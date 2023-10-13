@@ -8,7 +8,6 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import PlaceholderComponent from "components/PlaceholderComponent";
-import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import {
@@ -48,11 +47,6 @@ const ObservationsStackNavigator = ( ): Node => (
           headerShown: false,
           unmountOnBlur: true
         }}
-      />
-      <Stack.Screen
-        name="TaxonDetails"
-        component={TaxonDetails}
-        options={hideHeader}
       />
       <Stack.Screen
         name="UserProfile"

@@ -20,25 +20,21 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 type Props = {
   passesEvidenceTest: Function,
   handleDragAndDrop: Function,
-  showMediaViewer: Function,
   isFetchingLocation: boolean,
   locationTextClassNames: any,
   evidenceList: Array<string>,
   setShowAddEvidenceSheet: Function,
-  showAddEvidenceSheet: boolean,
-  savingPhoto: boolean
+  showAddEvidenceSheet: boolean
 }
 
 const EvidenceSection = ( {
   locationTextClassNames,
   handleDragAndDrop,
-  showMediaViewer,
   passesEvidenceTest,
   isFetchingLocation,
   evidenceList,
   setShowAddEvidenceSheet,
-  showAddEvidenceSheet,
-  savingPhoto
+  showAddEvidenceSheet
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -103,8 +99,6 @@ const EvidenceSection = ( {
         evidenceList={evidenceList}
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
-        showMediaViewer={showMediaViewer}
-        savingPhoto={savingPhoto}
       />
       <Pressable
         accessibilityRole="button"

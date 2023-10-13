@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   differenceInCalendarYears,
@@ -13,7 +12,6 @@ import React, {
   useCallback, useContext, useEffect,
   useRef, useState
 } from "react";
-import Photo from "realmModels/Photo";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
 
 import EvidenceSection from "./EvidenceSection";
@@ -22,15 +20,12 @@ const EvidenceSectionContainer = ( ): Node => {
   const {
     currentObservation,
     setPassesEvidenceTest,
-    savingPhoto,
-    setMediaViewerUris,
-    setSelectedPhotoIndex,
-    updateObservationKeys
+    updateObservationKeys,
+    setPhotoEvidenceUris,
+    photoEvidenceUris
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
   const mountedRef = useRef( true );
-  const navigation = useNavigation( );
-  const [deletePhotoMode, setDeletePhotoMode] = useState( false );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
 
@@ -49,6 +44,14 @@ const EvidenceSectionContainer = ( ): Node => {
       mountedRef.current = false;
     };
   }, [] );
+
+  useEffect( ( ) => {
+    if ( obsPhotos?.length > photoEvidenceUris?.length ) {
+      setPhotoEvidenceUris( obsPhotos.map(
+        obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+      ) );
+    }
+  }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
 
   const {
     hasLocation,
@@ -96,16 +99,6 @@ const EvidenceSectionContainer = ( ): Node => {
     return false;
   }, [currentObservation] );
 
-  const showMediaViewer = index => {
-    setSelectedPhotoIndex( index - 1 );
-    setMediaViewerUris(
-      obsPhotos.map(
-        obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
-      )
-    );
-    navigation.navigate( "MediaViewer" );
-  };
-
   const passesEvidenceTest = useCallback( ( ) => {
     if ( isFetchingLocation ) {
       return null;
@@ -115,12 +108,6 @@ const EvidenceSectionContainer = ( ): Node => {
     }
     return false;
   }, [isFetchingLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
-
-  useEffect( ( ) => {
-    if ( obsPhotos?.length === 0 && deletePhotoMode ) {
-      setDeletePhotoMode( false );
-    }
-  }, [obsPhotos, deletePhotoMode] );
 
   useEffect( ( ) => {
     // we're only showing the Missing Evidence Sheet if location/date are missing
@@ -142,19 +129,19 @@ const EvidenceSectionContainer = ( ): Node => {
     updateObservationKeys( {
       observationPhotos: data
     } );
+    const uris = data.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
+    setPhotoEvidenceUris( uris );
   };
 
   return (
     <EvidenceSection
       locationTextClassNames={locationTextClassNames}
       handleDragAndDrop={handleDragAndDrop}
-      showMediaViewer={showMediaViewer}
       passesEvidenceTest={passesEvidenceTest}
       isFetchingLocation={isFetchingLocation}
       evidenceList={obsPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
-      savingPhoto={savingPhoto}
     />
   );
 };

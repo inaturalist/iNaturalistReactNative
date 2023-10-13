@@ -96,7 +96,7 @@ const SearchBar = ( {
           </View>
         )
         : (
-          <View className="absolute right-4 top-[20px]">
+          <View className="absolute right-4 top-[15px]">
             <INatIcon name="magnifying-glass" size={18} />
           </View>
         )}

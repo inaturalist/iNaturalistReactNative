@@ -418,7 +418,7 @@ PODS:
     - React-Core
   - RNLocalize (2.2.6):
     - React-Core
-  - RNPermissions (3.8.0):
+  - RNPermissions (3.10.0):
     - React-Core
   - RNReanimated (2.17.0):
     - DoubleConversion
@@ -447,7 +447,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.20.0):
+  - RNScreens (3.21.1):
     - React-Core
     - React-RCTImage
   - RNShareMenu (6.0.0):
@@ -764,9 +764,9 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 6e4dc6b7ab3a385386d4e36228bd065e5a611394
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
-  RNPermissions: 46f97a9fb7a4ce9a3fbf3a9dde0e6f83eb7bd170
+  RNPermissions: 0332875c444efe864dd97071dc848529bd7cc692
   RNReanimated: f186e85d9f28c9383d05ca39e11dd194f59093ec
-  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNScreens: d3675ab2878704de70c9dae57fa5d024802404cc
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
@@ -774,6 +774,6 @@ SPEC CHECKSUMS:
   VisionCameraPluginInatVision: 79bb258db75218889c74d0897ecba676492c4def
   Yoga: 39310a10944fc864a7550700de349183450f8aaa
 
-PODFILE CHECKSUM: 12011c0d1d148a45ad35fd9c47bc095139411027
+PODFILE CHECKSUM: 77ed9526d4011b245ce5afa1ea331dea4c67d753
 
 COCOAPODS: 1.13.0

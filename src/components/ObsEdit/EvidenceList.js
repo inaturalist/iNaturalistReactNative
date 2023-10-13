@@ -1,10 +1,12 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React from "react";
+import React, { useContext } from "react";
 import { ActivityIndicator } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
@@ -14,18 +16,19 @@ import colors from "styles/tailwindColors";
 type Props = {
   evidenceList: Array<string>,
   handleAddEvidence?: Function,
-  handleDragAndDrop: Function,
-  showMediaViewer: Function,
-  savingPhoto: boolean
+  handleDragAndDrop: Function
 }
 
 const EvidenceList = ( {
   evidenceList,
   handleAddEvidence,
-  handleDragAndDrop,
-  showMediaViewer,
-  savingPhoto
+  handleDragAndDrop
 }: Props ): Node => {
+  const {
+    savingPhoto,
+    setSelectedPhotoIndex
+  } = useContext( ObsEditContext );
+  const navigation = useNavigation( );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
   const renderPhoto = ( { item, getIndex, drag } ) => (
@@ -33,7 +36,10 @@ const EvidenceList = ( {
       <Pressable
         onLongPress={drag}
         accessibilityRole="button"
-        onPress={( ) => showMediaViewer( getIndex( ) )}
+        onPress={( ) => {
+          setSelectedPhotoIndex( getIndex( ) );
+          navigation.navigate( "MediaViewer" );
+        }}
         className={classnames( imageClass )}
         testID={`EvidenceList.${item.photo?.url || item.photo?.localFilePath}`}
       >
