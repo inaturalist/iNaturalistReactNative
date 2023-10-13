@@ -31,7 +31,7 @@ const SuggestionsContainer = ( ): Node => {
   };
 
   const { data: nearbySuggestions, isLoading: loadingSuggestions } = useAuthenticatedQuery(
-    ["scoreImage", params.image],
+    ["scoreImage", selectedPhotoUri],
     async optsWithAuth => scoreImage(
       await flattenUploadParams(
         params.image,
@@ -41,7 +41,7 @@ const SuggestionsContainer = ( ): Node => {
       optsWithAuth
     ),
     {
-      enabled: !!params.image
+      enabled: !!selectedPhotoUri
     }
   );
 

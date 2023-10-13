@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { screen } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import SuggestionsList from "components/Suggestions/SuggestionsList";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -80,5 +80,14 @@ describe( "SuggestionsList", ( ) => {
     );
     const loading = screen.getByTestId( "SuggestionsList.loading" );
     expect( loading ).toBeVisible( );
+  } );
+
+  it( "should create an id when checkmark is pressed", async ( ) => {
+    renderSuggestionsList( );
+    const testID = `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`;
+    const checkmark = screen.getByTestId( `${testID}.checkmark` );
+    expect( checkmark ).toBeVisible( );
+    fireEvent.press( checkmark );
+    expect( mockTaxonSelection ).toHaveBeenCalled( );
   } );
 } );

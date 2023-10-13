@@ -8,6 +8,7 @@ import ObsEdit from "components/ObsEdit/ObsEdit";
 import { Heading4, Mortal, PermissionGate } from "components/SharedComponents";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import TaxonSearch from "components/Suggestions/TaxonSearch";
+import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import { t } from "i18next";
 import {
   blankHeaderTitle,
@@ -88,6 +89,11 @@ const SharedStackScreens = ( ): Node => (
           backgroundColor: "black"
         }
       }}
+    />
+    <Stack.Screen
+      name="TaxonDetails"
+      component={TaxonDetails}
+      options={hideHeader}
     />
   </Stack.Group>
 );

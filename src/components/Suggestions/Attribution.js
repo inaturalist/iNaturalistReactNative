@@ -4,6 +4,7 @@ import { fetchObservers } from "api/observations";
 import {
   Body3
 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
@@ -30,13 +31,17 @@ const Attribution = ( {
           name: true
         }
       }
-    } )
+    } ),
+
+    {
+      enabled: taxonIds.length > 0
+    }
   );
 
   const observers = data?.results?.map( observation => observation.user.login );
 
   if ( !observers || observers?.length === 0 ) {
-    return null;
+    return <View testID="Attribution.empty" />;
   }
 
   return (

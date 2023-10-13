@@ -40,6 +40,10 @@ const TaxonResult = ( {
   const theme = useTheme( );
   const taxonImage = { uri: taxon?.default_photo?.url };
 
+  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", {
+    id: taxon.id
+  } );
+
   return (
     <View
       className={
@@ -56,10 +60,7 @@ const TaxonResult = ( {
     >
       <Pressable
         className="flex-row items-center w-16 grow"
-        onPress={() => navigation.navigate( "ObservationsStackNavigator", {
-          screen: "TaxonDetails",
-          params: { id: taxon.id }
-        } )}
+        onPress={navToTaxonDetails}
         accessible
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
@@ -102,16 +103,7 @@ const TaxonResult = ( {
         <INatIconButton
           icon="info-circle-outline"
           size={22}
-          onPress={( ) => navigation.navigate( "TabNavigator", {
-            screen: "ObservationsStackNavigator",
-            params: {
-              screen: "TaxonDetails",
-              params: {
-                id: taxon.id,
-                lastScreen: "Suggestions"
-              }
-            }
-          } )}
+          onPress={navToTaxonDetails}
           color={clearBackground && theme.colors.onSecondary}
           accessibilityLabel={t( "Information" )}
           accessibilityHint={t( "Navigate-to-taxon-details" )}
