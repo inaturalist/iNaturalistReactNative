@@ -27,7 +27,7 @@ const SuggestionsContainer = ( ): Node => {
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
 
   useEffect( ( ) => {
-    if ( obsPhotos?.length > photoEvidenceUris.length ) {
+    if ( obsPhotos?.length > photoEvidenceUris?.length ) {
       setPhotoEvidenceUris( obsPhotos.map(
         obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
       ) );
