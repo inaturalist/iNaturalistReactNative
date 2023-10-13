@@ -452,7 +452,7 @@ PODS:
     - React-RCTImage
   - RNShareMenu (6.0.0):
     - React
-  - RNSVG (13.9.0):
+  - RNSVG (13.14.0):
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
@@ -768,7 +768,7 @@ SPEC CHECKSUMS:
   RNReanimated: f186e85d9f28c9383d05ca39e11dd194f59093ec
   RNScreens: d3675ab2878704de70c9dae57fa5d024802404cc
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
-  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
+  RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   VisionCamera: cb27c70cea1439e9a946bf2acdc059f8fb1bc68c
   VisionCameraPluginInatVision: 79bb258db75218889c74d0897ecba676492c4def
