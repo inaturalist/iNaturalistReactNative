@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect } from "react";
-import { Alert, Dimensions, PixelRatio } from "react-native";
+import { Alert } from "react-native";
 import {
   useCurrentUser,
   useIsConnected,
@@ -34,43 +34,17 @@ const ToolbarContainer = ( {
   const stopUpload = obsEditContext?.stopUpload;
   const uploadInProgress = obsEditContext?.uploadInProgress;
   const uploadMultipleObservations = obsEditContext?.uploadMultipleObservations;
-  const currentUploadIndex = obsEditContext?.currentUploadIndex;
   const progress = obsEditContext?.progress;
   const setUploads = obsEditContext?.setUploads;
   const uploads = obsEditContext?.uploads;
-  const totalUploadCount = obsEditContext?.totalUploadCount;
   const uploadError = obsEditContext?.error;
   const singleUpload = obsEditContext?.singleUpload;
+  const currentUploadIndex = obsEditContext?.currentUploadIndex;
+  const totalUploadCount = obsEditContext?.totalUploadCount;
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
 
-  const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
-
   const { refetch } = useObservationsUpdates( false );
-
-  const getStatusText = ( ) => {
-    if ( progress === 1 ) {
-      return t( "X-observations-uploaded", { count: totalUploadCount } );
-    }
-
-    if ( !uploadInProgress ) {
-      return numUnuploadedObs !== 0
-        ? t( "Upload-x-observations", { count: numUnuploadedObs } )
-        : "";
-    }
-
-    const translationParams = {
-      total: totalUploadCount,
-      uploadedCount: currentUploadIndex + 1
-    };
-
-    // iPhone 4 pixel width
-    if ( screenWidth <= 640 ) {
-      return t( "Uploading-x-of-y", translationParams );
-    }
-
-    return t( "Uploading-x-of-y-observations", translationParams );
-  };
 
   const handleSyncButtonPress = ( ) => {
     if ( !isOnline ) {
@@ -96,12 +70,6 @@ const ToolbarContainer = ( {
 
   const navToExplore = ( ) => navigation.navigate( "Explore" );
 
-  const statusText = getStatusText( );
-
-  const needsSync = ( ) => (
-    ( numUnuploadedObs > 0 && !uploadInProgress ) || ( uploadError && !uploadInProgress )
-  );
-
   useEffect( ( ) => {
     if ( uploads?.length > 0 && !singleUpload && uploadInProgress ) {
       uploadMultipleObservations( );
@@ -120,7 +88,6 @@ const ToolbarContainer = ( {
 
   return (
     <Toolbar
-      statusText={statusText}
       handleSyncButtonPress={handleSyncButtonPress}
       uploadError={uploadError && !uploadInProgress
         ? uploadError
@@ -133,7 +100,8 @@ const ToolbarContainer = ( {
       navToExplore={navToExplore}
       toggleLayout={toggleLayout}
       layout={layout}
-      needsSync={needsSync}
+      currentUploadIndex={currentUploadIndex}
+      totalUploadCount={totalUploadCount}
     />
   );
 };
