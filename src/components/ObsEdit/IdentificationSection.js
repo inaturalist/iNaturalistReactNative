@@ -98,7 +98,7 @@ const IdentificationSection = ( ): Node => {
               before={(
                 <Button
                   level={identification
-                    ? "primary"
+                    ? "neutral"
                     : "focus"}
                   onPress={navToSuggestions}
                   text={t( "ADD-AN-ID" )}
@@ -106,6 +106,7 @@ const IdentificationSection = ( ): Node => {
                     "border border-darkGray border-[2px]": identification
                   } )}
                   testID="ObsEdit.Suggestions"
+                  ignoreDark
                   icon={(
                     <INatIcon
                       name="sparkly-label"
