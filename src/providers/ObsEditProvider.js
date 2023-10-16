@@ -341,6 +341,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
         localFilePaths
       );
+      // TODO catch the error that gets raised here if the user denies gallery permission
       await savePhotosToCameraGallery( localFilePaths );
     };
 

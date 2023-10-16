@@ -21,7 +21,7 @@ const LOCATION_FETCH_INTERVAL = 1000;
 // isFetchingLocation to tell the consumer whether this process is happening.
 // If currentObservation is not new, it will not fetch location and return
 // information about the current observation's location
-const useCurrentObservationLocation = ( mountedRef: any ): Object => {
+const useCurrentObservationLocation = ( mountedRef: any, options: Object = { } ): Object => {
   const {
     currentObservation,
     updateObservationKeys
@@ -44,6 +44,7 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
   const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
+  const [permissionResult, setPermissionResult] = useState( null );
 
   useEffect( ( ) => {
     if ( !currentObservation ) return;
@@ -55,9 +56,9 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
       if ( !mountedRef.current ) return;
       if ( !shouldFetchLocation ) return;
 
-      const permissionResult = permissionResultFromMultiple(
+      setPermissionResult( permissionResultFromMultiple(
         await checkMultiple( LOCATION_PERMISSIONS )
-      );
+      ) );
       if ( permissionResult !== RESULTS.GRANTED ) {
         setFetchingLocation( false );
         setShouldFetchLocation( false );
@@ -108,15 +109,25 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
     currentObservation,
     fetchingLocation,
     lastLocationFetchTime,
+    mountedRef,
     numLocationFetches,
+    permissionResult,
     positionalAccuracy,
     setFetchingLocation,
-    setLastLocationFetchTime,
-    setNumLocationFetches,
-    setShouldFetchLocation,
     shouldFetchLocation,
-    updateObservationKeys,
-    mountedRef
+    updateObservationKeys
+  ] );
+
+  useEffect( ( ) => {
+    if ( options.retry && !shouldFetchLocation ) {
+      setTimeout( ( ) => {
+        setShouldFetchLocation( true );
+      }, LOCATION_FETCH_INTERVAL + 1 );
+    }
+  }, [
+    options.retry,
+    setShouldFetchLocation,
+    shouldFetchLocation
   ] );
 
   return {
@@ -127,7 +138,9 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
     // Internally we're tracking isFetching when one of potentially many
     // location requests is in flight, but this tells the external consumer
     // whether the overall location fetching process is happening
-    isFetchingLocation: shouldFetchLocation
+    isFetchingLocation: shouldFetchLocation,
+    permissionResult,
+    numLocationFetches
   };
 };
 

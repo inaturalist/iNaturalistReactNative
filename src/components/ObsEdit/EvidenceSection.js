@@ -7,6 +7,7 @@ import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPic
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
 import {
   differenceInCalendarYears,
@@ -20,6 +21,9 @@ import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
+import {
+  RESULTS as PERMISSION_RESULTS
+} from "react-native-permissions";
 import Photo from "realmModels/Photo";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -50,6 +54,10 @@ const EvidenceSection = ( ): Node => {
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
+  const [
+    shouldRetryCurrentObservationLocation,
+    setShouldRetryCurrentObservationLocation
+  ] = useState( false );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -69,8 +77,11 @@ const EvidenceSection = ( ): Node => {
 
   const {
     hasLocation,
-    isFetchingLocation
-  } = useCurrentObservationLocation( mountedRef );
+    isFetchingLocation,
+    permissionResult: locationPermissionResult
+  } = useCurrentObservationLocation( mountedRef, {
+    retry: shouldRetryCurrentObservationLocation
+  } );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -159,6 +170,14 @@ const EvidenceSection = ( ): Node => {
     }
   }, [hasValidLocation, hasValidDate, setPassesEvidenceTest] );
 
+  useEffect( ( ) => {
+    if ( latitude ) {
+      setShouldRetryCurrentObservationLocation( false );
+    } else if ( locationPermissionResult === "granted" ) {
+      setShouldRetryCurrentObservationLocation( true );
+    }
+  }, [latitude, locationPermissionResult] );
+
   const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
 
   return (
@@ -217,6 +236,19 @@ const EvidenceSection = ( ): Node => {
 
       </Pressable>
       <DatePicker currentObservation={currentObservation} />
+      <LocationPermissionGate
+        permissionNeeded={locationPermissionResult === PERMISSION_RESULTS.DENIED}
+        onPermissionGranted={( ) => {
+          setShouldRetryCurrentObservationLocation( true );
+        }}
+        onPermissionDenied={( ) => {
+          setShouldRetryCurrentObservationLocation( false );
+        }}
+        onPermissionBlocked={( ) => {
+          setShouldRetryCurrentObservationLocation( false );
+        }}
+        withoutNavigation
+      />
     </View>
   );
 };
