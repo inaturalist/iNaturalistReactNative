@@ -12,6 +12,7 @@ import {
 } from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
 import { modelPath, taxonomyPath } from "sharedHelpers/cvModel";
+import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
@@ -49,6 +50,8 @@ const FrameProcessorCamera = ( {
   onZoomChange,
   takingPhoto
 }: Props ): Node => {
+  const { deviceOrientation } = useDeviceOrientation();
+
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
     // iOS part exposes no logging, so calling it would crash
@@ -89,7 +92,8 @@ const FrameProcessorCamera = ( {
             version,
             modelPath,
             taxonomyPath,
-            confidenceThreshold
+            confidenceThreshold,
+            patchedOrientationAndroid: deviceOrientation
           } );
           handleResults( results );
         } catch ( classifierError ) {
@@ -98,7 +102,7 @@ const FrameProcessorCamera = ( {
         }
       } );
     },
-    [version, confidenceThreshold, takingPhoto]
+    [version, confidenceThreshold, takingPhoto, deviceOrientation]
   );
 
   return (
