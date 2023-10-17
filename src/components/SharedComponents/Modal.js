@@ -8,7 +8,11 @@ type Props = {
   showModal: boolean,
   closeModal: Function,
   modal: any,
-  backdropOpacity?: number
+  backdropOpacity?: number,
+  style?: Object,
+  animationIn?: string,
+  animationOut?: string,
+  disableSwipeDirection?: boolean
 }
 
 const modalStyle = {
@@ -20,20 +24,28 @@ const modalStyle = {
 // https://github.com/react-native-modal/react-native-modal/issues/525
 
 const Modal = ( {
-  showModal, closeModal, modal, backdropOpacity
-}: Props ): React.Node => (
-  <RNModal
-    isVisible={showModal}
-    onBackdropPress={closeModal}
-    onSwipeComplete={closeModal}
-    swipeDirection="down"
-    useNativeDriverForBackdrop
-    useNativeDriver
-    style={modalStyle}
-    backdropOpacity={backdropOpacity}
-  >
-    {modal}
-  </RNModal>
-);
+  showModal, closeModal, modal, backdropOpacity, style,
+  animationIn, animationOut, disableSwipeDirection = false
+}: Props ): React.Node => {
+  const swipeDirection = disableSwipeDirection
+    ? null
+    : "down";
+  return (
+    <RNModal
+      isVisible={showModal}
+      onBackdropPress={closeModal}
+      onSwipeComplete={closeModal}
+      swipeDirection={swipeDirection}
+      useNativeDriverForBackdrop
+      useNativeDriver
+      style={{ ...style, ...modalStyle }}
+      backdropOpacity={backdropOpacity}
+      animationIn={animationIn || "slideInUp"}
+      animationOut={animationOut || "slideOutDown"}
+    >
+      {modal}
+    </RNModal>
+  );
+};
 
 export default Modal;

@@ -6,15 +6,19 @@ import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Platform
-} from "react-native";
+import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
+import {
+  handleCameraError,
+  handleCaptureError,
+  handleClassifierError,
+  handleDeviceNotSupported,
+  handleLog
+} from "../helpers";
 import ARCameraButtons from "./ARCameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 
@@ -40,10 +44,13 @@ type Props = {
   takingPhoto: boolean,
   animatedProps: any,
   changeZoom: Function,
-  zoom: number,
+  zoomTextValue: string,
+  showZoomButton: boolean,
   navToObsEdit: Function,
-  photoSaved: boolean
-}
+  photoSaved: boolean,
+  onZoomStart?: Function,
+  onZoomChange?: Function,
+};
 
 const ARCamera = ( {
   flipCamera,
@@ -57,12 +64,15 @@ const ARCamera = ( {
   takingPhoto,
   animatedProps,
   changeZoom,
-  zoom,
+  zoomTextValue,
+  showZoomButton,
   navToObsEdit,
-  photoSaved
+  photoSaved,
+  onZoomStart,
+  onZoomChange
 }: Props ): Node => {
-  const { t } = useTranslation( );
-  const theme = useTheme( );
+  const { t } = useTranslation();
+  const theme = useTheme();
 
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
@@ -140,12 +150,14 @@ const ARCamera = ( {
         };
       }
     } else {
-      predictions = cvResults?.map( r => {
-        const rank = Object.keys( r )[0];
-        return r[rank][0];
-      } )
+      predictions = cvResults
+        ?.map( r => {
+          const rank = Object.keys( r )[0];
+          return r[rank][0];
+        } )
         .sort( ( a, b ) => a.rank - b.rank );
-      prediction = predictions && predictions.length > 0 && {
+      prediction = predictions
+        && predictions.length > 0 && {
         rank_level: predictions[0].rank,
         id: predictions[0].taxon_id,
         name: predictions[0].name,
@@ -155,38 +167,7 @@ const ARCamera = ( {
     setResult( prediction );
   };
 
-  const handleClassifierError = error => {
-    console.log( "handleClassifierError error.message :>> ", error.message );
-    // When we hit this error, there is an error with the classifier.
-    Alert.alert( "error", error.message );
-  };
-
-  const handleDeviceNotSupported = error => {
-    console.log( "handleDeviceNotSupported error.message :>> ", error.message );
-    // When we hit this error, something with the current device is not supported.
-    Alert.alert( "error", error.message );
-  };
-
-  const handleCaptureError = error => {
-    console.log( "handleCaptureError error.message :>> ", error.message );
-    // When we hit this error, taking a photo did not work correctly
-    Alert.alert( "error", error.message );
-  };
-
-  const handleCameraError = error => {
-    console.log( "handleCameraError error.message :>> ", error.message );
-    // This error is thrown when it does not fit in any of the above categories.
-    Alert.alert( "error", error.message );
-  };
-
-  const handleLog = event => {
-    // event = { log: "string" }
-    console.log( "handleLog event :>> ", event );
-    // TODO: this handles incoming logs from the vision-camera-plugin-inatvision,
-    // can be used for debugging, added to a logfile, etc.
-  };
-
-  useEffect( ( ) => {
+  useEffect( () => {
     if ( photoSaved ) {
       navToObsEdit( { prediction: result } );
     }
@@ -205,6 +186,9 @@ const ARCamera = ( {
           onCameraError={handleCameraError}
           onLog={handleLog}
           animatedProps={animatedProps}
+          onZoomStart={onZoomStart}
+          onZoomChange={onZoomChange}
+          takingPhoto={takingPhoto}
         />
       )}
       <LinearGradient
@@ -212,12 +196,11 @@ const ARCamera = ( {
         locations={[0.001, 1]}
         className="w-full"
       >
-        <View className={
-          classnames( "self-center h-[219px]", {
+        <View
+          className={classnames( "self-center h-[219px]", {
             "w-[493px]": isTablet,
             "pt-8 w-[346px]": !isTablet
-          } )
-        }
+          } )}
         >
           {showPrediction && result
             ? (
@@ -227,12 +210,11 @@ const ARCamera = ( {
                 testID={`ARCamera.taxa.${result.id}`}
                 clearBackground
                 confidence={convertScoreToConfidence( result?.score )}
+                white
               />
             )
             : (
-              <Body1
-                className="text-white self-center mt-[22px]"
-              >
+              <Body1 className="text-white self-center mt-[22px]">
                 {modelLoaded
                   ? t( "Scan-the-area-around-you-for-organisms" )
                   : t( "Loading-iNaturalists-AR-Camera" )}
@@ -260,7 +242,8 @@ const ARCamera = ( {
         hasFlash={hasFlash}
         takePhotoOptions={takePhotoOptions}
         showPrediction={showPrediction}
-        zoom={zoom}
+        zoomTextValue={zoomTextValue}
+        showZoomButton={showZoomButton}
         changeZoom={changeZoom}
       />
     </>

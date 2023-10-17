@@ -14,6 +14,15 @@ const mockTaxon = factory( "RemoteTaxon", {
   }
 } );
 
+const taxonWithIconicTaxonPhoto = factory( "LocalTaxon", {
+  name: "Pavo cristatus",
+  preferred_common_name: "Peafowl",
+  iconic_taxon_name: "Aves",
+  default_photo: {
+    url: "some url"
+  }
+} );
+
 describe( "DisplayTaxon", () => {
   beforeAll( async ( ) => {
     await initI18next( );
@@ -23,31 +32,24 @@ describe( "DisplayTaxon", () => {
     expect( <DisplayTaxon taxon={mockTaxon} handlePress={( ) => { }} /> ).toBeAccessible( );
   } );
 
-  it( "displays an iconic taxon photo when no taxon photo is available", () => {
-    const noPhotoTaxon = factory( "RemoteTaxon", {
-      name: "Pavo cristatus",
-      preferred_common_name: "Peafowl",
-      iconic_taxon_name: "Aves"
-    } );
-    renderComponent( <DisplayTaxon taxon={noPhotoTaxon} handlePress={( ) => { }} /> );
+  it( "displays an iconic taxon icon when no photo is available", () => {
+    renderComponent( <DisplayTaxon taxon={mockTaxon} handlePress={( ) => { }} /> );
 
-    const iconicTaxon = global.realm.objects( "Taxon" )
-      .filtered( "name CONTAINS[c] $0", noPhotoTaxon?.iconic_taxon_name );
+    expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) );
+  } );
+
+  it( "displays an iconic taxon photo when no taxon photo is available", () => {
+    renderComponent( <DisplayTaxon taxon={taxonWithIconicTaxonPhoto} handlePress={( ) => { }} /> );
 
     expect(
       screen.getByTestId( "DisplayTaxon.image" ).props.source
-    ).toStrictEqual( { uri: iconicTaxon?.[0]?.default_photo?.url } );
+    ).toStrictEqual( { uri: taxonWithIconicTaxonPhoto?.default_photo?.url } );
   } );
 
   it( "displays 50% opacity when taxon id is withdrawn", () => {
-    const withdrawnTaxon = factory( "RemoteTaxon", {
-      name: "Pavo cristatus",
-      preferred_common_name: "Peafowl"
-    } );
-
     renderComponent(
       <DisplayTaxon
-        taxon={withdrawnTaxon}
+        taxon={taxonWithIconicTaxonPhoto}
         handlePress={( ) => { }}
         withdrawn
       />

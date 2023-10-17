@@ -21,7 +21,8 @@ const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
     updateObservationKeys,
-    setPassesIdentificationTest
+    setPassesIdentificationTest,
+    setLastScreen
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -35,11 +36,24 @@ const IdentificationSection = ( ): Node => {
   const onTaxonChosen = taxonName => {
     const selectedTaxon = realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName );
     updateObservationKeys( {
-      taxon: selectedTaxon[0]
+      taxon: selectedTaxon.length > 0
+        ? selectedTaxon[0]
+        : {
+          id: 48460,
+          name: "Life",
+          rank: "stateofmatter",
+          rank_level: 100,
+          default_photo: {
+            url: "https://inaturalist-open-data.s3.amazonaws.com/photos/196425367/square.jpeg"
+          }
+        }
     } );
   };
 
-  const navToAddID = ( ) => navigation.navigate( "AddID" );
+  const navToSuggestions = ( ) => {
+    setLastScreen( "ObsEdit" );
+    navigation.navigate( "Suggestions" );
+  };
 
   useEffect( ( ) => {
     if ( hasIdentification ) {
@@ -62,45 +76,52 @@ const IdentificationSection = ( ): Node => {
           <View className="flex-row items-center justify-between mr-5 mt-5">
             <DisplayTaxon
               taxon={identification}
-              handlePress={navToAddID}
+              handlePress={navToSuggestions}
               accessibilityLabel={t( "Navigates-to-add-identification" )}
             />
             <INatIconButton
               icon="edit"
               size={20}
-              onPress={navToAddID}
+              onPress={navToSuggestions}
               accessibilityLabel={t( "Edit" )}
               accessibilityHint={t( "Navigates-to-add-identification" )}
             />
           </View>
         )}
         <View className="mt-5">
-          <IconicTaxonChooser
-            before={(
-              <Button
-                level={identification
-                  ? "primary"
-                  : "focus"}
-                onPress={navToAddID}
-                text={t( "ADD-AN-ID" )}
-                className={classnames( "rounded-full py-1 h-[36px]", {
-                  "border border-darkGray border-[2px]": identification
-                } )}
-                testID="ObsEdit.Suggestions"
-                icon={(
-                  <INatIcon
-                    name="sparkly-label"
-                    size={24}
-                    color={identification
-                      ? theme.colors.primary
-                      : theme.colors.onPrimary}
-                  />
-                )}
-              />
-            )}
-            taxon={identification}
-            onTaxonChosen={onTaxonChosen}
-          />
+          {( !identification
+            || identification.name === identification.iconic_taxon_name
+            || identification.isIconic
+            || identification.name === "Life"
+          ) && (
+            <IconicTaxonChooser
+              before={(
+                <Button
+                  level={identification
+                    ? "neutral"
+                    : "focus"}
+                  onPress={navToSuggestions}
+                  text={t( "ADD-AN-ID" )}
+                  className={classnames( "rounded-full py-1 h-[36px]", {
+                    "border border-darkGray border-[2px]": identification
+                  } )}
+                  testID="ObsEdit.Suggestions"
+                  ignoreDark
+                  icon={(
+                    <INatIcon
+                      name="sparkly-label"
+                      size={24}
+                      color={identification
+                        ? theme.colors.primary
+                        : theme.colors.onPrimary}
+                    />
+                  )}
+                />
+              )}
+              taxon={identification}
+              onTaxonChosen={onTaxonChosen}
+            />
+          )}
         </View>
       </View>
     </View>

@@ -80,6 +80,7 @@
   "CONFIRM": "CONFIRM",
   "Connected-Accounts": "Connected Accounts",
   "Content-Display": "Content & Display",
+  "Coordinates-copied-to-keyboard": "Coordinates copied to keyboard",
   "Copy-coordinates": "Copy Coordinates",
   "Couldnt-create-comment": "Couldn't create comment",
   "Couldnt-create-identification": "Couldn't create identification",
@@ -162,9 +163,9 @@
   "Explore": "Explore",
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "External-Applications": "External Applications",
-  "Featured": {
+  "FEATURED": {
     "comment": "Header for featured projects",
-    "val": "Featured"
+    "val": "FEATURED"
   },
   "Fetching-location": "Fetching location...",
   "Filters": "Filters",
@@ -203,7 +204,7 @@
   },
   "IDENTIFICATION": "IDENTIFICATION",
   "IDENTIFICATIONS": "IDENTIFICATIONS",
-  "If-an-account-with-that-email-exists": "If an account with that email exists, we’ve sent password reset instructions to your email.",
+  "If-an-account-with-that-email-exists": "If an account with that email exists, we've sent password reset instructions to your email.",
   "Import-X-photos": {
     "comment": "Shows the number of photos a user selected from the camera roll for upload",
     "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
@@ -219,9 +220,9 @@
     "val": "The username or password is incorrect"
   },
   "Join-the-largest-community-of-naturalists": "Join the largest community of naturalists in the world!",
-  "Joined": {
+  "JOINED": {
     "comment": "Header for joined projects",
-    "val": "Joined"
+    "val": "JOINED"
   },
   "Joined-date": {
     "comment": "Shows date user joined iNaturalist on user profile",
@@ -277,9 +278,9 @@
   "Muted-Users": "Muted Users",
   "Names": "Names",
   "Native": "Native",
-  "Nearby": {
+  "NEARBY": {
     "comment": "Header for nearby projects",
-    "val": "Nearby"
+    "val": "NEARBY"
   },
   "New-Observation": "New Observation",
   "Next": "Next",
@@ -303,6 +304,10 @@
   },
   "Notifications": "Notifications",
   "Obscured": "Obscured",
+  "Obscured-observation-location-map-description": {
+    "comment": "Displayed when user views an obscured location on the ObsDetail map screen",
+    "val": "This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon."
+  },
   "Observation": "Observation",
   "Observation-Attribution": "Observation: © { $attribution } · { $restrictions }",
   "OBSERVATIONS": "OBSERVATIONS",
@@ -400,6 +405,10 @@
     "val": "Research Grade"
   },
   "Reset": "Reset",
+  "Restore": {
+    "comment": "Option to restore withdrawn id from current user",
+    "val": "Restore"
+  },
   "Lets-reset-your-password": {
     "comment": "Appears in the reset password screen",
     "val": "Let's reset your password"
@@ -421,7 +430,6 @@
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",
-  "Search-for-a-taxon-to-add-an-identification": "Search for a taxon to add an identification.",
   "Search-for-a-user": "Search for a user",
   "Search-for-description-tags-text": "Search for description/tags text",
   "Select": "Select",
@@ -510,7 +518,7 @@
   },
   "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
   "View-in-browser": "View in Browser",
-  "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
+  "Visually-search-iNaturalist-data": "Visually search iNaturalist's wealth of data. Search by a taxon in a location",
   "Welcome-to-iNaturalist": "Welcome to iNaturalist!",
   "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",
   "Which-traditional-projects-can-add-your-observations": "Which traditional projects can add your observations?",
@@ -521,6 +529,10 @@
   },
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",
+  "Withdraw": {
+    "comment": "Option to Withdraw identification made by user",
+    "val": "Withdraw"
+  },
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
@@ -543,7 +555,7 @@
   "Take-a-photo-with-your-camera": "Take a photo with your camera",
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
   "Record-a-sound": "Record a sound",
-  "You-can-also-explore-existing-observations": "You can also explore existing observations on iNaturalist to discover what’s around you.",
+  "You-can-also-explore-existing-observations": "You can also explore existing observations on iNaturalist to discover what's around you.",
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
@@ -552,7 +564,7 @@
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
   "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
-  "Zoom-in": "Zoom in so that the observation’s accuracy is as low as possible.",
+  "Zoom-in": "Zoom in so that the observation's accuracy is as low as possible.",
   "Your-location-uncertainty-is-over-4000km": "Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
   "Category-leading": {
     "comment": "Identification category",
@@ -698,6 +710,8 @@
   "Observation-photos-unavailable-without-internet": "Observation photos unavailable without internet",
   "Taxon-photo-unavailable-without-internet": "Taxon photo unavailable without internet",
   "User-photo-unavailable-without-internet": "User photo unavailable without internet",
+  "Search": "Search",
+  "Select-photo": "Select photo",
   "Add-this-ID": {
     "comment": "Accessibility labels for icons",
     "val": "Add this identification"
@@ -722,6 +736,8 @@
   "User-location": "User location",
   "Loading-wheel": "Loading wheel",
   "Map-layers": "Map layers",
+  "Share-map": "Share map",
+  "Copy-map-coordinates": "Copy map coordinates",
   "Identification-label": "Identification label",
   "Observation-with-no-evidence": "Observation with no evidence",
   "Photo-importer": "Photo importer",
@@ -735,6 +751,7 @@
   "Start-upload": "Start upload",
   "Previous-observation": "Previous observation",
   "Next-observation": "Next observation",
+  "Close-search": "Close search",
   "date-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
@@ -784,16 +801,20 @@
   "The-location-will-not-be-visible": "The location will not be visible to others, which means it may be difficult to identify.",
   "This-is-a-wild-organism": {
     "comment": " Wild status sheet descriptions",
-    "val": "This is a wild organism and wasn’t placed in this location by humans."
+    "val": "This is a wild organism and wasn't placed in this location by humans."
   },
   "This-organism-was-placed-by-humans": "This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.",
   "Lat-Lon-Acc": {
     "comment": "Latitude, longitude, and accuracy on a single line on a single line",
     "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
   },
+  "Lat-Lon": {
+    "comment": "Latitude, longitude on a single line on a single line",
+    "val": "{ NUMBER($latitude, maximumFractionDigits: \"6\") }, { NUMBER($longitude, maximumFractionDigits: \"6\") }"
+  },
   "Every-observation-needs": {
     "comment": "Missing evidence sheet",
-    "val": "Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy."
+    "val": "Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you're concerned about location privacy."
   },
   "Stop-upload": {
     "comment": "Button or accessibility label for an interactive element that stops an upload",
@@ -829,6 +850,7 @@
   "SPECIES-WITHOUT-NUMBER": "{ $count ->\n  [one] SPECIES\n *[other] SPECIES\n}",
   "IDENTIFICATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] IDENTIFICATION\n *[other] IDENTIFICATIONS\n}",
   "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}",
+  "MEMBERS-WITHOUT-NUMBER": "{ $count ->\n  [one] MEMBER\n *[other] MEMBERS\n}",
   "Yes-license-my-photos": "Yes, license my photos, sounds, and observations so scientists can use my data (recommended)",
   "I-consent-to-allow-iNaturalist-to-store": "I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)",
   "I-consent-to-allow-my-personal-information": "I consent to allow my personal information to be transferred to the United States of America (required)",
@@ -857,7 +879,7 @@
   "Log-in-to-iNaturalist": "Log in to iNaturalist",
   "Try-searching-for-a-location-name": "Try searching for a location name to see the map",
   "Scan-the-area-around-you-for-organisms": "Scan the area around you for organisms.",
-  "Loading-iNaturalists-AR-Camera": "Loading iNaturalist’s AR Camera",
+  "Loading-iNaturalists-AR-Camera": "Loading iNaturalist's AR Camera",
   "No-results-found": {
     "comment": "Used for explore screen when search params lead to a search with no data",
     "val": "No results found"
@@ -865,5 +887,39 @@
   "Taxon-photo-and-name": {
     "comment": "Default accessibility label for DisplayTaxon component",
     "val": "Taxon photo and name"
-  }
+  },
+  "You-havent-joined-any-projects-yet": "You haven't joined any projects yet!",
+  "You-can-click-join-on-the-project-page": "You can click “join” on the project page.",
+  "No-projects-match-that-search": "No projects match that search",
+  "RESET-SEARCH": "RESET SEARCH",
+  "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
+  "VIEW-PROJECT-REQUIREMENTS": "VIEW PROJECT REQUIREMENTS",
+  "VIEW-IN-EXPLORE": "VIEW IN EXPLORE",
+  "Collection-Project": "Collection Project",
+  "Umbrella-Project": "Umbrella Project",
+  "Traditional-Project": "Traditional Project",
+  "ABOUT-COLLECTION-PROJECTS": "ABOUT COLLECTION PROJECTS",
+  "ABOUT-TRADITIONAL-PROJECTS": "ABOUT TRADITIONAL PROJECTS",
+  "ABOUT-UMBRELLA-PROJECTS": "ABOUT UMBRELLA PROJECTS",
+  "Every-time-a-collection-project": "Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.",
+  "Obervations-must-be-manually-added": "Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.",
+  "If-you-want-to-collate-compare-promote": "If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.",
+  "JOIN-PROJECT": "JOIN PROJECT",
+  "JOIN": "JOIN",
+  "LEAVE-PROJECT": "LEAVE PROJECT",
+  "LEAVE": "LEAVE",
+  "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue.",
+  "SEARCH-FOR-A-TAXON": "SEARCH FOR A TAXON",
+  "Select-the-identification-you-want-to-add": "Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.",
+  "TOP-ID-SUGGESTION": "TOP ID SUGGESTION",
+  "NEARBY-SUGGESTIONS": "NEARBY SUGGESTIONS",
+  "INCLUDE-TAXA-NOT-EXPECTED-NEARBY": "INCLUDE TAXA NOT EXPECTED NEARBY",
+  "ONLY-SHOW-TAXA-EXPECTED-NEARBY": "ONLY-SHOW-TAXA-EXPECTED-NEARBY",
+  "iNaturalist-Identification-suggestions-are-trained-on": "iNaturalist's Identification suggestions are trained on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.",
+  "SPECIES-NEARBY": "SPECIES NEARBY",
+  "Below-are-all-the-species-observed-within-50km": "Below are all the species observed within 50 km of your location within the taxon:",
+  "Species-Nearby-requires-internet-to-work": "Species Nearby requires internet to work. Please check your internet connection.",
+  "Your-identification-will-be-posted-with-the-following-comment": "Your identification will be posted with the following comment:",
+  "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo": "iNaturalist isn't able to provide a top ID suggestion for this photo.",
+  "iNaturalist-has-no-ID-suggestions-for-this-photo": "iNaturalist has no ID suggestions for this photo."
 }

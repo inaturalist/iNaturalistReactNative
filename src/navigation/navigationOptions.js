@@ -43,7 +43,7 @@ const showLongHeader: Object = {
   }
 };
 
-export const showHeaderLeft: Object = {
+const showHeaderLeft: Object = {
   ...showHeader,
   headerLeft: ( ) => <BackButton />
 };
@@ -55,7 +55,9 @@ export const hideHeaderLeft: Object = {
 
 const showCustomHeader: Object = {
   ...baseHeaderOptions,
-  header: ContextHeader
+  header: ContextHeader,
+  headerShadowVisible: true,
+  alignStart: true
 };
 
 const hideHeader = {
@@ -87,5 +89,6 @@ export {
   removeBottomBorder,
   showCustomHeader,
   showHeader,
+  showHeaderLeft,
   showLongHeader
 };

@@ -29,7 +29,7 @@ type Props = {
   rotation?: {
     value: number
   },
-  setMediaViewerUris: Function,
+  setPhotoEvidenceUris: Function,
   photoUris: Array<string>,
   setSelectedPhotoIndex: Function
 }
@@ -60,7 +60,7 @@ const PhotoCarousel = ( {
   isLargeScreen,
   isTablet,
   rotation,
-  setMediaViewerUris,
+  setPhotoEvidenceUris,
   photoUris,
   setSelectedPhotoIndex
 }: Props ): Node => {
@@ -136,7 +136,7 @@ const PhotoCarousel = ( {
               deletePhoto( item );
             } else {
               setSelectedPhotoIndex( index );
-              setMediaViewerUris( [...photoUris] );
+              setPhotoEvidenceUris( [...photoUris] );
               navigation.navigate( "MediaViewer" );
             }
           }}

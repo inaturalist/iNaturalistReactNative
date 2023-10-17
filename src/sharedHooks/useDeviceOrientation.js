@@ -6,10 +6,10 @@ import { Dimensions } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 
-export const LANDSCAPE_LEFT = "landscapeLeft";
-export const LANDSCAPE_RIGHT = "landscapeRight";
+export const LANDSCAPE_LEFT = "landscape-left";
+export const LANDSCAPE_RIGHT = "landscape-right";
 export const PORTRAIT = "portrait";
-export const PORTRAIT_UPSIDE_DOWN = "portraitUpsideDown";
+export const PORTRAIT_UPSIDE_DOWN = "portrait-upside-down";
 
 export function orientationLockerToIosOrientation( orientation: string ): string {
   // react-native-orientation-locker and react-native-vision-camera  different

@@ -1,9 +1,8 @@
 // @flow
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { Heading4, TransparentCircleButton, WarningSheet } from "components/SharedComponents";
-import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { SafeAreaView, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -11,7 +10,7 @@ import React, {
   useCallback, useContext, useEffect, useRef,
   useState
 } from "react";
-import { BackHandler, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -26,13 +25,13 @@ const MediaViewer = ( ): Node => {
   const [warningSheet, setWarningSheet] = useState( false );
   const {
     deletePhotoFromObservation,
-    mediaViewerUris,
+    photoEvidenceUris,
     selectedPhotoIndex,
     setSelectedPhotoIndex
   } = useContext( ObsEditContext );
 
   const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === mediaViewerUris.length - 1;
+  const atLastPhoto = selectedPhotoIndex === photoEvidenceUris.length - 1;
 
   const handleScrollLeft = index => {
     if ( atFirstPhoto ) { return; }
@@ -49,41 +48,15 @@ const MediaViewer = ( ): Node => {
   const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
-  const numOfPhotos = mediaViewerUris.length;
+  const numOfPhotos = photoEvidenceUris.length;
 
   const showWarningSheet = ( ) => setWarningSheet( true );
   const hideWarningSheet = ( ) => setWarningSheet( false );
 
-  const handleBackButtonPress = useCallback( ( ) => navigation.goBack( ), [navigation] );
-
-  const renderBackButton = useCallback( ( ) => (
-    <View className="ml-4">
-      <BackButton
-        color={colors.white}
-        onPress={handleBackButtonPress}
-      />
-    </View>
-  ), [handleBackButtonPress] );
-
-  useFocusEffect(
-    useCallback( ( ) => {
-      // make sure an Android user cannot back out to MyObservations with the back arrow
-      // and see a stale observation context state
-      const onBackPress = ( ) => {
-        handleBackButtonPress( );
-        return true;
-      };
-
-      BackHandler.addEventListener( "hardwareBackPress", onBackPress );
-
-      return ( ) => BackHandler.removeEventListener( "hardwareBackPress", onBackPress );
-    }, [handleBackButtonPress] )
-  );
-
   const deletePhoto = ( ) => {
-    deletePhotoFromObservation( mediaViewerUris[selectedPhotoIndex] );
+    deletePhotoFromObservation( photoEvidenceUris[selectedPhotoIndex] );
     hideWarningSheet( );
-    if ( mediaViewerUris.length === 0 ) {
+    if ( photoEvidenceUris.length === 0 ) {
       navigation.goBack( );
     } else if ( selectedPhotoIndex !== 0 ) {
       setSelectedPhotoIndex( selectedPhotoIndex - 1 );
@@ -96,12 +69,11 @@ const MediaViewer = ( ): Node => {
     );
 
     const headerOptions = {
-      headerTitle: renderHeaderTitle,
-      headerLeft: renderBackButton
+      headerTitle: renderHeaderTitle
     };
 
     navigation.setOptions( headerOptions );
-  }, [navigation, t, numOfPhotos, renderBackButton] );
+  }, [navigation, t, numOfPhotos] );
 
   const scrollToIndex = useCallback( index => {
     // when a user taps a photo in the carousel, the UI needs to automatically
@@ -143,13 +115,13 @@ const MediaViewer = ( ): Node => {
         />
       )}
       <MainPhotoDisplay
-        photoUris={mediaViewerUris}
+        photoUris={photoEvidenceUris}
         selectedPhotoIndex={selectedPhotoIndex}
         handleScrollEndDrag={handleScrollEndDrag}
         horizontalScroll={horizontalScroll}
       />
       <PhotoSelector
-        photoUris={mediaViewerUris}
+        photoUris={photoEvidenceUris}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
         isLandscapeMode={isLandscapeMode}

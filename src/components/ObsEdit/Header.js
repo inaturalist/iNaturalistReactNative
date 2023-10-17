@@ -12,7 +12,6 @@ import React, {
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
-import colors from "styles/tailwindColors";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
 import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
@@ -93,7 +92,6 @@ const Header = ( ): Node => {
 
   const renderBackButton = useCallback( ( ) => (
     <BackButton
-      color={colors.black}
       onPress={handleBackButtonPress}
     />
   ), [handleBackButtonPress] );
@@ -121,6 +119,7 @@ const Header = ( ): Node => {
         large
       >
         <Menu.Item
+          testID="Header.delete-observation"
           onPress={( ) => {
             setDeleteSheetVisible( true );
             setKebabMenuVisible( false );

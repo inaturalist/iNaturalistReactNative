@@ -10,20 +10,27 @@ type Props = {
   }
 
 const BackButton = ( {
-  onPress, color
+  color,
+  onPress
 }: Props ): Node => {
   const navigation = useNavigation();
   const tintColor = color || colors.black;
 
-  if ( navigation?.canGoBack ) {
+  if ( navigation?.canGoBack( ) ) {
     return (
-      <HeaderBackButton tintColor={tintColor} onPress={onPress || navigation.goBack} />
+      <HeaderBackButton
+        tintColor={tintColor}
+        onPress={onPress || navigation.goBack}
+        // move backbutton to same margin as in react-navigation
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          margin: -11
+        }}
+      />
     );
   }
 
-  return (
-    null
-  );
+  return null;
 };
 
 export default BackButton;

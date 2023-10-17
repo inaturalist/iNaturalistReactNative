@@ -1,32 +1,40 @@
 // @flow
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import { Body3, Body4, INatIcon } from "components/SharedComponents";
+import { Body3, Body4 } from "components/SharedComponents";
+import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   observation: Object,
+  obscured?: boolean,
   classNameMargin?: string,
   details?: boolean,
   large?: boolean
 };
 
 const ObservationLocation = ( {
-  observation, classNameMargin, details, large
+  observation, classNameMargin, details, large, obscured
 }: Props ): React.Node => {
   const { t } = useTranslation( );
-
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   let displayCoords;
-  const geoprivacy = checkCamelAndSnakeCase( observation, "geoprivacy" );
-
-  if ( !displayLocation ) {
-    displayLocation = t( "No-Location" );
+  let displayGeoprivacy = t( "Open" );
+  if ( observation.geoprivacy === "obscured" ) {
+    displayGeoprivacy = t( "Obscured" );
+  } else if ( observation.geoprivacy === "private" ) {
+    displayGeoprivacy = t( "Private" );
   }
+
+  const TextComponent = large
+    ? Body3
+    : Body4;
+
   if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
     && ( observation?.longitude != null && observation?.longitude !== undefined )
+    && !obscured
   ) {
     displayCoords = t( "Lat-Lon-Acc", {
       latitude: observation.latitude,
@@ -34,23 +42,56 @@ const ObservationLocation = ( {
       accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
     } );
   }
+  if ( ( observation?.privateLatitude !== null && observation?.privateLatitude !== undefined )
+  && ( observation?.privateLongitude != null && observation?.privateLongitude !== undefined )
+  && !obscured
+  ) {
+    displayCoords = t( "Lat-Lon-Acc", {
+      latitude: observation.privateLatitude,
+      longitude: observation.privateLongitude,
+      accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+    } );
+  }
+  if ( !displayLocation ) {
+    if ( displayCoords && !details ) {
+      displayLocation = displayCoords;
+    } else {
+      displayLocation = t( "No-Location" );
+    }
+  }
 
-  const displayGeoprivacy = ( ) => (
-    <View className="flex-row mt-[11px]">
-      <INatIcon name="globe-outline" size={14} />
-      <Body4
-        className="text-darkGray ml-[5px]"
-        numberOfLines={1}
-        ellipsizeMode="tail"
-      >
-        {geoprivacy}
-      </Body4>
-    </View>
-  );
-
-  const TextComponent = large
-    ? Body3
-    : Body4;
+  const showGeoprivacy = ( ) => {
+    let displayPrivacy = displayGeoprivacy;
+    if ( displayPrivacy === "private" ) {
+      displayPrivacy = "Private";
+    }
+    if ( displayPrivacy === "obscured" ) {
+      displayPrivacy = "Obscured";
+    }
+    if ( displayPrivacy === null || displayPrivacy === "open" ) {
+      displayPrivacy = "Open";
+    }
+    return (
+      <ContentWithIcon icon="globe-outline" size={14} classNameMargin="mt-[11px]">
+        <View className="flex-row space-x-[2px]">
+          <TextComponent
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {t( "Geoprivacy" )}
+          </TextComponent>
+          <TextComponent
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {t( displayPrivacy )}
+          </TextComponent>
+        </View>
+      </ContentWithIcon>
+    );
+  };
 
   return (
     <View
@@ -61,31 +102,29 @@ const ObservationLocation = ( {
         text: displayLocation
       }}
     >
-      <View className="flex-row">
-        <INatIcon name="location" size={15} />
-        <TextComponent
-          className="text-darkGray ml-[8px]"
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {displayLocation}
-        </TextComponent>
-      </View>
+      <ContentWithIcon icon="location" size={14}>
+        <View className="flex-col space-y-[11px]">
+          <TextComponent
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {displayLocation}
+          </TextComponent>
+          {( details && displayCoords )
+           && (
+             <TextComponent
+               className="text-darkGray"
+               numberOfLines={1}
+               ellipsizeMode="tail"
+             >
+               {displayCoords}
+             </TextComponent>
+           )}
+        </View>
+      </ContentWithIcon>
       {details
-        && (
-          <View className="flex-col">
-            {displayCoords && (
-              <Body4
-                className="text-darkGray ml-[23px] mt-[12px]"
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {displayCoords}
-              </Body4>
-            )}
-            {geoprivacy && displayGeoprivacy()}
-          </View>
-        )}
+        && showGeoprivacy()}
     </View>
   );
 };

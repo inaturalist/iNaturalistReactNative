@@ -19,7 +19,8 @@ type ButtonProps = {
   style?: any,
   testID?: string,
   text: string,
-  dropdown?: boolean
+  dropdown?: boolean,
+  ignoreDark?: boolean
 }
 
 const setStyles = ( {
@@ -28,7 +29,8 @@ const setStyles = ( {
   forceDark,
   isFocus,
   isPrimary,
-  isWarning
+  isWarning,
+  ignoreDark
 } ) => {
   const buttonClasses = [
     "active:opacity-75",
@@ -74,12 +76,17 @@ const setStyles = ( {
     }
   } else {
     buttonClasses.push( "border border-[3px]" );
-    buttonClasses.push( disabled
-      ? "border-darkGrayDisabled dark:border-lightGray"
-      : "border-darkGray dark:border-white bg-white dark:bg-darkGray" );
-    textClasses.push( disabled
-      ? "text-darkGrayDisabled dark:text-lightGray"
-      : "text-darkGray dark:text-white" );
+    if ( ignoreDark ) {
+      buttonClasses.push( "border-darkGray" );
+      textClasses.push( "text-darkGray" );
+    } else {
+      buttonClasses.push( disabled
+        ? "border-darkGrayDisabled dark:border-lightGray"
+        : "border-darkGray dark:border-white bg-white dark:bg-darkGray" );
+      textClasses.push( disabled
+        ? "text-darkGrayDisabled dark:text-lightGray"
+        : "text-darkGray dark:text-white" );
+    }
   }
 
   return { buttonClasses, textClasses };
@@ -114,7 +121,8 @@ const Button = ( {
   style,
   testID,
   text,
-  dropdown
+  dropdown,
+  ignoreDark
 }: ButtonProps ): React.Node => {
   const isPrimary = level === "primary";
   const isWarning = level === "warning";
@@ -126,7 +134,8 @@ const Button = ( {
     forceDark,
     isFocus,
     isPrimary,
-    isWarning
+    isWarning,
+    ignoreDark
   } );
 
   const theme = useTheme();

@@ -11,10 +11,17 @@ import colors from "styles/tailwindColors";
 type Props = {
   taxon: Object,
   before: any,
-  onTaxonChosen: Function
+  onTaxonChosen: Function,
+  testID?: string
 };
 
-const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => {
+const STYLESHEET = {
+  alignItems: "center"
+};
+
+const IconicTaxonChooser = ( {
+  taxon, before, onTaxonChosen, testID
+}: Props ): Node => {
   const { t } = useTranslation( );
   const [selectedIcon, setSelectedIcon] = useState( null );
   const iconicTaxa = useIconicTaxa( { reload: false } );
@@ -27,7 +34,7 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
     "animalia",
     "fungi",
     "arachnida",
-    "mollusica",
+    "mollusca",
     "mammalia",
     "reptilia",
     "amphibia",
@@ -97,6 +104,8 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
       showsHorizontalScrollIndicator={false}
       ListHeaderComponent={renderHeader}
       accessibilityRole="radiogroup"
+      testID={testID}
+      contentContainerStyle={STYLESHEET}
     />
   );
 };

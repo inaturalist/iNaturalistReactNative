@@ -6,11 +6,13 @@ import React, {
 } from "react";
 import { Platform } from "react-native";
 import Config from "react-native-config";
-import * as REA from "react-native-reanimated";
 import {
+  runAtTargetFps,
   useFrameProcessor
 } from "react-native-vision-camera";
+import { Worklets } from "react-native-worklets-core";
 import { modelPath, taxonomyPath } from "sharedHelpers/cvModel";
+import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
@@ -22,7 +24,10 @@ type Props = {
   onCaptureError: Function,
   onCameraError: Function,
   onLog: Function,
-  animatedProps: any
+  animatedProps: any,
+  onZoomStart?: Function,
+  onZoomChange?: Function,
+  takingPhoto: boolean,
 };
 
 const version = Config.CV_MODEL_VERSION;
@@ -40,8 +45,13 @@ const FrameProcessorCamera = ( {
   onCaptureError,
   onCameraError,
   onLog,
-  animatedProps
+  animatedProps,
+  onZoomStart,
+  onZoomChange,
+  takingPhoto
 }: Props ): Node => {
+  const { deviceOrientation } = useDeviceOrientation();
+
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
     // iOS part exposes no logging, so calling it would crash
@@ -57,25 +67,42 @@ const FrameProcessorCamera = ( {
     };
   }, [onLog] );
 
+  const handleResults = Worklets.createRunInJsFn( predictions => {
+    onTaxaDetected( predictions );
+  } );
+
+  const handleError = Worklets.createRunInJsFn( error => {
+    onClassifierError( error );
+  } );
+
   const frameProcessor = useFrameProcessor(
     frame => {
       "worklet";
 
-      // Reminder: this is a worklet, running on the UI thread.
-      try {
-        const results = InatVision.inatVision( frame, {
-          version,
-          modelPath,
-          taxonomyPath,
-          confidenceThreshold
-        } );
-        REA.runOnJS( onTaxaDetected )( results );
-      } catch ( classifierError ) {
-        console.log( `Error: ${classifierError.message}` );
-        REA.runOnJS( onClassifierError )( classifierError );
+      if ( takingPhoto ) {
+        return;
       }
+
+      runAtTargetFps( 1, () => {
+        "worklet";
+
+        // Reminder: this is a worklet, running on the UI thread.
+        try {
+          const results = InatVision.inatVision( frame, {
+            version,
+            modelPath,
+            taxonomyPath,
+            confidenceThreshold,
+            patchedOrientationAndroid: deviceOrientation
+          } );
+          handleResults( results );
+        } catch ( classifierError ) {
+          console.log( `Error: ${classifierError.message}` );
+          handleError( classifierError );
+        }
+      } );
     },
-    [version, confidenceThreshold]
+    [version, confidenceThreshold, takingPhoto, deviceOrientation]
   );
 
   return (
@@ -87,11 +114,9 @@ const FrameProcessorCamera = ( {
       onCaptureError={onCaptureError}
       onCameraError={onCameraError}
       frameProcessor={frameProcessor}
-      // A value of 1 indicates that the frame processor gets executed once per second.
-      // This roughly equals the setting of the legacy camera of 1000ms between predictions,
-      // i.e. what taxaDetectionInterval was set to.
-      frameProcessorFps={1}
       animatedProps={animatedProps}
+      onZoomStart={onZoomStart}
+      onZoomChange={onZoomChange}
     />
   );
 };

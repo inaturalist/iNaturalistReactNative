@@ -1,73 +1,90 @@
 // @flow
 import classNames from "classnames";
 import { INatIcon, PhotoCount } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { LinearGradient, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { dropShadow } from "styles/global";
 
-import ObsImageBackground from "./ObsImageBackground";
+import ObsImage from "./ObsImage";
 
 type SOURCE = {
   uri: string,
 };
 
 type Props = {
-  source: SOURCE,
   children?: Node,
+  isSmall?: boolean,
+  hasSound?: boolean,
+  height?: string,
+  iconicTaxonName?: string,
+  isMultiplePhotosTop?: boolean,
   obsPhotosCount?: number,
+  opaque?: boolean,
   selectable?: boolean,
   selected?: boolean,
-  hasSound?: boolean,
-  opaque?: boolean,
-  width?: string,
-  height?: string,
-  isMultiplePhotosTop?: boolean,
-  disableGradient?: boolean,
-  hasSmallBorderRadius?: boolean,
+  source: SOURCE,
+  style?: Object,
+  white?: boolean,
+  className?: string,
   testID?: string,
-  style?: Object
+  width?: string
 };
 
 const ObsImagePreview = ( {
-  source,
   children,
+  isSmall = false,
   hasSound = false,
+  height = "h-[62px]",
+  iconicTaxonName = "unknown",
+  isMultiplePhotosTop = false,
   obsPhotosCount = 0,
+  opaque = false,
   selectable = false,
   selected = false,
-  width = "w-[62px]",
-  height = "h-[62px]",
-  opaque = false,
-  isMultiplePhotosTop = false,
-  disableGradient = false,
-  hasSmallBorderRadius = false,
+  source,
+  style,
+  className,
   testID,
-  style
+  white = false,
+  width = "w-[62px]"
 }: Props ): Node => {
   const theme = useTheme();
-  const hasMultiplePhotos = obsPhotosCount > 1;
-  const borderRadius = hasSmallBorderRadius
+  const borderRadius = isSmall
     ? "rounded-lg"
     : "rounded-2xl";
 
+  const imageClassName = classNames(
+    "max-h-[210px]",
+    "overflow-hidden",
+    "relative",
+    borderRadius,
+    height,
+    borderRadius,
+    className,
+    width
+  );
+
   return (
     <View
-      className={classNames(
-        "relative overflow-hidden max-h-[210px]",
-        width,
-        height,
-        borderRadius
-      )}
+      className={imageClassName}
       style={style}
       testID={testID}
     >
-      <ObsImageBackground
+      <ObsImage
         uri={source}
         opaque={opaque}
-        disableGradient={disableGradient}
+        imageClassName={imageClassName}
+        iconicTaxonName={iconicTaxonName}
+        white={white}
       />
+      { !isSmall && (
+        <LinearGradient
+          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+          className="absolute w-full h-full"
+        />
+      ) }
       {selectable && (
         <View
           className={classNames(
@@ -88,21 +105,21 @@ const ObsImagePreview = ( {
           )}
         </View>
       )}
-      {hasMultiplePhotos && (
+      {obsPhotosCount !== 1 && (
         <View
           className={classNames( "absolute right-0 p-1", {
             "bottom-0": !isMultiplePhotosTop,
             "top-0": isMultiplePhotosTop,
-            "p-2": !hasSmallBorderRadius
+            "p-2": !isSmall
           } )}
         >
-          <PhotoCount count={obsPhotosCount} />
+          { !( isSmall && obsPhotosCount === 0 ) && <PhotoCount count={obsPhotosCount} /> }
         </View>
       )}
       {hasSound && (
         <View
           className={classNames( "absolute left-0 top-0 p-1", {
-            "p-2": !hasSmallBorderRadius
+            "p-2": !isSmall
           } )}
           style={dropShadow}
         >

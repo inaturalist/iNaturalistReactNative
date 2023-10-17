@@ -9,6 +9,10 @@ import { useEffect } from "react";
 import Observation from "realmModels/Observation";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
+import { log } from "../../react-native-logs.config";
+
+const logger = log.extend( "useAuthenticatedQuery" );
+
 const { useRealm } = RealmContext;
 
 const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Object ): Object => {
@@ -18,9 +22,11 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
   const baseParams = {
     ...newInputParams,
     per_page: 50,
-    fields: Observation.FIELDS,
+    fields: Observation.LIST_FIELDS,
     ttl: -1
   };
+
+  const queryKey = ["searchObservations", baseParams];
 
   const {
     data: observations,
@@ -29,7 +35,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     status
   } = useInfiniteQuery( {
     // eslint-disable-next-line
-    queryKey: ["searchObservations", baseParams],
+    queryKey,
     keepPreviousData: false,
     queryFn: async ( { pageParam } ) => {
       const apiToken = await getJWT( );
@@ -48,11 +54,21 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
         // $FlowIgnore
         params.page = 1;
       }
+      const { results } = await searchObservations( params, options );
 
-      return searchObservations( params, options );
+      return results || [];
     },
     getNextPageParam: lastPage => last( lastPage )?.id,
-    enabled: !!currentUser
+    // allow a user to see the Explore screen Observations
+    // content while logged out
+    enabled: !!currentUser || upsert === false,
+    retry: ( failureCount, error ) => {
+      if ( error.status > 500 ) {
+        logger.warn( `${error.status} Error for query: `, queryKey );
+        return 0;
+      }
+      return 3;
+    }
   } );
 
   useEffect( ( ) => {

@@ -2,14 +2,24 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <RNShareMenu/ShareMenuManager.h>
+#import <React/RCTLinkingManager.h>
 
 @implementation AppDelegate
 
+// https://reactnative.dev/docs/linking#get-the-deep-link
 - (BOOL)application:(UIApplication *)app
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  return [ShareMenuManager application:app openURL:url options:options];
+  return [RCTLinkingManager application:app openURL:url options:options] || [ShareMenuManager application:app openURL:url options:options];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
+ restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+ return [RCTLinkingManager application:application
+                  continueUserActivity:userActivity
+                    restorationHandler:restorationHandler];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

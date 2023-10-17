@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import MyObservations from "components/MyObservations/MyObservations";
 import initI18next from "i18n/initI18next";
@@ -16,35 +15,10 @@ const mockObservations = [
       factory( "LocalComment" ),
       factory( "LocalComment" )
     ],
-    // This is a Realm object method that we use to see if a record was deleted or not
-    isValid: jest.fn( () => true ),
-    wasSynced: jest.fn( ),
-    needsSync: jest.fn( ),
-    observationPhotos: [
-      factory( "LocalObservationPhoto", {
-        photo: {
-          id: faker.datatype.number( ),
-          attribution: faker.lorem.sentence( ),
-          licenseCode: "cc-by-nc",
-          url: faker.image.imageUrl( )
-        }
-      } )
-    ]
+    observationPhotos: [factory( "LocalObservationPhoto" )]
   } ),
   factory( "LocalObservation", {
-    isValid: jest.fn( () => true ),
-    wasSynced: jest.fn( ),
-    needsSync: jest.fn( ),
-    observationPhotos: [
-      factory( "LocalObservationPhoto", {
-        photo: {
-          id: faker.datatype.number( ),
-          attribution: faker.lorem.sentence( ),
-          licenseCode: "cc-by-nc",
-          url: faker.image.imageUrl( )
-        }
-      } )
-    ]
+    observationPhotos: [factory( "LocalObservationPhoto" )]
   } )
 ];
 
@@ -62,16 +36,6 @@ jest.mock( "@react-navigation/native", () => {
     } )
   };
 } );
-
-// jest.mock( "sharedHooks/useApiToken" );
-
-// jest.mock( "sharedHooks/useLocalObservations", () => ( {
-//   __esModule: true,
-//   default: () => ( {
-//     observationList: mockObservations,
-//     allObsToUpload: []
-//   } )
-// } ) );
 
 const DEVICE_ORIENTATION_PHONE_PORTRAIT = {
   deviceOrientation: "portrait",

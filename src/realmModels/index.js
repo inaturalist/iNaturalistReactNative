@@ -26,7 +26,7 @@ export default {
     User,
     Vote
   ],
-  schemaVersion: 39,
+  schemaVersion: 40,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   migration: ( oldRealm, newRealm ) => {
     if ( oldRealm.schemaVersion < 34 ) {

@@ -15,6 +15,7 @@ import {
   showHeaderLeft
 } from "navigation/navigationOptions";
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
+import ProjectsStackNavigator from "navigation/StackNavigators/ProjectsStackNavigator";
 import React from "react";
 
 import CustomTabBar from "./CustomTabBar";
@@ -87,6 +88,11 @@ const BottomTabs = ( ) => {
         <Tab.Screen
           name="Donate"
           component={PlaceholderComponent}
+        />
+        <Tab.Screen
+          name="ProjectsStackNavigator"
+          component={ProjectsStackNavigator}
+          options={hideHeader}
         />
       </Tab.Navigator>
     </Mortal>

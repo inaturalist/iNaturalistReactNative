@@ -2,21 +2,15 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AddIDContainer from "components/AddID/AddIDContainer";
 import CameraContainer from "components/Camera/CameraContainer";
-import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
-import MediaViewer from "components/MediaViewer/MediaViewer";
-import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
-import { Heading4, Mortal, PermissionGate } from "components/SharedComponents";
+import { Mortal, PermissionGate } from "components/SharedComponents";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
   blankHeaderTitle,
   hideHeader,
-  hideHeaderLeft,
-  removeBottomBorder,
   showCustomHeader,
   showHeaderLeft
 } from "navigation/navigationOptions";
@@ -25,7 +19,7 @@ import React from "react";
 import { PermissionsAndroid, Platform } from "react-native";
 import { PERMISSIONS } from "react-native-permissions";
 
-const addIDTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
+import SharedStackScreens from "./SharedStackScreens";
 
 const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
 const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
@@ -125,16 +119,6 @@ const PhotoGalleryWithPermission = ( ) => {
   );
 };
 
-const ObsEditWithPermission = ( ) => (
-  <Mortal>
-    <PermissionGate
-      permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}
-    >
-      <ObsEdit />
-    </PermissionGate>
-  </Mortal>
-);
-
 const AddObsStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
@@ -170,7 +154,8 @@ const AddObsStackNavigator = ( ): Node => (
           ...showHeaderLeft,
           ...showCustomHeader,
           lazy: true,
-          title: t( "Group-Photos" )
+          title: t( "Group-Photos" ),
+          headerShadowVisible: false
         }}
       />
       <Stack.Screen
@@ -180,40 +165,8 @@ const AddObsStackNavigator = ( ): Node => (
           title: t( "Record-new-sound" )
         }}
       />
-      <Stack.Screen
-        name="ObsEdit"
-        component={ObsEditWithPermission}
-        options={{
-          ...removeBottomBorder,
-          ...blankHeaderTitle,
-          headerBackVisible: false
-        }}
-      />
-      <Stack.Screen
-        name="AddID"
-        component={AddIDContainer}
-        options={{
-          ...removeBottomBorder,
-          headerTitle: addIDTitle
-        }}
-      />
-      <Stack.Screen
-        name="LocationPicker"
-        component={LocationPickerContainer}
-        options={hideHeader}
-      />
-      <Stack.Screen
-        name="MediaViewer"
-        component={MediaViewer}
-        options={{
-          ...blankHeaderTitle,
-          headerStyle: {
-            backgroundColor: "black"
-          },
-          ...hideHeaderLeft
-        }}
-      />
     </Stack.Group>
+    {SharedStackScreens( )}
   </Stack.Navigator>
 );
 

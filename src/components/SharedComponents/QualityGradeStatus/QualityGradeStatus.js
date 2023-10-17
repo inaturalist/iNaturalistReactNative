@@ -1,9 +1,9 @@
 // @flow
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import CasualGrade from "images/svg/casualGrade.svg";
-import NeedsIdGrade from "images/svg/needsIdGrade.svg";
-import ResearchGrade from "images/svg/researchGrade.svg";
+import CasualGrade from "images/svg/casual_grade.svg";
+import NeedsIdGrade from "images/svg/needs_id_grade.svg";
+import ResearchGrade from "images/svg/research_grade.svg";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
 
@@ -16,7 +16,7 @@ type Props = {
 const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
   if ( qualityGrade === "research" ) {
     return (
-    // $FlowIgnore
+    // $FlowIgnore[not-a-component]
       <ResearchGrade
         accessible
         accessibilityLabel={t( "Quality-Grade-research" )}
@@ -28,7 +28,7 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
   }
   if ( qualityGrade === "needs_id" ) {
     return (
-    // $FlowIgnore
+    // $FlowIgnore[not-a-component]
       <NeedsIdGrade
         accessible
         accessibilityLabel={t( "Quality-Grade-needs_id" )}
@@ -39,7 +39,7 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
     );
   }
   return (
-    // $FlowIgnore
+    // $FlowIgnore[not-a-component]
     <CasualGrade
       accessible
       accessibilityLabel={t( "Quality-Grade-casual" )}

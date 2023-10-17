@@ -75,30 +75,34 @@ exports[`Tabs should render correctly 1`] = `
                 "fontFamily": "Whitney-Medium",
               },
               [
-                {
-                  "fontSize": 16,
-                  "lineHeight": 18,
-                },
-                {
-                  "lineHeight": 19,
-                },
-                {
-                  "fontWeight": "600",
-                },
-                {
-                  "letterSpacing": 2,
-                },
-                {
-                  "color": "#454545",
-                },
                 [
                   {
-                    "alignSelf": "center",
+                    "fontSize": 16,
+                    "lineHeight": 18,
                   },
                   {
-                    "paddingBottom": 4,
-                    "paddingTop": 4,
+                    "lineHeight": 19,
                   },
+                  {
+                    "fontWeight": "600",
+                  },
+                  {
+                    "letterSpacing": 2,
+                  },
+                  {
+                    "color": "#454545",
+                  },
+                  [
+                    {
+                      "alignSelf": "center",
+                    },
+                    {
+                      "paddingTop": 16,
+                    },
+                    {
+                      "paddingBottom": 12,
+                    },
+                  ],
                 ],
               ],
             ]
@@ -184,30 +188,34 @@ exports[`Tabs should render correctly 1`] = `
                 "fontFamily": "Whitney-Medium",
               },
               [
-                {
-                  "fontSize": 16,
-                  "lineHeight": 18,
-                },
-                {
-                  "lineHeight": 19,
-                },
-                {
-                  "fontWeight": "600",
-                },
-                {
-                  "letterSpacing": 2,
-                },
-                {
-                  "color": "#454545",
-                },
                 [
                   {
-                    "alignSelf": "center",
+                    "fontSize": 16,
+                    "lineHeight": 18,
                   },
                   {
-                    "paddingBottom": 4,
-                    "paddingTop": 4,
+                    "lineHeight": 19,
                   },
+                  {
+                    "fontWeight": "600",
+                  },
+                  {
+                    "letterSpacing": 2,
+                  },
+                  {
+                    "color": "#454545",
+                  },
+                  [
+                    {
+                      "alignSelf": "center",
+                    },
+                    {
+                      "paddingTop": 16,
+                    },
+                    {
+                      "paddingBottom": 12,
+                    },
+                  ],
                 ],
               ],
             ]
