@@ -26,8 +26,9 @@ type Props = {
   selected?: boolean,
   source: SOURCE,
   style?: Object,
-  testID?: string,
   white?: boolean,
+  className?: string,
+  testID?: string,
   width?: string
 };
 
@@ -44,6 +45,7 @@ const ObsImagePreview = ( {
   selected = false,
   source,
   style,
+  className,
   testID,
   white = false,
   width = "w-[62px]"
@@ -59,6 +61,8 @@ const ObsImagePreview = ( {
     "relative",
     borderRadius,
     height,
+    borderRadius,
+    className,
     width
   );
 

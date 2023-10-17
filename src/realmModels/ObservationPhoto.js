@@ -53,14 +53,15 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static async new( uri ) {
+  static async new( uri, position ) {
     const photo = await Photo.new( uri );
     return {
       _created_at: new Date( ),
       _updated_at: new Date( ),
       uuid: uuid.v4( ),
       photo,
-      originalPhotoUri: uri
+      originalPhotoUri: uri,
+      position
     };
   }
 

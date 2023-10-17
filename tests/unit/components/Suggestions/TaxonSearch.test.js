@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { fireEvent, screen } from "@testing-library/react-native";
-import AddIDContainer from "components/AddID/AddIDContainer";
+import TaxonSearch from "components/Suggestions/TaxonSearch";
 import initI18next from "i18n/initI18next";
-import { t } from "i18next";
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
@@ -14,14 +14,6 @@ import { renderComponent } from "../../../helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 jest.mock( "providers/ObsEditProvider" );
-
-const mockMutate = jest.fn();
-jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    mutate: mockMutate
-  } )
-} ) );
 
 jest.mock(
   "components/SharedComponents/ViewWrapper",
@@ -38,23 +30,10 @@ jest.mock(
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: faker.name.firstName( ),
-  // rank: "genus",
-  // rank_level: 27,
   preferred_common_name: faker.name.fullName( ),
   default_photo: {
     square_url: faker.image.imageUrl( )
   }
-  // ancestors: [{
-  //   id: faker.datatype.number( ),
-  //   preferred_common_name: faker.name.fullName( ),
-  //   name: faker.name.fullName( ),
-  //   rank: "class"
-  // }],
-  // wikipedia_summary: faker.lorem.paragraph( ),
-  // taxonPhotos: [{
-  //   photo: factory( "RemotePhoto" )
-  // }],
-  // wikipedia_url: faker.internet.url( )
 } );
 
 const mockTaxaList = [
@@ -107,68 +86,60 @@ jest.mock( "react-native-paper", () => {
   return MockedModule;
 } );
 
-const mockRoute = {
-  params: {
-    observationUUID: faker.datatype.uuid( ),
-    createRemoteIdentification: true
-  }
-};
+const mockCreateId = jest.fn( );
 
-const renderAddId = ( ) => renderComponent(
+const renderTaxonSearch = ( loading = false, comment = "" ) => renderComponent(
   <ObsEditContext.Provider value={{
-    updateObservationKeys: jest.fn( )
+    updateObservationKeys: jest.fn( ),
+    createId: mockCreateId,
+    loading,
+    comment
   }}
   >
-    <AddIDContainer route={mockRoute} />
+    <TaxonSearch />
   </ObsEditContext.Provider>
 );
 
-describe( "AddID", ( ) => {
+describe( "TaxonSearch", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
   } );
 
   test( "should not have accessibility errors", () => {
-    const addID = (
+    const suggestions = (
       <BottomSheetModalProvider>
         <INatPaperProvider>
           <ObsEditContext.Provider value={{
             updateObservationKeys: jest.fn( )
           }}
           >
-            <AddIDContainer route={mockRoute} />
+            <TaxonSearch />
           </ObsEditContext.Provider>
         </INatPaperProvider>
       </BottomSheetModalProvider>
     );
-    expect( addID ).toBeAccessible( );
+    expect( suggestions ).toBeAccessible( );
   } );
 
   it( "should render inside mocked container", ( ) => {
-    renderAddId( );
+    renderTaxonSearch( );
     expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy();
   } );
 
   it( "show taxon search results", async ( ) => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-    renderAddId( );
+    renderTaxonSearch( );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
     fireEvent.changeText( input, "Some taxon" );
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
   } );
 
-  it( "shows loading indicator when taxon is selected", async () => {
-    renderAddId( );
-    const input = screen.getByTestId( "SearchTaxon" );
-    const taxon = mockTaxaList[0];
-
-    fireEvent.changeText( input, "Some taxon" );
-
-    expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
-    const labelText = t( "Checkmark" );
-    const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
-    fireEvent.press( chooseButton );
-    await screen.findByTestId( "AddID.ActivityIndicator" );
+  it( "shows comment section if observation has comment", ( ) => {
+    renderTaxonSearch( false, "Comment added to observation in TaxonSearch" );
+    const commentSection = screen.getByText(
+      i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
+    );
+    expect( commentSection ).toBeVisible( );
   } );
 } );

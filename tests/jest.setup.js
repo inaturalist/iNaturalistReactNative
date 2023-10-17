@@ -14,10 +14,15 @@ import { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
-  mockUseCameraDevices
+  mockUseCameraDevice
 } from "./vision-camera/vision-camera";
 
 jest.mock( "vision-camera-plugin-inatvision" );
+jest.mock( "react-native-worklets-core", () => ( {
+  Worklets: {
+    createRunInJsFn: jest.fn()
+  }
+} ) );
 
 jest.mock( "@sayem314/react-native-keep-awake" );
 jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
@@ -32,7 +37,10 @@ require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
   sortDevices: mockSortDevices,
-  useCameraDevices: mockUseCameraDevices
+  useCameraDevice: mockUseCameraDevice,
+  VisionCameraProxy: {
+    getFrameProcessorPlugin: jest.fn( )
+  }
 } ) );
 
 jest.mock( "react-native-localize", () => mockRNLocalize );
@@ -62,6 +70,7 @@ jest.mock( "@react-navigation/native", ( ) => {
     useIsFocused: jest.fn( ( ) => true ),
     useRoute: jest.fn( ( ) => ( { } ) ),
     useNavigation: ( ) => ( {
+      addListener: jest.fn(),
       setOptions: jest.fn( )
     } )
   };

@@ -3,85 +3,59 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
-import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
-import {
-  differenceInCalendarYears,
-  isFuture,
-  parseISO
-} from "date-fns";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, {
-  useCallback,
-  useContext, useEffect, useRef, useState
-} from "react";
+import React, { useContext } from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
-import {
-  RESULTS as PERMISSION_RESULTS
-} from "react-native-permissions";
-import Photo from "realmModels/Photo";
-import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
 import useTranslation from "sharedHooks/useTranslation";
 
 import DatePicker from "./DatePicker";
 import EvidenceList from "./EvidenceList";
 import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
-const EvidenceSection = ( ): Node => {
+type Props = {
+  evidenceList: Array<string>,
+  handleDragAndDrop: Function,
+  isFetchingLocation: boolean,
+  locationPermissionNeeded: boolean,
+  locationTextClassNames: any,
+  onLocationPermissionBlocked: Function,
+  onLocationPermissionDenied: Function,
+  onLocationPermissionGranted: Function,
+  passesEvidenceTest: Function,
+  setShowAddEvidenceSheet: Function,
+  showAddEvidenceSheet: boolean,
+}
+
+const EvidenceSection = ( {
+  evidenceList,
+  handleDragAndDrop,
+  isFetchingLocation,
+  locationPermissionNeeded,
+  locationTextClassNames,
+  onLocationPermissionBlocked,
+  onLocationPermissionDenied,
+  onLocationPermissionGranted,
+  passesEvidenceTest,
+  setShowAddEvidenceSheet,
+  showAddEvidenceSheet
+}: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
   const {
-    currentObservation,
-    setPassesEvidenceTest
+    currentObservation
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
-  const photoUris = obsPhotos
-    ? Array.from( obsPhotos ).map(
-      obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
-    )
-    : [];
-  const mountedRef = useRef( true );
   const navigation = useNavigation( );
 
   const navToLocationPicker = ( ) => {
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );
   };
-
-  const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
-  const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
-  const [
-    shouldRetryCurrentObservationLocation,
-    setShouldRetryCurrentObservationLocation
-  ] = useState( false );
-
-  // Hook version of componentWillUnmount. We use a ref to track mounted
-  // state (not useState, which might get frozen in a closure for other
-  // useEffects), and set it to false in the cleanup cleanup function. The
-  // effect has an empty dependency array so it should only run when the
-  // component mounts and when it unmounts, unlike in the cleanup effects of
-  // other hooks, which will run when any of there dependency values change,
-  // and maybe even before other hooks execute. If we ever need to do this
-  // again we could probably wrap this into its own hook, like useMounted
-  // ( ).
-  useEffect( ( ) => {
-    mountedRef.current = true;
-    return function cleanup( ) {
-      mountedRef.current = false;
-    };
-  }, [] );
-
-  const {
-    hasLocation,
-    isFetchingLocation,
-    permissionResult: locationPermissionResult
-  } = useCurrentObservationLocation( mountedRef, {
-    retry: shouldRetryCurrentObservationLocation
-  } );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -112,78 +86,10 @@ const EvidenceSection = ( ): Node => {
     } );
   };
 
-  const hasPhotoOrSound = useCallback( ( ) => {
-    if ( currentObservation?.observationPhotos?.length > 0
-      || currentObservation?.observationSounds?.length > 0 ) {
-      return true;
-    }
-    return false;
-  }, [currentObservation] );
-
-  const hasValidLocation = useCallback( ( ) => {
-    if ( hasLocation
-      && ( latitude !== 0 && longitude !== 0 )
-      && ( latitude >= -90 && latitude <= 90 )
-      && ( longitude >= -180 && longitude <= 180 )
-      && ( currentObservation?.positional_accuracy === null
-        || currentObservation?.positional_accuracy === undefined
-        || (
-          currentObservation?.positional_accuracy
-        && currentObservation?.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
-      )
-    ) {
-      return true;
-    }
-    return false;
-  }, [currentObservation, longitude, latitude, hasLocation] );
-
-  const hasValidDate = useCallback( ( ) => {
-    const observationDate = parseISO(
-      currentObservation?.observed_on_string || currentObservation?.time_observed_at
-    );
-    if ( observationDate
-      && !isFuture( observationDate )
-      && differenceInCalendarYears( observationDate, new Date( ) ) <= 130
-    ) {
-      return true;
-    }
-    return false;
-  }, [currentObservation] );
-
-  const passesEvidenceTest = useCallback( ( ) => {
-    if ( isFetchingLocation ) {
-      return null;
-    }
-    if ( hasValidLocation( ) && hasValidDate( ) && hasPhotoOrSound( ) ) {
-      return true;
-    }
-    return false;
-  }, [isFetchingLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
-
-  useEffect( ( ) => {
-    // we're only showing the Missing Evidence Sheet if location/date are missing
-    // but not if there is a missing photo or sound
-    // so the ObsEditContext version of passing evidence test
-    // will be different from what shows here with the red warning/green checkmark
-    if ( hasValidLocation( ) && hasValidDate( ) ) {
-      setPassesEvidenceTest( true );
-    }
-  }, [hasValidLocation, hasValidDate, setPassesEvidenceTest] );
-
-  useEffect( ( ) => {
-    if ( latitude ) {
-      setShouldRetryCurrentObservationLocation( false );
-    } else if ( locationPermissionResult === "granted" ) {
-      setShouldRetryCurrentObservationLocation( true );
-    }
-  }, [latitude, locationPermissionResult] );
-
-  const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
-
   return (
     <View className="mx-6 mt-6">
       <AddEvidenceSheet
-        disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
+        disableAddingMoreEvidence={obsPhotos?.length >= MAX_PHOTOS_ALLOWED}
         hidden={!showAddEvidenceSheet}
         onClose={( ) => setShowAddEvidenceSheet( false )}
       />
@@ -199,8 +105,9 @@ const EvidenceSection = ( ): Node => {
         </View>
       </View>
       <EvidenceList
-        photoUris={photoUris}
-        handleAddEvidence={handleAddEvidence}
+        evidenceList={evidenceList}
+        handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
+        handleDragAndDrop={handleDragAndDrop}
       />
       <Pressable
         accessibilityRole="button"
@@ -233,20 +140,13 @@ const EvidenceSection = ( ): Node => {
               )
           }
         </View>
-
       </Pressable>
       <DatePicker currentObservation={currentObservation} />
       <LocationPermissionGate
-        permissionNeeded={locationPermissionResult === PERMISSION_RESULTS.DENIED}
-        onPermissionGranted={( ) => {
-          setShouldRetryCurrentObservationLocation( true );
-        }}
-        onPermissionDenied={( ) => {
-          setShouldRetryCurrentObservationLocation( false );
-        }}
-        onPermissionBlocked={( ) => {
-          setShouldRetryCurrentObservationLocation( false );
-        }}
+        permissionNeeded={locationPermissionNeeded}
+        onPermissionGranted={onLocationPermissionGranted}
+        onPermissionDenied={onLocationPermissionDenied}
+        onPermissionBlocked={onLocationPermissionBlocked}
         withoutNavigation
       />
     </View>

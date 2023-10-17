@@ -15,7 +15,7 @@ import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
-const LOCATION_FETCH_INTERVAL = 1000;
+export const LOCATION_FETCH_INTERVAL = 1000;
 
 // Primarily fetches the current location for a new observation and returns
 // isFetchingLocation to tell the consumer whether this process is happening.
