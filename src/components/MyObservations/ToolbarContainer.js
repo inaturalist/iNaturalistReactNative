@@ -40,9 +40,11 @@ const ToolbarContainer = ( {
   const uploadError = obsEditContext?.error;
   const singleUpload = obsEditContext?.singleUpload;
   const currentUploadIndex = obsEditContext?.currentUploadIndex;
-  const totalUploadCount = obsEditContext?.totalUploadCount;
+  const clearUploadProgress = obsEditContext?.clearUploadProgress;
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
+
+  const totalUploadCount = uploads.length;
 
   const { refetch } = useObservationsUpdates( false );
 
@@ -80,10 +82,14 @@ const ToolbarContainer = ( {
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
+        console.log( "stop upload when leaving toolbar" );
         stopUpload( );
       } );
+      navigation.addListener( "focus", ( ) => {
+        clearUploadProgress( );
+      } );
     },
-    [navigation, stopUpload]
+    [navigation, stopUpload, clearUploadProgress]
   );
 
   return (
@@ -96,7 +102,7 @@ const ToolbarContainer = ( {
       stopUpload={stopUpload}
       progress={progress}
       numUnuploadedObs={numUnuploadedObs}
-      currentUser={currentUser}
+      showExploreIcon={currentUser}
       navToExplore={navToExplore}
       toggleLayout={toggleLayout}
       layout={layout}

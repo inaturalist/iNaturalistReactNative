@@ -7,7 +7,7 @@ import React from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsUploadStatus from "./ObsUploadStatus";
+import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
   observation: Object,
@@ -41,7 +41,7 @@ const ObsGridItem = ( {
     white
   >
     <View className="absolute bottom-0 flex p-2 w-full">
-      <ObsUploadStatus
+      <ObsUploadStatusContainer
         observation={observation}
         layout="horizontal"
         white

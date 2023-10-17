@@ -95,6 +95,16 @@ const UploadStatus = ( {
 
   useEffect( () => () => cancelAnimation( rotation ), [rotation] );
 
+  const showProgressArrow = ( ) => (
+    <View className="absolute" accessibilityLabel={t( "Upload-in-progress" )}>
+      <INatIcon
+        name="upload-arrow"
+        color={color || defaultColor}
+        size={15}
+      />
+    </View>
+  );
+
   const displayIcon = () => {
     if ( progress === 0 ) {
       return (
@@ -111,13 +121,7 @@ const UploadStatus = ( {
     if ( progress <= 0.05 ) {
       return (
         <>
-          <View className="absolute">
-            <INatIcon
-              name="upload-arrow"
-              color={color || defaultColor}
-              size={15}
-            />
-          </View>
+          {showProgressArrow( )}
           <AnimatedView style={rotate}>
             <INatIcon name="circle-dots" color={color || defaultColor} size={33} />
           </AnimatedView>
@@ -127,13 +131,7 @@ const UploadStatus = ( {
     if ( progress > 0.05 && progress < 1 ) {
       return (
         <>
-          <View className="absolute">
-            <INatIcon
-              name="upload-arrow"
-              color={color || defaultColor}
-              size={15}
-            />
-          </View>
+          {showProgressArrow( )}
           <CircularProgressBase
             testID="UploadStatus.CircularProgress"
             value={progress}

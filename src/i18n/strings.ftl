@@ -1123,6 +1123,7 @@ Grid-view = Grid view
 Remove-favorite = Remove favorite
 Add-favorite = Add favorite
 Start-upload = Start upload
+Upload-in-progress = Upload in progress
 Previous-observation = Previous observation
 Next-observation = Next observation
 Close-search = Close search

@@ -60,6 +60,16 @@ const initialState = {
   uploads: []
 };
 
+const startUploadState = uploads => ( {
+  error: null,
+  uploadInProgress: true,
+  uploads,
+  uploadProgress: { },
+  totalProgressIncrements: uploads
+    .reduce( ( count, current ) => count
+      + current.observationPhotos.length, 1 )
+} );
+
 const reducer = ( state, action ) => {
   switch ( action.type ) {
     case "CONTINUE_UPLOADS":
@@ -81,13 +91,7 @@ const reducer = ( state, action ) => {
     case "START_MULTIPLE_UPLOADS":
       return {
         ...state,
-        error: null,
-        uploadInProgress: true,
-        uploads: action.uploads,
-        uploadProgress: action.uploadProgress,
-        totalProgressIncrements: action.uploads.length + action.uploads
-          .reduce( ( count, current ) => count
-            + current.observationPhotos.length, 0 )
+        ...startUploadState( action.uploads )
       };
     case "START_NEXT_UPLOAD":
       return {
@@ -107,12 +111,8 @@ const reducer = ( state, action ) => {
     case "UPLOAD_SINGLE_OBSERVATION":
       return {
         ...state,
-        uploads: [action.observation],
-        singleUpload: true,
-        uploadInProgress: true,
-        totalProgressIncrements: 1 + [action.observation]
-          .reduce( ( count, current ) => count
-            + current.observationPhotos.length, 0 )
+        ...startUploadState( [action.observation] ),
+        singleUpload: true
       };
     default:
       throw new Error( );
@@ -158,12 +158,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     uploads
   } = state;
 
-  const totalUploadCount = uploads.length;
-  const totalUploadProgress = Object.values( uploadProgress ).reduce( ( count, current ) => count
+  const currentUploadProgress = Object.values( uploadProgress ).reduce( ( count, current ) => count
   + Number( current ), 0 );
 
   const progress = totalProgressIncrements > 0
-    ? totalUploadProgress / totalProgressIncrements
+    ? currentUploadProgress / totalProgressIncrements
     : 0;
 
   const resetObsEditContext = useCallback( ( ) => {
@@ -186,12 +185,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     deactivateKeepAwake( );
   };
 
+  const clearUploadProgress = ( ) => {
+    dispatch( { type: "UPDATE_PROGRESS", uploadProgress: { } } );
+  };
+
   const setUploads = allUploads => {
-    const resetProgress = { };
     dispatch( {
       type: "START_MULTIPLE_UPLOADS",
-      uploads: allUploads,
-      uploadProgress: resetProgress
+      uploads: allUploads
     } );
   };
 
@@ -875,11 +876,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setOriginalCameraUrisMap,
       savingPhoto,
       singleUpload,
-      totalUploadCount,
       createId,
       setLastScreen,
       comment,
-      setComment
+      setComment,
+      clearUploadProgress
     };
   }, [
     currentObservation,
@@ -920,7 +921,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     cameraRollUris,
     savingPhoto,
     singleUpload,
-    totalUploadCount,
     createIdentificationMutation,
     lastScreen,
     localObservation,
