@@ -130,6 +130,7 @@ const Toolbar = ( {
             disabled={false}
             accessibilityLabel={t( "Sync-observations" )}
             size={30}
+            testID="SyncButton"
           />
 
           {statusText && (

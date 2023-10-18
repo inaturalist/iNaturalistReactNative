@@ -20,7 +20,8 @@ type Props = {
   progress: number,
   uploadObservation: Function,
   layout: string,
-  children: any
+  children: any,
+  uuid: string
 }
 const AnimatedView = Reanimated.createAnimatedComponent( View );
 
@@ -45,7 +46,8 @@ const UploadStatus = ( {
   progress,
   uploadObservation,
   layout,
-  children
+  children,
+  uuid
 }: Props ): Node => {
   const theme = useTheme();
   const defaultColor = theme.colors.primary;
@@ -96,7 +98,11 @@ const UploadStatus = ( {
   useEffect( () => () => cancelAnimation( rotation ), [rotation] );
 
   const showProgressArrow = ( ) => (
-    <View className="absolute" accessibilityLabel={t( "Upload-in-progress" )}>
+    <View
+      className="absolute"
+      accessibilityLabel={t( "Upload-in-progress" )}
+      testID={`UploadIcon.progress.${uuid}`}
+    >
       <INatIcon
         name="upload-arrow"
         color={color || defaultColor}
@@ -115,6 +121,7 @@ const UploadStatus = ( {
           onPress={startUpload}
           disabled={false}
           accessibilityLabel={t( "Start-upload" )}
+          testID={`UploadIcon.start.${uuid}`}
         />
       );
     }
@@ -154,6 +161,7 @@ const UploadStatus = ( {
         <AnimatedView
           className="absolute"
           entering={keyframe.duration( 2000 )}
+          testID={`UploadIcon.complete.${uuid}`}
         >
           <INatIcon
             size={28}

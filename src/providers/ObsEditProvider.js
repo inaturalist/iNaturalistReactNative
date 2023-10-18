@@ -165,6 +165,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     ? currentUploadProgress / totalProgressIncrements
     : 0;
 
+  const clearUploadProgress = ( ) => {
+    dispatch( { type: "UPDATE_PROGRESS", uploadProgress: { } } );
+  };
+
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
     setCurrentObservationIndex( 0 );
@@ -178,15 +182,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGroupedPhotos( [] );
     setPhotoEvidenceUris( [] );
     setComment( "" );
+    clearUploadProgress( );
   }, [] );
 
   const stopUpload = ( ) => {
     dispatch( { type: "STOP_UPLOADS" } );
     deactivateKeepAwake( );
-  };
-
-  const clearUploadProgress = ( ) => {
-    dispatch( { type: "UPDATE_PROGRESS", uploadProgress: { } } );
   };
 
   const setUploads = allUploads => {

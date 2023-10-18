@@ -36,6 +36,7 @@ const ObsUploadStatus = ( {
         layout={layout}
         white={white}
         classNameMargin={classNameMargin}
+        testID={`ObsStatus.${observation.uuid}`}
       />
     );
 
@@ -50,6 +51,7 @@ const ObsUploadStatus = ( {
         color={whiteColor}
         completeColor={whiteColor}
         layout={layout}
+        uuid={observation.uuid}
       >
         {obsStatus}
       </UploadStatus>

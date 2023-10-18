@@ -28,7 +28,7 @@ describe( "ObsUploadStatus", () => {
     renderComponent(
       <ObsUploadStatus
         observation={mockUnsyncedObservation}
-        needsSync={( ) => true}
+        showUploadStatus
         progress={0}
       />
     );
@@ -41,7 +41,7 @@ describe( "ObsUploadStatus", () => {
     renderComponent(
       <ObsUploadStatus
         observation={mockEditedObservation}
-        needsSync={( ) => true}
+        showUploadStatus
         progress={0}
       />
     );
@@ -54,7 +54,7 @@ describe( "ObsUploadStatus", () => {
     renderComponent(
       <ObsUploadStatus
         observation={mockUnsyncedObservation}
-        needsSync={( ) => true}
+        showUploadStatus
         progress={0.05}
       />
     );
@@ -67,7 +67,7 @@ describe( "ObsUploadStatus", () => {
     renderComponent(
       <ObsUploadStatus
         observation={mockUnsyncedObservation}
-        needsSync={( ) => true}
+        showUploadStatus
         progress={1}
       />
     );

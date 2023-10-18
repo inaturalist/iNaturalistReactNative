@@ -38,9 +38,9 @@ const ObsUploadStatusContainer = ( {
     || item._synced_at <= item._updated_at;
 
   const currentProgress = uploadProgress?.[observation.uuid] || 0;
-  const currentProgressIncrements = [observation].length + [observation]
-    .reduce( ( count, current ) => count
-      + current.observationPhotos.length, 0 );
+  const currentProgressIncrements = observation?.observationPhotos
+    ? 1 + observation.observationPhotos.length
+    : 1;
 
   const progress = currentProgress / currentProgressIncrements || 0;
 

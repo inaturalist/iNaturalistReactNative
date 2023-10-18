@@ -96,9 +96,37 @@ describe( "MyObservations", ( ) => {
             factory( "LocalComment" ),
             factory( "LocalComment" ),
             factory( "LocalComment" )
+          ],
+          _synced_at: null,
+          observationPhotos: [
+            factory( "LocalObservationPhoto", {
+              photo: {
+                id: faker.datatype.number( ),
+                url: faker.image.imageUrl( ),
+                position: 0
+              }
+            } )
           ]
         } ),
-        factory( "LocalObservation" )
+        factory( "LocalObservation", {
+          _synced_at: null,
+          observationPhotos: [
+            factory( "LocalObservationPhoto", {
+              photo: {
+                id: faker.datatype.number( ),
+                url: `${faker.image.imageUrl( )}/100`,
+                position: 0
+              }
+            } ),
+            factory( "LocalObservationPhoto", {
+              photo: {
+                id: faker.datatype.number( ),
+                url: `${faker.image.imageUrl( )}/200`,
+                position: 1
+              }
+            } )
+          ]
+        } )
       ];
 
       beforeEach( async () => {
@@ -120,6 +148,97 @@ describe( "MyObservations", ( ) => {
         await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
         mockObservations.forEach( obs => {
           expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
+        } );
+      } );
+
+      it( "displays unuploaded status", async () => {
+        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /Upload 2 observations/ );
+          expect( toolbarText ).toBeVisible( );
+        } );
+        mockObservations.forEach( obs => {
+          const uploadIcon = screen.getByTestId( `UploadIcon.start.${obs.uuid}` );
+          expect( uploadIcon ).toBeVisible( );
+        } );
+      } );
+
+      it( "displays upload in progress status when individual upload tapped", async () => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /Upload 2 observations/ );
+          expect( toolbarText ).toBeVisible( );
+        } );
+        const uploadIcon = screen.getByTestId( `UploadIcon.start.${mockObservations[0].uuid}` );
+        expect( uploadIcon ).toBeVisible( );
+        fireEvent.press( uploadIcon );
+        await waitFor( ( ) => {
+          const uploadInProgressText = screen.getByText( /Uploading 1 of 1 observation/ );
+          expect( uploadInProgressText ).toBeVisible( );
+        } );
+        const uploadInProgressIcon = screen.getByTestId(
+          `UploadIcon.progress.${mockObservations[0].uuid}`
+        );
+        expect( uploadInProgressIcon ).toBeVisible( );
+        const secondUploadIcon = screen.getByTestId(
+          `UploadIcon.start.${mockObservations[1].uuid}`
+        );
+        expect( secondUploadIcon ).toBeVisible( );
+      } );
+
+      it( "displays upload in progress status when toolbar tapped", async () => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /Upload 2 observations/ );
+          expect( toolbarText ).toBeVisible( );
+        } );
+        const syncIcon = screen.getByTestId( "SyncButton" );
+        expect( syncIcon ).toBeVisible( );
+        fireEvent.press( syncIcon );
+        await waitFor( ( ) => {
+          const uploadInProgressText = screen.getByText( /Uploading 1 of 2 observations/ );
+          expect( uploadInProgressText ).toBeVisible( );
+        } );
+        mockObservations.forEach( obs => {
+          const uploadInProgressIcon = screen.getByTestId( `UploadIcon.progress.${obs.uuid}` );
+          expect( uploadInProgressIcon ).toBeVisible( );
+        } );
+      } );
+
+      const mockObservationsSynced = [
+        factory( "LocalObservation", {
+          comments: [
+            factory( "LocalComment" ),
+            factory( "LocalComment" ),
+            factory( "LocalComment" )
+          ],
+          _synced_at: faker.date.past( )
+        } ),
+        factory( "LocalObservation", {
+          _synced_at: faker.date.past( )
+        } )
+      ];
+
+      beforeEach( async () => {
+      // Write local observation to Realm
+        await global.realm.write( () => {
+          mockObservationsSynced.forEach( mockObservation => {
+            global.realm.create( "Observation", mockObservation );
+          } );
+        } );
+      } );
+
+      it( "displays observation status", async () => {
+        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await waitFor( ( ) => {
+          const syncIcon = screen.getByTestId( "SyncButton" );
+          expect( syncIcon ).toBeVisible( );
+        } );
+        mockObservationsSynced.forEach( obs => {
+          const obsStatus = screen.getByTestId( `ObsStatus.${obs.uuid}` );
+          expect( obsStatus ).toBeVisible( );
         } );
       } );
     } );

@@ -44,7 +44,7 @@ const ToolbarContainer = ( {
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
 
-  const totalUploadCount = uploads.length;
+  const totalUploadCount = uploads?.length || 0;
 
   const { refetch } = useObservationsUpdates( false );
 
@@ -82,7 +82,6 @@ const ToolbarContainer = ( {
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
-        console.log( "stop upload when leaving toolbar" );
         stopUpload( );
       } );
       navigation.addListener( "focus", ( ) => {
