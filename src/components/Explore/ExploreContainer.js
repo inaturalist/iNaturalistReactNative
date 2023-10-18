@@ -3,7 +3,6 @@
 import { useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
-import { useUserLocation } from "sharedHooks";
 
 import Explore from "./Explore";
 
@@ -97,7 +96,6 @@ const reducer = ( state, action ) => {
 };
 
 const ExploreContainer = ( ): Node => {
-  const { latLng } = useUserLocation( { skipPlaceGuess: false } );
   const { params } = useRoute( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
@@ -122,20 +120,6 @@ const ExploreContainer = ( ): Node => {
       } );
     }
   }, [params] );
-
-  useEffect( ( ) => {
-    if ( region.latitude === 0.0 && latLng?.latitude ) {
-      dispatch( {
-        type: "SET_LOCATION",
-        region: {
-          ...region,
-          latitude: latLng.latitude,
-          longitude: latLng.longitude,
-          place_guess: latLng.place_guess
-        }
-      } );
-    }
-  }, [latLng, region] );
 
   const changeExploreView = newView => {
     dispatch( {

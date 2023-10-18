@@ -6,6 +6,7 @@ import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCam
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -18,21 +19,29 @@ import EvidenceList from "./EvidenceList";
 import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 type Props = {
-  passesEvidenceTest: Function,
+  evidenceList: Array<string>,
   handleDragAndDrop: Function,
   isFetchingLocation: boolean,
+  locationPermissionNeeded: boolean,
   locationTextClassNames: any,
-  evidenceList: Array<string>,
+  onLocationPermissionBlocked: Function,
+  onLocationPermissionDenied: Function,
+  onLocationPermissionGranted: Function,
+  passesEvidenceTest: Function,
   setShowAddEvidenceSheet: Function,
-  showAddEvidenceSheet: boolean
+  showAddEvidenceSheet: boolean,
 }
 
 const EvidenceSection = ( {
-  locationTextClassNames,
-  handleDragAndDrop,
-  passesEvidenceTest,
-  isFetchingLocation,
   evidenceList,
+  handleDragAndDrop,
+  isFetchingLocation,
+  locationPermissionNeeded,
+  locationTextClassNames,
+  onLocationPermissionBlocked,
+  onLocationPermissionDenied,
+  onLocationPermissionGranted,
+  passesEvidenceTest,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet
 }: Props ): Node => {
@@ -133,6 +142,13 @@ const EvidenceSection = ( {
         </View>
       </Pressable>
       <DatePicker currentObservation={currentObservation} />
+      <LocationPermissionGate
+        permissionNeeded={locationPermissionNeeded}
+        onPermissionGranted={onLocationPermissionGranted}
+        onPermissionDenied={onLocationPermissionDenied}
+        onPermissionBlocked={onLocationPermissionBlocked}
+        withoutNavigation
+      />
     </View>
   );
 };

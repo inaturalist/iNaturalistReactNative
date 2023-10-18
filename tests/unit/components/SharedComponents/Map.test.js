@@ -22,12 +22,12 @@ describe( "Map", ( ) => {
   } );
 
   it( "displays filtered observations on map", async ( ) => {
-    renderComponent( <Map
-      showExplore
-      tileMapParams={{
-        taxon_id: 47178
-      }}
-    /> );
+    renderComponent(
+      <Map
+        withObsTiles
+        tileMapParams={{ taxon_id: 47178 }}
+      />
+    );
     const tiles = await screen.findByTestId( "Map.UrlTile" );
     expect( tiles ).toHaveProp( "urlTemplate", "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=47178&color=%2374ac00&verifiable=true" );
   } );

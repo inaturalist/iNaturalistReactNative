@@ -5,12 +5,13 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useContext, useEffect,
-  useReducer, useRef
+  useContext,
+  useEffect,
+  useReducer,
+  useRef
 } from "react";
-import { Dimensions, Platform } from "react-native";
+import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 import LocationPicker from "./LocationPicker";
 
@@ -36,7 +37,6 @@ const initialState = {
     longitudeDelta: DELTA
   },
   loading: true,
-  fetchingLocation: false,
   hidePlaceResults: true
 };
 
@@ -46,21 +46,6 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         positional_accuracy: estimatedAccuracy( state.region.longitudeDelta )
-      };
-    case "SET_CURRENT_LOCATION":
-      return {
-        ...state,
-        fetchingLocation: false,
-        region: {
-          ...state.region,
-          latitude: action.userLocation?.latitude,
-          longitude: action.userLocation?.longitude
-        }
-      };
-    case "SET_FETCHING_LOCATION":
-      return {
-        ...state,
-        fetchingLocation: true
       };
     case "INITIALIZE_MAP":
       return {
@@ -130,7 +115,7 @@ type Props = {
 };
 
 const LocationPickerContainer = ( { route }: Props ): Node => {
-  const mapView = useRef( );
+  const mapViewRef = useRef( );
   const { currentObservation } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { goBackOnSave } = route.params;
@@ -140,7 +125,6 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
   const {
     accuracy,
     accuracyTest,
-    fetchingLocation,
     hidePlaceResults,
     loading,
     locationName,
@@ -148,7 +132,7 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
     region
   } = state;
 
-  const showMap = region.latitude !== 0.0;
+  const showCrosshairs = region.latitude !== 0.0;
 
   const keysToUpdate = {
     latitude: region.latitude,
@@ -172,9 +156,11 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
 
     // don't update region if map hasn't actually moved
     // otherwise, it's jittery on Android
-    if ( newRegion.latitude.toFixed( 6 ) === region.latitude?.toFixed( 6 )
+    if (
+      newRegion.latitude.toFixed( 6 ) === region.latitude?.toFixed( 6 )
       && newRegion.longitude.toFixed( 6 ) === region.longitude?.toFixed( 6 )
-      && newRegion.latitudeDelta.toFixed( 6 ) === region.latitudeDelta?.toFixed( 6 ) ) {
+      && newRegion.latitudeDelta.toFixed( 6 ) === region.latitudeDelta?.toFixed( 6 )
+    ) {
       return;
     }
 
@@ -193,29 +179,6 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
     } else {
       dispatch( { type: "SET_MAP_TYPE", mapType: "standard" } );
     }
-  };
-
-  const returnToUserLocation = async ( ) => {
-    dispatch( { type: "SET_FETCHING_LOCATION" } );
-    const userLocation = await fetchUserLocation( );
-    dispatch( { type: "SET_CURRENT_LOCATION", userLocation } );
-    mapView.current?.getCamera( )
-      .then( cam => {
-        if ( Platform.OS === "android" ) {
-          cam.zoom = 20;
-        } else {
-          cam.altitude = 100;
-        }
-        mapView.current?.animateCamera( cam );
-      } )
-      .catch( getCameraError => {
-        if ( getCameraError.message.match( /AirMapView.map is not valid/ ) ) {
-          // This doesn't seem to have any ill effect
-          return;
-        }
-        throw getCameraError;
-      } );
-    dispatch( { type: "ESTIMATE_ACCURACY" } );
   };
 
   const updateLocationName = useCallback( name => {
@@ -237,8 +200,8 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
   );
 
   useEffect( ( ) => {
-    if ( !showMap ) dispatch( { type: "SET_LOADING", loading: false } );
-  }, [showMap] );
+    if ( !showCrosshairs ) dispatch( { type: "SET_LOADING", loading: false } );
+  }, [showCrosshairs] );
 
   const setMapReady = ( ) => dispatch( { type: "SET_LOADING", loading: false } );
 
@@ -260,18 +223,16 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
       accuracy={accuracy}
       accuracyTest={accuracyTest}
       goBackOnSave={goBackOnSave}
-      fetchingLocation={fetchingLocation}
       hidePlaceResults={hidePlaceResults}
       keysToUpdate={keysToUpdate}
       loading={loading}
       locationName={locationName}
       mapType={mapType}
-      mapView={mapView}
+      mapViewRef={mapViewRef}
       region={region}
-      returnToUserLocation={returnToUserLocation}
       selectPlaceResult={selectPlaceResult}
       setMapReady={setMapReady}
-      showMap={showMap}
+      showCrosshairs={showCrosshairs}
       toggleMapLayer={toggleMapLayer}
       updateLocationName={updateLocationName}
       updateRegion={updateRegion}

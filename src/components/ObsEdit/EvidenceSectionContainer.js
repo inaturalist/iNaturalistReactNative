@@ -12,6 +12,9 @@ import React, {
   useCallback, useContext, useEffect,
   useRef, useState
 } from "react";
+import {
+  RESULTS as PERMISSION_RESULTS
+} from "react-native-permissions";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
 
 import EvidenceSection from "./EvidenceSection";
@@ -28,6 +31,11 @@ const EvidenceSectionContainer = ( ): Node => {
   const mountedRef = useRef( true );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
+
+  const [
+    shouldRetryCurrentObservationLocation,
+    setShouldRetryCurrentObservationLocation
+  ] = useState( false );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -53,13 +61,29 @@ const EvidenceSectionContainer = ( ): Node => {
     }
   }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
 
+  // const {
+  //   hasLocation,
+  //   isFetchingLocation
+  // } = useCurrentObservationLocation( mountedRef );
+
   const {
     hasLocation,
-    isFetchingLocation
-  } = useCurrentObservationLocation( mountedRef );
+    isFetchingLocation,
+    permissionResult: locationPermissionResult
+  } = useCurrentObservationLocation( mountedRef, {
+    retry: shouldRetryCurrentObservationLocation
+  } );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
+
+  useEffect( ( ) => {
+    if ( latitude ) {
+      setShouldRetryCurrentObservationLocation( false );
+    } else if ( locationPermissionResult === "granted" ) {
+      setShouldRetryCurrentObservationLocation( true );
+    }
+  }, [latitude, locationPermissionResult] );
 
   const hasPhotoOrSound = useCallback( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
@@ -142,6 +166,16 @@ const EvidenceSectionContainer = ( ): Node => {
       evidenceList={obsPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
+      onLocationPermissionGranted={( ) => {
+        setShouldRetryCurrentObservationLocation( true );
+      }}
+      onLocationPermissionDenied={( ) => {
+        setShouldRetryCurrentObservationLocation( false );
+      }}
+      onLocationPermissionBlocked={( ) => {
+        setShouldRetryCurrentObservationLocation( false );
+      }}
+      locationPermissionNeeded={locationPermissionResult === PERMISSION_RESULTS.DENIED}
     />
   );
 };

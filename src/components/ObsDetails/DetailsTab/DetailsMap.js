@@ -40,7 +40,6 @@ type Props = {
   copyCoordinates: Function,
   shareMap: Function,
   cycleMapTypes: Function,
-  zoomToCurrentUserLocation: Function,
   closeModal: Function
 }
 
@@ -61,9 +60,6 @@ const FloatingActionButton = ( {
       buttonClassName
     )}
     icon={icon}
-    height={46}
-    width={46}
-    size={24}
     onPress={onPress}
     accessibilityLabel={accessibilityLabel}
   />
@@ -83,8 +79,7 @@ const DetailsMap = ( {
   obscured,
   positionalAccuracy,
   shareMap,
-  showNotificationModal,
-  zoomToCurrentUserLocation
+  showNotificationModal
 }: Props ): Node => {
   const theme = useTheme( );
   return (
@@ -92,7 +87,7 @@ const DetailsMap = ( {
       <View className="flex-1 h-full">
         <Map
           showLocationIndicator
-          showsMyLocationButton={false}
+          showCurrentLocationButton
           obsLatitude={latitude}
           obsLongitude={longitude}
           mapHeight="100%"
@@ -119,13 +114,6 @@ const DetailsMap = ( {
               />
             </>
           )}
-          <FloatingActionButton
-            icon="currentlocation"
-            onPress={( ) => zoomToCurrentUserLocation( )}
-            accessibilityLabel={t( "User-location" )}
-            buttonClassName="bottom-0 right-0"
-            theme={theme}
-          />
           <FloatingActionButton
             icon="map-layers"
             onPress={( ) => cycleMapTypes( )}

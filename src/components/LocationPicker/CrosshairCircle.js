@@ -18,10 +18,7 @@ const CrosshairCircle = ( { accuracyTest, getShadow }: Props ): Node => {
   const theme = useTheme( );
 
   return (
-    <View
-      className="right-[127px] bottom-[127px]"
-      pointerEvents="none"
-    >
+    <View pointerEvents="none">
       <View
         className={
           classnames(
