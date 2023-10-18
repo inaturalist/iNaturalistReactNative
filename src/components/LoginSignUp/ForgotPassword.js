@@ -1,13 +1,11 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { CloseButton, WarningSheet } from "components/SharedComponents";
-import {
-  Image, ScrollView, View
-} from "components/styledComponents";
+import { WarningSheet } from "components/SharedComponents";
+import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Keyboard } from "react-native";
 import { openInbox } from "react-native-email-link";
 
@@ -15,26 +13,15 @@ import {
   resetPassword
 } from "./AuthenticationService";
 import ForgotPasswordForm from "./ForgotPasswordForm";
+import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
 const ForgotPassword = ( ): Node => {
   const navigation = useNavigation( );
-  const [hideHeader, setHideHeader] = useState( false );
   const [showSheet, setShowSheet] = useState( false );
-
-  const handleInputFocus = ( ) => setHideHeader( true );
-
-  useEffect( () => {
-    const unsubscribe = navigation.addListener( "blur", () => {
-      setHideHeader( false );
-    } );
-
-    return unsubscribe;
-  }, [navigation] );
 
   const reset = async email => {
     await resetPassword( email );
-    setHideHeader( false );
     setShowSheet( true );
     Keyboard.dismiss( );
   };
@@ -65,20 +52,8 @@ const ForgotPassword = ( ): Node => {
           justifyContent: "space-between"
         }}
       >
-        {!hideHeader && (
-          <View>
-            <CloseButton size={22} icon="chevron-left" />
-            <Image
-              className="w-[234px] h-[43px] self-center"
-              resizeMode="contain"
-              source={require( "images/inaturalist.png" )}
-              accessibilityIgnoresInvertColors
-            />
-          </View>
-        )}
+        <Header />
         <ForgotPasswordForm
-          handleInputFocus={handleInputFocus}
-          hideHeader={hideHeader}
           reset={reset}
         />
       </ScrollView>

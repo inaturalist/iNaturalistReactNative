@@ -12,24 +12,27 @@ import React from "react";
 
 type Props = {
   headerText?: string,
+  hideLogo?: boolean,
   closeButtonIcon?: string
 }
 
-const Header = ( { headerText, closeButtonIcon }: Props ): Node => (
-  <View>
-    <View className={classnames( "self-end pr-2", {
+const Header = ( { headerText, hideLogo, closeButtonIcon }: Props ): Node => (
+  <View className="shrink">
+    <View className={classnames( "self-end pt-2 pr-2", {
       "self-start": closeButtonIcon
     } )}
     >
       <CloseButton size={19} icon={closeButtonIcon} />
     </View>
-    <View className="self-center">
-      <Image
-        className="w-[234px] h-[43px]"
-        resizeMode="contain"
-        source={require( "images/inaturalist.png" )}
-        accessibilityIgnoresInvertColors
-      />
+    <View className="w-full items-center">
+      { !hideLogo && (
+        <Image
+          className="w-[234px] h-[43px]"
+          resizeMode="contain"
+          source={require( "images/inaturalist.png" )}
+          accessibilityIgnoresInvertColors
+        />
+      ) }
       {headerText && (
         <Body1 className="text-center color-white mt-[24px] max-w-[280px]">
           {headerText}
