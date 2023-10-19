@@ -10,6 +10,8 @@ import * as React from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 
+import usePhotoGallery from "./PhotoImporter/hooks/usePhotoGallery";
+
 type Props = {
   closeModal: ( ) => void
 }
@@ -20,6 +22,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   const obsEditContext = React.useContext( ObsEditContext );
   const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
   const navigation = useNavigation( );
+  const showPhotoGallery = usePhotoGallery( );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
@@ -46,7 +49,14 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     closeModal( );
   };
 
-  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery" );
+  const navToPhotoGallery = ( ) => {
+    const resetObsEditContext = obsEditContext?.resetObsEditContext;
+    // clear previous upload context before navigating
+    if ( resetObsEditContext ) {
+      resetObsEditContext( );
+    }
+    showPhotoGallery();
+  };
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 

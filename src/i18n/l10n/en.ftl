@@ -67,7 +67,7 @@ attribution-cc-by = some rights reserved (CC BY)
 
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 
-attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+attribution-cc-by-nc = some rights reserved (CC BY-NC)
 
 attribution-cc-by-nd = some rights reserved (CC BY-ND)
 
@@ -79,7 +79,7 @@ attribution-cc-by = some rights reserved (CC BY)
 
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 
-attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+attribution-cc-by-nc = some rights reserved (CC BY-NC)
 
 attribution-cc-by-nd = some rights reserved (CC BY-ND)
 
@@ -158,7 +158,7 @@ DATA-QUALITY = DATA QUALITY
 
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
 
-# declares the current data quality status of the observation 
+# declares the current data quality status of the observation
 Data-quality-assessment-title-research = This observation is Research Grade!
 
 Data-quality-assessment-title-needs-id = This observation Needs ID
@@ -174,7 +174,7 @@ Data-quality-assessment-description-needs-id = This observation has not yet met 
 
 Data-quality-assessment-description-casual = This observation has not met the conditions for Research Grade status.
 
-# checklist test for Data Quality Assessment of Observation Details 
+# checklist test for Data Quality Assessment of Observation Details
 Data-quality-assessment-date-specified = Date specified
 
 Data-quality-assessment-location-specified = Location specified
@@ -1298,3 +1298,5 @@ JOIN = JOIN
 LEAVE-PROJECT = LEAVE PROJECT
 LEAVE = LEAVE
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
+
+Import-Photos-From = Import Photos From

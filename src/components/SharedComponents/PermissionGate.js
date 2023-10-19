@@ -4,13 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
-  PermissionsAndroid,
   Platform,
   Pressable,
   Text,
   View
 } from "react-native";
-import { request, RESULTS } from "react-native-permissions";
+import { requestPermission } from "sharedHelpers/permissions";
 import useTranslation from "sharedHooks/useTranslation";
 import { viewStyles } from "styles/permissionGate";
 
@@ -40,42 +39,15 @@ const PermissionGate = ( { children, permission, isIOS }: Props ): Node => {
     // effect refers to anything defined outside of this function, hence no
     // constants for the result states and no abstraction of this method for
     // requesting permissions
-    const requestAndroidPermissions = async () => {
-      const r = await PermissionsAndroid.request( permission );
-      if ( r === PermissionsAndroid.RESULTS.GRANTED ) {
-        setResult( "granted" );
-      } else if ( r === PermissionsAndroid.RESULTS.DENIED ) {
-        setResult( "denied" );
-      } else {
-        setResult( "never_ask_again" );
-      }
-    };
-
-    const requestiOSPermissions = async () => {
-      const r = await request( permission );
-
-      if ( r === RESULTS.GRANTED ) {
-        setResult( "granted" );
-      } else if ( r === RESULTS.DENIED ) {
-        setResult( "denied" );
-      } else {
-        setResult( "never_ask_again" );
-      }
-    };
-
     if ( result === null ) {
-      if ( Platform.OS === "android" ) {
-        requestAndroidPermissions();
-      } else {
-        requestiOSPermissions();
-      }
+      requestPermission( permission ).then( r => setResult( r ) );
     }
 
     // If this component has already been rendered but was just returned to in
     // the navigation, check again
     navigation.addListener( "focus", async () => {
       if ( result === null && Platform.OS === "android" ) {
-        await requestAndroidPermissions();
+        setResult( await requestPermission( permission ) );
       }
     } );
   }, [permission, navigation, result] );
@@ -86,14 +58,7 @@ const PermissionGate = ( { children, permission, isIOS }: Props ): Node => {
       style={viewStyles.permissionButton}
       onPress={async () => {
         try {
-          const r = await PermissionsAndroid.request( permission );
-          if ( r === PermissionsAndroid.RESULTS.GRANTED ) {
-            setResult( "granted" );
-          } else if ( r === PermissionsAndroid.RESULTS.DENIED ) {
-            setResult( "denied" );
-          } else {
-            setResult( "never_ask_again" );
-          }
+          setResult( await requestPermission( permission ) );
         } catch ( e ) {
           console.warn(
             // eslint-disable-next-line max-len

@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import usePhotoGallery from "components/PhotoImporter/hooks/usePhotoGallery";
 import {
   BottomSheet, EvidenceButton, List2
 } from "components/SharedComponents";
@@ -24,6 +25,7 @@ const AddEvidenceSheet = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [choice, setChoice] = useState( null );
+  const showPhotoGallery = usePhotoGallery( );
 
   return (
     <BottomSheet
@@ -36,9 +38,10 @@ const AddEvidenceSheet = ( {
         if ( position > -1 ) return;
 
         if ( choice === "camera" ) {
-          navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
+          navigation.navigate( "CameraNavigator", { screen: "Camera", params: { addEvidence: true, camera: "Standard", backToObsEdit: true } } );
         } else if ( choice === "import" ) {
-          navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
+          // Show photo gallery, but skip group photos phase
+          showPhotoGallery( true );
         } else if ( choice === "sound" ) {
           Alert.alert( "TODO", "Still need to implement sound recording" );
         }

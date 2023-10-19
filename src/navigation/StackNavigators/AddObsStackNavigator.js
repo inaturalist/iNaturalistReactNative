@@ -4,12 +4,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import { Mortal, PermissionGate } from "components/SharedComponents";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
-  blankHeaderTitle,
   hideHeader,
   showCustomHeader,
   showHeaderLeft
@@ -17,7 +15,6 @@ import {
 import type { Node } from "react";
 import React from "react";
 import { PermissionsAndroid, Platform } from "react-native";
-import { PERMISSIONS } from "react-native-permissions";
 
 import SharedStackScreens from "./SharedStackScreens";
 
@@ -82,43 +79,6 @@ const SoundRecorderWithPermission = ( ) => {
   );
 };
 
-const PhotoGalleryWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    return (
-      <PermissionGate
-        permission={androidReadPermissions}
-      >
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate
-            permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-
-  return (
-    <PermissionGate permission={androidReadPermissions}>
-      <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-      >
-        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
-          <PermissionGate
-            permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE}
-            isIOS
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    </PermissionGate>
-  );
-};
-
 const AddObsStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
@@ -141,11 +101,6 @@ const AddObsStackNavigator = ( ): Node => (
             backgroundColor: "black"
           }
         }}
-      />
-      <Stack.Screen
-        name="PhotoGallery"
-        component={PhotoGalleryWithPermission}
-        options={blankHeaderTitle}
       />
       <Stack.Screen
         name="GroupPhotos"
