@@ -38,7 +38,14 @@ const AddEvidenceSheet = ( {
         if ( position > -1 ) return;
 
         if ( choice === "camera" ) {
-          navigation.navigate( "CameraNavigator", { screen: "Camera", params: { addEvidence: true, camera: "Standard", backToObsEdit: true } } );
+          navigation.navigate( "CameraNavigator", {
+            screen: "Camera",
+            params: {
+              addEvidence: true,
+              camera: "Standard",
+              backToObsEdit: true
+            }
+          } );
         } else if ( choice === "import" ) {
           // Show photo gallery, but skip group photos phase
           showPhotoGallery( true );
