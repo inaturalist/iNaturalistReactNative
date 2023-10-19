@@ -131,6 +131,7 @@
   "DELETE": "DELETE",
   "DELETE-ALL": "DELETE ALL",
   "Delete-comment": "Delete comment",
+  "DELETE-COMMENT": "DELETE COMMENT?",
   "DELETE-OBSERVATION": "DELETE OBSERVATION?",
   "Delete-observation": "Delete observation",
   "Delete-observations": "Delete observations",
@@ -405,10 +406,11 @@
     "val": "Research Grade"
   },
   "Reset": "Reset",
-  "Restore": {
+  "Restore-ID": {
     "comment": "Option to restore withdrawn id from current user",
-    "val": "Restore"
+    "val": "Restore-ID"
   },
+  "RESTORE-ID": "RESTORE-ID",
   "Lets-reset-your-password": {
     "comment": "Appears in the reset password screen",
     "val": "Let's reset your password"
@@ -530,9 +532,10 @@
   },
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",
-  "Withdraw": {
-    "comment": "Option to Withdraw identification made by user",
-    "val": "Withdraw"
+  "Withdraw-ID": "Withdraw ID",
+  "WITHDRAW-ID": {
+    "comment": "Button to Withdraw identification made by user",
+    "val": "WITHDRAW ID"
   },
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
