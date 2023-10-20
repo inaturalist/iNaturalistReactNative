@@ -18,13 +18,15 @@ type Props = {
   layout?: "horizontal" | "vertical",
   white?: boolean,
   classNameMargin?: string,
+  testID?: string
 };
 /* eslint-disable react-native/no-inline-styles */
 const ObsStatus = ( {
   observation,
   white,
   layout = "vertical",
-  classNameMargin
+  classNameMargin,
+  testID
 }: Props ): Node => {
   const theme = useTheme();
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
@@ -46,7 +48,7 @@ const ObsStatus = ( {
   const commentsFilled = observation.comments_viewed === false;
 
   return (
-    <View className={classNames( "flex", flexDirection, classNameMargin )}>
+    <View className={classNames( "flex", flexDirection, classNameMargin )} testID={testID}>
       <IdentificationsCount
         classNameMargin={margin}
         count={numIdents}
