@@ -23,7 +23,7 @@ type Props = {
   stopUpload: Function,
   progress: number,
   numUnuploadedObs: number,
-  showExploreIcon: ?Object,
+  showsExploreIcon: boolean,
   navToExplore: Function,
   toggleLayout: Function,
   currentUploadIndex: number,
@@ -38,7 +38,7 @@ const Toolbar = ( {
   stopUpload,
   progress,
   numUnuploadedObs,
-  showExploreIcon,
+  showsExploreIcon,
   navToExplore,
   toggleLayout,
   currentUploadIndex,
@@ -97,7 +97,7 @@ const Toolbar = ( {
     }
     >
       <View className="flex-row items-center mx-4">
-        {showExploreIcon && (
+        {showsExploreIcon && (
           <INatIconButton
             icon="compass-rose-outline"
             onPress={navToExplore}
