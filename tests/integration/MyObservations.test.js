@@ -23,6 +23,9 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 describe( "MyObservations", ( ) => {
   beforeAll( async ( ) => {
+    await global.realm.write( ( ) => {
+      global.realm.deleteAll( );
+    } );
     await initI18next( );
   } );
 
