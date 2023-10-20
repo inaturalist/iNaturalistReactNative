@@ -92,11 +92,6 @@ describe( "MyObservations", ( ) => {
     describe( "with observations", ( ) => {
       const mockObservations = [
         factory( "LocalObservation", {
-          comments: [
-            factory( "LocalComment" ),
-            factory( "LocalComment" ),
-            factory( "LocalComment" )
-          ],
           _synced_at: null,
           observationPhotos: [
             factory( "LocalObservationPhoto", {
@@ -208,11 +203,6 @@ describe( "MyObservations", ( ) => {
 
       const mockObservationsSynced = [
         factory( "LocalObservation", {
-          comments: [
-            factory( "LocalComment" ),
-            factory( "LocalComment" ),
-            factory( "LocalComment" )
-          ],
           _synced_at: faker.date.past( )
         } ),
         factory( "LocalObservation", {
