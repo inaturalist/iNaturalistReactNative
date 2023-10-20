@@ -5,7 +5,7 @@ import type { Node } from "react";
 import React from "react";
 import {
   KeyboardAvoidingView,
-  Platform
+  StatusBar
 } from "react-native";
 
 type Props = {
@@ -13,27 +13,27 @@ type Props = {
   children: any
 }
 
-const KEYBOARD_AVOIDING_VIEW_STYLE = { flex: 1 };
+const KEYBOARD_AVOIDING_VIEW_STYLE = {
+  flex: 1,
+  flexGrow: 1
+};
 
 const LoginSignupWrapper = ( { backgroundSource, children }: Props ): Node => (
-  <SafeAreaView className="bg-black w-full h-full">
-    <ImageBackground
-      source={backgroundSource}
-      className="h-full"
-    >
+  <ImageBackground
+    source={backgroundSource}
+    className="h-full"
+  >
+    <SafeAreaView className="w-full h-full">
+      <StatusBar barStyle="light-content" />
       <KeyboardAvoidingView
         keyboardVerticalOffset={30}
-        behavior={
-          Platform.OS === "android"
-            ? "height"
-            : "padding"
-        }
+        behavior="padding"
         style={KEYBOARD_AVOIDING_VIEW_STYLE}
       >
         {children}
       </KeyboardAvoidingView>
-    </ImageBackground>
-  </SafeAreaView>
+    </SafeAreaView>
+  </ImageBackground>
 );
 
 export default LoginSignupWrapper;

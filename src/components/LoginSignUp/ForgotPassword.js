@@ -16,6 +16,11 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
+const SCROLL_VIEW_STYLE = {
+  flex: 1,
+  justifyContent: "space-between"
+};
+
 const ForgotPassword = ( ): Node => {
   const navigation = useNavigation( );
   const [showSheet, setShowSheet] = useState( false );
@@ -46,11 +51,7 @@ const ForgotPassword = ( ): Node => {
       )}
       <ScrollView
         keyboardShouldPersistTaps="always"
-        // eslint-disable-next-line react-native/no-inline-styles
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: "space-between"
-        }}
+        contentContainerStyle={SCROLL_VIEW_STYLE}
       >
         <Header />
         <ForgotPasswordForm

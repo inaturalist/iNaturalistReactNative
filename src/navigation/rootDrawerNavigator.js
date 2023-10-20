@@ -49,8 +49,7 @@ const RootDrawerNavigator = ( ): Node => (
       name="LoginNavigator"
       component={LoginStackNavigator}
       options={{
-        ...hideHeader,
-        ...hideDrawerHeaderLeft
+        headerShown: false
       }}
     />
     <Drawer.Screen

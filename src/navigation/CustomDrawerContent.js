@@ -253,7 +253,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
                 : t( "LOG-IN" )
             }
             onPress={( ) => {
-              navigation.navigate( "LoginNavigator" );
+              navigation.navigate( "Login" );
             }}
             labelStyle={labelStyle}
             icon={signOutButton}

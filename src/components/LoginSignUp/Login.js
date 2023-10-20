@@ -64,7 +64,7 @@ const Login = ( ): Node => {
   return (
     <LoginSignUpWrapper backgroundSource={require( "images/toucan.png" )}>
       {loggedIn
-        ? <Logout />
+        ? <Logout onLogOut={() => setLoggedIn( false )} />
         : (
           <ScrollView
             keyboardShouldPersistTaps="always"

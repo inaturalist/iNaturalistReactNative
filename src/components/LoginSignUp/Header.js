@@ -1,9 +1,6 @@
 // @flow
 
-import classnames from "classnames";
-import {
-  Body1, CloseButton
-} from "components/SharedComponents";
+import { Body1 } from "components/SharedComponents";
 import {
   Image, View
 } from "components/styledComponents";
@@ -12,18 +9,11 @@ import React from "react";
 
 type Props = {
   headerText?: string,
-  hideLogo?: boolean,
-  closeButtonIcon?: string
+  hideLogo?: boolean
 }
 
-const Header = ( { headerText, hideLogo, closeButtonIcon }: Props ): Node => (
+const Header = ( { headerText, hideLogo }: Props ): Node => (
   <View className="shrink">
-    <View className={classnames( "self-end pt-2 pr-2", {
-      "self-start": closeButtonIcon
-    } )}
-    >
-      <CloseButton size={19} icon={closeButtonIcon} />
-    </View>
     <View className="w-full items-center">
       { !hideLogo && (
         <Image
