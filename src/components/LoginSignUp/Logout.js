@@ -56,19 +56,15 @@ const Logout = ( { onLogOut }: Props ) : Node => {
   const onSignOut = async ( ) => {
     logger.info( `Signing out ${username || ""} at the request of the user` );
     await signOut( { realm, clearRealm: true, queryClient } );
-    if ( typeof ( onLogOut ) === "function" ) onLogOut( );
+    if ( typeof ( onLogOut ) === "function" ) {
+      onLogOut( );
+    }
     hideDialog( );
 
     // TODO might be necessary to restart the app at this point. We just
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state
-    // Reset navigation state so that ObsList gets rerendered
-    navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator",
-      params: {
-        screen: "ObsList"
-      }
-    } );
+    navigation.getParent( )?.goBack( );
   };
 
   return (

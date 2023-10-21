@@ -55,13 +55,11 @@ const LoginForm = ( {
     setLoggedIn( true );
     setLoading( false );
 
-    navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator"
-    } );
+    navigation.getParent( )?.goBack( );
   };
 
   return (
-    <View className="px-4 mt-[9px] justify-end grow">
+    <View className="px-4 pb-10 mt-[9px] justify-end grow">
       <View className="mx-4">
         <View className="mb-2">
           {emailConfirmed && (

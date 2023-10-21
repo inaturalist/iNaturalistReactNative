@@ -22,7 +22,7 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
   const theme = useTheme( );
 
   return (
-    <View className="px-4 mt-[9px] justify-end">
+    <View className="px-4 pb-10 mt-[9px] justify-end">
       <View className="mx-4">
         <Heading4 className="color-white mb-[11px]">{t( "EMAIL" )}</Heading4>
         <TextInput

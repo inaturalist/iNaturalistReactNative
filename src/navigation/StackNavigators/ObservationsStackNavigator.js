@@ -17,6 +17,7 @@ import {
   showHeaderLeft,
   showLongHeader
 } from "navigation/navigationOptions";
+import ModalLoginScreen from "navigation/Screens/ModalLoginScreen";
 import type { Node } from "react";
 import React from "react";
 
@@ -92,6 +93,7 @@ const ObservationsStackNavigator = ( ): Node => (
         headerTitle: t( "Identify" )
       }}
     />
+    {ModalLoginScreen( { navigator: Stack } )}
   </Stack.Navigator>
 );
 

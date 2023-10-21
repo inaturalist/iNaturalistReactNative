@@ -1,10 +1,12 @@
 // @flow
 
+import classnames from "classnames";
 import { ImageBackground, SafeAreaView } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
   KeyboardAvoidingView,
+  Platform,
   StatusBar
 } from "react-native";
 
@@ -23,7 +25,17 @@ const LoginSignupWrapper = ( { backgroundSource, children }: Props ): Node => (
     source={backgroundSource}
     className="h-full"
   >
-    <SafeAreaView className="w-full h-full">
+    <SafeAreaView
+      className={classnames(
+        "w-full",
+        "h-full",
+        // In LoginStackNavigator we set `headerTransparent: true`, but this
+        // makes content inside the SafeAreaView stay there in iOS but flow
+        // up under the header area in Android. Barring a better solution,
+        // this makes sure content stay below the header on Android
+        Platform.OS === "android" && "pt-[60px]"
+      )}
+    >
       <StatusBar barStyle="light-content" />
       <KeyboardAvoidingView
         keyboardVerticalOffset={30}

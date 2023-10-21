@@ -4,9 +4,16 @@ import LicensePhotos from "components/LoginSignUp/LicensePhotos";
 import Login from "components/LoginSignUp/Login";
 import SignUp from "components/LoginSignUp/SignUp";
 import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
-import { BackButton } from "components/SharedComponents";
+import { CloseButton } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
+
+const LoginCloseButton = ( ) => (
+  <CloseButton
+    handleClose={navigation => navigation.getParent( )?.goBack( )}
+    buttonClassName="mr-[-15px]"
+  />
+);
 
 const LOGIN_SCREEN_OPTIONS = {
   headerTitle: "",
@@ -14,12 +21,11 @@ const LOGIN_SCREEN_OPTIONS = {
   headerTintColor: "white",
   contentStyle: {
     backgroundColor: "black"
-  }
+  },
+  headerRight: LoginCloseButton
 };
 
 const Stack = createNativeStackNavigator( );
-
-const LoginBackButton = () => <BackButton color="white" />;
 
 const LoginStackNavigator = ( ): Node => (
   <Stack.Navigator>
@@ -27,8 +33,7 @@ const LoginStackNavigator = ( ): Node => (
       name="Login"
       component={Login}
       options={{
-        ...LOGIN_SCREEN_OPTIONS,
-        headerLeft: LoginBackButton
+        ...LOGIN_SCREEN_OPTIONS
       }}
     />
     <Stack.Screen
