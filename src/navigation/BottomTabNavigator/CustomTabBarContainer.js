@@ -3,7 +3,7 @@ import { useDrawerStatus } from "@react-navigation/drawer";
 import type { Node } from "react";
 import React, { useState } from "react";
 import User from "realmModels/User";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
 
 import CustomTabBar from "./CustomTabBar";
 
@@ -19,6 +19,7 @@ type Props = {
 const CustomTabBarContainer = ( { navigation }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
+  const isConnected = useIsConnected( );
   const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
   const isDrawerOpen = useDrawerStatus() === "open";
 
@@ -55,8 +56,10 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
     },
     {
       icon: "person",
-      userIconUri: User.uri( currentUser ),
-      testID: User.uri( currentUser )
+      userIconUri: isConnected
+        ? User.uri( currentUser )
+        : null,
+      testID: User.uri( currentUser ) && isConnected
         ? "NavButton.avatar"
         : "NavButton.personIcon",
       accessibilityLabel: t( "Observations" ),
