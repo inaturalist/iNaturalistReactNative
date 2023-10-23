@@ -53,7 +53,6 @@ const usePhotoGallery = ( ) => {
     if ( result !== PERMISSION_GRANTED ) {
       return;
     }
-
     ImagePicker.launchImageLibrary( {
       selectionLimit: MAX_PHOTOS_ALLOWED,
       mediaType: "photo",
@@ -82,6 +81,7 @@ const usePhotoGallery = ( ) => {
         // create a new observation and skip group photos screen
         createObservationFromGallery( selectedImages[0] );
         navToObsEdit();
+        return;
       }
 
       setGroupedPhotos( selectedImages.map( photo => ( {

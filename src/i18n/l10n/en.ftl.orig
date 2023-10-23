@@ -67,7 +67,7 @@ attribution-cc-by = some rights reserved (CC BY)
 
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 
-attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+attribution-cc-by-nc = some rights reserved (CC BY-NC)
 
 attribution-cc-by-nd = some rights reserved (CC BY-ND)
 
@@ -79,7 +79,7 @@ attribution-cc-by = some rights reserved (CC BY)
 
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 
-attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+attribution-cc-by-nc = some rights reserved (CC BY-NC)
 
 attribution-cc-by-nd = some rights reserved (CC BY-ND)
 
@@ -160,7 +160,7 @@ DATA-QUALITY = DATA QUALITY
 
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
 
-# declares the current data quality status of the observation 
+# declares the current data quality status of the observation
 Data-quality-assessment-title-research = This observation is Research Grade!
 
 Data-quality-assessment-title-needs-id = This observation Needs ID
@@ -176,7 +176,7 @@ Data-quality-assessment-description-needs-id = This observation has not yet met 
 
 Data-quality-assessment-description-casual = This observation has not met the conditions for Research Grade status.
 
-# checklist test for Data Quality Assessment of Observation Details 
+# checklist test for Data Quality Assessment of Observation Details
 Data-quality-assessment-date-specified = Date specified
 
 Data-quality-assessment-location-specified = Location specified
@@ -1123,6 +1123,7 @@ Grid-view = Grid view
 Remove-favorite = Remove favorite
 Add-favorite = Add favorite
 Start-upload = Start upload
+Upload-in-progress = Upload in progress
 Previous-observation = Previous observation
 Next-observation = Next observation
 Close-search = Close search
@@ -1277,7 +1278,6 @@ No-results-found = No results found
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
 
-<<<<<<< HEAD
 # Title of screen asking for permission to access the camera
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real-time with your camera
 # Title of screen asking for permission to access the camera when access was denied
@@ -1334,9 +1334,6 @@ USE-LOCATION = USE LOCATION
 # Accessibility label for a button that closes the permission request screen
 Close-permission-request-screen = Close permission request screen
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
-=======
-You-havent-joined-any-projects-yet = You haven't joined any projects yet!
->>>>>>> main
 
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 
@@ -1369,6 +1366,9 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE = LEAVE
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 
+<<<<<<< HEAD
+Import-Photos-From = Import Photos From
+=======
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
 Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
@@ -1382,3 +1382,4 @@ Species-Nearby-requires-internet-to-work = Species Nearby requires internet to w
 Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:
 iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo = iNaturalist isn't able to provide a top ID suggestion for this photo.
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
+>>>>>>> main

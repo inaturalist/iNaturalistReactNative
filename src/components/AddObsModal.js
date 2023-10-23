@@ -49,13 +49,27 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     closeModal( );
   };
 
-  const navToPhotoGallery = ( ) => {
+  const navToPhotoGallery = async ( ) => {
+    function sleep( ms ) {
+      return new Promise( resolve => {
+        setTimeout( () => {
+          resolve();
+        }, ms );
+      } );
+    }
     const resetObsEditContext = obsEditContext?.resetObsEditContext;
     // clear previous upload context before navigating
     if ( resetObsEditContext ) {
       resetObsEditContext( );
     }
-    showPhotoGallery();
+
+    await closeModal( );
+    if ( Platform.OS === "ios" ) {
+      // Annoying hack for iOS - since if we close the modal for adding new observation ->
+      // while it's still being closed, it will close the native photo library
+      await sleep( 500 );
+    }
+    await showPhotoGallery();
   };
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );

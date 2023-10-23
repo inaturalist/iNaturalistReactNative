@@ -92,7 +92,7 @@
   "DATA-QUALITY": "DATA QUALITY",
   "DATA-QUALITY-ASSESSMENT": "DATA QUALITY ASSESSMENT",
   "Data-quality-assessment-title-research": {
-    "comment": "declares the current data quality status of the observation ",
+    "comment": "declares the current data quality status of the observation",
     "val": "This observation is Research Grade!"
   },
   "Data-quality-assessment-title-needs-id": "This observation Needs ID",
@@ -105,7 +105,7 @@
   "Data-quality-assessment-description-needs-id": "This observation has not yet met the conditions for Research Grade status:",
   "Data-quality-assessment-description-casual": "This observation has not met the conditions for Research Grade status.",
   "Data-quality-assessment-date-specified": {
-    "comment": "checklist test for Data Quality Assessment of Observation Details ",
+    "comment": "checklist test for Data Quality Assessment of Observation Details",
     "val": "Date specified"
   },
   "Data-quality-assessment-location-specified": "Location specified",
@@ -749,6 +749,7 @@
   "Remove-favorite": "Remove favorite",
   "Add-favorite": "Add favorite",
   "Start-upload": "Start upload",
+  "Upload-in-progress": "Upload in progress",
   "Previous-observation": "Previous observation",
   "Next-observation": "Next observation",
   "Close-search": "Close search",
@@ -888,7 +889,6 @@
     "comment": "Default accessibility label for DisplayTaxon component",
     "val": "Taxon photo and name"
   },
-<<<<<<< HEAD
   "Observe-and-identify-organisms-in-real-time-with-your-camera": {
     "comment": "Title of screen asking for permission to access the camera",
     "val": "Observe and identify organisms in real-time with your camera"
@@ -966,9 +966,6 @@
     "val": "Close permission request screen"
   },
   "You-havent-joined-any-projects-yet": "You haven’t joined any projects yet!",
-=======
-  "You-havent-joined-any-projects-yet": "You haven't joined any projects yet!",
->>>>>>> main
   "You-can-click-join-on-the-project-page": "You can click “join” on the project page.",
   "No-projects-match-that-search": "No projects match that search",
   "RESET-SEARCH": "RESET SEARCH",
@@ -989,6 +986,9 @@
   "LEAVE-PROJECT": "LEAVE PROJECT",
   "LEAVE": "LEAVE",
   "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue.",
+<<<<<<< HEAD
+  "Import-Photos-From": "Import Photos From"
+=======
   "SEARCH-FOR-A-TAXON": "SEARCH FOR A TAXON",
   "Select-the-identification-you-want-to-add": "Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.",
   "TOP-ID-SUGGESTION": "TOP ID SUGGESTION",
@@ -1002,4 +1002,5 @@
   "Your-identification-will-be-posted-with-the-following-comment": "Your identification will be posted with the following comment:",
   "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo": "iNaturalist isn't able to provide a top ID suggestion for this photo.",
   "iNaturalist-has-no-ID-suggestions-for-this-photo": "iNaturalist has no ID suggestions for this photo."
+>>>>>>> main
 }
