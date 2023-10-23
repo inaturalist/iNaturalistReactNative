@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Button, StickyToolbar
@@ -7,7 +8,7 @@ import {
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
@@ -28,6 +29,16 @@ const BottomButtons = ( ): Node => {
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
   const [buttonPressed, setButtonPressed] = useState( null );
+  const navigation = useNavigation( );
+
+  useEffect(
+    ( ) => {
+      navigation.addListener( "blur", ( ) => {
+        setButtonPressed( null );
+      } );
+    },
+    [navigation]
+  );
 
   const showMissingEvidence = ( ) => {
     if ( allowUserToUpload ) { return false; }

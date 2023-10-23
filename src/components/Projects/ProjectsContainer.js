@@ -1,6 +1,7 @@
 // @flow
 
 import { searchProjects } from "api/projects";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import _ from "lodash";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
@@ -24,7 +25,11 @@ const ProjectsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const { latLng } = useUserLocation( { skipPlaceGuess: true } );
+  const [permissionsGranted, setPermissionsGranted] = useState( false );
+  const { latLng } = useUserLocation( {
+    skipPlaceGuess: true,
+    permissionsGranted
+  } );
 
   const {
     data: projects,
@@ -90,15 +95,24 @@ const ProjectsContainer = ( ): Node => {
   }
 
   return (
-    <Projects
-      searchInput={searchInput}
-      setSearchInput={setSearchInput}
-      tabs={tabs}
-      currentTabId={currentTabId}
-      projects={projects}
-      isLoading={isLoading}
-      memberId={memberId}
-    />
+    <>
+      <Projects
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        tabs={tabs}
+        currentTabId={currentTabId}
+        projects={projects}
+        isLoading={isLoading}
+        memberId={memberId}
+      />
+      <LocationPermissionGate
+        permissionNeeded={currentTabId === NEARBY_TAB_ID}
+        withoutNavigation
+        onPermissionGranted={( ) => setPermissionsGranted( true )}
+        onPermissionDenied={( ) => setPermissionsGranted( false )}
+        onPermissionBlocked={( ) => setPermissionsGranted( false )}
+      />
+    </>
   );
 };
 

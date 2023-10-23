@@ -21,7 +21,8 @@ const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
     updateObservationKeys,
-    setPassesIdentificationTest
+    setPassesIdentificationTest,
+    setLastScreen
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -49,7 +50,10 @@ const IdentificationSection = ( ): Node => {
     } );
   };
 
-  const navToAddID = ( ) => navigation.navigate( "AddID" );
+  const navToSuggestions = ( ) => {
+    setLastScreen( "ObsEdit" );
+    navigation.navigate( "Suggestions" );
+  };
 
   useEffect( ( ) => {
     if ( hasIdentification ) {
@@ -72,13 +76,13 @@ const IdentificationSection = ( ): Node => {
           <View className="flex-row items-center justify-between mr-5 mt-5">
             <DisplayTaxon
               taxon={identification}
-              handlePress={navToAddID}
+              handlePress={navToSuggestions}
               accessibilityLabel={t( "Navigates-to-add-identification" )}
             />
             <INatIconButton
               icon="edit"
               size={20}
-              onPress={navToAddID}
+              onPress={navToSuggestions}
               accessibilityLabel={t( "Edit" )}
               accessibilityHint={t( "Navigates-to-add-identification" )}
             />
@@ -94,14 +98,15 @@ const IdentificationSection = ( ): Node => {
               before={(
                 <Button
                   level={identification
-                    ? "primary"
+                    ? "neutral"
                     : "focus"}
-                  onPress={navToAddID}
+                  onPress={navToSuggestions}
                   text={t( "ADD-AN-ID" )}
                   className={classnames( "rounded-full py-1 h-[36px]", {
                     "border border-darkGray border-[2px]": identification
                   } )}
                   testID="ObsEdit.Suggestions"
+                  ignoreDark
                   icon={(
                     <INatIcon
                       name="sparkly-label"

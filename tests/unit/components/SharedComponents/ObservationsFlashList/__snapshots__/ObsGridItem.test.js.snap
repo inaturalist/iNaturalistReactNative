@@ -1,0 +1,623 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObsGridItem for an observation with a photo should render 1`] = `
+<View
+  style={
+    [
+      [
+        {
+          "maxHeight": 210,
+        },
+        {
+          "overflow": "hidden",
+        },
+        {
+          "position": "relative",
+        },
+        {
+          "borderBottomLeftRadius": 15,
+          "borderBottomRightRadius": 15,
+          "borderTopLeftRadius": 15,
+          "borderTopRightRadius": 15,
+        },
+        {
+          "height": 62,
+        },
+        {
+          "borderBottomLeftRadius": 15,
+          "borderBottomRightRadius": 15,
+          "borderTopLeftRadius": 15,
+          "borderTopRightRadius": 15,
+        },
+        {
+          "width": "100%",
+        },
+      ],
+    ]
+  }
+  testID="MyObservations.gridItem.00000000-0000-0000-0000-000000000000"
+>
+  <Image
+    accessibilityIgnoresInvertColors={true}
+    source={
+      {
+        "uri": "https://loremflickr.com/640/480",
+      }
+    }
+    style={
+      [
+        [
+          {
+            "flexGrow": 1,
+          },
+          {
+            "aspectRatio": 1,
+          },
+        ],
+      ]
+    }
+    testID="ObsList.photo"
+  />
+  <BVLinearGradient
+    colors={
+      [
+        0,
+        2147483648,
+      ]
+    }
+    endPoint={
+      {
+        "x": 0.5,
+        "y": 1,
+      }
+    }
+    locations={null}
+    startPoint={
+      {
+        "x": 0.5,
+        "y": 0,
+      }
+    }
+    style={
+      [
+        [
+          {
+            "position": "absolute",
+          },
+          {
+            "width": "100%",
+          },
+          {
+            "height": "100%",
+          },
+        ],
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "position": "absolute",
+          },
+          {
+            "bottom": 0,
+          },
+          {
+            "display": "flex",
+          },
+          {
+            "paddingBottom": 8,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "paddingTop": 8,
+          },
+          {
+            "width": "100%",
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Saved observation, in queue to upload"
+      accessible={true}
+      style={
+        [
+          [
+            {
+              "alignItems": "center",
+            },
+            {
+              "justifyContent": "center",
+            },
+            {
+              "width": 49,
+            },
+            {
+              "height": 67,
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="Start upload"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 44,
+            },
+            false,
+            undefined,
+          ]
+        }
+        testID="UploadIcon.start.00000000-0000-0000-0000-000000000000"
+      >
+        <View
+          style={
+            [
+              [
+                {
+                  "position": "relative",
+                },
+              ],
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "rgba(255, 255, 255, 1)",
+                  "fontSize": 33,
+                },
+                undefined,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "fontFamily": "Whitney-Medium",
+          },
+          [
+            [
+              {
+                "fontSize": 18,
+                "lineHeight": 22,
+              },
+              {
+                "fontWeight": "500",
+              },
+              {
+                "color": "#454545",
+              },
+              [
+                {
+                  "color": "#ffffff",
+                },
+              ],
+            ],
+          ],
+        ]
+      }
+    >
+      unknown
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`ObsGridItem for an observation without a photo should render 1`] = `
+<View
+  style={
+    [
+      [
+        {
+          "maxHeight": 210,
+        },
+        {
+          "overflow": "hidden",
+        },
+        {
+          "position": "relative",
+        },
+        {
+          "borderBottomLeftRadius": 15,
+          "borderBottomRightRadius": 15,
+          "borderTopLeftRadius": 15,
+          "borderTopRightRadius": 15,
+        },
+        {
+          "height": 62,
+        },
+        {
+          "borderBottomLeftRadius": 15,
+          "borderBottomRightRadius": 15,
+          "borderTopLeftRadius": 15,
+          "borderTopRightRadius": 15,
+        },
+        {
+          "width": "100%",
+        },
+      ],
+    ]
+  }
+  testID="MyObservations.gridItem.00000000-0000-0000-0000-000000000000"
+>
+  <View
+    style={
+      [
+        [
+          {
+            "flexGrow": 1,
+          },
+          {
+            "aspectRatio": 1,
+          },
+          {
+            "maxHeight": 210,
+          },
+          {
+            "overflow": "hidden",
+          },
+          {
+            "position": "relative",
+          },
+          {
+            "borderBottomLeftRadius": 15,
+            "borderBottomRightRadius": 15,
+            "borderTopLeftRadius": 15,
+            "borderTopRightRadius": 15,
+          },
+          {
+            "height": 62,
+          },
+          {
+            "borderBottomLeftRadius": 15,
+            "borderBottomRightRadius": 15,
+            "borderTopLeftRadius": 15,
+            "borderTopRightRadius": 15,
+          },
+          {
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "#454545",
+          },
+          {
+            "justifyContent": "center",
+          },
+          {
+            "alignItems": "center",
+          },
+          {
+            "backgroundColor": "#454545",
+          },
+        ],
+      ]
+    }
+    testID="IconicTaxonName.iconicTaxonIcon"
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#ffffff",
+            "fontSize": 22,
+          },
+          undefined,
+          {
+            "fontFamily": "INatIcon",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+  <BVLinearGradient
+    colors={
+      [
+        0,
+        2147483648,
+      ]
+    }
+    endPoint={
+      {
+        "x": 0.5,
+        "y": 1,
+      }
+    }
+    locations={null}
+    startPoint={
+      {
+        "x": 0.5,
+        "y": 0,
+      }
+    }
+    style={
+      [
+        [
+          {
+            "position": "absolute",
+          },
+          {
+            "width": "100%",
+          },
+          {
+            "height": "100%",
+          },
+        ],
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        [
+          {
+            "position": "absolute",
+          },
+          {
+            "right": 0,
+          },
+          {
+            "paddingBottom": 4,
+            "paddingLeft": 4,
+            "paddingRight": 4,
+            "paddingTop": 4,
+          },
+          {
+            "top": 0,
+          },
+          {
+            "paddingBottom": 8,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "paddingTop": 8,
+          },
+        ],
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "rgba(244, 239, 244, 1)",
+            "fontSize": 24,
+          },
+          undefined,
+          {
+            "fontFamily": "INatIcon",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        [
+          {
+            "position": "absolute",
+          },
+          {
+            "bottom": 0,
+          },
+          {
+            "display": "flex",
+          },
+          {
+            "paddingBottom": 8,
+            "paddingLeft": 8,
+            "paddingRight": 8,
+            "paddingTop": 8,
+          },
+          {
+            "width": "100%",
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Saved observation, in queue to upload"
+      accessible={true}
+      style={
+        [
+          [
+            {
+              "alignItems": "center",
+            },
+            {
+              "justifyContent": "center",
+            },
+            {
+              "width": 49,
+            },
+            {
+              "height": 67,
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="Start upload"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 44,
+            },
+            false,
+            undefined,
+          ]
+        }
+        testID="UploadIcon.start.00000000-0000-0000-0000-000000000000"
+      >
+        <View
+          style={
+            [
+              [
+                {
+                  "position": "relative",
+                },
+              ],
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "rgba(255, 255, 255, 1)",
+                  "fontSize": 33,
+                },
+                undefined,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "fontFamily": "Whitney-Medium",
+          },
+          [
+            [
+              {
+                "fontSize": 18,
+                "lineHeight": 22,
+              },
+              {
+                "fontWeight": "500",
+              },
+              {
+                "color": "#454545",
+              },
+              [
+                {
+                  "color": "#ffffff",
+                },
+              ],
+            ],
+          ],
+        ]
+      }
+    >
+      unknown
+    </Text>
+  </View>
+</View>
+`;

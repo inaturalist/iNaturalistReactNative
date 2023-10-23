@@ -1,10 +1,47 @@
 # frozen_string_literal: true
 
+# setup instructions from https://www.npmjs.com/package/react-native-permissions
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
 require_relative "../node_modules/react-native/scripts/react_native_pods"
 require_relative "../node_modules/@react-native-community/cli-platform-ios/native_modules"
+require_relative '../node_modules/react-native-permissions/scripts/setup'
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
+
+# ⬇️ uncomment wanted permissions
+setup_permissions([
+  # 'AppTrackingTransparency',
+  # 'BluetoothPeripheral',
+  # 'Calendars',
+  'Camera',
+  # 'Contacts',
+  # 'FaceID',
+  'LocationAccuracy',
+  'LocationAlways',
+  'LocationWhenInUse',
+  'MediaLibrary',
+  'Microphone',
+  # 'Motion',
+  # 'Notifications',
+  'PhotoLibrary',
+  'PhotoLibraryAddOnly',
+  # 'Reminders',
+  # 'Siri',
+  # 'SpeechRecognition',
+  # 'StoreKit',
+])
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
 # because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
@@ -29,8 +66,6 @@ target "iNaturalistReactNative" do
   # Flags change depending on the env values.
   flags = get_default_flags
 
-  permissions_path = "../node_modules/react-native-permissions/ios"
-
   use_react_native!(
     path: config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
@@ -47,8 +82,6 @@ target "iNaturalistReactNative" do
     app_path: "#{Pod::Config.instance.installation_root}/.."
   )
   pod "React-jsi", path: "../node_modules/react-native/ReactCommon/jsi", modular_headers: true
-  pod "Permission-LocationWhenInUse", path: "#{permissions_path}/LocationWhenInUse"
-  pod "Permission-PhotoLibrary", path: "#{permissions_path}/PhotoLibrary"
 
   pod "react-native-config", path: "../node_modules/react-native-config"
 

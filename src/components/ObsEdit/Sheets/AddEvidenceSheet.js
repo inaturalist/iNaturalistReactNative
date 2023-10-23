@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import usePhotoGallery from "components/PhotoImporter/hooks/usePhotoGallery";
 import {
-  BottomSheet, EvidenceButton, List2
+    BottomSheet, EvidenceButton, List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -12,89 +12,89 @@ import { Alert } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  disableAddingMoreEvidence: boolean,
-  hidden?: boolean,
-  onClose: Function
+disableAddingMoreEvidence: boolean,
+    hidden?: boolean,
+onClose: Function
 }
 
 const AddEvidenceSheet = ( {
-  disableAddingMoreEvidence,
-  hidden,
-  onClose
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const [choice, setChoice] = useState( null );
-  const showPhotoGallery = usePhotoGallery( );
-
-  return (
-    <BottomSheet
-      handleClose={onClose}
-      headerText={t( "ADD-EVIDENCE" )}
-      snapPoints={[202]}
-      hidden={hidden}
-      onChange={position => {
-        // -1 means the sheet is fully hidden... and in theory it's safe to navigate away
-        if ( position > -1 ) return;
-
-        if ( choice === "camera" ) {
-          navigation.navigate( "CameraNavigator", {
-            screen: "Camera",
-            params: {
-              addEvidence: true,
-              camera: "Standard",
-              backToObsEdit: true
+                          disableAddingMoreEvidence,
+                          hidden,
+                          onClose
+                          }: Props ): Node => {
+    const { t } = useTranslation( );
+    const navigation = useNavigation( );
+    const [choice, setChoice] = useState( null );
+    const showPhotoGallery = usePhotoGallery( );
+    
+    return (
+            <BottomSheet
+            handleClose={onClose}
+            headerText={t( "ADD-EVIDENCE" )}
+            snapPoints={[202]}
+            hidden={hidden}
+            onChange={position => {
+            // -1 means the sheet is fully hidden... and in theory it's safe to navigate away
+            if ( position > -1 ) return;
+            
+            if ( choice === "camera" ) {
+            navigation.navigate( "CameraNavigator", {
+                                screen: "Camera",
+                                params: {
+                                addEvidence: true,
+                                camera: "Standard",
+                                backToObsEdit: true
+                                }
+                                } );
+            } else if ( choice === "import" ) {
+            // Show photo gallery, but skip group photos phase
+            showPhotoGallery( true );
+            } else if ( choice === "sound" ) {
+            Alert.alert( "TODO", "Still need to implement sound recording" );
             }
-          } );
-        } else if ( choice === "import" ) {
-          // Show photo gallery, but skip group photos phase
-          showPhotoGallery( true );
-        } else if ( choice === "sound" ) {
-          Alert.alert( "TODO", "Still need to implement sound recording" );
-        }
-      }}
-    >
-      <View className="items-center p-5">
-        {disableAddingMoreEvidence && (
-          <List2>
-            {t( "You-can-add-up-to-20-media" )}
-          </List2>
-        )}
-        <View className="flex-row w-full justify-around">
-          <EvidenceButton
+            }}
+            >
+            <View className="items-center p-5">
+            {disableAddingMoreEvidence && (
+                                           <List2>
+                                           {t( "You-can-add-up-to-20-media" )}
+                                           </List2>
+                                           )}
+            <View className="flex-row w-full justify-around">
+            <EvidenceButton
             icon="camera"
             handlePress={( ) => {
-              setChoice( "camera" );
-              onClose( );
+            setChoice( "camera" );
+            onClose( );
             }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Camera" )}
             accessibilityHint={t( "Navigates-to-camera" )}
-          />
-          <EvidenceButton
+            />
+            <EvidenceButton
             icon="gallery"
             handlePress={( ) => {
-              setChoice( "import" );
-              onClose( );
+            setChoice( "import" );
+            onClose( );
             }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Bulk-importer" )}
             accessibilityHint={t( "Navigates-to-bulk-importer" )}
-          />
-          <EvidenceButton
+            />
+            <EvidenceButton
             icon="microphone"
             handlePress={( ) => {
-              setChoice( "sound" );
-              onClose( );
+            setChoice( "sound" );
+            onClose( );
             }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Sound-recorder" )}
             accessibilityHint={t( "Navigates-to-sound-recorder" )}
-          />
-        </View>
-      </View>
-    </BottomSheet>
-  );
+            />
+            </View>
+            </View>
+            </BottomSheet>
+            );
 };
 
 export default AddEvidenceSheet;

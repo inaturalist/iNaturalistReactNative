@@ -132,6 +132,7 @@ const StandardCamera = ( {
             onDeviceNotSupported={handleDeviceNotSupported}
             onCaptureError={handleCaptureError}
             onCameraError={handleCameraError}
+            resizeMode="contain"
           />
         )}
         <FadeInOutView takingPhoto={takingPhoto} />

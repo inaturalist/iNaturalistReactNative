@@ -18,7 +18,7 @@ const ConfidenceInterval = ( { confidence = 0, activeColor = "bg-white" }: Props
     )}
     />
   );
-  const Dot = <View className="bg-lightGray h-[2px] w-[2px] rounded-full mx-[1px]" />;
+  const Dot = <View className="bg-mediumGray h-[2px] w-[2px] rounded-full mx-[1px]" />;
 
   const dots = [];
 
@@ -29,7 +29,7 @@ const ConfidenceInterval = ( { confidence = 0, activeColor = "bg-white" }: Props
   }
 
   return (
-    <View className="flex-row justify-evenly items-center w-[36px]">
+    <View className="flex-row justify-between items-center w-[36px]">
       {dots}
     </View>
   );

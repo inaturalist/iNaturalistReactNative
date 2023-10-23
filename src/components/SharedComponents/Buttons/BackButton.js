@@ -10,7 +10,7 @@ type Props = {
   }
 
 const BackButton = ( {
-  color,
+  color = colors.black,
   onPress
 }: Props ): Node => {
   const navigation = useNavigation();

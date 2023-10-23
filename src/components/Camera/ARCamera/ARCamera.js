@@ -188,6 +188,7 @@ const ARCamera = ( {
           animatedProps={animatedProps}
           onZoomStart={onZoomStart}
           onZoomChange={onZoomChange}
+          takingPhoto={takingPhoto}
         />
       )}
       <LinearGradient

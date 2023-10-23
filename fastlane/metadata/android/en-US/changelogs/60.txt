@@ -1,0 +1,14 @@
+NEW
+* Obscuration cell and accuracy circle on ObsDetail map
+* DetailsMap view
+* Copy and share location from DetailsMap
+* Use drag and drop to let a user change photo positions
+* Suggestions (using server data)
+
+FIXED
+* Patched react-native-maps to address bug with showsUserLocation
+* Photo count UI
+* Add ID button color
+
+CHANGED
+* Updated vision-camera

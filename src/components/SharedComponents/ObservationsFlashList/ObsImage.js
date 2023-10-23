@@ -12,18 +12,21 @@ type URI = {
 type Props = {
   uri?: URI,
   opaque?: boolean,
-  style?: Object,
   iconicTaxonName?: string,
   white?: boolean,
   imageClassName: string
 };
+
+const CLASS_NAMES = [
+  "grow",
+  "aspect-square"
+];
 
 const ObsImage = ( {
   uri,
   opaque = false,
   iconicTaxonName = "unknown",
   white = false,
-  style,
   imageClassName
 }: Props ): Node => {
   const noImg = !uri?.uri;
@@ -31,9 +34,12 @@ const ObsImage = ( {
   if ( noImg ) {
     return (
       <IconicTaxonIcon
-        imageClassName={imageClassName}
+        imageClassName={[
+          ...CLASS_NAMES,
+          imageClassName,
+          { "bg-darkGray": white }
+        ]}
         iconicTaxonName={iconicTaxonName}
-        style={style}
         white={white}
       />
     );
@@ -42,7 +48,7 @@ const ObsImage = ( {
   return (
     <Image
       source={uri}
-      className={classNames( "grow aspect-square", { "opacity-50": opaque } )}
+      className={classNames( ...CLASS_NAMES, { "opacity-50": opaque } )}
       testID="ObsList.photo"
       accessibilityIgnoresInvertColors
     />

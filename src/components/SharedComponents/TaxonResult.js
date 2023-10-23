@@ -17,25 +17,40 @@ type Props = {
   handleCheckmarkPress: Function,
   testID: string,
   clearBackground?: boolean,
-  confidence?: number
+  confidence?: number,
+  white?: boolean,
+  activeColor?: string,
+  confidencePosition?: string,
+  first?: boolean,
 };
 
 const TaxonResult = ( {
-  taxon, handleCheckmarkPress, testID, clearBackground, confidence
+  clearBackground,
+  confidence,
+  handleCheckmarkPress,
+  taxon,
+  testID,
+  white = false,
+  activeColor,
+  confidencePosition = "photo",
+  first = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const theme = useTheme( );
   const taxonImage = { uri: taxon?.default_photo?.url };
 
+  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: taxon.id } );
+
   return (
     <View
       className={
         classnames(
-          "flex-row items-center justify-between pl-3 py-1",
+          "flex-row items-center justify-between px-4 py-3",
           {
-            "border-[0.5px] border-lightGray": !clearBackground,
-            "mx-4": clearBackground
+            "border-b-[1px] border-lightGray": !clearBackground,
+            "mx-4": clearBackground,
+            "border-t-[1px]": first
           }
         )
       }
@@ -43,7 +58,7 @@ const TaxonResult = ( {
     >
       <Pressable
         className="flex-row items-center w-16 grow"
-        onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
+        onPress={navToTaxonDetails}
         accessible
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
@@ -54,10 +69,16 @@ const TaxonResult = ( {
           source={taxonImage}
           testID={`${testID}.photo`}
           iconicTaxonName={taxon?.iconic_taxon_name}
+          className="rounded-xl"
+          isSmall
+          white={white}
         />
-        {confidence && (
+        {( confidence && confidencePosition === "photo" ) && (
           <View className="absolute -bottom-5 w-[62px]">
-            <ConfidenceInterval confidence={confidence} />
+            <ConfidenceInterval
+              confidence={confidence}
+              activeColor={activeColor}
+            />
           </View>
         )}
         <View className="shrink ml-3">
@@ -66,28 +87,27 @@ const TaxonResult = ( {
             layout="horizontal"
             color={clearBackground && "text-white"}
           />
+          {( confidence && confidencePosition === "text" ) && (
+            <View className="absolute -bottom-3 w-[62px]">
+              <ConfidenceInterval
+                confidence={confidence}
+                activeColor={activeColor}
+              />
+            </View>
+          )}
         </View>
       </Pressable>
       <View className="flex-row items-center">
         <INatIconButton
           icon="info-circle-outline"
           size={22}
-          onPress={() => navigation.navigate( "TabNavigator", {
-            screen: "ObservationsStackNavigator",
-            params: {
-              screen: "TaxonDetails",
-              params: {
-                id: taxon.id,
-                lastScreen: "AddID"
-              }
-            }
-          } )}
+          onPress={navToTaxonDetails}
           color={clearBackground && theme.colors.onSecondary}
           accessibilityLabel={t( "Information" )}
           accessibilityHint={t( "Navigate-to-taxon-details" )}
         />
         <INatIconButton
-          className="mx-2"
+          className="ml-2"
           icon={clearBackground
             ? "checkmark-circle-outline"
             : "checkmark-circle"}
@@ -98,6 +118,7 @@ const TaxonResult = ( {
           onPress={handleCheckmarkPress}
           accessibilityLabel={t( "Checkmark" )}
           accessibilityHint={t( "Add-this-ID" )}
+          testID={`${testID}.checkmark`}
         />
       </View>
     </View>

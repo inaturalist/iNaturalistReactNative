@@ -4,125 +4,97 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import { Mortal, PermissionGate } from "components/SharedComponents";
+import PermissionGateContainer, {
+    AUDIO_PERMISSIONS,
+    CAMERA_PERMISSIONS
+} from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
-  hideHeader,
-  showCustomHeader,
-  showHeaderLeft
+    hideHeader,
+    showCustomHeader,
+    showHeaderLeft
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
-import { PermissionsAndroid, Platform } from "react-native";
 
 import SharedStackScreens from "./SharedStackScreens";
 
-const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
-const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
-
-const androidReadPermissions = usesAndroid13Permissions
-  ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-  : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-
 const Stack = createNativeStackNavigator( );
 
-const CameraContainerWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    // WRITE_EXTERNAL_STORAGE is deprecated after Android 10
-    // https://developer.android.com/training/data-storage/shared/media#access-other-apps-files
-    return (
-      <Mortal>
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-            <CameraContainer />
-          </PermissionGate>
-        </PermissionGate>
-      </Mortal>
-    );
-  }
-  return (
-    <Mortal>
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-        <CameraContainer />
-      </PermissionGate>
-    </Mortal>
-  );
-};
+const CameraContainerWithPermission = ( ) => (
+                                              <PermissionGateContainer
+                                              permissions={CAMERA_PERMISSIONS}
+                                              title={t( "Observe-and-identify-organisms-in-real-time-with-your-camera" )}
+                                              titleDenied={t( "Please allow Camera Access" )}
+                                              body={t( "Use-the-iNaturalist-camera-to-observe" )}
+                                              blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
+                                              buttonText={t( "OBSERVE-ORGANISMS" )}
+                                              icon="camera"
+                                              >
+                                              <CameraContainer />
+                                              </PermissionGateContainer>
+                                              );
 
-const SoundRecorderWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    return (
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate
-            permission={androidReadPermissions}
-          >
-            <SoundRecorder />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-  return (
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-      <PermissionGate
-        permission={androidReadPermissions}
-      >
-        <SoundRecorder />
-      </PermissionGate>
-    </PermissionGate>
-  );
-};
+const SoundRecorderWithPermission = ( ) => (
+                                            <PermissionGateContainer
+                                            permissions={AUDIO_PERMISSIONS}
+                                            title={t( "Record-organism-sounds-with-the-microphone" )}
+                                            titleDenied={t( "Please-allow-Microphone-Access" )}
+                                            body={t( "Use-your-devices-microphone-to-record" )}
+                                            blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
+                                            buttonText={t( "RECORD-SOUND" )}
+                                            icon="microphone"
+                                            image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+                                            >
+                                            <SoundRecorder />
+                                            </PermissionGateContainer>
+                                            );
 
 const AddObsStackNavigator = ( ): Node => (
-  <Stack.Navigator
-    screenOptions={{
-      headerBackTitleVisible: false,
-      headerTintColor: "black",
-      contentStyle: {
-        backgroundColor: "white"
-      }
-    }}
-  >
-    <Stack.Group>
-      <Stack.Screen
-        name="Camera"
-        component={CameraContainerWithPermission}
-        options={{
-          ...hideHeader,
-          orientation: "all",
-          unmountOnBlur: true,
-          contentStyle: {
-            backgroundColor: "black"
-          }
-        }}
-      />
-      <Stack.Screen
-        name="GroupPhotos"
-        component={GroupPhotosContainer}
-        options={{
-          ...showHeaderLeft,
-          ...showCustomHeader,
-          lazy: true,
-          title: t( "Group-Photos" ),
-          headerShadowVisible: false
-        }}
-      />
-      <Stack.Screen
-        name="SoundRecorder"
-        component={SoundRecorderWithPermission}
-        options={{
-          title: t( "Record-new-sound" )
-        }}
-      />
-    </Stack.Group>
-    {SharedStackScreens( )}
-  </Stack.Navigator>
-);
+                                           <Stack.Navigator
+                                           screenOptions={{
+                                           headerBackTitleVisible: false,
+                                           headerTintColor: "black",
+                                           contentStyle: {
+                                           backgroundColor: "white"
+                                           }
+                                           }}
+                                           >
+                                           <Stack.Group>
+                                           <Stack.Screen
+                                           name="Camera"
+                                           component={CameraContainerWithPermission}
+                                           options={{
+                                           ...hideHeader,
+                                           orientation: "all",
+                                           unmountOnBlur: true,
+                                           contentStyle: {
+                                           backgroundColor: "black"
+                                           }
+                                           }}
+                                           />
+                                           <Stack.Screen
+                                           name="GroupPhotos"
+                                           component={GroupPhotosContainer}
+                                           options={{
+                                           ...showHeaderLeft,
+                                           ...showCustomHeader,
+                                           lazy: true,
+                                           title: t( "Group-Photos" ),
+                                           headerShadowVisible: false
+                                           }}
+                                           />
+                                           <Stack.Screen
+                                           name="SoundRecorder"
+                                           component={SoundRecorderWithPermission}
+                                           options={{
+                                           title: t( "Record-new-sound" )
+                                           }}
+                                           />
+                                           </Stack.Group>
+                                           {SharedStackScreens( )}
+                                           </Stack.Navigator>
+                                           );
 
 export default AddObsStackNavigator;

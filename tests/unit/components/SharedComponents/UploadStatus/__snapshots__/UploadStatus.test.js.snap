@@ -32,6 +32,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
         ],
       ]
     }
+    testID="UploadIcon.progress.undefined"
   >
     <Text
       allowFontScaling={false}
@@ -100,6 +101,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
         ],
       ]
     }
+    testID="UploadIcon.progress.undefined"
   >
     <Text
       allowFontScaling={false}

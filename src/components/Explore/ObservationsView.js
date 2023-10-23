@@ -40,12 +40,13 @@ const ObservationsView = ( {
   return observationsView === "map"
     ? (
       <Map
+        showExplore
         className="h-full"
         showsCompass={false}
         region={region}
-        hideMap={region.latitude === 0.0}
         observations={observations}
         tileMapParams={tileMapParams}
+        showCurrentLocationButton
       />
     )
     : (

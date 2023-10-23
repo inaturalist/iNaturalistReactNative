@@ -132,6 +132,8 @@ Connected-Accounts = Connected Accounts
 
 Content-Display = Content & Display
 
+Coordinates-copied-to-keyboard = Coordinates copied to keyboard
+
 Copy-coordinates = Copy Coordinates
 
 Copy-coordinates = Copy Coordinates
@@ -241,8 +243,8 @@ Delete-observation = Delete observation
 Delete-observations = Delete observations
 
 DELETE-X-OBSERVATIONS = DELETE {$count ->
-    [one] 1 OBSERVATION?
-    *[other] {$count} OBSERVATIONS?
+[one] 1 OBSERVATION?
+*[other] {$count} OBSERVATIONS?
 }
 
 Description-Tags = Description/Tags
@@ -254,8 +256,8 @@ DISCARD-CHANGES = DISCARD CHANGES
 DISCARD-OBSERVATION = DISCARD OBSERVATION
 
 DISCARD-X-OBSERVATIONS = {$count ->
-    [one] DISCARD OBSERVATION
-    *[other] DISCARD {$count} OBSERVATIONS
+[one] DISCARD OBSERVATION
+*[other] DISCARD {$count} OBSERVATIONS
 }
 
 Display = Display
@@ -331,7 +333,7 @@ Geoprivacy = Geoprivacy:
 # permissions after they have asked never to be asked for that permission
 # again
 Go-to-the-Settings-app-to-grant-permissions =
-    Go to the Settings app to grant iNaturalist the appropriate permissions.
+Go to the Settings app to grant iNaturalist the appropriate permissions.
 
 # Verb phrase label for a button to grant the app a permission, e.g.
 # permission to use the camera
@@ -355,12 +357,12 @@ IDENTIFICATION = IDENTIFICATION
 
 IDENTIFICATIONS = IDENTIFICATIONS
 
-If-an-account-with-that-email-exists = If an account with that email exists, we’ve sent password reset instructions to your email.
+If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 
 # Shows the number of photos a user selected from the camera roll for upload
 Import-X-photos = Import {$count ->
-    [one] 1 photo
-    *[other] {$count} photos
+[one] 1 photo
+*[other] {$count} photos
 }
 
 iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
@@ -500,6 +502,9 @@ NOTES = NOTES
 Notifications = Notifications
 
 Obscured = Obscured
+
+# Displayed when user views an obscured location on the ObsDetail map screen
+Obscured-observation-location-map-description = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
 
 Observation = Observation
 
@@ -699,8 +704,6 @@ Search-for-a-project = Search for a project
 
 Search-for-a-taxon = Search for a taxon
 
-Search-for-a-taxon-to-add-an-identification = Search for a taxon to add an identification.
-
 Search-for-a-user = Search for a user
 
 Search-for-description-tags-text = Search for description/tags text
@@ -783,20 +786,20 @@ UPLOAD-NOW = UPLOAD NOW
 
 # Shows the number of observations a user can upload to iNat from my observations page
 Upload-x-observations = Upload {$count ->
-    [one] 1 observation
-    *[other] {$count} observations
+[one] 1 observation
+*[other] {$count} observations
 }
 
 # Shows the number of observations a user can upload to iNat from my observations page
 UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
-    [one] 1 OBSERVATION
-    *[other] {$count} OBSERVATIONS
+[one] 1 OBSERVATION
+*[other] {$count} OBSERVATIONS
 }
 
 # Shows the number of observations a user is about to import
 IMPORT-X-OBSERVATIONS = IMPORT {$count ->
-    [one] 1 OBSERVATION
-    *[other] {$count} OBSERVATIONS
+[one] 1 OBSERVATION
+*[other] {$count} OBSERVATIONS
 }
 
 # Describes whether a user made this observation from web, iOS, or Android
@@ -807,14 +810,14 @@ Uploaded-via-application = Uploaded via: { $application }
 
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
-    [one] 1 Observation
-    *[other] {$count} Observations
+[one] 1 Observation
+*[other] {$count} Observations
 }
 
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
-    [one] 1 observation
-    *[other] {$total} observations
+[one] 1 observation
+*[other] {$total} observations
 }
 
 # Shows the progress of uploads for X of Y
@@ -841,7 +844,7 @@ VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
 View-in-browser = View in Browser
 
-Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
+Visually-search-iNaturalist-data = Visually search iNaturalist's wealth of data. Search by a taxon in a location
 
 Welcome-to-iNaturalist = Welcome to iNaturalist!
 
@@ -863,41 +866,41 @@ Withdraw = Withdraw
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
-    [one] 1 Observation
-    *[other] {$count} Observations
+[one] 1 Observation
+*[other] {$count} Observations
 }
 
 X-observations = {$count ->
-    [one] 1 observation
-    *[other] {$count} observations
+[one] 1 observation
+*[other] {$count} observations
 }
 
 X-observations-uploaded = {$count ->
-    [one] 1 observation uploaded
-    *[other] {$count} observations uploaded
+[one] 1 observation uploaded
+*[other] {$count} observations uploaded
 }
 
 X-of-Y = {$count ->
-    [one] 1
-    *[other] {$count}
+[one] 1
+*[other] {$count}
 } { $totalObservationCount ->
-    [one] of {$totalObservationCount}
-    *[other] of {$totalObservationCount}
+[one] of {$totalObservationCount}
+*[other] of {$totalObservationCount}
 }
 
 # Displays number of photos attached to an observation in the Media Viewer
 X-PHOTOS = {$photoCount ->
-    [one] 1 PHOTO
-    *[other] {$photoCount} PHOTOS
+[one] 1 PHOTO
+*[other] {$photoCount} PHOTOS
 }
 
 # Displays number of photos and observations a user has selected from the camera roll
 X-PHOTOS-X-OBSERVATIONS = {$photoCount ->
-    [one] 1 PHOTO
-    *[other] {$photoCount} PHOTOS
+[one] 1 PHOTO
+*[other] {$photoCount} PHOTOS
 }, {$observationCount ->
-    [one] 1 OBSERVATION
-    *[other] {$observationCount} OBSERVATIONS
+[one] 1 OBSERVATION
+*[other] {$observationCount} OBSERVATIONS
 }
 
 Yes = Yes
@@ -911,7 +914,7 @@ Take-a-photo-with-your-camera = Take a photo with your camera
 Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 Record-a-sound = Record a sound
 
-You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what’s around you.
+You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
@@ -922,14 +925,14 @@ You-have-unsaved-changes = You have unsaved changes. Would you like to save this
 You-must-be-logged-in-to-view-messages = You must be logged in to view messages
 
 You-will-lose-all-existing-observations = {$count ->
-    [one] You will lose all existing observations. Would you like to discard 1 observation?
-    *[other] You will lose all existing observations. Would you like to discard {$count} observations?
+[one] You will lose all existing observations. Would you like to discard 1 observation?
+*[other] You will lose all existing observations. Would you like to discard {$count} observations?
 }
 
 You-can-still-share-the-file =
-    You can still share the file with another app. If you can email it, please send it to { $email }
+You can still share the file with another app. If you can email it, please send it to { $email }
 
-Zoom-in = Zoom in so that the observation’s accuracy is as low as possible.
+Zoom-in = Zoom in so that the observation's accuracy is as low as possible.
 
 Your-location-uncertainty-is-over-4000km = Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 
@@ -993,32 +996,32 @@ Sound-recorder = Sound recorder
 User = User { $userHandle }
 Observation-Name = Observation { $scientificName }
 x-comments = {$count ->
-    [one] {$count} comment
-    *[other] {$count} comments
+[one] {$count} comment
+*[other] {$count} comments
 }
 x-identifications = {$count ->
-    [one] {$count} identification
-   *[other] {$count} identifications
+[one] {$count} identification
+*[other] {$count} identifications
 }
 
 X-Identifications = {$count ->
-    [one] {$count} Identification
-   *[other] {$count} Identifications
+[one] {$count} Identification
+*[other] {$count} Identifications
 }
 
 X-Identifiers = {$count ->
-    [one] {$count} Identifier
-   *[other] {$count} Identifiers
+[one] {$count} Identifier
+*[other] {$count} Identifiers
 }
 
 X-Observers = {$count ->
-    [one] {$count} Observer
-   *[other] {$count} Observers
+[one] {$count} Observer
+*[other] {$count} Observers
 }
 
 X-Species = {$count ->
-    [one] {$count} Species
-   *[other] {$count} Species
+[one] {$count} Species
+*[other] {$count} Species
 }
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
@@ -1080,6 +1083,8 @@ Location-map-unavailable-without-internet = Location map unavailable without int
 Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
 Taxon-photo-unavailable-without-internet = Taxon photo unavailable without internet
 User-photo-unavailable-without-internet = User photo unavailable without internet
+Search = Search
+Select-photo = Select photo
 
 # Accessibility labels for icons
 Add-this-ID = Add this identification
@@ -1103,6 +1108,8 @@ Edit = Edit
 User-location = User location
 Loading-wheel = Loading wheel
 Map-layers = Map layers
+Share-map = Share map
+Copy-map-coordinates = Copy map coordinates
 Filters = Filters
 Identification-label = Identification label
 Sound-recorder = Sound recorder
@@ -1167,14 +1174,18 @@ The-exact-location-will-be-hidden = The exact location will be hidden publicly, 
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
 
 #  Wild status sheet descriptions
-This-is-a-wild-organism = This is a wild organism and wasn’t placed in this location by humans.
+This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 
 # Latitude, longitude, and accuracy on a single line on a single line
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 
+# Latitude, longitude on a single line on a single line
+Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
+
+
 # Missing evidence sheet
-Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
+Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you're concerned about location privacy.
 # Button or accessibility label for an interactive element that stops an upload
 Stop-upload = Stop upload
 
@@ -1203,28 +1214,28 @@ TOP-OBSERVERS = TOP OBSERVERS
 TOP-IDENTIFIERS = TOP IDENTIFIERS
 
 OBSERVATIONS-WITHOUT-NUMBER = {$count ->
-    [one] OBSERVATION
-    *[other] OBSERVATIONS
+[one] OBSERVATION
+*[other] OBSERVATIONS
 }
 
 SPECIES-WITHOUT-NUMBER = {$count ->
-    [one] SPECIES
-    *[other] SPECIES
+[one] SPECIES
+*[other] SPECIES
 }
 
 IDENTIFICATIONS-WITHOUT-NUMBER = {$count ->
-    [one] IDENTIFICATION
-    *[other] IDENTIFICATIONS
+[one] IDENTIFICATION
+*[other] IDENTIFICATIONS
 }
 
 JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
-    [one] JOURNAL POST
-    *[other] JOURNAL POSTS
+[one] JOURNAL POST
+*[other] JOURNAL POSTS
 }
 
 MEMBERS-WITHOUT-NUMBER = {$count ->
-    [one] MEMBER
-    *[other] MEMBERS
+[one] MEMBER
+*[other] MEMBERS
 }
 
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
@@ -1244,7 +1255,7 @@ Please-click-the-link = Please click the link in the email within 60 minutes  to
 
 # Title for dialog telling the user that an Internet connection is required
 Internet-Connection-Required = Internet Connection Required
-Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the Internet.
+Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
 
 IDENTIFY = IDENTIFY
 PROJECTS = PROJECTS
@@ -1258,7 +1269,7 @@ Log-in-to-iNaturalist = Log in to iNaturalist
 
 Try-searching-for-a-location-name = Try searching for a location name to see the map
 Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
-Loading-iNaturalists-AR-Camera = Loading iNaturalist’s AR Camera
+Loading-iNaturalists-AR-Camera = Loading iNaturalist's AR Camera
 
 # Used for explore screen when search params lead to a search with no data
 No-results-found = No results found
@@ -1266,6 +1277,61 @@ No-results-found = No results found
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
 
+# Title of screen asking for permission to access the camera
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real-time with your camera
+# Title of screen asking for permission to access the camera when access was denied
+Please-allow-Camera-Access = Please allow Camera Access
+Use-the-iNaturalist-camera-to-observe = Use the iNaturalist camera to observe and identify organisms on-screen in real-time, and share them with our community to get identifications and contribute to science!
+Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the camera
+OBSERVE-ORGANISMS = OBSERVE ORGANISMS
+
+# Text for a button that opens the operating system Settings app
+OPEN-SETTINGS = OPEN SETTINGS
+
+# Title of a screen asking for permission
+Grant-Permission = Grant Permission
+
+# Title of a screen asking for permission when permission has been denied
+Please-Grant-Permission = Please Grant Permission
+
+# Text prompting the user to open Settings to grant permission after
+# permission has been denied
+Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
+
+# Text for a button that asks the user to grant permission
+GRANT-PERMISSION = GRANT PERMISSION
+
+
+# Title of screen asking for permission to access the microphone
+Record-organism-sounds-with-the-microphone = Record organism sounds with the microphone
+# Title of screen asking for permission to access the microphone when access was denied
+Please-allow-Microphone-Access = Please allow Microphone Access
+Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
+Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the microphone
+RECORD-SOUND = RECORD SOUND
+
+# Title of screen asking for permission to access the gallery
+Observe-and-identify-organisms-from-your-gallery = Observe and identify organisms from your gallery
+# Title of screen asking for permission to access the gallery when access was denied
+Please-Allow-Gallery-Access = Please Allow Gallery Access
+Upload-photos-from-your-gallery-and-create-observations = Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!
+Youve-previously-denied-gallery-permissions = You’ve previously denied gallery permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the gallery
+CHOOSE-PHOTOS = CHOOSE PHOTOS
+
+# Title of screen asking for permission to access location
+Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
+# Title of screen asking for permission to access location when access was denied
+Please-allow-Location-Access = Please allow Location Access
+iNaturalist-uses-your-location-to-give-you= iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location. You’re always in control of the location privacy of every observation you create.
+Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to location
+USE-LOCATION = USE LOCATION
+
+# Accessibility label for a button that closes the permission request screen
+Close-permission-request-screen = Close permission request screen
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
 
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
@@ -1288,9 +1354,9 @@ ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
 ABOUT-TRADITIONAL-PROJECTS = ABOUT TRADITIONAL PROJECTS
 ABOUT-UMBRELLA-PROJECTS = ABOUT UMBRELLA PROJECTS
 
-Every-time-a-collection-project = Every time a collection project’s page is loaded, iNaturalist will perform a quick search and display all observations that match the project’s requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
+Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
 Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
-If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city’s observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
+If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 
 JOIN-PROJECT = JOIN PROJECT
 JOIN = JOIN
@@ -1299,4 +1365,17 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE = LEAVE
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 
+SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
+Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
+TOP-ID-SUGGESTION = TOP ID SUGGESTION
+NEARBY-SUGGESTIONS = NEARBY SUGGESTIONS
+INCLUDE-TAXA-NOT-EXPECTED-NEARBY = INCLUDE TAXA NOT EXPECTED NEARBY
+ONLY-SHOW-TAXA-EXPECTED-NEARBY = ONLY-SHOW-TAXA-EXPECTED-NEARBY
+iNaturalist-Identification-suggestions-are-trained-on = iNaturalist's Identification suggestions are trained on observations and identifications made by the iNaturalist community, including {$user1}, {$user2}, {$user3}, and many others.
+SPECIES-NEARBY = SPECIES NEARBY
+Below-are-all-the-species-observed-within-50km = Below are all the species observed within 50 km of your location within the taxon:
+Species-Nearby-requires-internet-to-work = Species Nearby requires internet to work. Please check your internet connection.
+Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:
+iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo = iNaturalist isn't able to provide a top ID suggestion for this photo.
+iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 Import-Photos-From = Import Photos From

@@ -42,12 +42,15 @@ import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStat
 import UserText from "components/SharedComponents/UserText";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
+
+const { useRealm } = RealmContext;
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
@@ -57,6 +60,7 @@ const UiLibrary = (): Node => {
   const currentUser = useCurrentUser();
   const userId = currentUser?.id;
   const [loading, setLoading] = useState( false );
+  const realm = useRealm( );
   const userText = `
     User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
   `.trim();
@@ -86,6 +90,10 @@ const UiLibrary = (): Node => {
     uuid: "9abd103b-097e-4d32-a0a3-6a23f98ca333",
     vision: false
   };
+
+  const taxonWithPhoto = realm.objects( "Taxon" ).filtered( "defaultPhoto.url != nil" )[0];
+  const iconicTaxon = realm.objects( "Taxon" ).filtered( "isIconic == true" )[0];
+
   return (
     <ViewWrapper>
       <FloatingActionBar
@@ -582,7 +590,7 @@ const UiLibrary = (): Node => {
         <Heading2 className="my-2">ActivityItem</Heading2>
         <ActivityItem item={exampleId} currentUserId={userId} />
         <Heading2 className="my-2">Search Bar</Heading2>
-        <SearchBar value="search" />
+        <SearchBar value="search is a really great thing that we should all love" />
         <Heading2 className="my-2">Confidence Interval</Heading2>
         <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
         <Heading2 className="my-2">Taxon Result</Heading2>
@@ -592,9 +600,14 @@ const UiLibrary = (): Node => {
             name: "Aves",
             preferred_common_name: "Birds",
             rank: "family",
-            rank_level: 60
+            rank_level: 60,
+            iconic_taxon_name: "Aves"
           }}
         />
+        <Heading3>Taxon w/ photo</Heading3>
+        <TaxonResult taxon={taxonWithPhoto} />
+        <Heading3>Iconic taxon</Heading3>
+        <TaxonResult taxon={iconicTaxon} />
         <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
         <IconicTaxonChooser
           taxon={{

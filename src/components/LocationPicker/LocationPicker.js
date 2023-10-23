@@ -1,19 +1,18 @@
 // @flow
 
+import classnames from "classnames";
 import {
-  Body3,
   CloseButton, Heading4,
   INatIconButton,
+  Map,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import MapView from "react-native-maps";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
-import colors from "styles/tailwindColors";
 
 import CrosshairCircle from "./CrosshairCircle";
 import DisplayLatLng from "./DisplayLatLng";
@@ -37,18 +36,16 @@ type Props = {
   accuracy: number,
   accuracyTest: string,
   goBackOnSave: Function,
-  fetchingLocation: boolean,
   hidePlaceResults: boolean,
   keysToUpdate: Object,
   loading: boolean,
   locationName: ?string,
   mapType: string,
-  mapView: any,
+  mapViewRef: any,
   region: Object,
-  returnToUserLocation: Function,
   selectPlaceResult: Function,
   setMapReady: Function,
-  showMap: boolean,
+  showCrosshairs: boolean,
   toggleMapLayer: Function,
   updateLocationName: Function,
   updateRegion: Function,
@@ -58,18 +55,16 @@ const LocationPicker = ( {
   accuracy,
   accuracyTest,
   goBackOnSave,
-  fetchingLocation,
   hidePlaceResults,
   keysToUpdate,
   loading,
   locationName,
+  mapViewRef,
   mapType,
-  mapView,
   region,
-  returnToUserLocation,
   selectPlaceResult,
-  setMapReady,
-  showMap,
+  setMapReady = ( ) => { },
+  showCrosshairs,
   toggleMapLayer,
   updateLocationName,
   updateRegion
@@ -85,59 +80,60 @@ const LocationPicker = ( {
           <CloseButton black size={19} />
         </View>
       </View>
-      <View className="z-20">
-        <LocationSearch
-          locationName={locationName}
-          updateLocationName={updateLocationName}
-          getShadow={getShadow}
-          selectPlaceResult={selectPlaceResult}
-          hidePlaceResults={hidePlaceResults}
-        />
-      </View>
-      <View className="z-10">
-        <DisplayLatLng
-          region={region}
-          accuracy={accuracy}
-          getShadow={getShadow}
-        />
-      </View>
-      <View
-        className="top-1/2 left-1/2 absolute z-10"
-        pointerEvents="none"
-      >
-        {showMap && (
-          <CrosshairCircle
-            accuracyTest={accuracyTest}
+      <View className="flex-grow">
+        <View className="z-20">
+          <LocationSearch
+            locationName={locationName}
+            updateLocationName={updateLocationName}
+            getShadow={getShadow}
+            selectPlaceResult={selectPlaceResult}
+            hidePlaceResults={hidePlaceResults}
+          />
+        </View>
+        <View className="z-10">
+          <DisplayLatLng
+            region={region}
+            accuracy={accuracy}
             getShadow={getShadow}
           />
-        )}
-      </View>
-      <View className="top-1/2 left-1/2 absolute z-10">
-        {loading && <LoadingIndicator getShadow={getShadow} theme={theme} />}
-      </View>
-      <View className="flex-shrink">
-        {showMap
-          ? (
-            <MapView
-              className="h-full"
-              showsCompass={false}
-              region={region}
-              ref={mapView}
-              mapType={mapType}
-              // TODO: figure out the right zoom level here
-              // don't think it's necessary to let a user zoom out far beyond cities
-              minZoomLevel={5}
-              onRegionChangeComplete={async newRegion => {
-                updateRegion( newRegion );
-              }}
-              onMapReady={setMapReady}
-            />
-          )
-          : (
-            <View className="h-full bg-lightGray items-center justify-center">
-              <Body3>{t( "Try-searching-for-a-location-name" )}</Body3>
-            </View>
+        </View>
+        <View
+          className={classnames(
+            "absolute",
+            "z-10",
+            "flex-1",
+            "items-center",
+            "justify-center",
+            "w-full",
+            "h-full"
           )}
+          pointerEvents="none"
+        >
+          {showCrosshairs && (
+            <CrosshairCircle
+              accuracyTest={accuracyTest}
+              getShadow={getShadow}
+            />
+          )}
+        </View>
+        <View className="top-1/2 left-1/2 absolute z-10">
+          {loading && <LoadingIndicator getShadow={getShadow} theme={theme} />}
+        </View>
+        <Map
+          className="h-full"
+          showsCompass={false}
+          region={region}
+          mapViewRef={mapViewRef}
+          mapType={mapType}
+          minZoomLevel={5}
+          onRegionChangeComplete={async newRegion => {
+            updateRegion( newRegion );
+          }}
+          onMapReady={setMapReady}
+          showCurrentLocationButton
+          obsLatitude={region.latitude}
+          obsLongitude={region.longitude}
+        />
         <View
           style={getShadow( theme.colors.primary )}
           className="absolute bottom-3 bg-white left-3 rounded-full"
@@ -151,37 +147,6 @@ const LocationPicker = ( {
             accessibilityLabel={t( "Map-layers" )}
             accessibilityHint={t( "Toggles-map-layer" )}
           />
-        </View>
-        <View
-          style={getShadow( theme.colors.primary )}
-          className="absolute bottom-3 bg-white right-3 rounded-full"
-        >
-          {
-            fetchingLocation
-              ? (
-                <INatIconButton
-                  disabled
-                  height={46}
-                  width={46}
-                  size={24}
-                  accessibilityLabel={t( "Loading-wheel" )}
-                  accessibilityHint={t( "Indicates-location-is-loading" )}
-                >
-                  <ActivityIndicator color={colors.darkGrayDisabled} />
-                </INatIconButton>
-              )
-              : (
-                <INatIconButton
-                  icon="location-crosshairs"
-                  onPress={returnToUserLocation}
-                  height={46}
-                  width={46}
-                  size={24}
-                  accessibilityLabel={t( "User-location" )}
-                  accessibilityHint={t( "Returns-map-to-users-current-location" )}
-                />
-              )
-          }
         </View>
       </View>
       <Footer

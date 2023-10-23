@@ -1,6 +1,7 @@
 module.exports = {
   presets: ["module:metro-react-native-babel-preset"],
   plugins: [
+    "react-native-worklets-core/plugin",
     "transform-inline-environment-variables",
     "nativewind/babel",
     ["module-resolver", {
@@ -20,12 +21,7 @@ module.exports = {
       }
     }],
     // Reanimated 2 plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
-    [
-      "react-native-reanimated/plugin",
-      {
-        globals: ["__inatVision"]
-      }
-    ]
+    "react-native-reanimated/plugin"
   ],
   env: {
     production: {

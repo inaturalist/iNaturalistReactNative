@@ -12,7 +12,6 @@ import React, {
 } from "react";
 import {
   BackHandler,
-  Platform,
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -30,9 +29,14 @@ import {
 // remove if/when we return to the main repo
 import {
   Camera,
-  useCameraDevices
+  useCameraDevice
 } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import {
+  rotatePhotoPatch,
+  rotationLocalPhotoPatch,
+  rotationTempPhotoPatch
+} from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
@@ -86,6 +90,7 @@ const CameraWithDevice = ( {
   const camera = useRef<Camera>( null );
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
+    enableShutterSound: true,
     enableAutoStabilization: true,
     qualityPrioritization: "quality",
     ...( hasFlash && { flash: "off" } )
@@ -224,24 +229,18 @@ const CameraWithDevice = ( {
   const takePhoto = async ( ) => {
     setTakingPhoto( true );
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-    let photoRotation = 0;
-    switch ( cameraPhoto.metadata.Orientation ) {
-      case 1:
-        // Because the universe is a cruel, cruel place
-        if ( Platform.OS === "android" ) {
-          photoRotation = 180;
-        }
-        break;
-      case 6:
-        photoRotation = 90;
-        break;
-      case 8:
-        photoRotation = 270;
-        break;
-      default:
-        photoRotation = 0;
-    }
-    const newPhoto = await Photo.new( cameraPhoto.path, { rotation: photoRotation } );
+
+    // Rotate the original photo depending on device orientation
+    const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
+    await rotatePhotoPatch( cameraPhoto, photoRotation );
+
+    // Get the rotation for the local photo
+    const rotationLocalPhoto = rotationLocalPhotoPatch( );
+
+    // Create a local copy photo of the original
+    const newPhoto = await Photo.new( cameraPhoto.path, {
+      rotation: rotationLocalPhoto
+    } );
     const uri = newPhoto.localFilePath;
 
     // Remember original (unresized) camera URI
@@ -334,8 +333,7 @@ const CameraContainer = ( ): Node => {
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
   const [cameraPosition, setCameraPosition] = useState( "back" );
-  const devices = useCameraDevices( );
-  const device = devices[cameraPosition];
+  const device = useCameraDevice( cameraPosition );
 
   if ( !device ) {
     return null;

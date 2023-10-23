@@ -12,40 +12,71 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
+import { Dimensions, PixelRatio } from "react-native";
 import { ProgressBar, useTheme } from "react-native-paper";
 
 type Props = {
   layout: string,
-  statusText: ?string,
   handleSyncButtonPress: Function,
   uploadError: ?string,
   uploadInProgress: boolean,
   stopUpload: Function,
   progress: number,
   numUnuploadedObs: number,
-  currentUser: ?Object,
+  showsExploreIcon: boolean,
   navToExplore: Function,
   toggleLayout: Function,
-  needsSync: Function
+  currentUploadIndex: number,
+  totalUploadCount: number
 }
 
 const Toolbar = ( {
   layout,
-  statusText,
   handleSyncButtonPress,
   uploadError,
   uploadInProgress,
   stopUpload,
   progress,
   numUnuploadedObs,
-  currentUser,
+  showsExploreIcon,
   navToExplore,
   toggleLayout,
-  needsSync
+  currentUploadIndex,
+  totalUploadCount
 }: Props ): Node => {
   const theme = useTheme( );
   const uploadComplete = progress === 1;
   const uploading = uploadInProgress && !uploadComplete;
+
+  const needsSync = ( ) => (
+    ( numUnuploadedObs > 0 && !uploadInProgress ) || ( uploadError && !uploadInProgress )
+  );
+
+  const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
+
+  const getStatusText = ( ) => {
+    if ( progress === 1 ) {
+      return t( "X-observations-uploaded", { count: totalUploadCount } );
+    }
+
+    if ( !uploadInProgress ) {
+      return numUnuploadedObs !== 0
+        ? t( "Upload-x-observations", { count: numUnuploadedObs } )
+        : "";
+    }
+
+    const translationParams = {
+      total: totalUploadCount,
+      uploadedCount: currentUploadIndex + 1
+    };
+
+    // iPhone 4 pixel width
+    if ( screenWidth <= 640 ) {
+      return t( "Uploading-x-of-y", translationParams );
+    }
+
+    return t( "Uploading-x-of-y-observations", translationParams );
+  };
 
   const getSyncIconColor = ( ) => {
     if ( uploadError ) {
@@ -56,6 +87,8 @@ const Toolbar = ( {
     return theme.colors.primary;
   };
 
+  const statusText = getStatusText( );
+
   return (
     <View className={
       classNames(
@@ -64,7 +97,7 @@ const Toolbar = ( {
     }
     >
       <View className="flex-row items-center mx-4">
-        {currentUser && (
+        {showsExploreIcon && (
           <INatIconButton
             icon="compass-rose-outline"
             onPress={navToExplore}
@@ -97,6 +130,7 @@ const Toolbar = ( {
             disabled={false}
             accessibilityLabel={t( "Sync-observations" )}
             size={30}
+            testID="SyncButton"
           />
 
           {statusText && (
@@ -124,7 +158,7 @@ const Toolbar = ( {
               )}
             </View>
           )}
-          {( uploadInProgress && !uploadComplete ) && (
+          {uploading && (
             <INatIconButton
               icon="close"
               size={11}
