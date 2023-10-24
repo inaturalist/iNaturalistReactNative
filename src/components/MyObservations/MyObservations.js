@@ -18,7 +18,7 @@ type Props = {
   allObsToUpload: Array<Object>,
   currentUser: ?Object,
   showLoginSheet: boolean,
-  setShowLoginSheet: Function,
+  setShowLoginSheet: Function
 };
 
 const MyObservations = ( {
@@ -84,7 +84,7 @@ const MyObservations = ( {
               isFetchingNextPage={isFetchingNextPage}
               layout={layout}
               onEndReached={onEndReached}
-              allObsToUpload={allObsToUpload}
+              setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
               testID="MyObservationsAnimatedList"
               handleScroll={handleScroll}
