@@ -1,99 +1,22 @@
 // @flow
-import { useDrawerStatus } from "@react-navigation/drawer";
 import classNames from "classnames";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { Platform } from "react-native";
-import User from "realmModels/User";
-import { useCurrentUser } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import NavButton from "./NavButton";
 
-const DRAWER_ID = "OPEN_DRAWER";
-const EXPLORE_SCREEN_ID = "Explore";
-const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
-const MESSAGES_SCREEN_ID = "Messages";
-
 type Props = {
-  navigation: Object,
+  tabs: Array<Object>,
 };
 
 /* eslint-disable react/jsx-props-no-spreading */
 
-const CustomTabBar = ( { navigation }: Props ): Node => {
-  const currentUser = useCurrentUser( );
-  const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
-  const isDrawerOpen = useDrawerStatus() === "open";
-
-  const tabs = [
-    {
-      icon: "hamburger-menu",
-      testID: DRAWER_ID,
-      accessibilityLabel: t( "Open-drawer" ),
-      accessibilityHint: t( "Opens-the-side-drawer-menu" ),
-      width: 44,
-      height: 44,
-      size: 32,
-      onPress: ( ) => {
-        navigation.openDrawer( );
-        setActiveTab( null );
-      },
-      active: isDrawerOpen
-    },
-    {
-      icon: "compass-rose-outline",
-      testID: EXPLORE_SCREEN_ID,
-      accessibilityLabel: t( "Explore" ),
-      accessibilityHint: t( "Navigates-to-explore" ),
-      width: 44,
-      height: 44,
-      size: 40,
-      onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
-          screen: "Explore"
-        } );
-        setActiveTab( EXPLORE_SCREEN_ID );
-      },
-      active: EXPLORE_SCREEN_ID === activeTab
-    },
-    {
-      icon: "person",
-      userIconUri: User.uri( currentUser ),
-      testID: OBS_LIST_SCREEN_ID,
-      accessibilityLabel: t( "Observations" ),
-      accessibilityHint: t( "Navigates-to-observations" ),
-      width: 44,
-      height: 44,
-      size: 40,
-      onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
-          screen: "ObsList"
-        } );
-        setActiveTab( OBS_LIST_SCREEN_ID );
-      },
-      active: OBS_LIST_SCREEN_ID === activeTab
-    },
-    {
-      icon: "notifications-bell",
-      testID: MESSAGES_SCREEN_ID,
-      accessibilityLabel: t( "Messages" ),
-      accessibilityHint: t( "Navigates-to-messages" ),
-      width: 44,
-      height: 44,
-      size: 32,
-      onPress: ( ) => {
-        navigation.navigate( "Messages" );
-        setActiveTab( MESSAGES_SCREEN_ID );
-      },
-      active: MESSAGES_SCREEN_ID === activeTab
-    }
-  ];
-
+const CustomTabBar = ( { tabs }: Props ): Node => {
   const tabList = tabs.map( tab => (
     <View key={tab.testID}>
       <NavButton {...tab} />
