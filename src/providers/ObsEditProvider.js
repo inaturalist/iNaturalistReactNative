@@ -142,7 +142,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [groupedPhotos, setGroupedPhotos] = useState( [] );
   const [savingPhoto, setSavingPhoto] = useState( false );
-  const [lastScreen, setLastScreen] = useState( "" );
   const [comment, setComment] = useState( "" );
 
   // state related to uploads in useReducer
@@ -470,14 +469,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           taxon: newIdentification.taxon
         } );
         setLoading( false );
-        const navParams = {};
-        if ( lastScreen === "ObsDetails" ) {
-          navParams.uuid = currentObservation.uuid;
-        }
-        navigation.navigate( "ObservationsStackNavigator", {
-          screen: lastScreen,
-          params: navParams
-        } );
       }
     };
 
@@ -879,7 +870,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       savingPhoto,
       singleUpload,
       createId,
-      setLastScreen,
       comment,
       setComment,
       clearUploadProgress
@@ -924,7 +914,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     savingPhoto,
     singleUpload,
     createIdentificationMutation,
-    lastScreen,
     localObservation,
     comment,
     createObsPhotos,

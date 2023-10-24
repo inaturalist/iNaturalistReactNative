@@ -60,9 +60,7 @@ const SuggestionsContainer = ( ): Node => {
       photoUris={photoEvidenceUris}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
-      onTaxonChosen={
-        identification => createId( identification )
-      }
+      onTaxonChosen={createId}
       comment={comment}
       loading={loading}
       nearbySuggestions={nearbySuggestions}

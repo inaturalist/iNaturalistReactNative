@@ -100,8 +100,7 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const {
-    setObservations,
-    setLastScreen
+    setObservations
   } = useContext( ObsEditContext );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
@@ -305,7 +304,6 @@ const ObsDetailsContainer = ( ): Node => {
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
-    setLastScreen( "ObsDetails" );
     navigation.navigate( "Suggestions" );
   };
 
