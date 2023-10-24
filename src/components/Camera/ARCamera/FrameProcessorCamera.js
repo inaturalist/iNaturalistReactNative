@@ -14,6 +14,8 @@ import {
 // react-native-vision-camera v3
 // import { Worklets } from "react-native-worklets-core";
 import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel";
+import { Worklets } from "react-native-worklets-core";
+import { orientationPatchFrameProcessor } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
@@ -76,6 +78,7 @@ const FrameProcessorCamera = ( {
   //   onClassifierError( error );
   // } );
 
+  const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
   const frameProcessor = useFrameProcessor(
     frame => {
       "worklet";
@@ -117,6 +120,21 @@ const FrameProcessorCamera = ( {
       //     handleError( classifierError );
       //   }
       // } );
+        // Reminder: this is a worklet, running on the UI thread.
+        try {
+          const results = InatVision.inatVision( frame, {
+            version,
+            modelPath,
+            taxonomyPath,
+            confidenceThreshold,
+            patchedOrientationAndroid
+          } );
+          handleResults( results );
+        } catch ( classifierError ) {
+          console.log( `Error: ${classifierError.message}` );
+          handleError( classifierError );
+        }
+      } );
     },
     [modelVersion, confidenceThreshold, takingPhoto, deviceOrientation]
   );

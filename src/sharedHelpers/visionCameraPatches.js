@@ -22,6 +22,7 @@ export const visionCameraMajorVersion = dependencies["react-native-vision-camera
   );
 
 // Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v3.4.1
 // This patch is used to set the pixelFormat prop which should not be needed because the default
 // value would be fine for both platforms.
 // However, on Android for the "native" pixelFormat I could not find any method or properties to
@@ -31,7 +32,7 @@ export const pixelFormatPatch = () => ( Platform.OS === "ios"
   ? "native"
   : "yuv" );
 
-// Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v3.4.1
 // This patch is used to determine the orientation prop for the Camera component.
 // On Android, the orientation prop is not used, so we return null.
 // On iOS, the orientation prop is undocumented, but it does get used in a sense that the
@@ -43,7 +44,15 @@ export const orientationPatch = deviceOrientation => {
     : deviceOrientation;
 };
 
-// Needed for react-native-vision-camera v2 and v3.3.1
+// Needed for react-native-vision-camera v3.4.1 in combination
+// with our vision-camera-plugin-inatvision
+// This patch is used to determine the orientation prop for the FrameProcessor.
+// This is only needed for Android, so on iOS we return null.
+export const orientationPatchFrameProcessor = deviceOrientation => ( Platform.OS === "android"
+  ? deviceOrientation
+  : null );
+
+// Needed for react-native-vision-camera v3.4.1
 // As of this version the photo from takePhoto is not oriented coming from the native side.
 // E.g. if you take a photo in landscape-right and save it to camera roll directly from the
 // vision camera, it will be tilted in the native photo app. So, on iOS, depending on the
@@ -86,7 +95,7 @@ export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
   return photoRotation;
 };
 
-// Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v3.4.1
 // This patch is used to rotate the photo taken with the vision camera.
 // Because the photos coming from the vision camera are not oriented correctly, we
 // rotate them with image-resizer as a first step, replacing the original photo.
@@ -111,7 +120,7 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
   await RNFS.moveFile( tempUri, photo.path );
 };
 
-// Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v3.4.1
 // This patch is here to remember to replace the rotation used when resizing the original
 // photo to a smaller local copy we keep in the app cache. Previously we had a flow where
 // we would resize the original photo to a smaller version including rotation. Now, we
