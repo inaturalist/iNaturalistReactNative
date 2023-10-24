@@ -66,7 +66,6 @@ type Props = {
   mapHeight?: number|string, // allows for height to be defined as px or percentage
   mapViewRef?: Object,
   mapType?: string,
-  minZoomLevel?: number,
   obscured?: boolean,
   obsLatitude: number,
   obsLongitude: number,
@@ -82,7 +81,8 @@ type Props = {
   startAtUserLocation?: boolean,
   style?: Object,
   tileMapParams?: Object,
-  withObsTiles?: boolean
+  withObsTiles?: boolean,
+  testID?: string
 }
 
 const getShadow = shadowColor => getShadowStyle( {
@@ -102,7 +102,6 @@ const Map = ( {
   mapHeight,
   mapViewRef: mapViewRefProp,
   mapType,
-  minZoomLevel,
   obscured,
   obsLatitude,
   obsLongitude,
@@ -118,7 +117,8 @@ const Map = ( {
   startAtUserLocation = false,
   style,
   tileMapParams,
-  withObsTiles
+  withObsTiles,
+  testID
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
@@ -268,7 +268,7 @@ const Map = ( {
     >
       <MapView
         ref={mapViewRef}
-        testID="Map.MapView"
+        testID={testID || "Map.MapView"}
         className={className}
         region={( region?.latitude )
           ? region
@@ -297,7 +297,6 @@ const Map = ( {
         }}
         showsCompass={showsCompass}
         mapType={mapType || "standard"}
-        minZoomLevel={minZoomLevel}
         onMapReady={onMapReady}
         style={style}
       >
