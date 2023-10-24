@@ -1,0 +1,18 @@
+diff --git a/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/core/VideoPipeline.kt b/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/core/VideoPipeline.kt
+index af34761..4460171 100644
+--- a/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/core/VideoPipeline.kt
++++ b/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/core/VideoPipeline.kt
+@@ -104,7 +104,12 @@ class VideoPipeline(
+         frame.incrementRefCount()
+         frameProcessor?.call(frame)
+ 
+-        imageWriter!!.queueInputImage(image)
++        try {
++          imageWriter!!.queueInputImage(image)
++        }
++        catch (exception: RuntimeException){
++          // Handling exception
++        }
+ 
+         frame.decrementRefCount()
+       }, CameraQueues.videoQueue.handler)
