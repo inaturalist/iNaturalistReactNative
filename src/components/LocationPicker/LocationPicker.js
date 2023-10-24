@@ -125,7 +125,6 @@ const LocationPicker = ( {
           region={region}
           mapViewRef={mapViewRef}
           mapType={mapType}
-          minZoomLevel={5}
           onRegionChangeComplete={async newRegion => {
             updateRegion( newRegion );
           }}
@@ -133,6 +132,7 @@ const LocationPicker = ( {
           showCurrentLocationButton
           obsLatitude={region.latitude}
           obsLongitude={region.longitude}
+          testID="LocationPicker.Map"
         />
         <View
           style={getShadow( theme.colors.primary )}
