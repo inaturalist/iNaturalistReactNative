@@ -56,7 +56,7 @@ const PhotoPreview = ( {
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
-  if ( isTablet && !isLandscapeMode ) {
+  if ( isTablet && isLandscapeMode ) {
     noPhotosNotice = (
       <Text
         className={classnames(
@@ -76,7 +76,7 @@ const PhotoPreview = ( {
   }
 
   const wrapperStyle = { justifyContent: "center" };
-  if ( isTablet && !isLandscapeMode ) {
+  if ( isTablet && isLandscapeMode ) {
     // $FlowIssue[prop-missing]
     wrapperStyle.width = wrapperDim;
   } else {
