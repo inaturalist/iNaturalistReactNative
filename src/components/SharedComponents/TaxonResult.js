@@ -115,7 +115,7 @@ const TaxonResult = ( {
           color={clearBackground
             ? theme.colors.onSecondary
             : theme.colors.secondary}
-          onPress={handleCheckmarkPress}
+          onPress={() => handleCheckmarkPress( taxon )}
           accessibilityLabel={t( "Checkmark" )}
           accessibilityHint={t( "Add-this-ID" )}
           testID={`${testID}.checkmark`}

@@ -7,8 +7,8 @@ import realmConfig from "realmModels/index";
 // needs data to persist in Realm across opening/closing events, we will need
 // to take a different approach, e.g. writing to Realm to disk and erasing
 // those files after each test run
-jest.mock( "../src/realmModels/index", ( ) => {
-  const originalModule = jest.requireActual( "../src/realmModels/index" );
+jest.mock( "realmModels/index", ( ) => {
+  const originalModule = jest.requireActual( "realmModels/index" );
 
   // Mock the default export and named export 'foo'
   return {
@@ -24,8 +24,8 @@ jest.mock( "../src/realmModels/index", ( ) => {
 
 // Mock the contexts so the useRealm hook will provide a single, custom copy
 // of the Realm connection
-jest.mock( "../src/providers/contexts", ( ) => {
-  const originalModule = jest.requireActual( "../src/providers/contexts" );
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
   return {
     __esModule: true,
     ...originalModule,

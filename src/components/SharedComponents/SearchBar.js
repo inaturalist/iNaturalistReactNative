@@ -48,7 +48,7 @@ const SearchBar = ( {
       <TextInput
         ref={input}
         placeholder={placeholder}
-        accessibilityLabel="Search bar"
+        accessibilityLabel={t( "Search-for-a-taxon" )}
         keyboardType="default"
         mode="outlined"
         onChangeText={handleTextChange}
