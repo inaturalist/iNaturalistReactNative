@@ -130,6 +130,7 @@
   "Default-Search-Place": "Default Search Place",
   "DELETE": "DELETE",
   "DELETE-ALL": "DELETE ALL",
+  "DELETE-COMMENT": "DELETE COMMENT?",
   "Delete-comment": "Delete comment",
   "DELETE-OBSERVATION": "DELETE OBSERVATION?",
   "Delete-observation": "Delete observation",
