@@ -41,6 +41,11 @@ jobs:
     timeout-minutes: 60
 
     steps:
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15'
+  
     - name: Check out Git repository
       uses: actions/checkout@v3
       with:
