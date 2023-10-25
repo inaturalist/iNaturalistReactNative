@@ -10,9 +10,7 @@ import { ActivityIndicator, Animated } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation, useTranslation } from "sharedHooks";
 
-import MyObservationsPressable from "./MyObservationsPressable";
-import ObsGridItem from "./ObsGridItem";
-import ObsListItem from "./ObsListItem";
+import ObsItem from "./ObsItem";
 
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
@@ -21,7 +19,7 @@ type Props = {
   layout: "list" | "grid",
   data: Array<Object>,
   onEndReached: Function,
-  allObsToUpload?: Array<Object>,
+  setShowLoginSheet: Function,
   currentUser?: ?Object,
   testID: string,
   handleScroll?: Function,
@@ -31,43 +29,12 @@ type Props = {
 
 const GUTTER = 15;
 
-const Item = React.memo(
-  ( {
-    observation, layout, gridItemWidth, setShowLoginSheet = false
-  } ) => (
-    <MyObservationsPressable observation={observation} testID="MyObservationsPressable">
-      {
-        layout === "grid"
-          ? (
-            <ObsGridItem
-              observation={observation}
-              // 03022023 it seems like Flatlist is designed to work
-              // better with RN styles than with Tailwind classes
-              style={{
-                height: gridItemWidth,
-                width: gridItemWidth,
-                margin: GUTTER / 2
-              }}
-              setShowLoginSheet={setShowLoginSheet}
-            />
-          )
-          : (
-            <ObsListItem
-              observation={observation}
-              setShowLoginSheet={setShowLoginSheet}
-            />
-          )
-      }
-    </MyObservationsPressable>
-  )
-);
-
 const ObservationsFlashList = ( {
   isFetchingNextPage,
   layout,
   data,
   onEndReached,
-  allObsToUpload,
+  setShowLoginSheet,
   currentUser,
   testID,
   handleScroll,
@@ -117,12 +84,11 @@ const ObservationsFlashList = ( {
   ] );
 
   const renderItem = ( { item } ) => (
-    <Item
+    <ObsItem
       observation={item}
       layout={layout}
       gridItemWidth={gridItemWidth}
-      allObsToUpload={allObsToUpload}
-      testID={testID}
+      setShowLoginSheet={setShowLoginSheet}
     />
   );
 
