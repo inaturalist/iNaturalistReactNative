@@ -110,7 +110,7 @@ jobs:
       run: npm run e2e:build:ios
     
     - name: Run e2e test
-      run: npm run e2e:test:ios -- --cleanup --take-screenshots failing --record-videos failing -l debug
+      run: npm run e2e:test:ios -- --cleanup --take-screenshots failing --record-videos failing -l trace
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
