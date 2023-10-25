@@ -20,13 +20,6 @@ class Comment extends Realm.Object {
     };
   }
 
-  static async deleteComment( id, realm ) {
-    realm?.write( ( ) => {
-      const commentToDelete = realm.objects( "Comment" ).filtered( `uuid == "${id}"` )[0];
-      realm.delete( commentToDelete );
-    } );
-  }
-
   static schema = {
     name: "Comment",
     properties: {

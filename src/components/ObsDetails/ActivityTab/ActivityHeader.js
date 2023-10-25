@@ -2,7 +2,7 @@
 import classnames from "classnames";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import {
-  Body4, INatIcon, InlineUser, TextInputSheet
+  Body4, INatIcon, InlineUser, TextInputSheet, WarningSheet
 } from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
@@ -36,6 +36,7 @@ const ActivityHeader = ( {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [flagModalVisible, setFlagModalVisible] = useState( false );
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
+  const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const { user } = item;
 
   const itemType = item.category
@@ -145,7 +146,7 @@ const ActivityHeader = ( {
                 />
                 <Menu.Item
                   onPress={async ( ) => {
-                    deleteComment( item.uuid );
+                    setShowDeleteCommentSheet( true );
                     setKebabMenuVisible( false );
                   }}
                   title={t( "Delete-comment" )}
@@ -192,6 +193,17 @@ const ActivityHeader = ( {
             initialInput={item.body}
             snapPoints={[416]}
             confirm={textInput => updateCommentBody( textInput )}
+          />
+        )}
+        {( currentUser && showDeleteCommentSheet ) && (
+          <WarningSheet
+            handleClose={( ) => setShowDeleteCommentSheet( false )}
+            headerText={t( "DELETE-COMMENT" )}
+            snapPoints={[148]}
+            confirm={deleteComment}
+            buttonText={t( "DELETE" )}
+            handleSecondButtonPress={( ) => setShowDeleteCommentSheet( false )}
+            secondButtonText={t( "CANCEL" )}
           />
         )}
       </View>
