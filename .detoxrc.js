@@ -15,6 +15,7 @@ module.exports = {
     },
     jest: {
       setupTimeout: 600000,
+      teardownTimeout: 600000,
     },
   },
   apps: {
