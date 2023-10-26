@@ -52,6 +52,7 @@ const PermissionGate = ( {
       )}
     >
       <INatIconButton
+        testID="close-permission-gate"
         icon="close"
         color={colors.white}
         onPress={() => onClose( )}
