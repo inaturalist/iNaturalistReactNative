@@ -11,7 +11,6 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
-import { navigateToLogin } from "sharedHelpers/navigation";
 import { useNumUnuploadedObservations, useTranslation } from "sharedHooks";
 
 import Onboarding from "./Onboarding";
@@ -90,7 +89,7 @@ const Header = ( {
           )}
       </View>
       <Button
-        onPress={( ) => navigateToLogin( navigation )}
+        onPress={( ) => navigation.navigate( "LoginNavigator" )}
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-login-screen" )}
         text={t( "LOG-IN-TO-INATURALIST" )}

@@ -18,7 +18,6 @@ import { Dimensions, Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import { navigateToLogin } from "sharedHelpers/navigation";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -188,7 +187,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
           )}
           onPress={( ) => {
             if ( !currentUser ) {
-              navigateToLogin( navigation );
+              navigation.navigate( "LoginNavigator" );
             } else {
               navigation.navigate( "TabNavigator", {
                 screen: "ObservationsStackNavigator",
@@ -253,7 +252,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
                 ? t( "LOG-OUT" )
                 : t( "LOG-IN" )
             }
-            onPress={( ) => navigateToLogin( navigation )}
+            onPress={( ) => navigation.navigate( "LoginNavigator" )}
             labelStyle={labelStyle}
             icon={signOutButton}
             style={loginDrawerItemStyle}

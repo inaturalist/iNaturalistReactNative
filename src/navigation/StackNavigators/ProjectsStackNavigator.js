@@ -9,7 +9,6 @@ import {
   removeBottomBorder,
   showHeaderLeft
 } from "navigation/navigationOptions";
-import ModalLoginScreen from "navigation/Screens/ModalLoginScreen";
 import type { Node } from "react";
 import React from "react";
 
@@ -34,7 +33,6 @@ const ProjectsStackNavigator = ( ): Node => (
         ...showHeaderLeft
       }}
     />
-    {ModalLoginScreen( { navigator: Stack } )}
   </Stack.Navigator>
 );
 

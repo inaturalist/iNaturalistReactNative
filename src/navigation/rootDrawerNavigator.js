@@ -46,7 +46,7 @@ const RootDrawerNavigator = ( ): Node => (
       }}
     />
     <Drawer.Screen
-      name="LoginNavigatorAndroid"
+      name="LoginNavigator"
       component={LoginStackNavigator}
       options={{
         headerShown: false

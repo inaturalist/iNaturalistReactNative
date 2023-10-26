@@ -79,7 +79,7 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
       />
       <Body1
         className="color-white self-center mt-[30px] underline"
-        onPress={( ) => navigation.navigate( "Login" )}
+        onPress={( ) => navigation.navigate( "LoginNavigator", { screen: "Login" } )}
       >
         {t( "Already-have-an-account" )}
       </Body1>
