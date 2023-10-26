@@ -55,6 +55,20 @@ describe( "Signed in user", () => {
     );
     await expect( obsWithoutEvidenceButton ).toBeVisible();
     await obsWithoutEvidenceButton.tap();
+    /*
+    / 2.Insert.: On iOS setting location permission is currently not working
+    / react-native-vision-camera >v3.4 only compiles with XCode >15
+    / AppleSimUtils v0.9.10 used to set the location permission (other permissions afre fine)
+    / does not work on a Simulator with XCode15 + iOS17, so in order for this test to pass we
+    / disable usage of a location for now.
+    */
+    if ( device.getPlatform() === "ios" ) {
+      // Permission gate modal, press close icon to exit
+      const closePermissionGate = element( by.id( "close-permission-gate" ) );
+      await waitFor( closePermissionGate ).toBeVisible().withTimeout( 10000 );
+      await closePermissionGate.tap();
+    }
+
     // Check that the new observation screen is visible
     await waitFor( element( by.id( "new-observation-text" ) ) )
       .toBeVisible()
@@ -63,6 +77,24 @@ describe( "Signed in user", () => {
     const uploadNowButton = element( by.id( "ObsEdit.uploadButton" ) );
     await expect( uploadNowButton ).toBeVisible();
     await uploadNowButton.tap();
+
+    /*
+    / 2.Insert.: On iOS setting location permission is currently not working
+    / react-native-vision-camera >v3.4 only compiles with XCode >15
+    / AppleSimUtils v0.9.10 used to set the location permission (other permissions afre fine)
+    / does not work on a Simulator with XCode15 + iOS17, so in order for this test to pass we
+    / disable usage of a location for now.
+    */
+    if ( device.getPlatform() === "ios" ) {
+      // Press OK to dismiss "Missing evidence" modal
+      const okButton = element( by.label( "OK" ) );
+      await waitFor( okButton ).toBeVisible().withTimeout( 10000 );
+      await okButton.tap();
+      // Press Upload now button for the second time
+      await waitFor( uploadNowButton ).toBeVisible().withTimeout( 10000 );
+      await uploadNowButton.tap();
+    }
+
     // Check that the observation list screen is visible
     const observation = element( by.id( "MyObservationsPressable" ) ).atIndex( 0 );
     await waitFor( observation ).toBeVisible().withTimeout( 10000 );
