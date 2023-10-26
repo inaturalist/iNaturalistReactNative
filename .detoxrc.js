@@ -13,6 +13,9 @@ module.exports = {
       config: "e2e/jest.config.js",
       _: ["e2e"],
     },
+    jest: {
+      setupTimeout: 600000,
+    },
   },
   apps: {
     "ios.debug": {
