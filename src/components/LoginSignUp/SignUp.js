@@ -21,8 +21,6 @@ const SignUp = (): Node => {
     ? nonKeyboardHeight - TARGET_NON_KEYBOARD_HEIGHT
     : 30;
 
-  console.log( "keyboardVerticalOffset: ", keyboardVerticalOffset );
-
   return (
     <LoginSignUpWrapper
       backgroundSource={require( "images/frog.png" )}

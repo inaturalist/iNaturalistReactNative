@@ -10,11 +10,7 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { TextInput, useTheme } from "react-native-paper";
 
-type Props = {
-  handleInputFocus?: Function
-}
-
-const SignUpForm = ( { handleInputFocus }: Props ): Node => {
+const SignUpForm = ( ): Node => {
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [username, setUsername] = useState( "" );
@@ -35,7 +31,6 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
           autoCapitalize="none"
           keyboardType="email-address"
           selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
         />
         <Heading4 className="color-white mb-[11px] mt-[9px]">{t( "USERNAME" )}</Heading4>
         <TextInput
@@ -46,7 +41,6 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
           testID="Signup.username"
           autoCapitalize="none"
           selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
         />
         <Heading4 className="color-white mb-[11px] mt-[9px]">{t( "PASSWORD" )}</Heading4>
         <TextInput
@@ -57,7 +51,6 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
           secureTextEntry
           testID="Signup.password"
           selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
         />
       </View>
       <Button

@@ -4,6 +4,7 @@ import {
   Keyboard
 } from "react-native";
 
+// Returns info about the keyboard, like whether it's up and how tall it is
 const useKeyboardInfo = ( ) => {
   const [keyboardShown, setKeyboardShown] = useState( false );
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
