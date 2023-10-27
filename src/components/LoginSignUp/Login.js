@@ -5,10 +5,7 @@ import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import {
-  Dimensions,
-  Keyboard
-} from "react-native";
+import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
 import { isLoggedIn } from "./AuthenticationService";
 import Header from "./Header";
@@ -21,13 +18,13 @@ const SCROLL_VIEW_STYLE = {
   justifyContent: "space-between"
 };
 
+const TARGET_NON_KEYBOARD_HEIGHT = 420;
+
 const Login = ( ): Node => {
   const { params } = useRoute( );
   const emailConfirmed = params?.emailConfirmed;
   const [loggedIn, setLoggedIn] = useState( false );
-  const [keyboardShown, setKeyboardShown] = useState( false );
-  const [keyboardHeight, setKeyboardHeight] = useState( 0 );
-  const nonKeyboardHeight = Dimensions.get( "screen" ).height - keyboardHeight;
+  const { keyboardShown, nonKeyboardHeight } = useKeyboardInfo( );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -45,24 +42,15 @@ const Login = ( ): Node => {
     };
   }, [loggedIn] );
 
-  useEffect( ( ) => {
-    const showSubscription = Keyboard.addListener( "keyboardDidShow", keyboardDidShowEvent => {
-      setKeyboardHeight( keyboardDidShowEvent.endCoordinates.height );
-      setKeyboardShown( true );
-    } );
-    const hideSubscription = Keyboard.addListener( "keyboardDidHide", keyboardDidHideEvent => {
-      setKeyboardHeight( keyboardDidHideEvent.endCoordinates.height );
-      setKeyboardShown( false );
-    } );
-
-    return () => {
-      showSubscription.remove( );
-      hideSubscription.remove( );
-    };
-  }, [] );
+  const keyboardVerticalOffset = nonKeyboardHeight < TARGET_NON_KEYBOARD_HEIGHT
+    ? nonKeyboardHeight - TARGET_NON_KEYBOARD_HEIGHT
+    : 30;
 
   return (
-    <LoginSignUpWrapper backgroundSource={require( "images/toucan.png" )}>
+    <LoginSignUpWrapper
+      backgroundSource={require( "images/toucan.png" )}
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
       {loggedIn
         ? <Logout onLogOut={() => setLoggedIn( false )} />
         : (
@@ -71,7 +59,7 @@ const Login = ( ): Node => {
             contentContainerStyle={SCROLL_VIEW_STYLE}
           >
             <Header
-              hideLogo={nonKeyboardHeight < 470}
+              hideLogo={nonKeyboardHeight < 520}
               headerText={
                 nonKeyboardHeight < 540 && keyboardShown
                   ? undefined

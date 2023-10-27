@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { TextInput, useTheme } from "react-native-paper";
 
 type Props = {
-  handleInputFocus: Function
+  handleInputFocus?: Function
 }
 
 const SignUpForm = ( { handleInputFocus }: Props ): Node => {
@@ -22,7 +22,7 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
   const theme = useTheme( );
 
   return (
-    <View className="px-4 pb-10 mt-[9px] justify-end">
+    <View className="px-4 mt-[9px] justify-end">
       <View className="mx-4">
         <Heading4 className="color-white mb-[11px]">{t( "EMAIL" )}</Heading4>
         <TextInput
@@ -45,7 +45,6 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
           value={username}
           testID="Signup.username"
           autoCapitalize="none"
-          keyboardType="email-address"
           selectionColor={theme.colors.tertiary}
           onFocus={handleInputFocus}
         />

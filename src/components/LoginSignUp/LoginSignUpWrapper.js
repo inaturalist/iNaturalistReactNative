@@ -12,7 +12,8 @@ import {
 
 type Props = {
   backgroundSource: any,
-  children: any
+  children: any,
+  keyboardVerticalOffset?: number
 }
 
 const KEYBOARD_AVOIDING_VIEW_STYLE = {
@@ -20,7 +21,11 @@ const KEYBOARD_AVOIDING_VIEW_STYLE = {
   flexGrow: 1
 };
 
-const LoginSignupWrapper = ( { backgroundSource, children }: Props ): Node => (
+const LoginSignupWrapper = ( {
+  backgroundSource,
+  children,
+  keyboardVerticalOffset
+}: Props ): Node => (
   <ImageBackground
     source={backgroundSource}
     className="h-full"
@@ -38,7 +43,7 @@ const LoginSignupWrapper = ( { backgroundSource, children }: Props ): Node => (
     >
       <StatusBar barStyle="light-content" />
       <KeyboardAvoidingView
-        keyboardVerticalOffset={30}
+        keyboardVerticalOffset={keyboardVerticalOffset}
         behavior="padding"
         style={KEYBOARD_AVOIDING_VIEW_STYLE}
       >
