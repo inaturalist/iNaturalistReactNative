@@ -116,14 +116,14 @@
     "react-native-svg-transformer": "^1.1.0",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-vision-camera": "3.4.1",
+    "react-native-vision-camera": "3.6.4",
     "react-native-webview": "^11.26.1",
-    "react-native-worklets-core": "^0.2.0",
+    "react-native-worklets-core": "^0.2.2",
     "react-tinder-card": "^1.6.2",
     "realm": "^11.10.2",
     "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#vision-v3"
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#vision-v3.6"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
