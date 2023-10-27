@@ -14,8 +14,8 @@ module.exports = {
       _: ["e2e"],
     },
     jest: {
-      setupTimeout: 600000,
-      teardownTimeout: 600000,
+      setupTimeout: 900000,
+      teardownTimeout: 900000,
     },
   },
   apps: {
