@@ -25,7 +25,7 @@ type Props = {
   openCommentBox: Function,
   tabs: Array<Object>,
   currentTabId: string,
-  showCommentBox: Function,
+  showCommentBox: boolean,
   addingActivityItem: Function,
   observation: Object,
   refetchRemoteObservation: Function,
