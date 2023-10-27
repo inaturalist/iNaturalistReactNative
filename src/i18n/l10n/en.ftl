@@ -1123,6 +1123,7 @@ Grid-view = Grid view
 Remove-favorite = Remove favorite
 Add-favorite = Add favorite
 Start-upload = Start upload
+Upload-in-progress = Upload in progress
 Previous-observation = Previous observation
 Next-observation = Next observation
 Close-search = Close search
@@ -1277,7 +1278,62 @@ No-results-found = No results found
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
 
-You-havent-joined-any-projects-yet = You haven't joined any projects yet!
+# Title of screen asking for permission to access the camera
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real-time with your camera
+# Title of screen asking for permission to access the camera when access was denied
+Please-allow-Camera-Access = Please allow Camera Access
+Use-the-iNaturalist-camera-to-observe = Use the iNaturalist camera to observe and identify organisms on-screen in real-time, and share them with our community to get identifications and contribute to science!
+Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the camera
+OBSERVE-ORGANISMS = OBSERVE ORGANISMS
+
+# Text for a button that opens the operating system Settings app
+OPEN-SETTINGS = OPEN SETTINGS
+
+# Title of a screen asking for permission
+Grant-Permission = Grant Permission
+
+# Title of a screen asking for permission when permission has been denied
+Please-Grant-Permission = Please Grant Permission
+
+# Text prompting the user to open Settings to grant permission after
+# permission has been denied
+Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
+
+# Text for a button that asks the user to grant permission
+GRANT-PERMISSION = GRANT PERMISSION
+
+
+# Title of screen asking for permission to access the microphone
+Record-organism-sounds-with-the-microphone = Record organism sounds with the microphone
+# Title of screen asking for permission to access the microphone when access was denied
+Please-allow-Microphone-Access = Please allow Microphone Access
+Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
+Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the microphone
+RECORD-SOUND = RECORD SOUND
+
+# Title of screen asking for permission to access the gallery
+Observe-and-identify-organisms-from-your-gallery = Observe and identify organisms from your gallery
+# Title of screen asking for permission to access the gallery when access was denied
+Please-Allow-Gallery-Access = Please Allow Gallery Access
+Upload-photos-from-your-gallery-and-create-observations = Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!
+Youve-previously-denied-gallery-permissions = You’ve previously denied gallery permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the gallery
+CHOOSE-PHOTOS = CHOOSE PHOTOS
+
+# Title of screen asking for permission to access location
+Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
+# Title of screen asking for permission to access location when access was denied
+Please-allow-Location-Access = Please allow Location Access
+iNaturalist-uses-your-location-to-give-you= iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location. You’re always in control of the location privacy of every observation you create.
+Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to location
+USE-LOCATION = USE LOCATION
+
+# Accessibility label for a button that closes the permission request screen
+Close-permission-request-screen = Close permission request screen
+You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
 
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 

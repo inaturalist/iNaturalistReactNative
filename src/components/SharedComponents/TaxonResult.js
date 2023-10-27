@@ -40,9 +40,7 @@ const TaxonResult = ( {
   const theme = useTheme( );
   const taxonImage = { uri: taxon?.default_photo?.url };
 
-  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", {
-    id: taxon.id
-  } );
+  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   return (
     <View
@@ -117,7 +115,7 @@ const TaxonResult = ( {
           color={clearBackground
             ? theme.colors.onSecondary
             : theme.colors.secondary}
-          onPress={handleCheckmarkPress}
+          onPress={() => handleCheckmarkPress( taxon )}
           accessibilityLabel={t( "Checkmark" )}
           accessibilityHint={t( "Add-this-ID" )}
           testID={`${testID}.checkmark`}

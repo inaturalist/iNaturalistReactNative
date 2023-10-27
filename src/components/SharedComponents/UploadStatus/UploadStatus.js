@@ -20,7 +20,8 @@ type Props = {
   progress: number,
   uploadObservation: Function,
   layout: string,
-  children: any
+  children: any,
+  uuid: string
 }
 const AnimatedView = Reanimated.createAnimatedComponent( View );
 
@@ -45,7 +46,8 @@ const UploadStatus = ( {
   progress,
   uploadObservation,
   layout,
-  children
+  children,
+  uuid
 }: Props ): Node => {
   const theme = useTheme();
   const defaultColor = theme.colors.primary;
@@ -95,6 +97,20 @@ const UploadStatus = ( {
 
   useEffect( () => () => cancelAnimation( rotation ), [rotation] );
 
+  const showProgressArrow = ( ) => (
+    <View
+      className="absolute"
+      accessibilityLabel={t( "Upload-in-progress" )}
+      testID={`UploadIcon.progress.${uuid}`}
+    >
+      <INatIcon
+        name="upload-arrow"
+        color={color || defaultColor}
+        size={15}
+      />
+    </View>
+  );
+
   const displayIcon = () => {
     if ( progress === 0 ) {
       return (
@@ -105,19 +121,14 @@ const UploadStatus = ( {
           onPress={startUpload}
           disabled={false}
           accessibilityLabel={t( "Start-upload" )}
+          testID={`UploadIcon.start.${uuid}`}
         />
       );
     }
     if ( progress <= 0.05 ) {
       return (
         <>
-          <View className="absolute">
-            <INatIcon
-              name="upload-arrow"
-              color={color || defaultColor}
-              size={15}
-            />
-          </View>
+          {showProgressArrow( )}
           <AnimatedView style={rotate}>
             <INatIcon name="circle-dots" color={color || defaultColor} size={33} />
           </AnimatedView>
@@ -127,13 +138,7 @@ const UploadStatus = ( {
     if ( progress > 0.05 && progress < 1 ) {
       return (
         <>
-          <View className="absolute">
-            <INatIcon
-              name="upload-arrow"
-              color={color || defaultColor}
-              size={15}
-            />
-          </View>
+          {showProgressArrow( )}
           <CircularProgressBase
             testID="UploadStatus.CircularProgress"
             value={progress}
@@ -156,6 +161,7 @@ const UploadStatus = ( {
         <AnimatedView
           className="absolute"
           entering={keyframe.duration( 2000 )}
+          testID={`UploadIcon.complete.${uuid}`}
         >
           <INatIcon
             size={28}

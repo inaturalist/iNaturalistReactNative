@@ -60,6 +60,16 @@ const initialState = {
   uploads: []
 };
 
+const startUploadState = uploads => ( {
+  error: null,
+  uploadInProgress: true,
+  uploads,
+  uploadProgress: { },
+  totalProgressIncrements: uploads
+    .reduce( ( count, current ) => count
+      + current.observationPhotos.length, 1 )
+} );
+
 const reducer = ( state, action ) => {
   switch ( action.type ) {
     case "CONTINUE_UPLOADS":
@@ -81,13 +91,7 @@ const reducer = ( state, action ) => {
     case "START_MULTIPLE_UPLOADS":
       return {
         ...state,
-        error: null,
-        uploadInProgress: true,
-        uploads: action.uploads,
-        uploadProgress: action.uploadProgress,
-        totalProgressIncrements: action.uploads.length + action.uploads
-          .reduce( ( count, current ) => count
-            + current.observationPhotos.length, 0 )
+        ...startUploadState( action.uploads )
       };
     case "START_NEXT_UPLOAD":
       return {
@@ -107,12 +111,8 @@ const reducer = ( state, action ) => {
     case "UPLOAD_SINGLE_OBSERVATION":
       return {
         ...state,
-        uploads: [action.observation],
-        singleUpload: true,
-        uploadInProgress: true,
-        totalProgressIncrements: 1 + [action.observation]
-          .reduce( ( count, current ) => count
-            + current.observationPhotos.length, 0 )
+        ...startUploadState( [action.observation] ),
+        singleUpload: true
       };
     default:
       throw new Error( );
@@ -142,7 +142,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [groupedPhotos, setGroupedPhotos] = useState( [] );
   const [savingPhoto, setSavingPhoto] = useState( false );
-  const [lastScreen, setLastScreen] = useState( "" );
   const [comment, setComment] = useState( "" );
 
   // state related to uploads in useReducer
@@ -158,13 +157,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     uploads
   } = state;
 
-  const totalUploadCount = uploads.length;
-  const totalUploadProgress = Object.values( uploadProgress ).reduce( ( count, current ) => count
+  const currentUploadProgress = Object.values( uploadProgress ).reduce( ( count, current ) => count
   + Number( current ), 0 );
 
   const progress = totalProgressIncrements > 0
-    ? totalUploadProgress / totalProgressIncrements
+    ? currentUploadProgress / totalProgressIncrements
     : 0;
+
+  const clearUploadProgress = ( ) => {
+    dispatch( { type: "UPDATE_PROGRESS", uploadProgress: { } } );
+  };
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -179,6 +181,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGroupedPhotos( [] );
     setPhotoEvidenceUris( [] );
     setComment( "" );
+    clearUploadProgress( );
   }, [] );
 
   const stopUpload = ( ) => {
@@ -187,11 +190,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const setUploads = allUploads => {
-    const resetProgress = { };
     dispatch( {
       type: "START_MULTIPLE_UPLOADS",
-      uploads: allUploads,
-      uploadProgress: resetProgress
+      uploads: allUploads
     } );
   };
 
@@ -405,6 +406,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
         localFilePaths
       );
+      // TODO catch the error that gets raised here if the user denies gallery permission
       await savePhotosToCameraGallery( localFilePaths );
     };
 
@@ -467,14 +469,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           taxon: newIdentification.taxon
         } );
         setLoading( false );
-        const navParams = {};
-        if ( lastScreen === "ObsDetails" ) {
-          navParams.uuid = currentObservation.uuid;
-        }
-        navigation.navigate( "ObservationsStackNavigator", {
-          screen: lastScreen,
-          params: navParams
-        } );
       }
     };
 
@@ -875,11 +869,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setOriginalCameraUrisMap,
       savingPhoto,
       singleUpload,
-      totalUploadCount,
       createId,
-      setLastScreen,
       comment,
-      setComment
+      setComment,
+      clearUploadProgress
     };
   }, [
     currentObservation,
@@ -920,9 +913,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     cameraRollUris,
     savingPhoto,
     singleUpload,
-    totalUploadCount,
     createIdentificationMutation,
-    lastScreen,
     localObservation,
     comment,
     createObsPhotos,

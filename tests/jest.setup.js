@@ -70,7 +70,9 @@ jest.mock( "@react-navigation/native", ( ) => {
     useIsFocused: jest.fn( ( ) => true ),
     useRoute: jest.fn( ( ) => ( { } ) ),
     useNavigation: ( ) => ( {
-      setOptions: jest.fn( )
+      addListener: jest.fn(),
+      setOptions: jest.fn( ),
+      goBack: jest.fn( )
     } )
   };
 } );

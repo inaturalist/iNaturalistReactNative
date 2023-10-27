@@ -6,6 +6,7 @@ import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
+import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 
 import factory from "../factory";
 import { renderComponent } from "../helpers/render";
@@ -20,10 +21,27 @@ jest.mock( "@react-navigation/native", () => {
     ...actualNav,
     useRoute: () => ( {} ),
     useNavigation: () => ( {
+      addListener: jest.fn(),
       setOptions: jest.fn()
     } )
   };
 } );
+
+// import { checkMultiple, RESULTS } from "react-native-permissions";
+// jest.mock( "react-native-permissions", ( ) => {
+//   const actual = jest.requireActual( "react-native-permissions" );
+//   return {
+//     ...actual,
+//     checkMultiple: permissions => permissions.reduce(
+//       ( memo, permission ) => {
+//         memo[permission] = actual.RESULTS.GRANTED;
+//         return memo;
+//       },
+//       {}
+//     )
+//   };
+// } );
+// jest.mock('react-native-permissions', () => require('react-native-permissions/mock'));
 
 const mockCurrentUser = factory( "LocalUser" );
 
@@ -117,7 +135,7 @@ describe( "location fetching", () => {
   } );
 
   test( "should fetch location when new observation hasn't saved", async ( ) => {
-    const observations = [factory( "RemoteObservation", {
+    const observations = [factory( "LocalObservation", {
       observationPhotos: []
     } )];
     mockObsEditProviderWithObs( observations );
@@ -127,7 +145,7 @@ describe( "location fetching", () => {
 
     await waitFor( () => {
       expect( mockFetchUserLocation ).toHaveBeenCalled();
-    } );
+    }, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
     // Note: it would be nice to look for an update in the UI, but since we've
     // mocked ObsEditProvider here, it will never update. Might be good for
     // an integration test
@@ -149,6 +167,11 @@ describe( "location fetching", () => {
     expect(
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
     ).toBeTruthy();
+
+    // Location may not fetch immediately, so wait for twice the default fetch
+    // interval before testing whether the mock was called
+    await waitFor( () => {}, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
+
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
   } );
 
@@ -169,6 +192,9 @@ describe( "location fetching", () => {
     expect(
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
     ).toBeTruthy();
+
+    await waitFor( () => {}, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
+
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
   } );
 } );

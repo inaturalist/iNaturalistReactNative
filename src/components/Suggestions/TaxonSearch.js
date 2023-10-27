@@ -65,11 +65,14 @@ const TaxonSearch = ( ): Node => {
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
-        renderItem={( { item, index } ) => (
+        renderItem={( { item: taxon, index } ) => (
           <TaxonResult
-            taxon={item}
-            handleCheckmarkPress={( ) => createId( item )}
-            testID={`Search.taxa.${item.id}`}
+            taxon={taxon}
+            handleCheckmarkPress={( ) => {
+              createId( taxon );
+              navigation.navigate( "ObsEdit" );
+            }}
+            testID={`Search.taxa.${taxon.id}`}
             first={index === 0}
           />
         )}

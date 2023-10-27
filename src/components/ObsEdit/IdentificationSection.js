@@ -11,7 +11,7 @@ import {
 import { View } from "components/styledComponents";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
@@ -21,8 +21,7 @@ const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
     updateObservationKeys,
-    setPassesIdentificationTest,
-    setLastScreen
+    setPassesIdentificationTest
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -50,10 +49,9 @@ const IdentificationSection = ( ): Node => {
     } );
   };
 
-  const navToSuggestions = ( ) => {
-    setLastScreen( "ObsEdit" );
+  const navToSuggestions = useCallback( ( ) => {
     navigation.navigate( "Suggestions" );
-  };
+  }, [navigation] );
 
   useEffect( ( ) => {
     if ( hasIdentification ) {

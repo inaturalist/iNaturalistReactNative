@@ -18,7 +18,7 @@ import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsS
 import ProjectsStackNavigator from "navigation/StackNavigators/ProjectsStackNavigator";
 import React from "react";
 
-import CustomTabBar from "./CustomTabBar";
+import CustomTabBarContainer from "./CustomTabBarContainer";
 
 const Tab = createBottomTabNavigator( );
 
@@ -27,7 +27,7 @@ const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
 /* eslint-disable react/jsx-props-no-spreading */
 
 const BottomTabs = ( ) => {
-  const renderTabBar = props => <CustomTabBar {...props} />;
+  const renderTabBar = props => <CustomTabBarContainer {...props} />;
 
   return (
     <Mortal>

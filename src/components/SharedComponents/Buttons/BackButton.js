@@ -17,7 +17,7 @@ const BACK_BUTTON_STYLE = {
 };
 
 const BackButton = ( {
-  color,
+  color = colors.black,
   onPress
 }: Props ): Node => {
   const navigation = useNavigation();

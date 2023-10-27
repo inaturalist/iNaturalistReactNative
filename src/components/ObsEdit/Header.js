@@ -143,7 +143,9 @@ const Header = ( ): Node => {
       headerRight: renderKebabMenu
     };
 
-    navigation.setOptions( headerOptions );
+    if ( typeof ( navigation?.setOptions ) === "function" ) {
+      navigation?.setOptions( headerOptions );
+    }
   }, [
     observations,
     navigation,
