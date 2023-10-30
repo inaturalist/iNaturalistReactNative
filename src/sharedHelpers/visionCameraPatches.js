@@ -3,6 +3,7 @@
 */
 import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { Platform } from "react-native";
+import { isTablet } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import {
   LANDSCAPE_LEFT,
@@ -107,3 +108,32 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
 // in the future, we keep this patch here to remind us to put the rotation back to resizing
 // the smaller photo.
 export const rotationLocalPhotoPatch = () => 0;
+
+// Needed for react-native-vision-camera v3.3.1
+// This patch is used to rotate the camera view on iPads.
+// The only thing to do there is to rotate the camera view component
+// depending on the device orientation. The resulting photo is already rotated in other places.
+export const iPadStylePatch = deviceOrientation => {
+  // Do nothing on Android
+  if ( Platform.OS === "android" ) {
+    return {};
+  }
+  // Do nothing on phones
+  if ( !isTablet() ) {
+    return {};
+  }
+  if ( deviceOrientation === LANDSCAPE_RIGHT ) {
+    return {
+      transform: [{ rotate: "90deg" }]
+    };
+  } if ( deviceOrientation === LANDSCAPE_LEFT ) {
+    return {
+      transform: [{ rotate: "-90deg" }]
+    };
+  } if ( deviceOrientation === PORTRAIT_UPSIDE_DOWN ) {
+    return {
+      transform: [{ rotate: "180deg" }]
+    };
+  }
+  return {};
+};
