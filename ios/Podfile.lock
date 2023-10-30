@@ -318,7 +318,7 @@ PODS:
   - React-jsinspector (0.72.6)
   - React-logger (0.72.6):
     - glog
-  - react-native-cameraroll (5.9.0):
+  - react-native-cameraroll (6.0.0):
     - React-Core
   - react-native-config (1.5.0):
     - react-native-config/App (= 1.5.0)
@@ -531,7 +531,8 @@ PODS:
     - React
   - RNSVG (13.14.0):
     - React-Core
-  - RNVectorIcons (9.2.0):
+  - RNVectorIcons (10.0.1):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - SocketRocket (0.6.1)
   - VisionCamera (3.6.4):
@@ -817,7 +818,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 3bf18ff7cb03cd8dfdce08fbbc0d15058c1d71ae
   React-jsinspector: 194e32c6aab382d88713ad3dd0025c5f5c4ee072
   React-logger: cebf22b6cf43434e471dc561e5911b40ac01d289
-  react-native-cameraroll: fad943a324a4d893c249cabe6d0608c807e0e58f
+  react-native-cameraroll: 121cab3d7fe2972d9a26ef40558d78d4053356a8
   react-native-config: 5330c8258265c1e5fdb8c009d2cabd6badd96727
   react-native-exif-reader: b2ad2175125a5d7dbd399ac6bd3bc4ba8753f85a
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
@@ -869,7 +870,7 @@ SPEC CHECKSUMS:
   RNScreens: d3675ab2878704de70c9dae57fa5d024802404cc
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
-  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
+  RNVectorIcons: ace237de89f1574ef3c963ae9d5da3bd6fbeb02a
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: db57ca079c4f933f1ddd07f2f8fb2d171a826b85
   VisionCameraPluginInatVision: 79bb258db75218889c74d0897ecba676492c4def
