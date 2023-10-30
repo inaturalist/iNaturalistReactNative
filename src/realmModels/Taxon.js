@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import { fetchTaxon } from "api/taxa";
 
 import Photo from "./Photo";
 
@@ -103,6 +104,16 @@ class Taxon extends Realm.Object {
   }
 
   static uri = item => ( item && item.default_photo ) && { uri: item.default_photo.url };
+
+  static downloadRemoteTaxon = async ( id, realm ) => {
+    const remoteTaxon = await fetchTaxon( id, { fields: Taxon.TAXON_FIELDS } );
+    if ( remoteTaxon ) {
+      const localTaxon = Taxon.mapApiToRealm( remoteTaxon );
+      realm.write( ( ) => {
+        realm.create( "Taxon", localTaxon, "modified" );
+      } );
+    }
+  };
 
   static schema = {
     name: "Taxon",

@@ -10,7 +10,7 @@ import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useTaxon, useTranslation } from "sharedHooks";
 
 import {
   handleCameraError,
@@ -76,9 +76,10 @@ const ARCamera = ( {
 
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
+  const localTaxon = useTaxon( result?.taxon );
 
   // only show predictions when rank is order or lower, like we do on Seek
-  const showPrediction = ( result && result.rank_level <= 40 ) || false;
+  const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
 
   // Johannes (June 2023): I did read through the native code of the legacy inatcamera
   // that is triggered when using ref.current.takePictureAsync()
@@ -137,17 +138,20 @@ const ARCamera = ( {
       ]
     */
     // console.log( "cvResults :>> ", cvResults );
+    const standardizePrediction = finestPrediction => ( {
+      taxon: {
+        rank_level: finestPrediction.rank,
+        id: Number( finestPrediction.taxon_id ),
+        name: finestPrediction.name
+      },
+      score: finestPrediction.score
+    } );
     let prediction = null;
     let predictions = [];
     if ( Platform.OS === "ios" ) {
       if ( cvResults.length > 0 ) {
         const finestPrediction = cvResults[cvResults.length - 1];
-        prediction = {
-          rank_level: finestPrediction.rank,
-          id: finestPrediction.taxon_id,
-          name: finestPrediction.name,
-          score: finestPrediction.score
-        };
+        prediction = standardizePrediction( finestPrediction );
       }
     } else {
       predictions = cvResults
@@ -156,22 +160,19 @@ const ARCamera = ( {
           return r[rank][0];
         } )
         .sort( ( a, b ) => a.rank - b.rank );
-      prediction = predictions
-        && predictions.length > 0 && {
-        rank_level: predictions[0].rank,
-        id: predictions[0].taxon_id,
-        name: predictions[0].name,
-        score: predictions[0].score
-      };
+      if ( predictions.length > 0 ) {
+        const finestPrediction = predictions[0];
+        prediction = standardizePrediction( finestPrediction );
+      }
     }
     setResult( prediction );
   };
 
-  useEffect( () => {
+  useEffect( ( ) => {
     if ( photoSaved ) {
-      navToObsEdit( { prediction: result } );
+      navToObsEdit( localTaxon );
     }
-  }, [photoSaved, navToObsEdit, result] );
+  }, [photoSaved, navToObsEdit, localTaxon] );
 
   return (
     <>
@@ -205,9 +206,9 @@ const ARCamera = ( {
           {showPrediction && result
             ? (
               <TaxonResult
-                taxon={result}
+                taxon={localTaxon}
                 handleCheckmarkPress={takePhoto}
-                testID={`ARCamera.taxa.${result.id}`}
+                testID={`ARCamera.taxa.${result?.taxon?.id}`}
                 clearBackground
                 confidence={convertScoreToConfidence( result?.score )}
                 white

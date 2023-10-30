@@ -391,15 +391,15 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } );
     };
 
-    const createObsWithCameraPhotos = async ( localFilePaths, taxonPrediction ) => {
+    const createObsWithCameraPhotos = async ( localFilePaths, localTaxon ) => {
       const newObservation = await Observation.new( );
       newObservation.observationPhotos = await createObsPhotos( localFilePaths, {
         position: 0,
         local: true
       } );
 
-      if ( taxonPrediction ) {
-        newObservation.taxon = taxonPrediction;
+      if ( localTaxon ) {
+        newObservation.taxon = localTaxon;
       }
       setObservations( [newObservation] );
       logger.info(

@@ -97,6 +97,7 @@ const CameraWithDevice = ( {
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const [takingPhoto, setTakingPhoto] = useState( false );
+  const [photoSaved, setPhotoSaved] = useState( false );
 
   const zoom = useSharedValue( !device.isMultiCam
     ? device.minZoom
@@ -200,11 +201,11 @@ const CameraWithDevice = ( {
     }, [handleBackButtonPress] )
   );
 
-  const createOrUpdateEvidence = useCallback( prediction => {
+  const createEvidenceForObsEdit = useCallback( localTaxon => {
     if ( addEvidence ) {
       addCameraPhotosToCurrentObservation( evidenceToAdd );
     } else {
-      createObsWithCameraPhotos( cameraPreviewUris, prediction );
+      createObsWithCameraPhotos( cameraPreviewUris, localTaxon );
     }
   }, [
     addCameraPhotosToCurrentObservation,
@@ -214,11 +215,12 @@ const CameraWithDevice = ( {
     evidenceToAdd
   ] );
 
-  const navToObsEdit = useCallback( ( { prediction } ) => {
-    createOrUpdateEvidence( prediction );
+  const navToObsEdit = useCallback( localTaxon => {
+    createEvidenceForObsEdit( localTaxon );
+    setPhotoSaved( false );
     navigation.navigate( "ObsEdit" );
   }, [
-    createOrUpdateEvidence,
+    createEvidenceForObsEdit,
     navigation
   ] );
 
@@ -247,6 +249,7 @@ const CameraWithDevice = ( {
       setEvidenceToAdd( [...evidenceToAdd, uri] );
     }
     setTakingPhoto( false );
+    setPhotoSaved( true );
   };
 
   const toggleFlash = ( ) => {
@@ -314,7 +317,7 @@ const CameraWithDevice = ( {
             zoomTextValue={zoomTextValue}
             showZoomButton={device.isMultiCam}
             navToObsEdit={navToObsEdit}
-            photoSaved={cameraPreviewUris.length > 0}
+            photoSaved={photoSaved}
             onZoomStart={onZoomStart}
             onZoomChange={onZoomChange}
           />
