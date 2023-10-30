@@ -265,7 +265,7 @@ const CameraWithDevice = ( {
     setCameraPosition( newPosition );
   };
 
-  const flexDirection = isTablet && !isLandscapeMode
+  const flexDirection = isTablet && isLandscapeMode
     ? "flex-row"
     : "flex-col";
 

@@ -185,7 +185,7 @@ const PhotoCarousel = ( {
     <FlatList
       data={[...photoUris]}
       renderItem={renderPhotoOrEvidenceButton}
-      horizontal={!isTablet || !!isLandscapeMode}
+      horizontal={!isTablet || !isLandscapeMode}
       ListEmptyComponent={takingPhoto
         ? renderSkeleton( )
         : emptyComponent}
@@ -204,7 +204,7 @@ const PhotoCarousel = ( {
   const containerRef = useRef( );
   const [containerPos, setContainerPos] = useState( { x: null, y: null } );
   const containerStyle = {
-    height: isTablet && !isLandscapeMode
+    height: isTablet && isLandscapeMode
       ? "auto"
       : photoDim + photoGutter * 2,
     padding: photoGutter / 2
