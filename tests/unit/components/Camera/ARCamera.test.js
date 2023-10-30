@@ -3,6 +3,7 @@ import ARCamera from "components/Camera/ARCamera/ARCamera";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
+import * as useTaxon from "sharedHooks/useTaxon";
 
 const mockTaxonPrediction = {
   id: 144351,
@@ -10,10 +11,19 @@ const mockTaxonPrediction = {
   rank_level: 20
 };
 
-const mockTaxon = {
+const mockTaxonNoPrediction = {
   id: 3,
   name: "Aves",
   rank_level: 50
+};
+
+const mockLocalTaxon = {
+  id: 144351,
+  name: "Poecile",
+  rank_level: 20,
+  default_photo: {
+    url: "fake_image_url"
+  }
 };
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
@@ -21,6 +31,11 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   default: () => ( {
     data: mockTaxonPrediction
   } )
+} ) );
+
+jest.mock( "sharedHooks/useTaxon", () => ( {
+  __esModule: true,
+  default: () => mockLocalTaxon
 } ) );
 
 describe( "AR Camera", ( ) => {
@@ -45,7 +60,7 @@ describe( "AR Camera", ( ) => {
     render(
       <ARCamera
         result={{
-          taxon: mockTaxon
+          taxon: mockTaxonNoPrediction
         }}
         modelLoaded
       />
@@ -67,5 +82,45 @@ describe( "AR Camera", ( ) => {
     const loadingText = screen.getByText( i18next.t( "Loading-iNaturalists-AR-Camera" ) );
 
     expect( loadingText ).toBeVisible( );
+  } );
+
+  it( "displays taxon photo if taxon exists in realm", ( ) => {
+    render(
+      <ARCamera
+        result={{
+          taxon: mockLocalTaxon
+        }}
+        modelLoaded
+      />
+    );
+
+    const taxonPhoto = screen.getByTestId( "ObsList.photo" );
+
+    expect( taxonPhoto.props.source ).toStrictEqual(
+      {
+        uri: mockLocalTaxon.default_photo.url
+      }
+    );
+  } );
+
+  it( "displays iconic taxon icon if taxon does not exist in realm", ( ) => {
+    jest.spyOn( useTaxon, "default" ).mockImplementation( () => ( {
+      ...mockLocalTaxon,
+      default_photo: {
+        url: null
+      }
+    } ) );
+    render(
+      <ARCamera
+        result={{
+          taxon: mockLocalTaxon
+        }}
+        modelLoaded
+      />
+    );
+
+    const taxonIcon = screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" );
+
+    expect( taxonIcon ).toBeVisible( );
   } );
 } );
