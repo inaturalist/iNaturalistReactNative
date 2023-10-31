@@ -139,7 +139,7 @@
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.5.0",
     "babel-plugin-module-resolver": "^5.0.0",
-    "detox": "^20.13.3",
+    "detox": "^20.13.4",
     "dotenv": "^16.3.1",
     "download": "^8.0.0",
     "eslint": "^8.49.0",
