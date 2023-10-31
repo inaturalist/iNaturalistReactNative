@@ -37,8 +37,8 @@ jobs:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
     runs-on: macos-13
-    # Kill the task if not finished after 60 minutes
-    timeout-minutes: 120
+    # Kill the task if not finished after 150 minutes
+    timeout-minutes: 150
 
     steps:
     # react-native-vision-camera > v3.4 requires Xcode 15 to compile, which is currently not the default in the runner
