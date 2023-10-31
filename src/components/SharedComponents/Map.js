@@ -82,6 +82,7 @@ type Props = {
   style?: Object,
   tileMapParams?: Object,
   withObsTiles?: boolean,
+  withPressableObsTiles?: boolean,
   testID?: string
 }
 
@@ -118,6 +119,7 @@ const Map = ( {
   style,
   tileMapParams,
   withObsTiles,
+  withPressableObsTiles,
   testID
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
@@ -290,7 +292,7 @@ const Map = ( {
           setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
         }}
         onPress={e => {
-          if ( withObsTiles ) onMapPressForObsLyr( e.nativeEvent.coordinate );
+          if ( withPressableObsTiles ) onMapPressForObsLyr( e.nativeEvent.coordinate );
           else if ( openMapScreen ) {
             openMapScreen( );
           }
@@ -300,7 +302,7 @@ const Map = ( {
         onMapReady={onMapReady}
         style={style}
       >
-        {withObsTiles && urlTemplate && (
+        {( withPressableObsTiles || withObsTiles ) && urlTemplate && (
           <UrlTile
             testID="Map.UrlTile"
             tileSize={512}

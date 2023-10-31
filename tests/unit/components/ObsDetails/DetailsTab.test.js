@@ -29,17 +29,18 @@ const mockObservation = factory( "LocalObservation", {
   quality_grade: "casual"
 } );
 
+const mockObservationWithTaxon = {
+  ...mockObservation,
+  taxon: factory( "LocalTaxon" )
+};
+
 const mockAttribution = <View testID="mock-attribution" />;
 jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
   __esModule: true,
   default: () => mockAttribution
 } ) );
 
-const mockMap = <View testID="mock-map" />;
-jest.mock( "components/SharedComponents/Map", () => ( {
-  __esModule: true,
-  default: () => mockMap
-} ) );
+const baseUrl = "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
 
 describe( "DetailsTab", ( ) => {
   beforeAll( async ( ) => {
@@ -55,14 +56,38 @@ describe( "DetailsTab", ( ) => {
   test( "should display map if user is online", ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} /> );
 
-    const map = screen.queryByTestId( "mock-map" );
+    const map = screen.queryByTestId( "MapView" );
     expect( map ).toBeTruthy( );
 
     const noInternet = screen.queryByRole( "image", { name: "wifi-off" } );
     expect( noInternet ).toBeNull( );
   } );
 
-  test( "should display corrent location coordinates", async ( ) => {
+  test( "should show tiles on map for given taxon", ( ) => {
+    renderComponent( <DetailsTab observation={mockObservationWithTaxon} /> );
+
+    const map = screen.queryByTestId( "MapView" );
+    expect( map ).toBeTruthy( );
+
+    const tiles = screen.getByTestId( "Map.UrlTile" );
+    expect( tiles ).toBeVisible( );
+    expect( tiles ).toHaveProp(
+      "urlTemplate",
+      `${baseUrl}?taxon_id=${mockObservationWithTaxon.taxon.id}&color=%2374ac00&verifiable=true`
+    );
+  } );
+
+  test( "should not show tiles for observation with no taxon id", ( ) => {
+    renderComponent( <DetailsTab observation={mockObservation} /> );
+
+    const map = screen.queryByTestId( "MapView" );
+    expect( map ).toBeTruthy( );
+
+    const tiles = screen.queryByTestId( "Map.UrlTile" );
+    expect( tiles ).toBeFalsy( );
+  } );
+
+  test( "should display current location coordinates", async ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} /> );
     const lat = mockObservation.latitude;
     const long = mockObservation.longitude;
