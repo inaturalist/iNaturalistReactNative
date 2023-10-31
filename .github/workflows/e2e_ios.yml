@@ -84,9 +84,10 @@ jobs:
         path: ios/Pods
         key: pods-${{ hashFiles('**/Podfile.lock') }}
 
-    - name: Install CocoaPods
-      if: steps.podcache.outputs.cache-hit != 'true'
-      run: cd ios && pod install && cd ..
+    - name: Update Pods
+      run: |
+        gem update cocoapods xcodeproj
+        cd ios && pod install && cd ..
 
     # Generate the secret files needed for a release build
     - name: Create .env file
