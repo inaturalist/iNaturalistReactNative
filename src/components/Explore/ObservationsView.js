@@ -46,6 +46,7 @@ const ObservationsView = ( {
         region={region}
         observations={observations}
         tileMapParams={tileMapParams}
+        withPressableObsTiles={tileMapParams !== null}
         showCurrentLocationButton
       />
     )
