@@ -5,7 +5,9 @@ import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
 import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback, useMemo
+} from "react";
 import { ActivityIndicator, Animated } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation, useTranslation } from "sharedHooks";
@@ -48,71 +50,61 @@ const ObservationsFlashList = ( {
     screenWidth
   } = useDeviceOrientation( );
   const { t } = useTranslation( );
-  const [numColumns, setNumColumns] = useState( 0 );
-  const [gridItemWidth, setGridItemWidth] = useState( 0 );
 
-  useEffect( ( ) => {
-    const calculateGridItemWidth = columns => {
-      const combinedGutter = ( columns + 1 ) * GUTTER;
-      const gridWidth = isTablet
-        ? screenWidth
-        : Math.min( screenWidth, screenHeight );
-      return Math.floor(
-        ( gridWidth - combinedGutter ) / columns
-      );
-    };
+  const calculateGridItemWidth = columns => {
+    const combinedGutter = ( columns + 1 ) * GUTTER;
+    const gridWidth = isTablet
+      ? screenWidth
+      : Math.min( screenWidth, screenHeight );
+    return Math.floor(
+      ( gridWidth - combinedGutter ) / columns
+    );
+  };
 
-    const calculateNumColumns = ( ) => {
-      if ( layout === "list" || screenWidth <= BREAKPOINTS.md ) {
-        return 1;
-      }
-      if ( !isTablet ) return 2;
-      if ( isLandscapeMode ) return 6;
-      if ( screenWidth <= BREAKPOINTS.xl ) return 2;
-      return 4;
-    };
+  const calculateNumColumns = ( ) => {
+    if ( layout === "list" || screenWidth <= BREAKPOINTS.md ) {
+      return 1;
+    }
+    if ( !isTablet ) return 2;
+    if ( isLandscapeMode ) return 6;
+    if ( screenWidth <= BREAKPOINTS.xl ) return 2;
+    return 4;
+  };
 
-    const columns = calculateNumColumns( );
-    setGridItemWidth( calculateGridItemWidth( columns ) );
-    setNumColumns( columns );
-  }, [
-    isLandscapeMode,
-    isTablet,
-    layout,
-    screenHeight,
-    screenWidth
-  ] );
+  const numColumns = calculateNumColumns( );
+  const gridItemWidth = calculateGridItemWidth( numColumns );
 
-  const renderItem = ( { item } ) => (
+  const renderItem = useCallback( ( { item } ) => (
     <ObsItem
       observation={item}
       layout={layout}
       gridItemWidth={gridItemWidth}
       setShowLoginSheet={setShowLoginSheet}
     />
-  );
+  ), [gridItemWidth, layout, setShowLoginSheet] );
 
-  const renderItemSeparator = ( ) => {
+  const renderItemSeparator = useCallback( ( ) => {
     if ( layout === "grid" ) {
       return null;
     }
     return <View className="border-b border-lightGray" />;
-  };
+  }, [layout] );
 
-  const renderFooter = ( ) => (
+  const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
       isFetchingNextPage={isFetchingNextPage}
       currentUser={currentUser}
       layout={layout}
     />
-  );
+  ), [currentUser, isFetchingNextPage, layout] );
 
-  const contentContainerStyle = layout === "list"
-    ? {}
-    : {
+  const contentContainerStyle = useMemo( ( ) => {
+    if ( layout === "list" ) { return {}; }
+    return {
       paddingLeft: GUTTER / 2,
       paddingRight: GUTTER / 2
     };
+  }, [layout] );
 
   if ( numColumns === 0 ) { return null; }
 
