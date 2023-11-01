@@ -67,7 +67,7 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
         singleUpload: true
       };
     default:
-      throw new Error( );
+      return state;
   }
 };
 
