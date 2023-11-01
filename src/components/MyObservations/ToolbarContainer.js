@@ -81,6 +81,9 @@ const ToolbarContainer = ( {
   // clear upload status when leaving screen
   useEffect(
     ( ) => {
+      navigation.addListener( "blur", ( ) => {
+        stopUpload( );
+      } );
       navigation.addListener( "focus", ( ) => {
         clearUploadProgress( );
       } );

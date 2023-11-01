@@ -10,6 +10,7 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect,
+  useMemo,
   useRef, useState
 } from "react";
 import {
@@ -88,7 +89,7 @@ const EvidenceSectionContainer = ( {
     }
   }, [latitude, locationPermissionResult] );
 
-  const hasPhotoOrSound = useCallback( ( ) => {
+  const hasPhotoOrSound = useMemo( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
       || currentObservation?.observationSounds?.length > 0 ) {
       return true;
@@ -96,7 +97,7 @@ const EvidenceSectionContainer = ( {
     return false;
   }, [currentObservation] );
 
-  const hasValidLocation = useCallback( ( ) => {
+  const hasValidLocation = useMemo( ( ) => {
     if ( hasLocation
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
@@ -113,7 +114,7 @@ const EvidenceSectionContainer = ( {
     return false;
   }, [currentObservation, longitude, latitude, hasLocation] );
 
-  const hasValidDate = useCallback( ( ) => {
+  const hasValidDate = useMemo( ( ) => {
     const observationDate = parseISO(
       currentObservation?.observed_on_string || currentObservation?.time_observed_at
     );
@@ -130,18 +131,18 @@ const EvidenceSectionContainer = ( {
     if ( isFetchingLocation ) {
       return null;
     }
-    if ( hasValidLocation( ) && hasValidDate( ) && hasPhotoOrSound( ) ) {
+    if ( hasValidLocation && hasValidDate && hasPhotoOrSound ) {
       return true;
     }
     return false;
   }, [isFetchingLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
 
   useEffect( ( ) => {
-    // we're only showing the Missing Evidence Sheet if location/date are missing
+    // we're showing the Missing Evidence Sheet if location/date are missing
     // but not if there is a missing photo or sound
-    // so the ObsEditContext version of passing evidence test
-    // will be different from what shows here with the red warning/green checkmark
-    if ( hasValidLocation( ) && hasValidDate( ) && !passesEvidenceTest ) {
+    // so the fullEvidenceTest which shows the red warning/green checkmark
+    // is different than passesEvidenceTest
+    if ( hasValidLocation && hasValidDate && !passesEvidenceTest ) {
       setPassesEvidenceTest( true );
     }
   }, [hasValidLocation, hasValidDate, setPassesEvidenceTest, passesEvidenceTest] );

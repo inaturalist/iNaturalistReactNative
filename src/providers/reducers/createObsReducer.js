@@ -69,7 +69,8 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
       return {
         ...state,
         currentObservationIndex: action.currentObservationIndex,
-        observations: action.observations || []
+        observations: action.observations || [],
+        loading: false
       };
     case "SET_EVIDENCE_TO_ADD":
       return {

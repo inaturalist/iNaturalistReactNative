@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Button, StickyToolbar
@@ -29,21 +28,22 @@ const BottomButtons = ( {
   const {
     setNextScreen,
     currentObservation,
-    unsavedChanges
+    unsavedChanges,
+    loading
   } = useContext( ObsEditContext );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
   const [buttonPressed, setButtonPressed] = useState( null );
-  const navigation = useNavigation( );
 
   useEffect(
     ( ) => {
-      navigation.addListener( "blur", ( ) => {
+      // reset button disabled status when scrolling through multiple observations
+      if ( currentObservation ) {
         setButtonPressed( null );
-      } );
+      }
     },
-    [navigation]
+    [currentObservation]
   );
 
   const showMissingEvidence = ( ) => {
@@ -89,7 +89,7 @@ const BottomButtons = ( {
             level={unsavedChanges
               ? "focus"
               : "neutral"}
-            loading={buttonPressed === "save"}
+            loading={buttonPressed === "save" && loading}
             disabled={buttonPressed !== null}
           />
         )
@@ -104,7 +104,7 @@ const BottomButtons = ( {
               testID="ObsEdit.saveButton"
               text={t( "SAVE" )}
               level="neutral"
-              loading={buttonPressed === "save"}
+              loading={buttonPressed === "save" && loading}
               disabled={buttonPressed !== null}
             />
             <Button
@@ -115,7 +115,7 @@ const BottomButtons = ( {
               text={t( "UPLOAD-NOW" )}
               testID="ObsEdit.uploadButton"
               onPress={( ) => handlePress( "upload" )}
-              loading={buttonPressed === "upload"}
+              loading={buttonPressed === "upload" && loading}
               disabled={buttonPressed !== null}
             />
           </View>

@@ -161,6 +161,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       cameraRollUris,
       comment,
       currentUploadIndex,
+      groupedPhotos,
       error,
       evidenceToAdd,
       loading,
@@ -420,16 +421,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     }
 
     const saveObservation = async observation => {
-      setLoading( true );
       ensureRealm( );
       await writeExifToCameraRollPhotos( {
         latitude: observation.latitude,
         longitude: observation.longitude,
         positional_accuracy: observation.positionalAccuracy
       } );
-      const newObservation = await Observation.saveLocalObservationForUpload( observation, realm );
-      setLoading( false );
-      return newObservation;
+      return Observation.saveLocalObservationForUpload( observation, realm );
     };
 
     const saveCurrentObservation = async ( ) => saveObservation( currentObservation );
@@ -634,7 +632,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         observations.pop( );
         dispatch( {
           type: "SET_DISPLAYED_OBSERVATION",
-          currentObservationIndex: observations.length - 1,
+          currentObservationIndex: currentObservationIndex - 1,
           observations
         } );
       } else {
@@ -645,7 +643,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           currentObservationIndex,
           observations: []
         } );
+        console.log( currentObservationIndex, observations.length, "length of obs" );
         updateObservations( observations );
+
+        console.log( currentObservationIndex, observations.length, "length of obs1" );
       }
     };
 
@@ -821,6 +822,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       error,
       evidenceToAdd,
       galleryUris,
+      groupedPhotos,
       loading,
       localObservation,
       navigation,
