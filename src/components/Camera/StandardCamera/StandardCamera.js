@@ -80,16 +80,16 @@ const StandardCamera = ( {
   onZoomChange
 }: Props ): Node => {
   const {
-    allObsPhotoUris
+    totalObsPhotoUris
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
+  const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
   const [dismissChanges, setDismissChanges] = useState( false );
   const { screenWidth } = useDeviceOrientation( );
 
-  const photosTaken = allObsPhotoUris.length > 0;
+  const photosTaken = totalObsPhotoUris > 0;
 
   useEffect( ( ) => {
     // We do this navigation indirectly (vs doing it directly in DiscardChangesSheet),

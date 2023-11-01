@@ -21,6 +21,7 @@ const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
     updateObservationKeys,
+    passesIdentificationTest,
     setPassesIdentificationTest
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
@@ -54,10 +55,10 @@ const IdentificationSection = ( ): Node => {
   }, [navigation] );
 
   useEffect( ( ) => {
-    if ( hasIdentification ) {
-      setPassesIdentificationTest( true );
+    if ( hasIdentification && !passesIdentificationTest ) {
+      setPassesIdentificationTest( );
     }
-  }, [hasIdentification, setPassesIdentificationTest] );
+  }, [hasIdentification, setPassesIdentificationTest, passesIdentificationTest] );
 
   return (
     <View className="ml-5 mt-6">

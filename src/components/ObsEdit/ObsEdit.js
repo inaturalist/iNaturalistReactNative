@@ -22,7 +22,7 @@ const ObsEdit = ( ): Node => {
   const {
     currentObservation,
     observations,
-    setObservations,
+    updateObservations,
     resetObsEditContext,
     loading
   } = useContext( ObsEditContext );
@@ -41,9 +41,9 @@ const ObsEdit = ( ): Node => {
       resetObsEditContext( );
       // need .toJSON( ) to be able to add evidence to an existing local observation
       // otherwise, get a realm error about modifying managed objects outside of a write transaction
-      setObservations( [localObservation.toJSON( )] );
+      updateObservations( [localObservation.toJSON( )] );
     }
-  }, [localObservation, setObservations, resetObsEditContext, currentObservation] );
+  }, [localObservation, updateObservations, resetObsEditContext, currentObservation] );
 
   return (
     <>

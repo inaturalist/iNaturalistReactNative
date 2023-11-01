@@ -54,7 +54,7 @@ const PhotoGallery = (): Node => {
     createObservationFromGallery,
     galleryUris,
     setGalleryUris,
-    allObsPhotoUris,
+    totalObsPhotoUris,
     addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
     setEvidenceToAdd,
@@ -146,7 +146,7 @@ const PhotoGallery = (): Node => {
     const isDisabled = skipGroupPhotos && isSelected && checkPreviouslySelected( uri );
 
     const handleImagePress = () => {
-      if ( isSelected || allObsPhotoUris.length < MAX_PHOTOS_ALLOWED ) {
+      if ( isSelected || totalObsPhotoUris < MAX_PHOTOS_ALLOWED ) {
         handlePhotoSelection( item, isSelected );
       } else {
         setShowAlert( true );

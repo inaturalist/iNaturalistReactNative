@@ -41,7 +41,19 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
     case "RESET_OBS_CREATE":
       return {
         ...state,
-        ...INITIAL_CREATE_OBS_STATE
+        cameraPreviewUris: [],
+        cameraRollUris: [],
+        comment: "",
+        currentObservationIndex: 0,
+        evidenceToAdd: [],
+        galleryUris: [],
+        groupedPhotos: [],
+        observations: [],
+        originalCameraUrisMap: {},
+        passesEvidenceTest: false,
+        passesIdentificationTest: false,
+        photoEvidenceUris: [],
+        unsavedChanges: false
       };
     case "SET_ALBUM":
       return {
@@ -102,12 +114,12 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
     case "SET_PASSES_EVIDENCE_TEST":
       return {
         ...state,
-        passesEvidenceTest: action.passesEvidenceTest
+        passesEvidenceTest: true
       };
     case "SET_PASSES_IDENTIFICATION_TEST":
       return {
         ...state,
-        passesIdentificationTest: action.passesIdentificationTest
+        passesIdentificationTest: true
       };
     case "SET_PHOTO_EVIDENCE_URIS":
       return {

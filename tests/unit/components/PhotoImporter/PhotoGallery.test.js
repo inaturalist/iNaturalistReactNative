@@ -53,7 +53,7 @@ const obsEditValue = {
     longitude: -142.88
   } )],
   currentObservationIndex: 0,
-  allObsPhotoUris: [],
+  totalObsPhotoUris: 6,
   galleryUris: [],
   setGalleryUris: setStateMocked
 };

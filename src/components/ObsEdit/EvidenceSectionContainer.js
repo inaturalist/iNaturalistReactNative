@@ -23,6 +23,7 @@ const EvidenceSectionContainer = ( ): Node => {
   const {
     currentObservation,
     setPassesEvidenceTest,
+    passesEvidenceTest,
     updateObservationKeys,
     setPhotoEvidenceUris,
     photoEvidenceUris
@@ -60,11 +61,6 @@ const EvidenceSectionContainer = ( ): Node => {
       ) );
     }
   }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
-
-  // const {
-  //   hasLocation,
-  //   isFetchingLocation
-  // } = useCurrentObservationLocation( mountedRef );
 
   const {
     hasLocation,
@@ -123,7 +119,7 @@ const EvidenceSectionContainer = ( ): Node => {
     return false;
   }, [currentObservation] );
 
-  const passesEvidenceTest = useCallback( ( ) => {
+  const fullEvidenceTest = useCallback( ( ) => {
     if ( isFetchingLocation ) {
       return null;
     }
@@ -138,10 +134,10 @@ const EvidenceSectionContainer = ( ): Node => {
     // but not if there is a missing photo or sound
     // so the ObsEditContext version of passing evidence test
     // will be different from what shows here with the red warning/green checkmark
-    if ( hasValidLocation( ) && hasValidDate( ) ) {
-      setPassesEvidenceTest( true );
+    if ( hasValidLocation( ) && hasValidDate( ) && !passesEvidenceTest ) {
+      setPassesEvidenceTest( );
     }
-  }, [hasValidLocation, hasValidDate, setPassesEvidenceTest] );
+  }, [hasValidLocation, hasValidDate, setPassesEvidenceTest, passesEvidenceTest] );
 
   const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
 
@@ -161,7 +157,7 @@ const EvidenceSectionContainer = ( ): Node => {
     <EvidenceSection
       locationTextClassNames={locationTextClassNames}
       handleDragAndDrop={handleDragAndDrop}
-      passesEvidenceTest={passesEvidenceTest}
+      passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
       evidenceList={obsPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}

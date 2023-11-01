@@ -10,6 +10,7 @@ import {
   updateObservation
 } from "api/observations";
 import inatjs from "inaturalistjs";
+import _ from "lodash";
 import type { Node } from "react";
 import React, {
   useEffect,
@@ -80,8 +81,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     uploadProgress
   } = state;
 
-  console.log( "rerenders in ObsEditProvider" );
-
   useEffect( ( ) => {
     let currentProgress = uploadProgress;
     const progressListener = EventRegister.addEventListener(
@@ -106,8 +105,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
   }, [uploadProgress, singleUpload] );
 
-  const allObsPhotoUris = useMemo(
-    ( ) => [...cameraPreviewUris, ...galleryUris],
+  const totalObsPhotoUris = useMemo(
+    ( ) => [...cameraPreviewUris, ...galleryUris].length,
     [cameraPreviewUris, galleryUris]
   );
 
@@ -159,6 +158,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const uploadValue = useMemo( ( ) => {
     const {
+      album,
       cameraRollUris,
       comment,
       currentUploadIndex,
@@ -189,7 +189,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const resetObsEditContext = ( ) => {
       dispatch( { type: "RESET_OBS_CREATE" } );
-      clearUploadProgress( );
+      if ( !_.isEmpty( uploadProgress ) ) {
+        clearUploadProgress( );
+      }
     };
 
     const stopUpload = ( ) => {
@@ -618,12 +620,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
 
       if ( observations.length === 1 ) {
-        dispatch( {
-          type: "SET_NEXT_OBSERVATION",
-          currentObservationIndex: 0,
-          observations: []
-        } );
-
         navigation.navigate( "TabNavigator", {
           screen: "ObservationsStackNavigator",
           params: {
@@ -756,7 +752,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
-    const setAlbum = album => dispatch( { type: "SET_ALBUM", album } );
+    const setAlbum = newAlbum => dispatch( { type: "SET_ALBUM", album: newAlbum } );
 
     const setComment = newComment => dispatch( { type: "SET_COMMENT", comment: newComment } );
 
@@ -780,7 +776,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const setEvidenceToAdd = uris => dispatch( {
       type: "SET_EVIDENCE_TO_ADD",
-      setEvidenceToAdd: uris
+      evidenceToAdd: uris
     } );
 
     const setOriginalCameraUrisMap = uriMap => dispatch( {
@@ -790,14 +786,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const setLoading = isLoading => dispatch( { type: "SET_LOADING", loading: isLoading } );
 
-    const setPassesEvidenceTest = passes => dispatch( {
-      type: "SET_PASSES_EVIDENCE_TEST",
-      passesEvidenceTest: passes
+    const setPassesEvidenceTest = ( ) => dispatch( {
+      type: "SET_PASSES_EVIDENCE_TEST"
     } );
 
-    const setPassesIdentificationTest = passes => dispatch( {
-      type: "SET_PASSES_IDENTIFICATION_TEST",
-      passesIdentificationTest: passes
+    const setPassesIdentificationTest = ( ) => dispatch( {
+      type: "SET_PASSES_IDENTIFICATION_TEST"
     } );
 
     const setPhotoEvidenceUris = uris => dispatch( {
@@ -815,7 +809,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       addGalleryPhotosToCurrentObservation,
       addObservations,
       addSound,
-      allObsPhotoUris,
+      album,
+      totalObsPhotoUris,
       apiToken,
       cameraPreviewUris,
       cameraRollUris,
@@ -879,7 +874,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       uploadMultipleObservations
     };
   }, [
-    allObsPhotoUris,
+    totalObsPhotoUris,
     apiToken,
     cameraPreviewUris,
     createIdentificationMutation,

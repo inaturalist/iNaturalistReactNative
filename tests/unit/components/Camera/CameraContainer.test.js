@@ -36,7 +36,7 @@ jest.mock( "@react-navigation/native", () => {
 
 const mockValue = {
   addCameraPhotosToCurrentObservation: jest.fn(),
-  allObsPhotoUris: [],
+  totalObsPhotoUris: 10,
   cameraPreviewUris: []
 };
 
