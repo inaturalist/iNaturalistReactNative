@@ -16,14 +16,20 @@ import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
 const DESIRED_LOCATION_ACCURACY = 4000000;
 
-const BottomButtons = ( ): Node => {
+type Props = {
+  passesEvidenceTest: boolean,
+  passesIdentificationTest: boolean
+}
+
+const BottomButtons = ( {
+  passesEvidenceTest,
+  passesIdentificationTest
+}: Props ): Node => {
   const { t } = useTranslation( );
   const {
     setNextScreen,
     currentObservation,
-    unsavedChanges,
-    passesEvidenceTest,
-    passesIdentificationTest
+    unsavedChanges
   } = useContext( ObsEditContext );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );

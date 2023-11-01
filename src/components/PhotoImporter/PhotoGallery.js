@@ -31,6 +31,7 @@ const PhotoGallery = (): Node => {
   const [photoGallery, setPhotoGallery] = useState( {
     All: []
   } );
+  const [album, setAlbum] = useState( null );
 
   // Whether or not usePhotos can fetch photos now, e.g. if permissions have
   // been granted (Android), or if it's ok to request permissions (iOS). This
@@ -58,7 +59,6 @@ const PhotoGallery = (): Node => {
     addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
     setEvidenceToAdd,
-    album,
     setGroupedPhotos
   } = useContext( ObsEditContext );
   const [showAlert, setShowAlert] = useState( false );
@@ -220,7 +220,7 @@ const PhotoGallery = (): Node => {
   }, [album] );
 
   useEffect( () => {
-    const headerTitle = () => <PhotoAlbumPicker albums={albums} />;
+    const headerTitle = () => <PhotoAlbumPicker albums={albums} setAlbum={setAlbum} />;
 
     navigation.setOptions( {
       headerTitle

@@ -17,12 +17,18 @@ import { useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const IdentificationSection = ( ): Node => {
+type Props = {
+  passesIdentificationTest: boolean,
+  setPassesIdentificationTest: Function
+}
+
+const IdentificationSection = ( {
+  passesIdentificationTest,
+  setPassesIdentificationTest
+}: Props ): Node => {
   const {
     currentObservation,
-    updateObservationKeys,
-    passesIdentificationTest,
-    setPassesIdentificationTest
+    updateObservationKeys
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -56,7 +62,7 @@ const IdentificationSection = ( ): Node => {
 
   useEffect( ( ) => {
     if ( hasIdentification && !passesIdentificationTest ) {
-      setPassesIdentificationTest( );
+      setPassesIdentificationTest( true );
     }
   }, [hasIdentification, setPassesIdentificationTest, passesIdentificationTest] );
 

@@ -158,7 +158,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const uploadValue = useMemo( ( ) => {
     const {
-      album,
       cameraRollUris,
       comment,
       currentUploadIndex,
@@ -166,8 +165,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       evidenceToAdd,
       loading,
       originalCameraUrisMap,
-      passesEvidenceTest,
-      passesIdentificationTest,
       photoEvidenceUris,
       selectedPhotoIndex,
       unsavedChanges,
@@ -206,7 +203,17 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } );
     };
 
-    const updateObservations = obs => dispatch( { type: "SET_OBSERVATIONS", observations: obs } );
+    const setLoading = isLoading => dispatch( { type: "SET_LOADING", loading: isLoading } );
+
+    const updateObservations = obs => {
+      const isSavedObservation = currentObservation
+        && realm.objectForPrimaryKey( "Observation", currentObservation?.uuid );
+      dispatch( {
+        type: "SET_OBSERVATIONS",
+        observations: obs,
+        unsavedChanges: isSavedObservation
+      } );
+    };
 
     const addSound = async ( ) => {
       const newObservation = await Observation.createObsWithSounds( );
@@ -254,22 +261,22 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return Observation.new( newObservation );
     };
 
+    const createObservationWithPhotos = async photos => {
+      const newLocalObs = await createObservationFromGalleryPhoto( photos[0] );
+      newLocalObs.observationPhotos = await createObsPhotos( photos, { position: 0 } );
+      return newLocalObs;
+    };
+
     const createObservationsFromGroupedPhotos = async groupedPhotoObservations => {
       const newObservations = await Promise.all( groupedPhotoObservations.map(
-        async ( { photos } ) => {
-          const firstPhoto = photos[0];
-          const newLocalObs = await createObservationFromGalleryPhoto( firstPhoto );
-          newLocalObs.observationPhotos = await createObsPhotos( photos, { position: 0 } );
-          return newLocalObs;
-        }
+        async ( { photos } ) => createObservationWithPhotos( photos )
       ) );
       updateObservations( newObservations );
     };
 
     const createObservationFromGallery = async photo => {
-      const newLocalObs = await createObservationFromGalleryPhoto( photo );
-      newLocalObs.observationPhotos = await createObsPhotos( [photo], { position: 0 } );
-      updateObservations( [newLocalObs] );
+      const newObservation = await createObservationWithPhotos( [photo] );
+      updateObservations( [newObservation] );
     };
 
     const appendObsPhotos = obsPhotos => {
@@ -359,17 +366,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const updateObservationKeys = keysAndValues => {
       const updatedObservations = observations;
-      const obsToUpdate = observations[currentObservationIndex];
-      const isSavedObservation = realm.objectForPrimaryKey( "Observation", obsToUpdate.uuid );
       const updatedObservation = {
-        ...( obsToUpdate.toJSON
-          ? obsToUpdate.toJSON( )
-          : obsToUpdate ),
+        ...( currentObservation.toJSON
+          ? currentObservation.toJSON( )
+          : currentObservation ),
         ...keysAndValues
       };
-      if ( isSavedObservation && !unsavedChanges ) {
-        dispatch( { type: "SET_UNSAVED_CHANGES", unsavedChanges: true } );
-      }
       updatedObservations[currentObservationIndex] = updatedObservation;
       updateObservations( [...updatedObservations] );
     };
@@ -385,7 +387,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const createId = identification => {
-      dispatch( { type: "SET_LOADING", loading: true } );
+      setLoading( true );
       const newIdentification = formatIdentification( identification );
       const createRemoteIdentification = localObservation?.wasSynced( );
       if ( createRemoteIdentification ) {
@@ -400,7 +402,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         updateObservationKeys( {
           taxon: newIdentification.taxon
         } );
-        dispatch( { type: "SET_LOADING", loading: false } );
       }
     };
 
@@ -419,20 +420,23 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     }
 
     const saveObservation = async observation => {
+      setLoading( true );
       ensureRealm( );
       await writeExifToCameraRollPhotos( {
         latitude: observation.latitude,
         longitude: observation.longitude,
         positional_accuracy: observation.positionalAccuracy
       } );
-      return Observation.saveLocalObservationForUpload( observation, realm );
+      const newObservation = await Observation.saveLocalObservationForUpload( observation, realm );
+      setLoading( false );
+      return newObservation;
     };
 
     const saveCurrentObservation = async ( ) => saveObservation( currentObservation );
 
     const saveAllObservations = async ( ) => {
+      setLoading( true );
       ensureRealm( );
-      dispatch( { type: "SET_LOADING", loading: true } );
       await Promise.all( observations.map( async observation => {
         // Note that this should only happen after import when ObsEdit has
         // multiple observations to save, none of which should have
@@ -440,7 +444,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         // write EXIF for those.
         await Observation.saveLocalObservationForUpload( observation, realm );
       } ) );
-      dispatch( { type: "SET_LOADING", loading: false } );
+      setLoading( false );
     };
 
     const markRecordUploaded = ( recordUUID, type, response ) => {
@@ -525,7 +529,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           observation: obs
         } );
       }
-      dispatch( { type: "SET_LOADING", loading: true } );
+      setLoading( true );
       // don't bother trying to upload unless there's a logged in user
       if ( !currentUser ) { return {}; }
       if ( !apiToken ) {
@@ -609,7 +613,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           : null
       ] );
       deactivateKeepAwake( );
-      dispatch( { type: "SET_LOADING", loading: false } );
+      setLoading( false );
       return response;
     };
 
@@ -629,7 +633,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } else if ( currentObservationIndex === observations.length - 1 ) {
         observations.pop( );
         dispatch( {
-          type: "SET_NEXT_OBSERVATION",
+          type: "SET_DISPLAYED_OBSERVATION",
           currentObservationIndex: observations.length - 1,
           observations
         } );
@@ -637,7 +641,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         observations.splice( currentObservationIndex, 1 );
         // this seems necessary for rerendering the ObsEdit screen
         dispatch( {
-          type: "SET_NEXT_OBSERVATION",
+          type: "SET_DISPLAYED_OBSERVATION",
           currentObservationIndex,
           observations: []
         } );
@@ -712,12 +716,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const syncObservations = async ( ) => {
       // TODO: GET observation/deletions once this is enabled in API v2
       activateKeepAwake( );
-      dispatch( { type: "SET_LOADING", loading: true } );
+      setLoading( true );
       await downloadRemoteObservationsFromServer( );
       // we at least want to keep the device awake while uploads are happening
       // not sure about downloads/deletions
       deactivateKeepAwake( );
-      dispatch( { type: "SET_LOADING", loading: false } );
+      setLoading( false );
     };
 
     const uploadMultipleObservations = ( ) => {
@@ -752,12 +756,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
-    const setAlbum = newAlbum => dispatch( { type: "SET_ALBUM", album: newAlbum } );
-
     const setComment = newComment => dispatch( { type: "SET_COMMENT", comment: newComment } );
 
     const setCurrentObservationIndex = index => dispatch( {
-      type: "SET_NEXT_OBSERVATION",
+      type: "SET_DISPLAYED_OBSERVATION",
       currentObservationIndex: index,
       observations
     } );
@@ -784,23 +786,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       originalCameraUrisMap: uriMap
     } );
 
-    const setLoading = isLoading => dispatch( { type: "SET_LOADING", loading: isLoading } );
-
-    const setPassesEvidenceTest = ( ) => dispatch( {
-      type: "SET_PASSES_EVIDENCE_TEST"
-    } );
-
-    const setPassesIdentificationTest = ( ) => dispatch( {
-      type: "SET_PASSES_IDENTIFICATION_TEST"
-    } );
-
     const setPhotoEvidenceUris = uris => dispatch( {
       type: "SET_PHOTO_EVIDENCE_URIS",
       photoEvidenceUris: uris
     } );
 
     const setSelectedPhotoIndex = index => dispatch( {
-      type: "SET_PHOTO_EVIDENCE_URIS",
+      type: "SET_SELECTED_PHOTO_INDEX",
       selectedPhotoIndex: index
     } );
 
@@ -809,7 +801,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       addGalleryPhotosToCurrentObservation,
       addObservations,
       addSound,
-      album,
       totalObsPhotoUris,
       apiToken,
       cameraPreviewUris,
@@ -836,8 +827,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       numOfObsPhotos,
       observations,
       originalCameraUrisMap,
-      passesEvidenceTest,
-      passesIdentificationTest,
       photoEvidenceUris,
       progress,
       realm,
@@ -845,19 +834,15 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       saveAllObservations,
       saveCurrentObservation,
       selectedPhotoIndex,
-      setAlbum,
       setCameraPreviewUris,
       setComment,
       setCurrentObservationIndex,
       setEvidenceToAdd,
       setGalleryUris,
       setGroupedPhotos,
-      setLoading,
       setNextScreen,
       updateObservations,
       setOriginalCameraUrisMap,
-      setPassesEvidenceTest,
-      setPassesIdentificationTest,
       setPhotoEvidenceUris,
       setSelectedPhotoIndex,
       setUploads,

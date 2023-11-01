@@ -19,11 +19,18 @@ import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLoca
 
 import EvidenceSection from "./EvidenceSection";
 
-const EvidenceSectionContainer = ( ): Node => {
+type Props = {
+  passesEvidenceTest: boolean,
+  setPassesEvidenceTest: Function
+}
+
+const EvidenceSectionContainer = ( {
+  setPassesEvidenceTest,
+  passesEvidenceTest
+}: Props ): Node => {
   const {
     currentObservation,
-    setPassesEvidenceTest,
-    passesEvidenceTest,
+
     updateObservationKeys,
     setPhotoEvidenceUris,
     photoEvidenceUris
@@ -135,7 +142,7 @@ const EvidenceSectionContainer = ( ): Node => {
     // so the ObsEditContext version of passing evidence test
     // will be different from what shows here with the red warning/green checkmark
     if ( hasValidLocation( ) && hasValidDate( ) && !passesEvidenceTest ) {
-      setPassesEvidenceTest( );
+      setPassesEvidenceTest( true );
     }
   }, [hasValidLocation, hasValidDate, setPassesEvidenceTest, passesEvidenceTest] );
 

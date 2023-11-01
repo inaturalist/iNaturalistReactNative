@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect
+  useContext, useEffect, useState
 } from "react";
 import { ActivityIndicator } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -28,6 +28,8 @@ const ObsEdit = ( ): Node => {
   } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
+  const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
+  const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
 
   useEffect( ( ) => {
     // when first opening an observation from ObsDetails, fetch local observation from realm
@@ -53,15 +55,24 @@ const ObsEdit = ( ): Node => {
           {currentObservation && (
             <>
               {observations.length > 1 && <MultipleObservationsArrows />}
-              <EvidenceSectionContainer />
-              <IdentificationSection />
+              <EvidenceSectionContainer
+                passesEvidenceTest={passesEvidenceTest}
+                setPassesEvidenceTest={setPassesEvidenceTest}
+              />
+              <IdentificationSection
+                passesIdentificationTest={passesIdentificationTest}
+                setPassesIdentificationTest={setPassesIdentificationTest}
+              />
               <OtherDataSection />
             </>
           )}
           {loading && <ActivityIndicator />}
         </KeyboardAwareScrollView>
       </View>
-      <BottomButtons />
+      <BottomButtons
+        passesEvidenceTest={passesEvidenceTest}
+        passesIdentificationTest={passesIdentificationTest}
+      />
     </>
   );
 };

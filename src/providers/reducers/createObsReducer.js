@@ -1,7 +1,6 @@
 // @flow
 
 export const INITIAL_CREATE_OBS_STATE = {
-  album: null,
   // $FlowIgnore
   cameraPreviewUris: [],
   // $FlowIgnore
@@ -19,8 +18,6 @@ export const INITIAL_CREATE_OBS_STATE = {
   observations: [],
   // $FlowIgnore
   originalCameraUrisMap: {},
-  passesEvidenceTest: false,
-  passesIdentificationTest: false,
   // $FlowIgnore
   photoEvidenceUris: [],
   savingPhoto: false,
@@ -50,15 +47,8 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         groupedPhotos: [],
         observations: [],
         originalCameraUrisMap: {},
-        passesEvidenceTest: false,
-        passesIdentificationTest: false,
         photoEvidenceUris: [],
         unsavedChanges: false
-      };
-    case "SET_ALBUM":
-      return {
-        ...state,
-        album: action.album
       };
     case "SET_CAMERA_PREVIEW_URIS":
       return {
@@ -75,6 +65,12 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         ...state,
         comment: action.comment
       };
+    case "SET_DISPLAYED_OBSERVATION":
+      return {
+        ...state,
+        currentObservationIndex: action.currentObservationIndex,
+        observations: action.observations || []
+      };
     case "SET_EVIDENCE_TO_ADD":
       return {
         ...state,
@@ -85,6 +81,7 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         ...state,
         galleryUris: action.galleryUris
       };
+
     case "SET_GROUPED_PHOTOS":
       return {
         ...state,
@@ -95,12 +92,6 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         ...state,
         loading: action.loading
       };
-    case "SET_NEXT_OBSERVATION":
-      return {
-        ...state,
-        currentObservationIndex: action.currentObservationIndex,
-        observations: action.observations || []
-      };
     case "SET_ORIGINAL_CAMERA_URIS_MAP":
       return {
         ...state,
@@ -109,17 +100,9 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
     case "SET_OBSERVATIONS":
       return {
         ...state,
-        observations: action.observations
-      };
-    case "SET_PASSES_EVIDENCE_TEST":
-      return {
-        ...state,
-        passesEvidenceTest: true
-      };
-    case "SET_PASSES_IDENTIFICATION_TEST":
-      return {
-        ...state,
-        passesIdentificationTest: true
+        observations: action.observations,
+        unsavedChanges: action.unsavedChanges || false,
+        loading: false
       };
     case "SET_PHOTO_EVIDENCE_URIS":
       return {
@@ -135,11 +118,6 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
       return {
         ...state,
         selectedPhotoIndex: action.selectedPhotoIndex
-      };
-    case "SET_UNSAVED_CHANGES":
-      return {
-        ...state,
-        unsavedChanges: action.unsavedChanges
       };
     case "DELETE_PHOTO":
       return {
