@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import usePhotoGallery from "components/PhotoImporter/hooks/usePhotoGallery";
 import {
   BottomSheet, EvidenceButton, List2
 } from "components/SharedComponents";
@@ -25,7 +24,6 @@ const AddEvidenceSheet = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [choice, setChoice] = useState( null );
-  const showPhotoGallery = usePhotoGallery( );
 
   return (
     <BottomSheet
@@ -48,7 +46,10 @@ const AddEvidenceSheet = ( {
           } );
         } else if ( choice === "import" ) {
           // Show photo gallery, but skip group photos phase
-          showPhotoGallery( true );
+          navigation.navigate( "CameraNavigator", {
+            screen: "PhotoGallery",
+            params: { skipGroupPhotos: true }
+          } );
         } else if ( choice === "sound" ) {
           Alert.alert( "TODO", "Still need to implement sound recording" );
         }

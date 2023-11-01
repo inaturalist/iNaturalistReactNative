@@ -4,13 +4,15 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
+import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
-  CAMERA_PERMISSIONS
+  CAMERA_PERMISSIONS,
 } from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
+  blankHeaderTitle,
   hideHeader,
   showCustomHeader,
   showHeaderLeft
@@ -73,6 +75,11 @@ const AddObsStackNavigator = ( ): Node => (
             backgroundColor: "black"
           }
         }}
+      />
+      <Stack.Screen
+        name="PhotoGallery"
+        component={PhotoGallery}
+        options={blankHeaderTitle}
       />
       <Stack.Screen
         name="GroupPhotos"

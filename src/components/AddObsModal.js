@@ -10,8 +10,6 @@ import * as React from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 
-import usePhotoGallery from "./PhotoImporter/hooks/usePhotoGallery";
-
 type Props = {
   closeModal: ( ) => void
 }
@@ -22,7 +20,6 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   const obsEditContext = React.useContext( ObsEditContext );
   const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
   const navigation = useNavigation( );
-  const showPhotoGallery = usePhotoGallery( );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
@@ -50,26 +47,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   };
 
   const navToPhotoGallery = async ( ) => {
-    function sleep( ms ) {
-      return new Promise( resolve => {
-        setTimeout( () => {
-          resolve();
-        }, ms );
-      } );
-    }
-    const resetObsEditContext = obsEditContext?.resetObsEditContext;
-    // clear previous upload context before navigating
-    if ( resetObsEditContext ) {
-      resetObsEditContext( );
-    }
-
-    await closeModal( );
-    if ( Platform.OS === "ios" ) {
-      // Annoying hack for iOS - since if we close the modal for adding new observation ->
-      // while it's still being closed, it will close the native photo library
-      await sleep( 500 );
-    }
-    await showPhotoGallery();
+    navAndCloseModal( "PhotoGallery" );
   };
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
