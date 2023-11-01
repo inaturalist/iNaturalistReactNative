@@ -14,9 +14,9 @@ node_modules/react-native/Libraries/polyfills/.*
 ; This is an intentionally malflormed package
 .*/node_modules/resolve/test/resolver/malformed_package_json/package\.json$
 
-; Ignore this file
+; Ignore these files
 .*/node_modules/react-native/sdks/hermes/external/flowtest/test/flow/comment_interning/program_comment_directive.js
-
+.*/node_modules/react-native/Libraries/DevToolsSettings/DevToolsSettingsManager.d.ts
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*
