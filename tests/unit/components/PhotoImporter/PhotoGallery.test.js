@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import PhotoGalleryContainer from "components/PhotoImporter/PhotoGalleryContainer";
 import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import React from "react";
@@ -60,7 +60,7 @@ const obsEditValue = {
 
 const renderPhotoGallery = ( ) => renderComponent(
   <ObsEditContext.Provider value={obsEditValue}>
-    <PhotoGallery />
+    <PhotoGalleryContainer />
   </ObsEditContext.Provider>
 );
 
