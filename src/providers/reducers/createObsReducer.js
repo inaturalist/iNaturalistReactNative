@@ -26,7 +26,7 @@ export const INITIAL_CREATE_OBS_STATE = {
 };
 
 const createObsReducer = ( state: Object, action: Function ): Object => {
-  console.log( action, "action in create obs reducer" );
+  console.log( action.type, "action in create obs reducer" );
   switch ( action.type ) {
     case "CLEAR_ADDITIONAL_EVIDENCE": {
       return {

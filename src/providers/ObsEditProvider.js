@@ -173,7 +173,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       uploads,
       totalProgressIncrements
     } = state;
-    console.log( "rerenders in ObsEditProvider within uploadValue useMemo" );
     const currentUploadProgress = Object.values( uploadProgress )
       .reduce( ( count, current ) => count + Number( current ), 0 );
 

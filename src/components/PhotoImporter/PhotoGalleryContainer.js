@@ -23,7 +23,6 @@ const options = {
 const PhotoGalleryContainer = (): Node => {
   const [isScrolling, setIsScrolling] = useState( false );
   const [photoOptions, setPhotoOptions] = useState( options );
-  const [rerenderList, setRerenderList] = useState( false );
   const [photoGallery, setPhotoGallery] = useState( {
     All: []
   } );
@@ -125,10 +124,8 @@ const PhotoGalleryContainer = (): Node => {
   const handlePhotoSelection = ( item, selected ) => {
     if ( !selected ) {
       selectPhoto( item );
-      setRerenderList( false );
     } else {
       unselectPhoto( item );
-      setRerenderList( true );
     }
   };
 
@@ -138,6 +135,7 @@ const PhotoGalleryContainer = (): Node => {
 
   const handleImagePress = ( item, isSelected ) => {
     if ( isSelected || totalObsPhotoUris < MAX_PHOTOS_ALLOWED ) {
+      console.log( item, isSelected, "is selected" );
       handlePhotoSelection( item, isSelected );
     } else {
       setShowAlert( true );
@@ -210,10 +208,10 @@ const PhotoGalleryContainer = (): Node => {
       navToNextScreen={navToNextScreen}
       fetchMorePhotos={fetchMorePhotos}
       fetchingPhotos={fetchingPhotos}
-      rerenderList={rerenderList}
       showAlert={showAlert}
       totalSelected={totalSelected}
       hideAlert={hideAlert}
+      galleryUris={galleryUris}
     />
   );
 };
