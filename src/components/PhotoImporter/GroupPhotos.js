@@ -1,6 +1,7 @@
 // @flow
 
 import { FlashList } from "@shopify/flash-list";
+import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
   Body2, Button, FloatingActionBar, INatIcon, INatIconButton, StickyToolbar
 } from "components/SharedComponents";
@@ -8,7 +9,7 @@ import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTheme } from "react-native-paper";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation } from "sharedHooks";
@@ -70,22 +71,23 @@ const GroupPhotos = ( {
   };
   const itemWidth = calculateGridItemWidth();
 
-  const itemStyle = {
+  const itemStyle = useMemo( ( ) => ( {
     height: itemWidth,
     width: itemWidth,
     margin: GUTTER / 2
-  };
+  } ), [itemWidth] );
 
-  const renderImage = item => (
+  const renderImage = useCallback( item => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
       selectObservationPhotos={selectObservationPhotos}
       style={itemStyle}
     />
-  );
+  ), [itemStyle, selectedObservations, selectObservationPhotos] );
 
-  const renderItem = ( { item } ) => {
+  // $FlowIgnore
+  const renderItem = useCallback( ( { item } ) => {
     if ( item.empty ) {
       return (
         <Pressable
@@ -104,27 +106,40 @@ const GroupPhotos = ( {
         </Pressable>
       );
     }
+    // $FlowIgnore
     return renderImage( item );
+  }, [itemStyle, renderImage, theme] );
+
+  const renderHeader = ( ) => (
+    <View className="m-5">
+      <Body2>{t( "Group-photos-onboarding" )}</Body2>
+    </View>
+  );
+
+  const data = useMemo( ( ) => {
+    const newData = [].concat( groupedPhotos );
+    if ( totalPhotos < MAX_PHOTOS_ALLOWED ) {
+      newData.push( { empty: true } );
+    }
+    return newData;
+  }, [groupedPhotos, totalPhotos] );
+
+  const flashListStyle = {
+    paddingLeft: GUTTER / 2,
+    paddingRight: GUTTER / 2,
+    paddingBottom: 80 + GUTTER / 2
   };
 
-  const data = [].concat( groupedPhotos );
-  if ( totalPhotos < 20 ) {
-    data.push( { empty: true } );
-  }
+  const extraData = {
+    selectedObservations,
+    itemWidth
+  };
 
   return (
     <ViewWrapper>
       <FlashList
-        contentContainerStyle={{
-          paddingLeft: GUTTER / 2,
-          paddingRight: GUTTER / 2,
-          paddingBottom: 80 + GUTTER / 2
-        }}
-        ListHeaderComponent={(
-          <View className="m-5">
-            <Body2>{t( "Group-photos-onboarding" )}</Body2>
-          </View>
-        )}
+        contentContainerStyle={flashListStyle}
+        ListHeaderComponent={renderHeader}
         data={data}
         initialNumToRender={4}
         keyExtractor={extractKey}
@@ -132,10 +147,7 @@ const GroupPhotos = ( {
         key={numColumns}
         renderItem={renderItem}
         testID="GroupPhotos.list"
-        extraData={{
-          selectedObservations,
-          itemWidth
-        }}
+        extraData={extraData}
         estimatedItemSize={itemWidth + GUTTER}
       />
       <FloatingActionBar

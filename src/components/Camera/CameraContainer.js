@@ -12,6 +12,7 @@ import React, {
 } from "react";
 import {
   BackHandler,
+  Platform,
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -97,6 +98,9 @@ const CameraWithDevice = ( {
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const [takingPhoto, setTakingPhoto] = useState( false );
+  const [photoSaved, setPhotoSaved] = useState( false );
+  const [result, setResult] = useState( null );
+  const [modelLoaded, setModelLoaded] = useState( false );
 
   const zoom = useSharedValue( !device.isMultiCam
     ? device.minZoom
@@ -200,11 +204,12 @@ const CameraWithDevice = ( {
     }, [handleBackButtonPress] )
   );
 
-  const createOrUpdateEvidence = useCallback( prediction => {
+  const createEvidenceForObsEdit = useCallback( localTaxon => {
+    console.log( localTaxon, "add evidence and ev to add" );
     if ( addEvidence ) {
       addCameraPhotosToCurrentObservation( evidenceToAdd );
     } else {
-      createObsWithCameraPhotos( cameraPreviewUris, prediction );
+      createObsWithCameraPhotos( cameraPreviewUris, localTaxon );
     }
   }, [
     addCameraPhotosToCurrentObservation,
@@ -214,11 +219,12 @@ const CameraWithDevice = ( {
     evidenceToAdd
   ] );
 
-  const navToObsEdit = useCallback( ( { prediction } ) => {
-    createOrUpdateEvidence( prediction );
+  const navToObsEdit = useCallback( localTaxon => {
+    createEvidenceForObsEdit( localTaxon );
+    setPhotoSaved( false );
     navigation.navigate( "ObsEdit" );
   }, [
-    createOrUpdateEvidence,
+    createEvidenceForObsEdit,
     navigation
   ] );
 
@@ -247,6 +253,68 @@ const CameraWithDevice = ( {
       setEvidenceToAdd( [...evidenceToAdd, uri] );
     }
     setTakingPhoto( false );
+    setPhotoSaved( true );
+  };
+
+  const handleTaxaDetected = cvResults => {
+    if ( cvResults && !modelLoaded ) {
+      setModelLoaded( true );
+    }
+    /*
+      Using FrameProcessorCamera results in this as cvResults atm on Android
+      [
+        {
+          "stateofmatter": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        },
+        {
+          "order": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        },
+        {
+          "species": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        }
+      ]
+    */
+    /*
+      Using FrameProcessorCamera results in this as cvResults atm on iOS (= top prediction)
+      [
+        {"name": "Aves", "rank": 50, "score": 0.7627944946289062, "taxon_id": 3}
+      ]
+    */
+    // console.log( "cvResults :>> ", cvResults );
+    const standardizePrediction = finestPrediction => ( {
+      taxon: {
+        rank_level: finestPrediction.rank,
+        id: Number( finestPrediction.taxon_id ),
+        name: finestPrediction.name
+      },
+      score: finestPrediction.score
+    } );
+    let prediction = null;
+    let predictions = [];
+    if ( Platform.OS === "ios" ) {
+      if ( cvResults.length > 0 ) {
+        const finestPrediction = cvResults[cvResults.length - 1];
+        prediction = standardizePrediction( finestPrediction );
+      }
+    } else {
+      predictions = cvResults
+        ?.map( r => {
+          const rank = Object.keys( r )[0];
+          return r[rank][0];
+        } )
+        .sort( ( a, b ) => a.rank - b.rank );
+      if ( predictions.length > 0 ) {
+        const finestPrediction = predictions[0];
+        prediction = standardizePrediction( finestPrediction );
+      }
+    }
+    setResult( prediction );
   };
 
   const toggleFlash = ( ) => {
@@ -265,7 +333,7 @@ const CameraWithDevice = ( {
     setCameraPosition( newPosition );
   };
 
-  const flexDirection = isTablet && !isLandscapeMode
+  const flexDirection = isTablet && isLandscapeMode
     ? "flex-row"
     : "flex-col";
 
@@ -314,9 +382,12 @@ const CameraWithDevice = ( {
             zoomTextValue={zoomTextValue}
             showZoomButton={device.isMultiCam}
             navToObsEdit={navToObsEdit}
-            photoSaved={cameraPreviewUris.length > 0}
+            photoSaved={photoSaved}
             onZoomStart={onZoomStart}
             onZoomChange={onZoomChange}
+            result={result}
+            handleTaxaDetected={handleTaxaDetected}
+            modelLoaded={modelLoaded}
           />
         )}
     </View>

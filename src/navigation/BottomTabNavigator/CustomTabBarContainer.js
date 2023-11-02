@@ -1,7 +1,7 @@
 // @flow
 import { useDrawerStatus } from "@react-navigation/drawer";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import User from "realmModels/User";
 import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
 
@@ -23,7 +23,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
   const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
   const isDrawerOpen = useDrawerStatus() === "open";
 
-  const tabs = [
+  const tabs = useMemo( ( ) => ( [
     {
       icon: "hamburger-menu",
       testID: DRAWER_ID,
@@ -89,7 +89,14 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       },
       active: MESSAGES_SCREEN_ID === activeTab
     }
-  ];
+  ] ), [
+    activeTab,
+    isConnected,
+    currentUser,
+    isDrawerOpen,
+    navigation,
+    t
+  ] );
 
   return (
     <CustomTabBar

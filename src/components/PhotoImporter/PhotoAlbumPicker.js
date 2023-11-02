@@ -1,9 +1,8 @@
 // @flow
 
 import { Text } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React from "react";
 import RNPickerSelect from "react-native-picker-select";
 
 const FONT_SIZE = 20;
@@ -19,12 +18,11 @@ const pickerTextStyle = {
 };
 
 type Props = {
-  albums: ?Array<Object>
+  albums: ?Array<Object>,
+  setAlbum: Function
 }
 
-const PhotoAlbumPicker = ( { albums }: Props ): Node => {
-  const { setAlbum } = useContext( ObsEditContext );
-
+const PhotoAlbumPicker = ( { albums, setAlbum }: Props ): Node => {
   const changeAlbum = newAlbum => setAlbum( newAlbum !== "All"
     ? newAlbum
     : null );

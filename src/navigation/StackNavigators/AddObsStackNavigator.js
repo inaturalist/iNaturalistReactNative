@@ -4,7 +4,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import PhotoGalleryContainer from "components/PhotoImporter/PhotoGalleryContainer";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
   CAMERA_PERMISSIONS,
@@ -65,7 +65,7 @@ const PhotoGalleryWithPermission = ( ) => (
     icon="gallery"
     image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
   >
-    <PhotoGallery />
+    <PhotoGalleryContainer />
   </PermissionGateContainer>
 );
 

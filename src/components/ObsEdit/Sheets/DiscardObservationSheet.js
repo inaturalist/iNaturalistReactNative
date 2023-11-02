@@ -22,7 +22,7 @@ const DiscardObservationSheet = ( {
   const {
     observations,
     saveAllObservations,
-    setObservations
+    updateObservations
   } = useContext( ObsEditContext );
 
   const multipleObservations = observations.length > 1;
@@ -40,7 +40,7 @@ const DiscardObservationSheet = ( {
         : t( "By-exiting-observation-not-saved" )}
       handleSecondButtonPress={( ) => {
         saveAllObservations( );
-        setObservations( [] );
+        updateObservations( [] );
         navToObsList( );
       }}
       secondButtonText={multipleObservations && t( "SAVE-ALL" )}

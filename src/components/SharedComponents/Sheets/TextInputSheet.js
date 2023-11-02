@@ -6,7 +6,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
@@ -18,7 +18,8 @@ import colors from "styles/tailwindColors";
     initialInput?: ?string,
     placeholder: string,
     headerText: string,
-    snapPoints: Array<Object>
+    snapPoints: Array<Object>,
+    textInputStyle?: Object
   }
 
 const TextInputSheet = ( {
@@ -27,12 +28,28 @@ const TextInputSheet = ( {
   initialInput = null,
   placeholder,
   headerText,
-  snapPoints
+  snapPoints,
+  textInputStyle
 }: Props ): Node => {
   const textInputRef = useRef( );
   const theme = useTheme( );
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
+
+  const inputStyle = useMemo( ( ) => ( {
+    height: 223,
+    fontFamily: `Whitney-Light${Platform.OS === "ios"
+      ? ""
+      : "-Pro"}`,
+    fontSize: 14,
+    lineHeight: 17,
+    color: theme.colors.primary,
+    borderRadius: 8,
+    borderColor: colors.lightGray,
+    borderWidth: 1,
+    padding: 15,
+    textAlignVertical: "top"
+  } ), [theme] );
 
   return (
     <BottomSheet
@@ -54,21 +71,7 @@ const TextInputSheet = ( {
           onChangeText={text => setInput( text )}
           placeholder={placeholder}
           testID="ObsEdit.notes"
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{
-            height: 223,
-            fontFamily: `Whitney-Light${Platform.OS === "ios"
-              ? ""
-              : "-Pro"}`,
-            fontSize: 14,
-            lineHeight: 17,
-            color: theme.colors.primary,
-            borderRadius: 8,
-            borderColor: colors.lightGray,
-            borderWidth: 1,
-            padding: 15,
-            textAlignVertical: "top"
-          }}
+          style={[inputStyle, textInputStyle]}
           autoFocus
           defaultValue={input}
         />
