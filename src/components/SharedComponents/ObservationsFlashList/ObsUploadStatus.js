@@ -26,6 +26,7 @@ const ObsUploadStatus = ( {
   showUploadStatus,
   progress
 }: Props ): Node => {
+  console.log( progress, "progress in obs upload status" );
   const theme = useTheme( );
   const whiteColor = white && theme.colors.onPrimary;
 

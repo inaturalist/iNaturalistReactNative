@@ -38,12 +38,12 @@ const ObservationLocation = ( {
     ? Body3
     : Body4;
 
-  let displayCoords = useMemo( ( ) => {
+  const displayCoords = useMemo( ( ) => {
     if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
         && ( observation?.longitude != null && observation?.longitude !== undefined )
         && !obscured
     ) {
-      displayCoords = t( "Lat-Lon-Acc", {
+      return t( "Lat-Lon-Acc", {
         latitude: observation.latitude,
         longitude: observation.longitude,
         accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
@@ -53,12 +53,13 @@ const ObservationLocation = ( {
       && ( observation?.privateLongitude != null && observation?.privateLongitude !== undefined )
       && !obscured
     ) {
-      displayCoords = t( "Lat-Lon-Acc", {
+      return t( "Lat-Lon-Acc", {
         latitude: observation.privateLatitude,
         longitude: observation.privateLongitude,
         accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
       } );
     }
+    return null;
   }, [obscured, observation, t] );
 
   if ( !displayLocation ) {

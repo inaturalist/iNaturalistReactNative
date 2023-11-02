@@ -2,7 +2,7 @@
 
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext } from "react";
 import { Alert } from "react-native";
 import {
   useCurrentUser,
@@ -37,18 +37,12 @@ const ObsUploadStatusContainer = ( {
   const needsSync = item => !item._synced_at
     || item._synced_at <= item._updated_at;
 
-  const currentProgress = useMemo(
-    ( ) => uploadProgress?.[observation.uuid] || 0,
-    [observation, uploadProgress]
-  );
-  const currentProgressIncrements = useMemo( ( ) => ( observation?.observationPhotos
+  const currentProgress = uploadProgress?.[observation.uuid] || 0;
+  const currentProgressIncrements = observation?.observationPhotos
     ? 1 + observation.observationPhotos.length
-    : 1 ), [observation?.observationPhotos] );
+    : 1;
 
-  const progress = useMemo(
-    ( ) => currentProgress / currentProgressIncrements || 0,
-    [currentProgress, currentProgressIncrements]
-  );
+  const progress = currentProgress / currentProgressIncrements || 0;
 
   const startUpload = useCallback( ( ) => {
     if ( !isConnected ) {
@@ -73,10 +67,7 @@ const ObsUploadStatusContainer = ( {
     uploadObservation
   ] );
 
-  const showUploadStatus = useMemo(
-    ( ) => !!( ( needsSync( observation ) || uploadProgress?.[observation.uuid] ) ),
-    [observation, uploadProgress]
-  );
+  const showUploadStatus = !!( ( needsSync( observation ) || uploadProgress?.[observation.uuid] ) );
 
   return (
     <ObsUploadStatus
