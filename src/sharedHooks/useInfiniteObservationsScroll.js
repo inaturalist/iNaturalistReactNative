@@ -7,7 +7,7 @@ import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
-import useCurrentUser from "sharedHooks/useCurrentUser";
+import { useCurrentUser, useObservationsUpdates } from "sharedHooks";
 
 import { log } from "../../react-native-logs.config";
 
@@ -18,6 +18,7 @@ const { useRealm } = RealmContext;
 const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  useObservationsUpdates( !!currentUser );
 
   const baseParams = {
     ...newInputParams,

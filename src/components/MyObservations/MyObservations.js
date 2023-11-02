@@ -5,33 +5,39 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Animated, Platform } from "react-native";
+import {
+  useCurrentUser,
+  useInfiniteObservationsScroll
+} from "sharedHooks";
 
 import LoginSheet from "./LoginSheet";
 import MyObservationsEmpty from "./MyObservationsEmpty";
 
 type Props = {
-  isFetchingNextPage?: boolean,
   layout: "list" | "grid",
   observations: Array<Object>,
-  onEndReached: Function,
   toggleLayout: Function,
   allObsToUpload: Array<Object>,
-  currentUser: ?Object,
   showLoginSheet: boolean,
   setShowLoginSheet: Function
 };
 
 const MyObservations = ( {
-  isFetchingNextPage,
   layout,
   observations,
-  onEndReached,
   toggleLayout,
   allObsToUpload,
-  currentUser,
   showLoginSheet,
   setShowLoginSheet
 }: Props ): Node => {
+  const currentUser = useCurrentUser();
+  const { isFetchingNextPage, fetchNextPage: onEndReached } = useInfiniteObservationsScroll( {
+    upsert: true,
+    params: {
+      user_id: currentUser?.id
+    }
+  } );
+
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
