@@ -2,7 +2,7 @@
 
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { Alert } from "react-native";
 import {
   useCurrentUser,
@@ -37,14 +37,20 @@ const ObsUploadStatusContainer = ( {
   const needsSync = item => !item._synced_at
     || item._synced_at <= item._updated_at;
 
-  const currentProgress = uploadProgress?.[observation.uuid] || 0;
-  const currentProgressIncrements = observation?.observationPhotos
+  const currentProgress = useMemo(
+    ( ) => uploadProgress?.[observation.uuid] || 0,
+    [observation, uploadProgress]
+  );
+  const currentProgressIncrements = useMemo( ( ) => ( observation?.observationPhotos
     ? 1 + observation.observationPhotos.length
-    : 1;
+    : 1 ), [observation?.observationPhotos] );
 
-  const progress = currentProgress / currentProgressIncrements || 0;
+  const progress = useMemo(
+    ( ) => currentProgress / currentProgressIncrements || 0,
+    [currentProgress, currentProgressIncrements]
+  );
 
-  const startUpload = ( ) => {
+  const startUpload = useCallback( ( ) => {
     if ( !isConnected ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
@@ -58,9 +64,19 @@ const ObsUploadStatusContainer = ( {
       return;
     }
     uploadObservation( observation, { isSingleUpload: true } );
-  };
+  }, [
+    currentUser,
+    isConnected,
+    observation,
+    setShowLoginSheet,
+    t,
+    uploadObservation
+  ] );
 
-  const showUploadStatus = !!( ( needsSync( observation ) || uploadProgress?.[observation.uuid] ) );
+  const showUploadStatus = useMemo(
+    ( ) => !!( ( needsSync( observation ) || uploadProgress?.[observation.uuid] ) ),
+    [observation, uploadProgress]
+  );
 
   return (
     <ObsUploadStatus

@@ -69,7 +69,7 @@ const PhotoGalleryImage = ( {
       }}
     >
       <Image
-        testID="PhotoGallery.photo"
+        testID={`PhotoGallery.photo.${uri}`}
         source={{ uri }}
         accessibilityIgnoresInvertColors
         style={itemStyle}

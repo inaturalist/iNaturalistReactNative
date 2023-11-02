@@ -205,7 +205,6 @@ const CameraWithDevice = ( {
   );
 
   const createEvidenceForObsEdit = useCallback( localTaxon => {
-    console.log( localTaxon, "add evidence and ev to add" );
     if ( addEvidence ) {
       addCameraPhotosToCurrentObservation( evidenceToAdd );
     } else {

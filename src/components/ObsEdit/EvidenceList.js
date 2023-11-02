@@ -6,7 +6,7 @@ import { INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { ActivityIndicator } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
@@ -31,7 +31,7 @@ const EvidenceList = ( {
   const navigation = useNavigation( );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
-  const renderPhoto = ( { item, getIndex, drag } ) => (
+  const renderPhoto = useCallback( ( { item, getIndex, drag } ) => (
     <ScaleDecorator>
       <Pressable
         onLongPress={drag}
@@ -53,9 +53,9 @@ const EvidenceList = ( {
         </View>
       </Pressable>
     </ScaleDecorator>
-  );
+  ), [navigation, setSelectedPhotoIndex] );
 
-  const renderFooter = ( ) => {
+  const renderFooter = useCallback( ( ) => {
     if ( savingPhoto ) {
       return (
         <View className={classnames( imageClass )} testID="EvidenceList.saving">
@@ -68,9 +68,9 @@ const EvidenceList = ( {
       );
     }
     return null;
-  };
+  }, [savingPhoto] );
 
-  const renderHeader = ( ) => (
+  const renderHeader = useCallback( ( ) => (
     <Pressable
       accessibilityRole="button"
       onPress={handleAddEvidence}
@@ -81,7 +81,7 @@ const EvidenceList = ( {
     >
       <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
     </Pressable>
-  );
+  ), [handleAddEvidence] );
 
   return (
     <View className="mt-5">

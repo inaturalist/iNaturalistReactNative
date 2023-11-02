@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { Alert } from "react-native";
 import {
   useCurrentUser,
@@ -48,7 +48,7 @@ const ToolbarContainer = ( {
 
   const { refetch } = useObservationsUpdates( false );
 
-  const handleSyncButtonPress = ( ) => {
+  const handleSyncButtonPress = useCallback( ( ) => {
     if ( !isOnline ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
@@ -68,7 +68,17 @@ const ToolbarContainer = ( {
       syncObservations( );
       refetch( );
     }
-  };
+  }, [
+    allObsToUpload,
+    isOnline,
+    currentUser,
+    numUnuploadedObs,
+    syncObservations,
+    refetch,
+    setShowLoginSheet,
+    setUploads,
+    t
+  ] );
 
   const navToExplore = ( ) => navigation.navigate( "Explore" );
 

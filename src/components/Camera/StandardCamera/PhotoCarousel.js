@@ -5,7 +5,9 @@ import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import {
   ActivityIndicator,
   FlatList
@@ -98,7 +100,7 @@ const PhotoCarousel = ( {
     [rotation?.value]
   );
 
-  const renderSkeleton = ( ) => ( takingPhoto
+  const renderSkeleton = useCallback( ( ) => ( takingPhoto
     ? (
       <View
         className={classnames(
@@ -119,27 +121,43 @@ const PhotoCarousel = ( {
         </View>
       </View>
     )
-    : null );
+    : null ), [
+    isTablet,
+    isLandscapeMode,
+    photoClasses,
+    takingPhoto
+  ] );
 
-  const renderPhotoOrEvidenceButton = ( { item, index } ) => (
+  const showDeletePhotoMode = useCallback( ( ) => {
+    if ( deletePhoto ) {
+      setDeletePhotoMode( mode => !mode );
+    }
+  }, [deletePhoto] );
+
+  const handlePhotoPress = useCallback( ( item, index ) => {
+    if ( deletePhotoMode && deletePhoto ) {
+      deletePhoto( item );
+    } else {
+      setSelectedPhotoIndex( index );
+      setPhotoEvidenceUris( [...photoUris] );
+      navigation.navigate( "MediaViewer" );
+    }
+  }, [
+    deletePhotoMode,
+    photoUris,
+    setPhotoEvidenceUris,
+    setSelectedPhotoIndex,
+    deletePhoto,
+    navigation
+  ] );
+
+  const renderPhotoOrEvidenceButton = useCallback( ( { item, index } ) => (
     <>
       <Animated.View style={!isTablet && animatedStyle}>
         <Pressable
           accessibilityRole="button"
-          onLongPress={( ) => {
-            if ( deletePhoto ) {
-              setDeletePhotoMode( mode => !mode );
-            }
-          }}
-          onPress={( ) => {
-            if ( deletePhotoMode && deletePhoto ) {
-              deletePhoto( item );
-            } else {
-              setSelectedPhotoIndex( index );
-              setPhotoEvidenceUris( [...photoUris] );
-              navigation.navigate( "MediaViewer" );
-            }
-          }}
+          onLongPress={showDeletePhotoMode}
+          onPress={( ) => handlePhotoPress( item, index )}
           className={classnames( IMAGE_CONTAINER_CLASSES )}
         >
           <View
@@ -179,7 +197,18 @@ const PhotoCarousel = ( {
       </Animated.View>
       {index === photoUris.length - 1 && renderSkeleton( )}
     </>
-  );
+  ), [
+    handlePhotoPress,
+    showDeletePhotoMode,
+    animatedStyle,
+    deletePhotoMode,
+    photoUris,
+    isTablet,
+    photoClasses,
+    renderSkeleton,
+    t,
+    theme
+  ] );
 
   const photoPreviewsList = (
     <FlatList

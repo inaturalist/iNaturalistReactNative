@@ -10,7 +10,7 @@ import {
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Menu } from "react-native-paper";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
@@ -43,7 +43,7 @@ const ActivityHeader = ( {
     ? "Identification"
     : "Comment";
 
-  const renderIcon = () => {
+  const renderIcon = useCallback( () => {
     if ( idWithdrawn ) {
       return (
         <View className="opacity-50">
@@ -54,9 +54,9 @@ const ActivityHeader = ( {
     if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flagged ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
-  };
+  }, [flagged, idWithdrawn, item.vision] );
 
-  const renderStatus = () => {
+  const renderStatus = useCallback( () => {
     if ( flagged ) {
       return (
         <Body4>
@@ -81,11 +81,11 @@ const ActivityHeader = ( {
     return (
       <Body4 />
     );
-  };
+  }, [flagged, idWithdrawn, item.category] );
 
-  const closeFlagItemModal = () => {
+  const closeFlagItemModal = useCallback( () => {
     setFlagModalVisible( false );
-  };
+  }, [] );
 
   return (
     <View className={classnames( "flex-row justify-between", classNameMargin )}>

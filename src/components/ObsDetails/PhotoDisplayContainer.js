@@ -6,7 +6,8 @@ import {
 import _ from "lodash";
 import type { Node } from "react";
 import React, {
-  useCallback, useState
+  useCallback, useMemo,
+  useState
 } from "react";
 import { Alert } from "react-native";
 import {
@@ -66,16 +67,22 @@ const PhotoDisplayContainer = ( { observation, refetchRemoteObservation }: Props
     }
   );
 
-  const faveOrUnfave = ( ) => {
+  const faveOrUnfave = useCallback( ( ) => {
     if ( userFav ) {
       createUnfaveMutation.mutate( { uuid } );
     } else {
       createFaveMutation.mutate( { uuid } );
     }
-  };
+  }, [createFaveMutation, createUnfaveMutation, userFav, uuid] );
 
-  const observationPhotos = observation?.observationPhotos || observation?.observation_photos || [];
-  const photos = _.compact( Array.from( observationPhotos ).map( op => op.photo ) );
+  const observationPhotos = useMemo(
+    ( ) => observation?.observationPhotos || observation?.observation_photos || [],
+    [observation]
+  );
+  const photos = useMemo(
+    ( ) => _.compact( Array.from( observationPhotos ).map( op => op.photo ) ),
+    [observationPhotos]
+  );
 
   return (
     <PhotoDisplay
