@@ -81,7 +81,7 @@ const MyObservations = ( {
               toggleLayout={toggleLayout}
               layout={layout}
               currentUser={currentUser}
-              numObservations={observations.length}
+              hideToolbar={observations.length === 0}
               setHeightAboveToolbar={setHeightAboveToolbar}
               allObsToUpload={allObsToUpload}
               setShowLoginSheet={setShowLoginSheet}

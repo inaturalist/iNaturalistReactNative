@@ -19,7 +19,7 @@ type Props = {
   toggleLayout: Function;
   layout: string,
   currentUser: ?Object,
-  numObservations: number,
+  hideToolbar: boolean,
   setHeightAboveToolbar: Function,
   allObsToUpload: Array<Object>,
   setShowLoginSheet: Function
@@ -29,7 +29,7 @@ const Header = ( {
   toggleLayout,
   layout,
   currentUser,
-  numObservations,
+  hideToolbar,
   setHeightAboveToolbar,
   allObsToUpload,
   setShowLoginSheet
@@ -38,7 +38,6 @@ const Header = ( {
   const navigation = useNavigation( );
   const numUnuploadedObs = useNumUnuploadedObservations( );
   const { t } = useTranslation( );
-  const hideToolbar = numObservations === 0;
 
   const signedInContent = ( ) => (
     <Trans
