@@ -113,7 +113,7 @@ const ObsDetails = ( {
       {showCommentBox && (
         <TextInputSheet
           handleClose={hideCommentBox}
-          headerText={t( "ADD-OPTIONAL-COMMENT" )}
+          headerText={t( "ADD-COMMENT" )}
           snapPoints={[416]}
           confirm={textInput => onCommentAdded( textInput )}
         />

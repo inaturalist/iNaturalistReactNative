@@ -19,7 +19,7 @@ const DeleteCommentSheet = ( {
 }: Props ): Node => (
   <BottomSheet
     handleClose={handleClose}
-    headerText={t( "DELETE-COMMENT" )}
+    headerText={t( "DELETE-COMMENT?" )}
     snapPoints={[140]}
   >
     <View className="flex-row justify-evenly mx-[15px] my-[25px]">

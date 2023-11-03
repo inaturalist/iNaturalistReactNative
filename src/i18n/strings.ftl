@@ -235,7 +235,7 @@ DELETE = DELETE
 DELETE-ALL = DELETE ALL
 
 Delete-comment = Delete comment
-DELETE-COMMENT = DELETE COMMENT?
+DELETE-COMMENT? = DELETE COMMENT?
 
 DELETE-OBSERVATION = DELETE OBSERVATION?
 
@@ -669,8 +669,8 @@ Research-Grade = Research Grade
 Reset = Reset
 
 # Option to restore withdrawn id from current user
-Restore-ID = Restore-ID
-RESTORE-ID = RESTORE-ID
+Restore-ID = Restore ID
+RESTORE-ID = RESTORE ID
 
 # Appears in the reset password screen
 Lets-reset-your-password = Let's reset your password
@@ -866,6 +866,7 @@ Wild = Wild
 WILD-STATUS = WILD STATUS
 
 Withdraw-ID = Withdraw ID
+WITHDRAW-ID? = WITHDRAW ID?
 
 # Button to Withdraw identification made by user
 WITHDRAW-ID = WITHDRAW ID

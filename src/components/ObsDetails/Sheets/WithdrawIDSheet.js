@@ -33,7 +33,7 @@ const WithdrawIDSheet = ( {
 }: Props ): Node => (
   <BottomSheet
     handleClose={handleClose}
-    headerText={t( "WITHDRAW-ID" )}
+    headerText={t( "WITHDRAW-ID?" )}
     snapPoints={[220]}
   >
     <View
@@ -48,9 +48,9 @@ const WithdrawIDSheet = ( {
           handleClose();
         }}
         className="mx-2"
-        testID="ObsDetail.WithdrawId.withdraw"
-        accessibilityRole="link"
-        accessibilityHint={t( "Navigates-to-suggest-identification" )}
+        testID="ObsDetail.WithdrawId.cancel"
+        accessibilityRole="button"
+        accessibilityHint={t( "Closes-withdraw-id-sheet" )}
         level="secondary"
       />
       <Button
@@ -60,9 +60,9 @@ const WithdrawIDSheet = ( {
           handleClose();
         }}
         className="mx-2 grow"
-        testID="ObsDetail.WithdrawId.cancel"
-        accessibilityRole="link"
-        accessibilityHint={t( "Navigates-to-suggest-identification" )}
+        testID="ObsDetail.WithdrawId.withdraw"
+        accessibilityRole="button"
+        accessibilityHint={t( "Withdraws-id-and-closes" )}
         level="primary"
       />
 
