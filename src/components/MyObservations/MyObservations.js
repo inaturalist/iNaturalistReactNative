@@ -5,10 +5,6 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Animated, Platform } from "react-native";
-import {
-  useCurrentUser,
-  useInfiniteObservationsScroll
-} from "sharedHooks";
 
 import LoginSheet from "./LoginSheet";
 import MyObservationsEmpty from "./MyObservationsEmpty";
@@ -19,7 +15,11 @@ type Props = {
   toggleLayout: Function,
   allObsToUpload: Array<Object>,
   showLoginSheet: boolean,
-  setShowLoginSheet: Function
+  setShowLoginSheet: Function,
+  isFetchingNextPage: boolean,
+  onEndReached: Function,
+  currentUser: Object,
+  isOnline: boolean
 };
 
 const MyObservations = ( {
@@ -28,16 +28,12 @@ const MyObservations = ( {
   toggleLayout,
   allObsToUpload,
   showLoginSheet,
-  setShowLoginSheet
+  setShowLoginSheet,
+  isFetchingNextPage,
+  onEndReached,
+  currentUser,
+  isOnline
 }: Props ): Node => {
-  const currentUser = useCurrentUser();
-  const { isFetchingNextPage, fetchNextPage: onEndReached } = useInfiniteObservationsScroll( {
-    upsert: true,
-    params: {
-      user_id: currentUser?.id
-    }
-  } );
-
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
@@ -97,6 +93,7 @@ const MyObservations = ( {
               renderEmptyList={renderEmptyList}
               data={observations.filter( o => o.isValid() )}
               showObservationsEmptyScreen
+              isOnline={isOnline}
             />
           </StickyView>
         </View>

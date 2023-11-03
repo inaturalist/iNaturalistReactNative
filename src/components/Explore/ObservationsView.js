@@ -7,7 +7,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useInfiniteObservationsScroll } from "sharedHooks";
+import { useInfiniteObservationsScroll, useIsConnected } from "sharedHooks";
 
 type Props = {
   exploreParams: Object,
@@ -26,7 +26,7 @@ const ObservationsView = ( {
     observations, isFetchingNextPage, fetchNextPage, status
   } = useInfiniteObservationsScroll( { upsert: false, params: exploreParams } );
 
-  // console.log( observations[0], "observations" );
+  const isOnline = useIsConnected( );
 
   const tileMapParams = { };
 
@@ -60,6 +60,7 @@ const ObservationsView = ( {
           testID="ExploreObservationsAnimatedList"
           handleScroll={handleScroll}
           status={status}
+          isOnline={isOnline}
         />
       </View>
     );

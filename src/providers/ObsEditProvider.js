@@ -32,6 +32,7 @@ import {
   useApiToken,
   useAuthenticatedMutation,
   useCurrentUser,
+  useIsConnected,
   useLocalObservation,
   useTranslation
 } from "sharedHooks";
@@ -61,6 +62,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const apiToken = useApiToken( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
+  const isOnline = useIsConnected( );
 
   const combineReducers = ( ...reducers ) => ( prevState, value ) => reducers
     .reduce( ( newState, reducer ) => reducer( newState, value ), prevState );
@@ -519,7 +521,18 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return responses[0];
     };
 
+    const showInternetErrorAlert = ( ) => {
+      if ( !isOnline ) {
+        Alert.alert(
+          t( "Internet-Connection-Required" ),
+          t( "Please-try-again-when-you-are-connected-to-the-internet" )
+        );
+      }
+      return null;
+    };
+
     const uploadObservation = async ( obs, uploadOptions ) => {
+      showInternetErrorAlert( );
       if ( uploadOptions?.isSingleUpload ) {
         dispatch( {
           type: "UPLOAD_SINGLE_OBSERVATION",
@@ -714,6 +727,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const syncObservations = async ( ) => {
+      showInternetErrorAlert( );
       // TODO: GET observation/deletions once this is enabled in API v2
       activateKeepAwake( );
       setLoading( true );
@@ -725,6 +739,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const uploadMultipleObservations = ( ) => {
+      showInternetErrorAlert( );
       const upload = async observationToUpload => {
         try {
           await uploadObservation( observationToUpload );
@@ -868,11 +883,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     currentObservationIndex,
     currentUser,
     galleryUris,
+    isOnline,
     localObservation,
     navigation,
     numOfObsPhotos,
     observations,
     realm,
+    t,
     singleUpload,
     state,
     uploadProgress

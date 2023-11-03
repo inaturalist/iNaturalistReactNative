@@ -13,7 +13,6 @@ import React, {
 } from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import {
-  useIsConnected,
   useTranslation
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -22,16 +21,17 @@ type Props = {
   faveOrUnfave: Function,
   userFav: ?boolean,
   photos: Array<Object>,
-  uuid: string
+  uuid: string,
+  isOnline: boolean
 }
 
 const PhotoDisplay = ( {
   faveOrUnfave,
   userFav,
   photos,
-  uuid
+  uuid,
+  isOnline
 }: Props ): Node => {
-  const isOnline = useIsConnected( );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 

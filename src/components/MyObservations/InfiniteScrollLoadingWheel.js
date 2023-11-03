@@ -6,18 +6,18 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { ActivityIndicator } from "react-native";
-import { useIsConnected, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   isFetchingNextPage?: boolean,
   currentUser?: ?Object,
-  layout?: string
+  layout?: string,
+  isOnline?: boolean
 }
 
 const InfiniteScrollLoadingWheel = ( {
-  isFetchingNextPage, currentUser, layout
+  isFetchingNextPage, currentUser, layout, isOnline
 }: Props ): Node => {
-  const isOnline = useIsConnected( );
   const { t } = useTranslation( );
 
   const loadingWheelClass = "h-64 py-16";

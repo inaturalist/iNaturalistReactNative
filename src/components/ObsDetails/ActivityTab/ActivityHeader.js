@@ -24,14 +24,14 @@ type Props = {
   updateCommentBody: Function,
   deleteComment: Function,
   withdrawOrRestoreIdentification: Function,
-  onItemFlagged:Function
-
+  onItemFlagged:Function,
+  isOnline: boolean
 }
 
 const ActivityHeader = ( {
   item, classNameMargin, currentUser,
   idWithdrawn, flagged, updateCommentBody, deleteComment, withdrawOrRestoreIdentification,
-  onItemFlagged
+  onItemFlagged, isOnline
 }:Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [flagModalVisible, setFlagModalVisible] = useState( false );
@@ -89,7 +89,7 @@ const ActivityHeader = ( {
 
   return (
     <View className={classnames( "flex-row justify-between", classNameMargin )}>
-      <InlineUser user={user} />
+      <InlineUser user={user} isOnline={isOnline} />
       <View className="flex-row items-center space-x-[15px]">
         {renderIcon()}
         {

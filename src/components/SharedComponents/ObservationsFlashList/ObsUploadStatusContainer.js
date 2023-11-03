@@ -3,11 +3,8 @@
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useContext } from "react";
-import { Alert } from "react-native";
 import {
-  useCurrentUser,
-  useIsConnected,
-  useTranslation
+  useCurrentUser
 } from "sharedHooks";
 
 import ObsUploadStatus from "./ObsUploadStatus";
@@ -31,8 +28,6 @@ const ObsUploadStatusContainer = ( {
   const obsEditContext = useContext( ObsEditContext );
   const uploadObservation = obsEditContext?.uploadObservation;
   const uploadProgress = obsEditContext?.uploadProgress;
-  const isConnected = useIsConnected( );
-  const { t } = useTranslation( );
 
   const needsSync = item => !item._synced_at
     || item._synced_at <= item._updated_at;
@@ -45,14 +40,6 @@ const ObsUploadStatusContainer = ( {
   const progress = currentProgress / currentProgressIncrements || 0;
 
   const startUpload = useCallback( ( ) => {
-    if ( !isConnected ) {
-      Alert.alert(
-        t( "Internet-Connection-Required" ),
-        t( "Please-try-again-when-you-are-connected-to-the-internet" )
-      );
-      return;
-    }
-
     if ( !currentUser ) {
       setShowLoginSheet( true );
       return;
@@ -60,10 +47,8 @@ const ObsUploadStatusContainer = ( {
     uploadObservation( observation, { isSingleUpload: true } );
   }, [
     currentUser,
-    isConnected,
     observation,
     setShowLoginSheet,
-    t,
     uploadObservation
   ] );
 
