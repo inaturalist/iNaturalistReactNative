@@ -7,10 +7,14 @@ import type { Node } from "react";
 import React, {
   useContext, useState
 } from "react";
-import { InteractionManager, View } from "react-native";
+import { InteractionManager, Platform, View } from "react-native";
 import * as ImagePicker from "react-native-image-picker";
 
 const MAX_PHOTOS_ALLOWED = 20;
+
+const sleep = ms => new Promise(resolve => {
+  setTimeout(resolve, ms);
+});
 
 const PhotoGallery = ( ): Node => {
   const navigation = useNavigation( );
@@ -37,25 +41,25 @@ const PhotoGallery = ( ): Node => {
 
     setPhotoGalleryShown( true );
 
-    let response;
-    try {
-      response = await ImagePicker.launchImageLibrary( {
-        selectionLimit: MAX_PHOTOS_ALLOWED,
-        mediaType: "photo",
-        includeBase64: false,
-        includeExtra: true,
-        forceOldAndroidPhotoPicker: true,
-        chooserTitle: t( "Import-Photos-From" ),
-        presentationStyle: "fullScreen"
-      } );
-    } catch ( exc ) {
-      // User cancelled selection of photos - close current screen
-      console.error( exc );
-      navigation.goBack();
-      setPhotoGalleryShown( false );
+    if ( Platform.OS === "ios" ) {
+      // iOS has annoying transition of the screen - that if we don't wait enough time,
+      // the launchImageLibrary would halt and not return (and not showing any image picker)
+      await sleep( 500 );
     }
 
-    if ( !response || response.didCancel || !response.assets ) {
+    // According to the native code of the image picker library, it never rejects the promise,
+    // just returns a response object with errorCode
+    const response = await ImagePicker.launchImageLibrary( {
+      selectionLimit: MAX_PHOTOS_ALLOWED,
+      mediaType: "photo",
+      includeBase64: false,
+      includeExtra: true,
+      forceOldAndroidPhotoPicker: true,
+      chooserTitle: t( "Import-Photos-From" ),
+      presentationStyle: "fullScreen"
+    } );
+
+    if ( !response || response.didCancel || !response.assets || response.errorCode ) {
       // User cancelled selection of photos - close current screen
       navigation.goBack();
       setPhotoGalleryShown( false );
@@ -103,6 +107,7 @@ const PhotoGallery = ( ): Node => {
   };
 
   const onPermissionGranted = () => {
+    console.log( "onPermissionGranted" );
     setPermissionGranted( true );
   };
 
@@ -114,6 +119,7 @@ const PhotoGallery = ( ): Node => {
       // Wait for screen to finish transition
       interactionHandle = InteractionManager.runAfterInteractions( () => {
         if ( permissionGranted && !photoGalleryShown ) {
+          console.log( "Calling showPhotoGallery from useFocusEffect" );
           showPhotoGallery();
         }
       } );

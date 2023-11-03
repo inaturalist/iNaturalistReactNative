@@ -7,7 +7,7 @@ import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer"
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
-  CAMERA_PERMISSIONS,
+  CAMERA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
