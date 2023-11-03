@@ -9,18 +9,6 @@ import React from "react";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-// jest.mock( "@react-navigation/native", ( ) => {
-//   const actualNav = jest.requireActual( "@react-navigation/native" );
-//   return {
-//     ...actualNav,
-//     useRoute: ( ) => ( {
-//     } ),
-//     useNavigation: ( ) => ( {
-//       setOptions: jest.fn( )
-//     } )
-//   };
-// } );
-
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
@@ -30,8 +18,7 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
   <INatPaperProvider>
     <ObsEditContext.Provider value={{
       observations: obs,
-      currentObservation: obs[0],
-      setPassesIdentificationTest: jest.fn( )
+      currentObservation: obs[0]
     }}
     >
       {children}
@@ -41,7 +28,7 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
 
 const renderIdentificationSection = ( ) => renderComponent(
   <ObsEditProvider>
-    <IdentificationSection />
+    <IdentificationSection passesIdentificationTest />
   </ObsEditProvider>
 );
 

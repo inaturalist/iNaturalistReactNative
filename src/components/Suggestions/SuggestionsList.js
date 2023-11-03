@@ -1,9 +1,10 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import { Body1, Heading4, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { ActivityIndicator } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
@@ -19,6 +20,11 @@ const SuggestionsList = ( {
   loading
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const navigation = useNavigation( );
+  const onTaxonResultChosen = useCallback( taxon => {
+    onTaxonChosen( taxon );
+    navigation.goBack( );
+  }, [navigation, onTaxonChosen] );
 
   if ( loading ) {
     return (
@@ -71,7 +77,7 @@ const SuggestionsList = ( {
         <TaxonResult
           key={topSuggestion.taxon.id}
           taxon={topSuggestion.taxon}
-          handleCheckmarkPress={( ) => onTaxonChosen( topSuggestion.taxon )}
+          handleCheckmarkPress={onTaxonResultChosen}
           testID={`SuggestionsList.taxa.${topSuggestion.taxon.id}`}
           confidence={convertScoreToConfidence( topSuggestion.combined_score )}
           activeColor="bg-inatGreen"
@@ -88,7 +94,7 @@ const SuggestionsList = ( {
           <TaxonResult
             key={suggestion.taxon.id}
             taxon={suggestion.taxon}
-            handleCheckmarkPress={( ) => onTaxonChosen( suggestion.taxon )}
+            handleCheckmarkPress={onTaxonResultChosen}
             testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
             confidence={convertScoreToConfidence( suggestion.combined_score )}
             activeColor="bg-inatGreen"

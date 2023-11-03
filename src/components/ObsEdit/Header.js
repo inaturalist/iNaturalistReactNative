@@ -20,7 +20,7 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 const Header = ( ): Node => {
   const {
     observations,
-    setObservations,
+    updateObservations,
     currentObservation,
     unsavedChanges
   } = useContext( ObsEditContext );
@@ -53,15 +53,15 @@ const Header = ( ): Node => {
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    setObservations( [] );
+    updateObservations( [] );
     navToObsDetails( );
-  }, [setObservations, navToObsDetails] );
+  }, [updateObservations, navToObsDetails] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
-    setObservations( [] );
+    updateObservations( [] );
     navToObsList( );
-  }, [setObservations, navToObsList] );
+  }, [updateObservations, navToObsList] );
 
   const renderHeaderTitle = useCallback( ( ) => (
     <Heading2
@@ -143,7 +143,9 @@ const Header = ( ): Node => {
       headerRight: renderKebabMenu
     };
 
-    navigation.setOptions( headerOptions );
+    if ( typeof ( navigation?.setOptions ) === "function" ) {
+      navigation?.setOptions( headerOptions );
+    }
   }, [
     observations,
     navigation,

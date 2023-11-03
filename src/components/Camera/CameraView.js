@@ -7,7 +7,11 @@ import {
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
-import { orientationPatch, pixelFormatPatch } from "sharedHelpers/visionCameraPatches";
+import {
+  iPadStylePatch,
+  orientationPatch,
+  pixelFormatPatch
+} from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useIsForeground from "sharedHooks/useIsForeground";
 
@@ -152,6 +156,10 @@ const CameraView = ( {
       onZoomChange?.( e.scale );
     } );
 
+  // react-native-vision-camera v3.3.1:
+  // iPad camera preview is wrong in anything else than portrait
+  const cameraStyle = iPadStylePatch( deviceOrientation );
+
   return (
     <>
       <GestureDetector gesture={Gesture.Exclusive( singleTap, pinchGesture )}>
@@ -160,7 +168,7 @@ const CameraView = ( {
           photo
           enableZoomGesture={false}
           isActive={isActive}
-          style={[StyleSheet.absoluteFill]}
+          style={[StyleSheet.absoluteFill, cameraStyle]}
           onError={e => onError( e )}
           // react-native-vision-camera v3.3.1: This prop is undocumented, but does work on iOS
           // it does nothing on Android so we set it to null there

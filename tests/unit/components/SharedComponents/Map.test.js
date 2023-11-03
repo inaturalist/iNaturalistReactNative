@@ -24,7 +24,7 @@ describe( "Map", ( ) => {
   it( "displays filtered observations on map", async ( ) => {
     renderComponent(
       <Map
-        withObsTiles
+        withPressableObsTiles
         tileMapParams={{ taxon_id: 47178 }}
       />
     );

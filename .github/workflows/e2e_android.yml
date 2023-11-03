@@ -101,10 +101,6 @@ jobs:
     - name: Move keystore
       run: mv release.keystore android/app/release.keystore
 
-    # Check that the e2e test user is setup correctly, requires .env
-    - name: Check that the e2e test user is setup correctly
-      run: npm run github-actions-test-user-check
-
     # Download the example model otherwise an error alert will be shown on app start, requires .env
     - name: Download a fake cv model and taxonomy file into the assets folder
       run: npm run add-github-actions-test-model

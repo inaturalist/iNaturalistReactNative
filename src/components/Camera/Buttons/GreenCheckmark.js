@@ -19,7 +19,7 @@ const GreenCheckmark = ( {
 
   return (
     <INatIconButton
-      onPress={( ) => navToObsEdit( { prediction: null } )}
+      onPress={( ) => navToObsEdit( )}
       accessibilityLabel={t( "Checkmark" )}
       accessibilityHint={t( "Navigate-to-observation-edit-screen" )}
       disabled={false}

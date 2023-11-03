@@ -1,0 +1,570 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomTabBar should render correctly 1`] = `
+<View
+  collapsable={false}
+  pointerEvents="box-none"
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityRole="tablist"
+    style={
+      [
+        [
+          {
+            "display": "flex",
+          },
+          {
+            "flexDirection": "row",
+          },
+          {
+            "bottom": 0,
+          },
+          {
+            "backgroundColor": "#ffffff",
+          },
+          {
+            "width": "100%",
+          },
+          {
+            "justifyContent": "space-evenly",
+          },
+          {
+            "alignItems": "center",
+          },
+          {
+            "paddingBottom": 4,
+            "paddingLeft": 4,
+            "paddingRight": 4,
+            "paddingTop": 4,
+          },
+          {
+            "marginBottom": 0,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "marginTop": 0,
+          },
+          {
+            "paddingBottom": 20,
+          },
+          {
+            "elevation": 20,
+            "shadowColor": "#000000",
+            "shadowOffset": {
+              "height": -3,
+              "width": 0,
+            },
+            "shadowOpacity": 0.2,
+            "shadowRadius": 2,
+          },
+        ],
+      ]
+    }
+  >
+    <View>
+      <View
+        accessibilityHint="Opens-the-side-drawer-menu"
+        accessibilityLabel="Open-drawer"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 44,
+            },
+            false,
+            undefined,
+          ]
+        }
+        testID="OPEN_DRAWER"
+      >
+        <View
+          style={
+            [
+              [
+                {
+                  "position": "relative",
+                },
+              ],
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#454545",
+                  "fontSize": 32,
+                },
+                undefined,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityHint="Navigates-to-explore"
+        accessibilityLabel="Explore"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 44,
+            },
+            false,
+            undefined,
+          ]
+        }
+        testID="Explore"
+      >
+        <View
+          style={
+            [
+              [
+                {
+                  "position": "relative",
+                },
+              ],
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#454545",
+                  "fontSize": 40,
+                },
+                undefined,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <Modal
+      animationType="none"
+      deviceHeight={null}
+      deviceWidth={null}
+      hardwareAccelerated={false}
+      hideModalContentWhileAnimating={true}
+      onBackdropPress={[Function]}
+      onModalHide={[Function]}
+      onModalWillHide={[Function]}
+      onModalWillShow={[Function]}
+      onRequestClose={[Function]}
+      onSwipeComplete={[Function]}
+      panResponderThreshold={4}
+      scrollHorizontal={false}
+      scrollOffset={0}
+      scrollOffsetMax={0}
+      scrollTo={null}
+      statusBarTranslucent={false}
+      supportedOrientations={
+        [
+          "portrait",
+          "landscape",
+        ]
+      }
+      swipeDirection="down"
+      swipeThreshold={100}
+      transparent={true}
+      useNativeDriverForBackdrop={true}
+      visible={false}
+    />
+    <View
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          [
+            {
+              "width": 69,
+            },
+            {
+              "height": 69,
+            },
+            {
+              "borderBottomLeftRadius": 9999,
+              "borderBottomRightRadius": 9999,
+              "borderTopLeftRadius": 9999,
+              "borderTopRightRadius": 9999,
+            },
+            {
+              "overflow": "hidden",
+            },
+            {
+              "elevation": 5,
+              "shadowColor": "#000000",
+              "shadowOffset": {
+                "height": 2,
+                "width": 0,
+              },
+              "shadowOpacity": 0.25,
+              "shadowRadius": 2,
+            },
+          ],
+        ]
+      }
+      testID="add-obs-button"
+    >
+      <BVLinearGradient
+        angle={156.95}
+        colors={
+          [
+            4285836288,
+            4280909703,
+          ]
+        }
+        endPoint={
+          {
+            "x": 0.5,
+            "y": 1,
+          }
+        }
+        locations={null}
+        startPoint={
+          {
+            "x": 0.5,
+            "y": 0,
+          }
+        }
+        useAngle={true}
+      >
+        <View
+          style={
+            [
+              [
+                {
+                  "flexGrow": 1,
+                },
+                {
+                  "aspectRatio": 1,
+                },
+                {
+                  "display": "flex",
+                },
+                {
+                  "alignItems": "center",
+                },
+                {
+                  "justifyContent": "center",
+                },
+              ],
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#ffffff",
+                  "fontSize": 31,
+                },
+                undefined,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </BVLinearGradient>
+    </View>
+    <View>
+      <View
+        accessibilityHint="Navigates-to-observations"
+        accessibilityLabel="Observations"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 44,
+            },
+            false,
+            undefined,
+          ]
+        }
+        testID="NavButton.personIcon"
+      >
+        <View
+          style={
+            [
+              [
+                {
+                  "position": "relative",
+                },
+              ],
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#74AC00",
+                  "fontSize": 40,
+                },
+                undefined,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityHint="Navigates-to-messages"
+        accessibilityLabel="Messages"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 44,
+            },
+            false,
+            undefined,
+          ]
+        }
+        testID="Messages"
+      >
+        <View
+          style={
+            [
+              [
+                {
+                  "position": "relative",
+                },
+              ],
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#454545",
+                  "fontSize": 32,
+                },
+                undefined,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

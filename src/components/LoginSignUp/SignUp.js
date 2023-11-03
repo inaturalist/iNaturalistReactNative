@@ -3,19 +3,29 @@
 import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
+import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 import SignUpForm from "./SignUpForm";
 
-const SignUp = (): Node => {
-  const [hideHeader, setHideHeader] = useState( false );
+const TARGET_NON_KEYBOARD_HEIGHT = 440;
 
-  const handleInputFocus = ( ) => setHideHeader( true );
+const SignUp = (): Node => {
+  const { nonKeyboardHeight } = useKeyboardInfo( );
+
+  const hideHeader = nonKeyboardHeight < 580;
+
+  const keyboardVerticalOffset = nonKeyboardHeight < TARGET_NON_KEYBOARD_HEIGHT
+    ? nonKeyboardHeight - TARGET_NON_KEYBOARD_HEIGHT
+    : 30;
 
   return (
-    <LoginSignUpWrapper backgroundSource={require( "images/frog.png" )}>
+    <LoginSignUpWrapper
+      backgroundSource={require( "images/frog.png" )}
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
       <ScrollView
         keyboardShouldPersistTaps="always"
         // eslint-disable-next-line react-native/no-inline-styles
@@ -27,7 +37,7 @@ const SignUp = (): Node => {
         {!hideHeader && (
           <Header headerText={t( "Join-the-largest-community-of-naturalists" )} />
         )}
-        <SignUpForm handleInputFocus={handleInputFocus} />
+        <SignUpForm />
       </ScrollView>
     </LoginSignUpWrapper>
   );

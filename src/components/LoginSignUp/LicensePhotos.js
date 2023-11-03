@@ -14,7 +14,7 @@ const LicensePhotos = ( ): Node => (
     <ScrollView
       keyboardShouldPersistTaps="always"
     >
-      <Header headerText={t( "Almost-done" )} closeButtonIcon="chevron-left" />
+      <Header headerText={t( "Almost-done" )} />
       <LicensePhotosForm />
     </ScrollView>
   </LoginSignUpWrapper>

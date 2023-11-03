@@ -5,10 +5,10 @@ import classnames from "classnames";
 import {
   Body2,
   Body4,
-  INatIconButton
+  INatIconButton,
+  Map,
+  Modal
 } from "components/SharedComponents";
-import Map from "components/SharedComponents/Map";
-import Modal from "components/SharedComponents/Modal";
 import {
   SafeAreaView,
   View
@@ -40,7 +40,8 @@ type Props = {
   copyCoordinates: Function,
   shareMap: Function,
   cycleMapTypes: Function,
-  closeModal: Function
+  closeModal: Function,
+  tileMapParams: Object
 }
 
 const FloatingActionButton = ( {
@@ -79,7 +80,8 @@ const DetailsMap = ( {
   obscured,
   positionalAccuracy,
   shareMap,
-  showNotificationModal
+  showNotificationModal,
+  tileMapParams
 }: Props ): Node => {
   const theme = useTheme( );
   return (
@@ -95,6 +97,8 @@ const DetailsMap = ( {
           mapType={mapType}
           positionalAccuracy={positionalAccuracy}
           mapViewRef={mapViewRef}
+          withObsTiles={tileMapParams !== null}
+          tileMapParams={tileMapParams}
         >
           { !obscured && (
             <>

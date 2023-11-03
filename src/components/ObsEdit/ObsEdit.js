@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect
+  useContext, useEffect, useState
 } from "react";
 import { ActivityIndicator } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -22,12 +22,14 @@ const ObsEdit = ( ): Node => {
   const {
     currentObservation,
     observations,
-    setObservations,
+    updateObservations,
     resetObsEditContext,
     loading
   } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
+  const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
+  const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
 
   useEffect( ( ) => {
     // when first opening an observation from ObsDetails, fetch local observation from realm
@@ -41,9 +43,9 @@ const ObsEdit = ( ): Node => {
       resetObsEditContext( );
       // need .toJSON( ) to be able to add evidence to an existing local observation
       // otherwise, get a realm error about modifying managed objects outside of a write transaction
-      setObservations( [localObservation.toJSON( )] );
+      updateObservations( [localObservation.toJSON( )] );
     }
-  }, [localObservation, setObservations, resetObsEditContext, currentObservation] );
+  }, [localObservation, updateObservations, resetObsEditContext, currentObservation] );
 
   return (
     <>
@@ -53,15 +55,24 @@ const ObsEdit = ( ): Node => {
           {currentObservation && (
             <>
               {observations.length > 1 && <MultipleObservationsArrows />}
-              <EvidenceSectionContainer />
-              <IdentificationSection />
+              <EvidenceSectionContainer
+                passesEvidenceTest={passesEvidenceTest}
+                setPassesEvidenceTest={setPassesEvidenceTest}
+              />
+              <IdentificationSection
+                passesIdentificationTest={passesIdentificationTest}
+                setPassesIdentificationTest={setPassesIdentificationTest}
+              />
               <OtherDataSection />
             </>
           )}
           {loading && <ActivityIndicator />}
         </KeyboardAwareScrollView>
       </View>
-      <BottomButtons />
+      <BottomButtons
+        passesEvidenceTest={passesEvidenceTest}
+        passesIdentificationTest={passesIdentificationTest}
+      />
     </>
   );
 };

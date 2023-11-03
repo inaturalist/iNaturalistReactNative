@@ -13,11 +13,12 @@ type Props = {
   latitude: number,
   longitude: number,
   closeModal: Function,
-  obscured: bool
+  obscured: bool,
+  tileMapParams: ?Object
 }
 
 const DetailsMapContainer = ( {
-  observation, latitude, longitude, closeModal, obscured
+  observation, latitude, longitude, closeModal, obscured, tileMapParams
 }: Props ): Node => {
   const coordinateString = t( "Lat-Lon", {
     latitude,
@@ -82,6 +83,7 @@ const DetailsMapContainer = ( {
       showNotificationModal={showNotificationModal}
       closeNotificationsModal={closeShowNotificationModal}
       closeModal={closeModal}
+      tileMapParams={tileMapParams}
     />
   );
 };

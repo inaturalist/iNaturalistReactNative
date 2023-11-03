@@ -9,6 +9,7 @@ import {
 import { ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { Platform } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
@@ -63,6 +64,10 @@ const ObsDetails = ( {
 
   const taxon = observation?.taxon;
 
+  const textInputStyle = Platform.OS === "android" && {
+    height: 125
+  };
+
   return (
     <ViewWrapper>
       <ScrollView
@@ -114,6 +119,7 @@ const ObsDetails = ( {
         <TextInputSheet
           handleClose={hideCommentBox}
           headerText={t( "ADD-OPTIONAL-COMMENT" )}
+          textInputStyle={textInputStyle}
           snapPoints={[416]}
           confirm={textInput => onCommentAdded( textInput )}
         />
