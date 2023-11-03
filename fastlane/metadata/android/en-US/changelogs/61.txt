@@ -1,0 +1,14 @@
+NEW
+* Permission priming: show custom views before asking for permissions
+
+FIXED
+* Inputs login and signup should remain above keyboard instead of at top of
+  screen
+* Show map tiles for observation taxon on ObsDetail
+* Confirm comment deletion
+* Show log in button on MyObs instead of Upload button
+* Removed minimum zoom for LocationPicker
+* MyObs TabBar icon should remain after signing in but losing network
+
+CHANGED
+* Numerous battery usage and performance improvements
