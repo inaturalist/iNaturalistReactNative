@@ -166,8 +166,8 @@ const CameraView = ( {
   // which the Camera overflows its view
   return (
     <View className="overflow-hidden flex-1">
-      <GestureDetector gesture={Gesture.Exclusive( singleTap, pinchGesture )}>
-        <VeryBadIpadRotator>
+      <VeryBadIpadRotator>
+        <GestureDetector gesture={Gesture.Exclusive( singleTap, pinchGesture )}>
           <ReanimatedCamera
             // Shared props between StandardCamera and ARCamera
             photo
@@ -187,12 +187,12 @@ const CameraView = ( {
             animatedProps={animatedProps}
             resizeMode={resizeMode || "cover"}
           />
-        </VeryBadIpadRotator>
-      </GestureDetector>
-      <FocusSquare
-        singleTapToFocusAnimation={singleTapToFocusAnimation}
-        tappedCoordinates={tappedCoordinates}
-      />
+        </GestureDetector>
+        <FocusSquare
+          singleTapToFocusAnimation={singleTapToFocusAnimation}
+          tappedCoordinates={tappedCoordinates}
+        />
+      </VeryBadIpadRotator>
     </View>
   );
 };
