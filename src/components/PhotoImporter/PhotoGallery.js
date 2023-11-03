@@ -12,9 +12,9 @@ import * as ImagePicker from "react-native-image-picker";
 
 const MAX_PHOTOS_ALLOWED = 20;
 
-const sleep = ms => new Promise(resolve => {
-  setTimeout(resolve, ms);
-});
+const sleep = ms => new Promise( resolve => {
+  setTimeout( resolve, ms );
+} );
 
 const PhotoGallery = ( ): Node => {
   const navigation = useNavigation( );
