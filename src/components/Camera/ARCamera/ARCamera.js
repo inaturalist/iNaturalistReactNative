@@ -51,7 +51,8 @@ type Props = {
   onZoomChange?: Function,
   result?: Object,
   handleTaxaDetected: Function,
-  modelLoaded: boolean
+  modelLoaded: boolean,
+  isLandscapeMode: boolean
 };
 
 const ARCamera = ( {
@@ -74,7 +75,8 @@ const ARCamera = ( {
   onZoomChange,
   result,
   handleTaxaDetected,
-  modelLoaded
+  modelLoaded,
+  isLandscapeMode
 }: Props ): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -118,24 +120,31 @@ const ARCamera = ( {
   return (
     <>
       {device && (
-        <FrameProcessorCamera
-          cameraRef={camera}
-          device={device}
-          onTaxaDetected={handleTaxaDetected}
-          onClassifierError={handleClassifierError}
-          onDeviceNotSupported={handleDeviceNotSupported}
-          onCaptureError={handleCaptureError}
-          onCameraError={handleCameraError}
-          onLog={handleLog}
-          animatedProps={animatedProps}
-          onZoomStart={onZoomStart}
-          onZoomChange={onZoomChange}
-          takingPhoto={takingPhoto}
-        />
+        <View className="w-full h-full absolute z-0">
+          <FrameProcessorCamera
+            cameraRef={camera}
+            device={device}
+            onTaxaDetected={handleTaxaDetected}
+            onClassifierError={handleClassifierError}
+            onDeviceNotSupported={handleDeviceNotSupported}
+            onCaptureError={handleCaptureError}
+            onCameraError={handleCameraError}
+            onLog={handleLog}
+            animatedProps={animatedProps}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
+            takingPhoto={takingPhoto}
+          />
+        </View>
       )}
       <LinearGradient
         colors={["#000000", "rgba(0, 0, 0, 0)"]}
-        locations={[0.001, 1]}
+        locations={[
+          0.001,
+          isTablet && isLandscapeMode
+            ? 0.3
+            : 1
+        ]}
         className="w-full"
       >
         <View

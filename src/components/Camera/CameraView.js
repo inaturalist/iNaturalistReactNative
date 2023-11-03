@@ -1,4 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
+import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useRef, useState } from "react";
 import { Animated, StyleSheet } from "react-native";
@@ -8,7 +10,6 @@ import {
 import Reanimated from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
 import {
-  iPadStylePatch,
   orientationPatch,
   pixelFormatPatch
 } from "sharedHelpers/visionCameraPatches";
@@ -157,37 +158,42 @@ const CameraView = ( {
     } );
 
   // react-native-vision-camera v3.3.1:
-  // iPad camera preview is wrong in anything else than portrait
-  const cameraStyle = iPadStylePatch( deviceOrientation );
+  // iPad camera preview is wrong in anything else than portrait, hence the
+  // VeryBadIpadRotator, which will rotate its contents us a style transform
+  // and adjust position accordingly
 
+  // Note that overflow-hidden handles what seems to be a bug in android in
+  // which the Camera overflows its view
   return (
-    <>
+    <View className="overflow-hidden flex-1">
       <GestureDetector gesture={Gesture.Exclusive( singleTap, pinchGesture )}>
-        <ReanimatedCamera
-          // Shared props between StandardCamera and ARCamera
-          photo
-          enableZoomGesture={false}
-          isActive={isActive}
-          style={[StyleSheet.absoluteFill, cameraStyle]}
-          onError={e => onError( e )}
-          // react-native-vision-camera v3.3.1: This prop is undocumented, but does work on iOS
-          // it does nothing on Android so we set it to null there
-          orientation={orientationPatch( deviceOrientation )}
-          ref={cameraRef}
-          device={device}
-          enableHighQualityPhotos
-          // Props for ARCamera only
-          frameProcessor={frameProcessor}
-          pixelFormat={pixelFormatPatch()}
-          animatedProps={animatedProps}
-          resizeMode={resizeMode || "cover"}
-        />
+        <VeryBadIpadRotator>
+          <ReanimatedCamera
+            // Shared props between StandardCamera and ARCamera
+            photo
+            enableZoomGesture={false}
+            isActive={isActive}
+            style={StyleSheet.absoluteFill}
+            onError={e => onError( e )}
+            // react-native-vision-camera v3.3.1: This prop is undocumented, but does work on iOS
+            // it does nothing on Android so we set it to null there
+            orientation={orientationPatch( deviceOrientation )}
+            ref={cameraRef}
+            device={device}
+            enableHighQualityPhotos
+            // Props for ARCamera only
+            frameProcessor={frameProcessor}
+            pixelFormat={pixelFormatPatch()}
+            animatedProps={animatedProps}
+            resizeMode={resizeMode || "cover"}
+          />
+        </VeryBadIpadRotator>
       </GestureDetector>
       <FocusSquare
         singleTapToFocusAnimation={singleTapToFocusAnimation}
         tappedCoordinates={tappedCoordinates}
       />
-    </>
+    </View>
   );
 };
 
