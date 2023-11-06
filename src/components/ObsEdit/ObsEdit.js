@@ -1,6 +1,8 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PerformanceMeasureView } from "@shopify/react-native-performance";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -48,7 +50,10 @@ const ObsEdit = ( ): Node => {
   }, [localObservation, updateObservations, resetObsEditContext, currentObservation] );
 
   return (
-    <>
+    <PerformanceMeasureView
+      interactive={!!currentObservation}
+      screenName="ObsEdit"
+    >
       <View testID="obs-edit" className="bg-white flex-1">
         <Header />
         <KeyboardAwareScrollView className="bg-white mb-[80px]">
@@ -73,7 +78,7 @@ const ObsEdit = ( ): Node => {
         passesEvidenceTest={passesEvidenceTest}
         passesIdentificationTest={passesIdentificationTest}
       />
-    </>
+    </PerformanceMeasureView>
   );
 };
 

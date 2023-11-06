@@ -1,6 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useStartProfiler } from "@shopify/react-native-performance";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
@@ -15,6 +17,7 @@ type Props = {
 }
 
 const AddObsModal = ( { closeModal }: Props ): React.Node => {
+  const startNavigationTTITimer = useStartProfiler( );
   const { t } = useTranslation( );
   const theme = useTheme( );
 
@@ -30,7 +33,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
   const navigation = useNavigation( );
 
-  const navAndCloseModal = ( screen, params ) => {
+  const navAndCloseModal = ( screen, params, uiEvent ) => {
     const resetObsEditContext = obsEditContext?.resetObsEditContext;
     // clear previous upload context before navigating
     if ( resetObsEditContext ) {
@@ -38,6 +41,12 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     }
     if ( screen === "ObsEdit" ) {
       createObservationNoEvidence( );
+    }
+    if ( screen === "Camera" || screen === "ObsEdit" ) {
+      startNavigationTTITimer( {
+        source: "AddObsModal",
+        uiEvent
+      } );
     }
     // access nested screen
     navigation.navigate( "CameraNavigator", {
@@ -47,15 +56,19 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     closeModal( );
   };
 
-  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery" );
+  const navToPhotoGallery = uiEvent => navAndCloseModal( "PhotoGallery", uiEvent );
 
-  const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
+  const navToSoundRecorder = uiEvent => navAndCloseModal( "SoundRecorder", uiEvent );
 
-  const navToARCamera = ( ) => navAndCloseModal( "Camera", { camera: "AR" } );
+  const navToARCamera = uiEvent => navAndCloseModal( "Camera", { camera: "AR" }, uiEvent );
 
-  const navToStandardCamera = ( ) => navAndCloseModal( "Camera", { camera: "Standard" } );
+  const navToStandardCamera = uiEvent => navAndCloseModal(
+    "Camera",
+    { camera: "Standard" },
+    uiEvent
+  );
 
-  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
+  const navToObsEdit = uiEvent => navAndCloseModal( "ObsEdit", uiEvent );
 
   const bulletedText = [
     t( "Take-a-photo-with-your-camera" ),

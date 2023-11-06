@@ -1,6 +1,8 @@
 // @flow
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PerformanceMeasureView } from "@shopify/react-native-performance";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -406,13 +408,18 @@ const CameraContainer = ( ): Node => {
   }
 
   return (
-    <CameraWithDevice
-      addEvidence={addEvidence}
-      cameraType={cameraType}
-      cameraPosition={cameraPosition}
-      setCameraPosition={setCameraPosition}
-      device={device}
-    />
+    <PerformanceMeasureView
+      interactive={!!device}
+      screenName="Camera"
+    >
+      <CameraWithDevice
+        addEvidence={addEvidence}
+        cameraType={cameraType}
+        cameraPosition={cameraPosition}
+        setCameraPosition={setCameraPosition}
+        device={device}
+      />
+    </PerformanceMeasureView>
   );
 };
 

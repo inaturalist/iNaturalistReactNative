@@ -58,7 +58,7 @@ const MyObservationsContainer = ( ): Node => {
   if ( !layout ) { return null; }
 
   return (
-    <PerformanceMeasureView interactive={!!layout} screenName="HomeScreen">
+    <PerformanceMeasureView interactive={!!layout} screenName="ObsList">
       <MyObservations
         observations={observations}
         layout={layout}
