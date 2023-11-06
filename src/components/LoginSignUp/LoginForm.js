@@ -22,11 +22,15 @@ const { useRealm } = RealmContext;
 
 type Props = {
   setLoggedIn: Function,
-  handleInputFocus: Function,
+  handleInputFocus?: Function,
   emailConfirmed: ?boolean
 }
 
-const LoginForm = ( { setLoggedIn, handleInputFocus, emailConfirmed }: Props ): Node => {
+const LoginForm = ( {
+  emailConfirmed,
+  handleInputFocus,
+  setLoggedIn
+}: Props ): Node => {
   const realm = useRealm( );
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
@@ -51,44 +55,44 @@ const LoginForm = ( { setLoggedIn, handleInputFocus, emailConfirmed }: Props ): 
     setLoggedIn( true );
     setLoading( false );
 
-    navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator"
-    } );
+    navigation.getParent( )?.goBack( );
   };
 
   return (
-    <View className="px-4 mt-[9px] justify-end">
+    <View className="px-4 mt-[9px] justify-end grow">
       <View className="mx-4">
-        {emailConfirmed && (
-          <View className="flex-row mb-5 items-center justify-center">
-            <View className="bg-white rounded-full">
-              <INatIcon
-                name="checkmark-circle"
-                color={theme.colors.secondary}
-                size={19}
-              />
+        <View className="mb-2">
+          {emailConfirmed && (
+            <View className="flex-row mb-5 items-center justify-center">
+              <View className="bg-white rounded-full">
+                <INatIcon
+                  name="checkmark-circle"
+                  color={theme.colors.secondary}
+                  size={19}
+                />
+              </View>
+              <List2 className="ml-3 text-white font-medium">
+                {t( "Your-email-is-confirmed" )}
+              </List2>
             </View>
-            <List2 className="ml-3 text-white font-medium">
-              {t( "Your-email-is-confirmed" )}
-            </List2>
-          </View>
-        )}
-        <Heading4 className="color-white mb-[11px]">{t( "USERNAME-OR-EMAIL" )}</Heading4>
-        <TextInput
-          accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-          className="h-[45px] rounded-md"
-          onChangeText={text => {
-            setError( null );
-            setEmail( text );
-          }}
-          value={email}
-          autoComplete="email"
-          testID="Login.email"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
-        />
+          )}
+          <Heading4 className="color-white mb-[11px]">{t( "USERNAME-OR-EMAIL" )}</Heading4>
+          <TextInput
+            accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+            className="h-[45px] rounded-md"
+            onChangeText={text => {
+              setError( null );
+              setEmail( text );
+            }}
+            value={email}
+            autoComplete="email"
+            testID="Login.email"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            selectionColor={theme.colors.tertiary}
+            onFocus={handleInputFocus}
+          />
+        </View>
         <Heading4 className="color-white mb-[11px] mt-[9px]">{t( "PASSWORD" )}</Heading4>
         <TextInput
           accessibilityLabel={t( "PASSWORD" )}
@@ -99,6 +103,7 @@ const LoginForm = ( { setLoggedIn, handleInputFocus, emailConfirmed }: Props ): 
           }}
           value={password}
           secureTextEntry
+          autoCapitalize="none"
           testID="Login.password"
           selectionColor={theme.colors.tertiary}
           onFocus={handleInputFocus}

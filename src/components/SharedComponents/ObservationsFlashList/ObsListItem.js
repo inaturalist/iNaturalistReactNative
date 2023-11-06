@@ -6,7 +6,7 @@ import React from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsUploadStatus from "./ObsUploadStatus";
+import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
   observation: Object,
@@ -47,7 +47,7 @@ const ObsListItem = ( { observation, setShowLoginSheet }: Props ): Node => {
         />
       </View>
       <View className="items-center ml-auto justify-center">
-        <ObsUploadStatus
+        <ObsUploadStatusContainer
           observation={observation}
           layout="vertical"
           setShowLoginSheet={setShowLoginSheet}

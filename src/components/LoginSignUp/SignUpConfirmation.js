@@ -20,7 +20,7 @@ const SignUpConfirmation = ( ): Node => {
   return (
     <LoginSignUpWrapper backgroundSource={require( "images/pink_flower.png" )}>
       <View className="flex-1 justify-between">
-        <Header closeButtonIcon="chevron-left" />
+        <Header />
         <View className="px-4">
           <Body1 className={textClass}>
             {t( "One-last-step" )}
@@ -40,7 +40,7 @@ const SignUpConfirmation = ( ): Node => {
           />
           <Body1
             className="color-white self-center mt-[30px] underline"
-            onPress={( ) => navigation.navigate( "Login" )}
+            onPress={( ) => navigation.navigate( "LoginNavigator" )}
           >
             {t( "Return-to-Login" )}
           </Body1>

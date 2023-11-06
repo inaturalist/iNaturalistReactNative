@@ -9,6 +9,7 @@ import {
 import { ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { Platform } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
@@ -20,7 +21,7 @@ import DetailsTab from "./DetailsTab/DetailsTab";
 import Header from "./Header";
 
 type Props = {
-  navToAddID: Function,
+  navToSuggestions: Function,
   onCommentAdded: Function,
   openCommentBox: Function,
   tabs: Array<Object>,
@@ -40,7 +41,7 @@ type Props = {
 }
 
 const ObsDetails = ( {
-  navToAddID,
+  navToSuggestions,
   onCommentAdded,
   openCommentBox,
   tabs,
@@ -62,6 +63,10 @@ const ObsDetails = ( {
   const { t } = useTranslation( );
 
   const taxon = observation?.taxon;
+
+  const textInputStyle = Platform.OS === "android" && {
+    height: 125
+  };
 
   return (
     <ViewWrapper>
@@ -97,7 +102,7 @@ const ObsDetails = ( {
       </ScrollView>
       {showActivityTab && (
         <FloatingButtons
-          navToAddID={navToAddID}
+          navToSuggestions={navToSuggestions}
           openCommentBox={openCommentBox}
           showCommentBox={showCommentBox}
         />
@@ -114,6 +119,7 @@ const ObsDetails = ( {
         <TextInputSheet
           handleClose={hideCommentBox}
           headerText={t( "ADD-COMMENT" )}
+          textInputStyle={textInputStyle}
           snapPoints={[416]}
           confirm={textInput => onCommentAdded( textInput )}
         />

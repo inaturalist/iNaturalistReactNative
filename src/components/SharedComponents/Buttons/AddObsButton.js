@@ -1,8 +1,7 @@
 // @flow
 
 import AddObsModal from "components/AddObsModal";
-import { INatIcon } from "components/SharedComponents";
-import Modal from "components/SharedComponents/Modal";
+import { INatIcon, Modal } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
@@ -16,12 +15,14 @@ const AddObsButton = (): React.Node => {
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
+  const addObsModal = <AddObsModal closeModal={closeModal} />;
+
   return (
     <>
       <Modal
         showModal={showModal}
         closeModal={closeModal}
-        modal={<AddObsModal closeModal={closeModal} />}
+        modal={addObsModal}
       />
       <Pressable
         className="w-[69px] h-[69px] rounded-full overflow-hidden"

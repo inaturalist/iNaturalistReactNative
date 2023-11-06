@@ -1,129 +1,115 @@
-// @flow
-
-import { useNavigation } from "@react-navigation/native";
-import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import classnames from "classnames";
 import {
-  PermissionsAndroid,
-  Platform,
-  Pressable,
-  Text,
+  Body2,
+  Button,
+  Heading2,
+  INatIcon,
+  INatIconButton,
+  ViewWrapper
+} from "components/SharedComponents";
+import {
+  ImageBackground,
   View
+} from "components/styledComponents";
+import { t } from "i18next";
+import React from "react";
+import {
+  Linking
 } from "react-native";
-import { request, RESULTS } from "react-native-permissions";
-import useTranslation from "sharedHooks/useTranslation";
-import { viewStyles } from "styles/permissionGate";
+import DeviceInfo from "react-native-device-info";
+import { RESULTS } from "react-native-permissions";
+import colors from "styles/tailwindColors";
 
-import ViewWrapper from "./ViewWrapper";
-
-type Props = {
-  children: Node,
-  permission: string,
-  isIOS?: boolean,
+const BACKGROUND_IMAGE_STYLE = {
+  opacity: 0.33,
+  backgroundColor: "black"
 };
 
-// Prompts the user for an Android permission and renders children if granted.
-// Otherwise renders a view saying that permission is required, with a button
-// to grant it if the user hasn't asked not to be bothered again. In the
-// future we might want to extend this to always show a custom view before
-// asking the user for a permission.
-const PermissionGate = ( { children, permission, isIOS }: Props ): Node => {
-  const navigation = useNavigation();
-  const { t } = useTranslation();
-  const [result, setResult] = useState(
-    ( isIOS && Platform.OS === "ios" ) || ( !isIOS && Platform.OS === "android" )
-      ? null
-      : "granted"
-  );
-  useEffect( () => {
-    // kueda 20220422: for reasons I don't understand, the app crashes if this
-    // effect refers to anything defined outside of this function, hence no
-    // constants for the result states and no abstraction of this method for
-    // requesting permissions
-    const requestAndroidPermissions = async () => {
-      const r = await PermissionsAndroid.request( permission );
-      if ( r === PermissionsAndroid.RESULTS.GRANTED ) {
-        setResult( "granted" );
-      } else if ( r === PermissionsAndroid.RESULTS.DENIED ) {
-        setResult( "denied" );
-      } else {
-        setResult( "never_ask_again" );
-      }
-    };
+const isTablet = DeviceInfo.isTablet();
 
-    const requestiOSPermissions = async () => {
-      const r = await request( permission );
-
-      if ( r === RESULTS.GRANTED ) {
-        setResult( "granted" );
-      } else if ( r === RESULTS.DENIED ) {
-        setResult( "denied" );
-      } else {
-        setResult( "never_ask_again" );
-      }
-    };
-
-    if ( result === null ) {
-      if ( Platform.OS === "android" ) {
-        requestAndroidPermissions();
-      } else {
-        requestiOSPermissions();
-      }
-    }
-
-    // If this component has already been rendered but was just returned to in
-    // the navigation, check again
-    navigation.addListener( "focus", async () => {
-      if ( result === null && Platform.OS === "android" ) {
-        await requestAndroidPermissions();
-      }
-    } );
-  }, [permission, navigation, result] );
-
-  const manualGrantButton = (
-    <Pressable
-      accessibilityRole="button"
-      style={viewStyles.permissionButton}
-      onPress={async () => {
-        try {
-          const r = await PermissionsAndroid.request( permission );
-          if ( r === PermissionsAndroid.RESULTS.GRANTED ) {
-            setResult( "granted" );
-          } else if ( r === PermissionsAndroid.RESULTS.DENIED ) {
-            setResult( "denied" );
-          } else {
-            setResult( "never_ask_again" );
-          }
-        } catch ( e ) {
-          console.warn(
-            // eslint-disable-next-line max-len
-            `[DEBUG ${Platform.OS}] PermissionGate: Failed to request permission (${permission}): ${e}`
-          );
-        }
-      }}
-    >
-      <Text>{t( "Grant-Permission" )}</Text>
-    </Pressable>
-  );
-
-  const noPermission = (
-    <ViewWrapper>
-      <Text>{t( "You-denied-iNaturalist-permission-to-do-that" )}</Text>
-      {result === "denied" && manualGrantButton}
-      {result === "never_ask_again" && (
-        <Text>{t( "Go-to-the-Settings-app-to-grant-permissions" )}</Text>
+const PermissionGate = ( {
+  requestPermission,
+  grantStatus,
+  icon,
+  title = t( "Grant-Permission" ),
+  titleDenied = t( "Please-Grant-Permission" ),
+  body,
+  blockedPrompt = t( "Youve-denied-permission-prompt" ),
+  buttonText = t( "GRANT-PERMISSION" ),
+  image = require( "images/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
+  onClose
+} ) => (
+  <ViewWrapper wrapperClassName="bg-black">
+    <ImageBackground
+      source={image}
+      imageStyle={BACKGROUND_IMAGE_STYLE}
+      accessibilityIgnoresInvertColors
+      className={classnames(
+        "w-full",
+        "h-full",
+        "items-center"
       )}
-    </ViewWrapper>
-  );
-
-  let content = <Text>Requesting permission...</Text>;
-  if ( result === "granted" ) {
-    content = children;
-  } else if ( result !== null ) {
-    content = noPermission;
-  }
-
-  return <View style={viewStyles.PermissionGate}>{content}</View>;
-};
+    >
+      <INatIconButton
+        icon="close"
+        color={colors.white}
+        onPress={() => onClose( )}
+        className="absolute top-2 right-2 z-10"
+        accessibilityLabel={t( "Close-permission-request-screen" )}
+      />
+      <View
+        className={classnames(
+          isTablet
+            ? "w-[500px]"
+            : "w-full",
+          "h-full",
+          isTablet
+            ? "justify-center"
+            : "justify-end",
+          "p-5",
+          "items-center"
+        )}
+      >
+        { icon && (
+          <INatIcon
+            name={icon}
+            color={colors.white}
+            size={40}
+          />
+        ) }
+        <Heading2 className="text-center text-white mt-8 mb-5">
+          { grantStatus === null
+            ? title
+            : titleDenied}
+        </Heading2>
+        { body && (
+          <Body2 className="text-center text-white">{ body }</Body2>
+        ) }
+        { grantStatus === RESULTS.BLOCKED && (
+          <Body2 className="text-center text-white mt-5">
+            { blockedPrompt }
+          </Body2>
+        ) }
+        { grantStatus === RESULTS.BLOCKED
+          ? (
+            <Button
+              level="focus"
+              onPress={( ) => Linking.openSettings( )}
+              text={t( "OPEN-SETTINGS" )}
+              className="w-full mt-10"
+            />
+          )
+          : (
+            <Button
+              level="focus"
+              onPress={requestPermission}
+              text={buttonText}
+              className="w-full mt-10"
+            />
+          )}
+      </View>
+    </ImageBackground>
+  </ViewWrapper>
+);
 
 export default PermissionGate;

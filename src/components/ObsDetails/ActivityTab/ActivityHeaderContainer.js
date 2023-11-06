@@ -4,15 +4,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments, updateComment } from "api/comments";
 import { updateIdentification } from "api/identifications";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import Comment from "realmModels/Comment";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 import ActivityHeader from "./ActivityHeader";
-
-const { useRealm } = RealmContext;
 
 type Props = {
   item: Object,
@@ -29,7 +25,7 @@ const ActivityHeaderContainer = ( {
   const [currentUser, setCurrentUser] = useState( false );
   const [flagged, setFlagged] = useState( false );
   const [loading, setLoading] = useState( false );
-  const realm = useRealm( );
+  // const realm = useRealm( );
   const queryClient = useQueryClient( );
   const { user } = item;
 
@@ -67,7 +63,7 @@ const ActivityHeaderContainer = ( {
 
   const deleteUserComment = () => {
     setLoading( true );
-    Comment.deleteComment( item.uuid, realm );
+    // Comment.deleteComment( item.uuid, realm );
     // then delete remotely
     deleteCommentMutation.mutate( item.uuid );
   };

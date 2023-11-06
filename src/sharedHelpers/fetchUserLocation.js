@@ -1,31 +1,14 @@
 // @flow
 
 import Geolocation from "@react-native-community/geolocation";
-import { PermissionsAndroid, Platform } from "react-native";
-import { PERMISSIONS, request } from "react-native-permissions";
+import {
+  LOCATION_PERMISSIONS,
+  permissionResultFromMultiple
+} from "components/SharedComponents/PermissionGateContainer";
+import { Platform } from "react-native";
+import { checkMultiple, RESULTS } from "react-native-permissions";
 
 import fetchPlaceName from "./fetchPlaceName";
-
-const requestLocationPermissions = async ( ): Promise<?string> => {
-  // TODO: test this on a real device
-  if ( Platform.OS === "ios" ) {
-    try {
-      const permission = await request( PERMISSIONS.IOS.LOCATION_WHEN_IN_USE );
-      return permission;
-    } catch ( e ) {
-      console.warn( e, ": error requesting iOS permissions" );
-    }
-  }
-  if ( Platform.OS === "android" ) {
-    try {
-      const permission = await request( PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION );
-      return permission;
-    } catch ( e ) {
-      console.warn( e, ": error requesting android permissions" );
-    }
-  }
-  return null;
-};
 
 const options = {
   enableHighAccuracy: true,
@@ -46,10 +29,13 @@ type UserLocation = {
 
 }
 const fetchUserLocation = async ( ): Promise<?UserLocation> => {
-  const permissions = await requestLocationPermissions( );
+  // const permissions = await checkLocationPermissions( );
+  const permissionResult = permissionResultFromMultiple(
+    await checkMultiple( LOCATION_PERMISSIONS )
+  );
 
   // TODO: handle case where iOS permissions are not granted
-  if ( Platform.OS !== "android" && permissions !== "granted" ) {
+  if ( Platform.OS !== "android" && permissionResult !== RESULTS.GRANTED ) {
     return null;
   }
 

@@ -3,6 +3,9 @@ import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
+import INatPaperProvider from "providers/INatPaperProvider";
+import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import { View } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -10,6 +13,11 @@ import useIsConnected from "sharedHooks/useIsConnected";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
+
+// Mock ObservationProvider so it provides a specific array of observations
+// without any current observation or ability to update or fetch
+// observations
+jest.mock( "providers/ObsEditProvider" );
 
 const mockNavigate = jest.fn();
 const mockObservation = factory( "LocalObservation", {
@@ -150,13 +158,33 @@ jest.mock( "sharedHooks/useUserLocation", () => ( {
   default: () => ( { latLng: mockLatLng } )
 } ) );
 
+const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  <INatPaperProvider>
+    <ObsEditContext.Provider value={{
+      setPhotoEvidenceUris: jest.fn( ),
+      observations: obs
+    }}
+    >
+      {children}
+    </ObsEditContext.Provider>
+  </INatPaperProvider>
+) );
+
+const renderObsDetails = ( ) => renderComponent(
+  <ObsEditProvider>
+    <ObsDetailsContainer />
+  </ObsEditProvider>
+);
+
 describe( "ObsDetails", () => {
   beforeAll( async () => {
     await initI18next();
   } );
 
   it( "should not have accessibility errors", async () => {
-    renderComponent( <ObsDetailsContainer /> );
+    mockObsEditProviderWithObs( [mockObservation] );
+    renderObsDetails( );
     const obsDetails = await screen.findByTestId(
       `ObsDetails.${mockObservation.uuid}`
     );
@@ -165,7 +193,8 @@ describe( "ObsDetails", () => {
 
   it( "renders obs details from remote call", async () => {
     useIsConnected.mockImplementation( () => true );
-    renderComponent( <ObsDetailsContainer /> );
+    mockObsEditProviderWithObs( [mockObservation] );
+    renderObsDetails( );
 
     expect(
       await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` )
@@ -174,7 +203,8 @@ describe( "ObsDetails", () => {
   } );
 
   it( "renders data tab on button press", async () => {
-    renderComponent( <ObsDetailsContainer /> );
+    mockObsEditProviderWithObs( [mockObservation] );
+    renderObsDetails( );
     const button = await screen.findByTestId( "ObsDetails.DetailsTab" );
     expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy();
 
@@ -191,7 +221,8 @@ describe( "ObsDetails", () => {
 
     it( "should render fallback image icon instead of photos", async () => {
       useIsConnected.mockImplementation( () => true );
-      renderComponent( <ObsDetailsContainer /> );
+      mockObsEditProviderWithObs( [mockObservation] );
+      renderObsDetails( );
 
       const labelText = t( "Observation-has-no-photos-and-no-sounds" );
       const fallbackImage = await screen.findByLabelText( labelText );
@@ -207,7 +238,8 @@ describe( "ObsDetails", () => {
 
   describe( "activity tab", () => {
     it( "navigates to taxon details on button press", async () => {
-      renderComponent( <ObsDetailsContainer /> );
+      mockObsEditProviderWithObs( [mockObservation] );
+      renderObsDetails( );
       fireEvent.press(
         await screen.findByTestId(
           `ObsDetails.taxon.${mockObservation.taxon.id}`
@@ -220,7 +252,8 @@ describe( "ObsDetails", () => {
 
     it( "shows network error image instead of observation photos if user is offline", async () => {
       useIsConnected.mockImplementation( () => false );
-      renderComponent( <ObsDetailsContainer /> );
+      mockObsEditProviderWithObs( [mockObservation] );
+      renderObsDetails( );
       const labelText = t( "Observation-photos-unavailable-without-internet" );
       const noInternet = await screen.findByLabelText( labelText );
       expect( noInternet ).toBeTruthy();

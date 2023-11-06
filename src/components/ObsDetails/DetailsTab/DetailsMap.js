@@ -5,10 +5,10 @@ import classnames from "classnames";
 import {
   Body2,
   Body4,
-  INatIconButton
+  INatIconButton,
+  Map,
+  Modal
 } from "components/SharedComponents";
-import Map from "components/SharedComponents/Map";
-import Modal from "components/SharedComponents/Modal";
 import {
   SafeAreaView,
   View
@@ -40,8 +40,8 @@ type Props = {
   copyCoordinates: Function,
   shareMap: Function,
   cycleMapTypes: Function,
-  zoomToCurrentUserLocation: Function,
-  closeModal: Function
+  closeModal: Function,
+  tileMapParams: Object
 }
 
 const FloatingActionButton = ( {
@@ -61,9 +61,6 @@ const FloatingActionButton = ( {
       buttonClassName
     )}
     icon={icon}
-    height={46}
-    width={46}
-    size={24}
     onPress={onPress}
     accessibilityLabel={accessibilityLabel}
   />
@@ -84,7 +81,7 @@ const DetailsMap = ( {
   positionalAccuracy,
   shareMap,
   showNotificationModal,
-  zoomToCurrentUserLocation
+  tileMapParams
 }: Props ): Node => {
   const theme = useTheme( );
   return (
@@ -92,7 +89,7 @@ const DetailsMap = ( {
       <View className="flex-1 h-full">
         <Map
           showLocationIndicator
-          showsMyLocationButton={false}
+          showCurrentLocationButton
           obsLatitude={latitude}
           obsLongitude={longitude}
           mapHeight="100%"
@@ -100,6 +97,8 @@ const DetailsMap = ( {
           mapType={mapType}
           positionalAccuracy={positionalAccuracy}
           mapViewRef={mapViewRef}
+          withObsTiles={tileMapParams !== null}
+          tileMapParams={tileMapParams}
         >
           { !obscured && (
             <>
@@ -119,13 +118,6 @@ const DetailsMap = ( {
               />
             </>
           )}
-          <FloatingActionButton
-            icon="currentlocation"
-            onPress={( ) => zoomToCurrentUserLocation( )}
-            accessibilityLabel={t( "User-location" )}
-            buttonClassName="bottom-0 right-0"
-            theme={theme}
-          />
           <FloatingActionButton
             icon="map-layers"
             onPress={( ) => cycleMapTypes( )}

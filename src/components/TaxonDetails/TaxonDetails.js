@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchTaxon } from "api/taxa";
 import PlaceholderText from "components/PlaceholderText";
 import {
+  BackButton,
   DisplayTaxonName,
   Heading4,
   HideView,
@@ -11,7 +12,6 @@ import {
   ScrollViewWrapper,
   Tabs
 } from "components/SharedComponents";
-import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { ImageBackground, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -29,7 +29,6 @@ const TaxonDetails = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id } = params;
-  const lastScreen = params?.lastScreen;
   const { t } = useTranslation( );
   const [currentTabId, setCurrentTabId] = useState( ABOUT_TAB_ID );
 
@@ -70,16 +69,7 @@ const TaxonDetails = ( ): Node => {
         <View className="absolute left-5 top-5">
           <BackButton
             color={theme.colors.onPrimary}
-            onPress={( ) => {
-              if ( lastScreen ) {
-                navigation.navigate( "CameraNavigator", {
-                  screen: "AddID",
-                  params: { }
-                } );
-              } else {
-                navigation.goBack( );
-              }
-            }}
+            onPress={( ) => navigation.goBack( )}
           />
         </View>
         <View className="absolute bottom-5 left-5">
@@ -93,7 +83,12 @@ const TaxonDetails = ( ): Node => {
         <View className="absolute bottom-5 right-5">
           <INatIconButton
             icon="compass-rose-outline"
-            onPress={( ) => navigation.navigate( "Explore" )}
+            onPress={( ) => navigation.navigate( "TabNavigator", {
+              screen: "ObservationsStackNavigator",
+              params: {
+                screen: "Explore"
+              }
+            } )}
             accessibilityLabel={t( "Explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             size={30}

@@ -1,5 +1,4 @@
 // @flow
-
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
   View
@@ -42,7 +41,7 @@ const ActivityItemKebabMenu = ( {
             setShowWithdrawIDSheet( true );
             setKebabMenuVisible( false );
           }}
-          title={t( "Withdraw-ID" )}
+          title={t( "Withdraw" )}
           testID="MenuItem.Withdraw"
         />
       )
@@ -52,7 +51,7 @@ const ActivityItemKebabMenu = ( {
             withdrawOrRestoreIdentification( true );
             setKebabMenuVisible( false );
           }}
-          title={t( "Restore ID" )}
+          title={t( "Restore" )}
         />
       )}
   </KebabMenu>

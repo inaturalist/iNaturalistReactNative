@@ -12,7 +12,8 @@ type Props = {
   timestamp: number,
   handleImagePress: Function,
   isSelected: boolean,
-  isDisabled: boolean
+  isDisabled: boolean,
+  itemStyle: Object
 }
 
 const PhotoGalleryImage = ( {
@@ -20,7 +21,8 @@ const PhotoGalleryImage = ( {
   timestamp,
   handleImagePress,
   isSelected,
-  isDisabled
+  isDisabled,
+  itemStyle
 }: Props ): Node => {
   const showIcon = ( ) => {
     if ( isDisabled ) {
@@ -29,6 +31,9 @@ const PhotoGalleryImage = ( {
           name="indeterminate-check-box"
           size={30}
           color={colors.darkGray}
+          accessibilityState={{
+            disabled: true
+          }}
         />
       );
     }
@@ -39,14 +44,18 @@ const PhotoGalleryImage = ( {
           size={30}
           color={colors.inatGreen}
           testID={`PhotoGallery.selected.${uri}`}
+          accessibilityState={{
+            disabled: false
+          }}
         />
       );
     }
     return null;
   };
+
   return (
     <Pressable
-      className="w-1/4 px-0.5 py-0.5"
+      className="overflow-hidden"
       onPress={handleImagePress}
       testID={`PhotoGallery.${uri}`}
       disabled={isDisabled}
@@ -55,11 +64,15 @@ const PhotoGalleryImage = ( {
       accessibilityLabel={t( "Photo-taken-at", {
         date: new Date( timestamp * 1000 ).toLocaleString()
       } )}
+      accessibilityState={{
+        disabled: isDisabled
+      }}
     >
       <Image
         testID="PhotoGallery.photo"
         source={{ uri }}
-        className="grow aspect-square"
+        accessibilityIgnoresInvertColors
+        style={itemStyle}
       />
       <View className="absolute top-0 right-0">
         {showIcon( )}

@@ -29,7 +29,7 @@ type Props = {
   rotation?: {
     value: number
   },
-  setMediaViewerUris: Function,
+  setPhotoEvidenceUris: Function,
   photoUris: Array<string>,
   setSelectedPhotoIndex: Function
 }
@@ -60,7 +60,7 @@ const PhotoCarousel = ( {
   isLargeScreen,
   isTablet,
   rotation,
-  setMediaViewerUris,
+  setPhotoEvidenceUris,
   photoUris,
   setSelectedPhotoIndex
 }: Props ): Node => {
@@ -136,7 +136,7 @@ const PhotoCarousel = ( {
               deletePhoto( item );
             } else {
               setSelectedPhotoIndex( index );
-              setMediaViewerUris( [...photoUris] );
+              setPhotoEvidenceUris( [...photoUris] );
               navigation.navigate( "MediaViewer" );
             }
           }}
@@ -185,7 +185,7 @@ const PhotoCarousel = ( {
     <FlatList
       data={[...photoUris]}
       renderItem={renderPhotoOrEvidenceButton}
-      horizontal={!isTablet || !!isLandscapeMode}
+      horizontal={!isTablet || !isLandscapeMode}
       ListEmptyComponent={takingPhoto
         ? renderSkeleton( )
         : emptyComponent}
@@ -204,7 +204,7 @@ const PhotoCarousel = ( {
   const containerRef = useRef( );
   const [containerPos, setContainerPos] = useState( { x: null, y: null } );
   const containerStyle = {
-    height: isTablet && !isLandscapeMode
+    height: isTablet && isLandscapeMode
       ? "auto"
       : photoDim + photoGutter * 2,
     padding: photoGutter / 2

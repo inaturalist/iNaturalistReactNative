@@ -104,6 +104,15 @@ class Taxon extends Realm.Object {
 
   static uri = item => ( item && item.default_photo ) && { uri: item.default_photo.url };
 
+  static saveRemoteTaxon = async ( remoteTaxon, realm ) => {
+    if ( remoteTaxon ) {
+      const localTaxon = Taxon.mapApiToRealm( remoteTaxon );
+      realm.write( ( ) => {
+        realm.create( "Taxon", localTaxon, "modified" );
+      } );
+    }
+  };
+
   static schema = {
     name: "Taxon",
     primaryKey: "id",

@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  Body1, Button, Heading4
+  Button, Heading4
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -10,23 +10,17 @@ import React, { useState } from "react";
 import { TextInput, useTheme } from "react-native-paper";
 
 type Props = {
-  handleInputFocus: Function,
-  hideHeader: boolean,
+  handleInputFocus?: Function,
   reset: Function
 }
 
-const ForgotPasswordForm = ( { handleInputFocus, hideHeader, reset }: Props ): Node => {
+const ForgotPasswordForm = ( { handleInputFocus, reset }: Props ): Node => {
   const [email, setEmail] = useState( "" );
   const theme = useTheme( );
 
   return (
-    <View className="px-4 mt-[9px] justify-end">
-      {!hideHeader && (
-        <Body1 className="color-white self-center mb-[30px]">
-          {t( "Lets-reset-your-password" )}
-        </Body1>
-      )}
-      <View className="mx-4">
+    <View className="px-4 my-5 justify-end">
+      <View>
         <Heading4 className="color-white mb-[11px]">{t( "USERNAME-OR-EMAIL" )}</Heading4>
         <TextInput
           accessibilityLabel={t( "USERNAME-OR-EMAIL" )}

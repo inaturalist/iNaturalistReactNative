@@ -1,5 +1,5 @@
 // @flow
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
@@ -7,10 +7,11 @@ import {
   fetchRemoteObservation,
   markObservationUpdatesViewed
 } from "api/observations";
-import { RealmContext } from "providers/contexts";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useEffect, useReducer
+  useCallback,
+  useContext, useEffect, useReducer
 } from "react";
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
@@ -98,6 +99,9 @@ const reducer = ( state, action ) => {
 };
 
 const ObsDetailsContainer = ( ): Node => {
+  const {
+    updateObservations
+  } = useContext( ObsEditContext );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const { uuid } = params;
@@ -137,6 +141,14 @@ const ObsDetailsContainer = ( ): Node => {
   const observation = localObservation || remoteObservation;
 
   const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
+
+  useFocusEffect(
+    // this ensures activity items load after a user taps suggest id
+    // and adds a remote id on the Suggestions screen
+    useCallback( ( ) => {
+      queryClient.invalidateQueries( "fetchRemoteObservation" );
+    }, [queryClient] )
+  );
 
   useEffect( ( ) => {
     if ( !observationShown ) {
@@ -290,12 +302,9 @@ const ObsDetailsContainer = ( ): Node => {
     }
   }, [localObservation, markViewedMutation, uuid] );
 
-  const navToAddID = ( ) => {
-    navigation.navigate( "AddID", {
-      observationUUID: uuid,
-      createRemoteIdentification: true,
-      belongsToCurrentUser
-    } );
+  const navToSuggestions = ( ) => {
+    updateObservations( [observation] );
+    navigation.navigate( "Suggestions" );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
@@ -332,7 +341,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   return (
     <ObsDetails
-      navToAddID={navToAddID}
+      navToSuggestions={navToSuggestions}
       onCommentAdded={onCommentAdded}
       openCommentBox={openCommentBox}
       tabs={tabs}

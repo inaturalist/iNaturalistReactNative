@@ -4,7 +4,7 @@ import {
   fireEvent,
   screen
 } from "@testing-library/react-native";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import PhotoGalleryContainer from "components/PhotoImporter/PhotoGalleryContainer";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
@@ -39,7 +39,7 @@ test( "shows a selected checkmark when a photo is tapped", async ( ) => {
   } ) );
   renderComponent(
     <ObsEditProvider>
-      <PhotoGallery />
+      <PhotoGalleryContainer />
     </ObsEditProvider>
   );
   const renderedPhoto = await screen.findByTestId( `PhotoGallery.${photo.image.uri}` );

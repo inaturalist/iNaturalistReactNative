@@ -30,9 +30,14 @@ import {
 // remove if/when we return to the main repo
 import {
   Camera,
-  useCameraDevices
+  useCameraDevice
 } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import {
+  rotatePhotoPatch,
+  rotationLocalPhotoPatch,
+  rotationTempPhotoPatch
+} from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
@@ -84,6 +89,7 @@ const CameraWithDevice = ( {
   const camera = useRef<Camera>( null );
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
+    enableShutterSound: true,
     enableAutoStabilization: true,
     qualityPrioritization: "quality",
     ...( hasFlash && { flash: "off" } )
@@ -92,6 +98,9 @@ const CameraWithDevice = ( {
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const [takingPhoto, setTakingPhoto] = useState( false );
+  const [photoSaved, setPhotoSaved] = useState( false );
+  const [result, setResult] = useState( null );
+  const [modelLoaded, setModelLoaded] = useState( false );
 
   const zoom = useSharedValue( !device.isMultiCam
     ? device.minZoom
@@ -195,11 +204,12 @@ const CameraWithDevice = ( {
     }, [handleBackButtonPress] )
   );
 
-  const createOrUpdateEvidence = useCallback( prediction => {
+  const createEvidenceForObsEdit = useCallback( localTaxon => {
+    console.log( localTaxon, "add evidence and ev to add" );
     if ( addEvidence ) {
       addCameraPhotosToCurrentObservation( evidenceToAdd );
     } else {
-      createObsWithCameraPhotos( cameraPreviewUris, prediction );
+      createObsWithCameraPhotos( cameraPreviewUris, localTaxon );
     }
   }, [
     addCameraPhotosToCurrentObservation,
@@ -209,35 +219,30 @@ const CameraWithDevice = ( {
     evidenceToAdd
   ] );
 
-  const navToObsEdit = useCallback( ( { prediction } ) => {
-    createOrUpdateEvidence( prediction );
+  const navToObsEdit = useCallback( localTaxon => {
+    createEvidenceForObsEdit( localTaxon );
+    setPhotoSaved( false );
     navigation.navigate( "ObsEdit" );
   }, [
-    createOrUpdateEvidence,
+    createEvidenceForObsEdit,
     navigation
   ] );
 
   const takePhoto = async ( ) => {
     setTakingPhoto( true );
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-    let photoRotation = 0;
-    switch ( cameraPhoto.metadata.Orientation ) {
-      case 1:
-        // Because the universe is a cruel, cruel place
-        if ( Platform.OS === "android" ) {
-          photoRotation = 180;
-        }
-        break;
-      case 6:
-        photoRotation = 90;
-        break;
-      case 8:
-        photoRotation = 270;
-        break;
-      default:
-        photoRotation = 0;
-    }
-    const newPhoto = await Photo.new( cameraPhoto.path, { rotation: photoRotation } );
+
+    // Rotate the original photo depending on device orientation
+    const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
+    await rotatePhotoPatch( cameraPhoto, photoRotation );
+
+    // Get the rotation for the local photo
+    const rotationLocalPhoto = rotationLocalPhotoPatch( );
+
+    // Create a local copy photo of the original
+    const newPhoto = await Photo.new( cameraPhoto.path, {
+      rotation: rotationLocalPhoto
+    } );
     const uri = newPhoto.localFilePath;
 
     // Remember original (unresized) camera URI
@@ -248,6 +253,68 @@ const CameraWithDevice = ( {
       setEvidenceToAdd( [...evidenceToAdd, uri] );
     }
     setTakingPhoto( false );
+    setPhotoSaved( true );
+  };
+
+  const handleTaxaDetected = cvResults => {
+    if ( cvResults && !modelLoaded ) {
+      setModelLoaded( true );
+    }
+    /*
+      Using FrameProcessorCamera results in this as cvResults atm on Android
+      [
+        {
+          "stateofmatter": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        },
+        {
+          "order": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        },
+        {
+          "species": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        }
+      ]
+    */
+    /*
+      Using FrameProcessorCamera results in this as cvResults atm on iOS (= top prediction)
+      [
+        {"name": "Aves", "rank": 50, "score": 0.7627944946289062, "taxon_id": 3}
+      ]
+    */
+    // console.log( "cvResults :>> ", cvResults );
+    const standardizePrediction = finestPrediction => ( {
+      taxon: {
+        rank_level: finestPrediction.rank,
+        id: Number( finestPrediction.taxon_id ),
+        name: finestPrediction.name
+      },
+      score: finestPrediction.score
+    } );
+    let prediction = null;
+    let predictions = [];
+    if ( Platform.OS === "ios" ) {
+      if ( cvResults.length > 0 ) {
+        const finestPrediction = cvResults[cvResults.length - 1];
+        prediction = standardizePrediction( finestPrediction );
+      }
+    } else {
+      predictions = cvResults
+        ?.map( r => {
+          const rank = Object.keys( r )[0];
+          return r[rank][0];
+        } )
+        .sort( ( a, b ) => a.rank - b.rank );
+      if ( predictions.length > 0 ) {
+        const finestPrediction = predictions[0];
+        prediction = standardizePrediction( finestPrediction );
+      }
+    }
+    setResult( prediction );
   };
 
   const toggleFlash = ( ) => {
@@ -266,7 +333,7 @@ const CameraWithDevice = ( {
     setCameraPosition( newPosition );
   };
 
-  const flexDirection = isTablet && !isLandscapeMode
+  const flexDirection = isTablet && isLandscapeMode
     ? "flex-row"
     : "flex-col";
 
@@ -315,9 +382,13 @@ const CameraWithDevice = ( {
             zoomTextValue={zoomTextValue}
             showZoomButton={device.isMultiCam}
             navToObsEdit={navToObsEdit}
-            photoSaved={cameraPreviewUris.length > 0}
+            photoSaved={photoSaved}
             onZoomStart={onZoomStart}
             onZoomChange={onZoomChange}
+            result={result}
+            handleTaxaDetected={handleTaxaDetected}
+            modelLoaded={modelLoaded}
+            isLandscapeMode={isLandscapeMode}
           />
         )}
     </View>
@@ -329,8 +400,7 @@ const CameraContainer = ( ): Node => {
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
   const [cameraPosition, setCameraPosition] = useState( "back" );
-  const devices = useCameraDevices( );
-  const device = devices[cameraPosition];
+  const device = useCameraDevice( cameraPosition );
 
   if ( !device ) {
     return null;

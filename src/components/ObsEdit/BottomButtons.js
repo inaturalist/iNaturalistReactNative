@@ -7,7 +7,7 @@ import {
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
@@ -15,19 +15,36 @@ import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
 const DESIRED_LOCATION_ACCURACY = 4000000;
 
-const BottomButtons = ( ): Node => {
+type Props = {
+  passesEvidenceTest: boolean,
+  passesIdentificationTest: boolean
+}
+
+const BottomButtons = ( {
+  passesEvidenceTest,
+  passesIdentificationTest
+}: Props ): Node => {
   const { t } = useTranslation( );
   const {
     setNextScreen,
     currentObservation,
     unsavedChanges,
-    passesEvidenceTest,
-    passesIdentificationTest
+    loading
   } = useContext( ObsEditContext );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
   const [buttonPressed, setButtonPressed] = useState( null );
+
+  useEffect(
+    ( ) => {
+      // reset button disabled status when scrolling through multiple observations
+      if ( currentObservation ) {
+        setButtonPressed( null );
+      }
+    },
+    [currentObservation]
+  );
 
   const showMissingEvidence = ( ) => {
     if ( allowUserToUpload ) { return false; }
@@ -72,7 +89,7 @@ const BottomButtons = ( ): Node => {
             level={unsavedChanges
               ? "focus"
               : "neutral"}
-            loading={buttonPressed === "save"}
+            loading={buttonPressed === "save" && loading}
             disabled={buttonPressed !== null}
           />
         )
@@ -87,7 +104,7 @@ const BottomButtons = ( ): Node => {
               testID="ObsEdit.saveButton"
               text={t( "SAVE" )}
               level="neutral"
-              loading={buttonPressed === "save"}
+              loading={buttonPressed === "save" && loading}
               disabled={buttonPressed !== null}
             />
             <Button
@@ -98,7 +115,7 @@ const BottomButtons = ( ): Node => {
               text={t( "UPLOAD-NOW" )}
               testID="ObsEdit.uploadButton"
               onPress={( ) => handlePress( "upload" )}
-              loading={buttonPressed === "upload"}
+              loading={buttonPressed === "upload" && loading}
               disabled={buttonPressed !== null}
             />
           </View>

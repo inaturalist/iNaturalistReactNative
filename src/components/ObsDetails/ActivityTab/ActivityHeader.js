@@ -4,7 +4,7 @@ import ActivityHeaderKebabMenu from "components/ObsDetails/ActivityTab/ActivityH
 import DeleteCommentSheet from "components/ObsDetails/Sheets/DeleteCommentSheet";
 import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
 import {
-  Body4, INatIcon, InlineUser, TextInputSheet
+  Body4, INatIcon, InlineUser, TextInputSheet, WarningSheet
 } from "components/SharedComponents";
 import {
   View
@@ -137,6 +137,17 @@ const ActivityHeader = ( {
             initialInput={item.body}
             snapPoints={[416]}
             confirm={textInput => updateCommentBody( textInput )}
+          />
+        )}
+        {( currentUser && showDeleteCommentSheet ) && (
+          <WarningSheet
+            handleClose={( ) => setShowDeleteCommentSheet( false )}
+            headerText={t( "DELETE-COMMENT" )}
+            snapPoints={[148]}
+            confirm={deleteComment}
+            buttonText={t( "DELETE" )}
+            handleSecondButtonPress={( ) => setShowDeleteCommentSheet( false )}
+            secondButtonText={t( "CANCEL" )}
           />
         )}
       </View>

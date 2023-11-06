@@ -5,12 +5,11 @@ import FadeInOutView from "components/Camera/FadeInOutView";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
-import { Platform } from "react-native";
+import React, { useEffect } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useTaxon, useTranslation } from "sharedHooks";
 
 import {
   handleCameraError,
@@ -50,6 +49,10 @@ type Props = {
   photoSaved: boolean,
   onZoomStart?: Function,
   onZoomChange?: Function,
+  result?: Object,
+  handleTaxaDetected: Function,
+  modelLoaded: boolean,
+  isLandscapeMode: boolean
 };
 
 const ARCamera = ( {
@@ -69,16 +72,18 @@ const ARCamera = ( {
   navToObsEdit,
   photoSaved,
   onZoomStart,
-  onZoomChange
+  onZoomChange,
+  result,
+  handleTaxaDetected,
+  modelLoaded,
+  isLandscapeMode
 }: Props ): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
-
-  const [result, setResult] = useState( null );
-  const [modelLoaded, setModelLoaded] = useState( false );
+  const localTaxon = useTaxon( result?.taxon );
 
   // only show predictions when rank is order or lower, like we do on Seek
-  const showPrediction = ( result && result.rank_level <= 40 ) || false;
+  const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
 
   // Johannes (June 2023): I did read through the native code of the legacy inatcamera
   // that is triggered when using ref.current.takePictureAsync()
@@ -106,93 +111,40 @@ const ARCamera = ( {
     return 5;
   };
 
-  const handleTaxaDetected = cvResults => {
-    if ( cvResults && !modelLoaded ) {
-      setModelLoaded( true );
-    }
-    /*
-      Using FrameProcessorCamera results in this as cvResults atm on Android
-      [
-        {
-          "stateofmatter": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        },
-        {
-          "order": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        },
-        {
-          "species": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        }
-      ]
-    */
-    /*
-      Using FrameProcessorCamera results in this as cvResults atm on iOS (= top prediction)
-      [
-        {"name": "Aves", "rank": 50, "score": 0.7627944946289062, "taxon_id": 3}
-      ]
-    */
-    // console.log( "cvResults :>> ", cvResults );
-    let prediction = null;
-    let predictions = [];
-    if ( Platform.OS === "ios" ) {
-      if ( cvResults.length > 0 ) {
-        const finestPrediction = cvResults[cvResults.length - 1];
-        prediction = {
-          rank_level: finestPrediction.rank,
-          id: finestPrediction.taxon_id,
-          name: finestPrediction.name,
-          score: finestPrediction.score
-        };
-      }
-    } else {
-      predictions = cvResults
-        ?.map( r => {
-          const rank = Object.keys( r )[0];
-          return r[rank][0];
-        } )
-        .sort( ( a, b ) => a.rank - b.rank );
-      prediction = predictions
-        && predictions.length > 0 && {
-        rank_level: predictions[0].rank,
-        id: predictions[0].taxon_id,
-        name: predictions[0].name,
-        score: predictions[0].score
-      };
-    }
-    setResult( prediction );
-  };
-
-  useEffect( () => {
+  useEffect( ( ) => {
     if ( photoSaved ) {
-      navToObsEdit( { prediction: result } );
+      navToObsEdit( localTaxon );
     }
-  }, [photoSaved, navToObsEdit, result] );
+  }, [photoSaved, navToObsEdit, localTaxon] );
 
   return (
     <>
       {device && (
-        <FrameProcessorCamera
-          cameraRef={camera}
-          device={device}
-          onTaxaDetected={handleTaxaDetected}
-          onClassifierError={handleClassifierError}
-          onDeviceNotSupported={handleDeviceNotSupported}
-          onCaptureError={handleCaptureError}
-          onCameraError={handleCameraError}
-          onLog={handleLog}
-          animatedProps={animatedProps}
-          onZoomStart={onZoomStart}
-          onZoomChange={onZoomChange}
-        />
+        <View className="w-full h-full absolute z-0">
+          <FrameProcessorCamera
+            cameraRef={camera}
+            device={device}
+            onTaxaDetected={handleTaxaDetected}
+            onClassifierError={handleClassifierError}
+            onDeviceNotSupported={handleDeviceNotSupported}
+            onCaptureError={handleCaptureError}
+            onCameraError={handleCameraError}
+            onLog={handleLog}
+            animatedProps={animatedProps}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
+            takingPhoto={takingPhoto}
+          />
+        </View>
       )}
       <LinearGradient
         colors={["#000000", "rgba(0, 0, 0, 0)"]}
-        locations={[0.001, 1]}
+        locations={[
+          0.001,
+          isTablet && isLandscapeMode
+            ? 0.3
+            : 1
+        ]}
         className="w-full"
       >
         <View
@@ -204,9 +156,9 @@ const ARCamera = ( {
           {showPrediction && result
             ? (
               <TaxonResult
-                taxon={result}
+                taxon={localTaxon}
                 handleCheckmarkPress={takePhoto}
-                testID={`ARCamera.taxa.${result.id}`}
+                testID={`ARCamera.taxa.${result?.taxon?.id}`}
                 clearBackground
                 confidence={convertScoreToConfidence( result?.score )}
                 white

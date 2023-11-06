@@ -1,6 +1,7 @@
 export { default as ActivityCount } from "./ActivityCount/ActivityCount";
 export { default as CommentsCount } from "./ActivityCount/CommentsCount";
 export { default as IdentificationsCount } from "./ActivityCount/IdentificationsCount";
+export { default as BackButton } from "./Buttons/BackButton";
 export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";
@@ -21,6 +22,7 @@ export { default as INatIcon } from "./INatIcon";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as KebabMenu } from "./KebabMenu";
 export { default as Map } from "./Map";
+export { default as Modal } from "./Modal";
 export { default as Mortal } from "./Mortal";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as ObservationsFlashList } from "./ObservationsFlashList/ObservationsFlashList";

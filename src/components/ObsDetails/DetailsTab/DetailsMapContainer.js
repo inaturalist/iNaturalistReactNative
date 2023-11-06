@@ -7,18 +7,18 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import openMap from "react-native-open-maps";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 type Props = {
   observation: Object,
   latitude: number,
   longitude: number,
   closeModal: Function,
-  obscured: bool
+  obscured: bool,
+  tileMapParams: ?Object
 }
 
 const DetailsMapContainer = ( {
-  observation, latitude, longitude, closeModal, obscured
+  observation, latitude, longitude, closeModal, obscured, tileMapParams
 }: Props ): Node => {
   const coordinateString = t( "Lat-Lon", {
     latitude,
@@ -67,18 +67,6 @@ const DetailsMapContainer = ( {
 
   const mapViewRef = useRef<any>( null );
 
-  const zoomToCurrentUserLocation = async () => {
-    const userLocation = await fetchUserLocation( );
-    if ( userLocation ) {
-      mapViewRef.current.animateCamera( {
-        center: {
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude
-        }
-      } );
-    }
-  };
-
   return (
     <DetailsMap
       mapViewRef={mapViewRef}
@@ -92,10 +80,10 @@ const DetailsMapContainer = ( {
       copyCoordinates={copyCoordinates}
       shareMap={shareMap}
       cycleMapTypes={cycleMapTypes}
-      zoomToCurrentUserLocation={zoomToCurrentUserLocation}
       showNotificationModal={showNotificationModal}
       closeNotificationsModal={closeShowNotificationModal}
       closeModal={closeModal}
+      tileMapParams={tileMapParams}
     />
   );
 };

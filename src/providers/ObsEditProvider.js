@@ -2,6 +2,7 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import { createIdentification } from "api/identifications";
 import {
   createObservation,
   createOrUpdateEvidence,
@@ -9,15 +10,16 @@ import {
   updateObservation
 } from "api/observations";
 import inatjs from "inaturalistjs";
+import _ from "lodash";
 import type { Node } from "react";
 import React, {
-  useCallback,
   useEffect,
   useMemo,
-  useReducer,
-  useState
+  useReducer
 } from "react";
+import { Alert } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
+import rnUUID from "react-native-uuid";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
@@ -28,11 +30,20 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif, writeExifToFile } from "sharedHelpers/parseExif";
 import {
   useApiToken,
-  useCurrentUser
+  useAuthenticatedMutation,
+  useCurrentUser,
+  useLocalObservation,
+  useTranslation
 } from "sharedHooks";
 
 import { log } from "../../react-native-logs.config";
 import { ObsEditContext, RealmContext } from "./contexts";
+import createObsReducer, {
+  INITIAL_CREATE_OBS_STATE
+} from "./reducers/createObsReducer";
+import uploadReducer, {
+  INITIAL_UPLOAD_STATE
+} from "./reducers/uploadReducer";
 
 const { useRealm } = RealmContext;
 
@@ -44,145 +55,31 @@ const logger = log.extend( "ObsEditProvider" );
 
 const uploadProgressIncrement = 0.5;
 
-const initialState = {
-  currentUploadIndex: 0,
-  error: null,
-  singleUpload: false,
-  totalProgressIncrements: 0,
-  uploadInProgress: false,
-  uploadProgress: { },
-  uploads: []
-};
-
-const reducer = ( state, action ) => {
-  switch ( action.type ) {
-    case "CONTINUE_UPLOADS":
-      return {
-        ...state,
-        uploadInProgress: true
-      };
-    case "PAUSE_UPLOADS":
-      return {
-        ...state,
-        uploadInProgress: false,
-        currentUploadIndex: 0
-      };
-    case "SET_UPLOAD_ERROR":
-      return {
-        ...state,
-        error: action.error
-      };
-    case "START_MULTIPLE_UPLOADS":
-      return {
-        ...state,
-        error: null,
-        uploadInProgress: true,
-        uploads: action.uploads,
-        uploadProgress: action.uploadProgress,
-        totalProgressIncrements: action.uploads.length + action.uploads
-          .reduce( ( count, current ) => count
-            + current.observationPhotos.length, 0 )
-      };
-    case "START_NEXT_UPLOAD":
-      return {
-        ...state,
-        currentUploadIndex: Math.min( state.currentUploadIndex + 1, state.uploads.length - 1 )
-      };
-    case "STOP_UPLOADS":
-      return {
-        ...state,
-        ...initialState
-      };
-    case "UPDATE_PROGRESS":
-      return {
-        ...state,
-        uploadProgress: action.uploadProgress
-      };
-    case "UPLOAD_SINGLE_OBSERVATION":
-      return {
-        ...state,
-        uploads: [action.observation],
-        singleUpload: true,
-        uploadInProgress: true,
-        totalProgressIncrements: 1 + [action.observation]
-          .reduce( ( count, current ) => count
-            + current.observationPhotos.length, 0 )
-      };
-    default:
-      throw new Error( );
-  }
-};
-
 const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const apiToken = useApiToken( );
   const currentUser = useCurrentUser( );
-  // state related to creating/editing an observation
-  const [currentObservationIndex, setCurrentObservationIndex] = useState( 0 );
-  const [observations, setObservations] = useState( [] );
-  const [cameraPreviewUris, setCameraPreviewUris] = useState( [] );
-  const [galleryUris, setGalleryUris] = useState( [] );
-  const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
-  const [originalCameraUrisMap, setOriginalCameraUrisMap] = useState( {} );
-  const [cameraRollUris, setCameraRollUris] = useState( [] );
-  const [album, setAlbum] = useState( null );
-  const [loading, setLoading] = useState( false );
-  const [unsavedChanges, setUnsavedChanges] = useState( false );
-  const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
-  const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
-  const [mediaViewerUris, setMediaViewerUris] = useState( [] );
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
-  const [groupedPhotos, setGroupedPhotos] = useState( [] );
-  const [savingPhoto, setSavingPhoto] = useState( false );
+  const { t } = useTranslation( );
 
-  // state related to uploads in useReducer
-  const [state, dispatch] = useReducer( reducer, initialState );
+  const combineReducers = ( ...reducers ) => ( prevState, value ) => reducers
+    .reduce( ( newState, reducer ) => reducer( newState, value ), prevState );
+
+  const obsEditReducer = combineReducers( uploadReducer, createObsReducer );
+
+  const [state, dispatch] = useReducer( obsEditReducer, {
+    ...INITIAL_CREATE_OBS_STATE,
+    ...INITIAL_UPLOAD_STATE
+  } );
 
   const {
-    currentUploadIndex,
-    error,
+    cameraPreviewUris,
+    currentObservationIndex,
+    galleryUris,
+    observations,
     singleUpload,
-    totalProgressIncrements,
-    uploadInProgress,
-    uploadProgress,
-    uploads
+    uploadProgress
   } = state;
-
-  const totalUploadCount = uploads.length;
-  const totalUploadProgress = Object.values( uploadProgress ).reduce( ( count, current ) => count
-  + Number( current ), 0 );
-
-  const progress = totalProgressIncrements > 0
-    ? totalUploadProgress / totalProgressIncrements
-    : 0;
-
-  const resetObsEditContext = useCallback( ( ) => {
-    setObservations( [] );
-    setCurrentObservationIndex( 0 );
-    setCameraPreviewUris( [] );
-    setOriginalCameraUrisMap( {} );
-    setGalleryUris( [] );
-    setEvidenceToAdd( [] );
-    setCameraRollUris( [] );
-    setUnsavedChanges( false );
-    setPassesEvidenceTest( false );
-    setGroupedPhotos( [] );
-  }, [] );
-
-  const stopUpload = ( ) => {
-    dispatch( { type: "STOP_UPLOADS" } );
-    deactivateKeepAwake( );
-  };
-
-  const setUploads = allUploads => {
-    const resetProgress = { };
-    dispatch( {
-      type: "START_MULTIPLE_UPLOADS",
-      uploads: allUploads,
-      uploadProgress: resetProgress
-    } );
-  };
 
   useEffect( ( ) => {
     let currentProgress = uploadProgress;
@@ -208,92 +105,199 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
   }, [uploadProgress, singleUpload] );
 
-  const allObsPhotoUris = useMemo(
-    ( ) => [...cameraPreviewUris, ...galleryUris],
+  const totalObsPhotoUris = useMemo(
+    ( ) => [...cameraPreviewUris, ...galleryUris].length,
     [cameraPreviewUris, galleryUris]
   );
 
   const currentObservation = observations[currentObservationIndex];
+  const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
-  const addSound = async ( ) => {
-    const newObservation = await Observation.createObsWithSounds( );
-    setObservations( [newObservation] );
-  };
+  const localObservation = useLocalObservation( currentObservation?.uuid );
+  const wasSynced = localObservation?.wasSynced( );
 
-  const addObservations = async obs => setObservations( obs );
-
-  const createObservationNoEvidence = async ( ) => {
-    const newObservation = await Observation.new( );
-    setObservations( [newObservation] );
-  };
-
-  const createObsPhotos = useCallback(
-    async photos => Promise.all(
-      photos.map( async photo => ObservationPhoto.new( photo?.image?.uri ) )
-    ),
-    []
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
+    {
+      onSuccess: data => {
+        const belongsToCurrentUser = currentObservation?.user?.login === currentUser?.login;
+        if ( belongsToCurrentUser && wasSynced ) {
+          realm?.write( ( ) => {
+            const localIdentifications = currentObservation?.identifications;
+            const newIdentification = data[0];
+            newIdentification.user = currentUser;
+            newIdentification.taxon = realm?.objectForPrimaryKey(
+              "Taxon",
+              newIdentification.taxon.id
+            ) || newIdentification.taxon;
+            const realmIdentification = realm?.create( "Identification", newIdentification );
+            localIdentifications.push( realmIdentification );
+          } );
+        }
+        dispatch( { type: "SET_LOADING", loading: false } );
+        navigation.navigate( "ObservationsStackNavigator", {
+          screen: "ObsDetails",
+          params: { uuid: currentObservation.uuid }
+        } );
+      },
+      onError: e => {
+        const showErrorAlert = err => Alert.alert( "Error", err, [{ text: t( "OK" ) }], {
+          cancelable: true
+        } );
+        let identificationError = null;
+        if ( e ) {
+          identificationError = t( "Couldnt-create-identification-error", { error: e.message } );
+        } else {
+          identificationError = t( "Couldnt-create-identification-unknown-error" );
+        }
+        dispatch( { type: "SET_LOADING", loading: false } );
+        return showErrorAlert( identificationError );
+      }
+    }
   );
 
-  const createObservationFromGalleryPhoto = useCallback( async photo => {
-    const firstPhotoExif = await parseExif( photo?.image?.uri );
-    logger.info( `EXIF: ${JSON.stringify( firstPhotoExif, null, 2 )}` );
+  const uploadValue = useMemo( ( ) => {
+    const {
+      cameraRollUris,
+      comment,
+      currentUploadIndex,
+      groupedPhotos,
+      error,
+      evidenceToAdd,
+      loading,
+      originalCameraUrisMap,
+      photoEvidenceUris,
+      selectedPhotoIndex,
+      unsavedChanges,
+      uploadInProgress,
+      uploads,
+      totalProgressIncrements
+    } = state;
+    const currentUploadProgress = Object.values( uploadProgress )
+      .reduce( ( count, current ) => count + Number( current ), 0 );
 
-    const { latitude, longitude } = firstPhotoExif;
-    const placeGuess = await fetchPlaceName( latitude, longitude );
+    const progress = totalProgressIncrements > 0
+      ? currentUploadProgress / totalProgressIncrements
+      : 0;
 
-    const newObservation = {
-      latitude,
-      longitude,
-      place_guess: placeGuess,
-      observed_on_string: formatExifDateAsString( firstPhotoExif.date ) || null
+    const clearUploadProgress = ( ) => {
+      dispatch( { type: "UPDATE_PROGRESS", uploadProgress: { } } );
     };
 
-    if ( firstPhotoExif.positional_accuracy ) {
-      // $FlowIgnore
-      newObservation.positional_accuracy = firstPhotoExif.positional_accuracy;
-    }
-    return Observation.new( newObservation );
-  }, [] );
-
-  const createObservationsFromGroupedPhotos = useCallback( async groupedPhotoObservations => {
-    const newObservations = await Promise.all( groupedPhotoObservations.map(
-      async ( { photos } ) => {
-        const firstPhoto = photos[0];
-        const newLocalObs = await createObservationFromGalleryPhoto( firstPhoto );
-        newLocalObs.observationPhotos = await createObsPhotos( photos );
-        return newLocalObs;
+    const resetObsEditContext = ( ) => {
+      dispatch( { type: "RESET_OBS_CREATE" } );
+      if ( !_.isEmpty( uploadProgress ) ) {
+        clearUploadProgress( );
       }
-    ) );
-    setObservations( newObservations );
-  }, [createObsPhotos, createObservationFromGalleryPhoto] );
+    };
 
-  const createObservationFromGallery = useCallback( async photo => {
-    const newLocalObs = await createObservationFromGalleryPhoto( photo );
-    newLocalObs.observationPhotos = await createObsPhotos( [photo] );
-    setObservations( [newLocalObs] );
-  }, [createObsPhotos, createObservationFromGalleryPhoto] );
+    const stopUpload = ( ) => {
+      dispatch( { type: "STOP_UPLOADS" } );
+      deactivateKeepAwake( );
+    };
 
-  const appendObsPhotos = useCallback( obsPhotos => {
-    // need empty case for when a user creates an observation with no photos,
-    // then tries to add photos to observation later
-    const currentObservationPhotos = currentObservation?.observationPhotos || [];
+    const setUploads = allUploads => {
+      dispatch( {
+        type: "START_MULTIPLE_UPLOADS",
+        uploads: allUploads
+      } );
+    };
 
-    const updatedObs = currentObservation;
-    updatedObs.observationPhotos = [...currentObservationPhotos, ...obsPhotos];
-    setObservations( [updatedObs] );
-    // clear additional evidence
-    setEvidenceToAdd( [] );
-    setUnsavedChanges( true );
-  }, [currentObservation] );
+    const setLoading = isLoading => dispatch( { type: "SET_LOADING", loading: isLoading } );
 
-  const addGalleryPhotosToCurrentObservation = useCallback( async photos => {
-    setSavingPhoto( true );
-    const obsPhotos = await createObsPhotos( photos );
-    appendObsPhotos( obsPhotos );
-    setSavingPhoto( false );
-  }, [createObsPhotos, appendObsPhotos] );
+    const updateObservations = obs => {
+      const isSavedObservation = currentObservation
+        && realm.objectForPrimaryKey( "Observation", currentObservation?.uuid );
+      dispatch( {
+        type: "SET_OBSERVATIONS",
+        observations: obs,
+        unsavedChanges: isSavedObservation
+      } );
+    };
 
-  const uploadValue = useMemo( ( ) => {
+    const addSound = async ( ) => {
+      const newObservation = await Observation.createObsWithSounds( );
+      updateObservations( [newObservation] );
+    };
+
+    const addObservations = obs => updateObservations( obs );
+
+    const createObservationNoEvidence = async ( ) => {
+      const newObservation = await Observation.new( );
+      updateObservations( [newObservation] );
+    };
+
+    const createObsPhotos = async ( photos, { position, local } ) => {
+      let photoPosition = position;
+      return Promise.all(
+        photos.map( async photo => {
+          const newPhoto = ObservationPhoto.new( local
+            ? photo
+            : photo?.image?.uri, photoPosition );
+          photoPosition += 1;
+          return newPhoto;
+        } )
+      );
+    };
+
+    const createObservationFromGalleryPhoto = async photo => {
+      const firstPhotoExif = await parseExif( photo?.image?.uri );
+      logger.info( `EXIF: ${JSON.stringify( firstPhotoExif, null, 2 )}` );
+
+      const { latitude, longitude } = firstPhotoExif;
+      const placeGuess = await fetchPlaceName( latitude, longitude );
+
+      const newObservation = {
+        latitude,
+        longitude,
+        place_guess: placeGuess,
+        observed_on_string: formatExifDateAsString( firstPhotoExif.date ) || null
+      };
+
+      if ( firstPhotoExif.positional_accuracy ) {
+        // $FlowIgnore
+        newObservation.positional_accuracy = firstPhotoExif.positional_accuracy;
+      }
+      return Observation.new( newObservation );
+    };
+
+    const createObservationWithPhotos = async photos => {
+      const newLocalObs = await createObservationFromGalleryPhoto( photos[0] );
+      newLocalObs.observationPhotos = await createObsPhotos( photos, { position: 0 } );
+      return newLocalObs;
+    };
+
+    const createObservationsFromGroupedPhotos = async groupedPhotoObservations => {
+      const newObservations = await Promise.all( groupedPhotoObservations.map(
+        async ( { photos } ) => createObservationWithPhotos( photos )
+      ) );
+      updateObservations( newObservations );
+    };
+
+    const createObservationFromGallery = async photo => {
+      const newObservation = await createObservationWithPhotos( [photo] );
+      updateObservations( [newObservation] );
+    };
+
+    const appendObsPhotos = obsPhotos => {
+      // need empty case for when a user creates an observation with no photos,
+      // then tries to add photos to observation later
+      const currentObservationPhotos = currentObservation?.observationPhotos || [];
+
+      const updatedObs = currentObservation;
+      updatedObs.observationPhotos = [...currentObservationPhotos, ...obsPhotos];
+      updateObservations( [updatedObs] );
+      // clear additional evidence
+      dispatch( { type: "CLEAR_ADDITIONAL_EVIDENCE" } );
+    };
+
+    const addGalleryPhotosToCurrentObservation = async photos => {
+      dispatch( { type: "SET_SAVING_PHOTO", savingPhoto: true } );
+      const obsPhotos = await createObsPhotos( photos, { position: numOfObsPhotos } );
+      appendObsPhotos( obsPhotos );
+      dispatch( { type: "SET_SAVING_PHOTO", savingPhoto: false } );
+    };
+
     // Save URIs to camera gallery (if a photo was taken using the app,
     // we want it accessible in the camera's folder, as if the user has taken those photos
     // via their own camera app).
@@ -312,7 +316,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       logger.info( "savePhotosToCameraGallery, savedUris: ", savedUris );
       // Save these camera roll URIs, so later on observation editor can update
       // the EXIF metadata of these photos, once we retrieve a location.
-      setCameraRollUris( savedUris );
+      dispatch( { type: "SET_CAMERA_ROLL_URIS", cameraRollUris: savedUris } );
     };
 
     const writeExifToCameraRollPhotos = async exif => {
@@ -326,60 +330,86 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } );
     };
 
-    const createObsWithCameraPhotos = async ( localFilePaths, taxonPrediction ) => {
+    const createObsWithCameraPhotos = async ( localFilePaths, localTaxon ) => {
       const newObservation = await Observation.new( );
-      const obsPhotos = await Promise.all( localFilePaths.map(
-        async photo => ObservationPhoto.new( photo )
-      ) );
-      newObservation.observationPhotos = obsPhotos;
+      newObservation.observationPhotos = await createObsPhotos( localFilePaths, {
+        position: 0,
+        local: true
+      } );
 
-      if ( taxonPrediction ) {
-        newObservation.taxon = taxonPrediction;
+      if ( localTaxon ) {
+        newObservation.taxon = localTaxon;
       }
-      setObservations( [newObservation] );
+      updateObservations( [newObservation] );
       logger.info(
         "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
         localFilePaths
       );
+      // TODO catch the error that gets raised here if the user denies gallery permission
       await savePhotosToCameraGallery( localFilePaths );
     };
 
     const addCameraPhotosToCurrentObservation = async localFilePaths => {
-      setSavingPhoto( true );
-      const obsPhotos = await Promise.all( localFilePaths.map(
-        async photo => ObservationPhoto.new( photo )
-      ) );
+      dispatch( { type: "SET_SAVING_PHOTO", savingPhoto: true } );
+      const obsPhotos = await createObsPhotos( localFilePaths, {
+        position: numOfObsPhotos,
+        local: true
+      } );
       appendObsPhotos( obsPhotos );
       logger.info(
         "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
         localFilePaths
       );
       await savePhotosToCameraGallery( localFilePaths );
-      setSavingPhoto( false );
+      dispatch( { type: "SET_SAVING_PHOTO", savingPhoto: false } );
     };
 
     const updateObservationKeys = keysAndValues => {
       const updatedObservations = observations;
-      const obsToUpdate = observations[currentObservationIndex];
-      const isSavedObservation = realm.objectForPrimaryKey( "Observation", obsToUpdate.uuid );
       const updatedObservation = {
-        ...( obsToUpdate.toJSON
-          ? obsToUpdate.toJSON( )
-          : obsToUpdate ),
+        ...( currentObservation.toJSON
+          ? currentObservation.toJSON( )
+          : currentObservation ),
         ...keysAndValues
       };
-      if ( isSavedObservation && !unsavedChanges ) {
-        setUnsavedChanges( true );
-      }
       updatedObservations[currentObservationIndex] = updatedObservation;
-      setObservations( [...updatedObservations] );
+      updateObservations( [...updatedObservations] );
+    };
+
+    const formatIdentification = taxon => {
+      const newIdent = {
+        uuid: rnUUID.v4(),
+        body: comment,
+        taxon
+      };
+
+      return newIdent;
+    };
+
+    const createId = identification => {
+      setLoading( true );
+      const newIdentification = formatIdentification( identification );
+      const createRemoteIdentification = localObservation?.wasSynced( );
+      if ( createRemoteIdentification ) {
+        createIdentificationMutation.mutate( {
+          identification: {
+            observation_id: currentObservation.uuid,
+            taxon_id: newIdentification.taxon.id,
+            body: newIdentification.body
+          }
+        } );
+      } else {
+        updateObservationKeys( {
+          taxon: newIdentification.taxon
+        } );
+      }
     };
 
     const deleteLocalObservation = uuid => {
-      const localObservation = realm.objectForPrimaryKey( "Observation", uuid );
-      if ( !localObservation ) { return; }
+      const localObsToDelete = realm.objectForPrimaryKey( "Observation", uuid );
+      if ( !localObsToDelete ) { return; }
       realm?.write( ( ) => {
-        realm?.delete( localObservation );
+        realm?.delete( localObsToDelete );
       } );
     };
 
@@ -402,8 +432,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const saveCurrentObservation = async ( ) => saveObservation( currentObservation );
 
     const saveAllObservations = async ( ) => {
-      ensureRealm( );
       setLoading( true );
+      ensureRealm( );
       await Promise.all( observations.map( async observation => {
         // Note that this should only happen after import when ObsEdit has
         // multiple observations to save, none of which should have
@@ -591,9 +621,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
 
       if ( observations.length === 1 ) {
-        setCurrentObservationIndex( 0 );
-        setObservations( [] );
-
         navigation.navigate( "TabNavigator", {
           screen: "ObservationsStackNavigator",
           params: {
@@ -602,14 +629,23 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         } );
       } else if ( currentObservationIndex === observations.length - 1 ) {
         observations.pop( );
-        setCurrentObservationIndex( observations.length - 1 );
-        setObservations( observations );
+        dispatch( {
+          type: "SET_DISPLAYED_OBSERVATION",
+          currentObservationIndex: currentObservationIndex - 1,
+          observations
+        } );
       } else {
         observations.splice( currentObservationIndex, 1 );
-        setCurrentObservationIndex( currentObservationIndex );
         // this seems necessary for rerendering the ObsEdit screen
-        setObservations( [] );
-        setObservations( observations );
+        dispatch( {
+          type: "SET_DISPLAYED_OBSERVATION",
+          currentObservationIndex,
+          observations: []
+        } );
+        console.log( currentObservationIndex, observations.length, "length of obs" );
+        updateObservations( observations );
+
+        console.log( currentObservationIndex, observations.length, "length of obs1" );
       }
     };
 
@@ -635,23 +671,32 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         if ( obsPhotos.length > 0 ) {
           const updatedObsPhotos = deleteObservationPhoto( obsPhotos, photoUriToDelete );
           updatedObs.observationPhotos = updatedObsPhotos;
-          setObservations( [updatedObs] );
+          updateObservations( [updatedObs] );
         }
       }
 
-      // photos to show in media viewer
-      const newMediaViewerUris = removePhotoFromList( mediaViewerUris, photoUriToDelete );
-      setMediaViewerUris( [...newMediaViewerUris] );
-
+      // photos to show in MediaViewer
+      const newPhotoEvidenceUris = removePhotoFromList( photoEvidenceUris, photoUriToDelete );
       // photos displayed in PhotoPreview
       const newCameraPreviewUris = removePhotoFromList( cameraPreviewUris, photoUriToDelete );
-      setCameraPreviewUris( [...newCameraPreviewUris] );
 
       // when deleting photo from StandardCamera while adding new evidence, remember to clear
       // the list of new evidence to add
       if ( evidenceToAdd.length > 0 ) {
         const updatedEvidence = removePhotoFromList( evidenceToAdd, photoUriToDelete );
-        setEvidenceToAdd( [...updatedEvidence] );
+        dispatch( {
+          type: "DELETE_PHOTO",
+          photoEvidenceUris: [...newPhotoEvidenceUris],
+          cameraPreviewUris: [...newCameraPreviewUris],
+          evidenceToAdd: [...updatedEvidence]
+        } );
+      } else {
+        dispatch( {
+          type: "DELETE_PHOTO",
+          photoEvidenceUris: [...newPhotoEvidenceUris],
+          cameraPreviewUris: [...newCameraPreviewUris],
+          evidenceToAdd: []
+        } );
       }
 
       await Photo.deletePhoto( realm, photoUriToDelete );
@@ -680,9 +725,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const uploadMultipleObservations = ( ) => {
-      // if ( totalProgressIncrements === 0 ) {
-      //   dispatch( { type: "SET_TOTAL_PROGRESS" } );
-      // }
       const upload = async observationToUpload => {
         try {
           await uploadObservation( observationToUpload );
@@ -714,106 +756,126 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
+    const setComment = newComment => dispatch( { type: "SET_COMMENT", comment: newComment } );
+
+    const setCurrentObservationIndex = index => dispatch( {
+      type: "SET_DISPLAYED_OBSERVATION",
+      currentObservationIndex: index,
+      observations
+    } );
+
+    const setGalleryUris = uris => dispatch( { type: "SET_GALLERY_URIS", galleryUris: uris } );
+
+    const setGroupedPhotos = uris => dispatch( {
+      type: "SET_GROUPED_PHOTOS",
+      groupedPhotos: uris
+    } );
+
+    const setCameraPreviewUris = uris => dispatch( {
+      type: "SET_CAMERA_PREVIEW_URIS",
+      cameraPreviewUris: uris
+    } );
+
+    const setEvidenceToAdd = uris => dispatch( {
+      type: "SET_EVIDENCE_TO_ADD",
+      evidenceToAdd: uris
+    } );
+
+    const setOriginalCameraUrisMap = uriMap => dispatch( {
+      type: "SET_ORIGINAL_CAMERA_URIS_MAP",
+      originalCameraUrisMap: uriMap
+    } );
+
+    const setPhotoEvidenceUris = uris => dispatch( {
+      type: "SET_PHOTO_EVIDENCE_URIS",
+      photoEvidenceUris: uris
+    } );
+
+    const setSelectedPhotoIndex = index => dispatch( {
+      type: "SET_SELECTED_PHOTO_INDEX",
+      selectedPhotoIndex: index
+    } );
+
     return {
-      createObservationNoEvidence,
+      addCameraPhotosToCurrentObservation,
+      addGalleryPhotosToCurrentObservation,
       addObservations,
-      createObsWithCameraPhotos,
       addSound,
+      totalObsPhotoUris,
+      apiToken,
+      cameraPreviewUris,
+      cameraRollUris,
+      clearUploadProgress,
+      createId,
+      createIdentificationMutation,
+      createObservationFromGallery,
+      createObservationNoEvidence,
+      createObservationsFromGroupedPhotos,
+      createObsWithCameraPhotos,
       currentObservation,
       currentObservationIndex,
-      observations,
-      setCurrentObservationIndex,
-      setObservations,
-      updateObservationKeys,
-      cameraPreviewUris,
-      setCameraPreviewUris,
-      galleryUris,
-      setGalleryUris,
-      allObsPhotoUris,
-      createObservationsFromGroupedPhotos,
-      addGalleryPhotosToCurrentObservation,
-      createObservationFromGallery,
-      evidenceToAdd,
-      setEvidenceToAdd,
-      addCameraPhotosToCurrentObservation,
-      resetObsEditContext,
-      saveCurrentObservation,
-      deleteLocalObservation,
-      album,
-      setAlbum,
-      deletePhotoFromObservation,
-      uploadObservation,
-      setNextScreen,
-      loading,
-      setLoading,
-      unsavedChanges,
-      syncObservations,
-      uploadProgress,
-      saveAllObservations,
-      setPassesEvidenceTest,
-      passesEvidenceTest,
-      passesIdentificationTest,
-      setPassesIdentificationTest,
-      mediaViewerUris,
-      setMediaViewerUris,
-      selectedPhotoIndex,
-      setSelectedPhotoIndex,
-      groupedPhotos,
-      setGroupedPhotos,
-      stopUpload,
-      uploadMultipleObservations,
-      uploadInProgress,
-      error,
       currentUploadIndex,
-      progress,
-      setUploads,
-      uploads,
+      currentUser,
+      deleteLocalObservation,
+      deletePhotoFromObservation,
+      error,
+      evidenceToAdd,
+      galleryUris,
+      groupedPhotos,
+      loading,
+      localObservation,
+      navigation,
+      numOfObsPhotos,
+      observations,
       originalCameraUrisMap,
+      photoEvidenceUris,
+      progress,
+      realm,
+      resetObsEditContext,
+      saveAllObservations,
+      saveCurrentObservation,
+      selectedPhotoIndex,
+      setCameraPreviewUris,
+      setComment,
+      setCurrentObservationIndex,
+      setEvidenceToAdd,
+      setGalleryUris,
+      setGroupedPhotos,
+      setNextScreen,
+      updateObservations,
       setOriginalCameraUrisMap,
-      savingPhoto,
+      setPhotoEvidenceUris,
+      setSelectedPhotoIndex,
+      setUploads,
       singleUpload,
-      totalUploadCount
+      stopUpload,
+      syncObservations,
+      totalProgressIncrements,
+      unsavedChanges,
+      uploadProgress,
+      uploadInProgress,
+      uploads,
+      updateObservationKeys,
+      uploadObservation,
+      uploadMultipleObservations
     };
   }, [
+    totalObsPhotoUris,
+    apiToken,
+    cameraPreviewUris,
+    createIdentificationMutation,
     currentObservation,
     currentObservationIndex,
-    observations,
-    cameraPreviewUris,
-    galleryUris,
-    allObsPhotoUris,
-    createObservationsFromGroupedPhotos,
-    addGalleryPhotosToCurrentObservation,
-    createObservationFromGallery,
-    evidenceToAdd,
-    setEvidenceToAdd,
-    resetObsEditContext,
-    apiToken,
-    navigation,
-    realm,
-    album,
-    setAlbum,
-    loading,
-    setLoading,
-    unsavedChanges,
     currentUser,
-    uploadProgress,
-    passesEvidenceTest,
-    passesIdentificationTest,
-    mediaViewerUris,
-    selectedPhotoIndex,
-    groupedPhotos,
-    currentUploadIndex,
-    error,
-    uploadInProgress,
-    progress,
-    uploads,
-    setOriginalCameraUrisMap,
-    originalCameraUrisMap,
-    appendObsPhotos,
-    cameraRollUris,
-    savingPhoto,
+    galleryUris,
+    localObservation,
+    navigation,
+    numOfObsPhotos,
+    observations,
+    realm,
     singleUpload,
-    totalUploadCount
+    state,
+    uploadProgress
   ] );
 
   return (

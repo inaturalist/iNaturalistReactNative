@@ -4,8 +4,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
-import { Mortal, PermissionGate } from "components/SharedComponents";
+import PhotoGalleryContainer from "components/PhotoImporter/PhotoGalleryContainer";
+import PermissionGateContainer, {
+  AUDIO_PERMISSIONS,
+  CAMERA_PERMISSIONS,
+  READ_MEDIA_PERMISSIONS
+} from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
@@ -16,108 +20,54 @@ import {
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
-import { PermissionsAndroid, Platform } from "react-native";
-import { PERMISSIONS } from "react-native-permissions";
 
 import SharedStackScreens from "./SharedStackScreens";
 
-const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
-const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
-
-const androidReadPermissions = usesAndroid13Permissions
-  ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-  : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-
 const Stack = createNativeStackNavigator( );
 
-const CameraContainerWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    // WRITE_EXTERNAL_STORAGE is deprecated after Android 10
-    // https://developer.android.com/training/data-storage/shared/media#access-other-apps-files
-    return (
-      <Mortal>
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-            <CameraContainer />
-          </PermissionGate>
-        </PermissionGate>
-      </Mortal>
-    );
-  }
-  return (
-    <Mortal>
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-        <CameraContainer />
-      </PermissionGate>
-    </Mortal>
-  );
-};
+const CameraContainerWithPermission = ( ) => (
+  <PermissionGateContainer
+    permissions={CAMERA_PERMISSIONS}
+    title={t( "Observe-and-identify-organisms-in-real-time-with-your-camera" )}
+    titleDenied={t( "Please allow Camera Access" )}
+    body={t( "Use-the-iNaturalist-camera-to-observe" )}
+    blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
+    buttonText={t( "OBSERVE-ORGANISMS" )}
+    icon="camera"
+  >
+    <CameraContainer />
+  </PermissionGateContainer>
+);
 
-const SoundRecorderWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    return (
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate
-            permission={androidReadPermissions}
-          >
-            <SoundRecorder />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-  return (
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-      <PermissionGate
-        permission={androidReadPermissions}
-      >
-        <SoundRecorder />
-      </PermissionGate>
-    </PermissionGate>
-  );
-};
+const SoundRecorderWithPermission = ( ) => (
+  <PermissionGateContainer
+    permissions={AUDIO_PERMISSIONS}
+    title={t( "Record-organism-sounds-with-the-microphone" )}
+    titleDenied={t( "Please-allow-Microphone-Access" )}
+    body={t( "Use-your-devices-microphone-to-record" )}
+    blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
+    buttonText={t( "RECORD-SOUND" )}
+    icon="microphone"
+    image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+  >
+    <SoundRecorder />
+  </PermissionGateContainer>
+);
 
-const PhotoGalleryWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    return (
-      <PermissionGate
-        permission={androidReadPermissions}
-      >
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate
-            permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-
-  return (
-    <PermissionGate permission={androidReadPermissions}>
-      <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-      >
-        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
-          <PermissionGate
-            permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE}
-            isIOS
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    </PermissionGate>
-  );
-};
+const PhotoGalleryWithPermission = ( ) => (
+  <PermissionGateContainer
+    permissions={READ_MEDIA_PERMISSIONS}
+    title={t( "Observe-and-identify-organisms-from-your-gallery" )}
+    titleDenied={t( "Please-Allow-Gallery-Access" )}
+    body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
+    blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
+    buttonText={t( "CHOOSE-PHOTOS" )}
+    icon="gallery"
+    image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
+  >
+    <PhotoGalleryContainer />
+  </PermissionGateContainer>
+);
 
 const AddObsStackNavigator = ( ): Node => (
   <Stack.Navigator
