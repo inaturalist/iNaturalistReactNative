@@ -23,6 +23,12 @@ type Props = {
   takingPhoto: boolean
 }
 
+const STYLE = {
+  justifyContent: "center",
+  flex: 0,
+  flexShrink: 1
+};
+
 const PhotoPreview = ( {
   isLandscapeMode,
   isLargeScreen,
@@ -75,21 +81,18 @@ const PhotoPreview = ( {
     );
   }
 
-  const wrapperStyle = { justifyContent: "center" };
+  const dynamicStyle = {};
   if ( isTablet && isLandscapeMode ) {
-    // $FlowIssue[prop-missing]
-    wrapperStyle.width = wrapperDim;
+    dynamicStyle.width = wrapperDim;
   } else {
-    // $FlowIssue[prop-missing]
-    wrapperStyle.height = wrapperDim;
-    // $FlowIssue[prop-missing]
-    wrapperStyle.width = "100%";
+    dynamicStyle.height = wrapperDim;
+    dynamicStyle.width = "100%";
   }
 
   return (
     <View
       // eslint-disable-next-line react-native/no-inline-styles
-      style={wrapperStyle}
+      style={[STYLE, dynamicStyle]}
     >
       {
         photoUris.length === 0 && !takingPhoto

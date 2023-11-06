@@ -387,6 +387,7 @@ const CameraWithDevice = ( {
             result={result}
             handleTaxaDetected={handleTaxaDetected}
             modelLoaded={modelLoaded}
+            isLandscapeMode={isLandscapeMode}
           />
         )}
     </View>

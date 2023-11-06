@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import { View } from "components/styledComponents";
@@ -111,8 +112,13 @@ const StandardCamera = ( {
     await takePhoto( );
   };
 
+  const containerClasses = ["flex-1"];
+  if ( isTablet && isLandscapeMode ) {
+    containerClasses.push( "flex-row" );
+  }
+
   return (
-    <>
+    <View className={classnames( containerClasses )}>
       <PhotoPreview
         rotation={rotation}
         takingPhoto={takingPhoto}
@@ -132,7 +138,6 @@ const StandardCamera = ( {
             onDeviceNotSupported={handleDeviceNotSupported}
             onCaptureError={handleCaptureError}
             onCameraError={handleCameraError}
-            resizeMode="contain"
           />
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
@@ -170,7 +175,7 @@ const StandardCamera = ( {
           setDismissChanges( true );
         }}
       />
-    </>
+    </View>
   );
 };
 

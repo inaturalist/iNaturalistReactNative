@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { Body1, Button } from "components/SharedComponents";
-import { Pressable, SafeAreaView, View } from "components/styledComponents";
+import { SafeAreaView, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -11,8 +11,6 @@ import React, { useEffect, useState } from "react";
 import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/tailwindColors";
 
 import { log } from "../../../react-native-logs.config";
 import {
@@ -24,7 +22,11 @@ const logger = log.extend( "Logout" );
 
 const { useRealm } = RealmContext;
 
-const Logout = ( ): Node => {
+type Props = {
+  onLogOut?: Function
+}
+
+const Logout = ( { onLogOut }: Props ) : Node => {
   const navigation = useNavigation( );
   const [username, setUsername] = useState( null );
   const [visible, setVisible] = useState( false );
@@ -54,28 +56,16 @@ const Logout = ( ): Node => {
   const onSignOut = async ( ) => {
     logger.info( `Signing out ${username || ""} at the request of the user` );
     await signOut( { realm, clearRealm: true, queryClient } );
+    if ( typeof ( onLogOut ) === "function" ) {
+      onLogOut( );
+    }
+    hideDialog( );
 
     // TODO might be necessary to restart the app at this point. We just
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state
-    // Reset navigation state so that ObsList gets rerendered
-    navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator",
-      params: {
-        screen: "ObsList"
-      }
-    } );
+    navigation.getParent( )?.goBack( );
   };
-
-  const renderBackButton = ( ) => (
-    <Pressable
-      accessibilityRole="button"
-      onPress={( ) => navigation.goBack( )}
-      className="absolute top-8 right-8"
-    >
-      <IconMaterial name="close" color={colors.white} size={35} />
-    </Pressable>
-  );
 
   return (
     <>
@@ -95,12 +85,8 @@ const Logout = ( ): Node => {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-      {/* TODO: figure out how to account for safe area views with h-screen,
-      maybe something along these lines: https://github.com/mvllow/tailwindcss-safe-area/blob/70dbef61557b07e26b07a6167e13a377ba3c4625/index.js
-      */}
       <SafeAreaView>
-        {renderBackButton( )}
-        <View className="self-center justify-center h-screen">
+        <View className="self-center justify-center h-full">
           <Body1 className="text-white" testID="Login.loggedInAs">
             {t( "Logged-in-as", { username } )}
           </Body1>
