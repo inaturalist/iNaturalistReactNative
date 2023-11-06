@@ -183,9 +183,10 @@
   },
   "Fungi": "Fungi",
   "Geoprivacy": "Geoprivacy:",
-  "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
-  "Go-to-the-Settings-app-to-grant-permissions": "",
-  "Go to the Settings app to grant iNaturalist the appropriate permissions.": "",
+  "Go-to-the-Settings-app-to-grant-permissions": {
+    "comment": "Instruction for an Android user to go to the Settings app to grant\npermissions after they have asked never to be asked for that permission\nagain",
+    "val": "Go to the Settings app to grant iNaturalist the appropriate permissions."
+  },
   "Grant-Permission": {
     "comment": "Title of a screen asking for permission",
     "val": "Grant Permission"
@@ -193,7 +194,7 @@
   "Group-Photos": "Group Photos",
   "Group-photos-onboarding": {
     "comment": "Onboarding for users learning to group photos in the camera roll",
-    "val": "Group photos into observations– make sure there is only one species per observation"
+    "val": "Group photos into observations– make sure there is only one species per observation"
   },
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
@@ -563,8 +564,7 @@
   "You-have-unsaved-changes": "You have unsaved changes. Would you like to save this observation?",
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
-  "You-can-still-share-the-file": "",
-  "You can still share the file with another app. If you can email it, please send it to { $email }": "",
+  "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
   "Zoom-in": "Zoom in so that the observation's accuracy is as low as possible.",
   "Your-location-uncertainty-is-over-4000km": "Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
   "Category-leading": {
@@ -750,6 +750,7 @@
   "Remove-favorite": "Remove favorite",
   "Add-favorite": "Add favorite",
   "Start-upload": "Start upload",
+  "Upload-in-progress": "Upload in progress",
   "Previous-observation": "Previous observation",
   "Next-observation": "Next observation",
   "Close-search": "Close search",
@@ -757,6 +758,7 @@
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
   },
+  "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
   "datetime-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy h:mm a"

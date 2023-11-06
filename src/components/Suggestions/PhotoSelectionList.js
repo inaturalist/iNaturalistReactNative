@@ -5,7 +5,7 @@ import {
   Image, Pressable, View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { FlatList } from "react-native";
 import { useTranslation } from "sharedHooks";
 
@@ -20,7 +20,7 @@ const PhotoSelectionList = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const renderPhoto = ( { item } ) => (
+  const renderPhoto = useCallback( ( { item } ) => (
     <Pressable
       accessibilityRole="button"
       onPress={( ) => {
@@ -48,7 +48,7 @@ const PhotoSelectionList = ( {
         />
       </View>
     </Pressable>
-  );
+  ), [selectedPhotoUri, setSelectedPhotoUri, t] );
 
   return (
     <FlatList

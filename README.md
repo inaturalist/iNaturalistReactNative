@@ -77,12 +77,15 @@ Then you can run the tests:
 npm run e2e
 ```
 
+If you don't have the iOS simulator the e2e tests are [configured](https://github.com/inaturalist/iNaturalistReactNative/blob/main/.detoxrc.js#L51) to use, you may need to create it in XCode 15: Go to Window > Devices and Simulators, click the Simulators tab, click the "+" button in the lower left, and create a simulator that matches the `device.simulator.device.type` setting in `.detoxrc.js`.
+
 If you have built the app already for a previous test, and just want to run an updated test without changing the app code, you can run `npm run e2e:test`.
 
 If you are running into some issues after the tests have been working for some time, try updating `applesimutils` with `brew update && brew upgrade applesimutils`.
 
-If you want to run the Android tests you need to prepare your environment. Before you dive into the [setup](https://wix.github.io/Detox/docs/19.x/introduction/android-dev-env), know that alternatively you might find it easier setting up the required local emulator, preferrably an AOSP (Android Open Source Project) version, using Android Studio. Make sure the emulator has the same name as in the .detoxrc.js file.
-Run `npm run e2e:build:android && npm run e2e:test:android` to build the .apk for testing purposes and install and run it on the emulator with the name as stated in the detoxrc.js file.
+If you want to run the Android tests you need to prepare your environment. Before you dive into the [setup](https://wix.github.io/Detox/docs/19.x/introduction/android-dev-env), know that alternatively you might find it easier setting up the required local emulator, preferrably an AOSP (Android Open Source Project) version, using Android Studio. Make sure the emulator has the same name as in the `.detoxrc.js` file.
+
+Run `npm run e2e:build:android && npm run e2e:test:android` to build the APK for testing purposes and install and run it on the emulator with the name as stated in the `.detoxrc.js` file.
 
 ## Translations
 

@@ -102,12 +102,7 @@ const PhotoGallery = ( ): Node => {
     evidenceToAdd, galleryUris, navigation, setEvidenceToAdd, setGalleryUris, setGroupedPhotos,
     skipGroupPhotos] );
 
-  const onPermissionDenied = () => {
-    console.log( "onPermissionDenied" );
-  };
-
   const onPermissionGranted = () => {
-    console.log( "onPermissionGranted" );
     setPermissionGranted( true );
   };
 
@@ -119,7 +114,6 @@ const PhotoGallery = ( ): Node => {
       // Wait for screen to finish transition
       interactionHandle = InteractionManager.runAfterInteractions( () => {
         if ( permissionGranted && !photoGalleryShown ) {
-          console.log( "Calling showPhotoGallery from useFocusEffect" );
           showPhotoGallery();
         }
       } );
@@ -146,8 +140,6 @@ const PhotoGallery = ( ): Node => {
           icon="gallery"
           image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
           onPermissionGranted={onPermissionGranted}
-          onPermissionDenied={onPermissionDenied}
-          onPermissionBlocked={onPermissionDenied}
         />
       )}
     </View>

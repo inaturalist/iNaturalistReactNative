@@ -8,11 +8,11 @@ import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useMemo
 } from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import {
-  useIsConnected,
   useTranslation
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -21,16 +21,17 @@ type Props = {
   faveOrUnfave: Function,
   userFav: ?boolean,
   photos: Array<Object>,
-  uuid: string
+  uuid: string,
+  isOnline: boolean
 }
 
 const PhotoDisplay = ( {
   faveOrUnfave,
   userFav,
   photos,
-  uuid
+  uuid,
+  isOnline
 }: Props ): Node => {
-  const isOnline = useIsConnected( );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -48,7 +49,7 @@ const PhotoDisplay = ( {
     [t, navigation, uuid]
   );
 
-  const displayPhoto = ( ) => {
+  const displayPhoto = useCallback( ( ) => {
     if ( !isOnline ) {
       // TODO show photos that are available offline
       return (
@@ -92,6 +93,7 @@ const PhotoDisplay = ( {
         </View>
       );
     }
+
     return (
       <View
         className="bg-black flex-row justify-center"
@@ -108,7 +110,14 @@ const PhotoDisplay = ( {
         />
       </View>
     );
-  };
+  }, [
+    editButton,
+    faveOrUnfave,
+    isOnline,
+    photos,
+    t,
+    userFav
+  ] );
 
   return (
     <>

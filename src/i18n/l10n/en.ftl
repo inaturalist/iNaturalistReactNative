@@ -245,8 +245,8 @@ Delete-observation = Delete observation
 Delete-observations = Delete observations
 
 DELETE-X-OBSERVATIONS = DELETE {$count ->
-[one] 1 OBSERVATION?
-*[other] {$count} OBSERVATIONS?
+    [one] 1 OBSERVATION?
+    *[other] {$count} OBSERVATIONS?
 }
 
 Description-Tags = Description/Tags
@@ -258,8 +258,8 @@ DISCARD-CHANGES = DISCARD CHANGES
 DISCARD-OBSERVATION = DISCARD OBSERVATION
 
 DISCARD-X-OBSERVATIONS = {$count ->
-[one] DISCARD OBSERVATION
-*[other] DISCARD {$count} OBSERVATIONS
+    [one] DISCARD OBSERVATION
+    *[other] DISCARD {$count} OBSERVATIONS
 }
 
 Display = Display
@@ -335,7 +335,7 @@ Geoprivacy = Geoprivacy:
 # permissions after they have asked never to be asked for that permission
 # again
 Go-to-the-Settings-app-to-grant-permissions =
-Go to the Settings app to grant iNaturalist the appropriate permissions.
+    Go to the Settings app to grant iNaturalist the appropriate permissions.
 
 # Verb phrase label for a button to grant the app a permission, e.g.
 # permission to use the camera
@@ -344,7 +344,7 @@ Grant-Permission = Grant Permission
 Group-Photos = Group Photos
 
 # Onboarding for users learning to group photos in the camera roll
-Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
+Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
 
 Has-Photos = Has Photos
 
@@ -363,8 +363,8 @@ If-an-account-with-that-email-exists = If an account with that email exists, we'
 
 # Shows the number of photos a user selected from the camera roll for upload
 Import-X-photos = Import {$count ->
-[one] 1 photo
-*[other] {$count} photos
+    [one] 1 photo
+    *[other] {$count} photos
 }
 
 iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
@@ -788,20 +788,20 @@ UPLOAD-NOW = UPLOAD NOW
 
 # Shows the number of observations a user can upload to iNat from my observations page
 Upload-x-observations = Upload {$count ->
-[one] 1 observation
-*[other] {$count} observations
+    [one] 1 observation
+    *[other] {$count} observations
 }
 
 # Shows the number of observations a user can upload to iNat from my observations page
 UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
-[one] 1 OBSERVATION
-*[other] {$count} OBSERVATIONS
+    [one] 1 OBSERVATION
+    *[other] {$count} OBSERVATIONS
 }
 
 # Shows the number of observations a user is about to import
 IMPORT-X-OBSERVATIONS = IMPORT {$count ->
-[one] 1 OBSERVATION
-*[other] {$count} OBSERVATIONS
+    [one] 1 OBSERVATION
+    *[other] {$count} OBSERVATIONS
 }
 
 # Describes whether a user made this observation from web, iOS, or Android
@@ -812,14 +812,14 @@ Uploaded-via-application = Uploaded via: { $application }
 
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
-[one] 1 Observation
-*[other] {$count} Observations
+    [one] 1 Observation
+    *[other] {$count} Observations
 }
 
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
-[one] 1 observation
-*[other] {$total} observations
+    [one] 1 observation
+    *[other] {$total} observations
 }
 
 # Shows the progress of uploads for X of Y
@@ -868,41 +868,41 @@ Withdraw = Withdraw
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
-[one] 1 Observation
-*[other] {$count} Observations
+    [one] 1 Observation
+    *[other] {$count} Observations
 }
 
 X-observations = {$count ->
-[one] 1 observation
-*[other] {$count} observations
+    [one] 1 observation
+    *[other] {$count} observations
 }
 
 X-observations-uploaded = {$count ->
-[one] 1 observation uploaded
-*[other] {$count} observations uploaded
+    [one] 1 observation uploaded
+    *[other] {$count} observations uploaded
 }
 
 X-of-Y = {$count ->
-[one] 1
-*[other] {$count}
+    [one] 1
+    *[other] {$count}
 } { $totalObservationCount ->
-[one] of {$totalObservationCount}
-*[other] of {$totalObservationCount}
+    [one] of {$totalObservationCount}
+    *[other] of {$totalObservationCount}
 }
 
 # Displays number of photos attached to an observation in the Media Viewer
 X-PHOTOS = {$photoCount ->
-[one] 1 PHOTO
-*[other] {$photoCount} PHOTOS
+    [one] 1 PHOTO
+    *[other] {$photoCount} PHOTOS
 }
 
 # Displays number of photos and observations a user has selected from the camera roll
 X-PHOTOS-X-OBSERVATIONS = {$photoCount ->
-[one] 1 PHOTO
-*[other] {$photoCount} PHOTOS
+    [one] 1 PHOTO
+    *[other] {$photoCount} PHOTOS
 }, {$observationCount ->
-[one] 1 OBSERVATION
-*[other] {$observationCount} OBSERVATIONS
+    [one] 1 OBSERVATION
+    *[other] {$observationCount} OBSERVATIONS
 }
 
 Yes = Yes
@@ -927,12 +927,12 @@ You-have-unsaved-changes = You have unsaved changes. Would you like to save this
 You-must-be-logged-in-to-view-messages = You must be logged in to view messages
 
 You-will-lose-all-existing-observations = {$count ->
-[one] You will lose all existing observations. Would you like to discard 1 observation?
-*[other] You will lose all existing observations. Would you like to discard {$count} observations?
+    [one] You will lose all existing observations. Would you like to discard 1 observation?
+    *[other] You will lose all existing observations. Would you like to discard {$count} observations?
 }
 
 You-can-still-share-the-file =
-You can still share the file with another app. If you can email it, please send it to { $email }
+    You can still share the file with another app. If you can email it, please send it to { $email }
 
 Zoom-in = Zoom in so that the observation's accuracy is as low as possible.
 
@@ -998,32 +998,32 @@ Sound-recorder = Sound recorder
 User = User { $userHandle }
 Observation-Name = Observation { $scientificName }
 x-comments = {$count ->
-[one] {$count} comment
-*[other] {$count} comments
+    [one] {$count} comment
+    *[other] {$count} comments
 }
 x-identifications = {$count ->
-[one] {$count} identification
-*[other] {$count} identifications
+    [one] {$count} identification
+   *[other] {$count} identifications
 }
 
 X-Identifications = {$count ->
-[one] {$count} Identification
-*[other] {$count} Identifications
+    [one] {$count} Identification
+   *[other] {$count} Identifications
 }
 
 X-Identifiers = {$count ->
-[one] {$count} Identifier
-*[other] {$count} Identifiers
+    [one] {$count} Identifier
+   *[other] {$count} Identifiers
 }
 
 X-Observers = {$count ->
-[one] {$count} Observer
-*[other] {$count} Observers
+    [one] {$count} Observer
+   *[other] {$count} Observers
 }
 
 X-Species = {$count ->
-[one] {$count} Species
-*[other] {$count} Species
+    [one] {$count} Species
+   *[other] {$count} Species
 }
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
@@ -1125,6 +1125,7 @@ Grid-view = Grid view
 Remove-favorite = Remove favorite
 Add-favorite = Add favorite
 Start-upload = Start upload
+Upload-in-progress = Upload in progress
 Previous-observation = Previous observation
 Next-observation = Next observation
 Close-search = Close search
@@ -1216,28 +1217,28 @@ TOP-OBSERVERS = TOP OBSERVERS
 TOP-IDENTIFIERS = TOP IDENTIFIERS
 
 OBSERVATIONS-WITHOUT-NUMBER = {$count ->
-[one] OBSERVATION
-*[other] OBSERVATIONS
+    [one] OBSERVATION
+    *[other] OBSERVATIONS
 }
 
 SPECIES-WITHOUT-NUMBER = {$count ->
-[one] SPECIES
-*[other] SPECIES
+    [one] SPECIES
+    *[other] SPECIES
 }
 
 IDENTIFICATIONS-WITHOUT-NUMBER = {$count ->
-[one] IDENTIFICATION
-*[other] IDENTIFICATIONS
+    [one] IDENTIFICATION
+    *[other] IDENTIFICATIONS
 }
 
 JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
-[one] JOURNAL POST
-*[other] JOURNAL POSTS
+    [one] JOURNAL POST
+    *[other] JOURNAL POSTS
 }
 
 MEMBERS-WITHOUT-NUMBER = {$count ->
-[one] MEMBER
-*[other] MEMBERS
+    [one] MEMBER
+    *[other] MEMBERS
 }
 
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)

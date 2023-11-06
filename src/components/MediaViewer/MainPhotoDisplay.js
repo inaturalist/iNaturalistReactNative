@@ -2,7 +2,7 @@
 
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { FlatList } from "react-native";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -26,11 +26,11 @@ const MainPhotoDisplay = ( {
   );
 
   // need getItemLayout for setting initial scroll index
-  const getItemLayout = ( data, index ) => ( {
+  const getItemLayout = useCallback( ( data, index ) => ( {
     length: screenWidth,
     offset: screenWidth * index,
     index
-  } );
+  } ), [screenWidth] );
 
   return (
     <View className="flex-1">

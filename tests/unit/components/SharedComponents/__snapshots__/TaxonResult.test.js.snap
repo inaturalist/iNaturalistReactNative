@@ -109,12 +109,6 @@ exports[`TaxonResult should render correctly 1`] = `
               "height": 62,
             },
             {
-              "borderBottomLeftRadius": 8,
-              "borderBottomRightRadius": 8,
-              "borderTopLeftRadius": 8,
-              "borderTopRightRadius": 8,
-            },
-            {
               "width": 62,
             },
             [
@@ -157,12 +151,6 @@ exports[`TaxonResult should render correctly 1`] = `
               },
               {
                 "height": 62,
-              },
-              {
-                "borderBottomLeftRadius": 8,
-                "borderBottomRightRadius": 8,
-                "borderTopLeftRadius": 8,
-                "borderTopRightRadius": 8,
               },
               {
                 "width": 62,
