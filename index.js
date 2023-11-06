@@ -2,6 +2,8 @@
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PerformanceProfiler } from "@shopify/react-native-performance";
 import {
   QueryClient,
   QueryClientProvider
@@ -14,7 +16,7 @@ import inatjs from "inaturalistjs";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
-import React from "react";
+import React, { useCallback } from "react";
 import { AppRegistry } from "react-native";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
@@ -98,25 +100,33 @@ const queryClient = new QueryClient( {
   }
 } );
 
-const AppWithProviders = ( ) => (
-  <QueryClientProvider client={queryClient}>
-    <RealmProvider>
-      <SafeAreaProvider>
-        <INatPaperProvider>
-          <GestureHandlerRootView className="flex-1">
-            <BottomSheetModalProvider>
-              {/* NavigationContainer needs to be nested above ObsEditProvider */}
-              <NavigationContainer>
-                <ObsEditProvider>
-                  <App />
-                </ObsEditProvider>
-              </NavigationContainer>
-            </BottomSheetModalProvider>
-          </GestureHandlerRootView>
-        </INatPaperProvider>
-      </SafeAreaProvider>
-    </RealmProvider>
-  </QueryClientProvider>
-);
+const AppWithProviders = ( ) => {
+  const onReportPrepared = useCallback( report => {
+    const performanceLogger = log.extend( "PerformanceProfiler" );
+    performanceLogger.info( JSON.stringify( report ) );
+  }, [] );
+  return (
+    <PerformanceProfiler onReportPrepared={onReportPrepared}>
+      <QueryClientProvider client={queryClient}>
+        <RealmProvider>
+          <SafeAreaProvider>
+            <INatPaperProvider>
+              <GestureHandlerRootView className="flex-1">
+                <BottomSheetModalProvider>
+                  {/* NavigationContainer needs to be nested above ObsEditProvider */}
+                  <NavigationContainer>
+                    <ObsEditProvider>
+                      <App />
+                    </ObsEditProvider>
+                  </NavigationContainer>
+                </BottomSheetModalProvider>
+              </GestureHandlerRootView>
+            </INatPaperProvider>
+          </SafeAreaProvider>
+        </RealmProvider>
+      </QueryClientProvider>
+    </PerformanceProfiler>
+  );
+};
 
 AppRegistry.registerComponent( appName, ( ) => AppWithProviders );

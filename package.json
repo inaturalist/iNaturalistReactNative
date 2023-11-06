@@ -47,6 +47,7 @@
     "@realm/react": "^0.4.3",
     "@sayem314/react-native-keep-awake": "1.1.0",
     "@shopify/flash-list": "^1.6.1",
+    "@shopify/react-native-performance": "^4.1.2",
     "@tanstack/react-query": "^4.35.3",
     "apisauce": "3.0.0",
     "axios": "0.27.2",

@@ -1,6 +1,8 @@
 // @flow
 
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PerformanceMeasureView } from "@shopify/react-native-performance";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -56,18 +58,20 @@ const MyObservationsContainer = ( ): Node => {
   if ( !layout ) { return null; }
 
   return (
-    <MyObservations
-      observations={observations}
-      layout={layout}
-      toggleLayout={toggleLayout}
-      allObsToUpload={allObsToUpload}
-      showLoginSheet={showLoginSheet}
-      setShowLoginSheet={setShowLoginSheet}
-      isFetchingNextPage={isFetchingNextPage}
-      onEndReached={fetchNextPage}
-      currentUser={currentUser}
-      isOnline={isOnline}
-    />
+    <PerformanceMeasureView interactive={!!layout} screenName="HomeScreen">
+      <MyObservations
+        observations={observations}
+        layout={layout}
+        toggleLayout={toggleLayout}
+        allObsToUpload={allObsToUpload}
+        showLoginSheet={showLoginSheet}
+        setShowLoginSheet={setShowLoginSheet}
+        isFetchingNextPage={isFetchingNextPage}
+        onEndReached={fetchNextPage}
+        currentUser={currentUser}
+        isOnline={isOnline}
+      />
+    </PerformanceMeasureView>
   );
 };
 
