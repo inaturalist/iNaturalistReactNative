@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { LinearGradient, View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTheme } from "react-native-paper";
 import { dropShadow } from "styles/global";
 
@@ -61,10 +61,79 @@ const ObsImagePreview = ( {
     "relative",
     borderRadius,
     height,
-    borderRadius,
     className,
     width
   );
+
+  const renderPhotoCount = useCallback( ( ) => {
+    if ( obsPhotosCount !== 1 ) {
+      return (
+        <View
+          className={classNames( "absolute right-0 p-1", {
+            "bottom-0": !isMultiplePhotosTop,
+            "top-0": isMultiplePhotosTop,
+            "p-2": !isSmall
+          } )}
+        >
+          { !( isSmall && obsPhotosCount === 0 ) && <PhotoCount count={obsPhotosCount} /> }
+        </View>
+      );
+    }
+    return null;
+  }, [isMultiplePhotosTop, isSmall, obsPhotosCount] );
+
+  const renderSelectable = useCallback( ( ) => {
+    if ( selectable ) {
+      return (
+        <View
+          className={classNames(
+            "flex items-center justify-center",
+            "rounded-full",
+            "absolute m-2.5 right-0",
+            {
+              "bg-white": selected,
+              "w-[24px] h-[24px]": selected,
+              "w-[24px] h-[24px] border-2 border-white": !selected
+            }
+          )}
+          style={dropShadow}
+        >
+          {selected && (
+            <INatIcon name="checkmark" color={theme.colors.primary} size={12} />
+          )}
+        </View>
+      );
+    }
+    return null;
+  }, [selectable, selected, theme] );
+
+  const renderGradient = useCallback( ( ) => {
+    if ( !isSmall ) {
+      return (
+        <LinearGradient
+          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+          className="absolute w-full h-full"
+        />
+      );
+    }
+    return null;
+  }, [isSmall] );
+
+  const renderSoundIcon = useCallback( ( ) => {
+    if ( hasSound ) {
+      return (
+        <View
+          className={classNames( "absolute left-0 top-0 p-1", {
+            "p-2": !isSmall
+          } )}
+          style={dropShadow}
+        >
+          <INatIcon name="sound" color={theme.colors.onSecondary} size={18} />
+        </View>
+      );
+    }
+    return null;
+  }, [hasSound, isSmall, theme] );
 
   return (
     <View
@@ -79,53 +148,10 @@ const ObsImagePreview = ( {
         iconicTaxonName={iconicTaxonName}
         white={white}
       />
-      { !isSmall && (
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-          className="absolute w-full h-full"
-        />
-      ) }
-      {selectable && (
-        <View
-          className={classNames(
-            "flex items-center justify-center",
-            "rounded-full",
-            "absolute m-2.5 right-0",
-
-            {
-              "bg-white": selected,
-              "w-[24px] h-[24px]": selected,
-              "w-[24px] h-[24px] border-2 border-white": !selected
-            }
-          )}
-          style={dropShadow}
-        >
-          {selected && (
-            <INatIcon name="checkmark" color={theme.colors.primary} size={12} />
-          )}
-        </View>
-      )}
-      {obsPhotosCount !== 1 && (
-        <View
-          className={classNames( "absolute right-0 p-1", {
-            "bottom-0": !isMultiplePhotosTop,
-            "top-0": isMultiplePhotosTop,
-            "p-2": !isSmall
-          } )}
-        >
-          { !( isSmall && obsPhotosCount === 0 ) && <PhotoCount count={obsPhotosCount} /> }
-        </View>
-      )}
-      {hasSound && (
-        <View
-          className={classNames( "absolute left-0 top-0 p-1", {
-            "p-2": !isSmall
-          } )}
-          style={dropShadow}
-        >
-          <INatIcon name="sound" color={theme.colors.onSecondary} size={18} />
-        </View>
-      )}
+      {renderGradient( )}
+      {renderSelectable( )}
+      {renderPhotoCount( )}
+      {renderSoundIcon( )}
       {children}
     </View>
   );

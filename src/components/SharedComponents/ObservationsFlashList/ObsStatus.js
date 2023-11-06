@@ -9,7 +9,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 
@@ -29,32 +29,32 @@ const ObsStatus = ( {
   testID
 }: Props ): Node => {
   const theme = useTheme();
-  const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
     : "mr-2";
   const flexDirection = layout === "vertical"
     ? "flex-column"
     : "flex-row";
-  const iconColorResearchCheck = qualityGrade === "research"
-    ? theme.colors.secondary
-    : theme.colors.primary;
-  const iconColor = white
-    ? theme.colors.onPrimary
-    : iconColorResearchCheck;
-  const numIdents = observation.identifications?.length || 0;
-  const numComments = observation.comments?.length || 0;
-  const identificationsFilled = observation.identifications_viewed === false;
-  const commentsFilled = observation.comments_viewed === false;
 
-  return (
-    <View className={classNames( "flex", flexDirection, classNameMargin )} testID={testID}>
+  const showIdCount = useCallback( ( ) => {
+    const numIdents = observation.identifications?.length || 0;
+    const identificationsFilled = observation.identifications_viewed === false;
+
+    return (
       <IdentificationsCount
         classNameMargin={margin}
         count={numIdents}
         white={white}
         filled={identificationsFilled}
       />
+    );
+  }, [observation, margin, white] );
+
+  const showCommentCount = useCallback( ( ) => {
+    const numComments = observation.comments?.length || 0;
+    const commentsFilled = observation.comments_viewed === false;
+
+    return (
       <CommentsCount
         classNameMargin={margin}
         count={numComments}
@@ -62,7 +62,25 @@ const ObsStatus = ( {
         filled={commentsFilled}
         testID="ObsStatus.commentsCount"
       />
-      <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
+    );
+  }, [observation, margin, white] );
+
+  const showQualityGrade = useCallback( ( ) => {
+    const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
+    const iconColorResearchCheck = qualityGrade === "research"
+      ? theme.colors.secondary
+      : theme.colors.primary;
+    const iconColor = white
+      ? theme.colors.onPrimary
+      : iconColorResearchCheck;
+    return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
+  }, [observation, theme, white] );
+
+  return (
+    <View className={classNames( "flex", flexDirection, classNameMargin )} testID={testID}>
+      {showIdCount( )}
+      {showCommentCount( )}
+      {showQualityGrade( )}
     </View>
   );
 };

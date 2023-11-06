@@ -1,7 +1,6 @@
 export { default as useApiToken } from "./useApiToken";
 export { default as useAuthenticatedMutation } from "./useAuthenticatedMutation";
 export { default as useAuthenticatedQuery } from "./useAuthenticatedQuery";
-export { default as useCoords } from "./useCoords";
 export { default as useCurrentObservationLocation } from "./useCurrentObservationLocation";
 export { default as useCurrentUser } from "./useCurrentUser";
 export { default as useDeviceOrientation } from "./useDeviceOrientation";
@@ -9,7 +8,6 @@ export { default as useIconicTaxa } from "./useIconicTaxa";
 export { default as useInfiniteObservationsScroll } from "./useInfiniteObservationsScroll";
 export { default as useInfiniteScroll } from "./useInfiniteScroll";
 export { default as useIsConnected } from "./useIsConnected";
-export { default as useIsForeground } from "./useIsForeground";
 export { default as useLocalObservation } from "./useLocalObservation";
 export { default as useLocalObservations } from "./useLocalObservations";
 export { default as useNumUnuploadedObservations } from "./useNumUnuploadedObservations";
@@ -18,6 +16,5 @@ export { default as useObservationUpdatesWhenFocused } from "./useObservationUpd
 export { default as useShare } from "./useShare";
 export { default as useTaxon } from "./useTaxon";
 export { default as useTranslation } from "./useTranslation";
-export { default as useUnlockScreen } from "./useUnlockScreen";
 export { default as useUserLocation } from "./useUserLocation";
 export { default as useUserMe } from "./useUserMe";

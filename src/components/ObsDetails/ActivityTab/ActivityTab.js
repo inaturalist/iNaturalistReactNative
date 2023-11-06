@@ -10,14 +10,16 @@ type Props = {
   observation:Object,
   refetchRemoteObservation: Function,
   activityItems: Array<Object>,
-  onIDAgreePressed: Function
+  onIDAgreePressed: Function,
+  isOnline: boolean
 }
 
 const ActivityTab = ( {
   observation,
   refetchRemoteObservation,
   activityItems,
-  onIDAgreePressed
+  onIDAgreePressed,
+  isOnline
 }: Props ): React.Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -46,6 +48,7 @@ const ActivityTab = ( {
             refetchRemoteObservation={refetchRemoteObservation}
             onIDAgreePressed={onIDAgreePressed}
             currentUserId={userId}
+            isOnline={isOnline}
           />
         ) )}
     </View>

@@ -2,12 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react-native";
 import { InlineUser } from "components/SharedComponents";
 import initI18next from "i18n/initI18next";
 import React from "react";
-import useIsConnected from "sharedHooks/useIsConnected";
 
 import factory from "../../../../factory";
-
-jest.mock( "sharedHooks/useIsConnected" );
-useIsConnected.mockReturnValue( true );
 
 const mockNavigate = jest.fn( );
 jest.mock( "@react-navigation/native", ( ) => {
@@ -46,13 +42,13 @@ describe( "InlineUser", ( ) => {
 
   it( "renders reliably", () => {
     // Snapshot test
-    render( <InlineUser user={snapshotUser} /> );
+    render( <InlineUser user={snapshotUser} isOnline /> );
 
     expect( screen ).toMatchSnapshot();
   } );
 
   it( "displays user handle and image correctly", async ( ) => {
-    render( <InlineUser user={mockUser} /> );
+    render( <InlineUser user={mockUser} isOnline /> );
     // Check for user name text
     expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
     // This image appears after useIsConnected returns true
@@ -64,7 +60,7 @@ describe( "InlineUser", ( ) => {
   } );
 
   it( "fires onPress handler", ( ) => {
-    render( <InlineUser user={mockUser} /> );
+    render( <InlineUser user={mockUser} isOnline /> );
 
     const inlineUserComponent = screen.getByRole( "link" );
     fireEvent.press( inlineUserComponent );
@@ -75,7 +71,7 @@ describe( "InlineUser", ( ) => {
 
   describe( "when user has no icon set", () => {
     it( "displays user handle and fallback image correctly", async () => {
-      render( <InlineUser user={mockUserWithoutImage} /> );
+      render( <InlineUser user={mockUserWithoutImage} isOnline /> );
 
       expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
       // This icon appears after useIsConnected returns true
@@ -91,22 +87,14 @@ describe( "InlineUser", ( ) => {
 
     it( "renders reliably", ( ) => {
       // Snapshot test
-      render( <InlineUser user={snapshotUserWithoutImage} /> );
+      render( <InlineUser user={snapshotUserWithoutImage} isOnline /> );
       expect( screen ).toMatchSnapshot();
     } );
   } );
 
   describe( "when offline", () => {
-    beforeEach( () => {
-      useIsConnected.mockReturnValue( false );
-    } );
-
-    afterEach( () => {
-      useIsConnected.mockReturnValue( true );
-    } );
-
     it( "displays no internet fallback image correctly", async () => {
-      render( <InlineUser user={mockUser} /> );
+      render( <InlineUser user={mockUser} isOnline={false} /> );
 
       expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy();
       // This icon appears after useIsConnected returns false
@@ -118,7 +106,7 @@ describe( "InlineUser", ( ) => {
 
     it( "renders reliably", ( ) => {
       // Snapshot test
-      render( <InlineUser user={snapshotUser} /> );
+      render( <InlineUser user={snapshotUser} isOnline={false} /> );
       expect( screen ).toMatchSnapshot();
     } );
   } );

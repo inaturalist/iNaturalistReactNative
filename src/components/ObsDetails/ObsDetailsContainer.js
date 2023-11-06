@@ -19,6 +19,7 @@ import {
   useAuthenticatedMutation,
   useAuthenticatedQuery,
   useCurrentUser,
+  useIsConnected,
   useLocalObservation,
   useTranslation
 } from "sharedHooks";
@@ -108,6 +109,7 @@ const ObsDetailsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
+  const isOnline = useIsConnected( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
@@ -357,6 +359,7 @@ const ObsDetailsContainer = ( ): Node => {
       onAgree={onAgree}
       onIDAgreePressed={onIDAgreePressed}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
+      isOnline={isOnline}
     />
   );
 };
