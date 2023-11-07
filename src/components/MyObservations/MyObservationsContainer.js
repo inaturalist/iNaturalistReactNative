@@ -17,6 +17,7 @@ const MyObservationsContainer = ( ): Node => {
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const isOnline = useIsConnected( );
+  console.log( "is my obs container loading", layout );
 
   const currentUser = useCurrentUser();
   const { isFetchingNextPage, fetchNextPage } = useInfiniteObservationsScroll( {

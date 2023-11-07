@@ -41,6 +41,14 @@ jobs:
     - run: npm run lint
     - run: npm test
 
+    - name: Run performance testing script
+      run: ./reassure-tests.sh
+
+    - name: Run Danger.js
+      run: yarn danger ci
+      env:
+        DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+
   notify:
     name: Notify Slack
     needs: test
