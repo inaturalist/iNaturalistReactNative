@@ -1,9 +1,9 @@
 // @flow
 import { useDrawerStatus } from "@react-navigation/drawer";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import User from "realmModels/User";
-import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import CustomTabBar from "./CustomTabBar";
 
@@ -14,16 +14,16 @@ const MESSAGES_SCREEN_ID = "Messages";
 
 type Props = {
   navigation: Object,
+  isOnline: boolean
 };
 
-const CustomTabBarContainer = ( { navigation }: Props ): Node => {
+const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const isConnected = useIsConnected( );
   const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
   const isDrawerOpen = useDrawerStatus() === "open";
 
-  const tabs = [
+  const tabs = useMemo( ( ) => ( [
     {
       icon: "hamburger-menu",
       testID: DRAWER_ID,
@@ -56,10 +56,10 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
     },
     {
       icon: "person",
-      userIconUri: isConnected
+      userIconUri: isOnline
         ? User.uri( currentUser )
         : null,
-      testID: User.uri( currentUser ) && isConnected
+      testID: User.uri( currentUser ) && isOnline
         ? "NavButton.avatar"
         : "NavButton.personIcon",
       accessibilityLabel: t( "Observations" ),
@@ -89,7 +89,14 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       },
       active: MESSAGES_SCREEN_ID === activeTab
     }
-  ];
+  ] ), [
+    activeTab,
+    isOnline,
+    currentUser,
+    isDrawerOpen,
+    navigation,
+    t
+  ] );
 
   return (
     <CustomTabBar

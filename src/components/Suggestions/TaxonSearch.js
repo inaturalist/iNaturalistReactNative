@@ -10,7 +10,9 @@ import {
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback, useContext, useEffect, useState
+} from "react";
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { useAuthenticatedQuery } from "sharedHooks";
@@ -52,6 +54,18 @@ const TaxonSearch = ( ): Node => {
     <View className="pb-10" />
   );
 
+  const renderItem = useCallback( ( { item: taxon, index } ) => (
+    <TaxonResult
+      taxon={taxon}
+      handleCheckmarkPress={( ) => {
+        createId( taxon );
+        navigation.navigate( "ObsEdit" );
+      }}
+      testID={`Search.taxa.${taxon.id}`}
+      first={index === 0}
+    />
+  ), [createId, navigation] );
+
   return (
     <ViewWrapper className="flex-1">
       <AddCommentPrompt />
@@ -65,17 +79,7 @@ const TaxonSearch = ( ): Node => {
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
-        renderItem={( { item: taxon, index } ) => (
-          <TaxonResult
-            taxon={taxon}
-            handleCheckmarkPress={( ) => {
-              createId( taxon );
-              navigation.navigate( "ObsEdit" );
-            }}
-            testID={`Search.taxa.${taxon.id}`}
-            first={index === 0}
-          />
-        )}
+        renderItem={renderItem}
         keyExtractor={item => item.id}
         ListFooterComponent={renderFooter}
       />

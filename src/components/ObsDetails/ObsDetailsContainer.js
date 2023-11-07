@@ -19,6 +19,7 @@ import {
   useAuthenticatedMutation,
   useAuthenticatedQuery,
   useCurrentUser,
+  useIsConnected,
   useLocalObservation,
   useTranslation
 } from "sharedHooks";
@@ -100,7 +101,7 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const {
-    setObservations
+    updateObservations
   } = useContext( ObsEditContext );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
@@ -108,6 +109,7 @@ const ObsDetailsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
+  const isOnline = useIsConnected( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
@@ -303,7 +305,7 @@ const ObsDetailsContainer = ( ): Node => {
   }, [localObservation, markViewedMutation, uuid] );
 
   const navToSuggestions = ( ) => {
-    setObservations( [observation] );
+    updateObservations( [observation] );
     navigation.navigate( "Suggestions" );
   };
 
@@ -357,6 +359,7 @@ const ObsDetailsContainer = ( ): Node => {
       onAgree={onAgree}
       onIDAgreePressed={onIDAgreePressed}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
+      isOnline={isOnline}
     />
   );
 };

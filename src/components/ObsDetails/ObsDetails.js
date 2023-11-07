@@ -9,6 +9,7 @@ import {
 import { ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { Platform } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
@@ -36,7 +37,8 @@ type Props = {
   showAgreeWithIdSheet: Function,
   openCommentBox: Function,
   agreeIdSheetDiscardChanges: Function,
-  onAgree: Function
+  onAgree: Function,
+  isOnline: boolean
 }
 
 const ObsDetails = ( {
@@ -55,13 +57,18 @@ const ObsDetails = ( {
   showActivityTab,
   showAgreeWithIdSheet,
   agreeIdSheetDiscardChanges,
-  onAgree
+  onAgree,
+  isOnline
 }: Props ): Node => {
   const { params } = useRoute( );
   const { uuid } = params;
   const { t } = useTranslation( );
 
   const taxon = observation?.taxon;
+
+  const textInputStyle = Platform.OS === "android" && {
+    height: 125
+  };
 
   return (
     <ViewWrapper>
@@ -73,6 +80,7 @@ const ObsDetails = ( {
         <Header
           observation={observation}
           refetchRemoteObservation={refetchRemoteObservation}
+          isOnline={isOnline}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
@@ -83,6 +91,7 @@ const ObsDetails = ( {
             refetchRemoteObservation={refetchRemoteObservation}
             onIDAgreePressed={onIDAgreePressed}
             activityItems={activityItems}
+            isOnline={isOnline}
           />
         </HideView>
         <HideView noInitialRender show={!showActivityTab}>
@@ -114,6 +123,7 @@ const ObsDetails = ( {
         <TextInputSheet
           handleClose={hideCommentBox}
           headerText={t( "ADD-OPTIONAL-COMMENT" )}
+          textInputStyle={textInputStyle}
           snapPoints={[416]}
           confirm={textInput => onCommentAdded( textInput )}
         />

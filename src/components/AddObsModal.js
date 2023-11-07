@@ -4,30 +4,31 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
-import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   closeModal: ( ) => void
 }
 
 const AddObsModal = ( { closeModal }: Props ): React.Node => {
+  const { t } = useTranslation( );
   const theme = useTheme( );
-  // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
-  const obsEditContext = React.useContext( ObsEditContext );
-  const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
-  const navigation = useNavigation( );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
   // TODO: update these version numbers based on what the new model can handle
   // in CoreML and TFLite
-  const showARCamera = Platform.OS === "ios"
-    ? majorVersionIOS >= 11
-    : Platform.Version > 23;
+  const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
+    || ( Platform.OS === "android" && Platform.Version > 23 );
+
+  // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
+  const obsEditContext = React.useContext( ObsEditContext );
+  const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
+  const navigation = useNavigation( );
 
   const navAndCloseModal = ( screen, params ) => {
     const resetObsEditContext = obsEditContext?.resetObsEditContext;
@@ -46,7 +47,9 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     closeModal( );
   };
 
-  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery" );
+  const navToPhotoGallery = async ( ) => {
+    navAndCloseModal( "PhotoGallery" );
+  };
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 

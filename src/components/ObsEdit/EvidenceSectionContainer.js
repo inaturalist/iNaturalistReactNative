@@ -10,6 +10,7 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect,
+  useMemo,
   useRef, useState
 } from "react";
 import {
@@ -19,10 +20,18 @@ import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLoca
 
 import EvidenceSection from "./EvidenceSection";
 
-const EvidenceSectionContainer = ( ): Node => {
+type Props = {
+  passesEvidenceTest: boolean,
+  setPassesEvidenceTest: Function
+}
+
+const EvidenceSectionContainer = ( {
+  setPassesEvidenceTest,
+  passesEvidenceTest
+}: Props ): Node => {
   const {
     currentObservation,
-    setPassesEvidenceTest,
+
     updateObservationKeys,
     setPhotoEvidenceUris,
     photoEvidenceUris
@@ -61,11 +70,6 @@ const EvidenceSectionContainer = ( ): Node => {
     }
   }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
 
-  // const {
-  //   hasLocation,
-  //   isFetchingLocation
-  // } = useCurrentObservationLocation( mountedRef );
-
   const {
     hasLocation,
     isFetchingLocation,
@@ -85,7 +89,7 @@ const EvidenceSectionContainer = ( ): Node => {
     }
   }, [latitude, locationPermissionResult] );
 
-  const hasPhotoOrSound = useCallback( ( ) => {
+  const hasPhotoOrSound = useMemo( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
       || currentObservation?.observationSounds?.length > 0 ) {
       return true;
@@ -93,7 +97,7 @@ const EvidenceSectionContainer = ( ): Node => {
     return false;
   }, [currentObservation] );
 
-  const hasValidLocation = useCallback( ( ) => {
+  const hasValidLocation = useMemo( ( ) => {
     if ( hasLocation
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
@@ -110,7 +114,7 @@ const EvidenceSectionContainer = ( ): Node => {
     return false;
   }, [currentObservation, longitude, latitude, hasLocation] );
 
-  const hasValidDate = useCallback( ( ) => {
+  const hasValidDate = useMemo( ( ) => {
     const observationDate = parseISO(
       currentObservation?.observed_on_string || currentObservation?.time_observed_at
     );
@@ -123,25 +127,25 @@ const EvidenceSectionContainer = ( ): Node => {
     return false;
   }, [currentObservation] );
 
-  const passesEvidenceTest = useCallback( ( ) => {
+  const fullEvidenceTest = useCallback( ( ) => {
     if ( isFetchingLocation ) {
       return null;
     }
-    if ( hasValidLocation( ) && hasValidDate( ) && hasPhotoOrSound( ) ) {
+    if ( hasValidLocation && hasValidDate && hasPhotoOrSound ) {
       return true;
     }
     return false;
   }, [isFetchingLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
 
   useEffect( ( ) => {
-    // we're only showing the Missing Evidence Sheet if location/date are missing
+    // we're showing the Missing Evidence Sheet if location/date are missing
     // but not if there is a missing photo or sound
-    // so the ObsEditContext version of passing evidence test
-    // will be different from what shows here with the red warning/green checkmark
-    if ( hasValidLocation( ) && hasValidDate( ) ) {
+    // so the fullEvidenceTest which shows the red warning/green checkmark
+    // is different than passesEvidenceTest
+    if ( hasValidLocation && hasValidDate && !passesEvidenceTest ) {
       setPassesEvidenceTest( true );
     }
-  }, [hasValidLocation, hasValidDate, setPassesEvidenceTest] );
+  }, [hasValidLocation, hasValidDate, setPassesEvidenceTest, passesEvidenceTest] );
 
   const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
 
@@ -161,7 +165,7 @@ const EvidenceSectionContainer = ( ): Node => {
     <EvidenceSection
       locationTextClassNames={locationTextClassNames}
       handleDragAndDrop={handleDragAndDrop}
-      passesEvidenceTest={passesEvidenceTest}
+      passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
       evidenceList={obsPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}

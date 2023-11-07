@@ -21,12 +21,14 @@ type Props = {
   refetchRemoteObservation: Function,
   currentUserId?: Number,
   userAgreedId?: string,
-  onIDAgreePressed: Function
+  onIDAgreePressed: Function,
+  isOnline: boolean
 }
 
 const ActivityItem = ( {
   item, refetchRemoteObservation, currentUserId,
-  userAgreedId, onIDAgreePressed
+  userAgreedId, onIDAgreePressed,
+  isOnline
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { taxon, user } = item;
@@ -49,6 +51,7 @@ const ActivityItem = ( {
         item={item}
         refetchRemoteObservation={refetchRemoteObservation}
         idWithdrawn={idWithdrawn}
+        isOnline={isOnline}
       />
       {taxon && (
         <View className="flex-row items-center justify-between mr-[23px] mb-4">

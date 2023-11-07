@@ -14,15 +14,14 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import User from "realmModels/User";
-import useIsConnected from "sharedHooks/useIsConnected";
 
 type Props = {
-  user: any
+  user: any,
+  isOnline: boolean
 };
 
-const InlineUser = ( { user }: Props ): Node => {
+const InlineUser = ( { user, isOnline }: Props ): Node => {
   const navigation = useNavigation();
-  const isOnline = useIsConnected( );
   const userImgUri = User.uri( user );
   const userHandle = User.userHandle( user );
 

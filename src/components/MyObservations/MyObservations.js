@@ -10,27 +10,29 @@ import LoginSheet from "./LoginSheet";
 import MyObservationsEmpty from "./MyObservationsEmpty";
 
 type Props = {
-  isFetchingNextPage?: boolean,
   layout: "list" | "grid",
   observations: Array<Object>,
-  onEndReached: Function,
   toggleLayout: Function,
   allObsToUpload: Array<Object>,
-  currentUser: ?Object,
   showLoginSheet: boolean,
-  setShowLoginSheet: Function
+  setShowLoginSheet: Function,
+  isFetchingNextPage: boolean,
+  onEndReached: Function,
+  currentUser: Object,
+  isOnline: boolean
 };
 
 const MyObservations = ( {
-  isFetchingNextPage,
   layout,
   observations,
-  onEndReached,
   toggleLayout,
   allObsToUpload,
-  currentUser,
   showLoginSheet,
-  setShowLoginSheet
+  setShowLoginSheet,
+  isFetchingNextPage,
+  onEndReached,
+  currentUser,
+  isOnline
 }: Props ): Node => {
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
 
@@ -75,7 +77,7 @@ const MyObservations = ( {
               toggleLayout={toggleLayout}
               layout={layout}
               currentUser={currentUser}
-              numObservations={observations.length}
+              hideToolbar={observations.length === 0}
               setHeightAboveToolbar={setHeightAboveToolbar}
               allObsToUpload={allObsToUpload}
               setShowLoginSheet={setShowLoginSheet}
@@ -91,6 +93,7 @@ const MyObservations = ( {
               renderEmptyList={renderEmptyList}
               data={observations.filter( o => o.isValid() )}
               showObservationsEmptyScreen
+              isOnline={isOnline}
             />
           </StickyView>
         </View>

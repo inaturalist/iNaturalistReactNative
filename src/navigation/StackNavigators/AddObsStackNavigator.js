@@ -7,8 +7,7 @@ import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer"
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
-  CAMERA_PERMISSIONS,
-  READ_MEDIA_PERMISSIONS
+  CAMERA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
@@ -54,21 +53,6 @@ const SoundRecorderWithPermission = ( ) => (
   </PermissionGateContainer>
 );
 
-const PhotoGalleryWithPermission = ( ) => (
-  <PermissionGateContainer
-    permissions={READ_MEDIA_PERMISSIONS}
-    title={t( "Observe-and-identify-organisms-from-your-gallery" )}
-    titleDenied={t( "Please-Allow-Gallery-Access" )}
-    body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
-    blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
-    buttonText={t( "CHOOSE-PHOTOS" )}
-    icon="gallery"
-    image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
-  >
-    <PhotoGallery />
-  </PermissionGateContainer>
-);
-
 const AddObsStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
@@ -94,7 +78,7 @@ const AddObsStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="PhotoGallery"
-        component={PhotoGalleryWithPermission}
+        component={PhotoGallery}
         options={blankHeaderTitle}
       />
       <Stack.Screen

@@ -3,13 +3,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect } from "react";
-import { Alert } from "react-native";
+import React, { useCallback, useContext, useEffect } from "react";
 import {
   useCurrentUser,
-  useIsConnected,
-  useObservationsUpdates,
-  useTranslation
+  useObservationsUpdates
 } from "sharedHooks";
 
 import Toolbar from "./Toolbar";
@@ -27,7 +24,6 @@ const ToolbarContainer = ( {
   allObsToUpload,
   setShowLoginSheet
 }: Props ): Node => {
-  const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const syncObservations = obsEditContext?.syncObservations;
@@ -42,21 +38,12 @@ const ToolbarContainer = ( {
   const currentUploadIndex = obsEditContext?.currentUploadIndex;
   const clearUploadProgress = obsEditContext?.clearUploadProgress;
   const navigation = useNavigation( );
-  const isOnline = useIsConnected( );
 
   const totalUploadCount = uploads?.length || 0;
 
   const { refetch } = useObservationsUpdates( false );
 
-  const handleSyncButtonPress = ( ) => {
-    if ( !isOnline ) {
-      Alert.alert(
-        t( "Internet-Connection-Required" ),
-        t( "Please-try-again-when-you-are-connected-to-the-internet" )
-      );
-      return;
-    }
-
+  const handleSyncButtonPress = useCallback( ( ) => {
     if ( !currentUser ) {
       setShowLoginSheet( true );
       return;
@@ -68,7 +55,15 @@ const ToolbarContainer = ( {
       syncObservations( );
       refetch( );
     }
-  };
+  }, [
+    allObsToUpload,
+    currentUser,
+    numUnuploadedObs,
+    syncObservations,
+    refetch,
+    setShowLoginSheet,
+    setUploads
+  ] );
 
   const navToExplore = ( ) => navigation.navigate( "Explore" );
 

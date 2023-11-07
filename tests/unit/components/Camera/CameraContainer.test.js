@@ -8,7 +8,18 @@ import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { View } from "react-native";
 
+import factory from "../../../factory";
+
 const mockedNavigate = jest.fn();
+
+const mockTaxon = factory( "RemoteTaxon" );
+
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: mockTaxon
+  } )
+} ) );
 
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -25,7 +36,7 @@ jest.mock( "@react-navigation/native", () => {
 
 const mockValue = {
   addCameraPhotosToCurrentObservation: jest.fn(),
-  allObsPhotoUris: [],
+  totalObsPhotoUris: 10,
   cameraPreviewUris: []
 };
 

@@ -2,9 +2,10 @@
 import classNames from "classnames";
 import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import * as React from "react";
+import type { Node } from "react";
+import React, { useMemo } from "react";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   label?: string,
@@ -12,8 +13,12 @@ type Props = {
   classNameMargin?: string
 };
 
-const DateDisplay = ( { dateString, label, classNameMargin }: Props ): React.Node => {
+const DateDisplay = ( { dateString, label, classNameMargin }: Props ): Node => {
   const { t } = useTranslation( );
+  const date = useMemo( ( ) => ( label
+    ? `${label} `
+    : "" ) + formatApiDatetime( dateString, t ), [dateString, label, t] );
+
   return (
     <View className={classNames( "flex flex-row items-center", classNameMargin )}>
       <INatIcon
@@ -21,9 +26,7 @@ const DateDisplay = ( { dateString, label, classNameMargin }: Props ): React.Nod
         size={13}
       />
       <Body4 className="ml-[5px]">
-        {( label
-          ? `${label} `
-          : "" ) + formatApiDatetime( dateString, t )}
+        {date}
       </Body4>
     </View>
   );

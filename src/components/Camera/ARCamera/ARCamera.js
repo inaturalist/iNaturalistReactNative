@@ -5,12 +5,11 @@ import FadeInOutView from "components/Camera/FadeInOutView";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
-import { Platform } from "react-native";
+import React, { useEffect } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useTaxon, useTranslation } from "sharedHooks";
 
 import {
   handleCameraError,
@@ -50,6 +49,10 @@ type Props = {
   photoSaved: boolean,
   onZoomStart?: Function,
   onZoomChange?: Function,
+  result?: Object,
+  handleTaxaDetected: Function,
+  modelLoaded: boolean,
+  isLandscapeMode: boolean
 };
 
 const ARCamera = ( {
@@ -69,7 +72,11 @@ const ARCamera = ( {
   navToObsEdit,
   photoSaved,
   onZoomStart,
-  onZoomChange
+  onZoomChange,
+  result,
+  handleTaxaDetected,
+  modelLoaded,
+  isLandscapeMode
 }: Props ): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -77,9 +84,10 @@ const ARCamera = ( {
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
   const [hasFinishedHere, setHasFinishedHere] = useState( false );
+  const localTaxon = useTaxon( result?.taxon );
 
   // only show predictions when rank is order or lower, like we do on Seek
-  const showPrediction = ( result && result.rank_level <= 40 ) || false;
+  const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
 
   // Johannes (June 2023): I did read through the native code of the legacy inatcamera
   // that is triggered when using ref.current.takePictureAsync()
@@ -168,37 +176,44 @@ const ARCamera = ( {
     setResult( prediction );
   };
 
-  useEffect( () => {
+  useEffect(() => {
     if ( hasFinishedHere ) {
       return;
     }
     if ( photoSaved ) {
       setHasFinishedHere( true );
-      navToObsEdit( { prediction: result } );
+      navToObsEdit( localTaxon );
     }
-  }, [hasFinishedHere, photoSaved, navToObsEdit, result] );
+  }, [hasFinishedHere, photoSaved, navToObsEdit, localTaxon]);
 
   return (
     <>
       {device && (
-        <FrameProcessorCamera
-          cameraRef={camera}
-          device={device}
-          onTaxaDetected={handleTaxaDetected}
-          onClassifierError={handleClassifierError}
-          onDeviceNotSupported={handleDeviceNotSupported}
-          onCaptureError={handleCaptureError}
-          onCameraError={handleCameraError}
-          onLog={handleLog}
-          animatedProps={animatedProps}
-          onZoomStart={onZoomStart}
-          onZoomChange={onZoomChange}
-          takingPhoto={takingPhoto}
-        />
+        <View className="w-full h-full absolute z-0">
+          <FrameProcessorCamera
+            cameraRef={camera}
+            device={device}
+            onTaxaDetected={handleTaxaDetected}
+            onClassifierError={handleClassifierError}
+            onDeviceNotSupported={handleDeviceNotSupported}
+            onCaptureError={handleCaptureError}
+            onCameraError={handleCameraError}
+            onLog={handleLog}
+            animatedProps={animatedProps}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
+            takingPhoto={takingPhoto}
+          />
+        </View>
       )}
       <LinearGradient
         colors={["#000000", "rgba(0, 0, 0, 0)"]}
-        locations={[0.001, 1]}
+        locations={[
+          0.001,
+          isTablet && isLandscapeMode
+            ? 0.3
+            : 1
+        ]}
         className="w-full"
       >
         <View
@@ -210,9 +225,9 @@ const ARCamera = ( {
           {showPrediction && result
             ? (
               <TaxonResult
-                taxon={result}
+                taxon={localTaxon}
                 handleCheckmarkPress={takePhoto}
-                testID={`ARCamera.taxa.${result.id}`}
+                testID={`ARCamera.taxa.${result?.taxon?.id}`}
                 clearBackground
                 confidence={convertScoreToConfidence( result?.score )}
                 white

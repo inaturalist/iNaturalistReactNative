@@ -410,7 +410,7 @@ lane :internal do
     distribute_external: true,
     groups: [
       "iNat staff",
-      "iNat friends"
+      "iNat Friends"
     ],
     changelog: File.read( changelog_path ),
     # https://github.com/fastlane/fastlane/issues/20756

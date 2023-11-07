@@ -26,11 +26,6 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   default: () => undefined
 } ) );
 
-jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
-  __esModule: true,
-  default: () => true
-} ) );
-
 describe( "CustomTabBar", () => {
   it( "should render correctly", () => {
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
@@ -45,7 +40,7 @@ describe( "CustomTabBar", () => {
   } );
 
   it( "should display person icon while user is logged out", () => {
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
     expect( personIcon ).toBeVisible( );
@@ -53,7 +48,7 @@ describe( "CustomTabBar", () => {
 
   it( "should display avatar while user is logged in", () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline /> );
 
     const avatar = screen.getByTestId( "UserIcon.photo" );
     expect( avatar ).toBeVisible( );
@@ -61,7 +56,7 @@ describe( "CustomTabBar", () => {
 
   it( "should display person icon when connectivity is low", ( ) => {
     jest.spyOn( useIsConnected, "default" ).mockImplementation( () => false );
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline={false} /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
     expect( personIcon ).toBeVisible( );

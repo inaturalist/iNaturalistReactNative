@@ -107,6 +107,12 @@ const DetailsTab = ( { observation }: Props ): Node => {
     longitude
   } );
 
+  const tileMapParams = observation?.taxon?.id
+    ? {
+      taxon_id: observation.taxon.id
+    }
+    : null;
+
   const displayQualityGradeOption = option => {
     const isResearchGrade = ( qualityGrade === "research" && option === "research" );
     const labelClassName = ( qualityGrade === option )
@@ -167,6 +173,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
           openMapScreen={() => setShowMapModal( true )}
           showLocationIndicator
           positionalAccuracy={positionalAccuracy}
+          tileMapParams={tileMapParams}
+          withObsTiles={tileMapParams !== null}
         />
       ) }
 
@@ -258,6 +266,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
             longitude={longitude}
             obscured={isObscured}
             closeModal={( ) => setShowMapModal( false )}
+            tileMapParams={tileMapParams}
           />
         )}
       />

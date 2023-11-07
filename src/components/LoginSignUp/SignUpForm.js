@@ -10,11 +10,7 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { TextInput, useTheme } from "react-native-paper";
 
-type Props = {
-  handleInputFocus: Function
-}
-
-const SignUpForm = ( { handleInputFocus }: Props ): Node => {
+const SignUpForm = ( ): Node => {
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [username, setUsername] = useState( "" );
@@ -35,7 +31,6 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
           autoCapitalize="none"
           keyboardType="email-address"
           selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
         />
         <Heading4 className="color-white mb-[11px] mt-[9px]">{t( "USERNAME" )}</Heading4>
         <TextInput
@@ -45,9 +40,7 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
           value={username}
           testID="Signup.username"
           autoCapitalize="none"
-          keyboardType="email-address"
           selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
         />
         <Heading4 className="color-white mb-[11px] mt-[9px]">{t( "PASSWORD" )}</Heading4>
         <TextInput
@@ -58,7 +51,6 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
           secureTextEntry
           testID="Signup.password"
           selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
         />
       </View>
       <Button
@@ -79,7 +71,7 @@ const SignUpForm = ( { handleInputFocus }: Props ): Node => {
       />
       <Body1
         className="color-white self-center mt-[30px] underline"
-        onPress={( ) => navigation.navigate( "Login" )}
+        onPress={( ) => navigation.navigate( "LoginNavigator", { screen: "Login" } )}
       >
         {t( "Already-have-an-account" )}
       </Body1>
