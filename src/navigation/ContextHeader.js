@@ -55,6 +55,7 @@ const ContextHeader = ( {
         <BackButton
           color={colors.black}
           onPress={navigation.goBack}
+          inCustomHeader
         />
       )
     );

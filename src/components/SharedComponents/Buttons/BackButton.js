@@ -7,10 +7,11 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   color?: string,
-  onPress?: Function
+  onPress?: Function,
+  inCustomHeader?: boolean
 }
 
-const BACK_BUTTON_STYLE = {
+const REACT_NAVIGATION_BACK_BUTTON_STYLE = {
   marginStart: Platform.OS === "ios"
     ? -15
     : 0
@@ -18,7 +19,8 @@ const BACK_BUTTON_STYLE = {
 
 const BackButton = ( {
   color = colors.black,
-  onPress
+  onPress,
+  inCustomHeader
 }: Props ): Node => {
   const navigation = useNavigation();
   const tintColor = color || colors.black;
@@ -29,7 +31,7 @@ const BackButton = ( {
         tintColor={tintColor}
         onPress={onPress || navigation.goBack}
         // move backbutton to same margin as in react-navigation
-        style={BACK_BUTTON_STYLE}
+        style={!inCustomHeader && REACT_NAVIGATION_BACK_BUTTON_STYLE}
       />
     );
   }

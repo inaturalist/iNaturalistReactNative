@@ -3,7 +3,6 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { Heading2, KebabMenu } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
-import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -112,26 +111,24 @@ const Header = ( ): Node => {
   );
 
   const renderKebabMenu = useCallback( ( ) => (
-    <View className="mr-4">
-      <KebabMenu
-        visible={kebabMenuVisible}
-        setVisible={setKebabMenuVisible}
-        large
-      >
-        <Menu.Item
-          testID="Header.delete-observation"
-          onPress={( ) => {
-            setDeleteSheetVisible( true );
-            setKebabMenuVisible( false );
-          }}
-          title={
-            observations.length > 1
-              ? t( "Delete-observations" )
-              : t( "Delete-observation" )
-          }
-        />
-      </KebabMenu>
-    </View>
+    <KebabMenu
+      visible={kebabMenuVisible}
+      setVisible={setKebabMenuVisible}
+      large
+    >
+      <Menu.Item
+        testID="Header.delete-observation"
+        onPress={( ) => {
+          setDeleteSheetVisible( true );
+          setKebabMenuVisible( false );
+        }}
+        title={
+          observations.length > 1
+            ? t( "Delete-observations" )
+            : t( "Delete-observation" )
+        }
+      />
+    </KebabMenu>
   ), [kebabMenuVisible, observations, t, setDeleteSheetVisible] );
 
   useEffect( ( ) => {

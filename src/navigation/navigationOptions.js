@@ -57,7 +57,8 @@ const showCustomHeader: Object = {
   ...baseHeaderOptions,
   header: ContextHeader,
   headerShadowVisible: true,
-  alignStart: true
+  alignStart: true,
+  headerLeft: () => <BackButton inCustomHeader />
 };
 
 const hideHeader = {
