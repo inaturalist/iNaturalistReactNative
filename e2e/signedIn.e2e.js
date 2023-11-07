@@ -121,6 +121,21 @@ describe( "Signed in user", () => {
     await waitFor( editButton ).toBeVisible().withTimeout( 10000 );
     // Navigate to the edit screen
     await editButton.tap();
+
+    /*
+    / 2.Insert.: On iOS setting location permission is currently not working
+    / react-native-vision-camera >v3.4 only compiles with XCode >15
+    / AppleSimUtils v0.9.10 used to set the location permission (other permissions afre fine)
+    / does not work on a Simulator with XCode15 + iOS17, so in order for this test to pass we
+    / disable usage of a location for now.
+    */
+    if ( device.getPlatform() === "ios" ) {
+      // Permission gate modal, press close icon to exit
+      const closePermissionGate = element( by.id( "close-permission-gate" ) );
+      await waitFor( closePermissionGate ).toBeVisible().withTimeout( 10000 );
+      await closePermissionGate.tap();
+    }
+
     // Check that the edit screen is visible
     await waitFor( element( by.text( "EVIDENCE" ) ) )
       .toBeVisible()
