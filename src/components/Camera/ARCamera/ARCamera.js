@@ -5,7 +5,7 @@ import FadeInOutView from "components/Camera/FadeInOutView";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
@@ -81,8 +81,6 @@ const ARCamera = ( {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const [result, setResult] = useState( null );
-  const [modelLoaded, setModelLoaded] = useState( false );
   const [hasFinishedHere, setHasFinishedHere] = useState( false );
   const localTaxon = useTaxon( result?.taxon );
 
@@ -115,68 +113,7 @@ const ARCamera = ( {
     return 5;
   };
 
-  const handleTaxaDetected = cvResults => {
-    if ( cvResults && !modelLoaded ) {
-      setModelLoaded( true );
-    }
-    /*
-      Using FrameProcessorCamera results in this as cvResults atm on Android
-      [
-        {
-          "stateofmatter": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        },
-        {
-          "order": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        },
-        {
-          "species": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        }
-      ]
-    */
-    /*
-      Using FrameProcessorCamera results in this as cvResults atm on iOS (= top prediction)
-      [
-        {"name": "Aves", "rank": 50, "score": 0.7627944946289062, "taxon_id": 3}
-      ]
-    */
-    // console.log( "cvResults :>> ", cvResults );
-    let prediction = null;
-    let predictions = [];
-    if ( Platform.OS === "ios" ) {
-      if ( cvResults.length > 0 ) {
-        const finestPrediction = cvResults[cvResults.length - 1];
-        prediction = {
-          rank_level: finestPrediction.rank,
-          id: finestPrediction.taxon_id,
-          name: finestPrediction.name,
-          score: finestPrediction.score
-        };
-      }
-    } else {
-      predictions = cvResults
-        ?.map( r => {
-          const rank = Object.keys( r )[0];
-          return r[rank][0];
-        } )
-        .sort( ( a, b ) => a.rank - b.rank );
-      prediction = predictions
-        && predictions.length > 0 && {
-        rank_level: predictions[0].rank,
-        id: predictions[0].taxon_id,
-        name: predictions[0].name,
-        score: predictions[0].score
-      };
-    }
-    setResult( prediction );
-  };
-
-  useEffect(() => {
+  useEffect( () => {
     if ( hasFinishedHere ) {
       return;
     }
@@ -184,7 +121,7 @@ const ARCamera = ( {
       setHasFinishedHere( true );
       navToObsEdit( localTaxon );
     }
-  }, [hasFinishedHere, photoSaved, navToObsEdit, localTaxon]);
+  }, [hasFinishedHere, photoSaved, navToObsEdit, localTaxon] );
 
   return (
     <>
