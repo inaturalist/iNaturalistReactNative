@@ -76,6 +76,7 @@ const ARCamera = ( {
 
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
+  const [hasFinishedHere, setHasFinishedHere] = useState( false );
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result.rank_level <= 40 ) || false;
@@ -168,10 +169,14 @@ const ARCamera = ( {
   };
 
   useEffect( () => {
+    if ( hasFinishedHere ) {
+      return;
+    }
     if ( photoSaved ) {
+      setHasFinishedHere( true );
       navToObsEdit( { prediction: result } );
     }
-  }, [photoSaved, navToObsEdit, result] );
+  }, [hasFinishedHere, photoSaved, navToObsEdit, result] );
 
   return (
     <>
