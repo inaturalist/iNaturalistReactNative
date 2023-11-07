@@ -8,7 +8,7 @@ import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
@@ -74,6 +74,7 @@ const ARCamera = ( {
   const theme = useTheme();
 
   // const [hasFinishedHere, setHasFinishedHere] = useState( false );
+  // const localTaxon = useTaxon( result?.taxon );
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
@@ -98,9 +99,9 @@ const ARCamera = ( {
   //   }
   //   if ( photoSaved ) {
   //     setHasFinishedHere( true );
-  //     navToObsEdit( { prediction: result } );
+  //     navToObsEdit( localTaxon );
   //   }
-  // }, [hasFinishedHere, photoSaved, navToObsEdit, result] );
+  // }, [hasFinishedHere, photoSaved, navToObsEdit, localTaxon] );
 
   return (
     <>
