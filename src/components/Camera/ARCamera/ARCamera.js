@@ -73,6 +73,8 @@ const ARCamera = ( {
   const { t } = useTranslation();
   const theme = useTheme();
 
+  // const [hasFinishedHere, setHasFinishedHere] = useState( false );
+
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
 
@@ -89,6 +91,16 @@ const ARCamera = ( {
       ? result.taxon
       : null );
   };
+
+  // useEffect( () => {
+  //   if ( hasFinishedHere ) {
+  //     return;
+  //   }
+  //   if ( photoSaved ) {
+  //     setHasFinishedHere( true );
+  //     navToObsEdit( { prediction: result } );
+  //   }
+  // }, [hasFinishedHere, photoSaved, navToObsEdit, result] );
 
   return (
     <>
