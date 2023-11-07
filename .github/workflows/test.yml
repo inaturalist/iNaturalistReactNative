@@ -39,7 +39,6 @@ jobs:
       run: npm install --legacy-peer-deps
 
     - run: npm run lint
-    - run: npm test
 
     - name: Run performance testing script
       run: ../../scripts/reassure-tests.sh
@@ -48,6 +47,8 @@ jobs:
       run: yarn danger ci
       env:
         DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+
+    - run: npm test
 
   notify:
     name: Notify Slack
