@@ -11,9 +11,9 @@ import { Alert } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  disableAddingMoreEvidence: boolean,
-  hidden?: boolean,
-  onClose: Function
+disableAddingMoreEvidence: boolean,
+    hidden?: boolean,
+onClose: Function
 }
 
 const AddEvidenceSheet = ( {
@@ -38,9 +38,14 @@ const AddEvidenceSheet = ( {
         if ( choice === "camera" ) {
           navigation.navigate( "CameraNavigator", {
             screen: "Camera",
-            params: { addEvidence: true, camera: "Standard" }
+            params: {
+              addEvidence: true,
+              camera: "Standard",
+              backToObsEdit: true
+            }
           } );
         } else if ( choice === "import" ) {
+          // Show photo gallery, but skip group photos phase
           navigation.navigate( "CameraNavigator", {
             screen: "PhotoGallery",
             params: { skipGroupPhotos: true }

@@ -60,7 +60,8 @@ type Props = {
   cameraType: string,
   cameraPosition: string,
   device: Object,
-  setCameraPosition: Function
+  setCameraPosition: Function,
+  backToObsEdit: ?boolean
 }
 
 const CameraWithDevice = ( {
@@ -68,7 +69,8 @@ const CameraWithDevice = ( {
   cameraType,
   cameraPosition,
   device,
-  setCameraPosition
+  setCameraPosition,
+  backToObsEdit
 }: Props ): Node => {
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
@@ -183,10 +185,12 @@ const CameraWithDevice = ( {
   const handleBackButtonPress = useCallback( ( ) => {
     if ( cameraPreviewUris.length > 0 ) {
       setShowDiscardSheet( true );
+    } else if ( backToObsEdit ) {
+      navigation.navigate( "ObsEdit" );
     } else {
       navigation.goBack( );
     }
-  }, [setShowDiscardSheet, cameraPreviewUris, navigation] );
+  }, [backToObsEdit, setShowDiscardSheet, cameraPreviewUris, navigation] );
 
   useFocusEffect(
     // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator
@@ -396,6 +400,7 @@ const CameraWithDevice = ( {
 
 const CameraContainer = ( ): Node => {
   const { params } = useRoute( );
+  const backToObsEdit = params?.backToObsEdit;
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
   const [cameraPosition, setCameraPosition] = useState( "back" );
@@ -407,6 +412,7 @@ const CameraContainer = ( ): Node => {
 
   return (
     <CameraWithDevice
+      backToObsEdit={backToObsEdit}
       addEvidence={addEvidence}
       cameraType={cameraType}
       cameraPosition={cameraPosition}

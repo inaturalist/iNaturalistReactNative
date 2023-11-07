@@ -47,7 +47,9 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     closeModal( );
   };
 
-  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery" );
+  const navToPhotoGallery = async ( ) => {
+    navAndCloseModal( "PhotoGallery" );
+  };
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 

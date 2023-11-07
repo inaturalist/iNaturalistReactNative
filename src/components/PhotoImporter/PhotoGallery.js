@@ -1,141 +1,148 @@
-// @flow
-
-import { FlashList } from "@shopify/flash-list";
-import PhotoGalleryImage from "components/PhotoImporter/PhotoGalleryImage";
-import {
-  Body3, Button, StickyToolbar, ViewWrapper
-} from "components/SharedComponents";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
+  from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo
+  useContext, useState
 } from "react";
-import { ActivityIndicator } from "react-native";
-import { Snackbar } from "react-native-paper";
-import { useDeviceOrientation } from "sharedHooks";
+import { InteractionManager, Platform, View } from "react-native";
+import * as ImagePicker from "react-native-image-picker";
 
-const GUTTER = 1;
+const MAX_PHOTOS_ALLOWED = 20;
 
-type Props = {
-  checkSelected: Function,
-  checkPreviouslySelected: Function,
-  skipGroupPhotos: boolean,
-  handleImagePress: Function,
-  photosByAlbum: Array<Object>,
-  navToNextScreen: Function,
-  fetchMorePhotos: Function,
-  fetchingPhotos: boolean,
-  showAlert: boolean,
-  totalSelected: number,
-  hideAlert: Function,
-  galleryUris: Array<string>
-}
+const sleep = ms => new Promise( resolve => {
+  setTimeout( resolve, ms );
+} );
 
-const PhotoGallery = ( {
-  checkPreviouslySelected,
-  checkSelected,
-  skipGroupPhotos,
-  handleImagePress,
-  photosByAlbum,
-  navToNextScreen,
-  fetchMorePhotos,
-  fetchingPhotos,
-  galleryUris,
-  showAlert,
-  totalSelected,
-  hideAlert
-}: Props ): Node => {
+const PhotoGallery = ( ): Node => {
+  const navigation = useNavigation( );
+  const [photoGalleryShown, setPhotoGalleryShown] = useState( false );
+  const [permissionGranted, setPermissionGranted] = useState( false );
   const {
-    isTablet, screenWidth, screenHeight
-  } = useDeviceOrientation();
-  const numColumns = 4;
-  const calculateGridItemWidth = () => {
-    const combinedGutter = ( numColumns + 1 ) * GUTTER;
-    const gridWidth = isTablet
-      ? screenWidth
-      : Math.min( screenWidth, screenHeight );
-    return Math.floor( ( gridWidth - combinedGutter ) / numColumns );
-  };
-  const itemWidth = calculateGridItemWidth();
+    createObservationFromGallery,
+    galleryUris,
+    setGalleryUris,
+    addGalleryPhotosToCurrentObservation,
+    evidenceToAdd,
+    setEvidenceToAdd,
+    setGroupedPhotos
+  } = useContext( ObsEditContext );
+  const { params } = useRoute( );
+  const skipGroupPhotos = params
+    ? params.skipGroupPhotos
+    : false;
 
-  const itemStyle = useMemo( ( ) => ( {
-    height: itemWidth,
-    width: itemWidth,
-    margin: GUTTER / 2
-  } ), [itemWidth] );
-
-  const renderImage = useCallback( ( { item } ) => {
-    const uri = item?.image?.uri;
-    const isSelected = checkSelected( uri );
-    const isDisabled = ( skipGroupPhotos && isSelected && checkPreviouslySelected( uri ) ) || false;
-
-    return (
-      <PhotoGalleryImage
-        uri={uri}
-        timestamp={item.timestamp}
-        handleImagePress={( ) => handleImagePress( item, isSelected )}
-        isSelected={isSelected}
-        isDisabled={isDisabled}
-        itemStyle={itemStyle}
-      />
-    );
-  }, [
-    checkPreviouslySelected,
-    checkSelected,
-    skipGroupPhotos,
-    handleImagePress,
-    itemStyle
-  ] );
-
-  const extractKey = ( item, index ) => `${item}${index}`;
-
-  const renderEmptyList = useCallback( ( ) => {
-    if ( fetchingPhotos ) {
-      return <ActivityIndicator />;
+  const showPhotoGallery = React.useCallback( async () => {
+    if ( photoGalleryShown ) {
+      return;
     }
-    return <Body3>{t( "No-photos-found" )}</Body3>;
-  }, [fetchingPhotos] );
 
-  const flashListStyle = {
-    paddingLeft: GUTTER / 2,
-    paddingRight: GUTTER / 2,
-    paddingBottom: 80 + GUTTER / 2
+    setPhotoGalleryShown( true );
+
+    if ( Platform.OS === "ios" ) {
+      // iOS has annoying transition of the screen - that if we don't wait enough time,
+      // the launchImageLibrary would halt and not return (and not showing any image picker)
+      await sleep( 500 );
+    }
+
+    // According to the native code of the image picker library, it never rejects the promise,
+    // just returns a response object with errorCode
+    const response = await ImagePicker.launchImageLibrary( {
+      selectionLimit: MAX_PHOTOS_ALLOWED,
+      mediaType: "photo",
+      includeBase64: false,
+      includeExtra: true,
+      forceOldAndroidPhotoPicker: true,
+      chooserTitle: t( "Import-Photos-From" ),
+      presentationStyle: "fullScreen"
+    } );
+
+    if ( !response || response.didCancel || !response.assets || response.errorCode ) {
+      // User cancelled selection of photos - close current screen
+      navigation.goBack();
+      setPhotoGalleryShown( false );
+      return;
+    }
+
+    const navToObsEdit = () => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+
+    const selectedImages = response.assets.map( x => ( { image: x } ) );
+
+    setGalleryUris( [...galleryUris, ...response.assets.map( x => x.uri )] );
+    if ( skipGroupPhotos ) {
+      setEvidenceToAdd( [...evidenceToAdd, ...response.assets.map( x => x.uri )] );
+    }
+
+    if ( skipGroupPhotos ) {
+      // add any newly selected photos
+      // to an existing observation after navigating from ObsEdit
+      addGalleryPhotosToCurrentObservation( selectedImages );
+      navToObsEdit();
+      setPhotoGalleryShown( false );
+      return;
+    }
+    if ( selectedImages.length === 1 ) {
+      // create a new observation and skip group photos screen
+      createObservationFromGallery( selectedImages[0] );
+      navToObsEdit();
+      setPhotoGalleryShown( false );
+      return;
+    }
+
+    setGroupedPhotos( selectedImages.map( photo => ( {
+      photos: [photo]
+    } ) ) );
+
+    navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+    setPhotoGalleryShown( false );
+  }, [
+    photoGalleryShown, addGalleryPhotosToCurrentObservation, createObservationFromGallery,
+    evidenceToAdd, galleryUris, navigation, setEvidenceToAdd, setGalleryUris, setGroupedPhotos,
+    skipGroupPhotos] );
+
+  const onPermissionGranted = () => {
+    setPermissionGranted( true );
   };
 
-  const extraData = {
-    galleryUris
-  };
+  useFocusEffect(
+    React.useCallback( () => {
+      // This will run when the screen comes into focus.
+      let interactionHandle = null;
+
+      // Wait for screen to finish transition
+      interactionHandle = InteractionManager.runAfterInteractions( () => {
+        if ( permissionGranted && !photoGalleryShown ) {
+          showPhotoGallery();
+        }
+      } );
+
+      return () => {
+        // This runs when the screen goes out of focus
+        if ( interactionHandle ) {
+          interactionHandle.cancel();
+        }
+      };
+    }, [permissionGranted, photoGalleryShown, showPhotoGallery] )
+  );
 
   return (
-    <ViewWrapper testID="photo-gallery">
-      <FlashList
-        contentContainerStyle={flashListStyle}
-        data={photosByAlbum}
-        initialNumToRender={4}
-        keyExtractor={extractKey}
-        numColumns={numColumns}
-        renderItem={renderImage}
-        onEndReached={fetchMorePhotos}
-        testID="PhotoGallery.list"
-        ListEmptyComponent={renderEmptyList}
-        extraData={extraData}
-        estimatedItemSize={itemWidth}
-      />
-      {totalSelected > 0 && (
-        <StickyToolbar containerClass="items-center">
-          <Button
-            className="max-w-[500px] w-full"
-            level="focus"
-            text={t( "Import-X-photos", { count: totalSelected || 0 } )}
-            onPress={navToNextScreen}
-            testID="PhotoGallery.createObsButton"
-          />
-        </StickyToolbar>
+    <View>
+      {!permissionGranted && (
+        <PermissionGateContainer
+          permissions={READ_MEDIA_PERMISSIONS}
+          title={t( "Observe-and-identify-organisms-from-your-gallery" )}
+          titleDenied={t( "Please-Allow-Gallery-Access" )}
+          body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
+          blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
+          buttonText={t( "CHOOSE-PHOTOS" )}
+          icon="gallery"
+          image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
+          onPermissionGranted={onPermissionGranted}
+        />
       )}
-      <Snackbar visible={showAlert} onDismiss={hideAlert}>
-        {t( "You-can-only-upload-20-media" )}
-      </Snackbar>
-    </ViewWrapper>
+    </View>
   );
 };
 

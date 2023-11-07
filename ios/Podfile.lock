@@ -281,7 +281,7 @@ PODS:
     - React
   - react-native-geolocation (3.1.0):
     - React-Core
-  - react-native-image-picker (5.3.1):
+  - react-native-image-picker (7.0.0):
     - React-Core
   - react-native-image-resizer (3.0.7):
     - React-Core
@@ -726,7 +726,7 @@ SPEC CHECKSUMS:
   react-native-exif-reader: b2ad2175125a5d7dbd399ac6bd3bc4ba8753f85a
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation: ef66fb798d96284c6043f0b16c15d9d1d4955db4
-  react-native-image-picker: ec9b713e248760bfa0f879f0715391de4651a7cb
+  react-native-image-picker: ddbbe4d226d9c82a82360f5de66bf71a657a42e6
   react-native-image-resizer: 681f7607418b97c084ba2d0999b153b103040d8a
   react-native-keep-awake: acbee258db16483744910f0da3ace39eb9ab47fd
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
