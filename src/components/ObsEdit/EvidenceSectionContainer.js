@@ -16,6 +16,7 @@ import React, {
 import {
   RESULTS as PERMISSION_RESULTS
 } from "react-native-permissions";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
 
 import EvidenceSection from "./EvidenceSection";
@@ -31,7 +32,6 @@ const EvidenceSectionContainer = ( {
 }: Props ): Node => {
   const {
     currentObservation,
-
     updateObservationKeys,
     setPhotoEvidenceUris,
     photoEvidenceUris
@@ -160,6 +160,26 @@ const EvidenceSectionContainer = ( {
     const uris = data.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
     setPhotoEvidenceUris( uris );
   };
+
+  // Set the place_guess if not already set and coordinates are available.
+  // Note that at present this sets the place_guess for *any* obs that lacks
+  // it and has coords, including old obs, which might be a source of future
+  // bugs, but is also kind of something we want. Something to keep an eye
+  // on
+  useEffect( ( ) => {
+    async function setPlaceGuess( ) {
+      const placeGuess = await fetchPlaceName( latitude, longitude );
+      updateObservationKeys( { place_guess: placeGuess } );
+    }
+    if ( ( latitude && longitude ) && !currentObservation?.place_guess ) {
+      setPlaceGuess( );
+    }
+  }, [
+    currentObservation?.place_guess,
+    latitude,
+    longitude,
+    updateObservationKeys
+  ] );
 
   return (
     <EvidenceSection
