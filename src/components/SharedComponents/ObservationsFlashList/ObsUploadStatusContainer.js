@@ -35,7 +35,7 @@ const ObsUploadStatusContainer = ( {
   const progress = currentProgress / currentProgressIncrements || 0;
 
   const startUpload = useCallback( ( ) => {
-    uploadObservation( observation, { isSingleUpload: true } );
+    uploadObservation( observation );
   }, [
     observation,
     uploadObservation

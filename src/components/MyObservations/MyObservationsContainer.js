@@ -4,12 +4,8 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import {
-  createObservation,
-  createOrUpdateEvidence,
-  searchObservations,
-  updateObservation
+  searchObservations
 } from "api/observations";
-import inatjs from "inaturalistjs";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -18,10 +14,10 @@ import React, {
 import { Alert } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
-import ObservationPhoto from "realmModels/ObservationPhoto";
-import emitUploadProgress, {
+import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
+import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useApiToken,
   useCurrentUser,
@@ -33,12 +29,10 @@ import {
 
 import MyObservations from "./MyObservations";
 
-const uploadProgressIncrement = 0.5;
-
 export const INITIAL_UPLOAD_STATE = {
   currentUploadIndex: 0,
   error: null,
-  singleUpload: false,
+  singleUpload: true,
   totalProgressIncrements: 0,
   uploadInProgress: false,
   // $FlowIgnore
@@ -58,6 +52,7 @@ const startUploadState = uploads => ( {
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
+  console.log( action.type, "action type in myobs" );
   switch ( action.type ) {
     case "CONTINUE_UPLOADS":
       return {
@@ -78,7 +73,14 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
     case "START_MULTIPLE_UPLOADS":
       return {
         ...state,
-        ...startUploadState( action.uploads )
+        ...startUploadState( action.uploads ),
+        singleUpload: false
+      };
+    case "START_SINGLE_UPLOAD":
+      return {
+        ...state,
+        ...startUploadState( [action.observation] ),
+        singleUpload: true
       };
     case "START_NEXT_UPLOAD":
       return {
@@ -94,12 +96,6 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
       return {
         ...state,
         uploadProgress: action.uploadProgress
-      };
-    case "UPLOAD_SINGLE_OBSERVATION":
-      return {
-        ...state,
-        ...startUploadState( [action.observation] ),
-        singleUpload: true
       };
     default:
       return state;
@@ -181,209 +177,56 @@ const MyObservationsContainer = ( ): Node => {
     };
   }, [state.uploadProgress, state.singleUpload] );
 
-  const markRecordUploaded = useCallback( ( recordUUID, type, response ) => {
-    if ( !response ) { return; }
-    const { id } = response.results[0];
-
-    const record = realm.objectForPrimaryKey( type, recordUUID );
-    realm?.write( ( ) => {
-      record.id = id;
-      record._synced_at = new Date( );
-    } );
-  }, [realm] );
-
-  const uploadToServer = useCallback( async (
-    evidenceUUID: string,
-    type: string,
-    params: Object,
-    apiEndpoint: Function,
-    options: Object,
-    observationUUID?: string
-  ) => {
-    emitUploadProgress( observationUUID, uploadProgressIncrement );
-    const response = await createOrUpdateEvidence(
-      apiEndpoint,
-      params,
-      options
-    );
-    if ( response ) {
-      emitUploadProgress( observationUUID, uploadProgressIncrement );
-      markRecordUploaded( evidenceUUID, type, response );
-    }
-  }, [markRecordUploaded] );
-
-  const uploadEvidence = useCallback( async (
-    evidence: Array<Object>,
-    type: string,
-    apiSchemaMapper: Function,
-    observationId: ?number,
-    apiEndpoint: Function,
-    options: Object,
-    observationUUID?: string,
-    forceUpload?: boolean
-  ): Promise<any> => {
-    // only try to upload evidence which is not yet on the server
-    const unsyncedEvidence = forceUpload
-      ? evidence
-      : evidence.filter( item => !item.wasSynced( ) );
-
-    const responses = await Promise.all( unsyncedEvidence.map( item => {
-      const currentEvidence = item.toJSON( );
-      const evidenceUUID = currentEvidence.uuid;
-
-      // Remove all null values, b/c the API doesn't seem to like them
-      const newPhoto = {};
-      const photo = currentEvidence?.photo;
-      Object.keys( photo ).forEach( k => {
-        if ( photo[k] !== null ) {
-          newPhoto[k] = photo[k];
-        }
-      } );
-
-      currentEvidence.photo = newPhoto;
-
-      const params = apiSchemaMapper( observationId, currentEvidence );
-      return uploadToServer(
-        evidenceUUID,
-        type,
-        params,
-        apiEndpoint,
-        options,
-        observationUUID
-      );
-    } ) );
-    // eslint-disable-next-line consistent-return
-    return responses[0];
-  }, [uploadToServer] );
-
   const showInternetErrorAlert = useCallback( ( ) => {
+    console.log( isOnline, "is online" );
     if ( !isOnline ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
         t( "Please-try-again-when-you-are-connected-to-the-internet" )
       );
     }
-    return null;
   }, [isOnline, t] );
 
-  const uploadObservation = useCallback( async ( obs, uploadOptions ) => {
+  const toggleLoginSheet = useCallback( ( ) => {
     if ( !currentUser ) {
       setShowLoginSheet( true );
-      return;
     }
+  }, [currentUser] );
+
+  const startUpload = useCallback( ( observation, options ) => {
+    console.log( options, "options in start upload" );
+    toggleLoginSheet( );
     showInternetErrorAlert( );
-    if ( uploadOptions?.isSingleUpload ) {
-      dispatch( {
-        type: "UPLOAD_SINGLE_OBSERVATION",
-        observation: obs
-      } );
+    if ( options?.singleUpload !== false ) {
+      dispatch( { type: "START_SINGLE_UPLOAD", observation } );
     }
-    // don't bother trying to upload unless there's a logged in user
-    if ( !currentUser ) { return; }
-    if ( !apiToken ) {
-      throw new Error(
-        "Gack, tried to upload an observation without API token!"
-      );
-    }
-    activateKeepAwake( );
-    // every observation and observation photo counts for a total of 1 progress
-    // we're showing progress in 0.5 increments: when an upload of obs/obsPhoto starts
-    // and when the upload of obs/obsPhoto successfully completes
-    emitUploadProgress( obs.uuid, uploadProgressIncrement );
-    const obsToUpload = Observation.mapObservationForUpload( obs );
-    const options = { api_token: apiToken };
-
-    // Remove all null values, b/c the API doesn't seem to like them for some
-    // reason (might be an error with the API as of 20220801)
-    const newObs = {};
-    Object.keys( obsToUpload ).forEach( k => {
-      if ( obsToUpload[k] !== null ) {
-        newObs[k] = obsToUpload[k];
-      }
-    } );
-
-    let response;
-
-    // First upload the photos/sounds (before uploading the observation itself)
-    const hasPhotos = obs?.observationPhotos?.length > 0;
-
-    await Promise.all( [
-      hasPhotos
-        ? uploadEvidence(
-          obs.observationPhotos,
-          "ObservationPhoto",
-          ObservationPhoto.mapPhotoForUpload,
-          null,
-          inatjs.photos.create,
-          options
-        )
-        : null
-    ] );
-
-    const wasPreviouslySynced = obs.wasSynced( );
-    const uploadParams = {
-      observation: { ...newObs },
-      fields: { id: true }
-    };
-
-    if ( wasPreviouslySynced ) {
-      response = await updateObservation( {
-        ...uploadParams,
-        id: newObs.uuid,
-        ignore_photos: true
-      }, options );
-      emitUploadProgress( obs.uuid, uploadProgressIncrement );
-    } else {
-      response = await createObservation( uploadParams, options );
-      emitUploadProgress( obs.uuid, uploadProgressIncrement );
-    }
-
-    if ( !response ) {
-      return;
-    }
-
-    const { uuid: obsUUID } = response.results[0];
-
-    await Promise.all( [
-      markRecordUploaded( obs.uuid, "Observation", response ),
-      // Next, attach the uploaded photos/sounds to the uploaded observation
-      hasPhotos
-        ? uploadEvidence(
-          obs.observationPhotos,
-          "ObservationPhoto",
-          ObservationPhoto.mapPhotoForAttachingToObs,
-          obsUUID,
-          inatjs.observation_photos.create,
-          options,
-          obsUUID,
-          true
-        )
-        : null
-    ] );
-    deactivateKeepAwake( );
-  }, [apiToken, currentUser, markRecordUploaded, showInternetErrorAlert, uploadEvidence] );
+    uploadObservation( observation, realm );
+  }, [
+    showInternetErrorAlert,
+    toggleLoginSheet,
+    realm
+  ] );
 
   const uploadMultipleObservations = useCallback( ( ) => {
     const {
-      uploads,
       currentUploadIndex,
       uploadInProgress,
       uploadProgress
     } = state;
-    if ( !currentUser ) {
-      setShowLoginSheet( true );
-      return;
-    }
+    toggleLoginSheet( );
     showInternetErrorAlert( );
-    dispatch( { type: "START_MULTIPLE_UPLOADS", uploads: allObsToUpload } );
+    const currentUploads = allObsToUpload;
+    console.log( currentUploads.length, "current uploads" );
+    dispatch( { type: "START_MULTIPLE_UPLOADS", uploads: currentUploads } );
     const upload = async observationToUpload => {
+      console.log( observationToUpload, "observationToUpload" );
       try {
-        await uploadObservation( observationToUpload );
+        await startUpload( observationToUpload, { singleUpload: false } );
       } catch ( e ) {
         console.warn( e );
         dispatch( { type: "SET_UPLOAD_ERROR", error: e.message } );
       }
-      if ( currentUploadIndex === uploads.length - 1 ) {
+      if ( currentUploadIndex === currentUploads.length - 1 ) {
         // Finished uploading the last observation
         dispatch( { type: "PAUSE_UPLOADS" } );
       } else {
@@ -391,7 +234,7 @@ const MyObservationsContainer = ( ): Node => {
       }
     };
 
-    const observationToUpload = uploads[currentUploadIndex];
+    const observationToUpload = currentUploads[currentUploadIndex];
     const continueUpload = observationToUpload && !!apiToken;
 
     if ( !continueUpload && uploadInProgress ) {
@@ -405,7 +248,14 @@ const MyObservationsContainer = ( ): Node => {
       dispatch( { type: "CONTINUE_UPLOADS" } );
       upload( observationToUpload );
     }
-  }, [apiToken, showInternetErrorAlert, uploadObservation, state, allObsToUpload, currentUser] );
+  }, [
+    apiToken,
+    showInternetErrorAlert,
+    state,
+    allObsToUpload,
+    startUpload,
+    toggleLoginSheet
+  ] );
 
   const stopUpload = useCallback( ( ) => {
     dispatch( { type: "STOP_UPLOADS" } );
@@ -440,9 +290,9 @@ const MyObservationsContainer = ( ): Node => {
   useEffect( ( ) => {
     // upload pressed on ObsEdit screen
     if ( savedObservation ) {
-      uploadObservation( savedObservation, { isSingleUpload: true } );
+      startUpload( savedObservation );
     }
-  }, [savedObservation, uploadObservation] );
+  }, [savedObservation, startUpload] );
 
   // clear upload status when leaving screen
   useEffect(
@@ -459,6 +309,8 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( !layout ) { return null; }
 
+  console.log( state, "state in MyObs" );
+
   return (
     <MyObservations
       observations={observations}
@@ -473,7 +325,7 @@ const MyObservationsContainer = ( ): Node => {
       uploadState={state}
       uploadMultipleObservations={uploadMultipleObservations}
       stopUpload={stopUpload}
-      uploadObservation={uploadObservation}
+      uploadObservation={startUpload}
       syncObservations={syncObservations}
     />
   );

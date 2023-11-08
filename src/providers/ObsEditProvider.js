@@ -14,6 +14,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif, writeExifToFile } from "sharedHelpers/parseExif";
+import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
@@ -359,25 +360,27 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const setNextScreen = async ( { type }: Object ) => {
       const savedObservation = await saveCurrentObservation( );
-      if ( type === "upload" ) {
+
+      if ( observations.length === 1 ) {
+        const params = {
+          screen: "ObsList"
+        };
+        if ( type === "upload" ) {
+          // $FlowIgnore
+          params.uuid = savedObservation.uuid;
+        }
         // navigate to ObsList and start upload with uuid
         navigation.navigate( "TabNavigator", {
           screen: "ObservationsStackNavigator",
           params: {
             screen: "ObsList",
-            uuid: savedObservation.uuid
-          }
-        } );
-      }
-
-      if ( observations.length === 1 ) {
-        navigation.navigate( "TabNavigator", {
-          screen: "ObservationsStackNavigator",
-          params: {
-            screen: "ObsList"
+            params
           }
         } );
       } else if ( currentObservationIndex === observations.length - 1 ) {
+        if ( type === "upload" ) {
+          uploadObservation( savedObservation, realm );
+        }
         observations.pop( );
         dispatch( {
           type: "SET_DISPLAYED_OBSERVATION",
@@ -385,6 +388,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           observations
         } );
       } else {
+        if ( type === "upload" ) {
+          uploadObservation( savedObservation, realm );
+        }
         observations.splice( currentObservationIndex, 1 );
         // this seems necessary for rerendering the ObsEdit screen
         dispatch( {
@@ -392,10 +398,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           currentObservationIndex,
           observations: []
         } );
-        console.log( currentObservationIndex, observations.length, "length of obs" );
         updateObservations( observations );
-
-        console.log( currentObservationIndex, observations.length, "length of obs1" );
       }
     };
 
