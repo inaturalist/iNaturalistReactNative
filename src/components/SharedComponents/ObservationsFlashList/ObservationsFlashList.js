@@ -21,13 +21,14 @@ type Props = {
   layout: "list" | "grid",
   data: Array<Object>,
   onEndReached: Function,
-  setShowLoginSheet: Function,
+  uploadState: Object,
   currentUser?: ?Object,
   testID: string,
   handleScroll?: Function,
   status?: string,
   showObservationsEmptyScreen?: boolean,
-  isOnline: boolean
+  isOnline: boolean,
+  uploadObservation?: Function
 };
 
 const GUTTER = 15;
@@ -37,13 +38,14 @@ const ObservationsFlashList = ( {
   layout,
   data,
   onEndReached,
-  setShowLoginSheet,
+  uploadState,
   currentUser,
   testID,
   handleScroll,
   status,
   showObservationsEmptyScreen,
-  isOnline
+  isOnline,
+  uploadObservation
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -81,9 +83,10 @@ const ObservationsFlashList = ( {
       observation={item}
       layout={layout}
       gridItemWidth={gridItemWidth}
-      setShowLoginSheet={setShowLoginSheet}
+      uploadObservation={uploadObservation}
+      uploadState={uploadState}
     />
-  ), [gridItemWidth, layout, setShowLoginSheet] );
+  ), [gridItemWidth, layout, uploadState, uploadObservation] );
 
   const renderItemSeparator = useCallback( ( ) => {
     if ( layout === "grid" ) {

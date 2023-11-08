@@ -14,7 +14,8 @@ type Props = {
   width?: string,
   height?: string,
   style?: Object,
-  setShowLoginSheet: Function
+  uploadObservation: Function,
+  uploadState: Object
 };
 
 const ObsGridItem = ( {
@@ -22,7 +23,8 @@ const ObsGridItem = ( {
   width = "w-full",
   height,
   style,
-  setShowLoginSheet
+  uploadObservation,
+  uploadState
 }: Props ): Node => (
   <ObsImagePreview
     source={{
@@ -46,7 +48,8 @@ const ObsGridItem = ( {
         layout="horizontal"
         white
         classNameMargin="mb-1"
-        setShowLoginSheet={setShowLoginSheet}
+        uploadObservation={uploadObservation}
+        uploadState={uploadState}
       />
       <DisplayTaxonName
         keyBase={observation?.uuid}

@@ -10,10 +10,11 @@ import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
   observation: Object,
-  setShowLoginSheet: Function
+  uploadObservation: Function,
+  uploadState: Object
 };
 
-const ObsListItem = ( { observation, setShowLoginSheet }: Props ): Node => {
+const ObsListItem = ( { observation, uploadObservation, uploadState }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
@@ -50,7 +51,8 @@ const ObsListItem = ( { observation, setShowLoginSheet }: Props ): Node => {
         <ObsUploadStatusContainer
           observation={observation}
           layout="vertical"
-          setShowLoginSheet={setShowLoginSheet}
+          uploadObservation={uploadObservation}
+          uploadState={uploadState}
         />
       </View>
     </View>

@@ -1,9 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback } from "react";
 import {
   useCurrentUser,
   useObservationsUpdates
@@ -15,28 +14,38 @@ type Props = {
   toggleLayout: Function,
   layout: string,
   numUnuploadedObs: number,
-  allObsToUpload: Array<Object>,
-  setShowLoginSheet: Function
+  uploadState: Object,
+  uploadMultipleObservations: Function,
+  stopUpload: Function,
+  syncObservations: Function
 }
 
 const ToolbarContainer = ( {
-  toggleLayout, layout, numUnuploadedObs,
-  allObsToUpload,
-  setShowLoginSheet
+  toggleLayout,
+  layout,
+  numUnuploadedObs,
+  uploadState,
+  uploadMultipleObservations,
+  stopUpload,
+  syncObservations
 }: Props ): Node => {
+  const {
+    uploads,
+    error: uploadError,
+    currentUploadIndex,
+    uploadInProgress,
+    totalProgressIncrements,
+    uploadProgress
+  } = uploadState;
   const currentUser = useCurrentUser( );
-  const obsEditContext = useContext( ObsEditContext );
-  const syncObservations = obsEditContext?.syncObservations;
-  const stopUpload = obsEditContext?.stopUpload;
-  const uploadInProgress = obsEditContext?.uploadInProgress;
-  const uploadMultipleObservations = obsEditContext?.uploadMultipleObservations;
-  const progress = obsEditContext?.progress;
-  const setUploads = obsEditContext?.setUploads;
-  const uploads = obsEditContext?.uploads;
-  const uploadError = obsEditContext?.error;
-  const singleUpload = obsEditContext?.singleUpload;
-  const currentUploadIndex = obsEditContext?.currentUploadIndex;
-  const clearUploadProgress = obsEditContext?.clearUploadProgress;
+
+  const currentUploadProgress = Object.values( uploadProgress )
+    .reduce( ( count, current ) => count + Number( current ), 0 );
+
+  const progress = totalProgressIncrements > 0
+    ? currentUploadProgress / totalProgressIncrements
+    : 0;
+
   const navigation = useNavigation( );
 
   const totalUploadCount = uploads?.length || 0;
@@ -44,47 +53,20 @@ const ToolbarContainer = ( {
   const { refetch } = useObservationsUpdates( false );
 
   const handleSyncButtonPress = useCallback( ( ) => {
-    if ( !currentUser ) {
-      setShowLoginSheet( true );
-      return;
-    }
-
     if ( numUnuploadedObs > 0 ) {
-      setUploads( allObsToUpload );
+      uploadMultipleObservations( );
     } else {
       syncObservations( );
       refetch( );
     }
   }, [
-    allObsToUpload,
-    currentUser,
     numUnuploadedObs,
     syncObservations,
     refetch,
-    setShowLoginSheet,
-    setUploads
+    uploadMultipleObservations
   ] );
 
   const navToExplore = ( ) => navigation.navigate( "Explore" );
-
-  useEffect( ( ) => {
-    if ( uploads?.length > 0 && !singleUpload && uploadInProgress ) {
-      uploadMultipleObservations( );
-    }
-  }, [uploads, uploadMultipleObservations, singleUpload, uploadInProgress] );
-
-  // clear upload status when leaving screen
-  useEffect(
-    ( ) => {
-      navigation.addListener( "blur", ( ) => {
-        stopUpload( );
-      } );
-      navigation.addListener( "focus", ( ) => {
-        clearUploadProgress( );
-      } );
-    },
-    [navigation, stopUpload, clearUploadProgress]
-  );
 
   return (
     <Toolbar

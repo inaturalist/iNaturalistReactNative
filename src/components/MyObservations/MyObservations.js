@@ -13,26 +13,34 @@ type Props = {
   layout: "list" | "grid",
   observations: Array<Object>,
   toggleLayout: Function,
-  allObsToUpload: Array<Object>,
   showLoginSheet: boolean,
   setShowLoginSheet: Function,
   isFetchingNextPage: boolean,
   onEndReached: Function,
   currentUser: Object,
-  isOnline: boolean
+  isOnline: boolean,
+  uploadState: Object,
+  uploadMultipleObservations: Function,
+  stopUpload: Function,
+  uploadObservation: Function,
+  syncObservations: Function
 };
 
 const MyObservations = ( {
   layout,
   observations,
   toggleLayout,
-  allObsToUpload,
   showLoginSheet,
   setShowLoginSheet,
   isFetchingNextPage,
   onEndReached,
   currentUser,
-  isOnline
+  isOnline,
+  uploadState,
+  uploadMultipleObservations,
+  stopUpload,
+  uploadObservation,
+  syncObservations
 }: Props ): Node => {
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
 
@@ -79,14 +87,15 @@ const MyObservations = ( {
               currentUser={currentUser}
               hideToolbar={observations.length === 0}
               setHeightAboveToolbar={setHeightAboveToolbar}
-              allObsToUpload={allObsToUpload}
-              setShowLoginSheet={setShowLoginSheet}
+              uploadState={uploadState}
+              uploadMultipleObservations={uploadMultipleObservations}
+              stopUpload={stopUpload}
+              syncObservations={syncObservations}
             />
             <ObservationsFlashList
               isFetchingNextPage={isFetchingNextPage}
               layout={layout}
               onEndReached={onEndReached}
-              setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
               testID="MyObservationsAnimatedList"
               handleScroll={handleScroll}
@@ -94,6 +103,8 @@ const MyObservations = ( {
               data={observations.filter( o => o.isValid() )}
               showObservationsEmptyScreen
               isOnline={isOnline}
+              uploadObservation={uploadObservation}
+              uploadState={uploadState}
             />
           </StickyView>
         </View>

@@ -1,38 +1,22 @@
 // @flow
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { createIdentification } from "api/identifications";
-import {
-  createObservation,
-  createOrUpdateEvidence,
-  searchObservations,
-  updateObservation
-} from "api/observations";
-import inatjs from "inaturalistjs";
-import _ from "lodash";
 import type { Node } from "react";
 import React, {
-  useEffect,
   useMemo,
   useReducer
 } from "react";
 import { Alert } from "react-native";
-import { EventRegister } from "react-native-event-listeners";
 import rnUUID from "react-native-uuid";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
-import emitUploadProgress, {
-  INCREMENT_SINGLE_UPLOAD_PROGRESS
-} from "sharedHelpers/emitUploadProgress";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif, writeExifToFile } from "sharedHelpers/parseExif";
 import {
-  useApiToken,
   useAuthenticatedMutation,
   useCurrentUser,
-  useIsConnected,
   useLocalObservation,
   useTranslation
 } from "sharedHooks";
@@ -42,9 +26,6 @@ import { ObsEditContext, RealmContext } from "./contexts";
 import createObsReducer, {
   INITIAL_CREATE_OBS_STATE
 } from "./reducers/createObsReducer";
-import uploadReducer, {
-  INITIAL_UPLOAD_STATE
-} from "./reducers/uploadReducer";
 
 const { useRealm } = RealmContext;
 
@@ -54,58 +35,20 @@ type Props = {
 
 const logger = log.extend( "ObsEditProvider" );
 
-const uploadProgressIncrement = 0.5;
-
 const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
-  const apiToken = useApiToken( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
-  const isOnline = useIsConnected( );
 
-  const combineReducers = ( ...reducers ) => ( prevState, value ) => reducers
-    .reduce( ( newState, reducer ) => reducer( newState, value ), prevState );
-
-  const obsEditReducer = combineReducers( uploadReducer, createObsReducer );
-
-  const [state, dispatch] = useReducer( obsEditReducer, {
-    ...INITIAL_CREATE_OBS_STATE,
-    ...INITIAL_UPLOAD_STATE
-  } );
+  const [state, dispatch] = useReducer( createObsReducer, INITIAL_CREATE_OBS_STATE );
 
   const {
     cameraPreviewUris,
     currentObservationIndex,
     galleryUris,
-    observations,
-    singleUpload,
-    uploadProgress
+    observations
   } = state;
-
-  useEffect( ( ) => {
-    let currentProgress = uploadProgress;
-    const progressListener = EventRegister.addEventListener(
-      INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      increments => {
-        const uuid = increments[0];
-        const increment = increments[1];
-
-        if ( singleUpload && !currentProgress[uuid] ) {
-          currentProgress = { };
-        }
-
-        currentProgress[uuid] = ( uploadProgress[uuid] || 0 ) + increment;
-        dispatch( {
-          type: "UPDATE_PROGRESS",
-          uploadProgress: currentProgress
-        } );
-      }
-    );
-    return ( ) => {
-      EventRegister?.removeEventListener( progressListener );
-    };
-  }, [uploadProgress, singleUpload] );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris].length,
@@ -162,48 +105,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const {
       cameraRollUris,
       comment,
-      currentUploadIndex,
       groupedPhotos,
-      error,
       evidenceToAdd,
       loading,
       originalCameraUrisMap,
       photoEvidenceUris,
       selectedPhotoIndex,
-      unsavedChanges,
-      uploadInProgress,
-      uploads,
-      totalProgressIncrements
+      unsavedChanges
     } = state;
-    const currentUploadProgress = Object.values( uploadProgress )
-      .reduce( ( count, current ) => count + Number( current ), 0 );
 
-    const progress = totalProgressIncrements > 0
-      ? currentUploadProgress / totalProgressIncrements
-      : 0;
-
-    const clearUploadProgress = ( ) => {
-      dispatch( { type: "UPDATE_PROGRESS", uploadProgress: { } } );
-    };
-
-    const resetObsEditContext = ( ) => {
-      dispatch( { type: "RESET_OBS_CREATE" } );
-      if ( !_.isEmpty( uploadProgress ) ) {
-        clearUploadProgress( );
-      }
-    };
-
-    const stopUpload = ( ) => {
-      dispatch( { type: "STOP_UPLOADS" } );
-      deactivateKeepAwake( );
-    };
-
-    const setUploads = allUploads => {
-      dispatch( {
-        type: "START_MULTIPLE_UPLOADS",
-        uploads: allUploads
-      } );
-    };
+    const resetObsEditContext = ( ) => dispatch( { type: "RESET_OBS_CREATE" } );
 
     const setLoading = isLoading => dispatch( { type: "SET_LOADING", loading: isLoading } );
 
@@ -446,191 +357,17 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setLoading( false );
     };
 
-    const markRecordUploaded = ( recordUUID, type, response ) => {
-      if ( !response ) { return; }
-      const { id } = response.results[0];
-
-      const record = realm.objectForPrimaryKey( type, recordUUID );
-      realm?.write( ( ) => {
-        record.id = id;
-        record._synced_at = new Date( );
-      } );
-    };
-
-    const uploadToServer = async (
-      evidenceUUID: string,
-      type: string,
-      params: Object,
-      apiEndpoint: Function,
-      options: Object,
-      observationUUID?: string
-    ) => {
-      emitUploadProgress( observationUUID, uploadProgressIncrement );
-      const response = await createOrUpdateEvidence(
-        apiEndpoint,
-        params,
-        options
-      );
-      if ( response ) {
-        emitUploadProgress( observationUUID, uploadProgressIncrement );
-        markRecordUploaded( evidenceUUID, type, response );
-      }
-    };
-
-    const uploadEvidence = async (
-      evidence: Array<Object>,
-      type: string,
-      apiSchemaMapper: Function,
-      observationId: ?number,
-      apiEndpoint: Function,
-      options: Object,
-      observationUUID?: string,
-      forceUpload?: boolean
-    ): Promise<any> => {
-      // only try to upload evidence which is not yet on the server
-      const unsyncedEvidence = forceUpload
-        ? evidence
-        : evidence.filter( item => !item.wasSynced( ) );
-
-      const responses = await Promise.all( unsyncedEvidence.map( item => {
-        const currentEvidence = item.toJSON( );
-        const evidenceUUID = currentEvidence.uuid;
-
-        // Remove all null values, b/c the API doesn't seem to like them
-        const newPhoto = {};
-        const photo = currentEvidence?.photo;
-        Object.keys( photo ).forEach( k => {
-          if ( photo[k] !== null ) {
-            newPhoto[k] = photo[k];
-          }
-        } );
-
-        currentEvidence.photo = newPhoto;
-
-        const params = apiSchemaMapper( observationId, currentEvidence );
-        return uploadToServer(
-          evidenceUUID,
-          type,
-          params,
-          apiEndpoint,
-          options,
-          observationUUID
-        );
-      } ) );
-      // eslint-disable-next-line consistent-return
-      return responses[0];
-    };
-
-    const showInternetErrorAlert = ( ) => {
-      if ( !isOnline ) {
-        Alert.alert(
-          t( "Internet-Connection-Required" ),
-          t( "Please-try-again-when-you-are-connected-to-the-internet" )
-        );
-      }
-      return null;
-    };
-
-    const uploadObservation = async ( obs, uploadOptions ) => {
-      showInternetErrorAlert( );
-      if ( uploadOptions?.isSingleUpload ) {
-        dispatch( {
-          type: "UPLOAD_SINGLE_OBSERVATION",
-          observation: obs
-        } );
-      }
-      setLoading( true );
-      // don't bother trying to upload unless there's a logged in user
-      if ( !currentUser ) { return {}; }
-      if ( !apiToken ) {
-        throw new Error(
-          "Gack, tried to upload an observation without API token!"
-        );
-      }
-      activateKeepAwake( );
-      // every observation and observation photo counts for a total of 1 progress
-      // we're showing progress in 0.5 increments: when an upload of obs/obsPhoto starts
-      // and when the upload of obs/obsPhoto successfully completes
-      emitUploadProgress( obs.uuid, uploadProgressIncrement );
-      const obsToUpload = Observation.mapObservationForUpload( obs );
-      const options = { api_token: apiToken };
-
-      // Remove all null values, b/c the API doesn't seem to like them for some
-      // reason (might be an error with the API as of 20220801)
-      const newObs = {};
-      Object.keys( obsToUpload ).forEach( k => {
-        if ( obsToUpload[k] !== null ) {
-          newObs[k] = obsToUpload[k];
-        }
-      } );
-
-      let response;
-
-      // First upload the photos/sounds (before uploading the observation itself)
-      const hasPhotos = obs?.observationPhotos?.length > 0;
-
-      await Promise.all( [
-        hasPhotos
-          ? uploadEvidence(
-            obs.observationPhotos,
-            "ObservationPhoto",
-            ObservationPhoto.mapPhotoForUpload,
-            null,
-            inatjs.photos.create,
-            options
-          )
-          : null
-      ] );
-
-      const wasPreviouslySynced = obs.wasSynced( );
-      const uploadParams = {
-        observation: { ...newObs },
-        fields: { id: true }
-      };
-
-      if ( wasPreviouslySynced ) {
-        response = await updateObservation( {
-          ...uploadParams,
-          id: newObs.uuid,
-          ignore_photos: true
-        }, options );
-        emitUploadProgress( obs.uuid, uploadProgressIncrement );
-      } else {
-        response = await createObservation( uploadParams, options );
-        emitUploadProgress( obs.uuid, uploadProgressIncrement );
-      }
-
-      if ( !response ) {
-        return response;
-      }
-
-      const { uuid: obsUUID } = response.results[0];
-
-      await Promise.all( [
-        markRecordUploaded( obs.uuid, "Observation", response ),
-        // Next, attach the uploaded photos/sounds to the uploaded observation
-        hasPhotos
-          ? uploadEvidence(
-            obs.observationPhotos,
-            "ObservationPhoto",
-            ObservationPhoto.mapPhotoForAttachingToObs,
-            obsUUID,
-            inatjs.observation_photos.create,
-            options,
-            obsUUID,
-            true
-          )
-          : null
-      ] );
-      deactivateKeepAwake( );
-      setLoading( false );
-      return response;
-    };
-
     const setNextScreen = async ( { type }: Object ) => {
       const savedObservation = await saveCurrentObservation( );
       if ( type === "upload" ) {
-        uploadObservation( savedObservation, { isSingleUpload: true } );
+        // navigate to ObsList and start upload with uuid
+        navigation.navigate( "TabNavigator", {
+          screen: "ObservationsStackNavigator",
+          params: {
+            screen: "ObsList",
+            uuid: savedObservation.uuid
+          }
+        } );
       }
 
       if ( observations.length === 1 ) {
@@ -715,62 +452,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       await Photo.deletePhoto( realm, photoUriToDelete );
     };
 
-    const downloadRemoteObservationsFromServer = async ( ) => {
-      const params = {
-        user_id: currentUser?.id,
-        per_page: 50,
-        fields: Observation.FIELDS
-      };
-      const { results } = await searchObservations( params, { api_token: apiToken } );
-
-      Observation.upsertRemoteObservations( results, realm );
-    };
-
-    const syncObservations = async ( ) => {
-      showInternetErrorAlert( );
-      // TODO: GET observation/deletions once this is enabled in API v2
-      activateKeepAwake( );
-      setLoading( true );
-      await downloadRemoteObservationsFromServer( );
-      // we at least want to keep the device awake while uploads are happening
-      // not sure about downloads/deletions
-      deactivateKeepAwake( );
-      setLoading( false );
-    };
-
-    const uploadMultipleObservations = ( ) => {
-      showInternetErrorAlert( );
-      const upload = async observationToUpload => {
-        try {
-          await uploadObservation( observationToUpload );
-        } catch ( e ) {
-          console.warn( e );
-          dispatch( { type: "SET_UPLOAD_ERROR", error: e.message } );
-        }
-        if ( currentUploadIndex === uploads.length - 1 ) {
-          // Finished uploading the last observation
-          dispatch( { type: "PAUSE_UPLOADS" } );
-        } else {
-          dispatch( { type: "START_NEXT_UPLOAD" } );
-        }
-      };
-
-      const observationToUpload = uploads[currentUploadIndex];
-      const continueUpload = observationToUpload && !!apiToken;
-
-      if ( !continueUpload && uploadInProgress ) {
-        dispatch( { type: "PAUSE_UPLOADS" } );
-        return;
-      }
-
-      const uploadedUUIDS = Object.keys( uploadProgress );
-      // only try to upload every observation once
-      if ( !uploadedUUIDS.includes( observationToUpload.uuid ) ) {
-        dispatch( { type: "CONTINUE_UPLOADS" } );
-        upload( observationToUpload );
-      }
-    };
-
     const setComment = newComment => dispatch( { type: "SET_COMMENT", comment: newComment } );
 
     const setCurrentObservationIndex = index => dispatch( {
@@ -817,10 +498,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       addObservations,
       addSound,
       totalObsPhotoUris,
-      apiToken,
       cameraPreviewUris,
       cameraRollUris,
-      clearUploadProgress,
       createId,
       createIdentificationMutation,
       createObservationFromGallery,
@@ -829,11 +508,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       createObsWithCameraPhotos,
       currentObservation,
       currentObservationIndex,
-      currentUploadIndex,
       currentUser,
       deleteLocalObservation,
       deletePhotoFromObservation,
-      error,
       evidenceToAdd,
       galleryUris,
       groupedPhotos,
@@ -844,7 +521,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       observations,
       originalCameraUrisMap,
       photoEvidenceUris,
-      progress,
       realm,
       resetObsEditContext,
       saveAllObservations,
@@ -861,38 +537,23 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setOriginalCameraUrisMap,
       setPhotoEvidenceUris,
       setSelectedPhotoIndex,
-      setUploads,
-      singleUpload,
-      stopUpload,
-      syncObservations,
-      totalProgressIncrements,
       unsavedChanges,
-      uploadProgress,
-      uploadInProgress,
-      uploads,
-      updateObservationKeys,
-      uploadObservation,
-      uploadMultipleObservations
+      updateObservationKeys
     };
   }, [
     totalObsPhotoUris,
-    apiToken,
     cameraPreviewUris,
     createIdentificationMutation,
     currentObservation,
     currentObservationIndex,
     currentUser,
     galleryUris,
-    isOnline,
     localObservation,
     navigation,
     numOfObsPhotos,
     observations,
     realm,
-    t,
-    singleUpload,
-    state,
-    uploadProgress
+    state
   ] );
 
   return (
