@@ -41,7 +41,7 @@ jobs:
     - run: npm run lint
 
     - name: Run performance testing script
-      run: cd scripts && ./reassure-tests.sh
+      run: cd scripts && chmod +x reassure-tests.sh && ./reassure-tests.sh
 
     - name: Run Danger.js
       run: yarn danger ci
