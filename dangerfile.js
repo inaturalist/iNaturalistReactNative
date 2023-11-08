@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+// eslint-disable-next-line
 import { danger, message } from "danger";
 
 const modifiedMD = danger.git.modified_files.join( "- " );
