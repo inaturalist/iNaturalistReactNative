@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ../../scripts
+        working-directory: ./scripts
     steps:
       - name: Make the script files executable
         run: chmod +x ./reassure-tests.sh
