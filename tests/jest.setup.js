@@ -298,3 +298,12 @@ jest.mock( "react-native-exception-handler", () => ( {
     .fn()
     .mockImplementation( () => mockErrorHandler() )
 } ) );
+
+jest.mock( "react-native-geocoder-reborn", ( ) => ( {
+  geocodePosition: jest.fn( coord => [
+    `Somewhere near ${coord.lat}, ${coord.lng}`,
+    "Somewhere",
+    "Somewheria",
+    "SW"
+  ] )
+} ) );
