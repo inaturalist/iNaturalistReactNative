@@ -14,23 +14,6 @@ jobs:
         with:
           github_token: ${{ github.token }}
           cancel_others: true
-  performance-test: 
-    name: Run Performance Tests
-    needs: pre_build
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: scripts
-    steps:
-      - name: Make the script files executable
-        run: chmod +x ./reassure-tests.sh
-      - name: Run performance testing script
-        run: ./reassure-tests.sh
-
-      - name: Run Danger.js
-        run: yarn danger ci
-        env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
   test:
     name: Run Tests
     needs: pre_build
@@ -56,6 +39,15 @@ jobs:
       run: npm install --legacy-peer-deps
 
     - run: npm run lint
+
+    - name: Run performance testing script
+      run: cd scripts && ./reassure-tests.sh
+
+    - name: Run Danger.js
+      run: yarn danger ci
+      env:
+        DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+
     - run: npm test
 
   notify:
