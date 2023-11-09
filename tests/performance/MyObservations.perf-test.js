@@ -1,15 +1,14 @@
 // ComponentUnderTest.perf-test.tsx
 import { faker } from "@faker-js/faker";
 import MyObservations from "components/MyObservations/MyObservations";
+import initI18next from "i18n/initI18next";
 import React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { measurePerformance } from "reassure";
-import factory from "../factory";
-import { fireEvent } from '@testing-library/react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import initI18next from "i18n/initI18next";
 
-jest.setTimeout(60_000);
+import factory from "../factory";
+
+jest.setTimeout( 60_000 );
 
 const mockUser = factory( "LocalUser" );
 

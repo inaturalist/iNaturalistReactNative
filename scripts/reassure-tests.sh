@@ -8,7 +8,7 @@ git fetch origin
 # Gather baseline perf measurements
 git switch "$BASELINE_BRANCH"
 npm install --force
-npm run reassure --baseline
+npx reassure --baseline
 
 # Gather current perf measurements & compare results
 git switch --detach -
