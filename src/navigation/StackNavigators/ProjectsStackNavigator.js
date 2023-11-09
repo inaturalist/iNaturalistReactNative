@@ -7,7 +7,7 @@ import ProjectsContainer from "components/Projects/ProjectsContainer";
 import {
   blankHeaderTitle,
   removeBottomBorder,
-  showHeaderLeft
+  showHeader
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -30,7 +30,7 @@ const ProjectsStackNavigator = ( ): Node => (
       options={{
         ...blankHeaderTitle,
         ...removeBottomBorder,
-        ...showHeaderLeft
+        ...showHeader
       }}
     />
   </Stack.Navigator>
