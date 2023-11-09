@@ -134,7 +134,6 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "danger": "^11.3.0",
     "detox": "^20.12.1",
     "dotenv": "^16.3.1",
     "download": "^8.0.0",
