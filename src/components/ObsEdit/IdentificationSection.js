@@ -44,15 +44,7 @@ const IdentificationSection = ( {
     updateObservationKeys( {
       taxon: selectedTaxon.length > 0
         ? selectedTaxon[0]
-        : {
-          id: 48460,
-          name: "Life",
-          rank: "stateofmatter",
-          rank_level: 100,
-          default_photo: {
-            url: "https://inaturalist-open-data.s3.amazonaws.com/photos/196425367/square.jpeg"
-          }
-        }
+        : null
     } );
   };
 
