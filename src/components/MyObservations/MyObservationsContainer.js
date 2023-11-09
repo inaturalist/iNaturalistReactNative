@@ -115,8 +115,6 @@ const MyObservationsContainer = ( ): Node => {
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const isOnline = useIsConnected( );
-  const savedObservation = navParams?.uuid
-    && realm.objectForPrimaryKey( "Observation", navParams?.uuid );
 
   const currentUser = useCurrentUser();
   const { isFetchingNextPage, fetchNextPage } = useInfiniteObservationsScroll( {
@@ -154,6 +152,17 @@ const MyObservationsContainer = ( ): Node => {
   };
 
   useEffect( ( ) => {
+    // show progress in toolbar for observations uploaded on ObsEdit
+    if ( navParams?.uuid && !state.uploadInProgress ) {
+      const savedObservation = realm?.objectForPrimaryKey( "Observation", navParams?.uuid );
+      dispatch( {
+        type: "START_SINGLE_UPLOAD",
+        observation: savedObservation
+      } );
+    }
+  }, [navParams, state.uploadInProgress, realm] );
+
+  useEffect( ( ) => {
     let currentProgress = state.uploadProgress;
     const progressListener = EventRegister.addEventListener(
       INCREMENT_SINGLE_UPLOAD_PROGRESS,
@@ -178,7 +187,6 @@ const MyObservationsContainer = ( ): Node => {
   }, [state.uploadProgress, state.singleUpload] );
 
   const showInternetErrorAlert = useCallback( ( ) => {
-    console.log( isOnline, "is online" );
     if ( !isOnline ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
@@ -194,10 +202,9 @@ const MyObservationsContainer = ( ): Node => {
   }, [currentUser] );
 
   const startUpload = useCallback( ( observation, options ) => {
-    console.log( options, "options in start upload" );
     toggleLoginSheet( );
     showInternetErrorAlert( );
-    if ( options?.singleUpload !== false ) {
+    if ( !options || options?.singleUpload !== false ) {
       dispatch( { type: "START_SINGLE_UPLOAD", observation } );
     }
     uploadObservation( observation, realm );
@@ -216,7 +223,6 @@ const MyObservationsContainer = ( ): Node => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
     const currentUploads = allObsToUpload;
-    console.log( currentUploads.length, "current uploads" );
     dispatch( { type: "START_MULTIPLE_UPLOADS", uploads: currentUploads } );
     const upload = async observationToUpload => {
       console.log( observationToUpload, "observationToUpload" );
@@ -274,10 +280,7 @@ const MyObservationsContainer = ( ): Node => {
   }, [apiToken, currentUser, realm] );
 
   const syncObservations = useCallback( async ( ) => {
-    if ( !currentUser ) {
-      setShowLoginSheet( true );
-      return;
-    }
+    toggleLoginSheet( );
     showInternetErrorAlert( );
     // TODO: GET observation/deletions once this is enabled in API v2
     activateKeepAwake( );
@@ -285,14 +288,10 @@ const MyObservationsContainer = ( ): Node => {
     // we at least want to keep the device awake while uploads are happening
     // not sure about downloads/deletions
     deactivateKeepAwake( );
-  }, [downloadRemoteObservationsFromServer, currentUser, showInternetErrorAlert] );
-
-  useEffect( ( ) => {
-    // upload pressed on ObsEdit screen
-    if ( savedObservation ) {
-      startUpload( savedObservation );
-    }
-  }, [savedObservation, startUpload] );
+  }, [
+    downloadRemoteObservationsFromServer,
+    toggleLoginSheet,
+    showInternetErrorAlert] );
 
   // clear upload status when leaving screen
   useEffect(

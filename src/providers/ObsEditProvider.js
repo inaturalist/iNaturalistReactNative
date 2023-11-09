@@ -360,15 +360,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const setNextScreen = async ( { type }: Object ) => {
       const savedObservation = await saveCurrentObservation( );
+      const params = {};
+      if ( type === "upload" ) {
+        // $FlowIgnore
+        uploadObservation( savedObservation, realm );
+        params.uuid = savedObservation.uuid;
+      }
 
       if ( observations.length === 1 ) {
-        const params = {
-          screen: "ObsList"
-        };
-        if ( type === "upload" ) {
-          // $FlowIgnore
-          params.uuid = savedObservation.uuid;
-        }
         // navigate to ObsList and start upload with uuid
         navigation.navigate( "TabNavigator", {
           screen: "ObservationsStackNavigator",
@@ -378,9 +377,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           }
         } );
       } else if ( currentObservationIndex === observations.length - 1 ) {
-        if ( type === "upload" ) {
-          uploadObservation( savedObservation, realm );
-        }
         observations.pop( );
         dispatch( {
           type: "SET_DISPLAYED_OBSERVATION",
@@ -388,9 +384,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           observations
         } );
       } else {
-        if ( type === "upload" ) {
-          uploadObservation( savedObservation, realm );
-        }
         observations.splice( currentObservationIndex, 1 );
         // this seems necessary for rerendering the ObsEdit screen
         dispatch( {
