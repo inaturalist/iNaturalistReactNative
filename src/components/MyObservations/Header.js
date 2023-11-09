@@ -24,7 +24,8 @@ type Props = {
   uploadState: Object,
   uploadMultipleObservations: Function,
   stopUpload: Function,
-  syncObservations: Function
+  syncObservations: Function,
+  toolbarProgress: number
 }
 
 const Header = ( {
@@ -36,7 +37,8 @@ const Header = ( {
   uploadState,
   uploadMultipleObservations,
   stopUpload,
-  syncObservations
+  syncObservations,
+  toolbarProgress
 }: Props ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -127,6 +129,7 @@ const Header = ( {
           uploadMultipleObservations={uploadMultipleObservations}
           stopUpload={stopUpload}
           syncObservations={syncObservations}
+          toolbarProgress={toolbarProgress}
         />
       )}
     </>

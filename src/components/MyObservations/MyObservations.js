@@ -23,7 +23,8 @@ type Props = {
   uploadMultipleObservations: Function,
   stopUpload: Function,
   uploadObservation: Function,
-  syncObservations: Function
+  syncObservations: Function,
+  toolbarProgress: number
 };
 
 const MyObservations = ( {
@@ -40,7 +41,8 @@ const MyObservations = ( {
   uploadMultipleObservations,
   stopUpload,
   uploadObservation,
-  syncObservations
+  syncObservations,
+  toolbarProgress
 }: Props ): Node => {
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
 
@@ -91,6 +93,7 @@ const MyObservations = ( {
               uploadMultipleObservations={uploadMultipleObservations}
               stopUpload={stopUpload}
               syncObservations={syncObservations}
+              toolbarProgress={toolbarProgress}
             />
             <ObservationsFlashList
               isFetchingNextPage={isFetchingNextPage}

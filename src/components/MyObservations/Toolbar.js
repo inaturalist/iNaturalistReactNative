@@ -30,7 +30,7 @@ type Props = {
   toggleLayout: Function,
   currentUploadIndex: number,
   totalUploadCount: number,
-  uploadComplete: boolean
+  uploadsComplete: boolean
 }
 
 const Toolbar = ( {
@@ -46,11 +46,11 @@ const Toolbar = ( {
   toggleLayout,
   currentUploadIndex,
   totalUploadCount,
-  uploadComplete
+  uploadsComplete
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const uploading = uploadInProgress && !uploadComplete;
+  const uploading = uploadInProgress && !uploadsComplete;
 
   const needsSync = useCallback( ( ) => (
     ( numUnuploadedObs > 0 && !uploadInProgress ) || ( uploadError && !uploadInProgress )
@@ -158,7 +158,7 @@ const Toolbar = ( {
                 >
                   {statusText}
                 </Body2>
-                {( uploadComplete && !uploadError ) && (
+                {( uploadsComplete && !uploadError ) && (
                   <View className="ml-2">
                     <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
                   </View>

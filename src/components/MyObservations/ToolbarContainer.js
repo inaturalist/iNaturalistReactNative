@@ -17,7 +17,8 @@ type Props = {
   uploadState: Object,
   uploadMultipleObservations: Function,
   stopUpload: Function,
-  syncObservations: Function
+  syncObservations: Function,
+  toolbarProgress: number
 }
 
 const ToolbarContainer = ( {
@@ -27,26 +28,17 @@ const ToolbarContainer = ( {
   uploadState,
   uploadMultipleObservations,
   stopUpload,
-  syncObservations
+  syncObservations,
+  toolbarProgress
 }: Props ): Node => {
   const {
     uploads,
     error: uploadError,
     currentUploadIndex,
     uploadInProgress,
-    totalProgressIncrements,
-    uploadProgress,
-    uploadComplete
+    uploadsComplete
   } = uploadState;
   const currentUser = useCurrentUser( );
-
-  const currentUploadProgress = Object.values( uploadProgress )
-    .reduce( ( count, current ) => count + Number( current ), 0 );
-
-  const progress = totalProgressIncrements > 0
-    ? currentUploadProgress / totalProgressIncrements
-    : 0;
-
   const navigation = useNavigation( );
 
   const totalUploadCount = uploads?.length || 0;
@@ -77,7 +69,7 @@ const ToolbarContainer = ( {
         : null}
       uploadInProgress={uploadInProgress}
       stopUpload={stopUpload}
-      progress={progress}
+      progress={toolbarProgress}
       numUnuploadedObs={numUnuploadedObs}
       showsExploreIcon={currentUser}
       navToExplore={navToExplore}
@@ -85,7 +77,7 @@ const ToolbarContainer = ( {
       layout={layout}
       currentUploadIndex={currentUploadIndex}
       totalUploadCount={totalUploadCount}
-      uploadComplete={uploadComplete}
+      uploadsComplete={uploadsComplete}
     />
   );
 };

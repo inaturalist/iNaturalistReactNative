@@ -9,7 +9,8 @@ import {
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useReducer, useState
+  useCallback, useEffect,
+  useReducer, useState
 } from "react";
 import { Alert } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
@@ -50,11 +51,10 @@ const startUploadState = uploads => ( {
   uploadProgress: { },
   totalProgressIncrements: uploads
     .reduce( ( count, current ) => count
-      + current.observationPhotos.length, 1 )
+      + current.observationPhotos.length, uploads.length )
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
-  console.log( action.type, "action type in myobs", state );
   switch ( action.type ) {
     case "PAUSE_UPLOADS":
       return {
@@ -133,8 +133,18 @@ const MyObservationsContainer = ( ): Node => {
 
   const {
     uploads,
-    uploadsComplete
+    uploadsComplete,
+    uploadProgress,
+    uploadInProgress,
+    totalProgressIncrements
   } = state;
+
+  const currentUploadProgress = Object.values( uploadProgress )
+    .reduce( ( count, current ) => count + Number( current ), 0 );
+
+  const toolbarProgress = totalProgressIncrements > 0
+    ? currentUploadProgress / totalProgressIncrements
+    : 0;
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
@@ -223,13 +233,14 @@ const MyObservationsContainer = ( ): Node => {
     }
   }, [realm] );
 
-  const startUpload = useCallback( ( observation, options ) => {
+  const startUpload = useCallback( async ( observation, options ) => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
     if ( !options || options?.singleUpload !== false ) {
       dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
     }
-    upload( observation );
+    await upload( observation );
+    dispatch( { type: "UPLOADS_COMPLETE" } );
   }, [
     showInternetErrorAlert,
     toggleLoginSheet,
@@ -241,8 +252,10 @@ const MyObservationsContainer = ( ): Node => {
       return;
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
-    const complete = await Promise.all( uploads.map( obsToUpload => {
-      dispatch( { type: "START_NEXT_UPLOAD" } );
+    const complete = await Promise.all( uploads.map( ( obsToUpload, i ) => {
+      if ( i > 0 ) {
+        dispatch( { type: "START_NEXT_UPLOAD" } );
+      }
       return upload( obsToUpload );
     } ) );
     if ( complete ) {
@@ -295,10 +308,13 @@ const MyObservationsContainer = ( ): Node => {
     showInternetErrorAlert] );
 
   useEffect( ( ) => {
-    if ( allObsToUpload?.length > 0 && allObsToUpload.length >= uploads.length ) {
+    if ( uploadInProgress || uploadsComplete ) {
+      return;
+    }
+    if ( allObsToUpload?.length > 0 && allObsToUpload.length > uploads.length ) {
       dispatch( { type: "SET_UPLOADS", uploads: allObsToUpload } );
     }
-  }, [allObsToUpload, uploads] );
+  }, [allObsToUpload, uploads, uploadInProgress, uploadsComplete] );
 
   useEffect(
     ( ) => {
@@ -327,6 +343,7 @@ const MyObservationsContainer = ( ): Node => {
       stopUpload={stopUpload}
       uploadObservation={startUpload}
       syncObservations={syncObservations}
+      toolbarProgress={toolbarProgress}
     />
   );
 };
