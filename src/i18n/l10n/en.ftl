@@ -817,13 +817,13 @@ Uploading-X-Observations = Uploading {$count ->
 }
 
 # Shows the number of observations a user is currently uploading out of total on my observations page
-Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
+Uploading-x-of-y-observations = Uploading {$currentUploadCount} of {$total ->
     [one] 1 observation
     *[other] {$total} observations
 }
 
 # Shows the progress of uploads for X of Y
-Uploading-x-of-y = Uploading {$uploadedCount} of {$total}
+Uploading-x-of-y = Uploading {$currentUploadCount} of {$total}
 
 Upload-Progress = Upload {$uploadProgress} percent complete
 

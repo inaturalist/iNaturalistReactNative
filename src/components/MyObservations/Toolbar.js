@@ -20,34 +20,34 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 type Props = {
   layout: string,
   handleSyncButtonPress: Function,
-  uploadError: ?string,
-  uploadInProgress: boolean,
   stopUpload: Function,
   progress: number,
   numUnuploadedObs: number,
   showsExploreIcon: boolean,
   navToExplore: Function,
   toggleLayout: Function,
-  currentUploadIndex: number,
-  totalUploadCount: number,
-  uploadsComplete: boolean
+  uploadState: Object
 }
 
 const Toolbar = ( {
   layout,
   handleSyncButtonPress,
-  uploadError,
-  uploadInProgress,
   stopUpload,
   progress,
   numUnuploadedObs,
   showsExploreIcon,
   navToExplore,
   toggleLayout,
-  currentUploadIndex,
-  totalUploadCount,
-  uploadsComplete
+  uploadState
 }: Props ): Node => {
+  const {
+    uploads,
+    error: uploadError,
+    uploadInProgress,
+    uploadsComplete,
+    currentUploadCount
+  } = uploadState;
+  const totalUploadCount = uploads?.length || 0;
   const { t } = useTranslation( );
   const theme = useTheme( );
   const uploading = uploadInProgress && !uploadsComplete;
@@ -73,7 +73,7 @@ const Toolbar = ( {
 
     const translationParams = {
       total: totalUploadCount,
-      uploadedCount: currentUploadIndex + 1
+      currentUploadCount
     };
 
     // iPhone 4 pixel width
@@ -83,7 +83,7 @@ const Toolbar = ( {
 
     return t( "Uploading-x-of-y-observations", translationParams );
   }, [
-    currentUploadIndex,
+    currentUploadCount,
     totalUploadCount,
     progress,
     numUnuploadedObs,

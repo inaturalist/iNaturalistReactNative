@@ -91,7 +91,7 @@ const uploadEvidence = async (
   return responses[0];
 };
 
-const uploadObservation = async ( obs: Object, realm: Object ) => {
+const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   const apiToken = await getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {
@@ -123,7 +123,7 @@ const uploadObservation = async ( obs: Object, realm: Object ) => {
 
   await Promise.all( [
     hasPhotos
-      ? uploadEvidence(
+      ? await uploadEvidence(
         obs.observationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForUpload,
@@ -156,7 +156,7 @@ const uploadObservation = async ( obs: Object, realm: Object ) => {
   }
 
   if ( !response ) {
-    return;
+    return response;
   }
 
   const { uuid: obsUUID } = response.results[0];
@@ -165,7 +165,7 @@ const uploadObservation = async ( obs: Object, realm: Object ) => {
     markRecordUploaded( obs.uuid, "Observation", response, realm ),
     // Next, attach the uploaded photos/sounds to the uploaded observation
     hasPhotos
-      ? uploadEvidence(
+      ? await uploadEvidence(
         obs.observationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForAttachingToObs,
@@ -179,6 +179,7 @@ const uploadObservation = async ( obs: Object, realm: Object ) => {
       : null
   ] );
   deactivateKeepAwake( );
+  return response;
 };
 
 export default uploadObservation;

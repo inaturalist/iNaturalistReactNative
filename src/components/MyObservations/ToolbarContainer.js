@@ -31,17 +31,8 @@ const ToolbarContainer = ( {
   syncObservations,
   toolbarProgress
 }: Props ): Node => {
-  const {
-    uploads,
-    error: uploadError,
-    currentUploadIndex,
-    uploadInProgress,
-    uploadsComplete
-  } = uploadState;
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
-
-  const totalUploadCount = uploads?.length || 0;
 
   const { refetch } = useObservationsUpdates( false );
 
@@ -64,10 +55,6 @@ const ToolbarContainer = ( {
   return (
     <Toolbar
       handleSyncButtonPress={handleSyncButtonPress}
-      uploadError={uploadError && !uploadInProgress
-        ? uploadError
-        : null}
-      uploadInProgress={uploadInProgress}
       stopUpload={stopUpload}
       progress={toolbarProgress}
       numUnuploadedObs={numUnuploadedObs}
@@ -75,9 +62,7 @@ const ToolbarContainer = ( {
       navToExplore={navToExplore}
       toggleLayout={toggleLayout}
       layout={layout}
-      currentUploadIndex={currentUploadIndex}
-      totalUploadCount={totalUploadCount}
-      uploadsComplete={uploadsComplete}
+      uploadState={uploadState}
     />
   );
 };

@@ -31,7 +31,6 @@ import {
 import MyObservations from "./MyObservations";
 
 export const INITIAL_UPLOAD_STATE = {
-  currentUploadIndex: 0,
   error: null,
   singleUpload: true,
   totalProgressIncrements: 0,
@@ -40,7 +39,8 @@ export const INITIAL_UPLOAD_STATE = {
   uploadProgress: { },
   // $FlowIgnore
   uploads: [],
-  uploadsComplete: false
+  uploadsComplete: false,
+  currentUploadCount: 0
 };
 
 const startUploadState = uploads => ( {
@@ -49,6 +49,7 @@ const startUploadState = uploads => ( {
   uploadsComplete: false,
   uploads,
   uploadProgress: { },
+  currentUploadCount: 1,
   totalProgressIncrements: uploads
     .reduce( ( count, current ) => count
       + current.observationPhotos.length, uploads.length )
@@ -64,7 +65,8 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
     case "SET_UPLOAD_ERROR":
       return {
         ...state,
-        error: action.error
+        error: action.error,
+        uploadInProgress: false
       };
     case "SET_UPLOADS":
       return {
@@ -82,7 +84,7 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
     case "START_NEXT_UPLOAD":
       return {
         ...state,
-        currentUploadIndex: Math.min( state.currentUploadIndex + 1, state.uploads.length - 1 )
+        currentUploadCount: state.currentUploadCount + 1
       };
     case "STOP_UPLOADS":
       return {
@@ -252,15 +254,16 @@ const MyObservationsContainer = ( ): Node => {
       return;
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
-    const complete = await Promise.all( uploads.map( ( obsToUpload, i ) => {
+
+    uploads.forEach( async ( obsToUpload, i ) => {
+      await upload( obsToUpload );
       if ( i > 0 ) {
         dispatch( { type: "START_NEXT_UPLOAD" } );
       }
-      return upload( obsToUpload );
-    } ) );
-    if ( complete ) {
-      dispatch( { type: "UPLOADS_COMPLETE" } );
-    }
+      if ( i === uploads.length - 1 ) {
+        dispatch( { type: "UPLOADS_COMPLETE" } );
+      }
+    } );
   }, [
     uploadsComplete,
     upload,

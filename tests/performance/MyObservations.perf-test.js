@@ -49,7 +49,7 @@ const mockObservations = [
 const mockState = {
   uploads: mockObservations,
   error: null,
-  currentUploadIndex: 1,
+  currentUploadCount: 1,
   uploadInProgress: true,
   totalProgressIncrements: 2,
   uploadProgress: 1,
