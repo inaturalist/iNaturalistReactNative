@@ -16,6 +16,7 @@ const GroupPhotosContainer = ( ): Node => {
   const navigation = useNavigation( );
 
   const [selectedObservations, setSelectedObservations] = useState( [] );
+  const [isCreatingObservations, setIsCreatingObservations] = useState( false );
   const totalPhotos = groupedPhotos
     .reduce( ( count, current ) => count + current.photos.length, 0 );
 
@@ -124,8 +125,10 @@ const GroupPhotosContainer = ( ): Node => {
     setGroupedPhotos( removedFromGroup );
   };
 
-  const navToObsEdit = async () => {
-    createObservationsFromGroupedPhotos( groupedPhotos );
+  const navToObsEdit = async ( ) => {
+    setIsCreatingObservations( true );
+    await createObservationsFromGroupedPhotos( groupedPhotos );
+    setIsCreatingObservations( false );
     navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
   };
 
@@ -139,6 +142,7 @@ const GroupPhotosContainer = ( ): Node => {
       removePhotos={removePhotos}
       separatePhotos={separatePhotos}
       totalPhotos={totalPhotos}
+      isCreatingObservations={isCreatingObservations}
     />
   );
 };

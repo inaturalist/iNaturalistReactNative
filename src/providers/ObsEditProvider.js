@@ -12,7 +12,6 @@ import rnUUID from "react-native-uuid";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
-import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif, writeExifToFile } from "sharedHelpers/parseExif";
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
@@ -119,12 +118,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const setLoading = isLoading => dispatch( { type: "SET_LOADING", loading: isLoading } );
 
-    const updateObservations = obs => {
-      const isSavedObservation = currentObservation
-        && realm.objectForPrimaryKey( "Observation", currentObservation?.uuid );
+    const updateObservations = updatedObservations => {
+      const isSavedObservation = (
+        currentObservation
+        && realm.objectForPrimaryKey( "Observation", currentObservation.uuid )
+      );
       dispatch( {
         type: "SET_OBSERVATIONS",
-        observations: obs,
+        observations: updatedObservations,
         unsavedChanges: isSavedObservation
       } );
     };
@@ -145,9 +146,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       let photoPosition = position;
       return Promise.all(
         photos.map( async photo => {
-          const newPhoto = ObservationPhoto.new( local
-            ? photo
-            : photo?.image?.uri, photoPosition );
+          const newPhoto = ObservationPhoto.new(
+            local
+              ? photo
+              : photo?.image?.uri,
+            photoPosition
+          );
           photoPosition += 1;
           return newPhoto;
         } )
@@ -156,15 +160,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const createObservationFromGalleryPhoto = async photo => {
       const firstPhotoExif = await parseExif( photo?.image?.uri );
-      logger.info( `EXIF: ${JSON.stringify( firstPhotoExif, null, 2 )}` );
 
       const { latitude, longitude } = firstPhotoExif;
-      const placeGuess = await fetchPlaceName( latitude, longitude );
 
       const newObservation = {
         latitude,
         longitude,
-        place_guess: placeGuess,
         observed_on_string: formatExifDateAsString( firstPhotoExif.date ) || null
       };
 
@@ -183,7 +184,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const createObservationsFromGroupedPhotos = async groupedPhotoObservations => {
       const newObservations = await Promise.all( groupedPhotoObservations.map(
-        async ( { photos } ) => createObservationWithPhotos( photos )
+        ( { photos } ) => createObservationWithPhotos( photos )
       ) );
       updateObservations( newObservations );
     };

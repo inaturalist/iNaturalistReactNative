@@ -2,7 +2,6 @@
 
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
@@ -13,6 +12,7 @@ import Reanimated, {
   Keyframe, useAnimatedStyle, useDerivedValue, useSharedValue, withRepeat,
   withTiming
 } from "react-native-reanimated";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   color?: string,
@@ -49,6 +49,7 @@ const UploadStatus = ( {
   children,
   uuid
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const theme = useTheme();
   const defaultColor = theme.colors.primary;
   const defaultCompleteColor = theme.colors.secondary;

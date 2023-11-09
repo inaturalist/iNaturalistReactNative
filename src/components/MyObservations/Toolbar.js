@@ -9,11 +9,11 @@ import {
   RotatingINatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { Dimensions, PixelRatio } from "react-native";
 import { ProgressBar, useTheme } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 
 const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 
@@ -48,6 +48,7 @@ const Toolbar = ( {
   totalUploadCount,
   uploadComplete
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const theme = useTheme( );
   const uploading = uploadInProgress && !uploadComplete;
 
@@ -86,7 +87,8 @@ const Toolbar = ( {
     totalUploadCount,
     progress,
     numUnuploadedObs,
-    uploadInProgress
+    uploadInProgress,
+    t
   ] );
 
   const getSyncIconColor = useCallback( ( ) => {

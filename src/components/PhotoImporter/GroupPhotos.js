@@ -17,12 +17,13 @@ import { useDeviceOrientation } from "sharedHooks";
 import GroupPhotoImage from "./GroupPhotoImage";
 
 type Props = {
+  combinePhotos: Function,
   groupedPhotos: Array<Object>,
+  isCreatingObservations?: boolean,
+  navToObsEdit: Function,
+  removePhotos: Function,
   selectedObservations: Array<Object>,
   selectObservationPhotos: Function,
-  navToObsEdit: Function,
-  combinePhotos: Function,
-  removePhotos: Function,
   separatePhotos: Function,
   totalPhotos: number
 }
@@ -30,12 +31,13 @@ type Props = {
 const GUTTER = 15;
 
 const GroupPhotos = ( {
+  combinePhotos,
   groupedPhotos,
+  isCreatingObservations,
+  navToObsEdit,
+  removePhotos,
   selectedObservations,
   selectObservationPhotos,
-  navToObsEdit,
-  combinePhotos,
-  removePhotos,
   separatePhotos,
   totalPhotos
 }: Props ): Node => {
@@ -198,6 +200,7 @@ const GroupPhotos = ( {
           text={t( "IMPORT-X-OBSERVATIONS", { count: groupedPhotos.length } )}
           onPress={navToObsEdit}
           testID="GroupPhotos.next"
+          loading={isCreatingObservations}
         />
       </StickyToolbar>
     </ViewWrapper>
