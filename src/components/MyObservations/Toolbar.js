@@ -29,7 +29,8 @@ type Props = {
   navToExplore: Function,
   toggleLayout: Function,
   currentUploadIndex: number,
-  totalUploadCount: number
+  totalUploadCount: number,
+  uploadComplete: boolean
 }
 
 const Toolbar = ( {
@@ -44,10 +45,10 @@ const Toolbar = ( {
   navToExplore,
   toggleLayout,
   currentUploadIndex,
-  totalUploadCount
+  totalUploadCount,
+  uploadComplete
 }: Props ): Node => {
   const theme = useTheme( );
-  const uploadComplete = progress === 1;
   const uploading = uploadInProgress && !uploadComplete;
 
   const needsSync = useCallback( ( ) => (

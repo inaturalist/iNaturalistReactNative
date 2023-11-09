@@ -35,7 +35,8 @@ const ToolbarContainer = ( {
     currentUploadIndex,
     uploadInProgress,
     totalProgressIncrements,
-    uploadProgress
+    uploadProgress,
+    uploadComplete
   } = uploadState;
   const currentUser = useCurrentUser( );
 
@@ -84,6 +85,7 @@ const ToolbarContainer = ( {
       layout={layout}
       currentUploadIndex={currentUploadIndex}
       totalUploadCount={totalUploadCount}
+      uploadComplete={uploadComplete}
     />
   );
 };

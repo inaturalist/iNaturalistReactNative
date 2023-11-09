@@ -38,12 +38,14 @@ export const INITIAL_UPLOAD_STATE = {
   // $FlowIgnore
   uploadProgress: { },
   // $FlowIgnore
-  uploads: []
+  uploads: [],
+  uploadsComplete: false
 };
 
 const startUploadState = uploads => ( {
   error: null,
   uploadInProgress: true,
+  uploadsComplete: false,
   uploads,
   uploadProgress: { },
   totalProgressIncrements: uploads
@@ -52,35 +54,30 @@ const startUploadState = uploads => ( {
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
-  console.log( action.type, "action type in myobs" );
+  console.log( action.type, "action type in myobs", state );
   switch ( action.type ) {
-    case "CONTINUE_UPLOADS":
-      return {
-        ...state,
-        uploadInProgress: true
-      };
     case "PAUSE_UPLOADS":
       return {
         ...state,
-        uploadInProgress: false,
-        currentUploadIndex: 0
+        uploadInProgress: false
       };
     case "SET_UPLOAD_ERROR":
       return {
         ...state,
         error: action.error
       };
-    case "START_MULTIPLE_UPLOADS":
+    case "SET_UPLOADS":
       return {
         ...state,
-        ...startUploadState( action.uploads ),
-        singleUpload: false
+        uploads: action.uploads
       };
-    case "START_SINGLE_UPLOAD":
+    case "START_UPLOAD":
       return {
         ...state,
-        ...startUploadState( [action.observation] ),
-        singleUpload: true
+        ...startUploadState( action.observation
+          ? [action.observation]
+          : state.uploads ),
+        singleUpload: action.singleUpload
       };
     case "START_NEXT_UPLOAD":
       return {
@@ -92,10 +89,20 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
         ...state,
         ...INITIAL_UPLOAD_STATE
       };
+    case "UPLOADS_COMPLETE":
+      return {
+        ...state,
+        uploadInProgress: false,
+        uploadsComplete: true
+      };
     case "UPDATE_PROGRESS":
       return {
         ...state,
         uploadProgress: action.uploadProgress
+      };
+    case "RESET_UPLOAD_STATE":
+      return {
+        ...INITIAL_UPLOAD_STATE
       };
     default:
       return state;
@@ -123,6 +130,11 @@ const MyObservationsContainer = ( ): Node => {
       user_id: currentUser?.id
     }
   } );
+
+  const {
+    uploads,
+    uploadsComplete
+  } = state;
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
@@ -156,8 +168,9 @@ const MyObservationsContainer = ( ): Node => {
     if ( navParams?.uuid && !state.uploadInProgress ) {
       const savedObservation = realm?.objectForPrimaryKey( "Observation", navParams?.uuid );
       dispatch( {
-        type: "START_SINGLE_UPLOAD",
-        observation: savedObservation
+        type: "START_UPLOAD",
+        observation: savedObservation,
+        singleUpload: true
       } );
     }
   }, [navParams, state.uploadInProgress, realm] );
@@ -201,66 +214,54 @@ const MyObservationsContainer = ( ): Node => {
     }
   }, [currentUser] );
 
+  const upload = useCallback( async observation => {
+    try {
+      await uploadObservation( observation, realm );
+    } catch ( e ) {
+      console.warn( e );
+      dispatch( { type: "SET_UPLOAD_ERROR", error: e.message } );
+    }
+  }, [realm] );
+
   const startUpload = useCallback( ( observation, options ) => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
     if ( !options || options?.singleUpload !== false ) {
-      dispatch( { type: "START_SINGLE_UPLOAD", observation } );
+      dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
     }
-    uploadObservation( observation, realm );
+    upload( observation );
   }, [
     showInternetErrorAlert,
     toggleLoginSheet,
-    realm
+    upload
   ] );
 
-  const uploadMultipleObservations = useCallback( ( ) => {
-    const {
-      currentUploadIndex,
-      uploadInProgress,
-      uploadProgress
-    } = state;
-    toggleLoginSheet( );
-    showInternetErrorAlert( );
-    const currentUploads = allObsToUpload;
-    dispatch( { type: "START_MULTIPLE_UPLOADS", uploads: currentUploads } );
-    const upload = async observationToUpload => {
-      console.log( observationToUpload, "observationToUpload" );
-      try {
-        await startUpload( observationToUpload, { singleUpload: false } );
-      } catch ( e ) {
-        console.warn( e );
-        dispatch( { type: "SET_UPLOAD_ERROR", error: e.message } );
-      }
-      if ( currentUploadIndex === currentUploads.length - 1 ) {
-        // Finished uploading the last observation
-        dispatch( { type: "PAUSE_UPLOADS" } );
-      } else {
-        dispatch( { type: "START_NEXT_UPLOAD" } );
-      }
-    };
-
-    const observationToUpload = currentUploads[currentUploadIndex];
-    const continueUpload = observationToUpload && !!apiToken;
-
-    if ( !continueUpload && uploadInProgress ) {
-      dispatch( { type: "PAUSE_UPLOADS" } );
+  const uploadMultipleObservations = useCallback( async ( ) => {
+    if ( uploadsComplete ) {
       return;
     }
-
-    const uploadedUUIDS = Object.keys( uploadProgress );
-    // only try to upload every observation once
-    if ( !uploadedUUIDS.includes( observationToUpload.uuid ) ) {
-      dispatch( { type: "CONTINUE_UPLOADS" } );
-      upload( observationToUpload );
+    dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
+    const complete = await Promise.all( uploads.map( obsToUpload => {
+      dispatch( { type: "START_NEXT_UPLOAD" } );
+      return upload( obsToUpload );
+    } ) );
+    if ( complete ) {
+      dispatch( { type: "UPLOADS_COMPLETE" } );
     }
   }, [
-    apiToken,
+    uploadsComplete,
+    upload,
+    uploads
+  ] );
+
+  const startMultipleUploads = useCallback( ( ) => {
+    toggleLoginSheet( );
+    showInternetErrorAlert( );
+    uploadMultipleObservations( );
+  }, [
+    toggleLoginSheet,
     showInternetErrorAlert,
-    state,
-    allObsToUpload,
-    startUpload,
-    toggleLoginSheet
+    uploadMultipleObservations
   ] );
 
   const stopUpload = useCallback( ( ) => {
@@ -293,22 +294,22 @@ const MyObservationsContainer = ( ): Node => {
     toggleLoginSheet,
     showInternetErrorAlert] );
 
-  // clear upload status when leaving screen
+  useEffect( ( ) => {
+    if ( allObsToUpload?.length > 0 && allObsToUpload.length >= uploads.length ) {
+      dispatch( { type: "SET_UPLOADS", uploads: allObsToUpload } );
+    }
+  }, [allObsToUpload, uploads] );
+
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
-        stopUpload( );
-      } );
-      navigation.addListener( "focus", ( ) => {
-        dispatch( { type: "UPDATE_PROGRESS", uploadProgress: { } } );
+        dispatch( { type: "RESET_UPLOAD_STATE" } );
       } );
     },
-    [navigation, stopUpload]
+    [navigation]
   );
 
   if ( !layout ) { return null; }
-
-  console.log( state, "state in MyObs" );
 
   return (
     <MyObservations
@@ -322,7 +323,7 @@ const MyObservationsContainer = ( ): Node => {
       currentUser={currentUser}
       isOnline={isOnline}
       uploadState={state}
-      uploadMultipleObservations={uploadMultipleObservations}
+      uploadMultipleObservations={startMultipleUploads}
       stopUpload={stopUpload}
       uploadObservation={startUpload}
       syncObservations={syncObservations}
