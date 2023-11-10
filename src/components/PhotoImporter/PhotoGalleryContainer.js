@@ -135,7 +135,6 @@ const PhotoGalleryContainer = (): Node => {
 
   const handleImagePress = ( item, isSelected ) => {
     if ( isSelected || totalObsPhotoUris < MAX_PHOTOS_ALLOWED ) {
-      console.log( item, isSelected, "is selected" );
       handlePhotoSelection( item, isSelected );
     } else {
       setShowAlert( true );

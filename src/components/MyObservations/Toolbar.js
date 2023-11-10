@@ -11,9 +11,11 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { Dimensions, PixelRatio } from "react-native";
 import { ProgressBar, useTheme } from "react-native-paper";
+
+const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 
 type Props = {
   layout: string,
@@ -48,13 +50,15 @@ const Toolbar = ( {
   const uploadComplete = progress === 1;
   const uploading = uploadInProgress && !uploadComplete;
 
-  const needsSync = ( ) => (
+  const needsSync = useCallback( ( ) => (
     ( numUnuploadedObs > 0 && !uploadInProgress ) || ( uploadError && !uploadInProgress )
-  );
+  ), [
+    numUnuploadedObs,
+    uploadInProgress,
+    uploadError
+  ] );
 
-  const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
-
-  const getStatusText = ( ) => {
+  const getStatusText = useCallback( ( ) => {
     if ( progress === 1 ) {
       return t( "X-observations-uploaded", { count: totalUploadCount } );
     }
@@ -76,16 +80,22 @@ const Toolbar = ( {
     }
 
     return t( "Uploading-x-of-y-observations", translationParams );
-  };
+  }, [
+    currentUploadIndex,
+    totalUploadCount,
+    progress,
+    numUnuploadedObs,
+    uploadInProgress
+  ] );
 
-  const getSyncIconColor = ( ) => {
+  const getSyncIconColor = useCallback( ( ) => {
     if ( uploadError ) {
       return theme.colors.error;
     } if ( uploading || numUnuploadedObs > 0 ) {
       return theme.colors.secondary;
     }
     return theme.colors.primary;
-  };
+  }, [theme, uploading, uploadError, numUnuploadedObs] );
 
   const statusText = getStatusText( );
 

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Body1Bold, Body3, Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
@@ -46,18 +46,113 @@ const DisplayTaxonName = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  // this is mostly for the ARCamera, but might be helpful to display elsewhere
-  if ( taxon?.rank_level && !taxon?.rank ) {
-    taxon.rank = rankNames[taxon?.rank_level];
-  }
-
-  const textClass = () => {
+  const textClass = useCallback( ( ) => {
     const textColorClass = color || "text-darkGray";
     if ( withdrawn ) {
       return "text-darkGray opacity-50 line-through";
     }
     return textColorClass;
-  };
+  }, [color, withdrawn] );
+
+  const renderTaxonName = useCallback( ( ) => {
+    // this is mostly for the ARCamera, but might be helpful to display elsewhere
+    if ( taxon?.rank_level && !taxon?.rank ) {
+      taxon.rank = rankNames[taxon?.rank_level];
+    }
+
+    const {
+      commonName,
+      scientificNamePieces,
+      rankPiece,
+      rankLevel,
+      rank
+    } = generateTaxonPieces( taxon );
+    const isHorizontal = layout === "horizontal";
+    const getSpaceChar = showSpace => ( showSpace && isHorizontal
+      ? " "
+      : "" );
+
+    const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
+      const isItalics = piece !== rankPiece && (
+        rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
+      );
+      const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal )
+        ? " "
+        : "";
+      const text = piece + spaceChar;
+      const TextComponent = scientificNameFirst || !commonName
+        ? Body1Bold
+        : Body3;
+      return (
+        isItalics
+          ? (
+            <TextComponent
+              // eslint-disable-next-line react/no-array-index-key
+              key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
+              className={classNames( "italic", textClass() )}
+            >
+              {text}
+            </TextComponent>
+          )
+          : text
+      );
+    } );
+
+    if ( rank && rankLevel > 10 ) {
+      scientificNameComponent.unshift( `${rank} ` );
+    }
+
+    const TopTextComponent = !small
+      ? Body1Bold
+      : Body3;
+    const BottomTextComponent = !small
+      ? Body3
+      : Body4;
+
+    return (
+      <View
+        testID="display-taxon-name"
+        // 03032023 amanda - it doesn't look to me like we need these styles at all,
+        // and they're making the common name and sci name show up on the same
+        // line. not sure if i'm missing context here
+        // className={classNames( "flex", null, {
+        //   "flex-row items-end flex-wrap w-11/12": isHorizontal
+        // } )}
+      >
+        <TopTextComponent
+          className={textClass()}
+          numberOfLines={scientificNameFirst
+            ? 1
+            : 3}
+        >
+          {
+            ( scientificNameFirst || !commonName )
+              ? scientificNameComponent
+              : `${commonName}${
+                getSpaceChar( !scientificNameFirst )
+              }`
+          }
+        </TopTextComponent>
+
+        {
+          commonName && (
+            <BottomTextComponent className={textClass()}>
+              {scientificNameFirst
+                ? commonName
+                : scientificNameComponent}
+            </BottomTextComponent>
+          )
+        }
+      </View>
+    );
+  }, [
+    keyBase,
+    scientificNameFirst,
+    layout,
+    small,
+    taxon,
+    textClass
+  ] );
 
   if ( !taxon ) {
     return (
@@ -67,91 +162,7 @@ const DisplayTaxonName = ( {
     );
   }
 
-  const {
-    commonName,
-    scientificNamePieces,
-    rankPiece,
-    rankLevel,
-    rank
-  } = generateTaxonPieces( taxon );
-  const isHorizontal = layout === "horizontal";
-  const getSpaceChar = showSpace => ( showSpace && isHorizontal
-    ? " "
-    : "" );
-
-  const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
-    const isItalics = piece !== rankPiece && (
-      rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
-    );
-    const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal )
-      ? " "
-      : "";
-    const text = piece + spaceChar;
-    const TextComponent = scientificNameFirst || !commonName
-      ? Body1Bold
-      : Body3;
-    return (
-      isItalics
-        ? (
-          <TextComponent
-            // eslint-disable-next-line react/no-array-index-key
-            key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
-            className={classNames( "italic", textClass() )}
-          >
-            {text}
-          </TextComponent>
-        )
-        : text
-    );
-  } );
-
-  if ( rank && rankLevel > 10 ) {
-    scientificNameComponent.unshift( `${rank} ` );
-  }
-
-  const TopTextComponent = !small
-    ? Body1Bold
-    : Body3;
-  const BottomTextComponent = !small
-    ? Body3
-    : Body4;
-
-  return (
-    <View
-      testID="display-taxon-name"
-      // 03032023 amanda - it doesn't look to me like we need these styles at all,
-      // and they're making the common name and sci name show up on the same
-      // line. not sure if i'm missing context here
-      // className={classNames( "flex", null, {
-      //   "flex-row items-end flex-wrap w-11/12": isHorizontal
-      // } )}
-    >
-      <TopTextComponent
-        className={textClass()}
-        numberOfLines={scientificNameFirst
-          ? 1
-          : 3}
-      >
-        {
-          ( scientificNameFirst || !commonName )
-            ? scientificNameComponent
-            : `${commonName}${
-              getSpaceChar( !scientificNameFirst )
-            }`
-        }
-      </TopTextComponent>
-
-      {
-        commonName && (
-          <BottomTextComponent className={textClass()}>
-            {scientificNameFirst
-              ? commonName
-              : scientificNameComponent}
-          </BottomTextComponent>
-        )
-      }
-    </View>
-  );
+  return renderTaxonName( );
 };
 
 export default DisplayTaxonName;

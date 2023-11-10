@@ -11,7 +11,7 @@ import {
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
@@ -26,12 +26,13 @@ type Props = {
   updateCommentBody: Function,
   deleteComment: Function,
   withdrawOrRestoreIdentification: Function,
-
+  isOnline: boolean
 }
 
 const ActivityHeader = ( {
   item, classNameMargin, currentUser,
-  idWithdrawn, flagged, loading, updateCommentBody, deleteComment, withdrawOrRestoreIdentification
+  idWithdrawn, flagged, loading, updateCommentBody, deleteComment,
+  withdrawOrRestoreIdentification, isOnline
 }:Props ): Node => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
@@ -42,7 +43,7 @@ const ActivityHeader = ( {
     ? "Identification"
     : "Comment";
 
-  const renderIcon = () => {
+  const renderIcon = useCallback( () => {
     if ( idWithdrawn ) {
       return (
         <View className="opacity-50">
@@ -53,9 +54,9 @@ const ActivityHeader = ( {
     if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flagged ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
-  };
+  }, [flagged, idWithdrawn, item.vision] );
 
-  const renderStatus = () => {
+  const renderStatus = useCallback( () => {
     if ( flagged ) {
       return (
         <Body4>
@@ -80,11 +81,11 @@ const ActivityHeader = ( {
     return (
       <Body4 />
     );
-  };
+  }, [flagged, idWithdrawn, item.category] );
 
   return (
     <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
-      <InlineUser user={user} />
+      <InlineUser user={user} isOnline={isOnline} />
       <View className="flex-row items-center space-x-[15px]">
         {renderIcon()}
         {

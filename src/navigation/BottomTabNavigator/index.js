@@ -17,6 +17,7 @@ import {
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import ProjectsStackNavigator from "navigation/StackNavigators/ProjectsStackNavigator";
 import React from "react";
+import { useIsConnected } from "sharedHooks";
 
 import CustomTabBarContainer from "./CustomTabBarContainer";
 
@@ -27,7 +28,8 @@ const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
 /* eslint-disable react/jsx-props-no-spreading */
 
 const BottomTabs = ( ) => {
-  const renderTabBar = props => <CustomTabBarContainer {...props} />;
+  const isOnline = useIsConnected( );
+  const renderTabBar = props => <CustomTabBarContainer {...props} isOnline={isOnline} />;
 
   return (
     <Mortal>

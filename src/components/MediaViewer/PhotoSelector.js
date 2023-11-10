@@ -3,7 +3,7 @@
 import classnames from "classnames";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import {
   FlatList
 } from "react-native";
@@ -26,7 +26,7 @@ const PhotoSelector = ( {
   const smallPhotoClass = "rounded-sm w-[42px] h-[42px] mt-[6px] mx-[3px]";
   const largePhotoClass = "rounded-md w-[83px] h-[83px] mx-[10px]";
 
-  const renderPhoto = ( { item, index } ) => (
+  const renderPhoto = useCallback( ( { item, index } ) => (
     <Pressable
       accessibilityRole="button"
       onPress={( ) => scrollToIndex( index )}
@@ -51,7 +51,7 @@ const PhotoSelector = ( {
         className="w-full h-full"
       />
     </Pressable>
-  );
+  ), [isLandscapeMode, isLargeScreen, scrollToIndex, selectedPhotoIndex] );
 
   return (
     <View className={classnames(

@@ -14,7 +14,6 @@ import {
   pixelFormatPatch
 } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
-import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
 
@@ -57,9 +56,7 @@ const CameraView = ( {
   const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
 
   // check if camera page is active
-  const isFocused = useIsFocused();
-  const isForeground = useIsForeground();
-  const isActive = isFocused && isForeground;
+  const isFocused = useIsFocused( );
 
   const { deviceOrientation } = useDeviceOrientation();
 
@@ -172,7 +169,7 @@ const CameraView = ( {
             // Shared props between StandardCamera and ARCamera
             photo
             enableZoomGesture={false}
-            isActive={isActive}
+            isActive={isFocused}
             style={StyleSheet.absoluteFill}
             onError={e => onError( e )}
             // react-native-vision-camera v3.3.1: This prop is undocumented, but does work on iOS

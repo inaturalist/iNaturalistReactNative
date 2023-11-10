@@ -26,7 +26,8 @@ type Props = {
   testID: string,
   handleScroll?: Function,
   status?: string,
-  showObservationsEmptyScreen?: boolean
+  showObservationsEmptyScreen?: boolean,
+  isOnline: boolean
 };
 
 const GUTTER = 15;
@@ -41,7 +42,8 @@ const ObservationsFlashList = ( {
   testID,
   handleScroll,
   status,
-  showObservationsEmptyScreen
+  showObservationsEmptyScreen,
+  isOnline
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -95,8 +97,9 @@ const ObservationsFlashList = ( {
       isFetchingNextPage={isFetchingNextPage}
       currentUser={currentUser}
       layout={layout}
+      isOnline={isOnline}
     />
-  ), [currentUser, isFetchingNextPage, layout] );
+  ), [currentUser, isFetchingNextPage, layout, isOnline] );
 
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return {}; }

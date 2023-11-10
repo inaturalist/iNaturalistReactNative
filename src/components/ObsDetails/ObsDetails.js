@@ -37,7 +37,8 @@ type Props = {
   showAgreeWithIdSheet: Function,
   openCommentBox: Function,
   agreeIdSheetDiscardChanges: Function,
-  onAgree: Function
+  onAgree: Function,
+  isOnline: boolean
 }
 
 const ObsDetails = ( {
@@ -56,7 +57,8 @@ const ObsDetails = ( {
   showActivityTab,
   showAgreeWithIdSheet,
   agreeIdSheetDiscardChanges,
-  onAgree
+  onAgree,
+  isOnline
 }: Props ): Node => {
   const { params } = useRoute( );
   const { uuid } = params;
@@ -78,6 +80,7 @@ const ObsDetails = ( {
         <Header
           observation={observation}
           refetchRemoteObservation={refetchRemoteObservation}
+          isOnline={isOnline}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
@@ -88,6 +91,7 @@ const ObsDetails = ( {
             refetchRemoteObservation={refetchRemoteObservation}
             onIDAgreePressed={onIDAgreePressed}
             activityItems={activityItems}
+            isOnline={isOnline}
           />
         </HideView>
         <HideView noInitialRender show={!showActivityTab}>

@@ -15,12 +15,12 @@ type Props = {
   refetchRemoteObservation?: Function,
   classNameMargin?: string,
   idWithdrawn: boolean,
-
+  isOnline: boolean
 }
 
 const ActivityHeaderContainer = ( {
   item, refetchRemoteObservation, classNameMargin,
-  idWithdrawn
+  idWithdrawn, isOnline
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( false );
   const [flagged, setFlagged] = useState( false );
@@ -128,6 +128,7 @@ const ActivityHeaderContainer = ( {
       updateCommentBody={updateCommentBody}
       deleteComment={deleteUserComment}
       withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
+      isOnline={isOnline}
     />
   );
 };
