@@ -7,6 +7,7 @@ import React from "react";
 import { measurePerformance } from "reassure";
 
 import factory from "../factory";
+import { componentStack } from "../helpers/render";
 
 jest.setTimeout( 60_000 );
 
@@ -70,17 +71,21 @@ describe( "MyObservations Performance", ( ) => {
   } );
 
   test( "Test list loading time in MyObservations", async () => {
-    await measurePerformance( <MyObservations
-      observations={mockObservations}
-      layout="list"
-      toggleLayout={jest.fn( )}
-      allObsToUpload={[]}
-      showLoginSheet={false}
-      setShowLoginSheet={jest.fn( )}
-      isFetchingNextPage={false}
-      onEndReached={mockOnEndReached}
-      currentUser={mockUser}
-      isOnline
-    /> );
+    await measurePerformance(
+      componentStack(
+        <MyObservations
+          observations={mockObservations}
+          layout="list"
+          toggleLayout={jest.fn( )}
+          allObsToUpload={[]}
+          showLoginSheet={false}
+          setShowLoginSheet={jest.fn( )}
+          isFetchingNextPage={false}
+          onEndReached={mockOnEndReached}
+          currentUser={mockUser}
+          isOnline
+        />
+      )
+    );
   } );
 } );

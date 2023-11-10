@@ -22,9 +22,8 @@ const queryClient = new QueryClient( {
   }
 } );
 
-function renderComponent( component, update = null ) {
-  const renderMethod = update || render;
-  return renderMethod(
+function componentStack( component ) {
+  return (
     <QueryClientProvider client={queryClient}>
       <INatPaperProvider>
         <BottomSheetModalProvider>
@@ -37,11 +36,17 @@ function renderComponent( component, update = null ) {
   );
 }
 
+function renderComponent( component, update = null ) {
+  const renderMethod = update || render;
+  return renderMethod( componentStack( component ) );
+}
+
 function renderAppWithComponent( component, update = null ) {
   return renderComponent( <ObsEditProvider><App>{ component }</App></ObsEditProvider>, update );
 }
 
 export {
+  componentStack,
   renderAppWithComponent,
   renderComponent
 };
