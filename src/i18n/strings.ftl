@@ -484,8 +484,6 @@ No = No
 # When the user tries to reset password but enters a non-existent email
 No-account-found = No account found with that email
 
-No-comments-or-ids-to-display = No comments or ids to display
-
 No-Location = No Location
 
 No-model-found = No model found

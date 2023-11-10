@@ -290,7 +290,6 @@
     "comment": "When the user tries to reset password but enters a non-existent email",
     "val": "No account found with that email"
   },
-  "No-comments-or-ids-to-display": "No comments or ids to display",
   "No-Location": "No Location",
   "No-model-found": "No model found",
   "none": "none",
