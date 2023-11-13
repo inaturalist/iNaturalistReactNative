@@ -43,6 +43,8 @@
 	<string>Add existing photos and sounds to your observations.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>${PRODUCT_NAME} uses the camera to add photos to your observations of nature.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We do not intentionally request this permission. If you are seeing this, please take a screenshot and email it to help@inaturalist.org</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Add GPS coordinates to observations, show your location on maps, and more.</string>
 	<key>NSMicrophoneUsageDescription</key>
