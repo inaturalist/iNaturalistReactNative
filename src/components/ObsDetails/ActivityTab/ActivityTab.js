@@ -1,8 +1,7 @@
 // @flow
-import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useCurrentUser } from "sharedHooks";
 
 import ActivityItem from "./ActivityItem";
 
@@ -21,7 +20,6 @@ const ActivityTab = ( {
   onIDAgreePressed,
   isOnline
 }: Props ): React.Node => {
-  const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
 
@@ -38,9 +36,8 @@ const ActivityTab = ( {
 
   return (
     <View testID="ActivityTab">
-      {activityItems.length === 0
-        ? <Body3>{t( "No-comments-or-ids-to-display" )}</Body3>
-        : activityItems.map( item => (
+      {activityItems.length > 0
+        && activityItems.map( item => (
           <ActivityItem
             userAgreedId={userAgreedToId}
             key={item.uuid}
