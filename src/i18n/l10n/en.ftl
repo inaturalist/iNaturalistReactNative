@@ -484,8 +484,6 @@ No = No
 # When the user tries to reset password but enters a non-existent email
 No-account-found = No account found with that email
 
-No-comments-or-ids-to-display = No comments or ids to display
-
 No-Location = No Location
 
 No-model-found = No model found
@@ -1041,7 +1039,6 @@ Navigates-to-user-profile = Navigates to user profile.
 Navigates-to-drawer-item = Navigates to drawer item.
 Navigate-to-taxon-details = Navigate to taxon details
 Navigates-to-add-identification = Navigates to add identification.
-Navigates-to-identify = Navigates to identify.
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
@@ -1113,7 +1110,6 @@ Map-layers = Map layers
 Share-map = Share map
 Copy-map-coordinates = Copy map coordinates
 Filters = Filters
-Identification-label = Identification label
 Sound-recorder = Sound recorder
 Observation-with-no-evidence = Observation with no evidence
 Photo-importer = Photo importer
