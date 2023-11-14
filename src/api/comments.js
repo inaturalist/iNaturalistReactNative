@@ -38,7 +38,8 @@ const deleteComments = async (
   opts: Object = {}
 ): Promise<any> => {
   try {
-    return await inatjs.comments.delete( { id }, opts );
+    const { results } = await inatjs.comments.delete( { id }, opts );
+    return results;
   } catch ( e ) {
     return handleError( e );
   }

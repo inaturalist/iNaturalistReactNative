@@ -1,17 +1,17 @@
 // @flow
 import classnames from "classnames";
-import FlagItemModal from "components/ObsDetails/FlagItemModal";
+import ActivityHeaderKebabMenu from "components/ObsDetails/ActivityTab/ActivityHeaderKebabMenu";
+import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
 import {
   Body4, INatIcon, InlineUser, TextInputSheet, WarningSheet
 } from "components/SharedComponents";
-import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
   View
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { Menu } from "react-native-paper";
+import { ActivityIndicator } from "react-native";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
 
@@ -21,22 +21,21 @@ type Props = {
   classNameMargin?: string,
   idWithdrawn: boolean,
   flagged: boolean,
+  loading: boolean,
   updateCommentBody: Function,
   deleteComment: Function,
   withdrawOrRestoreIdentification: Function,
-  onItemFlagged:Function,
   isOnline: boolean
 }
 
 const ActivityHeader = ( {
   item, classNameMargin, currentUser,
-  idWithdrawn, flagged, updateCommentBody, deleteComment, withdrawOrRestoreIdentification,
-  onItemFlagged, isOnline
+  idWithdrawn, flagged, loading, updateCommentBody, deleteComment, withdrawOrRestoreIdentification,
+  isOnline
 }:Props ): Node => {
-  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
-  const [flagModalVisible, setFlagModalVisible] = useState( false );
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
+  const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
   const { user } = item;
 
   const itemType = item.category
@@ -83,10 +82,6 @@ const ActivityHeader = ( {
     );
   }, [flagged, idWithdrawn, item.category] );
 
-  const closeFlagItemModal = useCallback( () => {
-    setFlagModalVisible( false );
-  }, [] );
-
   return (
     <View className={classnames( "flex-row justify-between", classNameMargin )}>
       <InlineUser user={user} isOnline={isOnline} />
@@ -101,91 +96,34 @@ const ActivityHeader = ( {
                 {formatIdDate( item.updated_at || item.created_at, t )}
               </Body4>
             )}
-        {( itemType === "Identification" && currentUser )
-          && (
-            <KebabMenu
-              visible={kebabMenuVisible}
-              setVisible={setKebabMenuVisible}
-            >
-              {item.current === true
-                ? (
-                  <Menu.Item
-                    onPress={async ( ) => {
-                      withdrawOrRestoreIdentification( false );
-                      setKebabMenuVisible( false );
-                    }}
-                    title={t( "Withdraw" )}
-                    testID="MenuItem.Withdraw"
-                  />
-                )
-                : (
-                  <Menu.Item
-                    onPress={async ( ) => {
-                      withdrawOrRestoreIdentification( true );
-                      setKebabMenuVisible( false );
-                    }}
-                    title={t( "Restore" )}
-                  />
-                )}
-            </KebabMenu>
-          )}
         {
-          ( itemType === "Comment" && item.body && currentUser )
-            && (
-              <KebabMenu
-                visible={kebabMenuVisible}
-                setVisible={setKebabMenuVisible}
-              >
-                <Menu.Item
-                  onPress={async ( ) => {
-                    setShowEditCommentSheet( true );
-                    setKebabMenuVisible( false );
-                  }}
-                  title={t( "Edit-comment" )}
-                  testID="MenuItem.EditComment"
-                />
-                <Menu.Item
-                  onPress={async ( ) => {
-                    setShowDeleteCommentSheet( true );
-                    setKebabMenuVisible( false );
-                  }}
-                  title={t( "Delete-comment" )}
-                  testID="MenuItem.DeleteComment"
-                />
-              </KebabMenu>
+          loading
+            ? (
+              <View className="mr-[20px]">
+                <ActivityIndicator size={10} />
+              </View>
+            )
+            : (
+              <ActivityHeaderKebabMenu
+                currentUser={currentUser}
+                itemType={itemType}
+                current={item.current}
+                itemBody={item.body}
+                setShowWithdrawIDSheet={setShowWithdrawIDSheet}
+                withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
+                setShowEditCommentSheet={setShowEditCommentSheet}
+                setShowDeleteCommentSheet={setShowDeleteCommentSheet}
+              />
             )
         }
-        {
-          !currentUser
-          && (
-            <KebabMenu
-              visible={kebabMenuVisible}
-              setVisible={setKebabMenuVisible}
-            >
-              {!currentUser
-                ? (
-                  <Menu.Item
-                    onPress={() => setFlagModalVisible( true )}
-                    title={t( "Flag" )}
-                    testID="MenuItem.Flag"
-                  />
-                )
-                : undefined}
-              <View />
-            </KebabMenu>
-          )
-        }
-
-        {!currentUser
-        && (
-          <FlagItemModal
-            id={item.id}
-            showFlagItemModal={flagModalVisible}
-            closeFlagItemModal={closeFlagItemModal}
-            itemType={itemType}
-            onItemFlagged={onItemFlagged}
+        {showWithdrawIDSheet && (
+          <WithdrawIDSheet
+            handleClose={() => setShowWithdrawIDSheet( false )}
+            taxon={item.taxon}
+            withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
           />
         )}
+
         {( currentUser && showEditCommentSheet ) && (
           <TextInputSheet
             handleClose={() => setShowEditCommentSheet( false )}
