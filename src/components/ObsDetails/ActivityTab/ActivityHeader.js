@@ -83,7 +83,7 @@ const ActivityHeader = ( {
   }, [flagged, idWithdrawn, item.category] );
 
   return (
-    <View className={classnames( "flex-row justify-between", classNameMargin )}>
+    <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
       <InlineUser user={user} isOnline={isOnline} />
       <View className="flex-row items-center space-x-[15px]">
         {renderIcon()}
@@ -116,7 +116,7 @@ const ActivityHeader = ( {
               />
             )
         }
-        {showWithdrawIDSheet && (
+        {( currentUser && showWithdrawIDSheet ) && (
           <WithdrawIDSheet
             handleClose={() => setShowWithdrawIDSheet( false )}
             taxon={item.taxon}
