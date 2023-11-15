@@ -89,6 +89,12 @@ describe( "MyObservations", () => {
         toggleLayout={jest.fn( )}
         uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
+        uploadState={{
+          uploads: [],
+          error: null,
+          currentUploadCount: 0,
+          uploadInProgress: false
+        }}
       />
     );
     const obs = mockObservations[0];
@@ -110,6 +116,12 @@ describe( "MyObservations", () => {
         toggleLayout={jest.fn( )}
         uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
+        uploadState={{
+          uploads: [],
+          error: null,
+          currentUploadCount: 0,
+          uploadInProgress: false
+        }}
       />
     );
     // Awaiting the first observation because using await in the forEach errors out
@@ -134,6 +146,12 @@ describe( "MyObservations", () => {
         toggleLayout={jest.fn( )}
         uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
+        uploadState={{
+          uploads: [],
+          error: null,
+          currentUploadCount: 0,
+          uploadInProgress: false
+        }}
       />
     );
     mockObservations.forEach( obs => {
@@ -150,6 +168,12 @@ describe( "MyObservations", () => {
         toggleLayout={jest.fn( )}
         uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
+        uploadState={{
+          uploads: [],
+          error: null,
+          currentUploadCount: 0,
+          uploadInProgress: false
+        }}
       />
     );
     describe( "portrait orientation", ( ) => {

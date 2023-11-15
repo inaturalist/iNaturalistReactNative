@@ -41,7 +41,9 @@ describe( "Signed in user", () => {
     // prompt in iOS blocks things on the bottom of the screen.
     // https://github.com/wix/Detox/issues/3761#issuecomment-1521110131
     await device.sendToHome();
-    await device.launchApp( { newInstance: false } );
+    await device.launchApp( {
+      newInstance: false
+    } );
     /*
     / 2. Create an observation
     */
@@ -49,7 +51,7 @@ describe( "Signed in user", () => {
     await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
     await addObsButton.tap();
     await expect( element( by.id( "evidence-text" ) ) ).toBeVisible();
-    // Oberve without evidence
+    // Observe without evidence
     const obsWithoutEvidenceButton = element(
       by.id( "observe-without-evidence-button" )
     );

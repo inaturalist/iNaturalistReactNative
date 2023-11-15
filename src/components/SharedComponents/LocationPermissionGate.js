@@ -38,6 +38,7 @@ const LocationPermissionGate = ( {
     onPermissionBlocked={onPermissionBlocked}
     onPermissionDenied={onPermissionDenied}
     withoutNavigation={withoutNavigation}
+    testID="PermissionGate.Location"
   >
     {children}
   </PermissionGateContainer>

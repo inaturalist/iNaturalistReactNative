@@ -14,7 +14,13 @@ describe( "Toolbar", () => {
   it( "displays a pending upload", async () => {
     renderComponent( <Toolbar
       numUnuploadedObs={1}
-      uploadInProgress={false}
+      uploadState={{
+        uploadInProgress: false,
+        uploads: [{}, {}, {}, {}],
+        uploadsComplete: false,
+        error: null,
+        currentUploadCount: 1
+      }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "Upload-x-observations", { count: 1 } ) );
@@ -24,14 +30,19 @@ describe( "Toolbar", () => {
   it( "displays an upload in progress", async () => {
     renderComponent( <Toolbar
       numUnuploadedObs={1}
-      uploadInProgress
       totalUploadCount={1}
-      currentUploadIndex={0}
+      uploadState={{
+        uploadInProgress: true,
+        uploads: [{}],
+        uploadsComplete: false,
+        error: null,
+        currentUploadCount: 1
+      }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "Uploading-x-of-y-observations", {
       total: 1,
-      uploadedCount: 1
+      currentUploadCount: 1
     } ) );
     expect( statusText ).toBeVisible( );
   } );
@@ -40,6 +51,13 @@ describe( "Toolbar", () => {
     renderComponent( <Toolbar
       progress={1}
       totalUploadCount={1}
+      uploadState={{
+        uploadInProgress: false,
+        uploads: [{}],
+        uploadsComplete: true,
+        error: null,
+        currentUploadCount: 1
+      }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "X-observations-uploaded", {
@@ -51,7 +69,13 @@ describe( "Toolbar", () => {
   it( "displays an upload error", async () => {
     const error = "Couldn't complete upload";
     renderComponent( <Toolbar
-      uploadError={error}
+      uploadState={{
+        uploadInProgress: false,
+        uploads: [{}],
+        uploadsComplete: false,
+        error,
+        currentUploadCount: 1
+      }}
     /> );
     expect( screen.getByText( error ) ).toBeVisible( );
   } );
@@ -59,7 +83,13 @@ describe( "Toolbar", () => {
   it( "displays multiple pending uploads", async () => {
     renderComponent( <Toolbar
       numUnuploadedObs={4}
-      uploadInProgress={false}
+      uploadState={{
+        uploadInProgress: false,
+        uploads: [{}, {}, {}, {}],
+        uploadsComplete: false,
+        error: null,
+        currentUploadCount: 0
+      }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "Upload-x-observations", { count: 4 } ) );
@@ -69,14 +99,19 @@ describe( "Toolbar", () => {
   it( "displays multiple uploads in progress", async () => {
     renderComponent( <Toolbar
       numUnuploadedObs={3}
-      uploadInProgress
       totalUploadCount={5}
-      currentUploadIndex={1}
+      uploadState={{
+        uploadInProgress: true,
+        uploads: [{}, {}, {}, {}, {}],
+        uploadsComplete: false,
+        error: null,
+        currentUploadCount: 2
+      }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "Uploading-x-of-y-observations", {
       total: 5,
-      uploadedCount: 2
+      currentUploadCount: 2
     } ) );
     expect( statusText ).toBeVisible( );
   } );
@@ -85,6 +120,13 @@ describe( "Toolbar", () => {
     renderComponent( <Toolbar
       progress={1}
       totalUploadCount={7}
+      uploadState={{
+        uploadInProgress: false,
+        uploads: [{}, {}, {}, {}, {}, {}, {}],
+        uploadsComplete: true,
+        error: null,
+        currentUploadCount: 1
+      }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "X-observations-uploaded", {

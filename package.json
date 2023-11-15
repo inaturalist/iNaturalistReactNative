@@ -114,6 +114,7 @@
     "react-native-webview": "^11.26.1",
     "react-native-worklets-core": "^0.2.0",
     "realm": "^11.10.2",
+    "reassure": "^0.10.1",
     "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#vision-v3"
@@ -164,7 +165,6 @@
     "react-native-clean-project": "^4.0.1",
     "react-native-config-node": "^0.0.3",
     "react-test-renderer": "18.2.0",
-    "reassure": "^0.10.1",
     "tailwindcss": "^3.3.2",
     "typescript": "4.8.4",
     "yargs": "^17.7.2"

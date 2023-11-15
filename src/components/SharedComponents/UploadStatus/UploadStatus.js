@@ -91,7 +91,7 @@ const UploadStatus = ( {
     return t( "Upload-Complete" );
   };
 
-  const startUpload = async ( ) => {
+  const uploadSingleObservation = async ( ) => {
     startAnimation();
     await uploadObservation( );
   };
@@ -119,7 +119,7 @@ const UploadStatus = ( {
           icon="upload-saved"
           color={color || defaultColor}
           size={33}
-          onPress={startUpload}
+          onPress={uploadSingleObservation}
           disabled={false}
           accessibilityLabel={t( "Start-upload" )}
           testID={`UploadIcon.start.${uuid}`}

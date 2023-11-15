@@ -21,8 +21,11 @@ type Props = {
   currentUser: ?Object,
   hideToolbar: boolean,
   setHeightAboveToolbar: Function,
-  allObsToUpload: Array<Object>,
-  setShowLoginSheet: Function
+  uploadState: Object,
+  uploadMultipleObservations: Function,
+  stopUploads: Function,
+  syncObservations: Function,
+  toolbarProgress: number
 }
 
 const Header = ( {
@@ -31,8 +34,11 @@ const Header = ( {
   currentUser,
   hideToolbar,
   setHeightAboveToolbar,
-  allObsToUpload,
-  setShowLoginSheet
+  uploadState,
+  uploadMultipleObservations,
+  stopUploads,
+  syncObservations,
+  toolbarProgress
 }: Props ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -119,8 +125,11 @@ const Header = ( {
           toggleLayout={toggleLayout}
           layout={layout}
           numUnuploadedObs={numUnuploadedObs}
-          allObsToUpload={allObsToUpload}
-          setShowLoginSheet={setShowLoginSheet}
+          uploadState={uploadState}
+          uploadMultipleObservations={uploadMultipleObservations}
+          stopUploads={stopUploads}
+          syncObservations={syncObservations}
+          toolbarProgress={toolbarProgress}
         />
       )}
     </>

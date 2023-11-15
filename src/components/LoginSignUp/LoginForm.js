@@ -11,6 +11,7 @@ import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { Keyboard } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 
 import {
@@ -129,12 +130,14 @@ const LoginForm = ( {
         loading={loading}
         forceDark
       />
-      <Body1
-        className="color-white self-center mt-[30px] underline"
-        onPress={( ) => navigation.navigate( "SignUp" )}
-      >
-        {t( "Dont-have-an-account" )}
-      </Body1>
+      {!Keyboard.isVisible( ) && (
+        <Body1
+          className="color-white self-center mt-[30px] underline"
+          onPress={( ) => navigation.navigate( "SignUp" )}
+        >
+          {t( "Dont-have-an-account" )}
+        </Body1>
+      )}
     </View>
   );
 };
