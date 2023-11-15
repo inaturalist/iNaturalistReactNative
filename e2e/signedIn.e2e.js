@@ -41,7 +41,9 @@ describe( "Signed in user", () => {
     // prompt in iOS blocks things on the bottom of the screen.
     // https://github.com/wix/Detox/issues/3761#issuecomment-1521110131
     await device.sendToHome();
-    await device.launchApp( { newInstance: false } );
+    await device.launchApp( {
+      newInstance: false
+    } );
     /*
     / 2. Create an observation
     */
@@ -63,7 +65,7 @@ describe( "Signed in user", () => {
     //   const closeGateButton = element( by.id( "close-permission-gate" ) );
     //   await closeGateButton.tap();
     // }
-    // // Check that the new observation screen is visible
+    // Check that the new observation screen is visible
     await waitFor( element( by.id( "new-observation-text" ) ) )
       .toBeVisible()
       .withTimeout( 10000 );

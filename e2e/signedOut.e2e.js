@@ -27,13 +27,13 @@ describe( "Signed out user", () => {
     await expect( obsWithoutEvidenceButton ).toBeVisible( );
     await obsWithoutEvidenceButton.tap( );
     // Ignore location permission gate
-    if ( device.getPlatform() === "ios" ) {
-      await waitFor( element( by.id( "PermissionGate.Location" ) ) )
-        .toBeVisible()
-        .withTimeout( 10000 );
-      const closeGateButton = element( by.id( "close-permission-gate" ) );
-      await closeGateButton.tap();
-    }
+    // if ( device.getPlatform() === "ios" ) {
+    //   await waitFor( element( by.id( "PermissionGate.Location" ) ) )
+    //     .toBeVisible()
+    //     .withTimeout( 10000 );
+    //   const closeGateButton = element( by.id( "close-permission-gate" ) );
+    //   await closeGateButton.tap();
+    // }
     await waitFor( element( by.id( "new-observation-text" ) ) ).toBeVisible( ).withTimeout( 10000 );
   } );
 } );
