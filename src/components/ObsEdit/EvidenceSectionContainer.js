@@ -33,8 +33,8 @@ const EvidenceSectionContainer = ( {
   const {
     currentObservation,
     updateObservationKeys,
-    setPhotoEvidenceUris,
-    photoEvidenceUris
+    setPhotoEvidenceUris
+    // photoEvidenceUris
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
   const mountedRef = useRef( true );
@@ -62,13 +62,13 @@ const EvidenceSectionContainer = ( {
     };
   }, [] );
 
-  useEffect( ( ) => {
-    if ( obsPhotos?.length > photoEvidenceUris?.length ) {
-      setPhotoEvidenceUris( obsPhotos.map(
-        obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
-      ) );
-    }
-  }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
+  // useEffect( ( ) => {
+  //   if ( obsPhotos?.length > photoEvidenceUris?.length ) {
+  //     setPhotoEvidenceUris( obsPhotos.map(
+  //       obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+  //     ) );
+  //   }
+  // }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
 
   const {
     hasLocation,

@@ -26,14 +26,15 @@ export const INITIAL_CREATE_OBS_STATE = {
 };
 
 const createObsReducer = ( state: Object, action: Function ): Object => {
+  console.log( action.type, ": OBS REDUCER" );
   switch ( action.type ) {
-    case "CLEAR_ADDITIONAL_EVIDENCE": {
+    case "DELETE_PHOTO":
       return {
         ...state,
-        evidenceToAdd: [],
-        unsavedChanges: true
+        photoEvidenceUris: action.photoEvidenceUris,
+        cameraPreviewUris: action.cameraPreviewUris,
+        evidenceToAdd: action.evidenceToAdd
       };
-    }
     case "RESET_OBS_CREATE":
       return {
         ...state,
@@ -47,17 +48,22 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         observations: [],
         originalCameraUrisMap: {},
         photoEvidenceUris: [],
+        savingPhoto: false,
         unsavedChanges: false
-      };
-    case "SET_CAMERA_PREVIEW_URIS":
-      return {
-        ...state,
-        cameraPreviewUris: action.cameraPreviewUris
       };
     case "SET_CAMERA_ROLL_URIS":
       return {
         ...state,
-        cameraRollUris: action.cameraRollUris
+        cameraRollUris: action.cameraRollUris,
+        savingPhoto: false
+      };
+    case "SET_CAMERA_STATE":
+      return {
+        ...state,
+        originalCameraUrisMap: action.originalCameraUrisMap,
+        evidenceToAdd: action.evidenceToAdd,
+        cameraPreviewUris: action.cameraPreviewUris,
+        savingPhoto: action.evidenceToAdd.length > 0
       };
     case "SET_COMMENT":
       return {
@@ -71,17 +77,16 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         observations: action.observations || [],
         loading: false
       };
-    case "SET_EVIDENCE_TO_ADD":
+    case "SET_PHOTO_IMPORTER_STATE":
       return {
         ...state,
-        evidenceToAdd: action.evidenceToAdd
+        galleryUris: action.galleryUris,
+        evidenceToAdd: action.evidenceToAdd,
+        savingPhoto: action.evidenceToAdd.length > 0,
+        groupedPhotos: action.groupedPhotos,
+        observations: action.observations,
+        photoEvidenceUris: action.photoEvidenceUris
       };
-    case "SET_GALLERY_URIS":
-      return {
-        ...state,
-        galleryUris: action.galleryUris
-      };
-
     case "SET_GROUPED_PHOTOS":
       return {
         ...state,
@@ -92,39 +97,24 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         ...state,
         loading: action.loading
       };
-    case "SET_ORIGINAL_CAMERA_URIS_MAP":
-      return {
-        ...state,
-        originalCameraUrisMap: action.originalCameraUrisMap
-      };
     case "SET_OBSERVATIONS":
       return {
         ...state,
         observations: action.observations,
         unsavedChanges: action.unsavedChanges || false,
-        loading: false
+        loading: false,
+        evidenceToAdd: [],
+        savingPhoto: false
       };
     case "SET_PHOTO_EVIDENCE_URIS":
       return {
         ...state,
         photoEvidenceUris: action.photoEvidenceUris
       };
-    case "SET_SAVING_PHOTO":
-      return {
-        ...state,
-        savingPhoto: action.savingPhoto
-      };
     case "SET_SELECTED_PHOTO_INDEX":
       return {
         ...state,
         selectedPhotoIndex: action.selectedPhotoIndex
-      };
-    case "DELETE_PHOTO":
-      return {
-        ...state,
-        photoEvidenceUris: action.photoEvidenceUris,
-        cameraPreviewUris: action.cameraPreviewUris,
-        evidenceToAdd: action.evidenceToAdd
       };
     default:
       return state;

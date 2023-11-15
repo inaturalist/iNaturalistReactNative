@@ -69,12 +69,18 @@ const useCurrentObservationLocation = ( mountedRef: any, options: Object = { } )
       // If we're still receiving location updates and location is blank,
       // then we don't know where we are any more and the obs should update
       // to reflect that
-      updateObservationKeys( {
-        place_guess: location?.place_guess,
-        latitude: location?.latitude,
-        longitude: location?.longitude,
-        positional_accuracy: location?.positional_accuracy
-      } );
+      if ( location?.place_guess !== currentObservation.place_guess
+        || location?.latitude !== currentObservation.latitude
+        || location?.longitude !== currentObservation.longitude
+        || location?.positional_accuracy !== currentObservation.positional_accuracy
+      ) {
+        updateObservationKeys( {
+          place_guess: location?.place_guess,
+          latitude: location?.latitude,
+          longitude: location?.longitude,
+          positional_accuracy: location?.positional_accuracy
+        } );
+      }
 
       setFetchingLocation( false );
 

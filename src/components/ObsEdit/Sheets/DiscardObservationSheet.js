@@ -4,28 +4,46 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React from "react";
+import Observation from "realmModels/Observation";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   handleClose: Function,
   discardObservation: Function,
-  navToObsList: Function
+  navToObsList: Function,
+  observations: Array<Object>
 }
 
 const DiscardObservationSheet = ( {
   handleClose,
   discardObservation,
-  navToObsList
+  navToObsList,
+  observations
 }: Props ): Node => {
-  const {
-    observations,
-    saveAllObservations,
-    updateObservations
-  } = useContext( ObsEditContext );
+  const realm = useRealm( );
 
   const multipleObservations = observations.length > 1;
+
+  const ensureRealm = ( ) => {
+    if ( !realm ) {
+      throw new Error( "Gack, tried to save an observation without realm!" );
+    }
+  };
+
+  const saveAllObservations = async ( ) => {
+    ensureRealm( );
+    await Promise.all( observations.map( async observation => {
+      // Note that this should only happen after import when ObsEdit has
+      // multiple observations to save, none of which should have
+      // corresponding photos in cameraRollPhotos, so there's no need to
+      // write EXIF for those.
+      await Observation.saveLocalObservationForUpload( observation, realm );
+    } ) );
+  };
 
   return (
     <WarningSheet
@@ -40,7 +58,6 @@ const DiscardObservationSheet = ( {
         : t( "By-exiting-observation-not-saved" )}
       handleSecondButtonPress={( ) => {
         saveAllObservations( );
-        updateObservations( [] );
         navToObsList( );
       }}
       secondButtonText={multipleObservations && t( "SAVE-ALL" )}

@@ -5,10 +5,12 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   handleClose: Function,
@@ -19,8 +21,8 @@ const DeleteObservationSheet = ( {
   handleClose,
   navToObsList
 }: Props ): Node => {
+  const realm = useRealm( );
   const {
-    deleteLocalObservation,
     currentObservation,
     observations
   } = useContext( ObsEditContext );
@@ -28,17 +30,21 @@ const DeleteObservationSheet = ( {
 
   const multipleObservations = observations.length > 1;
 
-  const handleLocalDeletion = ( ) => {
-    deleteLocalObservation( uuid );
+  const handleLocalDeletion = useCallback( ( ) => {
+    const localObsToDelete = realm.objectForPrimaryKey( "Observation", uuid );
+    if ( !localObsToDelete ) { return; }
+    realm?.write( ( ) => {
+      realm?.delete( localObsToDelete );
+    } );
     handleClose( );
     navToObsList( );
-  };
+  }, [uuid, realm, handleClose, navToObsList] );
 
   const deleteObservationMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        handleLocalDeletion();
+        handleLocalDeletion( );
         // We do not invalidate the searchObservations query here because it would fetch
         // observations from the server and potentially do so before the refresh period
         // on elasticsearch for observations.search has passed and so retrieve the

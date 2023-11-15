@@ -1,5 +1,6 @@
 // @flow
 
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
@@ -32,6 +33,8 @@ import {
   Camera,
   useCameraDevice
 } from "react-native-vision-camera";
+import Observation from "realmModels/Observation";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import {
   rotatePhotoPatch,
@@ -44,6 +47,7 @@ import useDeviceOrientation, {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation";
 
+import { log } from "../../../react-native-logs.config";
 import ARCamera from "./ARCamera/ARCamera";
 import StandardCamera from "./StandardCamera/StandardCamera";
 
@@ -54,6 +58,8 @@ const isTablet = DeviceInfo.isTablet( );
 const MAX_ZOOM_FACTOR = 20;
 // Used for calculating the final zoom by pinch gesture
 const SCALE_FULL_ZOOM = 3;
+
+const logger = log.extend( "CameraContainer" );
 
 type Props = {
   addEvidence: ?boolean,
@@ -77,14 +83,14 @@ const CameraWithDevice = ( {
     Orientation.lockToPortrait( );
   }
   const {
-    addCameraPhotosToCurrentObservation,
-    createObsWithCameraPhotos,
+    currentObservation,
     cameraPreviewUris,
-    setCameraPreviewUris,
+    setCameraState,
     evidenceToAdd,
-    setEvidenceToAdd,
-    setOriginalCameraUrisMap,
-    originalCameraUrisMap
+    originalCameraUrisMap,
+    numOfObsPhotos,
+    updateObservations,
+    setCameraRollUris
   } = useContext( ObsEditContext );
   const navigation = useNavigation();
   // $FlowFixMe
@@ -208,18 +214,73 @@ const CameraWithDevice = ( {
     }, [handleBackButtonPress] )
   );
 
-  const createEvidenceForObsEdit = useCallback( localTaxon => {
+  // Save URIs to camera gallery (if a photo was taken using the app,
+  // we want it accessible in the camera's folder, as if the user has taken those photos
+  // via their own camera app).
+  const savePhotosToCameraGallery = useCallback( async uris => {
+    const savedUris = await Promise.all( uris.map( async uri => {
+      // Find original camera URI of each scaled-down photo
+      const cameraUri = originalCameraUrisMap[uri];
+
+      if ( !cameraUri ) {
+        console.error( `Couldn't find original camera URI for: ${uri}` );
+      }
+      logger.info( "savePhotosToCameraGallery, saving cameraUri: ", cameraUri );
+      return CameraRoll.save( cameraUri, { type: "photo", album: "Camera" } );
+    } ) );
+
+    logger.info( "savePhotosToCameraGallery, savedUris: ", savedUris );
+    // Save these camera roll URIs, so later on observation editor can update
+    // the EXIF metadata of these photos, once we retrieve a location.
+    setCameraRollUris( savedUris );
+  }, [originalCameraUrisMap, setCameraRollUris] );
+
+  const createObsWithCameraPhotos = useCallback( async ( localFilePaths, localTaxon ) => {
+    const newObservation = await Observation.new( );
+    newObservation.observationPhotos = await ObservationPhoto
+      .createObsPhotosWithPosition( localFilePaths, {
+        position: 0,
+        local: true
+      } );
+
+    if ( localTaxon ) {
+      newObservation.taxon = localTaxon;
+    }
+    updateObservations( [newObservation] );
+    logger.info(
+      "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
+      localFilePaths
+    );
+    // TODO catch the error that gets raised here if the user denies gallery permission
+    await savePhotosToCameraGallery( localFilePaths );
+  }, [savePhotosToCameraGallery, updateObservations] );
+
+  const createEvidenceForObsEdit = useCallback( async localTaxon => {
     if ( addEvidence ) {
-      addCameraPhotosToCurrentObservation( evidenceToAdd );
+      const obsPhotos = await ObservationPhoto
+        .createObsPhotosWithPosition( evidenceToAdd, {
+          position: numOfObsPhotos,
+          local: true
+        } );
+      const newObservations = Observation.appendObsPhotos( obsPhotos, currentObservation );
+      updateObservations( newObservations );
+      logger.info(
+        "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
+        evidenceToAdd
+      );
+      await savePhotosToCameraGallery( evidenceToAdd );
     } else {
       createObsWithCameraPhotos( cameraPreviewUris, localTaxon );
     }
   }, [
-    addCameraPhotosToCurrentObservation,
     createObsWithCameraPhotos,
     cameraPreviewUris,
     addEvidence,
-    evidenceToAdd
+    evidenceToAdd,
+    numOfObsPhotos,
+    currentObservation,
+    savePhotosToCameraGallery,
+    updateObservations
   ] );
 
   const navToObsEdit = useCallback( localTaxon => {
@@ -248,12 +309,19 @@ const CameraWithDevice = ( {
     } );
     const uri = newPhoto.localFilePath;
 
-    // Remember original (unresized) camera URI
-    setOriginalCameraUrisMap( { ...originalCameraUrisMap, [uri]: cameraPhoto.path } );
-
-    setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
     if ( addEvidence ) {
-      setEvidenceToAdd( [...evidenceToAdd, uri] );
+      setCameraState( {
+        // Remember original (unresized) camera URI
+        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path },
+        cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
+        evidenceToAdd: [...evidenceToAdd, uri]
+      } );
+    } else {
+      setCameraState( {
+        // Remember original (unresized) camera URI
+        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path },
+        cameraPreviewUris: cameraPreviewUris.concat( [uri] )
+      } );
     }
     setTakingPhoto( false );
     setPhotoSaved( true );

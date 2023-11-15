@@ -40,14 +40,6 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   <ObsEditContext.Provider value={{
     currentObservation: obs[0],
-    deleteLocalObservation: ( ) => {
-      global.realm.write( ( ) => {
-        const observation = global.realm.objectForPrimaryKey( "Observation", obs[0].uuid );
-        if ( observation ) {
-          global.realm.delete( observation );
-        }
-      } );
-    },
     observations: obs
   }}
   >

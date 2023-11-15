@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import rnUUID from "react-native-uuid";
 
 import Flag from "./Flag";
 import Taxon from "./Taxon";
@@ -42,6 +43,16 @@ class Identification extends Realm.Object {
     };
     return newId;
   }
+
+  static formatIdentification = ( taxon, comment ) => {
+    const newIdent = {
+      uuid: rnUUID.v4(),
+      body: comment,
+      taxon
+    };
+
+    return newIdent;
+  };
 
   static schema = {
     name: "Identification",

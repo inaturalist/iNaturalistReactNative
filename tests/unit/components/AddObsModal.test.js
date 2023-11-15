@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native";
+import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import AddObsModal from "components/AddObsModal";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -24,13 +24,13 @@ jest.mock( "@react-navigation/native", () => {
 } );
 
 const mockResetObsEdit = jest.fn( );
-const mockCreateObservation = jest.fn( );
+const mockUpdateObservations = jest.fn( );
 
 const mockObsEditProvider = ( ) => ObsEditProvider.mockImplementation( ( { children } ) => (
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   <ObsEditContext.Provider value={{
     resetObsEditContext: mockResetObsEdit,
-    createObservationNoEvidence: mockCreateObservation
+    updateObservations: mockUpdateObservations
   }}
   >
     {children}
@@ -65,7 +65,9 @@ describe( "AddObsModal", ( ) => {
     expect( noEvidenceButton ).toBeTruthy( );
     fireEvent.press( noEvidenceButton );
     expect( mockResetObsEdit ).toHaveBeenCalledTimes( 1 );
-    expect( mockCreateObservation ).toHaveBeenCalledTimes( 1 );
+    await waitFor( ( ) => {
+      expect( mockUpdateObservations ).toHaveBeenCalledTimes( 1 );
+    } );
     expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
       screen: "ObsEdit"
     } );
@@ -84,7 +86,7 @@ describe( "AddObsModal", ( ) => {
     expect( arCameraButton ).toBeTruthy( );
     fireEvent.press( arCameraButton );
     expect( mockResetObsEdit ).toHaveBeenCalledTimes( 1 );
-    expect( mockCreateObservation ).not.toHaveBeenCalled( );
+    expect( mockUpdateObservations ).not.toHaveBeenCalled( );
     expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
       screen: "Camera",
       params: { camera: "AR" }

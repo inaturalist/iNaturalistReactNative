@@ -170,6 +170,7 @@ const Header = ( ): Node => {
           discardObservation={discardObservation}
           handleClose={( ) => setDiscardObservationSheetVisible( false )}
           navToObsList={navToObsList}
+          observations={observations}
         />
       )}
       {discardChangesSheetVisible && (

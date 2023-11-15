@@ -9,6 +9,8 @@ import React, {
 } from "react";
 import { InteractionManager, Platform, View } from "react-native";
 import * as ImagePicker from "react-native-image-picker";
+import Observation from "realmModels/Observation";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -21,14 +23,14 @@ const PhotoGallery = ( ): Node => {
   const [photoGalleryShown, setPhotoGalleryShown] = useState( false );
   const [permissionGranted, setPermissionGranted] = useState( false );
   const {
-    createObservationFromGallery,
     galleryUris,
-    setGalleryUris,
-    addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
-    setEvidenceToAdd,
     setGroupedPhotos,
-    groupedPhotos
+    groupedPhotos,
+    updateObservations,
+    numOfObsPhotos,
+    currentObservation,
+    setPhotoImporterState
   } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const skipGroupPhotos = params
@@ -93,38 +95,42 @@ const PhotoGallery = ( ): Node => {
 
     const navToObsEdit = () => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
 
-    setGalleryUris( [...galleryUris, ...response.assets.map( x => x.uri )] );
     if ( skipGroupPhotos ) {
-      setEvidenceToAdd( [...evidenceToAdd, ...response.assets.map( x => x.uri )] );
-    }
-
-    if ( skipGroupPhotos ) {
-      // add any newly selected photos
-      // to an existing observation after navigating from ObsEdit
-      addGalleryPhotosToCurrentObservation( selectedImages );
+      // add evidence to existing observation
+      setPhotoImporterState( {
+        galleryUris: [...galleryUris, ...response.assets.map( x => x.uri )],
+        evidenceToAdd: [...evidenceToAdd, ...response.assets.map( x => x.uri )]
+      } );
+      const obsPhotos = await ObservationPhoto
+        .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos } );
+      const newObservations = Observation.appendObsPhotos( obsPhotos, currentObservation );
+      updateObservations( newObservations );
       navToObsEdit();
       setPhotoGalleryShown( false );
-      return;
-    }
-    if ( selectedImages.length === 1 ) {
+    } else if ( selectedImages.length === 1 ) {
       // create a new observation and skip group photos screen
-      createObservationFromGallery( selectedImages[0] );
+      const newObservation = await Observation.createObservationWithPhotos( [selectedImages[0]] );
+      setPhotoImporterState( {
+        observations: [newObservation]
+      } );
       navToObsEdit();
       setPhotoGalleryShown( false );
-      return;
+    } else {
+      // navigate to group photos
+      setPhotoImporterState( {
+        galleryUris: [...galleryUris, ...response.assets.map( x => x.uri )],
+        groupedPhotos: selectedImages.map( photo => ( {
+          photos: [photo]
+        } ) )
+      } );
+      navigation.setParams( { fromGroupPhotos: false } );
+      navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+      setPhotoGalleryShown( false );
     }
-
-    setGroupedPhotos( selectedImages.map( photo => ( {
-      photos: [photo]
-    } ) ) );
-
-    navigation.setParams( { fromGroupPhotos: false } );
-    navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
-    setPhotoGalleryShown( false );
   }, [
-    photoGalleryShown, addGalleryPhotosToCurrentObservation, createObservationFromGallery,
-    evidenceToAdd, galleryUris, navigation, setEvidenceToAdd, setGalleryUris, setGroupedPhotos,
-    fromGroupPhotos, skipGroupPhotos, groupedPhotos] );
+    photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
+    evidenceToAdd, galleryUris, navigation, setGroupedPhotos,
+    fromGroupPhotos, skipGroupPhotos, groupedPhotos, updateObservations, currentObservation] );
 
   const onPermissionGranted = () => {
     setPermissionGranted( true );
