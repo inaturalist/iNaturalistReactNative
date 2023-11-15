@@ -67,7 +67,7 @@ attribution-cc-by = some rights reserved (CC BY)
 
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 
-attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+attribution-cc-by-nc = some rights reserved (CC BY-NC)
 
 attribution-cc-by-nd = some rights reserved (CC BY-ND)
 
@@ -79,7 +79,7 @@ attribution-cc-by = some rights reserved (CC BY)
 
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 
-attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+attribution-cc-by-nc = some rights reserved (CC BY-NC)
 
 attribution-cc-by-nd = some rights reserved (CC BY-ND)
 
@@ -160,7 +160,7 @@ DATA-QUALITY = DATA QUALITY
 
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
 
-# declares the current data quality status of the observation 
+# declares the current data quality status of the observation
 Data-quality-assessment-title-research = This observation is Research Grade!
 
 Data-quality-assessment-title-needs-id = This observation Needs ID
@@ -176,7 +176,7 @@ Data-quality-assessment-description-needs-id = This observation has not yet met 
 
 Data-quality-assessment-description-casual = This observation has not met the conditions for Research Grade status.
 
-# checklist test for Data Quality Assessment of Observation Details 
+# checklist test for Data Quality Assessment of Observation Details
 Data-quality-assessment-date-specified = Date specified
 
 Data-quality-assessment-location-specified = Location specified
@@ -344,7 +344,7 @@ Grant-Permission = Grant Permission
 Group-Photos = Group Photos
 
 # Onboarding for users learning to group photos in the camera roll
-Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
+Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
 
 Has-Photos = Has Photos
 
@@ -483,8 +483,6 @@ No = No
 
 # When the user tries to reset password but enters a non-existent email
 No-account-found = No account found with that email
-
-No-comments-or-ids-to-display = No comments or ids to display
 
 No-Location = No Location
 
@@ -1041,7 +1039,6 @@ Navigates-to-user-profile = Navigates to user profile.
 Navigates-to-drawer-item = Navigates to drawer item.
 Navigate-to-taxon-details = Navigate to taxon details
 Navigates-to-add-identification = Navigates to add identification.
-Navigates-to-identify = Navigates to identify.
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
@@ -1113,7 +1110,6 @@ Map-layers = Map layers
 Share-map = Share map
 Copy-map-coordinates = Copy map coordinates
 Filters = Filters
-Identification-label = Identification label
 Sound-recorder = Sound recorder
 Observation-with-no-evidence = Observation with no evidence
 Photo-importer = Photo importer
@@ -1381,3 +1377,4 @@ Species-Nearby-requires-internet-to-work = Species Nearby requires internet to w
 Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:
 iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo = iNaturalist isn't able to provide a top ID suggestion for this photo.
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
+Import-Photos-From = Import Photos From
