@@ -131,7 +131,7 @@
   "DELETE": "DELETE",
   "DELETE-ALL": "DELETE ALL",
   "DELETE-COMMENT": "DELETE COMMENT",
-  "DELETE-COMMENT?": "DELETE COMMENT?",
+  "DELETE-COMMENT-QUESTION": "DELETE COMMENT?",
   "Delete-comment": "Delete comment",
   "DELETE-OBSERVATION": "DELETE OBSERVATION?",
   "Delete-observation": "Delete observation",
@@ -532,7 +532,7 @@
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",
   "Withdraw-ID": "Withdraw ID",
-  "WITHDRAW-ID?": "WITHDRAW ID?",
+  "WITHDRAW-ID-QUESTION": "WITHDRAW ID?",
   "WITHDRAW-ID": {
     "comment": "Button to Withdraw identification made by user",
     "val": "WITHDRAW ID"

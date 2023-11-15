@@ -33,7 +33,7 @@ const WithdrawIDSheet = ( {
 }: Props ): Node => (
   <BottomSheet
     handleClose={handleClose}
-    headerText={t( "WITHDRAW-ID?" )}
+    headerText={t( "WITHDRAW-ID-QUESTION" )}
     snapPoints={[220]}
   >
     <View

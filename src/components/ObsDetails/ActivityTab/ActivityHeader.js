@@ -136,7 +136,7 @@ const ActivityHeader = ( {
         {( currentUser && showDeleteCommentSheet ) && (
           <WarningSheet
             handleClose={( ) => setShowDeleteCommentSheet( false )}
-            headerText={t( "DELETE-COMMENT" )}
+            headerText={t( "DELETE-COMMENT-QUESTION" )}
             snapPoints={[148]}
             confirm={deleteComment}
             buttonText={t( "DELETE" )}
