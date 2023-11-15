@@ -205,8 +205,8 @@ describe( "ActivityHeaderKebabMenu", () => {
 
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
     fireEvent.press( await screen.findByTestId( "KebabMenu.Button" ) );
-    fireEvent.press( await screen.findByText( t( "Withdraw-ID" ) ) );
-    expect( await screen.findByText( t( "WITHDRAW-ID?" ) ) ).toBeTruthy( );
+    fireEvent.press( await screen.findByText( t( "Withdraw" ) ) );
+    expect( await screen.findByText( t( "WITHDRAW-ID-QUESTION" ) ) ).toBeTruthy( );
   } );
 
   it( "renders delete comment sheet when delete comment is pressed", async ( ) => {
@@ -232,6 +232,6 @@ describe( "ActivityHeaderKebabMenu", () => {
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
     fireEvent.press( await screen.findByTestId( "KebabMenu.Button" ) );
     fireEvent.press( await screen.findByText( t( "Delete-comment" ) ) );
-    expect( await screen.findByText( t( "DELETE-COMMENT?" ) ) ).toBeTruthy( );
+    expect( await screen.findByText( t( "DELETE-COMMENT-QUESTION" ) ) ).toBeTruthy( );
   } );
 } );
