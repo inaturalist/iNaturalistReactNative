@@ -14,7 +14,7 @@ type Props = {
   width?: string,
   height?: string,
   style?: Object,
-  uploadObservation: Function,
+  uploadSingleObservation?: Function,
   uploadState: Object
 };
 
@@ -23,7 +23,7 @@ const ObsGridItem = ( {
   width = "w-full",
   height,
   style,
-  uploadObservation,
+  uploadSingleObservation,
   uploadState
 }: Props ): Node => (
   <ObsImagePreview
@@ -48,7 +48,7 @@ const ObsGridItem = ( {
         layout="horizontal"
         white
         classNameMargin="mb-1"
-        uploadObservation={uploadObservation}
+        uploadSingleObservation={uploadSingleObservation}
         uploadState={uploadState}
       />
       <DisplayTaxonName

@@ -60,7 +60,8 @@ type Props = {
   onPermissionGranted?: Function,
   onPermissionDenied?: Function,
   onPermissionBlocked?: Function,
-  withoutNavigation?: boolean
+  withoutNavigation?: boolean,
+  testID?: string
 };
 
 export function permissionResultFromMultiple( multiResults: Object ): string {
@@ -101,7 +102,8 @@ const PermissionGateContainer = ( {
   permissions,
   title,
   titleDenied,
-  withoutNavigation
+  withoutNavigation,
+  testID
 }: Props ): Node => {
   const [result, setResult] = useState( null );
   const [modalShown, setModalShown] = useState( false );
@@ -204,6 +206,7 @@ const PermissionGateContainer = ( {
           buttonText={buttonText}
           image={image}
           onClose={closeModal}
+          testID={testID}
         />
       )}
     />

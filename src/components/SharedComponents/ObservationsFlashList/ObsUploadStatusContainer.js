@@ -1,7 +1,7 @@
 // @flow
 
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React from "react";
 
 import ObsUploadStatus from "./ObsUploadStatus";
 
@@ -10,7 +10,7 @@ type Props = {
   layout?: "horizontal" | "vertical",
   white?: boolean,
   classNameMargin?: string,
-  uploadObservation: Function,
+  uploadSingleObservation?: Function,
   uploadState: Object
 };
 
@@ -19,7 +19,7 @@ const ObsUploadStatusContainer = ( {
   layout,
   white = false,
   classNameMargin,
-  uploadObservation,
+  uploadSingleObservation,
   uploadState
 }: Props ): Node => {
   const { uploadProgress } = uploadState;
@@ -34,13 +34,6 @@ const ObsUploadStatusContainer = ( {
 
   const progress = currentProgress / currentProgressIncrements || 0;
 
-  const startUpload = useCallback( ( ) => {
-    uploadObservation( observation );
-  }, [
-    observation,
-    uploadObservation
-  ] );
-
   const showUploadStatus = !!( ( needsSync( observation ) || uploadProgress?.[observation.uuid] ) );
 
   return (
@@ -49,7 +42,11 @@ const ObsUploadStatusContainer = ( {
       layout={layout}
       white={white}
       classNameMargin={classNameMargin}
-      startUpload={startUpload}
+      uploadSingleObservation={( ) => {
+        if ( uploadSingleObservation ) {
+          uploadSingleObservation( observation );
+        }
+      }}
       showUploadStatus={showUploadStatus}
       progress={progress}
     />

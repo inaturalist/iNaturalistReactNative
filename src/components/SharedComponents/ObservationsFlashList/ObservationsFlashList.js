@@ -28,7 +28,7 @@ type Props = {
   status?: string,
   showObservationsEmptyScreen?: boolean,
   isOnline: boolean,
-  uploadObservation?: Function
+  uploadSingleObservation?: Function
 };
 
 const GUTTER = 15;
@@ -45,7 +45,7 @@ const ObservationsFlashList = ( {
   status,
   showObservationsEmptyScreen,
   isOnline,
-  uploadObservation
+  uploadSingleObservation
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -83,10 +83,10 @@ const ObservationsFlashList = ( {
       observation={item}
       layout={layout}
       gridItemWidth={gridItemWidth}
-      uploadObservation={uploadObservation}
+      uploadSingleObservation={uploadSingleObservation}
       uploadState={uploadState}
     />
-  ), [gridItemWidth, layout, uploadState, uploadObservation] );
+  ), [gridItemWidth, layout, uploadState, uploadSingleObservation] );
 
   const renderItemSeparator = useCallback( ( ) => {
     if ( layout === "grid" ) {

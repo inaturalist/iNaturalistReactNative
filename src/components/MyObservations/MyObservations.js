@@ -21,8 +21,8 @@ type Props = {
   isOnline: boolean,
   uploadState: Object,
   uploadMultipleObservations: Function,
-  stopUpload: Function,
-  uploadObservation: Function,
+  stopUploads: Function,
+  uploadSingleObservation: Function,
   syncObservations: Function,
   toolbarProgress: number
 };
@@ -39,8 +39,8 @@ const MyObservations = ( {
   isOnline,
   uploadState,
   uploadMultipleObservations,
-  stopUpload,
-  uploadObservation,
+  stopUploads,
+  uploadSingleObservation,
   syncObservations,
   toolbarProgress
 }: Props ): Node => {
@@ -91,7 +91,7 @@ const MyObservations = ( {
               setHeightAboveToolbar={setHeightAboveToolbar}
               uploadState={uploadState}
               uploadMultipleObservations={uploadMultipleObservations}
-              stopUpload={stopUpload}
+              stopUploads={stopUploads}
               syncObservations={syncObservations}
               toolbarProgress={toolbarProgress}
             />
@@ -106,7 +106,7 @@ const MyObservations = ( {
               data={observations.filter( o => o.isValid() )}
               showObservationsEmptyScreen
               isOnline={isOnline}
-              uploadObservation={uploadObservation}
+              uploadSingleObservation={uploadSingleObservation}
               uploadState={uploadState}
             />
           </StickyView>

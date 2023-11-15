@@ -37,9 +37,10 @@ const PermissionGate = ( {
   blockedPrompt = t( "Youve-denied-permission-prompt" ),
   buttonText = t( "GRANT-PERMISSION" ),
   image = require( "images/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
-  onClose
+  onClose,
+  testID
 } ) => (
-  <ViewWrapper wrapperClassName="bg-black">
+  <ViewWrapper wrapperClassName="bg-black" testID={testID}>
     <ImageBackground
       source={image}
       imageStyle={BACKGROUND_IMAGE_STYLE}
@@ -56,6 +57,7 @@ const PermissionGate = ( {
         onPress={() => onClose( )}
         className="absolute top-2 right-2 z-10"
         accessibilityLabel={t( "Close-permission-request-screen" )}
+        testID="close-permission-gate"
       />
       <View
         className={classnames(

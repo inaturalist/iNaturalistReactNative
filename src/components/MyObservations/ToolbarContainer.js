@@ -16,7 +16,7 @@ type Props = {
   numUnuploadedObs: number,
   uploadState: Object,
   uploadMultipleObservations: Function,
-  stopUpload: Function,
+  stopUploads: Function,
   syncObservations: Function,
   toolbarProgress: number
 }
@@ -27,7 +27,7 @@ const ToolbarContainer = ( {
   numUnuploadedObs,
   uploadState,
   uploadMultipleObservations,
-  stopUpload,
+  stopUploads,
   syncObservations,
   toolbarProgress
 }: Props ): Node => {
@@ -55,7 +55,7 @@ const ToolbarContainer = ( {
   return (
     <Toolbar
       handleSyncButtonPress={handleSyncButtonPress}
-      stopUpload={stopUpload}
+      stopUploads={stopUploads}
       progress={toolbarProgress}
       numUnuploadedObs={numUnuploadedObs}
       showsExploreIcon={currentUser}

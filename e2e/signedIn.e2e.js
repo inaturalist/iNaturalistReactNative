@@ -49,19 +49,33 @@ describe( "Signed in user", () => {
     await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
     await addObsButton.tap();
     await expect( element( by.id( "evidence-text" ) ) ).toBeVisible();
-    // Oberve without evidence
+    // Observe without evidence
     const obsWithoutEvidenceButton = element(
       by.id( "observe-without-evidence-button" )
     );
     await expect( obsWithoutEvidenceButton ).toBeVisible();
     await obsWithoutEvidenceButton.tap();
-    // Check that the new observation screen is visible
+    // Accept location permission gate
+    await waitFor( element( by.id( "PermissionGate.Location" ) ) )
+      .toBeVisible()
+      .withTimeout( 10000 );
+    const closeGateButton = element( by.id( "close-permission-gate" ) );
+    await closeGateButton.tap();
+    // // Check that the new observation screen is visible
     await waitFor( element( by.id( "new-observation-text" ) ) )
       .toBeVisible()
       .withTimeout( 10000 );
     // Press Upload now button
     const uploadNowButton = element( by.id( "ObsEdit.uploadButton" ) );
     await expect( uploadNowButton ).toBeVisible();
+    await uploadNowButton.tap();
+    // Skip missing evidence modal
+    await waitFor( element( by.text( "MISSING EVIDENCE" ) ) )
+      .toBeVisible()
+      .withTimeout( 10000 );
+    const closeModalButton = element( by.text( "OK" ) );
+    await closeModalButton.tap();
+    // Tap upload now again
     await uploadNowButton.tap();
     // Check that the observation list screen is visible
     const observation = element( by.id( "MyObservationsPressable" ) ).atIndex( 0 );
@@ -94,6 +108,12 @@ describe( "Signed in user", () => {
     await waitFor( editButton ).toBeVisible().withTimeout( 10000 );
     // Navigate to the edit screen
     await editButton.tap();
+    // Accept location permission gate again
+    await waitFor( element( by.id( "PermissionGate.Location" ) ) )
+      .toBeVisible()
+      .withTimeout( 10000 );
+    const secondCloseGateButton = element( by.id( "close-permission-gate" ) );
+    await secondCloseGateButton.tap();
     // Check that the edit screen is visible
     await waitFor( element( by.text( "EVIDENCE" ) ) )
       .toBeVisible()

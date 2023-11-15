@@ -20,7 +20,7 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 type Props = {
   layout: string,
   handleSyncButtonPress: Function,
-  stopUpload: Function,
+  stopUploads: Function,
   progress: number,
   numUnuploadedObs: number,
   showsExploreIcon: boolean,
@@ -32,7 +32,7 @@ type Props = {
 const Toolbar = ( {
   layout,
   handleSyncButtonPress,
-  stopUpload,
+  stopUploads,
   progress,
   numUnuploadedObs,
   showsExploreIcon,
@@ -137,7 +137,7 @@ const Toolbar = ( {
                 ? "sync-unsynced"
                 : "sync"
             }
-            rotating={uploading}
+            rotating={uploading && progress !== 1}
             onPress={handleSyncButtonPress}
             color={getSyncIconColor( )}
             disabled={false}
@@ -176,7 +176,7 @@ const Toolbar = ( {
               icon="close"
               size={11}
               accessibilityLabel={t( "Stop-upload" )}
-              onPress={stopUpload}
+              onPress={stopUploads}
             />
           )}
         </View>

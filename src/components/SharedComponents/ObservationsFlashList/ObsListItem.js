@@ -10,11 +10,11 @@ import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
   observation: Object,
-  uploadObservation: Function,
+  uploadSingleObservation?: Function,
   uploadState: Object
 };
 
-const ObsListItem = ( { observation, uploadObservation, uploadState }: Props ): Node => {
+const ObsListItem = ( { observation, uploadSingleObservation, uploadState }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
@@ -51,7 +51,7 @@ const ObsListItem = ( { observation, uploadObservation, uploadState }: Props ): 
         <ObsUploadStatusContainer
           observation={observation}
           layout="vertical"
-          uploadObservation={uploadObservation}
+          uploadSingleObservation={uploadSingleObservation}
           uploadState={uploadState}
         />
       </View>

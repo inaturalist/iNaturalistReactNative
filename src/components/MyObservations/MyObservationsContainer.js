@@ -25,6 +25,7 @@ import {
   useInfiniteObservationsScroll,
   useIsConnected,
   useLocalObservations,
+  useObservationsUpdates,
   useTranslation
 } from "sharedHooks";
 
@@ -126,6 +127,7 @@ const MyObservationsContainer = ( ): Node => {
   const isOnline = useIsConnected( );
 
   const currentUser = useCurrentUser();
+  useObservationsUpdates( !!currentUser );
   const { isFetchingNextPage, fetchNextPage } = useInfiniteObservationsScroll( {
     upsert: true,
     params: {
@@ -179,11 +181,14 @@ const MyObservationsContainer = ( ): Node => {
     // show progress in toolbar for observations uploaded on ObsEdit
     if ( navParams?.uuid && !state.uploadInProgress ) {
       const savedObservation = realm?.objectForPrimaryKey( "Observation", navParams?.uuid );
-      dispatch( {
-        type: "START_UPLOAD",
-        observation: savedObservation,
-        singleUpload: true
-      } );
+      const wasSynced = savedObservation?.wasSynced( );
+      if ( !wasSynced ) {
+        dispatch( {
+          type: "START_UPLOAD",
+          observation: savedObservation,
+          singleUpload: true
+        } );
+      }
     }
   }, [navParams, state.uploadInProgress, realm] );
 
@@ -226,7 +231,7 @@ const MyObservationsContainer = ( ): Node => {
     }
   }, [currentUser] );
 
-  const upload = useCallback( async observation => {
+  const uploadObservationAndCatchError = useCallback( async observation => {
     try {
       await uploadObservation( observation, realm );
     } catch ( e ) {
@@ -235,28 +240,28 @@ const MyObservationsContainer = ( ): Node => {
     }
   }, [realm] );
 
-  const startUpload = useCallback( async ( observation, options ) => {
+  const uploadSingleObservation = useCallback( async ( observation, options ) => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
     if ( !options || options?.singleUpload !== false ) {
       dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
     }
-    await upload( observation );
+    await uploadObservationAndCatchError( observation );
     dispatch( { type: "UPLOADS_COMPLETE" } );
   }, [
     showInternetErrorAlert,
     toggleLoginSheet,
-    upload
+    uploadObservationAndCatchError
   ] );
 
   const uploadMultipleObservations = useCallback( async ( ) => {
-    if ( uploadsComplete ) {
+    if ( uploadsComplete || uploadInProgress ) {
       return;
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
 
     uploads.forEach( async ( obsToUpload, i ) => {
-      await upload( obsToUpload );
+      await uploadObservationAndCatchError( obsToUpload );
       if ( i > 0 ) {
         dispatch( { type: "START_NEXT_UPLOAD" } );
       }
@@ -266,21 +271,12 @@ const MyObservationsContainer = ( ): Node => {
     } );
   }, [
     uploadsComplete,
-    upload,
-    uploads
+    uploadObservationAndCatchError,
+    uploads,
+    uploadInProgress
   ] );
 
-  const startMultipleUploads = useCallback( ( ) => {
-    toggleLoginSheet( );
-    showInternetErrorAlert( );
-    uploadMultipleObservations( );
-  }, [
-    toggleLoginSheet,
-    showInternetErrorAlert,
-    uploadMultipleObservations
-  ] );
-
-  const stopUpload = useCallback( ( ) => {
+  const stopUploads = useCallback( ( ) => {
     dispatch( { type: "STOP_UPLOADS" } );
     deactivateKeepAwake( );
   }, [] );
@@ -308,7 +304,8 @@ const MyObservationsContainer = ( ): Node => {
   }, [
     downloadRemoteObservationsFromServer,
     toggleLoginSheet,
-    showInternetErrorAlert] );
+    showInternetErrorAlert
+  ] );
 
   useEffect( ( ) => {
     if ( uploadInProgress || uploadsComplete ) {
@@ -321,7 +318,7 @@ const MyObservationsContainer = ( ): Node => {
 
   useEffect(
     ( ) => {
-      navigation.addListener( "blur", ( ) => {
+      navigation.addListener( "focus", ( ) => {
         dispatch( { type: "RESET_UPLOAD_STATE" } );
       } );
     },
@@ -342,9 +339,9 @@ const MyObservationsContainer = ( ): Node => {
       currentUser={currentUser}
       isOnline={isOnline}
       uploadState={state}
-      uploadMultipleObservations={startMultipleUploads}
-      stopUpload={stopUpload}
-      uploadObservation={startUpload}
+      uploadMultipleObservations={uploadMultipleObservations}
+      stopUploads={stopUploads}
+      uploadSingleObservation={uploadSingleObservation}
       syncObservations={syncObservations}
       toolbarProgress={toolbarProgress}
     />

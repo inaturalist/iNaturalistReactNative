@@ -23,7 +23,7 @@ type Props = {
   setHeightAboveToolbar: Function,
   uploadState: Object,
   uploadMultipleObservations: Function,
-  stopUpload: Function,
+  stopUploads: Function,
   syncObservations: Function,
   toolbarProgress: number
 }
@@ -36,7 +36,7 @@ const Header = ( {
   setHeightAboveToolbar,
   uploadState,
   uploadMultipleObservations,
-  stopUpload,
+  stopUploads,
   syncObservations,
   toolbarProgress
 }: Props ): Node => {
@@ -127,7 +127,7 @@ const Header = ( {
           numUnuploadedObs={numUnuploadedObs}
           uploadState={uploadState}
           uploadMultipleObservations={uploadMultipleObservations}
-          stopUpload={stopUpload}
+          stopUploads={stopUploads}
           syncObservations={syncObservations}
           toolbarProgress={toolbarProgress}
         />

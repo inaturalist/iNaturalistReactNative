@@ -12,7 +12,7 @@ type Props = {
   layout?: "horizontal" | "vertical",
   white?: boolean,
   classNameMargin?: string,
-  startUpload: Function,
+  uploadSingleObservation: Function,
   showUploadStatus: boolean,
   progress: number
 };
@@ -22,7 +22,7 @@ const ObsUploadStatus = ( {
   layout,
   white = false,
   classNameMargin,
-  startUpload,
+  uploadSingleObservation,
   showUploadStatus,
   progress
 }: Props ): Node => {
@@ -47,7 +47,7 @@ const ObsUploadStatus = ( {
     return (
       <UploadStatus
         progress={progress}
-        uploadObservation={startUpload}
+        uploadObservation={uploadSingleObservation}
         color={whiteColor}
         completeColor={whiteColor}
         layout={layout}
