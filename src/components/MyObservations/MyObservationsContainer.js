@@ -179,7 +179,7 @@ const MyObservationsContainer = ( ): Node => {
 
   useEffect( ( ) => {
     // show progress in toolbar for observations uploaded on ObsEdit
-    if ( navParams?.uuid && !state.uploadInProgress ) {
+    if ( navParams?.uuid && !state.uploadInProgress && currentUser ) {
       const savedObservation = realm?.objectForPrimaryKey( "Observation", navParams?.uuid );
       const wasSynced = savedObservation?.wasSynced( );
       if ( !wasSynced ) {
@@ -190,7 +190,7 @@ const MyObservationsContainer = ( ): Node => {
         } );
       }
     }
-  }, [navParams, state.uploadInProgress, realm] );
+  }, [navParams, state.uploadInProgress, realm, currentUser] );
 
   useEffect( ( ) => {
     let currentProgress = state.uploadProgress;

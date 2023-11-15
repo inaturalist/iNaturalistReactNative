@@ -56,13 +56,13 @@ describe( "Signed in user", () => {
     await expect( obsWithoutEvidenceButton ).toBeVisible();
     await obsWithoutEvidenceButton.tap();
     // Ignore location permission gate
-    if ( device.getPlatform() === "ios" ) {
-      await waitFor( element( by.id( "PermissionGate.Location" ) ) )
-        .toBeVisible()
-        .withTimeout( 10000 );
-      const closeGateButton = element( by.id( "close-permission-gate" ) );
-      await closeGateButton.tap();
-    }
+    // if ( device.getPlatform() === "ios" ) {
+    //   await waitFor( element( by.id( "PermissionGate.Location" ) ) )
+    //     .toBeVisible()
+    //     .withTimeout( 10000 );
+    //   const closeGateButton = element( by.id( "close-permission-gate" ) );
+    //   await closeGateButton.tap();
+    // }
     // // Check that the new observation screen is visible
     await waitFor( element( by.id( "new-observation-text" ) ) )
       .toBeVisible()
@@ -72,15 +72,15 @@ describe( "Signed in user", () => {
     await expect( uploadNowButton ).toBeVisible();
     await uploadNowButton.tap();
     // Skip missing evidence modal when location is not fetched
-    if ( device.getPlatform() === "ios" ) {
-      await waitFor( element( by.text( "MISSING EVIDENCE" ) ) )
-        .toBeVisible()
-        .withTimeout( 10000 );
-      const closeModalButton = element( by.text( "OK" ) );
-      await closeModalButton.tap();
-      // Tap upload now again
-      await uploadNowButton.tap();
-    }
+    // if ( device.getPlatform() === "ios" ) {
+    //   await waitFor( element( by.text( "MISSING EVIDENCE" ) ) )
+    //     .toBeVisible()
+    //     .withTimeout( 10000 );
+    //   const closeModalButton = element( by.text( "OK" ) );
+    //   await closeModalButton.tap();
+    //   // Tap upload now again
+    //   await uploadNowButton.tap();
+    // }
     // Check that the observation list screen is visible
     const observation = element( by.id( "MyObservationsPressable" ) ).atIndex( 0 );
     await waitFor( observation ).toBeVisible().withTimeout( 10000 );
@@ -113,13 +113,13 @@ describe( "Signed in user", () => {
     // Navigate to the edit screen
     await editButton.tap();
     // Ignore location permission gate again
-    if ( device.getPlatform() === "ios" ) {
-      await waitFor( element( by.id( "PermissionGate.Location" ) ) )
-        .toBeVisible()
-        .withTimeout( 10000 );
-      const secondCloseGateButton = element( by.id( "close-permission-gate" ) );
-      await secondCloseGateButton.tap();
-    }
+    // if ( device.getPlatform() === "ios" ) {
+    //   await waitFor( element( by.id( "PermissionGate.Location" ) ) )
+    //     .toBeVisible()
+    //     .withTimeout( 10000 );
+    //   const secondCloseGateButton = element( by.id( "close-permission-gate" ) );
+    //   await secondCloseGateButton.tap();
+    // }
     // Check that the edit screen is visible
     await waitFor( element( by.text( "EVIDENCE" ) ) )
       .toBeVisible()
