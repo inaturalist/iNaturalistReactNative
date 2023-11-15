@@ -2,6 +2,7 @@
 
 exports[`UploadStatus displays progress bar when progress is greater than 5% correctly 1`] = `
 <View
+  accessibilityLabel="Upload-Progress"
   accessible={true}
   style={
     [
@@ -23,6 +24,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
   }
 >
   <View
+    accessibilityLabel="Upload-in-progress"
     style={
       [
         [
@@ -71,6 +73,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
 
 exports[`UploadStatus displays progress bar when progress is less than 5% correctly 1`] = `
 <View
+  accessibilityLabel="Saved-Observation"
   accessible={true}
   style={
     [
@@ -92,6 +95,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
   }
 >
   <View
+    accessibilityLabel="Upload-in-progress"
     style={
       [
         [

@@ -11,7 +11,7 @@ import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useContext, useEffect, useState
+  useCallback, useContext, useState
 } from "react";
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
@@ -39,15 +39,6 @@ const TaxonSearch = ( ): Node => {
       },
       optsWithAuth
     )
-  );
-
-  useEffect(
-    ( ) => {
-      navigation.addListener( "blur", ( ) => {
-        setTaxonQuery( "" );
-      } );
-    },
-    [navigation]
   );
 
   const renderFooter = ( ) => (

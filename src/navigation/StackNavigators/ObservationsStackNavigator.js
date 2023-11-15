@@ -14,7 +14,7 @@ import {
   blankHeaderTitle,
   hideHeader,
   removeBottomBorder,
-  showHeaderLeft,
+  showHeader,
   showLongHeader
 } from "navigation/navigationOptions";
 import type { Node } from "react";
@@ -52,7 +52,7 @@ const ObservationsStackNavigator = ( ): Node => (
         name="UserProfile"
         component={UserProfile}
         options={{
-          ...showHeaderLeft,
+          ...showHeader,
           ...blankHeaderTitle,
           ...removeBottomBorder
         }}
@@ -78,7 +78,7 @@ const ObservationsStackNavigator = ( ): Node => (
         name="ExploreFilters"
         component={PlaceholderComponent}
         options={{
-          ...showHeaderLeft,
+          ...showHeader,
           ...removeBottomBorder
         }}
       />
@@ -88,7 +88,7 @@ const ObservationsStackNavigator = ( ): Node => (
       component={Identify}
       options={{
         ...removeBottomBorder,
-        ...showHeaderLeft,
+        ...showHeader,
         headerTitle: t( "Identify" )
       }}
     />

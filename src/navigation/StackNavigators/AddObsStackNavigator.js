@@ -4,11 +4,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import PhotoGalleryContainer from "components/PhotoImporter/PhotoGalleryContainer";
+import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
-  CAMERA_PERMISSIONS,
-  READ_MEDIA_PERMISSIONS
+  CAMERA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
@@ -16,7 +15,7 @@ import {
   blankHeaderTitle,
   hideHeader,
   showCustomHeader,
-  showHeaderLeft
+  showHeader
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -54,21 +53,6 @@ const SoundRecorderWithPermission = ( ) => (
   </PermissionGateContainer>
 );
 
-const PhotoGalleryWithPermission = ( ) => (
-  <PermissionGateContainer
-    permissions={READ_MEDIA_PERMISSIONS}
-    title={t( "Observe-and-identify-organisms-from-your-gallery" )}
-    titleDenied={t( "Please-Allow-Gallery-Access" )}
-    body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
-    blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
-    buttonText={t( "CHOOSE-PHOTOS" )}
-    icon="gallery"
-    image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
-  >
-    <PhotoGalleryContainer />
-  </PermissionGateContainer>
-);
-
 const AddObsStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
@@ -94,14 +78,14 @@ const AddObsStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="PhotoGallery"
-        component={PhotoGalleryWithPermission}
+        component={PhotoGallery}
         options={blankHeaderTitle}
       />
       <Stack.Screen
         name="GroupPhotos"
         component={GroupPhotosContainer}
         options={{
-          ...showHeaderLeft,
+          ...showHeader,
           ...showCustomHeader,
           lazy: true,
           title: t( "Group-Photos" ),

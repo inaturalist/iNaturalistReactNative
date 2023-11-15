@@ -36,13 +36,15 @@ const setPlaceName = ( results: Array<Object> ): string => {
 };
 
 const fetchPlaceName = async ( lat: ?number, lng: ?number ): any => {
+  if ( !lat || !lng ) { return null; }
   const { isInternetReachable } = await NetInfo.fetch( );
-  if ( !lat || !lng || !isInternetReachable ) { return null; }
+  if ( !isInternetReachable ) { return null; }
   try {
     const results = await Geocoder.geocodePosition( { lat, lng } );
     if ( results.length === 0 || typeof results !== "object" ) { return null; }
     return setPlaceName( results );
-  } catch {
+  } catch ( geocoderError ) {
+    if ( !geocoderError?.message?.includes( "geocodePosition failed" ) ) throw geocoderError;
     return null;
   }
 };

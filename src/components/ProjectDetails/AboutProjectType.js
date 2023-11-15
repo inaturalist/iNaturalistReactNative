@@ -28,11 +28,12 @@ const AboutProjectType = ( { projectType }: Props ): Node => {
       about: t( "If-you-want-to-collate-compare-promote" )
     }
   };
+  const selectedProjectType = projectTypes[projectType] || projectTypes.traditional;
 
   return (
     <>
-      <Heading4 className="mt-5 mb-3">{projectTypes[projectType || "traditional"].header}</Heading4>
-      <Body2>{projectTypes[projectType || "traditional"].about}</Body2>
+      <Heading4 className="mt-5 mb-3">{selectedProjectType.header}</Heading4>
+      <Body2>{selectedProjectType.about}</Body2>
     </>
   );
 };

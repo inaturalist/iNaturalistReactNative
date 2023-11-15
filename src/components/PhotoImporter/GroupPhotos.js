@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
@@ -17,12 +18,13 @@ import { useDeviceOrientation } from "sharedHooks";
 import GroupPhotoImage from "./GroupPhotoImage";
 
 type Props = {
+  combinePhotos: Function,
   groupedPhotos: Array<Object>,
+  isCreatingObservations?: boolean,
+  navToObsEdit: Function,
+  removePhotos: Function,
   selectedObservations: Array<Object>,
   selectObservationPhotos: Function,
-  navToObsEdit: Function,
-  combinePhotos: Function,
-  removePhotos: Function,
   separatePhotos: Function,
   totalPhotos: number
 }
@@ -30,15 +32,17 @@ type Props = {
 const GUTTER = 15;
 
 const GroupPhotos = ( {
+  combinePhotos,
   groupedPhotos,
+  isCreatingObservations,
+  navToObsEdit,
+  removePhotos,
   selectedObservations,
   selectObservationPhotos,
-  navToObsEdit,
-  combinePhotos,
-  removePhotos,
   separatePhotos,
   totalPhotos
 }: Props ): Node => {
+  const navigation = useNavigation( );
   const theme = useTheme();
   const {
     isLandscapeMode, isTablet, screenWidth, screenHeight
@@ -86,13 +90,20 @@ const GroupPhotos = ( {
     />
   ), [itemStyle, selectedObservations, selectObservationPhotos] );
 
+  const addPhotos = useCallback( () => {
+    navigation.navigate( "CameraNavigator", {
+      screen: "PhotoGallery",
+      params: { fromGroupPhotos: true }
+    } );
+  }, [navigation] );
+
   // $FlowIgnore
   const renderItem = useCallback( ( { item } ) => {
     if ( item.empty ) {
       return (
         <Pressable
           accessibilityRole="button"
-          onPress={() => console.log( "TODO" )}
+          onPress={addPhotos}
           className="rounded-[15px] justify-center items-center"
           // Sorry, couldn't get this to work with tailwind
           // eslint-disable-next-line react-native/no-inline-styles
@@ -108,7 +119,7 @@ const GroupPhotos = ( {
     }
     // $FlowIgnore
     return renderImage( item );
-  }, [itemStyle, renderImage, theme] );
+  }, [itemStyle, renderImage, theme, addPhotos] );
 
   const renderHeader = ( ) => (
     <View className="m-5">
@@ -198,6 +209,7 @@ const GroupPhotos = ( {
           text={t( "IMPORT-X-OBSERVATIONS", { count: groupedPhotos.length } )}
           onPress={navToObsEdit}
           testID="GroupPhotos.next"
+          loading={isCreatingObservations}
         />
       </StickyToolbar>
     </ViewWrapper>
