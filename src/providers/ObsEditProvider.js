@@ -236,23 +236,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       evidenceToAdd: options?.evidenceToAdd || evidenceToAdd
     } );
 
-    const updatePhotoEvidenceUris = obsPhotos => {
-      if ( obsPhotos?.length > photoEvidenceUris?.length ) {
-        return obsPhotos.map(
-          obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
-        );
-      }
-      return [];
-    };
-
     const setPhotoImporterState = options => dispatch( {
       type: "SET_PHOTO_IMPORTER_STATE",
       galleryUris: options?.galleryUris || galleryUris,
       savingPhoto: options?.savingPhoto || savingPhoto,
       evidenceToAdd: options?.evidenceToAdd || evidenceToAdd,
       groupedPhotos: options?.groupedPhotos || groupedPhotos,
-      observations: options?.observations || observations,
-      photoEvidenceUris: updatePhotoEvidenceUris( options?.observations?.observationPhotos )
+      observations: options?.observations || observations
     } );
 
     return {

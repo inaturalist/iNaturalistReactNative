@@ -84,8 +84,7 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         evidenceToAdd: action.evidenceToAdd,
         savingPhoto: action.evidenceToAdd.length > 0,
         groupedPhotos: action.groupedPhotos,
-        observations: action.observations,
-        photoEvidenceUris: action.photoEvidenceUris
+        observations: action.observations
       };
     case "SET_GROUPED_PHOTOS":
       return {
