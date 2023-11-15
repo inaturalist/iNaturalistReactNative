@@ -57,7 +57,7 @@ describe( "WithdrawIDSheet", () => {
       />
     );
 
-    expect( await screen.findByText( t( "WITHDRAW-ID?" ) ) ).toBeTruthy( );
+    expect( await screen.findByText( t( "WITHDRAW-ID-QUESTION" ) ) ).toBeTruthy( );
     expect( screen.getByRole(
       "button",
       { name: t( "WITHDRAW-ID" ), disabled: false }
