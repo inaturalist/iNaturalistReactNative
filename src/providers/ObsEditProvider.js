@@ -35,7 +35,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const { t } = useTranslation( );
 
   const [state, dispatch] = useReducer( createObsReducer, INITIAL_CREATE_OBS_STATE );
-  console.log( state.evidenceToAdd, "evidence to add state in provider" );
 
   const {
     cameraPreviewUris,
