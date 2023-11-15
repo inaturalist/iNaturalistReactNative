@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
   FlatList
 } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
 import { useTheme } from "react-native-paper";
 import Animated, {
@@ -134,30 +133,26 @@ const PhotoCarousel = ( {
     }
   }, [deletePhoto] );
 
-  const handlePhotoPress = useCallback( ( item, index ) => {
-    if ( deletePhotoMode && deletePhoto ) {
-      deletePhoto( item );
-    } else {
-      setSelectedPhotoIndex( index );
-      setPhotoEvidenceUris( [...photoUris] );
-      navigation.navigate( "MediaViewer" );
-    }
+  const viewPhotoAtIndex = useCallback( ( item, index ) => {
+    setSelectedPhotoIndex( index );
+    setPhotoEvidenceUris( [...photoUris] );
+    navigation.navigate( "MediaViewer" );
   }, [
-    deletePhotoMode,
-    photoUris,
-    setPhotoEvidenceUris,
     setSelectedPhotoIndex,
-    deletePhoto,
-    navigation
+    setPhotoEvidenceUris,
+    navigation,
+    photoUris
   ] );
+
+  const deletePhotoAtIndex = useCallback( ( item, _index ) => {
+    if ( !deletePhoto ) return;
+    deletePhoto( item );
+  }, [deletePhoto] );
 
   const renderPhotoOrEvidenceButton = useCallback( ( { item, index } ) => (
     <>
       <Animated.View style={!isTablet && animatedStyle}>
-        <Pressable
-          accessibilityRole="button"
-          onLongPress={showDeletePhotoMode}
-          onPress={( ) => handlePhotoPress( item, index )}
+        <View
           className={classnames( IMAGE_CONTAINER_CLASSES )}
         >
           <View
@@ -176,38 +171,50 @@ const PhotoCarousel = ( {
                 ...IMAGE_CONTAINER_CLASSES
               )}
             >
-              {deletePhotoMode && (
-                <LinearGradient
-                  className="absolute inset-0"
-                  colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
-                />
-              )}
-              { deletePhotoMode && (
-                <INatIconButton
-                  icon="trash-outline"
-                  mode="contained"
-                  color={theme.colors.onPrimary}
-                  backgroundColor="rgba(0, 0, 0, 0.5)"
-                  accessibilityLabel={t( "Delete" )}
-                />
-              )}
+              {
+                deletePhotoMode
+                  ? (
+                    <View
+                      className="w-full h-full flex-1 justify-center items-center bg-black/50"
+                    >
+                      <INatIconButton
+                        icon="trash-outline"
+                        mode="contained"
+                        color={theme.colors.onPrimary}
+                        backgroundColor="rgba(0, 0, 0, 0.5)"
+                        accessibilityLabel={t( "Delete-photo" )}
+                        onPress={( ) => deletePhotoAtIndex( item, index )}
+                      />
+                    </View>
+                  )
+                  : (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={t( "View-photo" )}
+                      onLongPress={showDeletePhotoMode}
+                      onPress={( ) => viewPhotoAtIndex( item, index )}
+                      className="w-full h-full"
+                    />
+                  )
+              }
             </ImageBackground>
           </View>
-        </Pressable>
+        </View>
       </Animated.View>
       {index === photoUris.length - 1 && renderSkeleton( )}
     </>
   ), [
-    handlePhotoPress,
-    showDeletePhotoMode,
     animatedStyle,
+    deletePhotoAtIndex,
     deletePhotoMode,
-    photoUris,
     isTablet,
     photoClasses,
+    photoUris,
     renderSkeleton,
+    showDeletePhotoMode,
     t,
-    theme
+    theme,
+    viewPhotoAtIndex
   ] );
 
   const photoPreviewsList = (
@@ -234,7 +241,7 @@ const PhotoCarousel = ( {
   const [containerPos, setContainerPos] = useState( { x: null, y: null } );
   const containerStyle = {
     height: isTablet && isLandscapeMode
-      ? "auto"
+      ? containerPos.h
       : photoDim + photoGutter * 2,
     padding: photoGutter / 2
   };
@@ -247,7 +254,12 @@ const PhotoCarousel = ( {
         // in state so we can layout content inside the modal in exactly the
         // same position
         ( ) => containerRef?.current?.measure(
-          ( _x, _y, _w, _h, pageX, pageY ) => setContainerPos( { x: pageX, y: pageY } )
+          ( _x, _y, w, h, pageX, pageY ) => setContainerPos( {
+            x: pageX,
+            y: pageY,
+            w,
+            h
+          } )
         )
       }
       // Dynamic calculation of these values kind of just doesn't work with tailwind.
@@ -255,6 +267,9 @@ const PhotoCarousel = ( {
       style={containerStyle}
     >
       {
+        // Render a model version of the previews over the actual previews.
+        // Awkward, but it helps handle some weird styling in a landscape
+        // tablet
         deletePhotoMode
           ? (
             <Modal

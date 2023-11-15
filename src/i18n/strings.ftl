@@ -232,6 +232,9 @@ Default-Search-Place = Default Search Place
 
 DELETE = DELETE
 
+# Button label or accessibility label for an element that deletes a photo
+Delete-photo = Delete photo
+
 DELETE-ALL = DELETE ALL
 
 DELETE-COMMENT = DELETE COMMENT
@@ -846,6 +849,10 @@ View-in-browser = View in Browser
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
 View-in-browser = View in Browser
+
+# Button or accessibility label for an element that lets the user view a
+# photo
+View-photo = View photo
 
 Visually-search-iNaturalist-data = Visually search iNaturalist's wealth of data. Search by a taxon in a location
 
