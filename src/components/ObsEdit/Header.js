@@ -1,6 +1,8 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useProfiledNavigation } from "@shopify/react-native-performance-navigation";
 import { Heading2, KebabMenu } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
@@ -25,7 +27,7 @@ const Header = ( ): Node => {
     unsavedChanges
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  const profiledNavigation = useProfiledNavigation( );
   const { params } = useRoute( );
   const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
@@ -33,7 +35,7 @@ const Header = ( ): Node => {
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
 
   const navToObsDetails = useCallback( ( ) => {
-    navigation.navigate( "TabNavigator", {
+    profiledNavigation.navigate( "TabNavigator", {
       screen: "ObservationsStackNavigator",
       params: {
         screen: "ObsDetails",
@@ -42,14 +44,14 @@ const Header = ( ): Node => {
         }
       }
     } );
-  }, [navigation, currentObservation] );
+  }, [profiledNavigation, currentObservation] );
 
-  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
+  const navToObsList = useCallback( ( ) => profiledNavigation.navigate( "TabNavigator", {
     screen: "ObservationsStackNavigator",
     params: {
       screen: "ObsList"
     }
-  } ), [navigation] );
+  } ), [profiledNavigation] );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
@@ -80,7 +82,7 @@ const Header = ( ): Node => {
     if ( params?.lastScreen === "GroupPhotos"
       || ( unsyncedObservation && !unsavedChanges )
     ) {
-      navigation.goBack( );
+      profiledNavigation.goBack( );
     } else if ( !currentObservation?._created_at ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
@@ -88,7 +90,7 @@ const Header = ( ): Node => {
     } else {
       navToObsDetails( );
     }
-  }, [currentObservation, navigation, unsavedChanges, params, navToObsDetails] );
+  }, [currentObservation, profiledNavigation, unsavedChanges, params, navToObsDetails] );
 
   const renderBackButton = useCallback( ( ) => (
     <BackButton
@@ -143,12 +145,12 @@ const Header = ( ): Node => {
       headerRight: renderKebabMenu
     };
 
-    if ( typeof ( navigation?.setOptions ) === "function" ) {
-      navigation?.setOptions( headerOptions );
+    if ( typeof ( profiledNavigation?.setOptions ) === "function" ) {
+      profiledNavigation?.setOptions( headerOptions );
     }
   }, [
     observations,
-    navigation,
+    profiledNavigation,
     renderKebabMenu,
     renderBackButton,
     renderHeaderTitle,

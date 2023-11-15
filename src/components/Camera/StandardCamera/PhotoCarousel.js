@@ -1,6 +1,7 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useProfiledNavigation } from "@shopify/react-native-performance-navigation";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
@@ -68,7 +69,7 @@ const PhotoCarousel = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const navigation = useNavigation( );
+  const profiledNavigation = useProfiledNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const photoClasses = isLargeScreen
     ? LARGE_PHOTO_CLASSES
@@ -140,7 +141,7 @@ const PhotoCarousel = ( {
     } else {
       setSelectedPhotoIndex( index );
       setPhotoEvidenceUris( [...photoUris] );
-      navigation.navigate( "MediaViewer" );
+      profiledNavigation.navigate( "MediaViewer" );
     }
   }, [
     deletePhotoMode,
@@ -148,7 +149,7 @@ const PhotoCarousel = ( {
     setPhotoEvidenceUris,
     setSelectedPhotoIndex,
     deletePhoto,
-    navigation
+    profiledNavigation
   ] );
 
   const renderPhotoOrEvidenceButton = useCallback( ( { item, index } ) => (

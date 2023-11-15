@@ -1,6 +1,7 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useProfiledNavigation } from "@shopify/react-native-performance-navigation";
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
@@ -28,7 +29,7 @@ const EvidenceList = ( {
     savingPhoto,
     setSelectedPhotoIndex
   } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
+  const profiledNavigation = useProfiledNavigation( );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
   const renderPhoto = useCallback( ( { item, getIndex, drag } ) => (
@@ -38,7 +39,7 @@ const EvidenceList = ( {
         accessibilityRole="button"
         onPress={( ) => {
           setSelectedPhotoIndex( getIndex( ) );
-          navigation.navigate( "MediaViewer" );
+          profiledNavigation.navigate( "MediaViewer" );
         }}
         className={classnames( imageClass )}
         testID={`EvidenceList.${item.photo?.url || item.photo?.localFilePath}`}
@@ -53,7 +54,7 @@ const EvidenceList = ( {
         </View>
       </Pressable>
     </ScaleDecorator>
-  ), [navigation, setSelectedPhotoIndex] );
+  ), [profiledNavigation, setSelectedPhotoIndex] );
 
   const renderFooter = useCallback( ( ) => {
     if ( savingPhoto ) {

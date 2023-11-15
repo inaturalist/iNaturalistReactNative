@@ -1,5 +1,6 @@
 // @flow
-import { useNavigation } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useProfiledNavigation } from "@shopify/react-native-performance-navigation";
 import {
   INatIconButton,
   PhotoCount, PhotoScroll
@@ -33,20 +34,20 @@ const PhotoDisplay = ( {
   isOnline
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  const profiledNavigation = useProfiledNavigation( );
 
   const editButton = useMemo(
     () => (
       <INatIconButton
         testID="ObsDetail.editButton"
-        onPress={() => navigation.navigate( "ObsEdit", { uuid } )}
+        onPress={() => profiledNavigation.navigate( "ObsEdit", { uuid } )}
         icon="pencil"
         color={colors.white}
         className="absolute top-3 right-3"
         accessibilityLabel={t( "Edit" )}
       />
     ),
-    [t, navigation, uuid]
+    [t, profiledNavigation, uuid]
   );
 
   const displayPhoto = useCallback( ( ) => {
@@ -125,7 +126,7 @@ const PhotoDisplay = ( {
       <View className="absolute top-3 left-3">
         <BackButton
           color={colors.white}
-          onPress={( ) => navigation.goBack( )}
+          onPress={( ) => profiledNavigation.goBack( )}
         />
       </View>
     </>

@@ -1,6 +1,7 @@
 // @flow
 
-import { createDrawerNavigator } from "@react-navigation/drawer";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { createProfiledDrawerNavigator } from "@shopify/react-native-performance-navigation-drawer";
 import {
   hideDrawerHeaderLeft, hideHeader,
   showHeader
@@ -21,7 +22,7 @@ const drawerOptions = {
   }
 };
 
-const Drawer = createDrawerNavigator( );
+const Drawer = createProfiledDrawerNavigator( );
 
 const drawerRenderer = ( { state, navigation, descriptors } ) => (
   <CustomDrawerContent

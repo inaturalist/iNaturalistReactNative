@@ -1,6 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ReactNavigationPerformanceView } from "@shopify/react-native-performance-navigation";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -130,16 +132,21 @@ const GroupPhotosContainer = ( ): Node => {
   };
 
   return (
-    <GroupPhotos
-      navToObsEdit={navToObsEdit}
-      groupedPhotos={groupedPhotos}
-      selectedObservations={selectedObservations}
-      selectObservationPhotos={selectObservationPhotos}
-      combinePhotos={combinePhotos}
-      removePhotos={removePhotos}
-      separatePhotos={separatePhotos}
-      totalPhotos={totalPhotos}
-    />
+    <ReactNavigationPerformanceView
+      interactive={!!groupedPhotos}
+      screenName="GroupPhotos"
+    >
+      <GroupPhotos
+        navToObsEdit={navToObsEdit}
+        groupedPhotos={groupedPhotos}
+        selectedObservations={selectedObservations}
+        selectObservationPhotos={selectObservationPhotos}
+        combinePhotos={combinePhotos}
+        removePhotos={removePhotos}
+        separatePhotos={separatePhotos}
+        totalPhotos={totalPhotos}
+      />
+    </ReactNavigationPerformanceView>
   );
 };
 

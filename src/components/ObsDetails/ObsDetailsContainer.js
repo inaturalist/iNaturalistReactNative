@@ -1,5 +1,10 @@
 // @flow
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {
+  ReactNavigationPerformanceView,
+  useProfiledNavigation
+} from "@shopify/react-native-performance-navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
@@ -106,7 +111,7 @@ const ObsDetailsContainer = ( ): Node => {
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const { uuid } = params;
-  const navigation = useNavigation( );
+  const profiledNavigation = useProfiledNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
   const isOnline = useIsConnected( );
@@ -306,7 +311,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const navToSuggestions = ( ) => {
     updateObservations( [observation] );
-    navigation.navigate( "Suggestions" );
+    profiledNavigation.navigate( "Suggestions" );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
@@ -342,25 +347,30 @@ const ObsDetailsContainer = ( ): Node => {
   }
 
   return (
-    <ObsDetails
-      navToSuggestions={navToSuggestions}
-      onCommentAdded={onCommentAdded}
-      openCommentBox={openCommentBox}
-      tabs={tabs}
-      currentTabId={currentTabId}
-      showCommentBox={showCommentBox}
-      addingActivityItem={addingActivityItem}
-      observation={observation}
-      refetchRemoteObservation={refetchObservation}
-      activityItems={activityItems}
-      showActivityTab={showActivityTab}
-      showAgreeWithIdSheet={showAgreeWithIdSheet}
-      agreeIdSheetDiscardChanges={agreeIdSheetDiscardChanges}
-      onAgree={onAgree}
-      onIDAgreePressed={onIDAgreePressed}
-      hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
-      isOnline={isOnline}
-    />
+    <ReactNavigationPerformanceView
+      interactive={!!observation}
+      screenName="ObsDetails"
+    >
+      <ObsDetails
+        navToSuggestions={navToSuggestions}
+        onCommentAdded={onCommentAdded}
+        openCommentBox={openCommentBox}
+        tabs={tabs}
+        currentTabId={currentTabId}
+        showCommentBox={showCommentBox}
+        addingActivityItem={addingActivityItem}
+        observation={observation}
+        refetchRemoteObservation={refetchObservation}
+        activityItems={activityItems}
+        showActivityTab={showActivityTab}
+        showAgreeWithIdSheet={showAgreeWithIdSheet}
+        agreeIdSheetDiscardChanges={agreeIdSheetDiscardChanges}
+        onAgree={onAgree}
+        onIDAgreePressed={onIDAgreePressed}
+        hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
+        isOnline={isOnline}
+      />
+    </ReactNavigationPerformanceView>
   );
 };
 

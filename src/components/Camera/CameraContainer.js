@@ -1,8 +1,11 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PerformanceMeasureView } from "@shopify/react-native-performance";
+import {
+  ReactNavigationPerformanceView,
+  useProfiledNavigation
+} from "@shopify/react-native-performance-navigation";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -86,7 +89,7 @@ const CameraWithDevice = ( {
     setOriginalCameraUrisMap,
     originalCameraUrisMap
   } = useContext( ObsEditContext );
-  const navigation = useNavigation();
+  const profiledNavigation = useProfiledNavigation( );
   // $FlowFixMe
   const camera = useRef<Camera>( null );
   const hasFlash = device?.hasFlash;
@@ -186,9 +189,9 @@ const CameraWithDevice = ( {
     if ( cameraPreviewUris.length > 0 ) {
       setShowDiscardSheet( true );
     } else {
-      navigation.goBack( );
+      profiledNavigation.goBack( );
     }
-  }, [setShowDiscardSheet, cameraPreviewUris, navigation] );
+  }, [setShowDiscardSheet, cameraPreviewUris, profiledNavigation] );
 
   useFocusEffect(
     // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator
@@ -223,10 +226,10 @@ const CameraWithDevice = ( {
   const navToObsEdit = useCallback( localTaxon => {
     createEvidenceForObsEdit( localTaxon );
     setPhotoSaved( false );
-    navigation.navigate( "ObsEdit" );
+    profiledNavigation.navigate( "ObsEdit" );
   }, [
     createEvidenceForObsEdit,
-    navigation
+    profiledNavigation
   ] );
 
   const takePhoto = async ( ) => {
@@ -408,7 +411,7 @@ const CameraContainer = ( ): Node => {
   }
 
   return (
-    <PerformanceMeasureView
+    <ReactNavigationPerformanceView
       interactive={!!device}
       screenName="Camera"
     >
@@ -419,7 +422,7 @@ const CameraContainer = ( ): Node => {
         setCameraPosition={setCameraPosition}
         device={device}
       />
-    </PerformanceMeasureView>
+    </ReactNavigationPerformanceView>
   );
 };
 

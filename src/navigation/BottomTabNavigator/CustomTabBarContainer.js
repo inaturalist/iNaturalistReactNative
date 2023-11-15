@@ -1,5 +1,6 @@
 // @flow
 import { useDrawerStatus } from "@react-navigation/drawer";
+import { useProfiledNavigation } from "@shopify/react-native-performance-navigation";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
 import User from "realmModels/User";
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
+  const profiledNavigation = useProfiledNavigation( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
@@ -47,7 +49,7 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
       height: 44,
       size: 40,
       onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
+        profiledNavigation.navigate( "ObservationsStackNavigator", {
           screen: "Explore"
         } );
         setActiveTab( EXPLORE_SCREEN_ID );
@@ -68,7 +70,7 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
       height: 44,
       size: 40,
       onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
+        profiledNavigation.navigate( "ObservationsStackNavigator", {
           screen: "ObsList"
         } );
         setActiveTab( OBS_LIST_SCREEN_ID );
@@ -95,7 +97,8 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
     currentUser,
     isDrawerOpen,
     navigation,
-    t
+    t,
+    profiledNavigation
   ] );
 
   return (

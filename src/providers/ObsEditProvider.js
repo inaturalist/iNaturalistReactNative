@@ -2,6 +2,8 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useProfiledNavigation } from "@shopify/react-native-performance-navigation";
 import { createIdentification } from "api/identifications";
 import {
   createObservation,
@@ -57,6 +59,7 @@ const logger = log.extend( "ObsEditProvider" );
 const uploadProgressIncrement = 0.5;
 
 const ObsEditProvider = ( { children }: Props ): Node => {
+  const profiledNavigation = useProfiledNavigation( );
   const navigation = useNavigation( );
   const realm = useRealm( );
   const apiToken = useApiToken( );
@@ -634,7 +637,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
 
       if ( observations.length === 1 ) {
-        navigation.navigate( "TabNavigator", {
+        profiledNavigation.navigate( "TabNavigator", {
           screen: "ObservationsStackNavigator",
           params: {
             screen: "ObsList"
@@ -892,7 +895,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     t,
     singleUpload,
     state,
-    uploadProgress
+    uploadProgress,
+    profiledNavigation
   ] );
 
   return (

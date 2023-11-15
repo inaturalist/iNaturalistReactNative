@@ -2,7 +2,7 @@
 
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PerformanceMeasureView } from "@shopify/react-native-performance";
+import { ReactNavigationPerformanceView } from "@shopify/react-native-performance-navigation";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -58,7 +58,7 @@ const MyObservationsContainer = ( ): Node => {
   if ( !layout ) { return null; }
 
   return (
-    <PerformanceMeasureView interactive={!!layout} screenName="ObsList">
+    <ReactNavigationPerformanceView interactive={!!layout} screenName="ObsList">
       <MyObservations
         observations={observations}
         layout={layout}
@@ -71,7 +71,7 @@ const MyObservationsContainer = ( ): Node => {
         currentUser={currentUser}
         isOnline={isOnline}
       />
-    </PerformanceMeasureView>
+    </ReactNavigationPerformanceView>
   );
 };
 

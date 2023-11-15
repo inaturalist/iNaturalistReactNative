@@ -2,7 +2,7 @@
 
 import { useRoute } from "@react-navigation/native";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PerformanceMeasureView } from "@shopify/react-native-performance";
+import { ReactNavigationPerformanceView } from "@shopify/react-native-performance-navigation";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -50,7 +50,7 @@ const ObsEdit = ( ): Node => {
   }, [localObservation, updateObservations, resetObsEditContext, currentObservation] );
 
   return (
-    <PerformanceMeasureView
+    <ReactNavigationPerformanceView
       interactive={!!currentObservation}
       screenName="ObsEdit"
     >
@@ -78,7 +78,7 @@ const ObsEdit = ( ): Node => {
         passesEvidenceTest={passesEvidenceTest}
         passesIdentificationTest={passesIdentificationTest}
       />
-    </PerformanceMeasureView>
+    </ReactNavigationPerformanceView>
   );
 };
 

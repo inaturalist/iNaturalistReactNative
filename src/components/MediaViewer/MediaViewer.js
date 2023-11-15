@@ -1,6 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ReactNavigationPerformanceView } from "@shopify/react-native-performance-navigation";
 import classnames from "classnames";
 import { Heading4, TransparentCircleButton, WarningSheet } from "components/SharedComponents";
 import { SafeAreaView, View } from "components/styledComponents";
@@ -101,49 +103,54 @@ const MediaViewer = ( ): Node => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
-      <StatusBar barStyle="light-content" />
-      {warningSheet && (
-        <WarningSheet
-          handleClose={hideWarningSheet}
-          confirm={deletePhoto}
-          headerText={t( "DISCARD-MEDIA" )}
-          snapPoints={[178]}
-          buttonText={t( "DISCARD" )}
-          secondButtonText={t( "CANCEL" )}
-          handleSecondButtonPress={hideWarningSheet}
-        />
-      )}
-      <MainPhotoDisplay
-        photoUris={photoEvidenceUris}
-        selectedPhotoIndex={selectedPhotoIndex}
-        handleScrollEndDrag={handleScrollEndDrag}
-        horizontalScroll={horizontalScroll}
-      />
-      <PhotoSelector
-        photoUris={photoEvidenceUris}
-        scrollToIndex={scrollToIndex}
-        isLargeScreen={isLargeScreen}
-        isLandscapeMode={isLandscapeMode}
-        selectedPhotoIndex={selectedPhotoIndex}
-      />
-      <View
-        className={classnames(
-          "absolute right-[14px]",
-          {
-            "bottom-[138px]": isLargeScreen,
-            "bottom-[91px]": !isLargeScreen
-          }
+    <ReactNavigationPerformanceView
+      interactive={!!photoEvidenceUris}
+      screenName="MediaViewer"
+    >
+      <SafeAreaView className="flex-1 bg-black">
+        <StatusBar barStyle="light-content" />
+        {warningSheet && (
+          <WarningSheet
+            handleClose={hideWarningSheet}
+            confirm={deletePhoto}
+            headerText={t( "DISCARD-MEDIA" )}
+            snapPoints={[178]}
+            buttonText={t( "DISCARD" )}
+            secondButtonText={t( "CANCEL" )}
+            handleSecondButtonPress={hideWarningSheet}
+          />
         )}
-      >
-        <TransparentCircleButton
-          onPress={showWarningSheet}
-          icon="trash-outline"
-          color={colors.white}
-          accessibilityLabel={t( "Delete" )}
+        <MainPhotoDisplay
+          photoUris={photoEvidenceUris}
+          selectedPhotoIndex={selectedPhotoIndex}
+          handleScrollEndDrag={handleScrollEndDrag}
+          horizontalScroll={horizontalScroll}
         />
-      </View>
-    </SafeAreaView>
+        <PhotoSelector
+          photoUris={photoEvidenceUris}
+          scrollToIndex={scrollToIndex}
+          isLargeScreen={isLargeScreen}
+          isLandscapeMode={isLandscapeMode}
+          selectedPhotoIndex={selectedPhotoIndex}
+        />
+        <View
+          className={classnames(
+            "absolute right-[14px]",
+            {
+              "bottom-[138px]": isLargeScreen,
+              "bottom-[91px]": !isLargeScreen
+            }
+          )}
+        >
+          <TransparentCircleButton
+            onPress={showWarningSheet}
+            icon="trash-outline"
+            color={colors.white}
+            accessibilityLabel={t( "Delete" )}
+          />
+        </View>
+      </SafeAreaView>
+    </ReactNavigationPerformanceView>
   );
 };
 

@@ -1,6 +1,8 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ReactNavigationPerformanceView } from "@shopify/react-native-performance-navigation";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
 
@@ -165,16 +167,18 @@ const ExploreContainer = ( ): Node => {
   };
 
   return (
-    <Explore
-      exploreParams={exploreParams}
-      region={region}
-      exploreView={exploreView}
-      changeExploreView={changeExploreView}
-      updateTaxon={updateTaxon}
-      updatePlace={updatePlace}
-      updatePlaceName={updatePlaceName}
-      updateTaxonName={updateTaxonName}
-    />
+    <ReactNavigationPerformanceView interactive={!!state} screenName="Explore">
+      <Explore
+        exploreParams={exploreParams}
+        region={region}
+        exploreView={exploreView}
+        changeExploreView={changeExploreView}
+        updateTaxon={updateTaxon}
+        updatePlace={updatePlace}
+        updatePlaceName={updatePlaceName}
+        updateTaxonName={updateTaxonName}
+      />
+    </ReactNavigationPerformanceView>
   );
 };
 

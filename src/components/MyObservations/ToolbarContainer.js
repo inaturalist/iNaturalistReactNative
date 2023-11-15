@@ -1,6 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useProfiledNavigation } from "@shopify/react-native-performance-navigation";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useContext, useEffect } from "react";
@@ -24,6 +26,7 @@ const ToolbarContainer = ( {
   allObsToUpload,
   setShowLoginSheet
 }: Props ): Node => {
+  const profiledNavigation = useProfiledNavigation( );
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const syncObservations = obsEditContext?.syncObservations;
@@ -65,7 +68,7 @@ const ToolbarContainer = ( {
     setUploads
   ] );
 
-  const navToExplore = ( ) => navigation.navigate( "Explore" );
+  const navToExplore = ( ) => profiledNavigation.navigate( "Explore" );
 
   useEffect( ( ) => {
     if ( uploads?.length > 0 && !singleUpload && uploadInProgress ) {

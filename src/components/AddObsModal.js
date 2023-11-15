@@ -1,8 +1,7 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { useStartProfiler } from "@shopify/react-native-performance";
+import { useProfiledNavigation } from "@shopify/react-native-performance-navigation";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
@@ -17,7 +16,7 @@ type Props = {
 }
 
 const AddObsModal = ( { closeModal }: Props ): React.Node => {
-  const startNavigationTTITimer = useStartProfiler( );
+  const profiledNavigation = useProfiledNavigation( );
   const { t } = useTranslation( );
   const theme = useTheme( );
 
@@ -31,9 +30,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
   const obsEditContext = React.useContext( ObsEditContext );
   const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
-  const navigation = useNavigation( );
 
-  const navAndCloseModal = ( screen, params, uiEvent ) => {
+  const navAndCloseModal = ( screen, params ) => {
     const resetObsEditContext = obsEditContext?.resetObsEditContext;
     // clear previous upload context before navigating
     if ( resetObsEditContext ) {
@@ -42,33 +40,26 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     if ( screen === "ObsEdit" ) {
       createObservationNoEvidence( );
     }
-    if ( screen === "Camera" || screen === "ObsEdit" ) {
-      startNavigationTTITimer( {
-        source: "AddObsModal",
-        uiEvent
-      } );
-    }
     // access nested screen
-    navigation.navigate( "CameraNavigator", {
+    profiledNavigation.navigate( "CameraNavigator", {
       screen,
       params
     } );
     closeModal( );
   };
 
-  const navToPhotoGallery = uiEvent => navAndCloseModal( "PhotoGallery", uiEvent );
+  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery" );
 
-  const navToSoundRecorder = uiEvent => navAndCloseModal( "SoundRecorder", uiEvent );
+  const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 
-  const navToARCamera = uiEvent => navAndCloseModal( "Camera", { camera: "AR" }, uiEvent );
+  const navToARCamera = ( ) => navAndCloseModal( "Camera", { camera: "AR" } );
 
-  const navToStandardCamera = uiEvent => navAndCloseModal(
+  const navToStandardCamera = ( ) => navAndCloseModal(
     "Camera",
-    { camera: "Standard" },
-    uiEvent
+    { camera: "Standard" }
   );
 
-  const navToObsEdit = uiEvent => navAndCloseModal( "ObsEdit", uiEvent );
+  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
   const bulletedText = [
     t( "Take-a-photo-with-your-camera" ),

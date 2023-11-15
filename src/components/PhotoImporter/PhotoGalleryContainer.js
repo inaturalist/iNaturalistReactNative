@@ -1,6 +1,11 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {
+  ReactNavigationPerformanceView,
+  useProfiledNavigation
+} from "@shopify/react-native-performance-navigation";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import useCameraRollPhotos from "components/PhotoImporter/hooks/useCameraRollPhotos";
 import usePhotoAlbums from "components/PhotoImporter/hooks/usePhotoAlbums";
@@ -21,6 +26,7 @@ const options = {
 };
 
 const PhotoGalleryContainer = (): Node => {
+  const profiledNavigation = useProfiledNavigation( );
   const [isScrolling, setIsScrolling] = useState( false );
   const [photoOptions, setPhotoOptions] = useState( options );
   const [photoGallery, setPhotoGallery] = useState( {
@@ -99,8 +105,6 @@ const PhotoGalleryContainer = (): Node => {
     }
   }, [galleryPhotos, photoGallery, setPhotoGallery, selectedAlbum] );
 
-  const navigation = useNavigation();
-
   const selectPhoto = p => {
     setGalleryUris( [...galleryUris, p?.image?.uri] );
     if ( skipGroupPhotos ) {
@@ -144,7 +148,13 @@ const PhotoGalleryContainer = (): Node => {
   const fetchMorePhotos = () => setIsScrolling( true );
 
   const navToNextScreen = async () => {
-    const navToObsEdit = () => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+    const navToObsEdit = () => profiledNavigation.navigate(
+      "ObsEdit",
+      {
+        lastScreen:
+          "PhotoGallery"
+      }
+    );
     if ( !selectedPhotos ) return;
     if ( skipGroupPhotos ) {
       // add any newly selected photos
@@ -162,7 +172,7 @@ const PhotoGalleryContainer = (): Node => {
     setGroupedPhotos( selectedPhotos.map( photo => ( {
       photos: [photo]
     } ) ) );
-    navigation.navigate( "GroupPhotos" );
+    profiledNavigation.navigate( "GroupPhotos" );
   };
 
   const hideAlert = ( ) => setShowAlert( false );
@@ -192,26 +202,31 @@ const PhotoGalleryContainer = (): Node => {
   useEffect( () => {
     const headerTitle = ( ) => <PhotoAlbumPicker albums={albums} setAlbum={setAlbum} />;
 
-    navigation.setOptions( {
+    profiledNavigation.setOptions( {
       headerTitle
     } );
-  }, [navigation, albums] );
+  }, [profiledNavigation, albums] );
 
   return (
-    <PhotoGallery
-      checkSelected={checkSelected}
-      checkPreviouslySelected={checkPreviouslySelected}
-      skipGroupPhotos={skipGroupPhotos}
-      handleImagePress={handleImagePress}
-      photosByAlbum={photosByAlbum}
-      navToNextScreen={navToNextScreen}
-      fetchMorePhotos={fetchMorePhotos}
-      fetchingPhotos={fetchingPhotos}
-      showAlert={showAlert}
-      totalSelected={totalSelected}
-      hideAlert={hideAlert}
-      galleryUris={galleryUris}
-    />
+    <ReactNavigationPerformanceView
+      interactive={!!canRequestPhotos}
+      screenName="PhotoGallery"
+    >
+      <PhotoGallery
+        checkSelected={checkSelected}
+        checkPreviouslySelected={checkPreviouslySelected}
+        skipGroupPhotos={skipGroupPhotos}
+        handleImagePress={handleImagePress}
+        photosByAlbum={photosByAlbum}
+        navToNextScreen={navToNextScreen}
+        fetchMorePhotos={fetchMorePhotos}
+        fetchingPhotos={fetchingPhotos}
+        showAlert={showAlert}
+        totalSelected={totalSelected}
+        hideAlert={hideAlert}
+        galleryUris={galleryUris}
+      />
+    </ReactNavigationPerformanceView>
   );
 };
 
