@@ -9,9 +9,9 @@ import { useIconicTaxa, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  taxon: Object,
   before: any,
   onTaxonChosen: Function,
+  taxon: Object,
   testID?: string
 };
 
@@ -20,7 +20,10 @@ const STYLESHEET = {
 };
 
 const IconicTaxonChooser = ( {
-  taxon, before, onTaxonChosen, testID
+  before,
+  onTaxonChosen,
+  taxon,
+  testID
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [selectedIcon, setSelectedIcon] = useState( null );

@@ -44,7 +44,7 @@ const Explore = ( {
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const [headerRight, setHeaderRight] = useState( null );
-  const [observationsView, setObservationsView] = useState( "map" );
+  const [observationsView, setObservationsView] = useState( "list" );
 
   const [heightAboveFilters, setHeightAboveFilters] = useState( 0 );
 

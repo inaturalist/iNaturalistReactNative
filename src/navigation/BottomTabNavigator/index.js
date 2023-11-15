@@ -1,19 +1,17 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
 import Messages from "components/Messages/Messages";
-import NetworkLogging from "components/NetworkLogging";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
-import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
 import {
   hideHeader,
   hideHeaderLeft,
-  showHeader,
-  showHeaderLeft
+  showHeader
 } from "navigation/navigationOptions";
+import DeveloperStackNavigator from "navigation/StackNavigators/DeveloperStackNavigator";
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import ProjectsStackNavigator from "navigation/StackNavigators/ProjectsStackNavigator";
 import React from "react";
@@ -37,7 +35,7 @@ const BottomTabs = ( ) => {
         initialRouteName={OBS_LIST_SCREEN_ID}
         tabBar={renderTabBar}
         backBehavior="history"
-        screenOptions={showHeaderLeft}
+        screenOptions={showHeader}
       >
         <Tab.Screen
           name="ObservationsStackNavigator"
@@ -72,14 +70,6 @@ const BottomTabs = ( ) => {
           component={PlaceholderComponent}
         />
         <Tab.Screen
-          name="network"
-          component={NetworkLogging}
-        />
-        <Tab.Screen
-          name="UI Library"
-          component={UiLibrary}
-        />
-        <Tab.Screen
           name="Help"
           component={PlaceholderComponent}
         />
@@ -94,6 +84,11 @@ const BottomTabs = ( ) => {
         <Tab.Screen
           name="ProjectsStackNavigator"
           component={ProjectsStackNavigator}
+          options={hideHeader}
+        />
+        <Tab.Screen
+          name="DeveloperStackNavigator"
+          component={DeveloperStackNavigator}
           options={hideHeader}
         />
       </Tab.Navigator>

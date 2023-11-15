@@ -15,7 +15,7 @@ import {
   blankHeaderTitle,
   hideHeader,
   showCustomHeader,
-  showHeaderLeft
+  showHeader
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -85,7 +85,7 @@ const AddObsStackNavigator = ( ): Node => (
         name="GroupPhotos"
         component={GroupPhotosContainer}
         options={{
-          ...showHeaderLeft,
+          ...showHeader,
           ...showCustomHeader,
           lazy: true,
           title: t( "Group-Photos" ),

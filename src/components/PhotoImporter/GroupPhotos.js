@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
@@ -41,6 +42,7 @@ const GroupPhotos = ( {
   separatePhotos,
   totalPhotos
 }: Props ): Node => {
+  const navigation = useNavigation( );
   const theme = useTheme();
   const {
     isLandscapeMode, isTablet, screenWidth, screenHeight
@@ -88,13 +90,20 @@ const GroupPhotos = ( {
     />
   ), [itemStyle, selectedObservations, selectObservationPhotos] );
 
+  const addPhotos = useCallback( () => {
+    navigation.navigate( "CameraNavigator", {
+      screen: "PhotoGallery",
+      params: { fromGroupPhotos: true }
+    } );
+  }, [navigation] );
+
   // $FlowIgnore
   const renderItem = useCallback( ( { item } ) => {
     if ( item.empty ) {
       return (
         <Pressable
           accessibilityRole="button"
-          onPress={() => console.log( "TODO" )}
+          onPress={addPhotos}
           className="rounded-[15px] justify-center items-center"
           // Sorry, couldn't get this to work with tailwind
           // eslint-disable-next-line react-native/no-inline-styles
@@ -110,7 +119,7 @@ const GroupPhotos = ( {
     }
     // $FlowIgnore
     return renderImage( item );
-  }, [itemStyle, renderImage, theme] );
+  }, [itemStyle, renderImage, theme, addPhotos] );
 
   const renderHeader = ( ) => (
     <View className="m-5">

@@ -37,7 +37,6 @@ type Props = {
 }
 
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
-  // $FlowFixMe
   const { state, navigation, descriptors } = props;
   const currentUser = useCurrentUser( );
   const theme = useTheme( );
@@ -63,32 +62,24 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       : -5
   } ), [] );
 
-  const loginDrawerItemStyle = useMemo( ( ) => ( {
-    ...drawerItemStyle,
-    opacity: 0.5,
-    display: currentUser
-      ? "flex"
-      : "none"
-  } ), [currentUser, drawerItemStyle] );
-
   const drawerItems = useMemo( ( ) => ( {
-    search: {
-      label: t( "SEARCH" ),
-      navigation: "search",
-      icon: "magnifying-glass"
-    },
-    identify: {
-      label: t( "IDENTIFY" ),
-      navigation: "TabNavigator",
-      params: {
-        screen: "ObservationsStackNavigator",
-        params: {
-          screen: "Identify"
-        }
-      },
-      icon: "label",
-      loggedInOnly: true
-    },
+    // search: {
+    //   label: t( "SEARCH" ),
+    //   navigation: "search",
+    //   icon: "magnifying-glass"
+    // },
+    // identify: {
+    //   label: t( "IDENTIFY" ),
+    //   navigation: "TabNavigator",
+    //   params: {
+    //     screen: "ObservationsStackNavigator",
+    //     params: {
+    //       screen: "Identify"
+    //     }
+    //   },
+    //   icon: "label",
+    //   loggedInOnly: true
+    // },
     projects: {
       label: t( "PROJECTS" ),
       navigation: "TabNavigator",
@@ -100,64 +91,69 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       },
       icon: "briefcase"
     },
-    help: {
-      label: t( "HELP" ),
-      navigation: "Help",
-      icon: "help"
-    },
-    blog: {
-      label: t( "BLOG" ),
-      navigation: "Blog",
-      icon: "laptop"
-    },
+    // help: {
+    //   label: t( "HELP" ),
+    //   navigation: "Help",
+    //   icon: "help",
+    //   color: colors.white,
+    //   backgroundColor: colors.darkGray
+    // },
+    // blog: {
+    //   label: t( "BLOG" ),
+    //   navigation: "Blog",
+    //   icon: "laptop"
+    // },
     about: {
       label: t( "ABOUT" ),
       navigation: "about",
       icon: "inaturalist"
     },
-    donate: {
-      label: t( "DONATE" ),
-      navigation: "Donate",
-      icon: "heart"
-    },
+    // donate: {
+    //   label: t( "DONATE" ),
+    //   navigation: "Donate",
+    //   icon: "heart"
+    // },
     settings: {
       label: t( "SETTINGS" ),
       navigation: "settings",
       icon: "gear",
       loggedInOnly: true
     },
-    // the following two are only for development mode,
-    // and should not be included in future app store releases
-    network: {
-      label: t( "NETWORK" ),
-      navigation: "network",
-      icon: "help"
+    // TODO on release we probably want to hide this item for non-staff, or
+    // provide a developer mode that can be turned on in settings
+    developer: {
+      label: "DEVELOPER",
+      navigation: "DeveloperStackNavigator",
+      icon: "triangle-exclamation",
+      color: "orange"
     },
-    uiLibrary: {
-      label: t( "UI-LIBRARY" ),
-      navigation: "UI Library",
-      icon: "help"
+    login: {
+      label: currentUser
+        ? t( "LOG-OUT" )
+        : t( "LOG-IN" ),
+      navigation: "LoginNavigator",
+      icon: "door-exit",
+      style: {
+        opacity: 0.5,
+        display: currentUser
+          ? "flex"
+          : "none"
+      }
     }
-  } ), [t] );
+  } ), [
+    currentUser,
+    t
+  ] );
 
-  const renderIcon = useCallback( item => {
-    let color = null;
-    let backgroundColor = null;
-
-    if ( item === "help" ) {
-      color = colors.white;
-      backgroundColor = colors.darkGray;
-    }
-    return (
-      <INatIconButton
-        icon={drawerItems[item].icon}
-        size={20}
-        color={color}
-        backgroundColor={backgroundColor}
-        accessibilityLabel={drawerItems[item].label}
-      />
-    );
-  }, [drawerItems] );
+  const renderIcon = useCallback( item => (
+    <INatIconButton
+      icon={drawerItems[item].icon}
+      size={20}
+      color={drawerItems[item].color}
+      // backgroundColor={drawerItems[item].backgroundColor}
+      accessibilityLabel={drawerItems[item].label}
+    />
+  ), [drawerItems] );
 
   const renderTopBanner = useCallback( ( ) => (
     <Pressable
@@ -226,7 +222,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         }}
         labelStyle={labelStyle}
         icon={( ) => renderIcon( item )}
-        style={drawerItemStyle}
+        style={[drawerItemStyle, drawerItems[item].style]}
       />
     );
   }, [
@@ -236,38 +232,6 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     renderIcon,
     drawerItems,
     navigation
-  ] );
-
-  const renderBottomLoginButton = useCallback( ( ) => {
-    const signOutButton = ( ) => (
-      <INatIconButton
-        icon="door-exit"
-        size={20}
-        accessibilityLabel={t( "Log-out" )}
-      />
-    );
-
-    return (
-      <DrawerItem
-        label={
-          currentUser
-            ? t( "LOG-OUT" )
-            : t( "LOG-IN" )
-        }
-        onPress={( ) => {
-          navigation.navigate( "LoginNavigator" );
-        }}
-        labelStyle={labelStyle}
-        icon={signOutButton}
-        style={loginDrawerItemStyle}
-      />
-    );
-  }, [
-    currentUser,
-    labelStyle,
-    loginDrawerItemStyle,
-    navigation,
-    t
   ] );
 
   return (
@@ -281,9 +245,6 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         {renderTopBanner( )}
         <View className="grow">
           {Object.keys( drawerItems ).map( item => renderDrawerItem( item ) )}
-        </View>
-        <View className="h-[66px]">
-          {renderBottomLoginButton( )}
         </View>
       </View>
     </DrawerContentScrollView>

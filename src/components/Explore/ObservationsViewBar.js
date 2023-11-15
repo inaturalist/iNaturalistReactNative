@@ -26,9 +26,7 @@ const ObservationsViewBar = ( {
   } );
 
   return (
-    <View
-      className="bottom-5 absolute left-5 z-10"
-    >
+    <View className="bottom-5 absolute left-5 z-10">
       <SegmentedButtons
         value={observationsView}
         onValueChange={updateObservationsView}
@@ -40,11 +38,6 @@ const ObservationsViewBar = ( {
         style={getShadowForColor( theme.colors.primary )}
         buttons={[
           {
-            style: buttonStyle( "map" ),
-            value: "map",
-            icon: "map"
-          },
-          {
             style: buttonStyle( "list" ),
             value: "list",
             icon: "hamburger-menu"
@@ -53,6 +46,11 @@ const ObservationsViewBar = ( {
             style: buttonStyle( "grid" ),
             value: "grid",
             icon: "grid"
+          },
+          {
+            style: buttonStyle( "map" ),
+            value: "map",
+            icon: "map"
           }
         ]}
       />
