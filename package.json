@@ -26,7 +26,8 @@
     "e2e": "npm run e2e:build && npm run e2e:test",
     "icons": "./scripts/update-icon-font.sh",
     "add-example-model": "node scripts/add-example-model.js",
-    "add-github-actions-test-model": "node scripts/add-github-actions-test-model.js"
+    "add-github-actions-test-model": "node scripts/add-github-actions-test-model.js",
+    "reassure": "reassure"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.7",
@@ -113,6 +114,7 @@
     "react-native-webview": "^11.26.1",
     "react-native-worklets-core": "^0.2.0",
     "realm": "^11.10.2",
+    "reassure": "^0.10.1",
     "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#vision-v3"
