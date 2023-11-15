@@ -1,6 +1,6 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -31,6 +31,8 @@ const ObsEdit = ( ): Node => {
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
 
+  const isFocused = useIsFocused( );
+
   useEffect( ( ) => {
     // when first opening an observation from ObsDetails, fetch local observation from realm
     // and set this in obsEditContext
@@ -47,34 +49,36 @@ const ObsEdit = ( ): Node => {
     }
   }, [localObservation, updateObservations, resetObsEditContext, currentObservation] );
 
-  return (
-    <>
-      <View testID="obs-edit" className="bg-white flex-1">
-        <Header />
-        <KeyboardAwareScrollView className="bg-white mb-[80px]">
-          {currentObservation && (
-            <>
-              {observations.length > 1 && <MultipleObservationsArrows />}
-              <EvidenceSectionContainer
-                passesEvidenceTest={passesEvidenceTest}
-                setPassesEvidenceTest={setPassesEvidenceTest}
-              />
-              <IdentificationSection
-                passesIdentificationTest={passesIdentificationTest}
-                setPassesIdentificationTest={setPassesIdentificationTest}
-              />
-              <OtherDataSection />
-            </>
-          )}
-          {loading && <ActivityIndicator />}
-        </KeyboardAwareScrollView>
-      </View>
-      <BottomButtons
-        passesEvidenceTest={passesEvidenceTest}
-        passesIdentificationTest={passesIdentificationTest}
-      />
-    </>
-  );
+  return isFocused
+    ? (
+      <>
+        <View testID="obs-edit" className="bg-white flex-1">
+          <Header />
+          <KeyboardAwareScrollView className="bg-white mb-[80px]">
+            {currentObservation && (
+              <>
+                {observations.length > 1 && <MultipleObservationsArrows />}
+                <EvidenceSectionContainer
+                  passesEvidenceTest={passesEvidenceTest}
+                  setPassesEvidenceTest={setPassesEvidenceTest}
+                />
+                <IdentificationSection
+                  passesIdentificationTest={passesIdentificationTest}
+                  setPassesIdentificationTest={setPassesIdentificationTest}
+                />
+                <OtherDataSection />
+              </>
+            )}
+            {loading && <ActivityIndicator />}
+          </KeyboardAwareScrollView>
+        </View>
+        <BottomButtons
+          passesEvidenceTest={passesEvidenceTest}
+          passesIdentificationTest={passesIdentificationTest}
+        />
+      </>
+    )
+    : null;
 };
 
 export default ObsEdit;
