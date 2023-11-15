@@ -24,6 +24,7 @@ const ActivityHeaderContainer = ( {
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( false );
   const [flagged, setFlagged] = useState( false );
+  const [loading, setLoading] = useState( false );
   const queryClient = useQueryClient( );
   const { user } = item;
 
@@ -39,35 +40,39 @@ const ActivityHeaderContainer = ( {
     }
   }, [user, item] );
 
-  const onItemFlagged = () => {
-    if ( refetchRemoteObservation ) {
-      setFlagged( true );
-      refetchRemoteObservation();
-    }
-  };
-
   const deleteCommentMutation = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),
     {
       onSuccess: ( ) => {
+        setLoading( false );
         queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
+      },
+      onError: () => {
+        setLoading( false );
       }
     }
   );
 
-  const deleteUserComment = ( ) => deleteCommentMutation.mutate( item.uuid );
+  const deleteUserComment = () => {
+    setLoading( true );
+    deleteCommentMutation.mutate( item.uuid );
+  };
 
   const updateCommentMutation = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => updateComment( uuid, optsWithAuth ),
     {
       onSuccess: () => {
+        setLoading( false );
         queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
+      },
+      onError: () => {
+        setLoading( false );
       }
     }
   );
@@ -79,6 +84,7 @@ const ActivityHeaderContainer = ( {
         body: comment
       }
     };
+    setLoading( true );
     updateCommentMutation.mutate( updateCommentParams );
   };
 
@@ -86,10 +92,14 @@ const ActivityHeaderContainer = ( {
     ( uuid, optsWithAuth ) => updateIdentification( uuid, optsWithAuth ),
     {
       onSuccess: () => {
+        setLoading( false );
         queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
+      },
+      onError: () => {
+        setLoading( false );
       }
     }
   );
@@ -102,11 +112,13 @@ const ActivityHeaderContainer = ( {
         current: withdrawOrRestore
       }
     };
+    setLoading( true );
     updateIdentificationMutation.mutate( updateIdentificationParams );
   };
 
   return (
     <ActivityHeader
+      loading={loading}
       item={item}
       currentUser={currentUser}
       idWithdrawn={idWithdrawn}
@@ -115,7 +127,6 @@ const ActivityHeaderContainer = ( {
       updateCommentBody={updateCommentBody}
       deleteComment={deleteUserComment}
       withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
-      onItemFlagged={onItemFlagged}
       isOnline={isOnline}
     />
   );
