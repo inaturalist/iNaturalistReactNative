@@ -32,7 +32,6 @@ const PhotoDisplayContainer = ( {
   const userId = currentUser?.id;
   const { t } = useTranslation( );
   const observationId = observation?.id;
-  console.log( observation?.id, "observation id" );
 
   const faves = observation?.faves;
   const uuid = observation?.uuid;
