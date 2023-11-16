@@ -1,0 +1,12 @@
+NEW
+* Native photo importer
+* Add photos from Group Photos
+
+FIXED
+* Iconic taxon chooser removes taxon when unknown is selected
+* Obs Edit shouldn't go blank after importing photos
+* Taxon Search should still show results when returning from Taxon Detail
+* Back button position fixes
+
+UPDATED
+* Performance improvements

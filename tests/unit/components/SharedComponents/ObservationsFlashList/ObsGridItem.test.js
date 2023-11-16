@@ -20,12 +20,22 @@ describe( "ObsGridItem", () => {
     } );
 
     it( "should render", () => {
-      render( <ObsGridItem observation={observationWithPhoto} /> );
+      render(
+        <ObsGridItem
+          observation={observationWithPhoto}
+          uploadState={{ uploadProgress: false }}
+        />
+      );
       expect( screen ).toMatchSnapshot();
     } );
 
     it( "should have photo", async ( ) => {
-      render( <ObsGridItem observation={observationWithPhoto} /> );
+      render(
+        <ObsGridItem
+          observation={observationWithPhoto}
+          uploadState={{ uploadProgress: false }}
+        />
+      );
       expect( await screen.findByTestId( "ObsList.photo" ) ).toBeTruthy( );
     } );
   } );
@@ -36,12 +46,22 @@ describe( "ObsGridItem", () => {
     } );
 
     it( "should render", ( ) => {
-      render( <ObsGridItem observation={observationWithoutPhoto} /> );
+      render(
+        <ObsGridItem
+          observation={observationWithoutPhoto}
+          uploadState={{ uploadProgress: false }}
+        />
+      );
       expect( screen ).toMatchSnapshot();
     } );
 
     it( "should have an iconic taxon icon", async ( ) => {
-      render( <ObsGridItem observation={observationWithoutPhoto} /> );
+      render(
+        <ObsGridItem
+          observation={observationWithoutPhoto}
+          uploadState={{ uploadProgress: false }}
+        />
+      );
       expect( await screen.findByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeTruthy( );
     } );
   } );

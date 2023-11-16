@@ -1,11 +1,7 @@
 // @flow
 
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useContext } from "react";
-import {
-  useCurrentUser
-} from "sharedHooks";
+import React from "react";
 
 import ObsUploadStatus from "./ObsUploadStatus";
 
@@ -14,7 +10,8 @@ type Props = {
   layout?: "horizontal" | "vertical",
   white?: boolean,
   classNameMargin?: string,
-  setShowLoginSheet: Function
+  uploadSingleObservation?: Function,
+  uploadState: Object
 };
 
 const ObsUploadStatusContainer = ( {
@@ -22,12 +19,10 @@ const ObsUploadStatusContainer = ( {
   layout,
   white = false,
   classNameMargin,
-  setShowLoginSheet
+  uploadSingleObservation,
+  uploadState
 }: Props ): Node => {
-  const currentUser = useCurrentUser( );
-  const obsEditContext = useContext( ObsEditContext );
-  const uploadObservation = obsEditContext?.uploadObservation;
-  const uploadProgress = obsEditContext?.uploadProgress;
+  const uploadProgress = uploadState?.uploadProgress;
 
   const needsSync = item => !item._synced_at
     || item._synced_at <= item._updated_at;
@@ -39,19 +34,6 @@ const ObsUploadStatusContainer = ( {
 
   const progress = currentProgress / currentProgressIncrements || 0;
 
-  const startUpload = useCallback( ( ) => {
-    if ( !currentUser ) {
-      setShowLoginSheet( true );
-      return;
-    }
-    uploadObservation( observation, { isSingleUpload: true } );
-  }, [
-    currentUser,
-    observation,
-    setShowLoginSheet,
-    uploadObservation
-  ] );
-
   const showUploadStatus = !!( ( needsSync( observation ) || uploadProgress?.[observation.uuid] ) );
 
   return (
@@ -60,7 +42,11 @@ const ObsUploadStatusContainer = ( {
       layout={layout}
       white={white}
       classNameMargin={classNameMargin}
-      startUpload={startUpload}
+      uploadSingleObservation={( ) => {
+        if ( uploadSingleObservation ) {
+          uploadSingleObservation( observation );
+        }
+      }}
       showUploadStatus={showUploadStatus}
       progress={progress}
     />

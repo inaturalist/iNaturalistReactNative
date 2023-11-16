@@ -27,11 +27,15 @@ const PhotoGallery = ( ): Node => {
     addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
     setEvidenceToAdd,
-    setGroupedPhotos
+    setGroupedPhotos,
+    groupedPhotos
   } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const skipGroupPhotos = params
     ? params.skipGroupPhotos
+    : false;
+  const fromGroupPhotos = params
+    ? params.fromGroupPhotos
     : false;
 
   const showPhotoGallery = React.useCallback( async () => {
@@ -61,14 +65,33 @@ const PhotoGallery = ( ): Node => {
 
     if ( !response || response.didCancel || !response.assets || response.errorCode ) {
       // User cancelled selection of photos - close current screen
-      navigation.goBack();
+
+      if ( fromGroupPhotos ) {
+        // This screen was called from the plus button of the group photos screen - get back to it
+        navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+        navigation.setParams( { fromGroupPhotos: false } );
+      } else {
+        navigation.goBack();
+      }
+      setPhotoGalleryShown( false );
+      return;
+    }
+
+    const selectedImages = response.assets.map( x => ( { image: x } ) );
+
+    if ( fromGroupPhotos ) {
+      // This screen was called from the plus button of the group photos screen - get back to it
+      // after adding the newly selected photos
+      setGroupedPhotos( [...groupedPhotos, ...selectedImages.map( photo => ( {
+        photos: [photo]
+      } ) )] );
+      navigation.setParams( { fromGroupPhotos: false } );
+      navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
       setPhotoGalleryShown( false );
       return;
     }
 
     const navToObsEdit = () => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
-
-    const selectedImages = response.assets.map( x => ( { image: x } ) );
 
     setGalleryUris( [...galleryUris, ...response.assets.map( x => x.uri )] );
     if ( skipGroupPhotos ) {
@@ -95,12 +118,13 @@ const PhotoGallery = ( ): Node => {
       photos: [photo]
     } ) ) );
 
+    navigation.setParams( { fromGroupPhotos: false } );
     navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
     setPhotoGalleryShown( false );
   }, [
     photoGalleryShown, addGalleryPhotosToCurrentObservation, createObservationFromGallery,
     evidenceToAdd, galleryUris, navigation, setEvidenceToAdd, setGalleryUris, setGroupedPhotos,
-    skipGroupPhotos] );
+    fromGroupPhotos, skipGroupPhotos, groupedPhotos] );
 
   const onPermissionGranted = () => {
     setPermissionGranted( true );

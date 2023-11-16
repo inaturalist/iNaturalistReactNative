@@ -13,14 +13,6 @@ import factory, { makeResponse } from "../factory";
 import { renderAppWithComponent } from "../helpers/render";
 import { signIn, signOut } from "../helpers/user";
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    addEventListener: ( ) => {}
-  };
-} );
-
 describe( "MyObservations", ( ) => {
   beforeAll( async ( ) => {
     await global.realm.write( ( ) => {

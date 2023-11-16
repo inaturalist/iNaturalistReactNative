@@ -46,6 +46,16 @@ const mockObservations = [
   } )
 ];
 
+const mockState = {
+  uploads: mockObservations,
+  error: null,
+  currentUploadCount: 1,
+  uploadInProgress: true,
+  totalProgressIncrements: 2,
+  uploadProgress: 1,
+  uploadsComplete: false
+};
+
 const mockOnEndReached = jest.fn( );
 
 jest.mock( "sharedHooks/useInfiniteObservationsScroll", () => ( {
@@ -81,6 +91,7 @@ describe( "MyObservations Performance", ( ) => {
       onEndReached={mockOnEndReached}
       currentUser={mockUser}
       isOnline
+      uploadState={mockState}
     /> );
   } );
 } );

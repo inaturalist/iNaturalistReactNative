@@ -234,7 +234,9 @@ DELETE = DELETE
 
 DELETE-ALL = DELETE ALL
 
-DELETE-COMMENT = DELETE COMMENT?
+DELETE-COMMENT = DELETE COMMENT
+
+DELETE-COMMENT-QUESTION = DELETE COMMENT?
 
 Delete-comment = Delete comment
 
@@ -484,8 +486,6 @@ No = No
 # When the user tries to reset password but enters a non-existent email
 No-account-found = No account found with that email
 
-No-comments-or-ids-to-display = No comments or ids to display
-
 No-Location = No Location
 
 No-model-found = No model found
@@ -670,7 +670,8 @@ Research-Grade = Research Grade
 Reset = Reset
 
 # Option to restore withdrawn id from current user
-Restore = Restore
+Restore-ID = Restore ID
+RESTORE-ID = RESTORE ID
 
 # Appears in the reset password screen
 Lets-reset-your-password = Let's reset your password
@@ -817,13 +818,13 @@ Uploading-X-Observations = Uploading {$count ->
 }
 
 # Shows the number of observations a user is currently uploading out of total on my observations page
-Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
+Uploading-x-of-y-observations = Uploading {$currentUploadCount} of {$total ->
     [one] 1 observation
     *[other] {$total} observations
 }
 
 # Shows the progress of uploads for X of Y
-Uploading-x-of-y = Uploading {$uploadedCount} of {$total}
+Uploading-x-of-y = Uploading {$currentUploadCount} of {$total}
 
 Upload-Progress = Upload {$uploadProgress} percent complete
 
@@ -863,8 +864,12 @@ Wild = Wild
 
 WILD-STATUS = WILD STATUS
 
-# Option to Withdraw identification made by user
-Withdraw = Withdraw
+Withdraw-ID = Withdraw ID
+
+WITHDRAW-ID-QUESTION = WITHDRAW ID?
+
+# Button to Withdraw identification made by user
+WITHDRAW-ID = WITHDRAW ID
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
@@ -1041,7 +1046,6 @@ Navigates-to-user-profile = Navigates to user profile.
 Navigates-to-drawer-item = Navigates to drawer item.
 Navigate-to-taxon-details = Navigate to taxon details
 Navigates-to-add-identification = Navigates to add identification.
-Navigates-to-identify = Navigates to identify.
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
@@ -1113,7 +1117,6 @@ Map-layers = Map layers
 Share-map = Share map
 Copy-map-coordinates = Copy map coordinates
 Filters = Filters
-Identification-label = Identification label
 Sound-recorder = Sound recorder
 Observation-with-no-evidence = Observation with no evidence
 Photo-importer = Photo importer

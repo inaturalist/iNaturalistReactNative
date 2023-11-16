@@ -13,26 +13,36 @@ type Props = {
   layout: "list" | "grid",
   observations: Array<Object>,
   toggleLayout: Function,
-  allObsToUpload: Array<Object>,
   showLoginSheet: boolean,
   setShowLoginSheet: Function,
   isFetchingNextPage: boolean,
   onEndReached: Function,
   currentUser: Object,
-  isOnline: boolean
+  isOnline: boolean,
+  uploadState: Object,
+  uploadMultipleObservations: Function,
+  stopUploads: Function,
+  uploadSingleObservation: Function,
+  syncObservations: Function,
+  toolbarProgress: number
 };
 
 const MyObservations = ( {
   layout,
   observations,
   toggleLayout,
-  allObsToUpload,
   showLoginSheet,
   setShowLoginSheet,
   isFetchingNextPage,
   onEndReached,
   currentUser,
-  isOnline
+  isOnline,
+  uploadState,
+  uploadMultipleObservations,
+  stopUploads,
+  uploadSingleObservation,
+  syncObservations,
+  toolbarProgress
 }: Props ): Node => {
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
 
@@ -79,14 +89,16 @@ const MyObservations = ( {
               currentUser={currentUser}
               hideToolbar={observations.length === 0}
               setHeightAboveToolbar={setHeightAboveToolbar}
-              allObsToUpload={allObsToUpload}
-              setShowLoginSheet={setShowLoginSheet}
+              uploadState={uploadState}
+              uploadMultipleObservations={uploadMultipleObservations}
+              stopUploads={stopUploads}
+              syncObservations={syncObservations}
+              toolbarProgress={toolbarProgress}
             />
             <ObservationsFlashList
               isFetchingNextPage={isFetchingNextPage}
               layout={layout}
               onEndReached={onEndReached}
-              setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
               testID="MyObservationsAnimatedList"
               handleScroll={handleScroll}
@@ -94,6 +106,8 @@ const MyObservations = ( {
               data={observations.filter( o => o.isValid() )}
               showObservationsEmptyScreen
               isOnline={isOnline}
+              uploadSingleObservation={uploadSingleObservation}
+              uploadState={uploadState}
             />
           </StickyView>
         </View>

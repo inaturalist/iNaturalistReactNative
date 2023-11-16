@@ -87,4 +87,4 @@ artifacts/
 **/ios/*.json
 
 # Reassure performance testing #
-/.reassure
+.reassure

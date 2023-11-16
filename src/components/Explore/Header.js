@@ -105,21 +105,9 @@ const Header = ( {
               onPress={( ) => setShowExploreBottomSheet( true )}
             />
             {headerRight
-              ? (
+              && (
                 <View className="mt-4">
                   <Body1>{headerRight}</Body1>
-                </View>
-              )
-              : (
-                <View className="bg-darkGray rounded-full h-[46px] w-[46px]">
-                  <INatIconButton
-                    icon="label"
-                    color={colors.white}
-                    className="self-center"
-                    onPress={( ) => navigation.navigate( "Identify" )}
-                    accessibilityLabel={t( "Identification-label" )}
-                    accessibilityHint={t( "Navigates-to-identify" )}
-                  />
                 </View>
               )}
           </View>

@@ -44,12 +44,6 @@ const useLocalObservations = ( ): Object => {
     };
   }, [isFocused, allObsToUpload.length, realm] );
 
-  useEffect( ( ) => {
-    if ( isFocused ) {
-      setObservationList( stagedObservationList.current );
-    }
-  }, [isFocused] );
-
   return {
     observationList,
     allObsToUpload

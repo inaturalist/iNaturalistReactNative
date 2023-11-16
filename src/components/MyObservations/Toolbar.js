@@ -20,36 +20,37 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 type Props = {
   layout: string,
   handleSyncButtonPress: Function,
-  uploadError: ?string,
-  uploadInProgress: boolean,
-  stopUpload: Function,
+  stopUploads: Function,
   progress: number,
   numUnuploadedObs: number,
   showsExploreIcon: boolean,
   navToExplore: Function,
   toggleLayout: Function,
-  currentUploadIndex: number,
-  totalUploadCount: number
+  uploadState: Object
 }
 
 const Toolbar = ( {
   layout,
   handleSyncButtonPress,
-  uploadError,
-  uploadInProgress,
-  stopUpload,
+  stopUploads,
   progress,
   numUnuploadedObs,
   showsExploreIcon,
   navToExplore,
   toggleLayout,
-  currentUploadIndex,
-  totalUploadCount
+  uploadState
 }: Props ): Node => {
+  const {
+    uploads,
+    error: uploadError,
+    uploadInProgress,
+    uploadsComplete,
+    currentUploadCount
+  } = uploadState;
+  const totalUploadCount = uploads?.length || 0;
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const uploadComplete = progress === 1;
-  const uploading = uploadInProgress && !uploadComplete;
+  const uploading = uploadInProgress && !uploadsComplete;
 
   const needsSync = useCallback( ( ) => (
     ( numUnuploadedObs > 0 && !uploadInProgress ) || ( uploadError && !uploadInProgress )
@@ -72,7 +73,7 @@ const Toolbar = ( {
 
     const translationParams = {
       total: totalUploadCount,
-      uploadedCount: currentUploadIndex + 1
+      currentUploadCount
     };
 
     // iPhone 4 pixel width
@@ -82,7 +83,7 @@ const Toolbar = ( {
 
     return t( "Uploading-x-of-y-observations", translationParams );
   }, [
-    currentUploadIndex,
+    currentUploadCount,
     totalUploadCount,
     progress,
     numUnuploadedObs,
@@ -136,7 +137,7 @@ const Toolbar = ( {
                 ? "sync-unsynced"
                 : "sync"
             }
-            rotating={uploading}
+            rotating={uploading && progress !== 1}
             onPress={handleSyncButtonPress}
             color={getSyncIconColor( )}
             disabled={false}
@@ -157,7 +158,7 @@ const Toolbar = ( {
                 >
                   {statusText}
                 </Body2>
-                {( uploadComplete && !uploadError ) && (
+                {( uploadsComplete && !uploadError ) && (
                   <View className="ml-2">
                     <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
                   </View>
@@ -175,7 +176,7 @@ const Toolbar = ( {
               icon="close"
               size={11}
               accessibilityLabel={t( "Stop-upload" )}
-              onPress={stopUpload}
+              onPress={stopUploads}
             />
           )}
         </View>
