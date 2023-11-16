@@ -360,6 +360,7 @@ const ObsDetailsContainer = ( ): Node => {
       onIDAgreePressed={onIDAgreePressed}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
       isOnline={isOnline}
+      belongsToCurrentUser={belongsToCurrentUser}
     />
   );
 };

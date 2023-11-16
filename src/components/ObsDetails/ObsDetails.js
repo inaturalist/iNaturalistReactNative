@@ -38,7 +38,8 @@ type Props = {
   openCommentBox: Function,
   agreeIdSheetDiscardChanges: Function,
   onAgree: Function,
-  isOnline: boolean
+  isOnline: boolean,
+  belongsToCurrentUser: boolean
 }
 
 const ObsDetails = ( {
@@ -58,7 +59,8 @@ const ObsDetails = ( {
   showAgreeWithIdSheet,
   agreeIdSheetDiscardChanges,
   onAgree,
-  isOnline
+  isOnline,
+  belongsToCurrentUser
 }: Props ): Node => {
   const { params } = useRoute( );
   const { uuid } = params;
@@ -81,6 +83,7 @@ const ObsDetails = ( {
           observation={observation}
           refetchRemoteObservation={refetchRemoteObservation}
           isOnline={isOnline}
+          belongsToCurrentUser={belongsToCurrentUser}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />

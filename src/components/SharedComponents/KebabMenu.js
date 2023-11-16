@@ -6,16 +6,18 @@ import React from "react";
 import { Menu } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import viewStyles from "styles/sharedComponents/kebabMenu";
+import colors from "styles/tailwindColors";
 
 type Props = {
   children: any,
   visible: boolean,
   setVisible: Function,
-  large?: boolean
+  large?: boolean,
+  white?: boolean
 }
 
 const KebabMenu = ( {
-  children, visible, setVisible, large
+  children, visible, setVisible, large, white
 }: Props ): Node => {
   const { t } = useTranslation( );
   const openMenu = ( ) => setVisible( true );
@@ -31,6 +33,9 @@ const KebabMenu = ( {
         : 15}
       accessibilityLabel={t( "Kebab-menu" )}
       accessibilityHint={t( "Open-kebab-menu" )}
+      color={white
+        ? colors.white
+        : colors.black}
     />
   );
 

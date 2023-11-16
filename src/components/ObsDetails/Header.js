@@ -16,13 +16,15 @@ import PhotoDisplayContainer from "./PhotoDisplayContainer";
 type Props = {
   observation: Object,
   refetchRemoteObservation: Function,
-  isOnline: boolean
+  isOnline: boolean,
+  belongsToCurrentUser: boolean
 }
 
 const Header = ( {
   observation,
   refetchRemoteObservation,
-  isOnline
+  isOnline,
+  belongsToCurrentUser
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -49,6 +51,7 @@ const Header = ( {
         observation={observation}
         refetchRemoteObservation={refetchRemoteObservation}
         isOnline={isOnline}
+        belongsToCurrentUser={belongsToCurrentUser}
       />
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
         <InlineUser user={observation?.user} isOnline={isOnline} />
