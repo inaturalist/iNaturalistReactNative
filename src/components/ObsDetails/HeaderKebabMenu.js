@@ -17,7 +17,7 @@ const HeaderKebabMenu = ( {
 }: Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
-  const url = `${observationsUrl}/${observationId.toString( )}`;
+  const url = `${observationsUrl}/${observationId?.toString( )}`;
   const sharingOptions = {
     url: "",
     message: ""
