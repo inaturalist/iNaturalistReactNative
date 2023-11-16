@@ -25,7 +25,6 @@ export const INITIAL_CREATE_OBS_STATE = {
 };
 
 const createObsReducer = ( state: Object, action: Function ): Object => {
-  console.log( action.type, ": OBS REDUCER" );
   switch ( action.type ) {
     case "DELETE_PHOTO":
       return {

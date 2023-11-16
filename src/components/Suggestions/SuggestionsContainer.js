@@ -25,6 +25,7 @@ const SuggestionsContainer = ( ): Node => {
   const obsPhotos = currentObservation?.observationPhotos;
   const localObservation = useLocalObservation( uuid );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
+  const [loading, setLoading] = useState( false );
 
   useEffect( ( ) => {
     if ( obsPhotos?.length > photoEvidenceUris?.length ) {
@@ -60,12 +61,14 @@ const SuggestionsContainer = ( ): Node => {
       photoUris={photoEvidenceUris}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
-      onTaxonChosen={createId}
+      createId={createId}
       comment={comment}
       setComment={setComment}
       currentObservation={currentObservation}
       nearbySuggestions={nearbySuggestions}
       loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}
+      loading={loading}
+      setLoading={setLoading}
     />
   );
 };

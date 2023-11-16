@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { fireEvent, screen } from "@testing-library/react-native";
+import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import SuggestionsList from "components/Suggestions/SuggestionsList";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -30,12 +30,13 @@ const mockSuggestionsList = [{
   }
 }];
 
-const mockTaxonSelection = jest.fn( );
+const mockCreateId = jest.fn( );
 
 const renderSuggestionsList = ( ) => renderComponent(
   <SuggestionsList
     nearbySuggestions={mockSuggestionsList}
-    onTaxonChosen={mockTaxonSelection}
+    setLoading={jest.fn( )}
+    createId={mockCreateId}
   />
 );
 
@@ -75,7 +76,7 @@ describe( "SuggestionsList", ( ) => {
     renderComponent(
       <SuggestionsList
         nearbySuggestions={[]}
-        loading
+        loadingSuggestions
       />
     );
     const loading = screen.getByTestId( "SuggestionsList.loading" );
@@ -88,6 +89,8 @@ describe( "SuggestionsList", ( ) => {
     const checkmark = screen.getByTestId( `${testID}.checkmark` );
     expect( checkmark ).toBeVisible( );
     fireEvent.press( checkmark );
-    expect( mockTaxonSelection ).toHaveBeenCalled( );
+    await waitFor( ( ) => {
+      expect( mockCreateId ).toHaveBeenCalled( );
+    } );
   } );
 } );

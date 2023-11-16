@@ -8,7 +8,7 @@ import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import {
   ActivityIndicator
 } from "react-native-paper";
@@ -26,10 +26,12 @@ type Props = {
   selectedPhotoUri: string,
   setSelectedPhotoUri: Function,
   nearbySuggestions: Array<Object>,
-  onTaxonChosen: Function,
+  createId: Function,
   loadingSuggestions: boolean,
   setComment: Function,
-  currentObservation: Object
+  currentObservation: Object,
+  loading: boolean,
+  setLoading: Function
 };
 
 const Suggestions = ( {
@@ -37,15 +39,16 @@ const Suggestions = ( {
   selectedPhotoUri,
   setSelectedPhotoUri,
   nearbySuggestions,
-  onTaxonChosen,
+  createId,
   comment,
   loadingSuggestions,
   setComment,
-  currentObservation
+  currentObservation,
+  loading,
+  setLoading
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const [loading, setLoading] = useState( false );
 
   return (
     <ScrollViewWrapper testID="suggestions">
@@ -77,12 +80,9 @@ const Suggestions = ( {
       <CommentBox comment={comment} />
       <SuggestionsList
         nearbySuggestions={nearbySuggestions}
-        onTaxonChosen={id => {
-          setLoading( true );
-          onTaxonChosen( id );
-          setLoading( false );
-        }}
-        loading={loadingSuggestions}
+        createId={createId}
+        loadingSuggestions={loadingSuggestions}
+        setLoading={setLoading}
       />
       {nearbySuggestions?.length > 0 && (
         <Attribution

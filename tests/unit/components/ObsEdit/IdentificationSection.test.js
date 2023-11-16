@@ -1,35 +1,17 @@
 import { screen } from "@testing-library/react-native";
 import IdentificationSection from "components/ObsEdit/IdentificationSection";
 import initI18next from "i18n/initI18next";
-import { ObsEditContext } from "providers/contexts";
-import INatPaperProvider from "providers/INatPaperProvider";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-// Mock ObservationProvider so it provides a specific array of observations
-// without any current observation or ability to update or fetch
-// observations
-jest.mock( "providers/ObsEditProvider" );
-const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <INatPaperProvider>
-    <ObsEditContext.Provider value={{
-      observations: obs,
-      currentObservation: obs[0]
-    }}
-    >
-      {children}
-    </ObsEditContext.Provider>
-  </INatPaperProvider>
-) );
-
-const renderIdentificationSection = ( ) => renderComponent(
-  <ObsEditProvider>
-    <IdentificationSection passesIdentificationTest />
-  </ObsEditProvider>
+const renderIdentificationSection = obs => renderComponent(
+  <IdentificationSection
+    passesIdentificationTest
+    observations={obs}
+    currentObservation={obs[0]}
+  />
 );
 
 describe( "IdentificationSection", () => {
@@ -43,8 +25,7 @@ describe( "IdentificationSection", () => {
         taxon: null
       } )
     ];
-    mockObsEditProviderWithObs( observations );
-    renderIdentificationSection( );
+    renderIdentificationSection( observations );
     expect( screen.getByTestId( "ObsEdit.Suggestions" ) ).toBeVisible( );
   } );
 
@@ -58,8 +39,7 @@ describe( "IdentificationSection", () => {
         }
       } )
     ];
-    mockObsEditProviderWithObs( observations );
-    renderIdentificationSection( );
+    renderIdentificationSection( observations );
     expect( screen.getByTestId( "ObsEdit.Suggestions" ) ).toBeVisible( );
   } );
 
@@ -72,8 +52,7 @@ describe( "IdentificationSection", () => {
         }
       } )
     ];
-    mockObsEditProviderWithObs( observations );
-    renderIdentificationSection( );
+    renderIdentificationSection( observations );
     expect( screen.queryByTestId( "ObsEdit.Suggestions" ) ).toBeFalsy( );
   } );
 } );
