@@ -157,7 +157,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                   }
                 />
                 <View
-                  accessibilityLabel="View-photo"
+                  accessibilityLabel="View photo"
                   accessibilityRole="button"
                   accessibilityState={
                     {
@@ -325,7 +325,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                   }
                 />
                 <View
-                  accessibilityLabel="View-photo"
+                  accessibilityLabel="View photo"
                   accessibilityRole="button"
                   accessibilityState={
                     {
@@ -493,7 +493,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                   }
                 />
                 <View
-                  accessibilityLabel="View-photo"
+                  accessibilityLabel="View photo"
                   accessibilityRole="button"
                   accessibilityState={
                     {
@@ -709,7 +709,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                   }
                 />
                 <View
-                  accessibilityLabel="View-photo"
+                  accessibilityLabel="View photo"
                   accessibilityRole="button"
                   accessibilityState={
                     {
@@ -882,7 +882,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                   }
                 />
                 <View
-                  accessibilityLabel="View-photo"
+                  accessibilityLabel="View photo"
                   accessibilityRole="button"
                   accessibilityState={
                     {
@@ -1055,7 +1055,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                   }
                 />
                 <View
-                  accessibilityLabel="View-photo"
+                  accessibilityLabel="View photo"
                   accessibilityRole="button"
                   accessibilityState={
                     {
