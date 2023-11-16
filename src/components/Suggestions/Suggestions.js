@@ -22,16 +22,18 @@ import SuggestionsList from "./SuggestionsList";
 
 type Props = {
   comment: string,
-  photoUris: Array<string>,
-  selectedPhotoUri: string,
-  setSelectedPhotoUri: Function,
+  loading: boolean,
+  loadingSuggestions: boolean,
   nearbySuggestions: Array<Object>,
-  createId: Function,
   loadingSuggestions: boolean,
   setComment: Function,
   currentObservation: Object,
   loading: boolean,
-  setLoading: Function
+  setLoading: Function,
+  onTaxonChosen: Function,
+  photoUris: Array<string>,
+  selectedPhotoUri: string,
+  setSelectedPhotoUri: Function
 };
 
 const Suggestions = ( {
@@ -39,7 +41,7 @@ const Suggestions = ( {
   selectedPhotoUri,
   setSelectedPhotoUri,
   nearbySuggestions,
-  createId,
+  onTaxonChosen,
   comment,
   loadingSuggestions,
   setComment,
@@ -80,7 +82,7 @@ const Suggestions = ( {
       <CommentBox comment={comment} />
       <SuggestionsList
         nearbySuggestions={nearbySuggestions}
-        createId={createId}
+        onTaxonChosen={onTaxonChosen}
         loadingSuggestions={loadingSuggestions}
         setLoading={setLoading}
       />

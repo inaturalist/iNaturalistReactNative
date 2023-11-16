@@ -22,7 +22,7 @@ const ObsUploadStatusContainer = ( {
   uploadSingleObservation,
   uploadState
 }: Props ): Node => {
-  const { uploadProgress } = uploadState;
+  const uploadProgress = uploadState?.uploadProgress;
 
   const needsSync = item => !item._synced_at
     || item._synced_at <= item._updated_at;

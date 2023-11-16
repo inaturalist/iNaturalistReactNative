@@ -29,14 +29,14 @@ const convertScoreToConfidence = score => {
 
 type Props = {
   nearbySuggestions: Array<Object>,
-  createId: Function,
+  onTaxonChosen: Function,
   loadingSuggestions: boolean,
   setLoading: Function
 };
 
 const SuggestionsList = ( {
   nearbySuggestions,
-  createId,
+  onTaxonChosen,
   loadingSuggestions,
   setLoading
 }: Props ): Node => {
@@ -44,10 +44,10 @@ const SuggestionsList = ( {
   const navigation = useNavigation( );
   const onTaxonResultChosen = useCallback( async taxon => {
     setLoading( true );
-    await createId( taxon );
+    await onTaxonChosen( taxon );
     setLoading( false );
     navigation.goBack( );
-  }, [navigation, createId, setLoading] );
+  }, [navigation, onTaxonChosen, setLoading] );
 
   if ( loadingSuggestions ) {
     return (

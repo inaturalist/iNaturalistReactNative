@@ -1,6 +1,7 @@
 // @flow
 
 import scoreImage from "api/computerVision";
+import { difference } from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect, useState } from "react";
@@ -23,17 +24,27 @@ const SuggestionsContainer = ( ): Node => {
   } = useContext( ObsEditContext );
   const uuid = currentObservation?.uuid;
   const obsPhotos = currentObservation?.observationPhotos;
+  const obsPhotoUris = ( obsPhotos || [] ).map(
+    obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+  );
   const localObservation = useLocalObservation( uuid );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
   const [loading, setLoading] = useState( false );
 
   useEffect( ( ) => {
-    if ( obsPhotos?.length > photoEvidenceUris?.length ) {
-      setPhotoEvidenceUris( obsPhotos.map(
-        obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
-      ) );
+    // If the photos are different, we need to display different photos
+    // (probably b/c we're looking at a different observation)
+    if ( difference( obsPhotoUris, photoEvidenceUris ).length > 0 ) {
+      setPhotoEvidenceUris( obsPhotoUris );
+      // And if the photos have changed, we should show results for the first
+      // one
+      setSelectedPhotoUri( obsPhotoUris[0] );
     }
-  }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
+  }, [
+    obsPhotoUris,
+    photoEvidenceUris,
+    setPhotoEvidenceUris
+  ] );
 
   const params = {
     image: selectedPhotoUri,
@@ -61,7 +72,7 @@ const SuggestionsContainer = ( ): Node => {
       photoUris={photoEvidenceUris}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
-      createId={createId}
+      onTaxonChosen={createId}
       comment={comment}
       setComment={setComment}
       currentObservation={currentObservation}

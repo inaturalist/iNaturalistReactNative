@@ -129,6 +129,10 @@
   "Date-uploaded-header-short": "Uploaded",
   "Default-Search-Place": "Default Search Place",
   "DELETE": "DELETE",
+  "Delete-photo": {
+    "comment": "Button label or accessibility label for an element that deletes a photo",
+    "val": "Delete photo"
+  },
   "DELETE-ALL": "DELETE ALL",
   "DELETE-COMMENT": "DELETE COMMENT",
   "DELETE-COMMENT-QUESTION": "DELETE COMMENT?",
@@ -520,6 +524,10 @@
   },
   "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
   "View-in-browser": "View in Browser",
+  "View-photo": {
+    "comment": "Button or accessibility label for an element that lets the user view a\nphoto",
+    "val": "View photo"
+  },
   "Visually-search-iNaturalist-data": "Visually search iNaturalist's wealth of data. Search by a taxon in a location",
   "Welcome-to-iNaturalist": "Welcome to iNaturalist!",
   "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",

@@ -36,7 +36,7 @@ const renderSuggestionsList = ( ) => renderComponent(
   <SuggestionsList
     nearbySuggestions={mockSuggestionsList}
     setLoading={jest.fn( )}
-    createId={mockCreateId}
+    onTaxonChosen={mockCreateId}
   />
 );
 
