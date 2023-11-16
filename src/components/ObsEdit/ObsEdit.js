@@ -20,11 +20,19 @@ import OtherDataSection from "./OtherDataSection";
 
 const ObsEdit = ( ): Node => {
   const {
+    cameraRollUris,
     currentObservation,
+    currentObservationIndex,
+    loading,
     observations,
-    updateObservations,
+    photoEvidenceUris,
     resetObsEditContext,
-    loading
+    savingPhoto,
+    setCurrentObservationIndex,
+    setPhotoEvidenceUris,
+    unsavedChanges,
+    updateObservations,
+    updateObservationKeys
   } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
@@ -53,20 +61,41 @@ const ObsEdit = ( ): Node => {
     ? (
       <>
         <View testID="obs-edit" className="bg-white flex-1">
-          <Header />
+          <Header
+            observations={observations}
+            currentObservation={currentObservation}
+            unsavedChanges={unsavedChanges}
+            updateObservations={updateObservations}
+          />
           <KeyboardAwareScrollView className="bg-white mb-[80px]">
             {currentObservation && (
               <>
-                {observations.length > 1 && <MultipleObservationsArrows />}
+                {observations.length > 1 && (
+                  <MultipleObservationsArrows
+                    currentObservationIndex={currentObservationIndex}
+                    setCurrentObservationIndex={setCurrentObservationIndex}
+                    observations={observations}
+                  />
+                )}
                 <EvidenceSectionContainer
                   passesEvidenceTest={passesEvidenceTest}
                   setPassesEvidenceTest={setPassesEvidenceTest}
+                  currentObservation={currentObservation}
+                  updateObservationKeys={updateObservationKeys}
+                  setPhotoEvidenceUris={setPhotoEvidenceUris}
+                  photoEvidenceUris={photoEvidenceUris}
+                  savingPhoto={savingPhoto}
                 />
                 <IdentificationSection
                   passesIdentificationTest={passesIdentificationTest}
                   setPassesIdentificationTest={setPassesIdentificationTest}
+                  currentObservation={currentObservation}
+                  updateObservationKeys={updateObservationKeys}
                 />
-                <OtherDataSection />
+                <OtherDataSection
+                  currentObservation={currentObservation}
+                  updateObservationKeys={updateObservationKeys}
+                />
               </>
             )}
             {loading && <ActivityIndicator />}
@@ -75,6 +104,12 @@ const ObsEdit = ( ): Node => {
         <BottomButtons
           passesEvidenceTest={passesEvidenceTest}
           passesIdentificationTest={passesIdentificationTest}
+          currentObservation={currentObservation}
+          unsavedChanges={unsavedChanges}
+          currentObservationIndex={currentObservationIndex}
+          observations={observations}
+          cameraRollUris={cameraRollUris}
+          setCurrentObservationIndex={setCurrentObservationIndex}
         />
       </>
     )

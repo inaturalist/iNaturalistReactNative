@@ -3,10 +3,9 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { Heading2, KebabMenu } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useContext, useEffect, useState
+  useCallback, useEffect, useState
 } from "react";
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
@@ -16,13 +15,19 @@ import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
 import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
 import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 
-const Header = ( ): Node => {
-  const {
-    observations,
-    updateObservations,
-    currentObservation,
-    unsavedChanges
-  } = useContext( ObsEditContext );
+type Props = {
+  observations: Array<Object>,
+  updateObservations: Function,
+  currentObservation: Object,
+  unsavedChanges: boolean
+}
+
+const Header = ( {
+  observations,
+  updateObservations,
+  currentObservation,
+  unsavedChanges
+}: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -163,6 +168,8 @@ const Header = ( ): Node => {
         <DeleteObservationSheet
           handleClose={( ) => setDeleteSheetVisible( false )}
           navToObsList={navToObsList}
+          observations={observations}
+          currentObservation={currentObservation}
         />
       )}
       {discardObservationSheetVisible && (

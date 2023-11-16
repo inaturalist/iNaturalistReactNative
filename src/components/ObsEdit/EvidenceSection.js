@@ -8,9 +8,8 @@ import {
 } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -19,6 +18,7 @@ import EvidenceList from "./EvidenceList";
 import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 type Props = {
+  currentObservation: Object,
   evidenceList: Array<string>,
   handleDragAndDrop: Function,
   isFetchingLocation: boolean,
@@ -28,11 +28,14 @@ type Props = {
   onLocationPermissionDenied: Function,
   onLocationPermissionGranted: Function,
   passesEvidenceTest: Function,
+  savingPhoto: boolean,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
+  updateObservationKeys: Function
 }
 
 const EvidenceSection = ( {
+  currentObservation,
   evidenceList,
   handleDragAndDrop,
   isFetchingLocation,
@@ -42,14 +45,13 @@ const EvidenceSection = ( {
   onLocationPermissionDenied,
   onLocationPermissionGranted,
   passesEvidenceTest,
+  savingPhoto,
   setShowAddEvidenceSheet,
-  showAddEvidenceSheet
+  showAddEvidenceSheet,
+  updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const {
-    currentObservation
-  } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
   const navigation = useNavigation( );
 
@@ -108,6 +110,7 @@ const EvidenceSection = ( {
         evidenceList={evidenceList}
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
+        savingPhoto={savingPhoto}
       />
       <Pressable
         accessibilityRole="button"
@@ -141,7 +144,10 @@ const EvidenceSection = ( {
           }
         </View>
       </Pressable>
-      <DatePicker currentObservation={currentObservation} />
+      <DatePicker
+        currentObservation={currentObservation}
+        updateObservationKeys={updateObservationKeys}
+      />
       <LocationPermissionGate
         permissionNeeded={locationPermissionNeeded}
         onPermissionGranted={onLocationPermissionGranted}

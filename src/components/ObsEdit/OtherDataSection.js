@@ -4,24 +4,26 @@ import {
   Body3, Heading4, INatIcon, TextInputSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
 
-const OtherDataSection = ( ): Node => {
+type Props = {
+  currentObservation: Object,
+  updateObservationKeys: Function
+}
+
+const OtherDataSection = ( {
+  currentObservation,
+  updateObservationKeys
+}: Props ): Node => {
   const { t } = useTranslation( );
   const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
   const [showWildStatusSheet, setShowWildStatusSheet] = useState( false );
   const [showNotesSheet, setShowNotesSheet] = useState( false );
-
-  const {
-    currentObservation,
-    updateObservationKeys
-  } = useContext( ObsEditContext );
 
   const geoprivacyOptions = [{
     label: t( "Open" ),

@@ -6,10 +6,10 @@ import {
   isFuture,
   parseISO
 } from "date-fns";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useContext, useEffect,
+  useCallback,
+  useEffect,
   useMemo,
   useRef, useState
 } from "react";
@@ -23,19 +23,23 @@ import EvidenceSection from "./EvidenceSection";
 
 type Props = {
   passesEvidenceTest: boolean,
-  setPassesEvidenceTest: Function
+  setPassesEvidenceTest: Function,
+  currentObservation: Object,
+  updateObservationKeys: Function,
+  setPhotoEvidenceUris: Function,
+  photoEvidenceUris: Array<string>,
+  savingPhoto: boolean
 }
 
 const EvidenceSectionContainer = ( {
   setPassesEvidenceTest,
-  passesEvidenceTest
+  passesEvidenceTest,
+  currentObservation,
+  updateObservationKeys,
+  setPhotoEvidenceUris,
+  photoEvidenceUris,
+  savingPhoto
 }: Props ): Node => {
-  const {
-    currentObservation,
-    updateObservationKeys,
-    setPhotoEvidenceUris,
-    photoEvidenceUris
-  } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
   const mountedRef = useRef( true );
 
@@ -183,6 +187,9 @@ const EvidenceSectionContainer = ( {
 
   return (
     <EvidenceSection
+      currentObservation={currentObservation}
+      savingPhoto={savingPhoto}
+      updateObservationKeys={updateObservationKeys}
       locationTextClassNames={locationTextClassNames}
       handleDragAndDrop={handleDragAndDrop}
       passesEvidenceTest={fullEvidenceTest}

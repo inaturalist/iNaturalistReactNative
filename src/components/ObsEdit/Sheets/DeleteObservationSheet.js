@@ -4,28 +4,28 @@ import { deleteObservation } from "api/observations";
 import {
   WarningSheet
 } from "components/SharedComponents";
-import { t } from "i18next";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useContext } from "react";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import React, { useCallback } from "react";
+import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
 type Props = {
   handleClose: Function,
-  navToObsList: Function
+  navToObsList: Function,
+  currentObservation: Object,
+  observations: Array<Object>
 }
 
 const DeleteObservationSheet = ( {
   handleClose,
-  navToObsList
+  navToObsList,
+  currentObservation,
+  observations
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const realm = useRealm( );
-  const {
-    currentObservation,
-    observations
-  } = useContext( ObsEditContext );
   const { uuid } = currentObservation;
 
   const isSavedObservation = (

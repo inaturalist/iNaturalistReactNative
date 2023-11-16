@@ -6,9 +6,9 @@ import {
   Button, StickyToolbar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { writeExifToFile } from "sharedHelpers/parseExif";
 import uploadObservation from "sharedHelpers/uploadObservation";
@@ -24,24 +24,28 @@ const DESIRED_LOCATION_ACCURACY = 4000000;
 
 type Props = {
   passesEvidenceTest: boolean,
-  passesIdentificationTest: boolean
+  passesIdentificationTest: boolean,
+  observations: Array<Object>,
+  currentObservation: Object,
+  unsavedChanges: boolean,
+  currentObservationIndex: number,
+  cameraRollUris: Array<string>,
+  setCurrentObservationIndex: Function
 }
 
 const BottomButtons = ( {
   passesEvidenceTest,
-  passesIdentificationTest
+  passesIdentificationTest,
+  currentObservation,
+  unsavedChanges,
+  currentObservationIndex,
+  observations,
+  cameraRollUris,
+  setCurrentObservationIndex
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const {
-    currentObservation,
-    unsavedChanges,
-    currentObservationIndex,
-    observations,
-    cameraRollUris,
-    setCurrentObservationIndex
-  } = useContext( ObsEditContext );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
