@@ -18,7 +18,8 @@ const SuggestionsContainer = ( ): Node => {
     currentObservation,
     createId,
     comment,
-    setPhotoEvidenceUris
+    setPhotoEvidenceUris,
+    setComment
   } = useContext( ObsEditContext );
   const uuid = currentObservation?.uuid;
   const obsPhotos = currentObservation?.observationPhotos;
@@ -61,6 +62,8 @@ const SuggestionsContainer = ( ): Node => {
       setSelectedPhotoUri={setSelectedPhotoUri}
       onTaxonChosen={createId}
       comment={comment}
+      setComment={setComment}
+      currentObservation={currentObservation}
       nearbySuggestions={nearbySuggestions}
       loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}
     />

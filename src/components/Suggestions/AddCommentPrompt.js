@@ -5,16 +5,19 @@ import {
   INatIconButton,
   TextInputSheet
 } from "components/SharedComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocalObservation, useTranslation } from "sharedHooks";
 
-const AddCommentPrompt = ( ): Node => {
-  const {
-    setComment,
-    currentObservation
-  } = useContext( ObsEditContext );
+type Props = {
+  setComment: Function,
+  currentObservation: Object
+}
+
+const AddCommentPrompt = ( {
+  setComment,
+  currentObservation
+}: Props ): Node => {
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
   const uuid = currentObservation?.uuid;
   const localObservation = useLocalObservation( uuid );

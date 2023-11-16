@@ -85,12 +85,15 @@ const CameraWithDevice = ( {
   const {
     currentObservation,
     cameraPreviewUris,
-    setCameraState,
+    deletePhotoFromObservation,
     evidenceToAdd,
     originalCameraUrisMap,
     numOfObsPhotos,
-    updateObservations,
-    setCameraRollUris
+    setCameraRollUris,
+    setCameraState,
+    setPhotoEvidenceUris,
+    totalObsPhotoUris,
+    updateObservations
   } = useContext( ObsEditContext );
   const navigation = useNavigation();
   // $FlowFixMe
@@ -435,6 +438,10 @@ const CameraWithDevice = ( {
             showZoomButton={device.isMultiCam}
             onZoomStart={onZoomStart}
             onZoomChange={onZoomChange}
+            totalObsPhotoUris={totalObsPhotoUris}
+            cameraPreviewUris={cameraPreviewUris}
+            deletePhotoFromObservation={deletePhotoFromObservation}
+            setPhotoEvidenceUris={setPhotoEvidenceUris}
           />
         )
         : (

@@ -4,9 +4,7 @@ import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer";
-import { ObsEditContext } from "providers/contexts";
 import {
-  useContext,
   useEffect,
   useState
 } from "react";
@@ -21,11 +19,12 @@ export const LOCATION_FETCH_INTERVAL = 1000;
 // isFetchingLocation to tell the consumer whether this process is happening.
 // If currentObservation is not new, it will not fetch location and return
 // information about the current observation's location
-const useCurrentObservationLocation = ( mountedRef: any, options: Object = { } ): Object => {
-  const {
-    currentObservation,
-    updateObservationKeys
-  } = useContext( ObsEditContext );
+const useCurrentObservationLocation = (
+  mountedRef: any,
+  currentObservation: Object,
+  updateObservationKeys: Function,
+  options: Object = { }
+): Object => {
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
   const hasLocation = latitude || longitude;

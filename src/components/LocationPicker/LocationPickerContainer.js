@@ -116,7 +116,10 @@ type Props = {
 
 const LocationPickerContainer = ( { route }: Props ): Node => {
   const mapViewRef = useRef( );
-  const { currentObservation } = useContext( ObsEditContext );
+  const {
+    currentObservation,
+    updateObservationKeys
+  } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { goBackOnSave } = route.params;
 
@@ -236,6 +239,7 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
       toggleMapLayer={toggleMapLayer}
       updateLocationName={updateLocationName}
       updateRegion={updateRegion}
+      updateObservationKeys={updateObservationKeys}
     />
   );
 };

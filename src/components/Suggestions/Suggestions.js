@@ -27,12 +27,21 @@ type Props = {
   setSelectedPhotoUri: Function,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
-  loadingSuggestions: boolean
+  loadingSuggestions: boolean,
+  setComment: Function,
+  currentObservation: Object
 };
 
 const Suggestions = ( {
-  photoUris, selectedPhotoUri, setSelectedPhotoUri, nearbySuggestions, onTaxonChosen,
-  comment, loadingSuggestions
+  photoUris,
+  selectedPhotoUri,
+  setSelectedPhotoUri,
+  nearbySuggestions,
+  onTaxonChosen,
+  comment,
+  loadingSuggestions,
+  setComment,
+  currentObservation
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -40,7 +49,10 @@ const Suggestions = ( {
 
   return (
     <ScrollViewWrapper testID="suggestions">
-      <AddCommentPrompt />
+      <AddCommentPrompt
+        setComment={setComment}
+        currentObservation={currentObservation}
+      />
       {loading && (
         <View
           className="absolute self-center z-10 pt-[30px]"

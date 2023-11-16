@@ -1,10 +1,9 @@
 // @flow
 import classnames from "classnames";
 import { Text, View } from "components/styledComponents";
-import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React from "react";
+import { useTranslation } from "sharedHooks";
 
 import PhotoCarousel, {
   LARGE_PHOTO_DIM,
@@ -20,7 +19,10 @@ type Props = {
   isLandscapeMode?: boolean,
   isLargeScreen?: boolean,
   isTablet?: boolean,
-  takingPhoto: boolean
+  takingPhoto: boolean,
+  cameraPreviewUris: Function,
+  deletePhotoFromObservation: Function,
+  setPhotoEvidenceUris: Function
 }
 
 const STYLE = {
@@ -34,20 +36,15 @@ const PhotoPreview = ( {
   isLargeScreen,
   isTablet,
   rotation,
-  takingPhoto
+  takingPhoto,
+  cameraPreviewUris,
+  deletePhotoFromObservation,
+  setPhotoEvidenceUris
 }: Props ): Node => {
-  const {
-    cameraPreviewUris: photoUris,
-    deletePhotoFromObservation,
-    setPhotoEvidenceUris
-  } = useContext( ObsEditContext );
+  const { t } = useTranslation( );
   const wrapperDim = isLargeScreen
     ? LARGE_PHOTO_DIM + LARGE_PHOTO_GUTTER * 2
     : SMALL_PHOTO_DIM + SMALL_PHOTO_GUTTER * 2;
-
-  const deletePhoto = photoUri => {
-    deletePhotoFromObservation( photoUri );
-  };
 
   let noPhotosNotice = (
     <Text
@@ -94,12 +91,12 @@ const PhotoPreview = ( {
       style={[STYLE, dynamicStyle]}
     >
       {
-        photoUris.length === 0 && !takingPhoto
+        cameraPreviewUris.length === 0 && !takingPhoto
           ? noPhotosNotice
           : (
             <PhotoCarousel
-              deletePhoto={deletePhoto}
-              photoUris={photoUris}
+              deletePhoto={deletePhotoFromObservation}
+              photoUris={cameraPreviewUris}
               rotation={rotation}
               setPhotoEvidenceUris={setPhotoEvidenceUris}
               takingPhoto={takingPhoto}

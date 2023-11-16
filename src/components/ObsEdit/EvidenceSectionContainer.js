@@ -78,9 +78,14 @@ const EvidenceSectionContainer = ( {
     hasLocation,
     isFetchingLocation,
     permissionResult: locationPermissionResult
-  } = useCurrentObservationLocation( mountedRef, {
-    retry: shouldRetryCurrentObservationLocation
-  } );
+  } = useCurrentObservationLocation(
+    mountedRef,
+    currentObservation,
+    updateObservationKeys,
+    {
+      retry: shouldRetryCurrentObservationLocation
+    }
+  );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;

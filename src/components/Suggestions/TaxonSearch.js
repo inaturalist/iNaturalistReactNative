@@ -23,7 +23,9 @@ import CommentBox from "./CommentBox";
 const TaxonSearch = ( ): Node => {
   const {
     createId,
-    comment
+    comment,
+    setComment,
+    currentObservation
   } = useContext( ObsEditContext );
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
@@ -59,7 +61,10 @@ const TaxonSearch = ( ): Node => {
 
   return (
     <ViewWrapper className="flex-1">
-      <AddCommentPrompt />
+      <AddCommentPrompt
+        setComment={setComment}
+        currentObservation={currentObservation}
+      />
       <CommentBox comment={comment} />
       <SearchBar
         handleTextChange={setTaxonQuery}
