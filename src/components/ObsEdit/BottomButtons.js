@@ -37,7 +37,6 @@ const BottomButtons = ( {
   const {
     currentObservation,
     unsavedChanges,
-    loading,
     currentObservationIndex,
     observations,
     cameraRollUris,
@@ -47,6 +46,7 @@ const BottomButtons = ( {
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
   const [buttonPressed, setButtonPressed] = useState( null );
+  const [loading, setLoading] = useState( false );
 
   const logger = log.extend( "ObsEditBottomButtons" );
 
@@ -98,10 +98,12 @@ const BottomButtons = ( {
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
+      setLoading( false );
     } else {
       observations.splice( currentObservationIndex, 1 );
       // this seems necessary for rerendering the ObsEdit screen
       setCurrentObservationIndex( currentObservationIndex, observations );
+      setLoading( false );
     }
   };
 
@@ -133,6 +135,7 @@ const BottomButtons = ( {
 
   const handlePress = type => {
     if ( showMissingEvidence( ) ) { return; }
+    setLoading( true );
     setButtonPressed( type );
     setNextScreen( { type } );
   };

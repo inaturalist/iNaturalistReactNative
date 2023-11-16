@@ -39,8 +39,7 @@ const PhotoPreview = ( {
   const {
     cameraPreviewUris: photoUris,
     deletePhotoFromObservation,
-    setPhotoEvidenceUris,
-    setSelectedPhotoIndex
+    setPhotoEvidenceUris
   } = useContext( ObsEditContext );
   const wrapperDim = isLargeScreen
     ? LARGE_PHOTO_DIM + LARGE_PHOTO_GUTTER * 2
@@ -107,7 +106,6 @@ const PhotoPreview = ( {
               isLargeScreen={isLargeScreen}
               isTablet={isTablet}
               isLandscapeMode={isLandscapeMode}
-              setSelectedPhotoIndex={setSelectedPhotoIndex}
             />
           )
       }

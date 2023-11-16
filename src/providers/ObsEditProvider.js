@@ -55,7 +55,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const wasSynced = localObservation?.wasSynced( );
 
   const createIdentificationMutation = useAuthenticatedMutation(
-    ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
+    async ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
         const belongsToCurrentUser = currentObservation?.user?.login === currentUser?.login;
@@ -72,11 +72,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
             localIdentifications.push( realmIdentification );
           } );
         }
-        dispatch( { type: "SET_LOADING", loading: false } );
         navigation.navigate( "ObservationsStackNavigator", {
           screen: "ObsDetails",
           params: { uuid: currentObservation.uuid }
         } );
+        return null;
       },
       onError: e => {
         const showErrorAlert = err => Alert.alert( "Error", err, [{ text: t( "OK" ) }], {
@@ -88,7 +88,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         } else {
           identificationError = t( "Couldnt-create-identification-unknown-error" );
         }
-        dispatch( { type: "SET_LOADING", loading: false } );
         return showErrorAlert( identificationError );
       }
     }
@@ -104,13 +103,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       originalCameraUrisMap,
       photoEvidenceUris,
       savingPhoto,
-      selectedPhotoIndex,
       unsavedChanges
     } = state;
 
     const resetObsEditContext = ( ) => dispatch( { type: "RESET_OBS_CREATE" } );
-
-    const setLoading = isLoading => dispatch( { type: "SET_LOADING", loading: isLoading } );
 
     const updateObservations = updatedObservations => {
       const isSavedObservation = (
@@ -136,23 +132,22 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       updateObservations( [...updatedObservations] );
     };
 
-    const createId = identification => {
+    const createId = async identification => {
       const newIdentification = Identification.formatIdentification( identification, comment );
       const createRemoteIdentification = localObservation?.wasSynced( );
       if ( createRemoteIdentification ) {
-        setLoading( true );
-        createIdentificationMutation.mutate( {
+        return createIdentificationMutation.mutate( {
           identification: {
             observation_id: currentObservation.uuid,
             taxon_id: newIdentification.taxon.id,
             body: newIdentification.body
           }
         } );
-      } else {
-        updateObservationKeys( {
-          taxon: newIdentification.taxon
-        } );
       }
+      updateObservationKeys( {
+        taxon: newIdentification.taxon
+      } );
+      return null;
     };
 
     const removePhotoFromList = ( list, photo ) => {
@@ -224,11 +219,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       photoEvidenceUris: uris
     } );
 
-    const setSelectedPhotoIndex = index => dispatch( {
-      type: "SET_SELECTED_PHOTO_INDEX",
-      selectedPhotoIndex: index
-    } );
-
     const setCameraState = options => dispatch( {
       type: "SET_CAMERA_STATE",
       originalCameraUrisMap: options?.originalCameraUrisMap,
@@ -250,23 +240,20 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       cameraPreviewUris,
       cameraRollUris,
       createId,
+      comment,
       currentObservation,
       currentObservationIndex,
-      currentUser,
       deletePhotoFromObservation,
       evidenceToAdd,
       galleryUris,
       groupedPhotos,
       loading,
-      localObservation,
-      navigation,
       numOfObsPhotos,
       observations,
       originalCameraUrisMap,
       photoEvidenceUris,
-      realm,
       resetObsEditContext,
-      selectedPhotoIndex,
+      savingPhoto,
       setCameraState,
       setCameraRollUris,
       setComment,
@@ -274,7 +261,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setGroupedPhotos,
       setPhotoEvidenceUris,
       setPhotoImporterState,
-      setSelectedPhotoIndex,
       unsavedChanges,
       updateObservationKeys,
       updateObservations
@@ -285,10 +271,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     createIdentificationMutation,
     currentObservation,
     currentObservationIndex,
-    currentUser,
     galleryUris,
     localObservation,
-    navigation,
     numOfObsPhotos,
     observations,
     realm,

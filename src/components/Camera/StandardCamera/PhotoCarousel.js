@@ -32,8 +32,7 @@ type Props = {
     value: number
   },
   setPhotoEvidenceUris: Function,
-  photoUris: Array<string>,
-  setSelectedPhotoIndex: Function
+  photoUris: Array<string>
 }
 
 export const SMALL_PHOTO_DIM = 42;
@@ -63,8 +62,7 @@ const PhotoCarousel = ( {
   isTablet,
   rotation,
   setPhotoEvidenceUris,
-  photoUris,
-  setSelectedPhotoIndex
+  photoUris
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -138,15 +136,13 @@ const PhotoCarousel = ( {
     if ( deletePhotoMode && deletePhoto ) {
       deletePhoto( item );
     } else {
-      setSelectedPhotoIndex( index );
       setPhotoEvidenceUris( [...photoUris] );
-      navigation.navigate( "MediaViewer" );
+      navigation.navigate( "MediaViewer", { index } );
     }
   }, [
     deletePhotoMode,
     photoUris,
     setPhotoEvidenceUris,
-    setSelectedPhotoIndex,
     deletePhoto,
     navigation
   ] );

@@ -8,7 +8,7 @@ import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator
 } from "react-native-paper";
@@ -27,16 +27,16 @@ type Props = {
   setSelectedPhotoUri: Function,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
-  loading: boolean,
   loadingSuggestions: boolean
 };
 
 const Suggestions = ( {
   photoUris, selectedPhotoUri, setSelectedPhotoUri, nearbySuggestions, onTaxonChosen,
-  comment, loading, loadingSuggestions
+  comment, loadingSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const [loading, setLoading] = useState( false );
 
   return (
     <ScrollViewWrapper testID="suggestions">
@@ -65,7 +65,11 @@ const Suggestions = ( {
       <CommentBox comment={comment} />
       <SuggestionsList
         nearbySuggestions={nearbySuggestions}
-        onTaxonChosen={onTaxonChosen}
+        onTaxonChosen={id => {
+          setLoading( true );
+          onTaxonChosen( id );
+          setLoading( false );
+        }}
         loading={loadingSuggestions}
       />
       {nearbySuggestions?.length > 0 && (

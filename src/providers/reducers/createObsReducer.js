@@ -21,7 +21,6 @@ export const INITIAL_CREATE_OBS_STATE = {
   // $FlowIgnore
   photoEvidenceUris: [],
   savingPhoto: false,
-  selectedPhotoIndex: 0,
   unsavedChanges: false
 };
 
@@ -91,11 +90,6 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         ...state,
         groupedPhotos: action.groupedPhotos
       };
-    case "SET_LOADING":
-      return {
-        ...state,
-        loading: action.loading
-      };
     case "SET_OBSERVATIONS":
       return {
         ...state,
@@ -109,11 +103,6 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
       return {
         ...state,
         photoEvidenceUris: action.photoEvidenceUris
-      };
-    case "SET_SELECTED_PHOTO_INDEX":
-      return {
-        ...state,
-        selectedPhotoIndex: action.selectedPhotoIndex
       };
     default:
       return state;

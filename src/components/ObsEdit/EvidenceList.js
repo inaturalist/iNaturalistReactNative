@@ -25,8 +25,7 @@ const EvidenceList = ( {
   handleDragAndDrop
 }: Props ): Node => {
   const {
-    savingPhoto,
-    setSelectedPhotoIndex
+    savingPhoto
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
@@ -37,8 +36,7 @@ const EvidenceList = ( {
         onLongPress={drag}
         accessibilityRole="button"
         onPress={( ) => {
-          setSelectedPhotoIndex( getIndex( ) );
-          navigation.navigate( "MediaViewer" );
+          navigation.navigate( "MediaViewer", { index: getIndex( ) } );
         }}
         className={classnames( imageClass )}
         testID={`EvidenceList.${item.photo?.url || item.photo?.localFilePath}`}
@@ -53,7 +51,7 @@ const EvidenceList = ( {
         </View>
       </Pressable>
     </ScaleDecorator>
-  ), [navigation, setSelectedPhotoIndex] );
+  ), [navigation] );
 
   const renderFooter = useCallback( ( ) => {
     if ( savingPhoto ) {
