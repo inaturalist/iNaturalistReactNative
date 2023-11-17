@@ -44,11 +44,10 @@ class Identification extends Realm.Object {
     return newId;
   }
 
-  static formatIdentification = ( taxon, comment ) => {
+  static new = attrs => {
     const newIdent = {
-      uuid: rnUUID.v4(),
-      body: comment,
-      taxon
+      ...attrs,
+      uuid: rnUUID.v4( )
     };
 
     return newIdent;

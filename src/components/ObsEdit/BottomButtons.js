@@ -54,12 +54,6 @@ const BottomButtons = ( {
 
   const logger = log.extend( "ObsEditBottomButtons" );
 
-  const ensureRealm = ( ) => {
-    if ( !realm ) {
-      throw new Error( "Gack, tried to save an observation without realm!" );
-    }
-  };
-
   const writeExifToCameraRollPhotos = async exif => {
     if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {
       return;
@@ -72,7 +66,6 @@ const BottomButtons = ( {
   };
 
   const saveObservation = async observation => {
-    ensureRealm( );
     await writeExifToCameraRollPhotos( {
       latitude: observation.latitude,
       longitude: observation.longitude,

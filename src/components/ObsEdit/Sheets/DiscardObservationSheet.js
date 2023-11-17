@@ -28,14 +28,7 @@ const DiscardObservationSheet = ( {
 
   const multipleObservations = observations.length > 1;
 
-  const ensureRealm = ( ) => {
-    if ( !realm ) {
-      throw new Error( "Gack, tried to save an observation without realm!" );
-    }
-  };
-
   const saveAllObservations = async ( ) => {
-    ensureRealm( );
     await Promise.all( observations.map( async observation => {
       // Note that this should only happen after import when ObsEdit has
       // multiple observations to save, none of which should have

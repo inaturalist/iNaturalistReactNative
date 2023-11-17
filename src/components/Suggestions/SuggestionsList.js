@@ -28,16 +28,16 @@ const convertScoreToConfidence = score => {
 };
 
 type Props = {
+  loadingSuggestions: boolean,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
-  loadingSuggestions: boolean,
   setLoading: Function
 };
 
 const SuggestionsList = ( {
+  loadingSuggestions,
   nearbySuggestions,
   onTaxonChosen,
-  loadingSuggestions,
   setLoading
 }: Props ): Node => {
   const { t } = useTranslation( );

@@ -133,7 +133,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const createId = async identification => {
-      const newIdentification = Identification.formatIdentification( identification, comment );
+      const newIdentification = Identification.new( {
+        taxon: identification,
+        body: comment
+      } );
       const createRemoteIdentification = localObservation?.wasSynced( );
       if ( createRemoteIdentification ) {
         return createIdentificationMutation.mutate( {

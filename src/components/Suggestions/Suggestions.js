@@ -22,32 +22,30 @@ import SuggestionsList from "./SuggestionsList";
 
 type Props = {
   comment: string,
+  currentObservation: Object,
   loading: boolean,
   loadingSuggestions: boolean,
   nearbySuggestions: Array<Object>,
-  loadingSuggestions: boolean,
-  setComment: Function,
-  currentObservation: Object,
-  loading: boolean,
-  setLoading: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
+  setComment: Function,
+  setLoading: Function,
   setSelectedPhotoUri: Function
 };
 
 const Suggestions = ( {
-  photoUris,
-  selectedPhotoUri,
-  setSelectedPhotoUri,
-  nearbySuggestions,
-  onTaxonChosen,
   comment,
-  loadingSuggestions,
-  setComment,
   currentObservation,
   loading,
-  setLoading
+  loadingSuggestions,
+  nearbySuggestions,
+  onTaxonChosen,
+  photoUris,
+  selectedPhotoUri,
+  setComment,
+  setLoading,
+  setSelectedPhotoUri
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
