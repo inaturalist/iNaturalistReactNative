@@ -149,6 +149,10 @@
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
+  "DONE": {
+    "comment": "Label for a button the user taps when a task is complete",
+    "val": "DONE"
+  },
   "Dont-have-an-account": "Don't have an account? Sign up",
   "During-app-start-no-model-found": "During app start there was no computer vision model found. There will be no AR camera.",
   "EDIT-COMMENT": "EDIT COMMENT",
@@ -576,7 +580,7 @@
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
   "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
-  "Zoom-in": "Zoom in so that the observation's accuracy is as low as possible.",
+  "Zoom-in-as-much-as-possible-to-improve": "Zoom in as much as possible to improve location accuracy and get better identifications.",
   "Your-location-uncertainty-is-over-4000km": "Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
   "Category-leading": {
     "comment": "Identification category",

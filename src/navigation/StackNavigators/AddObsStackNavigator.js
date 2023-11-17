@@ -12,7 +12,6 @@ import PermissionGateContainer, {
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
-  blankHeaderTitle,
   hideHeader,
   showCustomHeader,
   showHeader
@@ -79,7 +78,7 @@ const AddObsStackNavigator = ( ): Node => (
       <Stack.Screen
         name="PhotoGallery"
         component={PhotoGallery}
-        options={blankHeaderTitle}
+        options={hideHeader}
       />
       <Stack.Screen
         name="GroupPhotos"
