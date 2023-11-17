@@ -4,46 +4,58 @@ import { deleteObservation } from "api/observations";
 import {
   WarningSheet
 } from "components/SharedComponents";
-import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import React, { useCallback } from "react";
+import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   handleClose: Function,
-  navToObsList: Function
+  navToObsList: Function,
+  currentObservation: Object,
+  observations: Array<Object>
 }
 
 const DeleteObservationSheet = ( {
   handleClose,
-  navToObsList
+  navToObsList,
+  currentObservation,
+  observations
 }: Props ): Node => {
-  const {
-    deleteLocalObservation,
-    currentObservation,
-    observations
-  } = useContext( ObsEditContext );
+  const { t } = useTranslation( );
+  const realm = useRealm( );
   const { uuid } = currentObservation;
+
+  const isSavedObservation = (
+    currentObservation
+    && realm.objectForPrimaryKey( "Observation", currentObservation.uuid )
+  );
 
   const multipleObservations = observations.length > 1;
 
-  const handleLocalDeletion = ( ) => {
-    deleteLocalObservation( uuid );
+  const deleteLocalObservation = useCallback( ( ) => {
+    const localObsToDelete = realm.objectForPrimaryKey( "Observation", uuid );
+    if ( !localObsToDelete ) { return; }
+    realm?.write( ( ) => {
+      realm?.delete( localObsToDelete );
+    } );
     handleClose( );
     navToObsList( );
-  };
+  }, [uuid, realm, handleClose, navToObsList] );
 
   const deleteObservationMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        handleLocalDeletion();
+        deleteLocalObservation( );
         // We do not invalidate the searchObservations query here because it would fetch
         // observations from the server and potentially do so before the refresh period
         // on elasticsearch for observations.search has passed and so retrieve the
         // observation "pending deletion" again.
-      }
+      },
+      onError: e => console.log( e )
     }
   );
 
@@ -57,15 +69,11 @@ const DeleteObservationSheet = ( {
       handleSecondButtonPress={handleClose}
       secondButtonText={t( "CANCEL" )}
       confirm={( ) => {
-        if ( multipleObservations && !currentObservation?._created_at ) {
-          // observations are not yet persisted to realm if user
-          // is viewing multiple observations screen
-          // or adding new evidence,
-          // so we can simply navigate away before saving
+        if ( !isSavedObservation ) {
           handleClose( );
           navToObsList( );
         } else if ( !currentObservation?._synced_at ) {
-          handleLocalDeletion( );
+          deleteLocalObservation( );
         } else {
           deleteObservationMutation.mutate( { uuid } );
         }

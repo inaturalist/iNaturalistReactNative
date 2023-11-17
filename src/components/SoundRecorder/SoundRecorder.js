@@ -9,6 +9,7 @@ import React, { useContext, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 // $FlowFixMe
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
+import Observation from "realmModels/Observation";
 import useTranslation from "sharedHooks/useTranslation";
 import { textStyles, viewStyles } from "styles/soundRecorder/soundRecorder";
 
@@ -16,7 +17,7 @@ import { textStyles, viewStyles } from "styles/soundRecorder/soundRecorder";
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const SoundRecorder = (): Node => {
-  const { addSound } = useContext( ObsEditContext );
+  const { updateObservations } = useContext( ObsEditContext );
   const navigation = useNavigation();
   const { t } = useTranslation();
   // https://www.npmjs.com/package/react-native-audio-recorder-player
@@ -37,6 +38,11 @@ const SoundRecorder = (): Node => {
   const [status, setStatus] = useState( "notStarted" );
 
   audioRecorderPlayer.setSubscriptionDuration( 0.09 ); // optional. Default is 0.1
+
+  const addSound = async ( ) => {
+    const newObservation = await Observation.createObsWithSounds( );
+    updateObservations( [newObservation] );
+  };
 
   const startRecording = async () => {
     try {
