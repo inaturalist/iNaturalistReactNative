@@ -7,8 +7,14 @@ import type { Node } from "react";
 import React, {
   useContext, useState
 } from "react";
-import { InteractionManager, Platform, View } from "react-native";
+import {
+  InteractionManager,
+  Platform,
+  View
+} from "react-native";
 import * as ImagePicker from "react-native-image-picker";
+import { ActivityIndicator } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -152,7 +158,8 @@ const PhotoGallery = ( ): Node => {
   );
 
   return (
-    <View>
+    <View className="flex-1 w-full h-full justify-center items-center">
+      <ActivityIndicator size={100} color={colors.inatGreen} />
       {!permissionGranted && (
         <PermissionGateContainer
           permissions={READ_MEDIA_PERMISSIONS}

@@ -232,6 +232,9 @@ Default-Search-Place = Default Search Place
 
 DELETE = DELETE
 
+# Button label or accessibility label for an element that deletes a photo
+Delete-photo = Delete photo
+
 DELETE-ALL = DELETE ALL
 
 DELETE-COMMENT = DELETE COMMENT
@@ -269,6 +272,9 @@ Display = Display
 Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
+
+# Label for a button the user taps when a task is complete
+DONE = DONE
 
 Dont-have-an-account = Don't have an account? Sign up
 
@@ -847,6 +853,10 @@ VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
 View-in-browser = View in Browser
 
+# Button or accessibility label for an element that lets the user view a
+# photo
+View-photo = View photo
+
 Visually-search-iNaturalist-data = Visually search iNaturalist's wealth of data. Search by a taxon in a location
 
 Welcome-to-iNaturalist = Welcome to iNaturalist!
@@ -939,7 +949,8 @@ You-will-lose-all-existing-observations = {$count ->
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
 
-Zoom-in = Zoom in so that the observation's accuracy is as low as possible.
+Zoom-in-as-much-as-possible-to-improve =
+    Zoom in as much as possible to improve location accuracy and get better identifications.
 
 Your-location-uncertainty-is-over-4000km = Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 
