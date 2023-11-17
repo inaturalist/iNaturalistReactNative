@@ -6,15 +6,19 @@ import React from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
+import ObsStatus from "./ObsStatus";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
   observation: Object,
   uploadSingleObservation?: Function,
-  uploadState: Object
+  uploadState: Object,
+  explore: boolean
 };
 
-const ObsListItem = ( { observation, uploadSingleObservation, uploadState }: Props ): Node => {
+const ObsListItem = ( {
+  observation, uploadSingleObservation, uploadState, explore = false
+}: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
@@ -47,14 +51,24 @@ const ObsListItem = ( { observation, uploadSingleObservation, uploadState }: Pro
           classNameMargin="mt-1"
         />
       </View>
-      <View className="items-center ml-auto justify-center">
-        <ObsUploadStatusContainer
-          observation={observation}
-          layout="vertical"
-          uploadSingleObservation={uploadSingleObservation}
-          uploadState={uploadState}
-        />
-      </View>
+      {explore
+        ? (
+          <ObsStatus
+            observation={observation}
+            layout="vertical"
+            testID={`ObsStatus.${observation.uuid}`}
+          />
+        )
+        : (
+          <View className="items-center ml-auto justify-center">
+            <ObsUploadStatusContainer
+              observation={observation}
+              layout="vertical"
+              uploadSingleObservation={uploadSingleObservation}
+              uploadState={uploadState}
+            />
+          </View>
+        )}
     </View>
   );
 };

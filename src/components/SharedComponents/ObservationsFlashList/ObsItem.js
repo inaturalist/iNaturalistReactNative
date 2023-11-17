@@ -11,13 +11,14 @@ type Props = {
   gridItemWidth: number,
   layout: "list" | "grid",
   uploadSingleObservation?: Function,
-  uploadState: Object
+  uploadState: Object,
+  explore: boolean
 };
 
 const GUTTER = 15;
 
 const ObsItem = ( {
-  observation, layout, gridItemWidth, uploadState, uploadSingleObservation
+  observation, layout, gridItemWidth, uploadState, uploadSingleObservation, explore
 }: Props ): Node => (
   <MyObservationsPressable observation={observation} testID="MyObservationsPressable">
     {
@@ -34,6 +35,7 @@ const ObsItem = ( {
             }}
             uploadSingleObservation={uploadSingleObservation}
             uploadState={uploadState}
+            explore={explore}
           />
         )
         : (
@@ -41,6 +43,7 @@ const ObsItem = ( {
             observation={observation}
             uploadSingleObservation={uploadSingleObservation}
             uploadState={uploadState}
+            explore={explore}
           />
         )
     }
