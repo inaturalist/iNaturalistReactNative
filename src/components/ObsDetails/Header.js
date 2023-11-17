@@ -52,7 +52,11 @@ const Header = ( {
       />
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
         <InlineUser user={observation?.user} isOnline={isOnline} />
-        <DateDisplay dateString={observation?.created_at} />
+        <DateDisplay
+          dateString={
+            observation.time_observed_at || observation.observed_on_string
+          }
+        />
       </View>
       <View className="flex-row my-[11px] justify-between mx-3">
         {showTaxon()}

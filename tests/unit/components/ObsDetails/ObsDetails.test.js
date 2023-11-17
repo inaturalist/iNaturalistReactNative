@@ -2,12 +2,13 @@ import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import { View } from "react-native";
+import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useIsConnected from "sharedHooks/useIsConnected";
 
@@ -210,6 +211,19 @@ describe( "ObsDetails", () => {
 
     fireEvent.press( button );
     expect( await screen.findByTestId( "mock-data-tab" ) ).toBeTruthy();
+  } );
+
+  it( "renders observed date of observation in header", async ( ) => {
+    mockObsEditProviderWithObs( [mockObservation] );
+    renderObsDetails( );
+    const observedDate = await screen.findByText(
+      formatApiDatetime( mockObservation.time_observed_at, i18next.t )
+    );
+    expect( observedDate ).toBeVisible( );
+    const createdDate = screen.queryByText(
+      formatApiDatetime( mockObservation.created_at, i18next.t )
+    );
+    expect( createdDate ).toBeFalsy( );
   } );
 
   describe( "Observation with no evidence", () => {
