@@ -87,7 +87,7 @@ const TextInputSheet = ( {
           testID="ObsEdit.confirm"
           className="mt-5"
           level="primary"
-          text={t( "CONFIRM" )}
+          text={t( "DONE" )}
           onPress={() => {
             confirm( input );
             handleClose();

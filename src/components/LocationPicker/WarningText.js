@@ -25,7 +25,7 @@ const WarningText = ( { accuracyTest, getShadow }: Props ): Node => {
 
   const displayWarningText = ( ) => {
     if ( accuracyTest === "acceptable" ) {
-      return t( "Zoom-in" );
+      return t( "Zoom-in-as-much-as-possible-to-improve" );
     }
     if ( accuracyTest === "fail" ) {
       return t( "Location-accuracy-is-too-imprecise" );

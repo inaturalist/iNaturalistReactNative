@@ -17,6 +17,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
+import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import { getShadowForColor } from "styles/global";
 
 import CoordinatesCopiedNotification from "./CoordinatesCopiedNotification";
@@ -50,21 +51,36 @@ const FloatingActionButton = ( {
   accessibilityLabel,
   icon,
   theme
-} ) => (
-  <INatIconButton
-    style={getShadowForColor( theme.colors.primary )}
-    className={classnames(
-      "absolute",
-      "bg-white",
-      "rounded-full",
-      "m-5",
-      buttonClassName
-    )}
-    icon={icon}
-    onPress={onPress}
-    accessibilityLabel={accessibilityLabel}
-  />
-);
+} ) => {
+  const fabClassNames = classnames(
+    "absolute",
+    "bg-white",
+    "rounded-full",
+    "m-5",
+    buttonClassName
+  );
+  if ( icon === "export-variant" ) {
+    return (
+      <INatIconButton
+        style={getShadowForColor( theme.colors.primary )}
+        className={fabClassNames}
+        onPress={onPress}
+        accessibilityLabel={accessibilityLabel}
+      >
+        <IconMaterial name={icon} size={24} />
+      </INatIconButton>
+    );
+  }
+  return (
+    <INatIconButton
+      style={getShadowForColor( theme.colors.primary )}
+      className={fabClassNames}
+      icon={icon}
+      onPress={onPress}
+      accessibilityLabel={accessibilityLabel}
+    />
+  );
+};
 
 const DetailsMap = ( {
   closeModal,

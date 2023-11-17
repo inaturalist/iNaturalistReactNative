@@ -51,29 +51,31 @@ const PhotoDisplayContainer = ( {
   const createUnfaveMutation = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => unfaveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
-      onSuccess: ( ) => {
-        refetchRemoteObservation( );
-        setUserFav( false );
-      },
-      onError: error => showErrorAlert( error )
+      onSuccess: ( ) => refetchRemoteObservation( ),
+      onError: error => {
+        showErrorAlert( error );
+        setUserFav( true );
+      }
     }
   );
 
   const createFaveMutation = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => faveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
-      onSuccess: ( ) => {
-        refetchRemoteObservation( );
-        setUserFav( true );
-      },
-      onError: error => showErrorAlert( error )
+      onSuccess: ( ) => refetchRemoteObservation( ),
+      onError: error => {
+        showErrorAlert( error );
+        setUserFav( false );
+      }
     }
   );
 
   const faveOrUnfave = useCallback( ( ) => {
     if ( userFav ) {
+      setUserFav( false );
       createUnfaveMutation.mutate( { uuid } );
     } else {
+      setUserFav( true );
       createFaveMutation.mutate( { uuid } );
     }
   }, [createFaveMutation, createUnfaveMutation, userFav, uuid] );
