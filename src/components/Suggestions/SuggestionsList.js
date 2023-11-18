@@ -1,10 +1,9 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import { Body1, Heading4, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React from "react";
 import { ActivityIndicator } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
@@ -31,23 +30,14 @@ type Props = {
   loadingSuggestions: boolean,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
-  setLoading: Function
 };
 
 const SuggestionsList = ( {
   loadingSuggestions,
   nearbySuggestions,
-  onTaxonChosen,
-  setLoading
+  onTaxonChosen
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const onTaxonResultChosen = useCallback( async taxon => {
-    setLoading( true );
-    await onTaxonChosen( taxon );
-    setLoading( false );
-    navigation.goBack( );
-  }, [navigation, onTaxonChosen, setLoading] );
 
   if ( loadingSuggestions ) {
     return (
@@ -81,7 +71,7 @@ const SuggestionsList = ( {
         <TaxonResult
           key={topSuggestion.taxon.id}
           taxon={topSuggestion.taxon}
-          handleCheckmarkPress={onTaxonResultChosen}
+          handleCheckmarkPress={onTaxonChosen}
           testID={`SuggestionsList.taxa.${topSuggestion.taxon.id}`}
           confidence={convertScoreToConfidence( topSuggestion.combined_score )}
           activeColor="bg-inatGreen"
@@ -98,7 +88,7 @@ const SuggestionsList = ( {
           <TaxonResult
             key={suggestion.taxon.id}
             taxon={suggestion.taxon}
-            handleCheckmarkPress={onTaxonResultChosen}
+            handleCheckmarkPress={onTaxonChosen}
             testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
             confidence={convertScoreToConfidence( suggestion.combined_score )}
             activeColor="bg-inatGreen"

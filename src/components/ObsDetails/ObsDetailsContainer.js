@@ -105,7 +105,7 @@ const ObsDetailsContainer = ( ): Node => {
   } = useContext( ObsEditContext );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
-  const { uuid } = params;
+  const { uuid, taxonSuggested } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
@@ -294,6 +294,28 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
+  const onIDAdded = useCallback( () => {
+    if ( !taxonSuggested ) return;
+
+    // New taxon identification added by user
+
+    const idParams = {
+      observation_id: uuid,
+      taxon_id: taxonSuggested.id
+    };
+
+    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
+    createIdentificationMutation.mutate( { identification: idParams } );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [taxonSuggested, uuid] );
+
+  useEffect( () => {
+    if ( !taxonSuggested ) return;
+
+    onIDAdded();
+  }, [onIDAdded, taxonSuggested] );
+
   useEffect( ( ) => {
     if (
       localObservation
@@ -306,7 +328,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const navToSuggestions = ( ) => {
     updateObservations( [observation] );
-    navigation.navigate( "Suggestions" );
+    navigation.navigate( "Suggestions", { obsUUID: uuid } );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;

@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
   SearchBar,
@@ -21,6 +21,9 @@ import AddCommentPrompt from "./AddCommentPrompt";
 import CommentBox from "./CommentBox";
 
 const TaxonSearch = ( ): Node => {
+  const { params } = useRoute( );
+  const obsUUID = params?.obsUUID;
+
   const {
     createId,
     comment,
@@ -43,6 +46,17 @@ const TaxonSearch = ( ): Node => {
     )
   );
 
+  const onTaxonSelected = useCallback( async taxon => {
+    if ( !obsUUID ) {
+      // Called from observation editor screen
+      createId( taxon );
+      navigation.navigate( "ObsEdit" );
+    } else {
+      // Called when adding an identification to someone else's observation
+      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
+    }
+  }, [createId, navigation, obsUUID] );
+
   const renderFooter = ( ) => (
     <View className="pb-10" />
   );
@@ -50,14 +64,11 @@ const TaxonSearch = ( ): Node => {
   const renderItem = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       taxon={taxon}
-      handleCheckmarkPress={( ) => {
-        createId( taxon );
-        navigation.navigate( "ObsEdit" );
-      }}
+      handleCheckmarkPress={() => onTaxonSelected( taxon )}
       testID={`Search.taxa.${taxon.id}`}
       first={index === 0}
     />
-  ), [createId, navigation] );
+  ), [onTaxonSelected] );
 
   return (
     <ViewWrapper className="flex-1">
