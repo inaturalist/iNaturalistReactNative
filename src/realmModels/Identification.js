@@ -25,27 +25,22 @@ class Identification extends Realm.Object {
     return {
       ...id,
       createdAt: id.created_at,
-      flags: id.flags.length > 0
-        ? Flag.mapApiToRealm( id.flags )
-        : [],
-      taxon: Taxon.mapApiToRealm( id.taxon ),
-      user: User.mapApiToRealm( id.user )
+      flags: id.flags || [],
+      taxon: Taxon.mapApiToRealm( id.taxon )
     };
   }
 
-  static mapApiToRealm( id, realm ) {
+  static mapApiToRealm( id ) {
     const newId = {
       ...id,
-      flags: Flag.mapApiToRealm( id.flags ),
-      taxon: Taxon.mapApiToRealm( id.taxon ),
-      user: User.mapApiToRealm( id.user, realm )
+      taxon: Taxon.mapApiToRealm( id.taxon )
     };
     return newId;
   }
 
   static schema = {
     name: "Identification",
-    primaryKey: "uuid",
+    embedded: true,
     properties: {
       uuid: "string",
       body: "string?",

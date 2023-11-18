@@ -5,12 +5,9 @@ class Application extends Realm.Object {
     name: true
   };
 
-  static mapApiToRealm( application ) {
-    return application;
-  }
-
   static schema = {
     name: "Application",
+    embedded: true,
     properties: {
       name: "string?",
       // this creates an inverse relationship so applications

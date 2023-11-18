@@ -4,7 +4,7 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import {
-  searchObservations
+  checkForDeletedObservations, searchObservations
 } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -21,6 +21,7 @@ import {
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useApiToken,
+  useAuthenticatedQuery,
   useCurrentUser,
   useInfiniteObservationsScroll,
   useIsConnected,
@@ -125,6 +126,8 @@ const MyObservationsContainer = ( ): Node => {
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const isOnline = useIsConnected( );
+  const lastSync = "2023-11-02";
+  const [syncRemoteDeletedObs, setSyncRemoteDeletedObs] = useState( false );
 
   const currentUser = useCurrentUser();
   useObservationsUpdates( !!currentUser );
@@ -292,16 +295,38 @@ const MyObservationsContainer = ( ): Node => {
     Observation.upsertRemoteObservations( results, realm );
   }, [apiToken, currentUser, realm] );
 
+  const { data: deletedObservations } = useAuthenticatedQuery(
+    ["checkForDeletedObservations", syncRemoteDeletedObs],
+    optsWithAuth => checkForDeletedObservations(
+      {
+        since: lastSync
+      },
+      optsWithAuth
+    )
+  );
+
+  const syncRemoteDeletedObservations = useCallback( async ( ) => {
+    setSyncRemoteDeletedObs( true );
+    if ( deletedObservations.length > 0 ) {
+      realm.write( ( ) => {
+        deletedObservations.forEach( observation => {
+          const localObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
+          realm.delete( localObservation );
+        } );
+      } );
+    }
+    console.log( deletedObservations, "deleted observations in sync remote" );
+  }, [deletedObservations, realm] );
+
   const syncObservations = useCallback( async ( ) => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
-    // TODO: GET observation/deletions once this is enabled in API v2
     activateKeepAwake( );
+    await syncRemoteDeletedObservations( );
     await downloadRemoteObservationsFromServer( );
-    // we at least want to keep the device awake while uploads are happening
-    // not sure about downloads/deletions
     deactivateKeepAwake( );
   }, [
+    syncRemoteDeletedObservations,
     downloadRemoteObservationsFromServer,
     toggleLoginSheet,
     showInternetErrorAlert
