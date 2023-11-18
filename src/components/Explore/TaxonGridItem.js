@@ -32,6 +32,9 @@ const ObsGridItem = ( {
     height={height}
     style={style}
     isMultiplePhotosTop
+    obsPhotosCount={taxon?.default_photo
+      ? 1
+      : 0}
     testID={`TaxonGridItem.${taxon.id}`}
     iconicTaxonName={taxon.iconic_taxon_name}
   >

@@ -15,7 +15,8 @@ type Props = {
   height?: string,
   style?: Object,
   uploadSingleObservation?: Function,
-  uploadState: Object
+  uploadState: Object,
+  explore: boolean
 };
 
 const ObsGridItem = ( {
@@ -24,44 +25,51 @@ const ObsGridItem = ( {
   height,
   style,
   uploadSingleObservation,
-  uploadState
-}: Props ): Node => (
-  <ObsImagePreview
-    source={{
-      uri: Photo.displayLocalOrRemoteMediumPhoto(
-        observation?.observationPhotos?.[0]?.photo || observation?.observation_photos?.[0]?.photo
-      )
-    }}
-    width={width}
-    height={height}
-    style={style}
-    obsPhotosCount={observation?.observationPhotos?.length ?? 0}
-    hasSound={!!observation?.observationSounds?.length}
-    isMultiplePhotosTop
-    testID={`MyObservations.gridItem.${observation.uuid}`}
-    iconicTaxonName={observation.taxon?.iconic_taxon_name}
-    white
-  >
-    <View className="absolute bottom-0 flex p-2 w-full">
-      <ObsUploadStatusContainer
-        observation={observation}
-        layout="horizontal"
-        white
-        classNameMargin="mb-1"
-        uploadSingleObservation={uploadSingleObservation}
-        uploadState={uploadState}
-      />
-      <DisplayTaxonName
-        keyBase={observation?.uuid}
-        taxon={observation?.taxon}
-        scientificNameFirst={
-          observation?.user?.prefers_scientific_name_first
-        }
-        layout="vertical"
-        color="text-white"
-      />
-    </View>
-  </ObsImagePreview>
-);
+  uploadState,
+  explore
+}: Props ): Node => {
+  const photoCount = observation?.observationPhotos?.length
+  || observation?.observation_photos?.length;
+  return (
+    <ObsImagePreview
+      source={{
+        uri: Photo.displayLocalOrRemoteMediumPhoto(
+          observation?.observationPhotos?.[0]?.photo || observation?.observation_photos?.[0]?.photo
+        )
+      }}
+      width={width}
+      height={height}
+      style={style}
+      obsPhotosCount={photoCount ?? 0}
+      hasSound={!!observation?.observationSounds?.length}
+      isMultiplePhotosTop
+      testID={`MyObservations.gridItem.${observation.uuid}`}
+      iconicTaxonName={observation.taxon?.iconic_taxon_name}
+      white
+    >
+      <View className="absolute bottom-0 flex p-2 w-full">
+        {!explore && (
+          <ObsUploadStatusContainer
+            observation={observation}
+            layout="horizontal"
+            white
+            classNameMargin="mb-1"
+            uploadSingleObservation={uploadSingleObservation}
+            uploadState={uploadState}
+          />
+        )}
+        <DisplayTaxonName
+          keyBase={observation?.uuid}
+          taxon={observation?.taxon}
+          scientificNameFirst={
+            observation?.user?.prefers_scientific_name_first
+          }
+          layout="vertical"
+          color="text-white"
+        />
+      </View>
+    </ObsImagePreview>
+  );
+};
 
 export default ObsGridItem;
