@@ -12,6 +12,15 @@ import {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation";
 
+import { dependencies } from "../../package.json";
+
+export const visionCameraMajorVersion = dependencies["react-native-vision-camera"].match( /inaturalist/ )
+  // Our custom fork is forked from v2
+  ? 2
+  : Number(
+    dependencies["react-native-vision-camera"].replace( /[^\d.]/, "" ).split( "." )[0]
+  );
+
 // Needed for react-native-vision-camera v3.3.1
 // This patch is used to set the pixelFormat prop which should not be needed because the default
 // value would be fine for both platforms.
@@ -27,9 +36,12 @@ export const pixelFormatPatch = () => ( Platform.OS === "ios"
 // On Android, the orientation prop is not used, so we return null.
 // On iOS, the orientation prop is undocumented, but it does get used in a sense that the
 // photo metadata shows the correct Orientation only if this prop is set.
-export const orientationPatch = deviceOrientation => ( Platform.OS === "android"
-  ? null
-  : deviceOrientation );
+export const orientationPatch = deviceOrientation => {
+  if ( visionCameraMajorVersion < 3 ) return deviceOrientation;
+  return Platform.OS === "android"
+    ? null
+    : deviceOrientation;
+};
 
 // Needed for react-native-vision-camera v3.3.1
 // As of this version the photo from takePhoto is not oriented coming from the native side.
@@ -39,6 +51,7 @@ export const orientationPatch = deviceOrientation => ( Platform.OS === "android"
 // On Android, the rotation is derived from the device orientation at the time of taking the
 // photo, because orientation is not yet supported in the library.
 export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
+  if ( visionCameraMajorVersion < 3 && Platform.OS === "ios" ) return 0;
   let photoRotation = 0;
   if ( Platform.OS === "ios" ) {
     switch ( photo.metadata.Orientation ) {
@@ -120,6 +133,9 @@ export const iPadStylePatch = deviceOrientation => {
   }
   // Do nothing on phones
   if ( !isTablet() ) {
+    return {};
+  }
+  if ( visionCameraMajorVersion < 3 ) {
     return {};
   }
   if ( deviceOrientation === LANDSCAPE_RIGHT ) {

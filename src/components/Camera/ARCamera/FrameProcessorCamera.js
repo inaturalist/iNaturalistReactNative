@@ -6,11 +6,14 @@ import React, {
 } from "react";
 import { Platform } from "react-native";
 import Config from "react-native-config";
+import * as REA from "react-native-reanimated";
 import {
-  runAtTargetFps,
+  // react-native-vision-camera v3
+  // runAtTargetFps,
   useFrameProcessor
 } from "react-native-vision-camera";
-import { Worklets } from "react-native-worklets-core";
+// react-native-vision-camera v3
+// import { Worklets } from "react-native-worklets-core";
 import { modelPath, taxonomyPath } from "sharedHelpers/cvModel";
 import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
@@ -67,13 +70,13 @@ const FrameProcessorCamera = ( {
     };
   }, [onLog] );
 
-  const handleResults = Worklets.createRunInJsFn( predictions => {
-    onTaxaDetected( predictions );
-  } );
-
-  const handleError = Worklets.createRunInJsFn( error => {
-    onClassifierError( error );
-  } );
+  // react-native-vision-camera v3
+  // const handleResults = Worklets.createRunInJsFn( predictions => {
+  //   onTaxaDetected( predictions );
+  // } );
+  // const handleError = Worklets.createRunInJsFn( error => {
+  //   onClassifierError( error );
+  // } );
 
   const frameProcessor = useFrameProcessor(
     frame => {
@@ -83,24 +86,39 @@ const FrameProcessorCamera = ( {
         return;
       }
 
-      runAtTargetFps( 1, () => {
-        "worklet";
+      // react-native-vision-camera v2
+      // Reminder: this is a worklet, running on the UI thread.
+      try {
+        const results = InatVision.inatVision( frame, {
+          version,
+          modelPath,
+          taxonomyPath,
+          confidenceThreshold
+        } );
+        REA.runOnJS( onTaxaDetected )( results );
+      } catch ( classifierError ) {
+        console.log( `Error: ${classifierError.message}` );
+        REA.runOnJS( onClassifierError )( classifierError );
+      }
 
-        // Reminder: this is a worklet, running on the UI thread.
-        try {
-          const results = InatVision.inatVision( frame, {
-            version,
-            modelPath,
-            taxonomyPath,
-            confidenceThreshold,
-            patchedOrientationAndroid: deviceOrientation
-          } );
-          handleResults( results );
-        } catch ( classifierError ) {
-          console.log( `Error: ${classifierError.message}` );
-          handleError( classifierError );
-        }
-      } );
+      // react-native-vision-camera v3
+      // runAtTargetFps( 1, () => {
+      //   "worklet";
+      //   // Reminder: this is a worklet, running on the UI thread.
+      //   try {
+      //     const results = InatVision.inatVision( frame, {
+      //       version,
+      //       modelPath,
+      //       taxonomyPath,
+      //       confidenceThreshold,
+      //       patchedOrientationAndroid: deviceOrientation
+      //     } );
+      //     handleResults( results );
+      //   } catch ( classifierError ) {
+      //     console.log( `Error: ${classifierError.message}` );
+      //     handleError( classifierError );
+      //   }
+      // } );
     },
     [version, confidenceThreshold, takingPhoto, deviceOrientation]
   );
