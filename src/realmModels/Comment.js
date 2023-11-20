@@ -19,7 +19,7 @@ class Comment extends Realm.Object {
     properties: {
       uuid: "string",
       body: "string?",
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: "string?",
       flags: "Flag[]",
       id: "int?",
       user: "User?",

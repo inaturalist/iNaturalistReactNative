@@ -152,7 +152,8 @@ const checkForDeletedObservations = async (
   opts: Object = {}
 ) : Promise<?any> => {
   try {
-    return await inatjs.observations.deleted( params, opts );
+    const { results } = await inatjs.observations.deleted( params, opts );
+    return results;
   } catch ( e ) {
     return handleError( e );
   }

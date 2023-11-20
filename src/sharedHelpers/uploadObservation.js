@@ -13,7 +13,7 @@ import emitUploadProgress from "sharedHelpers/emitUploadProgress";
 
 const UPLOAD_PROGRESS_INCREMENT = 0.5;
 
-const markRecordUploaded = ( recordUUID, type, response, realm, observationUUID ) => {
+const markRecordUploaded = ( observationUUID, recordUUID, type, response, realm ) => {
   const { id } = response.results[0];
 
   const observation = realm?.objectForPrimaryKey( "Observation", observationUUID );
@@ -60,7 +60,7 @@ const uploadEvidence = async (
     if ( response ) {
       emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
       // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
-      markRecordUploaded( evidenceUUID, type, response, realm, observationUUID );
+      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm );
     }
   };
 
@@ -160,7 +160,7 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   const { uuid: obsUUID } = response.results[0];
 
   await Promise.all( [
-    markRecordUploaded( obs.uuid, "Observation", response, realm ),
+    markRecordUploaded( obs.uuid, null, "Observation", response, realm ),
     // Next, attach the uploaded photos/sounds to the uploaded observation
     hasPhotos
       ? await uploadEvidence(

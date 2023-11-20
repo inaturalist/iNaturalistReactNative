@@ -13,7 +13,7 @@ class Vote extends Realm.Object {
     name: "Vote",
     embedded: true,
     properties: {
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: "string?",
       id: "int",
       user_id: "int",
       vote_flag: "bool",

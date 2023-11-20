@@ -6,6 +6,9 @@ import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-k
 import {
   checkForDeletedObservations, searchObservations
 } from "api/observations";
+import {
+  format
+} from "date-fns";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -126,8 +129,9 @@ const MyObservationsContainer = ( ): Node => {
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const isOnline = useIsConnected( );
-  const lastSync = "2023-11-02";
-  const [syncRemoteDeletedObs, setSyncRemoteDeletedObs] = useState( false );
+  const lastSyncDate = realm.objects( "LocalPreferences" )[0]
+    ? format( realm.objects( "LocalPreferences" )[0].last_sync_time, "yyyy-MM-dd" )
+    : null;
 
   const currentUser = useCurrentUser();
   useObservationsUpdates( !!currentUser );
@@ -296,32 +300,49 @@ const MyObservationsContainer = ( ): Node => {
   }, [apiToken, currentUser, realm] );
 
   const { data: deletedObservations } = useAuthenticatedQuery(
-    ["checkForDeletedObservations", syncRemoteDeletedObs],
+    ["checkForDeletedObservations", lastSyncDate],
     optsWithAuth => checkForDeletedObservations(
       {
-        since: lastSync
+        since: lastSyncDate
       },
       optsWithAuth
-    )
+    ),
+    {
+      enabled: !!lastSyncDate
+    }
   );
 
   const syncRemoteDeletedObservations = useCallback( async ( ) => {
-    setSyncRemoteDeletedObs( true );
-    if ( deletedObservations.length > 0 ) {
+    if ( deletedObservations?.length > 0 ) {
       realm.write( ( ) => {
-        deletedObservations.forEach( observation => {
-          const localObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
-          realm.delete( localObservation );
+        deletedObservations.forEach( observationId => {
+          const localObsToDelete = realm.objects( "Observation" )
+            .filtered( `id == ${observationId}` );
+          realm.delete( localObsToDelete );
         } );
       } );
     }
-    console.log( deletedObservations, "deleted observations in sync remote" );
   }, [deletedObservations, realm] );
+
+  const updateSyncTime = useCallback( ( ) => {
+    realm.write( ( ) => {
+      const localPrefs = realm.objects( "LocalPreferences" )[0];
+      if ( !localPrefs ) {
+        realm.create( "LocalPreferences", {
+          ...localPrefs,
+          last_sync_time: new Date( )
+        } );
+      } else {
+        localPrefs.last_sync_time = new Date( );
+      }
+    } );
+  }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
     activateKeepAwake( );
+    updateSyncTime( );
     await syncRemoteDeletedObservations( );
     await downloadRemoteObservationsFromServer( );
     deactivateKeepAwake( );
@@ -329,7 +350,8 @@ const MyObservationsContainer = ( ): Node => {
     syncRemoteDeletedObservations,
     downloadRemoteObservationsFromServer,
     toggleLoginSheet,
-    showInternetErrorAlert
+    showInternetErrorAlert,
+    updateSyncTime
   ] );
 
   useEffect( ( ) => {
