@@ -38,7 +38,6 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: () => mockUser
 } ) );
 
-const mockNavigate = jest.fn();
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -49,7 +48,7 @@ jest.mock( "@react-navigation/native", () => {
       }
     } ),
     useNavigation: () => ( {
-      navigate: mockNavigate,
+      navigate: jest.fn(),
       addListener: jest.fn(),
       setOptions: jest.fn()
     } )

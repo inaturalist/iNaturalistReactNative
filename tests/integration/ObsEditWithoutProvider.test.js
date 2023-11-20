@@ -15,18 +15,6 @@ jest.mock( "providers/ObsEditProvider" );
 
 const mockLocationName = "San Francisco, CA";
 
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: () => ( {} ),
-    useNavigation: () => ( {
-      addListener: jest.fn(),
-      setOptions: jest.fn()
-    } )
-  };
-} );
-
 // import { checkMultiple, RESULTS } from "react-native-permissions";
 // jest.mock( "react-native-permissions", ( ) => {
 //   const actual = jest.requireActual( "react-native-permissions" );

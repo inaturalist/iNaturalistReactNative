@@ -55,18 +55,6 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   } )
 } ) );
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: ( ) => ( {
-      goBack: jest.fn( ),
-      setOptions: jest.fn( ),
-      addListener: jest.fn( )
-    } )
-  };
-} );
-
 // react-native-paper's TextInput does a bunch of async stuff that's hard to
 // control in a test, so we're just mocking it here.
 jest.mock( "react-native-paper", () => {

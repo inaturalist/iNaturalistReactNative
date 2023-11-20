@@ -18,16 +18,6 @@ jest.mock( "react-native/Libraries/Share/Share", () => ( {
   share: jest.fn( () => Promise.resolve( "mockResolve" ) )
 } ) );
 
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: () => ( {
-      canGoBack: jest.fn( ( ) => true )
-    } )
-  };
-} );
-
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",
   select: jest.fn( )

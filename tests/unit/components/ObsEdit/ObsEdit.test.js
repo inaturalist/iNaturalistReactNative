@@ -11,19 +11,6 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockLocationName = "San Francisco, CA";
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: ( ) => ( {
-    } ),
-    useNavigation: ( ) => ( {
-      addListener: jest.fn(),
-      setOptions: jest.fn( )
-    } )
-  };
-} );
-
 const mockCurrentUser = factory( "LocalUser" );
 
 jest.mock( "components/ObsEdit/Header" );
