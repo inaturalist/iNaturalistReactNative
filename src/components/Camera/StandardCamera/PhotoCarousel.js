@@ -233,12 +233,13 @@ const PhotoCarousel = ( {
   // the measure() method to store the position of the container element in
   // state, and use that to position another container inside the modal in
   // exactly the same place
+
   const containerRef = useRef( );
   const [containerPos, setContainerPos] = useState( { x: null, y: null } );
   const containerStyle = {
     height: isTablet && isLandscapeMode
-      ? containerPos.h
-      : photoDim + photoGutter * 2,
+      ? photoUris.length * ( photoDim + photoGutter ) + photoGutter
+      : photoDim + ( photoGutter * 2 ),
     padding: photoGutter / 2
   };
 
@@ -274,8 +275,7 @@ const PhotoCarousel = ( {
               backdropOpacity={0}
               // We want this to take over the whole screen
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{ margin: 0 }}
-              statusBarTranslucent
+              style={{ margin: 0, position: "relative" }}
             >
               <View
                 // These layout values need to be dynamic relative to the
