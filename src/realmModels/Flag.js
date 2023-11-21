@@ -23,7 +23,7 @@ class Flag extends Realm.Object {
     name: "Flag",
     primaryKey: "uuid",
     properties: {
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: "string?",
       id: "int",
       comment: "string?",
       flag: "string",
