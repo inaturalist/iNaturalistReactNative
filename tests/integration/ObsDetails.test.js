@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { screen, waitFor } from "@testing-library/react-native";
+import { screen } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -75,9 +75,7 @@ describe( "ObsDetails", () => {
       ).toBeTruthy();
       expect( inatjs.observations.viewedUpdates ).toHaveBeenCalledTimes( 1 );
       // Expect the observation in realm to have been updated with comments_viewed = true
-      await waitFor( ( ) => {
-        expect( observation.comments_viewed ).toBe( true );
-      } );
+      expect( observation.comments_viewed ).toBe( true );
     } );
   } );
 } );

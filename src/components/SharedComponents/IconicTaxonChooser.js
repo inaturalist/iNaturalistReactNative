@@ -19,6 +19,23 @@ const STYLESHEET = {
   alignItems: "center"
 };
 
+const iconicTaxonIcons = [
+  "plantae",
+  "insecta",
+  "aves",
+  "animalia",
+  "fungi",
+  "arachnida",
+  "mollusca",
+  "mammalia",
+  "reptilia",
+  "amphibia",
+  "actinopterygii",
+  "chromista",
+  "protozoa",
+  "unknown"
+];
+
 const IconicTaxonChooser = ( {
   before,
   onTaxonChosen,
@@ -29,23 +46,6 @@ const IconicTaxonChooser = ( {
   const [selectedIcon, setSelectedIcon] = useState( null );
   const iconicTaxa = useIconicTaxa( { reload: false } );
   const isIconic = taxon?.id && iconicTaxa.filtered( `id = ${taxon?.id}` );
-
-  const iconicTaxonIcons = [
-    "plantae",
-    "insecta",
-    "aves",
-    "animalia",
-    "fungi",
-    "arachnida",
-    "mollusca",
-    "mammalia",
-    "reptilia",
-    "amphibia",
-    "actinopterygii",
-    "chromista",
-    "protozoa",
-    "unknown"
-  ];
 
   useEffect( ( ) => {
     if ( !isIconic ) { return; }
@@ -65,7 +65,6 @@ const IconicTaxonChooser = ( {
             }
           )
         }
-        accessibilityRole="radio"
         accessibilityState={{
           selected: isSelected
         }}
@@ -79,7 +78,9 @@ const IconicTaxonChooser = ( {
             onTaxonChosen( item );
           }}
           color={isSelected && colors.white}
-          accessibilityLabel={item}
+          accessibilityLabel={
+            t( "Iconic-taxon-name", { iconicTaxon: item } )
+          }
           accessibilityHint={
             t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: item } )
           }
@@ -106,7 +107,6 @@ const IconicTaxonChooser = ( {
       renderItem={renderIcon}
       showsHorizontalScrollIndicator={false}
       ListHeaderComponent={renderHeader}
-      accessibilityRole="radiogroup"
       testID={testID}
       contentContainerStyle={STYLESHEET}
     />

@@ -82,6 +82,7 @@ const OtherDataSection = ( {
         className="flex-row flex-nowrap items-center ml-1 mt-5"
         onPress={( ) => setShowGeoprivacySheet( true )}
         accessibilityRole="button"
+        accessibilityLabel={t( "Select-geoprivacy-status" )}
       >
         <INatIcon
           name="globe-outline"
@@ -101,6 +102,7 @@ const OtherDataSection = ( {
         className="flex-row flex-nowrap items-center ml-1 mt-5"
         onPress={( ) => setShowWildStatusSheet( true )}
         accessibilityRole="button"
+        accessibilityLabel={t( "Select-captive-or-cultivated-status" )}
       >
         <INatIcon
           name="pot-outline"
@@ -134,6 +136,7 @@ const OtherDataSection = ( {
         <Body3
           onPress={( ) => setShowNotesSheet( true )}
           className="mx-3 py-3"
+          accessibilityRole="link"
         >
           {currentObservation?.description || t( "Add-optional-notes" )}
         </Body3>

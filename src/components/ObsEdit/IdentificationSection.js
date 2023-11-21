@@ -113,6 +113,7 @@ const IdentificationSection = ( {
                         : theme.colors.onPrimary}
                     />
                   )}
+                  accessibilityLabel={t( "Navigate-to-identification-suggestions-screen" )}
                 />
               )}
               taxon={identification}

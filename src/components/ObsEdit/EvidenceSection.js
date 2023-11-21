@@ -116,6 +116,7 @@ const EvidenceSection = ( {
         accessibilityRole="button"
         className="flex-row flex-nowrap my-3"
         onPress={navToLocationPicker}
+        accessibilityLabel={t( "Navigate-to-location-picker-screen" )}
       >
         <View className="w-[30px] items-center mr-1">
           {isFetchingLocation && <ActivityIndicator />}

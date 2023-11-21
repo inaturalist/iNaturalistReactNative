@@ -1398,3 +1398,11 @@ Your-identification-will-be-posted-with-the-following-comment = Your identificat
 iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo = iNaturalist isn't able to provide a top ID suggestion for this photo.
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 Import-Photos-From = Import Photos From
+
+## Accessibility labels for ObsEdit
+Select-a-date-and-time-for-observation = Select a date and time for observation
+Select-captive-or-cultivated-status = Select captive or cultivated status
+Select-geoprivacy-status = Select geoprivacy status
+Navigate-to-location-picker-screen = Navigate to location picker screen
+Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
+Navigate-to-identification-suggestions-screen = Navigate to identification suggestions screen
