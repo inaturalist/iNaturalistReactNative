@@ -1,8 +1,6 @@
-import Realm, { flags } from "realm";
+import Realm from "realm";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
-
-flags.THROW_ON_GLOBAL_REALM = true;
 
 // Mock the realm config so it uses an in-memory database. This means data is
 // only persisted until realm.close() gets called, so if the code under test

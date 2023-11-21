@@ -49,11 +49,6 @@ describe( "ObsDetails", () => {
   beforeAll( async () => {
     await initI18next();
 
-    // Write local observation to Realm
-    await global.realm.write( () => {
-      global.realm.create( "Observation", mockObservation );
-    } );
-
     jest.useFakeTimers( );
   } );
 
@@ -62,6 +57,12 @@ describe( "ObsDetails", () => {
   } );
 
   describe( "with an observation where we don't know if the user has viewed comments", () => {
+    beforeEach( async () => {
+      // Write local observation to Realm
+      await global.realm.write( () => {
+        global.realm.create( "Observation", mockObservation );
+      } );
+    } );
     it( "should make a request to observation/viewedUpdates", async () => {
       // Let's make sure the mock hasn't already been used
       expect( inatjs.observations.viewedUpdates ).not.toHaveBeenCalled();

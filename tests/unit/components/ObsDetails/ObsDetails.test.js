@@ -1,11 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { fireEvent, screen } from "@testing-library/react-native";
+import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import i18next, { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
-import INatPaperProvider from "providers/INatPaperProvider";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
@@ -15,12 +13,6 @@ import useIsConnected from "sharedHooks/useIsConnected";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-// Mock ObservationProvider so it provides a specific array of observations
-// without any current observation or ability to update or fetch
-// observations
-jest.mock( "providers/ObsEditProvider" );
-
-const mockNavigate = jest.fn();
 const mockObservation = factory( "LocalObservation", {
   _created_at: faker.date.past( ),
   created_at: "2022-11-27T19:07:41-08:00",
@@ -51,7 +43,8 @@ const mockObservation = factory( "LocalObservation", {
     login: faker.internet.userName( ),
     iconUrl: faker.image.imageUrl( ),
     locale: "en"
-  } )
+  } ),
+  identifications: []
 } );
 const mockNoEvidenceObservation = factory( "LocalObservation", {
   _created_at: faker.date.past( ),
@@ -73,19 +66,13 @@ const mockNoEvidenceObservation = factory( "LocalObservation", {
     login: faker.internet.userName( ),
     iconUrl: faker.image.imageUrl( ),
     locale: "en"
-  } )
+  } ),
+  identifications: []
 } );
 mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
-const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
-  iconUrl: faker.image.imageUrl( )
-} );
 
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
-  __esModule: true,
-  default: () => mockUser
-} ) );
+const mockNavigate = jest.fn();
 
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -119,18 +106,6 @@ jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
   } ) )
 } ) );
 
-// TODO if/when we test mutation behavior, the mutation will need to be mocked
-// so it actually does something, or we need to take a different approach
-jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
-  __esModule: true,
-  default: () => ( {
-    mutate: () => null
-  } )
-} ) );
-
-jest.mock( "components/ObsDetails/ActivityTab/ActivityTab" );
-jest.mock( "components/SharedComponents/PhotoScroll" );
-
 const mockDataTab = <View testID="mock-data-tab" />;
 jest.mock( "components/ObsDetails/DetailsTab/DetailsTab", () => ( {
   __esModule: true,
@@ -149,33 +124,14 @@ jest.mock(
 
 jest.mock( "sharedHooks/useIsConnected" );
 
-const mockLatLng = {
-  latitude: Number( faker.address.latitude( ) ),
-  longitude: Number( faker.address.longitude( ) )
-};
-
-jest.mock( "sharedHooks/useUserLocation", () => ( {
-  __esModule: true,
-  default: () => ( { latLng: mockLatLng } )
-} ) );
-
-const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <INatPaperProvider>
-    <ObsEditContext.Provider value={{
-      setPhotoEvidenceUris: jest.fn( ),
-      observations: obs
-    }}
-    >
-      {children}
-    </ObsEditContext.Provider>
-  </INatPaperProvider>
-) );
-
-const renderObsDetails = ( ) => renderComponent(
-  <ObsEditProvider>
+const renderObsDetails = obs => renderComponent(
+  <ObsEditContext.Provider value={{
+    setPhotoEvidenceUris: jest.fn( ),
+    observations: obs
+  }}
+  >
     <ObsDetailsContainer />
-  </ObsEditProvider>
+  </ObsEditContext.Provider>
 );
 
 describe( "ObsDetails", () => {
@@ -184,8 +140,7 @@ describe( "ObsDetails", () => {
   } );
 
   it( "should not have accessibility errors", async () => {
-    mockObsEditProviderWithObs( [mockObservation] );
-    renderObsDetails( );
+    renderObsDetails( [mockObservation] );
     const obsDetails = await screen.findByTestId(
       `ObsDetails.${mockObservation.uuid}`
     );
@@ -194,18 +149,18 @@ describe( "ObsDetails", () => {
 
   it( "renders obs details from remote call", async () => {
     useIsConnected.mockImplementation( () => true );
-    mockObsEditProviderWithObs( [mockObservation] );
-    renderObsDetails( );
+    renderObsDetails( [mockObservation] );
 
-    expect(
-      await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` )
-    ).toBeTruthy();
+    const obs = await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` );
+
+    await waitFor( ( ) => {
+      expect( obs ).toBeTruthy();
+    } );
     expect( screen.getByText( mockObservation.taxon.name ) ).toBeTruthy();
   } );
 
   it( "renders data tab on button press", async () => {
-    mockObsEditProviderWithObs( [mockObservation] );
-    renderObsDetails( );
+    renderObsDetails( [mockObservation] );
     const button = await screen.findByTestId( "ObsDetails.DetailsTab" );
     expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy();
 
@@ -214,8 +169,7 @@ describe( "ObsDetails", () => {
   } );
 
   it( "renders observed date of observation in header", async ( ) => {
-    mockObsEditProviderWithObs( [mockObservation] );
-    renderObsDetails( );
+    renderObsDetails( [mockObservation] );
     const observedDate = await screen.findByText(
       formatApiDatetime( mockObservation.time_observed_at, i18next.t )
     );
@@ -235,8 +189,7 @@ describe( "ObsDetails", () => {
 
     it( "should render fallback image icon instead of photos", async () => {
       useIsConnected.mockImplementation( () => true );
-      mockObsEditProviderWithObs( [mockObservation] );
-      renderObsDetails( );
+      renderObsDetails( [mockObservation] );
 
       const labelText = t( "Observation-has-no-photos-and-no-sounds" );
       const fallbackImage = await screen.findByLabelText( labelText );
@@ -252,8 +205,7 @@ describe( "ObsDetails", () => {
 
   describe( "activity tab", () => {
     it( "navigates to taxon details on button press", async () => {
-      mockObsEditProviderWithObs( [mockObservation] );
-      renderObsDetails( );
+      renderObsDetails( [mockObservation] );
       fireEvent.press(
         await screen.findByTestId(
           `ObsDetails.taxon.${mockObservation.taxon.id}`
@@ -266,8 +218,7 @@ describe( "ObsDetails", () => {
 
     it( "shows network error image instead of observation photos if user is offline", async () => {
       useIsConnected.mockImplementation( () => false );
-      mockObsEditProviderWithObs( [mockObservation] );
-      renderObsDetails( );
+      renderObsDetails( [mockObservation] );
       const labelText = t( "Observation-photos-unavailable-without-internet" );
       const noInternet = await screen.findByLabelText( labelText );
       expect( noInternet ).toBeTruthy();
