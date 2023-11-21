@@ -9,17 +9,9 @@ import React from "react";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-beforeEach( async ( ) => {
-  global.realm.write( ( ) => {
-    global.realm.deleteAll( );
-  } );
-} );
-
 afterEach( ( ) => {
   jest.clearAllMocks( );
 } );
-
-jest.mock( "providers/ObsEditProvider" );
 
 const renderDeleteSheet = obs => renderComponent(
   <DeleteObservationSheet
