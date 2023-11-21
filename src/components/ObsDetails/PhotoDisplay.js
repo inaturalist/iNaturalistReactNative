@@ -62,26 +62,26 @@ const PhotoDisplay = ( {
   ), [observationId] );
 
   const displayPhoto = useCallback( ( ) => {
-    if ( !isOnline ) {
-      // TODO show photos that are available offline
-      return (
-        <View className="bg-black flex-row justify-center">
-          <IconMaterial
-            name="wifi-off"
-            color={colors.white}
-            size={100}
-            accessibilityRole="image"
-            accessibilityLabel={t(
-              "Observation-photos-unavailable-without-internet"
-            )}
-          />
-        </View>
-      );
-    }
     if ( photos.length > 0 ) {
       return (
         <View className="bg-black">
-          <PhotoScroll photos={photos} />
+          {
+            isOnline
+              ? <PhotoScroll photos={photos} />
+              : (
+                <View className="bg-black flex-row justify-center">
+                  <IconMaterial
+                    name="wifi-off"
+                    color={colors.white}
+                    size={100}
+                    accessibilityRole="image"
+                    accessibilityLabel={t(
+                      "Observation-photos-unavailable-without-internet"
+                    )}
+                  />
+                </View>
+              )
+          }
           {/* TODO: a11y props are not passed down into this 3.party */}
           { belongsToCurrentUser
             ? editButton

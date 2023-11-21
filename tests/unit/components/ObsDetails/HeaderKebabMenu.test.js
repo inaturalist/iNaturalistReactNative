@@ -38,7 +38,7 @@ describe( "HeaderKebabMenu", () => {
       />
     );
 
-    const anchorButton = screen.getByLabelText( i18next.t( "Kebab-menu" ) );
+    const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );
     expect( anchorButton ).toBeTruthy( );
     fireEvent.press( anchorButton );
     const shareButton = await screen.findByTestId( "MenuItem.Share" );
@@ -56,7 +56,7 @@ describe( "HeaderKebabMenu", () => {
     );
     const editButton = screen.getByTestId( "ObsDetail.editButton" );
     expect( editButton ).toBeVisible( );
-    const anchorButton = screen.queryByLabelText( i18next.t( "Kebab-menu" ) );
+    const anchorButton = screen.queryByLabelText( i18next.t( "Observation-options" ) );
     expect( anchorButton ).toBeFalsy( );
   } );
 
@@ -71,7 +71,7 @@ describe( "HeaderKebabMenu", () => {
       />
     );
 
-    const anchorButton = screen.getByLabelText( i18next.t( "Kebab-menu" ) );
+    const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );
     expect( anchorButton ).toBeTruthy( );
     fireEvent.press( anchorButton );
     const shareButton = await screen.findByTestId( "MenuItem.Share" );
@@ -93,7 +93,7 @@ describe( "HeaderKebabMenu", () => {
       />
     );
 
-    const anchorButton = screen.getByLabelText( i18next.t( "Kebab-menu" ) );
+    const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );
     expect( anchorButton ).toBeTruthy( );
     fireEvent.press( anchorButton );
     const shareButton = await screen.findByTestId( "MenuItem.Share" );

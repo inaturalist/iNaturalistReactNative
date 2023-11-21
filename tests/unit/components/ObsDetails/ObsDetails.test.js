@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
@@ -11,6 +12,7 @@ import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useIsConnected from "sharedHooks/useIsConnected";
+import useLocalObservation from "sharedHooks/useLocalObservation";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
@@ -19,6 +21,8 @@ import { renderComponent } from "../../../helpers/render";
 // without any current observation or ability to update or fetch
 // observations
 jest.mock( "providers/ObsEditProvider" );
+
+jest.mock( "sharedHooks/useLocalObservation" );
 
 const mockNavigate = jest.fn();
 const mockObservation = factory( "LocalObservation", {
@@ -87,15 +91,15 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: () => mockUser
 } ) );
 
+useRoute.mockImplementation( ( ) => ( {
+  params: { uuid: mockObservation.uuid }
+} ) );
+
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
-    useRoute: () => ( {
-      params: {
-        uuid: mockObservation.uuid
-      }
-    } ),
+    useRoute: jest.fn( ),
     useNavigation: () => ( {
       navigate: mockNavigate,
       addListener: jest.fn(),
@@ -159,18 +163,20 @@ jest.mock( "sharedHooks/useUserLocation", () => ( {
   default: () => ( { latLng: mockLatLng } )
 } ) );
 
-const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <INatPaperProvider>
-    <ObsEditContext.Provider value={{
-      setPhotoEvidenceUris: jest.fn( ),
-      observations: obs
-    }}
-    >
-      {children}
-    </ObsEditContext.Provider>
-  </INatPaperProvider>
-) );
+const mockObsEditProviderWithObs = observations => ObsEditProvider.mockImplementation(
+  ( { children } ) => (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
+    <INatPaperProvider>
+      <ObsEditContext.Provider value={{
+        setPhotoEvidenceUris: jest.fn( ),
+        observations
+      }}
+      >
+        {children}
+      </ObsEditContext.Provider>
+    </INatPaperProvider>
+  )
+);
 
 const renderObsDetails = ( ) => renderComponent(
   <ObsEditProvider>
@@ -272,6 +278,56 @@ describe( "ObsDetails", () => {
       const noInternet = await screen.findByLabelText( labelText );
       expect( noInternet ).toBeTruthy();
       expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull();
+    } );
+  } );
+
+  describe( "viewing own observation", ( ) => {
+    async function expectEditAndNotMenu( ) {
+      renderObsDetails( );
+      const editLabelText = t( "Edit" );
+      const editButton = await screen.findByLabelText( editLabelText );
+      expect( editButton ).toBeTruthy( );
+      const kebabMenuLabelText = t( "Observation-options" );
+      const kebabMenu = screen.queryByLabelText( kebabMenuLabelText );
+      expect( kebabMenu ).toBeFalsy( );
+    }
+
+    it( "should show the edit button and not the menu", async ( ) => {
+      const mockOwnObservation = factory( "LocalObservation", { user: mockUser } );
+      mockObsEditProviderWithObs( [mockOwnObservation] );
+      useLocalObservation.mockImplementation( ( ) => mockOwnObservation );
+      expect( mockOwnObservation.user.id ).toEqual( mockUser.id );
+      await expectEditAndNotMenu( );
+    } );
+
+    it(
+      "should show the edit button and not the menu when the observation has never been uploaded",
+      async ( ) => {
+        const observation = factory.states( "unUploaded" )( "LocalObservation" );
+        mockObsEditProviderWithObs( [observation] );
+        useLocalObservation.mockImplementation( ( ) => observation );
+        // An unuploaded observation *should* be the only situation where an
+        // observation has no user, b/c a user can make observations before
+        // signing in
+        expect( observation.user ).toBeFalsy( );
+        await expectEditAndNotMenu( );
+      }
+    );
+  } );
+
+  describe( "viewing someone else's observation", ( ) => {
+    it( "should show the menu and not the edit button", async ( ) => {
+      expect( mockObservation.user.id ).not.toEqual( mockUser.id );
+      mockObsEditProviderWithObs( [mockObservation] );
+      useLocalObservation.mockImplementation( ( ) => mockObservation );
+      renderObsDetails( );
+      expect( await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
+      const kebabMenuLabelText = t( "Observation-options" );
+      const kebabMenu = await screen.findByLabelText( kebabMenuLabelText );
+      expect( kebabMenu ).toBeTruthy( );
+      const editLabelText = t( "Edit" );
+      const editButton = screen.queryByLabelText( editLabelText );
+      expect( editButton ).toBeFalsy( );
     } );
   } );
 } );
