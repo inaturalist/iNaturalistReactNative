@@ -59,7 +59,7 @@ describe( "useObservationsUpdates", ( ) => {
     ["comment", [mockCommentUpdate]],
     ["identification", [mockIdentificationUpdate]],
     ["both", mockData]
-  ] )( "when the update is a %s", a => {
+  ] )( "when the update is a %s", ( ) => {
     describe.each( [
       ["viewed fields not initialized", null, null],
       ["viewed comments and viewed identifications", true, true],
