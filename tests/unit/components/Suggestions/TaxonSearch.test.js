@@ -13,7 +13,6 @@ import factory, { makeResponse } from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
-jest.mock( "providers/ObsEditProvider" );
 
 jest.mock(
   "components/SharedComponents/ViewWrapper",

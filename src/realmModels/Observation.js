@@ -316,14 +316,14 @@ class Observation extends Realm.Object {
       captive_flag: "bool?",
       comments: "Comment[]",
       // timestamp of when observation was created on the server; not editable
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: { type: "string", mapTo: "createdAt", optional: true },
       description: "string?",
       faves: "Vote[]",
       geoprivacy: "string?",
       id: "int?",
       identifications: "Identification[]",
       latitude: "double?",
-      license_code: { type: "string?", mapTo: "licenseCode" },
+      license_code: { type: "string", mapTo: "licenseCode", optional: true },
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
       observationSounds: "ObservationSound[]",
@@ -333,20 +333,24 @@ class Observation extends Realm.Object {
       obscured: "bool?",
       owners_identification_from_vision: "bool?",
       species_guess: "string?",
-      place_guess: { type: "string?", mapTo: "placeGuess" },
+      place_guess: { type: "string", mapTo: "placeGuess", optional: true },
       positional_accuracy: "double?",
-      quality_grade: { type: "string?", mapTo: "qualityGrade" },
+      quality_grade: { type: "string", mapTo: "qualityGrade", optional: true },
       taxon: "Taxon?",
       // datetime when the observer observed the organism; user-editable, but
       // only by changing observed_on_string
-      time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
+      time_observed_at: { type: "string", mapTo: "timeObservedAt", optional: true },
       user: "User?",
       updated_at: "date?",
       comments_viewed: "bool?",
-      identifications_viewed: { type: "bool?", mapTo: "identificationsViewed" },
-      viewer_trusted_by_observer: { type: "bool?", mapTo: "viewerTrustedByObserver" },
-      private_place_guess: { type: "string?", mapTo: "privatePlaceGuess" },
-      private_location: { type: "string?", mapTo: "privateLocation" },
+      identifications_viewed: { type: "bool", mapTo: "identificationsViewed", optional: true },
+      viewer_trusted_by_observer: {
+        type: "bool",
+        mapTo: "viewerTrustedByObserver",
+        optional: true
+      },
+      private_place_guess: { type: "string", mapTo: "privatePlaceGuess", optional: true },
+      private_location: { type: "string", mapTo: "privateLocation", optional: true },
       privateLatitude: "double?",
       privateLongitude: "double?"
     }

@@ -3,15 +3,11 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
-import INatPaperProvider from "providers/INatPaperProvider";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 
 import factory from "../factory";
 import { renderComponent } from "../helpers/render";
-
-jest.mock( "providers/ObsEditProvider" );
 
 const mockLocationName = "San Francisco, CA";
 
@@ -39,13 +35,9 @@ jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
   default: () => mockFetchUserLocation()
 } ) );
 
-// Mock ObservationProvider so it provides a specific array of observations
-// without any current observation or ability to update or fetch
-// observations
-const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <INatPaperProvider>
-    <ObsEditContext.Provider value={{
+const renderObsEdit = obs => renderComponent(
+  <ObsEditContext.Provider
+    value={{
       observations: obs,
       currentObservation: obs[0],
       updateObservationKeys: jest.fn( ),
@@ -54,16 +46,9 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
       photoEvidenceUris: [faker.image.imageUrl( )],
       setPhotoEvidenceUris: jest.fn( )
     }}
-    >
-      {children}
-    </ObsEditContext.Provider>
-  </INatPaperProvider>
-) );
-
-const renderObsEdit = () => renderComponent(
-  <ObsEditProvider>
+  >
     <ObsEdit />
-  </ObsEditProvider>
+  </ObsEditContext.Provider>
 );
 
 const mockTaxon = factory( "RemoteTaxon", {
@@ -101,9 +86,8 @@ describe( "basic rendering", ( ) => {
       taxon: mockTaxon,
       observationPhotos: []
     } )];
-    mockObsEditProviderWithObs( observations );
 
-    renderObsEdit( );
+    renderObsEdit( observations );
 
     const obs = observations[0];
 
@@ -126,17 +110,15 @@ describe( "location fetching", () => {
     const observations = [factory( "LocalObservation", {
       observationPhotos: []
     } )];
-    mockObsEditProviderWithObs( observations );
+    renderObsEdit( observations );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
 
-    renderObsEdit();
+    renderObsEdit( observations );
 
     await waitFor( () => {
       expect( mockFetchUserLocation ).toHaveBeenCalled();
     }, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
-    // Note: it would be nice to look for an update in the UI, but since we've
-    // mocked ObsEditProvider here, it will never update. Might be good for
-    // an integration test
+    // Note: it would be nice to look for an update in the UI
   } );
 
   test( "shouldn't fetch location for existing obs on device that hasn't uploaded", async () => {
@@ -149,8 +131,7 @@ describe( "location fetching", () => {
     expect( observation.id ).toBeFalsy();
     expect( observation.created_at ).toBeFalsy();
     expect( observation._created_at ).toBeTruthy();
-    mockObsEditProviderWithObs( [observation] );
-    renderObsEdit();
+    renderObsEdit( [observation] );
 
     expect(
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
@@ -174,8 +155,7 @@ describe( "location fetching", () => {
     } );
     expect( observation.id ).toBeTruthy();
     expect( observation.created_at ).toBeTruthy();
-    mockObsEditProviderWithObs( [observation] );
-    renderObsEdit();
+    renderObsEdit( [observation] );
 
     expect(
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )

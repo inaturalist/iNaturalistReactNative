@@ -8,64 +8,11 @@ import React from "react";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-const mockObservation = factory( "LocalObservation", {
-  created_at: "2022-11-27T19:07:41-08:00",
-  time_observed_at: "2023-12-14T21:07:41-09:30",
-  comments: [
-    factory( "LocalComment" ),
-    factory( "LocalComment" ),
-    factory( "LocalComment" )
-  ],
-  identifications: [
-    factory( "LocalIdentification" ),
-    factory( "LocalIdentification" )
-  ]
-} );
-
 const mockUser = factory( "LocalUser", {
   id: 0,
   login: faker.internet.userName( ),
   iconUrl: faker.image.imageUrl( )
 } );
-
-jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
-  getUserId: ( ) => mockUser.id,
-  isCurrentUser: ( ) => true
-} ) );
-
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
-  __esModule: true,
-  default: () => mockUser
-} ) );
-
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: () => ( {
-      params: {
-        uuid: mockObservation.uuid
-      }
-    } ),
-    useNavigation: () => ( {
-      navigate: jest.fn(),
-      addListener: jest.fn(),
-      setOptions: jest.fn()
-    } )
-  };
-} );
-
-jest.mock( "components/SharedComponents/DisplayTaxonName" );
-
-// TODO if/when we test mutation behavior, the mutation will need to be mocked
-// so it actually does something, or we need to take a different approach
-const mockMutate = jest.fn();
-jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    mutate: mockMutate
-  } )
-} ) );
 
 describe( "ActivityHeaderKebabMenu", () => {
   beforeAll( async ( ) => {

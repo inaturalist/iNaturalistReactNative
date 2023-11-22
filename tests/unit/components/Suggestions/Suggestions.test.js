@@ -45,8 +45,6 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 // Mock api call to observations
 jest.mock( "inaturalistjs" );
 
-jest.mock( "sharedHooks/useLocalObservation" );
-
 const mockUris = [
   faker.image.imageUrl( ),
   `${faker.image.imageUrl( )}/400`

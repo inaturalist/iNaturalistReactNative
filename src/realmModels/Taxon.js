@@ -118,9 +118,18 @@ class Taxon extends Realm.Object {
     primaryKey: "id",
     properties: {
       id: "int",
-      default_photo: { type: "Photo?", mapTo: "defaultPhoto" },
+      default_photo: {
+        type: "object",
+        objectType: "Photo",
+        mapTo: "defaultPhoto",
+        optional: true
+      },
       name: "string?",
-      preferred_common_name: { type: "string?", mapTo: "preferredCommonName" },
+      preferred_common_name: {
+        type: "string",
+        mapTo: "preferredCommonName",
+        optional: true
+      },
       rank: "string?",
       rank_level: "int?",
       isIconic: "bool?",

@@ -8,6 +8,7 @@ import { ActivityIndicator, useTheme } from "react-native-paper";
 
 type ButtonProps = {
   accessibilityHint?: string,
+  accessibilityLabel?: string,
   accessibilityRole?: string,
   className?: string,
   disabled?: boolean,
@@ -110,6 +111,7 @@ const activityIndicatorColor = ( {
 
 const Button = ( {
   accessibilityHint,
+  accessibilityLabel,
   accessibilityRole,
   className,
   disabled,
@@ -151,6 +153,7 @@ const Button = ( {
       accessibilityRole={accessibilityRole || "button"}
       accessibilityState={{ disabled }}
       accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel}
     >
       {loading && (
         <ActivityIndicator

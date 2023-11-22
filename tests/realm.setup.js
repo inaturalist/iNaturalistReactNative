@@ -17,7 +17,8 @@ jest.mock( "realmModels/index", ( ) => {
     default: {
       schema: originalModule.default.schema,
       schemaVersion: originalModule.default.schemaVersion,
-      inMemory: true
+      inMemory: true,
+      path: "testArtifacts.realm"
     }
   };
 } );
