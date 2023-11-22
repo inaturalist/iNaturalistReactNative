@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -27,6 +27,24 @@ describe( "Explore", ( ) => {
     renderAppWithComponent( <ExploreContainer /> );
     const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
     expect( obsTaxonNameElt ).toBeTruthy( );
+    expect(
+      await screen.findByTestId( `ObsStatus.${mockRemoteObservation.uuid}` )
+    ).toBeTruthy( );
+    expect(
+      screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` )
+    ).toBeFalsy( );
+  } );
+  it( "should display grid item correctly", async ( ) => {
+    inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
+    // TODO find a more generic way to do this
+    inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
+    renderAppWithComponent( <ExploreContainer /> );
+    const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
+    expect( obsTaxonNameElt ).toBeTruthy( );
+    expect(
+      await screen.findByTestId( "SegmentedButton.grid" )
+    ).toBeTruthy( );
+    fireEvent.press( await screen.findByTestId( "SegmentedButton.grid" ) );
     expect(
       await screen.findByTestId( `ObsStatus.${mockRemoteObservation.uuid}` )
     ).toBeTruthy( );
