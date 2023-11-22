@@ -43,7 +43,7 @@ export const orientationPatch = deviceOrientation => {
     : deviceOrientation;
 };
 
-// Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v2 and v3.3.1
 // As of this version the photo from takePhoto is not oriented coming from the native side.
 // E.g. if you take a photo in landscape-right and save it to camera roll directly from the
 // vision camera, it will be tilted in the native photo app. So, on iOS, depending on the
@@ -51,7 +51,6 @@ export const orientationPatch = deviceOrientation => {
 // On Android, the rotation is derived from the device orientation at the time of taking the
 // photo, because orientation is not yet supported in the library.
 export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
-  if ( visionCameraMajorVersion < 3 && Platform.OS === "ios" ) return 0;
   let photoRotation = 0;
   if ( Platform.OS === "ios" ) {
     switch ( photo.metadata.Orientation ) {
