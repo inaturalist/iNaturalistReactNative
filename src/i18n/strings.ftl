@@ -1067,14 +1067,15 @@ Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 Switches-to-tab = Switches to { $tab } tab.
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 Use-the-devices-other-camera = Use the device's other camera.
-Open-kebab-menu = Open kebab menu.
+Open-menu = Open menu.
 Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
 Indicates-location-is-loading = Indicates location is loading.
 Returns-map-to-users-current-location = Returns map to user's current location.
 Toggles-map-layer = Toggles map layer.
-Navigate-to-observation-edit-screen = Navigate to observation edit screen
-Close-add-observation-modal = Close add observation modal
-Navigate-to-photo-importer = Navigate to photo importer
+Navigate-to-observation-edit-screen = Navigate to observation edit screen.
+Close-add-observation-modal = Close add observation modal.
+Navigate-to-photo-importer = Navigate to photo importer.
+Show-observation-options = Show observation options.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
 # Accessible label for the camera button
@@ -1097,7 +1098,8 @@ Navigate-to-project-details = Navigate to project details
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Photo-taken-at = Photo taken at { $date }
 Take-photo = Take photo
-# Accessibility labels for no internet state in ObsDetails
+
+## Accessibility labels for no internet state in ObsDetails
 Location-map-unavailable-without-internet = Location map unavailable without internet
 Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
 Taxon-photo-unavailable-without-internet = Taxon photo unavailable without internet
@@ -1105,7 +1107,7 @@ User-photo-unavailable-without-internet = User photo unavailable without interne
 Search = Search
 Select-photo = Select photo
 
-# Accessibility labels for icons
+## Accessibility labels for icons
 Add-this-ID = Add this identification
 Navigate-to-notifications-screen = Navigate to notifications screen
 Navigate-to-observation-list = Navigate to observation list
@@ -1122,7 +1124,8 @@ Disable-flash = Disable flash
 Enable-flash = Enable flash
 Information = Information
 Checkmark = Checkmark
-Kebab-menu = Kebab menu
+# Accessibility label for a button that opens a menu of options
+Menu = Menu
 Edit = Edit
 User-location = User location
 Loading-wheel = Loading wheel
@@ -1145,6 +1148,9 @@ Upload-in-progress = Upload in progress
 Previous-observation = Previous observation
 Next-observation = Next observation
 Close-search = Close search
+# Accessibility label for a button that shows a menu of options on the
+# observation detail view
+Observation-menu = Observation menu
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format

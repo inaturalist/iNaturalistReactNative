@@ -62,7 +62,8 @@ class Observation extends Realm.Object {
     private_geojson: true,
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
-    time_observed_at: true
+    time_observed_at: true.obs,
+    user: User && User.USER_FIELDS
   };
 
   static async new( obs ) {

@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
@@ -8,7 +9,9 @@ import React from "react";
 import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
+import * as useLocalObservation from "sharedHooks/useLocalObservation";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
@@ -71,18 +74,32 @@ const mockNoEvidenceObservation = factory( "LocalObservation", {
 } );
 mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
+const mockUser = factory( "LocalUser", {
+  login: faker.internet.userName( ),
+  iconUrl: faker.image.imageUrl( )
+} );
+
+jest.mock( "sharedHooks/useLocalObservation", () => ( {
+  __esModule: true,
+  default: ( ) => null
+} ) );
+
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
+  __esModule: true,
+  default: ( ) => null
+} ) );
 
 const mockNavigate = jest.fn();
+
+useRoute.mockImplementation( ( ) => ( {
+  params: { uuid: mockObservation.uuid }
+} ) );
 
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
-    useRoute: () => ( {
-      params: {
-        uuid: mockObservation.uuid
-      }
-    } ),
+    useRoute: jest.fn( ),
     useNavigation: () => ( {
       navigate: mockNavigate,
       addListener: jest.fn(),
@@ -223,6 +240,59 @@ describe( "ObsDetails", () => {
       const noInternet = await screen.findByLabelText( labelText );
       expect( noInternet ).toBeTruthy();
       expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull();
+    } );
+  } );
+
+  describe( "viewing own observation", ( ) => {
+    async function expectEditAndNotMenu( ) {
+      const editLabelText = t( "Edit" );
+      const editButton = await screen.findByLabelText( editLabelText );
+      expect( editButton ).toBeTruthy( );
+      const kebabMenuLabelText = t( "Observation-options" );
+      const kebabMenu = screen.queryByLabelText( kebabMenuLabelText );
+      expect( kebabMenu ).toBeFalsy( );
+    }
+
+    it( "should show the edit button and not the menu", async ( ) => {
+      const mockOwnObservation = factory( "LocalObservation", { user: mockUser } );
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => mockOwnObservation );
+      jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockOwnObservation.user );
+      renderObsDetails( [mockOwnObservation] );
+      expect( mockOwnObservation.user.id ).toEqual( mockUser.id );
+      await expectEditAndNotMenu( );
+    } );
+
+    it(
+      "should show the edit button and not the menu when the observation has never been uploaded",
+      async ( ) => {
+        const observation = factory.states( "unUploaded" )( "LocalObservation" );
+        jest.spyOn( useLocalObservation, "default" )
+          .mockImplementation( () => observation );
+        jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => observation.user );
+        renderObsDetails( [observation] );
+        // An unuploaded observation *should* be the only situation where an
+        // observation has no user, b/c a user can make observations before
+        // signing in
+        expect( observation.user ).toBeFalsy( );
+        await expectEditAndNotMenu( );
+      }
+    );
+  } );
+
+  describe( "viewing someone else's observation", ( ) => {
+    it( "should show the menu and not the edit button", async ( ) => {
+      expect( mockObservation.user.id ).not.toEqual( mockUser.id );
+      renderObsDetails( [mockObservation] );
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => mockObservation );
+      jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => null );
+      renderObsDetails( [mockObservation] );
+      expect( await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
+      const kebabMenuLabelText = t( "Observation-options" );
+      const kebabMenu = await screen.findByLabelText( kebabMenuLabelText );
+      expect( kebabMenu ).toBeTruthy( );
+      const editLabelText = t( "Edit" );
+      const editButton = screen.queryByLabelText( editLabelText );
+      expect( editButton ).toBeFalsy( );
     } );
   } );
 } );

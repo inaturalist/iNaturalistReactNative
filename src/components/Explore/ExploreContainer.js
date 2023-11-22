@@ -17,11 +17,7 @@ const initialState = {
     place_guess: ""
   },
   exploreParams: {
-    taxon_id: 1,
-    lat: 0.0,
-    lng: 0.0,
-    radius: 50,
-    taxon_name: "Animals",
+    verifiable: true,
     return_bounds: true
   },
   exploreView: "observations"
