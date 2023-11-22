@@ -9,15 +9,23 @@ import viewStyles from "styles/sharedComponents/kebabMenu";
 import colors from "styles/tailwindColors";
 
 type Props = {
+  accessibilityHint?: string,
+  accessibilityLabel?: string,
   children: any,
-  visible: boolean,
-  setVisible: Function,
   large?: boolean,
-  white?: boolean
+  setVisible: Function,
+  visible: boolean,
+  white?: boolean,
 }
 
 const KebabMenu = ( {
-  children, visible, setVisible, large, white
+  accessibilityHint,
+  accessibilityLabel,
+  children,
+  large,
+  setVisible,
+  visible,
+  white
 }: Props ): Node => {
   const { t } = useTranslation( );
   const openMenu = ( ) => setVisible( true );
@@ -31,8 +39,8 @@ const KebabMenu = ( {
       size={large
         ? 26
         : 15}
-      accessibilityLabel={t( "Kebab-menu" )}
-      accessibilityHint={t( "Open-kebab-menu" )}
+      accessibilityLabel={accessibilityLabel || t( "Menu" )}
+      accessibilityHint={accessibilityHint || t( "Open-menu" )}
       color={white
         ? colors.white
         : colors.black}

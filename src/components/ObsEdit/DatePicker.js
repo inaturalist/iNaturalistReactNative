@@ -2,18 +2,17 @@
 
 import { Body3, DateTimePicker, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { createObservedOnStringForUpload, displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  currentObservation: Object
+  currentObservation: Object,
+  updateObservationKeys: Function
 }
 
-const DatePicker = ( { currentObservation }: Props ): Node => {
-  const { updateObservationKeys } = useContext( ObsEditContext );
+const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Node => {
   const { t } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
@@ -44,6 +43,7 @@ const DatePicker = ( { currentObservation }: Props ): Node => {
         accessibilityRole="button"
         onPress={openModal}
         className="flex-row flex-nowrap items-center"
+        accessibilityLabel={t( "Select-a-date-and-time-for-observation" )}
       >
         <View className="w-[30px] items-center mr-1">
           <INatIcon size={14} name="clock-outline" />

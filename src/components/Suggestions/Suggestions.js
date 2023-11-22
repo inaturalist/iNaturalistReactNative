@@ -22,23 +22,29 @@ import SuggestionsList from "./SuggestionsList";
 
 type Props = {
   comment: string,
+  currentObservation: Object,
   loading: boolean,
   loadingSuggestions: boolean,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
+  setComment: Function,
+  setLoading: Function,
   setSelectedPhotoUri: Function
 };
 
 const Suggestions = ( {
   comment,
+  currentObservation,
   loading,
   loadingSuggestions,
   nearbySuggestions,
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
+  setComment,
+  setLoading,
   setSelectedPhotoUri
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -46,7 +52,10 @@ const Suggestions = ( {
 
   return (
     <ScrollViewWrapper testID="suggestions">
-      <AddCommentPrompt />
+      <AddCommentPrompt
+        setComment={setComment}
+        currentObservation={currentObservation}
+      />
       {loading && (
         <View
           className="absolute self-center z-10 pt-[30px]"
@@ -72,7 +81,8 @@ const Suggestions = ( {
       <SuggestionsList
         nearbySuggestions={nearbySuggestions}
         onTaxonChosen={onTaxonChosen}
-        loading={loadingSuggestions}
+        loadingSuggestions={loadingSuggestions}
+        setLoading={setLoading}
       />
       {nearbySuggestions?.length > 0 && (
         <Attribution

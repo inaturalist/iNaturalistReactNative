@@ -49,6 +49,7 @@ type Props = {
   toggleMapLayer: Function,
   updateLocationName: Function,
   updateRegion: Function,
+  updateObservationKeys: Function
 };
 
 const LocationPicker = ( {
@@ -67,7 +68,8 @@ const LocationPicker = ( {
   showCrosshairs,
   toggleMapLayer,
   updateLocationName,
-  updateRegion
+  updateRegion,
+  updateObservationKeys
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -152,6 +154,7 @@ const LocationPicker = ( {
       <Footer
         keysToUpdate={keysToUpdate}
         goBackOnSave={goBackOnSave}
+        updateObservationKeys={updateObservationKeys}
       />
     </ViewWrapper>
   );

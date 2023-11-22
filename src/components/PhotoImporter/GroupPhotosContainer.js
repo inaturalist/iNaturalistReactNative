@@ -5,13 +5,14 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect, useState } from "react";
+import Observation from "realmModels/Observation";
 
 import GroupPhotos from "./GroupPhotos";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
 const GroupPhotosContainer = ( ): Node => {
   const {
-    createObservationsFromGroupedPhotos, groupedPhotos, setGroupedPhotos
+    updateObservations, groupedPhotos, setGroupedPhotos
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
 
@@ -127,7 +128,10 @@ const GroupPhotosContainer = ( ): Node => {
 
   const navToObsEdit = async ( ) => {
     setIsCreatingObservations( true );
-    await createObservationsFromGroupedPhotos( groupedPhotos );
+    const newObservations = await Promise.all( groupedPhotos.map(
+      ( { photos } ) => Observation.createObservationWithPhotos( photos )
+    ) );
+    updateObservations( newObservations );
     setIsCreatingObservations( false );
     navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
   };

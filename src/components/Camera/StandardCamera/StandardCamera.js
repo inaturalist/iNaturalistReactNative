@@ -5,10 +5,8 @@ import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import { View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext,
   useEffect,
   useState
 } from "react";
@@ -55,6 +53,10 @@ type Props = {
   showZoomButton: boolean,
   onZoomStart?: Function,
   onZoomChange?: Function,
+  totalObsPhotoUris: number,
+  cameraPreviewUris: Function,
+  deletePhotoFromObservation: Function,
+  setPhotoEvidenceUris: Function
 };
 
 const StandardCamera = ( {
@@ -78,11 +80,12 @@ const StandardCamera = ( {
   zoomTextValue,
   showZoomButton,
   onZoomStart,
-  onZoomChange
+  onZoomChange,
+  totalObsPhotoUris,
+  cameraPreviewUris,
+  deletePhotoFromObservation,
+  setPhotoEvidenceUris
 }: Props ): Node => {
-  const {
-    totalObsPhotoUris
-  } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
@@ -125,6 +128,9 @@ const StandardCamera = ( {
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
+        cameraPreviewUris={cameraPreviewUris}
+        deletePhotoFromObservation={deletePhotoFromObservation}
+        setPhotoEvidenceUris={setPhotoEvidenceUris}
       />
       <View className="relative flex-1">
         {device && (

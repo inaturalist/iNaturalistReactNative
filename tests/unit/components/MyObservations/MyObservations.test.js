@@ -22,21 +22,6 @@ const mockObservations = [
   } )
 ];
 
-// Need to mock this b/c header and maybe other things interact directly with
-// nav
-const mockNavigate = jest.fn();
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: () => ( {} ),
-    useNavigation: () => ( {
-      navigate: mockNavigate,
-      addListener: jest.fn()
-    } )
-  };
-} );
-
 const DEVICE_ORIENTATION_PHONE_PORTRAIT = {
   deviceOrientation: "portrait",
   isTablet: false,

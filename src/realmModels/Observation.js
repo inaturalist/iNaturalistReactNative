@@ -1,6 +1,7 @@
 import { Realm } from "@realm/react";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
+import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 
 import Application from "./Application";
 import Comment from "./Comment";
@@ -61,7 +62,8 @@ class Observation extends Realm.Object {
     private_geojson: true,
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
-    time_observed_at: true
+    time_observed_at: true.obs,
+    user: User && User.USER_FIELDS
   };
 
   static async new( obs ) {
@@ -244,6 +246,41 @@ class Observation extends Realm.Object {
     const obsList = Observation.filterUnsyncedObservations( realm );
     const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
     return unsyncedObs.length > 0;
+  };
+
+  static createObservationFromGalleryPhoto = async photo => {
+    const firstPhotoExif = await parseExif( photo?.image?.uri );
+
+    const { latitude, longitude } = firstPhotoExif;
+
+    const newObservation = {
+      latitude,
+      longitude,
+      observed_on_string: formatExifDateAsString( firstPhotoExif.date ) || null
+    };
+
+    if ( firstPhotoExif.positional_accuracy ) {
+      // $FlowIgnore
+      newObservation.positional_accuracy = firstPhotoExif.positional_accuracy;
+    }
+    return Observation.new( newObservation );
+  };
+
+  static createObservationWithPhotos = async photos => {
+    const newLocalObs = await Observation.createObservationFromGalleryPhoto( photos[0] );
+    newLocalObs.observationPhotos = await ObservationPhoto
+      .createObsPhotosWithPosition( photos, { position: 0 } );
+    return newLocalObs;
+  };
+
+  static appendObsPhotos = ( obsPhotos, currentObservation ) => {
+    // need empty case for when a user creates an observation with no photos,
+    // then tries to add photos to observation later
+    const currentObservationPhotos = currentObservation?.observationPhotos || [];
+
+    const updatedObs = currentObservation;
+    updatedObs.observationPhotos = [...currentObservationPhotos, ...obsPhotos];
+    return [updatedObs];
   };
 
   static schema = {

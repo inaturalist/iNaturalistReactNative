@@ -2,17 +2,21 @@
 
 import { Heading2, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React from "react";
 import { useTranslation } from "sharedHooks";
 
-const MultipleObservationsArrows = ( ): Node => {
-  const {
-    currentObservationIndex,
-    setCurrentObservationIndex,
-    observations
-  } = useContext( ObsEditContext );
+type Props = {
+  currentObservationIndex: number,
+  setCurrentObservationIndex: Function,
+  observations: Array<Object>
+}
+
+const MultipleObservationsArrows = ( {
+  currentObservationIndex,
+  setCurrentObservationIndex,
+  observations
+}: Props ): Node => {
   const { t } = useTranslation( );
 
   const showNextObservation = ( ) => setCurrentObservationIndex( currentObservationIndex + 1 );

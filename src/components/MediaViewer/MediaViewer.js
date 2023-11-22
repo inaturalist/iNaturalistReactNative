@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import { Heading4, TransparentCircleButton, WarningSheet } from "components/SharedComponents";
 import { SafeAreaView, View } from "components/styledComponents";
@@ -21,13 +21,13 @@ import PhotoSelector from "./PhotoSelector";
 
 const MediaViewer = ( ): Node => {
   const navigation = useNavigation( );
+  const { params } = useRoute( );
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( params?.index );
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
   const {
     deletePhotoFromObservation,
-    photoEvidenceUris,
-    selectedPhotoIndex,
-    setSelectedPhotoIndex
+    photoEvidenceUris
   } = useContext( ObsEditContext );
 
   const atFirstPhoto = selectedPhotoIndex === 0;

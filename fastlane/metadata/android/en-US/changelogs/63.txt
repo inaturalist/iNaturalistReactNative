@@ -1,0 +1,16 @@
+NEW
+* Share on ObsDetail
+* Withdraw ID sheet on ObsDetail
+
+FIXED
+* Tap to focus should work
+* Removed upload buttons from Explore grid view
+* Show date observed instead of date created on ObsDetail
+* Remove lag when faving an obs
+* Allow photos to be deleted in StandardCamera
+* Suggestions change when viewing a different observation
+
+UPDATED
+* Performance improvements
+* Added loading indicator to background screen while importing photos
+* Changed button on obs notes sheet to "DONE"

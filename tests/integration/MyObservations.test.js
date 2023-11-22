@@ -15,9 +15,6 @@ import { signIn, signOut } from "../helpers/user";
 
 describe( "MyObservations", ( ) => {
   beforeAll( async ( ) => {
-    await global.realm.write( ( ) => {
-      global.realm.deleteAll( );
-    } );
     await initI18next( );
   } );
 
@@ -41,6 +38,11 @@ describe( "MyObservations", ( ) => {
   // } );
 
   describe( "when signed out", ( ) => {
+    beforeEach( async ( ) => {
+      await global.realm.write( ( ) => {
+        global.realm.deleteAll( );
+      } );
+    } );
     async function testApiMethodNotCalled( apiMethod ) {
       // Let's make sure the mock hasn't already been used
       expect( apiMethod ).not.toHaveBeenCalled( );
@@ -71,6 +73,9 @@ describe( "MyObservations", ( ) => {
     } );
 
     beforeEach( async ( ) => {
+      await global.realm.write( ( ) => {
+        global.realm.deleteAll( );
+      } );
       await signIn( mockUser );
     } );
 
@@ -230,6 +235,11 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "localization for current user", ( ) => {
+    beforeEach( async ( ) => {
+      await global.realm.write( ( ) => {
+        global.realm.deleteAll( );
+      } );
+    } );
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser", {
         login: faker.internet.userName( ),

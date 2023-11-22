@@ -61,6 +61,7 @@ const ObservationsView = ( {
           handleScroll={handleScroll}
           status={status}
           isOnline={isOnline}
+          explore
         />
       </View>
     );

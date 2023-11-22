@@ -142,7 +142,12 @@ const ObsDetailsContainer = ( ): Node => {
   const localObservation = useLocalObservation( uuid );
   const observation = localObservation || remoteObservation;
 
-  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
+  // In theory the only sitiation in which an observation would not have a
+  // user is when a user is not signed but has made a new observation in the
+  // app. Also in theory that user should not be able to get to ObsDetail for
+  // those observations, just ObsEdit. But.... let's be safe.
+  const belongsToCurrentUser = observation?.user?.id === currentUser?.id
+    || ( !observation?.user && !observation?.id );
 
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id

@@ -18,16 +18,6 @@ jest.mock( "react-native/Libraries/Share/Share", () => ( {
   share: jest.fn( () => Promise.resolve( "mockResolve" ) )
 } ) );
 
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: () => ( {
-      canGoBack: jest.fn( ( ) => true )
-    } )
-  };
-} );
-
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",
   select: jest.fn( )
@@ -48,7 +38,7 @@ describe( "HeaderKebabMenu", () => {
       />
     );
 
-    const anchorButton = screen.getByLabelText( i18next.t( "Kebab-menu" ) );
+    const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );
     expect( anchorButton ).toBeTruthy( );
     fireEvent.press( anchorButton );
     const shareButton = await screen.findByTestId( "MenuItem.Share" );
@@ -66,7 +56,7 @@ describe( "HeaderKebabMenu", () => {
     );
     const editButton = screen.getByTestId( "ObsDetail.editButton" );
     expect( editButton ).toBeVisible( );
-    const anchorButton = screen.queryByLabelText( i18next.t( "Kebab-menu" ) );
+    const anchorButton = screen.queryByLabelText( i18next.t( "Observation-options" ) );
     expect( anchorButton ).toBeFalsy( );
   } );
 
@@ -81,7 +71,7 @@ describe( "HeaderKebabMenu", () => {
       />
     );
 
-    const anchorButton = screen.getByLabelText( i18next.t( "Kebab-menu" ) );
+    const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );
     expect( anchorButton ).toBeTruthy( );
     fireEvent.press( anchorButton );
     const shareButton = await screen.findByTestId( "MenuItem.Share" );
@@ -103,7 +93,7 @@ describe( "HeaderKebabMenu", () => {
       />
     );
 
-    const anchorButton = screen.getByLabelText( i18next.t( "Kebab-menu" ) );
+    const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );
     expect( anchorButton ).toBeTruthy( );
     fireEvent.press( anchorButton );
     const shareButton = await screen.findByTestId( "MenuItem.Share" );

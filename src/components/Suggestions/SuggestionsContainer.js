@@ -18,9 +18,9 @@ const SuggestionsContainer = ( ): Node => {
     photoEvidenceUris,
     currentObservation,
     createId,
-    loading,
     comment,
-    setPhotoEvidenceUris
+    setPhotoEvidenceUris,
+    setComment
   } = useContext( ObsEditContext );
   const uuid = currentObservation?.uuid;
   const obsPhotos = currentObservation?.observationPhotos;
@@ -29,6 +29,7 @@ const SuggestionsContainer = ( ): Node => {
   );
   const localObservation = useLocalObservation( uuid );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
+  const [loading, setLoading] = useState( false );
 
   useEffect( ( ) => {
     // If the photos are different, we need to display different photos
@@ -73,9 +74,12 @@ const SuggestionsContainer = ( ): Node => {
       setSelectedPhotoUri={setSelectedPhotoUri}
       onTaxonChosen={createId}
       comment={comment}
-      loading={loading}
+      setComment={setComment}
+      currentObservation={currentObservation}
       nearbySuggestions={nearbySuggestions}
       loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}
+      loading={loading}
+      setLoading={setLoading}
     />
   );
 };

@@ -8,14 +8,6 @@ import * as useIsConnected from "sharedHooks/useIsConnected";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useFocusEffect: ( ) => jest.fn( )
-  };
-} );
-
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
   icon_url: faker.image.imageUrl( )

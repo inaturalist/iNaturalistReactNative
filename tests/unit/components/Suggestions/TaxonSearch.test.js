@@ -13,7 +13,6 @@ import factory, { makeResponse } from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
-jest.mock( "providers/ObsEditProvider" );
 
 jest.mock(
   "components/SharedComponents/ViewWrapper",
@@ -54,18 +53,6 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
     data: mockTaxaList
   } )
 } ) );
-
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: ( ) => ( {
-      goBack: jest.fn( ),
-      setOptions: jest.fn( ),
-      addListener: jest.fn( )
-    } )
-  };
-} );
 
 // react-native-paper's TextInput does a bunch of async stuff that's hard to
 // control in a test, so we're just mocking it here.
