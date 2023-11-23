@@ -82,7 +82,6 @@ describe( "useObservationsUpdates", ( ) => {
       it( "should write correct viewed status for comments and identifications", ( ) => {
         renderHook( ( ) => useObservationsUpdates( mockUser ) );
         const observation = global.realm.objects( "Observation" )[0];
-        console.log( observation, "observation" );
         expect( observation.comments_viewed ).toEqual( viewedComments );
         expect( observation.identifications_viewed ).toEqual( viewedIdentifications );
       } );

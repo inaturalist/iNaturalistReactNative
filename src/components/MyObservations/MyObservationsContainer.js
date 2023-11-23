@@ -6,9 +6,7 @@ import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-k
 import {
   checkForDeletedObservations, searchObservations
 } from "api/observations";
-import {
-  format
-} from "date-fns";
+import { format } from "date-fns";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -24,7 +22,6 @@ import {
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useApiToken,
-  useAuthenticatedQuery,
   useCurrentUser,
   useInfiniteObservationsScroll,
   useIsConnected,
@@ -36,6 +33,7 @@ import {
 import MyObservations from "./MyObservations";
 
 export const INITIAL_UPLOAD_STATE = {
+  currentUploadCount: 0,
   error: null,
   singleUpload: true,
   totalProgressIncrements: 0,
@@ -44,8 +42,7 @@ export const INITIAL_UPLOAD_STATE = {
   uploadProgress: { },
   // $FlowIgnore
   uploads: [],
-  uploadsComplete: false,
-  currentUploadCount: 0
+  uploadsComplete: false
 };
 
 const startUploadState = uploads => ( {
@@ -129,9 +126,6 @@ const MyObservationsContainer = ( ): Node => {
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const isOnline = useIsConnected( );
-  const lastSyncDate = realm.objects( "LocalPreferences" )[0]
-    ? format( realm.objects( "LocalPreferences" )[0].last_sync_time, "yyyy-MM-dd" )
-    : null;
 
   const currentUser = useCurrentUser();
   useObservationsUpdates( !!currentUser );
@@ -299,20 +293,14 @@ const MyObservationsContainer = ( ): Node => {
     Observation.upsertRemoteObservations( results, realm );
   }, [apiToken, currentUser, realm] );
 
-  const { data: deletedObservations } = useAuthenticatedQuery(
-    ["checkForDeletedObservations", lastSyncDate],
-    optsWithAuth => checkForDeletedObservations(
-      {
-        since: lastSyncDate
-      },
-      optsWithAuth
-    ),
-    {
-      enabled: !!lastSyncDate
-    }
-  );
-
   const syncRemoteDeletedObservations = useCallback( async ( ) => {
+    const lastSyncTime = realm.objects( "LocalPreferences" )?.[0]?.last_sync_time;
+    const params = {
+      since: format( lastSyncTime, "yyyy-MM-dd" ) || format( new Date( ), "yyyy-MM-dd" )
+    };
+    const response = await checkForDeletedObservations( params, { api_token: apiToken } );
+    const deletedObservations = response?.results;
+    if ( !deletedObservations ) { return; }
     if ( deletedObservations?.length > 0 ) {
       realm.write( ( ) => {
         deletedObservations.forEach( observationId => {
@@ -322,18 +310,19 @@ const MyObservationsContainer = ( ): Node => {
         } );
       } );
     }
-  }, [deletedObservations, realm] );
+  }, [realm, apiToken] );
 
   const updateSyncTime = useCallback( ( ) => {
+    const currentSyncTime = new Date( );
     realm.write( ( ) => {
       const localPrefs = realm.objects( "LocalPreferences" )[0];
       if ( !localPrefs ) {
         realm.create( "LocalPreferences", {
           ...localPrefs,
-          last_sync_time: new Date( )
+          last_sync_time: currentSyncTime
         } );
       } else {
-        localPrefs.last_sync_time = new Date( );
+        localPrefs.last_sync_time = currentSyncTime;
       }
     } );
   }, [realm] );
@@ -342,9 +331,9 @@ const MyObservationsContainer = ( ): Node => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
     activateKeepAwake( );
-    updateSyncTime( );
     await syncRemoteDeletedObservations( );
     await downloadRemoteObservationsFromServer( );
+    updateSyncTime( );
     deactivateKeepAwake( );
   }, [
     syncRemoteDeletedObservations,
@@ -369,7 +358,7 @@ const MyObservationsContainer = ( ): Node => {
         dispatch( { type: "RESET_UPLOAD_STATE" } );
       } );
     },
-    [navigation]
+    [navigation, realm]
   );
 
   if ( !layout ) { return null; }
