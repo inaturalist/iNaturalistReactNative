@@ -45,19 +45,6 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 // Mock api call to observations
 jest.mock( "inaturalistjs" );
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: ( ) => ( {
-      addListener: jest.fn( ),
-      goBack: jest.fn( )
-    } )
-  };
-} );
-
-jest.mock( "sharedHooks/useLocalObservation" );
-
 const mockUris = [
   faker.image.imageUrl( ),
   `${faker.image.imageUrl( )}/400`

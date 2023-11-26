@@ -1,4 +1,5 @@
 // @flow
+// $FlowIgnore[cannot-resolve-module]
 import { createRealmContext } from "@realm/react";
 import { createContext } from "react";
 // eslint-disable-next-line import/extensions

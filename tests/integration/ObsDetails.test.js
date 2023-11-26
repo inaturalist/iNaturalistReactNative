@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { screen, waitFor } from "@testing-library/react-native";
+import { screen } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -49,11 +49,6 @@ describe( "ObsDetails", () => {
   beforeAll( async () => {
     await initI18next();
 
-    // Write local observation to Realm
-    await global.realm.write( () => {
-      global.realm.create( "Observation", mockObservation );
-    } );
-
     jest.useFakeTimers( );
   } );
 
@@ -62,6 +57,12 @@ describe( "ObsDetails", () => {
   } );
 
   describe( "with an observation where we don't know if the user has viewed comments", () => {
+    beforeEach( async () => {
+      // Write local observation to Realm
+      await global.realm.write( () => {
+        global.realm.create( "Observation", mockObservation );
+      } );
+    } );
     it( "should make a request to observation/viewedUpdates", async () => {
       // Let's make sure the mock hasn't already been used
       expect( inatjs.observations.viewedUpdates ).not.toHaveBeenCalled();
@@ -74,9 +75,7 @@ describe( "ObsDetails", () => {
       ).toBeTruthy();
       expect( inatjs.observations.viewedUpdates ).toHaveBeenCalledTimes( 1 );
       // Expect the observation in realm to have been updated with comments_viewed = true
-      await waitFor( ( ) => {
-        expect( observation.comments_viewed ).toBe( true );
-      } );
+      expect( observation.comments_viewed ).toBe( true );
     } );
   } );
 } );

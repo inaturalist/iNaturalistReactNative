@@ -31,7 +31,10 @@ import {
 // remove if/when we return to the main repo
 import {
   Camera,
-  useCameraDevice
+  // react-native-vision-camera v3
+  // useCameraDevice
+  // react-native-vision-camera v2
+  useCameraDevices
 } from "react-native-vision-camera";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -479,7 +482,11 @@ const CameraContainer = ( ): Node => {
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
   const [cameraPosition, setCameraPosition] = useState( "back" );
-  const device = useCameraDevice( cameraPosition );
+  // react-native-vision-camera v3
+  // const device = useCameraDevice( cameraPosition );
+  // react-native-vision-camera v2
+  const devices = useCameraDevices( );
+  const device = devices[cameraPosition];
 
   if ( !device ) {
     return null;

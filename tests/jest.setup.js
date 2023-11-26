@@ -14,7 +14,8 @@ import { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
-  mockUseCameraDevice
+  mockUseCameraDevice,
+  mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
 jest.mock( "vision-camera-plugin-inatvision" );
@@ -37,6 +38,9 @@ require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
   sortDevices: mockSortDevices,
+  // react-native-vision-camera v2
+  useCameraDevices: mockUseCameraDevices,
+  // react-native-vision-camera v3
   useCameraDevice: mockUseCameraDevice,
   VisionCameraProxy: {
     getFrameProcessorPlugin: jest.fn( )
@@ -68,11 +72,13 @@ jest.mock( "@react-navigation/native", ( ) => {
   return {
     ...actualNav,
     useIsFocused: jest.fn( ( ) => true ),
-    useRoute: jest.fn( ( ) => ( { } ) ),
+    useFocusEffect: ( ) => jest.fn( ),
+    useRoute: jest.fn( ( ) => ( { params: {} } ) ),
     useNavigation: ( ) => ( {
       addListener: jest.fn(),
-      setOptions: jest.fn( ),
-      goBack: jest.fn( )
+      canGoBack: jest.fn( ( ) => true ),
+      goBack: jest.fn( ),
+      setOptions: jest.fn( )
     } )
   };
 } );

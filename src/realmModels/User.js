@@ -28,7 +28,7 @@ class User extends Realm.Object {
     primaryKey: "id",
     properties: {
       id: "int",
-      icon_url: { type: "string?", mapTo: "iconUrl" },
+      icon_url: { type: "string", mapTo: "iconUrl", optional: true },
       login: "string?",
       name: "string?",
       signedIn: "bool?",

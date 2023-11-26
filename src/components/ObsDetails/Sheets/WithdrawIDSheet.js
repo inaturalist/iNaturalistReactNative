@@ -9,11 +9,11 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 
-    type Props = {
-      handleClose: Function,
-      withdrawOrRestoreIdentification: Function,
-      taxon: Object
-    }
+type Props = {
+  handleClose: Function,
+  withdrawOrRestoreIdentification: Function,
+  taxon: Object
+}
 
 const showTaxon = taxon => {
   if ( !taxon ) {

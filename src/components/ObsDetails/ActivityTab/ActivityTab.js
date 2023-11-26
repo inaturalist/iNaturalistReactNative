@@ -26,8 +26,8 @@ const ActivityTab = ( {
   // finds the user's most recent id
   const findRecentUserAgreedToID = ( ) => {
     const currentIds = observation?.identifications;
-    const userAgree = currentIds.filter( id => id.user?.id === userId );
-    return userAgree.length > 0 && userAgree[userAgree.length - 1].current
+    const userAgree = currentIds?.filter( id => id.user?.id === userId );
+    return userAgree?.length > 0 && userAgree[userAgree.length - 1].current
       ? userAgree[userAgree.length - 1].taxon.id
       : undefined;
   };

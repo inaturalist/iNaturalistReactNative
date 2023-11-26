@@ -3,14 +3,11 @@ import AddObsModal from "components/AddObsModal";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import { ObsEditContext } from "providers/contexts";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 // eslint-disable-next-line import/no-unresolved
 import mockPlatform from "react-native/Libraries/Utilities/Platform";
 
 import { renderComponent } from "../../helpers/render";
-
-jest.mock( "providers/ObsEditProvider" );
 
 const mockNavigate = jest.fn();
 jest.mock( "@react-navigation/native", () => {
@@ -26,8 +23,7 @@ jest.mock( "@react-navigation/native", () => {
 const mockResetObsEdit = jest.fn( );
 const mockUpdateObservations = jest.fn( );
 
-const mockObsEditProvider = ( ) => ObsEditProvider.mockImplementation( ( { children } ) => (
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
+const renderWithObsEditProvider = children => renderComponent(
   <ObsEditContext.Provider value={{
     resetObsEditContext: mockResetObsEdit,
     updateObservations: mockUpdateObservations
@@ -35,7 +31,7 @@ const mockObsEditProvider = ( ) => ObsEditProvider.mockImplementation( ( { child
   >
     {children}
   </ObsEditContext.Provider>
-) );
+);
 
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",
@@ -53,12 +49,7 @@ describe( "AddObsModal", ( ) => {
   } );
 
   it( "navigates user to obs edit with no evidence", async ( ) => {
-    mockObsEditProvider( );
-    renderComponent(
-      <ObsEditProvider>
-        <AddObsModal closeModal={jest.fn( )} />
-      </ObsEditProvider>
-    );
+    renderWithObsEditProvider( <AddObsModal closeModal={jest.fn( )} /> );
     const noEvidenceButton = screen.getByLabelText(
       i18next.t( "Observation-with-no-evidence" )
     );
@@ -74,12 +65,7 @@ describe( "AddObsModal", ( ) => {
   } );
 
   it( "navigates user to AR camera on newer devices", async ( ) => {
-    mockObsEditProvider( );
-    renderComponent(
-      <ObsEditProvider>
-        <AddObsModal closeModal={jest.fn( )} />
-      </ObsEditProvider>
-    );
+    renderWithObsEditProvider( <AddObsModal closeModal={jest.fn( )} /> );
     const arCameraButton = screen.getByLabelText(
       i18next.t( "AR-Camera" )
     );
@@ -95,12 +81,7 @@ describe( "AddObsModal", ( ) => {
 
   it( "hides AR camera button on older devices", async ( ) => {
     mockPlatform.Version = 9;
-    mockObsEditProvider( );
-    renderComponent(
-      <ObsEditProvider>
-        <AddObsModal closeModal={jest.fn( )} />
-      </ObsEditProvider>
-    );
+    renderWithObsEditProvider( <AddObsModal closeModal={jest.fn( )} /> );
     const arCameraButton = screen.queryByLabelText(
       i18next.t( "AR-Camera" )
     );

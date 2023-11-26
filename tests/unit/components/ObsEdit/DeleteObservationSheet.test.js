@@ -9,26 +9,8 @@ import React from "react";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-beforeEach( async ( ) => {
-  global.realm.write( ( ) => {
-    global.realm.deleteAll( );
-  } );
-} );
-
 afterEach( ( ) => {
   jest.clearAllMocks( );
-} );
-
-jest.mock( "providers/ObsEditProvider" );
-
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: ( ) => ( {
-      navigate: jest.fn( )
-    } )
-  };
 } );
 
 const renderDeleteSheet = obs => renderComponent(
