@@ -161,7 +161,10 @@ const Map = ( {
       mapViewRef.current.animateToRegion( {
         ...region,
         latitude: userLocation.latitude,
-        longitude: userLocation.longitude
+        longitude: userLocation.longitude,
+        // Zoom level based on location accuracy
+        latitudeDelta: userLocation.accuracy * 0.00001,
+        longitudeDelta: userLocation.accuracy * 0.00001
       } );
       setZoomToUserLocationRequested( false );
     }
