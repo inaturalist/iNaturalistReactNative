@@ -133,7 +133,7 @@ class Photo extends Realm.Object {
 
   static schema = {
     name: "Photo",
-    // TODO: need uuid to be primary key for photos that get uploaded?
+    embedded: true,
     properties: {
       // datetime the photo was created on the device
       _created_at: "date?",

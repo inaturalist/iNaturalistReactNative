@@ -147,7 +147,19 @@ const fetchSpeciesCounts = async ( params: Object = {} ) : Promise<?any> => {
   }
 };
 
+const checkForDeletedObservations = async (
+  params: Object = {},
+  opts: Object = {}
+) : Promise<?any> => {
+  try {
+    return await inatjs.observations.deleted( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
+  checkForDeletedObservations,
   createObservation,
   createOrUpdateEvidence,
   deleteObservation,

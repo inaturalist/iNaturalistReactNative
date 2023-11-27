@@ -4,8 +4,9 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import {
-  searchObservations
+  checkForDeletedObservations, searchObservations
 } from "api/observations";
+import { format } from "date-fns";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -32,6 +33,7 @@ import {
 import MyObservations from "./MyObservations";
 
 export const INITIAL_UPLOAD_STATE = {
+  currentUploadCount: 0,
   error: null,
   singleUpload: true,
   totalProgressIncrements: 0,
@@ -40,8 +42,7 @@ export const INITIAL_UPLOAD_STATE = {
   uploadProgress: { },
   // $FlowIgnore
   uploads: [],
-  uploadsComplete: false,
-  currentUploadCount: 0
+  uploadsComplete: false
 };
 
 const startUploadState = uploads => ( {
@@ -292,19 +293,54 @@ const MyObservationsContainer = ( ): Node => {
     Observation.upsertRemoteObservations( results, realm );
   }, [apiToken, currentUser, realm] );
 
+  const syncRemoteDeletedObservations = useCallback( async ( ) => {
+    const lastSyncTime = realm.objects( "LocalPreferences" )?.[0]?.last_sync_time;
+    const params = {
+      since: format( lastSyncTime, "yyyy-MM-dd" ) || format( new Date( ), "yyyy-MM-dd" )
+    };
+    const response = await checkForDeletedObservations( params, { api_token: apiToken } );
+    const deletedObservations = response?.results;
+    if ( !deletedObservations ) { return; }
+    if ( deletedObservations?.length > 0 ) {
+      realm.write( ( ) => {
+        deletedObservations.forEach( observationId => {
+          const localObsToDelete = realm.objects( "Observation" )
+            .filtered( `id == ${observationId}` );
+          realm.delete( localObsToDelete );
+        } );
+      } );
+    }
+  }, [realm, apiToken] );
+
+  const updateSyncTime = useCallback( ( ) => {
+    const currentSyncTime = new Date( );
+    realm.write( ( ) => {
+      const localPrefs = realm.objects( "LocalPreferences" )[0];
+      if ( !localPrefs ) {
+        realm.create( "LocalPreferences", {
+          ...localPrefs,
+          last_sync_time: currentSyncTime
+        } );
+      } else {
+        localPrefs.last_sync_time = currentSyncTime;
+      }
+    } );
+  }, [realm] );
+
   const syncObservations = useCallback( async ( ) => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
-    // TODO: GET observation/deletions once this is enabled in API v2
     activateKeepAwake( );
+    await syncRemoteDeletedObservations( );
     await downloadRemoteObservationsFromServer( );
-    // we at least want to keep the device awake while uploads are happening
-    // not sure about downloads/deletions
+    updateSyncTime( );
     deactivateKeepAwake( );
   }, [
+    syncRemoteDeletedObservations,
     downloadRemoteObservationsFromServer,
     toggleLoginSheet,
-    showInternetErrorAlert
+    showInternetErrorAlert,
+    updateSyncTime
   ] );
 
   useEffect( ( ) => {
@@ -322,7 +358,7 @@ const MyObservationsContainer = ( ): Node => {
         dispatch( { type: "RESET_UPLOAD_STATE" } );
       } );
     },
-    [navigation]
+    [navigation, realm]
   );
 
   if ( !layout ) { return null; }
