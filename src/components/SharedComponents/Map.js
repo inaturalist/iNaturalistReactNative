@@ -153,19 +153,19 @@ const Map = ( {
   // Kind of obtuse, but the more obvious approach of making a function that
   // pans the map results in a function that gets recreated every time the
   // userLocation changes
-  const [panToUserLocationRequested, setPanToUserLocationRequested] = useState(
+  const [zoomToUserLocationRequested, setZoomToUserLocationRequested] = useState(
     startAtUserLocation
   );
   useEffect( ( ) => {
-    if ( userLocation && panToUserLocationRequested && mapViewRef?.current ) {
+    if ( userLocation && zoomToUserLocationRequested && mapViewRef?.current ) {
       mapViewRef.current.animateToRegion( {
         ...region,
         latitude: userLocation.latitude,
         longitude: userLocation.longitude
       } );
-      setPanToUserLocationRequested( false );
+      setZoomToUserLocationRequested( false );
     }
-  }, [userLocation, panToUserLocationRequested, region] );
+  }, [userLocation, zoomToUserLocationRequested, region] );
 
   // Kludge for the fact that the onUserLocationChange callback in MapView
   // won't fire if showsUserLocation is true on the first render
@@ -178,8 +178,8 @@ const Map = ( {
   const onPermissionGranted = useCallback( ( ) => {
     setPermissionRequested( false );
     setShowsUserLocation( true );
-    setPanToUserLocationRequested( true );
-  }, [setPermissionRequested, setShowsUserLocation, setPanToUserLocationRequested] );
+    setZoomToUserLocationRequested( true );
+  }, [setPermissionRequested, setShowsUserLocation, setZoomToUserLocationRequested] );
   const onPermissionBlocked = useCallback( ( ) => {
     setPermissionRequested( false );
     setShowsUserLocation( false );
@@ -364,7 +364,7 @@ const Map = ( {
           style={getShadow( theme.colors.primary )}
           accessibilityLabel={t( "User-location" )}
           onPress={( ) => {
-            setPanToUserLocationRequested( true );
+            setZoomToUserLocationRequested( true );
             setShowsUserLocation( true );
             setPermissionRequested( true );
           }}
