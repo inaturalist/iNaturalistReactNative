@@ -156,7 +156,7 @@ const Map = ( {
   const [zoomToUserLocationRequested, setZoomToUserLocationRequested] = useState(
     startAtUserLocation
   );
-  useEffect( ( ) => {
+
   // Adapted from iNat Android LocationChooserActivity.java computeOffset function
   const EARTH_RADIUS = 6371000; // Earth radius in meters
   function metersToLatitudeDelta( meters, latitude ) {
@@ -168,6 +168,8 @@ const Map = ( {
     const latitudeDelta = ( latitudeDeltaRadians * 180 ) / Math.PI;
     return latitudeDelta;
   }
+
+  useEffect( ( ) => {
     if ( userLocation && zoomToUserLocationRequested && mapViewRef?.current ) {
       mapViewRef.current.animateToRegion( {
         latitude: userLocation.latitude,
