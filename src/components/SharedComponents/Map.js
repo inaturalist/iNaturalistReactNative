@@ -170,7 +170,6 @@ const Map = ( {
   }
     if ( userLocation && zoomToUserLocationRequested && mapViewRef?.current ) {
       mapViewRef.current.animateToRegion( {
-        ...region,
         latitude: userLocation.latitude,
         longitude: userLocation.longitude,
         // Zoom level based on location accuracy.
@@ -180,7 +179,7 @@ const Map = ( {
       } );
       setZoomToUserLocationRequested( false );
     }
-  }, [userLocation, zoomToUserLocationRequested, region] );
+  }, [userLocation, zoomToUserLocationRequested] );
 
   // Kludge for the fact that the onUserLocationChange callback in MapView
   // won't fire if showsUserLocation is true on the first render
