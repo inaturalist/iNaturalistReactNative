@@ -68,8 +68,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
               "Taxon",
               newIdentification.taxon.id
             ) || newIdentification.taxon;
-            const realmIdentification = realm?.create( "Identification", newIdentification );
-            localIdentifications.push( realmIdentification );
+            localIdentifications.push( newIdentification );
           } );
         }
         navigation.navigate( "ObservationsStackNavigator", {

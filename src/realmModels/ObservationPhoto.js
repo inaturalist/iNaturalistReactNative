@@ -21,7 +21,7 @@ class ObservationPhoto extends Realm.Object {
   }
 
   static mapApiToRealm( observationPhoto, existingObs ) {
-    const obsPhotos = existingObs.observationPhotos;
+    const obsPhotos = existingObs?.observationPhotos;
     const existingObsPhoto = obsPhotos?.find( p => p.uuid === observationPhoto.uuid );
 
     const localObsPhoto = {

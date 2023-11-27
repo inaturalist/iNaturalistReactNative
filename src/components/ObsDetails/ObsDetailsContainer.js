@@ -233,8 +233,7 @@ const ObsDetailsContainer = ( ): Node => {
             const localComments = localObservation?.comments;
             const newComment = data[0];
             newComment.user = currentUser;
-            const realmComment = realm?.create( "Comment", newComment );
-            localComments.push( realmComment );
+            localComments.push( newComment );
           } );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
@@ -278,8 +277,7 @@ const ObsDetailsContainer = ( ): Node => {
               "Taxon",
               newIdentification.taxon.id
             ) || newIdentification.taxon;
-            const realmIdentification = realm?.create( "Identification", newIdentification );
-            localIdentifications.push( realmIdentification );
+            localIdentifications.push( newIdentification );
           } );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
