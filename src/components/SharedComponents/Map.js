@@ -157,14 +157,26 @@ const Map = ( {
     startAtUserLocation
   );
   useEffect( ( ) => {
+  // Adapted from iNat Android LocationChooserActivity.java computeOffset function
+  const EARTH_RADIUS = 6371000; // Earth radius in meters
+  function metersToLatitudeDelta( meters, latitude ) {
+    // Calculate latitude delta in radians
+    const latitudeDeltaRadians
+      = meters / ( EARTH_RADIUS * Math.cos( ( latitude * Math.PI ) / 180 ) );
+
+    // Convert latitude delta to degrees
+    const latitudeDelta = ( latitudeDeltaRadians * 180 ) / Math.PI;
+    return latitudeDelta;
+  }
     if ( userLocation && zoomToUserLocationRequested && mapViewRef?.current ) {
       mapViewRef.current.animateToRegion( {
         ...region,
         latitude: userLocation.latitude,
         longitude: userLocation.longitude,
-        // Zoom level based on location accuracy
-        latitudeDelta: userLocation.accuracy * 0.00001,
-        longitudeDelta: userLocation.accuracy * 0.00001
+        // Zoom level based on location accuracy.
+        latitudeDelta: metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude ),
+        // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
+        longitudeDelta: metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude )
       } );
       setZoomToUserLocationRequested( false );
     }
