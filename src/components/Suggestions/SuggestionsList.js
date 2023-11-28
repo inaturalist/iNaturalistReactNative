@@ -8,25 +8,48 @@ import React, { useCallback } from "react";
 import { ActivityIndicator } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
+const convertScoreToConfidence = score => {
+  if ( !score ) {
+    return null;
+  }
+  if ( score < 20 ) {
+    return 1;
+  }
+  if ( score < 40 ) {
+    return 2;
+  }
+  if ( score < 60 ) {
+    return 3;
+  }
+  if ( score < 80 ) {
+    return 4;
+  }
+  return 5;
+};
+
 type Props = {
+  loadingSuggestions: boolean,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
-  loading: boolean
+  setLoading: Function
 };
 
 const SuggestionsList = ( {
+  loadingSuggestions,
   nearbySuggestions,
   onTaxonChosen,
-  loading
+  setLoading
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const onTaxonResultChosen = useCallback( taxon => {
-    onTaxonChosen( taxon );
+  const onTaxonResultChosen = useCallback( async taxon => {
+    setLoading( true );
+    await onTaxonChosen( taxon );
+    setLoading( false );
     navigation.goBack( );
-  }, [navigation, onTaxonChosen] );
+  }, [navigation, onTaxonChosen, setLoading] );
 
-  if ( loading ) {
+  if ( loadingSuggestions ) {
     return (
       <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
         <ActivityIndicator large />
@@ -50,25 +73,6 @@ const SuggestionsList = ( {
   }
 
   const topSuggestion = nearbySuggestions[0];
-
-  const convertScoreToConfidence = score => {
-    if ( !score ) {
-      return null;
-    }
-    if ( score < 20 ) {
-      return 1;
-    }
-    if ( score < 40 ) {
-      return 2;
-    }
-    if ( score < 60 ) {
-      return 3;
-    }
-    if ( score < 80 ) {
-      return 4;
-    }
-    return 5;
-  };
 
   return (
     <>

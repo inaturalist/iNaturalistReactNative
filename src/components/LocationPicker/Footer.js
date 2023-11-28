@@ -3,22 +3,19 @@
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   keysToUpdate: Object,
-  goBackOnSave: boolean
+  goBackOnSave: boolean,
+  updateObservationKeys: Function
 };
 
-const Footer = ( { keysToUpdate, goBackOnSave }: Props ): Node => {
+const Footer = ( { keysToUpdate, goBackOnSave, updateObservationKeys }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  const {
-    updateObservationKeys
-  } = useContext( ObsEditContext );
 
   return (
     <View className="h-[73px] justify-center">

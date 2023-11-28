@@ -4,6 +4,7 @@
 import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import { format } from "date-fns";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
@@ -15,14 +16,7 @@ import { signIn, signOut } from "../helpers/user";
 
 describe( "MyObservations", ( ) => {
   beforeAll( async ( ) => {
-    await global.realm.write( ( ) => {
-      global.realm.deleteAll( );
-    } );
     await initI18next( );
-  } );
-
-  afterEach( ( ) => {
-    jest.clearAllMocks( );
   } );
 
   // For some reason this interferes with the "should not make a request to
@@ -41,6 +35,16 @@ describe( "MyObservations", ( ) => {
   // } );
 
   describe( "when signed out", ( ) => {
+    beforeEach( async ( ) => {
+      await global.realm.write( ( ) => {
+        global.realm.deleteAll( );
+      } );
+    } );
+
+    afterEach( ( ) => {
+      jest.clearAllMocks( );
+    } );
+
     async function testApiMethodNotCalled( apiMethod ) {
       // Let's make sure the mock hasn't already been used
       expect( apiMethod ).not.toHaveBeenCalled( );
@@ -71,20 +75,18 @@ describe( "MyObservations", ( ) => {
     } );
 
     beforeEach( async ( ) => {
+      await global.realm.write( ( ) => {
+        global.realm.deleteAll( );
+      } );
       await signIn( mockUser );
     } );
 
-    afterEach( signOut );
-
-    it( "should make a request to observations/updates", async ( ) => {
-      // Let's make sure the mock hasn't already been used
-      expect( inatjs.observations.updates ).not.toHaveBeenCalled();
-      renderAppWithComponent( <MyObservationsContainer /> );
-      expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
-      expect( inatjs.observations.updates ).toHaveBeenCalled();
+    afterEach( ( ) => {
+      jest.clearAllMocks( );
+      signOut( );
     } );
 
-    describe( "with observations", ( ) => {
+    describe( "with unsynced observations", ( ) => {
       const mockObservations = [
         factory( "LocalObservation", {
           _synced_at: null,
@@ -126,6 +128,18 @@ describe( "MyObservations", ( ) => {
             global.realm.create( "Observation", mockObservation );
           } );
         } );
+      } );
+
+      afterEach( ( ) => {
+        jest.clearAllMocks( );
+      } );
+
+      it( "should make a request to observations/updates", async ( ) => {
+        // Let's make sure the mock hasn't already been used
+        expect( inatjs.observations.updates ).not.toHaveBeenCalled();
+        renderAppWithComponent( <MyObservationsContainer /> );
+        expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
+        expect( inatjs.observations.updates ).toHaveBeenCalled();
       } );
 
       it( "renders grid view on button press", async () => {
@@ -195,10 +209,18 @@ describe( "MyObservations", ( ) => {
           expect( uploadInProgressIcon ).toBeVisible( );
         } );
       } );
+    } );
+
+    describe( "with synced observations", ( ) => {
+      const mockDeletedIds = [
+        faker.datatype.number( ),
+        faker.datatype.number( )
+      ];
 
       const mockObservationsSynced = [
         factory( "LocalObservation", {
-          _synced_at: faker.date.past( )
+          _synced_at: faker.date.past( ),
+          id: mockDeletedIds[0]
         } ),
         factory( "LocalObservation", {
           _synced_at: faker.date.past( )
@@ -206,19 +228,26 @@ describe( "MyObservations", ( ) => {
       ];
 
       beforeEach( async () => {
-      // Write local observation to Realm
         await global.realm.write( () => {
+          global.realm.deleteAll( );
           mockObservationsSynced.forEach( mockObservation => {
             global.realm.create( "Observation", mockObservation );
           } );
+          global.realm.create( "LocalPreferences", {
+            last_sync_time: new Date( "2023-11-01" )
+          } );
         } );
+      } );
+
+      afterEach( ( ) => {
+        jest.clearAllMocks( );
       } );
 
       it( "displays observation status", async () => {
         expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
+        const syncIcon = await screen.findByTestId( "SyncButton" );
         await waitFor( ( ) => {
-          const syncIcon = screen.getByTestId( "SyncButton" );
           expect( syncIcon ).toBeVisible( );
         } );
         mockObservationsSynced.forEach( obs => {
@@ -226,10 +255,55 @@ describe( "MyObservations", ( ) => {
           expect( obsStatus ).toBeVisible( );
         } );
       } );
+
+      it( "downloads deleted observations from server when sync button tapped", async ( ) => {
+        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const syncIcon = await screen.findByTestId( "SyncButton" );
+        await waitFor( ( ) => {
+          expect( syncIcon ).toBeVisible( );
+        } );
+        fireEvent.press( syncIcon );
+        const lastSyncTime = global.realm.objects( "LocalPreferences" )[0].last_sync_time;
+        await waitFor( ( ) => {
+          expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
+            {
+              since: format( lastSyncTime, "yyyy-MM-dd" )
+            },
+            expect.anything( )
+          );
+        } );
+      } );
+
+      it( "deletes local observations if they have been deleted on server", async ( ) => {
+        inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const syncIcon = await screen.findByTestId( "SyncButton" );
+        await waitFor( ( ) => {
+          expect( syncIcon ).toBeVisible( );
+        } );
+        fireEvent.press( syncIcon );
+        const spy = jest.spyOn( global.realm, "write" );
+        const deleteSpy = jest.spyOn( global.realm, "delete" );
+        await waitFor( ( ) => {
+          expect( spy ).toHaveBeenCalled( );
+        } );
+        expect( deleteSpy ).toHaveBeenCalled( );
+        expect( global.realm.objects( "Observation" ).length ).toBe( 1 );
+      } );
     } );
   } );
 
   describe( "localization for current user", ( ) => {
+    beforeEach( async ( ) => {
+      await global.realm.write( ( ) => {
+        global.realm.deleteAll( );
+      } );
+    } );
+
+    afterEach( ( ) => {
+      jest.clearAllMocks( );
+    } );
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser", {
         login: faker.internet.userName( ),

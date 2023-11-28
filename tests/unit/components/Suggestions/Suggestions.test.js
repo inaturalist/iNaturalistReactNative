@@ -1,15 +1,15 @@
 import { faker } from "@faker-js/faker";
 import {
+  fireEvent,
   screen, waitFor
 } from "@testing-library/react-native";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
-import inatjs from "inaturalistjs";
 import { ObsEditContext } from "providers/contexts";
 import React from "react";
 
-import factory, { makeResponse } from "../../../factory";
+import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
 const mockTaxon = factory( "RemoteTaxon", {
@@ -34,20 +34,16 @@ const mockSuggestionsList = [{
   }
 }];
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: mockSuggestionsList,
+    isLoading: false
+  } )
+} ) );
+
 // Mock api call to observations
 jest.mock( "inaturalistjs" );
-
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: ( ) => ( {
-      addListener: jest.fn( )
-    } )
-  };
-} );
-
-jest.mock( "sharedHooks/useLocalObservation" );
 
 const mockUris = [
   faker.image.imageUrl( ),
@@ -56,16 +52,18 @@ const mockUris = [
 
 const mockCreateId = jest.fn( );
 
-const renderSuggestions = ( loading = false, comment = "" ) => renderComponent(
+const renderSuggestions = ( comment = "" ) => renderComponent(
   <ObsEditContext.Provider value={{
     updateObservationKeys: jest.fn( ),
     photoEvidenceUris: mockUris,
     createId: mockCreateId,
-    loading,
     comment,
     currentObservation: {
-      uuid: faker.datatype.uuid( )
-    }
+      uuid: faker.datatype.uuid( ),
+      latitude: 41,
+      longitude: -143
+    },
+    setPhotoEvidenceUris: jest.fn( )
   }}
   >
     <SuggestionsContainer />
@@ -84,27 +82,38 @@ describe( "Suggestions", ( ) => {
     expect( suggestions ).toBeAccessible( );
   } );
 
+  it( "should fetch nearby suggestions for current photo", async ( ) => {
+    renderSuggestions( );
+    const taxonTopResult = screen.getByTestId(
+      `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
+    );
+    await waitFor( ( ) => {
+      expect( taxonTopResult ).toBeVisible( );
+    } );
+  } );
+
   it( "should show loading wheel while id being created", async ( ) => {
-    renderSuggestions( true );
+    renderSuggestions( );
+    const taxonTopResult = screen.getByTestId(
+      `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
+    );
+    await waitFor( ( ) => {
+      expect( taxonTopResult ).toBeVisible( );
+    } );
+    const taxonCheckmark = screen.getByTestId(
+      `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}.checkmark`
+    );
+    fireEvent.press( taxonCheckmark );
     await waitFor( ( ) => {
       expect( screen.queryByTestId( "Suggestions.ActivityIndicator" ) ).toBeVisible( );
     } );
   } );
 
   it( "shows comment section if observation has comment", ( ) => {
-    renderSuggestions( false, "Comment added to observation" );
+    renderSuggestions( "Comment added to observation" );
     const commentSection = screen.getByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
     );
     expect( commentSection ).toBeVisible( );
-  } );
-
-  it( "should fetch nearby suggestions for current photo", async ( ) => {
-    renderSuggestions( );
-    await waitFor( ( ) => {
-      inatjs.observations.observers.mockResolvedValue( makeResponse( [] ) );
-      inatjs.computervision.score_image.mockResolvedValue( makeResponse( mockSuggestionsList ) );
-      expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 1 );
-    } );
   } );
 } );

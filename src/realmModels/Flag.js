@@ -15,15 +15,11 @@ class Flag extends Realm.Object {
     uuid: true
   };
 
-  static mapApiToRealm( flag ) {
-    return flag;
-  }
-
   static schema = {
     name: "Flag",
-    primaryKey: "uuid",
+    embedded: true,
     properties: {
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: "string?",
       id: "int",
       comment: "string?",
       flag: "string",

@@ -9,9 +9,9 @@ import {
   INatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
@@ -19,17 +19,17 @@ const { useRealm } = RealmContext;
 
 type Props = {
   passesIdentificationTest: boolean,
-  setPassesIdentificationTest: Function
+  setPassesIdentificationTest: Function,
+  currentObservation: Object,
+  updateObservationKeys: Function
 }
 
 const IdentificationSection = ( {
   passesIdentificationTest,
-  setPassesIdentificationTest
+  setPassesIdentificationTest,
+  currentObservation,
+  updateObservationKeys
 }: Props ): Node => {
-  const {
-    currentObservation,
-    updateObservationKeys
-  } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -113,6 +113,7 @@ const IdentificationSection = ( {
                         : theme.colors.onPrimary}
                     />
                   )}
+                  accessibilityLabel={t( "Navigate-to-identification-suggestions-screen" )}
                 />
               )}
               taxon={identification}

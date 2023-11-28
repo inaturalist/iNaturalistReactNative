@@ -17,12 +17,16 @@ import {
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import HeaderKebabMenu from "./HeaderKebabMenu";
+
 type Props = {
   faveOrUnfave: Function,
   userFav: ?boolean,
   photos: Array<Object>,
   uuid: string,
-  isOnline: boolean
+  isOnline: boolean,
+  belongsToCurrentUser: boolean,
+  observationId: number
 }
 
 const PhotoDisplay = ( {
@@ -30,7 +34,9 @@ const PhotoDisplay = ( {
   userFav,
   photos,
   uuid,
-  isOnline
+  isOnline,
+  belongsToCurrentUser,
+  observationId
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -49,29 +55,37 @@ const PhotoDisplay = ( {
     [t, navigation, uuid]
   );
 
+  const kebabMenu = useCallback( ( ) => (
+    <View className="absolute top-3 right-3">
+      <HeaderKebabMenu observationId={observationId} />
+    </View>
+  ), [observationId] );
+
   const displayPhoto = useCallback( ( ) => {
-    if ( !isOnline ) {
-      // TODO show photos that are available offline
-      return (
-        <View className="bg-black flex-row justify-center">
-          <IconMaterial
-            name="wifi-off"
-            color={colors.white}
-            size={100}
-            accessibilityRole="image"
-            accessibilityLabel={t(
-              "Observation-photos-unavailable-without-internet"
-            )}
-          />
-        </View>
-      );
-    }
     if ( photos.length > 0 ) {
       return (
         <View className="bg-black">
-          <PhotoScroll photos={photos} />
+          {
+            isOnline
+              ? <PhotoScroll photos={photos} />
+              : (
+                <View className="bg-black flex-row justify-center">
+                  <IconMaterial
+                    name="wifi-off"
+                    color={colors.white}
+                    size={100}
+                    accessibilityRole="image"
+                    accessibilityLabel={t(
+                      "Observation-photos-unavailable-without-internet"
+                    )}
+                  />
+                </View>
+              )
+          }
           {/* TODO: a11y props are not passed down into this 3.party */}
-          { editButton }
+          { belongsToCurrentUser
+            ? editButton
+            : kebabMenu( )}
           <INatIconButton
             icon={userFav
               ? "star"
@@ -101,7 +115,9 @@ const PhotoDisplay = ( {
         accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}
       >
 
-        { editButton }
+        { belongsToCurrentUser
+          ? editButton
+          : kebabMenu( )}
         <IconMaterial
           color={colors.white}
           testID="ObsDetails.noImage"
@@ -111,6 +127,8 @@ const PhotoDisplay = ( {
       </View>
     );
   }, [
+    belongsToCurrentUser,
+    kebabMenu,
     editButton,
     faveOrUnfave,
     isOnline,

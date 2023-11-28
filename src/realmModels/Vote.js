@@ -9,15 +9,11 @@ class Vote extends Realm.Object {
     vote_scope: true
   };
 
-  static mapApiToRealm( vote ) {
-    return vote;
-  }
-
   static schema = {
     name: "Vote",
-    primaryKey: "id",
+    embedded: true,
     properties: {
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: "string?",
       id: "int",
       user_id: "int",
       vote_flag: "bool",

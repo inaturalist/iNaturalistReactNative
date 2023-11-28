@@ -20,9 +20,9 @@ class ObservationPhoto extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static mapApiToRealm( observationPhoto, realm ) {
-    const existingObsPhoto = realm
-      ?.objectForPrimaryKey( "ObservationPhoto", observationPhoto.uuid );
+  static mapApiToRealm( observationPhoto, existingObs ) {
+    const obsPhotos = existingObs?.observationPhotos;
+    const existingObsPhoto = obsPhotos?.find( p => p.uuid === observationPhoto.uuid );
 
     const localObsPhoto = {
       ...observationPhoto,
@@ -65,9 +65,33 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
+  static createObsPhotosWithPosition = async ( photos, { position, local } ) => {
+    let photoPosition = position;
+    return Promise.all(
+      photos.map( async photo => {
+        const newPhoto = ObservationPhoto.new(
+          local
+            ? photo
+            : photo?.image?.uri,
+          photoPosition
+        );
+        photoPosition += 1;
+        return newPhoto;
+      } )
+    );
+  };
+
+  static deleteObservationPhoto = ( list, photo ) => {
+    const i = list.findIndex(
+      p => p.photo.localFilePath === photo || p.originalPhotoUri === photo
+    );
+    list.splice( i, 1 );
+    return list;
+  };
+
   static schema = {
     name: "ObservationPhoto",
-    primaryKey: "uuid",
+    embedded: true,
     properties: {
       // datetime the obsPhoto was created on the device
       _created_at: "date?",

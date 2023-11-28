@@ -142,7 +142,12 @@ const ObsDetailsContainer = ( ): Node => {
   const localObservation = useLocalObservation( uuid );
   const observation = localObservation || remoteObservation;
 
-  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
+  // In theory the only sitiation in which an observation would not have a
+  // user is when a user is not signed but has made a new observation in the
+  // app. Also in theory that user should not be able to get to ObsDetail for
+  // those observations, just ObsEdit. But.... let's be safe.
+  const belongsToCurrentUser = observation?.user?.id === currentUser?.id
+    || ( !observation?.user && !observation?.id );
 
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
@@ -228,8 +233,7 @@ const ObsDetailsContainer = ( ): Node => {
             const localComments = localObservation?.comments;
             const newComment = data[0];
             newComment.user = currentUser;
-            const realmComment = realm?.create( "Comment", newComment );
-            localComments.push( realmComment );
+            localComments.push( newComment );
           } );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
@@ -273,8 +277,7 @@ const ObsDetailsContainer = ( ): Node => {
               "Taxon",
               newIdentification.taxon.id
             ) || newIdentification.taxon;
-            const realmIdentification = realm?.create( "Identification", newIdentification );
-            localIdentifications.push( realmIdentification );
+            localIdentifications.push( newIdentification );
           } );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
@@ -360,6 +363,7 @@ const ObsDetailsContainer = ( ): Node => {
       onIDAgreePressed={onIDAgreePressed}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
       isOnline={isOnline}
+      belongsToCurrentUser={belongsToCurrentUser}
     />
   );
 };

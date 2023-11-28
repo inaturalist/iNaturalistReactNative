@@ -11,10 +11,6 @@ class User extends Realm.Object {
     prefers_scientific_name_first: true
   };
 
-  static mapApiToRealm( user ) {
-    return user;
-  }
-
   // getting user icon data from production instead of staging
   static uri = user => user?.icon_url
                && { uri: user?.icon_url.replace( "staticdev", "static" ) };
@@ -28,7 +24,7 @@ class User extends Realm.Object {
     primaryKey: "id",
     properties: {
       id: "int",
-      icon_url: { type: "string?", mapTo: "iconUrl" },
+      icon_url: { type: "string", mapTo: "iconUrl", optional: true },
       login: "string?",
       name: "string?",
       signedIn: "bool?",

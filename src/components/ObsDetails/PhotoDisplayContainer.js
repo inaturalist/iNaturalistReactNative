@@ -21,15 +21,17 @@ import PhotoDisplay from "./PhotoDisplay";
 type Props = {
   observation: Object,
   refetchRemoteObservation: Function,
-  isOnline: boolean
+  isOnline: boolean,
+  belongsToCurrentUser: boolean
 }
 
 const PhotoDisplayContainer = ( {
-  observation, refetchRemoteObservation, isOnline
+  observation, refetchRemoteObservation, isOnline, belongsToCurrentUser
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const { t } = useTranslation( );
+  const observationId = observation?.id;
 
   const faves = observation?.faves;
   const uuid = observation?.uuid;
@@ -96,6 +98,8 @@ const PhotoDisplayContainer = ( {
       photos={photos}
       uuid={uuid}
       isOnline={isOnline}
+      belongsToCurrentUser={belongsToCurrentUser}
+      observationId={observationId}
     />
   );
 };

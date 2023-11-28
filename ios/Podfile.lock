@@ -393,11 +393,11 @@ PODS:
     - React-perflogger (= 0.71.12)
   - ReactNativeExceptionHandler (2.10.10):
     - React-Core
-  - RealmJS (11.10.2):
+  - RealmJS (12.3.0):
     - React
   - RNAudioRecorderPlayer (3.6.0):
     - React-Core
-  - RNCAsyncStorage (1.19.3):
+  - RNCAsyncStorage (1.19.5):
     - React-Core
   - RNCCheckbox (0.5.16):
     - BEMCheckBox (~> 1.4)
@@ -456,11 +456,10 @@ PODS:
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
-  - VisionCamera (3.2.2):
+  - VisionCamera (2.15.4):
     - React
     - React-callinvoker
     - React-Core
-    - react-native-worklets-core
   - VisionCameraPluginInatVision (0.1.0):
     - React-Core
   - Yoga (1.14.0)
@@ -752,9 +751,9 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7902246857a4ead4166869e6c42d4df329ff721d
   ReactCommon: a6d1c76b9e10b439e41db225263341240e1cda9f
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
-  RealmJS: 73a36da3cbbe85e1bdcbf55683172b51f35070d3
+  RealmJS: 4c52a15602e70b64cd9230b0a17a9c12741371f4
   RNAudioRecorderPlayer: 4690a7cd9e4fd8e58d9671936a7bc3b686e59051
-  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
+  RNCAsyncStorage: f2974eca860c16a3e56eea5771fda8d12e2d2057
   RNCCheckbox: 75255b03e604bbcc26411eb31c4cbe3e3865f538
   RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
   RNCPicker: 32ca102146bc7d34a8b93a998d9938d9f9ec7898
@@ -770,7 +769,7 @@ SPEC CHECKSUMS:
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
-  VisionCamera: cb27c70cea1439e9a946bf2acdc059f8fb1bc68c
+  VisionCamera: f41b08470c9ae0a01be0d5e48f9fdd61602aa51f
   VisionCameraPluginInatVision: 79bb258db75218889c74d0897ecba676492c4def
   Yoga: 39310a10944fc864a7550700de349183450f8aaa
 

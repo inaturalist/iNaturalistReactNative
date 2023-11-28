@@ -13,19 +13,13 @@ class Comment extends Realm.Object {
     user: User && User.USER_FIELDS
   };
 
-  static mapApiToRealm( comment, realm ) {
-    return {
-      ...comment,
-      user: User.mapApiToRealm( comment.user, realm )
-    };
-  }
-
   static schema = {
     name: "Comment",
+    embedded: true,
     properties: {
       uuid: "string",
       body: "string?",
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: "string?",
       flags: "Flag[]",
       id: "int?",
       user: "User?",

@@ -445,6 +445,7 @@
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "Settings": "Settings",
+  "Share": "Share",
   "SHARE-DEBUG-LOGS": "SHARE DEBUG LOGS",
   "Share-location": "Share Location",
   "Sign-out": "Sign out",
@@ -684,14 +685,15 @@
   "Switches-to-tab": "Switches to { $tab } tab.",
   "Text-Box-to-Describe-Reason-for-Flag": "Text box to describe reason for flag.",
   "Use-the-devices-other-camera": "Use the device's other camera.",
-  "Open-kebab-menu": "Open kebab menu.",
+  "Open-menu": "Open menu.",
   "Selects-iconic-taxon-X-for-identification": "Selects iconic taxon { $iconicTaxon } for identification.",
   "Indicates-location-is-loading": "Indicates location is loading.",
   "Returns-map-to-users-current-location": "Returns map to user's current location.",
   "Toggles-map-layer": "Toggles map layer.",
-  "Navigate-to-observation-edit-screen": "Navigate to observation edit screen",
-  "Close-add-observation-modal": "Close add observation modal",
-  "Navigate-to-photo-importer": "Navigate to photo importer",
+  "Navigate-to-observation-edit-screen": "Navigate to observation edit screen.",
+  "Close-add-observation-modal": "Close add observation modal.",
+  "Navigate-to-photo-importer": "Navigate to photo importer.",
+  "Show-observation-options": "Show observation options.",
   "Camera-button-value-back": {
     "comment": "Accessible label for the camera button",
     "val": "The back camera is being used."
@@ -718,19 +720,13 @@
   "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
   "Photo-taken-at": "Photo taken at { $date }",
   "Take-photo": "Take photo",
-  "Location-map-unavailable-without-internet": {
-    "comment": "Accessibility labels for no internet state in ObsDetails",
-    "val": "Location map unavailable without internet"
-  },
+  "Location-map-unavailable-without-internet": "Location map unavailable without internet",
   "Observation-photos-unavailable-without-internet": "Observation photos unavailable without internet",
   "Taxon-photo-unavailable-without-internet": "Taxon photo unavailable without internet",
   "User-photo-unavailable-without-internet": "User photo unavailable without internet",
   "Search": "Search",
   "Select-photo": "Select photo",
-  "Add-this-ID": {
-    "comment": "Accessibility labels for icons",
-    "val": "Add this identification"
-  },
+  "Add-this-ID": "Add this identification",
   "Navigate-to-notifications-screen": "Navigate to notifications screen",
   "Navigate-to-observation-list": "Navigate to observation list",
   "Open-side-menu": "Open side menu",
@@ -746,7 +742,10 @@
   "Enable-flash": "Enable flash",
   "Information": "Information",
   "Checkmark": "Checkmark",
-  "Kebab-menu": "Kebab menu",
+  "Menu": {
+    "comment": "Accessibility label for a button that opens a menu of options",
+    "val": "Menu"
+  },
   "Edit": "Edit",
   "User-location": "User location",
   "Loading-wheel": "Loading wheel",
@@ -767,6 +766,10 @@
   "Previous-observation": "Previous observation",
   "Next-observation": "Next observation",
   "Close-search": "Close search",
+  "Observation-menu": {
+    "comment": "Accessibility label for a button that shows a menu of options on the\nobservation detail view",
+    "val": "Observation menu"
+  },
   "date-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
@@ -1013,5 +1016,11 @@
   "Your-identification-will-be-posted-with-the-following-comment": "Your identification will be posted with the following comment:",
   "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo": "iNaturalist isn't able to provide a top ID suggestion for this photo.",
   "iNaturalist-has-no-ID-suggestions-for-this-photo": "iNaturalist has no ID suggestions for this photo.",
-  "Import-Photos-From": "Import Photos From"
+  "Import-Photos-From": "Import Photos From",
+  "Select-a-date-and-time-for-observation": "Select a date and time for observation",
+  "Select-captive-or-cultivated-status": "Select captive or cultivated status",
+  "Select-geoprivacy-status": "Select geoprivacy status",
+  "Navigate-to-location-picker-screen": "Navigate to location picker screen",
+  "Iconic-taxon-name": "Iconic taxon name: { $iconicTaxon }",
+  "Navigate-to-identification-suggestions-screen": "Navigate to identification suggestions screen"
 }

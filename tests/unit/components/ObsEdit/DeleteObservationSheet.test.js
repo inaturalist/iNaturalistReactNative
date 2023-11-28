@@ -4,64 +4,22 @@ import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationS
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
-import { ObsEditContext } from "providers/contexts";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-beforeEach( async ( ) => {
-  global.realm.write( ( ) => {
-    global.realm.deleteAll( );
-  } );
-} );
-
 afterEach( ( ) => {
   jest.clearAllMocks( );
 } );
 
-jest.mock( "providers/ObsEditProvider" );
-
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: ( ) => ( {
-      navigate: jest.fn( )
-    } )
-  };
-} );
-
-// Mock ObservationProvider so it provides a specific array of observations
-// without any current observation or ability to update or fetch
-// observations
-const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <ObsEditContext.Provider value={{
-    currentObservation: obs[0],
-    deleteLocalObservation: ( ) => {
-      global.realm.write( ( ) => {
-        const observation = global.realm.objectForPrimaryKey( "Observation", obs[0].uuid );
-        if ( observation ) {
-          global.realm.delete( observation );
-        }
-      } );
-    },
-    observations: obs
-  }}
-  >
-    {children}
-  </ObsEditContext.Provider>
-) );
-
-const renderDeleteSheet = ( ) => renderComponent(
-  <ObsEditProvider>
-    <DeleteObservationSheet
-      handleClose={( ) => jest.fn( )}
-      navToObsList={( ) => jest.fn( )}
-    />
-  </ObsEditProvider>
+const renderDeleteSheet = obs => renderComponent(
+  <DeleteObservationSheet
+    handleClose={( ) => jest.fn( )}
+    navToObsList={( ) => jest.fn( )}
+    currentObservation={obs[0]}
+    observations={obs}
+  />
 );
 
 const getLocalObservation = uuid => global.realm
@@ -85,8 +43,7 @@ describe( "delete observation", ( ) => {
       } );
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
-      mockObsEditProviderWithObs( observations );
-      renderDeleteSheet( );
+      renderDeleteSheet( observations );
       const deleteButtonText = i18next.t( "DELETE" );
       const deleteButton = screen.queryByText( deleteButtonText );
       expect( deleteButton ).toBeTruthy( );
@@ -108,8 +65,7 @@ describe( "delete observation", ( ) => {
       } );
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
-      mockObsEditProviderWithObs( observations );
-      renderDeleteSheet( );
+      renderDeleteSheet( observations );
       const deleteButtonText = i18next.t( "DELETE" );
       const deleteButton = await screen.findByText( deleteButtonText );
       expect( deleteButton ).toBeTruthy( );
@@ -129,8 +85,7 @@ describe( "delete observation", ( ) => {
       } );
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
-      mockObsEditProviderWithObs( observations );
-      renderDeleteSheet( );
+      renderDeleteSheet( observations );
 
       const cancelButton = screen.queryByText( /CANCEL/ );
       expect( cancelButton ).toBeTruthy( );

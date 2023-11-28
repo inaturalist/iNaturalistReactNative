@@ -5,6 +5,7 @@ import { ObsEditContext } from "providers/contexts";
 import { useCallback, useContext, useEffect } from "react";
 import { Platform } from "react-native";
 import ShareMenu from "react-native-share-menu";
+import Observation from "realmModels/Observation";
 
 import { log } from "../../react-native-logs.config";
 
@@ -20,10 +21,10 @@ const useShare = ( ): void => {
   const navigation = useNavigation( );
   const obsEditContext = useContext( ObsEditContext );
   const {
-    createObservationsFromGroupedPhotos
+    updateObservations
   } = useContext( ObsEditContext );
 
-  const handleShare = useCallback( ( item: ?SharedItem ) => {
+  const handleShare = useCallback( async ( item: ?SharedItem ) => {
     if ( !item ) {
       logger.info( "no item" );
       return;
@@ -70,11 +71,14 @@ const useShare = ( ): void => {
         .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
         .map( x => ( { image: { uri: x.data } } ) );
     }
-    logger.info( "calling createObservationsFromGroupedPhotos with photoUris: ", photoUris );
-    createObservationsFromGroupedPhotos( [{ photos: photoUris }] );
+    logger.info( "creating observations in useShare with photoUris: ", photoUris );
+    const newObservations = await Promise.all( [{ photos: photoUris }].map(
+      ( { photos } ) => Observation.createObservationWithPhotos( photos )
+    ) );
+    updateObservations( newObservations );
 
     navigation.navigate( "ObsEdit" );
-  }, [createObservationsFromGroupedPhotos, navigation, obsEditContext?.resetObsEditContext] );
+  }, [updateObservations, navigation, obsEditContext?.resetObsEditContext] );
 
   useEffect( () => {
     ShareMenu.getInitialShare( handleShare );

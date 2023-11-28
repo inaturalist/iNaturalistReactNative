@@ -4,24 +4,26 @@ import {
   Body3, Heading4, INatIcon, TextInputSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
 
-const OtherDataSection = ( ): Node => {
+type Props = {
+  currentObservation: Object,
+  updateObservationKeys: Function
+}
+
+const OtherDataSection = ( {
+  currentObservation,
+  updateObservationKeys
+}: Props ): Node => {
   const { t } = useTranslation( );
   const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
   const [showWildStatusSheet, setShowWildStatusSheet] = useState( false );
   const [showNotesSheet, setShowNotesSheet] = useState( false );
-
-  const {
-    currentObservation,
-    updateObservationKeys
-  } = useContext( ObsEditContext );
 
   const geoprivacyOptions = [{
     label: t( "Open" ),
@@ -80,6 +82,7 @@ const OtherDataSection = ( ): Node => {
         className="flex-row flex-nowrap items-center ml-1 mt-5"
         onPress={( ) => setShowGeoprivacySheet( true )}
         accessibilityRole="button"
+        accessibilityLabel={t( "Select-geoprivacy-status" )}
       >
         <INatIcon
           name="globe-outline"
@@ -99,6 +102,7 @@ const OtherDataSection = ( ): Node => {
         className="flex-row flex-nowrap items-center ml-1 mt-5"
         onPress={( ) => setShowWildStatusSheet( true )}
         accessibilityRole="button"
+        accessibilityLabel={t( "Select-captive-or-cultivated-status" )}
       >
         <INatIcon
           name="pot-outline"
@@ -132,6 +136,7 @@ const OtherDataSection = ( ): Node => {
         <Body3
           onPress={( ) => setShowNotesSheet( true )}
           className="mx-3 py-3"
+          accessibilityRole="link"
         >
           {currentObservation?.description || t( "Add-optional-notes" )}
         </Body3>

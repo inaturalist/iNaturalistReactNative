@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import rnUUID from "react-native-uuid";
 
 import Flag from "./Flag";
 import Taxon from "./Taxon";
@@ -25,33 +26,37 @@ class Identification extends Realm.Object {
     return {
       ...id,
       createdAt: id.created_at,
-      flags: id.flags.length > 0
-        ? Flag.mapApiToRealm( id.flags )
-        : [],
-      taxon: Taxon.mapApiToRealm( id.taxon ),
-      user: User.mapApiToRealm( id.user )
+      flags: id.flags || [],
+      taxon: Taxon.mapApiToRealm( id.taxon )
     };
   }
 
-  static mapApiToRealm( id, realm ) {
+  static mapApiToRealm( id ) {
     const newId = {
       ...id,
-      flags: Flag.mapApiToRealm( id.flags ),
-      taxon: Taxon.mapApiToRealm( id.taxon ),
-      user: User.mapApiToRealm( id.user, realm )
+      taxon: Taxon.mapApiToRealm( id.taxon )
     };
     return newId;
   }
 
+  static new = attrs => {
+    const newIdent = {
+      ...attrs,
+      uuid: rnUUID.v4( )
+    };
+
+    return newIdent;
+  };
+
   static schema = {
     name: "Identification",
-    primaryKey: "uuid",
+    embedded: true,
     properties: {
       uuid: "string",
       body: "string?",
       category: "string?",
       current: "bool",
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: { type: "string", mapTo: "createdAt", optional: true },
       flags: "Flag[]",
       id: "int?",
       taxon: "Taxon?",
