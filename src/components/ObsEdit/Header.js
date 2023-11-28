@@ -146,7 +146,7 @@ const Header = ( {
   ), [kebabMenuVisible, observations, t, setDeleteSheetVisible] );
 
   return (
-    <View className="flex-row justify-between items-center mt-12">
+    <View className="flex-row justify-between items-center">
       {renderBackButton( )}
       {observations.length > 0 && renderHeaderTitle( )}
       <View className="mr-4">

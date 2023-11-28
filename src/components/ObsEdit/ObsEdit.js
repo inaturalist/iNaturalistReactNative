@@ -1,7 +1,7 @@
 // @flow
 
 import { useIsFocused, useRoute } from "@react-navigation/native";
-import { View } from "components/styledComponents";
+import { ViewWrapper } from "components/SharedComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -60,7 +60,7 @@ const ObsEdit = ( ): Node => {
   return isFocused
     ? (
       <>
-        <View testID="obs-edit" className="bg-white flex-1">
+        <ViewWrapper testID="obs-edit">
           <Header
             observations={observations}
             currentObservation={currentObservation}
@@ -100,7 +100,7 @@ const ObsEdit = ( ): Node => {
             )}
             {loading && <ActivityIndicator />}
           </KeyboardAwareScrollView>
-        </View>
+        </ViewWrapper>
         <BottomButtons
           passesEvidenceTest={passesEvidenceTest}
           passesIdentificationTest={passesIdentificationTest}
