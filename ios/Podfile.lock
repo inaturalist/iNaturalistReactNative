@@ -302,7 +302,7 @@ PODS:
     - React-Core
   - react-native-webview (11.26.1):
     - React-Core
-  - react-native-worklets-core (0.2.2):
+  - react-native-worklets-core (0.2.4):
     - React
     - React-callinvoker
     - React-Core
@@ -454,7 +454,7 @@ PODS:
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
-  - VisionCamera (3.6.4):
+  - VisionCamera (3.6.12):
     - React
     - React-callinvoker
     - React-Core
@@ -729,20 +729,20 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
   react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
-  react-native-worklets-core: 7ad416a8965086b98b07964f7f6932560a54a14c
-  React-perflogger: c944b06edad34f5ecded0f29a6e66290a005d365
-  React-RCTActionSheet: fa467f37777dacba2c72da4be7ae065da4482d7d
-  React-RCTAnimation: 0591ee5f9e3d8c864a0937edea2165fe968e7099
-  React-RCTAppDelegate: 8b7f60103a83ad1670bda690571e73efddba29a0
-  React-RCTBlob: 082e8612f48b0ec12ca6dc949fb7c310593eff83
-  React-RCTImage: 6300660ef04d0e8a710ad9ea5d2fb4d9521c200d
-  React-RCTLinking: 7703ee1b10d3568c143a489ae74adc419c3f3ef3
-  React-RCTNetwork: 5748c647e09c66b918f81ae15ed7474327f653be
-  React-RCTSettings: 8c8a84ee363db9cbc287c8b8f2fb782acf7ba414
-  React-RCTText: d5e53c0741e3e2df91317781e993b5e42bd70448
-  React-RCTVibration: 052dd488ba95f461a37c992b9e01bd4bcc59a7b6
-  React-runtimeexecutor: b5abe02558421897cd9f73d4f4b6adb4bc297083
-  ReactCommon: a1a263d94f02a0dc8442f341d5a11b3d7a9cd44d
+  react-native-worklets-core: b4094f51cb2bc649e297206425cb8956f4945e3e
+  React-perflogger: 75b0e25075c67565a830985f3c373e2eae5389e0
+  React-RCTActionSheet: a0c3e916b327e297d124d9ebe8b0c721840ee04d
+  React-RCTAnimation: 3da7025801d7bf0f8cfd94574d6278d5b82a8b88
+  React-RCTAppDelegate: f74a567e0bc905aaff66d47ab30e6548f727549c
+  React-RCTBlob: 53252ebabe7777fd1c440a34546c64e16b162908
+  React-RCTImage: e230761bd34d71362dd8b3d51b5cd72674935aa0
+  React-RCTLinking: 3294b1b540005628168e5a341963b0eddc3932e8
+  React-RCTNetwork: 00c6b2215e54a9fb015c53a5e02b0a852dbb8568
+  React-RCTSettings: 2e7e4964f45e9b24c6c32ad30b6ab2ef4a7e2ffc
+  React-RCTText: a9c712b13cab90e1432e0ad113edc8bdbc691248
+  React-RCTVibration: a283fefb8cc29d9740a7ff2e87f72ad10f25a433
+  React-runtimeexecutor: 7902246857a4ead4166869e6c42d4df329ff721d
+  ReactCommon: a6d1c76b9e10b439e41db225263341240e1cda9f
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: 4c52a15602e70b64cd9230b0a17a9c12741371f4
   RNAudioRecorderPlayer: 4690a7cd9e4fd8e58d9671936a7bc3b686e59051
@@ -761,7 +761,7 @@ SPEC CHECKSUMS:
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
-  VisionCamera: db57ca079c4f933f1ddd07f2f8fb2d171a826b85
+  VisionCamera: ba8f52876b75381dcd1cbad55d355d2cbba603fe
   VisionCameraPluginInatVision: 79bb258db75218889c74d0897ecba676492c4def
   Yoga: e29645ec5a66fb00934fad85338742d1c247d4cb
 
