@@ -38,7 +38,7 @@ jest.mock(
   () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
 );
 
-require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
+require( "react-native-reanimated" ).setUpTests();
 
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
@@ -48,7 +48,7 @@ jest.mock( "react-native-vision-camera", ( ) => ( {
   // react-native-vision-camera v3
   useCameraDevice: mockUseCameraDevice,
   VisionCameraProxy: {
-    getFrameProcessorPlugin: jest.fn( )
+    initFrameProcessorPlugin: jest.fn( )
   }
 } ) );
 
