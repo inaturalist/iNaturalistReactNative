@@ -1,11 +1,11 @@
 // @flow
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { Heading2, KebabMenu } from "components/SharedComponents";
-import BackButton from "components/SharedComponents/Buttons/BackButton";
+import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useState
+  useCallback, useState
 } from "react";
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
@@ -94,11 +94,20 @@ const Header = ( {
     }
   }, [currentObservation, navigation, unsavedChanges, params, navToObsDetails] );
 
-  const renderBackButton = useCallback( ( ) => (
-    <BackButton
-      onPress={handleBackButtonPress}
-    />
-  ), [handleBackButtonPress] );
+  const renderBackButton = useCallback( ( ) => {
+    const extraPadding = {
+      marginStart: 15,
+      paddingVertical: 18,
+      paddingEnd: 24
+    };
+    return (
+      <BackButton
+        onPress={handleBackButtonPress}
+        customStyles={extraPadding}
+        testID="ObsEdit.BackButton"
+      />
+    );
+  }, [handleBackButtonPress] );
 
   useFocusEffect(
     useCallback( ( ) => {
@@ -136,34 +145,13 @@ const Header = ( {
     </KebabMenu>
   ), [kebabMenuVisible, observations, t, setDeleteSheetVisible] );
 
-  useEffect( ( ) => {
-    const headerOptions = {
-      headerTitle: currentObservation
-        ? renderHeaderTitle
-        : "",
-      headerLeft: renderBackButton,
-      headerRight: renderKebabMenu
-    };
-
-    if ( typeof ( navigation?.setOptions ) === "function" ) {
-      navigation?.setOptions( headerOptions );
-    }
-  }, [
-    observations,
-    navigation,
-    renderKebabMenu,
-    renderBackButton,
-    renderHeaderTitle,
-    currentObservation
-  ] );
-
-  // prevent header from flickering if observations haven't loaded yet
-  if ( observations.length === 0 ) {
-    return null;
-  }
-
   return (
-    <>
+    <View className="flex-row justify-between items-center">
+      {renderBackButton( )}
+      {observations.length > 0 && renderHeaderTitle( )}
+      <View className="mr-4">
+        {observations.length > 0 && renderKebabMenu( )}
+      </View>
       {deleteSheetVisible && (
         <DeleteObservationSheet
           handleClose={( ) => setDeleteSheetVisible( false )}
@@ -184,10 +172,9 @@ const Header = ( {
         <DiscardChangesSheet
           discardChanges={discardChanges}
           handleClose={( ) => setDiscardChangesSheetVisible( false )}
-
         />
       )}
-    </>
+    </View>
   );
 };
 

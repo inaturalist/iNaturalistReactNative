@@ -89,7 +89,7 @@ const EvidenceSection = ( {
   };
 
   return (
-    <View className="mx-6 mt-6">
+    <View className="mx-6">
       <AddEvidenceSheet
         disableAddingMoreEvidence={obsPhotos?.length >= MAX_PHOTOS_ALLOWED}
         hidden={!showAddEvidenceSheet}

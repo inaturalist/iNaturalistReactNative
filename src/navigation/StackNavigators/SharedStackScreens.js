@@ -35,12 +35,7 @@ const SharedStackScreens = ( ): Node => (
     <Stack.Screen
       name="ObsEdit"
       component={ObsEdit}
-      options={{
-        ...removeBottomBorder,
-        ...blankHeaderTitle,
-        headerBackVisible: false,
-        headerTitleAlign: "center"
-      }}
+      options={hideHeader}
     />
     <Stack.Screen
       name="Suggestions"
