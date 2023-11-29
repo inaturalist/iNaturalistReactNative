@@ -22,14 +22,15 @@ type Props = {
   data: Array<Object>,
   onEndReached: Function,
   uploadState: Object,
-  currentUser?: ?Object,
   testID: string,
   handleScroll?: Function,
   status?: string,
   showObservationsEmptyScreen?: boolean,
   isOnline: boolean,
   uploadSingleObservation?: Function,
-  explore: boolean
+  explore: boolean,
+  hideLoadingWheel: boolean,
+  renderHeader?: Function
 };
 
 const GUTTER = 15;
@@ -40,14 +41,15 @@ const ObservationsFlashList = ( {
   data,
   onEndReached,
   uploadState,
-  currentUser,
   testID,
   handleScroll,
   status,
   showObservationsEmptyScreen,
   isOnline,
   uploadSingleObservation,
-  explore
+  explore,
+  hideLoadingWheel,
+  renderHeader
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -100,12 +102,12 @@ const ObservationsFlashList = ( {
 
   const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      isFetchingNextPage={isFetchingNextPage}
-      currentUser={currentUser}
+      hideLoadingWheel={hideLoadingWheel}
       layout={layout}
       isOnline={isOnline}
+      explore={explore}
     />
-  ), [currentUser, isFetchingNextPage, layout, isOnline] );
+  ), [hideLoadingWheel, layout, isOnline, explore] );
 
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return {}; }
@@ -115,21 +117,26 @@ const ObservationsFlashList = ( {
     };
   }, [layout] );
 
-  if ( numColumns === 0 ) { return null; }
+  const renderEmptyComponent = useCallback( ( ) => {
+    const showEmptyScreen = showObservationsEmptyScreen
+      ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
+      : <Body3 className="self-center mt-[150px]">{t( "No-results-found" )}</Body3>;
 
-  const showEmptyScreen = showObservationsEmptyScreen
-    ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
-    : <Body3 className="self-center mt-[150px]">{t( "No-results-found" )}</Body3>;
-
-  if ( !data || data.length === 0 ) {
     return status === "loading"
       ? (
         <View className="self-center mt-[150px]">
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" testID="ObservationsFlashList.loading" />
         </View>
       )
       : showEmptyScreen;
-  }
+  }, [
+    isFetchingNextPage,
+    showObservationsEmptyScreen,
+    t,
+    status
+  ] );
+
+  if ( numColumns === 0 ) { return null; }
 
   return (
     <AnimatedFlashList
@@ -150,6 +157,8 @@ const ObservationsFlashList = ( {
       renderItem={renderItem}
       ItemSeparatorComponent={renderItemSeparator}
       ListFooterComponent={renderFooter}
+      ListEmptyComponent={renderEmptyComponent}
+      ListHeaderComponent={renderHeader}
       initialNumToRender={5}
       onEndReached={onEndReached}
       onEndReachedThreshold={0.2}

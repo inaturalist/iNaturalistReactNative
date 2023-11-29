@@ -9,20 +9,22 @@ import { ActivityIndicator } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  isFetchingNextPage?: boolean,
-  currentUser?: ?Object,
   layout?: string,
-  isOnline?: boolean
+  isOnline?: boolean,
+  hideLoadingWheel: boolean,
+  explore: boolean
 }
 
 const InfiniteScrollLoadingWheel = ( {
-  isFetchingNextPage, currentUser, layout, isOnline
+  hideLoadingWheel, layout, isOnline, explore
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const loadingWheelClass = "h-64 py-16";
-  if ( !isFetchingNextPage || !currentUser ) {
-    return <View className={loadingWheelClass} />;
+  const loadingWheelClass = explore
+    ? "h-[128px] py-16"
+    : "h-64 py-16";
+  if ( hideLoadingWheel ) {
+    return <View className={loadingWheelClass} testID="InfiniteScrollLoadingWheel.footerView" />;
   }
   return (
     <View className={classnames( loadingWheelClass, {
@@ -35,7 +37,7 @@ const InfiniteScrollLoadingWheel = ( {
             {t( "An-Internet-connection-is-required" )}
           </Body3>
         )
-        : <ActivityIndicator />}
+        : <ActivityIndicator testID="InfiniteScrollLoadingWheel.loading" />}
     </View>
   );
 };
