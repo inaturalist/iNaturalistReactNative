@@ -28,7 +28,8 @@ const SuggestionsContainer = ( ): Node => {
   const { params } = useRoute( );
   const obsUUID = params?.obsUUID;
   const uuid = currentObservation?.uuid;
-  const obsPhotos = currentObservation?.observationPhotos;
+  // TODO unify around a single interface for an Observation
+  const obsPhotos = currentObservation?.observationPhotos || currentObservation?.observation_photos;
   const obsPhotoUris = ( obsPhotos || [] ).map(
     obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
   );
