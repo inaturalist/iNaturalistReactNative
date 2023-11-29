@@ -70,8 +70,7 @@ afterAll( ( ) => {
 } );
 // /REALM SETUP
 
-// For all of these tests we need an existing observation to show suggestions for
-const mockObservations = [
+const makeMockObservations = ( ) => ( [
   factory( "LocalObservation", {
     _synced_at: null,
     // Suggestions won't load without a photo
@@ -79,15 +78,20 @@ const mockObservations = [
       factory( "LocalObservationPhoto" )
     ]
   } )
-];
+] );
 
 // Render the ObsEditProvider with the mocked observation
-function renderObservationsStackNavigator( ) {
+async function renderObservationsStackNavigatorWithObservations( observations ) {
+  // Save the mock observation in Realm
+  await Observation.saveLocalObservationForUpload(
+    observations[0],
+    global.mockRealms[__filename]
+  );
   renderComponent(
     <ObsEditProvider
       value={{
-        observations: mockObservations,
-        currentObservation: mockObservations[0]
+        observations,
+        currentObservation: observations[0]
       }}
     >
       <ObservationsStackNavigator />
@@ -100,20 +104,17 @@ describe( "Suggestions", ( ) => {
 
   // We need to navigate from MyObs to ObsEdit to Suggestions for all of these
   // tests
-  async function navigateToSuggestions( ) {
-    const unknownObsInMyObs = await screen.findByText( "unknown" );
-    await actor.press( unknownObsInMyObs );
+  async function navigateToSuggestionsForObservation( observation ) {
+    const observationRow = await screen.findByTestId(
+      `MyObservations.obsListItem.${observation.uuid}`
+    );
+    await actor.press( observationRow );
     const addIdButton = await screen.findByText( "ADD AN ID" );
     await actor.press( addIdButton );
   }
 
   beforeAll( async () => {
     await initI18next();
-    // Save the mock observation in Realm
-    await Observation.saveLocalObservationForUpload(
-      mockObservations[0],
-      global.mockRealms[__filename]
-    );
     // userEvent recommends fake timers
     jest.useFakeTimers( );
   } );
@@ -128,13 +129,20 @@ describe( "Suggestions", ( ) => {
       taxon: factory( "RemoteTaxon" ),
       combined_score: 50
     };
-    const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
-    inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
-    inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
+    beforeEach( ( ) => {
+      const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
+      inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
+      inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
+    } );
+
+    afterEach( ( ) => {
+      jest.clearAllMocks( );
+    } );
 
     it( "should navigate back to ObsEdit when top suggestion chosen", async ( ) => {
-      renderObservationsStackNavigator( );
-      await navigateToSuggestions( );
+      const observations = makeMockObservations( );
+      await renderObservationsStackNavigatorWithObservations( observations );
+      await navigateToSuggestionsForObservation( observations[0] );
       const topTaxonResultButton = await screen.findByTestId(
         `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
       );
@@ -144,8 +152,9 @@ describe( "Suggestions", ( ) => {
     } );
 
     it( "should navigate back to ObsEdit when another suggestion chosen", async ( ) => {
-      renderObservationsStackNavigator( );
-      await navigateToSuggestions( );
+      const observations = makeMockObservations( );
+      await renderObservationsStackNavigatorWithObservations( observations );
+      await navigateToSuggestionsForObservation( observations[0] );
       const otherTaxonResultButton = await screen.findByTestId(
         `SuggestionsList.taxa.${otherSuggestion.taxon.id}.checkmark`
       );
@@ -160,8 +169,9 @@ describe( "Suggestions", ( ) => {
       "should navigate back to ObsEdit when reached from ObsEdit via Suggestions"
       + " and search result chosen",
       async ( ) => {
-        renderObservationsStackNavigator( );
-        await navigateToSuggestions( );
+        const observations = makeMockObservations( );
+        await renderObservationsStackNavigatorWithObservations( observations );
+        await navigateToSuggestionsForObservation( observations[0] );
         const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
         await actor.press( searchButton );
         const searchInput = await screen.findByLabelText( "Search for a taxon" );

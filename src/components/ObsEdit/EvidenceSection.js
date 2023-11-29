@@ -119,7 +119,9 @@ const EvidenceSection = ( {
         accessibilityLabel={t( "Navigate-to-location-picker-screen" )}
       >
         <View className="w-[30px] items-center mr-1">
-          {isFetchingLocation && <ActivityIndicator />}
+          {isFetchingLocation && (
+            <ActivityIndicator testID="EvidenceSection.fetchingLocationIndicator" />
+          )}
           <View className={isFetchingLocation && "bottom-5"}>
             <INatIcon size={14} name="map-marker-outline" />
           </View>

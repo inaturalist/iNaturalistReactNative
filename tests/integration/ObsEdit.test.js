@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import Geolocation from "@react-native-community/geolocation";
 import { useRoute } from "@react-navigation/native";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
@@ -36,6 +37,16 @@ function renderObsEdit( update ) {
     update
   );
 }
+
+const mockGetCurrentPosition = jest.fn( ( success, _error, _options ) => success( {
+  coords: {
+    latitude: 1,
+    longitude: 1,
+    accuracy: 10,
+    timestamp: Date.now( )
+  }
+} ) );
+Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
 
 describe( "ObsEdit", ( ) => {
   beforeAll( async () => {
