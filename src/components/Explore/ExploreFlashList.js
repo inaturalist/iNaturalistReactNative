@@ -4,85 +4,91 @@ import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScroll
 import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { ActivityIndicator, Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
-  testID: string,
-  handleScroll: Function,
-  isFetchingNextPage: boolean,
+  contentContainerStyle?: Object,
   data: Array<Object>,
-  renderItem: Function,
-  renderItemSeparator?: Function,
-  fetchNextPage: boolean,
   estimatedItemSize: number,
+  fetchNextPage: boolean,
+  handleScroll: Function,
+  hideLoadingWheel: boolean,
+  isFetchingNextPage: boolean,
+  isOnline: boolean,
   keyExtractor: Function,
   layout?: string,
-  contentContainerStyle?: Object,
   numColumns?: number,
-  status: string
+  renderItem: Function,
+  renderItemSeparator?: Function,
+  status: string,
+  testID: string
 };
 
 const ExploreFlashList = ( {
-  testID,
-  handleScroll,
-  isFetchingNextPage,
+  contentContainerStyle,
   data,
-  renderItem,
-  renderItemSeparator,
-  fetchNextPage,
   estimatedItemSize,
+  fetchNextPage,
+  handleScroll,
+  hideLoadingWheel,
+  isFetchingNextPage,
+  isOnline,
   keyExtractor,
   layout,
-  contentContainerStyle,
   numColumns,
-  status
+  renderItem,
+  renderItemSeparator,
+  status,
+  testID
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const renderFooter = ( ) => (
+  const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      isFetchingNextPage={isFetchingNextPage}
+      hideLoadingWheel={hideLoadingWheel}
       layout={layout}
+      explore
+      isOnline={isOnline}
     />
-  );
+  ), [hideLoadingWheel, layout, isOnline] );
 
-  if ( !data || data.length === 0 ) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        {status === "loading"
-          ? (
-            <ActivityIndicator size="large" />
-          )
-          : <Body3>{t( "No-results-found" )}</Body3>}
-      </View>
-    );
-  }
+  const renderEmptyComponent = useCallback( ( ) => (
+    <View className="flex-1 justify-center items-center">
+      {status === "loading"
+        ? (
+          <ActivityIndicator size="large" testID="ExploreFlashList.loading" />
+        )
+        : <Body3>{t( "No-results-found" )}</Body3>}
+    </View>
+  ), [status, t] );
+
+  const renderHeader = useCallback( ( ) => <View className="mt-[180px]" />, [] );
 
   return (
-    <View className="h-full mt-[180px]">
-      <AnimatedFlashList
-        contentContainerStyle={contentContainerStyle}
-        data={data}
-        estimatedItemSize={estimatedItemSize}
-        testID={testID}
-        horizontal={false}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        ItemSeparatorComponent={renderItemSeparator}
-        ListFooterComponent={renderFooter}
-        initialNumToRender={5}
-        onEndReached={fetchNextPage}
-        onEndReachedThreshold={1}
-        refreshing={isFetchingNextPage}
-        onScroll={handleScroll}
-        accessible
-        numColumns={numColumns}
-      />
-    </View>
+    <AnimatedFlashList
+      contentContainerStyle={contentContainerStyle}
+      data={data}
+      estimatedItemSize={estimatedItemSize}
+      testID={testID}
+      horizontal={false}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      ItemSeparatorComponent={renderItemSeparator}
+      ListFooterComponent={renderFooter}
+      ListEmptyComponent={renderEmptyComponent}
+      initialNumToRender={5}
+      onEndReached={fetchNextPage}
+      onEndReachedThreshold={1}
+      refreshing={isFetchingNextPage}
+      onScroll={handleScroll}
+      accessible
+      numColumns={numColumns}
+      ListHeaderComponent={renderHeader}
+    />
   );
 };
 

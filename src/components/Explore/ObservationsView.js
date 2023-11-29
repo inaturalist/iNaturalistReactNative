@@ -2,11 +2,12 @@
 
 import {
   Map,
-  ObservationsFlashList
+  ObservationsFlashList,
+  ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useInfiniteObservationsScroll, useIsConnected } from "sharedHooks";
 
 type Props = {
@@ -37,6 +38,8 @@ const ObservationsView = ( {
     tileMapParams.place_id = exploreParams?.place_id;
   }
 
+  const renderHeader = useCallback( ( ) => <View className="mt-[180px]" />, [] );
+
   return observationsView === "map"
     ? (
       <Map
@@ -51,7 +54,7 @@ const ObservationsView = ( {
       />
     )
     : (
-      <View className="h-full mt-[180px]">
+      <ViewWrapper>
         <ObservationsFlashList
           isFetchingNextPage={isFetchingNextPage}
           layout={observationsView}
@@ -62,8 +65,10 @@ const ObservationsView = ( {
           status={status}
           isOnline={isOnline}
           explore
+          hideLoadingWheel={!isFetchingNextPage}
+          renderHeader={renderHeader}
         />
-      </View>
+      </ViewWrapper>
     );
 };
 

@@ -3,6 +3,7 @@
 import { useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
+import { useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
 
@@ -93,6 +94,7 @@ const reducer = ( state, action ) => {
 
 const ExploreContainer = ( ): Node => {
   const { params } = useRoute( );
+  const isOnline = useIsConnected( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
@@ -170,6 +172,7 @@ const ExploreContainer = ( ): Node => {
       updatePlace={updatePlace}
       updatePlaceName={updatePlaceName}
       updateTaxonName={updateTaxonName}
+      isOnline={isOnline}
     />
   );
 };
