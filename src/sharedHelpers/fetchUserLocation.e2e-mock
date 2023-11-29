@@ -1,13 +1,11 @@
 type UserLocation = {
   latitude: number,
   longitude: number,
-  positional_accuracy: number,
-  place_guess: string
+  positional_accuracy: number
 
 }
 const fetchUserLocation = async ( ): Promise<UserLocation> => new Promise( resolve => {
   setTimeout( ( ) => resolve( {
-    place_guess: "San Francisco",
     latitude: 37.7749,
     longitude: -122.4194,
     positional_accuracy: 5

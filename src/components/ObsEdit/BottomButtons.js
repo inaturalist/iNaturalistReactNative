@@ -33,6 +33,8 @@ type Props = {
   setCurrentObservationIndex: Function
 }
 
+const logger = log.extend( "ObsEditBottomButtons" );
+
 const BottomButtons = ( {
   passesEvidenceTest,
   passesIdentificationTest,
@@ -51,8 +53,6 @@ const BottomButtons = ( {
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
   const [buttonPressed, setButtonPressed] = useState( null );
   const [loading, setLoading] = useState( false );
-
-  const logger = log.extend( "ObsEditBottomButtons" );
 
   const writeExifToCameraRollPhotos = async exif => {
     if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {
@@ -75,7 +75,9 @@ const BottomButtons = ( {
   };
 
   const setNextScreen = async ( { type }: Object ) => {
+    logger.info( "saving observation ", currentObservation.uuid );
     const savedObservation = await saveObservation( currentObservation );
+    logger.info( "saved observation ", savedObservation.uuid );
     const params = {};
     if ( type === "upload" ) {
       // $FlowIgnore
@@ -84,6 +86,7 @@ const BottomButtons = ( {
     }
 
     if ( observations.length === 1 ) {
+      logger.info( "navigating back to MyObs" );
       // navigate to ObsList and start upload with uuid
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsStackNavigator",
@@ -92,6 +95,7 @@ const BottomButtons = ( {
           params
         }
       } );
+      logger.info( "navigated back to MyObs" );
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
@@ -131,6 +135,7 @@ const BottomButtons = ( {
   };
 
   const handlePress = type => {
+    logger.info( `tapped ${type}` );
     if ( showMissingEvidence( ) ) { return; }
     setLoading( true );
     setButtonPressed( type );
