@@ -1,10 +1,13 @@
 // @flow
 
+import { useNavigation, useRoute } from "@react-navigation/native";
 import scoreImage from "api/computerVision";
 import { difference } from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useContext, useEffect, useState
+} from "react";
 import flattenUploadParams from "sharedHelpers/flattenUploadParams";
 import {
   useAuthenticatedQuery,
@@ -22,14 +25,18 @@ const SuggestionsContainer = ( ): Node => {
     setPhotoEvidenceUris,
     setComment
   } = useContext( ObsEditContext );
+  const { params } = useRoute( );
+  const obsUUID = params?.obsUUID;
   const uuid = currentObservation?.uuid;
-  const obsPhotos = currentObservation?.observationPhotos;
+  // TODO unify around a single interface for an Observation
+  const obsPhotos = currentObservation?.observationPhotos || currentObservation?.observation_photos;
   const obsPhotoUris = ( obsPhotos || [] ).map(
     obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
   );
   const localObservation = useLocalObservation( uuid );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
   const [loading, setLoading] = useState( false );
+  const navigation = useNavigation();
 
   useEffect( ( ) => {
     // If the photos are different, we need to display different photos
@@ -46,7 +53,7 @@ const SuggestionsContainer = ( ): Node => {
     setPhotoEvidenceUris
   ] );
 
-  const params = {
+  const uploadParams = {
     image: selectedPhotoUri,
     latitude: localObservation?.latitude || currentObservation?.latitude,
     longitude: localObservation?.longitude || currentObservation?.longitude
@@ -56,9 +63,9 @@ const SuggestionsContainer = ( ): Node => {
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => scoreImage(
       await flattenUploadParams(
-        params.image,
-        params.latitude,
-        params.longitude
+        uploadParams.image,
+        uploadParams.latitude,
+        uploadParams.longitude
       ),
       optsWithAuth
     ),
@@ -67,19 +74,29 @@ const SuggestionsContainer = ( ): Node => {
     }
   );
 
+  const onTaxonChosen = async taxon => {
+    if ( !obsUUID ) {
+      setLoading( true );
+      await createId( taxon );
+      setLoading( false );
+      navigation.goBack( );
+    } else {
+      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
+    }
+  };
+
   return (
     <Suggestions
       photoUris={photoEvidenceUris}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
-      onTaxonChosen={createId}
+      onTaxonChosen={onTaxonChosen}
       comment={comment}
       setComment={setComment}
       currentObservation={currentObservation}
       nearbySuggestions={nearbySuggestions}
       loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}
       loading={loading}
-      setLoading={setLoading}
     />
   );
 };
