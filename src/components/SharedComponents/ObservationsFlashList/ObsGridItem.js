@@ -7,6 +7,7 @@ import React from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
+import ObsStatus from "./ObsStatus";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
@@ -48,16 +49,26 @@ const ObsGridItem = ( {
       white
     >
       <View className="absolute bottom-0 flex p-2 w-full">
-        {!explore && (
-          <ObsUploadStatusContainer
-            observation={observation}
-            layout="horizontal"
-            white
-            classNameMargin="mb-1"
-            uploadSingleObservation={uploadSingleObservation}
-            uploadState={uploadState}
-          />
-        )}
+        {explore
+          ? (
+            <ObsStatus
+              observation={observation}
+              layout="horizontal"
+              testID={`ObsStatus.${observation.uuid}`}
+              white
+            />
+          )
+          : (
+            <ObsUploadStatusContainer
+              observation={observation}
+              layout="horizontal"
+              white
+              classNameMargin="mb-1"
+              uploadSingleObservation={uploadSingleObservation}
+              uploadState={uploadState}
+            />
+
+          )}
         <DisplayTaxonName
           keyBase={observation?.uuid}
           taxon={observation?.taxon}
