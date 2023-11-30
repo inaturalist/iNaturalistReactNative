@@ -57,20 +57,20 @@ jobs:
     #     java-version: '8'
     #     distribution: 'zulu'
 
-    - name: Switch to JDK 8
-      run: |
-        echo "Running java -version before"
-        java -version
-        echo "JAVA_HOME_8_X64: $JAVA_HOME_8_X64"
-        echo "Running sudo update-java-alternatives --set JAVA_HOME_8_X64"
-        sudo update-java-alternatives --set $JAVA_HOME_8_X64
-        export JAVA_HOME=$JAVA_HOME_8_X64
-        echo "Adding new JAVA_HOME/bin to start of PATH"
-        export PATH=$JAVA_HOME/bin:$PATH
-        echo "Running java -version after"
-        java -version
-        echo "Running avdmanager list avd"
-        $ANDROID_HOME/tools/bin/avdmanager list avd
+    # - name: Switch to JDK 8
+    #   run: |
+    #     echo "Running java -version before"
+    #     java -version
+    #     echo "JAVA_HOME_8_X64: $JAVA_HOME_8_X64"
+    #     echo "Running sudo update-java-alternatives --set JAVA_HOME_8_X64"
+    #     sudo update-java-alternatives --set $JAVA_HOME_8_X64
+    #     export JAVA_HOME=$JAVA_HOME_8_X64
+    #     echo "Adding new JAVA_HOME/bin to start of PATH"
+    #     export PATH=$JAVA_HOME/bin:$PATH
+    #     echo "Running java -version after"
+    #     java -version
+    #     echo "Running avdmanager list avd"
+    #     $ANDROID_HOME/tools/bin/avdmanager list avd
 
     # - name: Setup Android SDK
     #   uses: android-actions/setup-android@v3
@@ -98,22 +98,22 @@ jobs:
           --device "Nexus 5X" \
           -k 'system-images;android-31;default;x86_64'
 
-    - name: Cache node modules
-      uses: actions/cache@v3
-      id: cache
-      with:
-        path: node_modules
-        key: node-modules-${{ hashFiles('**/package-lock.json') }}
+    # - name: Cache node modules
+    #   uses: actions/cache@v3
+    #   id: cache
+    #   with:
+    #     path: node_modules
+    #     key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
     - name: Check out Git repository
       uses: actions/checkout@v3
       with:
         fetch-depth: 1
 
-    - name: Install Node.js, NPM and Yarn
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+    # - name: Install Node.js, NPM and Yarn
+    #   uses: actions/setup-node@v3
+    #   with:
+    #     node-version: 18
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
