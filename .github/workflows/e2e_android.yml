@@ -66,8 +66,8 @@ jobs:
     #     java-version: '17'
     #     distribution: 'temurin'
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
+    # - name: Setup Android SDK
+    #   uses: android-actions/setup-android@v3
 
     # Use the Android command line tools to download an AOSP emulator image,
     # and setup new avd The name of the device for testing has to be the same
@@ -75,15 +75,15 @@ jobs:
     - name: Download Android Emulator Image
       run: |
         # do we even need this?
-        # /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        # $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
         echo "Checking java version"
         java --version
         echo "Checking emulator -list-avds"
-        /usr/local/lib/android/sdk/emulator/emulator -list-avds
+        $ANDROID_HOME/emulator/emulator -list-avds
         echo "Checking avdmanager list avd"
-        /usr/local/lib/android/sdk/tools/bin/avdmanager list avd
+        $ANDROID_HOME/tools/bin/avdmanager list avd
         echo "avdmanager create avd"
-        /usr/local/lib/android/sdk/tools/bin/avdmanager create avd \
+        $ANDROID_HOME/tools/bin/avdmanager create avd \
           --force \
           --name Pixel_5_API_31_AOSP \
           --device "Nexus 5X" \
@@ -142,16 +142,16 @@ jobs:
       continue-on-error: true
       run: |
         echo "Starting emulator"
-        nohup /usr/local/lib/android/sdk/emulator/emulator \
+        nohup $ANDROID_HOME/emulator/emulator \
           -avd Pixel_5_API_31_AOSP \
           -no-audio \
           -no-snapshot \
           -no-window \
           -no-boot-anim \
           -timezone America/Los_Angeles &
-        /usr/local/lib/android/sdk/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
-        /usr/local/lib/android/sdk/platform-tools/adb devices
-        /usr/local/lib/android/sdk/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
+        $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+        $ANDROID_HOME/platform-tools/adb devices
+        $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
         echo "Emulator started"
 
     # Start the Android e2e tests with extensive logging and screen captures for failing tests
