@@ -296,13 +296,13 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
           "borderTopColor": "#454545",
         },
         {
+          "backgroundColor": "#ffffff",
+        },
+        {
           "borderBottomColor": "#ffffff",
           "borderLeftColor": "#ffffff",
           "borderRightColor": "#ffffff",
           "borderTopColor": "#ffffff",
-        },
-        {
-          "backgroundColor": "#ffffff",
         },
         {
           "backgroundColor": "#454545",
