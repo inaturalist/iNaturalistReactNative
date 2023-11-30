@@ -82,8 +82,10 @@ jobs:
       run: |
         echo "Running java -version before"
         java -version
-        echo "ANDROID_HOME:"
-        echo $ANDROID_HOME
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "PATH: $PATH"
+        echo "Running avdmanager list avd"
+        $ANDROID_HOME/tools/bin/avdmanager list avd
         echo "sdkmanager --install"
         $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
         echo "avdmanager create avd"
