@@ -59,11 +59,12 @@ jobs:
 
     - name: Switch to JDK 8
       run: |
+        echo "Running java -version before"
+        java -version
         echo "JAVA_HOME_8_X64: $JAVA_HOME_8_X64"
-        export JAVA_HOME=$JAVA_HOME_8_X64
         echo "Running sudo update-java-alternatives --set JAVA_HOME_8_X64"
         sudo update-java-alternatives --set $JAVA_HOME_8_X64
-        echo "Running java -version"
+        echo "Running java -version after"
         java -version
 
     # - name: Setup Android SDK
@@ -74,6 +75,8 @@ jobs:
     # as on the .detoxrc.js file (even if it is not a Pixel)
     - name: Download Android Emulator Image
       run: |
+        echo "Running java -version before"
+        java -version
         echo "ANDROID_HOME:"
         echo $ANDROID_HOME
         echo "sdkmanager --install"
