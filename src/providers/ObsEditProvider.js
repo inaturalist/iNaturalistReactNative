@@ -100,11 +100,9 @@ const ObsEditProvider = ( { children, value }: Props ): Node => {
   const uploadValue = useMemo( ( ) => {
     const {
       cameraRollUris,
-      comment,
       groupedPhotos,
       evidenceToAdd,
       loading,
-      originalCameraUrisMap,
       photoEvidenceUris,
       savingPhoto,
       unsavedChanges
@@ -136,7 +134,7 @@ const ObsEditProvider = ( { children, value }: Props ): Node => {
       updateObservations( [...updatedObservations] );
     };
 
-    const createId = async identification => {
+    const createId = async ( identification, comment ) => {
       const newIdentification = Identification.new( {
         taxon: identification,
         body: comment
@@ -203,17 +201,10 @@ const ObsEditProvider = ( { children, value }: Props ): Node => {
       await Photo.deletePhoto( realm, photoUriToDelete );
     };
 
-    const setComment = newComment => dispatch( { type: "SET_COMMENT", comment: newComment } );
-
     const setCurrentObservationIndex = ( index, newObservations ) => dispatch( {
       type: "SET_DISPLAYED_OBSERVATION",
       currentObservationIndex: index,
       observations: newObservations || observations
-    } );
-
-    const setGroupedPhotos = uris => dispatch( {
-      type: "SET_GROUPED_PHOTOS",
-      groupedPhotos: uris
     } );
 
     const setCameraRollUris = uris => dispatch( {
@@ -228,18 +219,8 @@ const ObsEditProvider = ( { children, value }: Props ): Node => {
 
     const setCameraState = options => dispatch( {
       type: "SET_CAMERA_STATE",
-      originalCameraUrisMap: options?.originalCameraUrisMap,
       cameraPreviewUris: options?.cameraPreviewUris,
       evidenceToAdd: options?.evidenceToAdd || evidenceToAdd
-    } );
-
-    const setPhotoImporterState = options => dispatch( {
-      type: "SET_PHOTO_IMPORTER_STATE",
-      galleryUris: options?.galleryUris || galleryUris,
-      savingPhoto: options?.savingPhoto || savingPhoto,
-      evidenceToAdd: options?.evidenceToAdd || evidenceToAdd,
-      groupedPhotos: options?.groupedPhotos || groupedPhotos,
-      observations: options?.observations || observations
     } );
 
     return {
@@ -247,7 +228,6 @@ const ObsEditProvider = ( { children, value }: Props ): Node => {
       cameraPreviewUris,
       cameraRollUris,
       createId,
-      comment,
       currentObservation,
       currentObservationIndex,
       deletePhotoFromObservation,
@@ -257,17 +237,13 @@ const ObsEditProvider = ( { children, value }: Props ): Node => {
       loading,
       numOfObsPhotos,
       observations,
-      originalCameraUrisMap,
       photoEvidenceUris,
       resetObsEditContext,
       savingPhoto,
       setCameraState,
       setCameraRollUris,
-      setComment,
       setCurrentObservationIndex,
-      setGroupedPhotos,
       setPhotoEvidenceUris,
-      setPhotoImporterState,
       unsavedChanges,
       updateObservationKeys,
       updateObservations

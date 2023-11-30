@@ -3,6 +3,7 @@ import {
   fireEvent,
   screen, waitFor
 } from "@testing-library/react-native";
+import Suggestions from "components/Suggestions/Suggestions";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -52,12 +53,10 @@ const mockUris = [
 
 const mockCreateId = jest.fn( );
 
-const renderSuggestions = ( comment = "" ) => renderComponent(
+const renderSuggestions = ( ) => renderComponent(
   <ObsEditContext.Provider value={{
-    updateObservationKeys: jest.fn( ),
     photoEvidenceUris: mockUris,
     createId: mockCreateId,
-    comment,
     currentObservation: {
       uuid: faker.datatype.uuid( ),
       latitude: 41,
@@ -110,7 +109,11 @@ describe( "Suggestions", ( ) => {
   } );
 
   it( "shows comment section if observation has comment", ( ) => {
-    renderSuggestions( "Comment added to observation" );
+    renderComponent(
+      <Suggestions
+        comment="Comment added to observation"
+      />
+    );
     const commentSection = screen.getByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
     );

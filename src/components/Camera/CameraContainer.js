@@ -8,6 +8,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useContext,
+  useMemo,
   useRef,
   useState
 } from "react";
@@ -49,6 +50,7 @@ import useDeviceOrientation, {
   LANDSCAPE_RIGHT,
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation";
+import useStore from "stores/useStore";
 
 import { log } from "../../../react-native-logs.config";
 import ARCamera from "./ARCamera/ARCamera";
@@ -86,17 +88,7 @@ const CameraWithDevice = ( {
     Orientation.lockToPortrait( );
   }
   const {
-    currentObservation,
-    cameraPreviewUris,
-    deletePhotoFromObservation,
-    evidenceToAdd,
-    originalCameraUrisMap,
-    numOfObsPhotos,
-    setCameraRollUris,
-    setCameraState,
-    setPhotoEvidenceUris,
-    totalObsPhotoUris,
-    updateObservations
+    deletePhotoFromObservation
   } = useContext( ObsEditContext );
   const navigation = useNavigation();
   // $FlowFixMe
@@ -115,6 +107,23 @@ const CameraWithDevice = ( {
   const [photoSaved, setPhotoSaved] = useState( false );
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
+  const [originalCameraUrisMap, setOriginalCameraUrisMap] = useState( { } );
+  const setObservations = useStore( state => state.setObservations );
+  const updateObservations = useStore( state => state.updateObservations );
+  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
+  const evidenceToAdd = useStore( state => state.evidenceToAdd );
+  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const galleryUris = useStore( state => state.galleryUris );
+  const currentObservation = useStore( state => state.currentObservation );
+  const setCameraState = useStore( state => state.setCameraState );
+  const setCameraRollUris = useStore( state => state.setCameraRollUris );
+
+  const totalObsPhotoUris = useMemo(
+    ( ) => [...cameraPreviewUris, ...galleryUris].length,
+    [cameraPreviewUris, galleryUris]
+  );
+
+  const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
   const zoom = useSharedValue( !device.isMultiCam
     ? device.minZoom
@@ -252,14 +261,14 @@ const CameraWithDevice = ( {
     if ( localTaxon ) {
       newObservation.taxon = localTaxon;
     }
-    updateObservations( [newObservation] );
+    setObservations( [newObservation] );
     logger.info(
       "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
       localFilePaths
     );
     // TODO catch the error that gets raised here if the user denies gallery permission
     await savePhotosToCameraGallery( localFilePaths );
-  }, [savePhotosToCameraGallery, updateObservations] );
+  }, [savePhotosToCameraGallery, setObservations] );
 
   const createEvidenceForObsEdit = useCallback( async localTaxon => {
     if ( addEvidence ) {
@@ -315,17 +324,15 @@ const CameraWithDevice = ( {
     } );
     const uri = newPhoto.localFilePath;
 
+    // Remember original (unresized) camera URI
+    setOriginalCameraUrisMap( { ...originalCameraUrisMap, [uri]: cameraPhoto.path } );
     if ( addEvidence ) {
       setCameraState( {
-        // Remember original (unresized) camera URI
-        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path },
         cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
         evidenceToAdd: [...evidenceToAdd, uri]
       } );
     } else {
       setCameraState( {
-        // Remember original (unresized) camera URI
-        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path },
         cameraPreviewUris: cameraPreviewUris.concat( [uri] )
       } );
     }

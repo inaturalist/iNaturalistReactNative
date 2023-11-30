@@ -75,12 +75,12 @@ jest.mock( "react-native-paper", () => {
 
 const mockCreateId = jest.fn( );
 
-const renderTaxonSearch = ( loading = false, comment = "" ) => renderComponent(
+const renderTaxonSearch = ( ) => renderComponent(
   <ObsEditContext.Provider value={{
-    updateObservationKeys: jest.fn( ),
     createId: mockCreateId,
-    loading,
-    comment
+    currentObservation: {
+      wasSynced: true
+    }
   }}
   >
     <TaxonSearch />
@@ -122,11 +122,11 @@ describe( "TaxonSearch", ( ) => {
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
   } );
 
-  it( "shows comment section if observation has comment", ( ) => {
-    renderTaxonSearch( false, "Comment added to observation in TaxonSearch" );
-    const commentSection = screen.getByText(
+  it( "should render with no initial comment state", ( ) => {
+    renderTaxonSearch( );
+    const commentSection = screen.queryByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
     );
-    expect( commentSection ).toBeVisible( );
+    expect( commentSection ).toBeFalsy( );
   } );
 } );

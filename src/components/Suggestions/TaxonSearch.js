@@ -16,6 +16,7 @@ import React, {
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { useAuthenticatedQuery } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import CommentBox from "./CommentBox";
@@ -26,12 +27,12 @@ const TaxonSearch = ( ): Node => {
 
   const {
     createId,
-    comment,
-    setComment,
     currentObservation
   } = useContext( ObsEditContext );
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
+  const comment = useStore( state => state.comment );
+
   const { data: taxonList } = useAuthenticatedQuery(
     ["fetchSearchResults", taxonQuery],
     optsWithAuth => fetchSearchResults(
@@ -49,13 +50,13 @@ const TaxonSearch = ( ): Node => {
   const onTaxonSelected = useCallback( async taxon => {
     if ( !obsUUID ) {
       // Called from observation editor screen
-      createId( taxon );
+      createId( taxon, comment );
       navigation.navigate( "ObsEdit" );
     } else {
       // Called when adding an identification to someone else's observation
       navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
     }
-  }, [createId, navigation, obsUUID] );
+  }, [createId, navigation, obsUUID, comment] );
 
   const renderFooter = ( ) => (
     <View className="pb-10" />
@@ -73,7 +74,6 @@ const TaxonSearch = ( ): Node => {
   return (
     <ViewWrapper className="flex-1">
       <AddCommentPrompt
-        setComment={setComment}
         currentObservation={currentObservation}
       />
       <CommentBox comment={comment} />

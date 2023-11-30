@@ -2,14 +2,14 @@
 
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import { ViewWrapper } from "components/SharedComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect, useState
+  useEffect, useState
 } from "react";
 import { ActivityIndicator } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useLocalObservation from "sharedHooks/useLocalObservation";
+import useStore from "stores/useStore";
 
 import BottomButtons from "./BottomButtons";
 import EvidenceSectionContainer from "./EvidenceSectionContainer";
@@ -19,27 +19,38 @@ import MultipleObservationsArrows from "./MultipleObservationsArrows";
 import OtherDataSection from "./OtherDataSection";
 
 const ObsEdit = ( ): Node => {
-  const {
-    cameraRollUris,
-    currentObservation,
-    currentObservationIndex,
-    loading,
-    observations,
-    photoEvidenceUris,
-    resetObsEditContext,
-    savingPhoto,
-    setCurrentObservationIndex,
-    setPhotoEvidenceUris,
-    unsavedChanges,
-    updateObservations,
-    updateObservationKeys
-  } = useContext( ObsEditContext );
+  const resetStore = useStore( state => state.resetStore );
+  const observations = useStore( state => state.observations );
+  const setObservations = useStore( state => state.setObservations );
+  const updateObservations = useStore( state => state.updateObservations );
+  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
+  const cameraRollUris = useStore( state => state.cameraRollUris );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
+  const savingPhoto = useStore( state => state.savingPhoto );
+  const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
+  const unsavedChanges = useStore( state => state.unsavedChanges );
+  const loading = useStore( state => state.loading );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
 
+  const currentObservation = observations[currentObservationIndex];
+
   const isFocused = useIsFocused( );
+
+  const updateObservationKeys = keysAndValues => {
+    const updatedObservations = observations;
+    const updatedObservation = {
+      ...( currentObservation.toJSON
+        ? currentObservation.toJSON( )
+        : currentObservation ),
+      ...keysAndValues
+    };
+    updatedObservations[currentObservationIndex] = updatedObservation;
+    updateObservations( [...updatedObservations] );
+  };
 
   useEffect( ( ) => {
     // when first opening an observation from ObsDetails, fetch local observation from realm
@@ -50,12 +61,12 @@ const ObsEdit = ( ): Node => {
     // observation
     const obsChanged = localObservation && localObservation?.uuid !== currentObservation?.uuid;
     if ( obsChanged ) {
-      resetObsEditContext( );
+      resetStore( );
       // need .toJSON( ) to be able to add evidence to an existing local observation
       // otherwise, get a realm error about modifying managed objects outside of a write transaction
-      updateObservations( [localObservation.toJSON( )] );
+      setObservations( [localObservation.toJSON( )] );
     }
-  }, [localObservation, updateObservations, resetObsEditContext, currentObservation] );
+  }, [localObservation, setObservations, resetStore, currentObservation] );
 
   return isFocused
     ? (

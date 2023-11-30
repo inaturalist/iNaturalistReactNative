@@ -13,16 +13,19 @@ import {
   useAuthenticatedQuery,
   useLocalObservation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
   const {
-    createId,
-    currentObservation,
-    photoEvidenceUris,
-    setPhotoEvidenceUris
+    createId
   } = useContext( ObsEditContext );
+  const comment = useStore( state => state.comment );
+  const currentObservation = useStore( state => state.currentObservation );
+
+  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
+  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const { params } = useRoute( );
   const obsUUID = params?.obsUUID;
   const uuid = currentObservation?.uuid;
@@ -75,7 +78,7 @@ const SuggestionsContainer = ( ): Node => {
   const onTaxonChosen = async taxon => {
     if ( !obsUUID ) {
       setLoading( true );
-      await createId( taxon );
+      await createId( taxon, comment );
       setLoading( false );
       navigation.goBack( );
     } else {
@@ -85,6 +88,7 @@ const SuggestionsContainer = ( ): Node => {
 
   return (
     <Suggestions
+      comment={comment}
       currentObservation={currentObservation}
       loading={loading}
       loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}

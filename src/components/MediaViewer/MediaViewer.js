@@ -14,6 +14,7 @@ import { StatusBar } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import MainPhotoDisplay from "./MainPhotoDisplay";
@@ -26,9 +27,9 @@ const MediaViewer = ( ): Node => {
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
   const {
-    deletePhotoFromObservation,
-    photoEvidenceUris
+    deletePhotoFromObservation
   } = useContext( ObsEditContext );
+  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
 
   const atFirstPhoto = selectedPhotoIndex === 0;
   const atLastPhoto = selectedPhotoIndex === photoEvidenceUris.length - 1;

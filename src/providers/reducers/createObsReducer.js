@@ -5,7 +5,6 @@ export const INITIAL_CREATE_OBS_STATE = {
   cameraPreviewUris: [],
   // $FlowIgnore
   cameraRollUris: [],
-  comment: "",
   currentObservationIndex: 0,
   // $FlowIgnore
   evidenceToAdd: [],
@@ -16,8 +15,6 @@ export const INITIAL_CREATE_OBS_STATE = {
   loading: false,
   // $FlowIgnore
   observations: [],
-  // $FlowIgnore
-  originalCameraUrisMap: {},
   // $FlowIgnore
   photoEvidenceUris: [],
   savingPhoto: false,
@@ -38,13 +35,11 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         ...state,
         cameraPreviewUris: [],
         cameraRollUris: [],
-        comment: "",
         currentObservationIndex: 0,
         evidenceToAdd: [],
         galleryUris: [],
         groupedPhotos: [],
         observations: [],
-        originalCameraUrisMap: {},
         photoEvidenceUris: [],
         savingPhoto: false,
         unsavedChanges: false
@@ -58,15 +53,9 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
     case "SET_CAMERA_STATE":
       return {
         ...state,
-        originalCameraUrisMap: action.originalCameraUrisMap,
         evidenceToAdd: action.evidenceToAdd,
         cameraPreviewUris: action.cameraPreviewUris,
         savingPhoto: action.evidenceToAdd.length > 0
-      };
-    case "SET_COMMENT":
-      return {
-        ...state,
-        comment: action.comment
       };
     case "SET_DISPLAYED_OBSERVATION":
       return {
@@ -74,15 +63,6 @@ const createObsReducer = ( state: Object, action: Function ): Object => {
         currentObservationIndex: action.currentObservationIndex,
         observations: action.observations || [],
         loading: false
-      };
-    case "SET_PHOTO_IMPORTER_STATE":
-      return {
-        ...state,
-        galleryUris: action.galleryUris,
-        evidenceToAdd: action.evidenceToAdd,
-        savingPhoto: action.evidenceToAdd.length > 0,
-        groupedPhotos: action.groupedPhotos,
-        observations: action.observations
       };
     case "SET_GROUPED_PHOTOS":
       return {

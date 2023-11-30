@@ -8,16 +8,16 @@ import {
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useLocalObservation, useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
-  setComment: Function,
   currentObservation: Object
 }
 
 const AddCommentPrompt = ( {
-  setComment,
   currentObservation
 }: Props ): Node => {
+  const updateComment = useStore( state => state.updateComment );
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
   const uuid = currentObservation?.uuid;
   const localObservation = useLocalObservation( uuid );
@@ -48,7 +48,7 @@ const AddCommentPrompt = ( {
       handleClose={( ) => setShowAddCommentSheet( false )}
       headerText={t( "ADD-OPTIONAL-COMMENT" )}
       snapPoints={[416]}
-      confirm={textInput => setComment( textInput )}
+      confirm={updateComment}
     />
   );
 };

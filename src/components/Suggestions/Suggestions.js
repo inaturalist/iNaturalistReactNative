@@ -13,7 +13,6 @@ import {
   ActivityIndicator
 } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import Attribution from "./Attribution";
@@ -22,6 +21,7 @@ import PhotoSelectionList from "./PhotoSelectionList";
 import SuggestionsList from "./SuggestionsList";
 
 type Props = {
+  comment: string,
   currentObservation: Object,
   loading: boolean,
   loadingSuggestions: boolean,
@@ -33,6 +33,7 @@ type Props = {
 };
 
 const Suggestions = ( {
+  comment,
   currentObservation,
   loading,
   loadingSuggestions,
@@ -46,13 +47,10 @@ const Suggestions = ( {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const obsUUID = params?.obsUUID;
-  const comment = useStore( state => state.comment );
-  const updateComment = useStore( state => state.updateComment );
 
   return (
     <ScrollViewWrapper testID="suggestions">
       <AddCommentPrompt
-        setComment={updateComment}
         currentObservation={currentObservation}
       />
       {loading && (
