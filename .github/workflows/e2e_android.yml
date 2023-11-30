@@ -59,12 +59,12 @@ jobs:
         java-version: '11'
         distribution: 'zulu'
 
-    # # Trying to force a different JDK and updated android SDK
-    # - name: Set up JDK 17
-    #   uses: actions/setup-java@v3
-    #   with:
-    #     java-version: '17'
-    #     distribution: 'temurin'
+    # Trying to force a different JDK and updated android SDK
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
