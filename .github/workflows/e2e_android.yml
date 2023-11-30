@@ -83,6 +83,7 @@ jobs:
         echo "Running java -version before"
         java -version
         echo "ANDROID_HOME: $ANDROID_HOME"
+        export PATH=$JAVA_HOME_8_X64/bin:$PATH
         echo "PATH: $PATH"
         echo "Running avdmanager list avd"
         $ANDROID_HOME/tools/bin/avdmanager list avd
