@@ -58,7 +58,13 @@ jobs:
     #     distribution: 'zulu'
 
     - name: Switch to JDK 8
-      run: export JAVA_HOME=$JAVA_HOME_8_X64
+      run: |
+        echo "JAVA_HOME_8_X64: $JAVA_HOME_8_X64"
+        export JAVA_HOME=$JAVA_HOME_8_X64
+        echo "Running sudo update-java-alternatives --set JAVA_HOME_8_X64"
+        sudo update-java-alternatives --set $JAVA_HOME_8_X64
+        echo "Running java -version"
+        java -version
 
     # - name: Setup Android SDK
     #   uses: android-actions/setup-android@v3
