@@ -9,7 +9,7 @@ on:
 jobs:
   # This might be refactored to use concurrency from GitHub Actions directly?
   deduplicate:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: fkirc/skip-duplicate-actions@master
         with:
@@ -19,7 +19,7 @@ jobs:
   checksecret:
     name: check for oauth client
     needs: deduplicate
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -34,7 +34,7 @@ jobs:
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 60
 
@@ -49,15 +49,17 @@ jobs:
       with:
         node-version: 18
 
-    # Use the Android command line tools to download an AOSP emulator image, and setup new avd
-    # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
-    # The mac-os latest runner has 3 different versions of Java pre-installed (8,11,17), and there were errors when setting to use either 11 or 17 explicitly here
-    # I am assuming (but haven't tested) it uses 8 and then this step works
+    # Use the Android command line tools to download an AOSP emulator image,
+    # and setup new avd The name of the device for testing has to be the same
+    # as on the .detoxrc.js file (even if it is not a Pixel)
     - name: Download Android Emulator Image
       run: |
-        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
-        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;x86_64'
-        $ANDROID_HOME/emulator/emulator -list-avds
+        $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        $ANDROID_HOME/tools/bin/avdmanager create avd \
+          --force \
+          --name Pixel_5_API_31_AOSP \
+          --device "Nexus 5X" \
+          -k 'system-images;android-31;default;x86_64'
 
     - name: Cache node modules
       uses: actions/cache@v3
@@ -65,11 +67,6 @@ jobs:
       with:
         path: node_modules
         key: node-modules-${{ hashFiles('**/package-lock.json') }}
-  
-    - name: Rebuild detox from cache
-      if: steps.cache.outputs.cache-hit == 'true'
-      # Currently, (Detox 20) those two commands are macOS only
-      run: npx detox clean-framework-cache && npx detox build-framework-cache
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
@@ -105,7 +102,7 @@ jobs:
     - name: Download a fake cv model and taxonomy file into the assets folder
       run: npm run add-github-actions-test-model
 
-    # Macos-latest runner has 3 Java versions pre-installed, if not specified as here, the build step errors with requiring at least Java 11 or higher
+    # ubuntu-latest runner has 3 Java versions pre-installed, if not specified as here, the build step errors with requiring at least Java 11 or higher
     # So, this step is needed for the apk build step, but somehow this is breaking emulator setup, so it is placed here
     - name: Set up JDK 11
       uses: actions/setup-java@v3
@@ -113,7 +110,9 @@ jobs:
         java-version: '11'
         distribution: 'zulu'
 
-    # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
+    # This is by far the longest step in this job, currently we are building
+    # the apk everytime, maybe there should be a more specific trigger for
+    # the entire job
     - name: Build for detox
       run: npm run e2e:build:android
 
@@ -123,7 +122,13 @@ jobs:
       continue-on-error: true
       run: |
         echo "Starting emulator"
-        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_31_AOSP -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
+        nohup $ANDROID_HOME/emulator/emulator \
+          -avd Pixel_5_API_31_AOSP \
+          -no-audio \
+          -no-snapshot \
+          -no-window \
+          -no-boot-anim \
+          -timezone America/Los_Angeles &
         $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
         $ANDROID_HOME/platform-tools/adb devices
         $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
@@ -133,7 +138,8 @@ jobs:
     - name: Android Detox
       run: npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
 
-    # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
+    # The artifacts for the failing tests are available for download on
+    # github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
       uses: actions/upload-artifact@v3
       if: failure()
@@ -145,7 +151,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null
