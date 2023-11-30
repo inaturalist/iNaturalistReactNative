@@ -235,9 +235,19 @@ const MyObservationsContainer = ( ): Node => {
   const uploadObservationAndCatchError = useCallback( async observation => {
     try {
       await uploadObservation( observation, realm );
-    } catch ( e ) {
-      console.warn( e );
-      dispatch( { type: "SET_UPLOAD_ERROR", error: e.message } );
+    } catch ( uploadError ) {
+      console.warn( uploadError );
+      let { message } = uploadError;
+      if ( uploadError?.json?.errors ) {
+        // TODO localize comma join
+        message = uploadError.json.errors.map( error => {
+          if ( error.message?.errors ) {
+            return error.message.errors.flat( ).join( ", " );
+          }
+          return error.message;
+        } ).join( ", " );
+      }
+      dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
     }
   }, [realm] );
 
