@@ -99,7 +99,6 @@ const MyObservations = ( {
               isFetchingNextPage={isFetchingNextPage}
               layout={layout}
               onEndReached={onEndReached}
-              currentUser={currentUser}
               testID="MyObservationsAnimatedList"
               handleScroll={handleScroll}
               renderEmptyList={renderEmptyList}
@@ -108,6 +107,7 @@ const MyObservations = ( {
               isOnline={isOnline}
               uploadSingleObservation={uploadSingleObservation}
               uploadState={uploadState}
+              hideLoadingWheel={!isFetchingNextPage || !currentUser}
             />
           </StickyView>
         </View>
