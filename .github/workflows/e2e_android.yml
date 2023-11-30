@@ -83,6 +83,8 @@ jobs:
         echo "Running java -version before"
         java -version
         echo "ANDROID_HOME: $ANDROID_HOME"
+        sudo update-java-alternatives --set $JAVA_HOME_8_X64
+        export JAVA_HOME=$JAVA_HOME_8_X64
         export PATH=$JAVA_HOME_8_X64/bin:$PATH
         echo "PATH: $PATH"
         echo "Running avdmanager list avd"
