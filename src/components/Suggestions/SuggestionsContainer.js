@@ -18,12 +18,10 @@ import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
   const {
-    photoEvidenceUris,
-    currentObservation,
     createId,
-    comment,
-    setPhotoEvidenceUris,
-    setComment
+    currentObservation,
+    photoEvidenceUris,
+    setPhotoEvidenceUris
   } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const obsUUID = params?.obsUUID;
@@ -87,16 +85,14 @@ const SuggestionsContainer = ( ): Node => {
 
   return (
     <Suggestions
+      currentObservation={currentObservation}
+      loading={loading}
+      loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}
+      nearbySuggestions={nearbySuggestions}
+      onTaxonChosen={onTaxonChosen}
       photoUris={photoEvidenceUris}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
-      onTaxonChosen={onTaxonChosen}
-      comment={comment}
-      setComment={setComment}
-      currentObservation={currentObservation}
-      nearbySuggestions={nearbySuggestions}
-      loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}
-      loading={loading}
     />
   );
 };
