@@ -61,10 +61,10 @@ const setStyles = ( {
   } else if ( isPrimary ) {
     buttonClasses.push( disabled
       ? "bg-darkGrayDisabled"
-      : "bg-darkGray dark:bg-white" );
+      : "bg-darkGray" );
     textClasses.push( disabled
-      ? "text-white/50 dark:text-darkGray/50"
-      : "text-white dark:text-darkGray" );
+      ? "text-white/50"
+      : "text-white" );
   } else if ( isFocus ) {
     if ( forceDark ) {
       buttonClasses.push( disabled
@@ -72,7 +72,7 @@ const setStyles = ( {
         : "bg-inatGreen" );
     } else {
       buttonClasses.push( disabled
-        ? "bg-inatGreenDisabled dark:bg-inatGreenDisabledDark"
+        ? "bg-inatGreenDisabled"
         : "bg-inatGreen" );
     }
   } else {
@@ -82,15 +82,45 @@ const setStyles = ( {
       textClasses.push( "text-darkGray" );
     } else {
       buttonClasses.push( disabled
-        ? "border-darkGrayDisabled dark:border-lightGray"
-        : "border-darkGray dark:border-white bg-white dark:bg-darkGray" );
+        ? "border-darkGrayDisabled"
+        : "border-darkGray bg-white" );
       textClasses.push( disabled
-        ? "text-darkGrayDisabled dark:text-lightGray"
-        : "text-darkGray dark:text-white" );
+        ? "text-darkGrayDisabled"
+        : "text-darkGray" );
     }
   }
 
   return { buttonClasses, textClasses };
+};
+
+const setDarkStyles = ( {
+  buttonClasses,
+  textClasses,
+  isPrimary,
+  isFocus,
+  disabled,
+  forceDark
+} ) => {
+  if ( isPrimary ) {
+    buttonClasses.push(
+      disabled
+        ? ""
+        : "dark:bg-white"
+    );
+    textClasses.push(
+      disabled
+        ? "dark:text-darkGray/50"
+        : "dark:text-darkGray"
+    );
+  } else if ( isFocus ) {
+    if ( !forceDark ) {
+      buttonClasses.push(
+        disabled
+          ? "dark:bg-inatGreenDisabledDark"
+          : ""
+      );
+    }
+  }
 };
 
 const activityIndicatorColor = ( {
@@ -138,6 +168,16 @@ const Button = ( {
     isPrimary,
     isWarning,
     ignoreDark
+  } );
+  // Dark mode styles can be set with this function, but si scheduled to be worked on post-MVP
+  setDarkStyles( {
+    buttonClasses,
+    textClasses,
+    isWarning,
+    isPrimary,
+    isFocus,
+    disabled,
+    forceDark
   } );
 
   const theme = useTheme();
