@@ -62,7 +62,11 @@ jobs:
     # as on the .detoxrc.js file (even if it is not a Pixel)
     - name: Download Android Emulator Image
       run: |
-        $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        # do we even need this?
+        # $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        java --version
+        $ANDROID_HOME/emulator/emulator -list-avds
+        $ANDROID_HOME/tools/bin/avdmanager list avd
         $ANDROID_HOME/tools/bin/avdmanager create avd \
           --force \
           --name Pixel_5_API_31_AOSP \
