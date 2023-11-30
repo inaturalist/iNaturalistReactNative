@@ -298,15 +298,6 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
         {
           "backgroundColor": "#ffffff",
         },
-        {
-          "borderBottomColor": "#ffffff",
-          "borderLeftColor": "#ffffff",
-          "borderRightColor": "#ffffff",
-          "borderTopColor": "#ffffff",
-        },
-        {
-          "backgroundColor": "#454545",
-        },
       ],
     ]
   }
@@ -344,9 +335,6 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
               },
               {
                 "color": "#454545",
-              },
-              {
-                "color": "#ffffff",
               },
             ],
           ],
@@ -436,12 +424,6 @@ exports[`Button neutral in dark mode when disabled should render correctly 1`] =
           "borderRightColor": "#828181",
           "borderTopColor": "#828181",
         },
-        {
-          "borderBottomColor": "#E8E8E8",
-          "borderLeftColor": "#E8E8E8",
-          "borderRightColor": "#E8E8E8",
-          "borderTopColor": "#E8E8E8",
-        },
       ],
     ]
   }
@@ -479,9 +461,6 @@ exports[`Button neutral in dark mode when disabled should render correctly 1`] =
               },
               {
                 "color": "#828181",
-              },
-              {
-                "color": "#E8E8E8",
               },
             ],
           ],

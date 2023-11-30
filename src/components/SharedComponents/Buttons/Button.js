@@ -96,15 +96,12 @@ const setStyles = ( {
 const setDarkStyles = ( {
   buttonClasses,
   textClasses,
-  isWarning,
   isPrimary,
   isFocus,
   disabled,
   forceDark
 } ) => {
-  if ( isWarning ) {
-    console.log( "nothing to add here" );
-  } else if ( isPrimary ) {
+  if ( isPrimary ) {
     buttonClasses.push(
       disabled
         ? ""
@@ -123,17 +120,6 @@ const setDarkStyles = ( {
           : ""
       );
     }
-  } else {
-    buttonClasses.push(
-      disabled
-        ? "dark:border-lightGray"
-        : "dark:border-white dark:bg-darkGray"
-    );
-    textClasses.push(
-      disabled
-        ? "dark:text-lightGray"
-        : "dark:text-white"
-    );
   }
 };
 
@@ -183,6 +169,7 @@ const Button = ( {
     isWarning,
     ignoreDark
   } );
+  // Dark mode styles can be set with this function, but si scheduled to be worked on post-MVP
   setDarkStyles( {
     buttonClasses,
     textClasses,
