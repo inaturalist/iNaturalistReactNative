@@ -79,8 +79,6 @@ jobs:
         echo $ANDROID_HOME
         echo "sdkmanager --install"
         $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
-        echo "Checking java version"
-        java --version
         echo "avdmanager create avd"
         $ANDROID_HOME/tools/bin/avdmanager create avd \
           --force \
