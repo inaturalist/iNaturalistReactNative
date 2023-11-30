@@ -59,12 +59,12 @@ jobs:
     #     java-version: '11'
     #     distribution: 'zulu'
 
-    # Trying to force a different JDK and updated android SDK
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+    # # Trying to force a different JDK and updated android SDK
+    # - name: Set up JDK 17
+    #   uses: actions/setup-java@v3
+    #   with:
+    #     java-version: '17'
+    #     distribution: 'temurin'
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
@@ -76,9 +76,13 @@ jobs:
       run: |
         # do we even need this?
         # /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        echo "Checking java version"
         java --version
+        echo "Checking emulator -list-avds"
         /usr/local/lib/android/sdk/emulator/emulator -list-avds
+        echo "Checking avdmanager list avd"
         /usr/local/lib/android/sdk/tools/bin/avdmanager list avd
+        echo "avdmanager create avd"
         /usr/local/lib/android/sdk/tools/bin/avdmanager create avd \
           --force \
           --name Pixel_5_API_31_AOSP \
