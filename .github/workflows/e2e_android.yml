@@ -67,8 +67,8 @@ jobs:
         java-version: '8'
         distribution: 'zulu'
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
+    # - name: Setup Android SDK
+    #   uses: android-actions/setup-android@v3
 
     # Use the Android command line tools to download an AOSP emulator image,
     # and setup new avd The name of the device for testing has to be the same
