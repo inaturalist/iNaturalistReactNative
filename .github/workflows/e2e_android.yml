@@ -64,8 +64,13 @@ jobs:
         echo "JAVA_HOME_8_X64: $JAVA_HOME_8_X64"
         echo "Running sudo update-java-alternatives --set JAVA_HOME_8_X64"
         sudo update-java-alternatives --set $JAVA_HOME_8_X64
+        export JAVA_HOME=$JAVA_HOME_8_X64
+        echo "Adding new JAVA_HOME/bin to start of PATH"
+        export PATH=$JAVA_HOME/bin:$PATH
         echo "Running java -version after"
         java -version
+        echo "Running avdmanager list avd"
+        $ANDROID_HOME/tools/bin/avdmanager list avd
 
     # - name: Setup Android SDK
     #   uses: android-actions/setup-android@v3
