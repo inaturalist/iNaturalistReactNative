@@ -11,10 +11,6 @@ const mockRemoteObservation = factory( "RemoteObservation", {
   taxon: factory.states( "genus" )( "RemoteTaxon" )
 } );
 
-const mockIconicTaxon = factory( "RemoteTaxon", {
-  is_iconic: true
-} );
-
 describe( "Explore", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
@@ -22,8 +18,6 @@ describe( "Explore", ( ) => {
 
   it( "should render", async ( ) => {
     inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
-    // TODO find a more generic way to do this
-    inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
     renderAppWithComponent( <ExploreContainer /> );
     const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
     expect( obsTaxonNameElt ).toBeTruthy( );
@@ -36,8 +30,6 @@ describe( "Explore", ( ) => {
   } );
   it( "should display grid item correctly", async ( ) => {
     inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
-    // TODO find a more generic way to do this
-    inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
     renderAppWithComponent( <ExploreContainer /> );
     const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
     expect( obsTaxonNameElt ).toBeTruthy( );
