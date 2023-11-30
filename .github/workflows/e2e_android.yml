@@ -65,6 +65,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '8'
+        distribution: 'zulu'
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
