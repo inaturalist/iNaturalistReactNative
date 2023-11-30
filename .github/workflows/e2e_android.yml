@@ -66,8 +66,10 @@ jobs:
     #     java-version: '17'
     #     distribution: 'temurin'
 
-    # - name: Setup Android SDK
-    #   uses: android-actions/setup-android@v3
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        cmdline-tools-version: 9862592
 
     # Use the Android command line tools to download an AOSP emulator image,
     # and setup new avd The name of the device for testing has to be the same
@@ -76,6 +78,8 @@ jobs:
       run: |
         # do we even need this?
         # $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        echo "ANDROID_HOME:"
+        echo $ANDROID_HOME
         echo "Checking java version"
         java --version
         echo "Checking emulator -list-avds"
