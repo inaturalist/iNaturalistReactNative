@@ -5,7 +5,6 @@ import TaxonSearch from "components/Suggestions/TaxonSearch";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
-import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 
@@ -73,18 +72,8 @@ jest.mock( "react-native-paper", () => {
   return MockedModule;
 } );
 
-const mockCreateId = jest.fn( );
-
 const renderTaxonSearch = ( ) => renderComponent(
-  <ObsEditContext.Provider value={{
-    createId: mockCreateId,
-    currentObservation: {
-      wasSynced: true
-    }
-  }}
-  >
-    <TaxonSearch />
-  </ObsEditContext.Provider>
+  <TaxonSearch />
 );
 
 describe( "TaxonSearch", ( ) => {
@@ -96,12 +85,7 @@ describe( "TaxonSearch", ( ) => {
     const suggestions = (
       <BottomSheetModalProvider>
         <INatPaperProvider>
-          <ObsEditContext.Provider value={{
-            updateObservationKeys: jest.fn( )
-          }}
-          >
-            <TaxonSearch />
-          </ObsEditContext.Provider>
+          <TaxonSearch />
         </INatPaperProvider>
       </BottomSheetModalProvider>
     );

@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef, useState
@@ -18,7 +19,10 @@ import Animated, {
   useAnimatedStyle,
   withTiming
 } from "react-native-reanimated";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import { useTranslation } from "sharedHooks";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   emptyComponent?: Function,
@@ -63,6 +67,7 @@ const PhotoCarousel = ( {
   setPhotoEvidenceUris,
   photoUris
 }: Props ): Node => {
+  const realm = useRealm( );
   const { t } = useTranslation( );
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -140,10 +145,11 @@ const PhotoCarousel = ( {
     photoUris
   ] );
 
-  const deletePhotoAtIndex = useCallback( ( item, _index ) => {
+  const deletePhotoAtIndex = useCallback( async ( item, _index ) => {
     if ( !deletePhoto ) return;
     deletePhoto( item );
-  }, [deletePhoto] );
+    await ObservationPhoto.deletePhoto( realm, item );
+  }, [deletePhoto, realm] );
 
   const renderPhotoOrEvidenceButton = useCallback( ( { item, index } ) => (
     <>
@@ -167,6 +173,7 @@ const PhotoCarousel = ( {
                 ...IMAGE_CONTAINER_CLASSES
               )}
             >
+              {console.log( `PhotoCarousel.displayPhoto.${item}`, "items" )}
               {
                 deletePhotoMode
                   ? (
@@ -178,6 +185,7 @@ const PhotoCarousel = ( {
                         mode="contained"
                         color={theme.colors.onPrimary}
                         backgroundColor="rgba(0, 0, 0, 0.5)"
+                        testID={`PhotoCarousel.deletePhoto.${item}`}
                         accessibilityLabel={t( "Delete-photo" )}
                         onPress={( ) => deletePhotoAtIndex( item, index )}
                       />
@@ -187,6 +195,7 @@ const PhotoCarousel = ( {
                     <Pressable
                       accessibilityRole="button"
                       accessibilityLabel={t( "View-photo" )}
+                      testID={`PhotoCarousel.displayPhoto.${item}`}
                       onLongPress={showDeletePhotoMode}
                       onPress={( ) => viewPhotoAtIndex( item, index )}
                       className="w-full h-full"

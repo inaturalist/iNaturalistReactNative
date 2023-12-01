@@ -7,7 +7,6 @@ import Suggestions from "components/Suggestions/Suggestions";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
-import { ObsEditContext } from "providers/contexts";
 import React from "react";
 
 import factory from "../../../factory";
@@ -46,27 +45,8 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 // Mock api call to observations
 jest.mock( "inaturalistjs" );
 
-const mockUris = [
-  faker.image.imageUrl( ),
-  `${faker.image.imageUrl( )}/400`
-];
-
-const mockCreateId = jest.fn( );
-
 const renderSuggestions = ( ) => renderComponent(
-  <ObsEditContext.Provider value={{
-    photoEvidenceUris: mockUris,
-    createId: mockCreateId,
-    currentObservation: {
-      uuid: faker.datatype.uuid( ),
-      latitude: 41,
-      longitude: -143
-    },
-    setPhotoEvidenceUris: jest.fn( )
-  }}
-  >
-    <SuggestionsContainer />
-  </ObsEditContext.Provider>
+  <SuggestionsContainer />
 );
 
 describe( "Suggestions", ( ) => {

@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
-import { ObsEditContext } from "providers/contexts";
 import React from "react";
 
 import factory from "../../../factory";
@@ -20,16 +19,7 @@ const mockObservations = [
   } )
 ];
 
-const renderObsEdit = obs => renderComponent(
-  <ObsEditContext.Provider value={{
-    observations: obs,
-    currentObservation: obs[0],
-    setPassesIdentificationTest: jest.fn( )
-  }}
-  >
-    <ObsEdit />
-  </ObsEditContext.Provider>
-);
+const renderObsEdit = ( ) => renderComponent( <ObsEdit /> );
 
 describe( "ObsEdit", () => {
   beforeAll( async ( ) => {

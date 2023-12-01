@@ -3,11 +3,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import scoreImage from "api/computerVision";
 import { difference } from "lodash";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect, useState
+  useCallback,
+  useEffect, useState
 } from "react";
+import Identification from "realmModels/Identification";
 import flattenUploadParams from "sharedHelpers/flattenUploadParams";
 import {
   useAuthenticatedQuery,
@@ -18,12 +19,8 @@ import useStore from "stores/useStore";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
-  const {
-    createId
-  } = useContext( ObsEditContext );
   const comment = useStore( state => state.comment );
   const currentObservation = useStore( state => state.currentObservation );
-
   const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
   const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const { params } = useRoute( );
@@ -36,6 +33,10 @@ const SuggestionsContainer = ( ): Node => {
   );
   const localObservation = useLocalObservation( uuid );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
+  const observations = useStore( state => state.observations );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const updateObservations = useStore( state => state.updateObservations );
+
   const [loading, setLoading] = useState( false );
   const navigation = useNavigation();
 
@@ -52,6 +53,16 @@ const SuggestionsContainer = ( ): Node => {
     obsPhotoUris,
     photoEvidenceUris,
     setPhotoEvidenceUris
+  ] );
+
+  const updateTaxon = useCallback( newTaxon => {
+    const updatedObservations = observations;
+    updatedObservations[currentObservationIndex].taxon = newTaxon;
+    updateObservations( updatedObservations );
+  }, [
+    currentObservationIndex,
+    updateObservations,
+    observations
   ] );
 
   const uploadParams = {
@@ -75,14 +86,17 @@ const SuggestionsContainer = ( ): Node => {
     }
   );
 
-  const onTaxonChosen = async taxon => {
+  const onTaxonChosen = newTaxon => {
     if ( !obsUUID ) {
       setLoading( true );
-      await createId( taxon, comment );
-      setLoading( false );
+      const newIdentification = Identification.new( {
+        taxon: newTaxon,
+        body: comment
+      } );
+      updateTaxon( newIdentification.taxon );
       navigation.goBack( );
     } else {
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
+      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon } );
     }
   };
 

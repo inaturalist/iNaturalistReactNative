@@ -3,7 +3,6 @@ import {
 } from "@testing-library/react-native";
 import CameraContainer from "components/Camera/CameraContainer";
 import initI18next from "i18n/initI18next";
-import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { View } from "react-native";
@@ -34,11 +33,6 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
-const mockValue = {
-  totalObsPhotoUris: 10,
-  cameraPreviewUris: []
-};
-
 const mockView = <View />;
 jest.mock( "components/Camera/CameraView", () => ( {
   __esModule: true,
@@ -62,9 +56,7 @@ jest.mock( "components/Camera/ARCamera/FrameProcessorCamera", () => ( {
 
 const renderCameraContainer = () => render(
   <INatPaperProvider>
-    <ObsEditContext.Provider value={mockValue}>
-      <CameraContainer />
-    </ObsEditContext.Provider>
+    <CameraContainer />
   </INatPaperProvider>
 );
 
@@ -77,9 +69,7 @@ describe( "CameraContainer", ( ) => {
   it( "should not have accessibility errors", () => {
     const Camera = (
       <INatPaperProvider>
-        <ObsEditContext.Provider value={mockValue}>
-          <CameraContainer />
-        </ObsEditContext.Provider>
+        <CameraContainer />
       </INatPaperProvider>
     );
 

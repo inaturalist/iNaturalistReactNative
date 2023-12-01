@@ -3,11 +3,9 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useContext,
   useMemo,
   useRef,
   useState
@@ -87,9 +85,6 @@ const CameraWithDevice = ( {
   if ( !isTablet ) {
     Orientation.lockToPortrait( );
   }
-  const {
-    deletePhotoFromObservation
-  } = useContext( ObsEditContext );
   const navigation = useNavigation();
   // $FlowFixMe
   const camera = useRef<Camera>( null );
@@ -117,6 +112,7 @@ const CameraWithDevice = ( {
   const currentObservation = useStore( state => state.currentObservation );
   const setCameraState = useStore( state => state.setCameraState );
   const setCameraRollUris = useStore( state => state.setCameraRollUris );
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris].length,

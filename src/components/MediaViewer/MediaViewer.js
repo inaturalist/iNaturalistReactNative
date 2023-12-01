@@ -4,13 +4,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import { Heading4, TransparentCircleButton, WarningSheet } from "components/SharedComponents";
 import { SafeAreaView, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useContext, useEffect, useRef,
+  useCallback, useEffect, useRef,
   useState
 } from "react";
 import { StatusBar } from "react-native";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -20,16 +21,18 @@ import colors from "styles/tailwindColors";
 import MainPhotoDisplay from "./MainPhotoDisplay";
 import PhotoSelector from "./PhotoSelector";
 
+const { useRealm } = RealmContext;
+
 const MediaViewer = ( ): Node => {
+  const realm = useRealm( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( params?.index );
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
-  const {
-    deletePhotoFromObservation
-  } = useContext( ObsEditContext );
   const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
+  const currentObservation = useStore( state => state.currentObservation );
 
   const atFirstPhoto = selectedPhotoIndex === 0;
   const atLastPhoto = selectedPhotoIndex === photoEvidenceUris.length - 1;
@@ -54,8 +57,10 @@ const MediaViewer = ( ): Node => {
   const showWarningSheet = ( ) => setWarningSheet( true );
   const hideWarningSheet = ( ) => setWarningSheet( false );
 
-  const deletePhoto = ( ) => {
-    deletePhotoFromObservation( photoEvidenceUris[selectedPhotoIndex] );
+  const deletePhoto = async ( ) => {
+    const uriToDelete = photoEvidenceUris[selectedPhotoIndex];
+    deletePhotoFromObservation( uriToDelete );
+    await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
     hideWarningSheet( );
     if ( photoEvidenceUris.length === 0 ) {
       navigation.goBack( );

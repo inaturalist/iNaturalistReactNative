@@ -16,8 +16,8 @@ exports[`PhotoCarousel renders correctly 1`] = `
     data={
       [
         "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480",
+        "https://loremflickr.com/640/480/600",
+        "https://loremflickr.com/640/480/900",
       ]
     }
     getItem={[Function]}
@@ -200,6 +200,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://loremflickr.com/640/480"
                 />
               </View>
             </View>
@@ -304,7 +305,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://loremflickr.com/640/480/600",
                     }
                   }
                   style={
@@ -368,6 +369,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://loremflickr.com/640/480/600"
                 />
               </View>
             </View>
@@ -472,7 +474,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://loremflickr.com/640/480/900",
                     }
                   }
                   style={
@@ -536,6 +538,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://loremflickr.com/640/480/900"
                 />
               </View>
             </View>
@@ -563,8 +566,8 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
     data={
       [
         "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480",
+        "https://loremflickr.com/640/480/600",
+        "https://loremflickr.com/640/480/900",
       ]
     }
     getItem={[Function]}
@@ -752,6 +755,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://loremflickr.com/640/480"
                 />
               </View>
             </View>
@@ -861,7 +865,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://loremflickr.com/640/480/600",
                     }
                   }
                   style={
@@ -925,6 +929,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://loremflickr.com/640/480/600"
                 />
               </View>
             </View>
@@ -1034,7 +1039,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://loremflickr.com/640/480/900",
                     }
                   }
                   style={
@@ -1098,6 +1103,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://loremflickr.com/640/480/900"
                 />
               </View>
             </View>
