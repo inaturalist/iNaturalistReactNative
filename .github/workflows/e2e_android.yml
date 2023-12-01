@@ -89,6 +89,8 @@ jobs:
         echo "PATH: $PATH"
         echo "Running avdmanager list avd"
         $ANDROID_HOME/tools/bin/avdmanager list avd
+        echo "sdkmanager --list"
+        $ANDROID_HOME/tools/bin/sdkmanager --list
         echo "sdkmanager --install"
         $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
         echo "avdmanager create avd"
@@ -165,7 +167,11 @@ jobs:
     # the apk everytime, maybe there should be a more specific trigger for
     # the entire job
     - name: Build for detox
-      run: npm run e2e:build:android
+      run:
+        echo "First let's run du -sh to see if we're using a ton of space here"
+        du -sh *
+        echo "Ok, proceeding with the build..."
+        npm run e2e:build:android
 
     # Starts the avd previously set-up by name
     - name: Android Emulator
