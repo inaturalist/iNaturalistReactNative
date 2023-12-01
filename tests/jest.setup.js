@@ -4,13 +4,14 @@ import "@shopify/flash-list/jestSetup";
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import inatjs from "inaturalistjs";
+import fetchMock from "jest-fetch-mock";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 import mockRNLocalize from "react-native-localize/mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
-import { makeResponse } from "./factory";
+import factory, { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
@@ -199,7 +200,7 @@ jest.mock( "react-native-permissions", () => require( "react-native-permissions/
 
 // mocking globally since this currently affects a handful of unit and integration tests
 jest.mock( "@react-native-community/geolocation", ( ) => ( {
-  getCurrentPosition: ( ) => jest.fn( )
+  getCurrentPosition: jest.fn( )
 } ) );
 require( "react-native" ).NativeModules.RNCGeolocation = { };
 
@@ -313,3 +314,12 @@ jest.mock( "react-native-geocoder-reborn", ( ) => ( {
     "SW"
   ] )
 } ) );
+
+// Set up mocked fetch for testing (or disabling) fetch requests
+fetchMock.enableMocks( );
+fetchMock.dontMock( );
+
+const mockIconicTaxon = factory( "RemoteTaxon", {
+  is_iconic: true
+} );
+inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );

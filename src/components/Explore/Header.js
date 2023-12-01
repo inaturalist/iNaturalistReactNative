@@ -80,7 +80,15 @@ const Header = ( {
   );
 
   return (
-    <View className="z-10 top-0 absolute w-full">
+    <View
+      className="z-10 top-0 absolute w-full"
+      onLayout={event => {
+        const {
+          height
+        } = event.nativeEvent.layout;
+        setHeightAboveFilters( height );
+      }}
+    >
       <Surface
         style={surfaceStyle}
         className="h-[175px]"
@@ -91,12 +99,7 @@ const Header = ( {
         >
           <View
             className="flex-row justify-between align-center"
-            onLayout={event => {
-              const {
-                height
-              } = event.nativeEvent.layout;
-              setHeightAboveFilters( height );
-            }}
+
           >
             <Button
               text={exploreViewButtonText}

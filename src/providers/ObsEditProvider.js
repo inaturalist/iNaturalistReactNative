@@ -26,15 +26,20 @@ const { useRealm } = RealmContext;
 
 type Props = {
   children: any,
+  // Generally only used for testing
+  value?: Object
 };
 
-const ObsEditProvider = ( { children }: Props ): Node => {
+const ObsEditProvider = ( { children, value }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
 
-  const [state, dispatch] = useReducer( createObsReducer, INITIAL_CREATE_OBS_STATE );
+  const [state, dispatch] = useReducer( createObsReducer, {
+    ...INITIAL_CREATE_OBS_STATE,
+    ...value
+  } );
 
   const {
     cameraPreviewUris,

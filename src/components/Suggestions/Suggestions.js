@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Body3, Button, ScrollViewWrapper
 } from "components/SharedComponents";
@@ -30,7 +30,6 @@ type Props = {
   photoUris: Array<string>,
   selectedPhotoUri: string,
   setComment: Function,
-  setLoading: Function,
   setSelectedPhotoUri: Function
 };
 
@@ -44,11 +43,12 @@ const Suggestions = ( {
   photoUris,
   selectedPhotoUri,
   setComment,
-  setLoading,
   setSelectedPhotoUri
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const { params } = useRoute( );
+  const obsUUID = params?.obsUUID;
 
   return (
     <ScrollViewWrapper testID="suggestions">
@@ -73,7 +73,10 @@ const Suggestions = ( {
         <Body3 className="my-4 mx-3">{t( "Select-the-identification-you-want-to-add" )}</Body3>
         <Button
           text={t( "SEARCH-FOR-A-TAXON" )}
-          onPress={( ) => navigation.navigate( "TaxonSearch" )}
+          onPress={( ) => navigation.navigate(
+            "TaxonSearch",
+            { obsUUID }
+          )}
           accessibilityLabel={t( "Search" )}
         />
       </View>
@@ -82,7 +85,6 @@ const Suggestions = ( {
         nearbySuggestions={nearbySuggestions}
         onTaxonChosen={onTaxonChosen}
         loadingSuggestions={loadingSuggestions}
-        setLoading={setLoading}
       />
       {nearbySuggestions?.length > 0 && (
         <Attribution

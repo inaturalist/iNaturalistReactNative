@@ -233,9 +233,6 @@ describe( "MyObservations", ( ) => {
           mockObservationsSynced.forEach( mockObservation => {
             global.realm.create( "Observation", mockObservation );
           } );
-          global.realm.create( "LocalPreferences", {
-            last_sync_time: new Date( "2023-11-01" )
-          } );
         } );
       } );
 
@@ -256,40 +253,65 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      it( "downloads deleted observations from server when sync button tapped", async ( ) => {
-        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const syncIcon = await screen.findByTestId( "SyncButton" );
-        await waitFor( ( ) => {
-          expect( syncIcon ).toBeVisible( );
-        } );
-        fireEvent.press( syncIcon );
-        const lastSyncTime = global.realm.objects( "LocalPreferences" )[0].last_sync_time;
-        await waitFor( ( ) => {
-          expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
-            {
-              since: format( lastSyncTime, "yyyy-MM-dd" )
-            },
-            expect.anything( )
-          );
+      describe( "before initial sync", ( ) => {
+        it( "doesn't throw an error when sync button tapped", async ( ) => {
+          expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          expect( global.realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          expect( ( ) => {
+            fireEvent.press( syncIcon );
+          } ).not.toThrow( );
         } );
       } );
 
-      it( "deletes local observations if they have been deleted on server", async ( ) => {
-        inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const syncIcon = await screen.findByTestId( "SyncButton" );
-        await waitFor( ( ) => {
-          expect( syncIcon ).toBeVisible( );
+      describe( "after initial sync", ( ) => {
+        beforeEach( async () => {
+          await global.realm.write( () => {
+            global.realm.create( "LocalPreferences", {
+              last_sync_time: new Date( "2023-11-01" )
+            } );
+          } );
         } );
-        fireEvent.press( syncIcon );
-        const spy = jest.spyOn( global.realm, "write" );
-        const deleteSpy = jest.spyOn( global.realm, "delete" );
-        await waitFor( ( ) => {
-          expect( spy ).toHaveBeenCalled( );
+
+        it( "downloads deleted observations from server when sync button tapped", async ( ) => {
+          expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          fireEvent.press( syncIcon );
+          const lastSyncTime = global.realm.objects( "LocalPreferences" )[0].last_sync_time;
+          await waitFor( ( ) => {
+            expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
+              {
+                since: format( lastSyncTime, "yyyy-MM-dd" )
+              },
+              expect.anything( )
+            );
+          } );
         } );
-        expect( deleteSpy ).toHaveBeenCalled( );
-        expect( global.realm.objects( "Observation" ).length ).toBe( 1 );
+
+        it( "deletes local observations if they have been deleted on server", async ( ) => {
+          inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          fireEvent.press( syncIcon );
+          const spy = jest.spyOn( global.realm, "write" );
+          const deleteSpy = jest.spyOn( global.realm, "delete" );
+          await waitFor( ( ) => {
+            expect( spy ).toHaveBeenCalled( );
+          } );
+          expect( deleteSpy ).toHaveBeenCalled( );
+          expect( global.realm.objects( "Observation" ).length ).toBe( 1 );
+        } );
       } );
     } );
   } );

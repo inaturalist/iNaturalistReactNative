@@ -35,7 +35,6 @@ const mockCreateId = jest.fn( );
 const renderSuggestionsList = ( ) => renderComponent(
   <SuggestionsList
     nearbySuggestions={mockSuggestionsList}
-    setLoading={jest.fn( )}
     onTaxonChosen={mockCreateId}
   />
 );

@@ -178,7 +178,9 @@ const EvidenceSectionContainer = ( {
   useEffect( ( ) => {
     async function setPlaceGuess( ) {
       const placeGuess = await fetchPlaceName( latitude, longitude );
-      updateObservationKeys( { place_guess: placeGuess } );
+      if ( placeGuess ) {
+        updateObservationKeys( { place_guess: placeGuess } );
+      }
     }
     if ( ( latitude && longitude ) && !currentObservation?.place_guess ) {
       setPlaceGuess( );

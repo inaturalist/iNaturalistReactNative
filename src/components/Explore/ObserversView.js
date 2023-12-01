@@ -10,15 +10,17 @@ import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
-  setHeaderRight: Function,
   handleScroll: Function,
-  queryParams: Object
+  isOnline: boolean,
+  queryParams: Object,
+  setHeaderRight: Function
 };
 
 const ObserversView = ( {
-  setHeaderRight,
   handleScroll,
-  queryParams
+  isOnline,
+  queryParams,
+  setHeaderRight
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
@@ -56,16 +58,18 @@ const ObserversView = ( {
 
   return (
     <ExploreFlashList
-      testID="ExploreObserversAnimatedList"
-      handleScroll={handleScroll}
-      isFetchingNextPage={isFetchingNextPage}
       data={data}
+      estimatedItemSize={98}
+      fetchNextPage={fetchNextPage}
+      handleScroll={handleScroll}
+      hideLoadingWheel={!isFetchingNextPage}
+      isFetchingNextPage={isFetchingNextPage}
+      isOnline={isOnline}
+      keyExtractor={item => item.user.id}
       renderItem={renderItem}
       renderItemSeparator={renderItemSeparator}
-      fetchNextPage={fetchNextPage}
-      estimatedItemSize={98}
-      keyExtractor={item => item.user.id}
       status={status}
+      testID="ExploreObserversAnimatedList"
     />
   );
 };

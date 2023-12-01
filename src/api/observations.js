@@ -8,7 +8,7 @@ const searchObservations = async ( params: Object = {}, opts: Object = {} ): Pro
   try {
     return await inatjs.observations.search( params, opts );
   } catch ( e ) {
-    return handleError( e, { throw: true } );
+    return handleError( e );
   }
 };
 
@@ -46,7 +46,7 @@ const fetchRemoteObservation = async (
     }
     return null;
   } catch ( e ) {
-    return handleError( e, { throw: true } );
+    return handleError( e );
   }
 };
 
@@ -111,7 +111,7 @@ const fetchObservationUpdates = async (
     const { results } = await inatjs.observations.updates( params, opts );
     return results;
   } catch ( e ) {
-    return handleError( e, { throw: true } );
+    return handleError( e );
   }
 };
 

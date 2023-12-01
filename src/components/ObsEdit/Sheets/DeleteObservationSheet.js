@@ -72,7 +72,7 @@ const DeleteObservationSheet = ( {
         if ( !isSavedObservation ) {
           handleClose( );
           navToObsList( );
-        } else if ( !currentObservation?._synced_at ) {
+        } else if ( !isSavedObservation?._synced_at ) {
           deleteLocalObservation( );
         } else {
           deleteObservationMutation.mutate( { uuid } );

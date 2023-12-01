@@ -68,13 +68,12 @@ const useCurrentObservationLocation = (
       // If we're still receiving location updates and location is blank,
       // then we don't know where we are any more and the obs should update
       // to reflect that
-      if ( location?.place_guess !== currentObservation.place_guess
-        || location?.latitude !== currentObservation.latitude
+      if (
+        location?.latitude !== currentObservation.latitude
         || location?.longitude !== currentObservation.longitude
         || location?.positional_accuracy !== currentObservation.positional_accuracy
       ) {
         updateObservationKeys( {
-          place_guess: location?.place_guess,
           latitude: location?.latitude,
           longitude: location?.longitude,
           positional_accuracy: location?.positional_accuracy
@@ -100,14 +99,14 @@ const useCurrentObservationLocation = (
       // If we're already fetching we don't need to fetch again
       !fetchingLocation
       // We only need to fetch when we're above the target
-      && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
+      && positionalAccuracy > TARGET_POSITIONAL_ACCURACY
       // Don't fetch location more than once a second
       && Date.now() - lastLocationFetchTime >= LOCATION_FETCH_INTERVAL
     ) {
       setFetchingLocation( true );
       setLastLocationFetchTime( Date.now() );
       fetchLocation( );
-    } else if ( positionalAccuracy < TARGET_POSITIONAL_ACCURACY ) {
+    } else if ( positionalAccuracy <= TARGET_POSITIONAL_ACCURACY ) {
       setShouldFetchLocation( false );
     }
   }, [
