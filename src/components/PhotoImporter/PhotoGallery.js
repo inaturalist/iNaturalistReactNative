@@ -31,10 +31,12 @@ const PhotoGallery = ( ): Node => {
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
   const groupedPhotos = useStore( state => state.groupedPhotos );
-  const setObservations = useStore( state => state.setObservations );
+  const updateObservations = useStore( state => state.updateObservations );
   const galleryUris = useStore( state => state.galleryUris );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const currentObservation = useStore( state => state.currentObservation );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const observations = useStore( state => state.observations );
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
   const { params } = useRoute( );
@@ -108,8 +110,10 @@ const PhotoGallery = ( ): Node => {
       } );
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos } );
-      const newObservations = Observation.appendObsPhotos( obsPhotos, currentObservation );
-      setObservations( newObservations );
+      const updatedCurrentObservation = Observation
+        .appendObsPhotos( obsPhotos, currentObservation );
+      observations[currentObservationIndex] = updatedCurrentObservation;
+      updateObservations( observations );
       navToObsEdit();
       setPhotoGalleryShown( false );
     } else if ( selectedImages.length === 1 ) {
@@ -136,7 +140,8 @@ const PhotoGallery = ( ): Node => {
     photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
     evidenceToAdd, galleryUris, navigation, setGroupedPhotos,
     fromGroupPhotos, skipGroupPhotos, groupedPhotos, currentObservation,
-    setObservations] );
+    updateObservations, observations,
+    currentObservationIndex] );
 
   const onPermissionGranted = () => {
     setPermissionGranted( true );

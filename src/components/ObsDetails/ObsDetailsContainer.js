@@ -103,7 +103,7 @@ const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
-  const { uuid, taxonSuggested } = params;
+  const { uuid, taxonSuggested, comment } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
@@ -305,6 +305,11 @@ const ObsDetailsContainer = ( ): Node => {
       taxon_id: taxonSuggested.id
     };
 
+    if ( comment ) {
+      // $FlowIgnore
+      idParams.body = comment;
+    }
+
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createIdentificationMutation.mutate( { identification: idParams } );
 
@@ -340,11 +345,11 @@ const ObsDetailsContainer = ( ): Node => {
     refetchObservationUpdates( );
   };
 
-  const onAgree = comment => {
+  const onAgree = newComment => {
     const agreeParams = {
       observation_id: observation?.uuid,
       taxon_id: observation?.taxon?.id,
-      body: comment
+      body: newComment
     };
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );

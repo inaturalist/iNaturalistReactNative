@@ -96,7 +96,7 @@ const SuggestionsContainer = ( ): Node => {
       updateTaxon( newIdentification.taxon );
       navigation.goBack( );
     } else {
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon } );
+      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon, comment } );
     }
   };
 

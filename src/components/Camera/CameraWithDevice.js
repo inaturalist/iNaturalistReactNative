@@ -111,6 +111,8 @@ const CameraWithDevice = ( {
   const setCameraState = useStore( state => state.setCameraState );
   const setCameraRollUris = useStore( state => state.setCameraRollUris );
   const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const observations = useStore( state => state.observations );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris].length,
@@ -271,8 +273,10 @@ const CameraWithDevice = ( {
           position: numOfObsPhotos,
           local: true
         } );
-      const newObservations = Observation.appendObsPhotos( obsPhotos, currentObservation );
-      updateObservations( newObservations );
+      const updatedCurrentObservation = Observation
+        .appendObsPhotos( obsPhotos, currentObservation );
+      observations[currentObservationIndex] = updatedCurrentObservation;
+      updateObservations( observations );
       logger.info(
         "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
         evidenceToAdd
@@ -289,7 +293,9 @@ const CameraWithDevice = ( {
     numOfObsPhotos,
     currentObservation,
     savePhotosToCameraGallery,
-    updateObservations
+    updateObservations,
+    observations,
+    currentObservationIndex
   ] );
 
   const navToObsEdit = useCallback( localTaxon => {

@@ -68,7 +68,7 @@ const TaxonSearch = ( ): Node => {
       navigation.navigate( "ObsEdit" );
     } else {
       // Called when adding an identification to someone else's observation
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon } );
+      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon, comment } );
     }
   }, [navigation, obsUUID, comment, updateTaxon] );
 
