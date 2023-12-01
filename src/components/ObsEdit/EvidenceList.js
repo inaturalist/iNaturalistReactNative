@@ -82,6 +82,7 @@ const EvidenceList = ( {
   return (
     <View className="mt-5">
       <DraggableFlatList
+        testID="EvidenceList.DraggableFlatList"
         horizontal
         data={evidenceList}
         renderItem={renderPhoto}

@@ -6,6 +6,7 @@ import {
   isFuture,
   parseISO
 } from "date-fns";
+import { difference } from "lodash";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -42,6 +43,9 @@ const EvidenceSectionContainer = ( {
 }: Props ): Node => {
   const obsPhotos = currentObservation?.observationPhotos;
   const mountedRef = useRef( true );
+  const obsPhotoUris = ( obsPhotos || [] ).map(
+    obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+  );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
 
@@ -67,12 +71,10 @@ const EvidenceSectionContainer = ( {
   }, [] );
 
   useEffect( ( ) => {
-    if ( obsPhotos?.length > photoEvidenceUris?.length ) {
-      setPhotoEvidenceUris( obsPhotos.map(
-        obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
-      ) );
+    if ( difference( obsPhotoUris, photoEvidenceUris ).length > 0 ) {
+      setPhotoEvidenceUris( obsPhotoUris );
     }
-  }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
+  }, [photoEvidenceUris, setPhotoEvidenceUris, obsPhotoUris] );
 
   const {
     hasLocation,

@@ -10,14 +10,14 @@ const removePhotoFromList = ( list, photo ) => {
 };
 
 const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
-  if ( _.isEmpty ) { return []; }
+  if ( _.isEmpty( currentObservation ) ) { return []; }
   const updatedObs = currentObservation;
   const obsPhotos = Array.from( currentObservation?.observationPhotos );
   if ( obsPhotos.length > 0 ) {
     const updatedObsPhotos = ObservationPhoto
       .deleteObservationPhoto( obsPhotos, uri );
     updatedObs.observationPhotos = updatedObsPhotos;
-    return [updatedObs];
+    return updatedObs;
   }
   return [];
 };
@@ -33,6 +33,7 @@ const useStore = create( set => ( {
   groupedPhotos: [],
   loading: false,
   observations: [],
+  originalCameraUrisMap: {},
   photoEvidenceUris: [],
   savingPhoto: false,
   unsavedChanges: false,
@@ -40,7 +41,10 @@ const useStore = create( set => ( {
     photoEvidenceUris: [...removePhotoFromList( state.photoEvidenceUris, uri )],
     cameraPreviewUris: [...removePhotoFromList( state.cameraPreviewUris, uri )],
     evidenceToAdd: [...removePhotoFromList( state.evidenceToAdd, uri )],
-    observations: removeObsPhotoFromObservation( state.currentObservation, uri )
+    observations: removeObsPhotoFromObservation(
+      state.observations[state.currentObservationIndex],
+      uri
+    )
   } ) ),
   resetStore: ( ) => set( {
     cameraPreviewUris: [],
@@ -53,6 +57,7 @@ const useStore = create( set => ( {
     groupedPhotos: [],
     loading: false,
     observations: [],
+    originalCameraUrisMap: {},
     photoEvidenceUris: [],
     savingPhoto: false,
     unsavedChanges: false
@@ -64,7 +69,8 @@ const useStore = create( set => ( {
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     cameraPreviewUris: options?.cameraPreviewUris || state.cameraPreviewUris,
-    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto
+    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto,
+    originalCameraUrisMap: options?.originalCameraUrisMap || state.originalCameraUrisMap
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,
@@ -73,9 +79,10 @@ const useStore = create( set => ( {
   setGroupedPhotos: photos => set( {
     groupedPhotos: photos
   } ),
-  setObservations: updatedObservations => set( {
-    observations: updatedObservations
-  } ),
+  setObservations: updatedObservations => set( state => ( {
+    observations: updatedObservations,
+    currentObservation: updatedObservations[state.currentObservationIndex]
+  } ) ),
   setPhotoEvidenceUris: uris => set( {
     photoEvidenceUris: uris
   } ),
@@ -84,13 +91,16 @@ const useStore = create( set => ( {
     savingPhoto: options?.savingPhoto || state.savingPhoto,
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     groupedPhotos: options?.groupedPhotos || state.groupedPhotos,
-    observations: options?.observations || state.observations
+    observations: options?.observations || state.observations,
+    currentObservation: options?.observations?.[state.currentObservationIndex]
+    || state.observations?.[state.currentObservationIndex]
   } ) ),
   updateComment: newComment => set( { comment: newComment } ),
-  updateObservations: updatedObservations => set( {
+  updateObservations: updatedObservations => set( state => ( {
     observations: updatedObservations,
+    currentObservation: updatedObservations[state.currentObservationIndex],
     unsavedChanges: true
-  } )
+  } ) )
 } ) );
 
 export default useStore;

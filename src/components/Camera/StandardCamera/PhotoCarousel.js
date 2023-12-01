@@ -173,7 +173,6 @@ const PhotoCarousel = ( {
                 ...IMAGE_CONTAINER_CLASSES
               )}
             >
-              {console.log( `PhotoCarousel.displayPhoto.${item}`, "items" )}
               {
                 deletePhotoMode
                   ? (

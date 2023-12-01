@@ -8,9 +8,12 @@ import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
+import useStore from "stores/useStore";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
+
+const mockObservation = factory( "RemoteObservation" );
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: faker.name.firstName( ),
@@ -49,8 +52,11 @@ const renderSuggestions = ( ) => renderComponent(
   <SuggestionsContainer />
 );
 
+const initialStoreState = useStore.getState( );
+
 describe( "Suggestions", ( ) => {
   beforeAll( async ( ) => {
+    useStore.setState( initialStoreState, true );
     await initI18next( );
   } );
 
@@ -72,6 +78,10 @@ describe( "Suggestions", ( ) => {
   } );
 
   it( "should show loading wheel while id being created", async ( ) => {
+    useStore.setState( {
+      observations: [mockObservation],
+      currentObservationIndex: 0
+    } );
     renderSuggestions( );
     const taxonTopResult = screen.getByTestId(
       `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`

@@ -25,6 +25,7 @@ const ObsEdit = ( ): Node => {
   const updateObservations = useStore( state => state.updateObservations );
   const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const cameraRollUris = useStore( state => state.cameraRollUris );
+  const currentObservation = useStore( state => state.currentObservation );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
   const savingPhoto = useStore( state => state.savingPhoto );
@@ -35,8 +36,7 @@ const ObsEdit = ( ): Node => {
   const localObservation = useLocalObservation( params?.uuid );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
-
-  const currentObservation = observations[currentObservationIndex];
+  console.log( currentObservation?.observationPhotos, "obs photos" );
 
   const isFocused = useIsFocused( );
 

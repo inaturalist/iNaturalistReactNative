@@ -1,10 +1,14 @@
-import { screen } from "@testing-library/react-native";
+import { faker } from "@faker-js/faker";
+import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
 import React from "react";
+import useStore from "stores/useStore";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
+
+const initialStoreState = useStore.getState( );
 
 const mockLocationName = "San Francisco, CA";
 
@@ -19,10 +23,30 @@ const mockObservations = [
   } )
 ];
 
+const observationPhotos = [
+  factory( "RemoteObservationPhoto", {
+    photo: {
+      url: faker.image.imageUrl( )
+    },
+    position: 0
+  } ),
+  factory( "RemoteObservationPhoto", {
+    photo: {
+      url: `${faker.image.imageUrl( )}/100`
+    },
+    position: 1
+  } )
+];
+
+const mockObservation = factory( "RemoteObservation", {
+  observationPhotos
+} );
+
 const renderObsEdit = ( ) => renderComponent( <ObsEdit /> );
 
 describe( "ObsEdit", () => {
   beforeAll( async ( ) => {
+    useStore.setState( initialStoreState, true );
     await initI18next( );
   } );
 
@@ -31,5 +55,19 @@ describe( "ObsEdit", () => {
 
     const obsEdit = await screen.findByTestId( "obs-edit" );
     expect( obsEdit ).toBeAccessible();
+  } );
+
+  it( "displays the number of photos in global state obsPhotos", async ( ) => {
+    useStore.setState( {
+      currentObservation: mockObservation,
+      observations: [mockObservation]
+    } );
+    renderComponent( <ObsEdit /> );
+
+    const evidenceList = screen.getByTestId( "EvidenceList.DraggableFlatList" );
+
+    await waitFor( ( ) => {
+      expect( evidenceList ).toHaveProp( "data", observationPhotos );
+    } );
   } );
 } );
