@@ -167,7 +167,7 @@ jobs:
     # the apk everytime, maybe there should be a more specific trigger for
     # the entire job
     - name: Build for detox
-      run:
+      run: |
         echo "First let's run du -sh to see if we're using a ton of space here"
         du -sh *
         echo "Ok, proceeding with the build..."
