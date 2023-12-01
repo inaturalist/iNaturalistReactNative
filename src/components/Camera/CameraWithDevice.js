@@ -110,7 +110,6 @@ const CameraWithDevice = ( {
   const currentObservation = useStore( state => state.currentObservation );
   const setCameraState = useStore( state => state.setCameraState );
   const setCameraRollUris = useStore( state => state.setCameraRollUris );
-  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
 
   const totalObsPhotoUris = useMemo(
@@ -447,7 +446,6 @@ const CameraWithDevice = ( {
             onZoomChange={onZoomChange}
             totalObsPhotoUris={totalObsPhotoUris}
             cameraPreviewUris={cameraPreviewUris}
-            deletePhotoFromObservation={deletePhotoFromObservation}
             setPhotoEvidenceUris={setPhotoEvidenceUris}
           />
         )
