@@ -206,16 +206,25 @@ const MyObservationsContainer = ( ): Node => {
         }
 
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
-        dispatch( {
-          type: "UPDATE_PROGRESS",
-          uploadProgress: currentProgress
-        } );
+
+        if ( currentProgress[uuid] > state.totalProgressIncrements * increment ) {
+          dispatch( {
+            type: "UPLOADS_COMPLETE"
+          } );
+        } else {
+          console.log( currentProgress[uuid] );
+          dispatch( {
+            type: "UPDATE_PROGRESS",
+            uploadProgress: currentProgress
+          } );
+        }
       }
     );
     return ( ) => {
       EventRegister?.removeEventListener( progressListener );
     };
-  }, [state.uploadProgress, state.singleUpload] );
+  }, [state.uploadProgress, state.singleUpload,
+    state.totalProgressIncrements] );
 
   const showInternetErrorAlert = useCallback( ( ) => {
     if ( !isOnline ) {
@@ -328,6 +337,9 @@ const MyObservationsContainer = ( ): Node => {
   }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {
+    if ( !uploadInProgress && uploadsComplete ) {
+      dispatch( { type: "RESET_UPLOAD_STATE" } );
+    }
     toggleLoginSheet( );
     showInternetErrorAlert( );
     activateKeepAwake( );
@@ -335,7 +347,8 @@ const MyObservationsContainer = ( ): Node => {
     await downloadRemoteObservationsFromServer( );
     updateSyncTime( );
     deactivateKeepAwake( );
-  }, [
+  }, [uploadInProgress,
+    uploadsComplete,
     syncRemoteDeletedObservations,
     downloadRemoteObservationsFromServer,
     toggleLoginSheet,
