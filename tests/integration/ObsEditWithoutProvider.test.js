@@ -76,7 +76,10 @@ describe( "basic rendering", ( ) => {
       observationPhotos: []
     } )];
 
-    useStore.setState( { observations } );
+    useStore.setState( {
+      observations,
+      currentObservation: observations[0]
+    } );
     renderObsEdit( );
 
     const obs = observations[0];
@@ -88,6 +91,7 @@ describe( "basic rendering", ( ) => {
 
 describe( "location fetching", () => {
   beforeAll( async () => {
+    useStore.setState( initialStoreState, true );
     await initI18next();
   } );
 
@@ -100,10 +104,13 @@ describe( "location fetching", () => {
     const observations = [factory( "LocalObservation", {
       observationPhotos: []
     } )];
-    renderObsEdit( observations );
+    useStore.setState( {
+      observations,
+      currentObservation: observations[0]
+    } );
+    renderObsEdit( );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
 
-    useStore.setState( { observations } );
     renderObsEdit( );
 
     await waitFor( () => {
@@ -122,7 +129,10 @@ describe( "location fetching", () => {
     expect( observation.id ).toBeFalsy();
     expect( observation.created_at ).toBeFalsy();
     expect( observation._created_at ).toBeTruthy();
-    useStore.setState( { observations: [observation] } );
+    useStore.setState( {
+      observations: [observation],
+      currentObservation: observation
+    } );
     renderObsEdit( );
 
     expect(
@@ -147,7 +157,10 @@ describe( "location fetching", () => {
     } );
     expect( observation.id ).toBeTruthy();
     expect( observation.created_at ).toBeTruthy();
-    useStore.setState( { observations: [observation] } );
+    useStore.setState( {
+      observations: [observation],
+      currentObservation: observation
+    } );
     renderObsEdit( );
 
     expect(

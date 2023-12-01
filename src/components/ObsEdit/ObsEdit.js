@@ -36,7 +36,6 @@ const ObsEdit = ( ): Node => {
   const localObservation = useLocalObservation( params?.uuid );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
-  console.log( currentObservation?.observationPhotos, "obs photos" );
 
   const isFocused = useIsFocused( );
 
