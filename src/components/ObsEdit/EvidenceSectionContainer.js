@@ -19,6 +19,7 @@ import {
 } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
+import useStore from "stores/useStore";
 
 import EvidenceSection from "./EvidenceSection";
 
@@ -26,21 +27,17 @@ type Props = {
   passesEvidenceTest: boolean,
   setPassesEvidenceTest: Function,
   currentObservation: Object,
-  updateObservationKeys: Function,
-  setPhotoEvidenceUris: Function,
-  photoEvidenceUris: Array<string>,
-  savingPhoto: boolean
+  updateObservationKeys: Function
 }
 
 const EvidenceSectionContainer = ( {
   setPassesEvidenceTest,
   passesEvidenceTest,
   currentObservation,
-  updateObservationKeys,
-  setPhotoEvidenceUris,
-  photoEvidenceUris,
-  savingPhoto
+  updateObservationKeys
 }: Props ): Node => {
+  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
+  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const obsPhotos = currentObservation?.observationPhotos;
   const mountedRef = useRef( true );
   const obsPhotoUris = ( obsPhotos || [] ).map(
@@ -197,7 +194,6 @@ const EvidenceSectionContainer = ( {
   return (
     <EvidenceSection
       currentObservation={currentObservation}
-      savingPhoto={savingPhoto}
       updateObservationKeys={updateObservationKeys}
       locationTextClassNames={locationTextClassNames}
       handleDragAndDrop={handleDragAndDrop}

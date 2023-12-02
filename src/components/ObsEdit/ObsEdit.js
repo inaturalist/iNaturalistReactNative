@@ -6,7 +6,6 @@ import type { Node } from "react";
 import React, {
   useEffect, useState
 } from "react";
-import { ActivityIndicator } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import useStore from "stores/useStore";
@@ -19,21 +18,15 @@ import MultipleObservationsArrows from "./MultipleObservationsArrows";
 import OtherDataSection from "./OtherDataSection";
 
 const ObsEdit = ( ): Node => {
-  const resetStore = useStore( state => state.resetStore );
-  const observations = useStore( state => state.observations );
-  const setObservations = useStore( state => state.setObservations );
-  const updateObservations = useStore( state => state.updateObservations );
-  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
-  const cameraRollUris = useStore( state => state.cameraRollUris );
-  const currentObservation = useStore( state => state.currentObservation );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
-  const savingPhoto = useStore( state => state.savingPhoto );
-  const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
-  const unsavedChanges = useStore( state => state.unsavedChanges );
-  const loading = useStore( state => state.loading );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
+  const currentObservation = useStore( state => state.currentObservation );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const observations = useStore( state => state.observations );
+  const resetStore = useStore( state => state.resetStore );
+  const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
+  const setObservations = useStore( state => state.setObservations );
+  const updateObservations = useStore( state => state.updateObservations );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
 
@@ -74,7 +67,6 @@ const ObsEdit = ( ): Node => {
           <Header
             observations={observations}
             currentObservation={currentObservation}
-            unsavedChanges={unsavedChanges}
             updateObservations={updateObservations}
           />
           <KeyboardAwareScrollView className="bg-white mb-[80px]">
@@ -92,9 +84,6 @@ const ObsEdit = ( ): Node => {
                   setPassesEvidenceTest={setPassesEvidenceTest}
                   currentObservation={currentObservation}
                   updateObservationKeys={updateObservationKeys}
-                  setPhotoEvidenceUris={setPhotoEvidenceUris}
-                  photoEvidenceUris={photoEvidenceUris}
-                  savingPhoto={savingPhoto}
                 />
                 <IdentificationSection
                   passesIdentificationTest={passesIdentificationTest}
@@ -108,17 +97,14 @@ const ObsEdit = ( ): Node => {
                 />
               </>
             )}
-            {loading && <ActivityIndicator />}
           </KeyboardAwareScrollView>
         </ViewWrapper>
         <BottomButtons
           passesEvidenceTest={passesEvidenceTest}
           passesIdentificationTest={passesIdentificationTest}
           currentObservation={currentObservation}
-          unsavedChanges={unsavedChanges}
           currentObservationIndex={currentObservationIndex}
           observations={observations}
-          cameraRollUris={cameraRollUris}
           setCurrentObservationIndex={setCurrentObservationIndex}
         />
       </>

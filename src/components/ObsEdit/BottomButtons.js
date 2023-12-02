@@ -13,6 +13,7 @@ import Observation from "realmModels/Observation";
 import { writeExifToFile } from "sharedHelpers/parseExif";
 import uploadObservation from "sharedHelpers/uploadObservation";
 import useTranslation from "sharedHooks/useTranslation";
+import useStore from "stores/useStore";
 
 import { log } from "../../../react-native-logs.config";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
@@ -27,9 +28,7 @@ type Props = {
   passesIdentificationTest: boolean,
   observations: Array<Object>,
   currentObservation: Object,
-  unsavedChanges: boolean,
   currentObservationIndex: number,
-  cameraRollUris: Array<string>,
   setCurrentObservationIndex: Function
 }
 
@@ -39,12 +38,12 @@ const BottomButtons = ( {
   passesEvidenceTest,
   passesIdentificationTest,
   currentObservation,
-  unsavedChanges,
   currentObservationIndex,
   observations,
-  cameraRollUris,
   setCurrentObservationIndex
 }: Props ): Node => {
+  const cameraRollUris = useStore( state => state.cameraRollUris );
+  const unsavedChanges = useStore( state => state.unsavedChanges );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );
