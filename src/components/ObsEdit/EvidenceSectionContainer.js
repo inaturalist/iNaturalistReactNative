@@ -44,6 +44,7 @@ const EvidenceSectionContainer = ( {
   const mountedRef = useRef( true );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
+  const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
 
   const [
     shouldRetryCurrentObservationLocation,
@@ -170,6 +171,12 @@ const EvidenceSectionContainer = ( {
     setPhotoEvidenceUris( uris );
   };
 
+  useEffect( () => {
+    if ( !currentPlaceGuess ) return;
+
+    updateObservationKeys( { place_guess: currentPlaceGuess } );
+  }, [currentPlaceGuess, updateObservationKeys] );
+
   // Set the place_guess if not already set and coordinates are available.
   // Note that at present this sets the place_guess for *any* obs that lacks
   // it and has coords, including old obs, which might be a source of future
@@ -178,7 +185,11 @@ const EvidenceSectionContainer = ( {
   useEffect( ( ) => {
     async function setPlaceGuess( ) {
       const placeGuess = await fetchPlaceName( latitude, longitude );
-      updateObservationKeys( { place_guess: placeGuess } );
+      // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
+      // a while to return, in the meantime the current copy of the observation might have changed,
+      // so we update the observation from useEffect of currentPlaceGuess, so it will always
+      // have the latest copy of the current observation (see GH issue #584)
+      setCurrentPlaceGuess( placeGuess );
     }
     if ( ( latitude && longitude ) && !currentObservation?.place_guess ) {
       setPlaceGuess( );

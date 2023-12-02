@@ -44,6 +44,28 @@ const useCurrentObservationLocation = (
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
   const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
   const [permissionResult, setPermissionResult] = useState( null );
+  const [currentLocation, setCurrentLocation] = useState( null );
+
+  useEffect( () => {
+    if ( !currentLocation ) return;
+    if ( !currentObservation ) return;
+
+    // If we're still receiving location updates and location is blank,
+    // then we don't know where we are any more and the obs should update
+    // to reflect that
+    if ( currentLocation?.place_guess !== currentObservation.place_guess
+      || currentLocation?.latitude !== currentObservation.latitude
+      || currentLocation?.longitude !== currentObservation.longitude
+      || currentLocation?.positional_accuracy !== currentObservation.positional_accuracy
+    ) {
+      updateObservationKeys( {
+        place_guess: currentLocation?.place_guess,
+        latitude: currentLocation?.latitude,
+        longitude: currentLocation?.longitude,
+        positional_accuracy: currentLocation?.positional_accuracy
+      } );
+    }
+  }, [currentLocation, currentObservation, updateObservationKeys] );
 
   useEffect( ( ) => {
     if ( !currentObservation ) return;
@@ -65,21 +87,11 @@ const useCurrentObservationLocation = (
       }
       const location = await fetchUserLocation( );
 
-      // If we're still receiving location updates and location is blank,
-      // then we don't know where we are any more and the obs should update
-      // to reflect that
-      if ( location?.place_guess !== currentObservation.place_guess
-        || location?.latitude !== currentObservation.latitude
-        || location?.longitude !== currentObservation.longitude
-        || location?.positional_accuracy !== currentObservation.positional_accuracy
-      ) {
-        updateObservationKeys( {
-          place_guess: location?.place_guess,
-          latitude: location?.latitude,
-          longitude: location?.longitude,
-          positional_accuracy: location?.positional_accuracy
-        } );
-      }
+      // Cannot call updateObservationKeys directly from here, since fetchUserLocation might take
+      // a while to return, in the meantime the current copy of the observation might have changed,
+      // so we update the observation from useEffect of currentLocation, so it will always
+      // have the latest copy of the current observation (see GH issue #584)
+      setCurrentLocation( location );
 
       setFetchingLocation( false );
 
