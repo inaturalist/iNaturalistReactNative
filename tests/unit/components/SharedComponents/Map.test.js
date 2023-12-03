@@ -25,8 +25,8 @@ describe( "Map", ( ) => {
     renderComponent(
       <Map
         showLocationIndicator
-        obsLatitude={Number( faker.address.latitude( ) )}
-        obsLongitude={Number( faker.address.longitude( ) )}
+        obsLatitude={Number( faker.location.latitude( ) )}
+        obsLongitude={Number( faker.location.longitude( ) )}
       />
     );
     const testId = "Map.LocationIndicator";

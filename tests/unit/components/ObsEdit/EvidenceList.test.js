@@ -9,13 +9,13 @@ import { renderComponent } from "../../../helpers/render";
 const observationPhotos = [
   factory( "RemoteObservationPhoto", {
     photo: {
-      url: faker.image.imageUrl( )
+      url: faker.image.url( )
     },
     position: 0
   } ),
   factory( "RemoteObservationPhoto", {
     photo: {
-      url: `${faker.image.imageUrl( )}/100`
+      url: `${faker.image.url( )}/100`
     },
     position: 1
   } )

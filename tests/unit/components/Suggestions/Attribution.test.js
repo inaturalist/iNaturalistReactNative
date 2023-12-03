@@ -14,12 +14,12 @@ jest.mock( "inaturalistjs" );
 const mockUsers = [
   factory( "RemoteObservation", {
     user: {
-      login: faker.name.fullName( )
+      login: faker.person.fullName( )
     }
   } ),
   factory( "RemoteObservation", {
     user: {
-      login: faker.name.fullName( )
+      login: faker.person.fullName( )
     }
   } )
 ];

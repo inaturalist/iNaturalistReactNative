@@ -13,10 +13,10 @@ import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.name.firstName( ),
-  preferred_common_name: faker.name.fullName( ),
+  name: faker.person.firstName( ),
+  preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.imageUrl( )
+    square_url: faker.image.url( )
   }
 } );
 
@@ -24,13 +24,13 @@ const mockSuggestionsList = [{
   combined_score: 90.34,
   taxon: {
     ...mockTaxon,
-    id: faker.datatype.number( )
+    id: faker.number.int( )
   }
 }, {
   combined_score: 30.32,
   taxon: {
     ...mockTaxon,
-    id: faker.datatype.number( )
+    id: faker.number.int( )
   }
 }];
 
@@ -46,8 +46,8 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 jest.mock( "inaturalistjs" );
 
 const mockUris = [
-  faker.image.imageUrl( ),
-  `${faker.image.imageUrl( )}/400`
+  faker.image.url( ),
+  `${faker.image.url( )}/400`
 ];
 
 const mockCreateId = jest.fn( );
@@ -59,7 +59,7 @@ const renderSuggestions = ( comment = "" ) => renderComponent(
     createId: mockCreateId,
     comment,
     currentObservation: {
-      uuid: faker.datatype.uuid( ),
+      uuid: faker.string.uuid( ),
       latitude: 41,
       longitude: -143
     },

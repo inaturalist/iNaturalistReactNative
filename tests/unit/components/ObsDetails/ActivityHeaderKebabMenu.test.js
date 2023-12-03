@@ -11,7 +11,7 @@ import { renderComponent } from "../../../helpers/render";
 const mockUser = factory( "LocalUser", {
   id: 0,
   login: faker.internet.userName( ),
-  iconUrl: faker.image.imageUrl( )
+  iconUrl: faker.image.url( )
 } );
 
 describe( "ActivityHeaderKebabMenu", () => {

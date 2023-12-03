@@ -26,10 +26,10 @@ const mockObservation = factory( "LocalObservation", {
   observationPhotos: [
     factory( "LocalObservationPhoto", {
       photo: {
-        id: faker.datatype.number( ),
+        id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.imageUrl( )
+        url: faker.image.url( )
       }
     } )
   ],
@@ -39,8 +39,8 @@ const mockObservation = factory( "LocalObservation", {
       rank_level: 10
     } )
   } )],
-  latitude: Number( faker.address.latitude( ) ),
-  longitude: Number( faker.address.longitude( ) ),
+  latitude: Number( faker.location.latitude( ) ),
+  longitude: Number( faker.location.longitude( ) ),
   description: faker.lorem.paragraph( ),
   quality_grade: "casual"
 } );

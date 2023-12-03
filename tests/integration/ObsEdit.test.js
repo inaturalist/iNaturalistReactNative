@@ -18,7 +18,7 @@ beforeEach( async ( ) => {
   } );
   const mockUser = factory( "LocalUser", {
     login: faker.internet.userName( ),
-    iconUrl: faker.image.imageUrl( ),
+    iconUrl: faker.image.url( ),
     locale: "en"
   } );
   await signIn( mockUser );
@@ -58,15 +58,15 @@ describe( "ObsEdit", ( ) => {
       const observation = await Observation.saveLocalObservationForUpload(
         factory( "LocalObservation", {
           taxon: factory( "LocalTaxon", {
-            name: faker.name.firstName( ),
+            name: faker.person.firstName( ),
             rank: "species",
             rank_level: 10,
-            preferred_common_name: faker.name.fullName( ),
+            preferred_common_name: faker.person.fullName( ),
             defaultPhoto: {
-              id: faker.datatype.number( ),
+              id: faker.number.int( ),
               attribution: faker.lorem.sentence( ),
               licenseCode: "cc-by-nc",
-              url: faker.image.imageUrl( )
+              url: faker.image.url( )
             }
           } )
         } ),
@@ -87,15 +87,15 @@ describe( "ObsEdit", ( ) => {
       const observation = await Observation.saveLocalObservationForUpload(
         factory( "LocalObservation", {
           taxon: factory( "LocalTaxon", {
-            name: faker.name.firstName( ),
+            name: faker.person.firstName( ),
             rank: "species",
             rank_level: 10,
-            preferred_common_name: faker.name.fullName( ),
+            preferred_common_name: faker.person.fullName( ),
             defaultPhoto: {
-              id: faker.datatype.number( ),
+              id: faker.number.int( ),
               attribution: faker.lorem.sentence( ),
               licenseCode: "cc-by-nc",
-              url: faker.image.imageUrl( )
+              url: faker.image.url( )
             }
           } )
         } ),
@@ -111,15 +111,15 @@ describe( "ObsEdit", ( ) => {
       const newObservation = await Observation.saveLocalObservationForUpload(
         factory( "LocalObservation", {
           taxon: factory( "LocalTaxon", {
-            name: faker.name.firstName( ),
+            name: faker.person.firstName( ),
             rank: "species",
             rank_level: 10,
-            preferred_common_name: faker.name.fullName( ),
+            preferred_common_name: faker.person.fullName( ),
             defaultPhoto: {
-              id: faker.datatype.number( ),
+              id: faker.number.int( ),
               attribution: faker.lorem.sentence( ),
               licenseCode: "cc-by-nc",
-              url: faker.image.imageUrl( )
+              url: faker.image.url( )
             }
           } )
         } ),
@@ -138,15 +138,15 @@ describe( "ObsEdit", ( ) => {
       const observation = await Observation.saveLocalObservationForUpload(
         factory( "LocalObservation", {
           taxon: factory( "LocalTaxon", {
-            name: faker.name.firstName( ),
+            name: faker.person.firstName( ),
             rank: "species",
             rank_level: 10,
-            preferred_common_name: faker.name.fullName( ),
+            preferred_common_name: faker.person.fullName( ),
             defaultPhoto: {
-              id: faker.datatype.number( ),
+              id: faker.number.int( ),
               attribution: faker.lorem.sentence( ),
               licenseCode: "cc-by-nc",
-              url: faker.image.imageUrl( )
+              url: faker.image.url( )
             }
           } )
         } ),
