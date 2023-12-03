@@ -16,22 +16,29 @@ import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  item: Object,
-  currentUser: boolean,
   classNameMargin?: string,
-  idWithdrawn: boolean,
+  currentUser: boolean,
+  deleteComment: Function,
   flagged: boolean,
+  idWithdrawn: boolean,
+  isOnline: boolean,
+  item: Object,
   loading: boolean,
   updateCommentBody: Function,
-  deleteComment: Function,
-  withdrawOrRestoreIdentification: Function,
-  isOnline: boolean
+  withdrawOrRestoreIdentification: Function
 }
 
 const ActivityHeader = ( {
-  item, classNameMargin, currentUser,
-  idWithdrawn, flagged, loading, updateCommentBody, deleteComment, withdrawOrRestoreIdentification,
-  isOnline
+  classNameMargin,
+  currentUser,
+  deleteComment,
+  flagged,
+  idWithdrawn,
+  isOnline,
+  item,
+  loading,
+  updateCommentBody,
+  withdrawOrRestoreIdentification
 }:Props ): Node => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
@@ -53,7 +60,11 @@ const ActivityHeader = ( {
     if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flagged ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
-  }, [flagged, idWithdrawn, item.vision] );
+  }, [
+    flagged,
+    idWithdrawn,
+    item
+  ] );
 
   const renderStatus = useCallback( () => {
     if ( flagged ) {
@@ -80,7 +91,11 @@ const ActivityHeader = ( {
     return (
       <Body4 />
     );
-  }, [flagged, idWithdrawn, item.category] );
+  }, [
+    flagged,
+    idWithdrawn,
+    item
+  ] );
 
   return (
     <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
