@@ -9,12 +9,14 @@ import React, {
   useEffect, useState
 } from "react";
 import Identification from "realmModels/Identification";
+import { modelPath, taxonomyPath } from "sharedHelpers/cvModel";
 import flattenUploadParams from "sharedHelpers/flattenUploadParams";
 import {
   useAuthenticatedQuery,
   useLocalObservation
 } from "sharedHooks";
 import useStore from "stores/useStore";
+import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 import Suggestions from "./Suggestions";
 
@@ -39,6 +41,15 @@ const SuggestionsContainer = ( ): Node => {
 
   const [loading, setLoading] = useState( false );
   const navigation = useNavigation();
+
+  getPredictionsForImage( {
+    uri: photoEvidenceUris[0],
+    modelPath,
+    taxonomyPath,
+    version: "2.4"
+  } ).then( predictions => {
+    console.log( "predictions :>> ", predictions );
+  } );
 
   useEffect( ( ) => {
     // If the photos are different, we need to display different photos
