@@ -77,11 +77,11 @@ const SuggestionsContainer = ( ): Node => {
   const onTaxonChosen = async taxon => {
     if ( !obsUUID ) {
       setLoading( true );
-      await createId( taxon );
+      await createId( taxon, { vision: true } );
       setLoading( false );
       navigation.goBack( );
     } else {
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
+      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon, vision: true } );
     }
   };
 

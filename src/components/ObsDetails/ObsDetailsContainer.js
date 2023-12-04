@@ -105,7 +105,7 @@ const ObsDetailsContainer = ( ): Node => {
   } = useContext( ObsEditContext );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
-  const { uuid, taxonSuggested } = params;
+  const { uuid, taxonSuggested, vision } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
@@ -304,14 +304,15 @@ const ObsDetailsContainer = ( ): Node => {
 
     const idParams = {
       observation_id: uuid,
-      taxon_id: taxonSuggested.id
+      taxon_id: taxonSuggested.id,
+      vision
     };
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createIdentificationMutation.mutate( { identification: idParams } );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taxonSuggested, uuid] );
+  }, [taxonSuggested, uuid, vision] );
 
   useEffect( () => {
     if ( !taxonSuggested ) return;

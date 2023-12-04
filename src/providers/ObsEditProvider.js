@@ -136,19 +136,24 @@ const ObsEditProvider = ( { children, value }: Props ): Node => {
       updateObservations( [...updatedObservations] );
     };
 
-    const createId = async identification => {
+    const createId = async ( identification, options ) => {
       const newIdentification = Identification.new( {
         taxon: identification,
         body: comment
       } );
       const createRemoteIdentification = localObservation?.wasSynced( );
       if ( createRemoteIdentification ) {
+        const mutationParams = {
+          observation_id: currentObservation.uuid,
+          taxon_id: newIdentification.taxon.id,
+          body: newIdentification.body
+        };
+        if ( options?.vision ) {
+          // $FlowIgnore
+          mutationParams.vision = options.vision;
+        }
         return createIdentificationMutation.mutate( {
-          identification: {
-            observation_id: currentObservation.uuid,
-            taxon_id: newIdentification.taxon.id,
-            body: newIdentification.body
-          }
+          identification: mutationParams
         } );
       }
       updateObservationKeys( {
