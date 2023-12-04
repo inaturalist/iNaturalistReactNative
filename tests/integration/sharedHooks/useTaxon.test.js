@@ -17,7 +17,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 
 const mockTaxon = factory( "LocalTaxon", {
   default_photo: {
-    url: faker.image.imageUrl( )
+    url: faker.image.url( )
   }
 } );
 

@@ -55,9 +55,14 @@ const DisplayTaxonName = ( {
   }, [color, withdrawn] );
 
   const renderTaxonName = useCallback( ( ) => {
+    const taxonPojo = typeof ( taxon.toJSON ) === "function"
+      ? taxon.toJSON( )
+      : taxon;
+
     // this is mostly for the ARCamera, but might be helpful to display elsewhere
-    if ( taxon?.rank_level && !taxon?.rank ) {
-      taxon.rank = rankNames[taxon?.rank_level];
+    if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
+      // console.log( "taxon: ", taxon );
+      taxonPojo.rank = rankNames[taxonPojo?.rank_level];
     }
 
     const {
@@ -66,7 +71,7 @@ const DisplayTaxonName = ( {
       rankPiece,
       rankLevel,
       rank
-    } = generateTaxonPieces( taxon );
+    } = generateTaxonPieces( taxonPojo );
     const isHorizontal = layout === "horizontal";
     const getSpaceChar = showSpace => ( showSpace && isHorizontal
       ? " "

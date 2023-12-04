@@ -36,7 +36,7 @@ describe( "parseExifDateToLocalTimezone", () => {
 
 describe( "parseExif", () => {
   it( "should parse and return exif data when given a photo uri", async () => {
-    const exif = await parseExif( faker.image.imageUrl() );
+    const exif = await parseExif( faker.image.url() );
     expect( exif.date ).toEqual( EXPECTED_EXIF_DATE );
     expect( exif.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
     expect( exif.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );

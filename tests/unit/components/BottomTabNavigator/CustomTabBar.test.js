@@ -10,7 +10,7 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
-  icon_url: faker.image.imageUrl( )
+  icon_url: faker.image.url( )
 } );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {

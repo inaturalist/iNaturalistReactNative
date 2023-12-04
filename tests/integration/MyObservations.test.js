@@ -70,7 +70,7 @@ describe( "MyObservations", ( ) => {
   describe( "when signed in", ( ) => {
     const mockUser = factory( "LocalUser", {
       login: faker.internet.userName( ),
-      iconUrl: faker.image.imageUrl( ),
+      iconUrl: faker.image.url( ),
       locale: "en"
     } );
 
@@ -93,8 +93,8 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: faker.image.imageUrl( ),
+                id: faker.number.int( ),
+                url: faker.image.url( ),
                 position: 0
               }
             } )
@@ -105,15 +105,15 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: `${faker.image.imageUrl( )}/100`,
+                id: faker.number.int( ),
+                url: `${faker.image.url( )}/100`,
                 position: 0
               }
             } ),
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: `${faker.image.imageUrl( )}/200`,
+                id: faker.number.int( ),
+                url: `${faker.image.url( )}/200`,
                 position: 1
               }
             } )
@@ -213,8 +213,8 @@ describe( "MyObservations", ( ) => {
 
     describe( "with synced observations", ( ) => {
       const mockDeletedIds = [
-        faker.datatype.number( ),
-        faker.datatype.number( )
+        faker.number.int( ),
+        faker.number.int( )
       ];
 
       const mockObservationsSynced = [
@@ -329,7 +329,7 @@ describe( "MyObservations", ( ) => {
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser", {
         login: faker.internet.userName( ),
-        iconUrl: faker.image.imageUrl( ),
+        iconUrl: faker.image.url( ),
         locale: "en"
       } );
       expect( mockUser.locale ).toEqual( "en" );
@@ -344,7 +344,7 @@ describe( "MyObservations", ( ) => {
     it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
       const mockSpanishUser = factory( "LocalUser", {
         login: faker.internet.userName( ),
-        iconUrl: faker.image.imageUrl( ),
+        iconUrl: faker.image.url( ),
         locale: "es"
       } );
       expect( mockSpanishUser.locale ).toEqual( "es" );
@@ -361,7 +361,7 @@ describe( "MyObservations", ( ) => {
       async ( ) => {
         const mockUser = factory( "LocalUser", {
           login: faker.internet.userName( ),
-          iconUrl: faker.image.imageUrl( ),
+          iconUrl: faker.image.url( ),
           locale: "en"
         } );
         expect( mockUser.locale ).toEqual( "en" );

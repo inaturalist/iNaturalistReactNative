@@ -9,7 +9,7 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockedNavigate = jest.fn( );
 const mockProject = factory( "RemoteProject", {
-  icon: faker.image.imageUrl( ),
+  icon: faker.image.url( ),
   title: faker.lorem.sentence( )
 } );
 

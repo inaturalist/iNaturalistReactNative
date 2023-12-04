@@ -13,7 +13,7 @@ const mockObservation = factory( "LocalObservation", {
   comments: [mockComment],
   user: factory( "LocalUser", {
     login: faker.internet.userName( ),
-    iconUrl: faker.image.imageUrl( ),
+    iconUrl: faker.image.url( ),
     locale: "en"
   } )
 } );

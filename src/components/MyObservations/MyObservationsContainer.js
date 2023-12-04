@@ -53,8 +53,10 @@ const startUploadState = uploads => ( {
   uploadProgress: { },
   currentUploadCount: 1,
   totalProgressIncrements: uploads
-    .reduce( ( count, current ) => count
-      + current.observationPhotos.length, uploads.length )
+    .reduce(
+      ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+      uploads.length
+    )
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
