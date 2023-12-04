@@ -61,6 +61,9 @@ jest.mock( "providers/contexts", ( ) => {
 beforeAll( async ( ) => {
   global.mockRealms = global.mockRealms || {};
   global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
+  await initI18next();
+  // userEvent recommends fake timers
+  jest.useFakeTimers( );
 } );
 
 // Ensure the realm connection gets closed
@@ -70,20 +73,26 @@ afterAll( ( ) => {
 } );
 // /REALM SETUP
 
+const mockUser = factory( "LocalUser", {
+  login: "fake_login",
+  signedIn: true
+} );
+
 const makeMockObservations = ( ) => ( [
   factory( "LocalObservation", {
     _synced_at: faker.date.past( ),
     // Suggestions won't load without a photo
     observationPhotos: [
       factory( "LocalObservationPhoto" )
-    ]
+    ],
+    user: mockUser
   } )
 ] );
 
 async function renderObservationsStackNavigatorWithObservations( observations ) {
   // Save the mock observation in Realm
   global.mockRealms[__filename].write( ( ) => {
-    global.mockRealms[__filename].create( "Observation", observations[0] );
+    global.mockRealms[__filename].create( "Observation", observations[0], "modified" );
   } );
   renderComponent(
     <ObsEditProvider
@@ -97,7 +106,33 @@ async function renderObservationsStackNavigatorWithObservations( observations ) 
   );
 }
 
+const mockIdentification = factory( "RemoteIdentification", {
+  uuid: "123456789",
+  user: factory( "LocalUser" ),
+  taxon: factory( "LocalTaxon", {
+    name: "Miner's Lettuce",
+    rank_level: 10
+  } )
+} );
+
+// Mock the response from inatjs.computervision.score_image
+const topSuggestion = {
+  taxon: factory( "RemoteTaxon" ),
+  combined_score: 90
+};
+
 describe( "TaxonSearch", ( ) => {
+  beforeEach( ( ) => {
+    inatjs.observations.search.mockResolvedValue( makeResponse( ) );
+    const mockScoreImageResponse = makeResponse( [topSuggestion] );
+    inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
+    inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
+    inatjs.identifications.create.mockResolvedValue( { results: [mockIdentification] } );
+  } );
+
+  afterEach( ( ) => {
+    jest.clearAllMocks( );
+  } );
   const actor = userEvent.setup( );
 
   // We need to navigate from MyObs to ObsDetails to Suggestions to TaxonSearch for all of these
@@ -112,12 +147,6 @@ describe( "TaxonSearch", ( ) => {
     const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
     await actor.press( searchButton );
   }
-
-  beforeAll( async () => {
-    await initI18next();
-    // userEvent recommends fake timers
-    jest.useFakeTimers( );
-  } );
 
   it(
     "should navigate back to ObsDetails when reached from ObsDetails via Suggestions"
@@ -149,8 +178,7 @@ describe( "TaxonSearch", ( ) => {
         fields: "all",
         identification: {
           observation_id: observations[0].uuid,
-          taxon_id: mockSearchResultTaxon.id,
-          vision: false
+          taxon_id: mockSearchResultTaxon.id
         }
       }, {
         api_token: null
@@ -160,15 +188,12 @@ describe( "TaxonSearch", ( ) => {
 } );
 
 describe( "Suggestions", ( ) => {
-  // Mock the response from inatjs.computervision.score_image
-  const topSuggestion = {
-    taxon: factory( "RemoteTaxon" ),
-    combined_score: 90
-  };
   beforeEach( ( ) => {
+    inatjs.observations.search.mockResolvedValue( makeResponse( ) );
     const mockScoreImageResponse = makeResponse( [topSuggestion] );
     inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
     inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
+    inatjs.identifications.create.mockResolvedValue( { results: [mockIdentification] } );
   } );
 
   afterEach( ( ) => {

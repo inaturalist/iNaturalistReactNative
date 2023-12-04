@@ -49,11 +49,11 @@ const TaxonSearch = ( ): Node => {
   const onTaxonSelected = useCallback( async taxon => {
     if ( !obsUUID ) {
       // Called from observation editor screen
-      createId( taxon, { vision: false } );
+      createId( taxon );
       navigation.navigate( "ObsEdit" );
     } else {
       // Called when adding an identification to someone else's observation
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon, vision: false } );
+      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
     }
   }, [createId, navigation, obsUUID] );
 
