@@ -152,7 +152,6 @@ const ObsEditProvider = ( { children, value }: Props ): Node => {
           // $FlowIgnore
           mutationParams.vision = options.vision;
         }
-        console.log( mutationParams, "mutation params" );
         return createIdentificationMutation.mutate( {
           identification: mutationParams
         } );

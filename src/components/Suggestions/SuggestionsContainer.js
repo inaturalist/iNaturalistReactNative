@@ -81,7 +81,8 @@ const SuggestionsContainer = ( ): Node => {
       setLoading( true );
       await createId( taxon, { vision: true } );
       updateObservationKeys( {
-        owners_identification_from_vision: true
+        owners_identification_from_vision: true,
+        taxon
       } );
       setLoading( false );
       navigation.goBack( );

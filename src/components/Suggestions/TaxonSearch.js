@@ -52,7 +52,8 @@ const TaxonSearch = ( ): Node => {
       // Called from observation editor screen
       createId( taxon );
       updateObservationKeys( {
-        owners_identification_from_vision: false
+        owners_identification_from_vision: false,
+        taxon
       } );
       navigation.navigate( "ObsEdit" );
     } else {
