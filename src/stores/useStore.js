@@ -22,6 +22,11 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   return [];
 };
 
+// Note: this store is currently only for the observation flow (camera, gallery, obs edit,
+// suggestions, taxon search, obs details, etc.)
+// If we end up wanting to replace reducers move local state into global state from other screens
+// (like MyObservations or Explore), we should use the slices pattern documented here:
+// https://docs.pmnd.rs/zustand/guides/slices-pattern
 const useStore = create( set => ( {
   cameraPreviewUris: [],
   cameraRollUris: [],
