@@ -66,6 +66,7 @@ const BottomButtons = ( {
   };
 
   const saveObservation = async observation => {
+    console.log( observation, "save obs" );
     await writeExifToCameraRollPhotos( {
       latitude: observation.latitude,
       longitude: observation.longitude,

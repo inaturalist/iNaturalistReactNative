@@ -6,6 +6,7 @@ import { difference } from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useContext, useEffect, useState
 } from "react";
 import flattenUploadParams from "sharedHelpers/flattenUploadParams";
@@ -23,7 +24,8 @@ const SuggestionsContainer = ( ): Node => {
     createId,
     comment,
     setPhotoEvidenceUris,
-    setComment
+    setComment,
+    updateObservationKeys
   } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const obsUUID = params?.obsUUID;
@@ -74,16 +76,28 @@ const SuggestionsContainer = ( ): Node => {
     }
   );
 
-  const onTaxonChosen = async taxon => {
+  const onTaxonChosen = useCallback( async taxon => {
     if ( !obsUUID ) {
       setLoading( true );
       await createId( taxon, { vision: true } );
+      updateObservationKeys( {
+        observation: {
+          ...currentObservation,
+          owners_identification_from_vision: true
+        }
+      } );
       setLoading( false );
       navigation.goBack( );
     } else {
       navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon, vision: true } );
     }
-  };
+  }, [
+    navigation,
+    createId,
+    updateObservationKeys,
+    currentObservation,
+    obsUUID
+  ] );
 
   return (
     <Suggestions

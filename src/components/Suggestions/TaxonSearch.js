@@ -28,7 +28,8 @@ const TaxonSearch = ( ): Node => {
     createId,
     comment,
     setComment,
-    currentObservation
+    currentObservation,
+    updateObservationKeys
   } = useContext( ObsEditContext );
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
@@ -50,12 +51,18 @@ const TaxonSearch = ( ): Node => {
     if ( !obsUUID ) {
       // Called from observation editor screen
       createId( taxon );
+      updateObservationKeys( {
+        observation: {
+          ...currentObservation,
+          owners_identification_from_vision: false
+        }
+      } );
       navigation.navigate( "ObsEdit" );
     } else {
       // Called when adding an identification to someone else's observation
       navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
     }
-  }, [createId, navigation, obsUUID] );
+  }, [createId, navigation, obsUUID, currentObservation, updateObservationKeys] );
 
   const renderFooter = ( ) => (
     <View className="pb-10" />
