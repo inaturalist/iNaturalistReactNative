@@ -207,12 +207,12 @@ const MyObservationsContainer = ( ): Node => {
 
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
 
-        if ( currentProgress[uuid] > state.totalProgressIncrements * increment ) {
+        if ( state.singleUpload
+          && currentProgress[uuid] > state.totalProgressIncrements ) {
           dispatch( {
             type: "UPLOADS_COMPLETE"
           } );
         } else {
-          console.log( currentProgress[uuid] );
           dispatch( {
             type: "UPDATE_PROGRESS",
             uploadProgress: currentProgress
@@ -223,8 +223,7 @@ const MyObservationsContainer = ( ): Node => {
     return ( ) => {
       EventRegister?.removeEventListener( progressListener );
     };
-  }, [state.uploadProgress, state.singleUpload,
-    state.totalProgressIncrements] );
+  }, [state.uploadProgress, state.singleUpload, state.totalProgressIncrements, uploadInProgress] );
 
   const showInternetErrorAlert = useCallback( ( ) => {
     if ( !isOnline ) {
