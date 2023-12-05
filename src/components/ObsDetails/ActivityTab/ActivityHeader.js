@@ -44,6 +44,7 @@ const ActivityHeader = ( {
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
   const { user } = item;
+  const { vision, category } = user || {};
 
   const itemType = item.category
     ? "Identification"
@@ -57,13 +58,13 @@ const ActivityHeader = ( {
         </View>
       );
     }
-    if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
+    if ( vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flagged ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
   }, [
     flagged,
     idWithdrawn,
-    item
+    vision
   ] );
 
   const renderStatus = useCallback( () => {
@@ -81,10 +82,10 @@ const ActivityHeader = ( {
         </Body4>
       );
     }
-    if ( item.category ) {
+    if ( category ) {
       return (
         <Body4>
-          { t( `Category-${item.category}` )}
+          { t( `Category-${category}` )}
         </Body4>
       );
     }
@@ -92,9 +93,9 @@ const ActivityHeader = ( {
       <Body4 />
     );
   }, [
+    category,
     flagged,
-    idWithdrawn,
-    item
+    idWithdrawn
   ] );
 
   return (
