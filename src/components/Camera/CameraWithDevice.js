@@ -298,8 +298,8 @@ const CameraWithDevice = ( {
     currentObservationIndex
   ] );
 
-  const navToObsEdit = useCallback( localTaxon => {
-    createEvidenceForObsEdit( localTaxon );
+  const navToObsEdit = useCallback( async localTaxon => {
+    await createEvidenceForObsEdit( localTaxon );
     setPhotoSaved( false );
     navigation.navigate( "ObsEdit" );
   }, [
