@@ -7,11 +7,12 @@ import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
+import { reactQueryRetry } from "sharedHelpers/logging";
 import { useCurrentUser } from "sharedHooks";
 
 import { log } from "../../react-native-logs.config";
 
-const logger = log.extend( "useAuthenticatedQuery" );
+const logger = log.extend( "useInfiniteObservationsScroll" );
 
 const { useRealm } = RealmContext;
 
@@ -26,7 +27,9 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     ttl: -1
   };
 
-  const queryKey = ["searchObservations", baseParams];
+  const { fields, ...queryKeyParams } = baseParams;
+
+  const queryKey = ["useInfiniteObservationsScroll", "searchObservations", queryKeyParams];
 
   const {
     data: observations,
@@ -62,13 +65,10 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     // allow a user to see the Explore screen Observations
     // content while logged out
     enabled: !!currentUser || upsert === false,
-    retry: ( failureCount, error ) => {
-      if ( error.status > 500 ) {
-        logger.warn( `${error.status} Error for query: `, queryKey );
-        return 0;
-      }
-      return 3;
-    }
+    retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
+      beforeRetry: ( ) => logger.warn( error.status, "Error for query ", queryKey, ": ", error ),
+      logger
+    } )
   } );
 
   useEffect( ( ) => {

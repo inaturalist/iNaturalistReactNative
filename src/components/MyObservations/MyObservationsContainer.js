@@ -238,7 +238,7 @@ const MyObservationsContainer = ( ): Node => {
     try {
       await uploadObservation( observation, realm );
     } catch ( uploadError ) {
-      console.warn( uploadError );
+      console.warn( "MyObservationsContainer, uploadError: ", uploadError );
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
