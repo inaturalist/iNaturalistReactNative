@@ -7,11 +7,10 @@ import {
   fetchRemoteObservation,
   markObservationUpdatesViewed
 } from "api/observations";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback,
-  useContext, useEffect, useReducer
+  useCallback, useEffect, useReducer
 } from "react";
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
@@ -25,6 +24,7 @@ import {
 } from "sharedHooks";
 import useObservationsUpdates,
 { fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
+import useStore from "stores/useStore";
 
 import ObsDetails from "./ObsDetails";
 
@@ -100,12 +100,10 @@ const reducer = ( state, action ) => {
 };
 
 const ObsDetailsContainer = ( ): Node => {
-  const {
-    updateObservations
-  } = useContext( ObsEditContext );
+  const setObservations = useStore( state => state.setObservations );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
-  const { uuid, taxonSuggested } = params;
+  const { uuid, taxonSuggested, comment } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
@@ -313,6 +311,11 @@ const ObsDetailsContainer = ( ): Node => {
       taxon_id: taxonSuggested.id
     };
 
+    if ( comment ) {
+      // $FlowIgnore
+      idParams.body = comment;
+    }
+
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createIdentificationMutation.mutate( { identification: idParams } );
 
@@ -336,7 +339,7 @@ const ObsDetailsContainer = ( ): Node => {
   }, [localObservation, markViewedMutation, uuid] );
 
   const navToSuggestions = ( ) => {
-    updateObservations( [observation] );
+    setObservations( [observation] );
     navigation.navigate( "Suggestions", { obsUUID: uuid } );
   };
 
@@ -348,11 +351,11 @@ const ObsDetailsContainer = ( ): Node => {
     refetchObservationUpdates( );
   };
 
-  const onAgree = comment => {
+  const onAgree = newComment => {
     const agreeParams = {
       observation_id: observation?.uuid,
       taxon_id: observation?.taxon?.id,
-      body: comment
+      body: newComment
     };
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );

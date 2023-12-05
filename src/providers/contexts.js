@@ -1,7 +1,6 @@
 // @flow
 // $FlowIgnore[cannot-resolve-module]
 import { createRealmContext } from "@realm/react";
-import { createContext } from "react";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
 
@@ -16,10 +15,9 @@ import realmConfig from "realmModels/index";
 // }
 // checkOnRealmPath( "before creating realm context" );
 
-const ObsEditContext: Object = createContext<Function>( );
 const RealmContext: Object = createRealmContext( realmConfig );
 
 export {
-  ObsEditContext,
+  // eslint-disable-next-line
   RealmContext
 };

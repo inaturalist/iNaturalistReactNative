@@ -200,6 +200,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
                 />
               </View>
             </View>
@@ -368,6 +369,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg"
                 />
               </View>
             </View>
@@ -536,6 +538,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
                 />
               </View>
             </View>
@@ -752,6 +755,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
                 />
               </View>
             </View>
@@ -925,6 +929,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg"
                 />
               </View>
             </View>
@@ -1098,6 +1103,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
                 />
               </View>
             </View>

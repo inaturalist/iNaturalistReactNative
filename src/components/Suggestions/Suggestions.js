@@ -29,7 +29,6 @@ type Props = {
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  setComment: Function,
   setSelectedPhotoUri: Function
 };
 
@@ -42,7 +41,6 @@ const Suggestions = ( {
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  setComment,
   setSelectedPhotoUri
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -53,7 +51,6 @@ const Suggestions = ( {
   return (
     <ScrollViewWrapper testID="suggestions">
       <AddCommentPrompt
-        setComment={setComment}
         currentObservation={currentObservation}
       />
       {loading && (

@@ -28,7 +28,6 @@ type Props = {
   onLocationPermissionDenied: Function,
   onLocationPermissionGranted: Function,
   passesEvidenceTest: Function,
-  savingPhoto: boolean,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
   updateObservationKeys: Function
@@ -45,7 +44,6 @@ const EvidenceSection = ( {
   onLocationPermissionDenied,
   onLocationPermissionGranted,
   passesEvidenceTest,
-  savingPhoto,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
   updateObservationKeys
@@ -110,7 +108,6 @@ const EvidenceSection = ( {
         evidenceList={evidenceList}
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
-        savingPhoto={savingPhoto}
       />
       <Pressable
         accessibilityRole="button"

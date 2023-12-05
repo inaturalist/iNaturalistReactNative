@@ -2,12 +2,14 @@ import { faker } from "@faker-js/faker";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
-import { ObsEditContext } from "providers/contexts";
 import React from "react";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
+import useStore from "stores/useStore";
 
 import factory from "../factory";
 import { renderComponent } from "../helpers/render";
+
+const initialStoreState = useStore.getState( );
 
 const mockLocationName = "San Francisco, CA";
 
@@ -35,21 +37,7 @@ jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
   default: () => mockFetchUserLocation()
 } ) );
 
-const renderObsEdit = obs => renderComponent(
-  <ObsEditContext.Provider
-    value={{
-      observations: obs,
-      currentObservation: obs[0],
-      updateObservationKeys: jest.fn( ),
-      setPassesIdentificationTest: jest.fn( ),
-      writeExifToCameraRollPhotos: jest.fn( ),
-      photoEvidenceUris: [faker.image.url( )],
-      setPhotoEvidenceUris: jest.fn( )
-    }}
-  >
-    <ObsEdit />
-  </ObsEditContext.Provider>
-);
+const renderObsEdit = ( ) => renderComponent( <ObsEdit /> );
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: faker.person.firstName( ),
@@ -74,6 +62,7 @@ const mockTaxon = factory( "RemoteTaxon", {
 
 describe( "basic rendering", ( ) => {
   beforeAll( async () => {
+    useStore.setState( initialStoreState, true );
     await initI18next();
   } );
 
@@ -87,7 +76,11 @@ describe( "basic rendering", ( ) => {
       observationPhotos: []
     } )];
 
-    renderObsEdit( observations );
+    useStore.setState( {
+      observations,
+      currentObservation: observations[0]
+    } );
+    renderObsEdit( );
 
     const obs = observations[0];
 
@@ -98,6 +91,7 @@ describe( "basic rendering", ( ) => {
 
 describe( "location fetching", () => {
   beforeAll( async () => {
+    useStore.setState( initialStoreState, true );
     await initI18next();
   } );
 
@@ -110,10 +104,14 @@ describe( "location fetching", () => {
     const observations = [factory( "LocalObservation", {
       observationPhotos: []
     } )];
-    renderObsEdit( observations );
+    useStore.setState( {
+      observations,
+      currentObservation: observations[0]
+    } );
+    renderObsEdit( );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
 
-    renderObsEdit( observations );
+    renderObsEdit( );
 
     await waitFor( () => {
       expect( mockFetchUserLocation ).toHaveBeenCalled();
@@ -131,7 +129,11 @@ describe( "location fetching", () => {
     expect( observation.id ).toBeFalsy();
     expect( observation.created_at ).toBeFalsy();
     expect( observation._created_at ).toBeTruthy();
-    renderObsEdit( [observation] );
+    useStore.setState( {
+      observations: [observation],
+      currentObservation: observation
+    } );
+    renderObsEdit( );
 
     expect(
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
@@ -155,7 +157,11 @@ describe( "location fetching", () => {
     } );
     expect( observation.id ).toBeTruthy();
     expect( observation.created_at ).toBeTruthy();
-    renderObsEdit( [observation] );
+    useStore.setState( {
+      observations: [observation],
+      currentObservation: observation
+    } );
+    renderObsEdit( );
 
     expect(
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )

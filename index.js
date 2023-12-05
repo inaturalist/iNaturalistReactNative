@@ -10,7 +10,6 @@ import App from "components/App";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import INatPaperProvider from "providers/INatPaperProvider";
-import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
 import { AppRegistry } from "react-native";
@@ -82,9 +81,7 @@ const AppWithProviders = ( ) => (
             <BottomSheetModalProvider>
               {/* NavigationContainer needs to be nested above ObsEditProvider */}
               <NavigationContainer>
-                <ObsEditProvider>
-                  <App />
-                </ObsEditProvider>
+                <App />
               </NavigationContainer>
             </BottomSheetModalProvider>
           </GestureHandlerRootView>

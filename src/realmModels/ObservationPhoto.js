@@ -89,6 +89,37 @@ class ObservationPhoto extends Realm.Object {
     return list;
   };
 
+  static async deleteRemotePhoto( realm, uri, currentObservation ) {
+    // right now it doesn't look like there's a way to delete a photo OR an observation photo from
+    // api v2, so just going to worry about deleting locally for now
+    const obsPhotoToDelete = currentObservation?.observationPhotos.find( p => p.url === uri );
+    if ( obsPhotoToDelete ) {
+      realm?.write( ( ) => {
+        realm?.delete( obsPhotoToDelete );
+      } );
+    }
+  }
+
+  static async deleteLocalPhoto( realm, uri, currentObservation ) {
+    // delete uri on disk
+    Photo.deletePhotoFromDeviceStorage( uri );
+    const obsPhotoToDelete = currentObservation?.observationPhotos
+      .find( p => p.localFilePath === uri );
+    if ( obsPhotoToDelete ) {
+      realm?.write( ( ) => {
+        realm?.delete( obsPhotoToDelete );
+      } );
+    }
+  }
+
+  static async deletePhoto( realm, uri, currentObservation ) {
+    if ( uri.includes( "https://" ) ) {
+      ObservationPhoto.deleteRemotePhoto( realm, uri, currentObservation );
+    } else {
+      ObservationPhoto.deleteLocalPhoto( realm, uri, currentObservation );
+    }
+  }
+
   static schema = {
     name: "ObservationPhoto",
     embedded: true,

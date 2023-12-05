@@ -4,7 +4,6 @@ import { useRoute } from "@react-navigation/native";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import Observation from "realmModels/Observation";
 
@@ -31,9 +30,7 @@ afterEach( ( ) => {
 
 function renderObsEdit( update ) {
   return renderComponent(
-    <ObsEditProvider>
-      <ObsEdit />
-    </ObsEditProvider>,
+    <ObsEdit />,
     update
   );
 }
@@ -79,10 +76,6 @@ describe( "ObsEdit", ( ) => {
       } );
     } );
 
-    // I don't love this approach. What I want to do is assert that the context
-    // has the value I expect it has, but I don't see a way to do that without
-    // mocking the entirety of ObsEditProvider, which I don't want to do
-    // because that's one of the systems under test here
     it( "should render the observation in params after viewing other observation", async ( ) => {
       const observation = await Observation.saveLocalObservationForUpload(
         factory( "LocalObservation", {

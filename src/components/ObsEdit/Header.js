@@ -10,6 +10,7 @@ import React, {
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
 import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
@@ -18,16 +19,15 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 type Props = {
   observations: Array<Object>,
   updateObservations: Function,
-  currentObservation: Object,
-  unsavedChanges: boolean
+  currentObservation: Object
 }
 
 const Header = ( {
   observations,
   updateObservations,
-  currentObservation,
-  unsavedChanges
+  currentObservation
 }: Props ): Node => {
+  const unsavedChanges = useStore( state => state.unsavedChanges );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );

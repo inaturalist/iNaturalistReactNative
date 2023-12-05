@@ -8,14 +8,16 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useContext, useState
+  useCallback,
+  useState
 } from "react";
 import { FlatList } from "react-native";
+import Identification from "realmModels/Identification";
 import Taxon from "realmModels/Taxon";
 import { useAuthenticatedQuery } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import CommentBox from "./CommentBox";
@@ -23,15 +25,24 @@ import CommentBox from "./CommentBox";
 const TaxonSearch = ( ): Node => {
   const { params } = useRoute( );
   const obsUUID = params?.obsUUID;
-
-  const {
-    createId,
-    comment,
-    setComment,
-    currentObservation
-  } = useContext( ObsEditContext );
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
+  const currentObservation = useStore( state => state.currentObservation );
+  const comment = useStore( state => state.comment );
+  const observations = useStore( state => state.observations );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const updateObservations = useStore( state => state.updateObservations );
+
+  const updateTaxon = useCallback( newTaxon => {
+    const updatedObservations = observations;
+    updatedObservations[currentObservationIndex].taxon = newTaxon;
+    updateObservations( updatedObservations );
+  }, [
+    currentObservationIndex,
+    updateObservations,
+    observations
+  ] );
+
   const { data: taxonList } = useAuthenticatedQuery(
     ["fetchSearchResults", taxonQuery],
     optsWithAuth => fetchSearchResults(
@@ -46,16 +57,20 @@ const TaxonSearch = ( ): Node => {
     )
   );
 
-  const onTaxonSelected = useCallback( async taxon => {
+  const onTaxonSelected = useCallback( async newTaxon => {
     if ( !obsUUID ) {
       // Called from observation editor screen
-      createId( taxon );
+      const newIdentification = Identification.new( {
+        taxon: newTaxon,
+        body: comment
+      } );
+      updateTaxon( newIdentification.taxon );
       navigation.navigate( "ObsEdit" );
     } else {
       // Called when adding an identification to someone else's observation
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
+      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon, comment } );
     }
-  }, [createId, navigation, obsUUID] );
+  }, [navigation, obsUUID, comment, updateTaxon] );
 
   const renderFooter = ( ) => (
     <View className="pb-10" />
@@ -73,7 +88,6 @@ const TaxonSearch = ( ): Node => {
   return (
     <ViewWrapper className="flex-1">
       <AddCommentPrompt
-        setComment={setComment}
         currentObservation={currentObservation}
       />
       <CommentBox comment={comment} />

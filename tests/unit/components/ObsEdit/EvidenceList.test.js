@@ -2,9 +2,12 @@ import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import EvidenceList from "components/ObsEdit/EvidenceList";
 import React from "react";
+import useStore from "stores/useStore";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
+
+const initialStoreState = useStore.getState( );
 
 const observationPhotos = [
   factory( "RemoteObservationPhoto", {
@@ -29,6 +32,10 @@ const renderEvidenceList = evidenceList => renderComponent(
 );
 
 describe( "EvidenceList", ( ) => {
+  beforeAll( ( ) => {
+    useStore.setState( initialStoreState, true );
+  } );
+
   it( "should display add evidence button", ( ) => {
     renderEvidenceList( observationPhotos );
 
@@ -36,6 +43,9 @@ describe( "EvidenceList", ( ) => {
   } );
 
   it( "should display loading wheel if photo is saving", ( ) => {
+    useStore.setState( {
+      savingPhoto: true
+    } );
     renderEvidenceList( observationPhotos );
 
     expect( screen.getByTestId( "EvidenceList.saving" ) ).toBeVisible( );

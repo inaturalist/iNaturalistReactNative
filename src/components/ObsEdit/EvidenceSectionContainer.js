@@ -6,6 +6,7 @@ import {
   isFuture,
   parseISO
 } from "date-fns";
+import { difference } from "lodash";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -18,6 +19,7 @@ import {
 } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
+import useStore from "stores/useStore";
 
 import EvidenceSection from "./EvidenceSection";
 
@@ -25,23 +27,22 @@ type Props = {
   passesEvidenceTest: boolean,
   setPassesEvidenceTest: Function,
   currentObservation: Object,
-  updateObservationKeys: Function,
-  setPhotoEvidenceUris: Function,
-  photoEvidenceUris: Array<string>,
-  savingPhoto: boolean
+  updateObservationKeys: Function
 }
 
 const EvidenceSectionContainer = ( {
   setPassesEvidenceTest,
   passesEvidenceTest,
   currentObservation,
-  updateObservationKeys,
-  setPhotoEvidenceUris,
-  photoEvidenceUris,
-  savingPhoto
+  updateObservationKeys
 }: Props ): Node => {
+  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
+  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const obsPhotos = currentObservation?.observationPhotos;
   const mountedRef = useRef( true );
+  const obsPhotoUris = ( obsPhotos || [] ).map(
+    obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+  );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
 
@@ -67,12 +68,10 @@ const EvidenceSectionContainer = ( {
   }, [] );
 
   useEffect( ( ) => {
-    if ( obsPhotos?.length > photoEvidenceUris?.length ) {
-      setPhotoEvidenceUris( obsPhotos.map(
-        obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
-      ) );
+    if ( difference( obsPhotoUris, photoEvidenceUris ).length > 0 ) {
+      setPhotoEvidenceUris( obsPhotoUris );
     }
-  }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
+  }, [photoEvidenceUris, setPhotoEvidenceUris, obsPhotoUris] );
 
   const {
     hasLocation,
@@ -195,7 +194,6 @@ const EvidenceSectionContainer = ( {
   return (
     <EvidenceSection
       currentObservation={currentObservation}
-      savingPhoto={savingPhoto}
       updateObservationKeys={updateObservationKeys}
       locationTextClassNames={locationTextClassNames}
       handleDragAndDrop={handleDragAndDrop}

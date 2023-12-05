@@ -1,11 +1,11 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { ObsEditContext } from "providers/contexts";
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Platform } from "react-native";
 import ShareMenu from "react-native-share-menu";
 import Observation from "realmModels/Observation";
+import useStore from "stores/useStore";
 
 import { log } from "../../react-native-logs.config";
 
@@ -19,10 +19,8 @@ const logger = log.extend( "useShare" );
 
 const useShare = ( ): void => {
   const navigation = useNavigation( );
-  const obsEditContext = useContext( ObsEditContext );
-  const {
-    updateObservations
-  } = useContext( ObsEditContext );
+  const resetStore = useStore( state => state.resetStore );
+  const setObservations = useStore( state => state.setObservations );
 
   const handleShare = useCallback( async ( item: ?SharedItem ) => {
     if ( !item ) {
@@ -43,14 +41,8 @@ const useShare = ( ): void => {
     }
 
     // Move to ObsEdit screen (new observation, with shared photos).
-
-    const resetObsEditContext = obsEditContext?.resetObsEditContext;
-
-    // Clear previous upload context before navigating
-    if ( resetObsEditContext ) {
-      logger.info( "calling resetObsEditContext" );
-      resetObsEditContext( );
-    }
+    logger.info( "calling resetStore" );
+    resetStore( );
 
     // Create a new observation with multiple shared photos (one or more)
 
@@ -75,10 +67,10 @@ const useShare = ( ): void => {
     const newObservations = await Promise.all( [{ photos: photoUris }].map(
       ( { photos } ) => Observation.createObservationWithPhotos( photos )
     ) );
-    updateObservations( newObservations );
+    setObservations( newObservations );
 
     navigation.navigate( "ObsEdit" );
-  }, [updateObservations, navigation, obsEditContext?.resetObsEditContext] );
+  }, [setObservations, navigation, resetStore] );
 
   useEffect( () => {
     ShareMenu.getInitialShare( handleShare );

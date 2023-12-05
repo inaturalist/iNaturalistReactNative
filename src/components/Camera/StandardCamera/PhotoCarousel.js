@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef, useState
@@ -18,12 +19,15 @@ import Animated, {
   useAnimatedStyle,
   withTiming
 } from "react-native-reanimated";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   emptyComponent?: Function,
   takingPhoto?: boolean,
-  deletePhoto?: Function,
   isLandscapeMode?:boolean,
   isLargeScreen?: boolean,
   isTablet?: boolean,
@@ -55,7 +59,6 @@ const LARGE_PHOTO_CLASSES = [
 const PhotoCarousel = ( {
   emptyComponent,
   takingPhoto,
-  deletePhoto,
   isLandscapeMode,
   isLargeScreen,
   isTablet,
@@ -63,6 +66,8 @@ const PhotoCarousel = ( {
   setPhotoEvidenceUris,
   photoUris
 }: Props ): Node => {
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
+  const realm = useRealm( );
   const { t } = useTranslation( );
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -126,10 +131,10 @@ const PhotoCarousel = ( {
   ] );
 
   const showDeletePhotoMode = useCallback( ( ) => {
-    if ( deletePhoto ) {
+    if ( deletePhotoFromObservation ) {
       setDeletePhotoMode( mode => !mode );
     }
-  }, [deletePhoto] );
+  }, [deletePhotoFromObservation] );
 
   const viewPhotoAtIndex = useCallback( ( item, index ) => {
     setPhotoEvidenceUris( [...photoUris] );
@@ -140,10 +145,11 @@ const PhotoCarousel = ( {
     photoUris
   ] );
 
-  const deletePhotoAtIndex = useCallback( ( item, _index ) => {
-    if ( !deletePhoto ) return;
-    deletePhoto( item );
-  }, [deletePhoto] );
+  const deletePhotoAtIndex = useCallback( async ( item, _index ) => {
+    if ( !deletePhotoFromObservation ) return;
+    deletePhotoFromObservation( item );
+    await ObservationPhoto.deletePhoto( realm, item );
+  }, [deletePhotoFromObservation, realm] );
 
   const renderPhotoOrEvidenceButton = useCallback( ( { item, index } ) => (
     <>
@@ -178,6 +184,7 @@ const PhotoCarousel = ( {
                         mode="contained"
                         color={theme.colors.onPrimary}
                         backgroundColor="rgba(0, 0, 0, 0.5)"
+                        testID={`PhotoCarousel.deletePhoto.${item}`}
                         accessibilityLabel={t( "Delete-photo" )}
                         onPress={( ) => deletePhotoAtIndex( item, index )}
                       />
@@ -187,6 +194,7 @@ const PhotoCarousel = ( {
                     <Pressable
                       accessibilityRole="button"
                       accessibilityLabel={t( "View-photo" )}
+                      testID={`PhotoCarousel.displayPhoto.${item}`}
                       onLongPress={showDeletePhotoMode}
                       onPress={( ) => viewPhotoAtIndex( item, index )}
                       className="w-full h-full"

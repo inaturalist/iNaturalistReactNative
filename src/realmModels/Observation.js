@@ -280,7 +280,7 @@ class Observation extends Realm.Object {
 
     const updatedObs = currentObservation;
     updatedObs.observationPhotos = [...currentObservationPhotos, ...obsPhotos];
-    return [updatedObs];
+    return updatedObs;
   };
 
   static schema = {
