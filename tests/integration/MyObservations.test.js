@@ -70,7 +70,7 @@ describe( "MyObservations", ( ) => {
   describe( "when signed in", ( ) => {
     const mockUser = factory( "LocalUser", {
       login: faker.internet.userName( ),
-      iconUrl: faker.image.imageUrl( ),
+      iconUrl: faker.image.url( ),
       locale: "en"
     } );
 
@@ -93,8 +93,8 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: faker.image.imageUrl( ),
+                id: faker.number.int( ),
+                url: faker.image.url( ),
                 position: 0
               }
             } )
@@ -105,15 +105,15 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: `${faker.image.imageUrl( )}/100`,
+                id: faker.number.int( ),
+                url: `${faker.image.url( )}/100`,
                 position: 0
               }
             } ),
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: `${faker.image.imageUrl( )}/200`,
+                id: faker.number.int( ),
+                url: `${faker.image.url( )}/200`,
                 position: 1
               }
             } )
@@ -213,8 +213,8 @@ describe( "MyObservations", ( ) => {
 
     describe( "with synced observations", ( ) => {
       const mockDeletedIds = [
-        faker.datatype.number( ),
-        faker.datatype.number( )
+        faker.number.int( ),
+        faker.number.int( )
       ];
 
       const mockObservationsSynced = [
@@ -232,9 +232,6 @@ describe( "MyObservations", ( ) => {
           global.realm.deleteAll( );
           mockObservationsSynced.forEach( mockObservation => {
             global.realm.create( "Observation", mockObservation );
-          } );
-          global.realm.create( "LocalPreferences", {
-            last_sync_time: new Date( "2023-11-01" )
           } );
         } );
       } );
@@ -256,40 +253,65 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      it( "downloads deleted observations from server when sync button tapped", async ( ) => {
-        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const syncIcon = await screen.findByTestId( "SyncButton" );
-        await waitFor( ( ) => {
-          expect( syncIcon ).toBeVisible( );
-        } );
-        fireEvent.press( syncIcon );
-        const lastSyncTime = global.realm.objects( "LocalPreferences" )[0].last_sync_time;
-        await waitFor( ( ) => {
-          expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
-            {
-              since: format( lastSyncTime, "yyyy-MM-dd" )
-            },
-            expect.anything( )
-          );
+      describe( "before initial sync", ( ) => {
+        it( "doesn't throw an error when sync button tapped", async ( ) => {
+          expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          expect( global.realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          expect( ( ) => {
+            fireEvent.press( syncIcon );
+          } ).not.toThrow( );
         } );
       } );
 
-      it( "deletes local observations if they have been deleted on server", async ( ) => {
-        inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const syncIcon = await screen.findByTestId( "SyncButton" );
-        await waitFor( ( ) => {
-          expect( syncIcon ).toBeVisible( );
+      describe( "after initial sync", ( ) => {
+        beforeEach( async () => {
+          await global.realm.write( () => {
+            global.realm.create( "LocalPreferences", {
+              last_sync_time: new Date( "2023-11-01" )
+            } );
+          } );
         } );
-        fireEvent.press( syncIcon );
-        const spy = jest.spyOn( global.realm, "write" );
-        const deleteSpy = jest.spyOn( global.realm, "delete" );
-        await waitFor( ( ) => {
-          expect( spy ).toHaveBeenCalled( );
+
+        it( "downloads deleted observations from server when sync button tapped", async ( ) => {
+          expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          fireEvent.press( syncIcon );
+          const lastSyncTime = global.realm.objects( "LocalPreferences" )[0].last_sync_time;
+          await waitFor( ( ) => {
+            expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
+              {
+                since: format( lastSyncTime, "yyyy-MM-dd" )
+              },
+              expect.anything( )
+            );
+          } );
         } );
-        expect( deleteSpy ).toHaveBeenCalled( );
-        expect( global.realm.objects( "Observation" ).length ).toBe( 1 );
+
+        it( "deletes local observations if they have been deleted on server", async ( ) => {
+          inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          fireEvent.press( syncIcon );
+          const spy = jest.spyOn( global.realm, "write" );
+          const deleteSpy = jest.spyOn( global.realm, "delete" );
+          await waitFor( ( ) => {
+            expect( spy ).toHaveBeenCalled( );
+          } );
+          expect( deleteSpy ).toHaveBeenCalled( );
+          expect( global.realm.objects( "Observation" ).length ).toBe( 1 );
+        } );
       } );
     } );
   } );
@@ -307,7 +329,7 @@ describe( "MyObservations", ( ) => {
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser", {
         login: faker.internet.userName( ),
-        iconUrl: faker.image.imageUrl( ),
+        iconUrl: faker.image.url( ),
         locale: "en"
       } );
       expect( mockUser.locale ).toEqual( "en" );
@@ -322,7 +344,7 @@ describe( "MyObservations", ( ) => {
     it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
       const mockSpanishUser = factory( "LocalUser", {
         login: faker.internet.userName( ),
-        iconUrl: faker.image.imageUrl( ),
+        iconUrl: faker.image.url( ),
         locale: "es"
       } );
       expect( mockSpanishUser.locale ).toEqual( "es" );
@@ -339,7 +361,7 @@ describe( "MyObservations", ( ) => {
       async ( ) => {
         const mockUser = factory( "LocalUser", {
           login: faker.internet.userName( ),
-          iconUrl: faker.image.imageUrl( ),
+          iconUrl: faker.image.url( ),
           locale: "en"
         } );
         expect( mockUser.locale ).toEqual( "en" );

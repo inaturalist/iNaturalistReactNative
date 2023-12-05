@@ -191,8 +191,25 @@ fastlane prod
 
 ### Example: Build & Release for Internal Testing
 
+1. Ensure all tests are passing on the main branch
+1. Manual testing
+    1. Install a "Release" build on an iOS device
+        1. Online
+            1. Sign in
+            1. Make an observation by taking a new photo
+            1. Make an observation by importing an existing
+            1. Make an observation without a photo
+            1. Upload
+        1. Offline
+            1. Go into airplane mode
+            1. Make an observation by taking a new photo
+            1. Make an observation by importing an existing
+            1. Make an observation without a photo
+            1. Turn off airplane mode
+            1. Upload
+    1. Install a "release" build on an Android device and repeat iOS steps
 1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
-1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version for bug fixes, minor version for new features, major version if the app was completely re-written or can't import data from previous versions.
+1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.
 1. `npm install` to set the version in `package-lock.json`
 1. Commit changes
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote.

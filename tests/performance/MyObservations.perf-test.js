@@ -18,8 +18,8 @@ const mockObservations = [
     observationPhotos: [
       factory( "LocalObservationPhoto", {
         photo: {
-          id: faker.datatype.number( ),
-          url: faker.image.imageUrl( ),
+          id: faker.number.int( ),
+          url: faker.image.url( ),
           position: 0
         }
       } )
@@ -30,15 +30,15 @@ const mockObservations = [
     observationPhotos: [
       factory( "LocalObservationPhoto", {
         photo: {
-          id: faker.datatype.number( ),
-          url: `${faker.image.imageUrl( )}/100`,
+          id: faker.number.int( ),
+          url: `${faker.image.url( )}/100`,
           position: 0
         }
       } ),
       factory( "LocalObservationPhoto", {
         photo: {
-          id: faker.datatype.number( ),
-          url: `${faker.image.imageUrl( )}/200`,
+          id: faker.number.int( ),
+          url: `${faker.image.url( )}/200`,
           position: 1
         }
       } )

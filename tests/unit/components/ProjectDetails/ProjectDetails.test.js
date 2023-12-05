@@ -9,8 +9,8 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockProject = factory( "RemoteProject", {
   title: faker.lorem.sentence( ),
-  icon: faker.image.imageUrl( ),
-  header_image_url: faker.image.imageUrl( ),
+  icon: faker.image.url( ),
+  header_image_url: faker.image.url( ),
   description: faker.lorem.paragraph( )
 } );
 

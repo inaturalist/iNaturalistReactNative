@@ -40,17 +40,17 @@ jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
 const renderObsEdit = ( ) => renderComponent( <ObsEdit /> );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.name.firstName( ),
+  name: faker.person.firstName( ),
   rank: "genus",
   rank_level: 27,
-  preferred_common_name: faker.name.fullName( ),
+  preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.imageUrl( )
+    square_url: faker.image.url( )
   },
   ancestors: [{
-    id: faker.datatype.number( ),
-    preferred_common_name: faker.name.fullName( ),
-    name: faker.name.fullName( ),
+    id: faker.number.int( ),
+    preferred_common_name: faker.person.fullName( ),
+    name: faker.person.fullName( ),
     rank: "class"
   }],
   wikipedia_summary: faker.lorem.paragraph( ),
@@ -122,8 +122,8 @@ describe( "location fetching", () => {
   test( "shouldn't fetch location for existing obs on device that hasn't uploaded", async () => {
     const observation = factory( "LocalObservation", {
       _created_at: faker.date.past( ),
-      latitude: Number( faker.address.latitude( ) ),
-      longitude: Number( faker.address.longitude( ) ),
+      latitude: Number( faker.location.latitude( ) ),
+      longitude: Number( faker.location.longitude( ) ),
       observationPhotos: []
     } );
     expect( observation.id ).toBeFalsy();
@@ -148,11 +148,11 @@ describe( "location fetching", () => {
 
   test( "shouldn't fetch location for existing observation created elsewhere", async () => {
     const observation = factory( "LocalObservation", {
-      id: faker.datatype.number(),
+      id: faker.number.int(),
       created_at: faker.date.past(),
       _synced_at: faker.date.past(),
-      latitude: Number( faker.address.latitude( ) ),
-      longitude: Number( faker.address.longitude( ) ),
+      latitude: Number( faker.location.latitude( ) ),
+      longitude: Number( faker.location.longitude( ) ),
       observationPhotos: []
     } );
     expect( observation.id ).toBeTruthy();

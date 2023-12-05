@@ -11,7 +11,7 @@ import mockRNLocalize from "react-native-localize/mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
-import { makeResponse } from "./factory";
+import factory, { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
@@ -318,3 +318,8 @@ jest.mock( "react-native-geocoder-reborn", ( ) => ( {
 // Set up mocked fetch for testing (or disabling) fetch requests
 fetchMock.enableMocks( );
 fetchMock.dontMock( );
+
+const mockIconicTaxon = factory( "RemoteTaxon", {
+  is_iconic: true
+} );
+inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );

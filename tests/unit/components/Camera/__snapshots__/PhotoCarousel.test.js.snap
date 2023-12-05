@@ -15,9 +15,9 @@ exports[`PhotoCarousel renders correctly 1`] = `
   <RCTScrollView
     data={
       [
-        "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480/600",
-        "https://loremflickr.com/640/480/900",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
       ]
     }
     getItem={[Function]}
@@ -136,7 +136,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
                     }
                   }
                   style={
@@ -305,7 +305,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480/600",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
                     }
                   }
                   style={
@@ -474,7 +474,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480/900",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
                     }
                   }
                   style={
@@ -565,9 +565,9 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
   <RCTScrollView
     data={
       [
-        "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480/600",
-        "https://loremflickr.com/640/480/900",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
       ]
     }
     getItem={[Function]}
@@ -691,7 +691,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
                     }
                   }
                   style={
@@ -865,7 +865,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480/600",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
                     }
                   }
                   style={
@@ -1039,7 +1039,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480/900",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
                     }
                   }
                   style={

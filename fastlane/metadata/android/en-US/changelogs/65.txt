@@ -1,0 +1,13 @@
+FIXED
+* Fetching coordinates while offline
+* Buttons should remain the same in dark mode
+* Delete most recently-created obs
+* Adding identifications from Explore
+* Remove upload button from Explore grid view
+* Increased pressable area of ObsEdit back button
+* LocationPicker Current location button zooms as well as pans
+
+UPDATED
+* Show loading indicator at the end of results in Explore
+* Style of "unknown" text for unidentified ObsDetail
+* Obs deleted elsewhere should get deleted in app on sync

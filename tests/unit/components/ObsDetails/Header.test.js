@@ -8,9 +8,9 @@ import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.name.firstName( ),
+  name: faker.person.firstName( ),
   rank: "genus",
-  preferred_common_name: faker.name.fullName( )
+  preferred_common_name: faker.person.fullName( )
 } );
 
 describe( "Header", () => {

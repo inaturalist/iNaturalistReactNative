@@ -131,7 +131,7 @@ class Taxon extends Realm.Object {
         optional: true
       },
       rank: "string?",
-      rank_level: "int?",
+      rank_level: "float?",
       isIconic: "bool?",
       iconic_taxon_name: "string?"
     }

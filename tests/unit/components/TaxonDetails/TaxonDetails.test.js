@@ -13,17 +13,17 @@ import factory from "../../../factory";
 jest.mock( "inaturalistjs" );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.name.firstName( ),
+  name: faker.person.firstName( ),
   rank: "genus",
   rank_level: 27,
-  preferred_common_name: faker.name.fullName( ),
+  preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.imageUrl( )
+    square_url: faker.image.url( )
   },
   ancestors: [{
-    id: faker.datatype.number( ),
-    preferred_common_name: faker.name.fullName( ),
-    name: faker.name.fullName( ),
+    id: faker.number.int( ),
+    preferred_common_name: faker.person.fullName( ),
+    name: faker.person.fullName( ),
     rank: "class"
   }],
   wikipedia_summary: faker.lorem.paragraph( ),

@@ -22,7 +22,7 @@ beforeEach( async ( ) => {
   } );
   const mockUser = factory( "LocalUser", {
     login: faker.internet.userName( ),
-    iconUrl: faker.image.imageUrl( ),
+    iconUrl: faker.image.url( ),
     locale: "en"
   } );
   await signIn( mockUser );

@@ -53,8 +53,10 @@ const startUploadState = uploads => ( {
   uploadProgress: { },
   currentUploadCount: 1,
   totalProgressIncrements: uploads
-    .reduce( ( count, current ) => count
-      + current.observationPhotos.length, uploads.length )
+    .reduce(
+      ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+      uploads.length
+    )
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
@@ -236,7 +238,7 @@ const MyObservationsContainer = ( ): Node => {
     try {
       await uploadObservation( observation, realm );
     } catch ( uploadError ) {
-      console.warn( uploadError );
+      console.warn( "MyObservationsContainer, uploadError: ", uploadError );
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
@@ -303,11 +305,21 @@ const MyObservationsContainer = ( ): Node => {
     Observation.upsertRemoteObservations( results, realm );
   }, [apiToken, currentUser, realm] );
 
+  // TODO move this logic to a helper or a model so it can be more easily unit tested
   const syncRemoteDeletedObservations = useCallback( async ( ) => {
     const lastSyncTime = realm.objects( "LocalPreferences" )?.[0]?.last_sync_time;
-    const params = {
-      since: format( lastSyncTime, "yyyy-MM-dd" ) || format( new Date( ), "yyyy-MM-dd" )
-    };
+    const params = { since: format( new Date( ), "yyyy-MM-dd" ) };
+    if ( lastSyncTime ) {
+      try {
+        params.since = format( lastSyncTime, "yyyy-MM-dd" );
+      } catch ( lastSyncTimeFormatError ) {
+        if ( lastSyncTimeFormatError instanceof RangeError ) {
+          // If we can't parse that date, assume we've never synced and use the default
+        } else {
+          throw lastSyncTimeFormatError;
+        }
+      }
+    }
     const response = await checkForDeletedObservations( params, { api_token: apiToken } );
     const deletedObservations = response?.results;
     if ( !deletedObservations ) { return; }

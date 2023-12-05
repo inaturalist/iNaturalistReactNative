@@ -27,10 +27,10 @@ jest.mock(
 );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.name.firstName( ),
-  preferred_common_name: faker.name.fullName( ),
+  name: faker.person.firstName( ),
+  preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.imageUrl( )
+    square_url: faker.image.url( )
   }
 } );
 
@@ -38,11 +38,11 @@ const mockTaxaList = [
   mockTaxon,
   {
     ...mockTaxon,
-    id: faker.datatype.number( )
+    id: faker.number.int( )
   },
   {
     ...mockTaxon,
-    id: faker.datatype.number( )
+    id: faker.number.int( )
   }
 ];
 
