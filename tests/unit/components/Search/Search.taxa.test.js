@@ -9,9 +9,9 @@ import { renderComponent } from "../../../helpers/render";
 const mockedNavigate = jest.fn( );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  preferred_common_name: faker.name.fullName( ),
+  preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.imageUrl( )
+    square_url: faker.image.url( )
   }
 } );
 

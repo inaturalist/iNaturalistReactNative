@@ -16,14 +16,14 @@ const speciesTaxon = factory( "LocalTaxon", {
 } );
 
 const noCommonNameTaxon = factory( "LocalTaxon", {
-  name: faker.name.firstName( ),
+  name: faker.person.firstName( ),
   preferred_common_name: null,
   rank: "species",
   rank_level: 10
 } );
 
 const highRankTaxon = factory( "LocalTaxon", {
-  name: faker.name.firstName( ),
+  name: faker.person.firstName( ),
   preferred_common_name: null,
   rank_level: 27,
   rank: "genus"
@@ -151,6 +151,25 @@ describe( "DisplayTaxonName", ( ) => {
       expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
         "Lupinus albifrons var. collinusSilver Lupine"
       );
+    } );
+  } );
+
+  describe( "when taxon is a Realm object", ( ) => {
+    it( "fills in a missing genus rank from the rank_level", ( ) => {
+      let taxon;
+      global.realm.write( ( ) => {
+        taxon = global.realm.create(
+          "Taxon",
+          {
+            id: faker.number.int( ),
+            name: faker.person.firstName( ),
+            rank_level: 20
+          },
+          "modified"
+        );
+      } );
+      render( <DisplayTaxonName taxon={taxon} /> );
+      expect( screen.getByText( /Genus/ ) ).toBeTruthy( );
     } );
   } );
 } );

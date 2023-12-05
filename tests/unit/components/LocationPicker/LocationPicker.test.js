@@ -20,8 +20,8 @@ const mockPlaceResult = factory( "RemotePlace", {
   display_name: "New York",
   point_geojson: {
     coordinates: [
-      Number( faker.address.longitude( ) ),
-      Number( faker.address.latitude( ) )
+      Number( faker.location.longitude( ) ),
+      Number( faker.location.latitude( ) )
     ]
   }
 } );

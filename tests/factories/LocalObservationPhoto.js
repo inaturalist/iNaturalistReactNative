@@ -3,6 +3,6 @@ import { define } from "factoria";
 import photoFactory from "./LocalPhoto";
 
 export default define( "LocalObservationPhoto", faker => ( {
-  uuid: faker.datatype.uuid( ),
+  uuid: faker.string.uuid( ),
   photo: photoFactory( "LocalPhoto" )
 } ) );

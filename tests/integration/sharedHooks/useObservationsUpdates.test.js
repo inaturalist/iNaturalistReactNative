@@ -11,12 +11,12 @@ const mockUser = factory( "LocalUser" );
 const mockCommentUpdate = factory( "RemoteUpdate", {
   comment_id: 1,
   viewed: false,
-  resource_uuid: faker.datatype.uuid( )
+  resource_uuid: faker.string.uuid( )
 } );
 const mockIdentificationUpdate = factory( "RemoteUpdate", {
   identification_id: 2,
   viewed: false,
-  resource_uuid: faker.datatype.uuid( )
+  resource_uuid: faker.string.uuid( )
 } );
 const mockData = [mockCommentUpdate, mockIdentificationUpdate];
 

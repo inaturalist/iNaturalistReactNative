@@ -124,8 +124,13 @@ const ObsDetailsContainer = ( ): Node => {
 
   const queryClient = useQueryClient( );
 
-  const { data: remoteObservation, refetch: refetchRemoteObservation, isRefetching }
-  = useAuthenticatedQuery(
+  const localObservation = useLocalObservation( uuid );
+
+  const {
+    data: remoteObservation,
+    refetch: refetchRemoteObservation,
+    isRefetching
+  } = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
     optsWithAuth => fetchRemoteObservation(
       uuid,
@@ -135,11 +140,12 @@ const ObsDetailsContainer = ( ): Node => {
       optsWithAuth
     ),
     {
-      keepPreviousData: false
+      keepPreviousData: false,
+      enabled: localObservation?.wasSynced( ),
+      retry: 10
     }
   );
 
-  const localObservation = useLocalObservation( uuid );
   const observation = localObservation || remoteObservation;
 
   // In theory the only sitiation in which an observation would not have a

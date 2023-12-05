@@ -53,8 +53,10 @@ const startUploadState = uploads => ( {
   uploadProgress: { },
   currentUploadCount: 1,
   totalProgressIncrements: uploads
-    .reduce( ( count, current ) => count
-      + current.observationPhotos.length, uploads.length )
+    .reduce(
+      ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+      uploads.length
+    )
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
@@ -235,7 +237,7 @@ const MyObservationsContainer = ( ): Node => {
     try {
       await uploadObservation( observation, realm );
     } catch ( uploadError ) {
-      console.warn( uploadError );
+      console.warn( "MyObservationsContainer, uploadError: ", uploadError );
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join

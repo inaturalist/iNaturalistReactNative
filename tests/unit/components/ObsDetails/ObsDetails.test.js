@@ -23,28 +23,28 @@ const mockObservation = factory( "LocalObservation", {
   observationPhotos: [
     factory( "LocalObservationPhoto", {
       photo: {
-        id: faker.datatype.number( ),
+        id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.imageUrl( )
+        url: faker.image.url( )
       }
     } )
   ],
   taxon: factory( "LocalTaxon", {
-    name: faker.name.firstName( ),
+    name: faker.person.firstName( ),
     rank: "species",
     rank_level: 10,
-    preferred_common_name: faker.name.fullName( ),
+    preferred_common_name: faker.person.fullName( ),
     defaultPhoto: {
-      id: faker.datatype.number( ),
+      id: faker.number.int( ),
       attribution: faker.lorem.sentence( ),
       licenseCode: "cc-by-nc",
-      url: faker.image.imageUrl( )
+      url: faker.image.url( )
     }
   } ),
   user: factory( "LocalUser", {
     login: faker.internet.userName( ),
-    iconUrl: faker.image.imageUrl( ),
+    iconUrl: faker.image.url( ),
     locale: "en"
   } ),
   identifications: []
@@ -54,20 +54,20 @@ const mockNoEvidenceObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
   time_observed_at: "2023-12-14T21:07:41-09:30",
   taxon: factory( "LocalTaxon", {
-    name: faker.name.firstName( ),
+    name: faker.person.firstName( ),
     rank: "species",
     rank_level: 10,
-    preferred_common_name: faker.name.fullName( ),
+    preferred_common_name: faker.person.fullName( ),
     defaultPhoto: {
-      id: faker.datatype.number( ),
+      id: faker.number.int( ),
       attribution: faker.lorem.sentence( ),
       licenseCode: "cc-by-nc",
-      url: faker.image.imageUrl( )
+      url: faker.image.url( )
     }
   } ),
   user: factory( "LocalUser", {
     login: faker.internet.userName( ),
-    iconUrl: faker.image.imageUrl( ),
+    iconUrl: faker.image.url( ),
     locale: "en"
   } ),
   identifications: []
@@ -76,7 +76,7 @@ mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
-  iconUrl: faker.image.imageUrl( )
+  iconUrl: faker.image.url( )
 } );
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
