@@ -52,17 +52,14 @@ const TaxonSearch = ( ): Node => {
       // Called from observation editor screen
       createId( taxon );
       updateObservationKeys( {
-        observation: {
-          ...currentObservation,
-          owners_identification_from_vision: false
-        }
+        owners_identification_from_vision: false
       } );
       navigation.navigate( "ObsEdit" );
     } else {
       // Called when adding an identification to someone else's observation
       navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: taxon } );
     }
-  }, [createId, navigation, obsUUID, currentObservation, updateObservationKeys] );
+  }, [createId, navigation, obsUUID, updateObservationKeys] );
 
   const renderFooter = ( ) => (
     <View className="pb-10" />

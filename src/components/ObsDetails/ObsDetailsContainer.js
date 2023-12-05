@@ -308,6 +308,8 @@ const ObsDetailsContainer = ( ): Node => {
       vision
     };
 
+    console.log( idParams, "id params in obs details container" );
+
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createIdentificationMutation.mutate( { identification: idParams } );
 

@@ -181,7 +181,7 @@ class Observation extends Realm.Object {
     const obsToSave = {
       // just ...obs causes problems when obs is a realm object
       // ...obs.toJSON( ),
-      ...obs.observation,
+      ...obs,
       ...timestamps,
       taxon,
       observationPhotos,
