@@ -30,6 +30,8 @@ export const taxonomyPath: string = Platform.select( {
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`
 } );
 
+export const modelVersion = Config.CV_MODEL_VERSION;
+
 const addCameraFilesAndroid = () => {
   const copyFilesAndroid = ( source, destination ) => {
     RNFS.copyFileAssets( source, destination )
