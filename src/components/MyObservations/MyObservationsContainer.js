@@ -208,7 +208,7 @@ const MyObservationsContainer = ( ): Node => {
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
 
         if ( state.singleUpload
-          && currentProgress[uuid] > state.totalProgressIncrements ) {
+          && state.uploadProgress[uuid] >= state.totalProgressIncrements ) {
           dispatch( {
             type: "UPLOADS_COMPLETE"
           } );
