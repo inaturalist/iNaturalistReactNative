@@ -3,7 +3,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
-import MediaViewer from "components/MediaViewer/MediaViewer";
+import MediaViewerContainer from "components/MediaViewer/MediaViewerContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import { Heading4 } from "components/SharedComponents";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
@@ -63,7 +63,7 @@ const SharedStackScreens = ( ): Node => (
     />
     <Stack.Screen
       name="MediaViewer"
-      component={MediaViewer}
+      component={MediaViewerContainer}
       options={{
         ...blankHeaderTitle,
         headerTitleAlign: "center",

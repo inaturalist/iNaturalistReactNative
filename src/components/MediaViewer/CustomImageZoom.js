@@ -59,6 +59,7 @@ const CustomImageZoom = ( { source }: Props ): Node => {
         onStartShouldSetResponder={
           e => e.nativeEvent.touches.length < 2 && scaleValue.current <= 1
         }
+        testID="CustomImageZoom"
       >
         {/* $FlowIgnore */}
         <Image

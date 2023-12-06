@@ -1,41 +1,40 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { Heading4, TransparentCircleButton, WarningSheet } from "components/SharedComponents";
+import { TransparentCircleButton, WarningSheet } from "components/SharedComponents";
 import { SafeAreaView, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useRef,
+  useCallback,
+  useRef,
   useState
 } from "react";
 import { StatusBar } from "react-native";
-import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
-import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import MainPhotoDisplay from "./MainPhotoDisplay";
 import PhotoSelector from "./PhotoSelector";
 
-const { useRealm } = RealmContext;
+type Props = {
+  onDelete: Function,
+  urls: Array<string>
+}
 
-const MediaViewer = ( ): Node => {
-  const realm = useRealm( );
-  const navigation = useNavigation( );
+const MediaViewer = ( {
+  onDelete,
+  urls = []
+}: Props ): Node => {
   const { params } = useRoute( );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( params?.index );
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
-  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
-  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
-  const currentObservation = useStore( state => state.currentObservation );
 
   const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === photoEvidenceUris.length - 1;
+  const atLastPhoto = selectedPhotoIndex === urls.length - 1;
 
   const handleScrollLeft = index => {
     if ( atFirstPhoto ) { return; }
@@ -52,34 +51,8 @@ const MediaViewer = ( ): Node => {
   const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
-  const numOfPhotos = photoEvidenceUris.length;
-
   const showWarningSheet = ( ) => setWarningSheet( true );
   const hideWarningSheet = ( ) => setWarningSheet( false );
-
-  const deletePhoto = async ( ) => {
-    const uriToDelete = photoEvidenceUris[selectedPhotoIndex];
-    deletePhotoFromObservation( uriToDelete );
-    await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
-    hideWarningSheet( );
-    if ( photoEvidenceUris.length === 0 ) {
-      navigation.goBack( );
-    } else if ( selectedPhotoIndex !== 0 ) {
-      setSelectedPhotoIndex( selectedPhotoIndex - 1 );
-    }
-  };
-
-  useEffect( ( ) => {
-    const renderHeaderTitle = ( ) => (
-      <Heading4 className="color-white">{t( "X-PHOTOS", { photoCount: numOfPhotos } )}</Heading4>
-    );
-
-    const headerOptions = {
-      headerTitle: renderHeaderTitle
-    };
-
-    navigation.setOptions( headerOptions );
-  }, [navigation, t, numOfPhotos] );
 
   const scrollToIndex = useCallback( index => {
     // when a user taps a photo in the carousel, the UI needs to automatically
@@ -107,12 +80,12 @@ const MediaViewer = ( ): Node => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
+    <SafeAreaView className="flex-1 bg-black" testID="MediaViewer">
       <StatusBar barStyle="light-content" />
       {warningSheet && (
         <WarningSheet
           handleClose={hideWarningSheet}
-          confirm={deletePhoto}
+          confirm={onDelete}
           headerText={t( "DISCARD-MEDIA" )}
           snapPoints={[178]}
           buttonText={t( "DISCARD" )}
@@ -121,13 +94,13 @@ const MediaViewer = ( ): Node => {
         />
       )}
       <MainPhotoDisplay
-        photoUris={photoEvidenceUris}
+        photoUris={urls}
         selectedPhotoIndex={selectedPhotoIndex}
         handleScrollEndDrag={handleScrollEndDrag}
         horizontalScroll={horizontalScroll}
       />
       <PhotoSelector
-        photoUris={photoEvidenceUris}
+        photoUris={urls}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
         isLandscapeMode={isLandscapeMode}
