@@ -13,6 +13,7 @@ import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
 import { AppRegistry } from "react-native";
+import codePush from "react-native-code-push";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -91,4 +92,4 @@ const AppWithProviders = ( ) => (
   </QueryClientProvider>
 );
 
-AppRegistry.registerComponent( appName, ( ) => AppWithProviders );
+AppRegistry.registerComponent( appName, ( ) => codePush( AppWithProviders ) );

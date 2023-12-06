@@ -3,6 +3,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <RNShareMenu/ShareMenuManager.h>
 #import <React/RCTLinkingManager.h>
+#import <CodePush/CodePush.h>
 
 @implementation AppDelegate
 
@@ -37,7 +38,10 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+
+  // replaced [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  // with native CodePush instructions: https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-get-started
+  return [CodePush bundleURL];
 #endif
 }
 
