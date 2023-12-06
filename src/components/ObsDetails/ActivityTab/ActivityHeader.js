@@ -43,8 +43,8 @@ const ActivityHeader = ( {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
-  const { user } = item;
-  const { vision, category } = user || {};
+  const { user, vision } = item;
+  const { category } = user || {};
 
   const itemType = item.category
     ? "Identification"
@@ -58,6 +58,7 @@ const ActivityHeader = ( {
         </View>
       );
     }
+
     if ( vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flagged ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;

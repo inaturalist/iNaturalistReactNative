@@ -29,8 +29,6 @@ const markRecordUploaded = ( observationUUID, recordUUID, type, response, realm 
   }
   // TODO: add ObservationSound
 
-  console.log( record, "record", record?._synced_at, "record synced at date" );
-
   realm?.write( ( ) => {
     record.id = id;
     record._synced_at = new Date( );

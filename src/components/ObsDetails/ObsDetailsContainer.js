@@ -274,6 +274,7 @@ const ObsDetailsContainer = ( ): Node => {
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
+        console.log( data, "data in success id mutation" );
         if ( belongsToCurrentUser ) {
           realm?.write( ( ) => {
             const localIdentifications = localObservation?.identifications;
@@ -283,6 +284,9 @@ const ObsDetailsContainer = ( ): Node => {
               "Taxon",
               newIdentification.taxon.id
             ) || newIdentification.taxon;
+            if ( vision ) {
+              newIdentification.vision = true;
+            }
             localIdentifications.push( newIdentification );
           } );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
