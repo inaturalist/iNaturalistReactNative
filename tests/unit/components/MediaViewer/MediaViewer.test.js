@@ -39,5 +39,20 @@ describe( "MediaViewer", ( ) => {
       renderComponent( <MediaViewer urls={urls} /> );
       expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
     } );
+
+    describe( "when editable", ( ) => {
+      it( "should show the delete button", async ( ) => {
+        renderComponent( <MediaViewer urls={urls} editable /> );
+        expect( await screen.findByLabelText( "Delete" ) ).toBeTruthy( );
+      } );
+    } );
+
+    describe( "when not editable", ( ) => {
+      it( "should not show the delete button", async ( ) => {
+        renderComponent( <MediaViewer urls={urls} /> );
+        expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
+        expect( screen.queryByLabelText( "Delete" ) ).toBeFalsy( );
+      } );
+    } );
   } );
 } );

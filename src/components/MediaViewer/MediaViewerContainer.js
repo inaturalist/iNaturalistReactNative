@@ -27,6 +27,7 @@ const MediaViewerContainer = ( ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
 
   const numOfPhotos = photoEvidenceUris.length;
+  const editable = params?.editable;
 
   const deletePhoto = async ( ) => {
     const uriToDelete = photoEvidenceUris[selectedPhotoIndex];
@@ -55,6 +56,7 @@ const MediaViewerContainer = ( ): Node => {
     <MediaViewer
       onDelete={deletePhoto}
       urls={photoEvidenceUris}
+      editable={editable}
     />
   );
 };

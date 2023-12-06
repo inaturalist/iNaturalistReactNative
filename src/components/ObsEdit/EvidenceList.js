@@ -34,7 +34,7 @@ const EvidenceList = ( {
         onLongPress={drag}
         accessibilityRole="button"
         onPress={( ) => {
-          navigation.navigate( "MediaViewer", { index: getIndex( ) } );
+          navigation.navigate( "MediaViewer", { index: getIndex( ), editable: true } );
         }}
         className={classnames( imageClass )}
         testID={`EvidenceList.${item.photo?.url || item.photo?.localFilePath}`}

@@ -20,11 +20,13 @@ import MainPhotoDisplay from "./MainPhotoDisplay";
 import PhotoSelector from "./PhotoSelector";
 
 type Props = {
+  editable?: boolean,
   onDelete: Function,
   urls: Array<string>
 }
 
 const MediaViewer = ( {
+  editable,
   onDelete,
   urls = []
 }: Props ): Node => {
@@ -106,22 +108,24 @@ const MediaViewer = ( {
         isLandscapeMode={isLandscapeMode}
         selectedPhotoIndex={selectedPhotoIndex}
       />
-      <View
-        className={classnames(
-          "absolute right-[14px]",
-          {
-            "bottom-[138px]": isLargeScreen,
-            "bottom-[91px]": !isLargeScreen
-          }
-        )}
-      >
-        <TransparentCircleButton
-          onPress={showWarningSheet}
-          icon="trash-outline"
-          color={colors.white}
-          accessibilityLabel={t( "Delete" )}
-        />
-      </View>
+      { editable && (
+        <View
+          className={classnames(
+            "absolute right-[14px]",
+            {
+              "bottom-[138px]": isLargeScreen,
+              "bottom-[91px]": !isLargeScreen
+            }
+          )}
+        >
+          <TransparentCircleButton
+            onPress={showWarningSheet}
+            icon="trash-outline"
+            color={colors.white}
+            accessibilityLabel={t( "Delete" )}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

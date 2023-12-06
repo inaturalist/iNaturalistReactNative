@@ -138,7 +138,7 @@ const PhotoCarousel = ( {
 
   const viewPhotoAtIndex = useCallback( ( item, index ) => {
     setPhotoEvidenceUris( [...photoUris] );
-    navigation.navigate( "MediaViewer", { index } );
+    navigation.navigate( "MediaViewer", { index, editable: true } );
   }, [
     setPhotoEvidenceUris,
     navigation,
