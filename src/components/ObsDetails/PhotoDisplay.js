@@ -1,8 +1,8 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import {
-  INatIconButton,
-  PhotoCount, PhotoScroll
+  INatIcon,
+  INatIconButton, PhotoCount, PhotoScroll
 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
@@ -110,7 +110,7 @@ const PhotoDisplay = ( {
 
     return (
       <View
-        className="bg-black flex-row justify-center"
+        className="bg-black flex-row justify-center items-center h-72"
         accessible
         accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}
       >
@@ -118,11 +118,22 @@ const PhotoDisplay = ( {
         { belongsToCurrentUser
           ? editButton
           : kebabMenu( )}
-        <IconMaterial
+        <INatIcon
+          name="noevidence"
+          size={96}
           color={colors.white}
-          testID="ObsDetails.noImage"
-          name="image-not-supported"
-          size={100}
+        />
+        <INatIconButton
+          icon={userFav
+            ? "star"
+            : "star-bold-outline"}
+          size={25}
+          onPress={faveOrUnfave}
+          color={colors.white}
+          className="absolute bottom-3 right-3"
+          accessibilityLabel={userFav
+            ? t( "Remove-favorite" )
+            : t( "Add-favorite" )}
         />
       </View>
     );
