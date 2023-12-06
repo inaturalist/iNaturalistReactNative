@@ -17,6 +17,7 @@ module.exports = {
         realmModels: "./src/realmModels",
         sharedHelpers: "./src/sharedHelpers",
         sharedHooks: "./src/sharedHooks",
+        stores: "./src/stores",
         styles: "./src/styles"
       }
     }],

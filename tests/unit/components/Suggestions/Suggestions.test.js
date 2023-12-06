@@ -3,14 +3,17 @@ import {
   fireEvent,
   screen, waitFor
 } from "@testing-library/react-native";
+import Suggestions from "components/Suggestions/Suggestions";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
-import { ObsEditContext } from "providers/contexts";
 import React from "react";
+import useStore from "stores/useStore";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
+
+const mockObservation = factory( "RemoteObservation" );
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: faker.person.firstName( ),
@@ -45,33 +48,15 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 // Mock api call to observations
 jest.mock( "inaturalistjs" );
 
-const mockUris = [
-  faker.image.url( ),
-  `${faker.image.url( )}/400`
-];
-
-const mockCreateId = jest.fn( );
-
-const renderSuggestions = ( comment = "" ) => renderComponent(
-  <ObsEditContext.Provider value={{
-    updateObservationKeys: jest.fn( ),
-    photoEvidenceUris: mockUris,
-    createId: mockCreateId,
-    comment,
-    currentObservation: {
-      uuid: faker.string.uuid( ),
-      latitude: 41,
-      longitude: -143
-    },
-    setPhotoEvidenceUris: jest.fn( )
-  }}
-  >
-    <SuggestionsContainer />
-  </ObsEditContext.Provider>
+const renderSuggestions = ( ) => renderComponent(
+  <SuggestionsContainer />
 );
+
+const initialStoreState = useStore.getState( );
 
 describe( "Suggestions", ( ) => {
   beforeAll( async ( ) => {
+    useStore.setState( initialStoreState, true );
     await initI18next( );
   } );
 
@@ -93,6 +78,10 @@ describe( "Suggestions", ( ) => {
   } );
 
   it( "should show loading wheel while id being created", async ( ) => {
+    useStore.setState( {
+      observations: [mockObservation],
+      currentObservationIndex: 0
+    } );
     renderSuggestions( );
     const taxonTopResult = screen.getByTestId(
       `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
@@ -110,7 +99,11 @@ describe( "Suggestions", ( ) => {
   } );
 
   it( "shows comment section if observation has comment", ( ) => {
-    renderSuggestions( "Comment added to observation" );
+    renderComponent(
+      <Suggestions
+        comment="Comment added to observation"
+      />
+    );
     const commentSection = screen.getByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
     );

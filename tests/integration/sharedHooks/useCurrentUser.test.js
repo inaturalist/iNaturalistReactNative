@@ -18,7 +18,7 @@ describe( "useCurrentUser", () => {
 
   it( "should return current user", () => {
     const { result } = renderHook( () => useCurrentUser() );
-    const user = global.realm.objects( "User" )[0];
+    const user = global.realm.objects( "User" ).filtered( "signedIn == true" )[0];
     expect( user.login ).toEqual( result.current.login );
   } );
 } );

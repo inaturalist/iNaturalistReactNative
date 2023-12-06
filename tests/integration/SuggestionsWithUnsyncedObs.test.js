@@ -8,15 +8,17 @@ import inatjs from "inaturalistjs";
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import os from "os";
 import path from "path";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import Realm from "realm";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
 import Observation from "realmModels/Observation";
+import useStore from "stores/useStore";
 
 import factory, { makeResponse } from "../factory";
 import { renderComponent } from "../helpers/render";
+
+const initialStoreState = useStore.getState( );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -61,6 +63,7 @@ jest.mock( "providers/contexts", ( ) => {
 beforeAll( async ( ) => {
   global.mockRealms = global.mockRealms || {};
   global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
+  useStore.setState( initialStoreState, true );
 } );
 
 // Ensure the realm connection gets closed
@@ -76,11 +79,11 @@ const makeMockObservations = ( ) => ( [
     // Suggestions won't load without a photo
     observationPhotos: [
       factory( "LocalObservationPhoto" )
-    ]
+    ],
+    geoprivacy: "obscured"
   } )
 ] );
 
-// Render the ObsEditProvider with the mocked observation
 async function renderObservationsStackNavigatorWithObservations( observations ) {
   // Save the mock observation in Realm
   await Observation.saveLocalObservationForUpload(
@@ -88,14 +91,7 @@ async function renderObservationsStackNavigatorWithObservations( observations ) 
     global.mockRealms[__filename]
   );
   renderComponent(
-    <ObsEditProvider
-      value={{
-        observations,
-        currentObservation: observations[0]
-      }}
-    >
-      <ObservationsStackNavigator />
-    </ObsEditProvider>
+    <ObservationsStackNavigator />
   );
 }
 
@@ -139,8 +135,10 @@ describe( "Suggestions", ( ) => {
       jest.clearAllMocks( );
     } );
 
-    it( "should navigate back to ObsEdit when top suggestion chosen", async ( ) => {
+    it( "should navigate back to ObsEdit"
+    + " with expected observation when top suggestion chosen", async ( ) => {
       const observations = makeMockObservations( );
+      useStore.setState( { observations } );
       await renderObservationsStackNavigatorWithObservations( observations );
       await navigateToSuggestionsForObservation( observations[0] );
       const topTaxonResultButton = await screen.findByTestId(
@@ -149,6 +147,7 @@ describe( "Suggestions", ( ) => {
       expect( topTaxonResultButton ).toBeTruthy( );
       await actor.press( topTaxonResultButton );
       expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
+      expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
     } );
 
     it( "should navigate back to ObsEdit when another suggestion chosen", async ( ) => {
@@ -166,10 +165,11 @@ describe( "Suggestions", ( ) => {
 
   describe( "TaxonSearch", ( ) => {
     it(
-      "should navigate back to ObsEdit when reached from ObsEdit via Suggestions"
-      + " and search result chosen",
+      "should navigate back to ObsEdit with expected observation"
+      + " when reached from ObsEdit via Suggestions and search result chosen",
       async ( ) => {
         const observations = makeMockObservations( );
+        useStore.setState( { observations } );
         await renderObservationsStackNavigatorWithObservations( observations );
         await navigateToSuggestionsForObservation( observations[0] );
         const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
@@ -193,6 +193,7 @@ describe( "Suggestions", ( ) => {
         expect( taxonResultButton ).toBeTruthy( );
         await actor.press( taxonResultButton );
         expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
+        expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
       }
     );
   } );

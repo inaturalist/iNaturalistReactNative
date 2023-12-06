@@ -10,21 +10,21 @@ import { ActivityIndicator } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import Photo from "realmModels/Photo";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 type Props = {
   evidenceList: Array<string>,
   handleAddEvidence?: Function,
-  handleDragAndDrop: Function,
-  savingPhoto: boolean
+  handleDragAndDrop: Function
 }
 
 const EvidenceList = ( {
   evidenceList,
   handleAddEvidence,
-  handleDragAndDrop,
-  savingPhoto
+  handleDragAndDrop
 }: Props ): Node => {
+  const savingPhoto = useStore( state => state.savingPhoto );
   const navigation = useNavigation( );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
@@ -82,6 +82,7 @@ const EvidenceList = ( {
   return (
     <View className="mt-5">
       <DraggableFlatList
+        testID="EvidenceList.DraggableFlatList"
         horizontal
         data={evidenceList}
         renderItem={renderPhoto}

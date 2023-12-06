@@ -5,15 +5,18 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
 import fetchMock from "jest-fetch-mock";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
+import useStore from "stores/useStore";
 
 import factory from "../factory";
 import { renderComponent } from "../helpers/render";
 import { signIn, signOut } from "../helpers/user";
 
+const initialStoreState = useStore.getState( );
+
 beforeEach( async ( ) => {
+  useStore.setState( initialStoreState, true );
   global.realm.write( ( ) => {
     global.realm.deleteAll( );
   } );
@@ -65,15 +68,9 @@ describe( "ObsEdit offline", ( ) => {
       const observation = factory.states( "unUploaded" )( "LocalObservation", {
         observationPhotos: []
       } );
+      useStore.setState( { observations: [observation] } );
       renderComponent(
-        <ObsEditProvider
-          value={{
-            observations: [observation],
-            currentObservation: observation
-          }}
-        >
-          <ObsEdit />
-        </ObsEditProvider>
+        <ObsEdit />
       );
       await waitFor( ( ) => {
         expect(

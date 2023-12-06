@@ -4,7 +4,6 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import i18next, { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
 import React from "react";
 import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
@@ -141,14 +140,8 @@ jest.mock(
 
 jest.mock( "sharedHooks/useIsConnected" );
 
-const renderObsDetails = obs => renderComponent(
-  <ObsEditContext.Provider value={{
-    setPhotoEvidenceUris: jest.fn( ),
-    observations: obs
-  }}
-  >
-    <ObsDetailsContainer />
-  </ObsEditContext.Provider>
+const renderObsDetails = ( ) => renderComponent(
+  <ObsDetailsContainer />
 );
 
 describe( "ObsDetails", () => {

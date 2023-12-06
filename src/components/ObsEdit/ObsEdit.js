@@ -2,14 +2,13 @@
 
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import { ViewWrapper } from "components/SharedComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect, useState
+  useEffect, useState
 } from "react";
-import { ActivityIndicator } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useLocalObservation from "sharedHooks/useLocalObservation";
+import useStore from "stores/useStore";
 
 import BottomButtons from "./BottomButtons";
 import EvidenceSectionContainer from "./EvidenceSectionContainer";
@@ -19,27 +18,31 @@ import MultipleObservationsArrows from "./MultipleObservationsArrows";
 import OtherDataSection from "./OtherDataSection";
 
 const ObsEdit = ( ): Node => {
-  const {
-    cameraRollUris,
-    currentObservation,
-    currentObservationIndex,
-    loading,
-    observations,
-    photoEvidenceUris,
-    resetObsEditContext,
-    savingPhoto,
-    setCurrentObservationIndex,
-    setPhotoEvidenceUris,
-    unsavedChanges,
-    updateObservations,
-    updateObservationKeys
-  } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
+  const currentObservation = useStore( state => state.currentObservation );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const observations = useStore( state => state.observations );
+  const resetStore = useStore( state => state.resetStore );
+  const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
+  const setObservations = useStore( state => state.setObservations );
+  const updateObservations = useStore( state => state.updateObservations );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
 
   const isFocused = useIsFocused( );
+
+  const updateObservationKeys = keysAndValues => {
+    const updatedObservations = observations;
+    const updatedObservation = {
+      ...( currentObservation.toJSON
+        ? currentObservation.toJSON( )
+        : currentObservation ),
+      ...keysAndValues
+    };
+    updatedObservations[currentObservationIndex] = updatedObservation;
+    updateObservations( [...updatedObservations] );
+  };
 
   useEffect( ( ) => {
     // when first opening an observation from ObsDetails, fetch local observation from realm
@@ -50,12 +53,12 @@ const ObsEdit = ( ): Node => {
     // observation
     const obsChanged = localObservation && localObservation?.uuid !== currentObservation?.uuid;
     if ( obsChanged ) {
-      resetObsEditContext( );
+      resetStore( );
       // need .toJSON( ) to be able to add evidence to an existing local observation
       // otherwise, get a realm error about modifying managed objects outside of a write transaction
-      updateObservations( [localObservation.toJSON( )] );
+      setObservations( [localObservation.toJSON( )] );
     }
-  }, [localObservation, updateObservations, resetObsEditContext, currentObservation] );
+  }, [localObservation, setObservations, resetStore, currentObservation] );
 
   return isFocused
     ? (
@@ -64,7 +67,6 @@ const ObsEdit = ( ): Node => {
           <Header
             observations={observations}
             currentObservation={currentObservation}
-            unsavedChanges={unsavedChanges}
             updateObservations={updateObservations}
           />
           <KeyboardAwareScrollView className="bg-white mb-[80px]">
@@ -82,9 +84,6 @@ const ObsEdit = ( ): Node => {
                   setPassesEvidenceTest={setPassesEvidenceTest}
                   currentObservation={currentObservation}
                   updateObservationKeys={updateObservationKeys}
-                  setPhotoEvidenceUris={setPhotoEvidenceUris}
-                  photoEvidenceUris={photoEvidenceUris}
-                  savingPhoto={savingPhoto}
                 />
                 <IdentificationSection
                   passesIdentificationTest={passesIdentificationTest}
@@ -98,17 +97,14 @@ const ObsEdit = ( ): Node => {
                 />
               </>
             )}
-            {loading && <ActivityIndicator />}
           </KeyboardAwareScrollView>
         </ViewWrapper>
         <BottomButtons
           passesEvidenceTest={passesEvidenceTest}
           passesIdentificationTest={passesIdentificationTest}
           currentObservation={currentObservation}
-          unsavedChanges={unsavedChanges}
           currentObservationIndex={currentObservationIndex}
           observations={observations}
-          cameraRollUris={cameraRollUris}
           setCurrentObservationIndex={setCurrentObservationIndex}
         />
       </>

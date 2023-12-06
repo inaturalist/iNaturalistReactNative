@@ -9,7 +9,6 @@ import inatjs from "inaturalistjs";
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import os from "os";
 import path from "path";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import Realm from "realm";
 // eslint-disable-next-line import/extensions
@@ -99,14 +98,7 @@ async function renderObservationsStackNavigatorWithObservations( observations ) 
     global.mockRealms[__filename].create( "Observation", observations[0], "modified" );
   } );
   renderComponent(
-    <ObsEditProvider
-      value={{
-        observations,
-        currentObservation: observations[0]
-      }}
-    >
-      <ObservationsStackNavigator />
-    </ObsEditProvider>
+    <ObservationsStackNavigator />
   );
 }
 

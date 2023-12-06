@@ -2,19 +2,19 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
+import useStore from "stores/useStore";
 
 import GroupPhotos from "./GroupPhotos";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
 const GroupPhotosContainer = ( ): Node => {
-  const {
-    updateObservations, groupedPhotos, setGroupedPhotos
-  } = useContext( ObsEditContext );
   const navigation = useNavigation( );
+  const setObservations = useStore( state => state.setObservations );
+  const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
+  const groupedPhotos = useStore( state => state.groupedPhotos );
 
   const [selectedObservations, setSelectedObservations] = useState( [] );
   const [isCreatingObservations, setIsCreatingObservations] = useState( false );
@@ -131,7 +131,7 @@ const GroupPhotosContainer = ( ): Node => {
     const newObservations = await Promise.all( groupedPhotos.map(
       ( { photos } ) => Observation.createObservationWithPhotos( photos )
     ) );
-    updateObservations( newObservations );
+    setObservations( newObservations );
     setIsCreatingObservations( false );
     navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
   };

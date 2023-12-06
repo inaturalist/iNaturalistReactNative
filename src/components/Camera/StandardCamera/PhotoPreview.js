@@ -21,7 +21,6 @@ type Props = {
   isTablet?: boolean,
   takingPhoto: boolean,
   cameraPreviewUris: Function,
-  deletePhotoFromObservation: Function,
   setPhotoEvidenceUris: Function
 }
 
@@ -38,7 +37,6 @@ const PhotoPreview = ( {
   rotation,
   takingPhoto,
   cameraPreviewUris,
-  deletePhotoFromObservation,
   setPhotoEvidenceUris
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -95,7 +93,6 @@ const PhotoPreview = ( {
           ? noPhotosNotice
           : (
             <PhotoCarousel
-              deletePhoto={deletePhotoFromObservation}
               photoUris={cameraPreviewUris}
               rotation={rotation}
               setPhotoEvidenceUris={setPhotoEvidenceUris}
