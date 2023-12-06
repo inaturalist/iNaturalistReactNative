@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">iNaturalistReactNative</string>
+    <string name="CodePushDeploymentKey" moduleConfig="true">@string/CODE_PUSH_DEPLOYMENT_KEY</string>
 </resources>
