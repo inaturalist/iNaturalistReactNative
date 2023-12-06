@@ -13,7 +13,7 @@ type Props = {
 
 const CarouselImage = ( { item: photo } ) => {
   // check for local file path for unuploaded photos
-  const photoUrl = ( photo && photo.url )
+  const photoUrl = photo?.url
     ? photo.url.replace( "square", "large" )
     : photo.localFilePath;
 

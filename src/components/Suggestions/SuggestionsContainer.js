@@ -9,6 +9,7 @@ import React, {
   useEffect, useState
 } from "react";
 import Identification from "realmModels/Identification";
+import { predictImage } from "sharedHelpers/cvModel";
 import flattenUploadParams from "sharedHelpers/flattenUploadParams";
 import {
   useAuthenticatedQuery,
@@ -56,6 +57,16 @@ const SuggestionsContainer = ( ): Node => {
     observations,
     updateObservations
   ] );
+
+  // TODO: this block makes a prediction whenever the selected photo changes.
+  console.log( "selectedPhotoUri :>> ", selectedPhotoUri );
+  predictImage( selectedPhotoUri )
+    .then( predictions => {
+      console.log( "predictions :>> ", predictions );
+    } )
+    .catch( e => {
+      console.log( "e :>> ", e );
+    } );
 
   useEffect( ( ) => {
     // If the photos are different, we need to display different photos

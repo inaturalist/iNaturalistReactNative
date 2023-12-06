@@ -19,7 +19,10 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
-jest.mock( "vision-camera-plugin-inatvision" );
+jest.mock( "vision-camera-plugin-inatvision", () => ( {
+  getPredictionsForImage: jest.fn( () => Promise.resolve( "Mocked cv prediction" ) )
+} ) );
+
 jest.mock( "react-native-worklets-core", () => ( {
   Worklets: {
     createRunInJsFn: jest.fn()
