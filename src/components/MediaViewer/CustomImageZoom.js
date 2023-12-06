@@ -63,6 +63,7 @@ const CustomImageZoom = ( { source }: Props ): Node => {
       >
         {/* $FlowIgnore */}
         <Image
+          testID={`CustomImageZoom.${source.uri}`}
           source={source}
           resizeMode="contain"
           className={classnames(

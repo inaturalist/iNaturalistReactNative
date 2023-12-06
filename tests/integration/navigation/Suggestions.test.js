@@ -5,18 +5,15 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
-import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import os from "os";
 import path from "path";
-import React from "react";
 import Realm from "realm";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
-import Observation from "realmModels/Observation";
 import useStore from "stores/useStore";
 
-import factory, { makeResponse } from "../factory";
-import { renderComponent } from "../helpers/render";
+import factory, { makeResponse } from "../../factory";
+import { renderObservationsStackNavigatorWithObservations } from "../../helpers/render";
 
 const initialStoreState = useStore.getState( );
 
@@ -28,7 +25,8 @@ jest.unmock( "@react-navigation/native" );
 // database and doesn't interfere with the single, default in-memory database
 // used by other tests. In a perfect world, every parallel test worker would
 // have its own database, or at least this wouldn't be so manual, but it took
-// me long enough to figure this out. ~~~kueda 20231024 REALM SETUP
+// me long enough to figure this out. ~~~kueda 20231024
+// REALM SETUP
 const mockRealmConfig = {
   schema: realmConfig.schema,
   schemaVersion: realmConfig.schemaVersion,
@@ -84,17 +82,6 @@ const makeMockObservations = ( ) => ( [
   } )
 ] );
 
-async function renderObservationsStackNavigatorWithObservations( observations ) {
-  // Save the mock observation in Realm
-  await Observation.saveLocalObservationForUpload(
-    observations[0],
-    global.mockRealms[__filename]
-  );
-  renderComponent(
-    <ObservationsStackNavigator />
-  );
-}
-
 describe( "Suggestions", ( ) => {
   const actor = userEvent.setup( );
 
@@ -135,24 +122,26 @@ describe( "Suggestions", ( ) => {
       jest.clearAllMocks( );
     } );
 
-    it( "should navigate back to ObsEdit"
-    + " with expected observation when top suggestion chosen", async ( ) => {
-      const observations = makeMockObservations( );
-      useStore.setState( { observations } );
-      await renderObservationsStackNavigatorWithObservations( observations );
-      await navigateToSuggestionsForObservation( observations[0] );
-      const topTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
-      );
-      expect( topTaxonResultButton ).toBeTruthy( );
-      await actor.press( topTaxonResultButton );
-      expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
-      expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
-    } );
+    it(
+      "should navigate back to ObsEdit with expected observation when top suggestion chosen",
+      async ( ) => {
+        const observations = makeMockObservations( );
+        useStore.setState( { observations } );
+        await renderObservationsStackNavigatorWithObservations( observations, __filename );
+        await navigateToSuggestionsForObservation( observations[0] );
+        const topTaxonResultButton = await screen.findByTestId(
+          `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+        );
+        expect( topTaxonResultButton ).toBeTruthy( );
+        await actor.press( topTaxonResultButton );
+        expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
+        expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
+      }
+    );
 
     it( "should navigate back to ObsEdit when another suggestion chosen", async ( ) => {
       const observations = makeMockObservations( );
-      await renderObservationsStackNavigatorWithObservations( observations );
+      await renderObservationsStackNavigatorWithObservations( observations, __filename );
       await navigateToSuggestionsForObservation( observations[0] );
       const otherTaxonResultButton = await screen.findByTestId(
         `SuggestionsList.taxa.${otherSuggestion.taxon.id}.checkmark`
@@ -170,7 +159,7 @@ describe( "Suggestions", ( ) => {
       async ( ) => {
         const observations = makeMockObservations( );
         useStore.setState( { observations } );
-        await renderObservationsStackNavigatorWithObservations( observations );
+        await renderObservationsStackNavigatorWithObservations( observations, __filename );
         await navigateToSuggestionsForObservation( observations[0] );
         const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
         await actor.press( searchButton );

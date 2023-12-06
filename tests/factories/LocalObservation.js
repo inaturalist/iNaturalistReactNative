@@ -6,6 +6,7 @@ export default define( "LocalObservation", faker => ( {
   isValid: jest.fn( ( ) => true ),
   wasSynced: jest.fn( ),
   needsSync: jest.fn( ),
+  observationPhotos: [],
   viewed: jest.fn( ( ) => true ),
   unviewed: jest.fn( ( ) => false )
 } ), {

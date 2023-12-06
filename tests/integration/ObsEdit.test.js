@@ -126,31 +126,33 @@ describe( "ObsEdit", ( ) => {
       expect( screen.queryByText( observation.taxon.name ) ).toBeFalsy();
     } );
 
-    it( "should not reset the observation in context when context has "
-        + "the same observation", async ( ) => {
-      const observation = await Observation.saveLocalObservationForUpload(
-        factory( "LocalObservation", {
-          taxon: factory( "LocalTaxon", {
-            name: faker.person.firstName( ),
-            rank: "species",
-            rank_level: 10,
-            preferred_common_name: faker.person.fullName( ),
-            defaultPhoto: {
-              id: faker.number.int( ),
-              attribution: faker.lorem.sentence( ),
-              licenseCode: "cc-by-nc",
-              url: faker.image.url( )
-            }
-          } )
-        } ),
-        global.realm
-      );
-      useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
-      const { update } = renderObsEdit( );
-      expect( await screen.findByText( observation.taxon.name ) ).toBeTruthy( );
-      useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
-      await renderObsEdit( update );
-      expect( await screen.findByText( observation.taxon.name ) ).toBeTruthy( );
-    } );
+    it(
+      "should not reset the observation in context when context has the same observation",
+      async ( ) => {
+        const observation = await Observation.saveLocalObservationForUpload(
+          factory( "LocalObservation", {
+            taxon: factory( "LocalTaxon", {
+              name: faker.person.firstName( ),
+              rank: "species",
+              rank_level: 10,
+              preferred_common_name: faker.person.fullName( ),
+              defaultPhoto: {
+                id: faker.number.int( ),
+                attribution: faker.lorem.sentence( ),
+                licenseCode: "cc-by-nc",
+                url: faker.image.url( )
+              }
+            } )
+          } ),
+          global.realm
+        );
+        useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
+        const { update } = renderObsEdit( );
+        expect( await screen.findByText( observation.taxon.name ) ).toBeTruthy( );
+        useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
+        await renderObsEdit( update );
+        expect( await screen.findByText( observation.taxon.name ) ).toBeTruthy( );
+      }
+    );
   } );
 } );

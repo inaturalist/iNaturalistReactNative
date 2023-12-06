@@ -6,8 +6,10 @@ import {
 } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import App from "components/App";
+import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
+import Observation from "realmModels/Observation";
 
 const queryClient = new QueryClient( {
   defaultOptions: {
@@ -40,7 +42,22 @@ function renderAppWithComponent( component, update = null ) {
   return renderComponent( <App>{ component }</App>, update );
 }
 
+async function renderObservationsStackNavigatorWithObservations(
+  observations: Array,
+  realmIdentifier: string
+): any {
+  // Save the mock observation in Realm
+  await Observation.saveLocalObservationForUpload(
+    observations[0],
+    global.mockRealms[realmIdentifier]
+  );
+  renderComponent(
+    <ObservationsStackNavigator />
+  );
+}
+
 export {
   renderAppWithComponent,
-  renderComponent
+  renderComponent,
+  renderObservationsStackNavigatorWithObservations
 };
