@@ -789,6 +789,8 @@ Tap-to-search-for-taxa = Tap to search for taxa
 
 Taxon = Taxon
 
+TAXON = TAXON
+
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
 

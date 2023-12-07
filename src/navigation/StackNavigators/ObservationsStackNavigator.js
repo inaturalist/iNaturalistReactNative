@@ -7,7 +7,6 @@ import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import PlaceholderComponent from "components/PlaceholderComponent";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import {
@@ -73,14 +72,6 @@ const ObservationsStackNavigator = ( ): Node => (
         name="Explore"
         component={ExploreContainer}
         options={hideHeader}
-      />
-      <Stack.Screen
-        name="ExploreFilters"
-        component={PlaceholderComponent}
-        options={{
-          ...showHeader,
-          ...removeBottomBorder
-        }}
       />
     </Stack.Group>
     <Stack.Screen
