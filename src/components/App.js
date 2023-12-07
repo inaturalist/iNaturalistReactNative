@@ -11,9 +11,7 @@ import React, { useCallback, useEffect } from "react";
 import {
   AppState, Linking, LogBox
 } from "react-native";
-import {
-  SyncStatus
-} from "react-native-code-push";
+import codePush from "react-native-code-push";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import { addARCameraFiles } from "sharedHelpers/cvModel";
@@ -90,7 +88,7 @@ const App = ( { children }: Props ): Node => {
     }
   };
 
-  codePushStatusDidChange( SyncStatus );
+  codePushStatusDidChange( codePush.SyncStatus );
 
   useEffect( () => {
     if ( !isTablet ) {

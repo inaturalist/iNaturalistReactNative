@@ -73,7 +73,7 @@ const setStyles = ( {
     } else {
       buttonClasses.push( disabled
         ? "bg-inatGreenDisabled"
-        : "bg-red" );
+        : "bg-inatGreen" );
     }
   } else {
     buttonClasses.push( "border border-[3px]" );
