@@ -215,3 +215,9 @@ fastlane prod
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote.
 1. `bundle exec fastlane release` to build and push a release to Github
 1. `bundle exec fastlane internal` to distribute the builds to TestFlight and the Play Store
+
+### Deploying with CodePush
+1. Make a release build on either iOS or Android
+2. Make changes to JavaScript files within iNaturalistReactNative and deploy code changes using: `appcenter codepush release-react -a <owner>/iNaturalist-RN-iOS -d Production` or `appcenter codepush release-react -a <owner>/iNaturalist-RN-Android -d Production`. Keep in mind there are separate CodePush apps for both iOS and Android, and you will also need to configure separate apps for Staging on both iOS and Android.
+3. In the App Center, you'll be able to see the changes you deployed
+4. The next time you run an app using the same version, you can restart the app to see your changes applied.

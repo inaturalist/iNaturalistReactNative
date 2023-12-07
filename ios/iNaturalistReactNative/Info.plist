@@ -87,6 +87,6 @@
 		<string>https</string>
 	</array>
 	<key>CodePushDeploymentKey</key>
-	<string>${CODE_PUSH_DEPLOYMENT_KEY}</string>
+	<string>${IOS_CODE_PUSH_PRODUCTION_KEY}</string>
 </dict>
 </plist>
