@@ -21,7 +21,8 @@ const initialState = {
     verifiable: true,
     return_bounds: true
   },
-  exploreView: "observations"
+  exploreView: "observations",
+  showFiltersModal: false
 };
 
 const reducer = ( state, action ) => {
@@ -87,6 +88,16 @@ const reducer = ( state, action ) => {
           ...action.exploreFilters
         }
       };
+    case "SHOW_FILTERS_MODAL":
+      return {
+        ...state,
+        showFiltersModal: true
+      };
+    case "CLOSE_FILTERS_MODAL":
+      return {
+        ...state,
+        showFiltersModal: false
+      };
     default:
       throw new Error( );
   }
@@ -101,7 +112,13 @@ const ExploreContainer = ( ): Node => {
   const {
     region,
     exploreParams,
-    exploreView
+    exploreView,
+    showFiltersModal
+  }: {
+    region: Object,
+    exploreParams: Object,
+    exploreView: string,
+    showFiltersModal: boolean
   } = state;
 
   useEffect( ( ) => {
@@ -173,6 +190,9 @@ const ExploreContainer = ( ): Node => {
       updatePlaceName={updatePlaceName}
       updateTaxonName={updateTaxonName}
       isOnline={isOnline}
+      showFiltersModal={showFiltersModal}
+      openFiltersModal={( ) => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
+      closeFiltersModal={( ) => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
     />
   );
 };
