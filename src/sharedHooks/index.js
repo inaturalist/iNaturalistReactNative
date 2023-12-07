@@ -1,4 +1,3 @@
-export { default as useApiToken } from "./useApiToken";
 export { default as useAuthenticatedMutation } from "./useAuthenticatedMutation";
 export { default as useAuthenticatedQuery } from "./useAuthenticatedQuery";
 export { default as useCurrentObservationLocation } from "./useCurrentObservationLocation";

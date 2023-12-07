@@ -6,6 +6,7 @@ import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-k
 import {
   checkForDeletedObservations, searchObservations
 } from "api/observations";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { format } from "date-fns";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -21,7 +22,6 @@ import {
 } from "sharedHelpers/emitUploadProgress";
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
-  useApiToken,
   useCurrentUser,
   useInfiniteObservationsScroll,
   useIsConnected,
@@ -122,7 +122,6 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const { params: navParams } = useRoute( );
-  const apiToken = useApiToken( );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
   const { observationList: observations, allObsToUpload } = useLocalObservations( );
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
@@ -303,6 +302,7 @@ const MyObservationsContainer = ( ): Node => {
   }, [] );
 
   const downloadRemoteObservationsFromServer = useCallback( async ( ) => {
+    const apiToken = await getJWT( );
     const params = {
       user_id: currentUser?.id,
       per_page: 50,
@@ -311,10 +311,11 @@ const MyObservationsContainer = ( ): Node => {
     const { results } = await searchObservations( params, { api_token: apiToken } );
 
     Observation.upsertRemoteObservations( results, realm );
-  }, [apiToken, currentUser, realm] );
+  }, [currentUser, realm] );
 
   // TODO move this logic to a helper or a model so it can be more easily unit tested
   const syncRemoteDeletedObservations = useCallback( async ( ) => {
+    const apiToken = await getJWT( );
     const lastSyncTime = realm.objects( "LocalPreferences" )?.[0]?.last_sync_time;
     const params = { since: format( new Date( ), "yyyy-MM-dd" ) };
     if ( lastSyncTime ) {
@@ -340,7 +341,7 @@ const MyObservationsContainer = ( ): Node => {
         } );
       } );
     }
-  }, [realm, apiToken] );
+  }, [realm] );
 
   const updateSyncTime = useCallback( ( ) => {
     const currentSyncTime = new Date( );

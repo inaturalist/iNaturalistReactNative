@@ -41,6 +41,23 @@ const SuggestionsContainer = ( ): Node => {
   const [loading, setLoading] = useState( false );
   const navigation = useNavigation();
 
+  const updateObservationKeys = useCallback( keysAndValues => {
+    const updatedObservations = observations;
+    const updatedObservation = {
+      ...( currentObservation.toJSON
+        ? currentObservation.toJSON( )
+        : currentObservation ),
+      ...keysAndValues
+    };
+    updatedObservations[currentObservationIndex] = updatedObservation;
+    updateObservations( [...updatedObservations] );
+  }, [
+    currentObservation,
+    currentObservationIndex,
+    observations,
+    updateObservations
+  ] );
+
   // TODO: this block makes a prediction whenever the selected photo changes.
   console.log( "selectedPhotoUri :>> ", selectedPhotoUri );
   predictImage( selectedPhotoUri )
@@ -66,16 +83,6 @@ const SuggestionsContainer = ( ): Node => {
     setPhotoEvidenceUris
   ] );
 
-  const updateTaxon = useCallback( newTaxon => {
-    const updatedObservations = observations;
-    updatedObservations[currentObservationIndex].taxon = newTaxon;
-    updateObservations( updatedObservations );
-  }, [
-    currentObservationIndex,
-    updateObservations,
-    observations
-  ] );
-
   const uploadParams = {
     image: selectedPhotoUri,
     latitude: localObservation?.latitude || currentObservation?.latitude,
@@ -97,19 +104,32 @@ const SuggestionsContainer = ( ): Node => {
     }
   );
 
-  const onTaxonChosen = newTaxon => {
+  const onTaxonChosen = useCallback( newTaxon => {
+    const newIdentification = Identification.new( {
+      taxon: newTaxon,
+      body: comment
+    } );
     if ( !obsUUID ) {
       setLoading( true );
-      const newIdentification = Identification.new( {
-        taxon: newTaxon,
-        body: comment
+      updateObservationKeys( {
+        owners_identification_from_vision: true,
+        taxon: newIdentification.taxon
       } );
-      updateTaxon( newIdentification.taxon );
       navigation.goBack( );
     } else {
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon, comment } );
+      navigation.navigate( "ObsDetails", {
+        uuid: obsUUID,
+        taxonSuggested: newIdentification.taxon,
+        comment,
+        vision: true
+      } );
     }
-  };
+  }, [
+    navigation,
+    updateObservationKeys,
+    obsUUID,
+    comment
+  ] );
 
   return (
     <Suggestions

@@ -256,6 +256,7 @@ const CameraWithDevice = ( {
 
     if ( localTaxon ) {
       newObservation.taxon = localTaxon;
+      newObservation.owners_identification_from_vision = true;
     }
     setObservations( [newObservation] );
     logger.info(

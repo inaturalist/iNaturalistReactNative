@@ -33,14 +33,21 @@ const TaxonSearch = ( ): Node => {
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const updateObservations = useStore( state => state.updateObservations );
 
-  const updateTaxon = useCallback( newTaxon => {
+  const updateObservationKeys = useCallback( keysAndValues => {
     const updatedObservations = observations;
-    updatedObservations[currentObservationIndex].taxon = newTaxon;
-    updateObservations( updatedObservations );
+    const updatedObservation = {
+      ...( currentObservation.toJSON
+        ? currentObservation.toJSON( )
+        : currentObservation ),
+      ...keysAndValues
+    };
+    updatedObservations[currentObservationIndex] = updatedObservation;
+    updateObservations( [...updatedObservations] );
   }, [
+    currentObservation,
     currentObservationIndex,
-    updateObservations,
-    observations
+    observations,
+    updateObservations
   ] );
 
   const { data: taxonList } = useAuthenticatedQuery(
@@ -64,13 +71,16 @@ const TaxonSearch = ( ): Node => {
         taxon: newTaxon,
         body: comment
       } );
-      updateTaxon( newIdentification.taxon );
+      updateObservationKeys( {
+        owners_identification_from_vision: false,
+        taxon: newIdentification.taxon
+      } );
       navigation.navigate( "ObsEdit" );
     } else {
       // Called when adding an identification to someone else's observation
       navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon, comment } );
     }
-  }, [navigation, obsUUID, comment, updateTaxon] );
+  }, [navigation, obsUUID, updateObservationKeys, comment] );
 
   const renderFooter = ( ) => (
     <View className="pb-10" />
