@@ -6,6 +6,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Platform } from "react-native";
+import codePush from "react-native-code-push";
 import Config from "react-native-config";
 import {
   getBuildNumber,
@@ -40,6 +41,11 @@ const About = (): Node => {
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
   const { shareLogFile, emailLogFile } = useLogs( );
+
+  // Active update, which lets the end user know
+  // about each update, and displays it to them
+  // immediately after downloading it
+  codePush.sync( { updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE } );
 
   /* eslint-disable i18next/no-literal-string */
   return (

@@ -11,6 +11,9 @@ import React, { useCallback, useEffect } from "react";
 import {
   AppState, Linking, LogBox
 } from "react-native";
+import {
+  SyncStatus
+} from "react-native-code-push";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import { addARCameraFiles } from "sharedHelpers/cvModel";
@@ -53,7 +56,41 @@ const App = ( { children }: Props ): Node => {
 
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
+
   const { remoteUser } = useUserMe( );
+
+  const codePushStatusDidChange = status => {
+    switch ( status ) {
+      case status.CHECKING_FOR_UPDATE:
+        logger.info( "Checking for CodePush updates." );
+        break;
+      case status.DOWNLOADING_PACKAGE:
+        logger.info( "Downloading CodePush package." );
+        break;
+      case status.AWAITING_USER_ACTION:
+        logger.info( "Awaiting user action for CodePush" );
+        break;
+      case status.INSTALLING_UPDATE:
+        logger.info( "Installing CodePush update." );
+        break;
+      case status.UP_TO_DATE:
+        logger.info( "Up-to-date with CodePush." );
+        break;
+      case status.UPDATE_IGNORED:
+        logger.info( "CodePush update cancelled by user." );
+        break;
+      case status.UPDATE_INSTALLED:
+        logger.info( "Update installed with CodePush." );
+        break;
+      case status.UNKNOWN_ERROR:
+        logger.info( "An unknown CodePush error occurred" );
+        break;
+      default:
+        logger.info( "default CodePush" );
+    }
+  };
+
+  codePushStatusDidChange( SyncStatus );
 
   useEffect( () => {
     if ( !isTablet ) {
