@@ -31,7 +31,10 @@ type Props = {
   updateTaxon: Function,
   updatePlace: Function,
   updatePlaceName: Function,
-  updateTaxonName: Function
+  updateTaxonName: Function,
+  showFiltersModal: boolean,
+  openFiltersModal: Function,
+  closeFiltersModal: Function
 }
 
 const Explore = ( {
@@ -43,7 +46,10 @@ const Explore = ( {
   updateTaxon,
   updatePlace,
   updatePlaceName,
-  updateTaxonName
+  updateTaxonName,
+  showFiltersModal,
+  openFiltersModal,
+  closeFiltersModal
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
