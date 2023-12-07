@@ -131,6 +131,7 @@ android {
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         // Detox end
+        buildConfigField "String", "CODE_PUSH_DEPLOYMENT_KEY", "\"${System.getenv("CODE_PUSH_DEPLOYMENT_KEY")}\""
     }
 
     splits {
