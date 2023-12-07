@@ -5,26 +5,11 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { ActivityIndicator } from "react-native-paper";
+import {
+  convertOfflineScoreToConfidence,
+  convertOnlineScoreToConfidence
+} from "sharedHelpers/convertScores";
 import { useTranslation } from "sharedHooks";
-
-const convertScoreToConfidence = score => {
-  if ( !score ) {
-    return null;
-  }
-  if ( score < 20 ) {
-    return 1;
-  }
-  if ( score < 40 ) {
-    return 2;
-  }
-  if ( score < 60 ) {
-    return 3;
-  }
-  if ( score < 80 ) {
-    return 4;
-  }
-  return 5;
-};
 
 type Props = {
   loadingSuggestions: boolean,
@@ -73,13 +58,19 @@ const SuggestionsList = ( {
           taxon={topSuggestion.taxon}
           handleCheckmarkPress={onTaxonChosen}
           testID={`SuggestionsList.taxa.${topSuggestion.taxon.id}`}
-          confidence={convertScoreToConfidence( topSuggestion.combined_score )}
+          confidence={topSuggestion?.score
+            ? convertOfflineScoreToConfidence( topSuggestion?.score )
+            : convertOnlineScoreToConfidence( topSuggestion.combined_score )}
           activeColor="bg-inatGreen"
           confidencePosition="text"
           first
         />
       </View>
-      <Heading4 className="mt-6 mb-4 ml-4">{t( "NEARBY-SUGGESTIONS" )}</Heading4>
+      <Heading4 className="mt-6 mb-4 ml-4">
+        {topSuggestion?.score
+          ? t( "ALL-SUGGESTIONS" )
+          : t( "NEARBY-SUGGESTIONS" )}
+      </Heading4>
       {nearbySuggestions.map( ( suggestion, index ) => {
         if ( index === 0 ) {
           return null;
@@ -90,7 +81,9 @@ const SuggestionsList = ( {
             taxon={suggestion.taxon}
             handleCheckmarkPress={onTaxonChosen}
             testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
-            confidence={convertScoreToConfidence( suggestion.combined_score )}
+            confidence={suggestion?.score
+              ? convertOfflineScoreToConfidence( suggestion?.score )
+              : convertOnlineScoreToConfidence( suggestion.combined_score )}
             activeColor="bg-inatGreen"
             confidencePosition="text"
             first={index === 0}

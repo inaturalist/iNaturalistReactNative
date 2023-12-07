@@ -85,7 +85,9 @@ const Suggestions = ( {
       />
       {nearbySuggestions?.length > 0 && (
         <Attribution
-          taxonIds={nearbySuggestions.map( suggestion => suggestion.taxon.id )}
+          taxonIds={nearbySuggestions.map(
+            suggestion => suggestion.taxon.id
+          )}
         />
       )}
     </ScrollViewWrapper>

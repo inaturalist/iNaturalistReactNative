@@ -8,7 +8,7 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useTaxon, useTranslation } from "sharedHooks";
 
 import ConfidenceInterval from "./ConfidenceInterval";
 
@@ -28,7 +28,7 @@ const TaxonResult = ( {
   clearBackground,
   confidence,
   handleCheckmarkPress,
-  taxon,
+  taxon: taxonResult,
   testID,
   white = false,
   activeColor,
@@ -38,6 +38,7 @@ const TaxonResult = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const theme = useTheme( );
+  const taxon = useTaxon( taxonResult );
   const taxonImage = { uri: taxon?.default_photo?.url };
 
   const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: taxon.id } );
