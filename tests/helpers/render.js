@@ -9,6 +9,7 @@ import App from "components/App";
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Observation from "realmModels/Observation";
 
 const queryClient = new QueryClient( {
@@ -28,11 +29,13 @@ function renderComponent( component, update = null ) {
   return renderMethod(
     <QueryClientProvider client={queryClient}>
       <INatPaperProvider>
-        <BottomSheetModalProvider>
-          <NavigationContainer>
-            { component }
-          </NavigationContainer>
-        </BottomSheetModalProvider>
+        <GestureHandlerRootView className="flex-1">
+          <BottomSheetModalProvider>
+            <NavigationContainer>
+              { component }
+            </NavigationContainer>
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
       </INatPaperProvider>
     </QueryClientProvider>
   );
@@ -42,21 +45,28 @@ function renderAppWithComponent( component, update = null ) {
   return renderComponent( <App>{ component }</App>, update );
 }
 
+function renderApp( update = null ) {
+  return renderAppWithComponent( null, update );
+}
+
 async function renderObservationsStackNavigatorWithObservations(
   observations: Array,
   realmIdentifier: string
 ): any {
-  // Save the mock observation in Realm
-  await Observation.saveLocalObservationForUpload(
-    observations[0],
-    global.mockRealms[realmIdentifier]
-  );
+  if ( observations.length > 0 ) {
+    // Save the mock observation in Realm
+    await Observation.saveLocalObservationForUpload(
+      observations[0],
+      global.mockRealms[realmIdentifier]
+    );
+  }
   renderComponent(
     <ObservationsStackNavigator />
   );
 }
 
 export {
+  renderApp,
   renderAppWithComponent,
   renderComponent,
   renderObservationsStackNavigatorWithObservations

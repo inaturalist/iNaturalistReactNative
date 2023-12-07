@@ -10,7 +10,10 @@ import realmConfig from "realmModels/index";
 import useStore from "stores/useStore";
 
 import factory from "../../factory";
-import { renderObservationsStackNavigatorWithObservations } from "../../helpers/render";
+import {
+  renderApp,
+  renderObservationsStackNavigatorWithObservations
+} from "../../helpers/render";
 import { signIn, signOut } from "../../helpers/user";
 
 const initialStoreState = useStore.getState( );
@@ -74,8 +77,21 @@ const mockUser = factory( "LocalUser" );
 describe( "MediaViewer navigation", ( ) => {
   const actor = userEvent.setup( );
 
+  async function findAndPressByText( text ) {
+    const pressable = await screen.findByLabelText( text );
+    await actor.press( pressable );
+    return pressable;
+  }
+
+  async function findAndPressByLabelText( labelText ) {
+    const pressable = await screen.findByLabelText( labelText );
+    await actor.press( pressable );
+    return pressable;
+  }
+
   beforeAll( async () => {
     await initI18next();
+    jest.useFakeTimers( );
   } );
 
   beforeEach( async ( ) => {
@@ -87,21 +103,30 @@ describe( "MediaViewer navigation", ( ) => {
   } );
 
   describe( "from ObsEdit", ( ) => {
-    it( "should show the first photo when tapped", async ( ) => {
-      const observation = factory( "LocalObservation", {
-        _synced_at: null,
-        observationPhotos: [
-          factory( "LocalObservationPhoto" )
-        ]
-      } );
+    const observation = factory( "LocalObservation", {
+      _synced_at: null,
+      observationPhotos: [
+        factory( "LocalObservationPhoto" ),
+        factory( "LocalObservationPhoto" )
+      ]
+    } );
+    const observations = [observation];
+    useStore.setState( { observations } );
+
+    beforeEach( ( ) => {
       expect( observation.observationPhotos.length ).toBeGreaterThan( 0 );
-      const observations = [observation];
-      useStore.setState( { observations } );
+    } );
+
+    async function navigateToObsEdit( ) {
       await renderObservationsStackNavigatorWithObservations( observations, __filename );
       const observationRow = await screen.findByTestId(
         `MyObservations.obsListItem.${observation.uuid}`
       );
       await actor.press( observationRow );
+    }
+
+    it( "should show the first photo when tapped", async ( ) => {
+      await navigateToObsEdit( );
       const obsEditPhotos = await screen.findAllByTestId( "ObsEdit.photo" );
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
       await actor.press( obsEditPhotos[0] );
@@ -109,17 +134,57 @@ describe( "MediaViewer navigation", ( ) => {
         await screen.findByTestId( `CustomImageZoom.${observation.observationPhotos[0].photo.url}` )
       ).toBeVisible( );
     } );
-    it.todo( "should show the not show the first photo when second tapped" );
-    it.todo( "should show delete button" );
+
+    it( "should not show the first photo when second tapped", async ( ) => {
+      await navigateToObsEdit( );
+      const obsEditPhotos = await screen.findAllByTestId( "ObsEdit.photo" );
+      expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
+      await actor.press( obsEditPhotos[1] );
+      expect(
+        await screen.findByTestId( `CustomImageZoom.${observation.observationPhotos[1].photo.url}` )
+      ).toBeVisible( );
+      expect(
+        screen.queryByTestId( `CustomImageZoom.${observation.observationPhotos[0].photo.url}` )
+      ).toBeFalsy( );
+    } );
+
+    it( "should show delete button", async ( ) => {
+      await navigateToObsEdit( );
+      const obsEditPhotos = await screen.findAllByTestId( "ObsEdit.photo" );
+      expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
+      await actor.press( obsEditPhotos[0] );
+      expect( await screen.findByLabelText( "Delete" ) ).toBeVisible( );
+    } );
   } );
+
   describe( "from StandardCamera", ( ) => {
+    async function navigateToCamera( ) {
+      await renderApp( );
+      await findAndPressByText( "Add observations" );
+      await findAndPressByLabelText( "Camera" );
+    }
+
+    it( "should show a photo when tapped", async ( ) => {
+      navigateToCamera( );
+      await findAndPressByLabelText( "Take photo" );
+      await findAndPressByLabelText( "View photo" );
+      expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
+    } );
+
     it.todo( "should show the first photo when tapped" );
-    it.todo( "should show the not show the first photo when second tapped" );
-    it.todo( "should show delete button" );
+    it.todo( "should not show the first photo when second tapped" );
+
+    it( "should show delete button", async ( ) => {
+      navigateToCamera( );
+      await findAndPressByLabelText( "Take photo" );
+      await findAndPressByLabelText( "View photo" );
+      expect( await screen.findByLabelText( "Delete" ) ).toBeVisible( );
+    } );
   } );
+
   describe( "from ObsDetail", ( ) => {
     it.todo( "should show the first photo when tapped" );
-    it.todo( "should show the not show the first photo when second tapped" );
+    it.todo( "should not show the first photo when second tapped" );
     it.todo( "should show not delete button" );
   } );
 } );

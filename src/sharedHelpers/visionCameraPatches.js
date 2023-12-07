@@ -53,7 +53,7 @@ export const orientationPatch = deviceOrientation => {
 export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
   let photoRotation = 0;
   if ( Platform.OS === "ios" ) {
-    switch ( photo.metadata.Orientation ) {
+    switch ( photo.metadata?.Orientation ) {
       case 1:
       case 3:
         photoRotation = 180;
