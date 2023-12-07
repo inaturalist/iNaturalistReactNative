@@ -15,6 +15,7 @@ import {
   useAuthenticatedQuery, useTranslation
 } from "sharedHooks";
 
+import ExploreFilters from "./ExploreFilters";
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
@@ -195,6 +196,10 @@ const Explore = ( {
           ) )}
         </BottomSheet>
       )}
+      <ExploreFilters
+        showModal={showFiltersModal}
+        closeModal={closeFiltersModal}
+      />
     </>
   );
 };
