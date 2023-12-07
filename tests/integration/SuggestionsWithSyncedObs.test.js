@@ -11,6 +11,7 @@ import os from "os";
 import path from "path";
 import React from "react";
 import Realm from "realm";
+import Identification from "realmModels/Identification";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
 
@@ -87,8 +88,8 @@ const makeMockObservations = ( ) => ( [
     user: mockUser,
     positional_accuracy: 90,
     observed_on_string: "2020-01-01",
-    latitude: Number( faker.address.latitude( ) ),
-    longitude: Number( faker.address.longitude( ) )
+    latitude: Number( faker.location.latitude( ) ),
+    longitude: Number( faker.location.longitude( ) )
   } )
 ] );
 
@@ -184,7 +185,7 @@ describe( "TaxonSearch", ( ) => {
       await actor.press( taxonResultButton );
       expect( await screen.findByText( "ACTIVITY" ) ).toBeTruthy( );
       expect( inatjs.identifications.create ).toHaveBeenCalledWith( {
-        fields: "all",
+        fields: Identification.ID_FIELDS,
         identification: {
           observation_id: observations[0].uuid,
           taxon_id: mockSearchResultTaxon.id
@@ -281,7 +282,7 @@ describe( "Suggestions", ( ) => {
       await actor.press( topTaxonResultButton );
       expect( await screen.findByText( "ACTIVITY" ) ).toBeTruthy( );
       expect( inatjs.identifications.create ).toHaveBeenCalledWith( {
-        fields: "all",
+        fields: Identification.ID_FIELDS,
         identification: {
           observation_id: observations[0].uuid,
           taxon_id: topSuggestion.taxon.id,
