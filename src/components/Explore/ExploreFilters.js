@@ -37,12 +37,14 @@ const ExploreFilters = ( {
             <ScrollView className="p-4">
               {/* Header */}
               {/* TODO: */}
-              <INatIconButton
-                accessibilityLabel={t( "Close" )}
-                icon="close"
-                onPress={closeModal}
-                size={30}
-              />
+              <View className="flex-row justify-between align-middle">
+                <INatIconButton
+                  accessibilityLabel={t( "Close" )}
+                  icon="close"
+                  onPress={closeModal}
+                  size={30}
+                />
+              </View>
 
             </ScrollView>
           </View>
