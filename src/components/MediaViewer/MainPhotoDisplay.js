@@ -10,15 +10,17 @@ import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
-  photoUris: Array<string>,
-  selectedPhotoIndex: number,
   handleScrollEndDrag: Function,
-  horizontalScroll: any
+  horizontalScroll: any,
+  photoUris: Array<string>,
+  selectedPhotoIndex: number
 }
 
 const MainPhotoDisplay = ( {
-  photoUris, selectedPhotoIndex, horizontalScroll,
-  handleScrollEndDrag
+  handleScrollEndDrag,
+  horizontalScroll,
+  photoUris,
+  selectedPhotoIndex
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const renderImage = ( { item } ) => (
@@ -26,10 +28,10 @@ const MainPhotoDisplay = ( {
   );
 
   // need getItemLayout for setting initial scroll index
-  const getItemLayout = useCallback( ( data, index ) => ( {
+  const getItemLayout = useCallback( ( data, idx ) => ( {
     length: screenWidth,
-    offset: screenWidth * index,
-    index
+    offset: screenWidth * idx,
+    index: idx
   } ), [screenWidth] );
 
   return (

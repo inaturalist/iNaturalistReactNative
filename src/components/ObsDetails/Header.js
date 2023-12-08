@@ -51,7 +51,7 @@ const Header = ( {
   };
 
   return (
-    <View>
+    <>
       <PhotoDisplayContainer
         observation={observation}
         refetchRemoteObservation={refetchRemoteObservation}
@@ -71,7 +71,7 @@ const Header = ( {
         <ObsStatus layout="vertical" observation={observation} />
       </View>
       <ObservationLocation observation={observation} classNameMargin="ml-3 mb-2" />
-    </View>
+    </>
   );
 };
 

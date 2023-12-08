@@ -105,6 +105,8 @@ describe( "MediaViewer navigation", ( ) => {
   describe( "from ObsEdit", ( ) => {
     const observation = factory( "LocalObservation", {
       _synced_at: null,
+      needsSync: jest.fn( ( ) => true ),
+      wasSynced: jest.fn( ( ) => false ),
       observationPhotos: [
         factory( "LocalObservationPhoto" ),
         factory( "LocalObservationPhoto" )
@@ -114,6 +116,7 @@ describe( "MediaViewer navigation", ( ) => {
     useStore.setState( { observations } );
 
     beforeEach( ( ) => {
+      expect( observation.wasSynced( ) ).toBeFalsy( );
       expect( observation.observationPhotos.length ).toBeGreaterThan( 0 );
     } );
 
@@ -171,6 +174,9 @@ describe( "MediaViewer navigation", ( ) => {
       expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
     } );
 
+    // Haven't figured these out b/c I would need the URL of newly-created
+    // photos, which will probably involve altering the camera mock.
+    // ~~~kueda20231207
     it.todo( "should show the first photo when tapped" );
     it.todo( "should not show the first photo when second tapped" );
 
@@ -183,8 +189,60 @@ describe( "MediaViewer navigation", ( ) => {
   } );
 
   describe( "from ObsDetail", ( ) => {
-    it.todo( "should show the first photo when tapped" );
-    it.todo( "should not show the first photo when second tapped" );
-    it.todo( "should show not delete button" );
+    const observation = factory( "RemoteObservation", {
+      observation_photos: [
+        factory( "RemoteObservationPhoto" ),
+        factory( "RemoteObservationPhoto" )
+      ]
+    } );
+    const observations = [observation];
+    useStore.setState( { observations } );
+
+    async function navigateToObsDetail( ) {
+      await renderObservationsStackNavigatorWithObservations( observations, __filename );
+      const observationRow = await screen.findByTestId(
+        `MyObservations.obsListItem.${observation.uuid}`
+      );
+      await actor.press( observationRow );
+    }
+
+    it( "should show the first photo when tapped", async ( ) => {
+      await navigateToObsDetail( );
+      const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+      expect( photos[0] ).toBeVisible( );
+      await actor.press( photos[0] );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+        )
+      ).toBeVisible( );
+    } );
+
+    it( "should not show the first photo when second tapped", async ( ) => {
+      await navigateToObsDetail( );
+      const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+      await actor.press( photos[1] );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observation_photos[1].photo.url}`
+        )
+      ).toBeVisible( );
+      expect(
+        screen.queryByTestId( `CustomImageZoom.${observation.observation_photos[0].photo.url}` )
+      ).toBeFalsy( );
+    } );
+
+    it( "should show not delete button", async ( ) => {
+      await navigateToObsDetail( );
+      const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+      expect( photos[0] ).toBeVisible( );
+      await actor.press( photos[0] );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+        )
+      ).toBeVisible( );
+      expect( screen.queryByLabelText( "Delete" ) ).toBeFalsy( );
+    } );
   } );
 } );

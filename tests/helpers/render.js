@@ -54,11 +54,23 @@ async function renderObservationsStackNavigatorWithObservations(
   realmIdentifier: string
 ): any {
   if ( observations.length > 0 ) {
-    // Save the mock observation in Realm
-    await Observation.saveLocalObservationForUpload(
-      observations[0],
-      global.mockRealms[realmIdentifier]
-    );
+    await Promise.all( observations.map( async observation => {
+      // If it looks like it was supposed to be unsynced, save it like a new
+      // local obs
+      if ( observation.needsSync && observation.needsSync( ) ) {
+        // Save the mock observation in Realm
+        return Observation.saveLocalObservationForUpload(
+          observations[0],
+          global.mockRealms[realmIdentifier]
+        );
+      }
+      // Otherwise save it like a remote obs
+      return new Promise( resolve => {
+        resolve(
+          Observation.upsertRemoteObservations( [observation], global.mockRealms[realmIdentifier] )
+        );
+      } );
+    } ) );
   }
   renderComponent(
     <ObservationsStackNavigator />

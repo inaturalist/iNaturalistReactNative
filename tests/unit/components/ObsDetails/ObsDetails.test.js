@@ -258,7 +258,7 @@ describe( "ObsDetails", () => {
     it(
       "should show the edit button and not the menu when the observation has never been uploaded",
       async ( ) => {
-        const observation = factory.states( "unUploaded" )( "LocalObservation" );
+        const observation = factory( "LocalObservation" );
         jest.spyOn( useLocalObservation, "default" )
           .mockImplementation( () => observation );
         jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => observation.user );

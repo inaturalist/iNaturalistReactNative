@@ -1,6 +1,8 @@
 // @flow
 import { View } from "components/styledComponents";
-import * as React from "react";
+import { compact } from "lodash";
+import type { Node } from "react";
+import React, { useMemo } from "react";
 import { useCurrentUser } from "sharedHooks";
 
 import ActivityItem from "./ActivityItem";
@@ -19,7 +21,7 @@ const ActivityTab = ( {
   activityItems,
   onIDAgreePressed,
   isOnline
-}: Props ): React.Node => {
+}: Props ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
 
@@ -34,10 +36,21 @@ const ActivityTab = ( {
 
   const userAgreedToId = findRecentUserAgreedToID( );
 
+  const stableItems = useMemo(
+    ( ) => compact( activityItems ).map(
+      item => (
+        item.toJSON
+          ? item.toJSON( )
+          : item
+      )
+    ),
+    [activityItems]
+  );
+
   return (
     <View testID="ActivityTab">
-      {activityItems.length > 0
-        && activityItems.map( item => (
+      {stableItems.length > 0
+        && stableItems.map( item => (
           <ActivityItem
             userAgreedId={userAgreedToId}
             key={item.uuid}

@@ -1,24 +1,35 @@
 // @flow
 
-import { Image, View } from "components/styledComponents";
-import * as React from "react";
+import { Image, Pressable, View } from "components/styledComponents";
+import type { Node } from "react";
+import React, { useCallback, useState } from "react";
 import { Dimensions } from "react-native";
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
+import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
+  onPress: ?Function,
   photos: Array<Object>
 }
 
-const CarouselImage = ( { item: photo } ) => {
-  // check for local file path for unuploaded photos
-  const photoUrl = photo?.url
-    ? photo.url.replace( "square", "large" )
-    : photo.localFilePath;
+const PhotoScroll = ( {
+  onPress,
+  photos
+}: Props ): Node => {
+  const { width } = Dimensions.get( "window" );
+  const [index, setIndex] = useState<number>( 0 );
+  const { t } = useTranslation( );
+  const paginationColor = colors.white;
 
-  return (
-    <View>
+  const CarouselImage = useCallback( ( { item: photo } ) => {
+    // check for local file path for unuploaded photos
+    const photoUrl = photo?.url
+      ? photo.url.replace( "square", "large" )
+      : photo.localFilePath;
+
+    const image = (
       <Image
         testID="PhotoScroll.photo"
         source={{ uri: photoUrl }}
@@ -26,14 +37,22 @@ const CarouselImage = ( { item: photo } ) => {
         resizeMode="contain"
         accessibilityIgnoresInvertColors
       />
-    </View>
-  );
-};
-
-const PhotoScroll = ( { photos }: Props ): React.Node => {
-  const { width } = Dimensions.get( "window" );
-  const [index, setIndex] = React.useState<number>( 0 );
-  const paginationColor = colors.white;
+    );
+    if ( !onPress ) {
+      return image;
+    }
+    return (
+      <Pressable
+        onPress={
+          pressEvent => onPress( pressEvent, { uri: photo.url || photo.localFilePath } )
+        }
+        accessibilityRole="link"
+        accessibilityHint={t( "View-photo" )}
+      >
+        {image}
+      </Pressable>
+    );
+  }, [onPress, t] );
 
   return (
     <View className="relative">

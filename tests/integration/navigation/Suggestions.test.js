@@ -73,7 +73,6 @@ afterAll( ( ) => {
 
 const makeMockObservations = ( ) => ( [
   factory( "LocalObservation", {
-    _synced_at: null,
     // Suggestions won't load without a photo
     observationPhotos: [
       factory( "LocalObservationPhoto" )

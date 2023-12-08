@@ -55,7 +55,7 @@ const MediaViewerContainer = ( ): Node => {
   return (
     <MediaViewer
       onDelete={deletePhoto}
-      urls={photoEvidenceUris}
+      uris={photoEvidenceUris}
       editable={editable}
     />
   );

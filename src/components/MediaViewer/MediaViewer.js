@@ -21,22 +21,28 @@ import PhotoSelector from "./PhotoSelector";
 
 type Props = {
   editable?: boolean,
-  onDelete: Function,
-  urls: Array<string>
+  onDelete?: Function,
+  uri?: string,
+  uris?: Array<string>
 }
 
 const MediaViewer = ( {
   editable,
   onDelete,
-  urls = []
+  uri,
+  uris = []
 }: Props ): Node => {
   const { params } = useRoute( );
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( params?.index );
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(
+    params?.index === undefined
+      ? uris.indexOf( uri )
+      : params.index
+  );
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
 
   const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === urls.length - 1;
+  const atLastPhoto = selectedPhotoIndex === uris.length - 1;
 
   const handleScrollLeft = index => {
     if ( atFirstPhoto ) { return; }
@@ -96,13 +102,13 @@ const MediaViewer = ( {
         />
       )}
       <MainPhotoDisplay
-        photoUris={urls}
+        photoUris={uris}
         selectedPhotoIndex={selectedPhotoIndex}
         handleScrollEndDrag={handleScrollEndDrag}
         horizontalScroll={horizontalScroll}
       />
       <PhotoSelector
-        photoUris={urls}
+        photoUris={uris}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
         isLandscapeMode={isLandscapeMode}
