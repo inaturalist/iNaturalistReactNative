@@ -1,11 +1,14 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
 import { useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
+
+const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
@@ -19,7 +22,8 @@ const initialState = {
   },
   exploreParams: {
     verifiable: true,
-    return_bounds: true
+    return_bounds: true,
+    taxon: undefined
   },
   exploreView: "observations",
   showFiltersModal: false
@@ -48,6 +52,7 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
+          taxon: action.taxon,
           taxon_id: action.taxonId,
           taxon_name: action.taxonName
         }
@@ -106,6 +111,7 @@ const reducer = ( state, action ) => {
 const ExploreContainer = ( ): Node => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
+  const realm = useRealm();
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
@@ -143,9 +149,16 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateTaxon = taxon => {
+  const updateTaxon = ( taxonName: string ) => {
+    const selectedTaxon = realm
+      ?.objects( "Taxon" )
+      .filtered( "name CONTAINS[c] $0", taxonName );
+    const taxon = selectedTaxon.length > 0
+      ? selectedTaxon[0]
+      : null;
     dispatch( {
       type: "CHANGE_TAXON",
+      taxon,
       taxonId: taxon?.id,
       taxonName: taxon?.preferred_common_name || taxon?.name
     } );
