@@ -1,11 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import {
+  Body3,
   Button,
   DisplayTaxon,
   Heading1,
   Heading4,
   IconicTaxonChooser,
-  INatIconButton
+  INatIcon
 } from "components/SharedComponents";
 import Modal from "components/SharedComponents/Modal";
 import type { Node } from "react";
@@ -43,15 +44,16 @@ const ExploreFilters = ( {
           <View className="w-full h-full bg-white rounded-lg overflow-hidden">
             <ScrollView className="p-4">
               {/* Header */}
-              {/* TODO: */}
-              <View className="flex-row justify-between align-middle">
-                <Heading1>{t( "Explore-Filters" )}</Heading1>
-                <INatIconButton
-                  accessibilityLabel={t( "Close" )}
-                  icon="close"
-                  onPress={closeModal}
-                  size={30}
-                />
+              {/* TODO: add dropshadow */}
+              <View className="flex-row items-center justify-between p-5">
+                <View className="flex-row items-center">
+                  <INatIcon name="sliders" size={20} />
+                  <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
+                </View>
+                {/* TODO: onPress needs to reset filters */}
+                <Body3 onPress={closeModal}>
+                  {t( "Reset" )}
+                </Body3>
               </View>
 
               {/* Taxon Section */}

@@ -426,8 +426,6 @@ Location = Location
 
 LOCATION = LOCATION
 
-LOCATION = LOCATION
-
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
@@ -1428,6 +1426,7 @@ LEAVE = LEAVE
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
+SEARCH-FOR-A-LOCATION = SEARCH FOR A LOCATION
 Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 NEARBY-SUGGESTIONS = NEARBY SUGGESTIONS
