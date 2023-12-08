@@ -24,6 +24,8 @@ const ExploreFilters = ( {
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation( );
+  const { taxon } = exploreParams;
+
   return (
     <Modal
       showModal={showModal}
