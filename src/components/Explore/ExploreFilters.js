@@ -10,11 +10,18 @@ import {
 import { useTranslation } from "sharedHooks";
 
 type Props = {
+  exploreParams: Object,
   showModal: boolean,
-  closeModal: Function
+  closeModal: Function,
+  updateTaxon: Function
 };
 
-const ExploreFilters = ( { showModal, closeModal }: Props ): Node => {
+const ExploreFilters = ( {
+  exploreParams,
+  showModal,
+  closeModal,
+  updateTaxon
+}: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation( );
   return (
