@@ -320,6 +320,8 @@ EVIDENCE = EVIDENCE
 
 Explore = Explore
 
+Explore-Filters = Explore Filters
+
 EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 
 External-Applications = External Applications

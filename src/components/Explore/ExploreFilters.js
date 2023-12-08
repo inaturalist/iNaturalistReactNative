@@ -1,5 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import { Button, Heading4, INatIconButton } from "components/SharedComponents";
+import {
+  Button,
+  Heading1,
+  Heading4,
+  INatIconButton
+} from "components/SharedComponents";
 import Modal from "components/SharedComponents/Modal";
 import type { Node } from "react";
 import React from "react";
@@ -38,6 +43,7 @@ const ExploreFilters = ( {
               {/* Header */}
               {/* TODO: */}
               <View className="flex-row justify-between align-middle">
+                <Heading1>{t( "Explore-Filters" )}</Heading1>
                 <INatIconButton
                   accessibilityLabel={t( "Close" )}
                   icon="close"
