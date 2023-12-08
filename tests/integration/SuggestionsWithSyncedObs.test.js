@@ -18,6 +18,23 @@ import realmConfig from "realmModels/index";
 import factory, { makeResponse } from "../factory";
 import { renderComponent } from "../helpers/render";
 
+const mockOfflinePrediction = {
+  score: 0.97363,
+  taxon: {
+    rank_level: 10,
+    name: "Felis Catus",
+    id: 118552
+  }
+};
+
+jest.mock( "components/Suggestions/hooks/useOfflineSuggestions", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    offlineSuggestions: [mockOfflinePrediction],
+    loadingOfflineSuggestions: false
+  } )
+} ) );
+
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
@@ -113,17 +130,14 @@ const mockIdentification = factory( "RemoteIdentification", {
 } );
 
 // Mock the response from inatjs.computervision.score_image
-const topSuggestion = {
-  taxon: factory( "RemoteTaxon" ),
-  combined_score: 90
-};
+// const topSuggestion = {
+//   taxon: factory( "RemoteTaxon" ),
+//   combined_score: 90
+// };
 
 describe( "TaxonSearch", ( ) => {
   beforeEach( ( ) => {
     inatjs.observations.search.mockResolvedValue( makeResponse( ) );
-    const mockScoreImageResponse = makeResponse( [topSuggestion] );
-    inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
-    inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
     inatjs.identifications.create.mockResolvedValue( { results: [mockIdentification] } );
   } );
 
@@ -159,7 +173,7 @@ describe( "TaxonSearch", ( ) => {
   }
 
   it(
-    "should create an id with no vision attribute when reached from ObsDetails via Suggestions"
+    "should create an id with false vision attribute when reached from ObsDetails via Suggestions"
     + " and search result chosen",
     async ( ) => {
       const observations = makeMockObservations( );
@@ -188,7 +202,8 @@ describe( "TaxonSearch", ( ) => {
         fields: Identification.ID_FIELDS,
         identification: {
           observation_id: observations[0].uuid,
-          taxon_id: mockSearchResultTaxon.id
+          taxon_id: mockSearchResultTaxon.id,
+          vision: false
         }
       }, {
         api_token: null
@@ -233,9 +248,8 @@ describe( "TaxonSearch", ( ) => {
 
 describe( "Suggestions", ( ) => {
   beforeEach( ( ) => {
-    inatjs.observations.search.mockResolvedValue( makeResponse( ) );
-    const mockScoreImageResponse = makeResponse( [topSuggestion] );
-    inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
+    // const mockScoreImageResponse = makeResponse( [topSuggestion] );
+    // inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
     inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
     inatjs.identifications.create.mockResolvedValue( { results: [mockIdentification] } );
   } );
@@ -276,7 +290,7 @@ describe( "Suggestions", ( ) => {
       await renderObservationsStackNavigatorWithObservations( observations );
       await navigateToSuggestionsForObservation( observations[0] );
       const topTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+        `SuggestionsList.taxa.${mockOfflinePrediction.taxon.id}.checkmark`
       );
       expect( topTaxonResultButton ).toBeTruthy( );
       await actor.press( topTaxonResultButton );
@@ -285,7 +299,7 @@ describe( "Suggestions", ( ) => {
         fields: Identification.ID_FIELDS,
         identification: {
           observation_id: observations[0].uuid,
-          taxon_id: topSuggestion.taxon.id,
+          taxon_id: mockOfflinePrediction.taxon.id,
           vision: true
         }
       }, {
@@ -302,7 +316,7 @@ describe( "Suggestions", ( ) => {
       await renderObservationsStackNavigatorWithObservations( observations );
       await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
       const topTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+        `SuggestionsList.taxa.${mockOfflinePrediction.taxon.id}.checkmark`
       );
       expect( topTaxonResultButton ).toBeTruthy( );
       await actor.press( topTaxonResultButton );

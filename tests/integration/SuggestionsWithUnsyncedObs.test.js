@@ -18,6 +18,32 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "../factory";
 import { renderComponent } from "../helpers/render";
 
+const mockOfflinePrediction = {
+  score: 0.97363,
+  taxon: {
+    rank_level: 10,
+    name: "Felis Catus",
+    id: 118552
+  }
+};
+
+const secondOfflinePrediction = {
+  score: 0.9321,
+  taxon: {
+    rank_level: 20,
+    name: "Felis",
+    id: 41956
+  }
+};
+
+jest.mock( "components/Suggestions/hooks/useOfflineSuggestions", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    offlineSuggestions: [mockOfflinePrediction, secondOfflinePrediction],
+    loadingOfflineSuggestions: false
+  } )
+} ) );
+
 const initialStoreState = useStore.getState( );
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -117,17 +143,17 @@ describe( "Suggestions", ( ) => {
 
   describe( "when reached from ObsEdit", ( ) => {
     // Mock the response from inatjs.computervision.score_image
-    const topSuggestion = {
-      taxon: factory( "RemoteTaxon" ),
-      combined_score: 90
-    };
-    const otherSuggestion = {
-      taxon: factory( "RemoteTaxon" ),
-      combined_score: 50
-    };
+    // const topSuggestion = {
+    //   taxon: factory( "RemoteTaxon" ),
+    //   combined_score: 90
+    // };
+    // const otherSuggestion = {
+    //   taxon: factory( "RemoteTaxon" ),
+    //   combined_score: 50
+    // };
     beforeEach( ( ) => {
-      const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
-      inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
+      // const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
+      // inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
       inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
     } );
 
@@ -142,7 +168,7 @@ describe( "Suggestions", ( ) => {
       await renderObservationsStackNavigatorWithObservations( observations );
       await navigateToSuggestionsForObservation( observations[0] );
       const topTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+        `SuggestionsList.taxa.${mockOfflinePrediction.taxon.id}.checkmark`
       );
       expect( topTaxonResultButton ).toBeTruthy( );
       await actor.press( topTaxonResultButton );
@@ -155,7 +181,7 @@ describe( "Suggestions", ( ) => {
       await renderObservationsStackNavigatorWithObservations( observations );
       await navigateToSuggestionsForObservation( observations[0] );
       const otherTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${otherSuggestion.taxon.id}.checkmark`
+        `SuggestionsList.taxa.${secondOfflinePrediction.taxon.id}.checkmark`
       );
       expect( otherTaxonResultButton ).toBeTruthy( );
       await actor.press( otherTaxonResultButton );
