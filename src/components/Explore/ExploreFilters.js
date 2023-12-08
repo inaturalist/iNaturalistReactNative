@@ -1,8 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import {
   Button,
+  DisplayTaxon,
   Heading1,
   Heading4,
+  IconicTaxonChooser,
   INatIconButton
 } from "components/SharedComponents";
 import Modal from "components/SharedComponents/Modal";
@@ -52,6 +54,29 @@ const ExploreFilters = ( {
                 />
               </View>
 
+              {/* Taxon Section */}
+              <View className="mb-7">
+                <Heading4 className="mb-5">{t( "TAXON" )}</Heading4>
+                <View className="mb-5">
+                  {taxon
+                    ? (
+                      <DisplayTaxon
+                        taxon={taxon}
+                        // TODO: add this additional screen
+                        onPress={() => navigation.navigate( "ExploreTaxonSearch" )}
+                      />
+                    )
+                    : (
+                      <Button
+                        text={t( "SEARCH-FOR-A-TAXON" )}
+                        // TODO: add this additional screen
+                        onPress={() => navigation.navigate( "ExploreTaxonSearch" )}
+                        accessibilityLabel={t( "Search" )}
+                      />
+                    )}
+                </View>
+                <IconicTaxonChooser taxon={taxon} onTaxonChosen={updateTaxon} />
+              </View>
             </ScrollView>
           </View>
         </View>
