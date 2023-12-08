@@ -7,21 +7,18 @@ import {
 } from "components/SharedComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useLocalObservation, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
-  currentObservation: Object
+  synced: boolean
 }
 
 const AddCommentPrompt = ( {
-  currentObservation
+  synced
 }: Props ): Node => {
   const updateComment = useStore( state => state.updateComment );
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
-  const uuid = currentObservation?.uuid;
-  const localObservation = useLocalObservation( uuid );
-  const wasSynced = localObservation?.wasSynced( );
 
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -36,12 +33,12 @@ const AddCommentPrompt = ( {
       />
     );
 
-    if ( wasSynced ) {
+    if ( synced ) {
       navigation.setOptions( {
         headerRight: addCommentIcon
       } );
     }
-  }, [navigation, t, wasSynced] );
+  }, [navigation, t, synced] );
 
   return showAddCommentSheet && (
     <TextInputSheet

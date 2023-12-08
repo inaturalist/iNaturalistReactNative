@@ -9,60 +9,45 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import {
-  ActivityIndicator
-} from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import Attribution from "./Attribution";
 import CommentBox from "./CommentBox";
-import PhotoSelectionList from "./PhotoSelectionList";
+import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 import SuggestionsList from "./SuggestionsList";
 
 type Props = {
   comment: string,
-  currentObservation: Object,
-  loading: boolean,
   loadingSuggestions: boolean,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  setSelectedPhotoUri: Function
+  setSelectedPhotoUri: Function,
+  synced: boolean
 };
 
 const Suggestions = ( {
   comment,
-  currentObservation,
-  loading,
   loadingSuggestions,
   nearbySuggestions,
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  setSelectedPhotoUri
+  setSelectedPhotoUri,
+  synced
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const obsUUID = params?.obsUUID;
+  const { lastScreen } = params;
 
   return (
     <ScrollViewWrapper testID="suggestions">
-      <AddCommentPrompt
-        currentObservation={currentObservation}
-      />
-      {loading && (
-        <View
-          className="absolute self-center z-10 pt-[30px]"
-          testID="Suggestions.ActivityIndicator"
-        >
-          <ActivityIndicator large />
-        </View>
-      )}
+      <AddCommentPrompt synced={synced} />
       <View className="mx-5">
-        <PhotoSelectionList
+        <ObsPhotoSelectionList
           photoUris={photoUris}
           selectedPhotoUri={selectedPhotoUri}
           setSelectedPhotoUri={setSelectedPhotoUri}
@@ -70,10 +55,7 @@ const Suggestions = ( {
         <Body3 className="my-4 mx-3">{t( "Select-the-identification-you-want-to-add" )}</Body3>
         <Button
           text={t( "SEARCH-FOR-A-TAXON" )}
-          onPress={( ) => navigation.navigate(
-            "TaxonSearch",
-            { obsUUID }
-          )}
+          onPress={( ) => navigation.navigate( "TaxonSearch", { lastScreen } )}
           accessibilityLabel={t( "Search" )}
         />
       </View>

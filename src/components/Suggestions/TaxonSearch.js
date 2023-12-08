@@ -1,7 +1,5 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
-import fetchSearchResults from "api/search";
 import {
   SearchBar,
   TaxonResult,
@@ -14,92 +12,39 @@ import React, {
   useState
 } from "react";
 import { FlatList } from "react-native";
-import Identification from "realmModels/Identification";
-import Taxon from "realmModels/Taxon";
-import { useAuthenticatedQuery } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import CommentBox from "./CommentBox";
+import useTaxonSearch from "./hooks/useTaxonSearch";
+import useTaxonSelected from "./hooks/useTaxonSelected";
 
 const TaxonSearch = ( ): Node => {
-  const { params } = useRoute( );
-  const obsUUID = params?.obsUUID;
   const [taxonQuery, setTaxonQuery] = useState( "" );
-  const navigation = useNavigation( );
   const currentObservation = useStore( state => state.currentObservation );
   const comment = useStore( state => state.comment );
-  const observations = useStore( state => state.observations );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const updateObservations = useStore( state => state.updateObservations );
+  const synced = currentObservation.wasSynced !== undefined
+    && currentObservation.wasSynced( );
+  const [selectedTaxon, setSelectedTaxon] = useState( null );
 
-  const updateObservationKeys = useCallback( keysAndValues => {
-    const updatedObservations = observations;
-    const updatedObservation = {
-      ...( currentObservation.toJSON
-        ? currentObservation.toJSON( )
-        : currentObservation ),
-      ...keysAndValues
-    };
-    updatedObservations[currentObservationIndex] = updatedObservation;
-    updateObservations( [...updatedObservations] );
-  }, [
-    currentObservation,
-    currentObservationIndex,
-    observations,
-    updateObservations
-  ] );
+  const taxonList = useTaxonSearch( taxonQuery );
 
-  const { data: taxonList } = useAuthenticatedQuery(
-    ["fetchSearchResults", taxonQuery],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: taxonQuery,
-        sources: "taxa",
-        fields: {
-          taxon: Taxon.TAXON_FIELDS
-        }
-      },
-      optsWithAuth
-    )
-  );
+  useTaxonSelected( selectedTaxon, { vision: false } );
 
-  const onTaxonSelected = useCallback( async newTaxon => {
-    if ( !obsUUID ) {
-      // Called from observation editor screen
-      const newIdentification = Identification.new( {
-        taxon: newTaxon,
-        body: comment
-      } );
-      updateObservationKeys( {
-        owners_identification_from_vision: false,
-        taxon: newIdentification.taxon
-      } );
-      navigation.navigate( "ObsEdit" );
-    } else {
-      // Called when adding an identification to someone else's observation
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon, comment } );
-    }
-  }, [navigation, obsUUID, updateObservationKeys, comment] );
-
-  const renderFooter = ( ) => (
-    <View className="pb-10" />
-  );
+  const renderFooter = ( ) => <View className="pb-10" />;
 
   const renderItem = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       taxon={taxon}
-      handleCheckmarkPress={() => onTaxonSelected( taxon )}
+      handleCheckmarkPress={() => setSelectedTaxon( taxon )}
       testID={`Search.taxa.${taxon.id}`}
       first={index === 0}
     />
-  ), [onTaxonSelected] );
+  ), [setSelectedTaxon] );
 
   return (
-    <ViewWrapper className="flex-1">
-      <AddCommentPrompt
-        currentObservation={currentObservation}
-      />
+    <ViewWrapper>
+      <AddCommentPrompt synced={synced} />
       <CommentBox comment={comment} />
       <SearchBar
         handleTextChange={setTaxonQuery}

@@ -22,6 +22,24 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   return [];
 };
 
+const updateObservationKeysWithState = ( keysAndValues, state ) => {
+  const {
+    observations,
+    currentObservation,
+    currentObservationIndex
+  } = state;
+  const updatedObservations = observations;
+  const updatedObservation = {
+    ...( currentObservation.toJSON
+      ? currentObservation.toJSON( )
+      : currentObservation ),
+    ...keysAndValues
+  };
+  updatedObservations[currentObservationIndex] = updatedObservation;
+  console.log( updatedObservations, "updated observations" );
+  return updatedObservations;
+};
+
 // Note: this store is currently only for the observation flow (camera, gallery, obs edit,
 // suggestions, taxon search, obs details, etc.)
 // If we end up wanting to replace reducers move local state into global state from other screens
@@ -102,6 +120,12 @@ const useStore = create( set => ( {
   updateObservations: updatedObservations => set( state => ( {
     observations: updatedObservations,
     currentObservation: updatedObservations[state.currentObservationIndex],
+    unsavedChanges: true
+  } ) ),
+  updateObservationKeys: keysAndValues => set( state => ( {
+    observations: updateObservationKeysWithState( keysAndValues, state ),
+    currentObservation:
+      updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
     unsavedChanges: true
   } ) )
 } ) );

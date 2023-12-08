@@ -347,7 +347,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
-    navigation.navigate( "Suggestions", { obsUUID: uuid } );
+    navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
