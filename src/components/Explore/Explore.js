@@ -197,8 +197,10 @@ const Explore = ( {
         </BottomSheet>
       )}
       <ExploreFilters
+        exploreParams={exploreParams}
         showModal={showFiltersModal}
         closeModal={closeFiltersModal}
+        updateTaxon={updateTaxon}
       />
     </>
   );
