@@ -13,7 +13,6 @@ import useTaxonSelected from "./hooks/useTaxonSelected";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
-  const comment = useStore( state => state.comment );
   const currentObservation = useStore( state => state.currentObservation );
   const photoList = ObservationPhoto.mapObsPhotoUris( currentObservation );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoList[0] );
@@ -27,21 +26,17 @@ const SuggestionsContainer = ( ): Node => {
   //   onlineSuggestions,
   //   loadingOnlineSuggestions
   // } = useOnlineSuggestions( selectedPhotoUri );
-  const synced = currentObservation.wasSynced !== undefined
-    && currentObservation.wasSynced( );
 
   useTaxonSelected( selectedTaxon, { vision: true } );
 
   return (
     <Suggestions
-      comment={comment}
       loadingSuggestions={loadingSuggestions && photoList.length > 0}
       nearbySuggestions={nearbySuggestions}
       onTaxonChosen={setSelectedTaxon}
       photoUris={photoList}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
-      synced={synced}
     />
   );
 };

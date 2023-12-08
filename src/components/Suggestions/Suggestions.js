@@ -18,25 +18,21 @@ import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 import SuggestionsList from "./SuggestionsList";
 
 type Props = {
-  comment: string,
   loadingSuggestions: boolean,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  setSelectedPhotoUri: Function,
-  synced: boolean
+  setSelectedPhotoUri: Function
 };
 
 const Suggestions = ( {
-  comment,
   loadingSuggestions,
   nearbySuggestions,
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  setSelectedPhotoUri,
-  synced
+  setSelectedPhotoUri
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -45,7 +41,7 @@ const Suggestions = ( {
 
   return (
     <ScrollViewWrapper testID="suggestions">
-      <AddCommentPrompt synced={synced} />
+      <AddCommentPrompt />
       <View className="mx-5">
         <ObsPhotoSelectionList
           photoUris={photoUris}
@@ -59,7 +55,7 @@ const Suggestions = ( {
           accessibilityLabel={t( "Search" )}
         />
       </View>
-      <CommentBox comment={comment} />
+      <CommentBox />
       <SuggestionsList
         nearbySuggestions={nearbySuggestions}
         onTaxonChosen={onTaxonChosen}

@@ -36,7 +36,6 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
     ...keysAndValues
   };
   updatedObservations[currentObservationIndex] = updatedObservation;
-  console.log( updatedObservations, "updated observations" );
   return updatedObservations;
 };
 

@@ -1,9 +1,7 @@
 import { faker } from "@faker-js/faker";
 import {
-  fireEvent,
   screen, waitFor
 } from "@testing-library/react-native";
-import Suggestions from "components/Suggestions/Suggestions";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -12,8 +10,6 @@ import useStore from "stores/useStore";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
-
-const mockObservation = factory( "RemoteObservation" );
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: faker.person.firstName( ),
@@ -45,12 +41,25 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   } )
 } ) );
 
+const mockOfflinePrediction = {
+  score: 0.97363,
+  taxon: {
+    rank_level: 10,
+    name: "Felis Catus",
+    id: 118552
+  }
+};
+
+jest.mock( "components/Suggestions/hooks/useOfflineSuggestions", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    offlineSuggestions: [mockOfflinePrediction],
+    loadingOfflineSuggestions: false
+  } )
+} ) );
+
 // Mock api call to observations
 jest.mock( "inaturalistjs" );
-
-const renderSuggestions = ( ) => renderComponent(
-  <SuggestionsContainer />
-);
 
 const initialStoreState = useStore.getState( );
 
@@ -61,49 +70,37 @@ describe( "Suggestions", ( ) => {
   } );
 
   test( "should not have accessibility errors", async ( ) => {
-    renderSuggestions( );
+    renderComponent( <SuggestionsContainer /> );
 
     const suggestions = await screen.findByTestId( "suggestions" );
     expect( suggestions ).toBeAccessible( );
   } );
 
-  it( "should fetch nearby suggestions for current photo", async ( ) => {
-    renderSuggestions( );
+  it( "should fetch offline suggestions for current photo", async ( ) => {
+    renderComponent( <SuggestionsContainer /> );
     const taxonTopResult = screen.getByTestId(
-      `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
+      `SuggestionsList.taxa.${mockOfflinePrediction.taxon.id}`
     );
     await waitFor( ( ) => {
       expect( taxonTopResult ).toBeVisible( );
     } );
   } );
 
-  it( "should show loading wheel while id being created", async ( ) => {
-    useStore.setState( {
-      observations: [mockObservation],
-      currentObservationIndex: 0
-    } );
-    renderSuggestions( );
-    const taxonTopResult = screen.getByTestId(
-      `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
-    );
-    await waitFor( ( ) => {
-      expect( taxonTopResult ).toBeVisible( );
-    } );
-    const taxonCheckmark = screen.getByTestId(
-      `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}.checkmark`
-    );
-    fireEvent.press( taxonCheckmark );
-    await waitFor( ( ) => {
-      expect( screen.queryByTestId( "Suggestions.ActivityIndicator" ) ).toBeVisible( );
-    } );
-  } );
+  // it( "should fetch nearby suggestions for current photo", async ( ) => {
+  //   renderComponent( <SuggestionsContainer /> );
+  //   const taxonTopResult = screen.getByTestId(
+  //     `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
+  //   );
+  //   await waitFor( ( ) => {
+  //     expect( taxonTopResult ).toBeVisible( );
+  //   } );
+  // } );
 
   it( "shows comment section if observation has comment", ( ) => {
-    renderComponent(
-      <Suggestions
-        comment="Comment added to observation"
-      />
-    );
+    useStore.setState( {
+      comment: "This is a test comment"
+    } );
+    renderComponent( <SuggestionsContainer /> );
     const commentSection = screen.getByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
     );

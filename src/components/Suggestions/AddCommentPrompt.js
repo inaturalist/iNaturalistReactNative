@@ -10,15 +10,13 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-type Props = {
-  synced: boolean
-}
-
-const AddCommentPrompt = ( {
-  synced
-}: Props ): Node => {
+const AddCommentPrompt = ( ): Node => {
+  const currentObservation = useStore( state => state.currentObservation );
   const updateComment = useStore( state => state.updateComment );
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
+
+  const synced = currentObservation.wasSynced !== undefined
+  && currentObservation.wasSynced( );
 
   const { t } = useTranslation( );
   const navigation = useNavigation( );
