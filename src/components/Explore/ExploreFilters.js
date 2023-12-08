@@ -24,6 +24,14 @@ type Props = {
   updateTaxon: Function
 };
 
+const NumberBadge = ( { number } ): Node => (
+  <View
+    className="ml-3 w-5 h-5 justify-center items-center rounded-full bg-inatGreen"
+  >
+    <Body3 className="text-white">{number}</Body3>
+  </View>
+);
+
 const ExploreFilters = ( {
   exploreParams,
   showModal,
@@ -33,6 +41,8 @@ const ExploreFilters = ( {
   const { t } = useTranslation();
   const navigation = useNavigation( );
   const { taxon } = exploreParams;
+
+  const number = 0;
 
   return (
     <Modal
@@ -49,11 +59,11 @@ const ExploreFilters = ( {
                 <View className="flex-row items-center">
                   <INatIcon name="sliders" size={20} />
                   <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
+                  {/* TODO: add shadow */}
+                  {number !== 0 && <NumberBadge number={number} />}
                 </View>
                 {/* TODO: onPress needs to reset filters */}
-                <Body3 onPress={closeModal}>
-                  {t( "Reset" )}
-                </Body3>
+                <Body3 onPress={closeModal}>{t( "Reset" )}</Body3>
               </View>
 
               {/* Taxon Section */}
