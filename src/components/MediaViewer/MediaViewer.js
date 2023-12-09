@@ -1,12 +1,12 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import { TransparentCircleButton, WarningSheet } from "components/SharedComponents";
 import { SafeAreaView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
+  useEffect,
   useRef,
   useState
 } from "react";
@@ -32,11 +32,10 @@ const MediaViewer = ( {
   uri,
   uris = []
 }: Props ): Node => {
-  const { params } = useRoute( );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(
-    params?.index === undefined
-      ? uris.indexOf( uri )
-      : params.index
+    uris.indexOf( uri ) <= 0
+      ? 0
+      : uris.indexOf( uri )
   );
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
@@ -58,9 +57,6 @@ const MediaViewer = ( {
 
   const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
-
-  const showWarningSheet = ( ) => setWarningSheet( true );
-  const hideWarningSheet = ( ) => setWarningSheet( false );
 
   const scrollToIndex = useCallback( index => {
     // when a user taps a photo in the carousel, the UI needs to automatically
@@ -87,18 +83,37 @@ const MediaViewer = ( {
     }
   };
 
+  // If we've removed an item the selectedPhoto index might refer to a photo
+  // that no longer exists, so change it to the previous one
+  useEffect( ( ) => {
+    if ( selectedPhotoIndex >= uris.length ) {
+      setSelectedPhotoIndex( Math.max( 0, selectedPhotoIndex - 1 ) );
+    }
+  }, [selectedPhotoIndex, setSelectedPhotoIndex, uris.length] );
+
+  const deleteItem = useCallback( ( ) => {
+    const uriToDelete = uris[selectedPhotoIndex].toString( );
+    setWarningSheet( false );
+    if ( onDelete ) onDelete( uriToDelete );
+  }, [
+    onDelete,
+    selectedPhotoIndex,
+    setWarningSheet,
+    uris
+  ] );
+
   return (
     <SafeAreaView className="flex-1 bg-black" testID="MediaViewer">
       <StatusBar barStyle="light-content" />
       {warningSheet && (
         <WarningSheet
-          handleClose={hideWarningSheet}
-          confirm={onDelete}
+          handleClose={( ) => setWarningSheet( false )}
+          confirm={deleteItem}
           headerText={t( "DISCARD-MEDIA" )}
           snapPoints={[178]}
           buttonText={t( "DISCARD" )}
           secondButtonText={t( "CANCEL" )}
-          handleSecondButtonPress={hideWarningSheet}
+          handleSecondButtonPress={( ) => setWarningSheet( false )}
         />
       )}
       <MainPhotoDisplay
@@ -125,7 +140,7 @@ const MediaViewer = ( {
           )}
         >
           <TransparentCircleButton
-            onPress={showWarningSheet}
+            onPress={( ) => setWarningSheet( true )}
             icon="trash-outline"
             color={colors.white}
             accessibilityLabel={t( "Delete" )}

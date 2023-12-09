@@ -5,6 +5,7 @@ import { Heading4 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useEffect,
   useState
 } from "react";
@@ -29,16 +30,23 @@ const MediaViewerContainer = ( ): Node => {
   const numOfPhotos = photoEvidenceUris.length;
   const editable = params?.editable;
 
-  const deletePhoto = async ( ) => {
-    const uriToDelete = photoEvidenceUris[selectedPhotoIndex];
-    deletePhotoFromObservation( uriToDelete );
+  const deletePhoto = useCallback( async uriToDelete => {
     await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+    deletePhotoFromObservation( uriToDelete );
     if ( photoEvidenceUris.length === 0 ) {
       navigation.goBack( );
     } else if ( selectedPhotoIndex !== 0 ) {
       setSelectedPhotoIndex( selectedPhotoIndex - 1 );
     }
-  };
+  }, [
+    currentObservation,
+    deletePhotoFromObservation,
+    navigation,
+    photoEvidenceUris,
+    realm,
+    selectedPhotoIndex,
+    setSelectedPhotoIndex
+  ] );
 
   useEffect( ( ) => {
     const renderHeaderTitle = ( ) => (
@@ -55,6 +63,7 @@ const MediaViewerContainer = ( ): Node => {
   return (
     <MediaViewer
       onDelete={deletePhoto}
+      uri={photoEvidenceUris[selectedPhotoIndex]}
       uris={photoEvidenceUris}
       editable={editable}
     />
