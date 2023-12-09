@@ -45,6 +45,7 @@ const TaxonResult = ( {
   // right now, this fetches a single taxon at a time on AR camera &
   // a short list of taxa from offline Suggestions
   const taxon = useTaxon( taxonResult, fetchRemote );
+  console.log( taxon?.name, "taxon name", taxonResult?.name );
   const taxonImage = { uri: taxon?.default_photo?.url };
 
   const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: taxon.id } );

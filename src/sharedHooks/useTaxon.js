@@ -15,22 +15,18 @@ const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
   const {
     data: remoteTaxon
   } = useAuthenticatedQuery(
-    [fetchTaxon],
+    ["fetchTaxon"],
     optsWithAuth => fetchTaxon( taxon?.id, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
-    { enabled: !!( taxon?.id && fetchRemote ) }
+    {
+      enabled: !!( taxon?.id && fetchRemote )
+    }
   );
 
-  if ( remoteTaxon ) {
+  if ( !existingTaxon && remoteTaxon ) {
     Taxon.saveRemoteTaxon( remoteTaxon, realm );
   }
 
-  if ( existingTaxon?.default_photo?.url ) {
-    return existingTaxon;
-  }
-  if ( remoteTaxon?.default_photo?.url ) {
-    return remoteTaxon;
-  }
-  return taxon;
+  return existingTaxon || taxon;
 };
 
 export default useTaxon;

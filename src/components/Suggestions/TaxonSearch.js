@@ -37,6 +37,8 @@ const TaxonSearch = ( ): Node => {
     />
   ), [setSelectedTaxon] );
 
+  console.log( taxonList?.map( taxa => taxa.name ) );
+
   return (
     <ViewWrapper>
       <AddCommentPrompt />

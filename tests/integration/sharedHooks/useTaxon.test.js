@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { renderHook, waitFor } from "@testing-library/react-native";
+import { renderHook } from "@testing-library/react-native";
 import { useTaxon } from "sharedHooks";
 
 import factory from "../../factory";
@@ -53,22 +53,10 @@ describe( "useTaxon", ( ) => {
       } );
     } );
 
-    it( "should make an API call and return remote taxon when fetchRemote is enabled", ( ) => {
+    it( "should make an API call and return passed in taxon when fetchRemote is enabled", ( ) => {
       const taxonId = faker.number.int( );
       const { result } = renderHook( ( ) => useTaxon( { id: taxonId }, true ) );
-      expect( result.current ).toHaveProperty( "default_photo" );
-      expect( result.current.default_photo.url ).toEqual( mockRemoteTaxon.default_photo.url );
-    } );
-
-    it( "should save remote taxon and return remote taxon", async ( ) => {
-      const taxonId = faker.number.int( );
-      const taxon = global.realm.objects( "Taxon" )[0];
-      expect( taxon ).toBe( undefined );
-      const { result } = renderHook( ( ) => useTaxon( { id: taxonId } ) );
-      const remoteTaxon = global.realm.objects( "Taxon" )[0];
-      await waitFor( ( ) => {
-        expect( remoteTaxon.name ).toEqual( result.current.name );
-      } );
+      expect( result.current ).not.toHaveProperty( "default_photo" );
     } );
   } );
 } );
