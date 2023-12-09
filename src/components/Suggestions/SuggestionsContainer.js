@@ -27,6 +27,10 @@ const SuggestionsContainer = ( ): Node => {
   //   loadingOnlineSuggestions
   // } = useOnlineSuggestions( selectedPhotoUri );
 
+  const taxonIds = nearbySuggestions?.map(
+    suggestion => suggestion.taxon.id
+  );
+
   useTaxonSelected( selectedTaxon, { vision: true } );
 
   return (
@@ -37,6 +41,7 @@ const SuggestionsContainer = ( ): Node => {
       photoUris={photoList}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
+      taxonIds={taxonIds}
     />
   );
 };

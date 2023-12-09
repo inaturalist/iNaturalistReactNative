@@ -4,9 +4,11 @@ import { useTaxon } from "sharedHooks";
 
 import factory from "../../factory";
 
-jest.mock( "api/taxa" );
-
-const mockRemoteTaxon = factory( "RemoteTaxon" );
+const mockRemoteTaxon = factory( "RemoteTaxon", {
+  default_photo: {
+    url: faker.image.url( )
+  }
+} );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
@@ -36,9 +38,10 @@ describe( "useTaxon", ( ) => {
     } );
 
     describe( "when there is a local taxon with taxon id", ( ) => {
-      it( "should return local taxon", ( ) => {
+      it( "should return local taxon with default photo", ( ) => {
         const { result } = renderHook( ( ) => useTaxon( mockTaxon ) );
         expect( result.current ).toHaveProperty( "default_photo" );
+        expect( result.current.default_photo.url ).toEqual( mockTaxon.default_photo.url );
       } );
     } );
   } );
@@ -50,14 +53,21 @@ describe( "useTaxon", ( ) => {
       } );
     } );
 
-    it( "should save remote taxon and return taxon passed in", async ( ) => {
+    it( "should make an API call and return remote taxon when fetchRemote is enabled", ( ) => {
+      const taxonId = faker.number.int( );
+      const { result } = renderHook( ( ) => useTaxon( { id: taxonId }, true ) );
+      expect( result.current ).toHaveProperty( "default_photo" );
+      expect( result.current.default_photo.url ).toEqual( mockRemoteTaxon.default_photo.url );
+    } );
+
+    it( "should save remote taxon and return remote taxon", async ( ) => {
+      const taxonId = faker.number.int( );
       const taxon = global.realm.objects( "Taxon" )[0];
       expect( taxon ).toBe( undefined );
-      const { result } = renderHook( ( ) => useTaxon( { id: null } ) );
-      expect( result.current ).toEqual( { id: null } );
+      const { result } = renderHook( ( ) => useTaxon( { id: taxonId } ) );
       const remoteTaxon = global.realm.objects( "Taxon" )[0];
       await waitFor( ( ) => {
-        expect( remoteTaxon.name ).toEqual( mockRemoteTaxon.name );
+        expect( remoteTaxon.name ).toEqual( result.current.name );
       } );
     } );
   } );

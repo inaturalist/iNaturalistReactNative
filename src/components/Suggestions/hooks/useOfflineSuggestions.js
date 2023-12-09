@@ -18,7 +18,11 @@ const useOfflineSuggestions = ( selectedPhotoUri: string ): {
       try {
         const predictions = await predictImage( selectedPhotoUri );
         // using the same rank level for displaying predictions in AR Camera
-        const formattedPredictions = predictions?.filter( prediction => prediction.rank <= 40 )
+        // this is all temporary, since we ultimately want predictions
+        // returned similarly to how we return them on web; this is returning a
+        // single branch like on the AR Camera 2023-12-08
+        const formattedPredictions = predictions?.reverse( )
+          .filter( prediction => prediction.rank <= 40 )
           .map( prediction => ( {
             score: prediction.score,
             taxon: {
@@ -31,7 +35,6 @@ const useOfflineSuggestions = ( selectedPhotoUri: string ): {
         setLoadingOfflineSuggestions( false );
         return formattedPredictions;
       } catch ( e ) {
-        console.log( "e :>> ", e );
         setLoadingOfflineSuggestions( false );
         return e;
       }

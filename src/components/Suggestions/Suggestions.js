@@ -23,7 +23,8 @@ type Props = {
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  setSelectedPhotoUri: Function
+  setSelectedPhotoUri: Function,
+  taxonIds: Array<number>
 };
 
 const Suggestions = ( {
@@ -32,7 +33,8 @@ const Suggestions = ( {
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  setSelectedPhotoUri
+  setSelectedPhotoUri,
+  taxonIds
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -61,13 +63,7 @@ const Suggestions = ( {
         onTaxonChosen={onTaxonChosen}
         loadingSuggestions={loadingSuggestions}
       />
-      {nearbySuggestions?.length > 0 && (
-        <Attribution
-          taxonIds={nearbySuggestions.map(
-            suggestion => suggestion.taxon.id
-          )}
-        />
-      )}
+      {taxonIds?.length > 0 && <Attribution taxonIds={taxonIds} />}
     </ScrollViewWrapper>
   );
 };

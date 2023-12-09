@@ -36,7 +36,7 @@ const PARAMS = {
   fields: FIELDS
 };
 
-async function fetchTaxon( id: number, params: Object = {}, opts: Object = {} ): Promise<any> {
+async function fetchTaxon( id: any, params: Object = {}, opts: Object = {} ): Promise<any> {
   try {
     const { results } = await inatjs.taxa.fetch( id, { ...PARAMS, ...params }, opts );
     return results[0];

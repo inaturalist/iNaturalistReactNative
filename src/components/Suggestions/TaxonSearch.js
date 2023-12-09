@@ -33,6 +33,7 @@ const TaxonSearch = ( ): Node => {
       handleCheckmarkPress={() => setSelectedTaxon( taxon )}
       testID={`Search.taxa.${taxon.id}`}
       first={index === 0}
+      fetchRemote={false}
     />
   ), [setSelectedTaxon] );
 
