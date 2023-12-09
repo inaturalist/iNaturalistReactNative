@@ -8,7 +8,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import useStore from "stores/useStore";
 
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
-// import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
+import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import useTaxonSelected from "./hooks/useTaxonSelected";
 import Suggestions from "./Suggestions";
 
@@ -19,13 +19,17 @@ const SuggestionsContainer = ( ): Node => {
   const [selectedTaxon, setSelectedTaxon] = useState( null );
 
   const {
-    offlineSuggestions: nearbySuggestions,
-    loadingOfflineSuggestions: loadingSuggestions
+    offlineSuggestions,
+    loadingOfflineSuggestions
   } = useOfflineSuggestions( selectedPhotoUri );
-  // const {
-  //   onlineSuggestions,
-  //   loadingOnlineSuggestions
-  // } = useOnlineSuggestions( selectedPhotoUri );
+  const {
+    onlineSuggestions,
+    loadingOnlineSuggestions
+  } = useOnlineSuggestions( selectedPhotoUri, offlineSuggestions );
+
+  const nearbySuggestions = offlineSuggestions?.length > 0
+    ? offlineSuggestions
+    : onlineSuggestions;
 
   const taxonIds = nearbySuggestions?.map(
     suggestion => suggestion.taxon.id
@@ -33,9 +37,12 @@ const SuggestionsContainer = ( ): Node => {
 
   useTaxonSelected( selectedTaxon, { vision: true } );
 
+  const loadingSuggestions = ( loadingOfflineSuggestions || loadingOnlineSuggestions )
+  && photoList.length > 0;
+
   return (
     <Suggestions
-      loadingSuggestions={loadingSuggestions && photoList.length > 0}
+      loadingSuggestions={loadingSuggestions}
       nearbySuggestions={nearbySuggestions}
       onTaxonChosen={setSelectedTaxon}
       photoUris={photoList}

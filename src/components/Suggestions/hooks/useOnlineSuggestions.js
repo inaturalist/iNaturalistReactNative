@@ -7,17 +7,11 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-const useOnlineSuggestions = ( selectedPhotoUri: string ): {
+const useOnlineSuggestions = ( selectedPhotoUri: string, offlineSuggestions: Array<Object> ): {
   onlineSuggestions: Array<Object>,
   loadingOnlineSuggestions: boolean
 } => {
   const currentObservation = useStore( state => state.currentObservation );
-
-  const uploadParams = {
-    image: selectedPhotoUri,
-    latitude: currentObservation?.latitude,
-    longitude: currentObservation?.longitude
-  };
 
   const {
     data: onlineSuggestions,
@@ -26,14 +20,15 @@ const useOnlineSuggestions = ( selectedPhotoUri: string ): {
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => scoreImage(
       await flattenUploadParams(
-        uploadParams.image,
-        uploadParams.latitude,
-        uploadParams.longitude
+        selectedPhotoUri,
+        currentObservation?.latitude,
+        currentObservation?.longitude
       ),
       optsWithAuth
     ),
     {
-      enabled: !!selectedPhotoUri
+      enabled: !!(
+        selectedPhotoUri && offlineSuggestions.length === 0 )
     }
   );
 
