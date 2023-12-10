@@ -128,6 +128,14 @@ const ExploreContainer = ( ): Node => {
   } = state;
 
   useEffect( ( ) => {
+    if ( params?.taxon ) {
+      dispatch( {
+        type: "CHANGE_TAXON",
+        taxon: params?.taxon,
+        taxonId: params?.taxon.id,
+        taxonName: params?.taxon.preferred_common_name || params?.taxon.name
+      } );
+    }
     if ( params?.projectId ) {
       dispatch( {
         type: "SET_EXPLORE_FILTERS",
