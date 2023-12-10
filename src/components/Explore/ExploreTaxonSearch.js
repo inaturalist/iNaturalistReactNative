@@ -38,6 +38,7 @@ const ExploreTaxonSearch = ( ): Node => {
   );
 
   const onTaxonSelected = useCallback( async newTaxon => {
+    navigation.navigate( "Explore", { taxon: newTaxon } );
   }, [navigation] );
 
   const renderFooter = ( ) => (
@@ -45,6 +46,13 @@ const ExploreTaxonSearch = ( ): Node => {
   );
 
   const renderItem = useCallback( ( { item: taxon, index } ) => (
+    <TaxonResult
+      taxon={taxon}
+      showCheckmark={false}
+      handlePress={() => onTaxonSelected( taxon )}
+      testID={`Search.taxa.${taxon.id}`}
+      first={index === 0}
+    />
   ), [onTaxonSelected] );
 
   return (
