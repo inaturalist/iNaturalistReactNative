@@ -89,7 +89,12 @@ const reducer = ( state, action ) => {
           radius: null,
           place_id: action.placeId
         },
-        region: action.region
+        region: {
+          ...state.region,
+          latitude: action.latitude,
+          longitude: action.longitude,
+          place_guess: action.place_guess
+        }
       };
     case "SET_PLACE_NAME":
       return {
@@ -153,6 +158,16 @@ const ExploreContainer = ( ): Node => {
         taxonName: params?.taxon.preferred_common_name || params?.taxon.name
       } );
     }
+    if ( params?.place ) {
+      const { coordinates } = params.place.point_geojson;
+      dispatch( {
+        type: "CHANGE_PLACE_ID",
+        placeId: params.place?.id,
+        latitude: coordinates[1],
+        longitude: coordinates[0],
+        place_guess: params.place?.display_name
+      } );
+    }
     if ( params?.projectId ) {
       dispatch( {
         type: "SET_EXPLORE_FILTERS",
@@ -194,12 +209,9 @@ const ExploreContainer = ( ): Node => {
     dispatch( {
       type: "CHANGE_PLACE_ID",
       placeId: place?.id,
-      region: {
-        ...state.region,
-        latitude: coordinates[1],
-        longitude: coordinates[0],
-        place_guess: place?.display_name
-      }
+      latitude: coordinates[1],
+      longitude: coordinates[0],
+      place_guess: place?.display_name
     } );
   };
 
