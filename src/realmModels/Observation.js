@@ -253,6 +253,9 @@ class Observation extends Realm.Object {
 
     const { latitude, longitude } = firstPhotoExif;
 
+    console.log('Reading photo EXIF', photo?.image?.uri);
+    console.log('EXIF', firstPhotoExif);
+
     const newObservation = {
       latitude,
       longitude,
