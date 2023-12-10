@@ -426,8 +426,6 @@ Location = Location
 
 LOCATION = LOCATION
 
-LOCATION = LOCATION
-
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
@@ -745,6 +743,8 @@ Search-for-a-taxon = Search for a taxon
 Search-for-a-user = Search for a user
 
 Search-for-description-tags-text = Search for description/tags text
+
+SEARCH-TAXA = SEARCH TAXA
 
 Select = Select
 
