@@ -744,6 +744,8 @@ Search-for-a-user = Search for a user
 
 Search-for-description-tags-text = Search for description/tags text
 
+SEARCH-LOCATION = SEARCH LOCATION
+
 SEARCH-TAXA = SEARCH TAXA
 
 Select = Select

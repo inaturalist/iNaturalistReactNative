@@ -3,6 +3,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExploreContainer from "components/Explore/ExploreContainer";
+import ExploreLocationSearch from "components/Explore/ExploreLocationSearch";
 import ExploreTaxonSearch from "components/Explore/ExploreTaxonSearch";
 import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
@@ -24,6 +25,7 @@ import React from "react";
 import SharedStackScreens from "./SharedStackScreens";
 
 const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
+const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
 
@@ -83,6 +85,15 @@ const ObservationsStackNavigator = ( ): Node => (
         options={{
           ...removeBottomBorder,
           headerTitle: taxonSearchTitle,
+          headerTitleAlign: "center"
+        }}
+      />
+      <Stack.Screen
+        name="ExploreLocationSearch"
+        component={ExploreLocationSearch}
+        options={{
+          ...removeBottomBorder,
+          headerTitle: locationSearchTitle,
           headerTitleAlign: "center"
         }}
       />

@@ -744,6 +744,8 @@ Search-for-a-user = Search for a user
 
 Search-for-description-tags-text = Search for description/tags text
 
+SEARCH-LOCATION = SEARCH LOCATION
+
 SEARCH-TAXA = SEARCH TAXA
 
 Select = Select
@@ -1428,6 +1430,7 @@ LEAVE = LEAVE
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
+SEARCH-FOR-A-LOCATION = SEARCH FOR A LOCATION
 Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 NEARBY-SUGGESTIONS = NEARBY SUGGESTIONS
