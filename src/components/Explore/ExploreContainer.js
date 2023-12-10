@@ -12,7 +12,29 @@ const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
-const initialState = {
+const initialState: {
+  region: {
+    latitude: number;
+    longitude: number;
+    latitudeDelta: number;
+    longitudeDelta: number;
+    place_guess: string;
+  };
+  exploreParams: {
+    verifiable: boolean;
+    return_bounds: boolean;
+    taxon?: Object;
+    taxon_id?: number;
+    taxon_name?: string;
+    place_id?: number;
+    lat?: number;
+    lng?: number;
+    radius?: number;
+    project_id?: number;
+  };
+  exploreView: string;
+  showFiltersModal: boolean;
+} = {
   region: {
     latitude: 0.0,
     longitude: 0.0,
@@ -120,11 +142,6 @@ const ExploreContainer = ( ): Node => {
     exploreParams,
     exploreView,
     showFiltersModal
-  }: {
-    region: Object,
-    exploreParams: Object,
-    exploreView: string,
-    showFiltersModal: boolean
   } = state;
 
   useEffect( ( ) => {
