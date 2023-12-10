@@ -79,6 +79,7 @@ const FilterModal = ( { closeModal, exploreParams, updateTaxon } ): Node => {
                 <IconicTaxonChooser taxon={taxon} onTaxonChosen={updateTaxon} />
               </View>
             </ScrollView>
+      <ScrollView className="p-5">
           </View>
         </View>
       )}
