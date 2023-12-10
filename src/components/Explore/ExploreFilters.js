@@ -55,10 +55,6 @@ const FilterModal = ( { closeModal, exploreParams, updateTaxon } ): Node => {
         <Body3 onPress={closeModal}>{t( "Reset" )}</Body3>
       </View>
 
-              {/* Taxon Section */}
-              <View className="mb-7">
-                <Heading4 className="mb-5">{t( "TAXON" )}</Heading4>
-                <View className="mb-5">
                   {taxon
                     ? (
                       <DisplayTaxon
@@ -75,12 +71,13 @@ const FilterModal = ( { closeModal, exploreParams, updateTaxon } ): Node => {
                         accessibilityLabel={t( "Search" )}
                       />
                     )}
-                </View>
-                <IconicTaxonChooser taxon={taxon} onTaxonChosen={updateTaxon} />
-              </View>
-            </ScrollView>
       <ScrollView className="p-5">
+        {/* Taxon Section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "TAXON" )}</Heading4>
+          <View className="mb-5">
           </View>
+          <IconicTaxonChooser taxon={taxon} onTaxonChosen={updateTaxon} />
         </View>
       )}
     />
