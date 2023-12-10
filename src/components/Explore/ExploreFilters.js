@@ -32,16 +32,12 @@ const NumberBadge = ( { number } ): Node => (
   </View>
 );
 
-const ExploreFilters = ( {
-  exploreParams,
-  showModal,
-  closeModal,
-  updateTaxon
-}: Props ): Node => {
+const FilterModal = ( { closeModal, exploreParams, updateTaxon } ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation( );
   const { taxon } = exploreParams;
 
+  // TODO: actually calculate this number
   const number = 0;
 
   return (
@@ -96,5 +92,25 @@ const ExploreFilters = ( {
     />
   );
 };
+
+const ExploreFilters = ( {
+  exploreParams,
+  showModal,
+  closeModal,
+  updateTaxon
+}: Props ): Node => (
+  <Modal
+    showModal={showModal}
+    closeModal={closeModal}
+    fullScreen
+    modal={(
+      <FilterModal
+        exploreParams={exploreParams}
+        closeModal={closeModal}
+        updateTaxon={updateTaxon}
+      />
+    )}
+  />
+);
 
 export default ExploreFilters;
