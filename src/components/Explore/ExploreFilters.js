@@ -41,26 +41,19 @@ const FilterModal = ( { closeModal, exploreParams, updateTaxon } ): Node => {
   const number = 0;
 
   return (
-    <Modal
-      showModal={showModal}
-      closeModal={closeModal}
-      fullScreen
-      modal={(
-        <View className="flex-1 justify-center items-center bg-gray-900 bg-opacity-50">
-          <View className="w-full h-full bg-white rounded-lg overflow-hidden">
-            <ScrollView className="p-4">
-              {/* Header */}
-              {/* TODO: add dropshadow */}
-              <View className="flex-row items-center justify-between p-5">
-                <View className="flex-row items-center">
-                  <INatIcon name="sliders" size={20} />
-                  <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
-                  {/* TODO: add shadow */}
-                  {number !== 0 && <NumberBadge number={number} />}
-                </View>
-                {/* TODO: onPress needs to reset filters */}
-                <Body3 onPress={closeModal}>{t( "Reset" )}</Body3>
-              </View>
+    <View className="flex-1 bg-white">
+      {/* Header */}
+      {/* TODO: add dropshadow */}
+      <View className="flex-row items-center p-5 justify-between">
+        <View className="flex-row items-center">
+          <INatIcon name="sliders" size={20} />
+          <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
+          {/* TODO: add shadow */}
+          {number !== 0 && <NumberBadge number={number} />}
+        </View>
+        {/* TODO: onPress needs to reset filters */}
+        <Body3 onPress={closeModal}>{t( "Reset" )}</Body3>
+      </View>
 
               {/* Taxon Section */}
               <View className="mb-7">
