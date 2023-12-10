@@ -744,6 +744,8 @@ Search-for-a-user = Search for a user
 
 Search-for-description-tags-text = Search for description/tags text
 
+SEARCH-TAXA = SEARCH TAXA
+
 Select = Select
 
 Separate-Photos = Separate Photos

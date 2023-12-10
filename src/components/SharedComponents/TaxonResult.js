@@ -14,6 +14,7 @@ import ConfidenceInterval from "./ConfidenceInterval";
 
 type Props = {
   taxon: Object,
+  handlePress: Function,
   handleCheckmarkPress: Function,
   testID: string,
   clearBackground?: boolean,
@@ -28,6 +29,7 @@ type Props = {
 const TaxonResult = ( {
   clearBackground,
   confidence,
+  handlePress,
   handleCheckmarkPress,
   taxon: taxonResult,
   testID,
@@ -65,7 +67,7 @@ const TaxonResult = ( {
     >
       <Pressable
         className="flex-row items-center w-16 grow"
-        onPress={navToTaxonDetails}
+        onPress={handlePress || navToTaxonDetails}
         accessible
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
