@@ -198,6 +198,7 @@ const Explore = ( {
       )}
       <ExploreFilters
         exploreParams={exploreParams}
+        region={region}
         showModal={showFiltersModal}
         closeModal={closeFiltersModal}
         updateTaxon={updateTaxon}

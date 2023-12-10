@@ -32,10 +32,13 @@ const NumberBadge = ( { number } ): Node => (
   </View>
 );
 
-const FilterModal = ( { closeModal, exploreParams, updateTaxon } ): Node => {
+const FilterModal = ( { closeModal, exploreFilters, updateTaxon } ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation( );
-  const { taxon } = exploreParams;
+  const {
+    taxon,
+    region
+  } = exploreFilters;
 
   // TODO: actually calculate this number
   const number = 0;
@@ -85,14 +88,42 @@ const FilterModal = ( { closeModal, exploreParams, updateTaxon } ): Node => {
           </View>
           <IconicTaxonChooser taxon={taxon} onTaxonChosen={updateTaxon} />
         </View>
+
+        {/* Location Section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
+          <View className="mb-5">
+            {region.place_guess
+              ? (
+                <Button
+                  text={t( "EDIT-LOCATION" )}
+                  onPress={() => {
+                    closeModal();
+                    navigation.navigate( "ExploreLocationSearch" );
+                  }}
+                  accessibilityLabel={t( "Edit" )}
+                />
+              )
+              : (
+                <Button
+                  text={t( "SEARCH-FOR-A-LOCATION" )}
+                  onPress={() => {
+                    closeModal();
+                    navigation.navigate( "ExploreLocationSearch" );
+                  }}
+                  accessibilityLabel={t( "Search" )}
+                />
+              )}
+          </View>
+        </View>
       </ScrollView>
     </View>
-
   );
 };
 
 const ExploreFilters = ( {
   exploreParams,
+  region,
   showModal,
   closeModal,
   updateTaxon
@@ -103,7 +134,10 @@ const ExploreFilters = ( {
     fullScreen
     modal={(
       <FilterModal
-        exploreParams={exploreParams}
+        exploreFilters={{
+          ...exploreParams,
+          region
+        }}
         closeModal={closeModal}
         updateTaxon={updateTaxon}
       />
