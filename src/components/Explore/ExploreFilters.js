@@ -55,27 +55,33 @@ const FilterModal = ( { closeModal, exploreParams, updateTaxon } ): Node => {
         <Body3 onPress={closeModal}>{t( "Reset" )}</Body3>
       </View>
 
-                  {taxon
-                    ? (
-                      <DisplayTaxon
-                        taxon={taxon}
-                        // TODO: add this additional screen
-                        onPress={() => navigation.navigate( "ExploreTaxonSearch" )}
-                      />
-                    )
-                    : (
-                      <Button
-                        text={t( "SEARCH-FOR-A-TAXON" )}
-                        // TODO: add this additional screen
-                        onPress={() => navigation.navigate( "ExploreTaxonSearch" )}
-                        accessibilityLabel={t( "Search" )}
-                      />
-                    )}
       <ScrollView className="p-5">
         {/* Taxon Section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "TAXON" )}</Heading4>
           <View className="mb-5">
+            {taxon
+              ? (
+                <DisplayTaxon
+                  taxon={taxon}
+                  handlePress={() => {
+                    closeModal();
+                    navigation.navigate( "ExploreTaxonSearch" );
+                  }}
+                >
+                  <INatIcon name="edit" size={22} />
+                </DisplayTaxon>
+              )
+              : (
+                <Button
+                  text={t( "SEARCH-FOR-A-TAXON" )}
+                  onPress={() => {
+                    closeModal();
+                    navigation.navigate( "ExploreTaxonSearch" );
+                  }}
+                  accessibilityLabel={t( "Search" )}
+                />
+              )}
           </View>
           <IconicTaxonChooser taxon={taxon} onTaxonChosen={updateTaxon} />
         </View>
