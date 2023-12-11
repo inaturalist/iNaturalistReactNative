@@ -225,13 +225,27 @@ Date = Date
 
 DATE = DATE
 
-DATE = DATE
-
 Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
 
+Date-observed = Date observed
+
+DATE-OBSERVED = DATE OBSERVED
+
+DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
+
+DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
+
 Date_observed_header_short = Observed
+
+Date-uploaded = Date uploaded
+
+DATE-UPLOADED = DATE UPLOADED
+
+DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
+
+DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
 
 Date-uploaded-header-short = Uploaded
 
@@ -487,6 +501,8 @@ Months = Months
 
 Most-faved = Most faved
 
+MOST-FAVED = MOST FAVED
+
 Muted-Users = Muted Users
 
 Names = Names
@@ -497,6 +513,8 @@ Native = Native
 NEARBY = NEARBY
 
 New-Observation = New Observation
+
+Newest-to-oldest = Newest to oldest
 
 Next = Next
 
@@ -553,6 +571,8 @@ Observations-created-on-iNaturalist = Observations created on iNaturalist are us
 Offensive-Inappropriate = Offensive/Inappropriate
 
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
+
+Oldest-to-newest = Oldest to newest
 
 Open = Open
 
@@ -772,6 +792,8 @@ some-rights-reserved = some rights reserved
 Sort-By = Sort By
 
 Sort-by = Sort by
+
+SORT-BY = SORT BY
 
 Spam = Spam
 
