@@ -11,6 +11,10 @@ const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
+const defaultFilters = {
+  sortBy: "DATE_UPLOADED_NEWEST"
+};
+
 const initialState: {
   region: {
     latitude: number,
@@ -31,7 +35,7 @@ const initialState: {
     radius?: number,
     project_id?: number,
     sortBy?: string,
-  }
+  },
 } = {
   region: {
     latitude: 0.0,
@@ -51,7 +55,7 @@ const initialState: {
     lng: undefined,
     radius: undefined,
     project_id: undefined,
-    sortBy: "DATE_UPLOADED_NEWEST"
+    ...defaultFilters
   }
 };
 
