@@ -1,8 +1,16 @@
 // @flow
 
 import classnames from "classnames";
-import { TransparentCircleButton, WarningSheet } from "components/SharedComponents";
-import { SafeAreaView, View } from "components/styledComponents";
+import {
+  BackButton,
+  Heading4,
+  TransparentCircleButton,
+  WarningSheet
+} from "components/SharedComponents";
+import {
+  SafeAreaView,
+  View
+} from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -11,6 +19,7 @@ import React, {
   useState
 } from "react";
 import { StatusBar } from "react-native";
+import { useTheme } from "react-native-paper";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -21,13 +30,17 @@ import PhotoSelector from "./PhotoSelector";
 
 type Props = {
   editable?: boolean,
+  onClose?: Function,
   onDelete?: Function,
   uri?: string,
   uris?: Array<string>
 }
 
+const BACK_BUTTON_STYLE = { position: "absolute", start: 0 };
+
 const MediaViewer = ( {
   editable,
+  onClose = ( ) => { },
   onDelete,
   uri,
   uris = []
@@ -39,6 +52,7 @@ const MediaViewer = ( {
   );
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
+  const theme = useTheme( );
 
   const atFirstPhoto = selectedPhotoIndex === 0;
   const atLastPhoto = selectedPhotoIndex === uris.length - 1;
@@ -104,18 +118,18 @@ const MediaViewer = ( {
 
   return (
     <SafeAreaView className="flex-1 bg-black" testID="MediaViewer">
-      <StatusBar barStyle="light-content" />
-      {warningSheet && (
-        <WarningSheet
-          handleClose={( ) => setWarningSheet( false )}
-          confirm={deleteItem}
-          headerText={t( "DISCARD-MEDIA" )}
-          snapPoints={[178]}
-          buttonText={t( "DISCARD" )}
-          secondButtonText={t( "CANCEL" )}
-          handleSecondButtonPress={( ) => setWarningSheet( false )}
+      <StatusBar hidden barStyle="light-content" backgroundColor="black" />
+      <View className="flex-row items-center justify-center min-h-[44]">
+        <BackButton
+          inCustomHeader
+          color={theme.colors.onPrimary}
+          customStyles={BACK_BUTTON_STYLE}
+          onPress={onClose}
         />
-      )}
+        <Heading4 className="color-white">
+          {t( "X-PHOTOS", { photoCount: uris.length } )}
+        </Heading4>
+      </View>
       <MainPhotoDisplay
         photoUris={uris}
         selectedPhotoIndex={selectedPhotoIndex}
@@ -146,6 +160,18 @@ const MediaViewer = ( {
             accessibilityLabel={t( "Delete" )}
           />
         </View>
+      )}
+      {warningSheet && (
+        <WarningSheet
+          handleClose={( ) => setWarningSheet( false )}
+          confirm={deleteItem}
+          headerText={t( "DISCARD-MEDIA" )}
+          snapPoints={[178]}
+          buttonText={t( "DISCARD" )}
+          secondButtonText={t( "CANCEL" )}
+          handleSecondButtonPress={( ) => setWarningSheet( false )}
+          insideModal
+        />
       )}
     </SafeAreaView>
   );

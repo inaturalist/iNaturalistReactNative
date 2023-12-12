@@ -1,7 +1,7 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -34,7 +34,6 @@ type Props = {
   rotation?: {
     value: number
   },
-  setPhotoEvidenceUris: Function,
   photoUris: Array<string>
 }
 
@@ -63,15 +62,14 @@ const PhotoCarousel = ( {
   isLargeScreen,
   isTablet,
   rotation,
-  setPhotoEvidenceUris,
   photoUris
 }: Props ): Node => {
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const realm = useRealm( );
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const navigation = useNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
+  const [tappedPhotoIndex, setTappedPhotoIndex] = useState( -1 );
   const photoClasses = isLargeScreen
     ? LARGE_PHOTO_CLASSES
     : SMALL_PHOTO_CLASSES;
@@ -137,12 +135,9 @@ const PhotoCarousel = ( {
   }, [deletePhotoFromObservation] );
 
   const viewPhotoAtIndex = useCallback( ( item, index ) => {
-    setPhotoEvidenceUris( [...photoUris] );
-    navigation.navigate( "MediaViewer", { index, editable: true } );
+    setTappedPhotoIndex( index );
   }, [
-    setPhotoEvidenceUris,
-    navigation,
-    photoUris
+    setTappedPhotoIndex
   ] );
 
   const deletePhotoAtIndex = useCallback( async ( item, _index ) => {
@@ -302,6 +297,13 @@ const PhotoCarousel = ( {
           )
           : photoPreviewsList
       }
+      <MediaViewerModal
+        editable
+        showModal={tappedPhotoIndex >= 0}
+        onClose={( ) => setTappedPhotoIndex( -1 )}
+        uri={photoUris[tappedPhotoIndex]}
+        uris={photoUris}
+      />
     </View>
   );
 };

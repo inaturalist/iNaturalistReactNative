@@ -4,15 +4,17 @@ import _ from "lodash";
 
 const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   if ( _.isEmpty( currentObservation ) ) { return []; }
-  const updatedObs = currentObservation;
+  const updatedObservation = currentObservation;
   const obsPhotos = Array.from( currentObservation?.observationPhotos );
   if ( obsPhotos.length > 0 ) {
-    const updatedObsPhotos = _.remove(
+    // FYI, _.remove edits the array in place and returns the items you
+    // removed
+    _.remove(
       obsPhotos,
       obsPhoto => obsPhoto.photo.localFilePath === uri || obsPhoto.originalPhotoUri === uri
     );
-    updatedObs.observationPhotos = updatedObsPhotos;
-    return updatedObs;
+    updatedObservation.observationPhotos = obsPhotos;
+    return [updatedObservation];
   }
   return [];
 };

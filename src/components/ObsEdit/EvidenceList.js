@@ -1,20 +1,24 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { ActivityIndicator } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
+const { useRealm } = RealmContext;
+
 type Props = {
-  evidenceList: Array<string>,
+  evidenceList: Array<Object>,
   handleAddEvidence?: Function,
   handleDragAndDrop: Function
 }
@@ -24,9 +28,15 @@ const EvidenceList = ( {
   handleAddEvidence,
   handleDragAndDrop
 }: Props ): Node => {
+  const currentObservation = useStore( state => state.currentObservation );
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const savingPhoto = useStore( state => state.savingPhoto );
-  const navigation = useNavigation( );
+  const realm = useRealm( );
+  const [tappedMediaIndex, setTappedMediaIndex] = useState( -1 );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
+  const mediaUris = evidenceList.map(
+    mediaItem => mediaItem.photo?.url || mediaItem.photo?.localFilePath
+  );
 
   const renderPhoto = useCallback( ( { item, getIndex, drag } ) => (
     <ScaleDecorator>
@@ -34,7 +44,7 @@ const EvidenceList = ( {
         onLongPress={drag}
         accessibilityRole="button"
         onPress={( ) => {
-          navigation.navigate( "MediaViewer", { index: getIndex( ), editable: true } );
+          setTappedMediaIndex( getIndex( ) );
         }}
         className={classnames( imageClass )}
         testID={`EvidenceList.${item.photo?.url || item.photo?.localFilePath}`}
@@ -49,7 +59,7 @@ const EvidenceList = ( {
         </View>
       </Pressable>
     </ScaleDecorator>
-  ), [navigation] );
+  ), [setTappedMediaIndex] );
 
   const renderFooter = useCallback( ( ) => {
     if ( savingPhoto ) {
@@ -90,6 +100,18 @@ const EvidenceList = ( {
         onDragEnd={handleDragAndDrop}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
+      />
+      <MediaViewerModal
+        editable
+        showModal={tappedMediaIndex >= 0}
+        onClose={( ) => setTappedMediaIndex( -1 )}
+        onDelete={async uriToDelete => {
+          await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+          deletePhotoFromObservation( uriToDelete );
+          setTappedMediaIndex( tappedMediaIndex - 1 );
+        }}
+        uri={mediaUris[tappedMediaIndex]}
+        uris={mediaUris}
       />
     </View>
   );

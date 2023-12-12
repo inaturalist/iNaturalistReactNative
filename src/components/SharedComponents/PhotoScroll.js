@@ -1,9 +1,10 @@
 // @flow
 
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, StatusBar } from "react-native";
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
 import { useTranslation } from "sharedHooks";
@@ -20,6 +21,7 @@ const PhotoScroll = ( {
 }: Props ): Node => {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState<number>( 0 );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const { t } = useTranslation( );
   const paginationColor = colors.white;
 
@@ -43,9 +45,7 @@ const PhotoScroll = ( {
     }
     return (
       <Pressable
-        onPress={
-          pressEvent => onPress( pressEvent, { uri: photo.url || photo.localFilePath } )
-        }
+        onPress={( ) => setMediaViewerVisible( true )}
         accessibilityRole="link"
         accessibilityHint={t( "View-photo" )}
       >
@@ -56,6 +56,7 @@ const PhotoScroll = ( {
 
   return (
     <View className="relative">
+      <StatusBar hidden={mediaViewerVisible} />
       <Carousel
         testID="photo-scroll"
         loop={false}
@@ -110,8 +111,13 @@ const PhotoScroll = ( {
           />
         </View>
       )}
+      <MediaViewerModal
+        showModal={mediaViewerVisible}
+        onClose={( ) => setMediaViewerVisible( false )}
+        uri={photos[index].url}
+        uris={photos.map( photo => photo.url )}
+      />
     </View>
-
   );
 };
 
