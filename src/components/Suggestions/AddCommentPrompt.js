@@ -47,7 +47,6 @@ const AddCommentPrompt = ( {
     <TextInputSheet
       handleClose={( ) => setShowAddCommentSheet( false )}
       headerText={t( "ADD-OPTIONAL-COMMENT" )}
-      snapPoints={[416]}
       confirm={updateComment}
     />
   );

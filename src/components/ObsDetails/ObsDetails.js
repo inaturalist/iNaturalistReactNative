@@ -34,7 +34,7 @@ type Props = {
   activityItems: Array<Object>,
   showActivityTab: boolean,
   onIDAgreePressed: Function,
-  showAgreeWithIdSheet: Function,
+  showAgreeWithIdSheet: boolean,
   openCommentBox: Function,
   agreeIdSheetDiscardChanges: Function,
   onAgree: Function,
@@ -127,7 +127,6 @@ const ObsDetails = ( {
           handleClose={hideCommentBox}
           headerText={t( "ADD-OPTIONAL-COMMENT" )}
           textInputStyle={textInputStyle}
-          snapPoints={[416]}
           confirm={textInput => onCommentAdded( textInput )}
         />
       )}

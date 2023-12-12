@@ -114,7 +114,6 @@ const MediaViewer = ( ): Node => {
           handleClose={hideWarningSheet}
           confirm={deletePhoto}
           headerText={t( "DISCARD-MEDIA" )}
-          snapPoints={[178]}
           buttonText={t( "DISCARD" )}
           secondButtonText={t( "CANCEL" )}
           handleSecondButtonPress={hideWarningSheet}
