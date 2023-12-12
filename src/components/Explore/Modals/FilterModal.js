@@ -35,6 +35,22 @@ const FilterModal = ( {
   // TODO: actually calculate this number
   const number = 0;
 
+  const sortByButtonText = () => {
+    switch ( sortBy ) {
+      case "DATE_UPLOADED_OLDEST":
+        return t( "DATE-UPLOADED-OLDEST" );
+      case "DATE_OBSERVED_NEWEST":
+        return t( "DATE-OBSERVED-NEWEST" );
+      case "DATE_OBSERVED_OLDEST":
+        return t( "DATE-OBSERVED-OLDEST" );
+      case "MOST_FAVED":
+        return t( "MOST-FAVED" );
+      case "DATE_UPLOADED_NEWEST":
+      default:
+        return t( "DATE-UPLOADED-NEWEST" );
+    }
+  };
+
   return (
     <View className="flex-1 bg-white">
       {/* Header */}
@@ -120,7 +136,7 @@ const FilterModal = ( {
           <Heading4 className="mb-5">{t( "SORT-BY" )}</Heading4>
           <View className="mb-5">
             <Button
-              text={sortBy}
+              text={sortByButtonText()}
               className="shrink"
               dropdown
               onPress={() => {
@@ -132,7 +148,7 @@ const FilterModal = ( {
               <SortBySheet
                 selectedValue={sortBy}
                 handleClose={() => setShowSortBy( false )}
-                updateSortBy={updateSortBy}
+                update={updateSortBy}
               />
             )}
           </View>
