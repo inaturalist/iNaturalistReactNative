@@ -20,12 +20,23 @@ const NumberBadge = ( { number } ): Node => (
   </View>
 );
 
+type Props = {
+  closeModal: Function,
+  exploreFilters: Object,
+  filtersNotDefault: boolean,
+  resetFilters: Function,
+  updateTaxon: Function,
+  updateSortBy: Function
+};
+
 const FilterModal = ( {
   closeModal,
   exploreFilters,
+  filtersNotDefault,
+  resetFilters,
   updateTaxon,
   updateSortBy
-} ): Node => {
+}: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { taxon, region, sortBy } = exploreFilters;
@@ -62,8 +73,13 @@ const FilterModal = ( {
           {/* TODO: add shadow */}
           {number !== 0 && <NumberBadge number={number} />}
         </View>
-        {/* TODO: onPress needs to reset filters */}
-        <Body3 onPress={closeModal}>{t( "Reset" )}</Body3>
+        {filtersNotDefault
+          ? (
+            <Body3 onPress={resetFilters}>{t( "Reset" )}</Body3>
+          )
+          : (
+            <Body3 className="opacity-50">{t( "Reset" )}</Body3>
+          )}
       </View>
 
       <ScrollView className="p-5">
