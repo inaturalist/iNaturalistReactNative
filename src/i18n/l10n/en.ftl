@@ -227,7 +227,6 @@ DATE = DATE
 
 Date-added-newest-to-oldest = Date added - newest to oldest
 
-
 Date-added-oldest-to-newest = Date added - oldest to newest
 
 Date-observed = Date observed
