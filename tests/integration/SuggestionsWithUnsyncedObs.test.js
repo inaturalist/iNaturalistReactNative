@@ -141,13 +141,10 @@ describe( "Suggestions", ( ) => {
     await initI18next();
     // userEvent recommends fake timers
     jest.useFakeTimers( );
+    inatjs.observations.observers.mockResolvedValue( makeResponse( [] ) );
   } );
 
   describe( "when reached from ObsEdit", ( ) => {
-    beforeEach( ( ) => {
-      inatjs.observations.observers.mockResolvedValue( makeResponse( [] ) );
-    } );
-
     it( "should navigate back to ObsEdit"
     + " with expected observation when top suggestion chosen", async ( ) => {
       const observations = makeMockObservations( );

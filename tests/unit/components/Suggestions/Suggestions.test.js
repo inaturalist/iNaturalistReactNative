@@ -15,8 +15,15 @@ const mockCreateId = jest.fn( );
 
 const initialStoreState = useStore.getState( );
 
+const mockTaxon = factory( "RemoteTaxon" );
+
+jest.mock( "sharedHooks/useTaxon", () => ( {
+  __esModule: true,
+  default: () => mockTaxon
+} ) );
+
 const mockSuggestionsList = [{
-  taxon: factory( "RemoteTaxon" )
+  taxon: mockTaxon
 }];
 
 describe( "Suggestions", ( ) => {

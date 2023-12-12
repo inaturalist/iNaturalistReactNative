@@ -31,6 +31,11 @@ const mockOfflinePrediction = {
 
 const mockSearchResultTaxon = factory( "RemoteTaxon" );
 
+jest.mock( "sharedHooks/useTaxon", () => ( {
+  __esModule: true,
+  default: () => mockOfflinePrediction.taxon
+} ) );
+
 jest.mock( "components/Suggestions/hooks/useOfflineSuggestions", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
