@@ -335,10 +335,14 @@ const ObsDetailsContainer = ( ): Node => {
   }, [onIDAdded, taxonSuggested] );
 
   useEffect( ( ) => {
-    if ( localObservation?.unviewed( ) ) {
-      markViewedMutation.mutate( { id: localObservation?.uuid } );
+    if (
+      localObservation
+      && localObservation.unviewed()
+      && !markViewedMutation.isLoading
+    ) {
+      markViewedMutation.mutate( { id: uuid } );
     }
-  }, [localObservation, markViewedMutation] );
+  }, [localObservation, markViewedMutation, uuid] );
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );

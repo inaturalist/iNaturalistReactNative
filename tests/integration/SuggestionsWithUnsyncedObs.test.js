@@ -36,6 +36,8 @@ const secondOfflinePrediction = {
   }
 };
 
+const mockSearchResultTaxon = factory( "RemoteTaxon" );
+
 jest.mock( "components/Suggestions/hooks/useOfflineSuggestions", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
@@ -175,6 +177,14 @@ describe( "Suggestions", ( ) => {
   } );
 
   describe( "TaxonSearch", ( ) => {
+    beforeEach( ( ) => {
+      inatjs.search.mockResolvedValue( makeResponse( [
+        {
+          taxon: mockSearchResultTaxon
+        }
+      ] ) );
+    } );
+
     it(
       "should navigate back to ObsEdit with expected observation"
       + " when reached from ObsEdit via Suggestions and search result chosen",
@@ -186,12 +196,6 @@ describe( "Suggestions", ( ) => {
         const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
         await actor.press( searchButton );
         const searchInput = await screen.findByLabelText( "Search for a taxon" );
-        const mockSearchResultTaxon = factory( "RemoteTaxon" );
-        inatjs.search.mockResolvedValue( makeResponse( [
-          {
-            taxon: mockSearchResultTaxon
-          }
-        ] ) );
         await act(
           async ( ) => actor.type(
             searchInput,

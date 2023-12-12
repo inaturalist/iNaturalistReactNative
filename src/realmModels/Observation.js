@@ -353,7 +353,7 @@ class Observation extends Realm.Object {
   }
 
   unviewed() {
-    return this.comments_viewed === false || this.identifications_viewed === false;
+    return !this.viewed();
   }
 }
 

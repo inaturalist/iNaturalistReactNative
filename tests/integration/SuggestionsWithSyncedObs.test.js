@@ -29,6 +29,8 @@ const mockOfflinePrediction = {
   }
 };
 
+const mockSearchResultTaxon = factory( "RemoteTaxon" );
+
 jest.mock( "components/Suggestions/hooks/useOfflineSuggestions", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
@@ -133,8 +135,12 @@ const mockIdentification = factory( "RemoteIdentification", {
 
 describe( "TaxonSearch", ( ) => {
   beforeEach( ( ) => {
-    inatjs.observations.search.mockResolvedValue( makeResponse( ) );
     inatjs.identifications.create.mockResolvedValue( { results: [mockIdentification] } );
+    inatjs.search.mockResolvedValue( makeResponse( [
+      {
+        taxon: mockSearchResultTaxon
+      }
+    ] ) );
   } );
 
   afterEach( ( ) => {
@@ -176,12 +182,6 @@ describe( "TaxonSearch", ( ) => {
       await renderObservationsStackNavigatorWithObservations( observations );
       await navigateToTaxonSearchForObservation( observations[0] );
       const searchInput = await screen.findByLabelText( "Search for a taxon" );
-      const mockSearchResultTaxon = factory( "RemoteTaxon" );
-      inatjs.search.mockResolvedValue( makeResponse( [
-        {
-          taxon: mockSearchResultTaxon
-        }
-      ] ) );
       await act(
         async ( ) => actor.type(
           searchInput,
@@ -215,12 +215,6 @@ describe( "TaxonSearch", ( ) => {
       await renderObservationsStackNavigatorWithObservations( observations );
       await navigateToTaxonSearchForObservationViaObsEdit( observations[0] );
       const searchInput = await screen.findByLabelText( "Search for a taxon" );
-      const mockSearchResultTaxon = factory( "RemoteTaxon" );
-      inatjs.search.mockResolvedValue( makeResponse( [
-        {
-          taxon: mockSearchResultTaxon
-        }
-      ] ) );
       await act(
         async ( ) => actor.type(
           searchInput,
