@@ -1,6 +1,6 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
@@ -31,6 +31,7 @@ const initialState: {
     lng?: number;
     radius?: number;
     project_id?: number;
+    sortBy?: string;
   };
   exploreView: string;
   showFiltersModal: boolean;
@@ -104,6 +105,14 @@ const reducer = ( state, action ) => {
           place_guess: action.place_guess
         }
       };
+    case "CHANGE_SORT_BY":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          sortBy: action.sortBy
+        }
+      };
     case "SET_PLACE_NAME":
       return {
         ...state,
@@ -146,7 +155,9 @@ const reducer = ( state, action ) => {
 const ExploreContainer = ( ): Node => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
+
   const realm = useRealm();
+  const navigation = useNavigation();
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
@@ -223,6 +234,13 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
+  const updateSortBy = sortBy => {
+    dispatch( {
+      type: "CHANGE_SORT_BY",
+      sortBy
+    } );
+  };
+
   const updatePlaceName = newPlaceName => {
     dispatch( {
       type: "SET_PLACE_NAME",
@@ -257,6 +275,7 @@ const ExploreContainer = ( ): Node => {
       updatePlace={updatePlace}
       updatePlaceName={updatePlaceName}
       updateTaxonName={updateTaxonName}
+      updateSortBy={updateSortBy}
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
       openFiltersModal={( ) => dispatch( { type: "SHOW_FILTERS_MODAL" } )}

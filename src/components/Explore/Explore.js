@@ -33,6 +33,7 @@ type Props = {
   updatePlace: Function,
   updatePlaceName: Function,
   updateTaxonName: Function,
+  updateSortBy: Function,
   showFiltersModal: boolean,
   openFiltersModal: Function,
   closeFiltersModal: Function
@@ -48,6 +49,7 @@ const Explore = ( {
   updatePlace,
   updatePlaceName,
   updateTaxonName,
+  updateSortBy,
   showFiltersModal,
   openFiltersModal,
   closeFiltersModal
@@ -180,9 +182,7 @@ const Explore = ( {
         )}
       </ViewWrapper>
       {showExploreBottomSheet && (
-        <BottomSheet
-          headerText={t( "EXPLORE" )}
-        >
+        <BottomSheet headerText={t( "EXPLORE" )}>
           {Object.keys( exploreViewText ).map( view => (
             <Button
               text={exploreViewText[view]}
@@ -202,6 +202,7 @@ const Explore = ( {
         showModal={showFiltersModal}
         closeModal={closeFiltersModal}
         updateTaxon={updateTaxon}
+        updateSortBy={updateSortBy}
       />
     </>
   );
