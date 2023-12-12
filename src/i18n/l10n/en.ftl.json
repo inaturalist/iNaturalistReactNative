@@ -195,7 +195,9 @@
     "val": "FEATURED"
   },
   "Fetching-location": "Fetching location...",
+  "Filter": "Filter",
   "Filters": "Filters",
+  "FILTER-BY-A-USER": "FILTER BY A USER",
   "Finish": "Finish",
   "Fish": "Fish",
   "Flag-An-Item": "Flag An Item",
@@ -385,6 +387,7 @@
   "PROJECTS": "PROJECTS",
   "Projects": "Projects",
   "Quality-Grade": "Quality Grade",
+  "QUALITY-GRADE": "QUALITY GRADE",
   "quality-grade-research": {
     "comment": "Quality grade options",
     "val": "Research Grade"
@@ -510,6 +513,7 @@
   "Search-for-description-tags-text": "Search for description/tags text",
   "SEARCH-LOCATION": "SEARCH LOCATION",
   "SEARCH-TAXA": "SEARCH TAXA",
+  "SEARCH-USER": "SEARCH USER",
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "Settings": "Settings",
@@ -591,6 +595,7 @@
   "Upload-Progress": "Upload { $uploadProgress } percent complete",
   "Upload-Complete": "Upload Complete",
   "User": "User { $userHandle }",
+  "USER": "USER",
   "USERNAME": "USERNAME",
   "Username": "Username",
   "USERNAME-OR-EMAIL": {

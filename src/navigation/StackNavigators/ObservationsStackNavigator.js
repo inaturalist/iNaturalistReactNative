@@ -6,6 +6,7 @@ import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFilterScreen from "components/Explore/ExploreFilterScreen";
 import ExploreLocationSearch from "components/Explore/ExploreLocationSearch";
 import ExploreTaxonSearch from "components/Explore/ExploreTaxonSearch";
+import ExploreUserSearch from "components/Explore/ExploreUserSearch";
 import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
@@ -27,6 +28,7 @@ import SharedStackScreens from "./SharedStackScreens";
 
 const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
 const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
+const userSearchTitle = () => <Heading4>{t( "SEARCH-USER" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
 
@@ -100,6 +102,15 @@ const ObservationsStackNavigator = ( ): Node => (
         options={{
           ...removeBottomBorder,
           headerTitle: locationSearchTitle,
+          headerTitleAlign: "center"
+        }}
+      />
+      <Stack.Screen
+        name="ExploreUserSearch"
+        component={ExploreUserSearch}
+        options={{
+          ...removeBottomBorder,
+          headerTitle: userSearchTitle,
           headerTitleAlign: "center"
         }}
       />

@@ -345,7 +345,11 @@ FEATURED = FEATURED
 
 Fetching-location = Fetching location...
 
+Filter = Filter
+
 Filters = Filters
+
+FILTER-BY-A-USER = FILTER BY A USER
 
 Finish = Finish
 
@@ -620,6 +624,8 @@ Projects = Projects
 
 Quality-Grade = Quality Grade
 
+QUALITY-GRADE = QUALITY GRADE
+
 # Quality grade options
 quality-grade-research = Research Grade
 quality-grade-needs-id = Needs Id
@@ -768,6 +774,8 @@ SEARCH-LOCATION = SEARCH LOCATION
 
 SEARCH-TAXA = SEARCH TAXA
 
+SEARCH-USER = SEARCH USER
+
 Select = Select
 
 Separate-Photos = Separate Photos
@@ -894,6 +902,8 @@ Upload-Progress = Upload {$uploadProgress} percent complete
 Upload-Complete = Upload Complete
 
 User = User
+
+USER = USER
 
 USERNAME = USERNAME
 

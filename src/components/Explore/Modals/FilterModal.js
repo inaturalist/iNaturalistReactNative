@@ -169,6 +169,19 @@ const FilterModal = ( {
             )}
           </View>
         </View>
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "USER" )}</Heading4>
+          <View className="mb-5">
+                <Button
+                  text={t( "FILTER-BY-A-USER" )}
+                  onPress={() => {
+                    closeModal();
+                    navigation.navigate( "ExploreUserSearch" );
+                  }}
+                  accessibilityLabel={t( "Filter" )}
+                />
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
