@@ -45,7 +45,15 @@ const initialState: {
   exploreParams: {
     verifiable: true,
     return_bounds: true,
-    taxon: undefined
+    taxon: undefined,
+    taxon_id: undefined,
+    taxon_name: undefined,
+    place_id: undefined,
+    lat: undefined,
+    lng: undefined,
+    radius: undefined,
+    project_id: undefined,
+    sortBy: "DATE_UPLOADED_NEWEST"
   },
   exploreView: "observations",
   showFiltersModal: false
@@ -229,9 +237,19 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
+  const filteredParams = Object.entries( exploreParams ).reduce(
+    ( newParams, [key, value] ) => {
+      if ( value ) {
+        newParams[key] = value;
+      }
+      return newParams;
+    },
+    {}
+  );
+
   return (
     <Explore
-      exploreParams={exploreParams}
+      exploreParams={filteredParams}
       region={region}
       exploreView={exploreView}
       changeExploreView={changeExploreView}
