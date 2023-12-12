@@ -3,6 +3,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExploreContainer from "components/Explore/ExploreContainer";
+import ExploreFilterScreen from "components/Explore/ExploreFilterScreen";
 import ExploreLocationSearch from "components/Explore/ExploreLocationSearch";
 import ExploreTaxonSearch from "components/Explore/ExploreTaxonSearch";
 import Identify from "components/Identify/Identify";
@@ -77,6 +78,11 @@ const ObservationsStackNavigator = ( ): Node => (
       <Stack.Screen
         name="Explore"
         component={ExploreContainer}
+        options={hideHeader}
+      />
+      <Stack.Screen
+        name="ExploreFilterScreen"
+        component={ExploreFilterScreen}
         options={hideHeader}
       />
       <Stack.Screen
