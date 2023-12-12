@@ -127,7 +127,7 @@ const fetchObservers = async ( params: Object = {} ) : Promise<?any> => {
   try {
     return await inatjs.observations.observers( params );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { throw: true } );
   }
 };
 

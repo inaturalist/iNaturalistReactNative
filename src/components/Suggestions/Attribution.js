@@ -1,6 +1,5 @@
 // @flow
 
-import { fetchObservers } from "api/observations";
 import {
   Body3
 } from "components/SharedComponents";
@@ -8,9 +7,10 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
-  useAuthenticatedQuery,
   useTranslation
 } from "sharedHooks";
+
+import useObservers from "./hooks/useObservers";
 
 type Props = {
   taxonIds: Array<number>
@@ -20,25 +20,8 @@ const Attribution = ( {
   taxonIds
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const { data } = useAuthenticatedQuery(
-    ["fetchObservers", taxonIds],
-    ( ) => fetchObservers( {
-      taxon_ids: taxonIds,
-      per_page: 3,
-      fields: {
-        user: {
-          login: true,
-          name: true
-        }
-      }
-    } ),
 
-    {
-      enabled: taxonIds?.length > 0
-    }
-  );
-
-  const observers = data?.results?.map( observation => observation.user.login );
+  const observers = useObservers( taxonIds );
 
   if ( !observers || observers?.length === 0 ) {
     return <View testID="Attribution.empty" />;

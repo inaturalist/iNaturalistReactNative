@@ -274,7 +274,6 @@ const ObsDetailsContainer = ( ): Node => {
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
-        console.log( data, "data in success id mutation" );
         if ( belongsToCurrentUser ) {
           realm?.write( ( ) => {
             const localIdentifications = localObservation?.identifications;

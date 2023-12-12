@@ -16,7 +16,7 @@ const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
     data: remoteTaxon
   } = useAuthenticatedQuery(
     ["fetchTaxon"],
-    optsWithAuth => fetchTaxon( taxon?.id, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
+    optsWithAuth => fetchTaxon( taxon.id, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
     {
       enabled: !!( taxon?.id && fetchRemote )
     }

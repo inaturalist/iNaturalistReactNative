@@ -142,23 +142,8 @@ describe( "Suggestions", ( ) => {
   } );
 
   describe( "when reached from ObsEdit", ( ) => {
-    // Mock the response from inatjs.computervision.score_image
-    // const topSuggestion = {
-    //   taxon: factory( "RemoteTaxon" ),
-    //   combined_score: 90
-    // };
-    // const otherSuggestion = {
-    //   taxon: factory( "RemoteTaxon" ),
-    //   combined_score: 50
-    // };
     beforeEach( ( ) => {
-      // const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
-      // inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
-      inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
-    } );
-
-    afterEach( ( ) => {
-      jest.clearAllMocks( );
+      inatjs.observations.observers.mockResolvedValue( makeResponse( [] ) );
     } );
 
     it( "should navigate back to ObsEdit"
