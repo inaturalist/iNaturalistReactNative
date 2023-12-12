@@ -30,7 +30,7 @@ type Props = {
   photoUris: Array<string>,
   selectedPhotoUri: string,
   setSelectedPhotoUri: Function,
-  taxonIds: Array<number>
+  observers: Array<string>
 };
 
 const Suggestions = ( {
@@ -40,7 +40,7 @@ const Suggestions = ( {
   photoUris,
   selectedPhotoUri,
   setSelectedPhotoUri,
-  taxonIds
+  observers
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -114,8 +114,8 @@ const Suggestions = ( {
   }, [loadingSuggestions, nearbySuggestions, t] );
 
   const renderFooter = useCallback( ( ) => (
-    <Attribution taxonIds={taxonIds} />
-  ), [taxonIds] );
+    <Attribution observers={observers} />
+  ), [observers] );
 
   const renderHeader = useCallback( ( ) => (
     <>

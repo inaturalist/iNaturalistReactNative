@@ -7,6 +7,7 @@ import React, {
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import useStore from "stores/useStore";
 
+import useObservers from "./hooks/useObservers";
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import useTaxonSelected from "./hooks/useTaxonSelected";
@@ -37,6 +38,8 @@ const SuggestionsContainer = ( ): Node => {
     suggestion => suggestion.taxon.id
   );
 
+  const observers = useObservers( taxonIds );
+
   useTaxonSelected( selectedTaxon, { vision: true } );
 
   const loadingSuggestions = ( loadingOfflineSuggestions || loadingOnlineSuggestions )
@@ -50,7 +53,7 @@ const SuggestionsContainer = ( ): Node => {
       photoUris={photoList}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
-      taxonIds={taxonIds}
+      observers={observers}
     />
   );
 };

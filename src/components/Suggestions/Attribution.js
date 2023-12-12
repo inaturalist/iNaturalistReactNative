@@ -10,18 +10,14 @@ import {
   useTranslation
 } from "sharedHooks";
 
-import useObservers from "./hooks/useObservers";
-
 type Props = {
-  taxonIds: Array<number>
+  observers: Array<string>
 };
 
 const Attribution = ( {
-  taxonIds
+  observers
 }: Props ): Node => {
   const { t } = useTranslation( );
-
-  const observers = useObservers( taxonIds );
 
   if ( !observers || observers?.length === 0 ) {
     return <View testID="Attribution.empty" />;
