@@ -25,7 +25,9 @@ const SuggestionsContainer = ( ): Node => {
   const {
     onlineSuggestions,
     loadingOnlineSuggestions
-  } = useOnlineSuggestions( selectedPhotoUri, offlineSuggestions );
+  } = useOnlineSuggestions( selectedPhotoUri, {
+    tryOnlineSuggestions: offlineSuggestions.length === 0
+  } );
 
   const nearbySuggestions = offlineSuggestions?.length > 0
     ? offlineSuggestions
@@ -38,7 +40,7 @@ const SuggestionsContainer = ( ): Node => {
   useTaxonSelected( selectedTaxon, { vision: true } );
 
   const loadingSuggestions = ( loadingOfflineSuggestions || loadingOnlineSuggestions )
-  && photoList.length > 0;
+    && photoList.length > 0;
 
   return (
     <Suggestions

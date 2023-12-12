@@ -4,6 +4,8 @@ import {
   screen,
   userEvent
 } from "@testing-library/react-native";
+import * as useOfflineSuggestions from "components/Suggestions/hooks/useOfflineSuggestions";
+import * as useOnlineSuggestions from "components/Suggestions/hooks/useOnlineSuggestions";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
@@ -129,12 +131,6 @@ const mockIdentification = factory( "RemoteIdentification", {
   } )
 } );
 
-// Mock the response from inatjs.computervision.score_image
-// const topSuggestion = {
-//   taxon: factory( "RemoteTaxon" ),
-//   combined_score: 90
-// };
-
 describe( "TaxonSearch", ( ) => {
   beforeEach( ( ) => {
     inatjs.observations.search.mockResolvedValue( makeResponse( ) );
@@ -248,8 +244,6 @@ describe( "TaxonSearch", ( ) => {
 
 describe( "Suggestions", ( ) => {
   beforeEach( ( ) => {
-    // const mockScoreImageResponse = makeResponse( [topSuggestion] );
-    // inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
     inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
     inatjs.identifications.create.mockResolvedValue( { results: [mockIdentification] } );
   } );
@@ -320,6 +314,40 @@ describe( "Suggestions", ( ) => {
       );
       expect( topTaxonResultButton ).toBeTruthy( );
       await actor.press( topTaxonResultButton );
+      const saveChangesButton = await screen.findByText( "SAVE CHANGES" );
+      expect( saveChangesButton ).toBeTruthy( );
+      await actor.press( saveChangesButton );
+      const savedObservation = global.mockRealms[__filename]
+        .objectForPrimaryKey( "Observation", observations[0].uuid );
+      expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
+    }
+  );
+
+  it(
+    "should try online suggestions if no offline suggestions are found",
+    async ( ) => {
+      jest.spyOn( useOfflineSuggestions, "default" ).mockImplementation( () => ( {
+        offlineSuggestions: [],
+        loadingOfflineSuggestions: false
+      } ) );
+      // Mock the response from inatjs.computervision.score_image
+      const topSuggestion = {
+        taxon: factory( "RemoteTaxon" ),
+        combined_score: 90
+      };
+      jest.spyOn( useOnlineSuggestions, "default" ).mockImplementation( () => ( {
+        onlineSuggestions: [topSuggestion],
+        loadingOnlineSuggestions: false
+      } ) );
+      const observations = makeMockObservations( );
+      await renderObservationsStackNavigatorWithObservations( observations );
+      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+
+      const topOnlineTaxonResultButton = await screen.findByTestId(
+        `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+      );
+      expect( topOnlineTaxonResultButton ).toBeTruthy( );
+      await actor.press( topOnlineTaxonResultButton );
       const saveChangesButton = await screen.findByText( "SAVE CHANGES" );
       expect( saveChangesButton ).toBeTruthy( );
       await actor.press( saveChangesButton );

@@ -34,7 +34,7 @@ const Attribution = ( {
     } ),
 
     {
-      enabled: taxonIds.length > 0
+      enabled: taxonIds?.length > 0
     }
   );
 

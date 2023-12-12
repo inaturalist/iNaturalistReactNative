@@ -33,6 +33,11 @@ jest.mock( "components/Suggestions/hooks/useTaxonSearch", () => ( {
   default: ( ) => mockTaxaList
 } ) );
 
+jest.mock( "sharedHooks/useTaxon", () => ( {
+  __esModule: true,
+  default: () => mockTaxaList[0]
+} ) );
+
 // react-native-paper's TextInput does a bunch of async stuff that's hard to
 // control in a test, so we're just mocking it here.
 jest.mock( "react-native-paper", () => {
@@ -57,11 +62,11 @@ describe( "TaxonSearch", ( ) => {
     await initI18next( );
   } );
 
-  test( "should not have accessibility errors", () => {
-    const suggestions = (
+  test( "should not have accessibility errors", async ( ) => {
+    const taxonSearch = (
       <TaxonSearch />
     );
-    expect( suggestions ).toBeAccessible( );
+    expect( taxonSearch ).toBeAccessible( );
   } );
 
   it( "should render inside mocked container", ( ) => {
