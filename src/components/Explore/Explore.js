@@ -33,6 +33,8 @@ type Props = {
   updatePlace: Function,
   updatePlaceName: Function,
   updateTaxonName: Function,
+  filtersNotDefault: boolean,
+  resetFilters: Function,
   updateSortBy: Function,
   showFiltersModal: boolean,
   openFiltersModal: Function,
@@ -49,6 +51,8 @@ const Explore = ( {
   updatePlace,
   updatePlaceName,
   updateTaxonName,
+  filtersNotDefault,
+  resetFilters,
   updateSortBy,
   showFiltersModal,
   openFiltersModal,
@@ -199,6 +203,8 @@ const Explore = ( {
       <ExploreFilters
         exploreParams={exploreParams}
         region={region}
+        filtersNotDefault={filtersNotDefault}
+        resetFilters={resetFilters}
         showModal={showFiltersModal}
         closeModal={closeFiltersModal}
         updateTaxon={updateTaxon}

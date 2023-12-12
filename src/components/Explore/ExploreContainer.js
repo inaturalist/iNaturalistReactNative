@@ -12,6 +12,10 @@ const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
+const defaultFilters = {
+  sortBy: "DATE_UPLOADED_NEWEST"
+};
+
 const initialState: {
   region: {
     latitude: number;
@@ -129,6 +133,14 @@ const reducer = ( state, action ) => {
           taxon_name: action.taxonName
         }
       };
+    case "RESET_EXPLORE_FILTERS":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          ...defaultFilters
+        }
+      };
     case "SET_EXPLORE_FILTERS":
       return {
         ...state,
@@ -200,6 +212,10 @@ const ExploreContainer = ( ): Node => {
       } );
     }
   }, [params] );
+
+  const filtersNotDefault = () => Object.keys( defaultFilters ).some(
+    key => defaultFilters[key] !== exploreParams[key]
+  );
 
   const changeExploreView = newView => {
     dispatch( {
@@ -275,6 +291,8 @@ const ExploreContainer = ( ): Node => {
       updatePlace={updatePlace}
       updatePlaceName={updatePlaceName}
       updateTaxonName={updateTaxonName}
+      filtersNotDefault={filtersNotDefault()}
+      resetFilters={() => dispatch( { type: "RESET_EXPLORE_FILTERS" } )}
       updateSortBy={updateSortBy}
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}

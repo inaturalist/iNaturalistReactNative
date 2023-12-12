@@ -131,6 +131,14 @@ const reducer = ( state, action ) => {
           ...action.exploreFilters
         }
       };
+    case "RESET_EXPLORE_FILTERS":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          ...defaultFilters
+        }
+      };
     default:
       throw new Error();
   }
@@ -148,6 +156,9 @@ const ExploreFilterScreen = (): Node => {
     region,
     exploreParams
   } = state;
+
+  const filtersNotDefault = ( ) => Object.keys( defaultFilters )
+    .some( key => defaultFilters[key] !== exploreParams[key] );
 
   useEffect( () => {
     if ( params?.taxon ) {
@@ -204,12 +215,20 @@ const ExploreFilterScreen = (): Node => {
     } );
   };
 
+  const resetFilters = ( ) => {
+    dispatch( {
+      type: "RESET_EXPLORE_FILTERS"
+    } );
+  };
+
   return (
     <FilterModal
       exploreFilters={{
         ...exploreParams,
         region
       }}
+      filtersNotDefault={filtersNotDefault()}
+      resetFilters={resetFilters}
       closeModal={() => console.log( "Explore" )}
       updateTaxon={updateTaxon}
       updateSortBy={updateSortBy}

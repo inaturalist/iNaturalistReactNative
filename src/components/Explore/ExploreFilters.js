@@ -6,6 +6,9 @@ import FilterModal from "./Modals/FilterModal";
 
 type Props = {
   exploreParams: Object,
+  region: Object,
+  filtersNotDefault: boolean,
+  resetFilters: Function,
   showModal: boolean,
   closeModal: Function,
   updateTaxon: Function
@@ -14,6 +17,8 @@ type Props = {
 const ExploreFilters = ( {
   exploreParams,
   region,
+  filtersNotDefault,
+  resetFilters,
   showModal,
   closeModal,
   updateTaxon,
@@ -29,6 +34,8 @@ const ExploreFilters = ( {
           ...exploreParams,
           region
         }}
+        filtersNotDefault={filtersNotDefault}
+        resetFilters={resetFilters}
         closeModal={closeModal}
         updateTaxon={updateTaxon}
         updateSortBy={updateSortBy}
