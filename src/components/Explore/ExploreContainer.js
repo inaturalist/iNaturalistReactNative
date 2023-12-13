@@ -13,7 +13,8 @@ const { useRealm } = RealmContext;
 const DELTA = 0.2;
 
 const defaultFilters = {
-  sortBy: "DATE_UPLOADED_NEWEST"
+  sortBy: "DATE_UPLOADED_NEWEST",
+  user: null
 };
 
 const initialState: {
@@ -35,7 +36,8 @@ const initialState: {
     lng?: number;
     radius?: number;
     project_id?: number;
-    sortBy?: string;
+    sortBy: string;
+    user: Object;
   };
   exploreView: string;
   showFiltersModal: boolean;
@@ -58,7 +60,7 @@ const initialState: {
     lng: undefined,
     radius: undefined,
     project_id: undefined,
-    sortBy: "DATE_UPLOADED_NEWEST"
+    ...defaultFilters
   },
   exploreView: "observations",
   showFiltersModal: false
@@ -133,6 +135,14 @@ const reducer = ( state, action ) => {
           taxon_name: action.taxonName
         }
       };
+    case "SET_USER":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          user: action.user
+        }
+      };
     case "RESET_EXPLORE_FILTERS":
       return {
         ...state,
@@ -197,6 +207,12 @@ const ExploreContainer = ( ): Node => {
         latitude: coordinates[1],
         longitude: coordinates[0],
         place_guess: params.place?.display_name
+      } );
+    }
+    if ( params?.user ) {
+      dispatch( {
+        type: "SET_USER",
+        user: params.user
       } );
     }
     if ( params?.projectId ) {
