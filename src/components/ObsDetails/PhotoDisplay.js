@@ -15,6 +15,7 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import {
   useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import HeaderKebabMenu from "./HeaderKebabMenu";
@@ -26,7 +27,7 @@ type Props = {
   observationId: number,
   photos: Array<Object>,
   userFav: ?boolean,
-  uuid: string
+  observation: Object
 }
 
 const PhotoDisplay = ( {
@@ -36,23 +37,27 @@ const PhotoDisplay = ( {
   observationId,
   photos,
   userFav,
-  uuid
+  observation
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const setObservations = useStore( state => state.setObservations );
 
   const editButton = useMemo(
     () => (
       <INatIconButton
         testID="ObsDetail.editButton"
-        onPress={() => navigation.navigate( "ObsEdit", { uuid } )}
+        onPress={() => {
+          setObservations( [observation] );
+          navigation.navigate( "ObsEdit", { uuid: observation.uuid } );
+        }}
         icon="pencil"
         color={colors.white}
         className="absolute top-3 right-3"
         accessibilityLabel={t( "Edit" )}
       />
     ),
-    [t, navigation, uuid]
+    [t, navigation, observation, setObservations]
   );
 
   const kebabMenu = useCallback( ( ) => (
