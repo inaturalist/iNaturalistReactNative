@@ -65,7 +65,6 @@ const DeleteObservationSheet = ( {
       headerText={multipleObservations
         ? t( "DELETE-X-OBSERVATIONS", { count: observations.length } )
         : t( "DELETE-OBSERVATION" )}
-      snapPoints={[148]}
       handleSecondButtonPress={handleClose}
       secondButtonText={t( "CANCEL" )}
       confirm={( ) => {

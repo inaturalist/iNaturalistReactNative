@@ -67,7 +67,6 @@ beforeAll( async ( ) => {
 // Ensure the realm connection gets closed
 afterAll( ( ) => {
   global.mockRealms[__filename]?.close( );
-  jest.clearAllMocks( );
 } );
 // /REALM SETUP
 
@@ -104,21 +103,24 @@ describe( "Suggestions", ( ) => {
   describe( "when reached from ObsEdit", ( ) => {
     // Mock the response from inatjs.computervision.score_image
     const topSuggestion = {
-      taxon: factory( "RemoteTaxon" ),
+      taxon: factory( "RemoteTaxon", { name: "Primum suggestion" } ),
       combined_score: 90
     };
     const otherSuggestion = {
-      taxon: factory( "RemoteTaxon" ),
+      taxon: factory( "RemoteTaxon", { name: "Alia suggestione" } ),
       combined_score: 50
     };
     beforeEach( ( ) => {
       const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
       inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
       inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
+      inatjs.taxa.fetch.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
     } );
 
     afterEach( ( ) => {
-      jest.clearAllMocks( );
+      inatjs.computervision.score_image.mockReset( );
+      inatjs.observations.observers.mockReset( );
+      inatjs.taxa.fetch.mockReset( );
     } );
 
     it(

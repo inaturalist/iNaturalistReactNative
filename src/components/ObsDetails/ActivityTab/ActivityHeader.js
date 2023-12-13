@@ -146,7 +146,6 @@ const ActivityHeader = ( {
             handleClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}
-            snapPoints={[416]}
             confirm={textInput => updateCommentBody( textInput )}
           />
         )}
@@ -154,7 +153,6 @@ const ActivityHeader = ( {
           <WarningSheet
             handleClose={( ) => setShowDeleteCommentSheet( false )}
             headerText={t( "DELETE-COMMENT-QUESTION" )}
-            snapPoints={[148]}
             confirm={deleteComment}
             buttonText={t( "DELETE" )}
             handleSecondButtonPress={( ) => setShowDeleteCommentSheet( false )}

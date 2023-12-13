@@ -18,7 +18,6 @@ import colors from "styles/tailwindColors";
     initialInput?: ?string,
     placeholder: string,
     headerText: string,
-    snapPoints: Array<Object>,
     textInputStyle?: Object
   }
 
@@ -28,7 +27,6 @@ const TextInputSheet = ( {
   initialInput = null,
   placeholder,
   headerText,
-  snapPoints,
   textInputStyle
 }: Props ): Node => {
   const textInputRef = useRef( );
@@ -55,7 +53,6 @@ const TextInputSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
-      snapPoints={snapPoints}
       onChange={position => {
         if ( position === -1 ) {
           handleClose();

@@ -135,7 +135,6 @@ const MediaViewer = ( {
           handleClose={( ) => setWarningSheet( false )}
           confirm={deleteItem}
           headerText={t( "DISCARD-MEDIA" )}
-          snapPoints={[178]}
           buttonText={t( "DISCARD" )}
           secondButtonText={t( "CANCEL" )}
           handleSecondButtonPress={( ) => setWarningSheet( false )}

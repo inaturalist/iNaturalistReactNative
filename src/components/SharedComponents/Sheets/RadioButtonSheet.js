@@ -13,7 +13,6 @@ import useTranslation from "sharedHooks/useTranslation";
 type Props = {
   handleClose: Function,
   confirm: Function,
-  snapPoints: Array<number>,
   headerText: string,
   radioValues: Object,
   selectedValue?: any
@@ -22,7 +21,6 @@ type Props = {
 const RadioButtonSheet = ( {
   handleClose,
   confirm,
-  snapPoints,
   headerText,
   radioValues,
   selectedValue = "none"
@@ -64,14 +62,13 @@ const RadioButtonSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
-      snapPoints={snapPoints}
       onChange={position => {
         if ( position === -1 ) {
           handleClose( );
         }
       }}
     >
-      <View className="px-4 pt-[20px]">
+      <View className="p-5">
         {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
         <Button
           level="primary"
