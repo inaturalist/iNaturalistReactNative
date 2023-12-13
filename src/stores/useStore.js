@@ -1,23 +1,20 @@
 // eslint-disable-next-line
 import { create } from "zustand";
-import ObservationPhoto from "realmModels/ObservationPhoto";
 import _ from "lodash";
-
-const removePhotoFromList = ( list, photo ) => {
-  const i = list.findIndex( p => p === photo );
-  list.splice( i, 1 );
-  return list || [];
-};
 
 const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   if ( _.isEmpty( currentObservation ) ) { return []; }
-  const updatedObs = currentObservation;
+  const updatedObservation = currentObservation;
   const obsPhotos = Array.from( currentObservation?.observationPhotos );
   if ( obsPhotos.length > 0 ) {
-    const updatedObsPhotos = ObservationPhoto
-      .deleteObservationPhoto( obsPhotos, uri );
-    updatedObs.observationPhotos = updatedObsPhotos;
-    return updatedObs;
+    // FYI, _.remove edits the array in place and returns the items you
+    // removed
+    _.remove(
+      obsPhotos,
+      obsPhoto => obsPhoto.photo.localFilePath === uri || obsPhoto.originalPhotoUri === uri
+    );
+    updatedObservation.observationPhotos = obsPhotos;
+    return [updatedObservation];
   }
   return [];
 };
@@ -42,9 +39,9 @@ const useStore = create( set => ( {
   savingPhoto: false,
   unsavedChanges: false,
   deletePhotoFromObservation: uri => set( state => ( {
-    photoEvidenceUris: [...removePhotoFromList( state.photoEvidenceUris, uri )],
-    cameraPreviewUris: [...removePhotoFromList( state.cameraPreviewUris, uri )],
-    evidenceToAdd: [...removePhotoFromList( state.evidenceToAdd, uri )],
+    photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
+    cameraPreviewUris: [..._.pull( state.cameraPreviewUris, uri )],
+    evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
     observations: removeObsPhotoFromObservation(
       state.observations[state.currentObservationIndex],
       uri

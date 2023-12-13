@@ -1,10 +1,6 @@
 // @flow
 
-import {
-  BottomSheetModal,
-  BottomSheetView,
-  useBottomSheetDynamicSnapPoints
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetModal, BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -24,7 +20,8 @@ type Props = {
   handleClose?: Function,
   hideCloseButton?: boolean,
   headerText?: string,
-  snapPoints?: any
+  snapPoints?: any,
+  insideModal?: boolean
 }
 
 const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
@@ -36,7 +33,8 @@ const StandardBottomSheet = ( {
   handleClose,
   hideCloseButton = false,
   headerText,
-  snapPoints
+  snapPoints,
+  insideModal
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -61,12 +59,20 @@ const StandardBottomSheet = ( {
     if ( handleClose ) {
       handleClose( );
     }
-    sheetRef.current?.dismiss( );
-  }, [handleClose] );
+    if ( insideModal ) {
+      sheetRef.current?.collapse( );
+    } else {
+      sheetRef.current?.dismiss( );
+    }
+  }, [handleClose, insideModal] );
 
   const handleSnapPress = useCallback( ( ) => {
-    sheetRef.current?.present( );
-  }, [] );
+    if ( insideModal ) {
+      sheetRef.current?.expand( );
+    } else {
+      sheetRef.current?.present( );
+    }
+  }, [insideModal] );
 
   useEffect( ( ) => {
     if ( hidden ) {
@@ -76,8 +82,12 @@ const StandardBottomSheet = ( {
     }
   }, [hidden, handleClosePress, handleSnapPress] );
 
+  const BottomSheetComponent = insideModal
+    ? BottomSheet
+    : BottomSheetModal;
+
   return (
-    <BottomSheetModal
+    <BottomSheetComponent
       ref={sheetRef}
       index={0}
       snapPoints={animatedSnapPoints}
@@ -104,7 +114,7 @@ const StandardBottomSheet = ( {
           />
         )}
       </BottomSheetView>
-    </BottomSheetModal>
+    </BottomSheetComponent>
   );
 };
 

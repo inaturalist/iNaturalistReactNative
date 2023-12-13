@@ -1412,3 +1412,7 @@ Select-geoprivacy-status = Select geoprivacy status
 Navigate-to-location-picker-screen = Navigate to location picker screen
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 Navigate-to-identification-suggestions-screen = Navigate to identification suggestions screen
+
+# Accessibility label for a button that starts the process of adding an
+# observation, e.g. the button in the tab bar
+Add-observations = Add observations

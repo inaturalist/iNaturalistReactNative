@@ -103,7 +103,6 @@ const CameraWithDevice = ( {
   const [modelLoaded, setModelLoaded] = useState( false );
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
-  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
   const galleryUris = useStore( state => state.galleryUris );
@@ -453,7 +452,6 @@ const CameraWithDevice = ( {
             onZoomChange={onZoomChange}
             totalObsPhotoUris={totalObsPhotoUris}
             cameraPreviewUris={cameraPreviewUris}
-            setPhotoEvidenceUris={setPhotoEvidenceUris}
           />
         )
         : (

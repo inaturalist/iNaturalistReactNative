@@ -7,6 +7,7 @@ import React, { useCallback } from "react";
 import {
   FlatList
 } from "react-native";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   photoUris: Array<string>,
@@ -23,12 +24,14 @@ const PhotoSelector = ( {
   isLandscapeMode,
   isLargeScreen
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const smallPhotoClass = "rounded-sm w-[42px] h-[42px] mt-[6px] mx-[3px]";
   const largePhotoClass = "rounded-md w-[83px] h-[83px] mx-[10px]";
 
   const renderPhoto = useCallback( ( { item, index } ) => (
     <Pressable
       accessibilityRole="button"
+      accessibilityLabel={t( "View-photo" )}
       onPress={( ) => scrollToIndex( index )}
       className={classnames(
         "overflow-hidden",
@@ -51,7 +54,13 @@ const PhotoSelector = ( {
         className="w-full h-full"
       />
     </Pressable>
-  ), [isLandscapeMode, isLargeScreen, scrollToIndex, selectedPhotoIndex] );
+  ), [
+    isLandscapeMode,
+    isLargeScreen,
+    scrollToIndex,
+    selectedPhotoIndex,
+    t
+  ] );
 
   return (
     <View className={classnames(

@@ -20,23 +20,23 @@ import colors from "styles/tailwindColors";
 import HeaderKebabMenu from "./HeaderKebabMenu";
 
 type Props = {
-  faveOrUnfave: Function,
-  userFav: ?boolean,
-  photos: Array<Object>,
-  uuid: string,
-  isOnline: boolean,
   belongsToCurrentUser: boolean,
-  observationId: number
+  faveOrUnfave: Function,
+  isOnline: boolean,
+  observationId: number,
+  photos: Array<Object>,
+  userFav: ?boolean,
+  uuid: string
 }
 
 const PhotoDisplay = ( {
-  faveOrUnfave,
-  userFav,
-  photos,
-  uuid,
-  isOnline,
   belongsToCurrentUser,
-  observationId
+  faveOrUnfave,
+  isOnline,
+  observationId,
+  photos,
+  userFav,
+  uuid
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -61,13 +61,25 @@ const PhotoDisplay = ( {
     </View>
   ), [observationId] );
 
+  const navigateToMediaViewer = useCallback(
+    ( _pressEvent, options ) => {
+      navigation.navigate( "UrlMediaViewer", { uri: options.uri, uris: photos.map( p => p.url ) } );
+    },
+    [navigation, photos]
+  );
+
   const displayPhoto = useCallback( ( ) => {
     if ( photos.length > 0 ) {
       return (
         <View className="bg-black">
           {
             isOnline
-              ? <PhotoScroll photos={photos} />
+              ? (
+                <PhotoScroll
+                  photos={photos}
+                  onPress={navigateToMediaViewer}
+                />
+              )
               : (
                 <View className="bg-black flex-row justify-center">
                   <IconMaterial
@@ -143,6 +155,7 @@ const PhotoDisplay = ( {
     editButton,
     faveOrUnfave,
     isOnline,
+    navigateToMediaViewer,
     photos,
     t,
     userFav

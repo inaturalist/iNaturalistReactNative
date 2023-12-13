@@ -3,13 +3,12 @@ import { useRoute } from "@react-navigation/native";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
 import {
   HideView, Tabs,
-  TextInputSheet,
-  ViewWrapper
+  TextInputSheet
 } from "components/SharedComponents";
-import { ScrollView, View } from "components/styledComponents";
+import { SafeAreaView, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
@@ -73,11 +72,13 @@ const ObsDetails = ( {
   };
 
   return (
-    <ViewWrapper>
+    <SafeAreaView className="flex-1 bg-black">
+      <StatusBar barStyle="light-content" backgroundColor="black" />
       <ScrollView
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[1]}
         scrollEventThrottle={16}
+        className="bg-white"
       >
         <Header
           observation={observation}
@@ -130,7 +131,7 @@ const ObsDetails = ( {
           confirm={textInput => onCommentAdded( textInput )}
         />
       )}
-    </ViewWrapper>
+    </SafeAreaView>
   );
 };
 
