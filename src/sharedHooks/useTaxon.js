@@ -7,7 +7,7 @@ import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const useTaxon = ( taxon: Object ): Object => {
+const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
   const realm = useRealm( );
 
   const existingTaxon = taxon?.id && realm.objectForPrimaryKey( "Taxon", taxon?.id );
@@ -15,9 +15,11 @@ const useTaxon = ( taxon: Object ): Object => {
   const {
     data: remoteTaxon
   } = useAuthenticatedQuery(
-    [fetchTaxon],
-    optsWithAuth => fetchTaxon( taxon?.id, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
-    { enabled: !!taxon?.id }
+    ["fetchTaxon"],
+    optsWithAuth => fetchTaxon( taxon.id, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
+    {
+      enabled: !!( taxon?.id && fetchRemote )
+    }
   );
 
   if ( !existingTaxon && remoteTaxon ) {

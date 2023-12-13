@@ -98,6 +98,7 @@ class Taxon extends Realm.Object {
   static mapApiToRealm( taxon ) {
     return {
       ...taxon,
+      id: Number( taxon.id ),
       default_photo: Photo.mapApiToRealm( taxon?.default_photo )
     };
   }

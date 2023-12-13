@@ -27,22 +27,11 @@ const ObsEdit = ( ): Node => {
   const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
+  const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
 
   const isFocused = useIsFocused( );
-
-  const updateObservationKeys = keysAndValues => {
-    const updatedObservations = observations;
-    const updatedObservation = {
-      ...( currentObservation.toJSON
-        ? currentObservation.toJSON( )
-        : currentObservation ),
-      ...keysAndValues
-    };
-    updatedObservations[currentObservationIndex] = updatedObservation;
-    updateObservations( [...updatedObservations] );
-  };
 
   useEffect( ( ) => {
     // when first opening an observation from ObsDetails, fetch local observation from realm

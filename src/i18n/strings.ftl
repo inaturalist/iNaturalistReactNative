@@ -44,6 +44,8 @@ Agree-with-ID-description = Would you like to agree with the ID and suggest the 
 
 All = All
 
+ALL-SUGGESTIONS = ALL SUGGESTIONS
+
 All-observations = All observations
 
 # license code

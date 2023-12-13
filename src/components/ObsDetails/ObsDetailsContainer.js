@@ -274,7 +274,6 @@ const ObsDetailsContainer = ( ): Node => {
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
-        console.log( data, "data in success id mutation" );
         if ( belongsToCurrentUser ) {
           realm?.write( ( ) => {
             const localIdentifications = localObservation?.identifications;
@@ -347,7 +346,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
-    navigation.navigate( "Suggestions", { obsUUID: uuid } );
+    navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;

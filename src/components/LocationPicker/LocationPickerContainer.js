@@ -115,26 +115,12 @@ type Props = {
 
 const LocationPickerContainer = ( { route }: Props ): Node => {
   const mapViewRef = useRef( );
-  const observations = useStore( state => state.observations );
-  const updateObservations = useStore( state => state.updateObservations );
   const currentObservation = useStore( state => state.currentObservation );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const { goBackOnSave } = route.params;
 
   const [state, dispatch] = useReducer( reducer, initialState );
-
-  const updateObservationKeys = keysAndValues => {
-    const updatedObservations = observations;
-    const updatedObservation = {
-      ...( currentObservation.toJSON
-        ? currentObservation.toJSON( )
-        : currentObservation ),
-      ...keysAndValues
-    };
-    updatedObservations[currentObservationIndex] = updatedObservation;
-    updateObservations( [...updatedObservations] );
-  };
 
   const {
     accuracy,
