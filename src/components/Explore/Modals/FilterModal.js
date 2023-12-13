@@ -9,6 +9,7 @@ import {
   IconicTaxonChooser,
   INatIcon
 } from "components/SharedComponents";
+import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -177,6 +178,9 @@ const FilterModal = ( {
             )}
           </View>
         </View>
+
+        {/* Quality Grade Section */}
+        {/* User Section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "USER" )}</Heading4>
           <View className="mb-5">
