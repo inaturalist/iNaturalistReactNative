@@ -180,6 +180,12 @@ const FilterModal = ( {
         </View>
 
         {/* Quality Grade Section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
+          <View className="mb-5">
+          </View>
+        </View>
+
         {/* User Section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "USER" )}</Heading4>
