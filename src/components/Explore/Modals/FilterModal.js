@@ -9,9 +9,9 @@ import {
   IconicTaxonChooser,
   INatIcon
 } from "components/SharedComponents";
+import { Pressable, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 const NumberBadge = ( { number } ): Node => (
