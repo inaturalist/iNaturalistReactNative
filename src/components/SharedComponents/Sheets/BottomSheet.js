@@ -1,6 +1,10 @@
 // @flow
 
-import BottomSheet, { BottomSheetModal, BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetModal,
+  BottomSheetView,
+  useBottomSheetDynamicSnapPoints
+} from "@gorhom/bottom-sheet";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
