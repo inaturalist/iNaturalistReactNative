@@ -54,6 +54,10 @@ const ExploreUserSearch = ( ): Node => {
     [onUserSelected]
   );
 
+  const renderItemSeparator = () => (
+    <View className="border-b border-lightGray" />
+  );
+
   return (
     <ViewWrapper className="flex-1">
       <SearchBar
@@ -70,6 +74,8 @@ const ExploreUserSearch = ( ): Node => {
         keyExtractor={item => item.id}
         ListFooterComponent={renderFooter}
         renderItem={renderItem}
+        ListHeaderComponent={renderItemSeparator}
+        ItemSeparatorComponent={renderItemSeparator}
         accessible
       />
     </ViewWrapper>
