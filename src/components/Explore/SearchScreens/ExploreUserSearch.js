@@ -32,8 +32,8 @@ const ExploreUserSearch = ( ): Node => {
     )
   );
 
-  const onUserSelected = useCallback( async newTaxon => {
-    navigation.navigate( "Explore", { taxon: newTaxon } );
+  const onUserSelected = useCallback( async user => {
+    navigation.navigate( "Explore", { user } );
   }, [navigation] );
 
   const renderItem = useCallback(
