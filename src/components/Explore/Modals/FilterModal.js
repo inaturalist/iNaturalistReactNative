@@ -39,7 +39,9 @@ const FilterModal = ( {
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { taxon, region, sortBy } = exploreFilters;
+  const {
+    taxon, region, sortBy, user
+  } = exploreFilters;
 
   const [showSortBy, setShowSortBy] = useState( false );
 
@@ -172,6 +174,26 @@ const FilterModal = ( {
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "USER" )}</Heading4>
           <View className="mb-5">
+            {user
+              ? (
+                <Pressable
+                  className="flex-row justify-between items-center"
+                  accessibilityRole="button"
+                  // TODO: accessibilityLabel={t( "Change user or something like this" )}
+                  onPress={() => {
+                    closeModal();
+                    navigation.navigate( "ExploreUserSearch" );
+                  }}
+                >
+                  <UserListItem
+                    item={{ user }}
+                    count={user.observations_count}
+                    countText="X-Observations"
+                  />
+                  <INatIcon name="edit" size={22} />
+                </Pressable>
+              )
+              : (
                 <Button
                   text={t( "FILTER-BY-A-USER" )}
                   onPress={() => {
@@ -180,6 +202,7 @@ const FilterModal = ( {
                   }}
                   accessibilityLabel={t( "Filter" )}
                 />
+              )}
           </View>
         </View>
       </ScrollView>
