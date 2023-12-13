@@ -18,12 +18,13 @@ import { useTranslation } from "sharedHooks";
 import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
-  children: any,
+  children: Node,
   hidden?: boolean,
   onChange?: Function,
   handleClose?: Function,
   hideCloseButton?: boolean,
-  headerText?: string
+  headerText?: string,
+  snapPoints?: any
 }
 
 const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
@@ -34,8 +35,13 @@ const StandardBottomSheet = ( {
   onChange = null,
   handleClose,
   hideCloseButton = false,
-  headerText
+  headerText,
+  snapPoints
 }: Props ): Node => {
+  if ( snapPoints ) {
+    throw new Error( "BottomSheet does not accept snapPoints as a prop." );
+  }
+
   const { t } = useTranslation( );
   const sheetRef = useRef( null );
 
