@@ -1,6 +1,7 @@
 import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
 import {
   ActivityCount,
+  ActivityIndicator,
   Body1,
   Body2,
   Body3,
@@ -118,6 +119,12 @@ const UiLibrary = (): Node => {
           component, please put it here first and try to show what it looks like
           with different property configurations.
         </Body1>
+        <Heading1>ActivityIndicator</Heading1>
+        <View className="flex-row justify-between">
+          <ActivityIndicator />
+          <ActivityIndicator color="orange" />
+          <ActivityIndicator color="deeppink" size={50} />
+        </View>
         <Heading1>Buttons</Heading1>
         <Heading2>Button</Heading2>
         <Button

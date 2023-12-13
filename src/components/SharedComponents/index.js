@@ -1,6 +1,7 @@
 export { default as ActivityCount } from "./ActivityCount/ActivityCount";
 export { default as CommentsCount } from "./ActivityCount/CommentsCount";
 export { default as IdentificationsCount } from "./ActivityCount/IdentificationsCount";
+export { default as ActivityIndicator } from "./ActivityIndicator";
 export { default as BackButton } from "./Buttons/BackButton";
 export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
