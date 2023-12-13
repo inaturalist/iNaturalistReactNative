@@ -42,12 +42,15 @@ const ExploreUserSearch = ( ): Node => {
 
   const renderItem = useCallback(
     ( { item } ) => (
+      // TODO: add onPress = onUserSelected
+      // TODO: add divider between items
       <UserListItem
         item={{ user: item }}
         count={item.observations_count}
         countText="X-Observations"
       />
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onUserSelected]
   );
 
