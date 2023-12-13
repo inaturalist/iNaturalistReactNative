@@ -8,7 +8,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import UserListItem from "components/SharedComponents/UserListItem";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -38,14 +38,19 @@ const ExploreUserSearch = ( ): Node => {
 
   const renderItem = useCallback(
     ( { item } ) => (
-      // TODO: add onPress = onUserSelected
-      <UserListItem
-        item={{ user: item }}
-        count={item.observations_count}
-        countText="X-Observations"
-      />
+      <Pressable
+        onPress={() => onUserSelected( item )}
+        accessibilityRole="button"
+        // accessibilityLabel={t( "Camera-button-zoom" )}
+        accessibilityState={{ disabled: false }}
+      >
+        <UserListItem
+          item={{ user: item }}
+          count={item.observations_count}
+          countText="X-Observations"
+        />
+      </Pressable>
     ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onUserSelected]
   );
 
