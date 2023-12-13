@@ -38,7 +38,6 @@ const ForgotPassword = ( ): Node => {
           handleClose={( ) => setShowSheet( false )}
           confirm={( ) => openInbox( )}
           headerText={t( "CHECK-YOUR-EMAIL" )}
-          snapPoints={[178]}
           text={t( "If-an-account-with-that-email-exists" )}
           buttonText={t( "OPEN-EMAIL" )}
           secondButtonText={t( "BACK-TO-LOGIN" )}

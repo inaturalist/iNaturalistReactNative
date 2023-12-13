@@ -13,7 +13,6 @@ type Props = {
   text?: string,
   buttonText: string,
   confirm: Function,
-  snapPoints: Array<number>,
   secondButtonText?: string,
   handleSecondButtonPress?: Function,
   buttonType?: string,
@@ -27,7 +26,6 @@ const WarningSheet = ( {
   text,
   buttonText,
   confirm,
-  snapPoints,
   secondButtonText,
   handleSecondButtonPress,
   buttonType,
@@ -37,7 +35,6 @@ const WarningSheet = ( {
   <BottomSheet
     handleClose={handleClose}
     headerText={headerText}
-    snapPoints={snapPoints}
     hidden={hidden}
     insideModal={insideModal}
     onChange={position => {

@@ -30,7 +30,6 @@ const TextSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
-      snapPoints={[256]}
       hideCloseButton
       onChange={position => {
         if ( position === -1 ) {

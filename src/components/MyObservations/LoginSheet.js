@@ -16,7 +16,6 @@ const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
 
   return (
     <WarningSheet
-      snapPoints={[165]}
       handleClose={( ) => setShowLoginSheet( false )}
       buttonType="focus"
       headerText={t( "PLEASE-LOG-IN" )}

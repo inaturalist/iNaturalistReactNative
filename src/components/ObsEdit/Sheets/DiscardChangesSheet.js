@@ -20,7 +20,6 @@ const DiscardChangesSheet = ( {
     handleClose={handleClose}
     confirm={discardChanges}
     headerText={t( "DISCARD-CHANGES" )}
-    snapPoints={[178]}
     text={t( "By-exiting-changes-not-saved" )}
     buttonText={t( "DISCARD-CHANGES" )}
   />
