@@ -26,6 +26,7 @@ const MediaViewerModal = ( {
     showModal={showModal}
     fullScreen
     closeModal={onClose}
+    disableSwipeDirection
     modal={(
       <MediaViewer
         editable={editable}

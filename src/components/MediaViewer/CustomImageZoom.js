@@ -1,25 +1,26 @@
 // @flow
 
-import classnames from "classnames";
-import { View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useRef, useState } from "react";
-import { Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image as RNImage } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
-// lifted from this issue: https://github.com/ascoders/react-native-image-zoom/issues/42#issuecomment-734209924
-
 type Props = {
+  // Height of the container
   height: number,
-  source: Object
+  source: Object,
+  // Function to tell the parent whether zooming is enabled, useful to disable
+  // scrolling
+  setZooming?: Function
 }
 
 const CustomImageZoom = ( {
   height,
-  source
+  source,
+  setZooming
 }: Props ): Node => {
-  const scaleValue = useRef( 1 );
   const [photoDimensions, setPhotoDimensions] = useState( {
     width: 0,
     height: 0
@@ -34,14 +35,23 @@ const CustomImageZoom = ( {
     ? screenHeight
     : screenWidth;
   const aspectRatio = photoDimensions.width / photoDimensions.height;
-  const imageHeight = Math.min( photoDimensions.height * aspectRatio, height );
+  const imageHeight = Math.min( height, photoDimensions.height * aspectRatio );
+  const imageWidth = Math.min(
+    usableScreenWidth,
+    ( imageHeight / photoDimensions.height ) * photoDimensions.width
+  );
 
   const handleMove = ( { scale } ) => {
-    scaleValue.current = scale;
+    if ( !setZooming ) return;
+    if ( scale > 1 ) {
+      setZooming( true );
+    } else {
+      setZooming( false );
+    }
   };
 
   useEffect( ( ) => {
-    Image.getSize( source.uri, ( w, h ) => {
+    RNImage.getSize( source.uri, ( w, h ) => {
       setPhotoDimensions( {
         height: h,
         width: w
@@ -53,34 +63,23 @@ const CustomImageZoom = ( {
     <ImageZoom
       cropWidth={usableScreenWidth}
       cropHeight={height}
-      imageWidth={usableScreenWidth}
+      imageWidth={imageWidth || usableScreenWidth}
       imageHeight={
         photoDimensions.width < photoDimensions.height
           ? height
           : ( imageHeight || height )
       }
       minScale={1}
-      onStartShouldSetPanResponder={e => {
-        const pinching = e.nativeEvent.touches.length === 2;
-        const alreadyZooming = scaleValue.current > 1;
-        return pinching || alreadyZooming;
-      }}
       onMove={handleMove}
     >
       <View
-        onStartShouldSetResponder={
-          e => e.nativeEvent.touches.length < 2 && scaleValue.current <= 1
-        }
         testID="CustomImageZoom"
       >
-        {/* $FlowIgnore */}
         <Image
           testID={`CustomImageZoom.${source.uri}`}
           source={source}
           resizeMode="contain"
-          className={classnames(
-            "w-full h-full"
-          )}
+          className="w-full h-full"
           accessibilityIgnoresInvertColors
         />
       </View>

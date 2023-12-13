@@ -24,6 +24,7 @@ const MainPhotoDisplay = ( {
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
+  const [zooming, setZooming] = useState( false );
   const atFirstPhoto = selectedPhotoIndex === 0;
   const atLastPhoto = selectedPhotoIndex === photoUris.length - 1;
 
@@ -31,6 +32,7 @@ const MainPhotoDisplay = ( {
     <CustomImageZoom
       source={{ uri: Photo.displayLargePhoto( photoUri ) }}
       height={displayHeight}
+      setZooming={setZooming}
     />
   ), [displayHeight] );
 
@@ -89,8 +91,9 @@ const MainPhotoDisplay = ( {
         getItemLayout={getItemLayout}
         horizontal
         pagingEnabled
+        // Disable scrolling when image is zooming
+        scrollEnabled={!zooming}
         showsHorizontalScrollIndicator={false}
-        // $FlowIgnore
         ref={horizontalScroll}
         onMomentumScrollEnd={handleScrollEndDrag}
       />

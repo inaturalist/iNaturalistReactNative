@@ -571,7 +571,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
         "landscape",
       ]
     }
-    swipeDirection="down"
+    swipeDirection={null}
     swipeThreshold={100}
     transparent={true}
     useNativeDriverForBackdrop={true}
@@ -1166,7 +1166,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         "landscape",
       ]
     }
-    swipeDirection="down"
+    swipeDirection={null}
     swipeThreshold={100}
     transparent={true}
     useNativeDriverForBackdrop={true}
