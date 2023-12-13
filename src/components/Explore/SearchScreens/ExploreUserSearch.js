@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import fetchSearchResults from "api/search";
 import {
   SearchBar,
@@ -13,7 +14,6 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { FlatList } from "react-native";
 import { useAuthenticatedQuery } from "sharedHooks";
 
 const ExploreUserSearch = ( ): Node => {
@@ -62,12 +62,15 @@ const ExploreUserSearch = ( ): Node => {
         testID="SearchUser"
         containerClass="my-5 mx-4"
       />
-      <FlatList
-        keyboardShouldPersistTaps="always"
+      <FlashList
         data={userList}
-        renderItem={renderItem}
+        initialNumToRender={5}
+        estimatedItemSize={100}
+        testID="SearchUserList"
         keyExtractor={item => item.id}
         ListFooterComponent={renderFooter}
+        renderItem={renderItem}
+        accessible
       />
     </ViewWrapper>
   );
