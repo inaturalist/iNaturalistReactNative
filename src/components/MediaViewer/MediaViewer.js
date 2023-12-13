@@ -54,19 +54,6 @@ const MediaViewer = ( {
   const [warningSheet, setWarningSheet] = useState( false );
   const theme = useTheme( );
 
-  const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === uris.length - 1;
-
-  const handleScrollLeft = index => {
-    if ( atFirstPhoto ) { return; }
-    setSelectedPhotoIndex( index );
-  };
-
-  const handleScrollRight = index => {
-    if ( atLastPhoto ) { return; }
-    setSelectedPhotoIndex( index );
-  };
-
   const horizontalScroll = useRef( null );
 
   const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
@@ -78,24 +65,6 @@ const MediaViewer = ( {
     setSelectedPhotoIndex( index );
     horizontalScroll?.current?.scrollToIndex( { index, animated: true } );
   }, [setSelectedPhotoIndex] );
-
-  const handleScrollEndDrag = e => {
-    const { contentOffset, layoutMeasurement } = e.nativeEvent;
-    const { x } = contentOffset;
-
-    const currentOffset = screenWidth * selectedPhotoIndex;
-
-    // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
-    const index = Math.floor(
-      Math.floor( x ) / Math.floor( layoutMeasurement.width )
-    );
-
-    if ( x > currentOffset ) {
-      handleScrollRight( index );
-    } else if ( x < currentOffset ) {
-      handleScrollLeft( index );
-    }
-  };
 
   // If we've removed an item the selectedPhoto index might refer to a photo
   // that no longer exists, so change it to the previous one
@@ -133,8 +102,8 @@ const MediaViewer = ( {
       <MainPhotoDisplay
         photoUris={uris}
         selectedPhotoIndex={selectedPhotoIndex}
-        handleScrollEndDrag={handleScrollEndDrag}
         horizontalScroll={horizontalScroll}
+        setSelectedPhotoIndex={setSelectedPhotoIndex}
       />
       <PhotoSelector
         photoUris={uris}

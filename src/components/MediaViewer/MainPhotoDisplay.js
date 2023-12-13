@@ -2,7 +2,7 @@
 
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList } from "react-native";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -10,22 +10,29 @@ import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
-  handleScrollEndDrag: Function,
   horizontalScroll: any,
   photoUris: Array<string>,
-  selectedPhotoIndex: number
+  selectedPhotoIndex: number,
+  setSelectedPhotoIndex: Function
 }
 
 const MainPhotoDisplay = ( {
-  handleScrollEndDrag,
   horizontalScroll,
   photoUris,
-  selectedPhotoIndex
+  selectedPhotoIndex,
+  setSelectedPhotoIndex
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
-  const renderImage = ( { item } ) => (
-    <CustomImageZoom source={{ uri: Photo.displayLargePhoto( item ) }} />
-  );
+  const [displayHeight, setDisplayHeight] = useState( 0 );
+  const atFirstPhoto = selectedPhotoIndex === 0;
+  const atLastPhoto = selectedPhotoIndex === photoUris.length - 1;
+
+  const renderImage = useCallback( ( { item: photoUri } ) => (
+    <CustomImageZoom
+      source={{ uri: Photo.displayLargePhoto( photoUri ) }}
+      height={displayHeight}
+    />
+  ), [displayHeight] );
 
   // need getItemLayout for setting initial scroll index
   const getItemLayout = useCallback( ( data, idx ) => ( {
@@ -34,8 +41,47 @@ const MainPhotoDisplay = ( {
     index: idx
   } ), [screenWidth] );
 
+  const handleScrollLeft = useCallback( index => {
+    if ( atFirstPhoto ) { return; }
+    setSelectedPhotoIndex( index );
+  }, [atFirstPhoto, setSelectedPhotoIndex] );
+
+  const handleScrollRight = useCallback( index => {
+    if ( atLastPhoto ) { return; }
+    setSelectedPhotoIndex( index );
+  }, [atLastPhoto, setSelectedPhotoIndex] );
+
+  const handleScrollEndDrag = useCallback( e => {
+    const { contentOffset, layoutMeasurement } = e.nativeEvent;
+    const { x } = contentOffset;
+
+    const currentOffset = screenWidth * selectedPhotoIndex;
+
+    // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
+    const index = Math.floor(
+      Math.floor( x ) / Math.floor( layoutMeasurement.width )
+    );
+
+    if ( x > currentOffset ) {
+      handleScrollRight( index );
+    } else if ( x < currentOffset ) {
+      handleScrollLeft( index );
+    }
+  }, [
+    handleScrollLeft,
+    handleScrollRight,
+    screenWidth,
+    selectedPhotoIndex
+  ] );
+
   return (
-    <View className="flex-1">
+    <View
+      className="flex-1"
+      onLayout={event => {
+        const { height } = event.nativeEvent.layout;
+        setDisplayHeight( height );
+      }}
+    >
       <FlatList
         data={photoUris}
         renderItem={renderImage}
