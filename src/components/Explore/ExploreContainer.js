@@ -233,6 +233,18 @@ const ExploreContainer = ( ): Node => {
     key => defaultFilters[key] !== exploreParams[key]
   );
 
+  const numberOfFilters = Object.keys( defaultFilters ).reduce( ( count, key ) => {
+    // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
+    if ( key === "sortBy" ) {
+      return count;
+    }
+
+    if ( exploreParams[key] && exploreParams[key] !== defaultFilters[key] ) {
+      return count + 1;
+    }
+    return count;
+  }, 0 );
+
   const changeExploreView = newView => {
     dispatch( {
       type: "CHANGE_EXPLORE_VIEW",
@@ -315,6 +327,7 @@ const ExploreContainer = ( ): Node => {
       // openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
       openFiltersModal={() => navigation.navigate( "ExploreFilterScreen" )}
       closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
+      numberOfFilters={numberOfFilters}
     />
   );
 };

@@ -27,7 +27,8 @@ type Props = {
   filtersNotDefault: boolean,
   resetFilters: Function,
   updateTaxon: Function,
-  updateSortBy: Function
+  updateSortBy: Function,
+  numberOfFilters: number
 };
 
 const FilterModal = ( {
@@ -36,7 +37,8 @@ const FilterModal = ( {
   filtersNotDefault,
   resetFilters,
   updateTaxon,
-  updateSortBy
+  updateSortBy,
+  numberOfFilters
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -45,9 +47,6 @@ const FilterModal = ( {
   } = exploreFilters;
 
   const [showSortBy, setShowSortBy] = useState( false );
-
-  // TODO: actually calculate this number
-  const number = 0;
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -74,7 +73,7 @@ const FilterModal = ( {
           <INatIcon name="sliders" size={20} />
           <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
           {/* TODO: add shadow */}
-          {number !== 0 && <NumberBadge number={number} />}
+          {numberOfFilters !== 0 && <NumberBadge number={numberOfFilters} />}
         </View>
         {filtersNotDefault
           ? (

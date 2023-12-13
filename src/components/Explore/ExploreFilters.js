@@ -11,7 +11,8 @@ type Props = {
   resetFilters: Function,
   showModal: boolean,
   closeModal: Function,
-  updateTaxon: Function
+  updateTaxon: Function,
+  numberOfFilters: number
 };
 
 const ExploreFilters = ( {
@@ -22,7 +23,8 @@ const ExploreFilters = ( {
   showModal,
   closeModal,
   updateTaxon,
-  updateSortBy
+  updateSortBy,
+  numberOfFilters
 }: Props ): Node => (
   <Modal
     showModal={showModal}
@@ -39,6 +41,7 @@ const ExploreFilters = ( {
         closeModal={closeModal}
         updateTaxon={updateTaxon}
         updateSortBy={updateSortBy}
+        numberOfFilters={numberOfFilters}
       />
     )}
   />

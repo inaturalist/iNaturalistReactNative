@@ -38,7 +38,8 @@ type Props = {
   updateSortBy: Function,
   showFiltersModal: boolean,
   openFiltersModal: Function,
-  closeFiltersModal: Function
+  closeFiltersModal: Function,
+  numberOfFilters: number
 }
 
 const Explore = ( {
@@ -56,7 +57,8 @@ const Explore = ( {
   updateSortBy,
   showFiltersModal,
   openFiltersModal,
-  closeFiltersModal
+  closeFiltersModal,
+  numberOfFilters
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -209,6 +211,7 @@ const Explore = ( {
         closeModal={closeFiltersModal}
         updateTaxon={updateTaxon}
         updateSortBy={updateSortBy}
+        numberOfFilters={numberOfFilters}
       />
     </>
   );
