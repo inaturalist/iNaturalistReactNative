@@ -36,14 +36,9 @@ const ExploreUserSearch = ( ): Node => {
     navigation.navigate( "Explore", { taxon: newTaxon } );
   }, [navigation] );
 
-  const renderFooter = ( ) => (
-    <View className="pb-10" />
-  );
-
   const renderItem = useCallback(
     ( { item } ) => (
       // TODO: add onPress = onUserSelected
-      // TODO: add divider between items
       <UserListItem
         item={{ user: item }}
         count={item.observations_count}
@@ -72,7 +67,6 @@ const ExploreUserSearch = ( ): Node => {
         estimatedItemSize={100}
         testID="SearchUserList"
         keyExtractor={item => item.id}
-        ListFooterComponent={renderFooter}
         renderItem={renderItem}
         ListHeaderComponent={renderItemSeparator}
         ItemSeparatorComponent={renderItemSeparator}
