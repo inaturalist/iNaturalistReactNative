@@ -91,15 +91,21 @@ const FilterModal = ( {
           <View className="mb-5">
             {taxon
               ? (
-                <DisplayTaxon
-                  taxon={taxon}
-                  handlePress={() => {
+                <Pressable
+                  className="flex-row justify-between items-center"
+                  accessibilityRole="button"
+                  // TODO: accessibilityLabel={t( "Change user or something like this" )}
+                  onPress={() => {
                     closeModal();
                     navigation.navigate( "ExploreTaxonSearch" );
                   }}
                 >
+                  <DisplayTaxon
+                    taxon={taxon}
+                  />
                   <INatIcon name="edit" size={22} />
-                </DisplayTaxon>
+                </Pressable>
+
               )
               : (
                 <Button

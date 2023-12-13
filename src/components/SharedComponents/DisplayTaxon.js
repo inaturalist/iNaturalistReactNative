@@ -11,7 +11,6 @@ import { useTranslation } from "sharedHooks";
 const { useRealm } = RealmContext;
 
 type Props = {
-  children?: Node,
   handlePress: Function,
   taxon: Object,
   testID?: string,
@@ -20,7 +19,6 @@ type Props = {
 }
 
 const DisplayTaxon = ( {
-  children,
   handlePress, taxon, testID, accessibilityLabel, withdrawn
 }: Props ): Node => {
   const realm = useRealm( );
@@ -71,7 +69,6 @@ const DisplayTaxon = ( {
             <DisplayTaxonName taxon={taxon} withdrawn={withdrawn} />
           </View>
         </View>
-        {children}
       </View>
     </Pressable>
   );
