@@ -4,9 +4,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFilterScreen from "components/Explore/ExploreFilterScreen";
-import ExploreLocationSearch from "components/Explore/ExploreLocationSearch";
-import ExploreTaxonSearch from "components/Explore/ExploreTaxonSearch";
-import ExploreUserSearch from "components/Explore/ExploreUserSearch";
+import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
+import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
+import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
