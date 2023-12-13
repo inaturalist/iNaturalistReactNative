@@ -20,6 +20,7 @@ const ExploreUserSearch = ( ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const navigation = useNavigation( );
 
+  // TODO: replace this with infinite scroll like ExploreFlashList
   const { data: userList } = useAuthenticatedQuery(
     ["fetchSearchResults", userQuery],
     optsWithAuth => fetchSearchResults(
@@ -41,7 +42,7 @@ const ExploreUserSearch = ( ): Node => {
       <Pressable
         onPress={() => onUserSelected( item )}
         accessibilityRole="button"
-        // accessibilityLabel={t( "Camera-button-zoom" )}
+        // TODO: accessibilityLabel={t( "Something like ?" )}
         accessibilityState={{ disabled: false }}
       >
         <UserListItem
