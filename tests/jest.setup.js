@@ -333,7 +333,8 @@ fetchMock.enableMocks( );
 fetchMock.dontMock( );
 
 const mockIconicTaxon = factory( "RemoteTaxon", {
-  is_iconic: true
+  is_iconic: true,
+  name: "Mock iconic taxon"
 } );
 inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
 
