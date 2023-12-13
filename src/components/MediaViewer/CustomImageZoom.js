@@ -1,35 +1,57 @@
 // @flow
 
-import classnames from "classnames";
-import { View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image as RNImage } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
-
-// lifted from this issue: https://github.com/ascoders/react-native-image-zoom/issues/42#issuecomment-734209924
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
 type Props = {
-  source: Object
+  // Height of the container
+  height: number,
+  source: Object,
+  // Function to tell the parent whether zooming is enabled, useful to disable
+  // scrolling
+  setZooming?: Function
 }
 
-const CustomImageZoom = ( { source }: Props ): Node => {
-  const scaleValue = useRef( 1 );
+const CustomImageZoom = ( {
+  height,
+  source,
+  setZooming
+}: Props ): Node => {
   const [photoDimensions, setPhotoDimensions] = useState( {
     width: 0,
     height: 0
   } );
-
-  const { width, height } = Dimensions.get( "screen" );
+  const {
+    isLandscapeMode,
+    isTablet,
+    screenWidth,
+    screenHeight
+  } = useDeviceOrientation( );
+  const usableScreenWidth = !isTablet && isLandscapeMode
+    ? screenHeight
+    : screenWidth;
   const aspectRatio = photoDimensions.width / photoDimensions.height;
-  const SELECTED_IMAGE_HEIGHT = Math.min( photoDimensions.height * aspectRatio, height ) - 150;
+  const imageHeight = Math.min( height, photoDimensions.height * aspectRatio );
+  const imageWidth = Math.min(
+    usableScreenWidth,
+    ( imageHeight / photoDimensions.height ) * photoDimensions.width
+  );
 
   const handleMove = ( { scale } ) => {
-    scaleValue.current = scale;
+    if ( !setZooming ) return;
+    if ( scale > 1 ) {
+      setZooming( true );
+    } else {
+      setZooming( false );
+    }
   };
 
   useEffect( ( ) => {
-    Image.getSize( source.uri, ( w, h ) => {
+    RNImage.getSize( source.uri, ( w, h ) => {
       setPhotoDimensions( {
         height: h,
         width: w
@@ -37,36 +59,27 @@ const CustomImageZoom = ( { source }: Props ): Node => {
     } );
   }, [source] );
 
-  if ( !photoDimensions.width ) {
-    return null;
-  }
-
   return (
     <ImageZoom
-      cropWidth={width}
-      cropHeight={SELECTED_IMAGE_HEIGHT}
-      imageWidth={width}
-      imageHeight={SELECTED_IMAGE_HEIGHT}
+      cropWidth={usableScreenWidth}
+      cropHeight={height}
+      imageWidth={imageWidth || usableScreenWidth}
+      imageHeight={
+        photoDimensions.width < photoDimensions.height
+          ? height
+          : ( imageHeight || height )
+      }
       minScale={1}
-      onStartShouldSetPanResponder={e => {
-        const pinching = e.nativeEvent.touches.length === 2;
-        const alreadyZooming = scaleValue.current > 1;
-        return pinching || alreadyZooming;
-      }}
       onMove={handleMove}
     >
       <View
-        onStartShouldSetResponder={
-          e => e.nativeEvent.touches.length < 2 && scaleValue.current <= 1
-        }
+        testID="CustomImageZoom"
       >
-        {/* $FlowIgnore */}
         <Image
+          testID={`CustomImageZoom.${source.uri}`}
           source={source}
           resizeMode="contain"
-          className={classnames(
-            "w-full h-full"
-          )}
+          className="w-full h-full"
           accessibilityIgnoresInvertColors
         />
       </View>

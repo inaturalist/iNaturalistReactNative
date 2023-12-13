@@ -124,7 +124,10 @@ const MyObservationsContainer = ( ): Node => {
   const { params: navParams } = useRoute( );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
   const { observationList: observations, allObsToUpload } = useLocalObservations( );
-  const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
+  const {
+    getItem: getStoredLayout,
+    setItem: setStoredLayout
+  } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const isOnline = useIsConnected( );
 
@@ -154,28 +157,25 @@ const MyObservationsContainer = ( ): Node => {
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
-  const writeItemToStorage = useCallback( async newValue => {
-    await setItem( newValue );
+  const writeLayoutToStorage = useCallback( async newValue => {
+    await setStoredLayout( newValue );
     setLayout( newValue );
-  }, [setItem] );
+  }, [setStoredLayout] );
 
   useEffect( ( ) => {
-    const readItemFromStorage = async ( ) => {
-      const item = await getItem( );
-      if ( !item ) {
-        await writeItemToStorage( "list" );
-      }
-      setLayout( item || "list" );
+    const readLayoutFromStorage = async ( ) => {
+      const storedLayout = await getStoredLayout( );
+      setLayout( storedLayout || "list" );
     };
 
-    readItemFromStorage( );
-  }, [getItem, writeItemToStorage] );
+    readLayoutFromStorage( );
+  }, [getStoredLayout, writeLayoutToStorage] );
 
   const toggleLayout = ( ) => {
     if ( layout === "grid" ) {
-      writeItemToStorage( "list" );
+      writeLayoutToStorage( "list" );
     } else {
-      writeItemToStorage( "grid" );
+      writeLayoutToStorage( "grid" );
     }
   };
 

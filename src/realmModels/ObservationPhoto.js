@@ -81,14 +81,6 @@ class ObservationPhoto extends Realm.Object {
     );
   };
 
-  static deleteObservationPhoto = ( list, photo ) => {
-    const i = list.findIndex(
-      p => p.photo.localFilePath === photo || p.originalPhotoUri === photo
-    );
-    list.splice( i, 1 );
-    return list;
-  };
-
   static async deleteRemotePhoto( realm, uri, currentObservation ) {
     // right now it doesn't look like there's a way to delete a photo OR an observation photo from
     // api v2, so just going to worry about deleting locally for now

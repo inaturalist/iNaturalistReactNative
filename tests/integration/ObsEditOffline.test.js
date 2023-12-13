@@ -65,7 +65,7 @@ describe( "ObsEdit offline", ( ) => {
         }
       } ) );
       Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
-      const observation = factory.states( "unUploaded" )( "LocalObservation", {
+      const observation = factory( "LocalObservation", {
         observationPhotos: []
       } );
       useStore.setState( { observations: [observation] } );
