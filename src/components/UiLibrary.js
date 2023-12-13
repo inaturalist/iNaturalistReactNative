@@ -6,6 +6,7 @@ import {
   Body3,
   Body4,
   Button,
+  Checkbox,
   CloseButton,
   CommentsCount,
   ConfidenceInterval,
@@ -349,7 +350,8 @@ const UiLibrary = (): Node => {
               {iconName}
             </Body1>
           ) )}
-
+        <Heading2 className="my-2">Checkbox</Heading2>
+        <Checkbox text="This is a checkbox" />
         <Heading2 className="my-2">User Icons</Heading2>
         <View className="flex flex-row justify-between mb-3">
           <View>
