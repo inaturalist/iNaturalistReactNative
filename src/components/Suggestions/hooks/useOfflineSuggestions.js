@@ -6,12 +6,14 @@ import {
 } from "react";
 import { predictImage } from "sharedHelpers/cvModel";
 
-const useOfflineSuggestions = ( selectedPhotoUri: string ): {
+const useOfflineSuggestions = ( selectedPhotoUri: string, options: Object ): {
   offlineSuggestions: Array<Object>,
   loadingOfflineSuggestions: boolean
 } => {
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
   const [loadingOfflineSuggestions, setLoadingOfflineSuggestions] = useState( true );
+
+  const { tryOfflineSuggestions } = options;
 
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
@@ -40,10 +42,10 @@ const useOfflineSuggestions = ( selectedPhotoUri: string ): {
       }
     };
 
-    if ( selectedPhotoUri ) {
+    if ( selectedPhotoUri && tryOfflineSuggestions ) {
       predictOffline( );
     }
-  }, [selectedPhotoUri] );
+  }, [selectedPhotoUri, tryOfflineSuggestions] );
 
   return {
     offlineSuggestions,
