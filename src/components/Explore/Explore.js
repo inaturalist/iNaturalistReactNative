@@ -98,14 +98,14 @@ const Explore = ( {
   return (
     <>
       <ViewWrapper testID="Explore">
+        {exploreView === "observations" && (
+          <ObservationsViewBar
+            observationsView={observationsView}
+            updateObservationsView={newView => setObservationsView( newView )}
+          />
+        )}
         <View className="overflow-hidden">
           <StickyView scrollY={scrollY} heightAboveView={heightAboveFilters}>
-            {exploreView === "observations" && (
-              <ObservationsViewBar
-                observationsView={observationsView}
-                updateObservationsView={newView => setObservationsView( newView )}
-              />
-            )}
             <Header
               region={region}
               setShowExploreBottomSheet={setShowExploreBottomSheet}
