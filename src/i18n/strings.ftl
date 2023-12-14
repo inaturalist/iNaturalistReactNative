@@ -349,6 +349,8 @@ Filter = Filter
 
 Filters = Filters
 
+FILTER-BY-A-PROJECT = FILTER BY A PROJECT
+
 FILTER-BY-A-USER = FILTER BY A USER
 
 Finish = Finish
@@ -615,6 +617,8 @@ Private = Private
 Profile = Profile
 
 Profile-Picture = Profile Picture
+
+PROJECT = PROJECT
 
 Project-Settings = Project Settings
 

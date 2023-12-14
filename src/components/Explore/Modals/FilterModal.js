@@ -43,7 +43,7 @@ const FilterModal = ( {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const {
-    taxon, region, sortBy, user
+    taxon, region, sortBy, user, project
   } = exploreFilters;
 
   const [showSortBy, setShowSortBy] = useState( false );
@@ -212,6 +212,42 @@ const FilterModal = ( {
               : (
                 <Button
                   text={t( "FILTER-BY-A-USER" )}
+                  onPress={() => {
+                    closeModal();
+                    navigation.navigate( "ExploreUserSearch" );
+                  }}
+                  accessibilityLabel={t( "Filter" )}
+                />
+              )}
+          </View>
+        </View>
+
+        {/* Project Section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "PROJECT" )}</Heading4>
+          <View className="mb-5">
+            {project
+              ? (
+                <Pressable
+                  className="flex-row justify-between items-center"
+                  accessibilityRole="button"
+                  // TODO: accessibilityLabel={t( "Change project or something like this" )}
+                  onPress={() => {
+                    closeModal();
+                    navigation.navigate( "ExploreUserSearch" );
+                  }}
+                >
+                  <UserListItem
+                    item={{ project }}
+                    count={project.observations_count}
+                    countText="X-Observations"
+                  />
+                  <INatIcon name="edit" size={22} />
+                </Pressable>
+              )
+              : (
+                <Button
+                  text={t( "FILTER-BY-A-PROJECT" )}
                   onPress={() => {
                     closeModal();
                     navigation.navigate( "ExploreUserSearch" );
