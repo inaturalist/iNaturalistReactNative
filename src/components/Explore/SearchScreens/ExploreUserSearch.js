@@ -34,11 +34,12 @@ const ExploreUserSearch = ( ): Node => {
   );
 
   const onUserSelected = useCallback( async user => {
-    if ( !user.id ) {
+    if ( !user.id && !user.login ) {
+      // If both of those are missing, we can not query by user
       // TODO: user facing error message
       return;
     }
-    navigation.navigate( "Explore", { userId: user.id } );
+    navigation.navigate( "Explore", { user } );
   }, [navigation] );
 
   const renderItem = useCallback(

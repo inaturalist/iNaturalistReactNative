@@ -12,7 +12,13 @@ const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
+const calculatedFilters = {
+  user: null
+};
+
+// Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
 const defaultFilters = {
+  ...calculatedFilters,
   sortBy: "DATE_UPLOADED_NEWEST",
   user_id: null
 };
@@ -37,6 +43,7 @@ const initialState: {
     radius?: number,
     project_id?: number,
     sortBy: string,
+    user: ?Object,
     user_id: ?string,
   },
   exploreView: string,
@@ -140,6 +147,7 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
+          user: action.user,
           user_id: action.userId
         }
       };
@@ -209,10 +217,11 @@ const ExploreContainer = ( ): Node => {
         place_guess: params.place?.display_name
       } );
     }
-    if ( params?.userId ) {
+    if ( params?.user ) {
       dispatch( {
         type: "SET_USER",
-        userId: params.userId
+        user: params.user,
+        userId: params.user.id
       } );
     }
     if ( params?.projectId ) {
@@ -233,13 +242,8 @@ const ExploreContainer = ( ): Node => {
     key => defaultFilters[key] !== exploreParams[key]
   );
 
-  const numberOfFilters = Object.keys( defaultFilters ).reduce( ( count, key ) => {
-    // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
-    if ( key === "sortBy" ) {
-      return count;
-    }
-
-    if ( exploreParams[key] && exploreParams[key] !== defaultFilters[key] ) {
+  const numberOfFilters = Object.keys( calculatedFilters ).reduce( ( count, key ) => {
+    if ( exploreParams[key] && exploreParams[key] !== calculatedFilters[key] ) {
       return count + 1;
     }
     return count;
