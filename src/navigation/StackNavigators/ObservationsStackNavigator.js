@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFilterScreen from "components/Explore/ExploreFilterScreen";
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
+import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Identify from "components/Identify/Identify";
@@ -108,6 +109,15 @@ const ObservationsStackNavigator = ( ): Node => (
       <Stack.Screen
         name="ExploreUserSearch"
         component={ExploreUserSearch}
+        options={{
+          ...removeBottomBorder,
+          headerTitle: userSearchTitle,
+          headerTitleAlign: "center"
+        }}
+      />
+      <Stack.Screen
+        name="ExploreProjectSearch"
+        component={ExploreProjectSearch}
         options={{
           ...removeBottomBorder,
           headerTitle: userSearchTitle,
