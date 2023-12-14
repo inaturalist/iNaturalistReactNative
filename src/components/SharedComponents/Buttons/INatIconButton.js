@@ -16,12 +16,13 @@ type Props = {
   height?: number,
   icon: string,
   onPress: Function,
+  // Inserts a white or colored view under the icon so an holes in the shape show as
+  // white
+  preventTransparency?: boolean,
   size?: number,
   style?: Object,
   testID?: string,
   width?: number,
-  // Inserts a white or colored view under the icon so an holes in the shape show as
-  // white
   backgroundColor?: string,
   mode?: "contained"
 }
@@ -40,6 +41,7 @@ const INatIconButton = ( {
   height = 44,
   icon,
   onPress,
+  preventTransparency,
   size = 18,
   style,
   testID,
@@ -100,6 +102,32 @@ const INatIconButton = ( {
       testID={testID}
     >
       <View className="relative">
+        { backgroundColor && preventTransparency && (
+          <View
+            // Position and size need to be dynamic
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              opacity: disabled
+                ? 0
+                : 1,
+              position: "absolute",
+              top: preventTransparency
+                ? 2
+                : -2,
+              start: preventTransparency
+                ? 2
+                : -2,
+              width: preventTransparency
+                ? size - 4
+                : size + 4,
+              height: preventTransparency
+                ? size - 4
+                : size + 4,
+              backgroundColor,
+              borderRadius: 9999
+            }}
+          />
+        )}
         {
           children || (
             <INatIcon
