@@ -286,6 +286,8 @@ EDIT-COMMENT = EDIT COMMENT
 
 EDIT-LOCATION = EDIT LOCATION
 
+Edit-Observation = Edit Observation
+
 EMAIL = EMAIL
 
 # Appears above the email text field

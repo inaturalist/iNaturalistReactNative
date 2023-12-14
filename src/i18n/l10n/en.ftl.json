@@ -158,6 +158,7 @@
   "During-app-start-no-model-found": "During app start there was no computer vision model found. There will be no AR camera.",
   "EDIT-COMMENT": "EDIT COMMENT",
   "EDIT-LOCATION": "EDIT LOCATION",
+  "Edit-Observation": "Edit Observation",
   "EMAIL": "EMAIL",
   "Email": {
     "comment": "Appears above the email text field",

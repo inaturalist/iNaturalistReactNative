@@ -36,6 +36,9 @@ const Header = ( {
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
 
+  const savedLocally = currentObservation?._created_at;
+  const unsynced = !currentObservation?._synced_at;
+
   const navToObsDetails = useCallback( ( ) => {
     navigation.navigate( "TabNavigator", {
       screen: "ObservationsStackNavigator",
@@ -67,32 +70,47 @@ const Header = ( {
     navToObsList( );
   }, [updateObservations, navToObsList] );
 
-  const renderHeaderTitle = useCallback( ( ) => (
-    <Heading2
-      testID="new-observation-text"
-      accessible
-      accessibilityRole="header"
-    >
-      {observations.length <= 1
-        ? t( "New-Observation" )
-        : t( "X-Observations", { count: observations.length } )}
-    </Heading2>
-  ), [observations, t] );
+  const renderHeaderTitle = useCallback( ( ) => {
+    let headingText = "";
+    if ( savedLocally ) {
+      headingText = t( "Edit-Observation" );
+    } else if ( observations.length > 1 ) {
+      headingText = t( "X-Observations", { count: observations.length } );
+    } else {
+      headingText = t( "New-Observation" );
+    }
+    return (
+      <Heading2
+        testID="new-observation-text"
+        accessible
+        accessibilityRole="header"
+      >
+        {headingText}
+      </Heading2>
+    );
+  }, [observations, t, savedLocally] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    const unsyncedObservation = !currentObservation?._synced_at && currentObservation?._created_at;
     if ( params?.lastScreen === "GroupPhotos"
-      || ( unsyncedObservation && !unsavedChanges )
+      || ( unsynced && savedLocally )
+      || ( unsynced && !unsavedChanges )
     ) {
       navigation.goBack( );
-    } else if ( !currentObservation?._created_at ) {
+    } else if ( !savedLocally ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
       navToObsDetails( );
     }
-  }, [currentObservation, navigation, unsavedChanges, params, navToObsDetails] );
+  }, [
+    unsynced,
+    savedLocally,
+    navigation,
+    unsavedChanges,
+    params,
+    navToObsDetails
+  ] );
 
   const renderBackButton = useCallback( ( ) => {
     const extraPadding = {

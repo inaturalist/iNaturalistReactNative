@@ -5,6 +5,7 @@ import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
   observation: Object,
@@ -15,12 +16,15 @@ type Props = {
 const MyObservationsPressable = ( { observation, testID, children }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
+  const setObservations = useStore( state => state.setObservations );
+
   const unsynced = typeof observation.wasSynced !== "undefined" && !observation.wasSynced( );
 
   const navigateToObservation = ( ) => {
     const { uuid } = observation;
     if ( unsynced ) {
-      navigation.navigate( "ObsEdit", { uuid } );
+      setObservations( [observation] );
+      navigation.navigate( "ObsEdit" );
     } else {
       navigation.navigate( "ObsDetails", { uuid } );
     }
