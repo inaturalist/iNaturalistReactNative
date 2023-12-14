@@ -38,6 +38,8 @@ const Checkbox = ( { text }: Props ): Node => {
       : theme.colors.primary
   };
 
+  const iconStyle = { borderRadius: 6 };
+
   return (
     <BouncyCheckbox
       size={25}
@@ -46,6 +48,7 @@ const Checkbox = ( { text }: Props ): Node => {
       iconComponent={renderIcon}
       onPress={( ) => setIsChecked( !isChecked )}
       textComponent={renderCheckboxText}
+      iconStyle={iconStyle}
       innerIconStyle={innerIconStyle}
       accessibilityRole="radio"
       accessibilityLabel={t( "Checkmark" )}

@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { Checkbox } from "components/SharedComponents";
 import initI18next from "i18n/initI18next";
 import React from "react";
@@ -9,6 +9,12 @@ import { renderComponent } from "../../../helpers/render";
 describe( "Checkbox", () => {
   beforeAll( async ( ) => {
     await initI18next( );
+  } );
+
+  it( "renders reliably", () => {
+    render( <Checkbox text="Checkmark text" /> );
+
+    expect( screen ).toMatchSnapshot( );
   } );
 
   it( "has no accessibility errors", () => {
