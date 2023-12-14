@@ -1,10 +1,8 @@
 // @flow
 
-import classnames from "classnames";
 import {
   BackButton,
   Heading4,
-  TransparentCircleButton,
   WarningSheet
 } from "components/SharedComponents";
 import {
@@ -23,7 +21,6 @@ import { useTheme } from "react-native-paper";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
-import colors from "styles/tailwindColors";
 
 import MainPhotoDisplay from "./MainPhotoDisplay";
 import PhotoSelector from "./PhotoSelector";
@@ -52,7 +49,7 @@ const MediaViewer = ( {
   // uris = []
   photos = []
 }: Props ): Node => {
-  const uris = photos.map( photo => photo.url );
+  const uris = photos.map( photo => photo.url || photo.localFilePath );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(
     uris.indexOf( uri ) <= 0
       ? 0
@@ -64,7 +61,7 @@ const MediaViewer = ( {
 
   const horizontalScroll = useRef( null );
 
-  const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
+  const { screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
   const scrollToIndex = useCallback( index => {
@@ -83,9 +80,9 @@ const MediaViewer = ( {
   }, [selectedPhotoIndex, setSelectedPhotoIndex, uris.length] );
 
   const deleteItem = useCallback( ( ) => {
-    const uriToDelete = uris[selectedPhotoIndex].toString( );
+    const uriToDelete = uris[selectedPhotoIndex]?.toString( );
     setWarningSheet( false );
-    if ( onDelete ) onDelete( uriToDelete );
+    if ( onDelete && uriToDelete ) onDelete( uriToDelete );
   }, [
     onDelete,
     selectedPhotoIndex,
@@ -108,37 +105,19 @@ const MediaViewer = ( {
         </Heading4>
       </View>
       <MainPhotoDisplay
+        editable={editable}
         photos={photos}
         selectedPhotoIndex={selectedPhotoIndex}
-        hideAttribution={editable}
         horizontalScroll={horizontalScroll}
         setSelectedPhotoIndex={setSelectedPhotoIndex}
+        onDelete={( ) => setWarningSheet( true )}
       />
       <PhotoSelector
         photos={photos}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
-        isLandscapeMode={isLandscapeMode}
         selectedPhotoIndex={selectedPhotoIndex}
       />
-      { editable && (
-        <View
-          className={classnames(
-            "absolute right-[14px]",
-            {
-              "bottom-[138px]": isLargeScreen,
-              "bottom-[91px]": !isLargeScreen
-            }
-          )}
-        >
-          <TransparentCircleButton
-            onPress={( ) => setWarningSheet( true )}
-            icon="trash-outline"
-            color={colors.white}
-            accessibilityLabel={t( "Delete" )}
-          />
-        </View>
-      )}
       {warningSheet && (
         <WarningSheet
           handleClose={( ) => setWarningSheet( false )}

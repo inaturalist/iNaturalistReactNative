@@ -62,12 +62,12 @@ describe( "MediaViewer", ( ) => {
 
       it( "should show the delete button", async ( ) => {
         renderComponent( <MediaViewer photos={photos} editable /> );
-        expect( await screen.findByLabelText( "Delete" ) ).toBeTruthy( );
+        expect( await screen.findByLabelText( "Delete photo" ) ).toBeTruthy( );
       } );
 
       it( "should not show AttributionButton", async ( ) => {
         renderComponent( <MediaViewer photos={photos} editable /> );
-        await screen.findByLabelText( "Delete" );
+        await screen.findByLabelText( "Delete photo" );
         expect( screen.queryByTestId( "AttributionButton" ) ).toBeFalsy( );
       } );
     } );
@@ -78,7 +78,7 @@ describe( "MediaViewer", ( ) => {
       it( "should not show the delete button", async ( ) => {
         renderComponent( <MediaViewer photos={photos} /> );
         expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
-        expect( screen.queryByLabelText( "Delete" ) ).toBeFalsy( );
+        expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
       } );
 
       it( "should show that a photographer reserves all rights", async ( ) => {

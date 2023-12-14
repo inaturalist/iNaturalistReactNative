@@ -1,18 +1,24 @@
 // @flow
 
+import {
+  TransparentCircleButton
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { FlatList } from "react-native";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
 import AttributionButton from "./AttributionButton";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
-  hideAttribution?: boolean,
+  editable?: boolean,
   horizontalScroll: any,
+  onDelete?: Function,
   photos: Array<{
     id?: number,
     url: string,
@@ -25,12 +31,14 @@ type Props = {
 }
 
 const MainPhotoDisplay = ( {
-  hideAttribution,
+  editable,
   horizontalScroll,
+  onDelete = ( ) => { },
   photos,
   selectedPhotoIndex,
   setSelectedPhotoIndex
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
@@ -40,19 +48,37 @@ const MainPhotoDisplay = ( {
   const renderImage = useCallback( ( { item: photo } ) => (
     <View>
       <CustomImageZoom
-        source={{ uri: Photo.displayLargePhoto( photo.url ) }}
+        source={{ uri: Photo.displayLargePhoto( photo.url || photo.localFilePath ) }}
         height={displayHeight}
         setZooming={setZooming}
       />
-      {!hideAttribution && (
-        <AttributionButton
-          licenseCode={photo.licenseCode}
-          attribution={photo.attribution}
-          optionalClasses="absolute top-0 right-4"
-        />
-      ) }
+      {
+        editable
+          ? (
+            <View className="absolute bottom-4 right-4">
+              <TransparentCircleButton
+                onPress={onDelete}
+                icon="trash-outline"
+                color={colors.white}
+                accessibilityLabel={t( "Delete-photo" )}
+              />
+            </View>
+          )
+          : (
+            <AttributionButton
+              licenseCode={photo.licenseCode}
+              attribution={photo.attribution}
+              optionalClasses="absolute top-4 right-4"
+            />
+          )
+      }
     </View>
-  ), [displayHeight, hideAttribution] );
+  ), [
+    displayHeight,
+    editable,
+    onDelete,
+    t
+  ] );
 
   // need getItemLayout for setting initial scroll index
   const getItemLayout = useCallback( ( data, idx ) => ( {

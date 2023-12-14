@@ -36,10 +36,21 @@ const PARAMS = {
   fields: FIELDS
 };
 
+function mapTaxonPhotoToLocalSchema( taxonPhoto ) {
+  taxonPhoto.photo.licenseCode = taxonPhoto.photo.licenseCode
+    || taxonPhoto.photo.license_code;
+  return taxonPhoto;
+}
+function mapToLocalSchema( taxon ) {
+  taxon.taxonPhotos = taxon?.taxonPhotos?.map( mapTaxonPhotoToLocalSchema );
+  taxon.taxon_photos = taxon?.taxon_photos?.map( mapTaxonPhotoToLocalSchema );
+  return taxon;
+}
+
 async function fetchTaxon( id: any, params: Object = {}, opts: Object = {} ): Promise<any> {
   try {
     const { results } = await inatjs.taxa.fetch( id, { ...PARAMS, ...params }, opts );
-    return results[0];
+    return mapToLocalSchema( results[0] );
   } catch ( e ) {
     return handleError( e );
   }

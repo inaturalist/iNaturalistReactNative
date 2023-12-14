@@ -19,7 +19,6 @@ type Props = {
   }>,
   scrollToIndex: Function,
   selectedPhotoIndex?: number,
-  isLandscapeMode?:boolean,
   isLargeScreen?: boolean
 }
 
@@ -27,12 +26,11 @@ const PhotoSelector = ( {
   photos,
   scrollToIndex,
   selectedPhotoIndex,
-  isLandscapeMode,
   isLargeScreen
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const smallPhotoClass = "rounded-sm w-[42px] h-[42px] mt-[6px] mx-[3px]";
-  const largePhotoClass = "rounded-md w-[83px] h-[83px] mx-[10px]";
+  const smallPhotoClass = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";
+  const largePhotoClass = "rounded-md w-[83px] h-[83px] mx-[10px] my-[20px]";
 
   const renderPhoto = useCallback( ( { item: photo, index } ) => (
     <Pressable
@@ -45,23 +43,18 @@ const PhotoSelector = ( {
           "border border-white border-[3px]": selectedPhotoIndex === index
         },
         {
-          "mt-[18px]": isLargeScreen && isLandscapeMode,
-          "mt-[47px]": isLargeScreen && !isLandscapeMode
-        },
-        {
           [`${smallPhotoClass}`]: !isLargeScreen,
           [`${largePhotoClass}`]: isLargeScreen
         }
       )}
     >
       <Image
-        source={{ uri: photo.url }}
+        source={{ uri: photo.url || photo.localFilePath }}
         accessibilityIgnoresInvertColors
         className="w-full h-full"
       />
     </Pressable>
   ), [
-    isLandscapeMode,
     isLargeScreen,
     scrollToIndex,
     selectedPhotoIndex,
@@ -69,12 +62,7 @@ const PhotoSelector = ( {
   ] );
 
   return (
-    <View className={classnames(
-      {
-        "left-[9px]": isLargeScreen
-      }
-    )}
-    >
+    <View>
       <FlatList
         data={photos}
         renderItem={renderPhoto}

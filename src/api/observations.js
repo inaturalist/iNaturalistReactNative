@@ -6,18 +6,22 @@ import handleError from "./error";
 
 // I tried doing this in Observaiton.js but got mysterious Realm errors. More
 // could be here, but this solves an immediate problem with schema mismatch
+function mapObsPhotoToLocalSchema( obsPhoto ) {
+  obsPhoto.photo.licenseCode = obsPhoto.photo.licenseCode
+    || obsPhoto.photo.license_code;
+  return obsPhoto;
+}
 function mapToLocalSchema( observation ) {
-  observation.observationPhotos = observation?.observationPhotos?.map( obsPhoto => {
-    obsPhoto.photo.licsenseCode = obsPhoto.photo.licsenseCode
-      || obsPhoto.photo.licsenseCode.license_code;
-    return obsPhoto;
-  } );
+  observation.observationPhotos = observation?.observationPhotos?.map( mapObsPhotoToLocalSchema );
+  observation.observation_photos = observation?.observation_photos?.map( mapObsPhotoToLocalSchema );
   return observation;
 }
 
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
-    return await inatjs.observations.search( params, opts );
+    const response = await inatjs.observations.search( params, opts );
+    response.results = response.results.map( mapToLocalSchema );
+    return response;
   } catch ( e ) {
     return handleError( e );
   }

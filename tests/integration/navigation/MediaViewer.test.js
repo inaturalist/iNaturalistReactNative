@@ -157,7 +157,9 @@ describe( "MediaViewer navigation", ( ) => {
       const obsEditPhotos = await screen.findAllByTestId( "ObsEdit.photo" );
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
       await actor.press( obsEditPhotos[0] );
-      expect( await screen.findByLabelText( "Delete" ) ).toBeVisible( );
+      const deleteButtons = await screen.findAllByLabelText( "Delete photo" );
+      expect( deleteButtons.length ).toEqual( observation.observationPhotos.length );
+      expect( deleteButtons[0] ).toBeVisible( );
     } );
   } );
 
@@ -187,7 +189,7 @@ describe( "MediaViewer navigation", ( ) => {
       navigateToCamera( );
       await findAndPressByLabelText( "Take photo" );
       await findAndPressByLabelText( "View photo" );
-      expect( await screen.findByLabelText( "Delete" ) ).toBeVisible( );
+      expect( await screen.findByLabelText( "Delete photo" ) ).toBeVisible( );
     } );
   } );
 
@@ -249,7 +251,7 @@ describe( "MediaViewer navigation", ( ) => {
           `CustomImageZoom.${observation.observation_photos[0].photo.url}`
         )
       ).toBeVisible( );
-      expect( screen.queryByLabelText( "Delete" ) ).toBeFalsy( );
+      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
     } );
   } );
 
@@ -308,7 +310,7 @@ describe( "MediaViewer navigation", ( ) => {
           `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
         )
       ).toBeVisible( );
-      expect( screen.queryByLabelText( "Delete" ) ).toBeFalsy( );
+      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
     } );
   } );
 } );
