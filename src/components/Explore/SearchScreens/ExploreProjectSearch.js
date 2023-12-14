@@ -20,16 +20,14 @@ const ExploreProjectSearch = ( ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const navigation = useNavigation( );
 
-  const { data: projects, isLoading } = useAuthenticatedQuery(
-    ["searchProjects", { q: userQuery }],
+  const { data: projects } = useAuthenticatedQuery(
+    ["searchProjects", userQuery],
     optsWithAuth => searchProjects( { q: userQuery }, optsWithAuth )
   );
 
-  console.log( "isLoading :>> ", isLoading );
-
   const onUserSelected = useCallback( async project => {
     if ( !project.id ) {
-      // If both of those are missing, we can not query by user
+      // If this is missing, we can not query by project
       // TODO: user facing error message
       return;
     }
