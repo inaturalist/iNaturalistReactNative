@@ -14,6 +14,7 @@ const DELTA = 0.2;
 
 const calculatedFilters = {
   user: undefined,
+  project: undefined
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -21,6 +22,7 @@ const defaultFilters = {
   ...calculatedFilters,
   sortBy: "DATE_UPLOADED_NEWEST",
   user_id: undefined,
+  project_id: undefined
 };
 
 const initialState: {
@@ -41,10 +43,11 @@ const initialState: {
     lat?: number,
     lng?: number,
     radius?: number,
-    project_id?: number,
+    project: ?Object,
+    project_id: ?number,
     sortBy: string,
     user: ?Object,
-    user_id: ?string,
+    user_id: ?number,
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -151,6 +154,15 @@ const reducer = ( state, action ) => {
           user_id: action.userId
         }
       };
+    case "SET_PROJECT":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          project: action.project,
+          project_id: action.projectId
+        }
+      };
     case "RESET_EXPLORE_FILTERS":
       return {
         ...state,
@@ -222,6 +234,13 @@ const ExploreContainer = ( ): Node => {
         type: "SET_USER",
         user: params.user,
         userId: params.user.id
+      } );
+    }
+    if ( params?.project ) {
+      dispatch( {
+        type: "SET_PROJECT",
+        project: params?.project,
+        projectId: params?.project.id
       } );
     }
     if ( params?.projectId ) {
