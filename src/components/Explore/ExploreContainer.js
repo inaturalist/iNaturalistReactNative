@@ -13,14 +13,14 @@ const { useRealm } = RealmContext;
 const DELTA = 0.2;
 
 const calculatedFilters = {
-  user: null
+  user: undefined,
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
 const defaultFilters = {
   ...calculatedFilters,
   sortBy: "DATE_UPLOADED_NEWEST",
-  user_id: null
+  user_id: undefined,
 };
 
 const initialState: {
