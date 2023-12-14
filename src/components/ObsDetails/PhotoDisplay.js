@@ -49,7 +49,7 @@ const PhotoDisplay = ( {
         testID="ObsDetail.editButton"
         onPress={() => {
           setObservations( [observation] );
-          navigation.navigate( "ObsEdit", { uuid: observation.uuid } );
+          navigation.navigate( "ObsEdit" );
         }}
         icon="pencil"
         color={colors.white}
