@@ -184,7 +184,6 @@ const FilterModal = ( {
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
           <View className="mb-5">
-            {/* <></> */}
             <Checkbox text={t( "Research-Grade" )} />
             <View className="mb-4" />
             <Checkbox text={t( "Needs-ID" )} />
