@@ -83,6 +83,10 @@
   "Content-Display": "Content & Display",
   "Coordinates-copied-to-keyboard": "Coordinates copied to keyboard",
   "Copy-coordinates": "Copy Coordinates",
+  "Copyright": {
+    "comment": "Right to control copies of a creative work; this string may be used as a\nheading to describe general information about rights, attribution, and\nlicensing",
+    "val": "Copyright"
+  },
   "Couldnt-create-comment": "Couldn't create comment",
   "Couldnt-create-identification": "Couldn't create identification",
   "Couldnt-create-identification-error": "Couldn't create identification { $error }",

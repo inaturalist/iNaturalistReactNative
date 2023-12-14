@@ -140,6 +140,11 @@ Copy-coordinates = Copy Coordinates
 
 Copy-coordinates = Copy Coordinates
 
+# Right to control copies of a creative work; this string may be used as a
+# heading to describe general information about rights, attribution, and
+# licensing
+Copyright = Copyright
+
 Couldnt-create-comment = Couldn't create comment
 
 Couldnt-create-identification = Couldn't create identification

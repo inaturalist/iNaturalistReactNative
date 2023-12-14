@@ -65,8 +65,11 @@ describe( "MediaViewer", ( ) => {
         expect( await screen.findByLabelText( "Delete" ) ).toBeTruthy( );
       } );
 
-      it.todo( "should not show that a photographer reserves all rights" );
-      it.todo( "should not show that a photographer has applied a license" );
+      it( "should not show AttributionButton", async ( ) => {
+        renderComponent( <MediaViewer photos={photos} editable /> );
+        await screen.findByLabelText( "Delete" );
+        expect( screen.queryByTestId( "AttributionButton" ) ).toBeFalsy( );
+      } );
     } );
 
     describe( "when not editable", ( ) => {
@@ -78,8 +81,22 @@ describe( "MediaViewer", ( ) => {
         expect( screen.queryByLabelText( "Delete" ) ).toBeFalsy( );
       } );
 
-      it.todo( "should show that a photographer reserves all rights" );
-      it.todo( "should show that a photographer has applied a license" );
+      it( "should show that a photographer reserves all rights", async ( ) => {
+        const photo = factory( "RemotePhoto", {
+          license_code: null,
+          attribution: "(c) username, all rights reserved"
+        } );
+        expect( photo.license_code ).toBeNull( );
+        renderComponent( <MediaViewer photos={[photo]} /> );
+        expect( await screen.findByLabelText( /all rights reserved/ ) ).toBeVisible( );
+      } );
+
+      it( "should show that a photographer has applied a license", async ( ) => {
+        const photo = factory( "RemotePhoto" );
+        expect( photo.license_code ).not.toBeNull( );
+        renderComponent( <MediaViewer photos={[photo]} /> );
+        expect( await screen.findByLabelText( /some rights reserved/ ) ).toBeVisible( );
+      } );
     } );
   } );
 } );

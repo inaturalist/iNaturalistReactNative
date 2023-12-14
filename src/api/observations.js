@@ -4,6 +4,17 @@ import inatjs from "inaturalistjs";
 
 import handleError from "./error";
 
+// I tried doing this in Observaiton.js but got mysterious Realm errors. More
+// could be here, but this solves an immediate problem with schema mismatch
+function mapToLocalSchema( observation ) {
+  observation.observationPhotos = observation?.observationPhotos?.map( obsPhoto => {
+    obsPhoto.photo.licsenseCode = obsPhoto.photo.licsenseCode
+      || obsPhoto.photo.licsenseCode.license_code;
+    return obsPhoto;
+  } );
+  return observation;
+}
+
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
     return await inatjs.observations.search( params, opts );
@@ -42,7 +53,7 @@ const fetchRemoteObservation = async (
     if ( !response ) { return null; }
     const { results } = response;
     if ( results?.length > 0 ) {
-      return results[0];
+      return mapToLocalSchema( results[0] );
     }
     return null;
   } catch ( e ) {

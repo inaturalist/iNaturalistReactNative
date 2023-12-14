@@ -6,7 +6,6 @@ import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
 import { useTheme } from "react-native-paper";
-import colors from "styles/tailwindColors";
 
 type Props = {
   accessibilityHint?: string,
@@ -49,7 +48,6 @@ const INatIconButton = ( {
   mode
 }: Props ): Node => {
   const theme = useTheme( );
-  const isWhite = backgroundColor === colors.white;
   // width || 0 is to placate flow. width should never be undefined because of
   // the defaultProps, but I guess flow can't figure that out.
   if ( ( width || 0 ) < MIN_ACCESSIBLE_DIM ) {
@@ -102,32 +100,6 @@ const INatIconButton = ( {
       testID={testID}
     >
       <View className="relative">
-        { backgroundColor && (
-          <View
-            // Position and size need to be dynamic
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={{
-              opacity: disabled
-                ? 0
-                : 1,
-              position: "absolute",
-              top: isWhite
-                ? 2
-                : -2,
-              start: isWhite
-                ? 2
-                : -2,
-              width: isWhite
-                ? size - 2
-                : size + 4,
-              height: isWhite
-                ? size - 2
-                : size + 4,
-              backgroundColor,
-              borderRadius: 9999
-            }}
-          />
-        )}
         {
           children || (
             <INatIcon

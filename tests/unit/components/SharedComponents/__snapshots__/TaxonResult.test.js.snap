@@ -197,7 +197,7 @@ exports[`TaxonResult should render correctly 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <View
@@ -394,7 +394,7 @@ exports[`TaxonResult should render correctly 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
     </View>

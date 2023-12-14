@@ -173,7 +173,7 @@ describe( "MediaViewer navigation", ( ) => {
       await findAndPressByLabelText( "Take photo" );
       const photo = await findAndPressByLabelText( "View photo" );
       await actor.press( photo );
-      
+
       expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
     } );
 

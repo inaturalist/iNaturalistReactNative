@@ -110,6 +110,7 @@ const MediaViewer = ( {
       <MainPhotoDisplay
         photos={photos}
         selectedPhotoIndex={selectedPhotoIndex}
+        hideAttribution={editable}
         horizontalScroll={horizontalScroll}
         setSelectedPhotoIndex={setSelectedPhotoIndex}
       />

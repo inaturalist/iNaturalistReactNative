@@ -7,9 +7,11 @@ import { FlatList } from "react-native";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
+import AttributionButton from "./AttributionButton";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
+  hideAttribution?: boolean,
   horizontalScroll: any,
   photos: Array<{
     id?: number,
@@ -23,6 +25,7 @@ type Props = {
 }
 
 const MainPhotoDisplay = ( {
+  hideAttribution,
   horizontalScroll,
   photos,
   selectedPhotoIndex,
@@ -35,12 +38,21 @@ const MainPhotoDisplay = ( {
   const atLastPhoto = selectedPhotoIndex === photos.length - 1;
 
   const renderImage = useCallback( ( { item: photo } ) => (
-    <CustomImageZoom
-      source={{ uri: Photo.displayLargePhoto( photo.url ) }}
-      height={displayHeight}
-      setZooming={setZooming}
-    />
-  ), [displayHeight] );
+    <View>
+      <CustomImageZoom
+        source={{ uri: Photo.displayLargePhoto( photo.url ) }}
+        height={displayHeight}
+        setZooming={setZooming}
+      />
+      {!hideAttribution && (
+        <AttributionButton
+          licenseCode={photo.licenseCode}
+          attribution={photo.attribution}
+          optionalClasses="absolute top-0 right-4"
+        />
+      ) }
+    </View>
+  ), [displayHeight, hideAttribution] );
 
   // need getItemLayout for setting initial scroll index
   const getItemLayout = useCallback( ( data, idx ) => ( {
