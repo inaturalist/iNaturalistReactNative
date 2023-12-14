@@ -518,6 +518,8 @@ Native = Native
 # Header for nearby projects
 NEARBY = NEARBY
 
+Needs-ID = Needs ID
+
 New-Observation = New Observation
 
 Newest-to-oldest = Newest to oldest

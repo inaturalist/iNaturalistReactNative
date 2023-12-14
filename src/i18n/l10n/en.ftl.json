@@ -313,6 +313,7 @@
     "comment": "Header for nearby projects",
     "val": "NEARBY"
   },
+  "Needs-ID": "Needs ID",
   "New-Observation": "New Observation",
   "Newest-to-oldest": "Newest to oldest",
   "Next": "Next",

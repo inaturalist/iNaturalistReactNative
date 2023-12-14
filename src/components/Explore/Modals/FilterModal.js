@@ -3,6 +3,7 @@ import SortBySheet from "components/Explore/Sheets/SortBySheet";
 import {
   Body3,
   Button,
+  Checkbox,
   DisplayTaxon,
   Heading1,
   Heading4,
@@ -184,6 +185,11 @@ const FilterModal = ( {
           <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
           <View className="mb-5">
             {/* <></> */}
+            <Checkbox text={t( "Research-Grade" )} />
+            <View className="mb-4" />
+            <Checkbox text={t( "Needs-ID" )} />
+            <View className="mb-4" />
+            <Checkbox text={t( "Casual" )} />
           </View>
         </View>
 
