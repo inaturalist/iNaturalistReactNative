@@ -34,7 +34,11 @@ const ExploreUserSearch = ( ): Node => {
   );
 
   const onUserSelected = useCallback( async user => {
-    navigation.navigate( "Explore", { user } );
+    if ( !user.id ) {
+      // TODO: user facing error message
+      return;
+    }
+    navigation.navigate( "Explore", { userId: user.id } );
   }, [navigation] );
 
   const renderItem = useCallback(

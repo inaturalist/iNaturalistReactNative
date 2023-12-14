@@ -14,33 +14,33 @@ const DELTA = 0.2;
 
 const defaultFilters = {
   sortBy: "DATE_UPLOADED_NEWEST",
-  user: null
+  user_id: null
 };
 
 const initialState: {
   region: {
-    latitude: number;
-    longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
-    place_guess: string;
-  };
+    latitude: number,
+    longitude: number,
+    latitudeDelta: number,
+    longitudeDelta: number,
+    place_guess: string,
+  },
   exploreParams: {
-    verifiable: boolean;
-    return_bounds: boolean;
-    taxon?: Object;
-    taxon_id?: number;
-    taxon_name?: string;
-    place_id?: number;
-    lat?: number;
-    lng?: number;
-    radius?: number;
-    project_id?: number;
-    sortBy: string;
-    user: Object;
-  };
-  exploreView: string;
-  showFiltersModal: boolean;
+    verifiable: boolean,
+    return_bounds: boolean,
+    taxon?: Object,
+    taxon_id?: number,
+    taxon_name?: string,
+    place_id?: number,
+    lat?: number,
+    lng?: number,
+    radius?: number,
+    project_id?: number,
+    sortBy: string,
+    user_id: ?string,
+  },
+  exploreView: string,
+  showFiltersModal: boolean,
 } = {
   region: {
     latitude: 0.0,
@@ -140,7 +140,7 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
-          user: action.user
+          user_id: action.userId
         }
       };
     case "RESET_EXPLORE_FILTERS":
@@ -209,10 +209,10 @@ const ExploreContainer = ( ): Node => {
         place_guess: params.place?.display_name
       } );
     }
-    if ( params?.user ) {
+    if ( params?.userId ) {
       dispatch( {
         type: "SET_USER",
-        user: params.user
+        userId: params.userId
       } );
     }
     if ( params?.projectId ) {
