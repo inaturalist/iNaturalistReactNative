@@ -14,6 +14,7 @@ const useAuthenticatedMutation = (
     // one is expired. We *could* store the token in state with useState if
     // fetching from RNSInfo becomes a performance issue
     const apiToken = await getJWT( );
+    console.log( apiToken, "api token jwt" );
     const options = {
       api_token: apiToken
     };
