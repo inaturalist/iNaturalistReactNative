@@ -9,6 +9,7 @@ import {
   IconicTaxonChooser,
   INatIcon
 } from "components/SharedComponents";
+import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -234,14 +235,10 @@ const FilterModal = ( {
                   // TODO: accessibilityLabel={t( "Change project or something like this" )}
                   onPress={() => {
                     closeModal();
-                    navigation.navigate( "ExploreUserSearch" );
+                    navigation.navigate( "ExploreProjectSearch" );
                   }}
                 >
-                  <UserListItem
-                    item={{ project }}
-                    count={project.observations_count}
-                    countText="X-Observations"
-                  />
+                  <ProjectListItem item={project} />
                   <INatIcon name="edit" size={22} />
                 </Pressable>
               )
@@ -250,7 +247,7 @@ const FilterModal = ( {
                   text={t( "FILTER-BY-A-PROJECT" )}
                   onPress={() => {
                     closeModal();
-                    navigation.navigate( "ExploreUserSearch" );
+                    navigation.navigate( "ExploreProjectSearch" );
                   }}
                   accessibilityLabel={t( "Filter" )}
                 />
