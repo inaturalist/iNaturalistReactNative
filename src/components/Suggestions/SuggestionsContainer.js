@@ -20,19 +20,19 @@ const SuggestionsContainer = ( ): Node => {
   const [selectedTaxon, setSelectedTaxon] = useState( null );
 
   const {
-    offlineSuggestions,
-    loadingOfflineSuggestions
-  } = useOfflineSuggestions( selectedPhotoUri );
-  const {
     onlineSuggestions,
     loadingOnlineSuggestions
-  } = useOnlineSuggestions( selectedPhotoUri, {
-    tryOnlineSuggestions: offlineSuggestions.length === 0
+  } = useOnlineSuggestions( selectedPhotoUri );
+  const {
+    offlineSuggestions,
+    loadingOfflineSuggestions
+  } = useOfflineSuggestions( selectedPhotoUri, {
+    tryOfflineSuggestions: onlineSuggestions?.length === 0
   } );
 
-  const nearbySuggestions = offlineSuggestions?.length > 0
-    ? offlineSuggestions
-    : onlineSuggestions;
+  const nearbySuggestions = onlineSuggestions?.length > 0
+    ? onlineSuggestions
+    : offlineSuggestions;
 
   const taxonIds = nearbySuggestions?.map(
     suggestion => suggestion.taxon.id
@@ -42,7 +42,7 @@ const SuggestionsContainer = ( ): Node => {
 
   useTaxonSelected( selectedTaxon, { vision: true } );
 
-  const loadingSuggestions = ( loadingOfflineSuggestions || loadingOnlineSuggestions )
+  const loadingSuggestions = ( loadingOnlineSuggestions || loadingOfflineSuggestions )
     && photoList.length > 0;
 
   return (

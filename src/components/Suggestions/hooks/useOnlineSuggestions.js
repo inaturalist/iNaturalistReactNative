@@ -7,16 +7,15 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-const useOnlineSuggestions = ( selectedPhotoUri: string, options: Object ): {
+const useOnlineSuggestions = ( selectedPhotoUri: string ): {
   onlineSuggestions: Array<Object>,
   loadingOnlineSuggestions: boolean
 } => {
   const currentObservation = useStore( state => state.currentObservation );
-  const { tryOnlineSuggestions } = options;
 
   const {
     data: onlineSuggestions,
-    isLoading
+    isLoading: loadingOnlineSuggestions
   } = useAuthenticatedQuery(
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => scoreImage(
@@ -28,16 +27,13 @@ const useOnlineSuggestions = ( selectedPhotoUri: string, options: Object ): {
       optsWithAuth
     ),
     {
-      enabled: !!(
-        selectedPhotoUri && tryOnlineSuggestions )
+      enabled: !!selectedPhotoUri
     }
   );
 
   return {
     onlineSuggestions,
-    loadingOnlineSuggestions: tryOnlineSuggestions
-      ? isLoading
-      : false
+    loadingOnlineSuggestions
   };
 };
 
