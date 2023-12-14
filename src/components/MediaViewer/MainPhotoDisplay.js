@@ -11,14 +11,20 @@ import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
   horizontalScroll: any,
-  photoUris: Array<string>,
+  photos: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>,
   selectedPhotoIndex: number,
   setSelectedPhotoIndex: Function
 }
 
 const MainPhotoDisplay = ( {
   horizontalScroll,
-  photoUris,
+  photos,
   selectedPhotoIndex,
   setSelectedPhotoIndex
 }: Props ): Node => {
@@ -26,11 +32,11 @@ const MainPhotoDisplay = ( {
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
   const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === photoUris.length - 1;
+  const atLastPhoto = selectedPhotoIndex === photos.length - 1;
 
-  const renderImage = useCallback( ( { item: photoUri } ) => (
+  const renderImage = useCallback( ( { item: photo } ) => (
     <CustomImageZoom
-      source={{ uri: Photo.displayLargePhoto( photoUri ) }}
+      source={{ uri: Photo.displayLargePhoto( photo.url ) }}
       height={displayHeight}
       setZooming={setZooming}
     />
@@ -85,7 +91,7 @@ const MainPhotoDisplay = ( {
       }}
     >
       <FlatList
-        data={photoUris}
+        data={photos}
         renderItem={renderImage}
         initialScrollIndex={selectedPhotoIndex}
         getItemLayout={getItemLayout}

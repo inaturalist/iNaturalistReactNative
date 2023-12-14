@@ -12,7 +12,13 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   onPress: ?Function,
-  photos: Array<Object>
+  photos: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>
 }
 
 const PhotoScroll = ( {
@@ -115,7 +121,7 @@ const PhotoScroll = ( {
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
         uri={photos[index].url}
-        uris={photos.map( photo => photo.url )}
+        photos={photos}
       />
     </View>
   );

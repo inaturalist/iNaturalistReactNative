@@ -74,10 +74,10 @@ const TaxonDetails = ( ): Node => {
     }
   ];
 
-  const mediaUris = compact(
+  const photos = compact(
     taxon?.taxonPhotos
-      ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo.url )
-      : [taxon?.defaultPhoto?.url]
+      ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
+      : [taxon?.defaultPhoto]
   );
 
   return (
@@ -94,7 +94,7 @@ const TaxonDetails = ( ): Node => {
             testID="TaxonDetails.photo"
             className="w-full h-full"
             source={{
-              uri: Photo.displayMediumPhoto( mediaUris.at( 0 ) )
+              uri: Photo.displayMediumPhoto( photos.at( 0 )?.url )
             }}
             accessibilityIgnoresInvertColors
           />
@@ -153,7 +153,7 @@ const TaxonDetails = ( ): Node => {
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
-        uris={mediaUris}
+        photos={photos}
       />
     </ScrollViewWrapper>
   );

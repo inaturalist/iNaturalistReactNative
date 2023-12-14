@@ -33,7 +33,13 @@ type Props = {
   onClose?: Function,
   onDelete?: Function,
   uri?: string,
-  uris?: Array<string>
+  photos?: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>
 }
 
 const BACK_BUTTON_STYLE = { position: "absolute", start: 0 };
@@ -43,8 +49,10 @@ const MediaViewer = ( {
   onClose = ( ) => { },
   onDelete,
   uri,
-  uris = []
+  // uris = []
+  photos = []
 }: Props ): Node => {
+  const uris = photos.map( photo => photo.url );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(
     uris.indexOf( uri ) <= 0
       ? 0
@@ -100,13 +108,13 @@ const MediaViewer = ( {
         </Heading4>
       </View>
       <MainPhotoDisplay
-        photoUris={uris}
+        photos={photos}
         selectedPhotoIndex={selectedPhotoIndex}
         horizontalScroll={horizontalScroll}
         setSelectedPhotoIndex={setSelectedPhotoIndex}
       />
       <PhotoSelector
-        photoUris={uris}
+        photos={photos}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
         isLandscapeMode={isLandscapeMode}

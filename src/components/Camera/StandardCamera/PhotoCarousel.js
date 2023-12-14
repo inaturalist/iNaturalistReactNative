@@ -306,7 +306,7 @@ const PhotoCarousel = ( {
           setTappedPhotoIndex( tappedPhotoIndex - 1 );
         }}
         uri={photoUris[tappedPhotoIndex]}
-        uris={photoUris}
+        photos={photoUris.map( uri => ( { url: uri } ) )}
       />
     </View>
   );

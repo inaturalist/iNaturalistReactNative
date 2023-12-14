@@ -10,7 +10,13 @@ import {
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  photoUris: Array<string>,
+  photos: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>,
   scrollToIndex: Function,
   selectedPhotoIndex?: number,
   isLandscapeMode?:boolean,
@@ -18,7 +24,7 @@ type Props = {
 }
 
 const PhotoSelector = ( {
-  photoUris,
+  photos,
   scrollToIndex,
   selectedPhotoIndex,
   isLandscapeMode,
@@ -28,7 +34,7 @@ const PhotoSelector = ( {
   const smallPhotoClass = "rounded-sm w-[42px] h-[42px] mt-[6px] mx-[3px]";
   const largePhotoClass = "rounded-md w-[83px] h-[83px] mx-[10px]";
 
-  const renderPhoto = useCallback( ( { item, index } ) => (
+  const renderPhoto = useCallback( ( { item: photo, index } ) => (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={t( "View-photo" )}
@@ -49,7 +55,7 @@ const PhotoSelector = ( {
       )}
     >
       <Image
-        source={{ uri: item }}
+        source={{ uri: photo.url }}
         accessibilityIgnoresInvertColors
         className="w-full h-full"
       />
@@ -70,7 +76,7 @@ const PhotoSelector = ( {
     )}
     >
       <FlatList
-        data={[...photoUris]}
+        data={photos}
         renderItem={renderPhoto}
         horizontal
       />

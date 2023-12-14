@@ -9,18 +9,24 @@ type Props = {
   editable?: boolean,
   onClose?: Function,
   onDelete?: Function,
+  photos?: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>,
   showModal: boolean,
-  uri?: string,
-  uris?: Array<string>
+  uri?: string
 }
 
 const MediaViewerModal = ( {
   editable,
   onClose = ( ) => { },
   onDelete,
+  photos = [],
   showModal,
-  uri,
-  uris = []
+  uri
 }: Props ): Node => (
   <Modal
     showModal={showModal}
@@ -32,8 +38,8 @@ const MediaViewerModal = ( {
         editable={editable}
         onClose={onClose}
         onDelete={onDelete}
+        photos={photos}
         uri={uri}
-        uris={uris}
       />
     )}
   />
