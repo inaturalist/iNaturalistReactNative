@@ -228,6 +228,7 @@
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
+  "Highest": "Highest",
   "ID-Withdrawn": {
     "comment": "Identification Status",
     "val": "ID Withdrawn"
@@ -283,6 +284,7 @@
     "val": "Looks like you're not using Apple Mail"
   },
   "Low": "Low",
+  "Lowest": "Lowest",
   "Mammals": "Mammals",
   "Media": "Media",
   "Missing-Date": "Missing Date",
@@ -548,6 +550,7 @@
   "Tap-to-search-for-taxa": "Tap to search for taxa",
   "Taxon": "Taxon",
   "TAXON": "TAXON",
+  "TAXONOMIC-RANKS": "TAXONOMIC RANKS",
   "TAXONOMY-header": {
     "comment": "Header for a block of text describing a taxon's taxonomy",
     "val": "TAXONOMY"

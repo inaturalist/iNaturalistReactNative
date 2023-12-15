@@ -395,6 +395,8 @@ Has-Sounds = Has Sounds
 
 High = High
 
+Highest = Highest
+
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 
@@ -467,6 +469,8 @@ Login-sub-title = Document living things, identify organisms & contribute to sci
 Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
 
 Low = Low
+
+Lowest = Lowest
 
 Mammals = Mammals
 
@@ -830,6 +834,8 @@ Tap-to-search-for-taxa = Tap to search for taxa
 Taxon = Taxon
 
 TAXON = TAXON
+
+TAXONOMIC-RANKS = TAXONOMIC RANKS
 
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY

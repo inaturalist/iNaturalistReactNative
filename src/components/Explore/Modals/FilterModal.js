@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import SortBySheet from "components/Explore/Sheets/SortBySheet";
 import {
+  Body2,
   Body3,
   Button,
   Checkbox,
@@ -258,6 +259,31 @@ const FilterModal = ( {
                 />
               )}
           </View>
+        </View>
+
+        {/* Taxonomic Ranks section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
+          <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
+          <Button
+            text="ALL"
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              closeModal();
+              setShowSortBy( true );
+            }}
+          />
+          <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
+          <Button
+            text="ALL"
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              closeModal();
+              setShowSortBy( true );
+            }}
+          />
         </View>
       </ScrollView>
     </View>
