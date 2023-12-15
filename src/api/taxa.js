@@ -25,6 +25,7 @@ const FIELDS = {
   name: true,
   preferred_common_name: true,
   rank: true,
+  rank_level: true,
   taxon_photos: {
     photo: PHOTO_FIELDS
   },
@@ -49,7 +50,8 @@ function mapToLocalSchema( taxon ) {
 
 async function fetchTaxon( id: any, params: Object = {}, opts: Object = {} ): Promise<any> {
   try {
-    const { results } = await inatjs.taxa.fetch( id, { ...PARAMS, ...params }, opts );
+    const fetchParams = { ...PARAMS, ...params };
+    const { results } = await inatjs.taxa.fetch( id, fetchParams, opts );
     return mapToLocalSchema( results[0] );
   } catch ( e ) {
     return handleError( e );

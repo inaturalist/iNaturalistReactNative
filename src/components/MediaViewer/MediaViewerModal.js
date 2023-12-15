@@ -7,6 +7,8 @@ import React from "react";
 
 type Props = {
   editable?: boolean,
+  // Optional component to use as the header
+  header?: Function,
   onClose?: Function,
   onDelete?: Function,
   photos?: Array<{
@@ -22,6 +24,7 @@ type Props = {
 
 const MediaViewerModal = ( {
   editable,
+  header,
   onClose = ( ) => { },
   onDelete,
   photos = [],
@@ -36,6 +39,7 @@ const MediaViewerModal = ( {
     modal={(
       <MediaViewer
         editable={editable}
+        header={header}
         onClose={onClose}
         onDelete={onDelete}
         photos={photos}

@@ -6,7 +6,6 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import PlaceholderText from "components/PlaceholderText";
 import {
   BackButton,
-  DisplayTaxonName,
   Heading4,
   HideView,
   INatIconButton,
@@ -17,13 +16,15 @@ import { Image, Pressable, View } from "components/styledComponents";
 import { compact } from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
 import About from "./About";
+import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
+import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 const logger = log.extend( "TaxonDetails" );
 
@@ -46,7 +47,7 @@ const TaxonDetails = ( ): Node => {
 
   // Note that we want to authenticate this to localize names, desc language, etc.
   const {
-    data,
+    data: remoteTaxon,
     isLoading,
     isError,
     error
@@ -57,7 +58,7 @@ const TaxonDetails = ( ): Node => {
   if ( error ) {
     logger.error( `Failed to retrieve taxon ${id}: ${error}` );
   }
-  const taxon = data || localTaxon;
+  const taxon = remoteTaxon || localTaxon;
 
   const tabs = [
     {
@@ -79,6 +80,13 @@ const TaxonDetails = ( ): Node => {
       ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
       : [taxon?.defaultPhoto]
   );
+
+  const renderHeader = useCallback( ( { onClose } ) => (
+    <TaxonDetailsMediaViewerHeader
+      taxon={taxon}
+      onClose={onClose}
+    />
+  ), [taxon] );
 
   return (
     <ScrollViewWrapper testID={`TaxonDetails.${taxon?.id}`}>
@@ -105,15 +113,8 @@ const TaxonDetails = ( ): Node => {
             onPress={( ) => navigation.goBack( )}
           />
         </View>
-        <View className="absolute bottom-5 left-5">
-          <Heading4 className="color-white">{taxon?.rank}</Heading4>
-          <DisplayTaxonName
-            taxon={taxon}
-            layout="horizontal"
-            color="text-white"
-          />
-        </View>
-        <View className="absolute bottom-5 right-5">
+        <View className="absolute bottom-0 p-5 w-full flex-row items-center">
+          <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
           <INatIconButton
             icon="compass-rose-outline"
             onPress={( ) => navigation.navigate( "TabNavigator", {
@@ -130,7 +131,7 @@ const TaxonDetails = ( ): Node => {
             // little padding that we can't control, so the negative margin
             // here is to ensure the visible icon is flush with the edge of
             // the container
-            className="m-0 ml-[-8px] bg-inatGreen rounded-full"
+            className="ml-5 bg-inatGreen rounded-full"
           />
         </View>
       </View>
@@ -154,6 +155,7 @@ const TaxonDetails = ( ): Node => {
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
         photos={photos}
+        header={renderHeader}
       />
     </ScrollViewWrapper>
   );

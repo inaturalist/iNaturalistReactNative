@@ -1,14 +1,7 @@
 // @flow
 
-import {
-  BackButton,
-  Heading4,
-  WarningSheet
-} from "components/SharedComponents";
-import {
-  SafeAreaView,
-  View
-} from "components/styledComponents";
+import { WarningSheet } from "components/SharedComponents";
+import { SafeAreaView } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -17,16 +10,18 @@ import React, {
   useState
 } from "react";
 import { StatusBar } from "react-native";
-import { useTheme } from "react-native-paper";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 
 import MainPhotoDisplay from "./MainPhotoDisplay";
+import MediaViewerHeader from "./MediaViewerHeader";
 import PhotoSelector from "./PhotoSelector";
 
 type Props = {
   editable?: boolean,
+  // Optional component to use as the header
+  header?: Function,
   onClose?: Function,
   onDelete?: Function,
   uri?: string,
@@ -39,14 +34,12 @@ type Props = {
   }>
 }
 
-const BACK_BUTTON_STYLE = { position: "absolute", start: 0 };
-
 const MediaViewer = ( {
   editable,
+  header,
   onClose = ( ) => { },
   onDelete,
   uri,
-  // uris = []
   photos = []
 }: Props ): Node => {
   const uris = photos.map( photo => photo.url || photo.localFilePath );
@@ -57,7 +50,6 @@ const MediaViewer = ( {
   );
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
-  const theme = useTheme( );
 
   const horizontalScroll = useRef( null );
 
@@ -93,17 +85,11 @@ const MediaViewer = ( {
   return (
     <SafeAreaView className="flex-1 bg-black" testID="MediaViewer">
       <StatusBar hidden barStyle="light-content" backgroundColor="black" />
-      <View className="flex-row items-center justify-center min-h-[44]">
-        <BackButton
-          inCustomHeader
-          color={theme.colors.onPrimary}
-          customStyles={BACK_BUTTON_STYLE}
-          onPress={onClose}
-        />
-        <Heading4 className="color-white">
-          {t( "X-PHOTOS", { photoCount: uris.length } )}
-        </Heading4>
-      </View>
+      {
+        header
+          ? header( { onClose, photoCount: uris.length } )
+          : <MediaViewerHeader onClose={onClose} photoCount={uris.length} />
+      }
       <MainPhotoDisplay
         editable={editable}
         photos={photos}
