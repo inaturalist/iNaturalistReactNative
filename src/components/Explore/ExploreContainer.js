@@ -12,6 +12,10 @@ const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
+const RESEARCH = "research";
+const NEEDS_ID = "needs_id";
+const CASUAL = "casual";
+
 const calculatedFilters = {
   user: undefined,
   project: undefined,
@@ -203,7 +207,7 @@ const reducer = ( state, action ) => {
           researchGrade: !state.exploreParams.researchGrade
         }
       };
-    case "TOOGLE_NEEDS_ID":
+    case "TOGGLE_NEEDS_ID":
       return {
         ...state,
         exploreParams: {
@@ -361,6 +365,16 @@ const ExploreContainer = ( ): Node => {
     },
     {}
   );
+  filteredParams.quality_grade = [];
+  if ( exploreParams.researchGrade ) {
+    filteredParams.quality_grade.push( RESEARCH );
+  }
+  if ( exploreParams.needsID ) {
+    filteredParams.quality_grade.push( NEEDS_ID );
+  }
+  if ( exploreParams.casual ) {
+    filteredParams.quality_grade.push( CASUAL );
+  }
 
   return (
     <Explore
