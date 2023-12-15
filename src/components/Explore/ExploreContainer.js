@@ -29,7 +29,9 @@ const calculatedFilters = {
   project: undefined,
   researchGrade: true,
   needsID: true,
-  casual: false
+  casual: false,
+  hrank: undefined,
+  lrank: undefined
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -66,6 +68,8 @@ const initialState: {
     researchGrade: boolean,
     needsID: boolean,
     casual: boolean,
+    hrank: ?string,
+    lrank: ?string
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -231,6 +235,21 @@ const reducer = ( state, action ) => {
           casual: !state.exploreParams.casual
         }
       };
+    case "SET_HIGHEST_TAXONOMIC_RANK":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          hrank: action.hrank
+        }
+      };
+    case "SET_LOWEST_TAXONOMIC_RANK":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          lrank: action.lrank
+      };
     default:
       throw new Error();
   }
@@ -242,6 +261,7 @@ const ExploreContainer = ( ): Node => {
 
   const realm = useRealm();
   const navigation = useNavigation();
+  console.log( "navigation :>> ", navigation );
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
@@ -367,6 +387,18 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
+  const updateHighestTaxonomicRank = newRank => {
+    dispatch( {
+      type: "SET_HIGHEST_TAXONOMIC_RANK",
+      hrank: newRank
+    } );
+  const updateLowestTaxonomicRank = newRank => {
+    dispatch( {
+      type: "SET_LOWEST_TAXONOMIC_RANK",
+      lrank: newRank
+    } );
+  };
+
   const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -422,13 +454,15 @@ const ExploreContainer = ( ): Node => {
       updateSortBy={updateSortBy}
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
-      // openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
-      openFiltersModal={() => navigation.navigate( "ExploreFilterScreen" )}
+      openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
+      // openFiltersModal={() => navigation.navigate( "ExploreFilterScreen" )}
       closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
       numberOfFilters={numberOfFilters}
       updateResearchGrade={() => dispatch( { type: "TOGGLE_RESEARCH_GRADE" } )}
       updateNeedsID={() => dispatch( { type: "TOGGLE_NEEDS_ID" } )}
       updateCasual={() => dispatch( { type: "TOGGLE_CASUAL" } )}
+      updateHighestTaxonomicRank={updateHighestTaxonomicRank}
+      updateLowestTaxonomicRank={updateLowestTaxonomicRank}
     />
   );
 };

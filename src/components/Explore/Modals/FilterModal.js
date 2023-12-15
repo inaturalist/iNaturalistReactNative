@@ -34,7 +34,9 @@ type Props = {
   numberOfFilters: number,
   updateResearchGrade: Function,
   updateNeedsID: Function,
-  updateCasual: Function
+  updateCasual: Function,
+  updateLowestTaxonomicRank: Function,
+  updateHighestTaxonomicRank: Function
 };
 
 const FilterModal = ( {
@@ -47,12 +49,23 @@ const FilterModal = ( {
   numberOfFilters,
   updateResearchGrade,
   updateNeedsID,
-  updateCasual
+  updateCasual,
+  updateLowestTaxonomicRank,
+  updateHighestTaxonomicRank
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const {
-    taxon, region, sortBy, user, project, researchGrade, needsID, casual
+    taxon,
+    region,
+    sortBy,
+    user,
+    project,
+    researchGrade,
+    needsID,
+    casual,
+    lrank,
+    hrank
   } = exploreFilters;
 
   const [showSortBy, setShowSortBy] = useState( false );

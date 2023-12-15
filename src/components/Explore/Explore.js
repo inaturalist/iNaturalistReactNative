@@ -42,7 +42,9 @@ type Props = {
   numberOfFilters: number,
   updateResearchGrade: Function,
   updateNeedsID: Function,
-  updateCasual: Function
+  updateCasual: Function,
+  updateHighestTaxonomicRank: Function,
+  updateLowestTaxonomicRank: Function
 }
 
 const Explore = ( {
@@ -64,7 +66,9 @@ const Explore = ( {
   numberOfFilters,
   updateResearchGrade,
   updateNeedsID,
-  updateCasual
+  updateCasual,
+  updateHighestTaxonomicRank,
+  updateLowestTaxonomicRank
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -221,6 +225,8 @@ const Explore = ( {
         updateResearchGrade={updateResearchGrade}
         updateNeedsID={updateNeedsID}
         updateCasual={updateCasual}
+        updateHighestTaxonomicRank={updateHighestTaxonomicRank}
+        updateLowestTaxonomicRank={updateLowestTaxonomicRank}
       />
     </>
   );

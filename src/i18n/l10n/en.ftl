@@ -44,6 +44,8 @@ Agree-with-ID-description = Would you like to agree with the ID and suggest the 
 
 All = All
 
+ALL = ALL
+
 ALL-SUGGESTIONS = ALL SUGGESTIONS
 
 All-observations = All observations
@@ -58,6 +60,8 @@ Already-have-an-account = Already have an account? Log in
 Amphibians = Amphibians
 
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
+
+APPLY-FILTERS = APPLY FILTERS
 
 Arachnids = Arachnids
 
@@ -662,6 +666,8 @@ Ranks-SUBCLASS = SUBCLASS
 Ranks-subclass = subclass
 Ranks-INFRACLASS = INFRACLASS
 Ranks-infraclass = infraclass
+Ranks-SUBTERCLASS = SUBTERCLASS
+Ranks-subterclass = subterclass
 Ranks-SUPERORDER = SUPERORDER
 Ranks-superorder = superorder
 Ranks-ORDER = ORDER
@@ -670,8 +676,6 @@ Ranks-SUBORDER = SUBORDER
 Ranks-suborder = suborder
 Ranks-INFRAORDER = INFRAORDER
 Ranks-infraorder = infraorder
-Ranks-SUBTERCLASS = SUBTERCLASS
-Ranks-subterclass = subterclass
 Ranks-PARVORDER = PARVORDER
 Ranks-parvorder = parvorder
 Ranks-ZOOSECTION = ZOOSECTION
