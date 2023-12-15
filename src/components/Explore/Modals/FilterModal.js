@@ -86,6 +86,147 @@ const FilterModal = ( {
     }
   };
 
+  const tUp = key => t( key ).toUpperCase();
+
+  const taxonomicRankValues = {
+    kingdom: {
+      label: tUp( "Ranks-kingdom" ),
+      value: "kingdom"
+    },
+    phylum: {
+      label: tUp( "Ranks-phylum" ),
+      value: "phylum"
+    },
+    subphylum: {
+      label: tUp( "Ranks-subphylum" ),
+      value: "subphylum"
+    },
+    superclass: {
+      label: tUp( "Ranks-superclass" ),
+      value: "superclass"
+    },
+    class: {
+      label: tUp( "Ranks-class" ),
+      value: "class"
+    },
+    subclass: {
+      label: tUp( "Ranks-subclass" ),
+      value: "subclass"
+    },
+    infraclass: {
+      label: tUp( "Ranks-infraclass" ),
+      value: "infraclass"
+    },
+    subterclass: {
+      label: tUp( "Ranks-subterclass" ),
+      value: "subterclass"
+    },
+    superorder: {
+      label: tUp( "Ranks-superorder" ),
+      value: "superorder"
+    },
+    order: {
+      label: tUp( "Ranks-order" ),
+      value: "order"
+    },
+    suborder: {
+      label: tUp( "Ranks-suborder" ),
+      value: "suborder"
+    },
+    infraorder: {
+      label: tUp( "Ranks-infraorder" ),
+      value: "infraorder"
+    },
+    parvorder: {
+      label: tUp( "Ranks-parvorder" ),
+      value: "parvorder"
+    },
+    zoosection: {
+      label: tUp( "Ranks-zoosection" ),
+      value: "zoosection"
+    },
+    zoosubsection: {
+      label: tUp( "Ranks-zoosubsection" ),
+      value: "zoosubsection"
+    },
+    superfamily: {
+      label: tUp( "Ranks-superfamily" ),
+      value: "superfamily"
+    },
+    epifamily: {
+      label: tUp( "Ranks-epifamily" ),
+      value: "epifamily"
+    },
+    family: {
+      label: tUp( "Ranks-family" ),
+      value: "family"
+    },
+    subfamily: {
+      label: tUp( "Ranks-subfamily" ),
+      value: "subfamily"
+    },
+    supertribe: {
+      label: tUp( "Ranks-supertribe" ),
+      value: "supertribe"
+    },
+    tribe: {
+      label: tUp( "Ranks-tribe" ),
+      value: "tribe"
+    },
+    subtribe: {
+      label: tUp( "Ranks-subtribe" ),
+      value: "subtribe"
+    },
+    genus: {
+      label: tUp( "Ranks-genus" ),
+      value: "genus"
+    },
+    genushybrid: {
+      label: tUp( "Ranks-genushybrid" ),
+      value: "genushybrid"
+    },
+    subgenus: {
+      label: tUp( "Ranks-subgenus" ),
+      value: "subgenus"
+    },
+    section: {
+      label: tUp( "Ranks-section" ),
+      value: "section"
+    },
+    subsection: {
+      label: tUp( "Ranks-subsection" ),
+      value: "subsection"
+    },
+    complex: {
+      label: tUp( "Ranks-complex" ),
+      value: "complex"
+    },
+    species: {
+      label: tUp( "Ranks-species" ),
+      value: "species"
+    },
+    hybrid: {
+      label: tUp( "Ranks-hybrid" ),
+      value: "hybrid"
+    },
+    subspecies: {
+      label: tUp( "Ranks-subspecies" ),
+      value: "subspecies"
+    },
+    variety: {
+      label: tUp( "Ranks-variety" ),
+      value: "variety"
+    },
+    form: {
+      label: tUp( "Ranks-form" ),
+      value: "form"
+    },
+    infrahybrid: {
+      label: tUp( "Ranks-infrahybrid" ),
+      value: "infrahybrid"
+    }
+  };
+
   return (
     <View className="flex-1 bg-white">
       {/* Header */}
@@ -297,7 +438,9 @@ const FilterModal = ( {
           <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
           <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
           <Button
-            text="ALL"
+            text={lrank
+              ? taxonomicRankValues[lrank]?.label
+              : t( "ALL" )}
             className="shrink mb-7"
             dropdown
             onPress={() => {
@@ -307,7 +450,9 @@ const FilterModal = ( {
           />
           <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
           <Button
-            text="ALL"
+            text={hrank
+              ? taxonomicRankValues[hrank]?.label
+              : t( "ALL" )}
             className="shrink mb-7"
             dropdown
             onPress={() => {
