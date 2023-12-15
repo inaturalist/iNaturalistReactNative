@@ -1,11 +1,12 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body2,
   Heading4
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
@@ -16,7 +17,10 @@ type Props = {
 }
 
 const Taxonomy = ( { taxon: currentTaxon }: Props ): React.Node => {
+  const navigation = useNavigation( );
   const { t } = useTranslation( );
+
+  const navToTaxonDetails = id => navigation.navigate( "TaxonDetails", { id } );
 
   const displayCommonName = ( commonName, options ) => (
     <Body2 className={
@@ -74,25 +78,25 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): React.Node => {
     } = generateTaxonPieces( taxon );
 
     return (
-      <View className="flex-row">
+      <Pressable
+        accessibilityRole="button"
+        className="flex-row"
+        key={taxon?.id}
+        disabled={isCurrentTaxon}
+        onPress={( ) => navToTaxonDetails( taxon?.id )}
+      >
         {displayCommonName( commonName, { isCurrentTaxon } )}
         {displayScientificName( rank, scientificNamePieces, rankLevel, rankPiece )}
-      </View>
+      </Pressable>
     );
   };
-
-  const displayTaxonomyList = ( ) => currentTaxon?.ancestors?.map( ancestor => (
-    <View key={ancestor.id || currentTaxon.id}>
-      {renderTaxon( ancestor )}
-    </View>
-  ) );
 
   return (
     <View className="mb-5">
       <Heading4 className="my-3">
         {t( "TAXONOMY-header" )}
       </Heading4>
-      {displayTaxonomyList( )}
+      {currentTaxon?.ancestors?.map( ancestor => renderTaxon( ancestor ) )}
       {renderTaxon( currentTaxon, { isCurrentTaxon: true } )}
     </View>
   );
