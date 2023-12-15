@@ -9,7 +9,8 @@ import {
   Heading1,
   Heading4,
   IconicTaxonChooser,
-  INatIcon
+  INatIcon,
+  RadioButtonSheet,
 } from "components/SharedComponents";
 import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import UserListItem from "components/SharedComponents/UserListItem";
@@ -69,6 +70,8 @@ const FilterModal = ( {
   } = exploreFilters;
 
   const [showSortBy, setShowSortBy] = useState( false );
+  const [showLowerTaxRank, setShowLowerTaxRank] = useState( false );
+  const [showHigherTaxRank, setShowHigherTaxRank] = useState( false );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -445,9 +448,21 @@ const FilterModal = ( {
             dropdown
             onPress={() => {
               closeModal();
-              setShowSortBy( true );
+              setShowLowerTaxRank( true );
             }}
           />
+          {showLowerTaxRank && (
+            <RadioButtonSheet
+              headerText={t( "TAXONOMIC-RANKS" )}
+              confirm={newRank => {
+                updateLowestTaxonomicRank( newRank );
+                setShowLowerTaxRank( false );
+              }}
+              handleClose={() => setShowLowerTaxRank( false )}
+              radioValues={taxonomicRankValues}
+              selectedValue={lrank}
+            />
+          )}
           <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
           <Button
             text={hrank
@@ -457,9 +472,22 @@ const FilterModal = ( {
             dropdown
             onPress={() => {
               closeModal();
-              setShowSortBy( true );
+              setShowHigherTaxRank( true );
             }}
           />
+          {showHigherTaxRank && (
+            <RadioButtonSheet
+              headerText={t( "TAXONOMIC-RANKS" )}
+              confirm={newRank => {
+                updateHighestTaxonomicRank( newRank );
+                setShowHigherTaxRank( false );
+              }}
+              handleClose={() => setShowHigherTaxRank( false )}
+              radioValues={taxonomicRankValues}
+              selectedValue={hrank}
+            />
+          )}
+
         </View>
       </ScrollView>
     </View>
