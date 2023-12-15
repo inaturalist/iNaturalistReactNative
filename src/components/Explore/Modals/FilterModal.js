@@ -10,7 +10,9 @@ import {
   Heading4,
   IconicTaxonChooser,
   INatIcon,
+  INatIconButton,
   RadioButtonSheet,
+  StickyToolbar
 } from "components/SharedComponents";
 import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import UserListItem from "components/SharedComponents/UserListItem";
@@ -490,6 +492,21 @@ const FilterModal = ( {
 
         </View>
       </ScrollView>
+      <StickyToolbar>
+        <View className="flex-1 flex-row items-center">
+          <INatIconButton
+            icon="chevron-left"
+            onPress={closeModal}
+            size={22}
+            accessibilityLabel={t( "Back" )}
+          />
+          <Button
+            className="flex-1 ml-5"
+            text={t( "APPLY-FILTERS" )}
+            onPress={closeModal}
+          />
+        </View>
+      </StickyToolbar>
     </View>
   );
 };
