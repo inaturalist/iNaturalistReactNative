@@ -210,6 +210,8 @@ const reducer = ( state, action ) => {
           ...state.exploreParams,
           needsID: !state.exploreParams.needsID
         }
+      };
+    case "TOGGLE_CASUAL":
       return {
         ...state,
         exploreParams: {
