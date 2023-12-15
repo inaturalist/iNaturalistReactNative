@@ -14,7 +14,10 @@ const DELTA = 0.2;
 
 const calculatedFilters = {
   user: undefined,
-  project: undefined
+  project: undefined,
+  researchGrade: true,
+  needsID: true,
+  casual: false
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -48,6 +51,9 @@ const initialState: {
     sortBy: string,
     user: ?Object,
     user_id: ?number,
+    researchGrade: boolean,
+    needsID: boolean,
+    casual: boolean,
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -189,8 +195,30 @@ const reducer = ( state, action ) => {
         ...state,
         showFiltersModal: false
       };
+    case "TOGGLE_RESEARCH_GRADE":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          researchGrade: !state.exploreParams.researchGrade
+        }
+      };
+    case "TOOGLE_NEEDS_ID":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          needsID: !state.exploreParams.needsID
+        }
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          casual: !state.exploreParams.casual
+        }
+      };
     default:
-      throw new Error( );
+      throw new Error();
   }
 };
 
@@ -351,6 +379,9 @@ const ExploreContainer = ( ): Node => {
       openFiltersModal={() => navigation.navigate( "ExploreFilterScreen" )}
       closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
       numberOfFilters={numberOfFilters}
+      updateResearchGrade={() => dispatch( { type: "TOGGLE_RESEARCH_GRADE" } )}
+      updateNeedsID={() => dispatch( { type: "TOGGLE_NEEDS_ID" } )}
+      updateCasual={() => dispatch( { type: "TOGGLE_CASUAL" } )}
     />
   );
 };

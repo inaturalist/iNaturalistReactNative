@@ -12,7 +12,10 @@ type Props = {
   showModal: boolean,
   closeModal: Function,
   updateTaxon: Function,
-  numberOfFilters: number
+  numberOfFilters: number,
+  updateSortBy: Function,
+  updateResearchGrade: Function,
+  updateNeedsID: Function,
 };
 
 const ExploreFilters = ( {
@@ -24,7 +27,10 @@ const ExploreFilters = ( {
   closeModal,
   updateTaxon,
   updateSortBy,
-  numberOfFilters
+  numberOfFilters,
+  updateResearchGrade,
+  updateNeedsID,
+  updateCasual
 }: Props ): Node => (
   <Modal
     showModal={showModal}
@@ -42,6 +48,9 @@ const ExploreFilters = ( {
         updateTaxon={updateTaxon}
         updateSortBy={updateSortBy}
         numberOfFilters={numberOfFilters}
+        updateResearchGrade={updateResearchGrade}
+        updateNeedsID={updateNeedsID}
+        updateCasual={updateCasual}
       />
     )}
   />

@@ -39,7 +39,10 @@ type Props = {
   showFiltersModal: boolean,
   openFiltersModal: Function,
   closeFiltersModal: Function,
-  numberOfFilters: number
+  numberOfFilters: number,
+  updateResearchGrade: Function,
+  updateNeedsID: Function,
+  updateCasual: Function
 }
 
 const Explore = ( {
@@ -58,7 +61,10 @@ const Explore = ( {
   showFiltersModal,
   openFiltersModal,
   closeFiltersModal,
-  numberOfFilters
+  numberOfFilters,
+  updateResearchGrade,
+  updateNeedsID,
+  updateCasual
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -212,6 +218,9 @@ const Explore = ( {
         updateTaxon={updateTaxon}
         updateSortBy={updateSortBy}
         numberOfFilters={numberOfFilters}
+        updateResearchGrade={updateResearchGrade}
+        updateNeedsID={updateNeedsID}
+        updateCasual={updateCasual}
       />
     </>
   );

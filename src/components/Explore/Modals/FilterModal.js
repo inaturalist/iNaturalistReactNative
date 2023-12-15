@@ -31,7 +31,10 @@ type Props = {
   resetFilters: Function,
   updateTaxon: Function,
   updateSortBy: Function,
-  numberOfFilters: number
+  numberOfFilters: number,
+  updateResearchGrade: Function,
+  updateNeedsID: Function,
+  updateCasual: Function
 };
 
 const FilterModal = ( {
@@ -41,12 +44,15 @@ const FilterModal = ( {
   resetFilters,
   updateTaxon,
   updateSortBy,
-  numberOfFilters
+  numberOfFilters,
+  updateResearchGrade,
+  updateNeedsID,
+  updateCasual
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const {
-    taxon, region, sortBy, user, project
+    taxon, region, sortBy, user, project, researchGrade, needsID, casual
   } = exploreFilters;
 
   const [showSortBy, setShowSortBy] = useState( false );
@@ -185,11 +191,23 @@ const FilterModal = ( {
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
           <View className="mb-5">
-            <Checkbox text={t( "Research-Grade" )} />
+            <Checkbox
+              text={t( "Research-Grade" )}
+              isChecked={researchGrade}
+              onPress={updateResearchGrade}
+            />
             <View className="mb-4" />
-            <Checkbox text={t( "Needs-ID" )} />
+            <Checkbox
+              text={t( "Needs-ID" )}
+              isChecked={needsID}
+              onPress={updateNeedsID}
+            />
             <View className="mb-4" />
-            <Checkbox text={t( "Casual" )} />
+            <Checkbox
+              text={t( "Casual" )}
+              isChecked={casual}
+              onPress={updateCasual}
+            />
           </View>
         </View>
 
