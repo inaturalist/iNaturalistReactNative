@@ -44,7 +44,8 @@ type Props = {
   updateNeedsID: Function,
   updateCasual: Function,
   updateHighestTaxonomicRank: Function,
-  updateLowestTaxonomicRank: Function
+  updateLowestTaxonomicRank: Function,
+  updateDateObserved: Function
 }
 
 const Explore = ( {
@@ -68,7 +69,8 @@ const Explore = ( {
   updateNeedsID,
   updateCasual,
   updateHighestTaxonomicRank,
-  updateLowestTaxonomicRank
+  updateLowestTaxonomicRank,
+  updateDateObserved
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -227,6 +229,7 @@ const Explore = ( {
         updateCasual={updateCasual}
         updateHighestTaxonomicRank={updateHighestTaxonomicRank}
         updateLowestTaxonomicRank={updateLowestTaxonomicRank}
+        updateDateObserved={updateDateObserved}
       />
     </>
   );

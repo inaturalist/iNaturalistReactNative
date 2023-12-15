@@ -39,7 +39,8 @@ type Props = {
   updateNeedsID: Function,
   updateCasual: Function,
   updateLowestTaxonomicRank: Function,
-  updateHighestTaxonomicRank: Function
+  updateHighestTaxonomicRank: Function,
+  updateDateObserved: Function
 };
 
 const FilterModal = ( {
@@ -54,7 +55,8 @@ const FilterModal = ( {
   updateNeedsID,
   updateCasual,
   updateLowestTaxonomicRank,
-  updateHighestTaxonomicRank
+  updateHighestTaxonomicRank,
+  updateDateObserved
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -68,12 +70,14 @@ const FilterModal = ( {
     needsID,
     casual,
     lrank,
-    hrank
+    hrank,
+    dateObserved
   } = exploreFilters;
 
   const [showSortBy, setShowSortBy] = useState( false );
   const [showLowerTaxRank, setShowLowerTaxRank] = useState( false );
   const [showHigherTaxRank, setShowHigherTaxRank] = useState( false );
+  const [showDateObserved, setShowDateObserved] = useState( false );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {

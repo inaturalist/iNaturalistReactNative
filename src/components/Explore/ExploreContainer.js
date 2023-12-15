@@ -24,6 +24,10 @@ const ASC = "asc";
 
 const DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST";
 
+const all = "all";
+const exactDate = "exactDate";
+const months = "months";
+
 const calculatedFilters = {
   user: undefined,
   project: undefined,
@@ -31,7 +35,8 @@ const calculatedFilters = {
   needsID: true,
   casual: false,
   hrank: undefined,
-  lrank: undefined
+  lrank: undefined,
+  dateObserved: all
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -69,7 +74,8 @@ const initialState: {
     needsID: boolean,
     casual: boolean,
     hrank: ?string,
-    lrank: ?string
+    lrank: ?string,
+    dateObserved: string
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -251,6 +257,30 @@ const reducer = ( state, action ) => {
           lrank: action.lrank
         }
       };
+    case "SET_DATE_OBSERVED_ALL":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          dateObserved: all
+        }
+      };
+    case "SET_DATE_OBSERVED_EXACT":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          dateObserved: exactDate
+        }
+      };
+    case "SET_DATE_OBSERVED_MONTHS":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          dateObserved: months
+        }
+      };
     default:
       throw new Error();
   }
@@ -402,6 +432,22 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
+  const updateDateObserved = newDateObserved => {
+    if ( newDateObserved === all ) {
+      dispatch( {
+        type: "SET_DATE_OBSERVED_ALL"
+      } );
+    } else if ( newDateObserved === exactDate ) {
+      dispatch( {
+        type: "SET_DATE_OBSERVED_EXACT"
+      } );
+    } else if ( newDateObserved === months ) {
+      dispatch( {
+        type: "SET_DATE_OBSERVED_MONTHS"
+      } );
+    }
+  };
+
   const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -466,6 +512,7 @@ const ExploreContainer = ( ): Node => {
       updateCasual={() => dispatch( { type: "TOGGLE_CASUAL" } )}
       updateHighestTaxonomicRank={updateHighestTaxonomicRank}
       updateLowestTaxonomicRank={updateLowestTaxonomicRank}
+      updateDateObserved={updateDateObserved}
     />
   );
 };
