@@ -16,6 +16,14 @@ const RESEARCH = "research";
 const NEEDS_ID = "needs_id";
 const CASUAL = "casual";
 
+const CREATED_AT = "created_at"; // = date uploaded at
+const OBSERVED_ON = "observed_on";
+
+const DESC = "desc";
+const ASC = "asc";
+
+const DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST";
+
 const calculatedFilters = {
   user: undefined,
   project: undefined,
@@ -27,7 +35,7 @@ const calculatedFilters = {
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
 const defaultFilters = {
   ...calculatedFilters,
-  sortBy: "DATE_UPLOADED_NEWEST",
+  sortBy: DATE_UPLOADED_NEWEST,
   user_id: undefined,
   project_id: undefined
 };
@@ -295,12 +303,15 @@ const ExploreContainer = ( ): Node => {
     key => defaultFilters[key] !== exploreParams[key]
   );
 
-  const numberOfFilters = Object.keys( calculatedFilters ).reduce( ( count, key ) => {
-    if ( exploreParams[key] && exploreParams[key] !== calculatedFilters[key] ) {
-      return count + 1;
-    }
-    return count;
-  }, 0 );
+  const numberOfFilters = Object.keys( calculatedFilters ).reduce(
+    ( count, key ) => {
+      if ( exploreParams[key] && exploreParams[key] !== calculatedFilters[key] ) {
+        return count + 1;
+      }
+      return count;
+    },
+    0
+  );
 
   const changeExploreView = newView => {
     dispatch( {
@@ -374,6 +385,21 @@ const ExploreContainer = ( ): Node => {
   }
   if ( exploreParams.casual ) {
     filteredParams.quality_grade.push( CASUAL );
+  }
+  // DATE_UPLOADED_NEWEST is the default sort order
+  filteredParams.order_by = CREATED_AT;
+  filteredParams.order = DESC;
+  if ( exploreParams.sortBy === "DATE_UPLOADED_OLDEST" ) {
+    filteredParams.order_by = CREATED_AT;
+    filteredParams.order = ASC;
+  }
+  if ( exploreParams.sortBy === "DATE_OBSERVED_NEWEST" ) {
+    filteredParams.order_by = OBSERVED_ON;
+    filteredParams.order = DESC;
+  }
+  if ( exploreParams.sortBy === "DATE_OBSERVED_OLDEST" ) {
+    filteredParams.order_by = OBSERVED_ON;
+    filteredParams.order = ASC;
   }
   // TODO: is this possible on the API at all?
   // if ( exploreParams.sortBy === "MOST_FAVED" ) {
