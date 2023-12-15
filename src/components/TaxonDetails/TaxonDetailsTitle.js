@@ -28,7 +28,7 @@ const TaxonDetailsTitle = ( {
 
   return (
     <View className="flex-1 flex-col">
-      <Heading4 className={optionalClasses}>{t( `Ranks-${taxon.rank?.toUpperCase( )}` )}</Heading4>
+      <Heading4 className={optionalClasses}>{t( `Ranks-${taxon?.rank?.toUpperCase( )}` )}</Heading4>
       <DisplayTaxonName
         taxon={taxon}
         color={optionalClasses}
