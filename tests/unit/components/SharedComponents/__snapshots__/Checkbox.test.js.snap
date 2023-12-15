@@ -7,7 +7,7 @@ exports[`Checkbox renders reliably 1`] = `
   accessibilityState={
     {
       "busy": undefined,
-      "checked": undefined,
+      "checked": false,
       "disabled": undefined,
       "expanded": undefined,
       "selected": undefined,

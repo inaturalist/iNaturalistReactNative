@@ -102,7 +102,7 @@ describe( "Flags", ( ) => {
     expect( screen.getByText( "Spam" ) ).toBeTruthy( );
     expect( screen.getByText( "Offensive/Inappropriate" ) ).toBeTruthy( );
     expect( screen.getByText( "Other" ) ).toBeTruthy( );
-    expect( screen.getAllByRole( "checkbox" ) ).toHaveLength( 3 );
+    expect( screen.getAllByRole( "radio" ) ).toHaveLength( 3 );
   } );
 
   // it( "calls flag api when save button pressed", async ( ) => {

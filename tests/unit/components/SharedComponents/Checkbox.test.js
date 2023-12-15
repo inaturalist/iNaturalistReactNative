@@ -33,7 +33,7 @@ describe( "Checkbox", () => {
   } );
 
   it( "has no accessibility errors", () => {
-    const checkbox = <Checkbox text="Checkmark text" />;
+    const checkbox = <Checkbox text="Checkmark text" isChecked />;
 
     expect( checkbox ).toBeAccessible();
   } );

@@ -57,6 +57,9 @@ const Checkbox = ( {
       innerIconStyle={innerIconStyle}
       accessibilityRole="radio"
       accessibilityLabel={t( "Checkmark" )}
+      accessibilityState={{
+        checked: isChecked
+      }}
     />
   );
 };
