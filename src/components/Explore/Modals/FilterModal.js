@@ -65,8 +65,8 @@ const FilterModal = ( {
         return t( "DATE-OBSERVED-NEWEST" );
       case "DATE_OBSERVED_OLDEST":
         return t( "DATE-OBSERVED-OLDEST" );
-      case "MOST_FAVED":
-        return t( "MOST-FAVED" );
+      // case "MOST_FAVED":
+      //   return t( "MOST-FAVED" );
       case "DATE_UPLOADED_NEWEST":
       default:
         return t( "DATE-UPLOADED-NEWEST" );

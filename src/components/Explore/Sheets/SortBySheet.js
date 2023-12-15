@@ -31,10 +31,6 @@ const SortBySheet = ( {
       label: t( "Date-observed" ),
       text: t( "Oldest-to-newest" ),
       value: "DATE_OBSERVED_OLDEST"
-    },
-    MOST_FAVED: {
-      label: t( "Most-faved" ),
-      value: "MOST_FAVED"
     }
   };
 

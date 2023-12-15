@@ -375,6 +375,11 @@ const ExploreContainer = ( ): Node => {
   if ( exploreParams.casual ) {
     filteredParams.quality_grade.push( CASUAL );
   }
+  // TODO: is this possible on the API at all?
+  // if ( exploreParams.sortBy === "MOST_FAVED" ) {
+  //   filteredParams.order_by = "faves";
+  //   filteredParams.order = DESC;
+  // }
 
   return (
     <Explore
