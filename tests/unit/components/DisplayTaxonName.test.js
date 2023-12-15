@@ -53,7 +53,7 @@ describe( "DisplayTaxonName", ( ) => {
       render( <DisplayTaxonName taxon={speciesTaxon} /> );
 
       expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-        `${speciesTaxon.preferred_common_name} ${speciesTaxon.name}`
+        `${speciesTaxon.preferred_common_name}${speciesTaxon.name}`
       );
     } );
 
@@ -82,7 +82,7 @@ describe( "DisplayTaxonName", ( ) => {
     } );
 
     test( "renders correct taxon for subspecies", ( ) => {
-      render( <DisplayTaxonName taxon={subspeciesTaxon} /> );
+      render( <DisplayTaxonName taxon={subspeciesTaxon} layout="horizontal" /> );
 
       expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
         "Silver Lupine Lupinus albifrons var. collinus"
@@ -90,7 +90,7 @@ describe( "DisplayTaxonName", ( ) => {
     } );
 
     test( "renders correct taxon for improperly capitalized common name", ( ) => {
-      render( <DisplayTaxonName taxon={uncapitalizedTaxon} /> );
+      render( <DisplayTaxonName taxon={uncapitalizedTaxon} layout="horizontal" /> );
       expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
         "Crown-of-thorns Blue Sea-Stars Acanthaster planci"
       );
@@ -107,7 +107,7 @@ describe( "DisplayTaxonName", ( ) => {
 
   describe( "when scientific name is first", ( ) => {
     test( "renders correct taxon for species", ( ) => {
-      render( <DisplayTaxonName taxon={speciesTaxon} scientificNameFirst /> );
+      render( <DisplayTaxonName taxon={speciesTaxon} scientificNameFirst layout="horizontal" /> );
 
       expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
         `${speciesTaxon.name} ${speciesTaxon.preferred_common_name}`
@@ -131,7 +131,9 @@ describe( "DisplayTaxonName", ( ) => {
     } );
 
     test( "renders correct taxon for species", ( ) => {
-      render( <DisplayTaxonName taxon={subspeciesTaxon} scientificNameFirst /> );
+      render(
+        <DisplayTaxonName taxon={subspeciesTaxon} scientificNameFirst layout="horizontal" />
+      );
 
       expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
         "Lupinus albifrons var. collinus Silver Lupine"

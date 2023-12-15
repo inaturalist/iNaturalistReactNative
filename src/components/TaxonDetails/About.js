@@ -1,16 +1,23 @@
 // @flow
 
-import { Body2, Button, Heading4 } from "components/SharedComponents";
+import {
+  ActivityIndicator,
+  Body2,
+  Button,
+  Heading4
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import {
-  ActivityIndicator, Linking, Platform, useWindowDimensions
+  Linking,
+  Platform,
+  useWindowDimensions
 } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  taxon: Object,
+  taxon?: Object,
   isLoading: boolean,
   isError: boolean
 }
@@ -50,7 +57,11 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
     } );
   }, [taxon] );
 
-  const openWikipedia = () => Linking.openURL( taxon.wikipedia_url );
+  const openWikipedia = () => {
+    if ( taxon?.wikipedia_url ) {
+      Linking.openURL( taxon.wikipedia_url );
+    }
+  };
 
   const baseStyle = {
     fontFamily: `Whitney-Light${Platform.OS === "ios"
@@ -62,18 +73,22 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
   const fonts = ["Whitney-Light", "Whitney-Light-Pro", ...defaultSystemFonts];
 
   if ( isLoading ) {
-    return <ActivityIndicator />;
+    return <View className="m-3"><ActivityIndicator /></View>;
   }
 
   if ( isError || !taxon ) {
-    return <Body2>{t( "Error-Could-Not-Fetch-Taxon" )}</Body2>;
+    return (
+      <View className="m-3">
+        <Body2>{t( "Error-Could-Not-Fetch-Taxon" )}</Body2>
+      </View>
+    );
   }
 
   return (
     <View className="mx-3">
       <Heading4 className="my-3">{t( "STATUS-header" )}</Heading4>
       <Heading4 className="my-3">{t( "WIKIPEDIA" )}</Heading4>
-      {taxon.wikipedia_summary && (
+      {taxon?.wikipedia_summary && (
         <HTML
           contentWidth={width}
           source={{ html: taxon.wikipedia_summary }}
@@ -81,15 +96,17 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
           baseStyle={baseStyle}
         />
       )}
-      <Body2
-        onPress={openWikipedia}
-        accessibilityRole="link"
-        testID="TaxonDetails.wikipedia"
-        className="my-3 color-inatGreen underline"
-      >
-        {t( "Read-more-on-Wikipedia" )}
+      { taxon.wikipedia_url && (
+        <Body2
+          onPress={openWikipedia}
+          accessibilityRole="link"
+          testID="TaxonDetails.wikipedia"
+          className="my-3 color-inatGreen underline"
+        >
+          {t( "Read-more-on-Wikipedia" )}
 
-      </Body2>
+        </Body2>
+      ) }
       <Heading4 className="my-3">
         {t( "TAXONOMY-header" )}
       </Heading4>

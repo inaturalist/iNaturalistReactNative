@@ -1,40 +1,84 @@
 // @flow
 
+import {
+  TransparentCircleButton
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { FlatList } from "react-native";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
+import AttributionButton from "./AttributionButton";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
+  editable?: boolean,
   horizontalScroll: any,
-  photoUris: Array<string>,
+  onDelete?: Function,
+  photos: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>,
   selectedPhotoIndex: number,
   setSelectedPhotoIndex: Function
 }
 
 const MainPhotoDisplay = ( {
+  editable,
   horizontalScroll,
-  photoUris,
+  onDelete = ( ) => { },
+  photos,
   selectedPhotoIndex,
   setSelectedPhotoIndex
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
   const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === photoUris.length - 1;
+  const atLastPhoto = selectedPhotoIndex === photos.length - 1;
 
-  const renderImage = useCallback( ( { item: photoUri } ) => (
-    <CustomImageZoom
-      source={{ uri: Photo.displayLargePhoto( photoUri ) }}
-      height={displayHeight}
-      setZooming={setZooming}
-    />
-  ), [displayHeight] );
+  const renderImage = useCallback( ( { item: photo } ) => (
+    <View>
+      <CustomImageZoom
+        source={{ uri: Photo.displayLargePhoto( photo.url || photo.localFilePath ) }}
+        height={displayHeight}
+        setZooming={setZooming}
+      />
+      {
+        editable
+          ? (
+            <View className="absolute bottom-4 right-4">
+              <TransparentCircleButton
+                onPress={onDelete}
+                icon="trash-outline"
+                color={colors.white}
+                accessibilityLabel={t( "Delete-photo" )}
+              />
+            </View>
+          )
+          : (
+            <AttributionButton
+              licenseCode={photo.licenseCode}
+              attribution={photo.attribution}
+              optionalClasses="absolute top-4 right-4"
+            />
+          )
+      }
+    </View>
+  ), [
+    displayHeight,
+    editable,
+    onDelete,
+    t
+  ] );
 
   // need getItemLayout for setting initial scroll index
   const getItemLayout = useCallback( ( data, idx ) => ( {
@@ -85,7 +129,7 @@ const MainPhotoDisplay = ( {
       }}
     >
       <FlatList
-        data={photoUris}
+        data={photos}
         renderItem={renderImage}
         initialScrollIndex={selectedPhotoIndex}
         getItemLayout={getItemLayout}

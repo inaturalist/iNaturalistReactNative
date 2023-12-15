@@ -3,13 +3,14 @@ import {
   userEvent
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
+import inatjs from "inaturalistjs";
 import os from "os";
 import path from "path";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
 import useStore from "stores/useStore";
 
-import factory from "../../factory";
+import factory, { makeResponse } from "../../factory";
 import {
   renderApp,
   renderObservationsStackNavigatorWithObservations
@@ -156,7 +157,9 @@ describe( "MediaViewer navigation", ( ) => {
       const obsEditPhotos = await screen.findAllByTestId( "ObsEdit.photo" );
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
       await actor.press( obsEditPhotos[0] );
-      expect( await screen.findByLabelText( "Delete" ) ).toBeVisible( );
+      const deleteButtons = await screen.findAllByLabelText( "Delete photo" );
+      expect( deleteButtons.length ).toEqual( observation.observationPhotos.length );
+      expect( deleteButtons[0] ).toBeVisible( );
     } );
   } );
 
@@ -170,7 +173,9 @@ describe( "MediaViewer navigation", ( ) => {
     it( "should show a photo when tapped", async ( ) => {
       navigateToCamera( );
       await findAndPressByLabelText( "Take photo" );
-      await findAndPressByLabelText( "View photo" );
+      const photo = await findAndPressByLabelText( "View photo" );
+      await actor.press( photo );
+
       expect( await screen.findByTestId( "CustomImageZoom" ) ).toBeTruthy( );
     } );
 
@@ -184,7 +189,7 @@ describe( "MediaViewer navigation", ( ) => {
       navigateToCamera( );
       await findAndPressByLabelText( "Take photo" );
       await findAndPressByLabelText( "View photo" );
-      expect( await screen.findByLabelText( "Delete" ) ).toBeVisible( );
+      expect( await screen.findByLabelText( "Delete photo" ) ).toBeVisible( );
     } );
   } );
 
@@ -236,7 +241,7 @@ describe( "MediaViewer navigation", ( ) => {
     //   ).not.toBeVisible( );
     // } );
 
-    it( "should show not delete button", async ( ) => {
+    it( "should not show delete button", async ( ) => {
       await navigateToObsDetail( );
       const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
       expect( photos[0] ).toBeVisible( );
@@ -246,7 +251,66 @@ describe( "MediaViewer navigation", ( ) => {
           `CustomImageZoom.${observation.observation_photos[0].photo.url}`
         )
       ).toBeVisible( );
-      expect( screen.queryByLabelText( "Delete" ) ).toBeFalsy( );
+      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
+    } );
+  } );
+
+  describe( "from TaxonDetail", ( ) => {
+    const taxonPhotos = [
+      factory( "RemoteTaxonPhoto" ),
+      factory( "RemoteTaxonPhoto" )
+    ];
+    const taxon = factory( "RemoteTaxon", {
+      // inatjs attribute
+      taxonPhotos
+    } );
+    const observation = factory( "RemoteObservation", { taxon } );
+    const observations = [observation];
+    useStore.setState( { observations } );
+
+    beforeEach( ( ) => {
+      inatjs.taxa.fetch.mockResolvedValue( makeResponse( [taxon] ) );
+    } );
+
+    afterEach( ( ) => {
+      inatjs.taxa.fetch.mockReset( );
+    } );
+
+    async function navigateToTaxonDetail( ) {
+      await renderObservationsStackNavigatorWithObservations( observations, __filename );
+      const observationRow = await screen.findByTestId(
+        `MyObservations.obsListItem.${observation.uuid}`
+      );
+      await actor.press( observationRow );
+      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
+      const displayedTaxon = await screen.findByText( taxon.name );
+      await actor.press( displayedTaxon );
+      expect( await screen.findByTestId( `TaxonDetails.${taxon.id}` ) ).toBeVisible( );
+    }
+
+    it( "should show the first photo when tapped", async ( ) => {
+      await navigateToTaxonDetail( );
+      const photo = await screen.findByTestId( "TaxonDetails.photo" );
+      expect( photo ).toBeVisible( );
+      await actor.press( photo );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
+        )
+      ).toBeVisible( );
+    } );
+
+    it( "should not show delete button", async ( ) => {
+      await navigateToTaxonDetail( );
+      const photo = await screen.findByTestId( "TaxonDetails.photo" );
+      expect( photo ).toBeVisible( );
+      await actor.press( photo );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
+        )
+      ).toBeVisible( );
+      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
     } );
   } );
 } );

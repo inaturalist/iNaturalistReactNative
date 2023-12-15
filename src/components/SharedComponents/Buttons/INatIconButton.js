@@ -6,7 +6,6 @@ import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
 import { useTheme } from "react-native-paper";
-import colors from "styles/tailwindColors";
 
 type Props = {
   accessibilityHint?: string,
@@ -17,12 +16,13 @@ type Props = {
   height?: number,
   icon: string,
   onPress: Function,
+  // Inserts a white or colored view under the icon so an holes in the shape show as
+  // white
+  preventTransparency?: boolean,
   size?: number,
   style?: Object,
   testID?: string,
   width?: number,
-  // Inserts a white or colored view under the icon so an holes in the shape show as
-  // white
   backgroundColor?: string,
   mode?: "contained"
 }
@@ -41,6 +41,7 @@ const INatIconButton = ( {
   height = 44,
   icon,
   onPress,
+  preventTransparency,
   size = 18,
   style,
   testID,
@@ -49,7 +50,6 @@ const INatIconButton = ( {
   mode
 }: Props ): Node => {
   const theme = useTheme( );
-  const isWhite = backgroundColor === colors.white;
   // width || 0 is to placate flow. width should never be undefined because of
   // the defaultProps, but I guess flow can't figure that out.
   if ( ( width || 0 ) < MIN_ACCESSIBLE_DIM ) {
@@ -102,7 +102,7 @@ const INatIconButton = ( {
       testID={testID}
     >
       <View className="relative">
-        { backgroundColor && (
+        { backgroundColor && preventTransparency && (
           <View
             // Position and size need to be dynamic
             // eslint-disable-next-line react-native/no-inline-styles
@@ -111,17 +111,17 @@ const INatIconButton = ( {
                 ? 0
                 : 1,
               position: "absolute",
-              top: isWhite
+              top: preventTransparency
                 ? 2
                 : -2,
-              start: isWhite
+              start: preventTransparency
                 ? 2
                 : -2,
-              width: isWhite
-                ? size - 2
+              width: preventTransparency
+                ? size - 4
                 : size + 4,
-              height: isWhite
-                ? size - 2
+              height: preventTransparency
+                ? size - 4
                 : size + 4,
               backgroundColor,
               borderRadius: 9999

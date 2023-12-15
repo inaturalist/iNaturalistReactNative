@@ -38,10 +38,10 @@ const EvidenceSectionContainer = ( {
 }: Props ): Node => {
   const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
   const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
-  const obsPhotos = currentObservation?.observationPhotos;
+  const photos = currentObservation?.observationPhotos?.map( obsPhoto => obsPhoto.photo ) || [];
   const mountedRef = useRef( true );
-  const obsPhotoUris = ( obsPhotos || [] ).map(
-    obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+  const obsPhotoUris = photos.map(
+    photo => photo.url || photo.localFilePath
   );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
@@ -199,7 +199,7 @@ const EvidenceSectionContainer = ( {
       handleDragAndDrop={handleDragAndDrop}
       passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
-      evidenceList={obsPhotos || []}
+      photos={photos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       onLocationPermissionGranted={( ) => {

@@ -147,7 +147,7 @@ exports[`CustomTabBar should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>
@@ -395,7 +395,7 @@ exports[`CustomTabBar should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </BVLinearGradient>
@@ -479,7 +479,7 @@ exports[`CustomTabBar should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>
@@ -563,7 +563,7 @@ exports[`CustomTabBar should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>

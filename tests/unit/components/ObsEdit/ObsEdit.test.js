@@ -38,7 +38,10 @@ const observationPhotos = [
   } )
 ];
 
+const photos = observationPhotos.map( obsPhoto => obsPhoto.photo );
+
 const mockObservation = factory( "RemoteObservation", {
+  speciesGuess: "Obsedit test",
   observationPhotos
 } );
 
@@ -67,7 +70,7 @@ describe( "ObsEdit", () => {
     const evidenceList = screen.getByTestId( "EvidenceList.DraggableFlatList" );
 
     await waitFor( ( ) => {
-      expect( evidenceList ).toHaveProp( "data", observationPhotos );
+      expect( evidenceList ).toHaveProp( "data", photos );
     } );
   } );
 } );

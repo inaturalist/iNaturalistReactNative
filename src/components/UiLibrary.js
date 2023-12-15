@@ -1,6 +1,7 @@
 import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
 import {
   ActivityCount,
+  ActivityIndicator,
   Body1,
   Body2,
   Body3,
@@ -11,6 +12,7 @@ import {
   CommentsCount,
   ConfidenceInterval,
   DateDisplay,
+  DisplayTaxonName,
   Divider,
   EvidenceButton,
   FloatingActionBar,
@@ -94,6 +96,8 @@ const UiLibrary = (): Node => {
 
   const taxonWithPhoto = realm.objects( "Taxon" ).filtered( "defaultPhoto.url != nil" )[0];
   const iconicTaxon = realm.objects( "Taxon" ).filtered( "isIconic == true" )[0];
+  const species = realm.objects( "Taxon" )
+    .filtered( "preferred_common_name != nil AND rank = 'species'" )[0];
 
   return (
     <ViewWrapper>
@@ -119,6 +123,12 @@ const UiLibrary = (): Node => {
           component, please put it here first and try to show what it looks like
           with different property configurations.
         </Body1>
+        <Heading1>ActivityIndicator</Heading1>
+        <View className="flex-row justify-between">
+          <ActivityIndicator />
+          <ActivityIndicator color="orange" />
+          <ActivityIndicator color="deeppink" size={50} />
+        </View>
         <Heading1>Buttons</Heading1>
         <Heading2>Button</Heading2>
         <Button
@@ -620,7 +630,27 @@ const UiLibrary = (): Node => {
           before={<Button text={t( "ADD-AN-ID" )} className="rounded-full" />}
           onTaxonChosen={taxon => console.log( "taxon selected:", taxon )}
         />
-        <Heading2 className="my-2">More Stuff!</Heading2>
+
+        <Heading1 className="my-2">DisplayTaxonName</Heading1>
+        <Heading2 className="my-2">Color</Heading2>
+        <DisplayTaxonName color="text-blue" taxon={species || taxonWithPhoto} />
+        <DisplayTaxonName color="text-green" taxon={species || taxonWithPhoto} />
+        <Heading2 className="my-2">Horizontal</Heading2>
+        <DisplayTaxonName layout="horizontal" taxon={species || taxonWithPhoto} />
+        <Heading2 className="my-2">Scientific name first</Heading2>
+        <DisplayTaxonName scientificNameFirst taxon={species || taxonWithPhoto} />
+        <Heading2 className="my-2">Small</Heading2>
+        <DisplayTaxonName small taxon={species || taxonWithPhoto} />
+        <Heading2 className="my-2">Withdrawn</Heading2>
+        <DisplayTaxonName withdrawn taxon={species || taxonWithPhoto} />
+        <Heading2 className="my-2">Text component customization</Heading2>
+        <DisplayTaxonName
+          topTextComponent={Heading5}
+          bottomTextComponent={Heading3}
+          taxon={species || taxonWithPhoto}
+        />
+
+        <Heading1 className="my-2">More Stuff!</Heading1>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>

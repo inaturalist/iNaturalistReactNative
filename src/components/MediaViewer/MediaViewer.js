@@ -1,16 +1,7 @@
 // @flow
 
-import classnames from "classnames";
-import {
-  BackButton,
-  Heading4,
-  TransparentCircleButton,
-  WarningSheet
-} from "components/SharedComponents";
-import {
-  SafeAreaView,
-  View
-} from "components/styledComponents";
+import { WarningSheet } from "components/SharedComponents";
+import { SafeAreaView } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -19,32 +10,39 @@ import React, {
   useState
 } from "react";
 import { StatusBar } from "react-native";
-import { useTheme } from "react-native-paper";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
-import colors from "styles/tailwindColors";
 
 import MainPhotoDisplay from "./MainPhotoDisplay";
+import MediaViewerHeader from "./MediaViewerHeader";
 import PhotoSelector from "./PhotoSelector";
 
 type Props = {
   editable?: boolean,
+  // Optional component to use as the header
+  header?: Function,
   onClose?: Function,
   onDelete?: Function,
   uri?: string,
-  uris?: Array<string>
+  photos?: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>
 }
-
-const BACK_BUTTON_STYLE = { position: "absolute", start: 0 };
 
 const MediaViewer = ( {
   editable,
+  header,
   onClose = ( ) => { },
   onDelete,
   uri,
-  uris = []
+  photos = []
 }: Props ): Node => {
+  const uris = photos.map( photo => photo.url || photo.localFilePath );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(
     uris.indexOf( uri ) <= 0
       ? 0
@@ -52,11 +50,10 @@ const MediaViewer = ( {
   );
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
-  const theme = useTheme( );
 
   const horizontalScroll = useRef( null );
 
-  const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
+  const { screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
   const scrollToIndex = useCallback( index => {
@@ -75,9 +72,9 @@ const MediaViewer = ( {
   }, [selectedPhotoIndex, setSelectedPhotoIndex, uris.length] );
 
   const deleteItem = useCallback( ( ) => {
-    const uriToDelete = uris[selectedPhotoIndex].toString( );
+    const uriToDelete = uris[selectedPhotoIndex]?.toString( );
     setWarningSheet( false );
-    if ( onDelete ) onDelete( uriToDelete );
+    if ( onDelete && uriToDelete ) onDelete( uriToDelete );
   }, [
     onDelete,
     selectedPhotoIndex,
@@ -88,48 +85,25 @@ const MediaViewer = ( {
   return (
     <SafeAreaView className="flex-1 bg-black" testID="MediaViewer">
       <StatusBar hidden barStyle="light-content" backgroundColor="black" />
-      <View className="flex-row items-center justify-center min-h-[44]">
-        <BackButton
-          inCustomHeader
-          color={theme.colors.onPrimary}
-          customStyles={BACK_BUTTON_STYLE}
-          onPress={onClose}
-        />
-        <Heading4 className="color-white">
-          {t( "X-PHOTOS", { photoCount: uris.length } )}
-        </Heading4>
-      </View>
+      {
+        header
+          ? header( { onClose, photoCount: uris.length } )
+          : <MediaViewerHeader onClose={onClose} photoCount={uris.length} />
+      }
       <MainPhotoDisplay
-        photoUris={uris}
+        editable={editable}
+        photos={photos}
         selectedPhotoIndex={selectedPhotoIndex}
         horizontalScroll={horizontalScroll}
         setSelectedPhotoIndex={setSelectedPhotoIndex}
+        onDelete={( ) => setWarningSheet( true )}
       />
       <PhotoSelector
-        photoUris={uris}
+        photos={photos}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
-        isLandscapeMode={isLandscapeMode}
         selectedPhotoIndex={selectedPhotoIndex}
       />
-      { editable && (
-        <View
-          className={classnames(
-            "absolute right-[14px]",
-            {
-              "bottom-[138px]": isLargeScreen,
-              "bottom-[91px]": !isLargeScreen
-            }
-          )}
-        >
-          <TransparentCircleButton
-            onPress={( ) => setWarningSheet( true )}
-            icon="trash-outline"
-            color={colors.white}
-            accessibilityLabel={t( "Delete" )}
-          />
-        </View>
-      )}
       {warningSheet && (
         <WarningSheet
           handleClose={( ) => setWarningSheet( false )}

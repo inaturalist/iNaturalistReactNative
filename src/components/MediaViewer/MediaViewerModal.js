@@ -7,20 +7,29 @@ import React from "react";
 
 type Props = {
   editable?: boolean,
+  // Optional component to use as the header
+  header?: Function,
   onClose?: Function,
   onDelete?: Function,
+  photos?: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>,
   showModal: boolean,
-  uri?: string,
-  uris?: Array<string>
+  uri?: string
 }
 
 const MediaViewerModal = ( {
   editable,
+  header,
   onClose = ( ) => { },
   onDelete,
+  photos = [],
   showModal,
-  uri,
-  uris = []
+  uri
 }: Props ): Node => (
   <Modal
     showModal={showModal}
@@ -30,10 +39,11 @@ const MediaViewerModal = ( {
     modal={(
       <MediaViewer
         editable={editable}
+        header={header}
         onClose={onClose}
         onDelete={onDelete}
+        photos={photos}
         uri={uri}
-        uris={uris}
       />
     )}
   />

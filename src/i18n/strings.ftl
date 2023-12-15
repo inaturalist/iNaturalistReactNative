@@ -140,6 +140,11 @@ Copy-coordinates = Copy Coordinates
 
 Copy-coordinates = Copy Coordinates
 
+# Right to control copies of a creative work; this string may be used as a
+# heading to describe general information about rights, attribution, and
+# licensing
+Copyright = Copyright
+
 Couldnt-create-comment = Couldn't create comment
 
 Couldnt-create-identification = Couldn't create identification
@@ -586,76 +591,77 @@ quality-grade-casual = Casual
 Rank = Rank
 
 # The following Ranks- strings are taxonomic ranks (in taxonomic order, not alphabetical order)
+Ranks-STATEOFMATTER = STATE OF MATTER
 Ranks-stateofmatter = state of matter
-
+Ranks-KINGDOM = KINGDOM
 Ranks-kingdom = kingdom
-
+Ranks-SUBKINGDOM = SUBKINGDOM
 Ranks-subkingdom = subkingdom
-
+Ranks-PHYLUM = PHYLUM
 Ranks-phylum = phylum
-
+Ranks-SUBPHYLUM = SUBPHYLUM
 Ranks-subphylum = subphylum
-
+Ranks-SUPERCLASS = SUPERCLASS
 Ranks-superclass = superclass
-
+Ranks-CLASS = CLASS
 Ranks-class = class
-
+Ranks-SUBCLASS = SUBCLASS
 Ranks-subclass = subclass
-
+Ranks-INFRACLASS = INFRACLASS
 Ranks-infraclass = infraclass
-
+Ranks-SUPERORDER = SUPERORDER
 Ranks-superorder = superorder
-
+Ranks-ORDER = ORDER
 Ranks-order = order
-
+Ranks-SUBORDER = SUBORDER
 Ranks-suborder = suborder
-
+Ranks-INFRAORDER = INFRAORDER
 Ranks-infraorder = infraorder
-
+Ranks-SUBTERCLASS = SUBTERCLASS
 Ranks-subterclass = subterclass
-
+Ranks-PARVORDER = PARVORDER
 Ranks-parvorder = parvorder
-
+Ranks-ZOOSECTION = ZOOSECTION
 Ranks-zoosection = zoosection
-
+Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-zoosubsection = zoosubsection
-
+Ranks-SUPERFAMILY = SUPERFAMILY
 Ranks-superfamily = superfamily
-
+Ranks-EPIFAMILY = EPIFAMILY
 Ranks-epifamily = epifamily
-
+Ranks-FAMILY = FAMILY
 Ranks-family = family
-
+Ranks-SUBFAMILY = SUBFAMILY
 Ranks-subfamily = subfamily
-
+Ranks-SUPERTRIBE = SUPERTRIBE
 Ranks-supertribe = supertribe
-
+Ranks-TRIBE = TRIBE
 Ranks-tribe = tribe
-
+Ranks-SUBTRIBE = SUBTRIBE
 Ranks-subtribe = subtribe
-
+Ranks-GENUS = GENUS
 Ranks-genus = genus
-
+Ranks-GENUSHYBRID = GENUSHYBRID
 Ranks-genushybrid = genushybrid
-
+Ranks-SUBGENUS = SUBGENUS
 Ranks-subgenus = subgenus
-
+Ranks-SECTION = SECTION
 Ranks-section = section
-
+Ranks-SUBSECTION = SUBSECTION
 Ranks-subsection = subsection
-
+Ranks-COMPLEX = COMPLEX
 Ranks-complex = complex
-
+Ranks-SPECIES = SPECIES
 Ranks-species = species
-
+Ranks-HYBRID = HYBRID
 Ranks-hybrid = hybrid
-
+Ranks-SUBSPECIES = SUBSPECIES
 Ranks-subspecies = subspecies
-
+Ranks-VARIETY = VARIETY
 Ranks-variety = variety
-
+Ranks-FORM = FORM
 Ranks-form = form
-
+Ranks-INFRAHYBRID = INFRAHYBRID
 Ranks-infrahybrid = infrahybrid
 
 Read-more-on-Wikipedia = Read more on Wikipedia
