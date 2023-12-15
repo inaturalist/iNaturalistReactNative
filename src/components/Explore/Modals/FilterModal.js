@@ -232,6 +232,21 @@ const FilterModal = ( {
     }
   };
 
+  const dateObservedValues = {
+    all: {
+      label: t( "All" ),
+      value: "all"
+    },
+    exactDates: {
+      label: t( "Exact-Date" ),
+      value: "exactDate"
+    },
+    months: {
+      label: t( "Months" ),
+      value: "months"
+    }
+  };
+
   return (
     <View className="flex-1 bg-white">
       {/* Header */}
@@ -490,6 +505,22 @@ const FilterModal = ( {
             />
           )}
 
+        {/* Date observed section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "DATE-OBSERVED" )}</Heading4>
+          {showDateObserved && (
+            <RadioButtonSheet
+              headerText={t( "DATE-OBSERVED" )}
+              confirm={newDateObserved => {
+                updateDateObserved( newDateObserved );
+                setShowDateObserved( false );
+              }}
+              handleClose={() => setShowHigherTaxRank( false )}
+              radioValues={dateObservedValues}
+              selectedValue={dateObserved}
+            />
+          )}
+        </View>
         </View>
       </ScrollView>
       <StickyToolbar>

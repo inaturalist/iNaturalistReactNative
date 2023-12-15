@@ -336,6 +336,8 @@ Offline-DQA-description = The DQA may not be accurate. Check your internet conne
 
 EVIDENCE = EVIDENCE
 
+Exact-Date = Exact Date
+
 Explore = Explore
 
 Explore-Filters = Explore Filters
