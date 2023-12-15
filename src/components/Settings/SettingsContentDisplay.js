@@ -1,12 +1,12 @@
 // @flow
 
-import CheckBox from "@react-native-community/checkbox";
 import { Picker } from "@react-native-picker/picker";
+import { Checkbox } from "components/SharedComponents";
 import inatLicenses from "dictionaries/licenses";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { textStyles, viewStyles } from "styles/settings/settings";
 import colors from "styles/tailwindColors";
 
@@ -57,21 +57,11 @@ const LicenseSelector = ( {
         ) )}
       </Picker>
     </View>
-
-    <Pressable
-      accessibilityRole="button"
-      style={[viewStyles.row, viewStyles.notificationCheckbox]}
-      onPress={() => {
-        onUpdateExisting( !updateExisting );
-      }}
-    >
-      <CheckBox
-        value={updateExisting}
-        onValueChange={onUpdateExisting}
-        tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
-      />
-      <Text style={textStyles.notificationTitle}>{updateExistingTitle}</Text>
-    </Pressable>
+    <Checkbox
+      isChecked={updateExisting}
+      onPress={onUpdateExisting}
+      text={updateExistingTitle}
+    />
   </>
 );
 
@@ -110,28 +100,13 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
       </View>
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Taxonomy-Settings" )}</Text>
-      <Pressable
-        accessibilityRole="button"
-        style={[viewStyles.row, viewStyles.notificationCheckbox]}
-        onPress={() => {
-          onSettingsModified( {
-            ...settings,
-            prefers_automatic_taxonomic_changes: !settings.prefers_automatic_taxonomic_changes
-          } );
+      <Checkbox
+        isChecked={settings.prefers_automatic_taxonomic_changes}
+        onPress={v => {
+          onSettingsModified( { ...settings, prefers_automatic_taxonomic_changes: v } );
         }}
-      >
-        <CheckBox
-          value={settings.prefers_automatic_taxonomic_changes}
-          onValueChange={v => {
-            onSettingsModified( { ...settings, prefers_automatic_taxonomic_changes: v } );
-          }}
-          tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
-        />
-        <Text style={textStyles.notificationTitle}>
-          {t( "Automatically-update-my-content-for-taxon-changes" )}
-        </Text>
-      </Pressable>
-
+        text={t( "Automatically-update-my-content-for-taxon-changes" )}
+      />
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Names" )}</Text>
       <Text style={textStyles.subTitle}>{t( "Display" )}</Text>
       <Text>{t( "This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist" )}</Text>
@@ -180,25 +155,13 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
       <Text style={[textStyles.title, textStyles.marginTop]}>
         {t( "Community-Moderation-Settings" )}
       </Text>
-      <Pressable
-        accessibilityRole="button"
-        style={[viewStyles.row, viewStyles.notificationCheckbox]}
-        onPress={() => {
-          onSettingsModified( {
-            ...settings,
-            prefers_community_taxa: !settings.prefers_community_taxa
-          } );
+      <Checkbox
+        isChecked={settings.prefers_community_taxa}
+        onPress={v => {
+          onSettingsModified( { ...settings, prefers_community_taxa: v } );
         }}
-      >
-        <CheckBox
-          value={settings.prefers_community_taxa}
-          onValueChange={v => {
-            onSettingsModified( { ...settings, prefers_community_taxa: v } );
-          }}
-          tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
-        />
-        <Text style={textStyles.notificationTitle}>{t( "Accept-community-identifications" )}</Text>
-      </Pressable>
+        text={t( "Accept-community-identifications" )}
+      />
       <Text style={textStyles.subTitle}>
         {t( "Who-can-add-observation-fields-to-my-observations" )}
       </Text>

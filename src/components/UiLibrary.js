@@ -61,6 +61,7 @@ const UiLibrary = (): Node => {
   const currentUser = useCurrentUser();
   const userId = currentUser?.id;
   const [loading, setLoading] = useState( false );
+  const [isChecked, setIsChecked] = useState( false );
   const realm = useRealm( );
   const userText = `
     User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
@@ -351,7 +352,11 @@ const UiLibrary = (): Node => {
             </Body1>
           ) )}
         <Heading2 className="my-2">Checkbox</Heading2>
-        <Checkbox text="This is a checkbox" />
+        <Checkbox
+          text="This is a checkbox"
+          isChecked={isChecked}
+          onPress={( ) => setIsChecked( !isChecked )}
+        />
         <Heading2 className="my-2">User Icons</Heading2>
         <View className="flex flex-row justify-between mb-3">
           <View>

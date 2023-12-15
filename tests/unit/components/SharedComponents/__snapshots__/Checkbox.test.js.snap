@@ -65,7 +65,7 @@ exports[`Checkbox renders reliably 1`] = `
   }
   textComponent={
     <ForwardRef
-      className="ml-3"
+      className="ml-3 flex-shrink"
       component={[Function]}
     >
       Checkmark text
@@ -154,6 +154,9 @@ exports[`Checkbox renders reliably 1`] = `
           [
             {
               "marginLeft": 12,
+            },
+            {
+              "flexShrink": 1,
             },
           ],
         ],
