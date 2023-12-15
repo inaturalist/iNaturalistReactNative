@@ -12,7 +12,12 @@ import {
   ScrollViewWrapper,
   Tabs
 } from "components/SharedComponents";
-import { Image, Pressable, View } from "components/styledComponents";
+import {
+  Image,
+  LinearGradient,
+  Pressable,
+  View
+} from "components/styledComponents";
 import { compact } from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -105,6 +110,10 @@ const TaxonDetails = ( ): Node => {
               uri: Photo.displayMediumPhoto( photos.at( 0 )?.url )
             }}
             accessibilityIgnoresInvertColors
+          />
+          <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+            className="absolute w-full h-full"
           />
         </Pressable>
         <View className="absolute left-5 top-5">
