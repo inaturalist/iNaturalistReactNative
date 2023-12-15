@@ -249,6 +249,7 @@ const reducer = ( state, action ) => {
         exploreParams: {
           ...state.exploreParams,
           lrank: action.lrank
+        }
       };
     default:
       throw new Error();
@@ -392,6 +393,8 @@ const ExploreContainer = ( ): Node => {
       type: "SET_HIGHEST_TAXONOMIC_RANK",
       hrank: newRank
     } );
+  };
+
   const updateLowestTaxonomicRank = newRank => {
     dispatch( {
       type: "SET_LOWEST_TAXONOMIC_RANK",
