@@ -508,6 +508,60 @@ const FilterModal = ( {
               selectedValue={hrank}
             />
           )}
+        </View>
+
+        {/* Taxonomic Ranks section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
+          <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
+          <Button
+            text={lrank
+              ? taxonomicRankValues[lrank]?.label
+              : t( "ALL" )}
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              closeModal();
+              setShowLowerTaxRank( true );
+            }}
+          />
+          {showLowerTaxRank && (
+            <RadioButtonSheet
+              headerText={t( "TAXONOMIC-RANKS" )}
+              confirm={newRank => {
+                updateLowestTaxonomicRank( newRank );
+                setShowLowerTaxRank( false );
+              }}
+              handleClose={() => setShowLowerTaxRank( false )}
+              radioValues={taxonomicRankValues}
+              selectedValue={lrank}
+            />
+          )}
+          <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
+          <Button
+            text={hrank
+              ? taxonomicRankValues[hrank]?.label
+              : t( "ALL" )}
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              closeModal();
+              setShowHigherTaxRank( true );
+            }}
+          />
+          {showHigherTaxRank && (
+            <RadioButtonSheet
+              headerText={t( "TAXONOMIC-RANKS" )}
+              confirm={newRank => {
+                updateHighestTaxonomicRank( newRank );
+                setShowHigherTaxRank( false );
+              }}
+              handleClose={() => setShowHigherTaxRank( false )}
+              radioValues={taxonomicRankValues}
+              selectedValue={hrank}
+            />
+          )}
+        </View>
 
         {/* Date observed section */}
         <View className="mb-7">
