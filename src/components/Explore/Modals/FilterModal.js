@@ -271,7 +271,7 @@ const FilterModal = ( {
           )}
       </View>
 
-      <ScrollView className="p-5">
+      <ScrollView className="p-4">
         {/* Taxon Section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "TAXON" )}</Heading4>
