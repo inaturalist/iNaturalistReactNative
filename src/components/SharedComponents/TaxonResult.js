@@ -91,7 +91,6 @@ const TaxonResult = ( {
         <View className="shrink ml-3">
           <DisplayTaxonName
             taxon={taxon}
-            layout="horizontal"
             color={clearBackground && "text-white"}
           />
           {( confidence && confidencePosition === "text" ) && (
