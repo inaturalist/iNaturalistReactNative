@@ -2,9 +2,8 @@ import { screen } from "@testing-library/react-native";
 import ActivityTab from "components/ObsDetails/ActivityTab/ActivityTab";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",

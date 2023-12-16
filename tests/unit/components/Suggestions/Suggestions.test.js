@@ -7,9 +7,8 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import useStore from "stores/useStore";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockCreateId = jest.fn( );
 
@@ -34,7 +33,7 @@ describe( "Suggestions", ( ) => {
 
   test( "should not have accessibility errors", async ( ) => {
     renderComponent( <Suggestions
-      nearbySuggestions={mockSuggestionsList}
+      suggestions={mockSuggestionsList}
     /> );
 
     const suggestions = await screen.findByTestId( "suggestions" );
@@ -43,7 +42,7 @@ describe( "Suggestions", ( ) => {
 
   it( "should fetch offline suggestions for current photo", async ( ) => {
     renderComponent( <Suggestions
-      nearbySuggestions={mockSuggestionsList}
+      suggestions={mockSuggestionsList}
     /> );
     const taxonTopResult = screen.getByTestId(
       `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
@@ -58,7 +57,7 @@ describe( "Suggestions", ( ) => {
       comment: "This is a test comment"
     } );
     renderComponent( <Suggestions
-      nearbySuggestions={mockSuggestionsList}
+      suggestions={mockSuggestionsList}
     /> );
     const commentSection = screen.getByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
@@ -68,16 +67,16 @@ describe( "Suggestions", ( ) => {
 
   it( "should display empty text if no suggestions are found", ( ) => {
     renderComponent( <Suggestions
-      nearbySuggestions={[]}
+      suggestions={[]}
     /> );
     const emptyText = i18next
-      .t( "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo" );
+      .t( "iNaturalist-has-no-ID-suggestions-for-this-photo" );
     expect( screen.getByText( emptyText ) ).toBeVisible( );
   } );
 
   it( "should display a loading wheel if suggestions are loading", ( ) => {
     renderComponent( <Suggestions
-      nearbySuggestions={[]}
+      suggestions={[]}
       loadingSuggestions
     /> );
     const loading = screen.getByTestId( "SuggestionsList.loading" );
@@ -86,7 +85,7 @@ describe( "Suggestions", ( ) => {
 
   it( "should create an id when checkmark is pressed", async ( ) => {
     renderComponent( <Suggestions
-      nearbySuggestions={mockSuggestionsList}
+      suggestions={mockSuggestionsList}
       onTaxonChosen={mockCreateId}
     /> );
     const testID = `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`;

@@ -7,8 +7,7 @@ import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
 import Photo from "realmModels/Photo";
-
-import factory from "../../../factory";
+import factory from "tests/factory";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 

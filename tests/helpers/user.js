@@ -3,8 +3,7 @@ import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import nock from "nock";
 import RNSInfo from "react-native-sensitive-info";
-
-import { makeResponse } from "../factory";
+import { makeResponse } from "tests/factory";
 
 async function signOut( options = {} ) {
   const realm = options.realm || global.realm;

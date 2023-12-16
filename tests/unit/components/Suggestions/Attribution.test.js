@@ -3,8 +3,7 @@ import { screen } from "@testing-library/react-native";
 import Attribution from "components/Suggestions/Attribution";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import { renderComponent } from "../../../helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 const mockObservers = [
   faker.person.fullName( ), faker.person.fullName( ), faker.person.fullName( )

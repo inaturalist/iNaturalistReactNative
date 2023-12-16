@@ -2,9 +2,8 @@ import { screen } from "@testing-library/react-native";
 import { DisplayTaxon } from "components/SharedComponents";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: "Aves",

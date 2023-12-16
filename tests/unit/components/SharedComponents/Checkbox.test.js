@@ -3,8 +3,7 @@ import { Checkbox } from "components/SharedComponents";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import colors from "styles/tailwindColors";
-
-import { renderComponent } from "../../../helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 const rerenderCheckmarkComponent = checked => {
   renderComponent(

@@ -2,9 +2,8 @@ import { screen } from "@testing-library/react-native";
 import EvidenceList from "components/ObsEdit/EvidenceList";
 import React from "react";
 import useStore from "stores/useStore";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );
 

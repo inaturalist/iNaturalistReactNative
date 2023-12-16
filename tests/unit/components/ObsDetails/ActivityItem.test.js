@@ -2,9 +2,8 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockIdentification = factory( "LocalIdentification", {
   uuid: "123456789",
