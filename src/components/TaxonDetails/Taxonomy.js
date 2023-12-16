@@ -39,8 +39,7 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
   const displayScientificName = ( rank, scientificNamePieces, rankLevel, rankPiece, options ) => {
     const isCurrentTaxon = options?.isCurrentTaxon;
     const hasCommonName = options?.hasCommonName;
-    const isChild = options?.isChild;
-    const underline = !isCurrentTaxon && ( isChild || !hasCommonName );
+    const underline = !isCurrentTaxon && !hasCommonName;
     // italics part ported over from DisplayTaxonName
     const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
       const isItalics = piece !== rankPiece && (
@@ -67,45 +66,32 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
       );
     } );
 
-    return isChild
-      ? (
-        <View className="flex-row">
-          <Body2 className={
-            classnames( {
-              underline
-            } )
-          }
+    return (
+      <Body2 className={
+        classnames( {
+          underline,
+          "text-inatGreen": isCurrentTaxon,
+          "-ml-1 ": !hasCommonName
+        } )
+      }
+      >
+        {hasCommonName && <Body2>(</Body2>}
+        {rankLevel > 10 && (
+          <Body2
+            className={
+              classnames( {
+                "font-bold": !hasCommonName,
+                "text-inatGreen": isCurrentTaxon
+              } )
+            }
           >
-            { scientificNameComponent }
+            {`${rank} `}
           </Body2>
-        </View>
-      )
-      : (
-        <Body2 className={
-          classnames( {
-            underline,
-            "text-inatGreen": isCurrentTaxon,
-            "-ml-1 ": !hasCommonName
-          } )
-        }
-        >
-          {hasCommonName && <Body2>(</Body2>}
-          {rankLevel > 10 && (
-            <Body2
-              className={
-                classnames( {
-                  "font-bold": !hasCommonName,
-                  "text-inatGreen": isCurrentTaxon
-                } )
-              }
-            >
-              {`${rank} `}
-            </Body2>
-          )}
-          {scientificNameComponent}
-          {hasCommonName && <Body2>)</Body2>}
-        </Body2>
-      );
+        )}
+        {scientificNameComponent}
+        {hasCommonName && <Body2>)</Body2>}
+      </Body2>
+    );
   };
 
   const renderTaxon = useCallback( ( taxon, options ) => {
@@ -144,8 +130,7 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
           rankPiece,
           {
             isCurrentTaxon,
-            hasCommonName: commonName,
-            isChild
+            hasCommonName: commonName
           }
         )}
       </Pressable>
@@ -158,22 +143,13 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
         {currentTaxon?.ancestors?.map( ancestor => renderTaxon( ancestor ) )}
         {renderTaxon( currentTaxon, { isCurrentTaxon: true } )}
         {viewChildren
-          ? currentTaxon?.children?.map( child => renderTaxon( child, {
+          && currentTaxon?.children?.map( child => renderTaxon( child, {
             isChild: true
-          } ) )
-          : (
-            <Button
-              className="mt-3"
-              onPress={( ) => setViewChildren( true )}
-              text={t( "VIEW-CHILDREN-TAXA" )}
-            />
-          )}
+          } ) )}
       </>
     ),
-    [currentTaxon, renderTaxon, viewChildren, t]
+    [currentTaxon, renderTaxon, viewChildren]
   );
-
-  console.log( currentTaxon?.children, "children from current taxon" );
 
   return (
     <View className="mb-5">
@@ -181,6 +157,13 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
         {t( "TAXONOMY-header" )}
       </Heading4>
       {displayTaxonomy( )}
+      {!viewChildren && currentTaxon?.children && (
+        <Button
+          className="mt-3"
+          onPress={( ) => setViewChildren( true )}
+          text={t( "VIEW-CHILDREN-TAXA" )}
+        />
+      )}
     </View>
   );
 };
