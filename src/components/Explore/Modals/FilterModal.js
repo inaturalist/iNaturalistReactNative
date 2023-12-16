@@ -1,10 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import SortBySheet from "components/Explore/Sheets/SortBySheet";
 import {
+  Body1,
   Body2,
   Body3,
   Button,
   Checkbox,
+  DateTimePicker,
   DisplayTaxon,
   Heading1,
   Heading4,
@@ -56,7 +58,8 @@ const FilterModal = ( {
   updateCasual,
   updateLowestTaxonomicRank,
   updateHighestTaxonomicRank,
-  updateDateObserved
+  updateDateObserved,
+  updateDateUploaded
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -71,16 +74,22 @@ const FilterModal = ( {
     casual,
     lrank,
     hrank,
-    dateObserved
+    dateObserved,
+    // eslint-disable-next-line camelcase
+    observed_on,
+    dateUploaded,
+    // eslint-disable-next-line camelcase
+    created_on
   } = exploreFilters;
-
 
   const NONE = "NONE";
   const SORT_BY = "SORT_BY";
   const LRANK = "LRANK";
   const HRANK = "HRANK";
   const DATE_OBSERVED = "DATE_OBSERVED";
-  const DATE_PICKER_EXACT = "DATE_PICKER_EXACT";
+  const OBSERVED_EXACT = "OBSERVED_EXACT";
+  const DATE_UPLOADED = "DATE_UPLOADED";
+  const UPLOADED_EXACT = "UPLOADED_EXACT";
   const [openSheet, setOpenSheet] = useState( NONE );
 
   const sortByButtonText = () => {
@@ -245,7 +254,7 @@ const FilterModal = ( {
       label: t( "All" ),
       value: "all"
     },
-    exactDates: {
+    exactDate: {
       label: t( "Exact-Date" ),
       value: "exactDate"
     },
@@ -253,6 +262,31 @@ const FilterModal = ( {
       label: t( "Months" ),
       value: "months"
     }
+  };
+
+  const dateUploadedValues = {
+    all: {
+      label: t( "All" ),
+      value: "all"
+    },
+    exactDate: {
+      label: t( "Exact-Date" ),
+      value: "exactDate"
+    }
+  };
+
+  const updateObservedDate = date => {
+    updateDateObserved(
+      dateObservedValues.exactDate.value,
+      date.toISOString().split( "T" )[0]
+    );
+  };
+
+  const updateUploadedExact = date => {
+    updateDateUploaded(
+      dateUploadedValues.exactDate.value,
+      date.toISOString().split( "T" )[0]
+    );
   };
 
   return (
@@ -498,6 +532,7 @@ const FilterModal = ( {
             }}
           />
           {openSheet === HRANK && (
+            // TODO: change as in Figma designs
             <RadioButtonSheet
               headerText={t( "TAXONOMIC-RANKS" )}
               confirm={newRank => {
@@ -511,59 +546,6 @@ const FilterModal = ( {
           )}
         </View>
 
-        {/* Taxonomic Ranks section */}
-        {/* <View className="mb-7">
-          <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
-          <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
-          <Button
-            text={lrank
-              ? taxonomicRankValues[lrank]?.label
-              : t( "ALL" )}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              closeModal();
-              setShowLowerTaxRank( true );
-            }}
-          />
-          {showLowerTaxRank && (
-            <RadioButtonSheet
-              headerText={t( "TAXONOMIC-RANKS" )}
-              confirm={newRank => {
-                updateLowestTaxonomicRank( newRank );
-                setShowLowerTaxRank( false );
-              }}
-              handleClose={() => setShowLowerTaxRank( false )}
-              radioValues={taxonomicRankValues}
-              selectedValue={lrank}
-            />
-          )}
-          <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
-          <Button
-            text={hrank
-              ? taxonomicRankValues[hrank]?.label
-              : t( "ALL" )}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              closeModal();
-              setShowHigherTaxRank( true );
-            }}
-          />
-          {showHigherTaxRank && (
-            <RadioButtonSheet
-              headerText={t( "TAXONOMIC-RANKS" )}
-              confirm={newRank => {
-                updateHighestTaxonomicRank( newRank );
-                setShowHigherTaxRank( false );
-              }}
-              handleClose={() => setShowHigherTaxRank( false )}
-              radioValues={taxonomicRankValues}
-              selectedValue={hrank}
-            />
-          )}
-        </View> */}
-
         {/* Date observed section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "DATE-OBSERVED" )}</Heading4>
@@ -572,11 +554,32 @@ const FilterModal = ( {
             className="shrink mb-7"
             dropdown
             onPress={() => {
-              // closeModal();
+              closeModal();
               setOpenSheet( DATE_OBSERVED );
             }}
           />
           {dateObserved === dateObservedValues.exactDate.value && (
+            <View className="items-center">
+              {/* eslint-disable-next-line camelcase */}
+              <Body1 className="mb-5">{observed_on}</Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( OBSERVED_EXACT );
+                }}
+              />
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === OBSERVED_EXACT}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateObservedDate( date )}
+              />
+            </View>
+          )}
+          {dateObserved === dateObservedValues.months.value && (
+            // TODO: make this section
+            <Body1 className="mb-5">{t( "Exact-Date" )}</Body1>
           )}
           {openSheet === DATE_OBSERVED && (
             <RadioButtonSheet
@@ -591,6 +594,50 @@ const FilterModal = ( {
             />
           )}
         </View>
+
+        {/* Date uploaded section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "DATE-UPLOADED" )}</Heading4>
+          <Button
+            text={dateUploadedValues[dateUploaded]?.label.toUpperCase()}
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              closeModal();
+              setOpenSheet( DATE_UPLOADED );
+            }}
+          />
+          {dateUploaded === dateUploadedValues.exactDate.value && (
+            <View className="items-center">
+              {/* eslint-disable-next-line camelcase */}
+              <Body1 className="mb-5">{created_on}</Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( UPLOADED_EXACT );
+                }}
+              />
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateUploadedExact( date )}
+              />
+            </View>
+          )}
+          {openSheet === DATE_UPLOADED && (
+            <RadioButtonSheet
+              headerText={t( "DATE-UPLOADED" )}
+              confirm={newDate => {
+                updateDateUploaded( newDate );
+                setOpenSheet( NONE );
+              }}
+              handleClose={() => setOpenSheet( NONE )}
+              radioValues={dateUploadedValues}
+              selectedValue={dateUploaded}
+            />
+          )}
         </View>
       </ScrollView>
       <StickyToolbar>
