@@ -10,10 +10,10 @@ import React, { useCallback, useState } from "react";
 import { ActivityIndicator } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
-import ObservationPhoto from "../../realmModels/ObservationPhoto";
 
 const { useRealm } = RealmContext;
 
