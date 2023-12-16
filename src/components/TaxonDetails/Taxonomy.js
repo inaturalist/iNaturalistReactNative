@@ -75,7 +75,16 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
         } )
       }
       >
-        {hasCommonName && <Body2>(</Body2>}
+        {hasCommonName && (
+          <Body2 className={
+            classnames( {
+              "text-inatGreen": isCurrentTaxon
+            } )
+          }
+          >
+            (
+          </Body2>
+        )}
         {rankLevel > 10 && (
           <Body2
             className={
@@ -89,7 +98,16 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
           </Body2>
         )}
         {scientificNameComponent}
-        {hasCommonName && <Body2>)</Body2>}
+        {hasCommonName && (
+          <Body2 className={
+            classnames( {
+              "text-inatGreen": isCurrentTaxon
+            } )
+          }
+          >
+            )
+          </Body2>
+        )}
       </Body2>
     );
   };
@@ -108,7 +126,7 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
     return (
       <Pressable
         accessibilityRole="button"
-        className="flex-row py-2"
+        className="flex-row py-2 flex-wrap"
         key={taxon?.id}
         disabled={isCurrentTaxon}
         onPress={( ) => navigation.navigate( "TaxonDetails", { id: taxon?.id } )}
