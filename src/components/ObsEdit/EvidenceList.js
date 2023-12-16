@@ -35,6 +35,7 @@ const EvidenceList = ( {
   const [tappedMediaIndex, setTappedMediaIndex] = useState( -1 );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
   const photoUris = photos.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
+  const innerPhotos = photos.map( obsPhoto => obsPhoto.photo );
 
   const renderPhoto = useCallback( ( { item: obsPhoto, getIndex, drag } ) => (
     <ScaleDecorator>
@@ -109,7 +110,7 @@ const EvidenceList = ( {
           setTappedMediaIndex( tappedMediaIndex - 1 );
         }}
         uri={photoUris[tappedMediaIndex]}
-        photos={photos}
+        photos={innerPhotos}
       />
     </View>
   );
