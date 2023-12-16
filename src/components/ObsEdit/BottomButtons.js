@@ -8,11 +8,12 @@ import {
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { writeExifToFile } from "sharedHelpers/parseExif";
 import uploadObservation from "sharedHelpers/uploadObservation";
-import useTranslation from "sharedHooks/useTranslation";
+import { useCurrentUser, useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import { log } from "../../../react-native-logs.config";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
@@ -27,22 +28,23 @@ type Props = {
   passesIdentificationTest: boolean,
   observations: Array<Object>,
   currentObservation: Object,
-  unsavedChanges: boolean,
   currentObservationIndex: number,
-  cameraRollUris: Array<string>,
   setCurrentObservationIndex: Function
 }
+
+const logger = log.extend( "ObsEditBottomButtons" );
 
 const BottomButtons = ( {
   passesEvidenceTest,
   passesIdentificationTest,
   currentObservation,
-  unsavedChanges,
   currentObservationIndex,
   observations,
-  cameraRollUris,
   setCurrentObservationIndex
 }: Props ): Node => {
+  const currentUser = useCurrentUser( );
+  const cameraRollUris = useStore( state => state.cameraRollUris );
+  const unsavedChanges = useStore( state => state.unsavedChanges );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );
@@ -52,9 +54,9 @@ const BottomButtons = ( {
   const [buttonPressed, setButtonPressed] = useState( null );
   const [loading, setLoading] = useState( false );
 
-  const logger = log.extend( "ObsEditBottomButtons" );
+  const passesTests = passesEvidenceTest && passesIdentificationTest;
 
-  const writeExifToCameraRollPhotos = async exif => {
+  const writeExifToCameraRollPhotos = useCallback( async exif => {
     if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {
       return;
     }
@@ -63,19 +65,27 @@ const BottomButtons = ( {
       logger.info( "writeExifToCameraRollPhotos, writing exif for uri: ", uri );
       writeExifToFile( uri, exif );
     } );
-  };
+  }, [
+    cameraRollUris,
+    currentObservation
+  ] );
 
-  const saveObservation = async observation => {
+  const saveObservation = useCallback( async observation => {
     await writeExifToCameraRollPhotos( {
       latitude: observation.latitude,
       longitude: observation.longitude,
       positional_accuracy: observation.positionalAccuracy
     } );
     return Observation.saveLocalObservationForUpload( observation, realm );
-  };
+  }, [
+    realm,
+    writeExifToCameraRollPhotos
+  ] );
 
-  const setNextScreen = async ( { type }: Object ) => {
+  const setNextScreen = useCallback( async ( { type }: Object ) => {
+    logger.info( "saving observation ", currentObservation.uuid );
     const savedObservation = await saveObservation( currentObservation );
+    logger.info( "saved observation ", savedObservation.uuid );
     const params = {};
     if ( type === "upload" ) {
       // $FlowIgnore
@@ -84,6 +94,7 @@ const BottomButtons = ( {
     }
 
     if ( observations.length === 1 ) {
+      logger.info( "navigating back to MyObs" );
       // navigate to ObsList and start upload with uuid
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsStackNavigator",
@@ -92,6 +103,7 @@ const BottomButtons = ( {
           params
         }
       } );
+      logger.info( "navigated back to MyObs" );
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
@@ -102,7 +114,15 @@ const BottomButtons = ( {
       setCurrentObservationIndex( currentObservationIndex, observations );
       setLoading( false );
     }
-  };
+  }, [
+    currentObservation,
+    currentObservationIndex,
+    navigation,
+    realm,
+    saveObservation,
+    observations,
+    setCurrentObservationIndex
+  ] );
 
   useEffect(
     ( ) => {
@@ -114,7 +134,7 @@ const BottomButtons = ( {
     [currentObservation]
   );
 
-  const showMissingEvidence = ( ) => {
+  const showMissingEvidence = useCallback( ( ) => {
     if ( allowUserToUpload ) { return false; }
     // missing evidence sheet takes precedence over the location imprecise sheet
     if ( !passesEvidenceTest ) {
@@ -128,14 +148,79 @@ const BottomButtons = ( {
       return true;
     }
     return false;
-  };
+  }, [allowUserToUpload, currentObservation, passesEvidenceTest] );
 
-  const handlePress = type => {
+  const handlePress = useCallback( type => {
+    logger.info( `tapped ${type}` );
     if ( showMissingEvidence( ) ) { return; }
     setLoading( true );
     setButtonPressed( type );
     setNextScreen( { type } );
-  };
+  }, [setNextScreen, showMissingEvidence] );
+
+  const renderSaveButton = useCallback( ( ) => (
+    <Button
+      className="px-[25px]"
+      onPress={( ) => handlePress( "save" )}
+      testID="ObsEdit.saveButton"
+      text={t( "SAVE" )}
+      level="neutral"
+      loading={buttonPressed === "save" && loading}
+      disabled={buttonPressed !== null}
+    />
+  ), [buttonPressed, loading, handlePress, t] );
+
+  const renderSaveChangesButton = useCallback( ( ) => (
+    <Button
+      onPress={( ) => handlePress( "save" )}
+      testID="ObsEdit.saveChangesButton"
+      text={t( "SAVE-CHANGES" )}
+      level={unsavedChanges
+        ? "focus"
+        : "neutral"}
+      loading={buttonPressed === "save" && loading}
+      disabled={buttonPressed !== null}
+    />
+  ), [buttonPressed, loading, handlePress, t, unsavedChanges] );
+
+  const renderUploadButton = useCallback( ( ) => (
+    <Button
+      className="ml-3 grow"
+      level={passesTests
+        ? "focus"
+        : "neutral"}
+      text={t( "UPLOAD-NOW" )}
+      testID="ObsEdit.uploadButton"
+      onPress={( ) => handlePress( "upload" )}
+      loading={buttonPressed === "upload" && loading}
+      disabled={buttonPressed !== null}
+    />
+  ), [buttonPressed, loading, handlePress, t, passesTests] );
+
+  const renderButtons = useCallback( ( ) => {
+    if ( !currentUser ) {
+      return renderSaveButton( );
+    }
+    if ( currentObservation?._synced_at ) {
+      return renderSaveChangesButton( );
+    }
+    return (
+      <View className={classnames( "flex-row justify-evenly", {
+        "opacity-50": !passesEvidenceTest
+      } )}
+      >
+        {renderSaveButton( )}
+        {renderUploadButton( )}
+      </View>
+    );
+  }, [
+    currentObservation,
+    passesEvidenceTest,
+    currentUser,
+    renderSaveButton,
+    renderSaveChangesButton,
+    renderUploadButton
+  ] );
 
   return (
     <StickyToolbar>
@@ -149,46 +234,7 @@ const BottomButtons = ( {
           setShowImpreciseLocationSheet={setShowImpreciseLocationSheet}
         />
       )}
-      {currentObservation?._synced_at
-        ? (
-          <Button
-            onPress={( ) => handlePress( "save" )}
-            testID="ObsEdit.saveChangesButton"
-            text={t( "SAVE-CHANGES" )}
-            level={unsavedChanges
-              ? "focus"
-              : "neutral"}
-            loading={buttonPressed === "save" && loading}
-            disabled={buttonPressed !== null}
-          />
-        )
-        : (
-          <View className={classnames( "flex-row justify-evenly", {
-            "opacity-50": !passesEvidenceTest
-          } )}
-          >
-            <Button
-              className="px-[25px]"
-              onPress={( ) => handlePress( "save" )}
-              testID="ObsEdit.saveButton"
-              text={t( "SAVE" )}
-              level="neutral"
-              loading={buttonPressed === "save" && loading}
-              disabled={buttonPressed !== null}
-            />
-            <Button
-              className="ml-3 grow"
-              level={passesEvidenceTest && passesIdentificationTest
-                ? "focus"
-                : "neutral"}
-              text={t( "UPLOAD-NOW" )}
-              testID="ObsEdit.uploadButton"
-              onPress={( ) => handlePress( "upload" )}
-              loading={buttonPressed === "upload" && loading}
-              disabled={buttonPressed !== null}
-            />
-          </View>
-        )}
+      {renderButtons( )}
     </StickyToolbar>
   );
 };

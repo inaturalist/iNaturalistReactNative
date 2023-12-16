@@ -4,14 +4,13 @@ import ActivityHeader from "components/ObsDetails/ActivityTab/ActivityHeader";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockUser = factory( "LocalUser", {
   id: 0,
   login: faker.internet.userName( ),
-  iconUrl: faker.image.imageUrl( )
+  iconUrl: faker.image.url( )
 } );
 
 describe( "ActivityHeaderKebabMenu", () => {

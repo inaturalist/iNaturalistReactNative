@@ -1,6 +1,6 @@
 // @flow
 
-import CheckBox from "@react-native-community/checkbox";
+import { Checkbox } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -11,7 +11,6 @@ import {
   View
 } from "react-native";
 import { viewStyles } from "styles/settings/settings";
-import colors from "styles/tailwindColors";
 
 type Props = {
   relationship: Object,
@@ -35,26 +34,20 @@ const Relationship = ( {
         <Text>{relationship.friendUser.name}</Text>
       </View>
       <View style={viewStyles.column}>
-        <View style={[viewStyles.row, viewStyles.notificationCheckbox]}>
-          <CheckBox
-            value={relationship.following}
-            onValueChange={
-              ( ) => { updateRelationship( relationship, { following: !relationship.following } ); }
-            }
-            tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
-          />
-          <Text>{t( "Following" )}</Text>
-        </View>
-        <View style={[viewStyles.row, viewStyles.notificationCheckbox]}>
-          <CheckBox
-            value={relationship.trust}
-            onValueChange={
-              ( ) => { updateRelationship( relationship, { trust: !relationship.trust } ); }
-            }
-            tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
-          />
-          <Text>{t( "Trust-with-hidden-coordinates" )}</Text>
-        </View>
+        <Checkbox
+          isChecked={relationship.following}
+          onPress={
+            ( ) => { updateRelationship( relationship, { following: !relationship.following } ); }
+          }
+          text={t( "Following" )}
+        />
+        <Checkbox
+          isChecked={relationship.trust}
+          onPress={
+            ( ) => { updateRelationship( relationship, { trust: !relationship.trust } ); }
+          }
+          text={t( "Trust-with-hidden-coordinates" )}
+        />
       </View>
     </View>
     <Text>{t( "Added-on-date", { date: relationship.created_at } )}</Text>

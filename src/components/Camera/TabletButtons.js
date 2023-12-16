@@ -100,6 +100,7 @@ const TabletButtons = ( {
         changeZoom={changeZoom}
         zoomTextValue={zoomTextValue}
         showZoomButton={showZoomButton}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
       />
       <Flash
         toggleFlash={toggleFlash}

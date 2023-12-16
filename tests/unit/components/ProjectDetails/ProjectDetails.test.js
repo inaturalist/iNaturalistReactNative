@@ -3,14 +3,13 @@ import { screen } from "@testing-library/react-native";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockProject = factory( "RemoteProject", {
   title: faker.lorem.sentence( ),
-  icon: faker.image.imageUrl( ),
-  header_image_url: faker.image.imageUrl( ),
+  icon: faker.image.url( ),
+  header_image_url: faker.image.url( ),
   description: faker.lorem.paragraph( )
 } );
 

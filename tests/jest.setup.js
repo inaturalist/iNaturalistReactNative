@@ -3,14 +3,16 @@ import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
+import mockFs from "fs";
 import inatjs from "inaturalistjs";
+import fetchMock from "jest-fetch-mock";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 import mockRNLocalize from "react-native-localize/mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
-import { makeResponse } from "./factory";
+import factory, { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
@@ -18,7 +20,10 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
-jest.mock( "vision-camera-plugin-inatvision" );
+jest.mock( "vision-camera-plugin-inatvision", () => ( {
+  getPredictionsForImage: jest.fn( () => Promise.resolve( "Mocked cv prediction" ) )
+} ) );
+
 jest.mock( "react-native-worklets-core", () => ( {
   Worklets: {
     createRunInJsFn: jest.fn()
@@ -199,7 +204,7 @@ jest.mock( "react-native-permissions", () => require( "react-native-permissions/
 
 // mocking globally since this currently affects a handful of unit and integration tests
 jest.mock( "@react-native-community/geolocation", ( ) => ( {
-  getCurrentPosition: ( ) => jest.fn( )
+  getCurrentPosition: jest.fn( )
 } ) );
 require( "react-native" ).NativeModules.RNCGeolocation = { };
 
@@ -227,7 +232,16 @@ jest.mock( "react-native-fs", ( ) => {
         mtime: 123,
         name: "testdata"
       }
-    ] ) )
+    ] ) ),
+    writeFile: jest.fn( async ( filePath, contents, _encoding ) => {
+      mockFs.writeFile( filePath, contents, jest.fn( ) );
+    } ),
+    mkdir: jest.fn( async ( filepath, _options ) => {
+      mockFs.mkdir( filepath, jest.fn( ) );
+    } ),
+    unlink: jest.fn( async path => {
+      mockFs.unlink( path, jest.fn( ) );
+    } )
   };
 
   return RNFS;
@@ -312,4 +326,28 @@ jest.mock( "react-native-geocoder-reborn", ( ) => ( {
     "Somewheria",
     "SW"
   ] )
+} ) );
+
+// Set up mocked fetch for testing (or disabling) fetch requests
+fetchMock.enableMocks( );
+fetchMock.dontMock( );
+
+const mockIconicTaxon = factory( "RemoteTaxon", {
+  is_iconic: true,
+  name: "Mock iconic taxon"
+} );
+inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
+
+jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
+  createResizedImage: jest.fn(
+    async (
+      path,
+      _maxWidth,
+      _maxHeight,
+      _compressFormat,
+      _quality,
+      _rotation,
+      _outputPath
+    ) => ( { uri: path } )
+  )
 } ) );

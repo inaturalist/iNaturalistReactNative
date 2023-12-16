@@ -23,17 +23,28 @@ Object.defineProperty( INatApiError.prototype, "name", {
 
 const handleError = async ( e: Object, options: Object = {} ): Object => {
   if ( !e.response ) { throw e; }
-  const errorText = await e.response.text( );
-  const error = new INatApiError( errorText, e.response.status );
+  const errorJson = await e.response.json( );
+  // Handle some of the insanity of our errors
+  if ( errorJson.errors ) {
+    errorJson.errors = errorJson.errors.map( error => {
+      if ( error.message && error.message.match( /":/ ) ) {
+        error.message = JSON.parse( error.message );
+      }
+      return error;
+    } );
+  }
+  const error = new INatApiError( errorJson, e.response.status );
   // TODO: this will log all errors handled here to the log file, in a production build
   // we probably don't want to do that, so change this back to console.error at one point
   logger.error(
-    `Error requesting ${e.response.url} (status: ${e.response.status}): ${errorText}`
+    `Error requesting ${e.response.url} (status: ${e.response.status}): ${errorJson}`
   );
-  if ( options.throw ) {
-    throw error;
+  // Default to throw errors. We almost never want handle supress an error at
+  // this low level
+  if ( options.throw === false ) {
+    return null;
   }
-  return null;
+  throw error;
 };
 
 export default handleError;

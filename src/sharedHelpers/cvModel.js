@@ -3,6 +3,7 @@ import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
+import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 import { log } from "../../react-native-logs.config";
 
@@ -28,6 +29,15 @@ export const modelPath: string = Platform.select( {
 export const taxonomyPath: string = Platform.select( {
   ios: `${RNFS.DocumentDirectoryPath}/${modelFiles.IOSTAXONOMY}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`
+} );
+
+export const modelVersion = Config.CV_MODEL_VERSION;
+
+export const predictImage = ( uri: string ): Promise<Object> => getPredictionsForImage( {
+  uri,
+  modelPath,
+  taxonomyPath,
+  version: modelVersion
 } );
 
 const addCameraFilesAndroid = () => {

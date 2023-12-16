@@ -1,13 +1,12 @@
 // @flow
 
-import CheckBox from "@react-native-community/checkbox";
+import { Checkbox } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import Switch from "react-native/Libraries/Components/Switch/Switch";
 import { textStyles, viewStyles } from "styles/settings/settings";
-import colors from "styles/tailwindColors";
 
 import type { SettingsProps } from "./types";
 
@@ -27,18 +26,11 @@ const EMAIL_NOTIFICATIONS = {
 };
 
 const EmailNotification = ( { title, value, onValueChange } ): Node => (
-  <Pressable
-    accessibilityRole="button"
-    style={[viewStyles.row, viewStyles.notificationCheckbox]}
-    onPress={() => onValueChange( !value )}
-  >
-    <CheckBox
-      value={value}
-      onValueChange={onValueChange}
-      tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
-    />
-    <Text style={textStyles.notificationTitle}>{title}</Text>
-  </Pressable>
+  <Checkbox
+    isChecked={value}
+    onPress={onValueChange}
+    text={title}
+  />
 );
 
 const Notification = ( {

@@ -1,40 +1,60 @@
 // @flow
 
-import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetModal,
+  BottomSheetView,
+  useBottomSheetDynamicSnapPoints
+} from "@gorhom/bottom-sheet";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useRef
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef
 } from "react";
 import { useTranslation } from "sharedHooks";
 import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
-  children: any,
+  children: Node,
   hidden?: boolean,
-  snapPoints?: ( string|number )[],
   onChange?: Function,
   handleClose?: Function,
   hideCloseButton?: boolean,
-  headerText?: string
+  headerText?: string,
+  snapPoints?: any,
+  insideModal?: boolean
 }
-
-const DEFAULT_SNAP_POINTS = ["45%"];
 
 const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
 
 const StandardBottomSheet = ( {
   children,
   hidden,
-  snapPoints = DEFAULT_SNAP_POINTS,
   onChange = null,
   handleClose,
   hideCloseButton = false,
-  headerText
+  headerText,
+  snapPoints,
+  insideModal
 }: Props ): Node => {
+  if ( snapPoints ) {
+    throw new Error( "BottomSheet does not accept snapPoints as a prop." );
+  }
+
   const { t } = useTranslation( );
   const sheetRef = useRef( null );
+
+  const initialSnapPoints = useMemo( () => ["CONTENT_HEIGHT"], [] );
+
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout
+  } = useBottomSheetDynamicSnapPoints( initialSnapPoints );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
@@ -43,12 +63,20 @@ const StandardBottomSheet = ( {
     if ( handleClose ) {
       handleClose( );
     }
-    sheetRef.current?.dismiss( );
-  }, [handleClose] );
+    if ( insideModal ) {
+      sheetRef.current?.collapse( );
+    } else {
+      sheetRef.current?.dismiss( );
+    }
+  }, [handleClose, insideModal] );
 
   const handleSnapPress = useCallback( ( ) => {
-    sheetRef.current?.present( );
-  }, [] );
+    if ( insideModal ) {
+      sheetRef.current?.expand( );
+    } else {
+      sheetRef.current?.present( );
+    }
+  }, [insideModal] );
 
   useEffect( ( ) => {
     if ( hidden ) {
@@ -58,17 +86,23 @@ const StandardBottomSheet = ( {
     }
   }, [hidden, handleClosePress, handleSnapPress] );
 
+  const BottomSheetComponent = insideModal
+    ? BottomSheet
+    : BottomSheetModal;
+
   return (
-    <BottomSheetModal
+    <BottomSheetComponent
       ref={sheetRef}
       index={0}
-      snapPoints={snapPoints}
+      snapPoints={animatedSnapPoints}
+      handleHeight={animatedHandleHeight}
+      contentHeight={animatedContentHeight}
       style={viewStyles.shadow}
       handleComponent={noHandle}
       backdropComponent={renderBackdrop}
       onChange={onChange}
     >
-      <BottomSheetView>
+      <BottomSheetView onLayout={handleContentLayout}>
         <View className="items-center">
           <Heading4 className="pt-7">{headerText}</Heading4>
         </View>
@@ -84,7 +118,7 @@ const StandardBottomSheet = ( {
           />
         )}
       </BottomSheetView>
-    </BottomSheetModal>
+    </BottomSheetComponent>
   );
 };
 

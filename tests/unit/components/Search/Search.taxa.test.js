@@ -2,16 +2,15 @@ import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockedNavigate = jest.fn( );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  preferred_common_name: faker.name.fullName( ),
+  preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.imageUrl( )
+    square_url: faker.image.url( )
   }
 } );
 

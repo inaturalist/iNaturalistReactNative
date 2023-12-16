@@ -1,0 +1,14 @@
+NEW
+* Offline suggestions fallback when online not available
+* Splash screen
+* Android adaptive icon
+* View photos from ObsDetails and TaxonDetails
+
+FIXED
+* Suggestions should use coordinates
+
+UPDATED
+* Restyled ObsDetails when no media
+* Idents from vision get marked as such
+* Only show SAVE button on ObsEdit when logged out
+* ObsEdit title changed to "Edit Observation" when editing existing

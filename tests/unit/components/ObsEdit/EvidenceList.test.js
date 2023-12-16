@@ -1,51 +1,46 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import EvidenceList from "components/ObsEdit/EvidenceList";
 import React from "react";
+import useStore from "stores/useStore";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+const initialStoreState = useStore.getState( );
 
-const observationPhotos = [
-  factory( "RemoteObservationPhoto", {
-    photo: {
-      url: faker.image.imageUrl( )
-    },
-    position: 0
-  } ),
-  factory( "RemoteObservationPhoto", {
-    photo: {
-      url: `${faker.image.imageUrl( )}/100`
-    },
-    position: 1
-  } )
-];
+const photos = [factory( "RemotePhoto" ), factory( "RemotePhoto" )];
 
-const renderEvidenceList = evidenceList => renderComponent(
+const renderEvidenceList = evidencePhotos => renderComponent(
   <EvidenceList
-    evidenceList={evidenceList}
+    photos={evidencePhotos}
     savingPhoto
   />
 );
 
 describe( "EvidenceList", ( ) => {
+  beforeAll( ( ) => {
+    useStore.setState( initialStoreState, true );
+  } );
+
   it( "should display add evidence button", ( ) => {
-    renderEvidenceList( observationPhotos );
+    renderEvidenceList( photos );
 
     expect( screen.getByTestId( "EvidenceList.add" ) ).toBeVisible( );
   } );
 
   it( "should display loading wheel if photo is saving", ( ) => {
-    renderEvidenceList( observationPhotos );
+    useStore.setState( {
+      savingPhoto: true
+    } );
+    renderEvidenceList( photos );
 
     expect( screen.getByTestId( "EvidenceList.saving" ) ).toBeVisible( );
   } );
 
   it( "should render all observation photos", ( ) => {
-    renderEvidenceList( observationPhotos );
+    renderEvidenceList( photos );
 
-    expect( screen.getByTestId( `EvidenceList.${observationPhotos[0].photo.url}` ) ).toBeVisible( );
-    expect( screen.getByTestId( `EvidenceList.${observationPhotos[1].photo.url}` ) ).toBeVisible( );
+    expect( screen.getByTestId( `EvidenceList.${photos[0].url}` ) ).toBeVisible( );
+    expect( screen.getByTestId( `EvidenceList.${photos[1].url}` ) ).toBeVisible( );
   } );
 
   it( "should display an empty list when observation has no observation photos", ( ) => {

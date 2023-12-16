@@ -21,8 +21,6 @@ type Props = {
   isTablet?: boolean,
   takingPhoto: boolean,
   cameraPreviewUris: Function,
-  deletePhotoFromObservation: Function,
-  setPhotoEvidenceUris: Function
 }
 
 const STYLE = {
@@ -37,9 +35,7 @@ const PhotoPreview = ( {
   isTablet,
   rotation,
   takingPhoto,
-  cameraPreviewUris,
-  deletePhotoFromObservation,
-  setPhotoEvidenceUris
+  cameraPreviewUris
 }: Props ): Node => {
   const { t } = useTranslation( );
   const wrapperDim = isLargeScreen
@@ -95,10 +91,8 @@ const PhotoPreview = ( {
           ? noPhotosNotice
           : (
             <PhotoCarousel
-              deletePhoto={deletePhotoFromObservation}
               photoUris={cameraPreviewUris}
               rotation={rotation}
-              setPhotoEvidenceUris={setPhotoEvidenceUris}
               takingPhoto={takingPhoto}
               isLargeScreen={isLargeScreen}
               isTablet={isTablet}

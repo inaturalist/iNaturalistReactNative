@@ -4,22 +4,71 @@
 import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import { format } from "date-fns";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
+import os from "os";
+import path from "path";
 import React from "react";
+import Realm from "realm";
+import realmConfig from "realmModels/index";
+import factory, { makeResponse } from "tests/factory";
+import { renderAppWithComponent } from "tests/helpers/render";
+import { signIn, signOut } from "tests/helpers/user";
 
-import factory, { makeResponse } from "../factory";
-import { renderAppWithComponent } from "../helpers/render";
-import { signIn, signOut } from "../helpers/user";
+// This is a bit crazy, but this ensures this test uses its own in-memory
+// database and doesn't interfere with the single, default in-memory database
+// used by other tests. In a perfect world, every parallel test worker would
+// have its own database, or at least this wouldn't be so manual, but it took
+// me long enough to figure this out. ~~~kueda 20231024
+// REALM SETUP
+const mockRealmConfig = {
+  schema: realmConfig.schema,
+  schemaVersion: realmConfig.schemaVersion,
+  // No need to actually write to disk
+  inMemory: true,
+  // For an in memory db path is basically a unique identifier, *but* Realm
+  // may still write some metadata to disk, so this needs to be a real, but
+  // temporary, path. In theory this should prevent this test from
+  // interacting with other tests
+  path: path.join( os.tmpdir( ), `${path.basename( __filename )}.realm` )
+};
+
+// Mock the config so that all code that runs during this test talks to the same database
+jest.mock( "realmModels/index", ( ) => ( {
+  __esModule: true,
+  default: mockRealmConfig
+} ) );
+
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.mockRealms[__filename]
+    }
+  };
+} );
+
+// Open a realm connection and stuff it in global
+beforeAll( async ( ) => {
+  global.mockRealms = global.mockRealms || {};
+  global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
+} );
+
+// Ensure the realm connection gets closed
+afterAll( ( ) => {
+  global.mockRealms[__filename]?.close( );
+  jest.clearAllMocks( );
+} );
+// /REALM SETUP
 
 describe( "MyObservations", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
-  } );
-
-  afterEach( ( ) => {
-    jest.clearAllMocks( );
   } );
 
   // For some reason this interferes with the "should not make a request to
@@ -38,15 +87,11 @@ describe( "MyObservations", ( ) => {
   // } );
 
   describe( "when signed out", ( ) => {
-    beforeEach( async ( ) => {
-      await global.realm.write( ( ) => {
-        global.realm.deleteAll( );
-      } );
-    } );
     async function testApiMethodNotCalled( apiMethod ) {
       // Let's make sure the mock hasn't already been used
       expect( apiMethod ).not.toHaveBeenCalled( );
-      const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
+      const realm = global.mockRealms[__filename];
+      const signedInUsers = realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <MyObservationsContainer /> );
       const loginText = i18next.t( "Log-in-to-contribute-your-observations" );
@@ -68,36 +113,31 @@ describe( "MyObservations", ( ) => {
   describe( "when signed in", ( ) => {
     const mockUser = factory( "LocalUser", {
       login: faker.internet.userName( ),
-      iconUrl: faker.image.imageUrl( ),
+      iconUrl: faker.image.url( ),
       locale: "en"
     } );
 
     beforeEach( async ( ) => {
-      await global.realm.write( ( ) => {
-        global.realm.deleteAll( );
+      global.mockRealms[__filename].write( ( ) => {
+        global.mockRealms[__filename].deleteAll( );
       } );
-      await signIn( mockUser );
+      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
-    afterEach( signOut );
-
-    it( "should make a request to observations/updates", async ( ) => {
-      // Let's make sure the mock hasn't already been used
-      expect( inatjs.observations.updates ).not.toHaveBeenCalled();
-      renderAppWithComponent( <MyObservationsContainer /> );
-      expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
-      expect( inatjs.observations.updates ).toHaveBeenCalled();
+    afterEach( ( ) => {
+      jest.clearAllMocks( );
+      signOut( { realm: global.mockRealms[__filename] } );
     } );
 
-    describe( "with observations", ( ) => {
+    describe( "with unsynced observations", ( ) => {
       const mockObservations = [
         factory( "LocalObservation", {
           _synced_at: null,
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: faker.image.imageUrl( ),
+                id: faker.number.int( ),
+                url: faker.image.url( ),
                 position: 0
               }
             } )
@@ -108,15 +148,15 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: `${faker.image.imageUrl( )}/100`,
+                id: faker.number.int( ),
+                url: `${faker.image.url( )}/100`,
                 position: 0
               }
             } ),
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.datatype.number( ),
-                url: `${faker.image.imageUrl( )}/200`,
+                id: faker.number.int( ),
+                url: `${faker.image.url( )}/200`,
                 position: 1
               }
             } )
@@ -126,15 +166,28 @@ describe( "MyObservations", ( ) => {
 
       beforeEach( async () => {
         // Write local observation to Realm
-        await global.realm.write( () => {
+        await global.mockRealms[__filename].write( () => {
           mockObservations.forEach( mockObservation => {
-            global.realm.create( "Observation", mockObservation );
+            global.mockRealms[__filename].create( "Observation", mockObservation );
           } );
         } );
       } );
 
+      afterEach( ( ) => {
+        jest.clearAllMocks( );
+      } );
+
+      it( "should make a request to observations/updates", async ( ) => {
+        // Let's make sure the mock hasn't already been used
+        expect( inatjs.observations.updates ).not.toHaveBeenCalled();
+        renderAppWithComponent( <MyObservationsContainer /> );
+        expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
+        expect( inatjs.observations.updates ).toHaveBeenCalled();
+      } );
+
       it( "renders grid view on button press", async () => {
-        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
         const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
         fireEvent.press( button );
@@ -147,7 +200,8 @@ describe( "MyObservations", ( ) => {
       } );
 
       it( "displays unuploaded status", async () => {
-        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
         await waitFor( ( ) => {
           const toolbarText = screen.getByText( /Upload 2 observations/ );
@@ -200,10 +254,18 @@ describe( "MyObservations", ( ) => {
           expect( uploadInProgressIcon ).toBeVisible( );
         } );
       } );
+    } );
+
+    describe( "with synced observations", ( ) => {
+      const mockDeletedIds = [
+        faker.number.int( ),
+        faker.number.int( )
+      ];
 
       const mockObservationsSynced = [
         factory( "LocalObservation", {
-          _synced_at: faker.date.past( )
+          _synced_at: faker.date.past( ),
+          id: mockDeletedIds[0]
         } ),
         factory( "LocalObservation", {
           _synced_at: faker.date.past( )
@@ -211,19 +273,24 @@ describe( "MyObservations", ( ) => {
       ];
 
       beforeEach( async () => {
-      // Write local observation to Realm
-        await global.realm.write( () => {
+        await global.mockRealms[__filename].write( () => {
+          global.mockRealms[__filename].deleteAll( );
           mockObservationsSynced.forEach( mockObservation => {
-            global.realm.create( "Observation", mockObservation );
+            global.mockRealms[__filename].create( "Observation", mockObservation );
           } );
         } );
       } );
 
+      afterEach( ( ) => {
+        jest.clearAllMocks( );
+      } );
+
       it( "displays observation status", async () => {
-        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
+        const syncIcon = await screen.findByTestId( "SyncButton" );
         await waitFor( ( ) => {
-          const syncIcon = screen.getByTestId( "SyncButton" );
           expect( syncIcon ).toBeVisible( );
         } );
         mockObservationsSynced.forEach( obs => {
@@ -231,23 +298,90 @@ describe( "MyObservations", ( ) => {
           expect( obsStatus ).toBeVisible( );
         } );
       } );
+
+      describe( "before initial sync", ( ) => {
+        it( "doesn't throw an error when sync button tapped", async ( ) => {
+          const realm = global.mockRealms[__filename];
+          expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          expect( realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          expect( ( ) => {
+            fireEvent.press( syncIcon );
+          } ).not.toThrow( );
+        } );
+      } );
+
+      describe( "after initial sync", ( ) => {
+        beforeEach( async () => {
+          await global.mockRealms[__filename].write( () => {
+            global.mockRealms[__filename].create( "LocalPreferences", {
+              last_sync_time: new Date( "2023-11-01" )
+            } );
+          } );
+        } );
+
+        it( "downloads deleted observations from server when sync button tapped", async ( ) => {
+          const realm = global.mockRealms[__filename];
+          expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          fireEvent.press( syncIcon );
+          const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_sync_time;
+          await waitFor( ( ) => {
+            expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
+              {
+                since: format( lastSyncTime, "yyyy-MM-dd" )
+              },
+              expect.anything( )
+            );
+          } );
+        } );
+
+        it( "deletes local observations if they have been deleted on server", async ( ) => {
+          inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const syncIcon = await screen.findByTestId( "SyncButton" );
+          await waitFor( ( ) => {
+            expect( syncIcon ).toBeVisible( );
+          } );
+          fireEvent.press( syncIcon );
+          const spy = jest.spyOn( global.mockRealms[__filename], "write" );
+          const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
+          await waitFor( ( ) => {
+            expect( spy ).toHaveBeenCalled( );
+          } );
+          expect( deleteSpy ).toHaveBeenCalled( );
+          expect( global.mockRealms[__filename].objects( "Observation" ).length ).toBe( 1 );
+        } );
+      } );
     } );
   } );
 
   describe( "localization for current user", ( ) => {
     beforeEach( async ( ) => {
-      await global.realm.write( ( ) => {
-        global.realm.deleteAll( );
+      await global.mockRealms[__filename].write( ( ) => {
+        global.mockRealms[__filename].deleteAll( );
       } );
+    } );
+
+    afterEach( ( ) => {
+      jest.clearAllMocks( );
     } );
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser", {
         login: faker.internet.userName( ),
-        iconUrl: faker.image.imageUrl( ),
+        iconUrl: faker.image.url( ),
         locale: "en"
       } );
       expect( mockUser.locale ).toEqual( "en" );
-      await signIn( mockUser );
+      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       renderAppWithComponent( <MyObservationsContainer /> );
       await waitFor( ( ) => {
         expect( screen.getByText( /Welcome back/ ) ).toBeTruthy( );
@@ -258,11 +392,11 @@ describe( "MyObservations", ( ) => {
     it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
       const mockSpanishUser = factory( "LocalUser", {
         login: faker.internet.userName( ),
-        iconUrl: faker.image.imageUrl( ),
+        iconUrl: faker.image.url( ),
         locale: "es"
       } );
       expect( mockSpanishUser.locale ).toEqual( "es" );
-      await signIn( mockSpanishUser );
+      await signIn( mockSpanishUser, { realm: global.mockRealms[__filename] } );
       renderAppWithComponent( <MyObservationsContainer /> );
       await waitFor( ( ) => {
         expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy();
@@ -275,11 +409,11 @@ describe( "MyObservations", ( ) => {
       async ( ) => {
         const mockUser = factory( "LocalUser", {
           login: faker.internet.userName( ),
-          iconUrl: faker.image.imageUrl( ),
+          iconUrl: faker.image.url( ),
           locale: "en"
         } );
         expect( mockUser.locale ).toEqual( "en" );
-        await signIn( mockUser );
+        await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 
         const mockSpanishUser = factory( "LocalUser", {
           locale: "es"

@@ -7,11 +7,10 @@ import {
   fetchRemoteObservation,
   markObservationUpdatesViewed
 } from "api/observations";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback,
-  useContext, useEffect, useReducer
+  useCallback, useEffect, useReducer
 } from "react";
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
@@ -25,6 +24,7 @@ import {
 } from "sharedHooks";
 import useObservationsUpdates,
 { fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
+import useStore from "stores/useStore";
 
 import ObsDetails from "./ObsDetails";
 
@@ -100,12 +100,15 @@ const reducer = ( state, action ) => {
 };
 
 const ObsDetailsContainer = ( ): Node => {
-  const {
-    updateObservations
-  } = useContext( ObsEditContext );
+  const setObservations = useStore( state => state.setObservations );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
-  const { uuid } = params;
+  const {
+    comment,
+    taxonSuggested,
+    uuid,
+    vision
+  } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
@@ -124,8 +127,13 @@ const ObsDetailsContainer = ( ): Node => {
 
   const queryClient = useQueryClient( );
 
-  const { data: remoteObservation, refetch: refetchRemoteObservation, isRefetching }
-  = useAuthenticatedQuery(
+  const localObservation = useLocalObservation( uuid );
+
+  const {
+    data: remoteObservation,
+    refetch: refetchRemoteObservation,
+    isRefetching
+  } = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
     optsWithAuth => fetchRemoteObservation(
       uuid,
@@ -135,11 +143,12 @@ const ObsDetailsContainer = ( ): Node => {
       optsWithAuth
     ),
     {
-      keepPreviousData: false
+      keepPreviousData: false,
+      enabled: localObservation?.wasSynced( ),
+      retry: 10
     }
   );
 
-  const localObservation = useLocalObservation( uuid );
   const observation = localObservation || remoteObservation;
 
   // In theory the only sitiation in which an observation would not have a
@@ -233,8 +242,7 @@ const ObsDetailsContainer = ( ): Node => {
             const localComments = localObservation?.comments;
             const newComment = data[0];
             newComment.user = currentUser;
-            const realmComment = realm?.create( "Comment", newComment );
-            localComments.push( realmComment );
+            localComments.push( newComment );
           } );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
@@ -278,8 +286,10 @@ const ObsDetailsContainer = ( ): Node => {
               "Taxon",
               newIdentification.taxon.id
             ) || newIdentification.taxon;
-            const realmIdentification = realm?.create( "Identification", newIdentification );
-            localIdentifications.push( realmIdentification );
+            if ( vision ) {
+              newIdentification.vision = true;
+            }
+            localIdentifications.push( newIdentification );
           } );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
@@ -299,6 +309,33 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
+  const onIDAdded = useCallback( () => {
+    if ( !taxonSuggested ) return;
+
+    // New taxon identification added by user
+    const idParams = {
+      observation_id: uuid,
+      taxon_id: taxonSuggested.id,
+      vision
+    };
+
+    if ( comment ) {
+      // $FlowIgnore
+      idParams.body = comment;
+    }
+
+    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
+    createIdentificationMutation.mutate( { identification: idParams } );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [taxonSuggested, uuid, vision] );
+
+  useEffect( () => {
+    if ( !taxonSuggested ) return;
+
+    onIDAdded();
+  }, [onIDAdded, taxonSuggested] );
+
   useEffect( ( ) => {
     if (
       localObservation
@@ -310,8 +347,8 @@ const ObsDetailsContainer = ( ): Node => {
   }, [localObservation, markViewedMutation, uuid] );
 
   const navToSuggestions = ( ) => {
-    updateObservations( [observation] );
-    navigation.navigate( "Suggestions" );
+    setObservations( [observation] );
+    navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
@@ -322,11 +359,11 @@ const ObsDetailsContainer = ( ): Node => {
     refetchObservationUpdates( );
   };
 
-  const onAgree = comment => {
+  const onAgree = newComment => {
     const agreeParams = {
       observation_id: observation?.uuid,
       taxon_id: observation?.taxon?.id,
-      body: comment
+      body: newComment
     };
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );

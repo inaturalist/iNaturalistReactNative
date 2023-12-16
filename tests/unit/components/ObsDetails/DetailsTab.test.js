@@ -4,9 +4,8 @@ import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import { View } from "react-native";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
   __esModule: true,
@@ -23,8 +22,8 @@ jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
   time_observed_at: "2023-12-14T21:07:41-09:30",
-  latitude: Number( faker.address.latitude( ) ),
-  longitude: Number( faker.address.longitude( ) ),
+  latitude: Number( faker.location.latitude( ) ),
+  longitude: Number( faker.location.longitude( ) ),
   description: faker.lorem.paragraph( ),
   quality_grade: "casual"
 } );

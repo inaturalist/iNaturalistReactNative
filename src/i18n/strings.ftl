@@ -44,6 +44,8 @@ Agree-with-ID-description = Would you like to agree with the ID and suggest the 
 
 All = All
 
+ALL-SUGGESTIONS = ALL SUGGESTIONS
+
 All-observations = All observations
 
 # license code
@@ -137,6 +139,11 @@ Coordinates-copied-to-keyboard = Coordinates copied to keyboard
 Copy-coordinates = Copy Coordinates
 
 Copy-coordinates = Copy Coordinates
+
+# Right to control copies of a creative work; this string may be used as a
+# heading to describe general information about rights, attribution, and
+# licensing
+Copyright = Copyright
 
 Couldnt-create-comment = Couldn't create comment
 
@@ -283,6 +290,8 @@ During-app-start-no-model-found = During app start there was no computer vision 
 EDIT-COMMENT = EDIT COMMENT
 
 EDIT-LOCATION = EDIT LOCATION
+
+Edit-Observation = Edit Observation
 
 EMAIL = EMAIL
 
@@ -582,76 +591,77 @@ quality-grade-casual = Casual
 Rank = Rank
 
 # The following Ranks- strings are taxonomic ranks (in taxonomic order, not alphabetical order)
+Ranks-STATEOFMATTER = STATE OF MATTER
 Ranks-stateofmatter = state of matter
-
+Ranks-KINGDOM = KINGDOM
 Ranks-kingdom = kingdom
-
+Ranks-SUBKINGDOM = SUBKINGDOM
 Ranks-subkingdom = subkingdom
-
+Ranks-PHYLUM = PHYLUM
 Ranks-phylum = phylum
-
+Ranks-SUBPHYLUM = SUBPHYLUM
 Ranks-subphylum = subphylum
-
+Ranks-SUPERCLASS = SUPERCLASS
 Ranks-superclass = superclass
-
+Ranks-CLASS = CLASS
 Ranks-class = class
-
+Ranks-SUBCLASS = SUBCLASS
 Ranks-subclass = subclass
-
+Ranks-INFRACLASS = INFRACLASS
 Ranks-infraclass = infraclass
-
+Ranks-SUPERORDER = SUPERORDER
 Ranks-superorder = superorder
-
+Ranks-ORDER = ORDER
 Ranks-order = order
-
+Ranks-SUBORDER = SUBORDER
 Ranks-suborder = suborder
-
+Ranks-INFRAORDER = INFRAORDER
 Ranks-infraorder = infraorder
-
+Ranks-SUBTERCLASS = SUBTERCLASS
 Ranks-subterclass = subterclass
-
+Ranks-PARVORDER = PARVORDER
 Ranks-parvorder = parvorder
-
+Ranks-ZOOSECTION = ZOOSECTION
 Ranks-zoosection = zoosection
-
+Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-zoosubsection = zoosubsection
-
+Ranks-SUPERFAMILY = SUPERFAMILY
 Ranks-superfamily = superfamily
-
+Ranks-EPIFAMILY = EPIFAMILY
 Ranks-epifamily = epifamily
-
+Ranks-FAMILY = FAMILY
 Ranks-family = family
-
+Ranks-SUBFAMILY = SUBFAMILY
 Ranks-subfamily = subfamily
-
+Ranks-SUPERTRIBE = SUPERTRIBE
 Ranks-supertribe = supertribe
-
+Ranks-TRIBE = TRIBE
 Ranks-tribe = tribe
-
+Ranks-SUBTRIBE = SUBTRIBE
 Ranks-subtribe = subtribe
-
+Ranks-GENUS = GENUS
 Ranks-genus = genus
-
+Ranks-GENUSHYBRID = GENUSHYBRID
 Ranks-genushybrid = genushybrid
-
+Ranks-SUBGENUS = SUBGENUS
 Ranks-subgenus = subgenus
-
+Ranks-SECTION = SECTION
 Ranks-section = section
-
+Ranks-SUBSECTION = SUBSECTION
 Ranks-subsection = subsection
-
+Ranks-COMPLEX = COMPLEX
 Ranks-complex = complex
-
+Ranks-SPECIES = SPECIES
 Ranks-species = species
-
+Ranks-HYBRID = HYBRID
 Ranks-hybrid = hybrid
-
+Ranks-SUBSPECIES = SUBSPECIES
 Ranks-subspecies = subspecies
-
+Ranks-VARIETY = VARIETY
 Ranks-variety = variety
-
+Ranks-FORM = FORM
 Ranks-form = form
-
+Ranks-INFRAHYBRID = INFRAHYBRID
 Ranks-infrahybrid = infrahybrid
 
 Read-more-on-Wikipedia = Read more on Wikipedia
@@ -1412,3 +1422,15 @@ Select-geoprivacy-status = Select geoprivacy status
 Navigate-to-location-picker-screen = Navigate to location picker screen
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 Navigate-to-identification-suggestions-screen = Navigate to identification suggestions screen
+
+# Accessibility label for a button that starts the process of adding an
+# observation, e.g. the button in the tab bar
+Add-observations = Add observations
+
+
+# Title for a notice informing the user that they are viewing offline
+# identification suggestions
+Viewing-Offline-Suggestions = Viewing Offline Suggestions
+
+Viewing-Offline-Suggestions-results-may-differ =
+    Results may differ from the online suggestions and images and common names may not display.

@@ -1,47 +1,61 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { ActivityIndicator } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
+const { useRealm } = RealmContext;
+
 type Props = {
-  evidenceList: Array<string>,
+  photos?: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>,
   handleAddEvidence?: Function,
-  handleDragAndDrop: Function,
-  savingPhoto: boolean
+  handleDragAndDrop: Function
 }
 
 const EvidenceList = ( {
-  evidenceList,
+  photos = [],
   handleAddEvidence,
-  handleDragAndDrop,
-  savingPhoto
+  handleDragAndDrop
 }: Props ): Node => {
-  const navigation = useNavigation( );
+  const currentObservation = useStore( state => state.currentObservation );
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
+  const savingPhoto = useStore( state => state.savingPhoto );
+  const realm = useRealm( );
+  const [tappedMediaIndex, setTappedMediaIndex] = useState( -1 );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
+  const photoUris = photos.map( photo => photo.url || photo.localFilePath );
 
-  const renderPhoto = useCallback( ( { item, getIndex, drag } ) => (
+  const renderPhoto = useCallback( ( { item: photo, getIndex, drag } ) => (
     <ScaleDecorator>
       <Pressable
         onLongPress={drag}
         accessibilityRole="button"
         onPress={( ) => {
-          navigation.navigate( "MediaViewer", { index: getIndex( ) } );
+          setTappedMediaIndex( getIndex( ) );
         }}
         className={classnames( imageClass )}
-        testID={`EvidenceList.${item.photo?.url || item.photo?.localFilePath}`}
+        testID={`EvidenceList.${photo.url || photo.localFilePath}`}
       >
         <View className="rounded-lg overflow-hidden">
           <Image
-            source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( item.photo ) }}
+            source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
             testID="ObsEdit.photo"
             className="w-fit h-full flex items-center justify-center"
             accessibilityIgnoresInvertColors
@@ -49,7 +63,7 @@ const EvidenceList = ( {
         </View>
       </Pressable>
     </ScaleDecorator>
-  ), [navigation] );
+  ), [setTappedMediaIndex] );
 
   const renderFooter = useCallback( ( ) => {
     if ( savingPhoto ) {
@@ -82,13 +96,26 @@ const EvidenceList = ( {
   return (
     <View className="mt-5">
       <DraggableFlatList
+        testID="EvidenceList.DraggableFlatList"
         horizontal
-        data={evidenceList}
+        data={photos}
         renderItem={renderPhoto}
-        keyExtractor={item => item.photo?.url || item.photo?.localFilePath}
+        keyExtractor={photo => photo.url || photo.localFilePath}
         onDragEnd={handleDragAndDrop}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
+      />
+      <MediaViewerModal
+        editable
+        showModal={tappedMediaIndex >= 0}
+        onClose={( ) => setTappedMediaIndex( -1 )}
+        onDelete={async uriToDelete => {
+          await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+          deletePhotoFromObservation( uriToDelete );
+          setTappedMediaIndex( tappedMediaIndex - 1 );
+        }}
+        uri={photoUris[tappedMediaIndex]}
+        photos={photos}
       />
     </View>
   );

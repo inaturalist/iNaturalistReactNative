@@ -60,7 +60,7 @@ class ObservationSound extends Realm.Object {
 
   static schema = {
     name: "ObservationSound",
-    primaryKey: "uuid",
+    embedded: true,
     properties: {
       // datetime the obsSound was created on the device
       _created_at: "date?",

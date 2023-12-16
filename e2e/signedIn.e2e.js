@@ -65,16 +65,25 @@ describe( "Signed in user", () => {
     const uploadNowButton = element( by.id( "ObsEdit.uploadButton" ) );
     await expect( uploadNowButton ).toBeVisible();
     await uploadNowButton.tap();
-    // Check that the observation list screen is visible
-    const observation = element( by.id( "MyObservationsPressable" ) ).atIndex( 0 );
-    await waitFor( observation ).toBeVisible().withTimeout( 10000 );
-    // Check that the number of comments component is visible
-    const commentCount = element( by.id( "ObsStatus.commentsCount" ) ).atIndex( 0 );
+    // Check that the comments count component for the obs we just created is
+    // visible. Since it just saved and there's an animation the runs before
+    // this component becomes visible, and there may be other observations in
+    // the list, we need to wait for the right CommentsCount component to be
+    // visible
+    const obsListItem = element( by.id( /MyObservations\.obsListItem\..*/ ) ).atIndex( 0 );
+    const obsListItemAttributes = await obsListItem.getAttributes( );
+    const uuid = obsListItemAttributes.elements
+      ? obsListItemAttributes.elements[0].identifier.split( "." ).pop( )
+      : obsListItemAttributes.identifier.split( "." ).pop( );
+    const commentCount = element(
+      by.id( "ObsStatus.commentsCount" )
+        .withAncestor( by.id( `MyObservations.obsListItem.${uuid}` ) )
+    );
     await waitFor( commentCount ).toBeVisible().withTimeout( 10000 );
     /*
     / 3. Update the observation by adding a comment
     */
-    await observation.tap();
+    await commentCount.tap();
     const commentButton = element( by.id( "ObsDetail.commentButton" ) );
     await waitFor( commentButton ).toBeVisible().withTimeout( 10000 );
     await commentButton.tap();
@@ -87,11 +96,13 @@ describe( "Signed in user", () => {
     const commentModalSubmitButton = element( by.id( "ObsEdit.confirm" ) );
     await commentModalSubmitButton.tap();
     // Check that the comment is visible
+    await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "bottom" );
     const comment = element( by.text( "This is a comment" ) );
     await waitFor( comment ).toBeVisible().withTimeout( 10000 );
     /*
     / 4. Delete the observation
     */
+    await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "top" );
     const editButton = element( by.id( "ObsDetail.editButton" ) );
     await waitFor( editButton ).toBeVisible().withTimeout( 10000 );
     // Navigate to the edit screen

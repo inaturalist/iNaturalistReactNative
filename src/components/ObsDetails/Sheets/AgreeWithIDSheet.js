@@ -10,7 +10,7 @@ import {
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
   onAgree:Function,
@@ -35,22 +35,12 @@ const AgreeWithIDSheet = ( {
   taxon
 }: Props ): Node => {
   const [comment, setComment] = useState( "" );
-  const [snapPoint, setSnapPoint] = useState( 263 );
   const [showCommentBox, setShowCommentBox] = useState( false );
-
-  useEffect( () => {
-    if ( comment.length !== 0 ) {
-      setSnapPoint( 393 );
-    } else {
-      setSnapPoint( 263 );
-    }
-  }, [comment] );
 
   return (
     <BottomSheet
       handleClose={handleClose}
       headerText={t( "AGREE-WITH-ID" )}
-      snapPoints={[snapPoint]}
       text={t( "By-exiting-changes-not-saved" )}
       buttonText={t( "DISCARD-CHANGES" )}
     >
@@ -72,7 +62,7 @@ const AgreeWithIDSheet = ( {
         )}
         {showTaxon( taxon )}
       </View>
-      <View className="flex-row justify-evenly mx-3">
+      <View className="flex-row justify-evenly mx-3 mb-3">
         {comment
           ? (
             <Button
@@ -111,7 +101,6 @@ const AgreeWithIDSheet = ( {
         <TextInputSheet
           handleClose={( ) => setShowCommentBox( false )}
           headerText={t( "ADD-OPTIONAL-COMMENT" )}
-          snapPoints={[416]}
           confirm={textInput => setComment( textInput )}
         />
       )}

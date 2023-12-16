@@ -1,12 +1,13 @@
 import { faker } from "@faker-js/faker";
-import { renderHook, waitFor } from "@testing-library/react-native";
+import { renderHook } from "@testing-library/react-native";
 import { useTaxon } from "sharedHooks";
+import factory from "tests/factory";
 
-import factory from "../../factory";
-
-jest.mock( "api/taxa" );
-
-const mockRemoteTaxon = factory( "RemoteTaxon" );
+const mockRemoteTaxon = factory( "RemoteTaxon", {
+  default_photo: {
+    url: faker.image.url( )
+  }
+} );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
@@ -17,7 +18,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 
 const mockTaxon = factory( "LocalTaxon", {
   default_photo: {
-    url: faker.image.imageUrl( )
+    url: faker.image.url( )
   }
 } );
 
@@ -36,9 +37,10 @@ describe( "useTaxon", ( ) => {
     } );
 
     describe( "when there is a local taxon with taxon id", ( ) => {
-      it( "should return local taxon", ( ) => {
+      it( "should return local taxon with default photo", ( ) => {
         const { result } = renderHook( ( ) => useTaxon( mockTaxon ) );
         expect( result.current ).toHaveProperty( "default_photo" );
+        expect( result.current.default_photo.url ).toEqual( mockTaxon.default_photo.url );
       } );
     } );
   } );
@@ -50,15 +52,10 @@ describe( "useTaxon", ( ) => {
       } );
     } );
 
-    it( "should save remote taxon and return taxon passed in", async ( ) => {
-      const taxon = global.realm.objects( "Taxon" )[0];
-      expect( taxon ).toBe( undefined );
-      const { result } = renderHook( ( ) => useTaxon( { id: null } ) );
-      expect( result.current ).toEqual( { id: null } );
-      const remoteTaxon = global.realm.objects( "Taxon" )[0];
-      await waitFor( ( ) => {
-        expect( remoteTaxon.name ).toEqual( mockRemoteTaxon.name );
-      } );
+    it( "should make an API call and return passed in taxon when fetchRemote is enabled", ( ) => {
+      const taxonId = faker.number.int( );
+      const { result } = renderHook( ( ) => useTaxon( { id: taxonId }, true ) );
+      expect( result.current ).not.toHaveProperty( "default_photo" );
     } );
   } );
 } );

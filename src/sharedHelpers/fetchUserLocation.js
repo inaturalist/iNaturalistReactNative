@@ -8,8 +8,6 @@ import {
 import { Platform } from "react-native";
 import { checkMultiple, RESULTS } from "react-native-permissions";
 
-import fetchPlaceName from "./fetchPlaceName";
-
 const options = {
   enableHighAccuracy: true,
   maximumAge: 0
@@ -24,8 +22,7 @@ const getCurrentPosition = ( ) => new Promise(
 type UserLocation = {
   latitude: number,
   longitude: number,
-  positional_accuracy: number,
-  place_guess: ?string
+  positional_accuracy: number
 
 }
 const fetchUserLocation = async ( ): Promise<?UserLocation> => {
@@ -41,14 +38,12 @@ const fetchUserLocation = async ( ): Promise<?UserLocation> => {
 
   try {
     const { coords } = await getCurrentPosition( );
-    const placeGuess = await fetchPlaceName( coords.latitude, coords.longitude );
-
-    return {
-      place_guess: placeGuess,
+    const userLocation = {
       latitude: coords.latitude,
       longitude: coords.longitude,
       positional_accuracy: coords.accuracy
     };
+    return userLocation;
   } catch ( e ) {
     console.warn( e, "couldn't get latLng" );
   }

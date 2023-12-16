@@ -1,14 +1,16 @@
+import { API_HOST } from "components/LoginSignUp/AuthenticationService";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
+import nock from "nock";
 import RNSInfo from "react-native-sensitive-info";
+import { makeResponse } from "tests/factory";
 
-import { makeResponse } from "../factory";
-
-async function signOut( ) {
+async function signOut( options = {} ) {
+  const realm = options.realm || global.realm;
   i18next.language = undefined;
   // This is the nuclear option, maybe revisit if it's a source of bugs
-  global.realm.write( ( ) => {
-    global.realm.deleteAll( );
+  realm.write( ( ) => {
+    realm.deleteAll( );
   } );
   await RNSInfo.deleteItem( "username" );
   await RNSInfo.deleteItem( "jwtToken" );
@@ -16,16 +18,30 @@ async function signOut( ) {
   await RNSInfo.deleteItem( "accessToken" );
 }
 
-async function signIn( user ) {
+async function signIn( user, options = {} ) {
+  const realm = options.realm || global.realm;
   await RNSInfo.setItem( "username", user.login );
   await RNSInfo.setItem( "jwtToken", "yaddayadda" );
   await RNSInfo.setItem( "jwtGeneratedAt", Date.now( ).toString( ), {} );
   await RNSInfo.setItem( "accessToken", "yaddayadda" );
   inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
   user.signedIn = true;
-  global.realm.write( ( ) => {
-    global.realm.create( "User", user, "modified" );
+  realm.write( ( ) => {
+    realm.create( "User", user, "modified" );
   } );
+  const accessToken = "some-token";
+  nock( API_HOST )
+    .post( "/oauth/token" )
+    .reply( 200, { access_token: accessToken } )
+    .get( "/users/edit.json" )
+    .reply( 200, { login: user.login, id: user.id } );
+  nock( API_HOST, {
+    reqheaders: {
+      authorization: `Bearer ${accessToken}`
+    }
+  } )
+    .get( "/users/api_token.json" )
+    .reply( 200, { api_token: "some-jwt" } );
 }
 
 export {

@@ -1,14 +1,13 @@
 // @flow
 
-import CheckBox from "@react-native-community/checkbox";
 import { Picker } from "@react-native-picker/picker";
+import { Checkbox } from "components/SharedComponents";
 import inatLanguages from "dictionaries/languages";
 import inatNetworks from "dictionaries/networks";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Text, View } from "react-native";
-import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import { textStyles, viewStyles } from "styles/settings/settings";
 import colors from "styles/tailwindColors";
 
@@ -48,24 +47,11 @@ const SettingsAccount = ( { settings, onSettingsModified }: SettingsProps ): Nod
     />
 
     <Text style={[textStyles.subTitle]}>{t( "Privacy" )}</Text>
-    <Pressable
-      accessibilityRole="button"
-      style={[viewStyles.row, viewStyles.notificationCheckbox]}
-      onPress={() => onSettingsModified( {
-        ...settings,
-        prefers_no_tracking: !settings.prefers_no_tracking
-      } )}
-    >
-      <CheckBox
-        value={settings.prefers_no_tracking}
-        onValueChange={v => onSettingsModified( { ...settings, prefers_no_tracking: v } )}
-        tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
-      />
-      <Text style={[textStyles.checkbox, viewStyles.column]}>
-        {t( "Do-not-collect-stability-and-usage-data-using-third-party-services" )}
-      </Text>
-    </Pressable>
-
+    <Checkbox
+      isChecked={settings.prefers_no_tracking}
+      onPress={v => onSettingsModified( { ...settings, prefers_no_tracking: v } )}
+      text={t( "Do-not-collect-stability-and-usage-data-using-third-party-services" )}
+    />
     <Text style={[textStyles.subTitle]}>{t( "iNaturalist-Network-Affiliation" )}</Text>
     <View style={viewStyles.selectorContainer}>
       <Picker

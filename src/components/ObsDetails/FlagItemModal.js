@@ -1,7 +1,6 @@
 // @flow
-import CheckBox from "@react-native-community/checkbox";
 import createFlag from "api/flags";
-import { Button } from "components/SharedComponents";
+import { Button, Checkbox } from "components/SharedComponents";
 import {
   Modal,
   SafeAreaView,
@@ -118,50 +117,29 @@ const FlagItemModal = ( {
             {t( "Flag-Item-Description" )}
           </Text>
           <View className="flex-row my-2">
-            <CheckBox
-              disabled={false}
-              value={checkBoxValue === "spam"}
+            <Checkbox
+              isChecked={checkBoxValue === "spam"}
               onValueChange={() => toggleCheckBoxValue( "spam" )}
+              text={t( "Spam" )}
             />
-            <Text
-              className="font-bold text-lg ml-5"
-              onPress={() => toggleCheckBoxValue( "spam" )}
-            >
-              {t( "Spam" )}
-
-            </Text>
           </View>
           <Text className="mb-2 text-base" style>{t( "Spam-Examples" )}</Text>
 
           <View className="flex-row my-2">
-            <CheckBox
-              disabled={false}
-              value={checkBoxValue === "inappropriate"}
+            <Checkbox
+              isChecked={checkBoxValue === "inappropriate"}
               onValueChange={() => toggleCheckBoxValue( "inappropriate" )}
+              text={t( "Offensive-Inappropriate" )}
             />
-            <Text
-              className="font-bold text-lg ml-5"
-              onPress={() => toggleCheckBoxValue( "inappropriate" )}
-            >
-              {t( "Offensive-Inappropriate" )}
-
-            </Text>
           </View>
           <Text className="mb-2 text-base">{t( "Offensive-Inappropriate-Examples" )}</Text>
 
           <View className="flex-row my-2">
-            <CheckBox
-              disabled={false}
-              value={checkBoxValue === "other"}
+            <Checkbox
+              isChecked={checkBoxValue === "other"}
               onValueChange={() => toggleCheckBoxValue( "other" )}
+              text={t( "Other" )}
             />
-            <Text
-              className="font-bold text-lg ml-5"
-              onPress={() => toggleCheckBoxValue( "other" )}
-            >
-              {t( "Other" )}
-
-            </Text>
           </View>
           <Text className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Text>
           {( checkBoxValue === "other" )

@@ -1,10 +1,11 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import {
+  Body1,
   DateDisplay, DisplayTaxon, InlineUser, ObservationLocation
 } from "components/SharedComponents";
 import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
-import { Text, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
@@ -33,7 +34,11 @@ const Header = ( {
 
   const showTaxon = () => {
     if ( !taxon ) {
-      return <Text>{t( "Unknown-organism" )}</Text>;
+      return (
+        <View className="justify-center ml-1">
+          <Body1>{t( "Unknown" )}</Body1>
+        </View>
+      );
     }
     return (
       <DisplayTaxon
@@ -46,7 +51,7 @@ const Header = ( {
   };
 
   return (
-    <View>
+    <>
       <PhotoDisplayContainer
         observation={observation}
         refetchRemoteObservation={refetchRemoteObservation}
@@ -66,7 +71,7 @@ const Header = ( {
         <ObsStatus layout="vertical" observation={observation} />
       </View>
       <ObservationLocation observation={observation} classNameMargin="ml-3 mb-2" />
-    </View>
+    </>
   );
 };
 

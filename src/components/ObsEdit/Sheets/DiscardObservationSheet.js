@@ -45,7 +45,6 @@ const DiscardObservationSheet = ( {
       headerText={multipleObservations
         ? t( "DISCARD-X-OBSERVATIONS", { count: observations.length } )
         : t( "DISCARD-OBSERVATION" )}
-      snapPoints={[178]}
       text={multipleObservations
         ? t( "By-exiting-your-observations-not-saved" )
         : t( "By-exiting-observation-not-saved" )}

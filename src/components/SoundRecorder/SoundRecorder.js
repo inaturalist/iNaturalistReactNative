@@ -3,21 +3,21 @@
 import { useNavigation } from "@react-navigation/native";
 import PlaceholderText from "components/PlaceholderText";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 // $FlowFixMe
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import Observation from "realmModels/Observation";
 import useTranslation from "sharedHooks/useTranslation";
+import useStore from "stores/useStore";
 import { textStyles, viewStyles } from "styles/soundRecorder/soundRecorder";
 
 // needs to be outside of the component for stopRecorder to work correctly
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const SoundRecorder = (): Node => {
-  const { updateObservations } = useContext( ObsEditContext );
+  const setObservations = useStore( state => state.setObservations );
   const navigation = useNavigation();
   const { t } = useTranslation();
   // https://www.npmjs.com/package/react-native-audio-recorder-player
@@ -41,7 +41,7 @@ const SoundRecorder = (): Node => {
 
   const addSound = async ( ) => {
     const newObservation = await Observation.createObsWithSounds( );
-    updateObservations( [newObservation] );
+    setObservations( [newObservation] );
   };
 
   const startRecording = async () => {

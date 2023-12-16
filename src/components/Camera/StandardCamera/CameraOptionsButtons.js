@@ -53,10 +53,11 @@ const CameraOptionsButtons = ( {
         flashClassName="absolute bottom-[18px] left-[18px]"
       />
       <Zoom
-        changeZoom={changeZoom}
-        cameraZoomClasses="absolute bottom-[18px] self-center"
-        zoomTextValue={zoomTextValue}
         showZoomButton={showZoomButton}
+        changeZoom={changeZoom}
+        zoomTextValue={zoomTextValue}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
+        zoomClassName="absolute bottom-[18px] self-center"
       />
       <Animated.View
         style={!isTablet && rotatableAnimatedStyle}

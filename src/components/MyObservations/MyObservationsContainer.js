@@ -4,8 +4,10 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import {
-  searchObservations
+  checkForDeletedObservations, searchObservations
 } from "api/observations";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { format } from "date-fns";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -20,7 +22,6 @@ import {
 } from "sharedHelpers/emitUploadProgress";
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
-  useApiToken,
   useCurrentUser,
   useInfiniteObservationsScroll,
   useIsConnected,
@@ -32,6 +33,7 @@ import {
 import MyObservations from "./MyObservations";
 
 export const INITIAL_UPLOAD_STATE = {
+  currentUploadCount: 0,
   error: null,
   singleUpload: true,
   totalProgressIncrements: 0,
@@ -40,8 +42,7 @@ export const INITIAL_UPLOAD_STATE = {
   uploadProgress: { },
   // $FlowIgnore
   uploads: [],
-  uploadsComplete: false,
-  currentUploadCount: 0
+  uploadsComplete: false
 };
 
 const startUploadState = uploads => ( {
@@ -52,8 +53,10 @@ const startUploadState = uploads => ( {
   uploadProgress: { },
   currentUploadCount: 1,
   totalProgressIncrements: uploads
-    .reduce( ( count, current ) => count
-      + current.observationPhotos.length, uploads.length )
+    .reduce(
+      ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+      uploads.length
+    )
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
@@ -119,10 +122,12 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const { params: navParams } = useRoute( );
-  const apiToken = useApiToken( );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
   const { observationList: observations, allObsToUpload } = useLocalObservations( );
-  const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
+  const {
+    getItem: getStoredLayout,
+    setItem: setStoredLayout
+  } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const isOnline = useIsConnected( );
 
@@ -152,28 +157,25 @@ const MyObservationsContainer = ( ): Node => {
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
-  const writeItemToStorage = useCallback( async newValue => {
-    await setItem( newValue );
+  const writeLayoutToStorage = useCallback( async newValue => {
+    await setStoredLayout( newValue );
     setLayout( newValue );
-  }, [setItem] );
+  }, [setStoredLayout] );
 
   useEffect( ( ) => {
-    const readItemFromStorage = async ( ) => {
-      const item = await getItem( );
-      if ( !item ) {
-        await writeItemToStorage( "list" );
-      }
-      setLayout( item || "list" );
+    const readLayoutFromStorage = async ( ) => {
+      const storedLayout = await getStoredLayout( );
+      setLayout( storedLayout || "list" );
     };
 
-    readItemFromStorage( );
-  }, [getItem, writeItemToStorage] );
+    readLayoutFromStorage( );
+  }, [getStoredLayout, writeLayoutToStorage] );
 
   const toggleLayout = ( ) => {
     if ( layout === "grid" ) {
-      writeItemToStorage( "list" );
+      writeLayoutToStorage( "list" );
     } else {
-      writeItemToStorage( "grid" );
+      writeLayoutToStorage( "grid" );
     }
   };
 
@@ -205,16 +207,24 @@ const MyObservationsContainer = ( ): Node => {
         }
 
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
-        dispatch( {
-          type: "UPDATE_PROGRESS",
-          uploadProgress: currentProgress
-        } );
+
+        if ( state.singleUpload
+          && state.uploadProgress[uuid] >= state.totalProgressIncrements ) {
+          dispatch( {
+            type: "UPLOADS_COMPLETE"
+          } );
+        } else {
+          dispatch( {
+            type: "UPDATE_PROGRESS",
+            uploadProgress: currentProgress
+          } );
+        }
       }
     );
     return ( ) => {
       EventRegister?.removeEventListener( progressListener );
     };
-  }, [state.uploadProgress, state.singleUpload] );
+  }, [state.uploadProgress, state.singleUpload, state.totalProgressIncrements, uploadInProgress] );
 
   const showInternetErrorAlert = useCallback( ( ) => {
     if ( !isOnline ) {
@@ -234,9 +244,19 @@ const MyObservationsContainer = ( ): Node => {
   const uploadObservationAndCatchError = useCallback( async observation => {
     try {
       await uploadObservation( observation, realm );
-    } catch ( e ) {
-      console.warn( e );
-      dispatch( { type: "SET_UPLOAD_ERROR", error: e.message } );
+    } catch ( uploadError ) {
+      console.warn( "MyObservationsContainer, uploadError: ", uploadError );
+      let { message } = uploadError;
+      if ( uploadError?.json?.errors ) {
+        // TODO localize comma join
+        message = uploadError.json.errors.map( error => {
+          if ( error.message?.errors ) {
+            return error.message.errors.flat( ).join( ", " );
+          }
+          return error.message;
+        } ).join( ", " );
+      }
+      dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
     }
   }, [realm] );
 
@@ -282,6 +302,7 @@ const MyObservationsContainer = ( ): Node => {
   }, [] );
 
   const downloadRemoteObservationsFromServer = useCallback( async ( ) => {
+    const apiToken = await getJWT( );
     const params = {
       user_id: currentUser?.id,
       per_page: 50,
@@ -290,21 +311,71 @@ const MyObservationsContainer = ( ): Node => {
     const { results } = await searchObservations( params, { api_token: apiToken } );
 
     Observation.upsertRemoteObservations( results, realm );
-  }, [apiToken, currentUser, realm] );
+  }, [currentUser, realm] );
+
+  // TODO move this logic to a helper or a model so it can be more easily unit tested
+  const syncRemoteDeletedObservations = useCallback( async ( ) => {
+    const apiToken = await getJWT( );
+    const lastSyncTime = realm.objects( "LocalPreferences" )?.[0]?.last_sync_time;
+    const params = { since: format( new Date( ), "yyyy-MM-dd" ) };
+    if ( lastSyncTime ) {
+      try {
+        params.since = format( lastSyncTime, "yyyy-MM-dd" );
+      } catch ( lastSyncTimeFormatError ) {
+        if ( lastSyncTimeFormatError instanceof RangeError ) {
+          // If we can't parse that date, assume we've never synced and use the default
+        } else {
+          throw lastSyncTimeFormatError;
+        }
+      }
+    }
+    const response = await checkForDeletedObservations( params, { api_token: apiToken } );
+    const deletedObservations = response?.results;
+    if ( !deletedObservations ) { return; }
+    if ( deletedObservations?.length > 0 ) {
+      realm.write( ( ) => {
+        deletedObservations.forEach( observationId => {
+          const localObsToDelete = realm.objects( "Observation" )
+            .filtered( `id == ${observationId}` );
+          realm.delete( localObsToDelete );
+        } );
+      } );
+    }
+  }, [realm] );
+
+  const updateSyncTime = useCallback( ( ) => {
+    const currentSyncTime = new Date( );
+    realm.write( ( ) => {
+      const localPrefs = realm.objects( "LocalPreferences" )[0];
+      if ( !localPrefs ) {
+        realm.create( "LocalPreferences", {
+          ...localPrefs,
+          last_sync_time: currentSyncTime
+        } );
+      } else {
+        localPrefs.last_sync_time = currentSyncTime;
+      }
+    } );
+  }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {
+    if ( !uploadInProgress && uploadsComplete ) {
+      dispatch( { type: "RESET_UPLOAD_STATE" } );
+    }
     toggleLoginSheet( );
     showInternetErrorAlert( );
-    // TODO: GET observation/deletions once this is enabled in API v2
     activateKeepAwake( );
+    await syncRemoteDeletedObservations( );
     await downloadRemoteObservationsFromServer( );
-    // we at least want to keep the device awake while uploads are happening
-    // not sure about downloads/deletions
+    updateSyncTime( );
     deactivateKeepAwake( );
-  }, [
+  }, [uploadInProgress,
+    uploadsComplete,
+    syncRemoteDeletedObservations,
     downloadRemoteObservationsFromServer,
     toggleLoginSheet,
-    showInternetErrorAlert
+    showInternetErrorAlert,
+    updateSyncTime
   ] );
 
   useEffect( ( ) => {
@@ -322,7 +393,7 @@ const MyObservationsContainer = ( ): Node => {
         dispatch( { type: "RESET_UPLOAD_STATE" } );
       } );
     },
-    [navigation]
+    [navigation, realm]
   );
 
   if ( !layout ) { return null; }

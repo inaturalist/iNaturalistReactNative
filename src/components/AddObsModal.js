@@ -4,12 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
   closeModal: ( ) => void
@@ -18,6 +18,8 @@ type Props = {
 const AddObsModal = ( { closeModal }: Props ): React.Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
+  const setObservations = useStore( state => state.setObservations );
+  const resetStore = useStore( state => state.resetStore );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
@@ -26,20 +28,13 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
     || ( Platform.OS === "android" && Platform.Version > 23 );
 
-  // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
-  const obsEditContext = React.useContext( ObsEditContext );
-  const updateObservations = obsEditContext?.updateObservations;
   const navigation = useNavigation( );
 
   const navAndCloseModal = async ( screen, params ) => {
-    const resetObsEditContext = obsEditContext?.resetObsEditContext;
-    // clear previous upload context before navigating
-    if ( resetObsEditContext ) {
-      resetObsEditContext( );
-    }
+    resetStore( );
     if ( screen === "ObsEdit" ) {
       const newObservation = await Observation.new( );
-      updateObservations( [newObservation] );
+      setObservations( [newObservation] );
     }
     // access nested screen
     navigation.navigate( "CameraNavigator", {

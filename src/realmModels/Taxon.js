@@ -98,6 +98,7 @@ class Taxon extends Realm.Object {
   static mapApiToRealm( taxon ) {
     return {
       ...taxon,
+      id: Number( taxon.id ),
       default_photo: Photo.mapApiToRealm( taxon?.default_photo )
     };
   }
@@ -131,7 +132,7 @@ class Taxon extends Realm.Object {
         optional: true
       },
       rank: "string?",
-      rank_level: "int?",
+      rank_level: "float?",
       isIconic: "bool?",
       iconic_taxon_name: "string?"
     }

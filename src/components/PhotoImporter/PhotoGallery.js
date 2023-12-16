@@ -1,11 +1,11 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import ActivityIndicator from "components/SharedComponents/ActivityIndicator";
 import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useState
+  useState
 } from "react";
 import {
   InteractionManager,
@@ -13,10 +13,9 @@ import {
   View
 } from "react-native";
 import * as ImagePicker from "react-native-image-picker";
-import { ActivityIndicator } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import colors from "styles/tailwindColors";
+import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -28,16 +27,17 @@ const PhotoGallery = ( ): Node => {
   const navigation = useNavigation( );
   const [photoGalleryShown, setPhotoGalleryShown] = useState( false );
   const [permissionGranted, setPermissionGranted] = useState( false );
-  const {
-    galleryUris,
-    evidenceToAdd,
-    setGroupedPhotos,
-    groupedPhotos,
-    updateObservations,
-    numOfObsPhotos,
-    currentObservation,
-    setPhotoImporterState
-  } = useContext( ObsEditContext );
+  const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
+  const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
+  const groupedPhotos = useStore( state => state.groupedPhotos );
+  const updateObservations = useStore( state => state.updateObservations );
+  const galleryUris = useStore( state => state.galleryUris );
+  const evidenceToAdd = useStore( state => state.evidenceToAdd );
+  const currentObservation = useStore( state => state.currentObservation );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const observations = useStore( state => state.observations );
+  const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
+
   const { params } = useRoute( );
   const skipGroupPhotos = params
     ? params.skipGroupPhotos
@@ -109,8 +109,10 @@ const PhotoGallery = ( ): Node => {
       } );
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos } );
-      const newObservations = Observation.appendObsPhotos( obsPhotos, currentObservation );
-      updateObservations( newObservations );
+      const updatedCurrentObservation = Observation
+        .appendObsPhotos( obsPhotos, currentObservation );
+      observations[currentObservationIndex] = updatedCurrentObservation;
+      updateObservations( observations );
       navToObsEdit();
       setPhotoGalleryShown( false );
     } else if ( selectedImages.length === 1 ) {
@@ -136,7 +138,9 @@ const PhotoGallery = ( ): Node => {
   }, [
     photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
     evidenceToAdd, galleryUris, navigation, setGroupedPhotos,
-    fromGroupPhotos, skipGroupPhotos, groupedPhotos, updateObservations, currentObservation] );
+    fromGroupPhotos, skipGroupPhotos, groupedPhotos, currentObservation,
+    updateObservations, observations,
+    currentObservationIndex] );
 
   const onPermissionGranted = () => {
     setPermissionGranted( true );
@@ -165,7 +169,7 @@ const PhotoGallery = ( ): Node => {
 
   return (
     <View className="flex-1 w-full h-full justify-center items-center">
-      <ActivityIndicator size={100} color={colors.inatGreen} />
+      <ActivityIndicator />
       {!permissionGranted && (
         <PermissionGateContainer
           permissions={READ_MEDIA_PERMISSIONS}

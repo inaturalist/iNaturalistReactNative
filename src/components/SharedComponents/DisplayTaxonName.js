@@ -1,6 +1,8 @@
 // @flow
 import classNames from "classnames";
-import { Body1Bold, Body3, Body4 } from "components/SharedComponents";
+import {
+  Body1Bold, Body3, Body4, INatText
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
@@ -26,22 +28,26 @@ const rankNames = {
 };
 
 type Props = {
+  bottomTextComponent?: Function,
   color?: string,
   keyBase?: string,
   layout?: "horizontal" | "vertical",
   scientificNameFirst?: boolean,
   small?: boolean,
   taxon: Object,
+  topTextComponent?: Function,
   withdrawn?: boolean
 };
 
 const DisplayTaxonName = ( {
+  bottomTextComponent: BottomTextComponentProp,
   color,
   keyBase = "",
-  layout = "horizontal",
+  layout = "vertical",
   scientificNameFirst = false,
   small = false,
   taxon,
+  topTextComponent: TopTextComponentProp,
   withdrawn
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -55,9 +61,13 @@ const DisplayTaxonName = ( {
   }, [color, withdrawn] );
 
   const renderTaxonName = useCallback( ( ) => {
+    const taxonPojo = typeof ( taxon.toJSON ) === "function"
+      ? taxon.toJSON( )
+      : taxon;
+
     // this is mostly for the ARCamera, but might be helpful to display elsewhere
-    if ( taxon?.rank_level && !taxon?.rank ) {
-      taxon.rank = rankNames[taxon?.rank_level];
+    if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
+      taxonPojo.rank = rankNames[taxonPojo?.rank_level];
     }
 
     const {
@@ -66,7 +76,7 @@ const DisplayTaxonName = ( {
       rankPiece,
       rankLevel,
       rank
-    } = generateTaxonPieces( taxon );
+    } = generateTaxonPieces( taxonPojo );
     const isHorizontal = layout === "horizontal";
     const getSpaceChar = showSpace => ( showSpace && isHorizontal
       ? " "
@@ -80,19 +90,16 @@ const DisplayTaxonName = ( {
         ? " "
         : "";
       const text = piece + spaceChar;
-      const TextComponent = scientificNameFirst || !commonName
-        ? Body1Bold
-        : Body3;
       return (
         isItalics
           ? (
-            <TextComponent
+            <INatText
               // eslint-disable-next-line react/no-array-index-key
               key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
               className={classNames( "italic", textClass() )}
             >
               {text}
-            </TextComponent>
+            </INatText>
           )
           : text
       );
@@ -102,22 +109,25 @@ const DisplayTaxonName = ( {
       scientificNameComponent.unshift( `${rank} ` );
     }
 
-    const TopTextComponent = !small
-      ? Body1Bold
-      : Body3;
-    const BottomTextComponent = !small
-      ? Body3
-      : Body4;
+    let TopTextComponent = TopTextComponentProp;
+    if ( !TopTextComponent ) {
+      TopTextComponent = !small
+        ? Body1Bold
+        : Body3;
+    }
+    let BottomTextComponent = BottomTextComponentProp;
+    if ( !BottomTextComponent ) {
+      BottomTextComponent = !small
+        ? Body3
+        : Body4;
+    }
 
     return (
       <View
         testID="display-taxon-name"
-        // 03032023 amanda - it doesn't look to me like we need these styles at all,
-        // and they're making the common name and sci name show up on the same
-        // line. not sure if i'm missing context here
-        // className={classNames( "flex", null, {
-        //   "flex-row items-end flex-wrap w-11/12": isHorizontal
-        // } )}
+        className={classNames( "flex", null, {
+          "flex-row items-end flex-wrap w-11/12": isHorizontal
+        } )}
       >
         <TopTextComponent
           className={textClass()}
@@ -146,12 +156,14 @@ const DisplayTaxonName = ( {
       </View>
     );
   }, [
+    BottomTextComponentProp,
     keyBase,
-    scientificNameFirst,
     layout,
+    scientificNameFirst,
     small,
     taxon,
-    textClass
+    textClass,
+    TopTextComponentProp
   ] );
 
   if ( !taxon ) {

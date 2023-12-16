@@ -2,8 +2,7 @@ import { render, screen } from "@testing-library/react-native";
 import { ObservationLocation } from "components/SharedComponents";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
+import factory from "tests/factory";
 
 const latitude = 30.18183;
 const longitude = -85.760449;

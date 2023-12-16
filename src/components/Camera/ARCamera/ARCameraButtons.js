@@ -88,6 +88,7 @@ const ARCameraButtons = ( {
           zoomTextValue={zoomTextValue}
           changeZoom={changeZoom}
           showZoomButton={showZoomButton}
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
         />
       </View>
       <View className="flex-row justify-end pb-[20px]">

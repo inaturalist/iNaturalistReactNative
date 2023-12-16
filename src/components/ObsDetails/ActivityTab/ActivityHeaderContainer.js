@@ -28,6 +28,8 @@ const ActivityHeaderContainer = ( {
   const queryClient = useQueryClient( );
   const { user } = item;
 
+  const numFlags = item.flags?.length || 0;
+
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
       const current = await isCurrentUser( user?.login );
@@ -35,10 +37,10 @@ const ActivityHeaderContainer = ( {
     };
     isActiveUserTheCurrentUser( );
 
-    if ( item.flags?.length > 0 ) {
+    if ( numFlags > 0 ) {
       setFlagged( true );
     }
-  }, [user, item] );
+  }, [user, numFlags] );
 
   const deleteCommentMutation = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),

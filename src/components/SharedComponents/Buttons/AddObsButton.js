@@ -30,7 +30,7 @@ const AddObsButton = (): React.Node => {
         onPress={openModal}
         testID="add-obs-button"
         disabled={false}
-        accessibilityLabel={t( "Observe" )}
+        accessibilityLabel={t( "Add-observations" )}
         accessibilityHint={t( "Opens-add-observation-modal" )}
         accessibilityRole="button"
         accessibilityState={{

@@ -2,7 +2,7 @@
 
 import { fetchSpeciesCounts } from "api/observations";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import Taxon from "realmModels/Taxon";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import {
@@ -16,14 +16,16 @@ const GUTTER = 15;
 
 type Props = {
   handleScroll: Function,
-  setHeaderRight: Function,
-  queryParams: Object
+  isOnline: boolean,
+  queryParams: Object,
+  setHeaderRight: Function
 }
 
 const SpeciesView = ( {
   handleScroll,
-  setHeaderRight,
-  queryParams
+  isOnline,
+  queryParams,
+  setHeaderRight
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -31,36 +33,26 @@ const SpeciesView = ( {
     screenHeight,
     screenWidth
   } = useDeviceOrientation( );
-  const [numColumns, setNumColumns] = useState( 0 );
-  const [gridItemWidth, setGridItemWidth] = useState( 0 );
 
-  useEffect( ( ) => {
-    const calculateGridItemWidth = columns => {
-      const combinedGutter = ( columns + 1 ) * GUTTER;
-      const gridWidth = isTablet
-        ? screenWidth
-        : Math.min( screenWidth, screenHeight );
-      return Math.floor(
-        ( gridWidth - combinedGutter ) / columns
-      );
-    };
+  const calculateGridItemWidth = columns => {
+    const combinedGutter = ( columns + 1 ) * GUTTER;
+    const gridWidth = isTablet
+      ? screenWidth
+      : Math.min( screenWidth, screenHeight );
+    return Math.floor(
+      ( gridWidth - combinedGutter ) / columns
+    );
+  };
 
-    const calculateNumColumns = ( ) => {
-      if ( !isTablet ) return 2;
-      if ( isLandscapeMode ) return 6;
-      if ( screenWidth <= BREAKPOINTS.xl ) return 2;
-      return 4;
-    };
+  const calculateNumColumns = ( ) => {
+    if ( !isTablet ) return 2;
+    if ( isLandscapeMode ) return 6;
+    if ( screenWidth <= BREAKPOINTS.xl ) return 2;
+    return 4;
+  };
 
-    const columns = calculateNumColumns( );
-    setGridItemWidth( calculateGridItemWidth( columns ) );
-    setNumColumns( columns );
-  }, [
-    isLandscapeMode,
-    isTablet,
-    screenHeight,
-    screenWidth
-  ] );
+  const numColumns = calculateNumColumns( );
+  const gridItemWidth = calculateGridItemWidth( numColumns );
   const { t } = useTranslation( );
   const {
     data,
@@ -96,25 +88,30 @@ const SpeciesView = ( {
     }
   }, [totalResults, setHeaderRight, t] );
 
-  const contentContainerStyle = {
+  const contentContainerStyle = useMemo( ( ) => ( {
     paddingLeft: GUTTER / 2,
     paddingRight: GUTTER / 2
-  };
+  } ), [] );
+
+  const renderItemSeparator = useCallback( ( ) => null, [] );
 
   return (
     <ExploreFlashList
       contentContainerStyle={contentContainerStyle}
-      testID="ExploreSpeciesAnimatedList"
-      handleScroll={handleScroll}
-      isFetchingNextPage={isFetchingNextPage}
       data={data}
-      renderItem={renderItem}
-      fetchNextPage={fetchNextPage}
       estimatedItemSize={gridItemWidth}
+      fetchNextPage={fetchNextPage}
+      handleScroll={handleScroll}
+      hideLoadingWheel={!isFetchingNextPage}
+      isFetchingNextPage={isFetchingNextPage}
+      isOnline={isOnline}
       keyExtractor={item => item.taxon.id}
       layout="grid"
       numColumns={numColumns}
+      renderItem={renderItem}
+      renderItemSeparator={renderItemSeparator}
       status={status}
+      testID="ExploreSpeciesAnimatedList"
     />
   );
 };

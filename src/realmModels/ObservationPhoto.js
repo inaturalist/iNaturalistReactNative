@@ -20,9 +20,9 @@ class ObservationPhoto extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static mapApiToRealm( observationPhoto, realm ) {
-    const existingObsPhoto = realm
-      ?.objectForPrimaryKey( "ObservationPhoto", observationPhoto.uuid );
+  static mapApiToRealm( observationPhoto, existingObs ) {
+    const obsPhotos = existingObs?.observationPhotos;
+    const existingObsPhoto = obsPhotos?.find( p => p.uuid === observationPhoto.uuid );
 
     const localObsPhoto = {
       ...observationPhoto,
@@ -81,17 +81,48 @@ class ObservationPhoto extends Realm.Object {
     );
   };
 
-  static deleteObservationPhoto = ( list, photo ) => {
-    const i = list.findIndex(
-      p => p.photo.localFilePath === photo || p.originalPhotoUri === photo
+  static async deleteRemotePhoto( realm, uri, currentObservation ) {
+    // right now it doesn't look like there's a way to delete a photo OR an observation photo from
+    // api v2, so just going to worry about deleting locally for now
+    const obsPhotoToDelete = currentObservation?.observationPhotos.find( p => p.url === uri );
+    if ( obsPhotoToDelete ) {
+      realm?.write( ( ) => {
+        realm?.delete( obsPhotoToDelete );
+      } );
+    }
+  }
+
+  static async deleteLocalPhoto( realm, uri, currentObservation ) {
+    // delete uri on disk
+    Photo.deletePhotoFromDeviceStorage( uri );
+    const obsPhotoToDelete = currentObservation?.observationPhotos
+      .find( p => p.localFilePath === uri );
+    if ( obsPhotoToDelete ) {
+      realm?.write( ( ) => {
+        realm?.delete( obsPhotoToDelete );
+      } );
+    }
+  }
+
+  static async deletePhoto( realm, uri, currentObservation ) {
+    if ( uri.includes( "https://" ) ) {
+      ObservationPhoto.deleteRemotePhoto( realm, uri, currentObservation );
+    } else {
+      ObservationPhoto.deleteLocalPhoto( realm, uri, currentObservation );
+    }
+  }
+
+  static mapObsPhotoUris( observation ) {
+    const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
+    const obsPhotoUris = ( obsPhotos || [] ).map(
+      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
     );
-    list.splice( i, 1 );
-    return list;
-  };
+    return obsPhotoUris;
+  }
 
   static schema = {
     name: "ObservationPhoto",
-    primaryKey: "uuid",
+    embedded: true,
     properties: {
       // datetime the obsPhoto was created on the device
       _created_at: "date?",

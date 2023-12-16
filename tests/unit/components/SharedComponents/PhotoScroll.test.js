@@ -3,8 +3,7 @@ import { render, screen } from "@testing-library/react-native";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import _ from "lodash";
 import React from "react";
-
-import factory from "../../../factory";
+import factory from "tests/factory";
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
@@ -12,10 +11,10 @@ const mockObservation = factory( "LocalObservation", {
   observationPhotos: [
     factory( "LocalObservationPhoto", {
       photo: {
-        id: faker.datatype.number( ),
+        id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.imageUrl( )
+        url: faker.image.url( )
       }
     } )
   ]

@@ -1,0 +1,5 @@
+FIXED
+* Crash after signing in when an observation is associated with a
+  zoosubsection or other absurd infraranks
+* Fixed "missing date" issues
+* Fixed white screen when editing an observation

@@ -19,7 +19,6 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 type Props = {
   currentObservation: Object,
-  evidenceList: Array<string>,
   handleDragAndDrop: Function,
   isFetchingLocation: boolean,
   locationPermissionNeeded: boolean,
@@ -28,15 +27,20 @@ type Props = {
   onLocationPermissionDenied: Function,
   onLocationPermissionGranted: Function,
   passesEvidenceTest: Function,
-  savingPhoto: boolean,
+  photos: Array<{
+    id?: number,
+    url: string,
+    localFilePath?: string,
+    attribution?: string,
+    licenseCode?: string
+  }>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
-  updateObservationKeys: Function
+  updateObservationKeys: Function,
 }
 
 const EvidenceSection = ( {
   currentObservation,
-  evidenceList,
   handleDragAndDrop,
   isFetchingLocation,
   locationPermissionNeeded,
@@ -45,7 +49,7 @@ const EvidenceSection = ( {
   onLocationPermissionDenied,
   onLocationPermissionGranted,
   passesEvidenceTest,
-  savingPhoto,
+  photos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
   updateObservationKeys
@@ -89,7 +93,7 @@ const EvidenceSection = ( {
   };
 
   return (
-    <View className="mx-6 mt-6">
+    <View className="mx-6">
       <AddEvidenceSheet
         disableAddingMoreEvidence={obsPhotos?.length >= MAX_PHOTOS_ALLOWED}
         hidden={!showAddEvidenceSheet}
@@ -107,10 +111,9 @@ const EvidenceSection = ( {
         </View>
       </View>
       <EvidenceList
-        evidenceList={evidenceList}
+        photos={photos}
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
-        savingPhoto={savingPhoto}
       />
       <Pressable
         accessibilityRole="button"
@@ -119,7 +122,9 @@ const EvidenceSection = ( {
         accessibilityLabel={t( "Navigate-to-location-picker-screen" )}
       >
         <View className="w-[30px] items-center mr-1">
-          {isFetchingLocation && <ActivityIndicator />}
+          {isFetchingLocation && (
+            <ActivityIndicator testID="EvidenceSection.fetchingLocationIndicator" />
+          )}
           <View className={isFetchingLocation && "bottom-5"}>
             <INatIcon size={14} name="map-marker-outline" />
           </View>

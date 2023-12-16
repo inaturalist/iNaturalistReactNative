@@ -50,21 +50,11 @@ const useCurrentObservationLocation = (
     if ( !currentLocation ) return;
     if ( !currentObservation ) return;
 
-    // If we're still receiving location updates and location is blank,
-    // then we don't know where we are any more and the obs should update
-    // to reflect that
-    if ( currentLocation?.place_guess !== currentObservation.place_guess
-      || currentLocation?.latitude !== currentObservation.latitude
-      || currentLocation?.longitude !== currentObservation.longitude
-      || currentLocation?.positional_accuracy !== currentObservation.positional_accuracy
-    ) {
-      updateObservationKeys( {
-        place_guess: currentLocation?.place_guess,
-        latitude: currentLocation?.latitude,
-        longitude: currentLocation?.longitude,
-        positional_accuracy: currentLocation?.positional_accuracy
-      } );
-    }
+    updateObservationKeys( {
+      latitude: currentLocation?.latitude,
+      longitude: currentLocation?.longitude,
+      positional_accuracy: currentLocation?.positional_accuracy
+    } );
   }, [currentLocation, currentObservation, updateObservationKeys] );
 
   useEffect( ( ) => {
@@ -87,11 +77,20 @@ const useCurrentObservationLocation = (
       }
       const location = await fetchUserLocation( );
 
-      // Cannot call updateObservationKeys directly from here, since fetchUserLocation might take
-      // a while to return, in the meantime the current copy of the observation might have changed,
-      // so we update the observation from useEffect of currentLocation, so it will always
-      // have the latest copy of the current observation (see GH issue #584)
-      setCurrentLocation( location );
+      // If we're still receiving location updates and location is blank,
+      // then we don't know where we are any more and the obs should update
+      // to reflect that
+      if (
+        location?.latitude !== currentObservation.latitude
+        || location?.longitude !== currentObservation.longitude
+        || location?.positional_accuracy !== currentObservation.positional_accuracy
+      ) {
+        // Cannot call updateObservationKeys directly from here, since fetchUserLocation might take
+        // a while to return, in the meantime the current copy of the observation might have
+        // changed, so we update the observation from useEffect of currentLocation, so it will
+        // always have the latest copy of the current observation (see GH issue #584)
+        setCurrentLocation( location );
+      }
 
       setFetchingLocation( false );
 
@@ -112,14 +111,14 @@ const useCurrentObservationLocation = (
       // If we're already fetching we don't need to fetch again
       !fetchingLocation
       // We only need to fetch when we're above the target
-      && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
+      && positionalAccuracy > TARGET_POSITIONAL_ACCURACY
       // Don't fetch location more than once a second
       && Date.now() - lastLocationFetchTime >= LOCATION_FETCH_INTERVAL
     ) {
       setFetchingLocation( true );
       setLastLocationFetchTime( Date.now() );
       fetchLocation( );
-    } else if ( positionalAccuracy < TARGET_POSITIONAL_ACCURACY ) {
+    } else if ( positionalAccuracy <= TARGET_POSITIONAL_ACCURACY ) {
       setShouldFetchLocation( false );
     }
   }, [

@@ -1,71 +1,107 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  Body3, Button, ScrollViewWrapper
+  Body1,
+  Body3,
+  Button,
+  Heading4,
+  TaxonResult,
+  ViewWrapper
 } from "components/SharedComponents";
 import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
+import { FlatList } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import {
-  ActivityIndicator
-} from "react-native-paper";
+  convertOfflineScoreToConfidence,
+  convertOnlineScoreToConfidence
+} from "sharedHelpers/convertScores";
 import { useTranslation } from "sharedHooks";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import Attribution from "./Attribution";
 import CommentBox from "./CommentBox";
-import PhotoSelectionList from "./PhotoSelectionList";
-import SuggestionsList from "./SuggestionsList";
+import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 
 type Props = {
-  comment: string,
-  currentObservation: Object,
-  loading: boolean,
   loadingSuggestions: boolean,
-  nearbySuggestions: Array<Object>,
+  suggestions: Array<Object>,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  setComment: Function,
-  setLoading: Function,
-  setSelectedPhotoUri: Function
+  setSelectedPhotoUri: Function,
+  observers: Array<string>,
+  topSuggestion: Object,
+  usingOfflineSuggestions: boolean
 };
 
+const Suggestion = ( { suggestion, onChosen } ) => (
+  <TaxonResult
+    key={suggestion.taxon.id}
+    taxon={suggestion.taxon}
+    handleCheckmarkPress={onChosen}
+    testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
+    confidence={suggestion?.score
+      ? convertOfflineScoreToConfidence( suggestion?.score )
+      : convertOnlineScoreToConfidence( suggestion.combined_score )}
+    activeColor="bg-inatGreen"
+    confidencePosition="text"
+    first
+  />
+);
+
 const Suggestions = ( {
-  comment,
-  currentObservation,
-  loading,
   loadingSuggestions,
-  nearbySuggestions,
+  suggestions,
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  setComment,
-  setLoading,
-  setSelectedPhotoUri
+  setSelectedPhotoUri,
+  observers,
+  topSuggestion,
+  usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const { params } = useRoute( );
+  const { lastScreen } = params;
 
-  return (
-    <ScrollViewWrapper testID="suggestions">
-      <AddCommentPrompt
-        setComment={setComment}
-        currentObservation={currentObservation}
-      />
-      {loading && (
-        <View
-          className="absolute self-center z-10 pt-[30px]"
-          testID="Suggestions.ActivityIndicator"
-        >
+  const renderItem = useCallback( ( { item: suggestion } ) => (
+    <Suggestion suggestion={suggestion} onChosen={onTaxonChosen} />
+  ), [onTaxonChosen] );
+
+  const renderEmptyList = useCallback( ( ) => {
+    if ( loadingSuggestions ) {
+      return (
+        <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
           <ActivityIndicator large />
         </View>
-      )}
+      );
+    }
+
+    if ( !suggestions || suggestions.length === 0 ) {
+      return (
+        <Body1 className="mt-10 px-10 text-center">
+          {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
+        </Body1>
+      );
+    }
+    return null;
+  }, [loadingSuggestions, suggestions, t] );
+
+  const renderFooter = useCallback( ( ) => (
+    <Attribution observers={observers} />
+  ), [observers] );
+
+  const renderHeader = useCallback( ( ) => (
+    <>
+      <AddCommentPrompt />
       <View className="mx-5">
-        <PhotoSelectionList
+        <ObsPhotoSelectionList
           photoUris={photoUris}
           selectedPhotoUri={selectedPhotoUri}
           setSelectedPhotoUri={setSelectedPhotoUri}
@@ -73,23 +109,58 @@ const Suggestions = ( {
         <Body3 className="my-4 mx-3">{t( "Select-the-identification-you-want-to-add" )}</Body3>
         <Button
           text={t( "SEARCH-FOR-A-TAXON" )}
-          onPress={( ) => navigation.navigate( "TaxonSearch" )}
+          onPress={( ) => navigation.navigate( "TaxonSearch", { lastScreen } )}
           accessibilityLabel={t( "Search" )}
         />
       </View>
-      <CommentBox comment={comment} />
-      <SuggestionsList
-        nearbySuggestions={nearbySuggestions}
-        onTaxonChosen={onTaxonChosen}
-        loadingSuggestions={loadingSuggestions}
-        setLoading={setLoading}
+      { usingOfflineSuggestions && (
+        <View className="bg-warningYellow px-8 py-5 mt-5">
+          <Heading4>{ t( "Viewing-Offline-Suggestions" ) }</Heading4>
+          <Body3>{ t( "Viewing-Offline-Suggestions-results-may-differ" ) }</Body3>
+        </View>
+      ) }
+      { topSuggestion && (
+        <>
+          <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
+          <View className="bg-inatGreen/[.13]">
+            <Suggestion suggestion={topSuggestion} onChosen={onTaxonChosen} />
+          </View>
+        </>
+      ) }
+      { suggestions?.length > 0 && (
+        <Heading4 className="mt-6 mb-4 ml-4">
+          {
+            suggestions[0]?.score
+              ? t( "ALL-SUGGESTIONS" )
+              : t( "NEARBY-SUGGESTIONS" )
+          }
+        </Heading4>
+      ) }
+      <CommentBox />
+    </>
+  ), [
+    lastScreen,
+    navigation,
+    t,
+    topSuggestion,
+    photoUris,
+    selectedPhotoUri,
+    setSelectedPhotoUri,
+    suggestions,
+    onTaxonChosen,
+    usingOfflineSuggestions
+  ] );
+
+  return (
+    <ViewWrapper testID="suggestions">
+      <FlatList
+        data={suggestions}
+        renderItem={renderItem}
+        ListEmptyComponent={renderEmptyList}
+        ListFooterComponent={renderFooter}
+        ListHeaderComponent={renderHeader}
       />
-      {nearbySuggestions?.length > 0 && (
-        <Attribution
-          taxonIds={nearbySuggestions.map( suggestion => suggestion.taxon.id )}
-        />
-      )}
-    </ScrollViewWrapper>
+    </ViewWrapper>
   );
 };
 

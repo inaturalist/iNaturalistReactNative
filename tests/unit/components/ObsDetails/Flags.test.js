@@ -2,9 +2,8 @@ import { screen } from "@testing-library/react-native";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockCallback = jest.fn();
 const mockObservation = factory( "LocalObservation", {
@@ -102,7 +101,7 @@ describe( "Flags", ( ) => {
     expect( screen.getByText( "Spam" ) ).toBeTruthy( );
     expect( screen.getByText( "Offensive/Inappropriate" ) ).toBeTruthy( );
     expect( screen.getByText( "Other" ) ).toBeTruthy( );
-    expect( screen.getAllByRole( "checkbox" ) ).toHaveLength( 3 );
+    expect( screen.getAllByRole( "radio" ) ).toHaveLength( 3 );
   } );
 
   // it( "calls flag api when save button pressed", async ( ) => {

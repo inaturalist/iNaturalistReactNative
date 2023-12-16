@@ -4,7 +4,6 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import i18next, { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
 import React from "react";
 import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
@@ -12,9 +11,8 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   _created_at: faker.date.past( ),
@@ -23,28 +21,28 @@ const mockObservation = factory( "LocalObservation", {
   observationPhotos: [
     factory( "LocalObservationPhoto", {
       photo: {
-        id: faker.datatype.number( ),
+        id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.imageUrl( )
+        url: faker.image.url( )
       }
     } )
   ],
   taxon: factory( "LocalTaxon", {
-    name: faker.name.firstName( ),
+    name: faker.person.firstName( ),
     rank: "species",
     rank_level: 10,
-    preferred_common_name: faker.name.fullName( ),
+    preferred_common_name: faker.person.fullName( ),
     defaultPhoto: {
-      id: faker.datatype.number( ),
+      id: faker.number.int( ),
       attribution: faker.lorem.sentence( ),
       licenseCode: "cc-by-nc",
-      url: faker.image.imageUrl( )
+      url: faker.image.url( )
     }
   } ),
   user: factory( "LocalUser", {
     login: faker.internet.userName( ),
-    iconUrl: faker.image.imageUrl( ),
+    iconUrl: faker.image.url( ),
     locale: "en"
   } ),
   identifications: []
@@ -54,20 +52,20 @@ const mockNoEvidenceObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
   time_observed_at: "2023-12-14T21:07:41-09:30",
   taxon: factory( "LocalTaxon", {
-    name: faker.name.firstName( ),
+    name: faker.person.firstName( ),
     rank: "species",
     rank_level: 10,
-    preferred_common_name: faker.name.fullName( ),
+    preferred_common_name: faker.person.fullName( ),
     defaultPhoto: {
-      id: faker.datatype.number( ),
+      id: faker.number.int( ),
       attribution: faker.lorem.sentence( ),
       licenseCode: "cc-by-nc",
-      url: faker.image.imageUrl( )
+      url: faker.image.url( )
     }
   } ),
   user: factory( "LocalUser", {
     login: faker.internet.userName( ),
-    iconUrl: faker.image.imageUrl( ),
+    iconUrl: faker.image.url( ),
     locale: "en"
   } ),
   identifications: []
@@ -76,7 +74,7 @@ mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
-  iconUrl: faker.image.imageUrl( )
+  iconUrl: faker.image.url( )
 } );
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
@@ -141,14 +139,8 @@ jest.mock(
 
 jest.mock( "sharedHooks/useIsConnected" );
 
-const renderObsDetails = obs => renderComponent(
-  <ObsEditContext.Provider value={{
-    setPhotoEvidenceUris: jest.fn( ),
-    observations: obs
-  }}
-  >
-    <ObsDetailsContainer />
-  </ObsEditContext.Provider>
+const renderObsDetails = ( ) => renderComponent(
+  <ObsDetailsContainer />
 );
 
 describe( "ObsDetails", () => {
@@ -265,7 +257,7 @@ describe( "ObsDetails", () => {
     it(
       "should show the edit button and not the menu when the observation has never been uploaded",
       async ( ) => {
-        const observation = factory.states( "unUploaded" )( "LocalObservation" );
+        const observation = factory( "LocalObservation" );
         jest.spyOn( useLocalObservation, "default" )
           .mockImplementation( () => observation );
         jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => observation.user );

@@ -9,14 +9,10 @@ import {
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
-type Props = {
-  comment: string
-};
-
-const CommentBox = ( {
-  comment
-}: Props ): Node => {
+const CommentBox = ( ): Node => {
+  const comment = useStore( state => state.comment );
   const { t } = useTranslation( );
 
   return comment && comment.length > 0 && (

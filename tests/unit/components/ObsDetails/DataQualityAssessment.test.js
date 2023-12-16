@@ -6,9 +6,8 @@ import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
   __esModule: true,
@@ -26,10 +25,10 @@ const mockObservation = factory( "LocalObservation", {
   observationPhotos: [
     factory( "LocalObservationPhoto", {
       photo: {
-        id: faker.datatype.number( ),
+        id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.imageUrl( )
+        url: faker.image.url( )
       }
     } )
   ],
@@ -39,8 +38,8 @@ const mockObservation = factory( "LocalObservation", {
       rank_level: 10
     } )
   } )],
-  latitude: Number( faker.address.latitude( ) ),
-  longitude: Number( faker.address.longitude( ) ),
+  latitude: Number( faker.location.latitude( ) ),
+  longitude: Number( faker.location.longitude( ) ),
   description: faker.lorem.paragraph( ),
   quality_grade: "casual"
 } );

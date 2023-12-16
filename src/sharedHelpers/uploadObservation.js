@@ -13,36 +13,26 @@ import emitUploadProgress from "sharedHelpers/emitUploadProgress";
 
 const UPLOAD_PROGRESS_INCREMENT = 0.5;
 
-const markRecordUploaded = ( recordUUID, type, response, realm ) => {
-  if ( !response ) { return; }
+const markRecordUploaded = ( observationUUID, recordUUID, type, response, realm ) => {
   const { id } = response.results[0];
 
-  const record = realm.objectForPrimaryKey( type, recordUUID );
+  const observation = realm?.objectForPrimaryKey( "Observation", observationUUID );
+
+  let record;
+
+  if ( type === "Observation" ) {
+    record = observation;
+  } else if ( type === "ObservationPhoto" ) {
+    const obsPhotos = observation.observationPhotos;
+    const existingObsPhoto = obsPhotos?.find( p => p.uuid === recordUUID );
+    record = existingObsPhoto;
+  }
+  // TODO: add ObservationSound
+
   realm?.write( ( ) => {
     record.id = id;
     record._synced_at = new Date( );
   } );
-};
-
-const uploadToServer = async (
-  evidenceUUID: string,
-  type: string,
-  params: Object,
-  apiEndpoint: Function,
-  options: Object,
-  observationUUID?: string,
-  realm: Object
-) => {
-  emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
-  const response = await createOrUpdateEvidence(
-    apiEndpoint,
-    params,
-    options
-  );
-  if ( response ) {
-    emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
-    markRecordUploaded( evidenceUUID, type, response, realm );
-  }
 };
 
 const uploadEvidence = async (
@@ -56,6 +46,22 @@ const uploadEvidence = async (
   forceUpload?: boolean,
   realm: Object
 ): Promise<any> => {
+  const uploadToServer = async currentEvidence => {
+    const params = apiSchemaMapper( observationId, currentEvidence );
+    const evidenceUUID = currentEvidence.uuid;
+    emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
+    const response = await createOrUpdateEvidence(
+      apiEndpoint,
+      params,
+      options
+    );
+    if ( response ) {
+      emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
+      // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
+      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm );
+    }
+  };
+
   // only try to upload evidence which is not yet on the server
   const unsyncedEvidence = forceUpload
     ? evidence
@@ -63,7 +69,6 @@ const uploadEvidence = async (
 
   const responses = await Promise.all( unsyncedEvidence.map( item => {
     const currentEvidence = item.toJSON( );
-    const evidenceUUID = currentEvidence.uuid;
 
     // Remove all null values, b/c the API doesn't seem to like them
     const newPhoto = {};
@@ -76,16 +81,7 @@ const uploadEvidence = async (
 
     currentEvidence.photo = newPhoto;
 
-    const params = apiSchemaMapper( observationId, currentEvidence );
-    return uploadToServer(
-      evidenceUUID,
-      type,
-      params,
-      apiEndpoint,
-      options,
-      observationUUID,
-      realm
-    );
+    return uploadToServer( currentEvidence );
   } ) );
   // eslint-disable-next-line consistent-return
   return responses[0];
@@ -130,7 +126,7 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
         null,
         inatjs.photos.create,
         options,
-        "",
+        obs.uuid,
         false,
         realm
       )
@@ -162,7 +158,7 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   const { uuid: obsUUID } = response.results[0];
 
   await Promise.all( [
-    markRecordUploaded( obs.uuid, "Observation", response, realm ),
+    markRecordUploaded( obs.uuid, null, "Observation", response, realm ),
     // Next, attach the uploaded photos/sounds to the uploaded observation
     hasPhotos
       ? await uploadEvidence(

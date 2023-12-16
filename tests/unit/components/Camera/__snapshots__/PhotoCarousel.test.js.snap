@@ -15,9 +15,9 @@ exports[`PhotoCarousel renders correctly 1`] = `
   <RCTScrollView
     data={
       [
-        "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
       ]
     }
     getItem={[Function]}
@@ -136,7 +136,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
                     }
                   }
                   style={
@@ -200,6 +200,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
                 />
               </View>
             </View>
@@ -304,7 +305,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
                     }
                   }
                   style={
@@ -368,6 +369,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg"
                 />
               </View>
             </View>
@@ -472,7 +474,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
                     }
                   }
                   style={
@@ -536,6 +538,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
                 />
               </View>
             </View>
@@ -544,6 +547,36 @@ exports[`PhotoCarousel renders correctly 1`] = `
       </View>
     </View>
   </RCTScrollView>
+  <Modal
+    animationType="none"
+    deviceHeight={null}
+    deviceWidth={null}
+    hardwareAccelerated={false}
+    hideModalContentWhileAnimating={true}
+    onBackdropPress={[Function]}
+    onModalHide={[Function]}
+    onModalWillHide={[Function]}
+    onModalWillShow={[Function]}
+    onRequestClose={[Function]}
+    onSwipeComplete={[Function]}
+    panResponderThreshold={4}
+    scrollHorizontal={false}
+    scrollOffset={0}
+    scrollOffsetMax={0}
+    scrollTo={null}
+    statusBarTranslucent={false}
+    supportedOrientations={
+      [
+        "portrait",
+        "landscape",
+      ]
+    }
+    swipeDirection={null}
+    swipeThreshold={100}
+    transparent={true}
+    useNativeDriverForBackdrop={true}
+    visible={false}
+  />
 </View>
 `;
 
@@ -562,9 +595,9 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
   <RCTScrollView
     data={
       [
-        "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480",
-        "https://loremflickr.com/640/480",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
       ]
     }
     getItem={[Function]}
@@ -688,7 +721,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
                     }
                   }
                   style={
@@ -752,6 +785,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
                 />
               </View>
             </View>
@@ -861,7 +895,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
                     }
                   }
                   style={
@@ -925,6 +959,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg"
                 />
               </View>
             </View>
@@ -1034,7 +1069,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                 <Image
                   source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
+                      "uri": "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
                     }
                   }
                   style={
@@ -1098,6 +1133,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       ],
                     ]
                   }
+                  testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
                 />
               </View>
             </View>
@@ -1106,5 +1142,35 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       </View>
     </View>
   </RCTScrollView>
+  <Modal
+    animationType="none"
+    deviceHeight={null}
+    deviceWidth={null}
+    hardwareAccelerated={false}
+    hideModalContentWhileAnimating={true}
+    onBackdropPress={[Function]}
+    onModalHide={[Function]}
+    onModalWillHide={[Function]}
+    onModalWillShow={[Function]}
+    onRequestClose={[Function]}
+    onSwipeComplete={[Function]}
+    panResponderThreshold={4}
+    scrollHorizontal={false}
+    scrollOffset={0}
+    scrollOffsetMax={0}
+    scrollTo={null}
+    statusBarTranslucent={false}
+    supportedOrientations={
+      [
+        "portrait",
+        "landscape",
+      ]
+    }
+    swipeDirection={null}
+    swipeThreshold={100}
+    transparent={true}
+    useNativeDriverForBackdrop={true}
+    visible={false}
+  />
 </View>
 `;

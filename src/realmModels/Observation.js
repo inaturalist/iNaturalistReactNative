@@ -62,7 +62,7 @@ class Observation extends Realm.Object {
     private_geojson: true,
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
-    time_observed_at: true.obs,
+    time_observed_at: true,
     user: User && User.USER_FIELDS
   };
 
@@ -88,11 +88,6 @@ class Observation extends Realm.Object {
     return observation;
   }
 
-  static createLinkedObjects = ( list, createFunction, realm ) => {
-    if ( !list || list.length === 0 ) { return list; }
-    return list.map( item => createFunction.mapApiToRealm( item, realm ) );
-  };
-
   static upsertRemoteObservations( observations, realm ) {
     if ( observations && observations.length > 0 ) {
       const obsToUpsert = observations.filter(
@@ -115,30 +110,18 @@ class Observation extends Realm.Object {
     const taxon = obs.taxon
       ? Taxon.mapApiToRealm( obs.taxon )
       : null;
-    const observationPhotos = Observation.createLinkedObjects(
-      obs.observation_photos,
-      ObservationPhoto,
-      realm
-    );
-    const comments = Observation.createLinkedObjects( obs.comments, Comment, realm );
-    const identifications = Observation.createLinkedObjects(
-      obs.identifications,
-      Identification,
-      realm
-    );
-    const user = User.mapApiToRealm( obs.user );
-    const application = Application.mapApiToRealm( obs.application );
+    const observationPhotos = obs.observation_photos
+      ? obs.observation_photos.map( obsPhoto => ObservationPhoto
+        .mapApiToRealm( obsPhoto, existingObs ) )
+      : [];
 
-    const faves = obs.faves
-      ? Observation.createLinkedObjects( obs.faves, Vote, realm )
+    const identifications = obs.identifications
+      ? obs.identifications.map( id => Identification.mapApiToRealm( id ) )
       : [];
 
     const localObs = {
       ...obs,
       _synced_at: new Date( ),
-      application,
-      comments,
-      faves,
       identifications,
       // obs detail on web says geojson coords are preferred over lat/long
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
@@ -149,8 +132,7 @@ class Observation extends Realm.Object {
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
       observationPhotos,
-      taxon,
-      user
+      taxon
     };
 
     if ( !existingObs ) {
@@ -298,7 +280,7 @@ class Observation extends Realm.Object {
 
     const updatedObs = currentObservation;
     updatedObs.observationPhotos = [...currentObservationPhotos, ...obsPhotos];
-    return [updatedObs];
+    return updatedObs;
   };
 
   static schema = {

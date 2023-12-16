@@ -1,5 +1,6 @@
 import { define } from "factoria";
 
 export default define( "LocalUser", faker => ( {
-  id: faker.datatype.number( )
+  id: faker.number.int( ),
+  login: faker.internet.userName( )
 } ) );

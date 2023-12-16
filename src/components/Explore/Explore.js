@@ -3,6 +3,7 @@
 import {
   BottomSheet,
   Button,
+  StickyView,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -18,13 +19,12 @@ import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
-const { diffClamp } = Animated;
-
 type Props = {
-  exploreParams: Object,
-  region: Object,
-  exploreView: string,
   changeExploreView: Function,
+  exploreParams: Object,
+  exploreView: string,
+  isOnline: boolean,
+  region: Object,
   updateTaxon: Function,
   updatePlace: Function,
   updatePlaceName: Function,
@@ -32,10 +32,11 @@ type Props = {
 }
 
 const Explore = ( {
-  exploreParams,
-  region,
-  exploreView,
   changeExploreView,
+  exploreParams,
+  exploreView,
+  isOnline,
+  region,
   updateTaxon,
   updatePlace,
   updatePlaceName,
@@ -53,22 +54,6 @@ const Explore = ( {
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
-
-  // On Android, the scroll view offset is a double (not an integer), and interpolation shouldn't be
-  // one-to-one, which causes a jittery header while slow scrolling (see issue #634).
-  // See here as well: https://stackoverflow.com/a/60898411/1233767
-  const scrollYClamped = diffClamp(
-    scrollY.current,
-    0,
-    heightAboveFilters * 2
-  );
-
-  // Same as comment above (see here: https://stackoverflow.com/a/60898411/1233767)
-  const offsetForHeader = scrollYClamped.interpolate( {
-    inputRange: [0, heightAboveFilters * 2],
-    // $FlowIgnore
-    outputRange: [0, -heightAboveFilters]
-  } );
 
   const exploreViewText = {
     observations: t( "OBSERVATIONS" ),
@@ -113,23 +98,14 @@ const Explore = ( {
   return (
     <>
       <ViewWrapper testID="Explore">
-        <View className="flex-1">
-          {exploreView === "observations" && (
-            <ObservationsViewBar
-              observationsView={observationsView}
-              updateObservationsView={newView => setObservationsView( newView )}
-            />
-          )}
-          <Animated.View
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={{
-              transform: [{ translateY: offsetForHeader }],
-              flex: 1,
-              width: "100%",
-              height: "100%",
-              flexGrow: 1
-            }}
-          >
+        {exploreView === "observations" && (
+          <ObservationsViewBar
+            observationsView={observationsView}
+            updateObservationsView={newView => setObservationsView( newView )}
+          />
+        )}
+        <View className="overflow-hidden">
+          <StickyView scrollY={scrollY} heightAboveView={heightAboveFilters}>
             <Header
               region={region}
               setShowExploreBottomSheet={setShowExploreBottomSheet}
@@ -152,26 +128,29 @@ const Explore = ( {
             )}
             {exploreView === "species" && (
               <SpeciesView
-                setHeaderRight={setHeaderRight}
                 handleScroll={handleScroll}
+                isOnline={isOnline}
+                setHeaderRight={setHeaderRight}
                 queryParams={queryParams}
               />
             )}
             {exploreView === "observers" && (
               <ObserversView
-                setHeaderRight={setHeaderRight}
                 handleScroll={handleScroll}
+                isOnline={isOnline}
+                setHeaderRight={setHeaderRight}
                 queryParams={queryParams}
               />
             )}
             {exploreView === "identifiers" && (
               <IdentifiersView
-                setHeaderRight={setHeaderRight}
                 handleScroll={handleScroll}
+                isOnline={isOnline}
+                setHeaderRight={setHeaderRight}
                 queryParams={queryParams}
               />
             )}
-          </Animated.View>
+          </StickyView>
         </View>
       </ViewWrapper>
       {showExploreBottomSheet && (

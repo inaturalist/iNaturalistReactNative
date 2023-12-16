@@ -4,11 +4,26 @@ import inatjs from "inaturalistjs";
 
 import handleError from "./error";
 
+// I tried doing this in Observaiton.js but got mysterious Realm errors. More
+// could be here, but this solves an immediate problem with schema mismatch
+function mapObsPhotoToLocalSchema( obsPhoto ) {
+  obsPhoto.photo.licenseCode = obsPhoto.photo.licenseCode
+    || obsPhoto.photo.license_code;
+  return obsPhoto;
+}
+function mapToLocalSchema( observation ) {
+  observation.observationPhotos = observation?.observationPhotos?.map( mapObsPhotoToLocalSchema );
+  observation.observation_photos = observation?.observation_photos?.map( mapObsPhotoToLocalSchema );
+  return observation;
+}
+
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
-    return await inatjs.observations.search( params, opts );
+    const response = await inatjs.observations.search( params, opts );
+    response.results = response.results.map( mapToLocalSchema );
+    return response;
   } catch ( e ) {
-    return handleError( e, { throw: true } );
+    return handleError( e );
   }
 };
 
@@ -42,11 +57,11 @@ const fetchRemoteObservation = async (
     if ( !response ) { return null; }
     const { results } = response;
     if ( results?.length > 0 ) {
-      return results[0];
+      return mapToLocalSchema( results[0] );
     }
     return null;
   } catch ( e ) {
-    return handleError( e, { throw: true } );
+    return handleError( e );
   }
 };
 
@@ -111,7 +126,7 @@ const fetchObservationUpdates = async (
     const { results } = await inatjs.observations.updates( params, opts );
     return results;
   } catch ( e ) {
-    return handleError( e, { throw: true } );
+    return handleError( e );
   }
 };
 
@@ -127,7 +142,7 @@ const fetchObservers = async ( params: Object = {} ) : Promise<?any> => {
   try {
     return await inatjs.observations.observers( params );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { throw: true } );
   }
 };
 
@@ -147,7 +162,19 @@ const fetchSpeciesCounts = async ( params: Object = {} ) : Promise<?any> => {
   }
 };
 
+const checkForDeletedObservations = async (
+  params: Object = {},
+  opts: Object = {}
+) : Promise<?any> => {
+  try {
+    return await inatjs.observations.deleted( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
+  checkForDeletedObservations,
   createObservation,
   createOrUpdateEvidence,
   deleteObservation,

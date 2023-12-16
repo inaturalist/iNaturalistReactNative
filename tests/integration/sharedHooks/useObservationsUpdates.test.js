@@ -1,8 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { renderHook } from "@testing-library/react-native";
 import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
-
-import factory from "../../factory";
+import factory from "tests/factory";
 
 jest.mock( "api/observations" );
 
@@ -11,12 +10,12 @@ const mockUser = factory( "LocalUser" );
 const mockCommentUpdate = factory( "RemoteUpdate", {
   comment_id: 1,
   viewed: false,
-  resource_uuid: faker.datatype.uuid( )
+  resource_uuid: faker.string.uuid( )
 } );
 const mockIdentificationUpdate = factory( "RemoteUpdate", {
   identification_id: 2,
   viewed: false,
-  resource_uuid: faker.datatype.uuid( )
+  resource_uuid: faker.string.uuid( )
 } );
 const mockData = [mockCommentUpdate, mockIdentificationUpdate];
 
@@ -82,7 +81,6 @@ describe( "useObservationsUpdates", ( ) => {
       it( "should write correct viewed status for comments and identifications", ( ) => {
         renderHook( ( ) => useObservationsUpdates( mockUser ) );
         const observation = global.realm.objects( "Observation" )[0];
-        console.log( observation, "observation" );
         expect( observation.comments_viewed ).toEqual( viewedComments );
         expect( observation.identifications_viewed ).toEqual( viewedIdentifications );
       } );

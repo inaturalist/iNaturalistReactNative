@@ -6,13 +6,10 @@ import {
   QueryClient,
   QueryClientProvider
 } from "@tanstack/react-query";
-import handleError from "api/error";
 import App from "components/App";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import INatPaperProvider from "providers/INatPaperProvider";
-import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
 import { AppRegistry } from "react-native";
@@ -22,6 +19,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { enableLatestRenderer } from "react-native-maps";
 import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { reactQueryRetry } from "sharedHelpers/logging";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -69,31 +67,7 @@ inatjs.setConfig( {
 const queryClient = new QueryClient( {
   defaultOptions: {
     queries: {
-      retry: async ( failureCount, error ) => {
-        if ( error.status > 500 ) {
-          logger.warn( `${error.status} Error for query` );
-          return 0;
-        }
-        if (
-          // If this is an actual 408 Request Timeout error, we probably want to
-          // retry... but this will probably never happen
-          error.status === 408
-          // If there's just no network at the moment, definitely retry
-          || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
-        ) {
-          return failureCount < 3;
-        }
-        handleError( error, { throw: false } );
-        if ( error.status === 401 || error.status === 403 ) {
-          // If we get a 401 or 403, call getJWT
-          // which has a timestamp check if we need to refresh the token
-          const token = await getJWT( );
-          if ( token ) {
-            return failureCount < 2;
-          }
-        }
-        return false;
-      }
+      retry: reactQueryRetry
     }
   }
 } );
@@ -107,9 +81,7 @@ const AppWithProviders = ( ) => (
             <BottomSheetModalProvider>
               {/* NavigationContainer needs to be nested above ObsEditProvider */}
               <NavigationContainer>
-                <ObsEditProvider>
-                  <App />
-                </ObsEditProvider>
+                <App />
               </NavigationContainer>
             </BottomSheetModalProvider>
           </GestureHandlerRootView>

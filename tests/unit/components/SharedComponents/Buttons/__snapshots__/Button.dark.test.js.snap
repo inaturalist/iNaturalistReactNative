@@ -1,0 +1,922 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button focus in dark mode should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#74AC00",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Medium",
+        },
+        [
+          [
+            {
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
+          ],
+        ],
+      ]
+    }
+    testID="RNButton.text"
+  >
+    FOCUS BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button focus in dark mode when disabled should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#B9D580",
+        },
+        {
+          "backgroundColor": "#3A5600",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Medium",
+        },
+        [
+          [
+            {
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+            ],
+          ],
+        ],
+      ]
+    }
+    testID="RNButton.text"
+  >
+    FOCUS DISABLED
+  </Text>
+</View>
+`;
+
+exports[`Button neutral in dark mode should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "borderBottomWidth": 1,
+          "borderLeftWidth": 1,
+          "borderRightWidth": 1,
+          "borderTopWidth": 1,
+        },
+        {
+          "borderBottomWidth": 3,
+          "borderLeftWidth": 3,
+          "borderRightWidth": 3,
+          "borderTopWidth": 3,
+        },
+        {
+          "borderBottomColor": "#454545",
+          "borderLeftColor": "#454545",
+          "borderRightColor": "#454545",
+          "borderTopColor": "#454545",
+        },
+        {
+          "backgroundColor": "#ffffff",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Medium",
+        },
+        [
+          [
+            {
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+              {
+                "color": "#454545",
+              },
+            ],
+          ],
+        ],
+      ]
+    }
+    testID="RNButton.text"
+  >
+    NEUTRAL BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button neutral in dark mode when disabled should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "borderBottomWidth": 1,
+          "borderLeftWidth": 1,
+          "borderRightWidth": 1,
+          "borderTopWidth": 1,
+        },
+        {
+          "borderBottomWidth": 3,
+          "borderLeftWidth": 3,
+          "borderRightWidth": 3,
+          "borderTopWidth": 3,
+        },
+        {
+          "borderBottomColor": "#828181",
+          "borderLeftColor": "#828181",
+          "borderRightColor": "#828181",
+          "borderTopColor": "#828181",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Medium",
+        },
+        [
+          [
+            {
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+              {
+                "color": "#828181",
+              },
+            ],
+          ],
+        ],
+      ]
+    }
+    testID="RNButton.text"
+  >
+    NEUTRAL DISABLED
+  </Text>
+</View>
+`;
+
+exports[`Button primary in dark mode should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#454545",
+        },
+        {
+          "backgroundColor": "#ffffff",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Medium",
+        },
+        [
+          [
+            {
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+              {
+                "color": "#ffffff",
+              },
+              {
+                "color": "#454545",
+              },
+            ],
+          ],
+        ],
+      ]
+    }
+    testID="RNButton.text"
+  >
+    PRIMARY BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button primary in dark mode when disabled should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#828181",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Medium",
+        },
+        [
+          [
+            {
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+              {
+                "color": "rgba(69, 69, 69, 0.5)",
+              },
+            ],
+          ],
+        ],
+      ]
+    }
+    testID="RNButton.text"
+  >
+    PRIMARY DISABLED
+  </Text>
+</View>
+`;
+
+exports[`Button warning in dark mode should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#9B1010",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Medium",
+        },
+        [
+          [
+            {
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
+          ],
+        ],
+      ]
+    }
+    testID="RNButton.text"
+  >
+    WARNING BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button warning in dark mode when disabled should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#b06365",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Medium",
+        },
+        [
+          [
+            {
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+            ],
+          ],
+        ],
+      ]
+    }
+    testID="RNButton.text"
+  >
+    WARNING DISABLED
+  </Text>
+</View>
+`;

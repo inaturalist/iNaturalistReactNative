@@ -21,6 +21,7 @@ class Photo extends Realm.Object {
     if ( !existingObsPhoto ) {
       localPhoto._created_at = new Date( );
     }
+    localPhoto.licenseCode = localPhoto.licenseCode || photo?.license_code;
     return localPhoto;
   }
 
@@ -101,39 +102,9 @@ class Photo extends Realm.Object {
     RNFS.unlink( `${Photo.photoUploadPath}/${fileName}` );
   }
 
-  static async deleteRemotePhoto( realm, uri ) {
-    // right now it doesn't look like there's a way to delete a photo OR an observation photo from
-    // api v2, so just going to worry about deleting locally for now
-    const photoToDelete = Array.from( realm.objects( "Photo" ).filtered( `url == "${uri}"` ) )[0];
-    if ( photoToDelete ) {
-      realm?.write( ( ) => {
-        realm?.delete( photoToDelete );
-      } );
-    }
-  }
-
-  static async deleteLocalPhoto( realm, uri ) {
-    // delete uri on disk
-    Photo.deletePhotoFromDeviceStorage( uri );
-    const photoToDelete = realm.objects( "Photo" ).filtered( `localFilePath == "${uri}"` )[0];
-    if ( photoToDelete ) {
-      realm?.write( ( ) => {
-        realm?.delete( photoToDelete );
-      } );
-    }
-  }
-
-  static async deletePhoto( realm, uri ) {
-    if ( uri.includes( "https://" ) ) {
-      Photo.deleteRemotePhoto( realm, uri );
-    } else {
-      Photo.deleteLocalPhoto( realm, uri );
-    }
-  }
-
   static schema = {
     name: "Photo",
-    // TODO: need uuid to be primary key for photos that get uploaded?
+    embedded: true,
     properties: {
       // datetime the photo was created on the device
       _created_at: "date?",
@@ -148,6 +119,17 @@ class Photo extends Realm.Object {
       localFilePath: "string?"
     }
   };
+
+  // An unpleasant hack around another unpleasant hack, i.e. when we "need" to
+  // convert Realm objects to JSON and we apparently lose attributions
+  // defined with mapTo
+  toJSON( ) {
+    const json = super.toJSON( );
+    return {
+      ...json,
+      licenseCode: json.license_code
+    };
+  }
 }
 
 export default Photo;

@@ -2,11 +2,9 @@ import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import LocationPicker from "components/LocationPicker/LocationPicker";
 import initI18next from "i18n/initI18next";
-import { ObsEditContext } from "providers/contexts";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const observations = [
   factory( "RemoteObservation", {
@@ -20,8 +18,8 @@ const mockPlaceResult = factory( "RemotePlace", {
   display_name: "New York",
   point_geojson: {
     coordinates: [
-      Number( faker.address.longitude( ) ),
-      Number( faker.address.latitude( ) )
+      Number( faker.location.longitude( ) ),
+      Number( faker.location.latitude( ) )
     ]
   }
 } );
@@ -42,20 +40,15 @@ const mockRegion = {
 };
 
 const renderLocationPicker = region => renderComponent(
-  <ObsEditContext.Provider value={{
-    updateObservationKeys: jest.fn( )
-  }}
-  >
-    <LocationPicker
-      region={region}
-      locationName="Oakland, CA"
-      updateLocationName={location => jest.fn( location )}
-      hidePlaceResults={false}
-      selectPlaceResult={mockSelectPlaceResult}
-      mapType="standard"
-      loading={false}
-    />
-  </ObsEditContext.Provider>
+  <LocationPicker
+    region={region}
+    locationName="Oakland, CA"
+    updateLocationName={location => jest.fn( location )}
+    hidePlaceResults={false}
+    selectPlaceResult={mockSelectPlaceResult}
+    mapType="standard"
+    loading={false}
+  />
 );
 
 describe( "LocationPicker", () => {

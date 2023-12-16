@@ -40,17 +40,20 @@ const ObservationsViewBar = ( {
           {
             style: buttonStyle( "list" ),
             value: "list",
-            icon: "hamburger-menu"
+            icon: "hamburger-menu",
+            testID: "SegmentedButton.list"
           },
           {
             style: buttonStyle( "grid" ),
             value: "grid",
-            icon: "grid"
+            icon: "grid",
+            testID: "SegmentedButton.grid"
           },
           {
             style: buttonStyle( "map" ),
             value: "map",
-            icon: "map"
+            icon: "map",
+            testID: "SegmentedButton.map"
           }
         ]}
       />

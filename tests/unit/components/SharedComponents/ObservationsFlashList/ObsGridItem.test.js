@@ -2,8 +2,7 @@ import { render, screen } from "@testing-library/react-native";
 import ObsGridItem from "components/SharedComponents/ObservationsFlashList/ObsGridItem";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../../factory";
+import factory from "tests/factory";
 
 describe( "ObsGridItem", () => {
   beforeAll( async () => {
@@ -12,17 +11,23 @@ describe( "ObsGridItem", () => {
 
   describe( "for an observation with a photo", ( ) => {
     const observationWithPhoto = factory( "LocalObservation", {
-      // ObsGridItem contains a testID that uses the obs UUID, so in order for
-      // this to be deterministic, we need to manually set the UUID so it's
-      // the same for every run
-      uuid: "00000000-0000-0000-0000-000000000000",
       observationPhotos: [factory( "LocalObservationPhoto" )]
     } );
 
     it( "should render", () => {
+      const observationWithStablePhotoUrl = factory( "LocalObservation", {
+        uuid: "00000000-0000-0000-0000-000000000000",
+        observationPhotos: [
+          factory( "LocalObservationPhoto", {
+            photo: factory( "LocalPhoto", {
+              url: "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
+            } )
+          } )
+        ]
+      } );
       render(
         <ObsGridItem
-          observation={observationWithPhoto}
+          observation={observationWithStablePhotoUrl}
           uploadState={{ uploadProgress: false }}
         />
       );

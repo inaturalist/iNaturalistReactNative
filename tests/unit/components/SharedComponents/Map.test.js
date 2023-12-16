@@ -2,8 +2,7 @@ import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import { Map } from "components/SharedComponents";
 import React from "react";
-
-import { renderComponent } from "../../../helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 describe( "Map", ( ) => {
   it( "should be accessible", ( ) => {
@@ -25,8 +24,8 @@ describe( "Map", ( ) => {
     renderComponent(
       <Map
         showLocationIndicator
-        obsLatitude={Number( faker.address.latitude( ) )}
-        obsLongitude={Number( faker.address.longitude( ) )}
+        obsLatitude={Number( faker.location.latitude( ) )}
+        obsLongitude={Number( faker.location.longitude( ) )}
       />
     );
     const testId = "Map.LocationIndicator";

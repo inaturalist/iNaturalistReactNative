@@ -1,17 +1,16 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useReducer,
   useRef
 } from "react";
 import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import useStore from "stores/useStore";
 
 import LocationPicker from "./LocationPicker";
 
@@ -116,10 +115,8 @@ type Props = {
 
 const LocationPickerContainer = ( { route }: Props ): Node => {
   const mapViewRef = useRef( );
-  const {
-    currentObservation,
-    updateObservationKeys
-  } = useContext( ObsEditContext );
+  const currentObservation = useStore( state => state.currentObservation );
+  const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
   const { goBackOnSave } = route.params;
 

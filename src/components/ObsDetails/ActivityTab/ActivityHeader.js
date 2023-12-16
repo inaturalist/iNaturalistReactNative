@@ -16,27 +16,35 @@ import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  item: Object,
-  currentUser: boolean,
   classNameMargin?: string,
-  idWithdrawn: boolean,
+  currentUser: boolean,
+  deleteComment: Function,
   flagged: boolean,
+  idWithdrawn: boolean,
+  isOnline: boolean,
+  item: Object,
   loading: boolean,
   updateCommentBody: Function,
-  deleteComment: Function,
-  withdrawOrRestoreIdentification: Function,
-  isOnline: boolean
+  withdrawOrRestoreIdentification: Function
 }
 
 const ActivityHeader = ( {
-  item, classNameMargin, currentUser,
-  idWithdrawn, flagged, loading, updateCommentBody, deleteComment, withdrawOrRestoreIdentification,
-  isOnline
+  classNameMargin,
+  currentUser,
+  deleteComment,
+  flagged,
+  idWithdrawn,
+  isOnline,
+  item,
+  loading,
+  updateCommentBody,
+  withdrawOrRestoreIdentification
 }:Props ): Node => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
-  const { user } = item;
+  const { user, vision } = item;
+  const { category } = user || {};
 
   const itemType = item.category
     ? "Identification"
@@ -50,10 +58,15 @@ const ActivityHeader = ( {
         </View>
       );
     }
-    if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
+
+    if ( vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flagged ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
-  }, [flagged, idWithdrawn, item.vision] );
+  }, [
+    flagged,
+    idWithdrawn,
+    vision
+  ] );
 
   const renderStatus = useCallback( () => {
     if ( flagged ) {
@@ -70,17 +83,21 @@ const ActivityHeader = ( {
         </Body4>
       );
     }
-    if ( item.category ) {
+    if ( category ) {
       return (
         <Body4>
-          { t( `Category-${item.category}` )}
+          { t( `Category-${category}` )}
         </Body4>
       );
     }
     return (
       <Body4 />
     );
-  }, [flagged, idWithdrawn, item.category] );
+  }, [
+    category,
+    flagged,
+    idWithdrawn
+  ] );
 
   return (
     <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
@@ -129,7 +146,6 @@ const ActivityHeader = ( {
             handleClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}
-            snapPoints={[416]}
             confirm={textInput => updateCommentBody( textInput )}
           />
         )}
@@ -137,7 +153,6 @@ const ActivityHeader = ( {
           <WarningSheet
             handleClose={( ) => setShowDeleteCommentSheet( false )}
             headerText={t( "DELETE-COMMENT-QUESTION" )}
-            snapPoints={[148]}
             confirm={deleteComment}
             buttonText={t( "DELETE" )}
             handleSecondButtonPress={( ) => setShowDeleteCommentSheet( false )}

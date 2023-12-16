@@ -1,15 +1,16 @@
 // @flow
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { Heading2, KebabMenu } from "components/SharedComponents";
-import BackButton from "components/SharedComponents/Buttons/BackButton";
+import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useState
+  useCallback, useState
 } from "react";
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
 import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
@@ -18,16 +19,15 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 type Props = {
   observations: Array<Object>,
   updateObservations: Function,
-  currentObservation: Object,
-  unsavedChanges: boolean
+  currentObservation: Object
 }
 
 const Header = ( {
   observations,
   updateObservations,
-  currentObservation,
-  unsavedChanges
+  currentObservation
 }: Props ): Node => {
+  const unsavedChanges = useStore( state => state.unsavedChanges );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -35,6 +35,9 @@ const Header = ( {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
+
+  const savedLocally = currentObservation?._created_at;
+  const unsynced = !currentObservation?._synced_at;
 
   const navToObsDetails = useCallback( ( ) => {
     navigation.navigate( "TabNavigator", {
@@ -67,38 +70,62 @@ const Header = ( {
     navToObsList( );
   }, [updateObservations, navToObsList] );
 
-  const renderHeaderTitle = useCallback( ( ) => (
-    <Heading2
-      testID="new-observation-text"
-      accessible
-      accessibilityRole="header"
-    >
-      {observations.length <= 1
-        ? t( "New-Observation" )
-        : t( "X-Observations", { count: observations.length } )}
-    </Heading2>
-  ), [observations, t] );
+  const renderHeaderTitle = useCallback( ( ) => {
+    let headingText = "";
+    if ( savedLocally ) {
+      headingText = t( "Edit-Observation" );
+    } else if ( observations.length > 1 ) {
+      headingText = t( "X-Observations", { count: observations.length } );
+    } else {
+      headingText = t( "New-Observation" );
+    }
+    return (
+      <Heading2
+        testID="new-observation-text"
+        accessible
+        accessibilityRole="header"
+      >
+        {headingText}
+      </Heading2>
+    );
+  }, [observations, t, savedLocally] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    const unsyncedObservation = !currentObservation?._synced_at && currentObservation?._created_at;
     if ( params?.lastScreen === "GroupPhotos"
-      || ( unsyncedObservation && !unsavedChanges )
+      || ( unsynced && savedLocally )
+      || ( unsynced && !unsavedChanges )
     ) {
       navigation.goBack( );
-    } else if ( !currentObservation?._created_at ) {
+    } else if ( !savedLocally ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
       navToObsDetails( );
     }
-  }, [currentObservation, navigation, unsavedChanges, params, navToObsDetails] );
+  }, [
+    unsynced,
+    savedLocally,
+    navigation,
+    unsavedChanges,
+    params,
+    navToObsDetails
+  ] );
 
-  const renderBackButton = useCallback( ( ) => (
-    <BackButton
-      onPress={handleBackButtonPress}
-    />
-  ), [handleBackButtonPress] );
+  const renderBackButton = useCallback( ( ) => {
+    const extraPadding = {
+      marginStart: 15,
+      paddingVertical: 18,
+      paddingEnd: 24
+    };
+    return (
+      <BackButton
+        onPress={handleBackButtonPress}
+        customStyles={extraPadding}
+        testID="ObsEdit.BackButton"
+      />
+    );
+  }, [handleBackButtonPress] );
 
   useFocusEffect(
     useCallback( ( ) => {
@@ -136,34 +163,13 @@ const Header = ( {
     </KebabMenu>
   ), [kebabMenuVisible, observations, t, setDeleteSheetVisible] );
 
-  useEffect( ( ) => {
-    const headerOptions = {
-      headerTitle: currentObservation
-        ? renderHeaderTitle
-        : "",
-      headerLeft: renderBackButton,
-      headerRight: renderKebabMenu
-    };
-
-    if ( typeof ( navigation?.setOptions ) === "function" ) {
-      navigation?.setOptions( headerOptions );
-    }
-  }, [
-    observations,
-    navigation,
-    renderKebabMenu,
-    renderBackButton,
-    renderHeaderTitle,
-    currentObservation
-  ] );
-
-  // prevent header from flickering if observations haven't loaded yet
-  if ( observations.length === 0 ) {
-    return null;
-  }
-
   return (
-    <>
+    <View className="flex-row justify-between items-center">
+      {renderBackButton( )}
+      {observations.length > 0 && renderHeaderTitle( )}
+      <View className="mr-4">
+        {observations.length > 0 && renderKebabMenu( )}
+      </View>
       {deleteSheetVisible && (
         <DeleteObservationSheet
           handleClose={( ) => setDeleteSheetVisible( false )}
@@ -184,10 +190,9 @@ const Header = ( {
         <DiscardChangesSheet
           discardChanges={discardChanges}
           handleClose={( ) => setDiscardChangesSheetVisible( false )}
-
         />
       )}
-    </>
+    </View>
   );
 };
 

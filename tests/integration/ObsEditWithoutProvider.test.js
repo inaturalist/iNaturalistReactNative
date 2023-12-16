@@ -2,12 +2,13 @@ import { faker } from "@faker-js/faker";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
-import { ObsEditContext } from "providers/contexts";
 import React from "react";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
+import useStore from "stores/useStore";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
-import factory from "../factory";
-import { renderComponent } from "../helpers/render";
+const initialStoreState = useStore.getState( );
 
 const mockLocationName = "San Francisco, CA";
 
@@ -35,34 +36,20 @@ jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
   default: () => mockFetchUserLocation()
 } ) );
 
-const renderObsEdit = obs => renderComponent(
-  <ObsEditContext.Provider
-    value={{
-      observations: obs,
-      currentObservation: obs[0],
-      updateObservationKeys: jest.fn( ),
-      setPassesIdentificationTest: jest.fn( ),
-      writeExifToCameraRollPhotos: jest.fn( ),
-      photoEvidenceUris: [faker.image.imageUrl( )],
-      setPhotoEvidenceUris: jest.fn( )
-    }}
-  >
-    <ObsEdit />
-  </ObsEditContext.Provider>
-);
+const renderObsEdit = ( ) => renderComponent( <ObsEdit /> );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.name.firstName( ),
+  name: faker.person.firstName( ),
   rank: "genus",
   rank_level: 27,
-  preferred_common_name: faker.name.fullName( ),
+  preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.imageUrl( )
+    square_url: faker.image.url( )
   },
   ancestors: [{
-    id: faker.datatype.number( ),
-    preferred_common_name: faker.name.fullName( ),
-    name: faker.name.fullName( ),
+    id: faker.number.int( ),
+    preferred_common_name: faker.person.fullName( ),
+    name: faker.person.fullName( ),
     rank: "class"
   }],
   wikipedia_summary: faker.lorem.paragraph( ),
@@ -74,6 +61,7 @@ const mockTaxon = factory( "RemoteTaxon", {
 
 describe( "basic rendering", ( ) => {
   beforeAll( async () => {
+    useStore.setState( initialStoreState, true );
     await initI18next();
   } );
 
@@ -87,7 +75,11 @@ describe( "basic rendering", ( ) => {
       observationPhotos: []
     } )];
 
-    renderObsEdit( observations );
+    useStore.setState( {
+      observations,
+      currentObservation: observations[0]
+    } );
+    renderObsEdit( );
 
     const obs = observations[0];
 
@@ -98,6 +90,7 @@ describe( "basic rendering", ( ) => {
 
 describe( "location fetching", () => {
   beforeAll( async () => {
+    useStore.setState( initialStoreState, true );
     await initI18next();
   } );
 
@@ -110,10 +103,14 @@ describe( "location fetching", () => {
     const observations = [factory( "LocalObservation", {
       observationPhotos: []
     } )];
-    renderObsEdit( observations );
+    useStore.setState( {
+      observations,
+      currentObservation: observations[0]
+    } );
+    renderObsEdit( );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
 
-    renderObsEdit( observations );
+    renderObsEdit( );
 
     await waitFor( () => {
       expect( mockFetchUserLocation ).toHaveBeenCalled();
@@ -124,14 +121,18 @@ describe( "location fetching", () => {
   test( "shouldn't fetch location for existing obs on device that hasn't uploaded", async () => {
     const observation = factory( "LocalObservation", {
       _created_at: faker.date.past( ),
-      latitude: Number( faker.address.latitude( ) ),
-      longitude: Number( faker.address.longitude( ) ),
+      latitude: Number( faker.location.latitude( ) ),
+      longitude: Number( faker.location.longitude( ) ),
       observationPhotos: []
     } );
     expect( observation.id ).toBeFalsy();
     expect( observation.created_at ).toBeFalsy();
     expect( observation._created_at ).toBeTruthy();
-    renderObsEdit( [observation] );
+    useStore.setState( {
+      observations: [observation],
+      currentObservation: observation
+    } );
+    renderObsEdit( );
 
     expect(
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
@@ -146,16 +147,20 @@ describe( "location fetching", () => {
 
   test( "shouldn't fetch location for existing observation created elsewhere", async () => {
     const observation = factory( "LocalObservation", {
-      id: faker.datatype.number(),
+      id: faker.number.int(),
       created_at: faker.date.past(),
       _synced_at: faker.date.past(),
-      latitude: Number( faker.address.latitude( ) ),
-      longitude: Number( faker.address.longitude( ) ),
+      latitude: Number( faker.location.latitude( ) ),
+      longitude: Number( faker.location.longitude( ) ),
       observationPhotos: []
     } );
     expect( observation.id ).toBeTruthy();
     expect( observation.created_at ).toBeTruthy();
-    renderObsEdit( [observation] );
+    useStore.setState( {
+      observations: [observation],
+      currentObservation: observation
+    } );
+    renderObsEdit( );
 
     expect(
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
