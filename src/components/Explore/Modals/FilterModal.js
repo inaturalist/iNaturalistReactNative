@@ -567,16 +567,16 @@ const FilterModal = ( {
         {/* Date observed section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "DATE-OBSERVED" )}</Heading4>
-          {dateObserved === dateObservedValues.all.value && (
-            <Button
-              text={t( "ALL" )}
-              className="shrink mb-7"
-              dropdown
-              onPress={() => {
-                closeModal();
-                setShowDateObserved( true );
-              }}
-            />
+          <Button
+            text={dateObservedValues[dateObserved]?.label.toUpperCase()}
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              // closeModal();
+              setOpenSheet( DATE_OBSERVED );
+            }}
+          />
+          {dateObserved === dateObservedValues.exactDate.value && (
           )}
           {openSheet === DATE_OBSERVED && (
             <RadioButtonSheet
