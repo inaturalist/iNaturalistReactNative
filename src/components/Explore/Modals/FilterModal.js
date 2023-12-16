@@ -74,10 +74,14 @@ const FilterModal = ( {
     dateObserved
   } = exploreFilters;
 
-  const [showSortBy, setShowSortBy] = useState( false );
-  const [showLowerTaxRank, setShowLowerTaxRank] = useState( false );
-  const [showHigherTaxRank, setShowHigherTaxRank] = useState( false );
-  const [showDateObserved, setShowDateObserved] = useState( false );
+
+  const NONE = "NONE";
+  const SORT_BY = "SORT_BY";
+  const LRANK = "LRANK";
+  const HRANK = "HRANK";
+  const DATE_OBSERVED = "DATE_OBSERVED";
+  const DATE_PICKER_EXACT = "DATE_PICKER_EXACT";
+  const [openSheet, setOpenSheet] = useState( NONE );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -287,12 +291,9 @@ const FilterModal = ( {
                     navigation.navigate( "ExploreTaxonSearch" );
                   }}
                 >
-                  <DisplayTaxon
-                    taxon={taxon}
-                  />
+                  <DisplayTaxon taxon={taxon} />
                   <INatIcon name="edit" size={22} />
                 </Pressable>
-
               )
               : (
                 <Button
@@ -352,13 +353,13 @@ const FilterModal = ( {
               dropdown
               onPress={() => {
                 closeModal();
-                setShowSortBy( true );
+                setOpenSheet( SORT_BY );
               }}
             />
-            {showSortBy && (
+            {openSheet === SORT_BY && (
               <SortBySheet
                 selectedValue={sortBy}
-                handleClose={() => setShowSortBy( false )}
+                handleClose={() => setOpenSheet( NONE )}
                 update={updateSortBy}
               />
             )}
@@ -469,17 +470,17 @@ const FilterModal = ( {
             dropdown
             onPress={() => {
               closeModal();
-              setShowLowerTaxRank( true );
+              setOpenSheet( LRANK );
             }}
           />
-          {showLowerTaxRank && (
+          {openSheet === LRANK && (
             <RadioButtonSheet
               headerText={t( "TAXONOMIC-RANKS" )}
               confirm={newRank => {
                 updateLowestTaxonomicRank( newRank );
-                setShowLowerTaxRank( false );
+                setOpenSheet( NONE );
               }}
-              handleClose={() => setShowLowerTaxRank( false )}
+              handleClose={() => setOpenSheet( NONE )}
               radioValues={taxonomicRankValues}
               selectedValue={lrank}
             />
@@ -493,17 +494,17 @@ const FilterModal = ( {
             dropdown
             onPress={() => {
               closeModal();
-              setShowHigherTaxRank( true );
+              setOpenSheet( HRANK );
             }}
           />
-          {showHigherTaxRank && (
+          {openSheet === HRANK && (
             <RadioButtonSheet
               headerText={t( "TAXONOMIC-RANKS" )}
               confirm={newRank => {
                 updateHighestTaxonomicRank( newRank );
-                setShowHigherTaxRank( false );
+                setOpenSheet( NONE );
               }}
-              handleClose={() => setShowHigherTaxRank( false )}
+              handleClose={() => setOpenSheet( NONE )}
               radioValues={taxonomicRankValues}
               selectedValue={hrank}
             />
@@ -511,7 +512,7 @@ const FilterModal = ( {
         </View>
 
         {/* Taxonomic Ranks section */}
-        <View className="mb-7">
+        {/* <View className="mb-7">
           <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
           <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
           <Button
@@ -561,7 +562,7 @@ const FilterModal = ( {
               selectedValue={hrank}
             />
           )}
-        </View>
+        </View> */}
 
         {/* Date observed section */}
         <View className="mb-7">
@@ -577,14 +578,14 @@ const FilterModal = ( {
               }}
             />
           )}
-          {showDateObserved && (
+          {openSheet === DATE_OBSERVED && (
             <RadioButtonSheet
               headerText={t( "DATE-OBSERVED" )}
               confirm={newDateObserved => {
                 updateDateObserved( newDateObserved );
-                setShowDateObserved( false );
+                setOpenSheet( NONE );
               }}
-              handleClose={() => setShowHigherTaxRank( false )}
+              handleClose={() => setOpenSheet( NONE )}
               radioValues={dateObservedValues}
               selectedValue={dateObserved}
             />
