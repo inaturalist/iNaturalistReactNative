@@ -60,6 +60,8 @@ const ExploreUserSearch = ( ): Node => {
     [onUserSelected]
   );
 
+  // TODO: pagination like in ExploreFlashList ?
+
   const renderItemSeparator = () => (
     <View className="border-b border-lightGray" />
   );

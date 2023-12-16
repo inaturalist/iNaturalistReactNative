@@ -123,6 +123,8 @@ Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
 
+CHANGE-DATE = CHANGE DATE
+
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 
