@@ -366,4 +366,6 @@ describe( "Suggestions", ( ) => {
       expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
     }
   );
+
+  it.todo( "should create an identification when accessed from Explore" );
 } );

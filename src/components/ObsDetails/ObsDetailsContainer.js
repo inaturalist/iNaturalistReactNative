@@ -104,7 +104,10 @@ const ObsDetailsContainer = ( ): Node => {
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
-    uuid, taxonSuggested, comment, vision
+    comment,
+    taxonSuggested,
+    uuid,
+    vision
   } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
@@ -310,7 +313,6 @@ const ObsDetailsContainer = ( ): Node => {
     if ( !taxonSuggested ) return;
 
     // New taxon identification added by user
-
     const idParams = {
       observation_id: uuid,
       taxon_id: taxonSuggested.id,
