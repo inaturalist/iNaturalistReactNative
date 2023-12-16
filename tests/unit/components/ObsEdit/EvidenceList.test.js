@@ -7,7 +7,7 @@ import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );
 
-const photos = [factory( "RemotePhoto" ), factory( "RemotePhoto" )];
+const photos = [factory( "RemoteObservationPhoto" ), factory( "RemoteObservationPhoto" )];
 
 const renderEvidenceList = evidencePhotos => renderComponent(
   <EvidenceList
@@ -39,8 +39,8 @@ describe( "EvidenceList", ( ) => {
   it( "should render all observation photos", ( ) => {
     renderEvidenceList( photos );
 
-    expect( screen.getByTestId( `EvidenceList.${photos[0].url}` ) ).toBeVisible( );
-    expect( screen.getByTestId( `EvidenceList.${photos[1].url}` ) ).toBeVisible( );
+    expect( screen.getByTestId( `EvidenceList.${photos[0].photo.url}` ) ).toBeVisible( );
+    expect( screen.getByTestId( `EvidenceList.${photos[1].photo.url}` ) ).toBeVisible( );
   } );
 
   it( "should display an empty list when observation has no observation photos", ( ) => {
