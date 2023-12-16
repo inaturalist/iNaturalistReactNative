@@ -20,6 +20,7 @@ const PHOTO_FIELDS = {
 
 const FIELDS = {
   ancestors: ANCESTOR_FIELDS,
+  children: ANCESTOR_FIELDS,
   default_photo: {
     url: true
   },

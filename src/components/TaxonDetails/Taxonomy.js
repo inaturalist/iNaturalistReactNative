@@ -4,10 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body2,
-  Heading4
+  Heading4,
+  INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import * as React from "react";
+import type { Node } from "react";
+import React, { useCallback } from "react";
 import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
@@ -16,15 +18,13 @@ type Props = {
   taxon?: Object
 }
 
-const Taxonomy = ( { taxon: currentTaxon }: Props ): React.Node => {
+const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
-  const navToTaxonDetails = id => navigation.navigate( "TaxonDetails", { id } );
-
   const displayCommonName = ( commonName, options ) => (
     <Body2 className={
-      classnames( "font-bold mr-2 mb-3", {
+      classnames( "font-bold mr-1", {
         "text-inatGreen": options?.isCurrentTaxon,
         underline: !options?.isCurrentTaxon
       } )
@@ -34,7 +34,11 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): React.Node => {
     </Body2>
   );
 
-  const displayScientificName = ( rank, scientificNamePieces, rankLevel, rankPiece ) => {
+  const displayScientificName = ( rank, scientificNamePieces, rankLevel, rankPiece, options ) => {
+    const isCurrentTaxon = options?.isCurrentTaxon;
+    const hasCommonName = options?.hasCommonName;
+    const isChild = rankLevel < 10;
+    const underline = ( isChild && !isCurrentTaxon ) || !hasCommonName;
     // italics part ported over from DisplayTaxonName
     const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
       const isItalics = piece !== rankPiece && (
@@ -49,7 +53,9 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): React.Node => {
         <Body2
           className={
             classnames( {
-              italic: isItalics
+              italic: isItalics,
+              "font-bold": ( isChild && !isCurrentTaxon ) || !hasCommonName,
+              "text-inatGreen": isCurrentTaxon
             } )
           }
         >
@@ -58,17 +64,52 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): React.Node => {
       );
     } );
 
-    return (
-      <>
-        <Body2>(</Body2>
-        {rank && rankLevel > 10 && <Body2>{`${rank} `}</Body2>}
-        {scientificNameComponent}
-        <Body2>)</Body2>
-      </>
-    );
+    return isChild
+      ? (
+        <View className="flex-row">
+          <View className="ml-2 mr-1">
+            <INatIcon name="arrow-turn-down-right" size={11} />
+          </View>
+          <Body2 className={
+            classnames( {
+              underline
+            } )
+          }
+          >
+            { scientificNameComponent }
+          </Body2>
+        </View>
+      )
+      : (
+        <Body2 className={
+          classnames( {
+            underline,
+            "text-inatGreen": isCurrentTaxon,
+            "-ml-1 ": !hasCommonName
+          } )
+        }
+        >
+          {hasCommonName && <Body2>(</Body2>}
+          {rankLevel > 10 && (
+            <Body2
+              className={
+                classnames( {
+                  "font-bold": !hasCommonName
+                } )
+              }
+            >
+              {`${rank} `}
+            </Body2>
+          )}
+          {scientificNameComponent}
+          {hasCommonName && <Body2>)</Body2>}
+        </Body2>
+      );
   };
 
-  const renderTaxon = ( taxon, isCurrentTaxon ) => {
+  const renderTaxon = useCallback( ( taxon, options ) => {
+    const isCurrentTaxon = options?.isCurrentTaxon;
+    const isChild = options?.isChild;
     const {
       commonName,
       scientificNamePieces,
@@ -80,24 +121,40 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): React.Node => {
     return (
       <Pressable
         accessibilityRole="button"
-        className="flex-row"
+        className="flex-row py-2"
         key={taxon?.id}
         disabled={isCurrentTaxon}
-        onPress={( ) => navToTaxonDetails( taxon?.id )}
+        onPress={( ) => navigation.navigate( "TaxonDetails", { id: taxon?.id } )}
       >
-        {displayCommonName( commonName, { isCurrentTaxon } )}
-        {displayScientificName( rank, scientificNamePieces, rankLevel, rankPiece )}
+        {!isChild && displayCommonName( commonName, { isCurrentTaxon } )}
+        {displayScientificName(
+          rank,
+          scientificNamePieces,
+          rankLevel,
+          rankPiece,
+          { isCurrentTaxon, hasCommonName: commonName }
+        )}
       </Pressable>
     );
-  };
+  }, [navigation] );
+
+  const displayTaxonomy = useCallback(
+    ( ) => (
+      <>
+        {currentTaxon?.ancestors?.map( ancestor => renderTaxon( ancestor ) )}
+        {renderTaxon( currentTaxon, { isCurrentTaxon: true } )}
+        {currentTaxon?.children?.map( child => renderTaxon( child, { isChild: true } ) )}
+      </>
+    ),
+    [currentTaxon, renderTaxon]
+  );
 
   return (
     <View className="mb-5">
       <Heading4 className="my-3">
         {t( "TAXONOMY-header" )}
       </Heading4>
-      {currentTaxon?.ancestors?.map( ancestor => renderTaxon( ancestor ) )}
-      {renderTaxon( currentTaxon, { isCurrentTaxon: true } )}
+      {displayTaxonomy( )}
     </View>
   );
 };
