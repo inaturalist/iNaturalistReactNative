@@ -123,6 +123,8 @@ Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
 
+CHANGE-DATE = CHANGE DATE
+
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 
@@ -335,6 +337,8 @@ Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. C
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
 
 EVIDENCE = EVIDENCE
+
+Exact-Date = Exact Date
 
 Explore = Explore
 
