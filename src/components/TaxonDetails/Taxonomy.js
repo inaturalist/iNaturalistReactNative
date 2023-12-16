@@ -4,21 +4,23 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body2,
+  Button,
   Heading4,
   INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   taxon?: Object
 }
 
 const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
+  const [viewChildren, setViewChildren] = useState( false );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
@@ -37,8 +39,8 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
   const displayScientificName = ( rank, scientificNamePieces, rankLevel, rankPiece, options ) => {
     const isCurrentTaxon = options?.isCurrentTaxon;
     const hasCommonName = options?.hasCommonName;
-    const isChild = rankLevel < 10;
-    const underline = ( isChild && !isCurrentTaxon ) || !hasCommonName;
+    const isChild = options?.isChild;
+    const underline = !isCurrentTaxon && ( isChild || !hasCommonName );
     // italics part ported over from DisplayTaxonName
     const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
       const isItalics = piece !== rankPiece && (
@@ -51,10 +53,11 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
 
       return (
         <Body2
+          key={text}
           className={
             classnames( {
               italic: isItalics,
-              "font-bold": ( isChild && !isCurrentTaxon ) || !hasCommonName,
+              "font-bold": underline,
               "text-inatGreen": isCurrentTaxon
             } )
           }
@@ -67,9 +70,6 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
     return isChild
       ? (
         <View className="flex-row">
-          <View className="ml-2 mr-1">
-            <INatIcon name="arrow-turn-down-right" size={11} />
-          </View>
           <Body2 className={
             classnames( {
               underline
@@ -94,7 +94,8 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
             <Body2
               className={
                 classnames( {
-                  "font-bold": !hasCommonName
+                  "font-bold": !hasCommonName,
+                  "text-inatGreen": isCurrentTaxon
                 } )
               }
             >
@@ -125,29 +126,54 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
         key={taxon?.id}
         disabled={isCurrentTaxon}
         onPress={( ) => navigation.navigate( "TaxonDetails", { id: taxon?.id } )}
+        accessibilityState={{
+          disabled: isCurrentTaxon
+        }}
+        accessibilityLabel={t( "Navigate-to-taxon-details" )}
       >
-        {!isChild && displayCommonName( commonName, { isCurrentTaxon } )}
+        {isChild && (
+          <View className="ml-2 mr-1">
+            <INatIcon name="arrow-turn-down-right" size={11} />
+          </View>
+        )}
+        {displayCommonName( commonName, { isCurrentTaxon } )}
         {displayScientificName(
           rank,
           scientificNamePieces,
           rankLevel,
           rankPiece,
-          { isCurrentTaxon, hasCommonName: commonName }
+          {
+            isCurrentTaxon,
+            hasCommonName: commonName,
+            isChild
+          }
         )}
       </Pressable>
     );
-  }, [navigation] );
+  }, [navigation, t] );
 
   const displayTaxonomy = useCallback(
     ( ) => (
       <>
         {currentTaxon?.ancestors?.map( ancestor => renderTaxon( ancestor ) )}
         {renderTaxon( currentTaxon, { isCurrentTaxon: true } )}
-        {currentTaxon?.children?.map( child => renderTaxon( child, { isChild: true } ) )}
+        {viewChildren
+          ? currentTaxon?.children?.map( child => renderTaxon( child, {
+            isChild: true
+          } ) )
+          : (
+            <Button
+              className="mt-3"
+              onPress={( ) => setViewChildren( true )}
+              text={t( "VIEW-CHILDREN-TAXA" )}
+            />
+          )}
       </>
     ),
-    [currentTaxon, renderTaxon]
+    [currentTaxon, renderTaxon, viewChildren, t]
   );
+
+  console.log( currentTaxon?.children, "children from current taxon" );
 
   return (
     <View className="mb-5">

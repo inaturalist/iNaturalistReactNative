@@ -62,6 +62,9 @@
 		<string>Whitney-BookItalic-Pro.otf</string>
 		<string>inaturalisticons.ttf</string>
 		<string>INatIcon.ttf</string>
+		<string>Whitney Semibold Regular.otf</string>
+		<string>Whitney Semibold Italic.otf</string>
+		<string>Whitney Book Regular.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

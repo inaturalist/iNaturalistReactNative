@@ -70,6 +70,12 @@ module.exports = {
         "Whitney-Light-Pro": ["Whitney-Light-Pro"], // Android naming convention
         "Whitney-BookItalic": ["Whitney-BookItalic"],
         "Whitney-BookItalic-Pro": ["Whitney-BookItalic-Pro"], // Android naming convention
+        "Whitney-Semibold": ["Whitney-Semibold"],
+        "Whitney-Semibold-Pro": ["Whitney-Semibold-Pro"], // Android naming convention
+        "Whitney-Semibold-Italic": ["Whitney-Semibold-Italic"],
+        "Whitney-Semibold-Italic-Pro": ["Whitney-Semibold-Italic-Pro"], // Android naming convention
+        "Whitney-Book": ["Whitney-Book"],
+        "Whitney-Book-Pro": ["Whitney-Book-Pro"], // Android naming convention
         // selected from list of fonts already available in RN
         // https://infinitbility.com/react-native-font-family-list/
         "Papyrus-Condensed": ["Papyrus-Condensed"],
