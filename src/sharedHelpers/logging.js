@@ -11,14 +11,16 @@ function inspect( target ) {
 }
 
 async function reactQueryRetry( failureCount, error, options = {} ) {
+  const logger = options.logger || defaultLogger;
   if ( typeof ( options.beforeRertry ) === "function" ) {
     options.beforeRertry( failureCount, error );
   } else {
-    const logger = options.logger || defaultLogger;
-    logger.warn( error.status, "error for query, error: ", error );
+    logger.warn( error.status, "error for query, error: ", error, ", options: ", options );
   }
   if ( error.status > 500 ) {
-    return 0;
+    logger.info( "Handing 500+ error, failureCount: ", failureCount );
+    handleError( error );
+    return false;
   }
   if (
     // If this is an actual 408 Request Timeout error, we probably want to
@@ -27,8 +29,16 @@ async function reactQueryRetry( failureCount, error, options = {} ) {
     // If there's just no network at the moment, definitely retry
     || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
   ) {
-    return failureCount < 3;
+    const retryValue = failureCount < 3;
+    logger.info(
+      "Handling 408 Request Timeout, failureCount: ",
+      failureCount,
+      ", retryValue: ",
+      retryValue
+    );
+    return retryValue;
   }
+  logger.info( "Handling some other error, failureCount: ", failureCount );
   handleError( error, { throw: false } );
   if ( error.status === 401 || error.status === 403 ) {
     // If we get a 401 or 403, call getJWT

@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react-native";
 import { IconicTaxonChooser } from "components/SharedComponents";
 import React from "react";
-
-import factory from "../../../factory";
+import factory from "tests/factory";
 
 const mockData = [factory( "RemoteTaxon" )];
 

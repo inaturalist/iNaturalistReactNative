@@ -8,12 +8,11 @@ import os from "os";
 import path from "path";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
-
-import factory from "../../factory";
+import factory from "tests/factory";
 import {
   renderObservationsStackNavigatorWithObservations
-} from "../../helpers/render";
-import { signIn, signOut } from "../../helpers/user";
+} from "tests/helpers/render";
+import { signIn, signOut } from "tests/helpers/user";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally

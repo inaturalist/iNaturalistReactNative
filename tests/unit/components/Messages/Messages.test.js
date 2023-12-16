@@ -5,8 +5,7 @@ import Messages from "components/Messages/Messages";
 import initI18next from "i18n/initI18next";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
-
-import factory from "../../../factory";
+import factory from "tests/factory";
 
 const mockedNavigate = jest.fn( );
 const mockMessage = factory( "RemoteMessage", {

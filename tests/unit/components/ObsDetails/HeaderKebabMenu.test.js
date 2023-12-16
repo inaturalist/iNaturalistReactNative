@@ -6,9 +6,8 @@ import React from "react";
 import { Share } from "react-native";
 // eslint-disable-next-line import/no-unresolved
 import mockPlatform from "react-native/Libraries/Utilities/Platform";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   id: 1906

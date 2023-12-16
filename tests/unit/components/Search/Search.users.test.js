@@ -1,9 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 // TODO: figure out how to clear jest mocks correctly or return a different
 // value from jest mocks so these can all live in a single file?

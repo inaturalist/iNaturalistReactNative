@@ -1,8 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { renderHook } from "@testing-library/react-native";
 import { useTaxon } from "sharedHooks";
-
-import factory from "../../factory";
+import factory from "tests/factory";
 
 const mockRemoteTaxon = factory( "RemoteTaxon", {
   default_photo: {

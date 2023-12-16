@@ -1,7 +1,6 @@
 import { renderHook } from "@testing-library/react-native";
 import { useCurrentUser } from "sharedHooks";
-
-import factory from "../../factory";
+import factory from "tests/factory";
 
 const mockUser = factory( "LocalUser", {
   login: "fake_login",

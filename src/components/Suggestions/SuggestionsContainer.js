@@ -22,19 +22,26 @@ const SuggestionsContainer = ( ): Node => {
   const {
     onlineSuggestions,
     loadingOnlineSuggestions
-  } = useOnlineSuggestions( selectedPhotoUri );
+  } = useOnlineSuggestions( selectedPhotoUri, {
+    latitude: currentObservation?.latitude,
+    longitude: currentObservation?.longitude
+  } );
+
+  const tryOfflineSuggestions = !onlineSuggestions || onlineSuggestions?.length === 0;
   const {
     offlineSuggestions,
     loadingOfflineSuggestions
   } = useOfflineSuggestions( selectedPhotoUri, {
-    tryOfflineSuggestions: onlineSuggestions?.length === 0
+    tryOfflineSuggestions
   } );
 
-  const nearbySuggestions = onlineSuggestions?.length > 0
-    ? onlineSuggestions
+  const suggestions = onlineSuggestions?.results?.length > 0
+    ? onlineSuggestions.results
     : offlineSuggestions;
 
-  const taxonIds = nearbySuggestions?.map(
+  const topSuggestion = onlineSuggestions?.common_ancestor;
+
+  const taxonIds = suggestions?.map(
     suggestion => suggestion.taxon.id
   );
 
@@ -48,12 +55,14 @@ const SuggestionsContainer = ( ): Node => {
   return (
     <Suggestions
       loadingSuggestions={loadingSuggestions}
-      nearbySuggestions={nearbySuggestions}
+      topSuggestion={topSuggestion}
+      suggestions={suggestions}
       onTaxonChosen={setSelectedTaxon}
       photoUris={photoList}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
       observers={observers}
+      usingOfflineSuggestions={tryOfflineSuggestions && offlineSuggestions?.length > 0}
     />
   );
 };

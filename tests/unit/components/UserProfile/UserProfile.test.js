@@ -3,9 +3,8 @@ import UserProfile from "components/UserProfile/UserProfile";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockUser = factory( "RemoteUser" );
 

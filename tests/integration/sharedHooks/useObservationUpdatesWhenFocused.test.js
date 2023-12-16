@@ -1,7 +1,6 @@
 import { renderHook } from "@testing-library/react-native";
 import useObservationUpdatesWhenFocused from "sharedHooks/useObservationUpdatesWhenFocused";
-
-import factory from "../../factory";
+import factory from "tests/factory";
 
 jest.mock( "react-native/Libraries/AppState/AppState", () => ( {
   addEventListener: jest.fn( ( event, callback ) => {

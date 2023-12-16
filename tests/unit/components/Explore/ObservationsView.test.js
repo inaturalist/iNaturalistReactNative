@@ -3,8 +3,7 @@ import ObservationsFlashList
   from "components/SharedComponents/ObservationsFlashList/ObservationsFlashList";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import { renderComponent } from "../../../helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 const mockOnEndReached = jest.fn( );
 

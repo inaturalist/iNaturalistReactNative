@@ -3,8 +3,7 @@ import Toolbar from "components/MyObservations/Toolbar";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
-
-import { renderComponent } from "../../../helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 describe( "Toolbar", () => {
   beforeAll( async () => {

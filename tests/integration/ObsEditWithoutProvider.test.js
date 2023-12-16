@@ -5,9 +5,8 @@ import initI18next from "i18n/initI18next";
 import React from "react";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 import useStore from "stores/useStore";
-
-import factory from "../factory";
-import { renderComponent } from "../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );
 
