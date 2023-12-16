@@ -26,11 +26,13 @@ const SuggestionsContainer = ( ): Node => {
     latitude: currentObservation?.latitude,
     longitude: currentObservation?.longitude
   } );
+
+  const tryOfflineSuggestions = !onlineSuggestions || onlineSuggestions?.length === 0;
   const {
     offlineSuggestions,
     loadingOfflineSuggestions
   } = useOfflineSuggestions( selectedPhotoUri, {
-    tryOfflineSuggestions: !onlineSuggestions || onlineSuggestions?.length === 0
+    tryOfflineSuggestions
   } );
 
   const suggestions = onlineSuggestions?.results?.length > 0
@@ -60,7 +62,7 @@ const SuggestionsContainer = ( ): Node => {
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
       observers={observers}
-      usingOfflineSuggestions={offlineSuggestions?.length > 0}
+      usingOfflineSuggestions={tryOfflineSuggestions && offlineSuggestions?.length > 0}
     />
   );
 };

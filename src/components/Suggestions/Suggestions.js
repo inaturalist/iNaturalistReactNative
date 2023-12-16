@@ -113,6 +113,12 @@ const Suggestions = ( {
           accessibilityLabel={t( "Search" )}
         />
       </View>
+      { usingOfflineSuggestions && (
+        <View className="bg-warningYellow px-8 py-5 mt-5">
+          <Heading4>{ t( "Viewing-Offline-Suggestions" ) }</Heading4>
+          <Body3>{ t( "Viewing-Offline-Suggestions-results-may-differ" ) }</Body3>
+        </View>
+      ) }
       { topSuggestion && (
         <>
           <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
@@ -120,12 +126,6 @@ const Suggestions = ( {
             <Suggestion suggestion={topSuggestion} onChosen={onTaxonChosen} />
           </View>
         </>
-      ) }
-      { usingOfflineSuggestions && (
-        <View className="bg-warningYellow px-8 py-5 mt-5">
-          <Heading4>{ t( "Viewing-Offline-Suggestions" ) }</Heading4>
-          <Body3>{ t( "Viewing-Offline-Suggestions-results-may-differ" ) }</Body3>
-        </View>
       ) }
       { suggestions?.length > 0 && (
         <Heading4 className="mt-6 mb-4 ml-4">
