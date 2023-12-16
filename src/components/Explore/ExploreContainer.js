@@ -28,6 +28,7 @@ const all = "all";
 const exactDate = "exactDate";
 const months = "months";
 
+const today = new Date( ).toISOString( ).split( "T" )[0];
 const calculatedFilters = {
   user: undefined,
   project: undefined,
@@ -36,7 +37,8 @@ const calculatedFilters = {
   casual: false,
   hrank: undefined,
   lrank: undefined,
-  dateObserved: all
+  dateObserved: all,
+  dateUploaded: all
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -44,7 +46,9 @@ const defaultFilters = {
   ...calculatedFilters,
   sortBy: DATE_UPLOADED_NEWEST,
   user_id: undefined,
-  project_id: undefined
+  project_id: undefined,
+  observed_on: today,
+  created_on: today
 };
 
 const initialState: {
@@ -75,7 +79,10 @@ const initialState: {
     casual: boolean,
     hrank: ?string,
     lrank: ?string,
-    dateObserved: string
+    dateObserved: string,
+    observed_on: string,
+    dateUploaded: string,
+    created_on: string,
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -270,7 +277,8 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
-          dateObserved: exactDate
+          dateObserved: exactDate,
+          observed_on: action.observed_on
         }
       };
     case "SET_DATE_OBSERVED_MONTHS":
@@ -281,6 +289,24 @@ const reducer = ( state, action ) => {
           dateObserved: months
         }
       };
+    case "SET_DATE_UPLOADED_ALL":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          dateUploaded: all
+        }
+      };
+    case "SET_DATE_UPLOADED_EXACT":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          dateUploaded: exactDate,
+          created_on: action.created_on
+        }
+      };
+
     default:
       throw new Error();
   }
@@ -432,18 +458,32 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateDateObserved = newDateObserved => {
+  const updateDateObserved = ( newDateObserved, d1, d2 ) => {
     if ( newDateObserved === all ) {
       dispatch( {
         type: "SET_DATE_OBSERVED_ALL"
       } );
     } else if ( newDateObserved === exactDate ) {
       dispatch( {
-        type: "SET_DATE_OBSERVED_EXACT"
+        type: "SET_DATE_OBSERVED_EXACT",
+        observed_on: d1 || today
       } );
     } else if ( newDateObserved === months ) {
       dispatch( {
         type: "SET_DATE_OBSERVED_MONTHS"
+      } );
+    }
+  };
+
+  const updateDateUploaded = ( newDateObserved, d1 ) => {
+    if ( newDateObserved === all ) {
+      dispatch( {
+        type: "SET_DATE_UPLOADED_ALL"
+      } );
+    } else if ( newDateObserved === exactDate ) {
+      dispatch( {
+        type: "SET_DATE_UPLOADED_EXACT",
+        created_on: d1 || today
       } );
     }
   };
@@ -513,6 +553,7 @@ const ExploreContainer = ( ): Node => {
       updateHighestTaxonomicRank={updateHighestTaxonomicRank}
       updateLowestTaxonomicRank={updateLowestTaxonomicRank}
       updateDateObserved={updateDateObserved}
+      updateDateUploaded={updateDateUploaded}
     />
   );
 };

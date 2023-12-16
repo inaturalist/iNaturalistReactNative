@@ -37,7 +37,8 @@ const ExploreFilters = ( {
   updateCasual,
   updateHighestTaxonomicRank,
   updateLowestTaxonomicRank,
-  updateDateObserved
+  updateDateObserved,
+  updateDateUploaded
 }: Props ): Node => (
   <Modal
     showModal={showModal}
@@ -61,6 +62,7 @@ const ExploreFilters = ( {
         updateHighestTaxonomicRank={updateHighestTaxonomicRank}
         updateLowestTaxonomicRank={updateLowestTaxonomicRank}
         updateDateObserved={updateDateObserved}
+        updateDateUploaded={updateDateUploaded}
       />
     )}
   />
