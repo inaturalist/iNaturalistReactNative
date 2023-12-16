@@ -1426,3 +1426,11 @@ Navigate-to-identification-suggestions-screen = Navigate to identification sugge
 # Accessibility label for a button that starts the process of adding an
 # observation, e.g. the button in the tab bar
 Add-observations = Add observations
+
+
+# Title for a notice informing the user that they are viewing offline
+# identification suggestions
+Viewing-Offline-Suggestions = Viewing Offline Suggestions
+
+Viewing-Offline-Suggestions-results-may-differ =
+    Results may differ from the online suggestions and images and common names may not display.

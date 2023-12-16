@@ -9,13 +9,12 @@ import path from "path";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
 import useStore from "stores/useStore";
-
-import factory, { makeResponse } from "../../factory";
+import factory, { makeResponse } from "tests/factory";
 import {
   renderApp,
   renderObservationsStackNavigatorWithObservations
-} from "../../helpers/render";
-import { signIn, signOut } from "../../helpers/user";
+} from "tests/helpers/render";
+import { signIn, signOut } from "tests/helpers/user";
 
 const initialStoreState = useStore.getState( );
 

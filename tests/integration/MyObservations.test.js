@@ -13,10 +13,9 @@ import path from "path";
 import React from "react";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
-
-import factory, { makeResponse } from "../factory";
-import { renderAppWithComponent } from "../helpers/render";
-import { signIn, signOut } from "../helpers/user";
+import factory, { makeResponse } from "tests/factory";
+import { renderAppWithComponent } from "tests/helpers/render";
+import { signIn, signOut } from "tests/helpers/user";
 
 // This is a bit crazy, but this ensures this test uses its own in-memory
 // database and doesn't interfere with the single, default in-memory database

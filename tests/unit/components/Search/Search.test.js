@@ -1,8 +1,7 @@
 import { screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
-
-import { renderComponent } from "../../../helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 describe( "Search", () => {
   test( "should not have accessibility errors", async () => {

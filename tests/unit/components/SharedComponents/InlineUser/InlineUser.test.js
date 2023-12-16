@@ -2,8 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react-native";
 import { InlineUser } from "components/SharedComponents";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../../factory";
+import factory from "tests/factory";
 
 const mockNavigate = jest.fn( );
 jest.mock( "@react-navigation/native", ( ) => {

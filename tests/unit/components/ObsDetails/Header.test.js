@@ -3,9 +3,8 @@ import { screen } from "@testing-library/react-native";
 import Header from "components/ObsDetails/Header";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockTaxon = factory( "RemoteTaxon", {
   name: faker.person.firstName( ),

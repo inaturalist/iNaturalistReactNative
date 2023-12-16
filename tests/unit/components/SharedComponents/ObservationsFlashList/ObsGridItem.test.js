@@ -2,8 +2,7 @@ import { render, screen } from "@testing-library/react-native";
 import ObsGridItem from "components/SharedComponents/ObservationsFlashList/ObsGridItem";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../../factory";
+import factory from "tests/factory";
 
 describe( "ObsGridItem", () => {
   beforeAll( async () => {

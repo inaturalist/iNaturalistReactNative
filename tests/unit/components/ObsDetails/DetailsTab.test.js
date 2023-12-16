@@ -4,9 +4,8 @@ import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import { View } from "react-native";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
   __esModule: true,

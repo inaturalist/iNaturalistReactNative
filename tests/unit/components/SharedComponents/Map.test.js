@@ -2,8 +2,7 @@ import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import { Map } from "components/SharedComponents";
 import React from "react";
-
-import { renderComponent } from "../../../helpers/render";
+import { renderComponent } from "tests/helpers/render";
 
 describe( "Map", ( ) => {
   it( "should be accessible", ( ) => {

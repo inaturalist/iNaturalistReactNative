@@ -11,12 +11,13 @@ const useOfflineSuggestions = ( selectedPhotoUri: string, options: Object ): {
   loadingOfflineSuggestions: boolean
 } => {
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
-  const [loadingOfflineSuggestions, setLoadingOfflineSuggestions] = useState( true );
+  const [loadingOfflineSuggestions, setLoadingOfflineSuggestions] = useState( false );
 
   const { tryOfflineSuggestions } = options;
 
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
+      setLoadingOfflineSuggestions( true );
       try {
         const predictions = await predictImage( selectedPhotoUri );
         // using the same rank level for displaying predictions in AR Camera

@@ -4,9 +4,8 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
-
-import factory, { makeResponse } from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory, { makeResponse } from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 

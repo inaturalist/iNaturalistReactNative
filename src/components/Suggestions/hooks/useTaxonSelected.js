@@ -2,9 +2,10 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect } from "react";
-import Identification from "realmModels/Identification";
 import useStore from "stores/useStore";
 
+// TODO rename this, should be something to indicate that it handles
+// navigation
 const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -17,11 +18,6 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
   useEffect( ( ) => {
     if ( !selectedTaxon ) { return; }
 
-    const newIdentification = Identification.new( {
-      taxon: selectedTaxon,
-      body: comment
-    } );
-
     // checking for previous screen here rather than a synced/unsynced observation
     // because a user can arrive on Suggestions/TaxonSearch
     // in two different ways from ObsDetails -> they can land directly on the Suggestions
@@ -29,39 +25,31 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
     if ( lastScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation.uuid,
-        taxonSuggested: newIdentification.taxon,
+        // TODO refactor so we're not passing complex objects as params; all
+        // obs details really needs to know is the ID of the taxon
+        taxonSuggested: selectedTaxon,
         comment,
         vision
       } );
     } else {
       updateObservationKeys( {
         owners_identification_from_vision: vision,
-        taxon: newIdentification.taxon
+        taxon: selectedTaxon
       } );
+      if ( vision ) {
+        navigation.goBack( );
+      } else {
+        navigation.navigate( "ObsEdit" );
+      }
     }
   }, [
     comment,
-    currentObservation,
+    currentObservation.uuid,
     lastScreen,
     navigation,
     selectedTaxon,
     updateObservationKeys,
     vision
-  ] );
-
-  useEffect( ( ) => {
-    if ( !selectedTaxon ) { return; }
-    if ( currentObservation?.taxon?.id !== selectedTaxon.id ) { return; }
-    if ( vision ) {
-      navigation.goBack( );
-    } else {
-      navigation.navigate( "ObsEdit" );
-    }
-  }, [
-    currentObservation,
-    navigation,
-    vision,
-    selectedTaxon
   ] );
 };
 
