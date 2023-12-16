@@ -162,17 +162,12 @@ class Observation extends Realm.Object {
       timestamps._synced_at = null;
     }
 
-    const addTimestampsToEvidence = evidence => {
-      // right now there isn't a way to edit photos or sounds via ObsEdit
-      // so we only need to add timestamps on the first time a local observation is saved
-      if ( !existingObservation && evidence ) {
-        return evidence.map( record => ( {
-          ...timestamps,
-          ...record
-        } ) );
-      }
-      return evidence;
-    };
+    const addTimestampsToEvidence = evidence => ( evidence
+      ? evidence.map( record => ( {
+        ...record,
+        ...timestamps
+      } ) )
+      : evidence );
 
     const taxon = obs.taxon || null;
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );

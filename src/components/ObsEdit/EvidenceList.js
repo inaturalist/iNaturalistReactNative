@@ -10,21 +10,15 @@ import React, { useCallback, useState } from "react";
 import { ActivityIndicator } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
-import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
+import ObservationPhoto from "../../realmModels/ObservationPhoto";
 
 const { useRealm } = RealmContext;
 
 type Props = {
-  photos?: Array<{
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }>,
+  photos?: Array<Object>,
   handleAddEvidence?: Function,
   handleDragAndDrop: Function
 }
@@ -40,9 +34,9 @@ const EvidenceList = ( {
   const realm = useRealm( );
   const [tappedMediaIndex, setTappedMediaIndex] = useState( -1 );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
-  const photoUris = photos.map( photo => photo.url || photo.localFilePath );
+  const photoUris = photos.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
 
-  const renderPhoto = useCallback( ( { item: photo, getIndex, drag } ) => (
+  const renderPhoto = useCallback( ( { item: obsPhoto, getIndex, drag } ) => (
     <ScaleDecorator>
       <Pressable
         onLongPress={drag}
@@ -51,11 +45,11 @@ const EvidenceList = ( {
           setTappedMediaIndex( getIndex( ) );
         }}
         className={classnames( imageClass )}
-        testID={`EvidenceList.${photo.url || photo.localFilePath}`}
+        testID={`EvidenceList.${obsPhoto.photo?.url || obsPhoto.photo?.localFilePath}`}
       >
         <View className="rounded-lg overflow-hidden">
           <Image
-            source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
+            source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo ) }}
             testID="ObsEdit.photo"
             className="w-fit h-full flex items-center justify-center"
             accessibilityIgnoresInvertColors
@@ -100,7 +94,7 @@ const EvidenceList = ( {
         horizontal
         data={photos}
         renderItem={renderPhoto}
-        keyExtractor={photo => photo.url || photo.localFilePath}
+        keyExtractor={obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath}
         onDragEnd={handleDragAndDrop}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}

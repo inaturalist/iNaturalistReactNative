@@ -158,14 +158,18 @@ const EvidenceSectionContainer = ( {
   const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
 
   const handleDragAndDrop = ( { data } ) => {
-    data.forEach( ( obsPhoto, index ) => {
+    // Turn from Realm object to simple JS objects (so we can update the position)
+    const newObsPhotos = data.map( obsPhoto => obsPhoto.toJSON() );
+    newObsPhotos.forEach( ( obsPhoto, index ) => {
       obsPhoto.position = index;
     } );
 
     updateObservationKeys( {
-      observationPhotos: data
+      observationPhotos: newObsPhotos
     } );
-    const uris = data.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
+    const uris = newObsPhotos.map(
+      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+    );
     setPhotoEvidenceUris( uris );
   };
 
@@ -199,7 +203,7 @@ const EvidenceSectionContainer = ( {
       handleDragAndDrop={handleDragAndDrop}
       passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
-      photos={photos || []}
+      photos={currentObservation?.observationPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       onLocationPermissionGranted={( ) => {
