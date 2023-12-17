@@ -492,10 +492,6 @@
   "Share-location": "Share Location",
   "Sign-out": "Sign out",
   "Sign-Up": "Sign Up",
-  "SIMILAR-SPECIES-header": {
-    "comment": "Header for a section showing taxa similar to a single taxon",
-    "val": "SIMILAR SPECIES"
-  },
   "some-rights-reserved": {
     "comment": "license code",
     "val": "some rights reserved"
@@ -888,7 +884,6 @@
   "INATURALIST-ROLE": "INATURALIST { $role }",
   "Affiliation": "Affiliation: { $site }",
   "Monthly-Donor": "Monthly Donor",
-  "VIEW-SIMILAR-SPECIES": "VIEW SIMILAR SPECIES",
   "WIKIPEDIA": "WIKIPEDIA",
   "MY-OBSERVATIONS": {
     "comment": "Header for a section showing the viewer's observations",

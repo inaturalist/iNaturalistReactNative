@@ -745,9 +745,6 @@ Sign-out = Sign out
 
 Sign-Up = Sign Up
 
-# Header for a section showing taxa similar to a single taxon
-SIMILAR-SPECIES-header = SIMILAR SPECIES
-
 # license code
 some-rights-reserved = some rights reserved
 
@@ -1233,7 +1230,6 @@ INATURALIST-ROLE = INATURALIST {$role}
 Affiliation = Affiliation: {$site}
 Monthly-Donor = Monthly Donor
 
-VIEW-SIMILAR-SPECIES = VIEW SIMILAR SPECIES
 WIKIPEDIA = WIKIPEDIA
 
 # Header for a section showing the viewer's observations
