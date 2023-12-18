@@ -27,13 +27,7 @@ type Props = {
   onLocationPermissionDenied: Function,
   onLocationPermissionGranted: Function,
   passesEvidenceTest: Function,
-  photos: Array<{
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }>,
+  photos: Array<Object>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
   updateObservationKeys: Function,
