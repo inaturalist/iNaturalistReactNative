@@ -113,6 +113,7 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
   };
 
   const renderTaxon = useCallback( ( taxon, options ) => {
+    const id = taxon?.id || "";
     const isCurrentTaxon = options?.isCurrentTaxon;
     const isChild = options?.isChild;
     const {
@@ -127,13 +128,14 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
       <Pressable
         accessibilityRole="button"
         className="flex-row py-2 flex-wrap"
-        key={taxon?.id}
+        key={id}
         disabled={isCurrentTaxon}
-        onPress={( ) => navigation.navigate( "TaxonDetails", { id: taxon?.id } )}
+        onPress={( ) => navigation.navigate( "TaxonDetails", { id } )}
         accessibilityState={{
           disabled: isCurrentTaxon
         }}
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
+        testID={`TaxonomyRow.${id}`}
       >
         {isChild && (
           <View className="ml-2 mr-1">
