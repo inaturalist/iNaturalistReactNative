@@ -3,14 +3,10 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchTaxon } from "api/taxa";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import PlaceholderText from "components/PlaceholderText";
 import {
   BackButton,
-  Heading4,
-  HideView,
   INatIconButton,
-  ScrollViewWrapper,
-  Tabs
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import {
   Image,
@@ -35,16 +31,12 @@ const logger = log.extend( "TaxonDetails" );
 
 const { useRealm } = RealmContext;
 
-const ABOUT_TAB_ID = "ABOUT";
-const DATA_TAB_ID = "DATA";
-
 const TaxonDetails = ( ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id } = params;
   const { t } = useTranslation( );
-  const [currentTabId, setCurrentTabId] = useState( ABOUT_TAB_ID );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
   const realm = useRealm( );
@@ -64,21 +56,6 @@ const TaxonDetails = ( ): Node => {
     logger.error( `Failed to retrieve taxon ${id}: ${error}` );
   }
   const taxon = remoteTaxon || localTaxon;
-
-  const tabs = [
-    {
-      id: ABOUT_TAB_ID,
-      testID: "TaxonDetails.AboutTab",
-      onPress: () => setCurrentTabId( ABOUT_TAB_ID ),
-      text: t( "ABOUT" )
-    },
-    {
-      id: DATA_TAB_ID,
-      testID: "TaxonDetails.DataTab",
-      onPress: () => setCurrentTabId( DATA_TAB_ID ),
-      text: t( "DATA" )
-    }
-  ];
 
   const photos = compact(
     taxon?.taxonPhotos
@@ -144,22 +121,7 @@ const TaxonDetails = ( ): Node => {
           />
         </View>
       </View>
-      <Tabs tabs={tabs} activeId={currentTabId} />
-      <HideView show={currentTabId === ABOUT_TAB_ID}>
-        <About taxon={taxon} isLoading={isLoading} isError={isError} />
-      </HideView>
-      <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
-        <View className="m-3">
-          <Heading4>{ t( "MY-OBSERVATIONS" ) }</Heading4>
-          <PlaceholderText text="TODO" />
-          <Heading4>{ t( "GRAPHS" ) }</Heading4>
-          <PlaceholderText text="TODO" />
-          <Heading4>{ t( "TOP-OBSERVERS" ) }</Heading4>
-          <PlaceholderText text="TODO" />
-          <Heading4>{ t( "TOP-IDENTIFIERS" ) }</Heading4>
-          <PlaceholderText text="TODO" />
-        </View>
-      </HideView>
+      <About taxon={taxon} isLoading={isLoading} isError={isError} />
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
