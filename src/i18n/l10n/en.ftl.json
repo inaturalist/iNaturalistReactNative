@@ -1069,5 +1069,10 @@
   "Add-observations": {
     "comment": "Accessibility label for a button that starts the process of adding an\nobservation, e.g. the button in the tab bar",
     "val": "Add observations"
-  }
+  },
+  "Viewing-Offline-Suggestions": {
+    "comment": "Title for a notice informing the user that they are viewing offline\nidentification suggestions",
+    "val": "Viewing Offline Suggestions"
+  },
+  "Viewing-Offline-Suggestions-results-may-differ": "Results may differ from the online suggestions and images and common names may not display."
 }

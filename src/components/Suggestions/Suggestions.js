@@ -2,7 +2,11 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  Body1, Body3, Button, Heading4, TaxonResult,
+  Body1,
+  Body3,
+  Button,
+  Heading4,
+  TaxonResult,
   ViewWrapper
 } from "components/SharedComponents";
 import {
@@ -25,67 +29,50 @@ import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 
 type Props = {
   loadingSuggestions: boolean,
-  nearbySuggestions: Array<Object>,
+  suggestions: Array<Object>,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
   setSelectedPhotoUri: Function,
-  observers: Array<string>
+  observers: Array<string>,
+  topSuggestion: Object,
+  usingOfflineSuggestions: boolean
 };
+
+const Suggestion = ( { suggestion, onChosen } ) => (
+  <TaxonResult
+    key={suggestion.taxon.id}
+    taxon={suggestion.taxon}
+    handleCheckmarkPress={onChosen}
+    testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
+    confidence={suggestion?.score
+      ? convertOfflineScoreToConfidence( suggestion?.score )
+      : convertOnlineScoreToConfidence( suggestion.combined_score )}
+    activeColor="bg-inatGreen"
+    confidencePosition="text"
+    first
+  />
+);
 
 const Suggestions = ( {
   loadingSuggestions,
-  nearbySuggestions,
+  suggestions,
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
   setSelectedPhotoUri,
-  observers
+  observers,
+  topSuggestion,
+  usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
 
-  const renderItem = useCallback( ( { item: suggestion, index } ) => {
-    const renderResult = ( ) => (
-      <TaxonResult
-        key={suggestion.taxon.id}
-        taxon={suggestion.taxon}
-        handleCheckmarkPress={onTaxonChosen}
-        testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
-        confidence={suggestion?.score
-          ? convertOfflineScoreToConfidence( suggestion?.score )
-          : convertOnlineScoreToConfidence( suggestion.combined_score )}
-        activeColor="bg-inatGreen"
-        confidencePosition="text"
-        first
-      />
-    );
-    if ( index === 0 ) {
-      return (
-        <>
-          <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
-          <View className="bg-inatGreen/[.13]">
-            {renderResult( )}
-          </View>
-        </>
-      );
-    }
-    if ( index === 1 ) {
-      return (
-        <>
-          <Heading4 className="mt-6 mb-4 ml-4">
-            {suggestion?.score
-              ? t( "ALL-SUGGESTIONS" )
-              : t( "NEARBY-SUGGESTIONS" )}
-          </Heading4>
-          {renderResult( )}
-        </>
-      );
-    }
-    return renderResult( );
-  }, [onTaxonChosen, t] );
+  const renderItem = useCallback( ( { item: suggestion } ) => (
+    <Suggestion suggestion={suggestion} onChosen={onTaxonChosen} />
+  ), [onTaxonChosen] );
 
   const renderEmptyList = useCallback( ( ) => {
     if ( loadingSuggestions ) {
@@ -96,22 +83,15 @@ const Suggestions = ( {
       );
     }
 
-    if ( !nearbySuggestions || nearbySuggestions.length === 0 ) {
+    if ( !suggestions || suggestions.length === 0 ) {
       return (
-        <>
-          <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
-          <Body1 className="mx-10 text-center">
-            {t( "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo" )}
-          </Body1>
-          <Heading4 className="mt-6 mb-4 ml-4">{t( "NEARBY-SUGGESTIONS" )}</Heading4>
-          <Body1 className="mx-10 text-center">
-            {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
-          </Body1>
-        </>
+        <Body1 className="mt-10 px-10 text-center">
+          {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
+        </Body1>
       );
     }
     return null;
-  }, [loadingSuggestions, nearbySuggestions, t] );
+  }, [loadingSuggestions, suggestions, t] );
 
   const renderFooter = useCallback( ( ) => (
     <Attribution observers={observers} />
@@ -133,14 +113,48 @@ const Suggestions = ( {
           accessibilityLabel={t( "Search" )}
         />
       </View>
+      { usingOfflineSuggestions && (
+        <View className="bg-warningYellow px-8 py-5 mt-5">
+          <Heading4>{ t( "Viewing-Offline-Suggestions" ) }</Heading4>
+          <Body3>{ t( "Viewing-Offline-Suggestions-results-may-differ" ) }</Body3>
+        </View>
+      ) }
+      { topSuggestion && (
+        <>
+          <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
+          <View className="bg-inatGreen/[.13]">
+            <Suggestion suggestion={topSuggestion} onChosen={onTaxonChosen} />
+          </View>
+        </>
+      ) }
+      { suggestions?.length > 0 && (
+        <Heading4 className="mt-6 mb-4 ml-4">
+          {
+            suggestions[0]?.score
+              ? t( "ALL-SUGGESTIONS" )
+              : t( "NEARBY-SUGGESTIONS" )
+          }
+        </Heading4>
+      ) }
       <CommentBox />
     </>
-  ), [lastScreen, navigation, t, photoUris, selectedPhotoUri, setSelectedPhotoUri] );
+  ), [
+    lastScreen,
+    navigation,
+    t,
+    topSuggestion,
+    photoUris,
+    selectedPhotoUri,
+    setSelectedPhotoUri,
+    suggestions,
+    onTaxonChosen,
+    usingOfflineSuggestions
+  ] );
 
   return (
     <ViewWrapper testID="suggestions">
       <FlatList
-        data={nearbySuggestions}
+        data={suggestions}
         renderItem={renderItem}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}

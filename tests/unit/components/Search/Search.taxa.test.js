@@ -2,9 +2,8 @@ import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockedNavigate = jest.fn( );
 

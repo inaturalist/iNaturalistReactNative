@@ -4,9 +4,8 @@ import BottomButtons from "components/ObsEdit/BottomButtons";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   _synced_at: faker.date.past( )

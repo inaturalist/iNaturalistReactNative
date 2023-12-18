@@ -3,9 +3,8 @@ import ExploreContainer from "components/Explore/ExploreContainer";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import React from "react";
-
-import factory, { makeResponse } from "../factory";
-import { renderAppWithComponent } from "../helpers/render";
+import factory, { makeResponse } from "tests/factory";
+import { renderAppWithComponent } from "tests/helpers/render";
 
 const mockRemoteObservation = factory( "RemoteObservation", {
   taxon: factory.states( "genus" )( "RemoteTaxon" )
