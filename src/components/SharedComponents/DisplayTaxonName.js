@@ -96,7 +96,7 @@ const DisplayTaxonName = ( {
             <INatText
               // eslint-disable-next-line react/no-array-index-key
               key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
-              className={classNames( "italic", textClass() )}
+              className={classNames( "italic font-normal", textClass() )}
             >
               {text}
             </INatText>
