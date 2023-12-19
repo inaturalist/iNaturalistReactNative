@@ -51,8 +51,6 @@ const TaxonDetails = ( ): Node => {
     place_id: remoteUser?.place_id
   };
 
-  console.log( taxonFetchParams, "taxon fetch params" );
-
   // Note that we want to authenticate this to localize names, desc language, etc.
   const {
     data: remoteTaxon,
@@ -61,10 +59,7 @@ const TaxonDetails = ( ): Node => {
     error
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
-    optsWithAuth => fetchTaxon( id, taxonFetchParams, optsWithAuth ),
-    {
-      enabled: !!remoteUser
-    }
+    optsWithAuth => fetchTaxon( id, taxonFetchParams, optsWithAuth )
   );
   if ( error ) {
     logger.error( `Failed to retrieve taxon ${id}: ${error}` );
