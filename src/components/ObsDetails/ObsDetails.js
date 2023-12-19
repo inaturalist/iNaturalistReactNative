@@ -16,8 +16,9 @@ import {
 
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
+import CommunityTaxon from "./CommunityTaxon";
 import DetailsTab from "./DetailsTab/DetailsTab";
-import Header from "./Header";
+import PhotoDisplayContainer from "./PhotoDisplayContainer";
 
 type Props = {
   navToSuggestions: Function,
@@ -80,11 +81,15 @@ const ObsDetails = ( {
         scrollEventThrottle={16}
         className="bg-white"
       >
-        <Header
+        <PhotoDisplayContainer
           observation={observation}
           refetchRemoteObservation={refetchRemoteObservation}
           isOnline={isOnline}
           belongsToCurrentUser={belongsToCurrentUser}
+        />
+        <CommunityTaxon
+          observation={observation}
+          isOnline={isOnline}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
