@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
-import Header from "components/ObsDetails/Header";
+import CommunityTaxon from "components/ObsDetails/CommunityTaxon";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
@@ -12,14 +12,14 @@ const mockTaxon = factory( "RemoteTaxon", {
   preferred_common_name: faker.person.fullName( )
 } );
 
-describe( "Header", () => {
+describe( "CommunityTaxon", () => {
   beforeAll( async ( ) => {
     await initI18next( );
   } );
 
   it( "displays unknown text if no taxon", async ( ) => {
     renderComponent(
-      <Header
+      <CommunityTaxon
         observation={{
           taxon: null
         }}
@@ -32,7 +32,7 @@ describe( "Header", () => {
 
   it( "displays taxon", async ( ) => {
     renderComponent(
-      <Header
+      <CommunityTaxon
         observation={{
           taxon: mockTaxon
         }}
