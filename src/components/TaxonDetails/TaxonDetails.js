@@ -42,6 +42,10 @@ const TaxonDetails = ( ): Node => {
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
 
+  const taxonFetchParams = {
+    place_id: 1
+  };
+
   // Note that we want to authenticate this to localize names, desc language, etc.
   const {
     data: remoteTaxon,
@@ -50,7 +54,7 @@ const TaxonDetails = ( ): Node => {
     error
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
-    optsWithAuth => fetchTaxon( id, {}, optsWithAuth )
+    optsWithAuth => fetchTaxon( id, taxonFetchParams, optsWithAuth )
   );
   if ( error ) {
     logger.error( `Failed to retrieve taxon ${id}: ${error}` );

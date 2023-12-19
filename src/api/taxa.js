@@ -22,6 +22,25 @@ const FIELDS = {
   default_photo: {
     url: true
   },
+  establishment_means: {
+    establishment_means: true,
+    id: true,
+    place: {
+      id: true,
+      display_name: true
+    }
+  },
+  listed_taxa: {
+    establishment_means: true,
+    id: true,
+    list: {
+      title: true
+      // id: true
+    },
+    place: {
+      id: true
+    }
+  },
   name: true,
   preferred_common_name: true,
   rank: true,
