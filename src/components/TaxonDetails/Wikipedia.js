@@ -1,11 +1,9 @@
 // @flow
 
 import {
-  ActivityIndicator,
   Body2,
   Heading4
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import * as React from "react";
 import {
   Linking,
@@ -13,21 +11,17 @@ import {
   useWindowDimensions
 } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
-import { useTranslation } from "sharedHooks";
-
-import Taxonomy from "./Taxonomy";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  taxon?: Object,
-  isLoading: boolean,
-  isError: boolean
+  taxon: Object
 }
 
-const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
+const Wikipedia = ( { taxon }: Props ): React.Node => {
   const { width } = useWindowDimensions();
   const { t } = useTranslation();
 
-  const openWikipedia = () => {
+  const openWikipedia = ( ) => {
     if ( taxon?.wikipedia_url ) {
       Linking.openURL( taxon.wikipedia_url );
     }
@@ -42,23 +36,10 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
   };
   const fonts = ["Whitney-Light", "Whitney-Light-Pro", ...defaultSystemFonts];
 
-  if ( isLoading ) {
-    return <View className="m-3"><ActivityIndicator /></View>;
-  }
-
-  if ( isError || !taxon ) {
-    return (
-      <View className="m-3">
-        <Body2>{t( "Error-Could-Not-Fetch-Taxon" )}</Body2>
-      </View>
-    );
-  }
-
   return (
-    <View className="mx-3">
-      <Heading4 className="my-3">{t( "STATUS-header" )}</Heading4>
-      <Heading4 className="my-3">{t( "WIKIPEDIA" )}</Heading4>
-      {taxon?.wikipedia_summary && (
+    <>
+      <Heading4 className="mb-3">{t( "WIKIPEDIA" )}</Heading4>
+      {taxon.wikipedia_summary && (
         <HTML
           contentWidth={width}
           source={{ html: taxon.wikipedia_summary }}
@@ -77,9 +58,8 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
 
         </Body2>
       ) }
-      <Taxonomy taxon={taxon} />
-    </View>
+    </>
   );
 };
 
-export default About;
+export default Wikipedia;

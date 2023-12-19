@@ -4,7 +4,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchTaxon } from "api/taxa";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
+  ActivityIndicator,
   BackButton,
+  Body2,
   INatIconButton,
   ScrollViewWrapper
 } from "components/SharedComponents";
@@ -21,11 +23,13 @@ import React, { useCallback, useState } from "react";
 import { useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
-import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 
-import About from "./About";
+import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
+import Taxonomy from "./Taxonomy";
+import Wikipedia from "./Wikipedia";
 
 const logger = log.extend( "TaxonDetails" );
 
@@ -38,9 +42,14 @@ const TaxonDetails = ( ): Node => {
   const { id } = params;
   const { t } = useTranslation( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const { remoteUser } = useUserMe( );
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
+
+  const taxonFetchParams = {
+    place_id: remoteUser?.place_id
+  };
 
   // Note that we want to authenticate this to localize names, desc language, etc.
   const {
@@ -50,7 +59,7 @@ const TaxonDetails = ( ): Node => {
     error
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
-    optsWithAuth => fetchTaxon( id, {}, optsWithAuth )
+    optsWithAuth => fetchTaxon( id, taxonFetchParams, optsWithAuth )
   );
   if ( error ) {
     logger.error( `Failed to retrieve taxon ${id}: ${error}` );
@@ -69,6 +78,28 @@ const TaxonDetails = ( ): Node => {
       onClose={onClose}
     />
   ), [taxon] );
+
+  const displayTaxonDetails = ( ) => {
+    if ( isLoading ) {
+      return <View className="m-3"><ActivityIndicator /></View>;
+    }
+
+    if ( isError || !taxon ) {
+      return (
+        <View className="m-3">
+          <Body2>{t( "Error-Could-Not-Fetch-Taxon" )}</Body2>
+        </View>
+      );
+    }
+
+    return (
+      <View className="mx-3">
+        <EstablishmentMeans taxon={taxon} />
+        <Wikipedia taxon={taxon} />
+        <Taxonomy taxon={taxon} />
+      </View>
+    );
+  };
 
   return (
     <ScrollViewWrapper testID={`TaxonDetails.${taxon?.id}`}>
@@ -121,7 +152,7 @@ const TaxonDetails = ( ): Node => {
           />
         </View>
       </View>
-      <About taxon={taxon} isLoading={isLoading} isError={isError} />
+      {displayTaxonDetails( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}

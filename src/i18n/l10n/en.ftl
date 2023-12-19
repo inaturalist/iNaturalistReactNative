@@ -1432,3 +1432,8 @@ Viewing-Offline-Suggestions = Viewing Offline Suggestions
 
 Viewing-Offline-Suggestions-results-may-differ =
     Results may differ from the online suggestions and images and common names may not display.
+
+Endemic-to = Endemic to { $displayName }
+Introduced-to = Introduced to { $displayName }
+Native-to = Native to { $displayName }
+Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
