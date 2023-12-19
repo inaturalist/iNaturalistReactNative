@@ -124,9 +124,11 @@ const UserProfile = ( ): Node => {
         <Body2 className="mb-5">
           {t( "Last-Active-date", { date: formatUserProfileDate( user.updated_at, t ) } )}
         </Body2>
-        <Body2 className="mb-5">
-          {t( "Affiliation", { site: user.site.name } )}
-        </Body2>
+        {user.site && (
+          <Body2 className="mb-5">
+            {t( "Affiliation", { site: user.site.name } )}
+          </Body2>
+        )}
         {user.monthly_supporter && (
           <Body2 className="mb-5">
             {t( "Monthly-Donor" )}
