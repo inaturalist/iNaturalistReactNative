@@ -57,9 +57,7 @@ const queryClient = new QueryClient( {
 } );
 
 const errorHandler = ( error: Error, stackTrace: string ) => {
-  if ( error ) {
-    logger.error( `ErrorBoundary: ${error.toString( )} ${stackTrace}` );
-  }
+  logger.error( `ErrorBoundary: ${error.toString( )} ${stackTrace}` );
 };
 
 const AppWithProviders = ( ) => (
