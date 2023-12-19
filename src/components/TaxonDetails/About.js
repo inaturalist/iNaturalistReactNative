@@ -3,7 +3,6 @@
 import {
   ActivityIndicator,
   Body2,
-  Button,
   Heading4
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -79,13 +78,6 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
         </Body2>
       ) }
       <Taxonomy taxon={taxon} />
-      <Heading4 className="my-3">
-        {t( "SIMILAR-SPECIES-header" )}
-      </Heading4>
-      <Button
-        className="mb-6"
-        text={t( "VIEW-SIMILAR-SPECIES" )}
-      />
     </View>
   );
 };
