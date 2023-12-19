@@ -2,8 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react-native";
 import Taxonomy from "components/TaxonDetails/Taxonomy";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
+import factory from "tests/factory";
 
 const capitalizeFirstLetter = s => s.charAt( 0 ).toUpperCase( ) + s.slice( 1 );
 
