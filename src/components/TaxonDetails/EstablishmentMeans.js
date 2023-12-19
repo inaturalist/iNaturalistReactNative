@@ -24,9 +24,6 @@ const EstablishmentMeans = ( { taxon }: Props ): React.Node => {
 
   const establishmentMeans = taxon?.establishment_means?.establishment_means;
 
-  console.log( taxon.establishment_means, "establishment means" );
-  console.log( taxon.listed_taxa, "listed taxa" );
-
   const displayEstablishmentMeansText = ( ) => {
     const displayName = taxon.establishment_means.place.display_name;
     if ( establishmentMeans === "native" ) {

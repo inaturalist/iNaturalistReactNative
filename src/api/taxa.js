@@ -7,7 +7,8 @@ import handleError from "./error";
 const ANCESTOR_FIELDS = {
   name: true,
   preferred_common_name: true,
-  rank: true
+  rank: true,
+  rank_level: true
 };
 
 const PHOTO_FIELDS = {
@@ -19,6 +20,7 @@ const PHOTO_FIELDS = {
 
 const FIELDS = {
   ancestors: ANCESTOR_FIELDS,
+  children: ANCESTOR_FIELDS,
   default_photo: {
     url: true
   },

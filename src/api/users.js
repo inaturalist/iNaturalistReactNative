@@ -15,23 +15,24 @@ const MEMBER_PROJECT_PARAMS = {
 };
 
 const REMOTE_USER_FIELDS = {
-  name: true,
-  login: true,
-  icon_url: true,
   created_at: true,
-  roles: true,
   description: true,
-  updated_at: true,
-  species_count: true,
-  observations_count: true,
+  icon_url: true,
+  id: true,
   identifications_count: true,
   journal_posts_count: true,
+  locale: true,
+  login: true,
+  monthly_supporter: true,
+  name: true,
+  observations_count: true,
+  place_id: true,
+  roles: true,
   site: {
     name: true
   },
-  locale: true,
-  id: true,
-  monthly_supporter: true
+  species_count: true,
+  updated_at: true
 };
 
 const REMOTE_USER_PARAMS = {

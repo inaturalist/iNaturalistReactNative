@@ -12,20 +12,14 @@ import {
   useTranslation
 } from "sharedHooks";
 
-import PhotoDisplayContainer from "./PhotoDisplayContainer";
-
 type Props = {
   observation: Object,
-  refetchRemoteObservation: Function,
   isOnline: boolean,
-  belongsToCurrentUser: boolean
 }
 
-const Header = ( {
+const CommunityTaxon = ( {
   observation,
-  refetchRemoteObservation,
-  isOnline,
-  belongsToCurrentUser
+  isOnline
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -52,12 +46,6 @@ const Header = ( {
 
   return (
     <>
-      <PhotoDisplayContainer
-        observation={observation}
-        refetchRemoteObservation={refetchRemoteObservation}
-        isOnline={isOnline}
-        belongsToCurrentUser={belongsToCurrentUser}
-      />
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
         <InlineUser user={observation?.user} isOnline={isOnline} />
         <DateDisplay
@@ -66,13 +54,17 @@ const Header = ( {
           }
         />
       </View>
-      <View className="flex-row my-[11px] justify-between mx-3">
-        {showTaxon()}
-        <ObsStatus layout="vertical" observation={observation} />
+      <View className="flex-row my-[11px] mx-3">
+        <View className="grow">
+          {showTaxon()}
+        </View>
+        <View>
+          <ObsStatus layout="vertical" observation={observation} />
+        </View>
       </View>
       <ObservationLocation observation={observation} classNameMargin="ml-3 mb-2" />
     </>
   );
 };
 
-export default Header;
+export default CommunityTaxon;
