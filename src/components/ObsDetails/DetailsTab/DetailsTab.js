@@ -223,7 +223,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
               observation: {
                 date: observation.observed_on,
                 location: [observation.latitude, observation.longitude],
-                evidence: [observation.observationPhotos, observation.observationSounds],
+                evidence: [observation.observation_photos, observation.sounds],
                 taxon: {
                   id: observation.taxon.id,
                   rank_level: observation.taxon.rank_level

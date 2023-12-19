@@ -36,6 +36,7 @@ class Observation extends Realm.Object {
     observed_on: true,
     place_guess: true,
     quality_grade: true,
+    sounds: true,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
     user: User && User.USER_FIELDS,
