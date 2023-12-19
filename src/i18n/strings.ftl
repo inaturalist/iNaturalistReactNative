@@ -854,6 +854,8 @@ Username = Username
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 
+VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
+
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
 View-in-browser = View in Browser

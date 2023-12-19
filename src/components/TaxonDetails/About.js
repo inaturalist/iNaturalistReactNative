@@ -13,7 +13,9 @@ import {
   useWindowDimensions
 } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
+
+import Taxonomy from "./Taxonomy";
 
 type Props = {
   taxon?: Object,
@@ -24,37 +26,6 @@ type Props = {
 const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
   const { width } = useWindowDimensions();
   const { t } = useTranslation();
-
-  const displayTaxonomyList = React.useMemo( () => {
-    if ( !taxon || taxon.ancestors?.length === 0 ) {
-      return <View />;
-    }
-    return taxon.ancestors?.map( ( ancestor, i ) => {
-      const currentTaxon = `${taxon.preferred_common_name} (${taxon.name})`;
-      // TODO: make sure this design accounts for undefined common names
-      const formattedAncestor = ancestor.preferred_common_name
-        ? `${ancestor.preferred_common_name} (${ancestor.rank} ${ancestor.name})`
-        : `(${ancestor.rank} ${ancestor.name})`;
-      const displayAncestor = (
-        <Body2>{formattedAncestor}</Body2>
-      );
-      const displayTaxon = (
-        <Body2>{currentTaxon}</Body2>
-      );
-
-      const lastAncestor = i === taxon.ancestors.length - 1;
-
-      return (
-        <View key={lastAncestor
-          ? taxon.id
-          : ancestor.id}
-        >
-          {displayAncestor}
-          {lastAncestor && displayTaxon}
-        </View>
-      );
-    } );
-  }, [taxon] );
 
   const openWikipedia = () => {
     if ( taxon?.wikipedia_url ) {
@@ -106,10 +77,7 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
 
         </Body2>
       ) }
-      <Heading4 className="my-3">
-        {t( "TAXONOMY-header" )}
-      </Heading4>
-      {displayTaxonomyList}
+      <Taxonomy taxon={taxon} />
     </View>
   );
 };
