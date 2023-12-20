@@ -545,6 +545,8 @@ No-account-found = No account found with that email
 
 No-Location = No Location
 
+No-Media = No Media
+
 No-model-found = No model found
 
 none = none
@@ -609,6 +611,8 @@ PASSWORD = PASSWORD
 Paused = Paused
 
 Photo-Licensing = Photo Licensing
+
+Photos = Photos
 
 Photos-you-take-will-appear-here = Photos you take will appear here
 
@@ -820,6 +824,8 @@ Sort-By = Sort By
 Sort-by = Sort by
 
 SORT-BY = SORT BY
+
+Sounds = Sounds
 
 Spam = Spam
 

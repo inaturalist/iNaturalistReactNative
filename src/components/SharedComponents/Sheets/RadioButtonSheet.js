@@ -18,27 +18,30 @@ type Props = {
   selectedValue?: any
 }
 
-const RadioButtonSheet = ( {
-  handleClose,
-  confirm,
-  headerText,
-  radioValues,
-  selectedValue = "none"
-}: Props ): Node => {
-  const theme = useTheme( );
-  const { t } = useTranslation( );
-  const [checked, setChecked] = useState( selectedValue );
+type RowProps = {
+  keySubstring: string,
+  value: string,
+  checked: boolean,
+  onPress: Function,
+  label: string,
+  description: ?string
+}
 
-  const radioButtonRow = radioRow => (
-    <RadioButton.Group key={`RadioButtonSheet-row-${radioRow}`}>
+// TODO: this is proably better in a standalone component
+export const RadioButtonRow = ( {
+  keySubstring, value, checked, onPress, label, description
+}: RowProps ): Node => {
+  const theme = useTheme( );
+  return (
+    <RadioButton.Group key={`RadioButtonSheet-row-${keySubstring}`}>
       <RadioButton.Item
-        value={radioValues[radioRow]}
-        status={( checked === radioValues[radioRow].value )
+        value={value}
+        status={checked
           ? "checked"
           : "unchecked"}
-        onPress={( ) => setChecked( radioValues[radioRow].value )}
+        onPress={onPress}
         mode="android"
-        label={radioValues[radioRow].label}
+        label={label}
         position="leading"
         // eslint-disable-next-line react-native/no-inline-styles
         labelStyle={{
@@ -54,8 +57,30 @@ const RadioButtonSheet = ( {
         }}
         className="p-0"
       />
-      <List2 className="ml-[37px] mr-[33px] py-1">{radioValues[radioRow].text}</List2>
+      {description && <List2 className="ml-[37px] mr-[33px] py-1">{description}</List2>}
     </RadioButton.Group>
+  );
+};
+
+const RadioButtonSheet = ( {
+  handleClose,
+  confirm,
+  headerText,
+  radioValues,
+  selectedValue = "none"
+}: Props ): Node => {
+  const { t } = useTranslation( );
+  const [checked, setChecked] = useState( selectedValue );
+
+  const radioButtonRow = radioRow => (
+    <RadioButtonRow
+      keySubstring={radioRow}
+      value={radioValues[radioRow]}
+      checked={checked === radioValues[radioRow].value}
+      onPress={() => setChecked( radioValues[radioRow].value )}
+      label={radioValues[radioRow].label}
+      description={radioValues[radioRow].text}
+    />
   );
 
   return (

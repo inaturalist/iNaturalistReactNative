@@ -329,6 +329,7 @@
     "val": "No account found with that email"
   },
   "No-Location": "No Location",
+  "No-Media": "No Media",
   "No-model-found": "No model found",
   "none": "none",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
@@ -375,6 +376,7 @@
   "PASSWORD": "PASSWORD",
   "Paused": "Paused",
   "Photo-Licensing": "Photo Licensing",
+  "Photos": "Photos",
   "Photos-you-take-will-appear-here": "Photos you take will appear here",
   "Plants": "Plants",
   "Playing-Sound": {
@@ -538,6 +540,7 @@
   "Sort-By": "Sort By",
   "Sort-by": "Sort by",
   "SORT-BY": "SORT BY",
+  "Sounds": "Sounds",
   "Spam": "Spam",
   "Spam-Examples": "Commercial solicitation, links to nowhere, etc.",
   "SPECIES": "SPECIES",
