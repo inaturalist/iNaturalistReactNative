@@ -275,6 +275,57 @@ const FilterModal = ( {
     }
   };
 
+  const monthValues = {
+    1: {
+      label: t( "January" ),
+      value: 1
+    },
+    2: {
+      label: t( "February" ),
+      value: 2
+    },
+    3: {
+      label: t( "March" ),
+      value: 3
+    },
+    4: {
+      label: t( "April" ),
+      value: 4
+    },
+    5: {
+      label: t( "May" ),
+      value: 5
+    },
+    6: {
+      label: t( "June" ),
+      value: 6
+    },
+    7: {
+      label: t( "July" ),
+      value: 7
+    },
+    8: {
+      label: t( "August" ),
+      value: 8
+    },
+    9: {
+      label: t( "September" ),
+      value: 9
+    },
+    10: {
+      label: t( "October" ),
+      value: 10
+    },
+    11: {
+      label: t( "November" ),
+      value: 11
+    },
+    12: {
+      label: t( "December" ),
+      value: 12
+    }
+  };
+
   const updateObservedExact = date => {
     updateDateObserved(
       dateObservedValues.exactDate.value,
