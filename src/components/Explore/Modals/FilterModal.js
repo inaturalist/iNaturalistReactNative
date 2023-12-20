@@ -17,6 +17,7 @@ import {
   StickyToolbar
 } from "components/SharedComponents";
 import ProjectListItem from "components/SharedComponents/ProjectListItem";
+import { RadioButtonRow } from "components/SharedComponents/Sheets/RadioButtonSheet";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -276,6 +277,7 @@ const FilterModal = ( {
     }
   };
 
+  // TODO: use this from i18n or moment ?
   const monthValues = {
     1: {
       label: t( "January" ),
@@ -324,6 +326,25 @@ const FilterModal = ( {
     12: {
       label: t( "December" ),
       value: 12
+    }
+  };
+
+  const mediaValues = {
+    all: {
+      label: t( "All" ),
+      value: "all"
+    },
+    photos: {
+      label: t( "Photos" ),
+      value: "photos"
+    },
+    sounds: {
+      label: t( "Sounds" ),
+      value: "sounds"
+    },
+    noMedia: {
+      label: t( "No-Media" ),
+      value: "noMedia"
     }
   };
 
@@ -708,7 +729,20 @@ const FilterModal = ( {
             />
           )}
         </View>
+
+        {/* Media section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "MEDIA" )}</Heading4>
+          {Object.keys( mediaValues ).map( mediaKey => (
+            <RadioButtonRow
+              keySubstring={mediaKey}
+              value={mediaValues[mediaKey]}
+              label={mediaValues[mediaKey].label}
+            />
+          ) )}
+        </View>
       </ScrollView>
+      <Body3 className="text-center mb-5">{t( "TODO: remove this" )}</Body3>
       <StickyToolbar>
         <View className="flex-1 flex-row items-center">
           <INatIconButton
