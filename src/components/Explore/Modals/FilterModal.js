@@ -275,7 +275,7 @@ const FilterModal = ( {
     }
   };
 
-  const updateObservedDate = date => {
+  const updateObservedExact = date => {
     updateDateObserved(
       dateObservedValues.exactDate.value,
       date.toISOString().split( "T" )[0]
@@ -573,7 +573,7 @@ const FilterModal = ( {
               <DateTimePicker
                 isDateTimePickerVisible={openSheet === OBSERVED_EXACT}
                 toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateObservedDate( date )}
+                onDatePicked={date => updateObservedExact( date )}
               />
             </View>
           )}
