@@ -468,7 +468,7 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateDateObserved = ( newDateObserved, d1, d2 ) => {
+  const updateDateObserved = ( newDateObserved, d1, newMonths ) => {
     if ( newDateObserved === ALL ) {
       dispatch( {
         type: "SET_DATE_OBSERVED_ALL"
@@ -480,7 +480,8 @@ const ExploreContainer = ( ): Node => {
       } );
     } else if ( newDateObserved === MONTHS ) {
       dispatch( {
-        type: "SET_DATE_OBSERVED_MONTHS"
+        type: "SET_DATE_OBSERVED_MONTHS",
+        month: newMonths || months
       } );
     }
   };
