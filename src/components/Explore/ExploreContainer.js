@@ -29,6 +29,8 @@ const EXACT_DATE = "exactDate";
 const MONTHS = "months";
 
 const today = new Date( ).toISOString( ).split( "T" )[0];
+// Array with the numbers from 1 to 12
+const months = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
 const calculatedFilters = {
   user: undefined,
   project: undefined,
@@ -47,8 +49,9 @@ const defaultFilters = {
   sortBy: DATE_UPLOADED_NEWEST,
   user_id: undefined,
   project_id: undefined,
-  observed_on: today,
-  created_on: today
+  observed_on: undefined,
+  created_on: undefined,
+  month: undefined
 };
 
 const initialState: {
@@ -80,9 +83,10 @@ const initialState: {
     hrank: ?string,
     lrank: ?string,
     dateObserved: string,
-    observed_on: string,
+    observed_on: ?string,
+    month: ?number[],
     dateUploaded: string,
-    created_on: string,
+    created_on: ?string,
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -270,6 +274,8 @@ const reducer = ( state, action ) => {
         exploreParams: {
           ...state.exploreParams,
           dateObserved: ALL,
+          observed_on: null,
+          month: null
         }
       };
     case "SET_DATE_OBSERVED_EXACT":
@@ -277,8 +283,9 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
-          observed_on: action.observed_on
           dateObserved: EXACT_DATE,
+          observed_on: action.observed_on,
+          month: null
         }
       };
     case "SET_DATE_OBSERVED_MONTHS":
@@ -287,6 +294,8 @@ const reducer = ( state, action ) => {
         exploreParams: {
           ...state.exploreParams,
           dateObserved: MONTHS,
+          observed_on: null,
+          month: action.month
         }
       };
     case "SET_DATE_UPLOADED_ALL":
@@ -295,6 +304,7 @@ const reducer = ( state, action ) => {
         exploreParams: {
           ...state.exploreParams,
           dateUploaded: ALL,
+          created_on: null
         }
       };
     case "SET_DATE_UPLOADED_EXACT":
