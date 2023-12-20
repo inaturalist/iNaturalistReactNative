@@ -77,6 +77,7 @@ const FilterModal = ( {
     dateObserved,
     // eslint-disable-next-line camelcase
     observed_on,
+    month,
     dateUploaded,
     // eslint-disable-next-line camelcase
     created_on
@@ -330,6 +331,17 @@ const FilterModal = ( {
     updateDateObserved(
       dateObservedValues.exactDate.value,
       date.toISOString().split( "T" )[0]
+    );
+  };
+
+  const updateObservedMonths = monthInteger => {
+    const newMonths = month.includes( monthInteger )
+      ? month.filter( m => m !== monthInteger )
+      : [...month, monthInteger];
+    updateDateObserved(
+      dateObservedValues.months.value,
+      null,
+      newMonths
     );
   };
 
@@ -628,10 +640,16 @@ const FilterModal = ( {
               />
             </View>
           )}
-          {dateObserved === dateObservedValues.months.value && (
-            // TODO: make this section
-            <Body1 className="mb-5">{t( "Exact-Date" )}</Body1>
-          )}
+          {dateObserved === dateObservedValues.months.value
+            && Object.keys( monthValues ).map( monthKey => (
+              <View className="flex-row items-center mb-5">
+                <Checkbox
+                  text={monthValues[monthKey].label}
+                  isChecked={month.includes( monthValues[monthKey].value )}
+                  onPress={() => updateObservedMonths( monthValues[monthKey].value )}
+                />
+              </View>
+            ) )}
           {openSheet === DATE_OBSERVED && (
             <RadioButtonSheet
               headerText={t( "DATE-OBSERVED" )}
