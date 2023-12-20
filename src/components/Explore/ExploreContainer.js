@@ -24,9 +24,9 @@ const ASC = "asc";
 
 const DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST";
 
-const all = "all";
-const exactDate = "exactDate";
-const months = "months";
+const ALL = "all";
+const EXACT_DATE = "exactDate";
+const MONTHS = "months";
 
 const today = new Date( ).toISOString( ).split( "T" )[0];
 const calculatedFilters = {
@@ -37,8 +37,8 @@ const calculatedFilters = {
   casual: false,
   hrank: undefined,
   lrank: undefined,
-  dateObserved: all,
-  dateUploaded: all
+  dateObserved: ALL,
+  dateUploaded: ALL
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -269,7 +269,7 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
-          dateObserved: all
+          dateObserved: ALL,
         }
       };
     case "SET_DATE_OBSERVED_EXACT":
@@ -277,8 +277,8 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
-          dateObserved: exactDate,
           observed_on: action.observed_on
+          dateObserved: EXACT_DATE,
         }
       };
     case "SET_DATE_OBSERVED_MONTHS":
@@ -286,7 +286,7 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
-          dateObserved: months
+          dateObserved: MONTHS,
         }
       };
     case "SET_DATE_UPLOADED_ALL":
@@ -294,7 +294,7 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
-          dateUploaded: all
+          dateUploaded: ALL,
         }
       };
     case "SET_DATE_UPLOADED_EXACT":
@@ -302,7 +302,7 @@ const reducer = ( state, action ) => {
         ...state,
         exploreParams: {
           ...state.exploreParams,
-          dateUploaded: exactDate,
+          dateUploaded: EXACT_DATE,
           created_on: action.created_on
         }
       };
@@ -459,16 +459,16 @@ const ExploreContainer = ( ): Node => {
   };
 
   const updateDateObserved = ( newDateObserved, d1, d2 ) => {
-    if ( newDateObserved === all ) {
+    if ( newDateObserved === ALL ) {
       dispatch( {
         type: "SET_DATE_OBSERVED_ALL"
       } );
-    } else if ( newDateObserved === exactDate ) {
+    } else if ( newDateObserved === EXACT_DATE ) {
       dispatch( {
         type: "SET_DATE_OBSERVED_EXACT",
         observed_on: d1 || today
       } );
-    } else if ( newDateObserved === months ) {
+    } else if ( newDateObserved === MONTHS ) {
       dispatch( {
         type: "SET_DATE_OBSERVED_MONTHS"
       } );
@@ -476,11 +476,11 @@ const ExploreContainer = ( ): Node => {
   };
 
   const updateDateUploaded = ( newDateObserved, d1 ) => {
-    if ( newDateObserved === all ) {
+    if ( newDateObserved === ALL ) {
       dispatch( {
         type: "SET_DATE_UPLOADED_ALL"
       } );
-    } else if ( newDateObserved === exactDate ) {
+    } else if ( newDateObserved === EXACT_DATE ) {
       dispatch( {
         type: "SET_DATE_UPLOADED_EXACT",
         created_on: d1 || today
