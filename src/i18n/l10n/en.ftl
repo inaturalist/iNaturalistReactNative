@@ -322,6 +322,8 @@ EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
 
 Email-Notifications = Email Notifications
 
+Endemic = Endemic
+
 Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload
 
 Error-Couldnt-Upload-Photo = Error: Couldn't Upload Photo
@@ -557,6 +559,8 @@ No-photos-found = No photos found. If this is your first time opening the app an
 
 # license code
 no-rights-reserved-cc0-cc0 = no rights reserved (CC0) (CC0)
+
+No-Status = No Status
 
 # Header for observation description on observation detail
 NOTES = NOTES
