@@ -44,7 +44,11 @@ const calculatedFilters = {
   lrank: undefined,
   dateObserved: ALL,
   dateUploaded: ALL,
-  media: ALL
+  media: ALL,
+  introduced: true,
+  native: true,
+  endemic: true,
+  noStatus: true
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -92,6 +96,10 @@ const initialState: {
     dateUploaded: string,
     created_on: ?string,
     media: string,
+    introduced: boolean,
+    native: boolean,
+    endemic: boolean,
+    noStatus: boolean
   },
   exploreView: string,
   showFiltersModal: boolean,

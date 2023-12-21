@@ -84,7 +84,11 @@ const FilterModal = ( {
     dateUploaded,
     // eslint-disable-next-line camelcase
     created_on,
-    media
+    media,
+    introduced,
+    native,
+    endemic,
+    noStatus
   } = exploreFilters;
 
   const NONE = "NONE";
@@ -746,10 +750,22 @@ const FilterModal = ( {
         {/* Establishment Means section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
-          <Checkbox text={t( "Introduced" )} />
-          <Checkbox text={t( "Native" )} />
-          <Checkbox text={t( "Endemic" )} />
-          <Checkbox text={t( "No-Status" )} />
+          <Checkbox
+            isChecked={introduced}
+            text={t( "Introduced" )}
+          />
+          <Checkbox
+            isChecked={native}
+            text={t( "Native" )}
+          />
+          <Checkbox
+            isChecked={endemic}
+            text={t( "Endemic" )}
+          />
+          <Checkbox
+            isChecked={noStatus}
+            text={t( "No-Status" )}
+          />
         </View>
       </ScrollView>
       <Body3 className="text-center mb-10">{t( "TODO: remove this" )}</Body3>
