@@ -742,6 +742,11 @@ const FilterModal = ( {
             />
           ) )}
         </View>
+
+        {/* Establishment Means section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
+        </View>
       </ScrollView>
       <Body3 className="text-center mb-10">{t( "TODO: remove this" )}</Body3>
       <StickyToolbar>
