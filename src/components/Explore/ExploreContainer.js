@@ -337,7 +337,30 @@ const reducer = ( state, action ) => {
           media: action.media
         }
       };
-
+    case "TOGGLE_NATIVE":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          native: !state.exploreParams.native
+        }
+      };
+    case "TOGGLE_ENDEMIC":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          endemic: !state.exploreParams.endemic
+        }
+      };
+    case "TOGGLE_INTRODUCED":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          introduced: !state.exploreParams.introduced
+        }
+      };
     default:
       throw new Error();
   }
@@ -527,6 +550,24 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
+  const updateNative = () => {
+    dispatch( {
+      type: "TOGGLE_NATIVE"
+    } );
+  };
+
+  const updateEndemic = () => {
+    dispatch( {
+      type: "TOGGLE_ENDEMIC"
+    } );
+  };
+
+  const updateIntroduced = () => {
+    dispatch( {
+      type: "TOGGLE_INTRODUCED"
+    } );
+  };
+
   const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -568,6 +609,9 @@ const ExploreContainer = ( ): Node => {
   // }
   filteredParams.photos = exploreParams.media === PHOTOS || exploreParams.media === ALL;
   filteredParams.sounds = exploreParams.media === SOUNDS || exploreParams.media === ALL;
+  filteredParams.native = exploreParams.native;
+  filteredParams.endemic = exploreParams.endemic;
+  filteredParams.introduced = exploreParams.introduced;
 
   return (
     <Explore
@@ -596,6 +640,9 @@ const ExploreContainer = ( ): Node => {
       updateDateObserved={updateDateObserved}
       updateDateUploaded={updateDateUploaded}
       updateMedia={updateMedia}
+      updateNative={updateNative}
+      updateEndemic={updateEndemic}
+      updateIntroduced={updateIntroduced}
     />
   );
 };

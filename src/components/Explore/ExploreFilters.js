@@ -20,7 +20,12 @@ type Props = {
   updateHighestTaxonomicRank: Function,
   updateLowestTaxonomicRank: Function,
   updateDateObserved: Function,
+  updateDateUploaded: Function,
   updateMedia: Function,
+  updateNative: Function,
+  updateEndemic: Function,
+  updateIntroduced: Function,
+  updateNoStatus: Function
 };
 
 const ExploreFilters = ( {
@@ -40,7 +45,11 @@ const ExploreFilters = ( {
   updateLowestTaxonomicRank,
   updateDateObserved,
   updateDateUploaded,
-  updateMedia
+  updateMedia,
+  updateNative,
+  updateEndemic,
+  updateIntroduced,
+  updateNoStatus
 }: Props ): Node => (
   <Modal
     showModal={showModal}
@@ -66,6 +75,10 @@ const ExploreFilters = ( {
         updateDateObserved={updateDateObserved}
         updateDateUploaded={updateDateUploaded}
         updateMedia={updateMedia}
+        updateNative={updateNative}
+        updateEndemic={updateEndemic}
+        updateIntroduced={updateIntroduced}
+        updateNoStatus={updateNoStatus}
       />
     )}
   />

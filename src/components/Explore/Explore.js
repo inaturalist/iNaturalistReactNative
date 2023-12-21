@@ -47,7 +47,11 @@ type Props = {
   updateLowestTaxonomicRank: Function,
   updateDateObserved: Function,
   updateDateUploaded: Function,
-  updateMedia: Function
+  updateMedia: Function,
+  updateNative: Function,
+  updateEndemic: Function,
+  updateIntroduced: Function,
+  updateNoStatus: Function
 }
 
 const Explore = ( {
@@ -74,7 +78,11 @@ const Explore = ( {
   updateLowestTaxonomicRank,
   updateDateObserved,
   updateDateUploaded,
-  updateMedia
+  updateMedia,
+  updateNative,
+  updateEndemic,
+  updateIntroduced,
+  updateNoStatus
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -210,7 +218,7 @@ const Explore = ( {
               text={exploreViewText[view]}
               key={exploreViewText[view]}
               className="mx-5 my-3"
-              onPress={( ) => {
+              onPress={() => {
                 changeExploreView( view );
                 setShowExploreBottomSheet( false );
               }}
@@ -236,6 +244,10 @@ const Explore = ( {
         updateDateObserved={updateDateObserved}
         updateDateUploaded={updateDateUploaded}
         updateMedia={updateMedia}
+        updateNative={updateNative}
+        updateEndemic={updateEndemic}
+        updateIntroduced={updateIntroduced}
+        updateNoStatus={updateNoStatus}
       />
     </>
   );

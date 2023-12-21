@@ -45,6 +45,10 @@ type Props = {
   updateHighestTaxonomicRank: Function,
   updateDateObserved: Function,
   updateMedia: Function,
+  updateIntroduced: Function,
+  updateNative: Function,
+  updateEndemic: Function,
+  updateNoStatus: Function,
 };
 
 const FilterModal = ( {
@@ -62,7 +66,11 @@ const FilterModal = ( {
   updateHighestTaxonomicRank,
   updateDateObserved,
   updateDateUploaded,
-  updateMedia
+  updateMedia,
+  updateIntroduced,
+  updateNative,
+  updateEndemic,
+  updateNoStatus
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -752,18 +760,22 @@ const FilterModal = ( {
           <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
           <Checkbox
             isChecked={introduced}
+            onPress={updateIntroduced}
             text={t( "Introduced" )}
           />
           <Checkbox
             isChecked={native}
+            onPress={updateNative}
             text={t( "Native" )}
           />
           <Checkbox
             isChecked={endemic}
+            onPress={updateEndemic}
             text={t( "Endemic" )}
           />
           <Checkbox
             isChecked={noStatus}
+            onPress={updateNoStatus}
             text={t( "No-Status" )}
           />
         </View>
