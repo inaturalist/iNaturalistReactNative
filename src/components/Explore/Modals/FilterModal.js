@@ -43,7 +43,8 @@ type Props = {
   updateCasual: Function,
   updateLowestTaxonomicRank: Function,
   updateHighestTaxonomicRank: Function,
-  updateDateObserved: Function
+  updateDateObserved: Function,
+  updateMedia: Function,
 };
 
 const FilterModal = ( {
@@ -60,7 +61,8 @@ const FilterModal = ( {
   updateLowestTaxonomicRank,
   updateHighestTaxonomicRank,
   updateDateObserved,
-  updateDateUploaded
+  updateDateUploaded,
+  updateMedia
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -81,7 +83,8 @@ const FilterModal = ( {
     month,
     dateUploaded,
     // eslint-disable-next-line camelcase
-    created_on
+    created_on,
+    media
   } = exploreFilters;
 
   const NONE = "NONE";
@@ -359,11 +362,7 @@ const FilterModal = ( {
     const newMonths = month.includes( monthInteger )
       ? month.filter( m => m !== monthInteger )
       : [...month, monthInteger];
-    updateDateObserved(
-      dateObservedValues.months.value,
-      null,
-      newMonths
-    );
+    updateDateObserved( dateObservedValues.months.value, null, newMonths );
   };
 
   const updateUploadedExact = date => {
@@ -737,12 +736,14 @@ const FilterModal = ( {
             <RadioButtonRow
               keySubstring={mediaKey}
               value={mediaValues[mediaKey]}
+              checked={mediaValues[mediaKey].value === media}
+              onPress={() => updateMedia( mediaValues[mediaKey].value )}
               label={mediaValues[mediaKey].label}
             />
           ) )}
         </View>
       </ScrollView>
-      <Body3 className="text-center mb-5">{t( "TODO: remove this" )}</Body3>
+      <Body3 className="text-center mb-10">{t( "TODO: remove this" )}</Body3>
       <StickyToolbar>
         <View className="flex-1 flex-row items-center">
           <INatIconButton

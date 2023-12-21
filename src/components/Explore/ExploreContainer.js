@@ -28,6 +28,9 @@ const ALL = "all";
 const EXACT_DATE = "exactDate";
 const MONTHS = "months";
 
+const PHOTOS = "photos";
+const SOUNDS = "sounds";
+
 const today = new Date( ).toISOString( ).split( "T" )[0];
 // Array with the numbers from 1 to 12
 const months = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
@@ -40,7 +43,8 @@ const calculatedFilters = {
   hrank: undefined,
   lrank: undefined,
   dateObserved: ALL,
-  dateUploaded: ALL
+  dateUploaded: ALL,
+  media: ALL
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -87,6 +91,7 @@ const initialState: {
     month: ?number[],
     dateUploaded: string,
     created_on: ?string,
+    media: string,
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -316,6 +321,14 @@ const reducer = ( state, action ) => {
           created_on: action.created_on
         }
       };
+    case "SET_MEDIA":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          media: action.media
+        }
+      };
 
     default:
       throw new Error();
@@ -499,6 +512,13 @@ const ExploreContainer = ( ): Node => {
     }
   };
 
+  const updateMedia = newMedia => {
+    dispatch( {
+      type: "SET_MEDIA",
+      media: newMedia
+    } );
+  };
+
   const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -538,6 +558,8 @@ const ExploreContainer = ( ): Node => {
   //   filteredParams.order_by = "faves";
   //   filteredParams.order = DESC;
   // }
+  filteredParams.photos = exploreParams.media === PHOTOS || exploreParams.media === ALL;
+  filteredParams.sounds = exploreParams.media === SOUNDS || exploreParams.media === ALL;
 
   return (
     <Explore
@@ -565,6 +587,7 @@ const ExploreContainer = ( ): Node => {
       updateLowestTaxonomicRank={updateLowestTaxonomicRank}
       updateDateObserved={updateDateObserved}
       updateDateUploaded={updateDateUploaded}
+      updateMedia={updateMedia}
     />
   );
 };
