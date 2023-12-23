@@ -201,6 +201,7 @@ class Observation extends Realm.Object {
       place_guess: obs.place_guess,
       latitude: obs.latitude,
       longitude: obs.longitude,
+      positional_accuracy: obs.positional_accuracy,
       taxon_id: obs.taxon && obs.taxon.id,
       geoprivacy: obs.geoprivacy,
       uuid: obs.uuid,
