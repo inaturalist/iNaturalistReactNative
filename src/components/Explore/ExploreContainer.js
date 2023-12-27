@@ -602,11 +602,10 @@ const ExploreContainer = ( ): Node => {
     filteredParams.order_by = OBSERVED_ON;
     filteredParams.order = ASC;
   }
-  // TODO: is this possible on the API at all?
-  // if ( exploreParams.sortBy === "MOST_FAVED" ) {
-  //   filteredParams.order_by = "faves";
-  //   filteredParams.order = DESC;
-  // }
+  if ( exploreParams.sortBy === "MOST_FAVED" ) {
+    filteredParams.order_by = "votes";
+    filteredParams.order = DESC;
+  }
   filteredParams.photos = exploreParams.media === PHOTOS || exploreParams.media === ALL;
   filteredParams.sounds = exploreParams.media === SOUNDS || exploreParams.media === ALL;
   filteredParams.native = exploreParams.native;
