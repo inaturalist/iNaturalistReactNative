@@ -609,7 +609,7 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  let filteredParams = Object.entries( exploreParams ).reduce(
+  const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
         newParams[key] = value;
@@ -658,7 +658,6 @@ const ExploreContainer = ( ): Node => {
     filteredParams.captive = true;
   }
 
-  filteredParams = {};
   if ( exploreParams.reviewedFilter === REVIEWED ) {
     filteredParams.reviewed = true;
     filteredParams.viewer_id = currentUser?.id;
