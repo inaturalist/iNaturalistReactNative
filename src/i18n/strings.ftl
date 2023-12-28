@@ -770,6 +770,8 @@ Return-to-login = Return to login
 
 Reviewed = Reviewed
 
+Reviewed-observations-only = Reviewed observations only
+
 Reviewed-only = Reviewed only
 
 Revoke = Revoke
@@ -885,6 +887,8 @@ Unknown-organism = Unknown organism
 Unmute = Unmute
 
 Missing-Location = Missing Location
+
+Unreviewed-observations-only = Unreviewed observations only
 
 Unreviewed-only = Unreviewed only
 

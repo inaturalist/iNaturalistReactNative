@@ -381,6 +381,21 @@ const FilterModal = ( {
     }
   };
 
+  const reviewedValues = {
+    all: {
+      label: t( "All-observations" ),
+      value: "all"
+    },
+    reviewed: {
+      label: t( "Reviewed-observations-only" ),
+      value: "reviewed"
+    },
+    unreviewed: {
+      label: t( "Unreviewed-observations-only" ),
+      value: "unreviewed"
+    }
+  };
+
   const updateObservedExact = date => {
     updateDateObserved(
       dateObservedValues.exactDate.value,
@@ -804,13 +819,27 @@ const FilterModal = ( {
         {/* Wild Status section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "WILD-STATUS" )}</Heading4>
-          {Object.keys( wildValues ).map( wilkdKey => (
+          {Object.keys( wildValues ).map( wildKey => (
             <RadioButtonRow
-              keySubstring={wilkdKey}
-              value={wildValues[wilkdKey]}
-              checked={wildValues[wilkdKey].value === wildStatus}
-              onPress={() => updateWildStatus( wildValues[wilkdKey].value )}
-              label={wildValues[wilkdKey].label}
+              keySubstring={wildKey}
+              value={wildValues[wildKey]}
+              checked={wildValues[wildKey].value === wildStatus}
+              onPress={() => updateWildStatus( wildValues[wildKey].value )}
+              label={wildValues[wildKey].label}
+            />
+          ) )}
+        </View>
+
+        {/* Reviewed section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
+          {Object.keys( reviewedValues ).map( reviewedKey => (
+            <RadioButtonRow
+              keySubstring={reviewedKey}
+              value={reviewedValues[reviewedKey]}
+              checked={reviewedValues[reviewedKey].value === wildStatus}
+              onPress={() => updateWildStatus( reviewedValues[reviewedKey].value )}
+              label={reviewedValues[reviewedKey].label}
             />
           ) )}
         </View>
