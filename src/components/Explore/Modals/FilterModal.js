@@ -49,6 +49,7 @@ type Props = {
   updateNative: Function,
   updateEndemic: Function,
   updateNoStatus: Function,
+  updateWildStatus: Function
 };
 
 const FilterModal = ( {
@@ -70,7 +71,8 @@ const FilterModal = ( {
   updateIntroduced,
   updateNative,
   updateEndemic,
-  updateNoStatus
+  updateNoStatus,
+  updateWildStatus
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -96,7 +98,8 @@ const FilterModal = ( {
     introduced,
     native,
     endemic,
-    noStatus
+    noStatus,
+    wildStatus
   } = exploreFilters;
 
   const NONE = "NONE";
@@ -360,6 +363,21 @@ const FilterModal = ( {
     noMedia: {
       label: t( "No-Media" ),
       value: "noMedia"
+    }
+  };
+
+  const wildValues = {
+    all: {
+      label: t( "All" ),
+      value: "all"
+    },
+    wild: {
+      label: t( "Wild" ),
+      value: "wild"
+    },
+    captive: {
+      label: t( "Captive-Cultivated" ),
+      value: "captive"
     }
   };
 
@@ -781,6 +799,20 @@ const FilterModal = ( {
             onPress={updateNoStatus}
             text={t( "No-Status" )}
           />
+        </View>
+
+        {/* Wild Status section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "WILD-STATUS" )}</Heading4>
+          {Object.keys( wildValues ).map( wilkdKey => (
+            <RadioButtonRow
+              keySubstring={wilkdKey}
+              value={wildValues[wilkdKey]}
+              checked={wildValues[wilkdKey].value === wildStatus}
+              onPress={() => updateWildStatus( wildValues[wilkdKey].value )}
+              label={wildValues[wilkdKey].label}
+            />
+          ) )}
         </View>
       </ScrollView>
       <Body3 className="text-center mb-10">{t( "TODO: remove this" )}</Body3>
