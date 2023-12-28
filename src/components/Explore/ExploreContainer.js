@@ -31,6 +31,9 @@ const MONTHS = "months";
 const PHOTOS = "photos";
 const SOUNDS = "sounds";
 
+const WILD = "wild";
+const CAPTIVE = "captive";
+
 const today = new Date( ).toISOString( ).split( "T" )[0];
 // Array with the numbers from 1 to 12
 const months = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
@@ -49,6 +52,7 @@ const calculatedFilters = {
   native: true,
   endemic: true,
   noStatus: true
+  wildStatus: ALL
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -100,6 +104,7 @@ const initialState: {
     native: boolean,
     endemic: boolean,
     noStatus: boolean
+    wildStatus: string,
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -361,6 +366,14 @@ const reducer = ( state, action ) => {
           introduced: !state.exploreParams.introduced
         }
       };
+    case "SET_WILD_STATUS":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          wildStatus: action.wildStatus
+        }
+      };
     default:
       throw new Error();
   }
@@ -568,6 +581,13 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
+  const updateWildStatus = newWildStatus => {
+    dispatch( {
+      type: "SET_WILD_STATUS",
+      wildStatus: newWildStatus
+    } );
+  };
+
   const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -611,6 +631,11 @@ const ExploreContainer = ( ): Node => {
   filteredParams.native = exploreParams.native;
   filteredParams.endemic = exploreParams.endemic;
   filteredParams.introduced = exploreParams.introduced;
+  if ( exploreParams.wildStatus === WILD ) {
+    filteredParams.captive = false;
+  } else if ( exploreParams.wildStatus === CAPTIVE ) {
+    filteredParams.captive = true;
+  }
 
   return (
     <Explore
@@ -642,6 +667,7 @@ const ExploreContainer = ( ): Node => {
       updateNative={updateNative}
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}
+      updateWildStatus={updateWildStatus}
     />
   );
 };
