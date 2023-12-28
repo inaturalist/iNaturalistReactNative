@@ -763,16 +763,19 @@ const FilterModal = ( {
             onPress={updateIntroduced}
             text={t( "Introduced" )}
           />
+          <View className="mb-4" />
           <Checkbox
             isChecked={native}
             onPress={updateNative}
             text={t( "Native" )}
           />
+          <View className="mb-4" />
           <Checkbox
             isChecked={endemic}
             onPress={updateEndemic}
             text={t( "Endemic" )}
           />
+          <View className="mb-4" />
           <Checkbox
             isChecked={noStatus}
             onPress={updateNoStatus}
