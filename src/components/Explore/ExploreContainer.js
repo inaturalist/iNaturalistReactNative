@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
-import { useIsConnected } from "sharedHooks";
+import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
 
@@ -398,6 +398,7 @@ const ExploreContainer = ( ): Node => {
 
   const realm = useRealm();
   const navigation = useNavigation();
+  const currentUser = useCurrentUser();
   console.log( "navigation :>> ", navigation );
 
   const [state, dispatch] = useReducer( reducer, initialState );
@@ -660,8 +661,10 @@ const ExploreContainer = ( ): Node => {
   filteredParams = {};
   if ( exploreParams.reviewedFilter === REVIEWED ) {
     filteredParams.reviewed = true;
+    filteredParams.viewer_id = currentUser?.id;
   } else if ( exploreParams.reviewedFilter === UNREVIEWED ) {
     filteredParams.reviewed = false;
+    filteredParams.viewer_id = currentUser?.id;
   }
 
   return (
