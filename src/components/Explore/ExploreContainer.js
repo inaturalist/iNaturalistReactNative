@@ -34,6 +34,9 @@ const SOUNDS = "sounds";
 const WILD = "wild";
 const CAPTIVE = "captive";
 
+const REVIEWED = "reviewed";
+const UNREVIEWED = "unreviewed";
+
 const today = new Date( ).toISOString( ).split( "T" )[0];
 // Array with the numbers from 1 to 12
 const months = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
@@ -52,7 +55,8 @@ const calculatedFilters = {
   native: true,
   endemic: true,
   noStatus: true
-  wildStatus: ALL
+  wildStatus: ALL,
+  reviewedFilter: ALL
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -105,6 +109,7 @@ const initialState: {
     endemic: boolean,
     noStatus: boolean
     wildStatus: string,
+    reviewedFilter: string
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -374,6 +379,14 @@ const reducer = ( state, action ) => {
           wildStatus: action.wildStatus
         }
       };
+    case "SET_REVIEWED":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          reviewedFilter: action.reviewedFilter
+        }
+      };
     default:
       throw new Error();
   }
@@ -588,7 +601,14 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const filteredParams = Object.entries( exploreParams ).reduce(
+  const updateReviewed = newReviewed => {
+    dispatch( {
+      type: "SET_REVIEWED",
+      reviewedFilter: newReviewed
+    } );
+  };
+
+  let filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
         newParams[key] = value;
@@ -637,6 +657,13 @@ const ExploreContainer = ( ): Node => {
     filteredParams.captive = true;
   }
 
+  filteredParams = {};
+  if ( exploreParams.reviewedFilter === REVIEWED ) {
+    filteredParams.reviewed = true;
+  } else if ( exploreParams.reviewedFilter === UNREVIEWED ) {
+    filteredParams.reviewed = false;
+  }
+
   return (
     <Explore
       exploreParams={filteredParams}
@@ -668,6 +695,7 @@ const ExploreContainer = ( ): Node => {
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}
       updateWildStatus={updateWildStatus}
+      updateReviewed={updateReviewed}
     />
   );
 };

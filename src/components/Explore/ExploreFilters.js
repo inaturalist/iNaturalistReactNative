@@ -26,7 +26,8 @@ type Props = {
   updateEndemic: Function,
   updateIntroduced: Function,
   updateNoStatus: Function,
-  updateWildStatus: Function
+  updateWildStatus: Function,
+  updateReviewed: Function
 };
 
 const ExploreFilters = ( {
@@ -51,7 +52,8 @@ const ExploreFilters = ( {
   updateEndemic,
   updateIntroduced,
   updateNoStatus,
-  updateWildStatus
+  updateWildStatus,
+  updateReviewed
 }: Props ): Node => (
   <Modal
     showModal={showModal}
@@ -82,6 +84,7 @@ const ExploreFilters = ( {
         updateIntroduced={updateIntroduced}
         updateNoStatus={updateNoStatus}
         updateWildStatus={updateWildStatus}
+        updateReviewed={updateReviewed}
       />
     )}
   />

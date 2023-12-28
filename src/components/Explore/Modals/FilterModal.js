@@ -44,12 +44,14 @@ type Props = {
   updateLowestTaxonomicRank: Function,
   updateHighestTaxonomicRank: Function,
   updateDateObserved: Function,
+  updateDateUploaded: Function,
   updateMedia: Function,
   updateIntroduced: Function,
   updateNative: Function,
   updateEndemic: Function,
   updateNoStatus: Function,
-  updateWildStatus: Function
+  updateWildStatus: Function,
+  updateReviewed: Function,
 };
 
 const FilterModal = ( {
@@ -72,7 +74,8 @@ const FilterModal = ( {
   updateNative,
   updateEndemic,
   updateNoStatus,
-  updateWildStatus
+  updateWildStatus,
+  updateReviewed
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -99,7 +102,8 @@ const FilterModal = ( {
     native,
     endemic,
     noStatus,
-    wildStatus
+    wildStatus,
+    reviewedFilter
   } = exploreFilters;
 
   const NONE = "NONE";
@@ -837,8 +841,8 @@ const FilterModal = ( {
             <RadioButtonRow
               keySubstring={reviewedKey}
               value={reviewedValues[reviewedKey]}
-              checked={reviewedValues[reviewedKey].value === wildStatus}
-              onPress={() => updateWildStatus( reviewedValues[reviewedKey].value )}
+              checked={reviewedValues[reviewedKey].value === reviewedFilter}
+              onPress={() => updateReviewed( reviewedValues[reviewedKey].value )}
               label={reviewedValues[reviewedKey].label}
             />
           ) )}
