@@ -81,18 +81,6 @@ attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
 
 attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
 
-attribution-cc-by = some rights reserved (CC BY)
-
-attribution-cc-by-sa = some rights reserved (CC BY-SA)
-
-attribution-cc-by-nc = some rights reserved (CC BY-NC)
-
-attribution-cc-by-nd = some rights reserved (CC BY-ND)
-
-attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
-
-attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
-
 app-authorized-on-date = { $appName } (authorized on: { $date })
 
 Applications = Applications
@@ -122,6 +110,20 @@ CANCEL = CANCEL
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
+
+CC0 = CC0
+
+CC-BY = CC BY
+
+CC-BY-NC = CC BY-NC
+
+CC-BY-SA = CC BY-SA
+
+CC-BY-ND = CC BY-ND
+
+CC-BY-NC-SA = CC BY-NC-SA
+
+CC-BY-NC-ND = CC BY-NC-ND
 
 CHANGE-DATE = CHANGE DATE
 
@@ -617,6 +619,8 @@ PASSWORD = PASSWORD
 Paused = Paused
 
 Photo-Licensing = Photo Licensing
+
+PHOTO-LICENSING = PHOTO LICENSING
 
 Photos = Photos
 

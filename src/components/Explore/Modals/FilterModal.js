@@ -52,6 +52,7 @@ type Props = {
   updateNoStatus: Function,
   updateWildStatus: Function,
   updateReviewed: Function,
+  updatePhotoLicense: Function
 };
 
 const FilterModal = ( {
@@ -75,7 +76,8 @@ const FilterModal = ( {
   updateEndemic,
   updateNoStatus,
   updateWildStatus,
-  updateReviewed
+  updateReviewed,
+  updatePhotoLicense
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -103,7 +105,8 @@ const FilterModal = ( {
     endemic,
     noStatus,
     wildStatus,
-    reviewedFilter
+    reviewedFilter,
+    photoLicense
   } = exploreFilters;
 
   const NONE = "NONE";
@@ -114,6 +117,7 @@ const FilterModal = ( {
   const OBSERVED_EXACT = "OBSERVED_EXACT";
   const DATE_UPLOADED = "DATE_UPLOADED";
   const UPLOADED_EXACT = "UPLOADED_EXACT";
+  const PHOTO_LICENSING = "PHOTO_LICENSING";
   const [openSheet, setOpenSheet] = useState( NONE );
 
   const sortByButtonText = () => {
@@ -397,6 +401,41 @@ const FilterModal = ( {
     unreviewed: {
       label: t( "Unreviewed-observations-only" ),
       value: "unreviewed"
+    }
+  };
+
+  const photoLicensingValues = {
+    all: {
+      label: t( "All" ),
+      value: "all"
+    },
+    cc0: {
+      label: t( "CC0" ),
+      value: "cc0"
+    },
+    ccby: {
+      label: t( "CC-BY" ),
+      value: "ccby"
+    },
+    ccbync: {
+      label: t( "CC-BY-NC" ),
+      value: "ccbync"
+    },
+    ccbysa: {
+      label: t( "CC-BY-SA" ),
+      value: "ccbysa"
+    },
+    ccbynd: {
+      label: t( "CC-BY-ND" ),
+      value: "ccbynd"
+    },
+    ccbyncsa: {
+      label: t( "CC-BY-NC-SA" ),
+      value: "ccbyncsa"
+    },
+    ccbyncnd: {
+      label: t( "CC-BY-NC-ND" ),
+      value: "ccbyncnd"
     }
   };
 
@@ -846,6 +885,32 @@ const FilterModal = ( {
               label={reviewedValues[reviewedKey].label}
             />
           ) )}
+        </View>
+
+        {/* Photo licensing section */}
+        <View className="mb-7">
+          <Heading4 className="mb-5">{t( "PHOTO-LICENSING" )}</Heading4>
+          <Button
+            text={photoLicensingValues[photoLicense]?.label.toUpperCase()}
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              closeModal();
+              setOpenSheet( PHOTO_LICENSING );
+            }}
+          />
+          {openSheet === PHOTO_LICENSING && (
+            <RadioButtonSheet
+              headerText={t( "PHOTO-LICENSING" )}
+              confirm={newLicense => {
+                updatePhotoLicense( newLicense );
+                setOpenSheet( NONE );
+              }}
+              handleClose={() => setOpenSheet( NONE )}
+              radioValues={photoLicensingValues}
+              selectedValue={photoLicense}
+            />
+          )}
         </View>
       </ScrollView>
       <Body3 className="text-center mb-10">{t( "TODO: remove this" )}</Body3>
