@@ -56,7 +56,8 @@ const calculatedFilters = {
   endemic: true,
   noStatus: true
   wildStatus: ALL,
-  reviewedFilter: ALL
+  reviewedFilter: ALL,
+  photoLicense: ALL
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -109,7 +110,8 @@ const initialState: {
     endemic: boolean,
     noStatus: boolean
     wildStatus: string,
-    reviewedFilter: string
+    reviewedFilter: string,
+    photoLicense: string
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -387,6 +389,14 @@ const reducer = ( state, action ) => {
           reviewedFilter: action.reviewedFilter
         }
       };
+    case "SET_PHOTO_LICENSE":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          photoLicense: action.photoLicense
+        }
+      };
     default:
       throw new Error();
   }
@@ -606,6 +616,13 @@ const ExploreContainer = ( ): Node => {
     dispatch( {
       type: "SET_REVIEWED",
       reviewedFilter: newReviewed
+    } );
+  };
+
+  const updatePhotoLicense = newPhotoLicense => {
+    dispatch( {
+      type: "SET_PHOTO_LICENSE",
+      photoLicense: newPhotoLicense
     } );
   };
 
