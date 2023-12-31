@@ -492,10 +492,6 @@
   "Share-location": "Share Location",
   "Sign-out": "Sign out",
   "Sign-Up": "Sign Up",
-  "SIMILAR-SPECIES-header": {
-    "comment": "Header for a section showing taxa similar to a single taxon",
-    "val": "SIMILAR SPECIES"
-  },
   "some-rights-reserved": {
     "comment": "license code",
     "val": "some rights reserved"
@@ -569,6 +565,7 @@
     "comment": "Appears above the text fields",
     "val": "USERNAME OR EMAIL"
   },
+  "VIEW-CHILDREN-TAXA": "VIEW CHILDREN TAXA",
   "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
   "View-in-browser": "View in Browser",
   "View-photo": {
@@ -888,7 +885,6 @@
   "INATURALIST-ROLE": "INATURALIST { $role }",
   "Affiliation": "Affiliation: { $site }",
   "Monthly-Donor": "Monthly Donor",
-  "VIEW-SIMILAR-SPECIES": "VIEW SIMILAR SPECIES",
   "WIKIPEDIA": "WIKIPEDIA",
   "MY-OBSERVATIONS": {
     "comment": "Header for a section showing the viewer's observations",
@@ -1073,5 +1069,9 @@
     "comment": "Title for a notice informing the user that they are viewing offline\nidentification suggestions",
     "val": "Viewing Offline Suggestions"
   },
-  "Viewing-Offline-Suggestions-results-may-differ": "Results may differ from the online suggestions and images and common names may not display."
+  "Viewing-Offline-Suggestions-results-may-differ": "Results may differ from the online suggestions and images and common names may not display.",
+  "Endemic-to": "Endemic to { $displayName }",
+  "Introduced-to": "Introduced to { $displayName }",
+  "Native-to": "Native to { $displayName }",
+  "Source-List": "<0>(Source List: </0><1>{ $source }</1><0>)</0>"
 }
