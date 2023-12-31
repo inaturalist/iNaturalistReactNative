@@ -1,5 +1,6 @@
 // @flow
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { INatIconButton } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
@@ -26,6 +27,7 @@ import { useDeviceOrientation } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
+import { twMerge } from "tailwind-merge";
 
 const calculateZoom = ( width, delta ) => Math.round(
   Math.log2( 360 * ( width / 256 / delta ) ) + 1
@@ -76,6 +78,9 @@ type Props = {
   positionalAccuracy?: number,
   region?: Object,
   showCurrentLocationButton?: boolean,
+  currentLocationButtonClassName?: string,
+  showSwitchMapTypeButton?: boolean,
+  switchMapTypeButtonClassName?: string,
   showLocationIndicator?: boolean,
   showsCompass?: boolean,
   startAtUserLocation?: boolean,
@@ -113,6 +118,9 @@ const Map = ( {
   positionalAccuracy,
   region,
   showCurrentLocationButton,
+  currentLocationButtonClassName,
+  showSwitchMapTypeButton,
+  switchMapTypeButtonClassName,
   showLocationIndicator,
   showsCompass,
   startAtUserLocation = false,
@@ -135,6 +143,7 @@ const Map = ( {
   const [userLocation, setUserLocation] = useState( null );
   const { t } = useTranslation( );
   const mapViewRef = useRef( mapViewRefProp );
+  const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
 
   const initialLatitude = obsLatitude;
   const initialLongitude = obsLongitude;
@@ -168,6 +177,16 @@ const Map = ( {
     const latitudeDelta = ( latitudeDeltaRadians * 180 ) / Math.PI;
     return latitudeDelta;
   }
+
+  useEffect( () => {
+    AsyncStorage.getItem( "mapType" ).then( value => {
+      if ( value && !mapType ) {
+        // Load last saved map type (unless explicitly overridden by the parent
+        // of the Map component)
+        setCurrentMapType( value );
+      }
+    } );
+  }, [mapType, setCurrentMapType] );
 
   useEffect( ( ) => {
     if ( userLocation && zoomToUserLocationRequested && mapViewRef?.current ) {
@@ -210,6 +229,11 @@ const Map = ( {
     color: "%2374ac00",
     verifiable: "true"
   } ), [tileMapParams] );
+
+  const changeMapType = async newMapType => {
+    setCurrentMapType( newMapType );
+    await AsyncStorage.setItem( "mapType", newMapType );
+  };
 
   const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
   if ( obscured ) {
@@ -314,7 +338,7 @@ const Map = ( {
           }
         }}
         showsCompass={showsCompass}
-        mapType={mapType || "standard"}
+        mapType={currentMapType}
         onMapReady={onMapReady}
         style={style}
       >
@@ -376,7 +400,10 @@ const Map = ( {
       { showCurrentLocationButton && (
         <INatIconButton
           icon="location-crosshairs"
-          className="absolute bottom-5 right-5 bg-white rounded-full"
+          className={twMerge(
+            "absolute bottom-40 right-5 bg-white rounded-full",
+            currentLocationButtonClassName
+          )}
           style={getShadow( theme.colors.primary )}
           accessibilityLabel={t( "User-location" )}
           onPress={( ) => {
@@ -386,6 +413,22 @@ const Map = ( {
           }}
         />
       )}
+      {showSwitchMapTypeButton
+        && (
+          <INatIconButton
+            icon="map-layers"
+            className={twMerge(
+              "absolute bottom-40 right-20 bg-white rounded-full",
+              switchMapTypeButtonClassName )}
+            style={getShadow( theme.colors.primary )}
+            accessibilityLabel={t( "User-location" )}
+            onPress={( ) => {
+              changeMapType( currentMapType === "standard"
+                ? "satellite"
+                : "standard" );
+            }}
+          />
+        )}
       <LocationPermissionGate
         permissionNeeded={permissionRequested}
         onPermissionGranted={onPermissionGranted}

@@ -50,6 +50,9 @@ const ObservationsView = ( {
         tileMapParams={tileMapParams}
         withPressableObsTiles={tileMapParams !== null}
         showCurrentLocationButton
+        showSwitchMapTypeButton
+        switchMapTypeButtonClassName="left-20 bottom-[225px]"
+        currentLocationButtonClassName="left-5 bottom-[225px]"
       />
     )
     : (
