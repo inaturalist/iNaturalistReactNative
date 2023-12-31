@@ -5,7 +5,7 @@ import {
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer";
 import {
-  useEffect,
+  useEffect, useRef,
   useState
 } from "react";
 import { checkMultiple, RESULTS } from "react-native-permissions";
@@ -31,6 +31,8 @@ const useCurrentObservationLocation = (
   const originalPhotoUri = currentObservation?.observationPhotos
     && currentObservation?.observationPhotos[0]?.originalPhotoUri;
   const isGalleryPhoto = originalPhotoUri && !originalPhotoUri?.includes( "photoUploads" );
+  const locationNotSetYet = useRef( true );
+  const prevObservation = useRef( currentObservation );
 
   const [shouldFetchLocation, setShouldFetchLocation] = useState(
     currentObservation
@@ -47,14 +49,23 @@ const useCurrentObservationLocation = (
   const [currentLocation, setCurrentLocation] = useState( null );
 
   useEffect( () => {
-    if ( !currentLocation ) return;
-    if ( !currentObservation ) return;
+    if ( locationNotSetYet.current ) {
+      // Don't run if it's the first render
+      locationNotSetYet.current = false;
+      return;
+    } if ( prevObservation.current !== currentObservation ) {
+      // Don't run if observation was changed (only when location was changed)
+      prevObservation.current = currentObservation;
+      return;
+    }
 
     updateObservationKeys( {
       latitude: currentLocation?.latitude,
       longitude: currentLocation?.longitude,
       positional_accuracy: currentLocation?.positional_accuracy
     } );
+
+    prevObservation.current = currentObservation;
   }, [currentLocation, currentObservation, updateObservationKeys] );
 
   useEffect( ( ) => {
