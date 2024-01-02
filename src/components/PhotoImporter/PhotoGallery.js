@@ -179,7 +179,7 @@ const PhotoGallery = ( ): Node => {
           blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
           buttonText={t( "CHOOSE-PHOTOS" )}
           icon="gallery"
-          image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
+          image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
           onPermissionGranted={onPermissionGranted}
         />
       )}

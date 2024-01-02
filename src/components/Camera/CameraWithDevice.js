@@ -2,6 +2,8 @@
 
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import PermissionGateContainer, { WRITE_MEDIA_PERMISSIONS }
+  from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -42,6 +44,7 @@ import {
   rotationLocalPhotoPatch,
   rotationTempPhotoPatch
 } from "sharedHelpers/visionCameraPatches";
+import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
@@ -85,6 +88,7 @@ const CameraWithDevice = ( {
     Orientation.lockToPortrait( );
   }
   const navigation = useNavigation();
+  const { t } = useTranslation( );
   // $FlowFixMe
   const camera = useRef<Camera>( null );
   const hasFlash = device?.hasFlash;
@@ -112,6 +116,8 @@ const CameraWithDevice = ( {
   const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
+  const [permissionGranted, setPermissionGranted] = useState( false );
+  const [showGalleryPermission, setShowGalleryPermission] = useState( false );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris].length,
@@ -228,6 +234,7 @@ const CameraWithDevice = ( {
   // we want it accessible in the camera's folder, as if the user has taken those photos
   // via their own camera app).
   const savePhotosToCameraGallery = useCallback( async uris => {
+    if ( !permissionGranted ) { return false; }
     const savedUris = await Promise.all( uris.map( async uri => {
       // Find original camera URI of each scaled-down photo
       const cameraUri = originalCameraUrisMap[uri];
@@ -243,7 +250,8 @@ const CameraWithDevice = ( {
     // Save these camera roll URIs, so later on observation editor can update
     // the EXIF metadata of these photos, once we retrieve a location.
     setCameraRollUris( savedUris );
-  }, [originalCameraUrisMap, setCameraRollUris] );
+    return true;
+  }, [originalCameraUrisMap, setCameraRollUris, permissionGranted] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, localTaxon ) => {
     const newObservation = await Observation.new( );
@@ -262,8 +270,8 @@ const CameraWithDevice = ( {
       "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
       localFilePaths
     );
-    // TODO catch the error that gets raised here if the user denies gallery permission
-    await savePhotosToCameraGallery( localFilePaths );
+
+    return savePhotosToCameraGallery( localFilePaths );
   }, [savePhotosToCameraGallery, setObservations] );
 
   const createEvidenceForObsEdit = useCallback( async localTaxon => {
@@ -281,10 +289,9 @@ const CameraWithDevice = ( {
         "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
         evidenceToAdd
       );
-      await savePhotosToCameraGallery( evidenceToAdd );
-    } else {
-      createObsWithCameraPhotos( cameraPreviewUris, localTaxon );
+      return savePhotosToCameraGallery( evidenceToAdd );
     }
+    return createObsWithCameraPhotos( cameraPreviewUris, localTaxon );
   }, [
     createObsWithCameraPhotos,
     cameraPreviewUris,
@@ -299,9 +306,14 @@ const CameraWithDevice = ( {
   ] );
 
   const navToObsEdit = useCallback( async localTaxon => {
-    await createEvidenceForObsEdit( localTaxon );
+    const evidenceCreated = await createEvidenceForObsEdit( localTaxon );
     setPhotoSaved( false );
-    navigation.navigate( "ObsEdit" );
+
+    if ( evidenceCreated ) {
+      navigation.navigate( "ObsEdit" );
+    } else {
+      setShowGalleryPermission( true );
+    }
   }, [
     createEvidenceForObsEdit,
     navigation
@@ -423,9 +435,40 @@ const CameraWithDevice = ( {
     ? "flex-row"
     : "flex-col";
 
+  const onPermissionGranted = ( ) => {
+    setPermissionGranted( true );
+    navigation.navigate( "ObsEdit" );
+  };
+
+  const onPermissionDenied = ( ) => {
+    setPermissionGranted( false );
+    navigation.navigate( "ObsEdit" );
+  };
+
+  const onPermissionBlocked = ( ) => {
+    setPermissionGranted( false );
+    navigation.navigate( "ObsEdit" );
+  };
+
   return (
     <View className={`flex-1 bg-black ${flexDirection}`}>
       <StatusBar hidden />
+      {showGalleryPermission && (
+        <PermissionGateContainer
+          permissions={WRITE_MEDIA_PERMISSIONS}
+          title={t( "Save-photos-to-your-gallery" )}
+          titleDenied={t( "Please-Allow-Gallery-Access" )}
+          body={t( "Save-photos-to-your-gallery-to-create-observations" )}
+          blockedPrompt={t( "Youve-previously-denied-add-photo-permissions" )}
+          buttonText={t( "ADD-PHOTOS" )}
+          icon="gallery"
+          image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+          onPermissionGranted={onPermissionGranted}
+          onPermissionDenied={onPermissionDenied}
+          onPermissionBlocked={onPermissionBlocked}
+          withoutNavigation
+        />
+      )}
       {cameraType === "Standard"
         ? (
           <StandardCamera
