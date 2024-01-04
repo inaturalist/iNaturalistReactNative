@@ -62,6 +62,7 @@ type Props = {
   onPermissionGranted?: Function,
   permissionNeeded?: boolean,
   permissions: Array<string>,
+  setModalHidden?: Function,
   setModalWasClosed?: Function,
   testID?: string,
   title?: string,
@@ -105,6 +106,7 @@ const PermissionGateContainer = ( {
   onPermissionGranted,
   permissionNeeded = true,
   permissions,
+  setModalHidden,
   setModalWasClosed,
   testID,
   title,
@@ -142,6 +144,9 @@ const PermissionGateContainer = ( {
       setModalShown( true );
       return () => {};
     }
+    if ( setModalHidden ) {
+      setModalHidden( true );
+    }
     if ( !withoutNavigation ) {
       const unsubscribe = navigation.addListener( "focus", async () => {
         await checkPermission( );
@@ -156,6 +161,7 @@ const PermissionGateContainer = ( {
     navigation,
     permissionNeeded,
     result,
+    setModalHidden,
     withoutNavigation
   ] );
 
