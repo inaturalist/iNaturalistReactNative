@@ -64,7 +64,6 @@ const CameraWithDevice = ( {
   const [checkmarkTapped, setCheckmarkTapped] = useState( false );
   const [taxonResult, setTaxonResult] = useState( null );
   const [modalWasClosed, setModalWasClosed] = useState( false );
-  const [modalHidden, setModalHidden] = useState( false );
 
   const {
     createEvidenceForObsEdit
@@ -107,8 +106,7 @@ const CameraWithDevice = ( {
   };
 
   useEffect( ( ) => {
-    if ( checkmarkTapped
-      && ( modalHidden || modalWasClosed ) ) {
+    if ( checkmarkTapped && modalWasClosed ) {
       setCheckmarkTapped( false );
       setModalWasClosed( false );
       navToObsEdit( );
@@ -117,7 +115,6 @@ const CameraWithDevice = ( {
     navToObsEdit,
     checkmarkTapped,
     modalWasClosed,
-    modalHidden,
     addPhotoPermissionResult
   ] );
 
@@ -135,8 +132,7 @@ const CameraWithDevice = ( {
         onPermissionDenied={onPermissionDenied}
         withoutNavigation
         setModalWasClosed={setModalWasClosed}
-        setModalHidden={setModalHidden}
-        permissionNeeded={checkmarkTapped && addPhotoPermissionResult === null}
+        permissionNeeded={checkmarkTapped}
       />
       {cameraType === "Standard"
         ? (
