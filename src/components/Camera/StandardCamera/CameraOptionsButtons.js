@@ -18,7 +18,7 @@ type Props = {
   disallowAddingPhotos: boolean,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
-  navToObsEdit: Function,
+  handleCheckmarkPress: Function,
   toggleFlash: Function,
   flipCamera: Function,
   changeZoom: Function,
@@ -34,7 +34,7 @@ const CameraOptionsButtons = ( {
   disallowAddingPhotos,
   photosTaken,
   rotatableAnimatedStyle,
-  navToObsEdit,
+  handleCheckmarkPress,
   toggleFlash,
   flipCamera,
   hasFlash,
@@ -75,7 +75,7 @@ const CameraOptionsButtons = ( {
       disallowAddingPhotos={disallowAddingPhotos}
       photosTaken={photosTaken}
       rotatableAnimatedStyle={rotatableAnimatedStyle}
-      navToObsEdit={navToObsEdit}
+      handleCheckmarkPress={handleCheckmarkPress}
       toggleFlash={toggleFlash}
       flipCamera={flipCamera}
       hasFlash={hasFlash}

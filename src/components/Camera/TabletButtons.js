@@ -42,7 +42,7 @@ type Props = {
   disallowAddingPhotos?: boolean,
   photosTaken?: boolean,
   rotatableAnimatedStyle: Object,
-  navToObsEdit?: Function,
+  handleCheckmarkPress?: Function,
   toggleFlash: Function,
   flipCamera: Function,
   changeZoom: Function,
@@ -72,7 +72,7 @@ const TabletButtons = ( {
   disallowAddingPhotos,
   photosTaken,
   rotatableAnimatedStyle,
-  navToObsEdit,
+  handleCheckmarkPress,
   toggleFlash,
   flipCamera,
   hasFlash,
@@ -125,7 +125,7 @@ const TabletButtons = ( {
           className={classnames( checkmarkClasses, "mb-[25px]" )}
         >
           <GreenCheckmark
-            navToObsEdit={navToObsEdit}
+            handleCheckmarkPress={handleCheckmarkPress}
           />
         </Animated.View>
       ) }

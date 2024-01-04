@@ -1439,6 +1439,5 @@ Native-to = Native to { $displayName }
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 
 Save-photos-to-your-gallery = Save photos to your gallery
-Save-photos-to-your-gallery-to-create-observations = Save photos to your gallery to create observations
-ADD-PHOTOS = ADD PHOTOS
-Youve-previously-denied-add-photo-permissions = You've previously denied add photo permissions
+iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
+SAVE-PHOTOS = SAVE PHOTOS
