@@ -136,6 +136,7 @@ const CameraWithDevice = ( {
         withoutNavigation
         setModalWasClosed={setModalWasClosed}
         setModalHidden={setModalHidden}
+        permissionNeeded={checkmarkTapped && addPhotoPermissionResult === null}
       />
       {cameraType === "Standard"
         ? (
