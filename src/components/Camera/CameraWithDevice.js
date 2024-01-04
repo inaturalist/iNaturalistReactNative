@@ -106,7 +106,8 @@ const CameraWithDevice = ( {
   };
 
   useEffect( ( ) => {
-    if ( checkmarkTapped && modalWasClosed ) {
+    if ( checkmarkTapped
+        && ( modalWasClosed || addPhotoPermissionResult === "granted" ) ) {
       setCheckmarkTapped( false );
       setModalWasClosed( false );
       navToObsEdit( );
