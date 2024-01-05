@@ -504,10 +504,23 @@ No-photos-found = No photos found. If this is your first time opening the app an
 no-rights-reserved-cc0-cc0 = no rights reserved (CC0) (CC0)
 
 # Header for observation description on observation detail
-# Header for observation description on observation detail
 NOTES = NOTES
 
 Notifications = Notifications
+
+# notification when someone adds an identification to your observation
+Notification-Identification = added an identification to an observation by you
+
+# notification when someone adds an identification to your observation
+Notification-Comment = added a comment to an observation by you
+
+# notification when someone mentions you in a comment to an observations by you
+Notification-Comment = mentioned you in an observation by you
+
+No-Notifications-Found = You have no notifications! Get started by creating your own observations.
+
+Offline-No-Notifications = Cannot fetch notifications at this time.
+
 
 Obscured = Obscured
 
