@@ -27,7 +27,7 @@ const SuggestionsContainer = ( ): Node => {
     longitude: currentObservation?.longitude
   } );
 
-  const tryOfflineSuggestions = !onlineSuggestions || onlineSuggestions?.length === 0;
+  const tryOfflineSuggestions = !onlineSuggestions || onlineSuggestions?.results?.length === 0;
   const {
     offlineSuggestions,
     loadingOfflineSuggestions

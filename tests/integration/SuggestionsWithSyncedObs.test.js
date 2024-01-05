@@ -17,26 +17,12 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
+import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
-const mockOfflinePrediction = {
-  score: 0.97363,
-  taxon: {
-    rank_level: 10,
-    name: "Felis Catus",
-    id: 118552
-  }
-};
-
-// TODO remove this mock. This is an integration test, so we should only mock
-// things outside of this app's code, which in this case is
-// vision-camera-plugin-inatvision
-jest.mock( "components/Suggestions/hooks/useOfflineSuggestions", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    offlineSuggestions: [mockOfflinePrediction],
-    loadingOfflineSuggestions: false
-  } )
-} ) );
+const mockModelPrediction = factory( "ModelPrediction", {
+  // useOfflineSuggestions will filter out taxa w/ rank_level > 40
+  rank: 20
+} );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -348,14 +334,16 @@ describe( "Suggestions", ( ) => {
   it(
     "should try offline suggestions if no online suggestions are found",
     async ( ) => {
-      const mockScoreImageResponse = makeResponse( [] );
-      inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
+      inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
+      getPredictionsForImage.mockImplementation(
+        async ( ) => ( [mockModelPrediction] )
+      );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
       const offlineNotice = await screen.findByText( "Viewing Offline Suggestions" );
       expect( offlineNotice ).toBeVisible( );
       const topOfflineTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockOfflinePrediction.taxon.id}.checkmark`
+        `SuggestionsList.taxa.${mockModelPrediction.taxon_id}.checkmark`
       );
       expect( topOfflineTaxonResultButton ).toBeTruthy( );
       await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );
