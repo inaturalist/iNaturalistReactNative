@@ -12,9 +12,7 @@ import Realm from "realm";
 import realmConfig from "realmModels/index";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
-import { renderObservationsStackNavigatorWithObservations } from "tests/helpers/render";
-
-const initialStoreState = useStore.getState( );
+import { renderAppWithObservations } from "tests/helpers/render";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -55,6 +53,8 @@ jest.mock( "providers/contexts", ( ) => {
     }
   };
 } );
+
+const initialStoreState = useStore.getState( );
 
 // Open a realm connection and stuff it in global
 beforeAll( async ( ) => {
@@ -127,7 +127,7 @@ describe( "Suggestions", ( ) => {
       async ( ) => {
         const observations = makeMockObservations( );
         useStore.setState( { observations } );
-        await renderObservationsStackNavigatorWithObservations( observations, __filename );
+        await renderAppWithObservations( observations, __filename );
         await navigateToSuggestionsForObservation( observations[0] );
         const topTaxonResultButton = await screen.findByTestId(
           `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
@@ -141,7 +141,7 @@ describe( "Suggestions", ( ) => {
 
     it( "should navigate back to ObsEdit when another suggestion chosen", async ( ) => {
       const observations = makeMockObservations( );
-      await renderObservationsStackNavigatorWithObservations( observations, __filename );
+      await renderAppWithObservations( observations, __filename );
       await navigateToSuggestionsForObservation( observations[0] );
       const otherTaxonResultButton = await screen.findByTestId(
         `SuggestionsList.taxa.${otherSuggestion.taxon.id}.checkmark`
@@ -161,12 +161,10 @@ describe( "Suggestions", ( ) => {
           factory( "LocalObservation", { geoprivacy: "obscured" } )
         ];
         useStore.setState( { observations } );
-        await renderObservationsStackNavigatorWithObservations( observations, __filename );
+        await renderAppWithObservations( observations, __filename );
         await navigateToSuggestionsForObservation( observations[0] );
-        console.log( "[DEBUG Suggestions.test.js] finding search button" );
         const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
         await actor.press( searchButton );
-        console.log( "[DEBUG Suggestions.test.js] finding search input" );
         const searchInput = await screen.findByLabelText( "Search for a taxon" );
         const mockSearchResultTaxon = factory( "RemoteTaxon" );
         inatjs.search.mockResolvedValue( makeResponse( [

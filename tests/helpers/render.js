@@ -4,9 +4,8 @@ import {
   QueryClient,
   QueryClientProvider
 } from "@tanstack/react-query";
-import { render } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import App from "components/App";
-import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -49,7 +48,7 @@ function renderApp( update = null ) {
   return renderAppWithComponent( null, update );
 }
 
-async function renderObservationsStackNavigatorWithObservations(
+async function renderAppWithObservations(
   observations: Array,
   realmIdentifier: string
 ): any {
@@ -72,14 +71,20 @@ async function renderObservationsStackNavigatorWithObservations(
       } );
     } ) );
   }
-  renderComponent(
-    <ObservationsStackNavigator />
-  );
+  // Render the whole app with all the navigators
+  renderAppWithComponent( );
+  // If we don't wait for the obs to render we get errors about things
+  // happening outside of act(). Most tests will do this anyway, but this
+  // caused me a lot of confusion when I was trying to debug other problems
+  // by removing code until I was just rendering the stack navigator... and
+  // that was still erroring out. Hopefully this will prevent that particular
+  // point of confusion in the future. ~~~kueda 20240104
+  await screen.findByTestId( `MyObservations.obsListItem.${observations[0].uuid}` );
 }
 
 export {
   renderApp,
   renderAppWithComponent,
-  renderComponent,
-  renderObservationsStackNavigatorWithObservations
+  renderAppWithObservations,
+  renderComponent
 };
