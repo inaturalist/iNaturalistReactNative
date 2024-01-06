@@ -105,7 +105,7 @@ const ObsDetailsContainer = ( ): Node => {
   const { params } = useRoute();
   const {
     comment,
-    taxonSuggested,
+    suggestedTaxonId,
     uuid,
     vision
   } = params;
@@ -310,12 +310,12 @@ const ObsDetailsContainer = ( ): Node => {
   );
 
   const onIDAdded = useCallback( () => {
-    if ( !taxonSuggested ) return;
+    if ( !suggestedTaxonId ) return;
 
     // New taxon identification added by user
     const idParams = {
       observation_id: uuid,
-      taxon_id: taxonSuggested.id,
+      taxon_id: suggestedTaxonId,
       vision
     };
 
@@ -328,13 +328,13 @@ const ObsDetailsContainer = ( ): Node => {
     createIdentificationMutation.mutate( { identification: idParams } );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taxonSuggested, uuid, vision] );
+  }, [suggestedTaxonId, uuid, vision] );
 
   useEffect( () => {
-    if ( !taxonSuggested ) return;
+    if ( !suggestedTaxonId ) return;
 
     onIDAdded();
-  }, [onIDAdded, taxonSuggested] );
+  }, [onIDAdded, suggestedTaxonId] );
 
   useEffect( ( ) => {
     if (

@@ -10,7 +10,7 @@ import Realm from "realm";
 import realmConfig from "realmModels/index";
 import factory from "tests/factory";
 import {
-  renderObservationsStackNavigatorWithObservations
+  renderAppWithObservations
 } from "tests/helpers/render";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -96,7 +96,7 @@ describe( "ObsEdit", ( ) => {
     } );
 
     async function navigateToObsEditOrObsDetails( observations ) {
-      await renderObservationsStackNavigatorWithObservations( observations, __filename );
+      await renderAppWithObservations( observations, __filename );
       const observationRow = await screen.findByTestId(
         `MyObservations.obsListItem.${observations[0].uuid}`
       );

@@ -111,10 +111,9 @@ class Observation extends Realm.Object {
     const taxon = obs.taxon
       ? Taxon.mapApiToRealm( obs.taxon )
       : null;
-    const observationPhotos = obs.observation_photos
-      ? obs.observation_photos.map( obsPhoto => ObservationPhoto
-        .mapApiToRealm( obsPhoto, existingObs ) )
-      : [];
+    const observationPhotos = (
+      obs.observation_photos || obs.observationPhotos || []
+    ).map( obsPhoto => ObservationPhoto.mapApiToRealm( obsPhoto, existingObs ) );
 
     const identifications = obs.identifications
       ? obs.identifications.map( id => Identification.mapApiToRealm( id ) )
@@ -234,7 +233,7 @@ class Observation extends Realm.Object {
     const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
     const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
 
-    const obs = realm?.objects( "Observation" );
+    const obs = realm.objects( "Observation" );
     const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
     return unsyncedObs;
   };
