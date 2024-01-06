@@ -3,9 +3,10 @@ Welcome! We're excited that you're interested in contributing to the iNaturalist
 
 We welcome volunteer contributions! This app is still early in its development and a lot of things are in flux, but there's usually something to work on. Please keep the following in mind:
 
-1. Work on [existing issues](https://github.com/inaturalist/iNaturalistReactNative/issues) (though if you have ideas for improvement that aren't directly related to features, let us know). If you'd like to work on something, please leave a comment on that issue and we'll assign you to avoid overlapping work.
-2. Name your branch starting with the issue number and then something descriptive, e.g. `123-login-with-locale-crash`
-3. We try to review pull requests as soon as we can, but that might be up to a week or two
+1. Work on [existing issues](https://github.com/inaturalist/iNaturalistReactNative/issues) (though if you have ideas for improvement that aren't directly related to features, let us know)
+1. Leave a comment on the issue so we can assign you and other people know not to work on it
+1. Name your branch starting with the issue number and then something descriptive, e.g. `123-login-with-locale-crash`
+1. We try to review pull requests as soon as we can, but that might be up to a week or two
 
 ## Getting Started
 1. Fork the repository.
