@@ -274,7 +274,7 @@ class Observation extends Realm.Object {
     // then tries to add photos to observation later
     const currentObservationPhotos = currentObservation?.observationPhotos || [];
 
-    const updatedObs = currentObservation;
+    const updatedObs = currentObservation.toJSON( );
     updatedObs.observationPhotos = [...currentObservationPhotos, ...obsPhotos];
     return updatedObs;
   };

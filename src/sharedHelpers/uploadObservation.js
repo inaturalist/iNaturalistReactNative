@@ -65,16 +65,18 @@ const uploadEvidence = async (
   const responses = await Promise.all( evidence.map( item => {
     const currentEvidence = item.toJSON( );
 
-    // Remove all null values, b/c the API doesn't seem to like them
-    const newPhoto = {};
-    const photo = currentEvidence?.photo;
-    Object.keys( photo ).forEach( k => {
-      if ( photo[k] !== null ) {
-        newPhoto[k] = photo[k];
-      }
-    } );
+    if ( currentEvidence?.photo !== null ) {
+      // Remove all null values, b/c the API doesn't seem to like them
+      const newPhoto = {};
+      const photo = currentEvidence?.photo;
+      Object.keys( photo ).forEach( k => {
+        if ( photo[k] !== null ) {
+          newPhoto[k] = photo[k];
+        }
+      } );
 
-    currentEvidence.photo = newPhoto;
+      currentEvidence.photo = newPhoto;
+    }
 
     return uploadToServer( currentEvidence );
   } ) );
