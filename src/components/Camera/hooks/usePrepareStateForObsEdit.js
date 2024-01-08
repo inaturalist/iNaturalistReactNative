@@ -70,7 +70,7 @@ const usePrepareStateForObsEdit = (
     return savePhotosToCameraGallery( localFilePaths );
   }, [savePhotosToCameraGallery, setObservations] );
 
-  const createEvidenceForObsEdit = useCallback( async localTaxon => {
+  const prepareStateForObsEdit = useCallback( async localTaxon => {
     if ( addEvidence ) {
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( evidenceToAdd, {
@@ -102,7 +102,7 @@ const usePrepareStateForObsEdit = (
   ] );
 
   return {
-    createEvidenceForObsEdit: localTaxon => createEvidenceForObsEdit( localTaxon )
+    prepareStateForObsEdit: localTaxon => prepareStateForObsEdit( localTaxon )
   };
 };
 

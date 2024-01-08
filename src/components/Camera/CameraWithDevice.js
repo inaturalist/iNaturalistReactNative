@@ -66,7 +66,7 @@ const CameraWithDevice = ( {
   const [modalWasClosed, setModalWasClosed] = useState( false );
 
   const {
-    createEvidenceForObsEdit
+    prepareStateForObsEdit
   } = usePrepareStateForObsEdit( addPhotoPermissionResult, addEvidence );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
@@ -83,12 +83,12 @@ const CameraWithDevice = ( {
     : "flex-col";
 
   const navToObsEdit = useCallback( async ( ) => {
-    await createEvidenceForObsEdit( taxonResult );
+    await prepareStateForObsEdit( taxonResult );
     if ( taxonResult ) {
       setTaxonResult( null );
     }
     navigation.navigate( "ObsEdit" );
-  }, [taxonResult, createEvidenceForObsEdit, navigation] );
+  }, [taxonResult, prepareStateForObsEdit, navigation] );
 
   const handleCheckmarkPress = localTaxon => {
     setTaxonResult( localTaxon?.id
