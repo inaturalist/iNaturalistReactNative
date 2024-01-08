@@ -6,7 +6,7 @@ import {
   isFuture,
   parseISO
 } from "date-fns";
-import { difference } from "lodash";
+import { difference, isNil } from "lodash";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -45,6 +45,7 @@ const EvidenceSectionContainer = ( {
   );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
+  const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
 
   const [
     shouldRetryCurrentObservationLocation,
@@ -106,16 +107,19 @@ const EvidenceSectionContainer = ( {
   }, [currentObservation] );
 
   const hasValidLocation = useMemo( ( ) => {
-    if ( hasLocation
-      && ( latitude !== 0 && longitude !== 0 )
-      && ( latitude >= -90 && latitude <= 90 )
-      && ( longitude >= -180 && longitude <= 180 )
-      && ( currentObservation?.positional_accuracy === null
-        || currentObservation?.positional_accuracy === undefined
-        || (
-          currentObservation?.positional_accuracy
-        && currentObservation?.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
-      )
+    const coordinatesExist = latitude !== 0 && longitude !== 0;
+    const latitudeInRange = latitude >= -90 && latitude <= 90;
+    const longitudeInRange = longitude >= -180 && longitude <= 180;
+    const positionalAccuracyBlank = isNil( currentObservation?.positional_accuracy );
+    const positionalAccuracyDesireable = (
+      currentObservation?.positional_accuracy || 0
+    ) <= DESIRED_LOCATION_ACCURACY;
+    if (
+      hasLocation
+      && coordinatesExist
+      && latitudeInRange
+      && longitudeInRange
+      && ( positionalAccuracyBlank || positionalAccuracyDesireable )
     ) {
       return true;
     }
@@ -158,16 +162,26 @@ const EvidenceSectionContainer = ( {
   const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
 
   const handleDragAndDrop = ( { data } ) => {
-    data.forEach( ( obsPhoto, index ) => {
+    // Turn from Realm object to simple JS objects (so we can update the position)
+    const newObsPhotos = data.map( obsPhoto => obsPhoto.toJSON() );
+    newObsPhotos.forEach( ( obsPhoto, index ) => {
       obsPhoto.position = index;
     } );
 
     updateObservationKeys( {
-      observationPhotos: data
+      observationPhotos: newObsPhotos
     } );
-    const uris = data.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
+    const uris = newObsPhotos.map(
+      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+    );
     setPhotoEvidenceUris( uris );
   };
+
+  useEffect( () => {
+    if ( !currentPlaceGuess ) return;
+
+    updateObservationKeys( { place_guess: currentPlaceGuess } );
+  }, [currentPlaceGuess, updateObservationKeys] );
 
   // Set the place_guess if not already set and coordinates are available.
   // Note that at present this sets the place_guess for *any* obs that lacks
@@ -178,7 +192,11 @@ const EvidenceSectionContainer = ( {
     async function setPlaceGuess( ) {
       const placeGuess = await fetchPlaceName( latitude, longitude );
       if ( placeGuess ) {
-        updateObservationKeys( { place_guess: placeGuess } );
+        // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
+        // a while to return, in the meantime the current copy of the observation might have
+        // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
+        // always have the latest copy of the current observation (see GH issue #584)
+        setCurrentPlaceGuess( placeGuess );
       }
     }
     if ( ( latitude && longitude ) && !currentObservation?.place_guess ) {
@@ -199,7 +217,7 @@ const EvidenceSectionContainer = ( {
       handleDragAndDrop={handleDragAndDrop}
       passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
-      photos={photos || []}
+      photos={currentObservation?.observationPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       onLocationPermissionGranted={( ) => {

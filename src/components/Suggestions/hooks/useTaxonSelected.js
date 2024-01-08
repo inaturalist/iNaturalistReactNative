@@ -27,7 +27,7 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
         uuid: currentObservation.uuid,
         // TODO refactor so we're not passing complex objects as params; all
         // obs details really needs to know is the ID of the taxon
-        taxonSuggested: selectedTaxon,
+        suggestedTaxonId: selectedTaxon.id,
         comment,
         vision
       } );

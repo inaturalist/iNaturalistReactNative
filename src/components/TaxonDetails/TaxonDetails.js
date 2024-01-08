@@ -3,14 +3,13 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchTaxon } from "api/taxa";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import PlaceholderText from "components/PlaceholderText";
 import {
+  ActivityIndicator,
   BackButton,
-  Heading4,
-  HideView,
+  Body2,
   INatIconButton,
-  KebabMenu, ScrollViewWrapper,
-  Tabs
+  ScrollViewWrapper,
+  KebabMenu
 } from "components/SharedComponents";
 import {
   Image,
@@ -28,18 +27,17 @@ import {
 import { Menu, useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
-import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 
-import About from "./About";
+import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
+import Taxonomy from "./Taxonomy";
+import Wikipedia from "./Wikipedia";
 
 const logger = log.extend( "TaxonDetails" );
 
 const { useRealm } = RealmContext;
-
-const ABOUT_TAB_ID = "ABOUT";
-const DATA_TAB_ID = "DATA";
 
 const TAXON_URL = "https://www.inaturalist.org/taxa";
 
@@ -49,12 +47,17 @@ const TaxonDetails = ( ): Node => {
   const { params } = useRoute( );
   const { id } = params;
   const { t } = useTranslation( );
-  const [currentTabId, setCurrentTabId] = useState( ABOUT_TAB_ID );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const { remoteUser } = useUserMe( );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
+    
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
+
+  const taxonFetchParams = {
+    place_id: remoteUser?.place_id
+  };
 
   // Note that we want to authenticate this to localize names, desc language, etc.
   const {
@@ -64,28 +67,13 @@ const TaxonDetails = ( ): Node => {
     error
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
-    optsWithAuth => fetchTaxon( id, {}, optsWithAuth )
+    optsWithAuth => fetchTaxon( id, taxonFetchParams, optsWithAuth )
   );
   if ( error ) {
     logger.error( `Failed to retrieve taxon ${id}: ${error}` );
   }
   const taxon = remoteTaxon || localTaxon;
   const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
-
-  const tabs = [
-    {
-      id: ABOUT_TAB_ID,
-      testID: "TaxonDetails.AboutTab",
-      onPress: () => setCurrentTabId( ABOUT_TAB_ID ),
-      text: t( "ABOUT" )
-    },
-    {
-      id: DATA_TAB_ID,
-      testID: "TaxonDetails.DataTab",
-      onPress: () => setCurrentTabId( DATA_TAB_ID ),
-      text: t( "DATA" )
-    }
-  ];
 
   const photos = compact(
     taxon?.taxonPhotos
@@ -101,17 +89,39 @@ const TaxonDetails = ( ): Node => {
   ), [taxon] );
 
   const openURLInBrowser = async url => {
-    try {
-      const canOpen = await Linking.canOpenURL( url );
+        try {
+            const canOpen = await Linking.canOpenURL( url );
+            
+            if ( canOpen ) {
+                await Linking.openURL( url );
+            } else {
+                console.error( "Cannot open URL" );
+            }
+        } catch ( exc ) {
+            console.error( "An error occurred", exc );
+        }
+    };
 
-      if ( canOpen ) {
-        await Linking.openURL( url );
-      } else {
-        console.error( "Cannot open URL" );
-      }
-    } catch ( exc ) {
-      console.error( "An error occurred", exc );
+  const displayTaxonDetails = ( ) => {
+    if ( isLoading ) {
+      return <View className="m-3"><ActivityIndicator /></View>;
     }
+
+    if ( isError || !taxon ) {
+      return (
+        <View className="m-3">
+          <Body2>{t( "Error-Could-Not-Fetch-Taxon" )}</Body2>
+        </View>
+      );
+    }
+
+    return (
+      <View className="mx-3">
+        <EstablishmentMeans taxon={taxon} />
+        <Wikipedia taxon={taxon} />
+        <Taxonomy taxon={taxon} />
+      </View>
+    );
   };
 
   return (
@@ -208,22 +218,7 @@ const TaxonDetails = ( ): Node => {
           />
         </View>
       </View>
-      <Tabs tabs={tabs} activeId={currentTabId} />
-      <HideView show={currentTabId === ABOUT_TAB_ID}>
-        <About taxon={taxon} isLoading={isLoading} isError={isError} />
-      </HideView>
-      <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
-        <View className="m-3">
-          <Heading4>{ t( "MY-OBSERVATIONS" ) }</Heading4>
-          <PlaceholderText text="TODO" />
-          <Heading4>{ t( "GRAPHS" ) }</Heading4>
-          <PlaceholderText text="TODO" />
-          <Heading4>{ t( "TOP-OBSERVERS" ) }</Heading4>
-          <PlaceholderText text="TODO" />
-          <Heading4>{ t( "TOP-IDENTIFIERS" ) }</Heading4>
-          <PlaceholderText text="TODO" />
-        </View>
-      </HideView>
+      {displayTaxonDetails( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}

@@ -5,6 +5,19 @@ import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
 
 class ObservationSound extends Realm.Object {
+  static OBSERVATION_SOUNDS_FIELDS = {
+    id: true,
+    file_url: true,
+    flags: {
+      id: true,
+      created_at: true,
+      resolved_at: true,
+      updated_at: true,
+      uuid: true
+    },
+    uuid: true
+  };
+
   wasSynced( ) {
     return this._synced_at !== null;
   }

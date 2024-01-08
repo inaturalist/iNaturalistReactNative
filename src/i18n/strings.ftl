@@ -745,9 +745,6 @@ Sign-out = Sign out
 
 Sign-Up = Sign Up
 
-# Header for a section showing taxa similar to a single taxon
-SIMILAR-SPECIES-header = SIMILAR SPECIES
-
 # license code
 some-rights-reserved = some rights reserved
 
@@ -856,6 +853,8 @@ Username = Username
 
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
+
+VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
@@ -1233,7 +1232,6 @@ INATURALIST-ROLE = INATURALIST {$role}
 Affiliation = Affiliation: {$site}
 Monthly-Donor = Monthly Donor
 
-VIEW-SIMILAR-SPECIES = VIEW SIMILAR SPECIES
 WIKIPEDIA = WIKIPEDIA
 
 # Header for a section showing the viewer's observations
@@ -1434,3 +1432,8 @@ Viewing-Offline-Suggestions = Viewing Offline Suggestions
 
 Viewing-Offline-Suggestions-results-may-differ =
     Results may differ from the online suggestions and images and common names may not display.
+
+Endemic-to = Endemic to { $displayName }
+Introduced-to = Introduced to { $displayName }
+Native-to = Native to { $displayName }
+Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
