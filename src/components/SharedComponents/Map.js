@@ -2,6 +2,7 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { View } from "components/styledComponents";
@@ -27,7 +28,6 @@ import { useDeviceOrientation } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
-import classnames from "classnames";
 
 const calculateZoom = ( width, delta ) => Math.round(
   Math.log2( 360 * ( width / 256 / delta ) ) + 1
