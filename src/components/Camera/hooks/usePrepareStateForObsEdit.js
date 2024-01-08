@@ -6,13 +6,12 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
-import { log } from "../../../../react-native-logs.config";
+const logger = log.extend( "usePrepareStateForObsEdit" );
 
-const logger = log.extend( "useCreateEvidence" );
-
-const useCreateEvidence = (
+const usePrepareStateForObsEdit = (
   permissionGranted: ?string,
   addEvidence: ?boolean
 ): Object => {
@@ -107,4 +106,4 @@ const useCreateEvidence = (
   };
 };
 
-export default useCreateEvidence;
+export default usePrepareStateForObsEdit;

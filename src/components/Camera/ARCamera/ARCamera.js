@@ -24,7 +24,7 @@ import {
 } from "../helpers";
 import ARCameraButtons from "./ARCameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
-import useModelLoaded from "./hooks/useModelLoaded";
+import usePredictions from "./hooks/usePredictions";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -63,7 +63,7 @@ const ARCamera = ( {
   const {
     rotatableAnimatedStyle
   } = useRotation( );
-  const { result, modelLoaded, handleTaxaDetected } = useModelLoaded( );
+  const { result, modelLoaded, handleTaxaDetected } = usePredictions( );
   const {
     takePhoto,
     takePhotoOptions,

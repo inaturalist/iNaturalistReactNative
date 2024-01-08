@@ -29,7 +29,7 @@ import useDeviceOrientation, {
 } from "sharedHooks/useDeviceOrientation";
 
 import ARCamera from "./ARCamera/ARCamera";
-import useCreateEvidence from "./hooks/useCreateEvidence";
+import usePrepareStateForObsEdit from "./hooks/usePrepareStateForObsEdit";
 import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
@@ -67,7 +67,7 @@ const CameraWithDevice = ( {
 
   const {
     createEvidenceForObsEdit
-  } = useCreateEvidence( addPhotoPermissionResult, addEvidence );
+  } = usePrepareStateForObsEdit( addPhotoPermissionResult, addEvidence );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 

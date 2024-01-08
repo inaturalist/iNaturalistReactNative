@@ -7,7 +7,7 @@ import {
   Platform
 } from "react-native";
 
-const useModelLoaded = ( ): Object => {
+const usePredictions = ( ): Object => {
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
 
@@ -78,4 +78,4 @@ const useModelLoaded = ( ): Object => {
   };
 };
 
-export default useModelLoaded;
+export default usePredictions;

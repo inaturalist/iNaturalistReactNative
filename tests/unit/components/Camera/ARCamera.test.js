@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
 import ARCamera from "components/Camera/ARCamera/ARCamera";
-import * as useModelLoaded from "components/Camera/ARCamera/hooks/useModelLoaded";
+import * as usePredictions from "components/Camera/ARCamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
@@ -45,7 +45,7 @@ const mockModelLoaded = {
   result: null
 };
 
-jest.mock( "components/Camera/ARCamera/hooks/useModelLoaded", () => ( {
+jest.mock( "components/Camera/ARCamera/hooks/usePredictions", () => ( {
   __esModule: true,
   default: () => mockModelLoaded
 } ) );
@@ -63,7 +63,7 @@ describe( "AR Camera", ( ) => {
     await initI18next( );
   } );
   it( "shows a taxon prediction when result & rank_level < 40", async () => {
-    jest.spyOn( useModelLoaded, "default" ).mockImplementation( () => ( {
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
       result: {
         taxon: mockTaxonPrediction
@@ -77,7 +77,7 @@ describe( "AR Camera", ( ) => {
   } );
 
   it( "shows scan area text when rank_level > 40", async () => {
-    jest.spyOn( useModelLoaded, "default" ).mockImplementation( () => ( {
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
@@ -92,7 +92,7 @@ describe( "AR Camera", ( ) => {
   } );
 
   it( "shows loading text when model not yet loaded", async () => {
-    jest.spyOn( useModelLoaded, "default" ).mockImplementation( () => ( {
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
       modelLoaded: false
     } ) );
@@ -104,7 +104,7 @@ describe( "AR Camera", ( ) => {
   } );
 
   it( "displays taxon photo if taxon exists in realm", ( ) => {
-    jest.spyOn( useModelLoaded, "default" ).mockImplementation( () => ( {
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
@@ -129,7 +129,7 @@ describe( "AR Camera", ( ) => {
         url: null
       }
     } ) );
-    jest.spyOn( useModelLoaded, "default" ).mockImplementation( () => ( {
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
