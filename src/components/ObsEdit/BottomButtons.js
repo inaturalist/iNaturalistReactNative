@@ -74,7 +74,7 @@ const BottomButtons = ( {
     await writeExifToCameraRollPhotos( {
       latitude: observation.latitude,
       longitude: observation.longitude,
-      positional_accuracy: observation.positionalAccuracy
+      positional_accuracy: observation.positional_accuracy
     } );
     return Observation.saveLocalObservationForUpload( observation, realm );
   }, [

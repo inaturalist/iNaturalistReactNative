@@ -12,7 +12,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import {
   renderApp,
-  renderObservationsStackNavigatorWithObservations
+  renderAppWithObservations
 } from "tests/helpers/render";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -121,7 +121,7 @@ describe( "MediaViewer navigation", ( ) => {
     } );
 
     async function navigateToObsEdit( ) {
-      await renderObservationsStackNavigatorWithObservations( observations, __filename );
+      await renderAppWithObservations( observations, __filename );
       const observationRow = await screen.findByTestId(
         `MyObservations.obsListItem.${observation.uuid}`
       );
@@ -203,7 +203,7 @@ describe( "MediaViewer navigation", ( ) => {
     useStore.setState( { observations } );
 
     async function navigateToObsDetail( ) {
-      await renderObservationsStackNavigatorWithObservations( observations, __filename );
+      await renderAppWithObservations( observations, __filename );
       const observationRow = await screen.findByTestId(
         `MyObservations.obsListItem.${observation.uuid}`
       );
@@ -276,7 +276,7 @@ describe( "MediaViewer navigation", ( ) => {
     } );
 
     async function navigateToTaxonDetail( ) {
-      await renderObservationsStackNavigatorWithObservations( observations, __filename );
+      await renderAppWithObservations( observations, __filename );
       const observationRow = await screen.findByTestId(
         `MyObservations.obsListItem.${observation.uuid}`
       );

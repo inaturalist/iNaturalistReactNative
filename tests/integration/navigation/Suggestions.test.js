@@ -1,5 +1,5 @@
 import {
-  // act,
+  act,
   screen,
   userEvent
 } from "@testing-library/react-native";
@@ -12,9 +12,7 @@ import Realm from "realm";
 import realmConfig from "realmModels/index";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
-import { renderObservationsStackNavigatorWithObservations } from "tests/helpers/render";
-
-const initialStoreState = useStore.getState( );
+import { renderAppWithObservations } from "tests/helpers/render";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -55,6 +53,8 @@ jest.mock( "providers/contexts", ( ) => {
     }
   };
 } );
+
+const initialStoreState = useStore.getState( );
 
 // Open a realm connection and stuff it in global
 beforeAll( async ( ) => {
@@ -127,7 +127,7 @@ describe( "Suggestions", ( ) => {
       async ( ) => {
         const observations = makeMockObservations( );
         useStore.setState( { observations } );
-        await renderObservationsStackNavigatorWithObservations( observations, __filename );
+        await renderAppWithObservations( observations, __filename );
         await navigateToSuggestionsForObservation( observations[0] );
         const topTaxonResultButton = await screen.findByTestId(
           `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
@@ -141,7 +141,7 @@ describe( "Suggestions", ( ) => {
 
     it( "should navigate back to ObsEdit when another suggestion chosen", async ( ) => {
       const observations = makeMockObservations( );
-      await renderObservationsStackNavigatorWithObservations( observations, __filename );
+      await renderAppWithObservations( observations, __filename );
       await navigateToSuggestionsForObservation( observations[0] );
       const otherTaxonResultButton = await screen.findByTestId(
         `SuggestionsList.taxa.${otherSuggestion.taxon.id}.checkmark`
@@ -152,40 +152,40 @@ describe( "Suggestions", ( ) => {
     } );
   } );
 
-  // TODO restore these tests. I broke them but couldn't figure out how to fix
-  // them in the time I had ~~~~kueda 20231215
-  // describe( "TaxonSearch", ( ) => {
-  //   it(
-  //     "should navigate back to ObsEdit with expected observation"
-  //     + " when reached from ObsEdit via Suggestions and search result chosen",
-  //     async ( ) => {
-  //       const observations = makeMockObservations( );
-  //       useStore.setState( { observations } );
-  //       await renderObservationsStackNavigatorWithObservations( observations, __filename );
-  //       await navigateToSuggestionsForObservation( observations[0] );
-  //       const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
-  //       await actor.press( searchButton );
-  //       const searchInput = await screen.findByLabelText( "Search for a taxon" );
-  //       const mockSearchResultTaxon = factory( "RemoteTaxon" );
-  //       inatjs.search.mockResolvedValue( makeResponse( [
-  //         {
-  //           taxon: mockSearchResultTaxon
-  //         }
-  //       ] ) );
-  //       await act(
-  //         async ( ) => actor.type(
-  //           searchInput,
-  //           "doesn't really matter since we're mocking the response"
-  //         )
-  //       );
-  //       const taxonResultButton = await screen.findByTestId(
-  //         `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
-  //       );
-  //       expect( taxonResultButton ).toBeTruthy( );
-  //       await actor.press( taxonResultButton );
-  //       expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
-  //       expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
-  //     }
-  //   );
-  // } );
+  describe( "TaxonSearch", ( ) => {
+    it(
+      "should navigate back to ObsEdit with expected observation"
+      + " when reached from ObsEdit via Suggestions and search result chosen",
+      async ( ) => {
+        const observations = [
+          factory( "LocalObservation", { geoprivacy: "obscured" } )
+        ];
+        useStore.setState( { observations } );
+        await renderAppWithObservations( observations, __filename );
+        await navigateToSuggestionsForObservation( observations[0] );
+        const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
+        await actor.press( searchButton );
+        const searchInput = await screen.findByLabelText( "Search for a taxon" );
+        const mockSearchResultTaxon = factory( "RemoteTaxon" );
+        inatjs.search.mockResolvedValue( makeResponse( [
+          {
+            taxon: mockSearchResultTaxon
+          }
+        ] ) );
+        await act(
+          async ( ) => actor.type(
+            searchInput,
+            "doesn't really matter since we're mocking the response"
+          )
+        );
+        const taxonResultButton = await screen.findByTestId(
+          `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
+        );
+        expect( taxonResultButton ).toBeTruthy( );
+        await actor.press( taxonResultButton );
+        expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
+        expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
+      }
+    );
+  } );
 } );
