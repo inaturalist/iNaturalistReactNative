@@ -1,43 +1,28 @@
 import { faker } from "@faker-js/faker";
 import {
-  // act,
+  act,
   screen,
-  userEvent
+  userEvent,
+  within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
-import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import os from "os";
 import path from "path";
-import React from "react";
 import Realm from "realm";
 import Identification from "realmModels/Identification";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
+import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
-import { renderComponent } from "tests/helpers/render";
+import { renderAppWithObservations } from "tests/helpers/render";
+import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
+import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
-const mockOfflinePrediction = {
-  score: 0.97363,
-  taxon: {
-    rank_level: 10,
-    name: "Felis Catus",
-    id: 118552
-  }
-};
-
-// const mockSearchResultTaxon = factory( "RemoteTaxon" );
-
-// TODO remove this mock. This is an integration test, so we should only mock
-// things outside of this app's code, which in this case is
-// vision-camera-plugin-inatvision
-jest.mock( "components/Suggestions/hooks/useOfflineSuggestions", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    offlineSuggestions: [mockOfflinePrediction],
-    loadingOfflineSuggestions: false
-  } )
-} ) );
+const mockModelPrediction = factory( "ModelPrediction", {
+  // useOfflineSuggestions will filter out taxa w/ rank_level > 40
+  rank: 20
+} );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -78,10 +63,13 @@ jest.mock( "providers/contexts", ( ) => {
   };
 } );
 
+const initialStoreState = useStore.getState( );
+
 // Open a realm connection and stuff it in global
 beforeAll( async ( ) => {
   global.mockRealms = global.mockRealms || {};
   global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
+  useStore.setState( initialStoreState, true );
   await initI18next();
   // userEvent recommends fake timers
   jest.useFakeTimers( );
@@ -94,183 +82,184 @@ afterAll( ( ) => {
 } );
 // /REALM SETUP
 
-const mockUser = factory( "LocalUser", {
-  login: "fake_login",
-  signedIn: true
-} );
+const mockUser = factory( "LocalUser" );
 
 const makeMockObservations = ( ) => ( [
-  factory( "LocalObservation", {
+  factory( "RemoteObservation", {
     _synced_at: faker.date.past( ),
+    needsSync: jest.fn( ( ) => false ),
+    wasSynced: jest.fn( ( ) => true ),
     // Suggestions won't load without a photo
     observationPhotos: [
-      factory( "LocalObservationPhoto" )
+      factory( "RemoteObservationPhoto" )
     ],
     user: mockUser,
-    positional_accuracy: 90,
-    observed_on_string: "2020-01-01",
-    latitude: Number( faker.location.latitude( ) ),
-    longitude: Number( faker.location.longitude( ) )
+    observed_on_string: "2020-01-01"
   } )
 ] );
 
-async function renderObservationsStackNavigatorWithObservations( observations ) {
-  // Save the mock observation in Realm
-  global.mockRealms[__filename].write( ( ) => {
-    global.mockRealms[__filename].create( "Observation", observations[0], "modified" );
-  } );
-  renderComponent(
-    <ObservationsStackNavigator />
-  );
+async function setupAppWithSignedInUser( ) {
+  const observations = makeMockObservations( );
+  useStore.setState( { observations } );
+  await renderAppWithObservations( observations, __filename );
+  return { observations };
 }
 
-// TODO restore these tests. I broke them but couldn't figure out how to fix
-// them in the time I had ~~~~kueda 20231215
-// const mockIdentification = factory( "RemoteIdentification", {
-//   uuid: "123456789",
-//   user: factory( "LocalUser" ),
-//   taxon: factory( "LocalTaxon", {
-//     name: "Miner's Lettuce",
-//     rank_level: 10
-//   } )
-// } );
-//
-// describe( "TaxonSearch", ( ) => {
-//   beforeEach( ( ) => {
-//     inatjs.identifications.create.mockResolvedValue( { results: [mockIdentification] } );
-//     inatjs.search.mockResolvedValue( makeResponse( [
-//       {
-//         taxon: mockSearchResultTaxon
-//       }
-//     ] ) );
-//     inatjs.observations.observers.mockResolvedValue( makeResponse( [
-//       {
-//         observation_count: faker.number.int( ),
-//         species_count: faker.number.int( ),
-//         user: factory( "RemoteUser" )
-//       }
-//     ] ) );
-//   } );
+// Mock the response from inatjs.computervision.score_image
+const topSuggestion = {
+  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
+  combined_score: 90
+};
+const otherSuggestion = {
+  taxon: factory( "RemoteTaxon", { name: "Alia suggestione" } ),
+  combined_score: 50
+};
 
-//   afterEach( ( ) => {
-//     inatjs.identifications.create.mockReset( );
-//     inatjs.search.mockReset( );
-//     inatjs.observations.observers.mockReset( );
-//   } );
+beforeEach( async ( ) => {
+  const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
+  inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
+  inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
+  inatjs.taxa.fetch.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
+  inatjs.observations.viewedUpdates.mockResolvedValue( makeResponse( ) );
+  inatjs.identifications.create.mockResolvedValue( {
+    results: [factory( "RemoteIdentification", {
+      taxon: topSuggestion.taxon,
+      user: mockUser
+    } )]
+  } );
+  await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+} );
 
-//   const actor = userEvent.setup( );
+afterEach( ( ) => {
+  inatjs.computervision.score_image.mockReset( );
+  inatjs.observations.observers.mockReset( );
+  inatjs.taxa.fetch.mockReset( );
+  inatjs.observations.viewedUpdates.mockReset( );
+  inatjs.identifications.create.mockReset( );
+  signOut( { realm: global.mockRealms[__filename] } );
+} );
 
-//   // We need to navigate from MyObs to ObsDetails to Suggestions to TaxonSearch for all of these
-//   // tests
-//   async function navigateToTaxonSearchForObservation( observation ) {
-//     const observationRow = await screen.findByTestId(
-//       `MyObservations.obsListItem.${observation.uuid}`
-//     );
-//     await actor.press( observationRow );
-//     const suggestIdButton = await screen.findByText( "SUGGEST ID" );
-//     await actor.press( suggestIdButton );
-//     const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
-//     await actor.press( searchButton );
-//   }
+describe( "TaxonSearch", ( ) => {
+  const mockSearchResultTaxon = factory( "RemoteTaxon" );
 
-//   async function navigateToTaxonSearchForObservationViaObsEdit( observation ) {
-//     const observationRow = await screen.findByTestId(
-//       `MyObservations.obsListItem.${observation.uuid}`
-//     );
-//     await actor.press( observationRow );
-//     const suggestIdButton = await screen.findByLabelText( "Edit" );
-//     await actor.press( suggestIdButton );
-//     const addIdButton = await screen.findByText( "ADD AN ID" );
-//     await actor.press( addIdButton );
-//     const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
-//     await actor.press( searchButton );
-//   }
-//
-//   it(
-//     "should create an id with false vision attribute when reached from ObsDetails via"
-//     + " Suggestions and search result chosen",
-//     async ( ) => {
-//       const observations = makeMockObservations( );
-//       await renderObservationsStackNavigatorWithObservations( observations );
-//       await navigateToTaxonSearchForObservation( observations[0] );
-//       const searchInput = await screen.findByLabelText( "Search for a taxon" );
-//       await act(
-//         async ( ) => actor.type(
-//           searchInput,
-//           "doesn't really matter since we're mocking the response"
-//         )
-//       );
-//       const taxonResultButton = await screen.findByTestId(
-//         `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
-//       );
-//       expect( taxonResultButton ).toBeTruthy( );
-//       await actor.press( taxonResultButton );
-//       expect( await screen.findByText( "ACTIVITY" ) ).toBeTruthy( );
-//       expect( inatjs.identifications.create ).toHaveBeenCalledWith( {
-//         fields: Identification.ID_FIELDS,
-//         identification: {
-//           observation_id: observations[0].uuid,
-//           taxon_id: mockSearchResultTaxon.id,
-//           vision: false
-//         }
-//       }, {
-//         api_token: null
-//       } );
-//     }
-//   );
-
-//   it(
-//     "should update observation with false vision attribute when reached from ObsEdit"
-//     + " and search result chosen",
-//     async ( ) => {
-//       const observations = makeMockObservations( );
-//       await renderObservationsStackNavigatorWithObservations( observations );
-//       await navigateToTaxonSearchForObservationViaObsEdit( observations[0] );
-//       const searchInput = await screen.findByLabelText( "Search for a taxon" );
-//       await act(
-//         async ( ) => actor.type(
-//           searchInput,
-//           "doesn't really matter since we're mocking the response"
-//         )
-//       );
-//       const taxonResultButton = await screen.findByTestId(
-//         `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
-//       );
-//       expect( taxonResultButton ).toBeTruthy( );
-//       await actor.press( taxonResultButton );
-//       const saveChangesButton = await screen.findByText( "SAVE CHANGES" );
-//       expect( saveChangesButton ).toBeTruthy( );
-//       await actor.press( saveChangesButton );
-//       const savedObservation = global.mockRealms[__filename]
-//         .objectForPrimaryKey( "Observation", observations[0].uuid );
-//       expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", false );
-//     }
-//   );
-// } );
-
-describe( "Suggestions", ( ) => {
-  // Mock the response from inatjs.computervision.score_image
-  const topSuggestion = {
-    taxon: factory( "RemoteTaxon", { name: "Primum suggestion" } ),
-    combined_score: 90
-  };
-  const otherSuggestion = {
-    taxon: factory( "RemoteTaxon", { name: "Alia suggestione" } ),
-    combined_score: 50
-  };
   beforeEach( ( ) => {
-    const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
-    inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
-    inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
-    inatjs.taxa.fetch.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
+    inatjs.search.mockResolvedValue( makeResponse( [
+      {
+        taxon: mockSearchResultTaxon
+      }
+    ] ) );
+    inatjs.observations.observers.mockResolvedValue( makeResponse( [
+      {
+        observation_count: faker.number.int( ),
+        species_count: faker.number.int( ),
+        user: factory( "RemoteUser" )
+      }
+    ] ) );
+    inatjs.taxa.fetch.mockResolvedValue( makeResponse( [] ) );
   } );
 
   afterEach( ( ) => {
-    inatjs.computervision.score_image.mockReset( );
+    inatjs.search.mockReset( );
     inatjs.observations.observers.mockReset( );
     inatjs.taxa.fetch.mockReset( );
   } );
 
+  const actor = userEvent.setup( );
+
+  // We need to navigate from MyObs to ObsDetails to Suggestions to TaxonSearch for all of these
+  // tests
+  async function navigateToTaxonSearchForObservation( observation ) {
+    const observationRow = await screen.findByTestId(
+      `MyObservations.obsListItem.${observation.uuid}`
+    );
+    await actor.press( observationRow );
+    const suggestIdButton = await screen.findByText( "SUGGEST ID" );
+    await act( async ( ) => actor.press( suggestIdButton ) );
+    await screen.findByTestId(
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+    );
+    const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
+    await actor.press( searchButton );
+  }
+
+  async function navigateToTaxonSearchForObservationViaObsEdit( observation ) {
+    const observationRow = await screen.findByTestId(
+      `MyObservations.obsListItem.${observation.uuid}`
+    );
+    await actor.press( observationRow );
+    const editButton = await screen.findByLabelText( "Edit" );
+    await act( async ( ) => actor.press( editButton ) );
+    const addIdButton = await screen.findByText( "ADD AN ID" );
+    await actor.press( addIdButton );
+    await screen.findByTestId(
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+    );
+    const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
+    await actor.press( searchButton );
+  }
+
+  it(
+    "should create an id with false vision attribute when reached from ObsDetails via"
+    + " Suggestions and search result chosen",
+    async ( ) => {
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToTaxonSearchForObservation( observations[0] );
+      const searchInput = await screen.findByLabelText( "Search for a taxon" );
+      expect( searchInput ).toBeVisible( );
+      await act(
+        async ( ) => actor.type(
+          searchInput,
+          "doesn't really matter since we're mocking the response"
+        )
+      );
+      const taxonResultButton = await screen.findByTestId(
+        `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
+      );
+      expect( taxonResultButton ).toBeTruthy( );
+      await actor.press( taxonResultButton );
+      expect( await screen.findByText( "ACTIVITY" ) ).toBeTruthy( );
+      expect( inatjs.identifications.create ).toHaveBeenCalledWith( {
+        fields: Identification.ID_FIELDS,
+        identification: {
+          observation_id: observations[0].uuid,
+          taxon_id: mockSearchResultTaxon.id,
+          vision: false
+        }
+      }, {
+        api_token: TEST_JWT
+      } );
+    }
+  );
+
+  it(
+    "should update observation with false vision attribute when reached from ObsEdit"
+    + " and search result chosen",
+    async ( ) => {
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToTaxonSearchForObservationViaObsEdit( observations[0] );
+      const searchInput = await screen.findByLabelText( "Search for a taxon" );
+      await act(
+        async ( ) => actor.type(
+          searchInput,
+          "doesn't really matter since we're mocking the response"
+        )
+      );
+      const taxonResultButton = await screen.findByTestId(
+        `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
+      );
+      expect( taxonResultButton ).toBeTruthy( );
+      await actor.press( taxonResultButton );
+      const saveChangesButton = await screen.findByText( "SAVE CHANGES" );
+      expect( saveChangesButton ).toBeTruthy( );
+      await actor.press( saveChangesButton );
+      const savedObservation = global.mockRealms[__filename]
+        .objectForPrimaryKey( "Observation", observations[0].uuid );
+      expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", false );
+    }
+  );
+} );
+
+describe( "Suggestions", ( ) => {
   const actor = userEvent.setup( );
 
   // We need to navigate from MyObs to ObsDetails to Suggestions for all of these
@@ -281,7 +270,7 @@ describe( "Suggestions", ( ) => {
     );
     await actor.press( observationRow );
     const suggestIdButton = await screen.findByText( "SUGGEST ID" );
-    await actor.press( suggestIdButton );
+    await act( async ( ) => actor.press( suggestIdButton ) );
   }
 
   async function navigateToSuggestionsForObservationViaObsEdit( observation ) {
@@ -289,75 +278,75 @@ describe( "Suggestions", ( ) => {
       `MyObservations.obsListItem.${observation.uuid}`
     );
     await actor.press( observationRow );
-    const suggestIdButton = await screen.findByLabelText( "Edit" );
-    await actor.press( suggestIdButton );
+    const editButton = await screen.findByLabelText( "Edit" );
+    await act( async ( ) => actor.press( editButton ) );
     const addIdButton = await screen.findByText( "ADD AN ID" );
     await actor.press( addIdButton );
   }
 
-  it(
-    "should create an id with true vision attribute when reached from ObsDetails"
-    + " and taxon chosen",
-    async ( ) => {
-      const observations = makeMockObservations( );
-      await renderObservationsStackNavigatorWithObservations( observations );
-      await navigateToSuggestionsForObservation( observations[0] );
-      const taxonId = topSuggestion.taxon.id;
-      console.log( taxonId, "top computer vision suggestion" );
-      const topTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${taxonId}.checkmark`
-      );
-      expect( topTaxonResultButton ).toBeTruthy( );
-      await actor.press( topTaxonResultButton );
-      expect( await screen.findByText( "ACTIVITY" ) ).toBeTruthy( );
-      expect( inatjs.identifications.create ).toHaveBeenCalledWith( {
-        fields: Identification.ID_FIELDS,
-        identification: {
-          observation_id: observations[0].uuid,
-          taxon_id: taxonId,
-          vision: true
-        }
-      }, {
-        api_token: null
-      } );
-    }
-  );
+  it( "should create ident with vision=true via ObsDetails", async ( ) => {
+    const { observations } = await setupAppWithSignedInUser( );
+    await navigateToSuggestionsForObservation( observations[0] );
+    const taxonId = topSuggestion.taxon.id;
+    const topTaxonResultButton = await screen.findByTestId(
+      `SuggestionsList.taxa.${taxonId}.checkmark`
+    );
+    expect( topTaxonResultButton ).toBeTruthy( );
+    await actor.press( topTaxonResultButton );
+    const activityTab = await screen.findByTestId( "ActivityTab" );
+    expect( activityTab ).toBeVisible( );
+    // Wait for the actual identification we created to appear
+    const taxonNameInIdent = await within( activityTab ).findByText( topSuggestion.taxon.name );
+    expect( taxonNameInIdent ).toBeVisible( );
+    expect( inatjs.identifications.create ).toHaveBeenCalledWith( {
+      fields: Identification.ID_FIELDS,
+      identification: {
+        observation_id: observations[0].uuid,
+        taxon_id: taxonId,
+        vision: true
+      }
+    }, {
+      api_token: TEST_JWT
+    } );
+  } );
 
-  it(
-    "should update observation with true vision attribute when reached from ObsEdit"
-    + " and taxon chosen",
-    async ( ) => {
-      const observations = makeMockObservations( );
-      await renderObservationsStackNavigatorWithObservations( observations );
-      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-      const topTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
-      );
-      expect( topTaxonResultButton ).toBeTruthy( );
-      await actor.press( topTaxonResultButton );
-      const saveChangesButton = await screen.findByText( "SAVE CHANGES" );
-      expect( saveChangesButton ).toBeTruthy( );
-      await actor.press( saveChangesButton );
-      const savedObservation = global.mockRealms[__filename]
-        .objectForPrimaryKey( "Observation", observations[0].uuid );
-      expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
-    }
-  );
+  it( "should update observation with vision=true via ObsEdit", async ( ) => {
+    const { observations } = await setupAppWithSignedInUser( );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const topTaxonResultButton = await screen.findByTestId(
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+    );
+    expect( topTaxonResultButton ).toBeTruthy( );
+    await actor.press( topTaxonResultButton );
+    const saveChangesButton = await screen.findByText( "SAVE CHANGES" );
+    expect( saveChangesButton ).toBeTruthy( );
+    await actor.press( saveChangesButton );
+    // Ensure we're back on MyObs
+    const observationRow = await screen.findByTestId(
+      `MyObservations.obsListItem.${observations[0].uuid}`
+    );
+    expect( observationRow ).toBeVisible( );
+    const savedObservation = global.mockRealms[__filename]
+      .objectForPrimaryKey( "Observation", observations[0].uuid );
+    expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
+  } );
 
   it(
     "should try offline suggestions if no online suggestions are found",
     async ( ) => {
-      const mockScoreImageResponse = makeResponse( [] );
-      inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
-      const observations = makeMockObservations( );
-      await renderObservationsStackNavigatorWithObservations( observations );
-      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-
-      const topOnlineTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockOfflinePrediction.taxon.id}.checkmark`
+      inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
+      getPredictionsForImage.mockImplementation(
+        async ( ) => ( [mockModelPrediction] )
       );
-      expect( topOnlineTaxonResultButton ).toBeTruthy( );
-      await actor.press( topOnlineTaxonResultButton );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+      const offlineNotice = await screen.findByText( "Viewing Offline Suggestions" );
+      expect( offlineNotice ).toBeVisible( );
+      const topOfflineTaxonResultButton = await screen.findByTestId(
+        `SuggestionsList.taxa.${mockModelPrediction.taxon_id}.checkmark`
+      );
+      expect( topOfflineTaxonResultButton ).toBeTruthy( );
+      await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );
       const saveChangesButton = await screen.findByText( "SAVE CHANGES" );
       expect( saveChangesButton ).toBeTruthy( );
       await actor.press( saveChangesButton );
