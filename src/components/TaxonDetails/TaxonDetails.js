@@ -22,7 +22,9 @@ import { compact } from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { Linking, Share } from "react-native";
+import {
+  Alert, Linking, Platform, Share
+} from "react-native";
 import { Menu, useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
@@ -68,7 +70,7 @@ const TaxonDetails = ( ): Node => {
     logger.error( `Failed to retrieve taxon ${id}: ${error}` );
   }
   const taxon = remoteTaxon || localTaxon;
-  const taxonUrl = `${TAXON_URL}/${taxon.id}`;
+  const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
 
   const tabs = [
     {
@@ -150,6 +152,7 @@ const TaxonDetails = ( ): Node => {
             white
           >
             <Menu.Item
+              testID="MenuItem.OpenInBrowser"
               onPress={( ) => {
                 openURLInBrowser( taxonUrl );
                 setKebabMenuVisible( false );
@@ -157,12 +160,27 @@ const TaxonDetails = ( ): Node => {
               title={t( "View-in-browser" )}
             />
             <Menu.Item
-              onPress={( ) => {
-                Share.share( {
-                  message: taxonUrl,
-                  url: taxonUrl
-                } );
+              testID="MenuItem.Share"
+              onPress={async ( ) => {
+                const sharingOptions = {
+                  url: "",
+                  message: ""
+                };
+
+                if ( Platform.OS === "ios" ) {
+                  sharingOptions.url = taxonUrl;
+                } else {
+                  sharingOptions.message = taxonUrl;
+                }
+
                 setKebabMenuVisible( false );
+
+                try {
+                  return await Share.share( sharingOptions );
+                } catch ( err ) {
+                  Alert.alert( err.message );
+                  return null;
+                }
               }}
               title={t( "Share" )}
             />
