@@ -121,7 +121,6 @@
     "realm": "^12.3.0",
     "reassure": "^0.10.1",
     "sanitize-html": "^2.11.0",
-    "tailwind-merge": "^2.2.0",
     "use-debounce": "^9.0.4",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#image-prediction-from-file",
     "zustand": "^4.4.7"

@@ -27,7 +27,7 @@ import { useDeviceOrientation } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
-import { twMerge } from "tailwind-merge";
+import classnames from "classnames";
 
 const calculateZoom = ( width, delta ) => Math.round(
   Math.log2( 360 * ( width / 256 / delta ) ) + 1
@@ -400,7 +400,7 @@ const Map = ( {
       { showCurrentLocationButton && (
         <INatIconButton
           icon="location-crosshairs"
-          className={twMerge(
+          className={classnames(
             "absolute bottom-40 right-5 bg-white rounded-full",
             currentLocationButtonClassName
           )}
@@ -417,9 +417,10 @@ const Map = ( {
         && (
           <INatIconButton
             icon="map-layers"
-            className={twMerge(
+            className={classnames(
               "absolute bottom-40 right-20 bg-white rounded-full",
-              switchMapTypeButtonClassName )}
+              switchMapTypeButtonClassName
+            )}
             style={getShadow( theme.colors.primary )}
             accessibilityLabel={t( "User-location" )}
             onPress={( ) => {
