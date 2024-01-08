@@ -350,7 +350,7 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
         ]
       }
     >
-      
+      
     </Text>
   </View>
   <BVLinearGradient
@@ -437,7 +437,7 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
         ]
       }
     >
-      
+      
     </Text>
   </View>
   <View

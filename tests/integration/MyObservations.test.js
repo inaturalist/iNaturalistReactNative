@@ -8,11 +8,63 @@ import { format } from "date-fns";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
+import os from "os";
+import path from "path";
 import React from "react";
+import Realm from "realm";
+import realmConfig from "realmModels/index";
+import factory, { makeResponse } from "tests/factory";
+import { renderAppWithComponent } from "tests/helpers/render";
+import { signIn, signOut } from "tests/helpers/user";
 
-import factory, { makeResponse } from "../factory";
-import { renderAppWithComponent } from "../helpers/render";
-import { signIn, signOut } from "../helpers/user";
+// This is a bit crazy, but this ensures this test uses its own in-memory
+// database and doesn't interfere with the single, default in-memory database
+// used by other tests. In a perfect world, every parallel test worker would
+// have its own database, or at least this wouldn't be so manual, but it took
+// me long enough to figure this out. ~~~kueda 20231024
+// REALM SETUP
+const mockRealmConfig = {
+  schema: realmConfig.schema,
+  schemaVersion: realmConfig.schemaVersion,
+  // No need to actually write to disk
+  inMemory: true,
+  // For an in memory db path is basically a unique identifier, *but* Realm
+  // may still write some metadata to disk, so this needs to be a real, but
+  // temporary, path. In theory this should prevent this test from
+  // interacting with other tests
+  path: path.join( os.tmpdir( ), `${path.basename( __filename )}.realm` )
+};
+
+// Mock the config so that all code that runs during this test talks to the same database
+jest.mock( "realmModels/index", ( ) => ( {
+  __esModule: true,
+  default: mockRealmConfig
+} ) );
+
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.mockRealms[__filename]
+    }
+  };
+} );
+
+// Open a realm connection and stuff it in global
+beforeAll( async ( ) => {
+  global.mockRealms = global.mockRealms || {};
+  global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
+} );
+
+// Ensure the realm connection gets closed
+afterAll( ( ) => {
+  global.mockRealms[__filename]?.close( );
+  jest.clearAllMocks( );
+} );
+// /REALM SETUP
 
 describe( "MyObservations", ( ) => {
   beforeAll( async ( ) => {
@@ -35,20 +87,11 @@ describe( "MyObservations", ( ) => {
   // } );
 
   describe( "when signed out", ( ) => {
-    beforeEach( async ( ) => {
-      await global.realm.write( ( ) => {
-        global.realm.deleteAll( );
-      } );
-    } );
-
-    afterEach( ( ) => {
-      jest.clearAllMocks( );
-    } );
-
     async function testApiMethodNotCalled( apiMethod ) {
       // Let's make sure the mock hasn't already been used
       expect( apiMethod ).not.toHaveBeenCalled( );
-      const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
+      const realm = global.mockRealms[__filename];
+      const signedInUsers = realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <MyObservationsContainer /> );
       const loginText = i18next.t( "Log-in-to-contribute-your-observations" );
@@ -75,15 +118,15 @@ describe( "MyObservations", ( ) => {
     } );
 
     beforeEach( async ( ) => {
-      await global.realm.write( ( ) => {
-        global.realm.deleteAll( );
+      global.mockRealms[__filename].write( ( ) => {
+        global.mockRealms[__filename].deleteAll( );
       } );
-      await signIn( mockUser );
+      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
     afterEach( ( ) => {
       jest.clearAllMocks( );
-      signOut( );
+      signOut( { realm: global.mockRealms[__filename] } );
     } );
 
     describe( "with unsynced observations", ( ) => {
@@ -123,9 +166,9 @@ describe( "MyObservations", ( ) => {
 
       beforeEach( async () => {
         // Write local observation to Realm
-        await global.realm.write( () => {
+        await global.mockRealms[__filename].write( () => {
           mockObservations.forEach( mockObservation => {
-            global.realm.create( "Observation", mockObservation );
+            global.mockRealms[__filename].create( "Observation", mockObservation );
           } );
         } );
       } );
@@ -143,7 +186,8 @@ describe( "MyObservations", ( ) => {
       } );
 
       it( "renders grid view on button press", async () => {
-        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
         const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
         fireEvent.press( button );
@@ -156,7 +200,8 @@ describe( "MyObservations", ( ) => {
       } );
 
       it( "displays unuploaded status", async () => {
-        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
         await waitFor( ( ) => {
           const toolbarText = screen.getByText( /Upload 2 observations/ );
@@ -228,10 +273,10 @@ describe( "MyObservations", ( ) => {
       ];
 
       beforeEach( async () => {
-        await global.realm.write( () => {
-          global.realm.deleteAll( );
+        await global.mockRealms[__filename].write( () => {
+          global.mockRealms[__filename].deleteAll( );
           mockObservationsSynced.forEach( mockObservation => {
-            global.realm.create( "Observation", mockObservation );
+            global.mockRealms[__filename].create( "Observation", mockObservation );
           } );
         } );
       } );
@@ -241,7 +286,8 @@ describe( "MyObservations", ( ) => {
       } );
 
       it( "displays observation status", async () => {
-        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
         const syncIcon = await screen.findByTestId( "SyncButton" );
         await waitFor( ( ) => {
@@ -255,8 +301,9 @@ describe( "MyObservations", ( ) => {
 
       describe( "before initial sync", ( ) => {
         it( "doesn't throw an error when sync button tapped", async ( ) => {
-          expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-          expect( global.realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
+          const realm = global.mockRealms[__filename];
+          expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          expect( realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
           renderAppWithComponent( <MyObservationsContainer /> );
           const syncIcon = await screen.findByTestId( "SyncButton" );
           await waitFor( ( ) => {
@@ -270,22 +317,23 @@ describe( "MyObservations", ( ) => {
 
       describe( "after initial sync", ( ) => {
         beforeEach( async () => {
-          await global.realm.write( () => {
-            global.realm.create( "LocalPreferences", {
+          await global.mockRealms[__filename].write( () => {
+            global.mockRealms[__filename].create( "LocalPreferences", {
               last_sync_time: new Date( "2023-11-01" )
             } );
           } );
         } );
 
         it( "downloads deleted observations from server when sync button tapped", async ( ) => {
-          expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          const realm = global.mockRealms[__filename];
+          expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
           renderAppWithComponent( <MyObservationsContainer /> );
           const syncIcon = await screen.findByTestId( "SyncButton" );
           await waitFor( ( ) => {
             expect( syncIcon ).toBeVisible( );
           } );
           fireEvent.press( syncIcon );
-          const lastSyncTime = global.realm.objects( "LocalPreferences" )[0].last_sync_time;
+          const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_sync_time;
           await waitFor( ( ) => {
             expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
               {
@@ -304,13 +352,13 @@ describe( "MyObservations", ( ) => {
             expect( syncIcon ).toBeVisible( );
           } );
           fireEvent.press( syncIcon );
-          const spy = jest.spyOn( global.realm, "write" );
-          const deleteSpy = jest.spyOn( global.realm, "delete" );
+          const spy = jest.spyOn( global.mockRealms[__filename], "write" );
+          const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
           await waitFor( ( ) => {
             expect( spy ).toHaveBeenCalled( );
           } );
           expect( deleteSpy ).toHaveBeenCalled( );
-          expect( global.realm.objects( "Observation" ).length ).toBe( 1 );
+          expect( global.mockRealms[__filename].objects( "Observation" ).length ).toBe( 1 );
         } );
       } );
     } );
@@ -318,8 +366,8 @@ describe( "MyObservations", ( ) => {
 
   describe( "localization for current user", ( ) => {
     beforeEach( async ( ) => {
-      await global.realm.write( ( ) => {
-        global.realm.deleteAll( );
+      await global.mockRealms[__filename].write( ( ) => {
+        global.mockRealms[__filename].deleteAll( );
       } );
     } );
 
@@ -333,7 +381,7 @@ describe( "MyObservations", ( ) => {
         locale: "en"
       } );
       expect( mockUser.locale ).toEqual( "en" );
-      await signIn( mockUser );
+      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       renderAppWithComponent( <MyObservationsContainer /> );
       await waitFor( ( ) => {
         expect( screen.getByText( /Welcome back/ ) ).toBeTruthy( );
@@ -348,7 +396,7 @@ describe( "MyObservations", ( ) => {
         locale: "es"
       } );
       expect( mockSpanishUser.locale ).toEqual( "es" );
-      await signIn( mockSpanishUser );
+      await signIn( mockSpanishUser, { realm: global.mockRealms[__filename] } );
       renderAppWithComponent( <MyObservationsContainer /> );
       await waitFor( ( ) => {
         expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy();
@@ -365,7 +413,7 @@ describe( "MyObservations", ( ) => {
           locale: "en"
         } );
         expect( mockUser.locale ).toEqual( "en" );
-        await signIn( mockUser );
+        await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 
         const mockSpanishUser = factory( "LocalUser", {
           locale: "es"

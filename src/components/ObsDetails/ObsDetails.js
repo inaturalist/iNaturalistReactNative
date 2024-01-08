@@ -3,13 +3,12 @@ import { useRoute } from "@react-navigation/native";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
 import {
   HideView, Tabs,
-  TextInputSheet,
-  ViewWrapper
+  TextInputSheet
 } from "components/SharedComponents";
-import { ScrollView, View } from "components/styledComponents";
+import { SafeAreaView, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
@@ -17,8 +16,9 @@ import {
 
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
+import CommunityTaxon from "./CommunityTaxon";
 import DetailsTab from "./DetailsTab/DetailsTab";
-import Header from "./Header";
+import PhotoDisplayContainer from "./PhotoDisplayContainer";
 
 type Props = {
   navToSuggestions: Function,
@@ -34,7 +34,7 @@ type Props = {
   activityItems: Array<Object>,
   showActivityTab: boolean,
   onIDAgreePressed: Function,
-  showAgreeWithIdSheet: Function,
+  showAgreeWithIdSheet: boolean,
   openCommentBox: Function,
   agreeIdSheetDiscardChanges: Function,
   onAgree: Function,
@@ -73,17 +73,23 @@ const ObsDetails = ( {
   };
 
   return (
-    <ViewWrapper>
+    <SafeAreaView className="flex-1 bg-black">
+      <StatusBar barStyle="light-content" backgroundColor="black" />
       <ScrollView
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[1]}
         scrollEventThrottle={16}
+        className="bg-white"
       >
-        <Header
+        <PhotoDisplayContainer
           observation={observation}
           refetchRemoteObservation={refetchRemoteObservation}
           isOnline={isOnline}
           belongsToCurrentUser={belongsToCurrentUser}
+        />
+        <CommunityTaxon
+          observation={observation}
+          isOnline={isOnline}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
@@ -127,11 +133,10 @@ const ObsDetails = ( {
           handleClose={hideCommentBox}
           headerText={t( "ADD-OPTIONAL-COMMENT" )}
           textInputStyle={textInputStyle}
-          snapPoints={[416]}
           confirm={textInput => onCommentAdded( textInput )}
         />
       )}
-    </ViewWrapper>
+    </SafeAreaView>
   );
 };
 

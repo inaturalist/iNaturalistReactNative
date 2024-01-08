@@ -5,7 +5,7 @@ import {
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer";
 import {
-  useEffect,
+  useEffect, useRef,
   useState
 } from "react";
 import { checkMultiple, RESULTS } from "react-native-permissions";
@@ -31,6 +31,8 @@ const useCurrentObservationLocation = (
   const originalPhotoUri = currentObservation?.observationPhotos
     && currentObservation?.observationPhotos[0]?.originalPhotoUri;
   const isGalleryPhoto = originalPhotoUri && !originalPhotoUri?.includes( "photoUploads" );
+  const locationNotSetYet = useRef( true );
+  const prevObservation = useRef( currentObservation );
 
   const [shouldFetchLocation, setShouldFetchLocation] = useState(
     currentObservation
@@ -44,6 +46,27 @@ const useCurrentObservationLocation = (
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
   const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
   const [permissionResult, setPermissionResult] = useState( null );
+  const [currentLocation, setCurrentLocation] = useState( null );
+
+  useEffect( () => {
+    if ( locationNotSetYet.current ) {
+      // Don't run if it's the first render
+      locationNotSetYet.current = false;
+      return;
+    } if ( prevObservation.current !== currentObservation ) {
+      // Don't run if observation was changed (only when location was changed)
+      prevObservation.current = currentObservation;
+      return;
+    }
+
+    updateObservationKeys( {
+      latitude: currentLocation?.latitude,
+      longitude: currentLocation?.longitude,
+      positional_accuracy: currentLocation?.positional_accuracy
+    } );
+
+    prevObservation.current = currentObservation;
+  }, [currentLocation, currentObservation, updateObservationKeys] );
 
   useEffect( ( ) => {
     if ( !currentObservation ) return;
@@ -73,11 +96,11 @@ const useCurrentObservationLocation = (
         || location?.longitude !== currentObservation.longitude
         || location?.positional_accuracy !== currentObservation.positional_accuracy
       ) {
-        updateObservationKeys( {
-          latitude: location?.latitude,
-          longitude: location?.longitude,
-          positional_accuracy: location?.positional_accuracy
-        } );
+        // Cannot call updateObservationKeys directly from here, since fetchUserLocation might take
+        // a while to return, in the meantime the current copy of the observation might have
+        // changed, so we update the observation from useEffect of currentLocation, so it will
+        // always have the latest copy of the current observation (see GH issue #584)
+        setCurrentLocation( location );
       }
 
       setFetchingLocation( false );

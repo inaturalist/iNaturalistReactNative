@@ -54,8 +54,7 @@ type Props = {
   onZoomStart?: Function,
   onZoomChange?: Function,
   totalObsPhotoUris: number,
-  cameraPreviewUris: Function,
-  setPhotoEvidenceUris: Function
+  cameraPreviewUris: Function
 };
 
 const StandardCamera = ( {
@@ -81,8 +80,7 @@ const StandardCamera = ( {
   onZoomStart,
   onZoomChange,
   totalObsPhotoUris,
-  cameraPreviewUris,
-  setPhotoEvidenceUris
+  cameraPreviewUris
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -127,7 +125,6 @@ const StandardCamera = ( {
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
         cameraPreviewUris={cameraPreviewUris}
-        setPhotoEvidenceUris={setPhotoEvidenceUris}
       />
       <View className="relative flex-1">
         {device && (

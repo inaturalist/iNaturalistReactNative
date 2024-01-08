@@ -36,7 +36,6 @@ const WildStatusSheet = ( {
   return (
     <RadioButtonSheet
       headerText={t( "WILD-STATUS" )}
-      snapPoints={[318]}
       confirm={checkBoxValue => {
         updateCaptiveStatus( checkBoxValue );
         handleClose( );

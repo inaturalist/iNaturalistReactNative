@@ -121,7 +121,6 @@ const OtherDataSection = ( {
           <TextInputSheet
             handleClose={( ) => setShowNotesSheet( false )}
             headerText={t( "NOTES" )}
-            snapPoints={[416]}
             placeholder={t( "Add-optional-notes" )}
             initialInput={currentObservation?.description}
             confirm={textInput => updateObservationKeys( {

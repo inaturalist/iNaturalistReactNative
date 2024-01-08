@@ -41,7 +41,6 @@ const ObsListItem = ( {
         <DisplayTaxonName
           taxon={observation?.taxon}
           scientificNameFirst={observation?.user?.prefers_scientific_name_first}
-          layout="horizontal"
         />
         <ObservationLocation observation={observation} classNameMargin="mt-1" />
         <DateDisplay
@@ -51,24 +50,24 @@ const ObsListItem = ( {
           classNameMargin="mt-1"
         />
       </View>
-      {explore
-        ? (
-          <ObsStatus
-            observation={observation}
-            layout="vertical"
-            testID={`ObsStatus.${observation.uuid}`}
-          />
-        )
-        : (
-          <View className="items-center ml-auto justify-center">
+      <View className="items-center ml-auto justify-center">
+        {explore
+          ? (
+            <ObsStatus
+              observation={observation}
+              layout="vertical"
+              testID={`ObsStatus.${observation.uuid}`}
+            />
+          )
+          : (
             <ObsUploadStatusContainer
               observation={observation}
               layout="vertical"
               uploadSingleObservation={uploadSingleObservation}
               uploadState={uploadState}
             />
-          </View>
-        )}
+          )}
+      </View>
     </View>
   );
 };

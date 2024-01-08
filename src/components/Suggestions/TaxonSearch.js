@@ -1,7 +1,5 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
-import fetchSearchResults from "api/search";
 import {
   SearchBar,
   TaxonResult,
@@ -14,83 +12,35 @@ import React, {
   useState
 } from "react";
 import { FlatList } from "react-native";
-import Identification from "realmModels/Identification";
-import Taxon from "realmModels/Taxon";
-import { useAuthenticatedQuery } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import CommentBox from "./CommentBox";
+import useTaxonSearch from "./hooks/useTaxonSearch";
+import useTaxonSelected from "./hooks/useTaxonSelected";
 
 const TaxonSearch = ( ): Node => {
-  const { params } = useRoute( );
-  const obsUUID = params?.obsUUID;
   const [taxonQuery, setTaxonQuery] = useState( "" );
-  const navigation = useNavigation( );
-  const currentObservation = useStore( state => state.currentObservation );
-  const comment = useStore( state => state.comment );
-  const observations = useStore( state => state.observations );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const updateObservations = useStore( state => state.updateObservations );
+  const [selectedTaxon, setSelectedTaxon] = useState( null );
+  const taxonList = useTaxonSearch( taxonQuery );
 
-  const updateTaxon = useCallback( newTaxon => {
-    const updatedObservations = observations;
-    updatedObservations[currentObservationIndex].taxon = newTaxon;
-    updateObservations( updatedObservations );
-  }, [
-    currentObservationIndex,
-    updateObservations,
-    observations
-  ] );
+  useTaxonSelected( selectedTaxon, { vision: false } );
 
-  const { data: taxonList } = useAuthenticatedQuery(
-    ["fetchSearchResults", taxonQuery],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: taxonQuery,
-        sources: "taxa",
-        fields: {
-          taxon: Taxon.TAXON_FIELDS
-        }
-      },
-      optsWithAuth
-    )
-  );
+  const renderFooter = useCallback( ( ) => <View className="pb-10" />, [] );
 
-  const onTaxonSelected = useCallback( async newTaxon => {
-    if ( !obsUUID ) {
-      // Called from observation editor screen
-      const newIdentification = Identification.new( {
-        taxon: newTaxon,
-        body: comment
-      } );
-      updateTaxon( newIdentification.taxon );
-      navigation.navigate( "ObsEdit" );
-    } else {
-      // Called when adding an identification to someone else's observation
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon, comment } );
-    }
-  }, [navigation, obsUUID, comment, updateTaxon] );
-
-  const renderFooter = ( ) => (
-    <View className="pb-10" />
-  );
-
-  const renderItem = useCallback( ( { item: taxon, index } ) => (
+  const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       taxon={taxon}
-      handleCheckmarkPress={() => onTaxonSelected( taxon )}
+      handleCheckmarkPress={() => setSelectedTaxon( taxon )}
       testID={`Search.taxa.${taxon.id}`}
       first={index === 0}
+      fetchRemote={false}
     />
-  ), [onTaxonSelected] );
+  ), [setSelectedTaxon] );
 
   return (
-    <ViewWrapper className="flex-1">
-      <AddCommentPrompt
-        currentObservation={currentObservation}
-      />
-      <CommentBox comment={comment} />
+    <ViewWrapper>
+      <AddCommentPrompt />
+      <CommentBox />
       <SearchBar
         handleTextChange={setTaxonQuery}
         value={taxonQuery}
@@ -100,7 +50,7 @@ const TaxonSearch = ( ): Node => {
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
-        renderItem={renderItem}
+        renderItem={renderTaxonResult}
         keyExtractor={item => item.id}
         ListFooterComponent={renderFooter}
       />

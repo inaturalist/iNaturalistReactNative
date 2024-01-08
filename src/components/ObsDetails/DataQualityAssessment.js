@@ -412,9 +412,8 @@ const DataQualityAssessment = ( ): React.Node => {
         headerText={t( "ERROR-VOTING-IN-DQA" )}
         hidden={hideErrorSheet}
         hideCloseButton
-        snapPoints={["25"]}
       >
-        <View className="px-[26px] pt-[20px] flex-col space-y-[20px]">
+        <View className="px-[26px] py-[20px] flex-col space-y-[20px]">
           <List2 className="text-black">{t( "Error-voting-in-DQA-description" )}</List2>
           <Button
             text={t( "OK" )}

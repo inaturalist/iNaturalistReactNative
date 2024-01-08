@@ -1,127 +1,68 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
-import scoreImage from "api/computerVision";
-import { difference } from "lodash";
 import type { Node } from "react";
 import React, {
-  useCallback,
-  useEffect, useState
+  useState
 } from "react";
-import Identification from "realmModels/Identification";
-import { predictImage } from "sharedHelpers/cvModel";
-import flattenUploadParams from "sharedHelpers/flattenUploadParams";
-import {
-  useAuthenticatedQuery,
-  useLocalObservation
-} from "sharedHooks";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import useStore from "stores/useStore";
 
+import useObservers from "./hooks/useObservers";
+import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
+import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
+import useTaxonSelected from "./hooks/useTaxonSelected";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
-  const comment = useStore( state => state.comment );
   const currentObservation = useStore( state => state.currentObservation );
-  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
-  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
-  const { params } = useRoute( );
-  const obsUUID = params?.obsUUID;
-  const uuid = currentObservation?.uuid;
-  // TODO unify around a single interface for an Observation
-  const obsPhotos = currentObservation?.observationPhotos || currentObservation?.observation_photos;
-  const obsPhotoUris = ( obsPhotos || [] ).map(
-    obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
-  );
-  const localObservation = useLocalObservation( uuid );
-  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
-  const observations = useStore( state => state.observations );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const updateObservations = useStore( state => state.updateObservations );
+  const photoList = ObservationPhoto.mapObsPhotoUris( currentObservation );
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoList[0] );
+  const [selectedTaxon, setSelectedTaxon] = useState( null );
 
-  const [loading, setLoading] = useState( false );
-  const navigation = useNavigation();
+  const {
+    onlineSuggestions,
+    loadingOnlineSuggestions
+  } = useOnlineSuggestions( selectedPhotoUri, {
+    latitude: currentObservation?.latitude,
+    longitude: currentObservation?.longitude
+  } );
 
-  // TODO: this block makes a prediction whenever the selected photo changes.
-  console.log( "selectedPhotoUri :>> ", selectedPhotoUri );
-  predictImage( selectedPhotoUri )
-    .then( predictions => {
-      console.log( "predictions :>> ", predictions );
-    } )
-    .catch( e => {
-      console.log( "e :>> ", e );
-    } );
+  const tryOfflineSuggestions = !onlineSuggestions || onlineSuggestions?.length === 0;
+  const {
+    offlineSuggestions,
+    loadingOfflineSuggestions
+  } = useOfflineSuggestions( selectedPhotoUri, {
+    tryOfflineSuggestions
+  } );
 
-  useEffect( ( ) => {
-    // If the photos are different, we need to display different photos
-    // (probably b/c we're looking at a different observation)
-    if ( difference( obsPhotoUris, photoEvidenceUris ).length > 0 ) {
-      setPhotoEvidenceUris( obsPhotoUris );
-      // And if the photos have changed, we should show results for the first
-      // one
-      setSelectedPhotoUri( obsPhotoUris[0] );
-    }
-  }, [
-    obsPhotoUris,
-    photoEvidenceUris,
-    setPhotoEvidenceUris
-  ] );
+  const suggestions = onlineSuggestions?.results?.length > 0
+    ? onlineSuggestions.results
+    : offlineSuggestions;
 
-  const updateTaxon = useCallback( newTaxon => {
-    const updatedObservations = observations;
-    updatedObservations[currentObservationIndex].taxon = newTaxon;
-    updateObservations( updatedObservations );
-  }, [
-    currentObservationIndex,
-    updateObservations,
-    observations
-  ] );
+  const topSuggestion = onlineSuggestions?.common_ancestor;
 
-  const uploadParams = {
-    image: selectedPhotoUri,
-    latitude: localObservation?.latitude || currentObservation?.latitude,
-    longitude: localObservation?.longitude || currentObservation?.longitude
-  };
-
-  const { data: nearbySuggestions, isLoading: loadingSuggestions } = useAuthenticatedQuery(
-    ["scoreImage", selectedPhotoUri],
-    async optsWithAuth => scoreImage(
-      await flattenUploadParams(
-        uploadParams.image,
-        uploadParams.latitude,
-        uploadParams.longitude
-      ),
-      optsWithAuth
-    ),
-    {
-      enabled: !!selectedPhotoUri
-    }
+  const taxonIds = suggestions?.map(
+    suggestion => suggestion.taxon.id
   );
 
-  const onTaxonChosen = newTaxon => {
-    if ( !obsUUID ) {
-      setLoading( true );
-      const newIdentification = Identification.new( {
-        taxon: newTaxon,
-        body: comment
-      } );
-      updateTaxon( newIdentification.taxon );
-      navigation.goBack( );
-    } else {
-      navigation.navigate( "ObsDetails", { uuid: obsUUID, taxonSuggested: newTaxon, comment } );
-    }
-  };
+  const observers = useObservers( taxonIds );
+
+  useTaxonSelected( selectedTaxon, { vision: true } );
+
+  const loadingSuggestions = ( loadingOnlineSuggestions || loadingOfflineSuggestions )
+    && photoList.length > 0;
 
   return (
     <Suggestions
-      comment={comment}
-      currentObservation={currentObservation}
-      loading={loading}
-      loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}
-      nearbySuggestions={nearbySuggestions}
-      onTaxonChosen={onTaxonChosen}
-      photoUris={photoEvidenceUris}
+      loadingSuggestions={loadingSuggestions}
+      topSuggestion={topSuggestion}
+      suggestions={suggestions}
+      onTaxonChosen={setSelectedTaxon}
+      photoUris={photoList}
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
+      observers={observers}
+      usingOfflineSuggestions={tryOfflineSuggestions && offlineSuggestions?.length > 0}
     />
   );
 };

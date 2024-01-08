@@ -3,7 +3,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
-import MediaViewer from "components/MediaViewer/MediaViewer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import { Heading4 } from "components/SharedComponents";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
@@ -11,7 +10,6 @@ import TaxonSearch from "components/Suggestions/TaxonSearch";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import { t } from "i18next";
 import {
-  blankHeaderTitle,
   hideHeader,
   removeBottomBorder
 } from "navigation/navigationOptions";
@@ -60,19 +58,6 @@ const SharedStackScreens = ( ): Node => (
       name="LocationPicker"
       component={LocationPickerContainer}
       options={hideHeader}
-    />
-    <Stack.Screen
-      name="MediaViewer"
-      component={MediaViewer}
-      options={{
-        ...blankHeaderTitle,
-        headerTitleAlign: "center",
-        headerTintColor: "white",
-        headerBackTitleVisible: false,
-        headerStyle: {
-          backgroundColor: "black"
-        }
-      }}
     />
     <Stack.Screen
       name="TaxonDetails"

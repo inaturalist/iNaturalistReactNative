@@ -1,10 +1,10 @@
+import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import Header from "components/ObsEdit/Header";
 import initI18next from "i18n/initI18next";
 import React from "react";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockObservations = [
   factory( "LocalObservation" ),
@@ -46,6 +46,22 @@ describe( "Header", () => {
     );
 
     const headerText = await screen.findByText( /2 Observations/ );
+
+    expect( headerText ).toBeVisible();
+  } );
+
+  it( "renders edit header title when observation is saved locally", async () => {
+    const observation = factory( "LocalObservation", {
+      _created_at: faker.date.past( )
+    } );
+    renderComponent(
+      <Header
+        currentObservation={observation}
+        observations={[observation]}
+      />
+    );
+
+    const headerText = await screen.findByText( /Edit Observation/ );
 
     expect( headerText ).toBeVisible();
   } );

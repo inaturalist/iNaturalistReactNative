@@ -34,14 +34,13 @@ const WithdrawIDSheet = ( {
   <BottomSheet
     handleClose={handleClose}
     headerText={t( "WITHDRAW-ID-QUESTION" )}
-    snapPoints={[220]}
   >
     <View
       className="mx-[26px] space-y-[11px] my-[15px]"
     >
       {showTaxon( taxon )}
     </View>
-    <View className="flex-row justify-evenly mx-3">
+    <View className="flex-row justify-evenly mx-3 mb-3">
       <Button
         text={t( "CANCEL" )}
         onPress={( ) => {

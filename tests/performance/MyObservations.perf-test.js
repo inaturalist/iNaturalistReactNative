@@ -5,8 +5,7 @@ import initI18next from "i18n/initI18next";
 import React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { measurePerformance } from "reassure";
-
-import factory from "../factory";
+import factory from "tests/factory";
 
 jest.setTimeout( 60_000 );
 

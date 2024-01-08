@@ -3,7 +3,19 @@
   "data": [
     {
       "path": "assets/fonts/INatIcon.ttf",
-      "sha1": "d3d24b237a7ef666ef81aff93cde57e534a676a3"
+      "sha1": "495181444f9a2d8275f8bd86ff4988cd54e1fcb4"
+    },
+    {
+      "path": "assets/fonts/Whitney Book Regular.otf",
+      "sha1": "9b6e4749dcfa702e3fd6cc27d5c2bef1fdb966f9"
+    },
+    {
+      "path": "assets/fonts/Whitney Semibold Italic.otf",
+      "sha1": "829391a59c4305fe4733009da64fec983091cde1"
+    },
+    {
+      "path": "assets/fonts/Whitney Semibold Regular.otf",
+      "sha1": "fc560886d72adf37cccbad5bf8c58d7e0e546027"
     },
     {
       "path": "assets/fonts/Whitney-BookItalic-Pro.otf",

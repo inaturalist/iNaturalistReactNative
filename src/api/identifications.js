@@ -1,11 +1,12 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import Identification from "realmModels/Identification";
 
 import handleError from "./error";
 
 const PARAMS = {
-  fields: "all"
+  fields: Identification.ID_FIELDS
 };
 
 const createIdentification = async (

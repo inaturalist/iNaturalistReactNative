@@ -7,7 +7,8 @@ import handleError from "./error";
 const ANCESTOR_FIELDS = {
   name: true,
   preferred_common_name: true,
-  rank: true
+  rank: true,
+  rank_level: true
 };
 
 const PHOTO_FIELDS = {
@@ -19,12 +20,33 @@ const PHOTO_FIELDS = {
 
 const FIELDS = {
   ancestors: ANCESTOR_FIELDS,
+  children: ANCESTOR_FIELDS,
   default_photo: {
     url: true
+  },
+  establishment_means: {
+    establishment_means: true,
+    id: true,
+    place: {
+      id: true,
+      display_name: true
+    }
+  },
+  listed_taxa: {
+    establishment_means: true,
+    id: true,
+    list: {
+      title: true
+      // id: true
+    },
+    place: {
+      id: true
+    }
   },
   name: true,
   preferred_common_name: true,
   rank: true,
+  rank_level: true,
   taxon_photos: {
     photo: PHOTO_FIELDS
   },
@@ -36,10 +58,22 @@ const PARAMS = {
   fields: FIELDS
 };
 
-async function fetchTaxon( id: number, params: Object = {}, opts: Object = {} ): Promise<any> {
+function mapTaxonPhotoToLocalSchema( taxonPhoto ) {
+  taxonPhoto.photo.licenseCode = taxonPhoto.photo.licenseCode
+    || taxonPhoto.photo.license_code;
+  return taxonPhoto;
+}
+function mapToLocalSchema( taxon ) {
+  taxon.taxonPhotos = taxon?.taxonPhotos?.map( mapTaxonPhotoToLocalSchema );
+  taxon.taxon_photos = taxon?.taxon_photos?.map( mapTaxonPhotoToLocalSchema );
+  return taxon;
+}
+
+async function fetchTaxon( id: any, params: Object = {}, opts: Object = {} ): Promise<any> {
   try {
-    const { results } = await inatjs.taxa.fetch( id, { ...PARAMS, ...params }, opts );
-    return results[0];
+    const fetchParams = { ...PARAMS, ...params };
+    const { results } = await inatjs.taxa.fetch( id, fetchParams, opts );
+    return mapToLocalSchema( results[0] );
   } catch ( e ) {
     return handleError( e );
   }

@@ -3,6 +3,7 @@ import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
+import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
@@ -231,7 +232,16 @@ jest.mock( "react-native-fs", ( ) => {
         mtime: 123,
         name: "testdata"
       }
-    ] ) )
+    ] ) ),
+    writeFile: jest.fn( async ( filePath, contents, _encoding ) => {
+      mockFs.writeFile( filePath, contents, jest.fn( ) );
+    } ),
+    mkdir: jest.fn( async ( filepath, _options ) => {
+      mockFs.mkdir( filepath, jest.fn( ) );
+    } ),
+    unlink: jest.fn( async path => {
+      mockFs.unlink( path, jest.fn( ) );
+    } )
   };
 
   return RNFS;
@@ -323,6 +333,21 @@ fetchMock.enableMocks( );
 fetchMock.dontMock( );
 
 const mockIconicTaxon = factory( "RemoteTaxon", {
-  is_iconic: true
+  is_iconic: true,
+  name: "Mock iconic taxon"
 } );
 inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
+
+jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
+  createResizedImage: jest.fn(
+    async (
+      path,
+      _maxWidth,
+      _maxHeight,
+      _compressFormat,
+      _quality,
+      _rotation,
+      _outputPath
+    ) => ( { uri: path } )
+  )
+} ) );

@@ -29,7 +29,6 @@ const AddEvidenceSheet = ( {
     <BottomSheet
       handleClose={onClose}
       headerText={t( "ADD-EVIDENCE" )}
-      snapPoints={[202]}
       hidden={hidden}
       onChange={position => {
         // -1 means the sheet is fully hidden... and in theory it's safe to navigate away

@@ -19,7 +19,6 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 type Props = {
   currentObservation: Object,
-  evidenceList: Array<string>,
   handleDragAndDrop: Function,
   isFetchingLocation: boolean,
   locationPermissionNeeded: boolean,
@@ -28,14 +27,14 @@ type Props = {
   onLocationPermissionDenied: Function,
   onLocationPermissionGranted: Function,
   passesEvidenceTest: Function,
+  photos: Array<Object>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
-  updateObservationKeys: Function
+  updateObservationKeys: Function,
 }
 
 const EvidenceSection = ( {
   currentObservation,
-  evidenceList,
   handleDragAndDrop,
   isFetchingLocation,
   locationPermissionNeeded,
@@ -44,6 +43,7 @@ const EvidenceSection = ( {
   onLocationPermissionDenied,
   onLocationPermissionGranted,
   passesEvidenceTest,
+  photos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
   updateObservationKeys
@@ -105,7 +105,7 @@ const EvidenceSection = ( {
         </View>
       </View>
       <EvidenceList
-        evidenceList={evidenceList}
+        photos={photos}
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
       />

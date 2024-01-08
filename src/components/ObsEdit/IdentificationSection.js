@@ -49,7 +49,7 @@ const IdentificationSection = ( {
   };
 
   const navToSuggestions = useCallback( ( ) => {
-    navigation.navigate( "Suggestions" );
+    navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
   }, [navigation] );
 
   useEffect( ( ) => {

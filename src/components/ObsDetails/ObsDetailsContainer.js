@@ -103,7 +103,12 @@ const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
-  const { uuid, taxonSuggested, comment } = params;
+  const {
+    comment,
+    taxonSuggested,
+    uuid,
+    vision
+  } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
@@ -281,6 +286,9 @@ const ObsDetailsContainer = ( ): Node => {
               "Taxon",
               newIdentification.taxon.id
             ) || newIdentification.taxon;
+            if ( vision ) {
+              newIdentification.vision = true;
+            }
             localIdentifications.push( newIdentification );
           } );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
@@ -305,10 +313,10 @@ const ObsDetailsContainer = ( ): Node => {
     if ( !taxonSuggested ) return;
 
     // New taxon identification added by user
-
     const idParams = {
       observation_id: uuid,
-      taxon_id: taxonSuggested.id
+      taxon_id: taxonSuggested.id,
+      vision
     };
 
     if ( comment ) {
@@ -320,7 +328,7 @@ const ObsDetailsContainer = ( ): Node => {
     createIdentificationMutation.mutate( { identification: idParams } );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taxonSuggested, uuid] );
+  }, [taxonSuggested, uuid, vision] );
 
   useEffect( () => {
     if ( !taxonSuggested ) return;
@@ -340,7 +348,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
-    navigation.navigate( "Suggestions", { obsUUID: uuid } );
+    navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;

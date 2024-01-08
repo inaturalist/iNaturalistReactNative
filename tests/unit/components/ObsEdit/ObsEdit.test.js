@@ -4,9 +4,8 @@ import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import useStore from "stores/useStore";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );
 
@@ -26,19 +25,20 @@ const mockObservations = [
 const observationPhotos = [
   factory( "RemoteObservationPhoto", {
     photo: {
-      url: faker.image.imageUrl( )
+      url: faker.image.url( )
     },
     position: 0
   } ),
   factory( "RemoteObservationPhoto", {
     photo: {
-      url: `${faker.image.imageUrl( )}/100`
+      url: `${faker.image.url( )}/100`
     },
     position: 1
   } )
 ];
 
 const mockObservation = factory( "RemoteObservation", {
+  speciesGuess: "Obsedit test",
   observationPhotos
 } );
 

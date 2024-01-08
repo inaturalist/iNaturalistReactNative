@@ -8,7 +8,7 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useTaxon, useTranslation } from "sharedHooks";
 
 import ConfidenceInterval from "./ConfidenceInterval";
 
@@ -22,22 +22,29 @@ type Props = {
   activeColor?: string,
   confidencePosition?: string,
   first?: boolean,
+  fetchRemote?: boolean
 };
 
 const TaxonResult = ( {
   clearBackground,
   confidence,
   handleCheckmarkPress,
-  taxon,
+  taxon: taxonResult,
   testID,
   white = false,
   activeColor,
   confidencePosition = "photo",
-  first = false
+  first = false,
+  fetchRemote = true
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const theme = useTheme( );
+  // thinking about future performance, it might make more sense to batch
+  // network requests for useTaxon instead of making individual API calls.
+  // right now, this fetches a single taxon at a time on AR camera &
+  // a short list of taxa from offline Suggestions
+  const taxon = useTaxon( taxonResult, fetchRemote );
   const taxonImage = { uri: taxon?.default_photo?.url };
 
   const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: taxon.id } );
@@ -84,7 +91,6 @@ const TaxonResult = ( {
         <View className="shrink ml-3">
           <DisplayTaxonName
             taxon={taxon}
-            layout="horizontal"
             color={clearBackground && "text-white"}
           />
           {( confidence && confidencePosition === "text" ) && (

@@ -2,8 +2,7 @@
 
 import {
   Map,
-  ObservationsFlashList,
-  ViewWrapper
+  ObservationsFlashList
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -54,21 +53,19 @@ const ObservationsView = ( {
       />
     )
     : (
-      <ViewWrapper>
-        <ObservationsFlashList
-          isFetchingNextPage={isFetchingNextPage}
-          layout={observationsView}
-          data={observations}
-          onEndReached={fetchNextPage}
-          testID="ExploreObservationsAnimatedList"
-          handleScroll={handleScroll}
-          status={status}
-          isOnline={isOnline}
-          explore
-          hideLoadingWheel={!isFetchingNextPage}
-          renderHeader={renderHeader}
-        />
-      </ViewWrapper>
+      <ObservationsFlashList
+        isFetchingNextPage={isFetchingNextPage}
+        layout={observationsView}
+        data={observations}
+        onEndReached={fetchNextPage}
+        testID="ExploreObservationsAnimatedList"
+        handleScroll={handleScroll}
+        status={status}
+        isOnline={isOnline}
+        explore
+        hideLoadingWheel={!isFetchingNextPage}
+        renderHeader={renderHeader}
+      />
     );
 };
 

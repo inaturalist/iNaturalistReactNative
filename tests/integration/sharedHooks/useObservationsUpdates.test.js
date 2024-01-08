@@ -1,8 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { renderHook } from "@testing-library/react-native";
 import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
-
-import factory from "../../factory";
+import factory from "tests/factory";
 
 jest.mock( "api/observations" );
 

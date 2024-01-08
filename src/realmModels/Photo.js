@@ -21,6 +21,7 @@ class Photo extends Realm.Object {
     if ( !existingObsPhoto ) {
       localPhoto._created_at = new Date( );
     }
+    localPhoto.licenseCode = localPhoto.licenseCode || photo?.license_code;
     return localPhoto;
   }
 
@@ -118,6 +119,17 @@ class Photo extends Realm.Object {
       localFilePath: "string?"
     }
   };
+
+  // An unpleasant hack around another unpleasant hack, i.e. when we "need" to
+  // convert Realm objects to JSON and we apparently lose attributions
+  // defined with mapTo
+  toJSON( ) {
+    const json = super.toJSON( );
+    return {
+      ...json,
+      licenseCode: json.license_code
+    };
+  }
 }
 
 export default Photo;

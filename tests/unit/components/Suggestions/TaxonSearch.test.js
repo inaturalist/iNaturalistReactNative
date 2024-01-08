@@ -1,15 +1,11 @@
-import { faker } from "@faker-js/faker";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { fireEvent, screen } from "@testing-library/react-native";
 import TaxonSearch from "components/Suggestions/TaxonSearch";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
-import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
-
-import factory, { makeResponse } from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory, { makeResponse } from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 
@@ -26,31 +22,19 @@ jest.mock(
   }
 );
 
-const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.person.firstName( ),
-  preferred_common_name: faker.person.fullName( ),
-  default_photo: {
-    square_url: faker.image.url( )
-  }
-} );
-
 const mockTaxaList = [
-  mockTaxon,
-  {
-    ...mockTaxon,
-    id: faker.number.int( )
-  },
-  {
-    ...mockTaxon,
-    id: faker.number.int( )
-  }
+  factory( "RemoteTaxon" ),
+  factory( "RemoteTaxon" )
 ];
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+jest.mock( "components/Suggestions/hooks/useTaxonSearch", () => ( {
   __esModule: true,
-  default: () => ( {
-    data: mockTaxaList
-  } )
+  default: ( ) => mockTaxaList
+} ) );
+
+jest.mock( "sharedHooks/useTaxon", () => ( {
+  __esModule: true,
+  default: () => mockTaxaList[0]
 } ) );
 
 // react-native-paper's TextInput does a bunch of async stuff that's hard to
@@ -72,34 +56,26 @@ jest.mock( "react-native-paper", () => {
   return MockedModule;
 } );
 
-const renderTaxonSearch = ( ) => renderComponent(
-  <TaxonSearch />
-);
-
 describe( "TaxonSearch", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
   } );
 
-  test( "should not have accessibility errors", () => {
-    const suggestions = (
-      <BottomSheetModalProvider>
-        <INatPaperProvider>
-          <TaxonSearch />
-        </INatPaperProvider>
-      </BottomSheetModalProvider>
+  test( "should not have accessibility errors", async ( ) => {
+    const taxonSearch = (
+      <TaxonSearch />
     );
-    expect( suggestions ).toBeAccessible( );
+    expect( taxonSearch ).toBeAccessible( );
   } );
 
   it( "should render inside mocked container", ( ) => {
-    renderTaxonSearch( );
+    renderComponent( <TaxonSearch /> );
     expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy();
   } );
 
   it( "show taxon search results", async ( ) => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-    renderTaxonSearch( );
+    renderComponent( <TaxonSearch /> );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
     fireEvent.changeText( input, "Some taxon" );
@@ -107,7 +83,7 @@ describe( "TaxonSearch", ( ) => {
   } );
 
   it( "should render with no initial comment state", ( ) => {
-    renderTaxonSearch( );
+    renderComponent( <TaxonSearch /> );
     const commentSection = screen.queryByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
     );

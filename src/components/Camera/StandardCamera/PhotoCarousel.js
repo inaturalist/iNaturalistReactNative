@@ -1,7 +1,7 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -34,7 +34,6 @@ type Props = {
   rotation?: {
     value: number
   },
-  setPhotoEvidenceUris: Function,
   photoUris: Array<string>
 }
 
@@ -63,15 +62,14 @@ const PhotoCarousel = ( {
   isLargeScreen,
   isTablet,
   rotation,
-  setPhotoEvidenceUris,
   photoUris
 }: Props ): Node => {
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const realm = useRealm( );
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const navigation = useNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
+  const [tappedPhotoIndex, setTappedPhotoIndex] = useState( -1 );
   const photoClasses = isLargeScreen
     ? LARGE_PHOTO_CLASSES
     : SMALL_PHOTO_CLASSES;
@@ -137,21 +135,18 @@ const PhotoCarousel = ( {
   }, [deletePhotoFromObservation] );
 
   const viewPhotoAtIndex = useCallback( ( item, index ) => {
-    setPhotoEvidenceUris( [...photoUris] );
-    navigation.navigate( "MediaViewer", { index } );
+    setTappedPhotoIndex( index );
   }, [
-    setPhotoEvidenceUris,
-    navigation,
-    photoUris
+    setTappedPhotoIndex
   ] );
 
-  const deletePhotoAtIndex = useCallback( async ( item, _index ) => {
+  const deletePhotoByUri = useCallback( async photoUri => {
     if ( !deletePhotoFromObservation ) return;
-    deletePhotoFromObservation( item );
-    await ObservationPhoto.deletePhoto( realm, item );
+    deletePhotoFromObservation( photoUri );
+    await ObservationPhoto.deletePhoto( realm, photoUri );
   }, [deletePhotoFromObservation, realm] );
 
-  const renderPhotoOrEvidenceButton = useCallback( ( { item, index } ) => (
+  const renderPhotoOrEvidenceButton = useCallback( ( { item: photoUri, index } ) => (
     <>
       <Animated.View style={!isTablet && animatedStyle}>
         <View
@@ -165,7 +160,7 @@ const PhotoCarousel = ( {
             )}
           >
             <ImageBackground
-              source={{ uri: item }}
+              source={{ uri: photoUri }}
               className={classnames(
                 "w-fit",
                 "h-full",
@@ -184,9 +179,9 @@ const PhotoCarousel = ( {
                         mode="contained"
                         color={theme.colors.onPrimary}
                         backgroundColor="rgba(0, 0, 0, 0.5)"
-                        testID={`PhotoCarousel.deletePhoto.${item}`}
+                        testID={`PhotoCarousel.deletePhoto.${photoUri}`}
                         accessibilityLabel={t( "Delete-photo" )}
-                        onPress={( ) => deletePhotoAtIndex( item, index )}
+                        onPress={( ) => deletePhotoByUri( photoUri )}
                       />
                     </View>
                   )
@@ -194,9 +189,9 @@ const PhotoCarousel = ( {
                     <Pressable
                       accessibilityRole="button"
                       accessibilityLabel={t( "View-photo" )}
-                      testID={`PhotoCarousel.displayPhoto.${item}`}
+                      testID={`PhotoCarousel.displayPhoto.${photoUri}`}
                       onLongPress={showDeletePhotoMode}
-                      onPress={( ) => viewPhotoAtIndex( item, index )}
+                      onPress={( ) => viewPhotoAtIndex( photoUri, index )}
                       className="w-full h-full"
                     />
                   )
@@ -209,7 +204,7 @@ const PhotoCarousel = ( {
     </>
   ), [
     animatedStyle,
-    deletePhotoAtIndex,
+    deletePhotoByUri,
     deletePhotoMode,
     isTablet,
     photoClasses,
@@ -302,6 +297,17 @@ const PhotoCarousel = ( {
           )
           : photoPreviewsList
       }
+      <MediaViewerModal
+        editable
+        showModal={tappedPhotoIndex >= 0}
+        onClose={( ) => setTappedPhotoIndex( -1 )}
+        onDelete={async photoUri => {
+          await deletePhotoByUri( photoUri );
+          setTappedPhotoIndex( tappedPhotoIndex - 1 );
+        }}
+        uri={photoUris[tappedPhotoIndex]}
+        photos={photoUris.map( uri => ( { url: uri } ) )}
+      />
     </View>
   );
 };

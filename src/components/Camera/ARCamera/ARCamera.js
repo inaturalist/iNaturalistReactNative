@@ -9,7 +9,8 @@ import React, { useEffect } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
-import { useTaxon, useTranslation } from "sharedHooks";
+import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores";
+import { useTranslation } from "sharedHooks";
 
 import {
   handleCameraError,
@@ -80,7 +81,6 @@ const ARCamera = ( {
 }: Props ): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const localTaxon = useTaxon( result?.taxon );
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
@@ -92,30 +92,11 @@ const ARCamera = ( {
   // However, there is also some Exif and device orientation related code
   // that I have not checked. Anyway, those parts we would hoist into JS side if not done yet.
 
-  const convertScoreToConfidence = score => {
-    if ( !score ) {
-      return null;
-    }
-    if ( score < 0.2 ) {
-      return 1;
-    }
-    if ( score < 0.4 ) {
-      return 2;
-    }
-    if ( score < 0.6 ) {
-      return 3;
-    }
-    if ( score < 0.8 ) {
-      return 4;
-    }
-    return 5;
-  };
-
   useEffect( ( ) => {
     if ( photoSaved ) {
-      navToObsEdit( localTaxon );
+      navToObsEdit( result?.taxon );
     }
-  }, [photoSaved, navToObsEdit, localTaxon] );
+  }, [photoSaved, navToObsEdit, result?.taxon] );
 
   return (
     <>
@@ -156,11 +137,11 @@ const ARCamera = ( {
           {showPrediction && result
             ? (
               <TaxonResult
-                taxon={localTaxon}
+                taxon={result?.taxon}
                 handleCheckmarkPress={takePhoto}
                 testID={`ARCamera.taxa.${result?.taxon?.id}`}
                 clearBackground
-                confidence={convertScoreToConfidence( result?.score )}
+                confidence={convertOfflineScoreToConfidence( result?.score )}
                 white
               />
             )

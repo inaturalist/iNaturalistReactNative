@@ -9,7 +9,11 @@ import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
+import { log } from "../../../../react-native-logs.config";
+
 const { useRealm } = RealmContext;
+
+const logger = log.extend( "DeleteObservationSheet" );
 
 type Props = {
   handleClose: Function,
@@ -28,27 +32,28 @@ const DeleteObservationSheet = ( {
   const realm = useRealm( );
   const { uuid } = currentObservation;
 
-  const isSavedObservation = (
-    currentObservation
-    && realm.objectForPrimaryKey( "Observation", currentObservation.uuid )
-  );
+  const localObsToDelete = realm.objectForPrimaryKey( "Observation", uuid );
 
   const multipleObservations = observations.length > 1;
 
   const deleteLocalObservation = useCallback( ( ) => {
-    const localObsToDelete = realm.objectForPrimaryKey( "Observation", uuid );
-    if ( !localObsToDelete ) { return; }
+    logger.info( "Local observation to delete: ", localObsToDelete.uuid );
     realm?.write( ( ) => {
       realm?.delete( localObsToDelete );
     } );
-    handleClose( );
+    logger.info(
+      "Local observation deleted successfully, now returning to MyObservations"
+    );
     navToObsList( );
-  }, [uuid, realm, handleClose, navToObsList] );
+  }, [localObsToDelete, realm, navToObsList] );
 
   const deleteObservationMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
+        logger.info(
+          "Remote observation deleted successfully, now deleting local observation"
+        );
         deleteLocalObservation( );
         // We do not invalidate the searchObservations query here because it would fetch
         // observations from the server and potentially do so before the refresh period
@@ -65,16 +70,23 @@ const DeleteObservationSheet = ( {
       headerText={multipleObservations
         ? t( "DELETE-X-OBSERVATIONS", { count: observations.length } )
         : t( "DELETE-OBSERVATION" )}
-      snapPoints={[148]}
       handleSecondButtonPress={handleClose}
       secondButtonText={t( "CANCEL" )}
       confirm={( ) => {
-        if ( !isSavedObservation ) {
-          handleClose( );
+        if ( !localObsToDelete ) {
+          logger.info(
+            "Returning to MyObs because user is trying to delete an unsaved observation"
+          );
           navToObsList( );
-        } else if ( !isSavedObservation?._synced_at ) {
+        } else if ( !localObsToDelete?._synced_at ) {
+          logger.info(
+            "Deleting locally saved observation"
+          );
           deleteLocalObservation( );
         } else {
+          logger.info(
+            "Deleting remote observation"
+          );
           deleteObservationMutation.mutate( { uuid } );
         }
       }}

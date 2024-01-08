@@ -8,10 +8,9 @@ import fetchMock from "jest-fetch-mock";
 import React from "react";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 import useStore from "stores/useStore";
-
-import factory from "../factory";
-import { renderComponent } from "../helpers/render";
-import { signIn, signOut } from "../helpers/user";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
+import { signIn, signOut } from "tests/helpers/user";
 
 const initialStoreState = useStore.getState( );
 
@@ -65,7 +64,7 @@ describe( "ObsEdit offline", ( ) => {
         }
       } ) );
       Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
-      const observation = factory.states( "unUploaded" )( "LocalObservation", {
+      const observation = factory( "LocalObservation", {
         observationPhotos: []
       } );
       useStore.setState( { observations: [observation] } );

@@ -96,11 +96,13 @@ describe( "Signed in user", () => {
     const commentModalSubmitButton = element( by.id( "ObsEdit.confirm" ) );
     await commentModalSubmitButton.tap();
     // Check that the comment is visible
+    await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "bottom" );
     const comment = element( by.text( "This is a comment" ) );
     await waitFor( comment ).toBeVisible().withTimeout( 10000 );
     /*
     / 4. Delete the observation
     */
+    await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "top" );
     const editButton = element( by.id( "ObsDetail.editButton" ) );
     await waitFor( editButton ).toBeVisible().withTimeout( 10000 );
     // Navigate to the edit screen

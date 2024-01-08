@@ -77,7 +77,7 @@ const ObsStatus = ( {
   }, [observation, theme, white] );
 
   return (
-    <View className={classNames( "flex", flexDirection, classNameMargin )} testID={testID}>
+    <View className={classNames( "flex-1", flexDirection, classNameMargin )} testID={testID}>
       {showIdCount( )}
       {showCommentCount( )}
       {showQualityGrade( )}

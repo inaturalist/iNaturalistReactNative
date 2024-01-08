@@ -38,13 +38,14 @@ const EvidenceSectionContainer = ( {
 }: Props ): Node => {
   const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
   const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
-  const obsPhotos = currentObservation?.observationPhotos;
+  const photos = currentObservation?.observationPhotos?.map( obsPhoto => obsPhoto.photo ) || [];
   const mountedRef = useRef( true );
-  const obsPhotoUris = ( obsPhotos || [] ).map(
-    obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+  const obsPhotoUris = photos.map(
+    photo => photo.url || photo.localFilePath
   );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
+  const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
 
   const [
     shouldRetryCurrentObservationLocation,
@@ -158,16 +159,26 @@ const EvidenceSectionContainer = ( {
   const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
 
   const handleDragAndDrop = ( { data } ) => {
-    data.forEach( ( obsPhoto, index ) => {
+    // Turn from Realm object to simple JS objects (so we can update the position)
+    const newObsPhotos = data.map( obsPhoto => obsPhoto.toJSON() );
+    newObsPhotos.forEach( ( obsPhoto, index ) => {
       obsPhoto.position = index;
     } );
 
     updateObservationKeys( {
-      observationPhotos: data
+      observationPhotos: newObsPhotos
     } );
-    const uris = data.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
+    const uris = newObsPhotos.map(
+      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+    );
     setPhotoEvidenceUris( uris );
   };
+
+  useEffect( () => {
+    if ( !currentPlaceGuess ) return;
+
+    updateObservationKeys( { place_guess: currentPlaceGuess } );
+  }, [currentPlaceGuess, updateObservationKeys] );
 
   // Set the place_guess if not already set and coordinates are available.
   // Note that at present this sets the place_guess for *any* obs that lacks
@@ -178,7 +189,11 @@ const EvidenceSectionContainer = ( {
     async function setPlaceGuess( ) {
       const placeGuess = await fetchPlaceName( latitude, longitude );
       if ( placeGuess ) {
-        updateObservationKeys( { place_guess: placeGuess } );
+        // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
+        // a while to return, in the meantime the current copy of the observation might have
+        // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
+        // always have the latest copy of the current observation (see GH issue #584)
+        setCurrentPlaceGuess( placeGuess );
       }
     }
     if ( ( latitude && longitude ) && !currentObservation?.place_guess ) {
@@ -199,7 +214,7 @@ const EvidenceSectionContainer = ( {
       handleDragAndDrop={handleDragAndDrop}
       passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
-      evidenceList={obsPhotos || []}
+      photos={currentObservation?.observationPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       onLocationPermissionGranted={( ) => {

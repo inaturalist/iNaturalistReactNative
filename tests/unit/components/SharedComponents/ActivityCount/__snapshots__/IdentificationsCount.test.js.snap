@@ -36,7 +36,7 @@ exports[`IdentificationsCount renders default reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={
@@ -105,7 +105,7 @@ exports[`IdentificationsCount renders filled reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={
@@ -174,7 +174,7 @@ exports[`IdentificationsCount renders white reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={

@@ -36,6 +36,7 @@ class Observation extends Realm.Object {
     observed_on: true,
     place_guess: true,
     quality_grade: true,
+    sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
     user: User && User.USER_FIELDS,
@@ -162,17 +163,12 @@ class Observation extends Realm.Object {
       timestamps._synced_at = null;
     }
 
-    const addTimestampsToEvidence = evidence => {
-      // right now there isn't a way to edit photos or sounds via ObsEdit
-      // so we only need to add timestamps on the first time a local observation is saved
-      if ( !existingObservation && evidence ) {
-        return evidence.map( record => ( {
-          ...timestamps,
-          ...record
-        } ) );
-      }
-      return evidence;
-    };
+    const addTimestampsToEvidence = evidence => ( evidence
+      ? evidence.map( record => ( {
+        ...record,
+        ...timestamps
+      } ) )
+      : evidence );
 
     const taxon = obs.taxon || null;
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
@@ -205,6 +201,7 @@ class Observation extends Realm.Object {
       place_guess: obs.place_guess,
       latitude: obs.latitude,
       longitude: obs.longitude,
+      positional_accuracy: obs.positional_accuracy,
       taxon_id: obs.taxon && obs.taxon.id,
       geoprivacy: obs.geoprivacy,
       uuid: obs.uuid,

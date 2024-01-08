@@ -53,6 +53,16 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
+  static mapPhotoForUpdating( id, observationPhoto ) {
+    return {
+      id: observationPhoto.uuid,
+      observation_photo: {
+        observation_id: id,
+        position: observationPhoto.position
+      }
+    };
+  }
+
   static async new( uri, position ) {
     const photo = await Photo.new( uri );
     return {
@@ -79,14 +89,6 @@ class ObservationPhoto extends Realm.Object {
         return newPhoto;
       } )
     );
-  };
-
-  static deleteObservationPhoto = ( list, photo ) => {
-    const i = list.findIndex(
-      p => p.photo.localFilePath === photo || p.originalPhotoUri === photo
-    );
-    list.splice( i, 1 );
-    return list;
   };
 
   static async deleteRemotePhoto( realm, uri, currentObservation ) {
@@ -118,6 +120,14 @@ class ObservationPhoto extends Realm.Object {
     } else {
       ObservationPhoto.deleteLocalPhoto( realm, uri, currentObservation );
     }
+  }
+
+  static mapObsPhotoUris( observation ) {
+    const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
+    const obsPhotoUris = ( obsPhotos || [] ).map(
+      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+    );
+    return obsPhotoUris;
   }
 
   static schema = {

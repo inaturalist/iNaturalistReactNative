@@ -11,9 +11,8 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
-
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   _created_at: faker.date.past( ),
@@ -258,7 +257,7 @@ describe( "ObsDetails", () => {
     it(
       "should show the edit button and not the menu when the observation has never been uploaded",
       async ( ) => {
-        const observation = factory.states( "unUploaded" )( "LocalObservation" );
+        const observation = factory( "LocalObservation" );
         jest.spyOn( useLocalObservation, "default" )
           .mockImplementation( () => observation );
         jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => observation.user );
