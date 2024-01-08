@@ -314,10 +314,20 @@
     "val": "no rights reserved (CC0) (CC0)"
   },
   "NOTES": {
-    "comment": "Header for observation description on observation detail\nHeader for observation description on observation detail",
+    "comment": "Header for observation description on observation detail",
     "val": "NOTES"
   },
   "Notifications": "Notifications",
+  "Notification-Identification": {
+    "comment": "notification when someone adds an identification to your observation",
+    "val": "added an identification to an observation by you"
+  },
+  "Notification-Comment": {
+    "comment": "notification when someone mentions you in a comment to an observations by you",
+    "val": "mentioned you in an observation by you"
+  },
+  "No-Notifications-Found": "You have no notifications! Get started by creating your own observations.",
+  "Offline-No-Notifications": "Cannot fetch notifications at this time.",
   "Obscured": "Obscured",
   "Obscured-observation-location-map-description": {
     "comment": "Displayed when user views an obscured location on the ObsDetail map screen",

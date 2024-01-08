@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
-import Messages from "components/Messages/Messages";
+import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
@@ -43,8 +43,8 @@ const BottomTabs = ( ) => {
           options={hideHeader}
         />
         <Tab.Screen
-          name="Messages"
-          component={Messages}
+          name="Notifications"
+          component={NotificationsContainer}
           options={hideHeaderLeft}
         />
         <Tab.Screen
