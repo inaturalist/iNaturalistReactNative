@@ -255,6 +255,8 @@ const MyObservationsContainer = ( ): Node => {
           }
           return error.message;
         } ).join( ", " );
+      } else {
+        throw uploadError;
       }
       dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
     }

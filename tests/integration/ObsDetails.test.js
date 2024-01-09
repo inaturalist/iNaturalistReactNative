@@ -1,5 +1,4 @@
-import { faker } from "@faker-js/faker";
-import { screen } from "@testing-library/react-native";
+import { screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -8,6 +7,7 @@ import path from "path";
 import React from "react";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
+import Observation from "realmModels/Observation";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithComponent } from "tests/helpers/render";
 
@@ -60,20 +60,18 @@ afterAll( ( ) => {
 } );
 // /REALM SETUP
 
-const mockComment = factory( "LocalComment" );
-const mockObservation = factory( "LocalObservation", {
-  comments: [mockComment],
-  user: factory( "LocalUser", {
-    login: faker.internet.userName( ),
-    iconUrl: faker.image.url( ),
-    locale: "en"
-  } )
+const mockComment = factory( "RemoteComment" );
+const mockObservation = factory( "RemoteObservation", {
+  comments: [mockComment]
 } );
 const mockUpdate = factory( "RemoteUpdate", {
   resource_uuid: mockObservation.uuid,
   comment_id: mockComment.id,
   viewed: false
 } );
+
+// Mock api call to fetch observation so it looks like a remote copy exists
+inatjs.observations.fetch.mockResolvedValue( makeResponse( [mockObservation] ) );
 
 // Mock api call to observations
 jest.mock( "inaturalistjs" );
@@ -100,32 +98,31 @@ jest.mock( "@react-navigation/native", () => {
 describe( "ObsDetails", () => {
   beforeAll( async () => {
     await initI18next();
-
     jest.useFakeTimers( );
+    Observation.upsertRemoteObservations( [mockObservation], global.mockRealms[__filename] );
   } );
 
   afterEach( () => {
     jest.clearAllMocks();
   } );
 
-  describe( "with an observation where we don't know if the user has viewed comments", () => {
-    beforeEach( async () => {
-      // Write local observation to Realm
-      await global.mockRealms[__filename].write( () => {
-        global.mockRealms[__filename].create( "Observation", mockObservation );
-      } );
-    } );
-    it( "should make a request to observation/viewedUpdates", async () => {
+  describe( "with an observation where we don't know if the user has viewed comments", ( ) => {
+    it( "should make a request to observation/viewedUpdates", async ( ) => {
       // Let's make sure the mock hasn't already been used
       expect( inatjs.observations.viewedUpdates ).not.toHaveBeenCalled();
+      const observation = global.mockRealms[__filename].objectForPrimaryKey(
+        "Observation",
+        mockObservation.uuid
+      );
       // Expect the observation in realm to have comments_viewed param not initialized
-      const observation = global.mockRealms[__filename].objects( "Observation" )[0];
       expect( observation.comments_viewed ).not.toBeTruthy();
       renderAppWithComponent( <ObsDetailsContainer /> );
       expect(
-        await screen.findByText( `@${mockObservation.user.login}` )
+        await screen.findByText( `@${observation.user.login}` )
       ).toBeTruthy();
-      expect( inatjs.observations.viewedUpdates ).toHaveBeenCalledTimes( 1 );
+      await waitFor( ( ) => {
+        expect( inatjs.observations.viewedUpdates ).toHaveBeenCalledTimes( 1 );
+      } );
       // Expect the observation in realm to have been updated with comments_viewed = true
       expect( observation.comments_viewed ).toBe( true );
     } );

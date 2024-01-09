@@ -147,8 +147,7 @@ const ObsDetailsContainer = ( ): Node => {
     ),
     {
       keepPreviousData: false,
-      enabled: localObservation?.wasSynced( ),
-      retry: 10
+      enabled: localObservation?.wasSynced( )
     }
   );
 
@@ -341,13 +340,18 @@ const ObsDetailsContainer = ( ): Node => {
 
   useEffect( ( ) => {
     if (
-      localObservation
-      && localObservation.unviewed()
+      remoteObservation
+      && localObservation?.unviewed( )
       && !markViewedMutation.isLoading
     ) {
       markViewedMutation.mutate( { id: uuid } );
     }
-  }, [localObservation, markViewedMutation, uuid] );
+  }, [
+    localObservation,
+    markViewedMutation,
+    remoteObservation,
+    uuid
+  ] );
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );

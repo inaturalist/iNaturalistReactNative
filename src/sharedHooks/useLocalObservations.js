@@ -34,7 +34,7 @@ const useLocalObservations = ( ): Object => {
 
       if ( isFocused ) {
         setObservationList( stagedObservationList.current );
-        setAllObsToUpload( Array.from( unsyncedObs ) );
+        setAllObsToUpload( unsyncedObs );
       }
     } );
     // eslint-disable-next-line consistent-return
