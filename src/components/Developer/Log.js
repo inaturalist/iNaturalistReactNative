@@ -3,7 +3,9 @@ import {
   INatIconButton,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import { fontMonoClass, Text, View } from "components/styledComponents";
+import {
+  fontMonoClass, Text, TextInput, View
+} from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -46,9 +48,21 @@ const Log = (): Node => {
   return (
     <ScrollViewWrapper>
       <View className="p-5">
-        <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`}>
-          {logContents}
-        </Text>
+        {Platform.OS === "ios"
+          ? (
+            // iOS requires a TextInput for word selections
+            // https://github.com/facebook/react-native/issues/13938#issuecomment-520590673
+            <TextInput
+              accessibilityLabel="Text input field"
+              value={logContents}
+              editable={false}
+              multiline
+            />
+          )
+          : (
+            // Android can do word selections just with <Text>
+            <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`} selectable>{logContents}</Text>
+          )}
       </View>
     </ScrollViewWrapper>
   );
