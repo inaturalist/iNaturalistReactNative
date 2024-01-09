@@ -50,7 +50,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Record sound observations of nature.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Export and import ${PRODUCT_NAME} photos to and from your library.</string>
+	<string>Export ${PRODUCT_NAME} photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Export and import ${PRODUCT_NAME} photos to and from your library.</string>
 	<key>UIAppFonts</key>

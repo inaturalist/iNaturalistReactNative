@@ -29,7 +29,7 @@ type Props = {
   disallowAddingPhotos: boolean,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
-  navToObsEdit: Function
+  handleCheckmarkPress: Function
 }
 
 const CameraNavButtons = ( {
@@ -38,7 +38,7 @@ const CameraNavButtons = ( {
   disallowAddingPhotos,
   photosTaken,
   rotatableAnimatedStyle,
-  navToObsEdit
+  handleCheckmarkPress
 }: Props ): Node => !isTablet && (
   <View className="h-32 flex-row justify-between items-center">
     <CloseButton
@@ -59,7 +59,7 @@ const CameraNavButtons = ( {
           } )}
         >
           <GreenCheckmark
-            navToObsEdit={navToObsEdit}
+            handleCheckmarkPress={handleCheckmarkPress}
           />
         </Animated.View>
       )

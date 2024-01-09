@@ -42,26 +42,31 @@ export const READ_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.PHOTO_LIBRARY]
   : androidReadPermissions;
 
+export const WRITE_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
+  ? [PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
+  : androidReadPermissions;
+
 export const LOCATION_PERMISSIONS: Array<string> = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]
   : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
 
 type Props = {
+  blockedPrompt?: string,
+  body?: string,
+  buttonText?: string,
   children?: Node,
-  permissions: Array<string>,
   icon?: string,
+  image?: Object,
+  onPermissionBlocked?: Function,
+  onPermissionDenied?: Function,
+  onPermissionGranted?: Function,
+  permissionNeeded?: boolean,
+  permissions: Array<string>,
+  setModalWasClosed?: Function,
+  testID?: string,
   title?: string,
   titleDenied: string,
-  body?: string,
-  blockedPrompt?: string,
-  buttonText?: string,
-  image?: Object,
-  permissionNeeded?: boolean,
-  onPermissionGranted?: Function,
-  onPermissionDenied?: Function,
-  onPermissionBlocked?: Function,
-  withoutNavigation?: boolean,
-  testID?: string
+  withoutNavigation?: boolean
 };
 
 export function permissionResultFromMultiple( multiResults: Object ): string {
@@ -100,10 +105,11 @@ const PermissionGateContainer = ( {
   onPermissionGranted,
   permissionNeeded = true,
   permissions,
+  setModalWasClosed,
+  testID,
   title,
   titleDenied,
-  withoutNavigation,
-  testID
+  withoutNavigation
 }: Props ): Node => {
   const [result, setResult] = useState( null );
   const [modalShown, setModalShown] = useState( false );
@@ -161,11 +167,15 @@ const PermissionGateContainer = ( {
 
   const closeModal = useCallback( ( ) => {
     setModalShown( false );
+    if ( setModalWasClosed ) {
+      setModalWasClosed( true );
+    }
     if ( !withoutNavigation ) navigation.goBack( );
   }, [
     navigation,
     setModalShown,
-    withoutNavigation
+    withoutNavigation,
+    setModalWasClosed
   ] );
 
   // If the result changes, notify the parent component

@@ -4,10 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import useRotation from "components/Camera/hooks/useRotation";
+import useTakePhoto from "components/Camera/hooks/useTakePhoto";
+import useZoom from "components/Camera/hooks/useZoom";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useEffect,
+  useMemo,
   useState
 } from "react";
 import DeviceInfo from "react-native-device-info";
@@ -15,6 +19,7 @@ import { Snackbar } from "react-native-paper";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
+import useStore from "stores/useStore";
 
 import {
   handleCameraError,
@@ -25,6 +30,7 @@ import {
 import CameraNavButtons from "./CameraNavButtons";
 import CameraOptionsButtons from "./CameraOptionsButtons";
 import DiscardChangesSheet from "./DiscardChangesSheet";
+import useBackPress from "./hooks/useBackPress";
 import PhotoPreview from "./PhotoPreview";
 
 const isTablet = DeviceInfo.isTablet( );
@@ -32,58 +38,60 @@ const isTablet = DeviceInfo.isTablet( );
 export const MAX_PHOTOS_ALLOWED = 20;
 
 type Props = {
-  navToObsEdit: Function,
-  flipCamera: Function,
-  toggleFlash: Function,
-  changeZoom: Function,
-  takePhoto: Function,
-  handleBackButtonPress: Function,
-  rotatableAnimatedStyle: Object,
-  rotation: any,
-  isLandscapeMode: boolean,
-  device: any,
+  addEvidence: ?boolean,
+  backToObsEdit: ?boolean,
   camera: any,
-  hasFlash: boolean,
-  takePhotoOptions: Object,
-  setShowDiscardSheet: Function,
-  showDiscardSheet: boolean,
-  takingPhoto: boolean,
-  animatedProps: any,
-  zoomTextValue: string,
-  showZoomButton: boolean,
-  onZoomStart?: Function,
-  onZoomChange?: Function,
-  totalObsPhotoUris: number,
-  cameraPreviewUris: Function
+  device: any,
+  flipCamera: Function,
+  handleCheckmarkPress: Function,
+  isLandscapeMode: boolean
 };
 
 const StandardCamera = ( {
-  navToObsEdit,
-  flipCamera,
-  toggleFlash,
-  takePhoto,
-  handleBackButtonPress,
-  rotatableAnimatedStyle,
-  rotation,
-  isLandscapeMode,
-  device,
+  addEvidence,
+  backToObsEdit,
   camera,
-  hasFlash,
-  takePhotoOptions,
-  setShowDiscardSheet,
-  showDiscardSheet,
-  takingPhoto,
-  changeZoom,
-  animatedProps,
-  zoomTextValue,
-  showZoomButton,
-  onZoomStart,
-  onZoomChange,
-  totalObsPhotoUris,
-  cameraPreviewUris
+  device,
+  flipCamera,
+  handleCheckmarkPress,
+  isLandscapeMode
 }: Props ): Node => {
+  const hasFlash = device?.hasFlash;
+  const {
+    animatedProps,
+    changeZoom,
+    onZoomChange,
+    onZoomStart,
+    showZoomButton,
+    zoomTextValue
+  } = useZoom( device );
+  const {
+    rotatableAnimatedStyle,
+    rotation
+  } = useRotation( );
+  const {
+    handleBackButtonPress,
+    setShowDiscardSheet,
+    showDiscardSheet
+  } = useBackPress( backToObsEdit );
+  const {
+    takePhoto,
+    takePhotoOptions,
+    takingPhoto,
+    toggleFlash
+  } = useTakePhoto( camera, addEvidence, device );
+
   const navigation = useNavigation( );
   const { t } = useTranslation( );
+
+  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const galleryUris = useStore( state => state.galleryUris );
+
+  const totalObsPhotoUris = useMemo(
+    ( ) => [...cameraPreviewUris, ...galleryUris].length,
+    [cameraPreviewUris, galleryUris]
+  );
+
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
   const [dismissChanges, setDismissChanges] = useState( false );
@@ -147,7 +155,7 @@ const StandardCamera = ( {
           disallowAddingPhotos={disallowAddingPhotos}
           photosTaken={photosTaken}
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          navToObsEdit={navToObsEdit}
+          handleCheckmarkPress={handleCheckmarkPress}
           toggleFlash={toggleFlash}
           flipCamera={flipCamera}
           hasFlash={hasFlash}
@@ -163,7 +171,7 @@ const StandardCamera = ( {
         disallowAddingPhotos={disallowAddingPhotos}
         photosTaken={photosTaken}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
-        navToObsEdit={navToObsEdit}
+        handleCheckmarkPress={handleCheckmarkPress}
       />
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}

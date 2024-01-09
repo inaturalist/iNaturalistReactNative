@@ -9,17 +9,17 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  navToObsEdit: Function
+  handleCheckmarkPress: Function
 }
 
 const GreenCheckmark = ( {
-  navToObsEdit
+  handleCheckmarkPress
 }: Props ): Node => {
   const { t } = useTranslation( );
 
   return (
     <INatIconButton
-      onPress={( ) => navToObsEdit( )}
+      onPress={handleCheckmarkPress}
       accessibilityLabel={t( "Checkmark" )}
       accessibilityHint={t( "Navigate-to-observation-edit-screen" )}
       disabled={false}
