@@ -36,14 +36,15 @@ const ObsStatus = ( {
     ? "flex-column"
     : "flex-row";
 
-  const showIdCount = useCallback( ( ) => {
-    const numIdents = observation.identifications?.length || 0;
+  const showCurrentIdCount = useCallback( ( ) => {
+    const numCurrentIdents = observation
+      .identifications?.filter( id => id.current === true )?.length || 0;
     const identificationsFilled = observation.identifications_viewed === false;
 
     return (
       <IdentificationsCount
         classNameMargin={margin}
-        count={numIdents}
+        count={numCurrentIdents}
         white={white}
         filled={identificationsFilled}
       />
@@ -78,7 +79,7 @@ const ObsStatus = ( {
 
   return (
     <View className={classNames( "flex-1", flexDirection, classNameMargin )} testID={testID}>
-      {showIdCount( )}
+      {showCurrentIdCount( )}
       {showCommentCount( )}
       {showQualityGrade( )}
     </View>
