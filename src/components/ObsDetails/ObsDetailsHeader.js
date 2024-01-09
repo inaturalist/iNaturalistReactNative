@@ -45,7 +45,7 @@ const CommunityTaxon = ( {
   };
 
   return (
-    <>
+    <View className="bg-white">
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
         <InlineUser user={observation?.user} isOnline={isOnline} />
         <DateDisplay
@@ -63,7 +63,7 @@ const CommunityTaxon = ( {
         </View>
       </View>
       <ObservationLocation observation={observation} classNameMargin="ml-3 mb-2" />
-    </>
+    </View>
   );
 };
 
