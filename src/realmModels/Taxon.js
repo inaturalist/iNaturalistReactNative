@@ -11,6 +11,7 @@ class Taxon extends Realm.Object {
       license_code: true
     },
     iconic_taxon_name: true,
+    is_active: true,
     name: true,
     preferred_common_name: true,
     rank: true,
