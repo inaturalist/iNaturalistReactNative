@@ -68,7 +68,7 @@ const ActivityItem = ( {
           />
           { showAgreeButton && (
             <Pressable
-              testID="ActivityItem.AgreeIdButton"
+              testID={`ActivityItem.AgreeIdButton.${item.taxon.id}`}
               accessibilityRole="button"
               onPress={( ) => onIDAgreePressed( item.taxon )}
             >
