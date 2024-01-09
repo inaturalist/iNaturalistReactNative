@@ -19,7 +19,7 @@ async function reactQueryRetry( failureCount, error, options = {} ) {
   }
   if ( error.status > 500 ) {
     logger.info( "Handing 500+ error, failureCount: ", failureCount );
-    handleError( error );
+    await handleError( error );
     return false;
   }
   if (
@@ -39,7 +39,7 @@ async function reactQueryRetry( failureCount, error, options = {} ) {
     return retryValue;
   }
   logger.info( "Handling some other error, failureCount: ", failureCount );
-  handleError( error, { throw: false } );
+  await handleError( error, { throw: false } );
   if ( error.status === 401 || error.status === 403 ) {
     // If we get a 401 or 403, call getJWT
     // which has a timestamp check if we need to refresh the token
