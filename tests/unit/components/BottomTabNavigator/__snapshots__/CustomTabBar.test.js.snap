@@ -486,8 +486,8 @@ exports[`CustomTabBar should render correctly 1`] = `
       </View>
       <View>
         <View
-          accessibilityHint="Navigates-to-messages"
-          accessibilityLabel="Messages"
+          accessibilityHint="Navigates-to-notifications"
+          accessibilityLabel="Notifications"
           accessibilityRole="button"
           accessibilityState={
             {
@@ -531,7 +531,7 @@ exports[`CustomTabBar should render correctly 1`] = `
               undefined,
             ]
           }
-          testID="Messages"
+          testID="Notifications"
         >
           <View
             style={

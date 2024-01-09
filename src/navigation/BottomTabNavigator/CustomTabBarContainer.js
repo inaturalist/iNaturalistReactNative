@@ -10,7 +10,7 @@ import CustomTabBar from "./CustomTabBar";
 const DRAWER_ID = "OPEN_DRAWER";
 const EXPLORE_SCREEN_ID = "Explore";
 const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
-const MESSAGES_SCREEN_ID = "Messages";
+const NOTIFICATIONS_SCREEN_ID = "Notifications";
 
 type Props = {
   navigation: Object,
@@ -77,17 +77,17 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
     },
     {
       icon: "notifications-bell",
-      testID: MESSAGES_SCREEN_ID,
-      accessibilityLabel: t( "Messages" ),
-      accessibilityHint: t( "Navigates-to-messages" ),
+      testID: NOTIFICATIONS_SCREEN_ID,
+      accessibilityLabel: t( "Notifications" ),
+      accessibilityHint: t( "Navigates-to-notifications" ),
       width: 44,
       height: 44,
       size: 32,
       onPress: ( ) => {
-        navigation.navigate( "Messages" );
-        setActiveTab( MESSAGES_SCREEN_ID );
+        navigation.navigate( "Notifications" );
+        setActiveTab( NOTIFICATIONS_SCREEN_ID );
       },
-      active: MESSAGES_SCREEN_ID === activeTab
+      active: NOTIFICATIONS_SCREEN_ID === activeTab
     }
   ] ), [
     activeTab,

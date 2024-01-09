@@ -1,5 +1,6 @@
 // @flow
 
+import { Realm } from "@realm/react";
 import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   differenceInCalendarYears,
@@ -163,7 +164,9 @@ const EvidenceSectionContainer = ( {
 
   const handleDragAndDrop = ( { data } ) => {
     // Turn from Realm object to simple JS objects (so we can update the position)
-    const newObsPhotos = data.map( obsPhoto => obsPhoto.toJSON() );
+    const newObsPhotos = data.map( obsPhoto => ( obsPhoto instanceof Realm.Object
+      ? obsPhoto.toJSON()
+      : obsPhoto ) );
     newObsPhotos.forEach( ( obsPhoto, index ) => {
       obsPhoto.position = index;
     } );
