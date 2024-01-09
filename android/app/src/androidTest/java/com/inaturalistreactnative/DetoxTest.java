@@ -1,4 +1,4 @@
-package com.inaturalistreactnative;
+package org.inaturalist.iNaturalistMobile;
 
 import com.wix.detox.Detox;
 import com.wix.detox.config.DetoxConfig;

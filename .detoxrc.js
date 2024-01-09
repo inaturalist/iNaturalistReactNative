@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const buildGradle = fs.readFileSync("./android/app/build.gradle", "utf8");
 const versionCode = buildGradle.match(/versionCode (\d+)/)[1];
-const apkFilenamePrefix = `com.inaturalistreactnative-v${version}+${versionCode}`;
+const apkFilenamePrefix = `org.inaturalist.iNaturalistMobile-v${version}+${versionCode}`;
 
 /** @type {Detox.DetoxConfig} */
 module.exports = {

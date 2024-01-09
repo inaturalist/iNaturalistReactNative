@@ -1,4 +1,4 @@
-package com.inaturalistreactnative;
+package org.inaturalist.iNaturalistMobile;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
