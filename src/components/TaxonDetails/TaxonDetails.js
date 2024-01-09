@@ -8,8 +8,8 @@ import {
   BackButton,
   Body2,
   INatIconButton,
-  ScrollViewWrapper,
-  KebabMenu
+  KebabMenu,
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import {
   Image,
@@ -51,7 +51,6 @@ const TaxonDetails = ( ): Node => {
   const { remoteUser } = useUserMe( );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
-    
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
 
@@ -89,18 +88,18 @@ const TaxonDetails = ( ): Node => {
   ), [taxon] );
 
   const openURLInBrowser = async url => {
-        try {
-            const canOpen = await Linking.canOpenURL( url );
-            
-            if ( canOpen ) {
-                await Linking.openURL( url );
-            } else {
-                console.error( "Cannot open URL" );
-            }
-        } catch ( exc ) {
-            console.error( "An error occurred", exc );
-        }
-    };
+    try {
+      const canOpen = await Linking.canOpenURL( url );
+
+      if ( canOpen ) {
+        await Linking.openURL( url );
+      } else {
+        console.error( "Cannot open URL" );
+      }
+    } catch ( exc ) {
+      console.error( "An error occurred", exc );
+    }
+  };
 
   const displayTaxonDetails = ( ) => {
     if ( isLoading ) {

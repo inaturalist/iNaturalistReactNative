@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module '@realm/react' {
+declare module "@realm/react" {
   declare module.exports: any;
 }
 
@@ -22,14 +22,14 @@ declare module '@realm/react' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module '@realm/react/dist' {
+declare module "@realm/react/dist" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module '@realm/react/dist/index' {
+declare module "@realm/react/dist/index" {
   declare module.exports: $Exports<'@realm/react/dist'>;
 }
-declare module '@realm/react/dist/index.js' {
+declare module "@realm/react/dist/index.js" {
   declare module.exports: $Exports<'@realm/react/dist'>;
 }

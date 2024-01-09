@@ -37,7 +37,6 @@ const FIELDS = {
     id: true,
     list: {
       title: true
-      // id: true
     },
     place: {
       id: true

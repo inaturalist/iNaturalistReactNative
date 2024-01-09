@@ -47,10 +47,13 @@ const ActivityTab = ( {
     [activityItems]
   );
 
+  const indexOfFirstTaxonDisplayed = taxonId => stableItems
+    .findIndex( item => item.taxon.id === taxonId );
+
   return (
     <View testID="ActivityTab">
       {stableItems.length > 0
-        && stableItems.map( item => (
+        && stableItems.map( ( item, index ) => (
           <ActivityItem
             userAgreedId={userAgreedToId}
             key={item.uuid}
@@ -59,6 +62,7 @@ const ActivityTab = ( {
             onIDAgreePressed={onIDAgreePressed}
             currentUserId={userId}
             isOnline={isOnline}
+            isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
           />
         ) )}
     </View>

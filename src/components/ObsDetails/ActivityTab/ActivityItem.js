@@ -17,31 +17,36 @@ import { textStyles } from "styles/obsDetails/obsDetails";
 import ActivityHeaderContainer from "./ActivityHeaderContainer";
 
 type Props = {
-  item: Object,
-  refetchRemoteObservation: Function,
   currentUserId?: Number,
-  userAgreedId?: string,
+  isFirstDisplay: boolean,
+  isOnline: boolean,
+  item: Object,
   onIDAgreePressed: Function,
-  isOnline: boolean
+  refetchRemoteObservation: Function,
+  userAgreedId?: string
 }
 
 const ActivityItem = ( {
-  item, refetchRemoteObservation, currentUserId,
-  userAgreedId, onIDAgreePressed,
-  isOnline
+  currentUserId,
+  isFirstDisplay,
+  isOnline,
+  item,
+  onIDAgreePressed,
+  refetchRemoteObservation,
+  userAgreedId
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { taxon, user } = item;
-  const userId = currentUserId;
   const isCurrent = item.current !== undefined
     ? item.current
     : undefined;
 
   const idWithdrawn = isCurrent !== undefined && !isCurrent;
 
-  const showAgreeButton = ( user?.id !== userId )
-      && taxon?.rank_level <= 10
-      && ( userAgreedId !== taxon?.id );
+  const showAgreeButton = user?.id !== currentUserId
+    && userAgreedId !== taxon?.id
+    && taxon?.is_active
+    && isFirstDisplay;
 
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
@@ -65,7 +70,7 @@ const ActivityItem = ( {
             <Pressable
               testID="ActivityItem.AgreeIdButton"
               accessibilityRole="button"
-              onPress={onIDAgreePressed}
+              onPress={( ) => onIDAgreePressed( item.taxon )}
             >
               <INatIcon name="id-agree" size={33} />
             </Pressable>
