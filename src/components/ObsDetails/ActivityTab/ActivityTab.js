@@ -48,7 +48,7 @@ const ActivityTab = ( {
   );
 
   const indexOfFirstTaxonDisplayed = taxonId => stableItems
-    .findIndex( item => item.taxon.id === taxonId );
+    .findIndex( item => item?.taxon?.id === taxonId );
 
   return (
     <View testID="ActivityTab">
