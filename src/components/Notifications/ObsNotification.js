@@ -27,8 +27,8 @@ const ObsNotification = ( { item }: Props ): Node => {
   const realm = useRealm( );
   const theme = useTheme();
 
-  const { observationPhotos } = realm.objectForPrimaryKey( "Observation", item.resource_uuid );
-  const displayPhoto = observationPhotos[0]?.photo;
+  const observation = realm.objectForPrimaryKey( "Observation", item.resource_uuid );
+  const displayPhoto = observation?.observationPhotos[0]?.photo;
 
   const photoUrl = displayPhoto?.url
     ? displayPhoto.url.replace( "square", "large" )
