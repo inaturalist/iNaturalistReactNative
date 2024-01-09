@@ -16,8 +16,8 @@ import {
 
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
-import CommunityTaxon from "./CommunityTaxon";
 import DetailsTab from "./DetailsTab/DetailsTab";
+import ObsDetailsHeader from "./ObsDetailsHeader";
 import PhotoDisplayContainer from "./PhotoDisplayContainer";
 
 type Props = {
@@ -77,7 +77,7 @@ const ObsDetails = ( {
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <ScrollView
         testID={`ObsDetails.${uuid}`}
-        stickyHeaderIndices={[1]}
+        stickyHeaderIndices={[2]}
         scrollEventThrottle={16}
         className="bg-white"
       >
@@ -87,7 +87,7 @@ const ObsDetails = ( {
           isOnline={isOnline}
           belongsToCurrentUser={belongsToCurrentUser}
         />
-        <CommunityTaxon
+        <ObsDetailsHeader
           observation={observation}
           isOnline={isOnline}
         />
@@ -111,7 +111,6 @@ const ObsDetails = ( {
             <ActivityIndicator size="large" />
           </View>
         )}
-        <View className="pb-64" />
       </ScrollView>
       {showActivityTab && (
         <FloatingButtons
