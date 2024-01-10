@@ -103,7 +103,6 @@ const IdentificationSection = ( {
                     "border border-darkGray border-[2px]": identification
                   } )}
                   testID="ObsEdit.Suggestions"
-                  ignoreDark
                   icon={(
                     <INatIcon
                       name="sparkly-label"
