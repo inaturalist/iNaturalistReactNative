@@ -679,9 +679,18 @@ const ExploreContainer = ( ): Node => {
   }
   filteredParams.photos = exploreParams.media === PHOTOS || exploreParams.media === ALL;
   filteredParams.sounds = exploreParams.media === SOUNDS || exploreParams.media === ALL;
-  filteredParams.native = exploreParams.native;
-  filteredParams.endemic = exploreParams.endemic;
-  filteredParams.introduced = exploreParams.introduced;
+
+  // TODO: How to handle those values (native, endemic, introduced, noStatus)
+  // TODO: true = filter should be used, e.g. the query should be native=true
+  // TODO: ask Abhas what should happen when = false:
+  // not include the query param or send to the API native=false?
+  // TODO: how does no Status work alongside the other values?
+
+  // filteredParams.native = exploreParams.native;
+  // filteredParams.endemic = exploreParams.endemic;
+  // filteredParams.introduced = exploreParams.introduced;
+  // filteredParams.noStatus = exploreParams.noStatus;
+
   if ( exploreParams.wildStatus === WILD ) {
     filteredParams.captive = false;
   } else if ( exploreParams.wildStatus === CAPTIVE ) {
