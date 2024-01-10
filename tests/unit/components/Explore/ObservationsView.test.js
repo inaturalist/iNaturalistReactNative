@@ -60,6 +60,7 @@ describe( "ObservationsView", () => {
   it( "should show loading wheel before initial data loads", ( ) => {
     renderComponent(
       <ObservationsFlashList
+        dataCanBeFetched
         hideLoadingWheel
         isOnline
         data={[]}
