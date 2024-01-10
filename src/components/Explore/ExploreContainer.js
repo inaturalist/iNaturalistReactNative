@@ -54,7 +54,7 @@ const calculatedFilters = {
   introduced: true,
   native: true,
   endemic: true,
-  noStatus: true
+  noStatus: true,
   wildStatus: ALL,
   reviewedFilter: ALL,
   photoLicense: ALL
@@ -108,7 +108,7 @@ const initialState: {
     introduced: boolean,
     native: boolean,
     endemic: boolean,
-    noStatus: boolean
+    noStatus: boolean,
     wildStatus: string,
     reviewedFilter: string,
     photoLicense: string
@@ -372,6 +372,14 @@ const reducer = ( state, action ) => {
           introduced: !state.exploreParams.introduced
         }
       };
+    case "TOGGLE_NO_STATUS":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          noStatus: !state.exploreParams.noStatus
+        }
+      };
     case "SET_WILD_STATUS":
       return {
         ...state,
@@ -604,6 +612,12 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
+  const updateNoStatus = () => {
+    dispatch( {
+      type: "TOGGLE_NO_STATUS"
+    } );
+  };
+
   const updateWildStatus = newWildStatus => {
     dispatch( {
       type: "SET_WILD_STATUS",
@@ -726,6 +740,7 @@ const ExploreContainer = ( ): Node => {
       updateNative={updateNative}
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}
+      updateNoStatus={updateNoStatus}
       updateWildStatus={updateWildStatus}
       updateReviewed={updateReviewed}
       updatePhotoLicense={updatePhotoLicense}
