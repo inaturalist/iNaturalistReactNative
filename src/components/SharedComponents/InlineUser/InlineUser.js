@@ -28,7 +28,16 @@ const InlineUser = ( { user, isOnline }: Props ): Node => {
   const { t } = useTranslation( );
 
   const renderUserIcon = () => {
-    if ( !userImgUri || !isOnline ) {
+    if ( !isOnline ) {
+      return (
+        <INatIcon
+          testID="InlineUser.NoInternetPicture"
+          name="triangle-exclamation"
+          size={22}
+        />
+      );
+    }
+    if ( !userImgUri ) {
       return (
         <INatIcon
           testID="InlineUser.FallbackPicture"

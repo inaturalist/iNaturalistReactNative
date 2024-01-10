@@ -55,6 +55,7 @@ describe( "InlineUser", ( ) => {
     const profilePicture = await screen.findByTestId( "mockUserIcon" );
     expect( profilePicture ).toBeTruthy( );
     expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
+    expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy( );
   } );
 
   it( "fires onPress handler", ( ) => {
@@ -78,6 +79,9 @@ describe( "InlineUser", ( ) => {
         await screen.findByTestId( "InlineUser.FallbackPicture" )
       ).toBeTruthy();
       expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
+      expect(
+        screen.queryByTestId( "InlineUser.NoInternetPicture" )
+      ).not.toBeTruthy();
     } );
 
     it( "renders reliably", ( ) => {
@@ -94,8 +98,9 @@ describe( "InlineUser", ( ) => {
       expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy();
       // This icon appears after useIsConnected returns false
       // so we have to use await and findByTestId
-      expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
+      expect( await screen.findByTestId( "InlineUser.NoInternetPicture" ) ).toBeTruthy();
       expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
+      expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
     } );
 
     it( "renders reliably", ( ) => {
