@@ -1,0 +1,18 @@
+appId: org.inaturalist.iNatMobileBeta
+---
+- launchApp:
+    appId: com.apple.mobileslideshow
+- tapOn:
+    point: "50%,20%"
+- tapOn: "Share"
+- tapOn:
+    point: "35%,70%"
+- extendedWaitUntil:
+    visible: "Post"
+    timeout: 10000
+- tapOn: "Post"
+- extendedWaitUntil:
+    visible: "New Observation"
+    timeout: 10000
+- assertVisible: "Woodpecker Trail, Inverness, CA, US"
+- assertVisible: "Mar 12, 2011, 4:17:25 PM"
