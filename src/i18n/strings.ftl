@@ -346,7 +346,7 @@ Forgot-Password = Forgot Password
 
 Fungi = Fungi
 
-Geoprivacy = Geoprivacy:
+Geoprivacy-status = Geoprivacy: {$status}
 
 # Instruction for an Android user to go to the Settings app to grant
 # permissions after they have asked never to be asked for that permission
