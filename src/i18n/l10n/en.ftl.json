@@ -197,7 +197,7 @@
     "val": "Forgot Password"
   },
   "Fungi": "Fungi",
-  "Geoprivacy": "Geoprivacy:",
+  "Geoprivacy-status": "Geoprivacy: { $status }",
   "Go-to-the-Settings-app-to-grant-permissions": {
     "comment": "Instruction for an Android user to go to the Settings app to grant\npermissions after they have asked never to be asked for that permission\nagain",
     "val": "Go to the Settings app to grant iNaturalist the appropriate permissions."
