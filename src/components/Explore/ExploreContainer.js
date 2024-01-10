@@ -133,7 +133,6 @@ const initialState: {
     lat: undefined,
     lng: undefined,
     radius: undefined,
-    project_id: undefined,
     ...defaultFilters
   },
   exploreView: "observations",
