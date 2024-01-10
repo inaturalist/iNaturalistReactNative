@@ -127,7 +127,7 @@ module.exports = {
   env: {
     jest: true
   },
-  ignorePatterns: ["/coverage/*"],
+  ignorePatterns: ["/coverage/*", "/vendor/*"],
   settings: {
     "import/resolver": {
       "babel-module": { allowExistingDirectories: true }
