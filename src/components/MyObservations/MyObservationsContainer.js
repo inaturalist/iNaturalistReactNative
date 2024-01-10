@@ -133,7 +133,12 @@ const MyObservationsContainer = ( ): Node => {
 
   const currentUser = useCurrentUser();
   useObservationsUpdates( !!currentUser );
-  const { isFetchingNextPage, fetchNextPage } = useInfiniteObservationsScroll( {
+  const {
+    fetchNextPage,
+    isFetchingNextPage,
+    observations: data,
+    status
+  } = useInfiniteObservationsScroll( {
     upsert: true,
     params: {
       user_id: currentUser?.id
@@ -400,23 +405,30 @@ const MyObservationsContainer = ( ): Node => {
 
   if ( !layout ) { return null; }
 
+  // remote data is available before data is synced locally; this check
+  // prevents the empty list from rendering briefly when a user first logs in
+  const observationListStatus = data?.length > observations?.length
+    ? "loading"
+    : status;
+
   return (
     <MyObservations
-      observations={observations}
-      layout={layout}
-      toggleLayout={toggleLayout}
-      showLoginSheet={showLoginSheet}
-      setShowLoginSheet={setShowLoginSheet}
-      isFetchingNextPage={isFetchingNextPage}
-      onEndReached={fetchNextPage}
       currentUser={currentUser}
+      isFetchingNextPage={isFetchingNextPage}
       isOnline={isOnline}
-      uploadState={state}
-      uploadMultipleObservations={uploadMultipleObservations}
+      layout={layout}
+      observations={observations}
+      onEndReached={fetchNextPage}
+      setShowLoginSheet={setShowLoginSheet}
+      showLoginSheet={showLoginSheet}
+      status={observationListStatus}
       stopUploads={stopUploads}
-      uploadSingleObservation={uploadSingleObservation}
       syncObservations={syncObservations}
+      toggleLayout={toggleLayout}
       toolbarProgress={toolbarProgress}
+      uploadMultipleObservations={uploadMultipleObservations}
+      uploadSingleObservation={uploadSingleObservation}
+      uploadState={state}
     />
   );
 };
