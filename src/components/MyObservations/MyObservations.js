@@ -95,7 +95,7 @@ const MyObservations = ( {
               uploadState={uploadState}
             />
             <ObservationsFlashList
-              currentUser={currentUser}
+              dataCanBeFetched={!!currentUser}
               data={observations.filter( o => o.isValid() )}
               handleScroll={handleScroll}
               hideLoadingWheel={!isFetchingNextPage || !currentUser}

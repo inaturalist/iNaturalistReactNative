@@ -17,8 +17,8 @@ import ObsItem from "./ObsItem";
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
-  currentUser?: Object,
   data: Array<Object>,
+  dataCanBeFetched?: boolean,
   explore: boolean,
   handleScroll?: Function,
   hideLoadingWheel: boolean,
@@ -37,8 +37,8 @@ type Props = {
 const GUTTER = 15;
 
 const ObservationsFlashList = ( {
-  currentUser,
   data,
+  dataCanBeFetched,
   explore,
   handleScroll,
   hideLoadingWheel,
@@ -124,8 +124,7 @@ const ObservationsFlashList = ( {
       ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
       : <Body3 className="self-center mt-[150px]">{t( "No-results-found" )}</Body3>;
 
-    console.log( data?.length, status, "observations" );
-    return ( ( status === "success" && currentUser ) || !currentUser )
+    return ( ( status === "success" && dataCanBeFetched ) || !dataCanBeFetched )
       ? showEmptyScreen
       : (
         <View className="self-center mt-[150px]">
@@ -133,8 +132,7 @@ const ObservationsFlashList = ( {
         </View>
       );
   }, [
-    currentUser,
-    data,
+    dataCanBeFetched,
     isFetchingNextPage,
     showObservationsEmptyScreen,
     status,
