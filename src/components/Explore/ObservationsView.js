@@ -22,6 +22,8 @@ const ObservationsView = ( {
     ...exploreParams,
     per_page: 20
   };
+  // TODO: remove this console.log
+  console.log( "params for searching observations :>> ", params );
 
   const {
     observations, isFetchingNextPage, fetchNextPage, status
