@@ -683,6 +683,20 @@ const ExploreContainer = ( ): Node => {
     filteredParams.viewer_id = currentUser?.id;
   }
 
+  if ( exploreParams.photoLicense !== ALL ) {
+    const licenseParams = {
+      all: "all",
+      cc0: "cc0",
+      ccby: "cc-by",
+      ccbync: "cc-by-nc",
+      ccbysa: "cc-by-sa",
+      ccbynd: "cc-by-nd",
+      ccbyncsa: "cc-by-nc-sa",
+      ccbyncnd: "cc-by-nc-nd"
+    };
+    filteredParams.photo_license = licenseParams[exploreParams.photoLicense];
+  }
+
   return (
     <Explore
       exploreParams={filteredParams}
@@ -715,6 +729,7 @@ const ExploreContainer = ( ): Node => {
       updateIntroduced={updateIntroduced}
       updateWildStatus={updateWildStatus}
       updateReviewed={updateReviewed}
+      updatePhotoLicense={updatePhotoLicense}
     />
   );
 };
