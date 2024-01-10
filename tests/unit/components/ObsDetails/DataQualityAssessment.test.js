@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
-import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
+import DQAContainer from "components/ObsDetails/DQAContainer";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
@@ -98,7 +98,7 @@ describe( "Data Quality Assessment", ( ) => {
     await initI18next( );
   } );
   test( "renders correct quality grade status", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer qualityGrade={mockObservation.quality_grade} /> );
 
     const qualityGrade = await screen.findByTestId(
       `QualityGrade.${mockObservation.quality_grade}`
@@ -106,7 +106,7 @@ describe( "Data Quality Assessment", ( ) => {
     expect( qualityGrade ).toBeTruthy( );
   } );
   test( "renders correct quality grade status title", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer observation={mockObservation} /> );
 
     const qualityGrade = await screen.findByText(
       t( "Data-quality-assessment-title-casual" )
@@ -114,7 +114,7 @@ describe( "Data Quality Assessment", ( ) => {
     expect( qualityGrade ).toBeTruthy( );
   } );
   test( "renders correct quality grade status description", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer observation={mockObservation} /> );
 
     const qualityGrade = await screen.findByText(
       t( "Data-quality-assessment-description-casual" )
@@ -122,7 +122,7 @@ describe( "Data Quality Assessment", ( ) => {
     expect( qualityGrade ).toBeTruthy( );
   } );
   test( "renders correct metric titles", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer observation={mockObservation} /> );
 
     const dateSpecified = await screen.findByText(
       t( "Data-quality-assessment-date-specified" )
@@ -147,7 +147,7 @@ describe( "Data Quality Assessment", ( ) => {
   } );
 
   test( "renders correct metric vote titles", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer observation={mockObservation} /> );
 
     const dateAccurate = await screen.findByText(
       t( "Data-quality-assessment-date-is-accurate" )
@@ -171,7 +171,7 @@ describe( "Data Quality Assessment", ( ) => {
     expect( recentEvidence ).toBeTruthy( );
   } );
   test( "renders about section", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer observation={mockObservation} /> );
 
     const title = await screen.findByText(
       t( "ABOUT-THE-DQA" )
@@ -189,7 +189,7 @@ describe( "DQA Vote Buttons", ( ) => {
     await initI18next( );
   } );
   test( "renders DQA vote buttons", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer observation={mockObservation} /> );
 
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );
     fireEvent.press( emptyDisagreeButtons[0] );
@@ -198,7 +198,7 @@ describe( "DQA Vote Buttons", ( ) => {
   } );
 
   test( "calls api when DQA disagree button is pressed", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer observation={mockObservation} /> );
 
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );
     fireEvent.press( emptyDisagreeButtons[0] );
@@ -207,7 +207,7 @@ describe( "DQA Vote Buttons", ( ) => {
   } );
 
   test( "calls api when DQA agree button is pressed", async ( ) => {
-    renderComponent( <DataQualityAssessment observation={mockObservation} /> );
+    renderComponent( <DQAContainer observation={mockObservation} /> );
 
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyAgree" );
     fireEvent.press( emptyDisagreeButtons[0] );
