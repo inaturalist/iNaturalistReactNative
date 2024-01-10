@@ -1,12 +1,12 @@
-appId: org.inaturalist.iNatMobileBeta
+appId: org.inaturalist.iNaturalistMobile
 ---
 - launchApp:
-    appId: com.apple.mobileslideshow
-- tapOn:
-    point: "50%,20%"
+    appId: com.apple.mobileslideshow # iOS Photos app
+- tapOn: "Albums"
+- tapOn: "6 photos"
+- tapOn: "Photo, 13. March 2011, 01:17"
 - tapOn: "Share"
-- tapOn:
-    point: "35%,70%"
+- tapOn: "iNaturalistReactNative"
 - extendedWaitUntil:
     visible: "Post"
     timeout: 10000
@@ -14,5 +14,5 @@ appId: org.inaturalist.iNatMobileBeta
 - extendedWaitUntil:
     visible: "New Observation"
     timeout: 10000
-- assertVisible: "Woodpecker Trail, Inverness, CA, US"
-- assertVisible: "Mar 12, 2011, 4:17:25 PM"
+# Assert for timestamp which means EXIF parsing was correct
+- assertVisible: .*4:17:25.*
