@@ -17,39 +17,41 @@ import ObsItem from "./ObsItem";
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
-  isFetchingNextPage?: boolean,
-  layout: "list" | "grid",
+  currentUser?: Object,
   data: Array<Object>,
-  onEndReached: Function,
-  uploadState: Object,
-  testID: string,
-  handleScroll?: Function,
-  status?: string,
-  showObservationsEmptyScreen?: boolean,
-  isOnline: boolean,
-  uploadSingleObservation?: Function,
   explore: boolean,
+  handleScroll?: Function,
   hideLoadingWheel: boolean,
-  renderHeader?: Function
+  isFetchingNextPage?: boolean,
+  isOnline: boolean,
+  layout: "list" | "grid",
+  onEndReached: Function,
+  renderHeader?: Function,
+  showObservationsEmptyScreen?: boolean,
+  status?: string,
+  testID: string,
+  uploadSingleObservation?: Function,
+  uploadState: Object
 };
 
 const GUTTER = 15;
 
 const ObservationsFlashList = ( {
-  isFetchingNextPage,
-  layout,
+  currentUser,
   data,
-  onEndReached,
-  uploadState,
-  testID,
-  handleScroll,
-  status,
-  showObservationsEmptyScreen,
-  isOnline,
-  uploadSingleObservation,
   explore,
+  handleScroll,
   hideLoadingWheel,
-  renderHeader
+  isFetchingNextPage,
+  isOnline,
+  layout,
+  onEndReached,
+  renderHeader,
+  showObservationsEmptyScreen,
+  status,
+  testID,
+  uploadSingleObservation,
+  uploadState
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -122,49 +124,52 @@ const ObservationsFlashList = ( {
       ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
       : <Body3 className="self-center mt-[150px]">{t( "No-results-found" )}</Body3>;
 
-    return status === "loading"
-      ? (
+    console.log( data?.length, status, "observations" );
+    return ( ( status === "success" && currentUser ) || !currentUser )
+      ? showEmptyScreen
+      : (
         <View className="self-center mt-[150px]">
           <ActivityIndicator size="large" testID="ObservationsFlashList.loading" />
         </View>
-      )
-      : showEmptyScreen;
+      );
   }, [
+    currentUser,
+    data,
     isFetchingNextPage,
     showObservationsEmptyScreen,
-    t,
-    status
+    status,
+    t
   ] );
+
+  const estimatedItemSize = layout === "grid"
+    ? gridItemWidth
+    : 98;
 
   if ( numColumns === 0 ) { return null; }
 
   return (
     <AnimatedFlashList
+      ItemSeparatorComponent={renderItemSeparator}
+      ListEmptyComponent={renderEmptyComponent}
+      ListFooterComponent={renderFooter}
+      ListHeaderComponent={renderHeader}
+      accessible
       contentContainerStyle={contentContainerStyle}
       data={data}
-      key={layout}
-      estimatedItemSize={
-        layout === "grid"
-          ? gridItemWidth
-          : 98
-      }
-      testID={testID}
-      numColumns={numColumns}
+      estimatedItemSize={estimatedItemSize}
       horizontal={false}
+      initialNumToRender={5}
+      key={layout}
       // only used id as a fallback key because after upload
       // react thinks we've rendered a second item w/ a duplicate key
       keyExtractor={item => item.uuid || item.id}
-      renderItem={renderItem}
-      ItemSeparatorComponent={renderItemSeparator}
-      ListFooterComponent={renderFooter}
-      ListEmptyComponent={renderEmptyComponent}
-      ListHeaderComponent={renderHeader}
-      initialNumToRender={5}
+      numColumns={numColumns}
       onEndReached={onEndReached}
       onEndReachedThreshold={0.2}
       onScroll={handleScroll}
       refreshing={isFetchingNextPage}
-      accessible
+      renderItem={renderItem}
+      testID={testID}
     />
   );
 };
