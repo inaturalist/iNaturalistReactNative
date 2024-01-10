@@ -172,9 +172,9 @@ exports[`InlineUser when offline renders reliably 1`] = `
           {},
         ]
       }
-      testID="InlineUser.NoInternetPicture"
+      testID="InlineUser.FallbackPicture"
     >
-      
+      
     </Text>
   </View>
   <Text
