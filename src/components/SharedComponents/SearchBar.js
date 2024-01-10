@@ -18,71 +18,77 @@ const getShadow = shadowColor => getShadowStyle( {
 } );
 
 type Props = {
+  clearSearch?: Function,
   containerClass?: string,
   handleTextChange: Function,
-  value: string,
-  testID?: string,
   hasShadow?: boolean,
   input?: any,
   placeholder?: string,
-  clearSearch?: Function
+  testID?: string,
+  value: string,
 }
 
 // Ensure this component is placed outside of scroll views
 
 const SearchBar = ( {
+  clearSearch,
   containerClass,
-  testID,
   handleTextChange,
-  value,
   hasShadow,
   input,
   placeholder,
-  clearSearch
+  testID,
+  value
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
+
+  const outlineStyle = {
+    borderColor: "lightgray",
+    borderRadius: 8,
+    borderWidth: 1
+  };
+
+  const style = {
+    ...( hasShadow
+      ? getShadow( theme.colors.primary )
+      : {} ),
+    fontSize: 16,
+    lineHeight: 18,
+    paddingRight: 28
+  };
+
+  // kind of tricky to change the font here:
+  // https://github.com/callstack/react-native-paper/issues/3615#issuecomment-1402025033
+  const fontTheme = {
+    fonts: {
+      bodyLarge:
+        {
+          ...theme.fonts.bodyLarge,
+          fontFamily: `Whitney-Light${Platform.OS === "ios"
+            ? ""
+            : "-Pro"}`
+        }
+    }
+  };
 
   return (
     <View className={containerClass}>
       <TextInput
         ref={input}
-        placeholder={placeholder}
         accessibilityLabel={t( "Search-for-a-taxon" )}
+        activeUnderlineColor={theme.colors.primary}
+        dense
         keyboardType="default"
         mode="outlined"
         onChangeText={handleTextChange}
-        value={value}
-        // eslint-disable-next-line react-native/no-inline-styles
-        outlineStyle={{
-          borderColor: "lightgray",
-          borderRadius: 8,
-          borderWidth: 1
-        }}
+        outlineStyle={outlineStyle}
+        placeholder={placeholder}
+        style={style}
         testID={testID}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{
-          height: 45,
-          ...( hasShadow
-            ? getShadow( theme.colors.primary )
-            : {} ),
-          paddingRight: 28
-        }}
+        theme={fontTheme}
         underlineColor={theme.colors.primary}
-        activeUnderlineColor={theme.colors.primary}
-        // kind of tricky to change the font here:
-        // https://github.com/callstack/react-native-paper/issues/3615#issuecomment-1402025033
-        theme={{
-          fonts: {
-            bodyLarge:
-              {
-                ...theme.fonts.bodyLarge,
-                fontFamily: `Whitney-Light${Platform.OS === "ios"
-                  ? ""
-                  : "-Pro"}`
-              }
-          }
-        }}
+        value={value}
       />
       {value?.length > 0 && clearSearch
         ? (
