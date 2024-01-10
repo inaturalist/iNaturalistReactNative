@@ -89,7 +89,7 @@ const EvidenceList = ( {
   ), [handleAddEvidence] );
 
   return (
-    <View className="mt-5">
+    <>
       <DraggableFlatList
         testID="EvidenceList.DraggableFlatList"
         horizontal
@@ -99,6 +99,7 @@ const EvidenceList = ( {
         onDragEnd={handleDragAndDrop}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
+        className="py-5"
       />
       <MediaViewerModal
         editable
@@ -112,7 +113,7 @@ const EvidenceList = ( {
         uri={photoUris[tappedMediaIndex]}
         photos={innerPhotos}
       />
-    </View>
+    </>
   );
 };
 
