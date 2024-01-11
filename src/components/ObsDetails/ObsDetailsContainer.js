@@ -147,7 +147,7 @@ const ObsDetailsContainer = ( ): Node => {
     ),
     {
       keepPreviousData: false,
-      enabled: localObservation?.wasSynced( )
+      enabled: !!isOnline && localObservation?.wasSynced( )
     }
   );
 
@@ -383,7 +383,6 @@ const ObsDetailsContainer = ( ): Node => {
   };
 
   const onIDAgreePressed = taxon => {
-    console.log( taxon, "taxon on ID pressed" );
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
   };
 

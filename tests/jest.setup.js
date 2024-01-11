@@ -351,3 +351,7 @@ jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
     ) => ( { uri: path } )
   )
 } ) );
+
+jest.mock( "react-native-jwt-io", ( ) => ( {
+  encode: jest.fn( ( ) => "an-encoded-jwt" )
+} ) );

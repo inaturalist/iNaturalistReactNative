@@ -21,7 +21,7 @@ Object.defineProperty( INatApiError.prototype, "name", {
   value: "INatApiError"
 } );
 
-const handleError = async ( e: Object, options: Object = {} ): Object => {
+async function handleError( e: Object, options: Object = {} ): Object {
   if ( !e.response ) { throw e; }
   const errorJson = await e.response.json( );
   // Handle some of the insanity of our errors
@@ -39,12 +39,15 @@ const handleError = async ( e: Object, options: Object = {} ): Object => {
   logger.error(
     `Error requesting ${e.response.url} (status: ${e.response.status}): ${errorJson}`
   );
+  if ( typeof ( options.onApiError ) === "function" ) {
+    options.onApiError( error );
+  }
   // Default to throw errors. We almost never want handle supress an error at
   // this low level
   if ( options.throw === false ) {
     return null;
   }
   throw error;
-};
+}
 
 export default handleError;

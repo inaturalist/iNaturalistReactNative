@@ -7,13 +7,14 @@ import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
-import { useCurrentUser } from "sharedHooks";
+import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
 const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  const isConnected = useIsConnected( );
 
   const baseParams = {
     ...newInputParams,
@@ -58,7 +59,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     getNextPageParam: lastPage => last( lastPage )?.id,
     // allow a user to see the Explore screen Observations
     // content while logged out
-    enabled: !!currentUser || upsert === false
+    enabled: !!isConnected && ( !!currentUser || upsert === false )
   } );
 
   useEffect( ( ) => {
