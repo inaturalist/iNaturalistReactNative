@@ -169,9 +169,6 @@ exports[`Button focus in dark mode when disabled should render correctly 1`] = `
         {
           "backgroundColor": "#B9D580",
         },
-        {
-          "backgroundColor": "#3A5600",
-        },
       ],
     ]
   }
@@ -535,9 +532,6 @@ exports[`Button primary in dark mode should render correctly 1`] = `
         {
           "backgroundColor": "#454545",
         },
-        {
-          "backgroundColor": "#ffffff",
-        },
       ],
     ]
   }
@@ -575,9 +569,6 @@ exports[`Button primary in dark mode should render correctly 1`] = `
               },
               {
                 "color": "#ffffff",
-              },
-              {
-                "color": "#454545",
               },
             ],
           ],
@@ -689,9 +680,6 @@ exports[`Button primary in dark mode when disabled should render correctly 1`] =
               },
               {
                 "color": "rgba(255, 255, 255, 0.5)",
-              },
-              {
-                "color": "rgba(69, 69, 69, 0.5)",
               },
             ],
           ],

@@ -20,8 +20,7 @@ type ButtonProps = {
   style?: any,
   testID?: string,
   text: string,
-  dropdown?: boolean,
-  ignoreDark?: boolean
+  dropdown?: boolean
 }
 
 const setStyles = ( {
@@ -30,8 +29,7 @@ const setStyles = ( {
   forceDark,
   isFocus,
   isPrimary,
-  isWarning,
-  ignoreDark
+  isWarning
 } ) => {
   const buttonClasses = [
     "active:opacity-75",
@@ -77,51 +75,47 @@ const setStyles = ( {
     }
   } else {
     buttonClasses.push( "border border-[3px]" );
-    if ( ignoreDark ) {
-      buttonClasses.push( "border-darkGray" );
-      textClasses.push( "text-darkGray" );
-    } else {
-      buttonClasses.push( disabled
-        ? "border-darkGrayDisabled"
-        : "border-darkGray bg-white" );
-      textClasses.push( disabled
-        ? "text-darkGrayDisabled"
-        : "text-darkGray" );
-    }
+    buttonClasses.push( disabled
+      ? "border-darkGrayDisabled"
+      : "border-darkGray bg-white" );
+    textClasses.push( disabled
+      ? "text-darkGrayDisabled"
+      : "text-darkGray" );
   }
 
   return { buttonClasses, textClasses };
 };
 
-const setDarkStyles = ( {
-  buttonClasses,
-  textClasses,
-  isPrimary,
-  isFocus,
-  disabled,
-  forceDark
-} ) => {
-  if ( isPrimary ) {
-    buttonClasses.push(
-      disabled
-        ? ""
-        : "dark:bg-white"
-    );
-    textClasses.push(
-      disabled
-        ? "dark:text-darkGray/50"
-        : "dark:text-darkGray"
-    );
-  } else if ( isFocus ) {
-    if ( !forceDark ) {
-      buttonClasses.push(
-        disabled
-          ? "dark:bg-inatGreenDisabledDark"
-          : ""
-      );
-    }
-  }
-};
+// Dark mode styles can be set with this function, but si scheduled to be worked on post-MVP
+// const setDarkStyles = ( {
+//   buttonClasses,
+//   textClasses,
+//   isPrimary,
+//   isFocus,
+//   disabled,
+//   forceDark
+// } ) => {
+//   if ( isPrimary ) {
+//     buttonClasses.push(
+//       disabled
+//         ? ""
+//         : "dark:bg-white"
+//     );
+//     textClasses.push(
+//       disabled
+//         ? "dark:text-darkGray/50"
+//         : "dark:text-darkGray"
+//     );
+//   } else if ( isFocus ) {
+//     if ( !forceDark ) {
+//       buttonClasses.push(
+//         disabled
+//           ? "dark:bg-inatGreenDisabledDark"
+//           : ""
+//       );
+//     }
+//   }
+// };
 
 const activityIndicatorColor = ( {
   isPrimary, isWarning, isFocus, theme
@@ -153,8 +147,7 @@ const Button = ( {
   style,
   testID,
   text,
-  dropdown,
-  ignoreDark
+  dropdown
 }: ButtonProps ): React.Node => {
   const isPrimary = level === "primary";
   const isWarning = level === "warning";
@@ -166,19 +159,18 @@ const Button = ( {
     forceDark,
     isFocus,
     isPrimary,
-    isWarning,
-    ignoreDark
+    isWarning
   } );
   // Dark mode styles can be set with this function, but si scheduled to be worked on post-MVP
-  setDarkStyles( {
-    buttonClasses,
-    textClasses,
-    isWarning,
-    isPrimary,
-    isFocus,
-    disabled,
-    forceDark
-  } );
+  // setDarkStyles( {
+  //   buttonClasses,
+  //   textClasses,
+  //   isWarning,
+  //   isPrimary,
+  //   isFocus,
+  //   disabled,
+  //   forceDark
+  // } );
 
   const theme = useTheme();
 
