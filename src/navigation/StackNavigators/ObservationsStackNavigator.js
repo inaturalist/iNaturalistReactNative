@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
+import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import UserProfile from "components/UserProfile/UserProfile";
@@ -59,7 +59,7 @@ const ObservationsStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="DataQualityAssessment"
-        component={DataQualityAssessment}
+        component={DQAContainer}
         options={{
           ...showLongHeader,
           headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
