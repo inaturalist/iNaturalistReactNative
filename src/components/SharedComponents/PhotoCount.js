@@ -25,12 +25,15 @@ const PhotoCount = ( {
   const [idx, setIdx] = useState( 0 );
 
   useEffect( ( ) => {
-    if ( isFocused && !groupPhotos ) {
+    if ( isFocused ) {
       setIdx( i => i + 1 );
     }
-  }, [isFocused, setIdx, groupPhotos] );
+  }, [isFocused, setIdx] );
 
   useEffect( ( ) => {
+    // we need a different tactic for updating the PhotoCount in GroupPhotos
+    // since the SVG remains in the same place with a new count;
+    // in ObsListItem we can use isFocused to update PhotoCounts rendered on screen
     if ( count && groupPhotos ) {
       setIdx( i => i + 1 );
     }
