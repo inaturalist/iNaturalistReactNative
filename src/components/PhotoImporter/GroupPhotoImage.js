@@ -28,7 +28,7 @@ const GroupPhotoImage = ( {
     <Pressable
       accessibilityRole="button"
       onPress={handlePress}
-      testID={`GroupPhotos.${firstPhoto.uri}`}
+      testID={`GroupPhotos.${firstPhoto.image.uri}`}
       className="rounded-[17px] overflow-hidden"
     >
       <ObsImagePreview
