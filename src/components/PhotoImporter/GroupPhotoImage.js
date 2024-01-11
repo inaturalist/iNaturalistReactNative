@@ -1,6 +1,6 @@
 // @flow
 
-import ObsPreviewImage from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
+import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
 import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -31,12 +31,13 @@ const GroupPhotoImage = ( {
       testID={`GroupPhotos.${firstPhoto.uri}`}
       className="rounded-[17px] overflow-hidden"
     >
-      <ObsPreviewImage
+      <ObsImagePreview
         source={source}
         style={style}
         selected={isSelected}
         obsPhotosCount={item.photos.length}
         selectable
+        groupPhotos
       />
     </Pressable>
   );

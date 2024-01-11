@@ -3,7 +3,8 @@
 import { useIsFocused } from "@react-navigation/native";
 import { Body3, Body3Bold, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import * as React from "react";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import Svg, { ForeignObject, Path } from "react-native-svg";
@@ -11,20 +12,29 @@ import { dropShadow } from "styles/global";
 
 type Props = {
   count: number,
+  groupPhotos: boolean,
   size?: number,
   shadow?: boolean,
 };
 
-const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
-  const theme = useTheme();
-  const isFocused = useIsFocused();
-  const [idx, setIdx] = React.useState( 0 );
+const PhotoCount = ( {
+  count, groupPhotos, size, shadow
+}: Props ): Node => {
+  const theme = useTheme( );
+  const isFocused = useIsFocused( );
+  const [idx, setIdx] = useState( 0 );
 
-  React.useEffect( () => {
-    if ( isFocused ) {
+  useEffect( ( ) => {
+    if ( isFocused && !groupPhotos ) {
       setIdx( i => i + 1 );
     }
-  }, [isFocused, setIdx] );
+  }, [isFocused, setIdx, groupPhotos] );
+
+  useEffect( ( ) => {
+    if ( count && groupPhotos ) {
+      setIdx( i => i + 1 );
+    }
+  }, [count, groupPhotos] );
 
   if ( count === 0 ) {
     return <INatIcon name="noevidence" size={size} color={theme.colors.inverseOnSurface} />;

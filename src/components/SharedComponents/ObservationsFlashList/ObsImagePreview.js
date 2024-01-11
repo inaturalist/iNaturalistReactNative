@@ -15,37 +15,39 @@ type SOURCE = {
 
 type Props = {
   children?: Node,
-  isSmall?: boolean,
+  className?: string,
+  groupPhotos?: boolean,
   hasSound?: boolean,
   height?: string,
   iconicTaxonName?: string,
   isMultiplePhotosTop?: boolean,
+  isSmall?: boolean,
   obsPhotosCount?: number,
   opaque?: boolean,
   selectable?: boolean,
   selected?: boolean,
   source: SOURCE,
   style?: Object,
-  white?: boolean,
-  className?: string,
   testID?: string,
+  white?: boolean,
   width?: string
 };
 
 const ObsImagePreview = ( {
   children,
-  isSmall = false,
+  className,
+  groupPhotos = false,
   hasSound = false,
   height = "h-[62px]",
   iconicTaxonName = "unknown",
   isMultiplePhotosTop = false,
+  isSmall = false,
   obsPhotosCount = 0,
   opaque = false,
   selectable = false,
   selected = false,
   source,
   style,
-  className,
   testID,
   white = false,
   width = "w-[62px]"
@@ -75,12 +77,13 @@ const ObsImagePreview = ( {
             "p-2": !isSmall
           } )}
         >
-          { !( isSmall && obsPhotosCount === 0 ) && <PhotoCount count={obsPhotosCount} /> }
+          { !( isSmall && obsPhotosCount === 0 )
+            && <PhotoCount count={obsPhotosCount} groupPhotos={groupPhotos} /> }
         </View>
       );
     }
     return null;
-  }, [isMultiplePhotosTop, isSmall, obsPhotosCount] );
+  }, [isMultiplePhotosTop, isSmall, obsPhotosCount, groupPhotos] );
 
   const renderSelectable = useCallback( ( ) => {
     if ( selectable ) {
