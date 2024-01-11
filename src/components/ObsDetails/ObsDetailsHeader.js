@@ -17,7 +17,7 @@ type Props = {
   isOnline: boolean,
 }
 
-const CommunityTaxon = ( {
+const ObsDetailsHeader = ( {
   observation,
   isOnline
 }: Props ): Node => {
@@ -55,16 +55,16 @@ const CommunityTaxon = ( {
         />
       </View>
       <View className="flex-row my-[11px] mx-3">
-        <View className="grow">
+        <View className="shrink">
           {showTaxon()}
         </View>
-        <View>
+        <View className="ml-auto">
           <ObsStatus layout="vertical" observation={observation} />
         </View>
       </View>
-      <ObservationLocation observation={observation} classNameMargin="ml-3 mb-2" />
+      <ObservationLocation observation={observation} classNameMargin="mx-3 mb-2" />
     </View>
   );
 };
 
-export default CommunityTaxon;
+export default ObsDetailsHeader;
