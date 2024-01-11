@@ -1,6 +1,6 @@
 <manifest
   xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.inaturalistreactnative"
+  package="org.inaturalist.iNaturalistMobile"
   >
 
     <uses-permission android:name="android.permission.INTERNET" />

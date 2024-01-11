@@ -46,7 +46,7 @@ const SoundRecorderWithPermission = ( ) => (
     blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
     buttonText={t( "RECORD-SOUND" )}
     icon="microphone"
-    image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+    image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
   >
     <SoundRecorder />
   </PermissionGateContainer>

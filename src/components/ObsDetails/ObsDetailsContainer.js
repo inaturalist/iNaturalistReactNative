@@ -50,7 +50,8 @@ const initialState = {
   showAgreeWithIdSheet: false,
   showCommentBox: false,
   observationShown: null,
-  activityItems: []
+  activityItems: [],
+  taxonForAgreement: null
 };
 
 const reducer = ( state, action ) => {
@@ -87,7 +88,8 @@ const reducer = ( state, action ) => {
     case "SHOW_AGREE_SHEET":
       return {
         ...state,
-        showAgreeWithIdSheet: action.showAgreeWithIdSheet
+        showAgreeWithIdSheet: action.showAgreeWithIdSheet,
+        taxonForAgreement: action.taxonForAgreement
       };
     case "SHOW_COMMENT_BOX":
       return {
@@ -117,12 +119,13 @@ const ObsDetailsContainer = ( ): Node => {
   const [state, dispatch] = useReducer( reducer, initialState );
 
   const {
-    currentTabId,
+    activityItems,
     addingActivityItem,
+    currentTabId,
+    observationShown,
     showAgreeWithIdSheet,
     showCommentBox,
-    observationShown,
-    activityItems
+    taxonForAgreement
   } = state;
 
   const queryClient = useQueryClient( );
@@ -144,8 +147,7 @@ const ObsDetailsContainer = ( ): Node => {
     ),
     {
       keepPreviousData: false,
-      enabled: localObservation?.wasSynced( ),
-      retry: 10
+      enabled: localObservation?.wasSynced( )
     }
   );
 
@@ -338,13 +340,18 @@ const ObsDetailsContainer = ( ): Node => {
 
   useEffect( ( ) => {
     if (
-      localObservation
-      && localObservation.unviewed()
+      remoteObservation
+      && localObservation?.unviewed( )
       && !markViewedMutation.isLoading
     ) {
       markViewedMutation.mutate( { id: uuid } );
     }
-  }, [localObservation, markViewedMutation, uuid] );
+  }, [
+    localObservation,
+    markViewedMutation,
+    remoteObservation,
+    uuid
+  ] );
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
@@ -375,8 +382,9 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: false } );
   };
 
-  const onIDAgreePressed = ( ) => {
-    dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true } );
+  const onIDAgreePressed = taxon => {
+    console.log( taxon, "taxon on ID pressed" );
+    dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
   };
 
   if ( !observation ) {
@@ -385,24 +393,25 @@ const ObsDetailsContainer = ( ): Node => {
 
   return (
     <ObsDetails
-      navToSuggestions={navToSuggestions}
-      onCommentAdded={onCommentAdded}
-      openCommentBox={openCommentBox}
-      tabs={tabs}
-      currentTabId={currentTabId}
-      showCommentBox={showCommentBox}
-      addingActivityItem={addingActivityItem}
-      observation={observation}
-      refetchRemoteObservation={refetchObservation}
       activityItems={activityItems}
-      showActivityTab={showActivityTab}
-      showAgreeWithIdSheet={showAgreeWithIdSheet}
+      addingActivityItem={addingActivityItem}
       agreeIdSheetDiscardChanges={agreeIdSheetDiscardChanges}
-      onAgree={onAgree}
-      onIDAgreePressed={onIDAgreePressed}
+      belongsToCurrentUser={belongsToCurrentUser}
+      currentTabId={currentTabId}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
       isOnline={isOnline}
-      belongsToCurrentUser={belongsToCurrentUser}
+      navToSuggestions={navToSuggestions}
+      observation={observation}
+      onAgree={onAgree}
+      onCommentAdded={onCommentAdded}
+      onIDAgreePressed={onIDAgreePressed}
+      openCommentBox={openCommentBox}
+      refetchRemoteObservation={refetchObservation}
+      showActivityTab={showActivityTab}
+      showAgreeWithIdSheet={showAgreeWithIdSheet}
+      showCommentBox={showCommentBox}
+      tabs={tabs}
+      taxonForAgreement={taxonForAgreement}
     />
   );
 };

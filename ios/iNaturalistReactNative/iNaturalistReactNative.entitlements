@@ -8,7 +8,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.org.inaturalist.iNatMobileBeta</string>
+		<string>group.org.inaturalist.iNaturalistMobile</string>
 	</array>
 </dict>
 </plist>

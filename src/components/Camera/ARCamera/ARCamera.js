@@ -2,10 +2,13 @@
 
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import useRotation from "components/Camera/hooks/useRotation";
+import useTakePhoto from "components/Camera/hooks/useTakePhoto";
+import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
@@ -21,6 +24,7 @@ import {
 } from "../helpers";
 import ARCameraButtons from "./ARCameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
+import usePredictions from "./hooks/usePredictions";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -33,52 +37,39 @@ const isTablet = DeviceInfo.isTablet();
 // };
 
 type Props = {
-  flipCamera: Function,
-  toggleFlash: Function,
-  takePhoto: Function,
-  rotatableAnimatedStyle: Object,
-  device: any,
   camera: any,
-  hasFlash: boolean,
-  takePhotoOptions: Object,
-  takingPhoto: boolean,
-  animatedProps: any,
-  changeZoom: Function,
-  zoomTextValue: string,
-  showZoomButton: boolean,
-  navToObsEdit: Function,
-  photoSaved: boolean,
-  onZoomStart?: Function,
-  onZoomChange?: Function,
-  result?: Object,
-  handleTaxaDetected: Function,
-  modelLoaded: boolean,
+  device: any,
+  flipCamera: Function,
+  handleCheckmarkPress: Function,
   isLandscapeMode: boolean
 };
 
 const ARCamera = ( {
-  flipCamera,
-  toggleFlash,
-  takePhoto,
-  rotatableAnimatedStyle,
-  device,
   camera,
-  hasFlash,
-  takePhotoOptions,
-  takingPhoto,
-  animatedProps,
-  changeZoom,
-  zoomTextValue,
-  showZoomButton,
-  navToObsEdit,
-  photoSaved,
-  onZoomStart,
-  onZoomChange,
-  result,
-  handleTaxaDetected,
-  modelLoaded,
+  device,
+  flipCamera,
+  handleCheckmarkPress,
   isLandscapeMode
 }: Props ): Node => {
+  const hasFlash = device?.hasFlash;
+  const {
+    animatedProps,
+    changeZoom,
+    onZoomChange,
+    onZoomStart,
+    showZoomButton,
+    zoomTextValue
+  } = useZoom( device );
+  const {
+    rotatableAnimatedStyle
+  } = useRotation( );
+  const { result, modelLoaded, handleTaxaDetected } = usePredictions( );
+  const {
+    takePhoto,
+    takePhotoOptions,
+    takingPhoto,
+    toggleFlash
+  } = useTakePhoto( camera, null, device );
   const { t } = useTranslation();
   const theme = useTheme();
 
@@ -92,11 +83,12 @@ const ARCamera = ( {
   // However, there is also some Exif and device orientation related code
   // that I have not checked. Anyway, those parts we would hoist into JS side if not done yet.
 
-  useEffect( ( ) => {
-    if ( photoSaved ) {
-      navToObsEdit( result?.taxon );
-    }
-  }, [photoSaved, navToObsEdit, result?.taxon] );
+  const handlePress = async ( ) => {
+    await takePhoto( );
+    handleCheckmarkPress( showPrediction
+      ? result.taxon
+      : null );
+  };
 
   return (
     <>
@@ -138,7 +130,7 @@ const ARCamera = ( {
             ? (
               <TaxonResult
                 taxon={result?.taxon}
-                handleCheckmarkPress={takePhoto}
+                handleCheckmarkPress={handlePress}
                 testID={`ARCamera.taxa.${result?.taxon?.id}`}
                 clearBackground
                 confidence={convertOfflineScoreToConfidence( result?.score )}
@@ -167,7 +159,7 @@ const ARCamera = ( {
       )}
       <FadeInOutView takingPhoto={takingPhoto} />
       <ARCameraButtons
-        takePhoto={takePhoto}
+        takePhoto={handlePress}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         toggleFlash={toggleFlash}
         flipCamera={flipCamera}

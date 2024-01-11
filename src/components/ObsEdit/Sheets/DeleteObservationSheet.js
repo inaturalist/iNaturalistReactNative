@@ -60,7 +60,15 @@ const DeleteObservationSheet = ( {
         // on elasticsearch for observations.search has passed and so retrieve the
         // observation "pending deletion" again.
       },
-      onError: e => console.log( e )
+      onError: deleteObservationError => {
+        // If we tried to delete and got a 404, this observation doesn't exist
+        // on the server any more and should be deleted locally
+        if ( deleteObservationError?.status === 404 ) {
+          deleteLocalObservation( );
+        } else {
+          throw deleteObservationError;
+        }
+      }
     }
   );
 

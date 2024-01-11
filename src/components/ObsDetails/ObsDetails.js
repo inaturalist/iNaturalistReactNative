@@ -16,57 +16,57 @@ import {
 
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
-import CommunityTaxon from "./CommunityTaxon";
 import DetailsTab from "./DetailsTab/DetailsTab";
+import ObsDetailsHeader from "./ObsDetailsHeader";
 import PhotoDisplayContainer from "./PhotoDisplayContainer";
 
 type Props = {
-  navToSuggestions: Function,
-  onCommentAdded: Function,
-  openCommentBox: Function,
-  tabs: Array<Object>,
-  currentTabId: string,
-  showCommentBox: Function,
-  addingActivityItem: Function,
-  observation: Object,
-  refetchRemoteObservation: Function,
-  hideCommentBox: Function,
   activityItems: Array<Object>,
-  showActivityTab: boolean,
-  onIDAgreePressed: Function,
-  showAgreeWithIdSheet: boolean,
-  openCommentBox: Function,
+  addingActivityItem: Function,
   agreeIdSheetDiscardChanges: Function,
-  onAgree: Function,
+  belongsToCurrentUser: boolean,
+  currentTabId: string,
+  hideCommentBox: Function,
   isOnline: boolean,
-  belongsToCurrentUser: boolean
+  navToSuggestions: Function,
+  observation: Object,
+  onAgree: Function,
+  onCommentAdded: Function,
+  onIDAgreePressed: Function,
+  openCommentBox: Function,
+  openCommentBox: Function,
+  refetchRemoteObservation: Function,
+  showActivityTab: boolean,
+  showAgreeWithIdSheet: boolean,
+  showCommentBox: Function,
+  tabs: Array<Object>,
+  taxonForAgreement: ?Object
 }
 
 const ObsDetails = ( {
-  navToSuggestions,
-  onCommentAdded,
-  openCommentBox,
-  tabs,
-  currentTabId,
-  showCommentBox,
-  addingActivityItem,
-  observation,
-  refetchRemoteObservation,
-  hideCommentBox,
-  onIDAgreePressed,
   activityItems,
+  addingActivityItem,
+  agreeIdSheetDiscardChanges,
+  belongsToCurrentUser,
+  currentTabId,
+  hideCommentBox,
+  isOnline,
+  navToSuggestions,
+  observation,
+  onAgree,
+  onCommentAdded,
+  onIDAgreePressed,
+  openCommentBox,
+  refetchRemoteObservation,
   showActivityTab,
   showAgreeWithIdSheet,
-  agreeIdSheetDiscardChanges,
-  onAgree,
-  isOnline,
-  belongsToCurrentUser
+  showCommentBox,
+  tabs,
+  taxonForAgreement
 }: Props ): Node => {
   const { params } = useRoute( );
   const { uuid } = params;
   const { t } = useTranslation( );
-
-  const taxon = observation?.taxon;
 
   const textInputStyle = Platform.OS === "android" && {
     height: 125
@@ -77,7 +77,7 @@ const ObsDetails = ( {
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <ScrollView
         testID={`ObsDetails.${uuid}`}
-        stickyHeaderIndices={[1]}
+        stickyHeaderIndices={[2]}
         scrollEventThrottle={16}
         className="bg-white"
       >
@@ -87,7 +87,7 @@ const ObsDetails = ( {
           isOnline={isOnline}
           belongsToCurrentUser={belongsToCurrentUser}
         />
-        <CommunityTaxon
+        <ObsDetailsHeader
           observation={observation}
           isOnline={isOnline}
         />
@@ -111,7 +111,6 @@ const ObsDetails = ( {
             <ActivityIndicator size="large" />
           </View>
         )}
-        <View className="pb-64" />
       </ScrollView>
       {showActivityTab && (
         <FloatingButtons
@@ -122,8 +121,8 @@ const ObsDetails = ( {
       )}
       {showAgreeWithIdSheet && (
         <AgreeWithIDSheet
-          taxon={taxon}
-          handleClose={( ) => agreeIdSheetDiscardChanges( )}
+          taxon={taxonForAgreement}
+          handleClose={agreeIdSheetDiscardChanges}
           onAgree={onAgree}
         />
       )}

@@ -35,6 +35,10 @@
 	<string>67</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -50,7 +54,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Record sound observations of nature.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Export and import ${PRODUCT_NAME} photos to and from your library.</string>
+	<string>Export ${PRODUCT_NAME} photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Export and import ${PRODUCT_NAME} photos to and from your library.</string>
 	<key>UIAppFonts</key>
@@ -85,9 +89,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>https</string>
-	</array>
 </dict>
 </plist>

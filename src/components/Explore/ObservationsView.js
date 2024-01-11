@@ -42,29 +42,33 @@ const ObservationsView = ( {
   return observationsView === "map"
     ? (
       <Map
-        showExplore
         className="h-full"
-        showsCompass={false}
-        region={region}
+        currentLocationButtonClassName="left-5 bottom-[225px]"
         observations={observations}
+        region={region}
+        showCurrentLocationButton
+        showExplore
+        showSwitchMapTypeButton
+        showsCompass={false}
+        switchMapTypeButtonClassName="left-20 bottom-[225px]"
         tileMapParams={tileMapParams}
         withPressableObsTiles={tileMapParams !== null}
-        showCurrentLocationButton
       />
     )
     : (
       <ObservationsFlashList
-        isFetchingNextPage={isFetchingNextPage}
-        layout={observationsView}
         data={observations}
-        onEndReached={fetchNextPage}
-        testID="ExploreObservationsAnimatedList"
-        handleScroll={handleScroll}
-        status={status}
-        isOnline={isOnline}
+        dataCanBeFetched
         explore
+        handleScroll={handleScroll}
         hideLoadingWheel={!isFetchingNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        isOnline={isOnline}
+        layout={observationsView}
+        onEndReached={fetchNextPage}
         renderHeader={renderHeader}
+        status={status}
+        testID="ExploreObservationsAnimatedList"
       />
     );
 };

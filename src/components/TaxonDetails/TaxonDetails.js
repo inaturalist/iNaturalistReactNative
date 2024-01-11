@@ -8,6 +8,7 @@ import {
   BackButton,
   Body2,
   INatIconButton,
+  KebabMenu,
   ScrollViewWrapper
 } from "components/SharedComponents";
 import {
@@ -20,7 +21,10 @@ import { compact } from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { useTheme } from "react-native-paper";
+import {
+  Alert, Linking, Platform, Share
+} from "react-native";
+import { Menu, useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
@@ -35,6 +39,8 @@ const logger = log.extend( "TaxonDetails" );
 
 const { useRealm } = RealmContext;
 
+const TAXON_URL = "https://www.inaturalist.org/taxa";
+
 const TaxonDetails = ( ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -43,6 +49,7 @@ const TaxonDetails = ( ): Node => {
   const { t } = useTranslation( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const { remoteUser } = useUserMe( );
+  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
@@ -65,6 +72,7 @@ const TaxonDetails = ( ): Node => {
     logger.error( `Failed to retrieve taxon ${id}: ${error}` );
   }
   const taxon = remoteTaxon || localTaxon;
+  const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
 
   const photos = compact(
     taxon?.taxonPhotos
@@ -78,6 +86,20 @@ const TaxonDetails = ( ): Node => {
       onClose={onClose}
     />
   ), [taxon] );
+
+  const openURLInBrowser = async url => {
+    try {
+      const canOpen = await Linking.canOpenURL( url );
+
+      if ( canOpen ) {
+        await Linking.openURL( url );
+      } else {
+        console.error( "Cannot open URL" );
+      }
+    } catch ( exc ) {
+      console.error( "An error occurred", exc );
+    }
+  };
 
   const displayTaxonDetails = ( ) => {
     if ( isLoading ) {
@@ -129,6 +151,49 @@ const TaxonDetails = ( ): Node => {
             color={theme.colors.onPrimary}
             onPress={( ) => navigation.goBack( )}
           />
+        </View>
+
+        <View className="absolute right-5 top-5">
+          <KebabMenu
+            visible={kebabMenuVisible}
+            setVisible={setKebabMenuVisible}
+            large
+            white
+          >
+            <Menu.Item
+              testID="MenuItem.OpenInBrowser"
+              onPress={( ) => {
+                openURLInBrowser( taxonUrl );
+                setKebabMenuVisible( false );
+              }}
+              title={t( "View-in-browser" )}
+            />
+            <Menu.Item
+              testID="MenuItem.Share"
+              onPress={async ( ) => {
+                const sharingOptions = {
+                  url: "",
+                  message: ""
+                };
+
+                if ( Platform.OS === "ios" ) {
+                  sharingOptions.url = taxonUrl;
+                } else {
+                  sharingOptions.message = taxonUrl;
+                }
+
+                setKebabMenuVisible( false );
+
+                try {
+                  return await Share.share( sharingOptions );
+                } catch ( err ) {
+                  Alert.alert( err.message );
+                  return null;
+                }
+              }}
+              title={t( "Share" )}
+            />
+          </KebabMenu>
         </View>
         <View className="absolute bottom-0 p-5 w-full flex-row items-center">
           <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />

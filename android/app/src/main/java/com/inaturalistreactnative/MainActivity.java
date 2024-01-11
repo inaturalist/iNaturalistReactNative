@@ -1,4 +1,4 @@
-package com.inaturalistreactnative;
+package org.inaturalist.iNaturalistMobile;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

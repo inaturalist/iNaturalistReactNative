@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
 import ARCamera from "components/Camera/ARCamera/ARCamera";
+import * as usePredictions from "components/Camera/ARCamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
@@ -38,18 +39,37 @@ jest.mock( "sharedHooks/useTaxon", () => ( {
   default: () => mockLocalTaxon
 } ) );
 
+const mockModelLoaded = {
+  handleTaxaDetected: jest.fn( ),
+  modelLoaded: false,
+  result: null
+};
+
+jest.mock( "components/Camera/ARCamera/hooks/usePredictions", () => ( {
+  __esModule: true,
+  default: () => mockModelLoaded
+} ) );
+
+jest.mock( "components/Camera/hooks/useZoom", () => ( {
+  __esModule: true,
+  default: () => ( {
+    animatedProps: {}
+  }
+  )
+} ) );
+
 describe( "AR Camera", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
   } );
   it( "shows a taxon prediction when result & rank_level < 40", async () => {
-    render(
-      <ARCamera
-        result={{
-          taxon: mockTaxonPrediction
-        }}
-      />
-    );
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+      ...mockModelLoaded,
+      result: {
+        taxon: mockTaxonPrediction
+      }
+    } ) );
+    render( <ARCamera /> );
 
     const taxonResult = screen.getByTestId( `ARCamera.taxa.${mockTaxonPrediction.id}` );
 
@@ -57,14 +77,14 @@ describe( "AR Camera", ( ) => {
   } );
 
   it( "shows scan area text when rank_level > 40", async () => {
-    render(
-      <ARCamera
-        result={{
-          taxon: mockTaxonNoPrediction
-        }}
-        modelLoaded
-      />
-    );
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+      ...mockModelLoaded,
+      modelLoaded: true,
+      result: {
+        taxon: mockTaxonNoPrediction
+      }
+    } ) );
+    render( <ARCamera /> );
 
     const scanText = screen.getByText( i18next.t( "Scan-the-area-around-you-for-organisms" ) );
 
@@ -72,12 +92,11 @@ describe( "AR Camera", ( ) => {
   } );
 
   it( "shows loading text when model not yet loaded", async () => {
-    render(
-      <ARCamera
-        modelLoaded={false}
-        result={null}
-      />
-    );
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+      ...mockModelLoaded,
+      modelLoaded: false
+    } ) );
+    render( <ARCamera /> );
 
     const loadingText = screen.getByText( i18next.t( "Loading-iNaturalists-AR-Camera" ) );
 
@@ -85,14 +104,14 @@ describe( "AR Camera", ( ) => {
   } );
 
   it( "displays taxon photo if taxon exists in realm", ( ) => {
-    render(
-      <ARCamera
-        result={{
-          taxon: mockLocalTaxon
-        }}
-        modelLoaded
-      />
-    );
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+      ...mockModelLoaded,
+      modelLoaded: true,
+      result: {
+        taxon: mockLocalTaxon
+      }
+    } ) );
+    render( <ARCamera /> );
 
     const taxonPhoto = screen.getByTestId( "ObsList.photo" );
 
@@ -110,14 +129,14 @@ describe( "AR Camera", ( ) => {
         url: null
       }
     } ) );
-    render(
-      <ARCamera
-        result={{
-          taxon: mockLocalTaxon
-        }}
-        modelLoaded
-      />
-    );
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+      ...mockModelLoaded,
+      modelLoaded: true,
+      result: {
+        taxon: mockLocalTaxon
+      }
+    } ) );
+    render( <ARCamera /> );
 
     const taxonIcon = screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" );
 

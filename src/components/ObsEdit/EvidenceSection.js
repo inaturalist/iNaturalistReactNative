@@ -111,7 +111,7 @@ const EvidenceSection = ( {
       />
       <Pressable
         accessibilityRole="button"
-        className="flex-row flex-nowrap my-3"
+        className="flex-row flex-nowrap pb-3"
         onPress={navToLocationPicker}
         accessibilityLabel={t( "Navigate-to-location-picker-screen" )}
       >
