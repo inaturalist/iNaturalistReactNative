@@ -115,7 +115,7 @@
     "react-native-svg-transformer": "^1.1.0",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-vision-camera": "3.6.12",
+    "react-native-vision-camera": "3.7.0",
     "react-native-webview": "^11.26.1",
     "react-native-worklets-core": "^0.2.4",
     "realm": "^12.3.0",
