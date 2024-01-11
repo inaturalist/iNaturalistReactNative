@@ -25,6 +25,7 @@ const DQAContainer = ( ): React.Node => {
   const [loadingDisagree, setLoadingDisagree] = useState( false );
   const [loadingMetric, setLoadingMetric] = useState( "none" );
   const [hideErrorSheet, setHideErrorSheet] = useState( true );
+  const [hideOfflineSheet, setHideOfflineSheet] = useState( true );
 
   const fetchMetricsParams = {
     id: observationUUID,
@@ -51,20 +52,20 @@ const DQAContainer = ( ): React.Node => {
         setQualityMetrics( response );
       },
       onError: () => {
-        setHideErrorSheet( false );
+        if ( !isOnline ) {
+          setHideOfflineSheet( false );
+        }
       }
     }
   );
 
   useEffect( ( ) => {
-    if ( isOnline ) {
-      mutate( {
-        id: params.observationUUID,
-        fields: "metric,agree,user_id",
-        ttl: -1
-      } );
-    }
-  }, [mutate, params, isOnline] );
+    mutate( {
+      id: params.observationUUID,
+      fields: "metric,agree,user_id",
+      ttl: -1
+    } );
+  }, [mutate, params] );
 
   const createQualityMetricMutation = useAuthenticatedMutation(
     ( qualityMetricParams, optsWithAuth ) => setQualityMetric( qualityMetricParams, optsWithAuth ),
@@ -201,6 +202,19 @@ const DQAContainer = ( ): React.Node => {
           <Button
             text={t( "OK" )}
             onPress={() => resetButtonsOnError( )}
+          />
+        </View>
+      </BottomSheet>
+      <BottomSheet
+        headerText={t( "ERROR-LOADING-DQA" )}
+        hidden={hideOfflineSheet}
+        hideCloseButton
+      >
+        <View className="px-[26px] py-[20px] flex-col space-y-[20px]">
+          <List2 className="text-black">{t( "Offline-DQA-description" )}</List2>
+          <Button
+            text={t( "OK" )}
+            onPress={() => setHideOfflineSheet( true )}
           />
         </View>
       </BottomSheet>
