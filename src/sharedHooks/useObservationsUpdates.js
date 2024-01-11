@@ -21,8 +21,6 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
 
   const {
     data,
-    isError,
-    error,
     refetch
   } = useAuthenticatedQuery(
     [fetchObservationUpdatesKey],
@@ -30,10 +28,6 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     { enabled: !!enabled }
   );
 
-  if ( isError && error?.status !== 503 ) {
-    console.log( "Error fetching observation updates", error );
-    throw error;
-  }
   /*
     Example data:
     data [

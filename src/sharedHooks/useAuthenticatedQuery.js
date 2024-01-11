@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { reactQueryRetry } from "sharedHelpers/logging";
 
 // Should work like React Query's useQuery except it calls the queryFunction
 // with an object that includes the JWT
@@ -21,6 +22,9 @@ const useAuthenticatedQuery = (
     };
     return queryFunction( options );
   },
+  retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
+    queryKey
+  } ),
   ...queryOptions
 } );
 

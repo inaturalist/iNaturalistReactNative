@@ -9,11 +9,10 @@ const { useRealm } = RealmContext;
 const useIconicTaxa = ( { reload }: Object ): Object => {
   const realm = useRealm( );
 
+  const queryKey = ["searchTaxa", reload];
   const { data: iconicTaxa } = useAuthenticatedQuery(
-    ["searchTaxa", reload],
-    ( ) => searchTaxa( {
-      iconic: true
-    } ),
+    queryKey,
+    ( ) => searchTaxa( { iconic: true } ),
     { enabled: !!reload }
   );
 

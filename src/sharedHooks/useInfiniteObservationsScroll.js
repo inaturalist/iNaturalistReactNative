@@ -7,12 +7,7 @@ import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
-import { reactQueryRetry } from "sharedHelpers/logging";
 import { useCurrentUser } from "sharedHooks";
-
-import { log } from "../../react-native-logs.config";
-
-const logger = log.extend( "useInfiniteObservationsScroll" );
 
 const { useRealm } = RealmContext;
 
@@ -58,17 +53,12 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
         params.page = 1;
       }
       const { results } = await searchObservations( params, options );
-
       return results || [];
     },
     getNextPageParam: lastPage => last( lastPage )?.id,
     // allow a user to see the Explore screen Observations
     // content while logged out
-    enabled: !!currentUser || upsert === false,
-    retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
-      beforeRetry: ( ) => logger.warn( error.status, "Error for query ", queryKey, ": ", error ),
-      logger
-    } )
+    enabled: !!currentUser || upsert === false
   } );
 
   useEffect( ( ) => {
