@@ -66,6 +66,7 @@ type Props = {
   children?: any,
   className?: string,
   mapHeight?: number|string, // allows for height to be defined as px or percentage
+  mapViewClassName?: string,
   mapViewRef?: Object,
   mapType?: string,
   obscured?: boolean,
@@ -106,6 +107,7 @@ const Map = ( {
   children,
   className = "flex-1",
   mapHeight,
+  mapViewClassName,
   mapViewRef: mapViewRefProp,
   mapType,
   obscured,
@@ -306,7 +308,10 @@ const Map = ( {
           : null
       ]}
       testID="MapView"
-      className="flex-1 h-full"
+      className={classnames(
+        "flex-1 h-full",
+        mapViewClassName
+      )}
     >
       <MapView
         ref={mapViewRef}

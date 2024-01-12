@@ -5,25 +5,23 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import User from "realmModels/User";
-import { useInfiniteScroll, useTranslation } from "sharedHooks";
+import { useInfiniteScroll } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
-  handleScroll: Function,
+  count: Object,
   isOnline: boolean,
   queryParams: Object,
-  setHeaderRight: Function
+  updateCount: Function
 };
 
 const IdentifiersView = ( {
-  handleScroll,
+  count,
   isOnline,
   queryParams,
-  setHeaderRight
+  updateCount
 }: Props ): Node => {
-  const { t } = useTranslation( );
-
   const {
     data,
     fetchNextPage,
@@ -53,17 +51,16 @@ const IdentifiersView = ( {
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
-    if ( totalResults ) {
-      setHeaderRight( t( "X-Identifiers", { count: totalResults } ) );
+    if ( totalResults && count.identifiers !== totalResults ) {
+      updateCount( { identifiers: totalResults } );
     }
-  }, [totalResults, setHeaderRight, t] );
+  }, [totalResults, updateCount, count] );
 
   return (
     <ExploreFlashList
       data={data}
       estimatedItemSize={98}
       fetchNextPage={fetchNextPage}
-      handleScroll={handleScroll}
       hideLoadingWheel={!isFetchingNextPage}
       isFetchingNextPage={isFetchingNextPage}
       isOnline={isOnline}

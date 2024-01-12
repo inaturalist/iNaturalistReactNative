@@ -145,12 +145,18 @@ const ObservationsFlashList = ( {
 
   if ( numColumns === 0 ) { return null; }
 
+  const headerComponentStyle = layout === "grid" && {
+    marginLeft: -7,
+    marginRight: -7
+  };
+
   return (
     <AnimatedFlashList
       ItemSeparatorComponent={renderItemSeparator}
       ListEmptyComponent={renderEmptyComponent}
       ListFooterComponent={renderFooter}
       ListHeaderComponent={renderHeader}
+      ListHeaderComponentStyle={headerComponentStyle}
       accessible
       contentContainerStyle={contentContainerStyle}
       data={data}

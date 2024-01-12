@@ -601,10 +601,7 @@
     "comment": "Button to Withdraw identification made by user",
     "val": "WITHDRAW ID"
   },
-  "X-Observations": {
-    "comment": "Banner above Explore Map showing total number of results",
-    "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
-  },
+  "X-Observations": "{ $count ->\n  [one] { $count } Observations\n *[other] { $count } Observations\n}",
   "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
   "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
   "X-of-Y": "{ $count ->\n  [one] 1\n *[other] { $count }\n} { $totalObservationCount ->\n  [one] of { $totalObservationCount }\n *[other] of { $totalObservationCount }\n}",
@@ -1088,5 +1085,10 @@
   "Source-List": "<0>(Source List: </0><1>{ $source }</1><0>)</0>",
   "Save-photos-to-your-gallery": "Save photos to your gallery",
   "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery": "iNaturalist can save photos you take in the app to your device’s gallery.",
-  "SAVE-PHOTOS": "SAVE PHOTOS"
+  "SAVE-PHOTOS": "SAVE PHOTOS",
+  "Explore-View": "Explore View",
+  "IDENTIFIERS": "IDENTIFIERS",
+  "OBSERVERS": "OBSERVERS",
+  "All-organisms": "All organisms",
+  "Worldwide": "Worldwide"
 }
