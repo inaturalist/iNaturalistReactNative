@@ -1,0 +1,14 @@
+NEW
+* Notifications (in progress, but please report bugs)
+* Map type toggle on Explore
+* Share & View in Browser on TaxonDetail
+
+FIXED
+* Taxon detail formatting & taxonomy browser
+* DQA reacheable from Explore
+* Ident counts only include current idents
+* Permission gate for gallery access for new obs
+* Only one Agree button per taxon
+* Default user icon shown instead of profile pics while offline
+* Iconic taxon chooser uses full screen width
+* Lots more!
