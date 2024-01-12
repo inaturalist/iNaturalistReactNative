@@ -25,15 +25,15 @@ const EstablishmentMeans = ( { taxon }: Props ): React.Node => {
   const establishmentMeans = taxon?.establishment_means?.establishment_means;
 
   const displayEstablishmentMeansText = ( ) => {
-    const displayName = taxon.establishment_means.place.display_name;
+    const placeName = taxon.establishment_means.place.display_name;
     if ( establishmentMeans === "native" ) {
-      return t( "Native-to", { displayName } );
+      return t( "Native-to-place", { place: placeName } );
     }
     if ( establishmentMeans === "introduced" ) {
-      return t( "Introduced-to", { displayName } );
+      return t( "Introduced-to-place", { place: placeName } );
     }
     if ( establishmentMeans === "endemic" ) {
-      return t( "Endemic-to", { displayName } );
+      return t( "Endemic-to-place", { place: placeName } );
     }
     return "";
   };
@@ -74,7 +74,7 @@ const EstablishmentMeans = ( { taxon }: Props ): React.Node => {
 
   return taxon?.establishment_means && (
     <View className="mb-6">
-      <Heading4 className="mb-3">{t( "STATUS-header" )}</Heading4>
+      <Heading4 className="mb-3">{t( "ESTABLISHMENT-MEANS-header" )}</Heading4>
       <Body2>
         {displayEstablishmentMeansText( )}
         {" "}

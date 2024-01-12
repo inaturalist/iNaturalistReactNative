@@ -780,6 +780,9 @@ Status = Status
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
 
+# Header for a section describing how a taxon arrived in a given place
+ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
+
 Stay-on-this-screen = Stay on this screen while your location loads.
 
 Tap-to-search-for-taxa = Tap to search for taxa
@@ -1450,9 +1453,12 @@ Viewing-Offline-Suggestions = Viewing Offline Suggestions
 Viewing-Offline-Suggestions-results-may-differ =
     Results may differ from the online suggestions and images and common names may not display.
 
-Endemic-to = Endemic to { $displayName }
-Introduced-to = Introduced to { $displayName }
-Native-to = Native to { $displayName }
+# TODO this and many other uses of placeables are not currently translatable
+# without knowing the vowel/consonant state of the first letter of the
+# placeable
+Endemic-to-place = Endemic to { $place }
+Introduced-to-place = Introduced to { $place }
+Native-to-place = Native to { $place }
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 
 Save-photos-to-your-gallery = Save photos to your gallery

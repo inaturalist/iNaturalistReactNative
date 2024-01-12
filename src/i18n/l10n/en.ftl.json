@@ -518,6 +518,10 @@
     "comment": "Header for a block of text describing a taxon's conservation status",
     "val": "STATUS"
   },
+  "ESTABLISHMENT-MEANS-header": {
+    "comment": "Header for a section describing how a taxon arrived in a given place",
+    "val": "ESTABLISHMENT MEANS"
+  },
   "Stay-on-this-screen": "Stay on this screen while your location loads.",
   "Tap-to-search-for-taxa": "Tap to search for taxa",
   "Taxon": "Taxon",
@@ -1082,9 +1086,12 @@
     "val": "Viewing Offline Suggestions"
   },
   "Viewing-Offline-Suggestions-results-may-differ": "Results may differ from the online suggestions and images and common names may not display.",
-  "Endemic-to": "Endemic to { $displayName }",
-  "Introduced-to": "Introduced to { $displayName }",
-  "Native-to": "Native to { $displayName }",
+  "Endemic-to-place": {
+    "comment": "TODO this and many other uses of placeables are not currently translatable\nwithout knowing the vowel/consonant state of the first letter of the\nplaceable",
+    "val": "Endemic to { $place }"
+  },
+  "Introduced-to-place": "Introduced to { $place }",
+  "Native-to-place": "Native to { $place }",
   "Source-List": "<0>(Source List: </0><1>{ $source }</1><0>)</0>",
   "Save-photos-to-your-gallery": "Save photos to your gallery",
   "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery": "iNaturalist can save photos you take in the app to your device’s gallery.",
