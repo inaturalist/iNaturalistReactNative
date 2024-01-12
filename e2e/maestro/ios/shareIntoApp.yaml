@@ -3,7 +3,7 @@ appId: org.inaturalist.iNaturalistMobile
 - launchApp:
     appId: com.apple.mobileslideshow # iOS Photos app
 - tapOn: "Albums"
-- tapOn: "6 photos"
+- tapOn: "Recents"
 - tapOn: "Photo, 13. March 2011, 01:17"
 - tapOn: "Share"
 - tapOn: "iNaturalistReactNative"
