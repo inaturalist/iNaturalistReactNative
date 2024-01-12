@@ -59,8 +59,8 @@ const IdentificationSection = ( {
   }, [hasIdentification, setPassesIdentificationTest, passesIdentificationTest] );
 
   return (
-    <View className="ml-5 mt-6">
-      <View className="flex-row">
+    <View className="mt-6">
+      <View className="ml-5 flex-row">
         <Heading4>{t( "IDENTIFICATION" )}</Heading4>
         {hasIdentification && (
           <View className="ml-3">
@@ -70,7 +70,7 @@ const IdentificationSection = ( {
       </View>
       <View className="ml-1">
         {identification && (
-          <View className="flex-row items-center justify-between mr-5 mt-5">
+          <View className="flex-row items-center justify-between mr-5 mt-5 ml-5">
             <DisplayTaxon
               taxon={identification}
               handlePress={navToSuggestions}
@@ -99,7 +99,7 @@ const IdentificationSection = ( {
                     : "focus"}
                   onPress={navToSuggestions}
                   text={t( "ADD-AN-ID" )}
-                  className={classnames( "rounded-full py-1 h-[36px]", {
+                  className={classnames( "rounded-full py-1 h-[36px] ml-4", {
                     "border border-darkGray border-[2px]": identification
                   } )}
                   testID="ObsEdit.Suggestions"
