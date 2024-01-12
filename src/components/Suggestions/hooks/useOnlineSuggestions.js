@@ -14,28 +14,24 @@ const resizeImage = async (
   height?: number,
   outputPath?: string
 ): Promise<string> => {
-  try {
-    // Note that the default behavior of this library is to resize to contain,
-    // i.e. it will not adjust aspect ratio
-    const { uri } = await ImageResizer.createResizedImage(
-      path,
-      width,
-      height || width, // height
-      "JPEG", // compressFormat
-      100, // quality
-      0, // rotation
-      // $FlowFixMe
-      outputPath, // outputPath
-      true // keep metadata
-    );
+  // Note that the default behavior of this library is to resize to contain,
+  // i.e. it will not adjust aspect ratio
+  const { uri } = await ImageResizer.createResizedImage(
+    path,
+    width,
+    height || width, // height
+    "JPEG", // compressFormat
+    100, // quality
+    0, // rotation
+    // $FlowFixMe
+    outputPath, // outputPath
+    true // keep metadata
+  );
 
-    return uri;
-  } catch ( e ) {
-    return "";
-  }
+  return uri;
 };
 
-type ScoreImageParams = {
+type FlattenUploadArgs = {
   image: any,
   lat?: number,
   lng?: number
@@ -45,10 +41,10 @@ const flattenUploadParams = async (
   uri: string,
   latitude?: number,
   longitude?: number
-): Promise<ScoreImageParams> => {
+): Promise<FlattenUploadArgs> => {
   const uploadUri = await resizeImage( uri, 640 );
 
-  const params: ScoreImageParams = {
+  const params: FlattenUploadArgs = {
     image: new FileUpload( {
       uri: uploadUri,
       name: "photo.jpeg",
@@ -85,20 +81,20 @@ const useOnlineSuggestions = (
     isError
   } = useAuthenticatedQuery(
     ["scoreImage", selectedPhotoUri],
-    async optsWithAuth => scoreImage(
-      await flattenUploadParams(
+    async optsWithAuth => {
+      const scoreImageParams = await flattenUploadParams(
         // Ensure that if this URI is a remote thumbnail that we are resizing
         // a reasonably-sized image and not deliverying a handful of
         // upsampled pixels
         Photo.displayMediumPhoto( selectedPhotoUri ),
         options?.latitude,
         options?.longitude
-      ),
-      optsWithAuth
-    ),
+      );
+      return scoreImage( scoreImageParams, optsWithAuth );
+    },
     {
       enabled: !!selectedPhotoUri,
-      retry: 2
+      allowAnonymousJWT: true
     }
   );
 

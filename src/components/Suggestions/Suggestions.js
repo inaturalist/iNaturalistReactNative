@@ -2,6 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
+  ActivityIndicator,
   Body1,
   Body3,
   Button,
@@ -15,7 +16,6 @@ import {
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import {
   convertOfflineScoreToConfidence,
   convertOnlineScoreToConfidence
@@ -78,7 +78,7 @@ const Suggestions = ( {
     if ( loadingSuggestions ) {
       return (
         <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
-          <ActivityIndicator large />
+          <ActivityIndicator size={50} />
         </View>
       );
     }

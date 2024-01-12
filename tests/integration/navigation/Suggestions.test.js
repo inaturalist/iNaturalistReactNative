@@ -69,6 +69,13 @@ afterAll( ( ) => {
 } );
 // /REALM SETUP
 
+// // import { useNetInfo } from "@react-native-community/netinfo";
+// jest.mock( "@react-native-community/netinfo", ( ) => ( {
+//   useNetInfo: jest.fn( ( ) => ( {
+//     isInternetReachable: true
+//   } ) )
+// } ) );
+
 const makeMockObservations = ( ) => ( [
   factory( "LocalObservation", {
     // Suggestions won't load without a photo
