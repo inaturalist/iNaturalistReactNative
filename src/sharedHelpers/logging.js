@@ -10,45 +10,48 @@ function inspect( target ) {
   return JSON.stringify( target );
 }
 
-async function reactQueryRetry( failureCount, error, options = {} ) {
+// Note that this should not be async. When you're using it with reactQuery,
+// returning a promise is like returning true, which means it retries
+// forever
+function reactQueryRetry( failureCount, error, options = {} ) {
   const logger = options.logger || defaultLogger;
-  if ( typeof ( options.beforeRertry ) === "function" ) {
-    options.beforeRertry( failureCount, error );
-  } else {
-    logger.warn( error.status, "error for query, error: ", error, ", options: ", options );
+  if ( typeof ( options.beforeRetry ) === "function" ) {
+    options.beforeRetry( failureCount, error );
   }
-  if ( error.status > 500 ) {
-    logger.info( "Handing 500+ error, failureCount: ", failureCount );
-    await handleError( error );
-    return false;
-  }
+  logger.warn(
+    `reactQueryRetry, error: ${error.message}, failureCount: ${failureCount}, options:`,
+    options
+  );
+  let shouldRetry = failureCount < 2;
   if (
     // If this is an actual 408 Request Timeout error, we probably want to
-    // retry... but this will probably never happen
+    // retry... but this will probably never happen because at this point the
+    // error hasn't been converted to an INatApiError
     error.status === 408
     // If there's just no network at the moment, definitely retry
     || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
   ) {
-    const retryValue = failureCount < 3;
+    shouldRetry = failureCount < 3;
     logger.info(
-      "Handling 408 Request Timeout, failureCount: ",
-      failureCount,
-      ", retryValue: ",
-      retryValue
+      "reactQueryRetry, handling 408 Request Timeout / Network request failed, "
+      + `failureCount: ${failureCount}, shouldRetry: ${shouldRetry}, options: `,
+      options
     );
-    return retryValue;
   }
-  logger.info( "Handling some other error, failureCount: ", failureCount );
-  await handleError( error, { throw: false } );
-  if ( error.status === 401 || error.status === 403 ) {
-    // If we get a 401 or 403, call getJWT
-    // which has a timestamp check if we need to refresh the token
-    const token = await getJWT( );
-    if ( token ) {
-      return failureCount < 2;
+  handleError( error, {
+    throw: false,
+    onApiError: apiError => {
+      if ( apiError.status === 401 || apiError.status === 403 ) {
+        // If we get a 401 or 403, call getJWT
+        // which has a timestamp check if we need to refresh the token
+        logger.info( "reactQueryRetry, handling auth error, calling getJWT" );
+        getJWT( );
+      }
+      // Consider handling 500+ errors differently. if you can detect them
+      // before processing, you want to disable retry
     }
-  }
-  return false;
+  } );
+  return shouldRetry;
 }
 
 // eslint-disable-next-line import/prefer-default-export

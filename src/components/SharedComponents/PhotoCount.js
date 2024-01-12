@@ -3,7 +3,8 @@
 import { useIsFocused } from "@react-navigation/native";
 import { Body3, Body3Bold, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import * as React from "react";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import Svg, { ForeignObject, Path } from "react-native-svg";
@@ -11,20 +12,32 @@ import { dropShadow } from "styles/global";
 
 type Props = {
   count: number,
+  groupPhotos: boolean,
   size?: number,
   shadow?: boolean,
 };
 
-const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
-  const theme = useTheme();
-  const isFocused = useIsFocused();
-  const [idx, setIdx] = React.useState( 0 );
+const PhotoCount = ( {
+  count, groupPhotos, size, shadow
+}: Props ): Node => {
+  const theme = useTheme( );
+  const isFocused = useIsFocused( );
+  const [idx, setIdx] = useState( 0 );
 
-  React.useEffect( () => {
+  useEffect( ( ) => {
     if ( isFocused ) {
       setIdx( i => i + 1 );
     }
   }, [isFocused, setIdx] );
+
+  useEffect( ( ) => {
+    // we need a different tactic for updating the PhotoCount in GroupPhotos
+    // since the SVG remains in the same place with a new count;
+    // in ObsListItem we can use isFocused to update PhotoCounts rendered on screen
+    if ( count && groupPhotos ) {
+      setIdx( i => i + 1 );
+    }
+  }, [count, groupPhotos] );
 
   if ( count === 0 ) {
     return <INatIcon name="noevidence" size={size} color={theme.colors.inverseOnSurface} />;

@@ -1,6 +1,7 @@
 // @flow
 
 import { useMutation } from "@tanstack/react-query";
+import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 
 // Should work like React Query's useMutation except it calls the queryFunction
@@ -19,6 +20,7 @@ const useAuthenticatedMutation = (
     };
     return mutationFunction( id, options );
   },
+  onError: handleError,
   ...mutationOptions
 } );
 

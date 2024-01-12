@@ -1,0 +1,15 @@
+appId: org.inaturalist.iNaturalistMobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible: 
+        id: "log-in-to-iNaturalist-text-no-observations"
+    timeout: 10000
+- launchApp:
+    appId: com.apple.mobilesafari
+- tapOn: "Address"
+- inputText: "https://www.inaturalist.org/users/sign_in?confirmed=true"
+- pressKey: Enter
+- assertVisible: .*Open in the iNaturalistReactNative app.*
+- tapOn: OPEN
+- assertVisible: "Your email is confirmed! Please log in to continue."

@@ -11,7 +11,11 @@
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  return [RCTLinkingManager application:app openURL:url options:options] || [ShareMenuManager application:app openURL:url options:options];
+  BOOL handledByShareMenu = [ShareMenuManager application:app openURL:url options:options];
+  BOOL handledByLinkingManager = [RCTLinkingManager application:app openURL:url options:options];
+
+  // Return YES if either of the managers can handle the URL
+  return handledByShareMenu || handledByLinkingManager;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity

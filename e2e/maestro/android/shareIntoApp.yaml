@@ -1,0 +1,15 @@
+# adb push e2e/maestro/android/test.jpg /sdcard/Pictures
+# adb reboot
+appId: org.inaturalist.iNaturalistMobile
+---
+- launchApp:
+    appId: com.android.gallery3d # Android AOSP Gallery app
+- tapOn:
+    id: "com.android.gallery3d:id/gl_root_view"
+- tapOn: "Share with"
+- tapOn: "iNaturalistReactNative"
+- extendedWaitUntil:
+    visible: "New Observation"
+    timeout: 10000
+# Assert for timestamp which means EXIF parsing was correct
+- assertVisible: .*11:14:16.*

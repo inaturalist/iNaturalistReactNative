@@ -2,9 +2,11 @@
 import { fetchUserMe } from "api/users";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useIsConnected from "sharedHooks/useIsConnected";
 
 const useUserMe = ( ): Object => {
   const currentUser = useCurrentUser( );
+  const isConnected = useIsConnected( );
 
   const {
     data: remoteUser,
@@ -14,7 +16,7 @@ const useUserMe = ( ): Object => {
     ["fetchUserMe"],
     optsWithAuth => fetchUserMe( { }, optsWithAuth ),
     {
-      enabled: !!currentUser
+      enabled: !!isConnected && !!currentUser
     }
   );
 

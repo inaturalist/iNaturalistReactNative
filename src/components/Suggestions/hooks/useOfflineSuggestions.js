@@ -5,6 +5,9 @@ import {
   useState
 } from "react";
 import { predictImage } from "sharedHelpers/cvModel";
+import { log } from "sharedHelpers/logger";
+
+const logger = log.extend( "useOfflineSuggestions" );
 
 const useOfflineSuggestions = (
   selectedPhotoUri: string,
@@ -15,13 +18,28 @@ const useOfflineSuggestions = (
 } => {
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
   const [loadingOfflineSuggestions, setLoadingOfflineSuggestions] = useState( false );
+  const [error, setError] = useState( null );
 
   const { tryOfflineSuggestions } = options;
 
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
       setLoadingOfflineSuggestions( true );
-      const predictions = await predictImage( selectedPhotoUri );
+      let predictions = [];
+      try {
+        predictions = await predictImage( selectedPhotoUri );
+      } catch ( predictImageError ) {
+        if ( predictImageError.message.match( /getWidth/ ) ) {
+          // TODO fix this. There's a bug in the android side of vision-camera-plugin-inatvision
+          logger.error(
+            `HACK working around failure to getWidth of ${selectedPhotoUri}`,
+            predictImageError
+          );
+          predictions = [];
+        } else {
+          throw predictImageError;
+        }
+      }
       // using the same rank level for displaying predictions in AR Camera
       // this is all temporary, since we ultimately want predictions
       // returned similarly to how we return them on web; this is returning a
@@ -42,9 +60,15 @@ const useOfflineSuggestions = (
     };
 
     if ( selectedPhotoUri && tryOfflineSuggestions ) {
-      predictOffline( );
+      predictOffline( ).catch( predictOfflineError => {
+        // For some reason if you throw here, it doesn't actually buble up. Is
+        // an effect callback run in a promise?
+        setError( predictOfflineError );
+      } );
     }
-  }, [selectedPhotoUri, tryOfflineSuggestions] );
+  }, [selectedPhotoUri, tryOfflineSuggestions, setError] );
+
+  if ( error ) throw error;
 
   return {
     offlineSuggestions,

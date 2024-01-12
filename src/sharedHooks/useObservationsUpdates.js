@@ -2,7 +2,7 @@
 
 import { fetchObservationUpdates } from "api/observations";
 import { RealmContext } from "providers/contexts";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { useAuthenticatedQuery, useIsConnected } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -10,6 +10,7 @@ export const fetchObservationUpdatesKey = "fetchObservationUpdates";
 
 const useObservationsUpdates = ( enabled: boolean ): Object => {
   const realm = useRealm();
+  const isConnected = useIsConnected( );
 
   // Request params for fetching unviewed updates
   const baseParams = {
@@ -21,19 +22,13 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
 
   const {
     data,
-    isError,
-    error,
     refetch
   } = useAuthenticatedQuery(
     [fetchObservationUpdatesKey],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
-    { enabled: !!enabled }
+    { enabled: !!isConnected && !!enabled }
   );
 
-  if ( isError && error?.status !== 503 ) {
-    console.log( "Error fetching observation updates", error );
-    throw error;
-  }
   /*
     Example data:
     data [
