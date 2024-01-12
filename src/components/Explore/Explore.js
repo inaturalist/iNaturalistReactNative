@@ -74,8 +74,8 @@ const Explore = ( {
   const exploreViewIcon = {
     observations: "binoculars",
     species: "leaf",
-    observers: "observers",
-    identifiers: "identifiers"
+    observers: "person",
+    identifiers: "person"
   };
 
   const queryParams = {
