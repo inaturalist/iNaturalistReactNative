@@ -50,6 +50,8 @@ const Modal = ( {
       isVisible={showModal}
       onBackdropPress={closeModal}
       onSwipeComplete={closeModal}
+      // Always close the modal when Android back button pressed
+      onRequestClose={closeModal}
       swipeDirection={swipeDirection}
       useNativeDriverForBackdrop
       useNativeDriver
