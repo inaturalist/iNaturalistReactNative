@@ -1063,6 +1063,11 @@ X-Identifiers = {$count ->
    *[other] {$count} Identifiers
 }
 
+X-Observations = {$count ->
+    [one] {$count} Observations
+   *[other] {$count} Observations
+}
+
 X-Observers = {$count ->
     [one] {$count} Observer
    *[other] {$count} Observers
@@ -1464,3 +1469,9 @@ Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Save-photos-to-your-gallery = Save photos to your gallery
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
 SAVE-PHOTOS = SAVE PHOTOS
+
+Explore-View = Explore View
+IDENTIFIERS = IDENTIFIERS
+OBSERVERS = OBSERVERS
+All-organisms = All organisms
+Worldwide = Worldwide

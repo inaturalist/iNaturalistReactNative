@@ -5,17 +5,14 @@ import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { ActivityIndicator, Animated } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { useTranslation } from "sharedHooks";
-
-const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
   contentContainerStyle?: Object,
   data: Array<Object>,
   estimatedItemSize: number,
   fetchNextPage: boolean,
-  handleScroll: Function,
   hideLoadingWheel: boolean,
   isFetchingNextPage: boolean,
   isOnline: boolean,
@@ -33,7 +30,6 @@ const ExploreFlashList = ( {
   data,
   estimatedItemSize,
   fetchNextPage,
-  handleScroll,
   hideLoadingWheel,
   isFetchingNextPage,
   isOnline,
@@ -66,28 +62,30 @@ const ExploreFlashList = ( {
     </View>
   ), [status, t] );
 
-  const renderHeader = useCallback( ( ) => <View className="mt-[180px]" />, [] );
+  const headerComponentStyle = layout === "grid" && {
+    marginLeft: -7,
+    marginRight: -7
+  };
 
   return (
-    <AnimatedFlashList
+    <FlashList
+      ItemSeparatorComponent={renderItemSeparator}
+      ListEmptyComponent={renderEmptyComponent}
+      ListFooterComponent={renderFooter}
+      ListHeaderComponentStyle={headerComponentStyle}
+      accessible
       contentContainerStyle={contentContainerStyle}
       data={data}
       estimatedItemSize={estimatedItemSize}
-      testID={testID}
       horizontal={false}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      ItemSeparatorComponent={renderItemSeparator}
-      ListFooterComponent={renderFooter}
-      ListEmptyComponent={renderEmptyComponent}
       initialNumToRender={5}
+      keyExtractor={keyExtractor}
+      numColumns={numColumns}
       onEndReached={fetchNextPage}
       onEndReachedThreshold={1}
       refreshing={isFetchingNextPage}
-      onScroll={handleScroll}
-      accessible
-      numColumns={numColumns}
-      ListHeaderComponent={renderHeader}
+      renderItem={renderItem}
+      testID={testID}
     />
   );
 };
