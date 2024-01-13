@@ -402,6 +402,8 @@ lane :internal do
   upload_to_play_store(
     aab: aab_path,
     track: "internal",
+    # TODO promote build to closed testing and jump through play store hoops
+    release_status: "draft",
     version_name: last_tag
   )
 
@@ -409,7 +411,9 @@ lane :internal do
     ipa: get_ipa_path,
     distribute_external: true,
     groups: [
-      "iNat staff",
+      # I don't think this is necessary since staff should be in the internal
+      # group
+      # "iNat staff",
       "iNat Friends"
     ],
     changelog: File.read( changelog_path ),
