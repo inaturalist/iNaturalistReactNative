@@ -1,6 +1,6 @@
 // @flow
 import type { Node } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { useDeviceOrientation } from "sharedHooks";
 
@@ -22,6 +22,8 @@ const StickyView = ( {
     screenHeight,
     screenWidth
   } = useDeviceOrientation( );
+  // eslint-disable-next-line no-unused-vars
+  const [scrollPosition, setScrollPosition] = useState( 0 );
 
   // On Android, the scroll view offset is a double (not an integer), and interpolation shouldn't be
   // one-to-one, which causes a jittery header while slow scrolling (see issue #634).
@@ -38,6 +40,28 @@ const StickyView = ( {
     // $FlowIgnore
     outputRange: [0, -heightAboveView]
   } );
+
+  useEffect( () => {
+    const currentScrollY = scrollY.current;
+
+    if ( scrollY.current ) {
+      // #560 - We use a state variable to force rendering of the component - since on iOS,
+      // you can over scroll a list when scrolling it to the top (creating a bounce effect),
+      // and sometimes, even though offsetForHeader gets updated correctly, it doesn't cause
+      // a re-render of the component, and then the Animated.View's translateY property doesn't
+      // get updated with the latest value of offsetForHeader (this causes a weird view, where the
+      // top header if semi cut off, even though the user scrolled the list all the way to the top).
+      // So by changing a state variable of the component, every time the user scroll the list -> we
+      // make sure the component always gets re-rendered.
+      currentScrollY.addListener( ( { value } ) => {
+        setScrollPosition( value );
+      } );
+    }
+
+    return () => {
+      currentScrollY.removeAllListeners();
+    };
+  }, [scrollY] );
 
   return (
     <Animated.View
