@@ -270,9 +270,7 @@ class Observation extends Realm.Object {
   };
 
   static appendObsPhotos = ( obsPhotos, currentObservation ) => {
-    const updatedObs = ( currentObservation instanceof Realm.Object
-      ? currentObservation.toJSON( )
-      : currentObservation );
+    const updatedObs = currentObservation;
 
     // need empty case for when a user creates an observation with no photos,
     // then tries to add photos to observation later
