@@ -721,43 +721,47 @@ const ExploreContainer = ( ): Node => {
   }
 
   return (
-    <ExploreProvider>
-      <Explore
-        exploreParams={filteredParams}
-        region={region}
-        exploreView={exploreView}
-        changeExploreView={changeExploreView}
-        updateTaxon={updateTaxon}
-        updatePlace={updatePlace}
-        updatePlaceName={updatePlaceName}
-        updateTaxonName={updateTaxonName}
-        filtersNotDefault={filtersNotDefault()}
-        resetFilters={() => dispatch( { type: "RESET_EXPLORE_FILTERS" } )}
-        updateSortBy={updateSortBy}
-        isOnline={isOnline}
-        showFiltersModal={showFiltersModal}
-        openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
-        // openFiltersModal={() => navigation.navigate( "ExploreFilterScreen" )}
-        closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
-        numberOfFilters={numberOfFilters}
-        updateResearchGrade={() => dispatch( { type: "TOGGLE_RESEARCH_GRADE" } )}
-        updateNeedsID={() => dispatch( { type: "TOGGLE_NEEDS_ID" } )}
-        updateCasual={() => dispatch( { type: "TOGGLE_CASUAL" } )}
-        updateHighestTaxonomicRank={updateHighestTaxonomicRank}
-        updateLowestTaxonomicRank={updateLowestTaxonomicRank}
-        updateDateObserved={updateDateObserved}
-        updateDateUploaded={updateDateUploaded}
-        updateMedia={updateMedia}
-        updateNative={updateNative}
-        updateEndemic={updateEndemic}
-        updateIntroduced={updateIntroduced}
-        updateNoStatus={updateNoStatus}
-        updateWildStatus={updateWildStatus}
-        updateReviewed={updateReviewed}
-        updatePhotoLicense={updatePhotoLicense}
-      />
-    </ExploreProvider>
+    <Explore
+      exploreParams={filteredParams}
+      region={region}
+      exploreView={exploreView}
+      changeExploreView={changeExploreView}
+      updateTaxon={updateTaxon}
+      updatePlace={updatePlace}
+      updatePlaceName={updatePlaceName}
+      updateTaxonName={updateTaxonName}
+      filtersNotDefault={filtersNotDefault()}
+      resetFilters={() => dispatch( { type: "RESET_EXPLORE_FILTERS" } )}
+      updateSortBy={updateSortBy}
+      isOnline={isOnline}
+      showFiltersModal={showFiltersModal}
+      openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
+      // openFiltersModal={() => navigation.navigate( "ExploreFilterScreen" )}
+      closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
+      numberOfFilters={numberOfFilters}
+      updateResearchGrade={() => dispatch( { type: "TOGGLE_RESEARCH_GRADE" } )}
+      updateNeedsID={() => dispatch( { type: "TOGGLE_NEEDS_ID" } )}
+      updateCasual={() => dispatch( { type: "TOGGLE_CASUAL" } )}
+      updateHighestTaxonomicRank={updateHighestTaxonomicRank}
+      updateLowestTaxonomicRank={updateLowestTaxonomicRank}
+      updateDateObserved={updateDateObserved}
+      updateDateUploaded={updateDateUploaded}
+      updateMedia={updateMedia}
+      updateNative={updateNative}
+      updateEndemic={updateEndemic}
+      updateIntroduced={updateIntroduced}
+      updateNoStatus={updateNoStatus}
+      updateWildStatus={updateWildStatus}
+      updateReviewed={updateReviewed}
+      updatePhotoLicense={updatePhotoLicense}
+    />
   );
 };
 
-export default ExploreContainer;
+const ExploreContainerConnected = (): Node => (
+  <ExploreProvider>
+    <ExploreContainer />
+  </ExploreProvider>
+);
+
+export default ExploreContainerConnected;
