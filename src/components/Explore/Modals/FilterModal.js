@@ -20,7 +20,13 @@ import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import { RadioButtonRow } from "components/SharedComponents/Sheets/RadioButtonSheet";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
-import { EXPLORE_ACTION, useExplore } from "providers/ExploreContext.tsx";
+import {
+  DATE_OBSERVED,
+  DATE_UPLOADED,
+  EXPLORE_ACTION,
+  MEDIA,
+  useExplore
+} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
@@ -44,9 +50,6 @@ type Props = {
   updateCasual: Function,
   updateLowestTaxonomicRank: Function,
   updateHighestTaxonomicRank: Function,
-  updateDateObserved: Function,
-  updateDateUploaded: Function,
-  updateMedia: Function,
   updateIntroduced: Function,
   updateNative: Function,
   updateEndemic: Function,
@@ -66,9 +69,6 @@ const FilterModal = ( {
   updateCasual,
   updateLowestTaxonomicRank,
   updateHighestTaxonomicRank,
-  updateDateObserved,
-  updateDateUploaded,
-  updateMedia,
   updateIntroduced,
   updateNative,
   updateEndemic,
@@ -87,14 +87,7 @@ const FilterModal = ( {
     casual,
     lrank,
     hrank,
-    dateObserved,
-    // eslint-disable-next-line camelcase
-    observed_on,
-    month,
-    dateUploaded,
-    // eslint-disable-next-line camelcase
-    created_on,
-    media,
+
     introduced,
     native,
     endemic,
@@ -102,15 +95,27 @@ const FilterModal = ( {
   } = exploreFilters;
 
   const { state, dispatch } = useExplore();
-  const { wildStatus, reviewedFilter, photoLicense } = state.exploreParams;
+  const {
+    dateObserved,
+    // eslint-disable-next-line camelcase
+    observed_on,
+    months,
+    dateUploaded,
+    // eslint-disable-next-line camelcase
+    created_on,
+    media,
+    wildStatus,
+    reviewedFilter,
+    photoLicense
+  } = state.exploreParams;
 
   const NONE = "NONE";
   const SORT_BY = "SORT_BY";
   const LRANK = "LRANK";
   const HRANK = "HRANK";
-  const DATE_OBSERVED = "DATE_OBSERVED";
+  const DATE_OBSERVED_M = "DATE_OBSERVED_M";
   const OBSERVED_EXACT = "OBSERVED_EXACT";
-  const DATE_UPLOADED = "DATE_UPLOADED";
+  const DATE_UPLOADED_M = "DATE_UPLOADED_M";
   const UPLOADED_EXACT = "UPLOADED_EXACT";
   const PHOTO_LICENSING = "PHOTO_LICENSING";
   const [openSheet, setOpenSheet] = useState( NONE );
@@ -275,26 +280,26 @@ const FilterModal = ( {
   const dateObservedValues = {
     all: {
       label: t( "All" ),
-      value: "all"
+      value: DATE_OBSERVED.ALL
     },
     exactDate: {
       label: t( "Exact-Date" ),
-      value: "exactDate"
+      value: DATE_OBSERVED.EXACT_DATE
     },
     months: {
       label: t( "Months" ),
-      value: "months"
+      value: DATE_OBSERVED.MONTHS
     }
   };
 
   const dateUploadedValues = {
     all: {
       label: t( "All" ),
-      value: "all"
+      value: DATE_UPLOADED.ALL
     },
     exactDate: {
       label: t( "Exact-Date" ),
-      value: "exactDate"
+      value: DATE_UPLOADED.EXACT_DATE
     }
   };
 
@@ -353,19 +358,19 @@ const FilterModal = ( {
   const mediaValues = {
     all: {
       label: t( "All" ),
-      value: "all"
+      value: MEDIA.ALL
     },
     photos: {
       label: t( "Photos" ),
-      value: "photos"
+      value: MEDIA.PHOTOS
     },
     sounds: {
       label: t( "Sounds" ),
-      value: "sounds"
+      value: MEDIA.SOUNDS
     },
     noMedia: {
       label: t( "No-Media" ),
-      value: "noMedia"
+      value: MEDIA.NONE
     }
   };
 
@@ -434,6 +439,28 @@ const FilterModal = ( {
     }
   };
 
+  const updateDateObserved = ( newDateObserved, d1, newMonths ) => {
+    const today = new Date( ).toISOString( ).split( "T" )[0];
+    // Array with the numbers from 1 to 12
+    const allMonths = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
+
+    if ( newDateObserved === DATE_OBSERVED.ALL ) {
+      dispatch( {
+        type: "SET_DATE_OBSERVED_ALL"
+      } );
+    } else if ( newDateObserved === DATE_OBSERVED.EXACT_DATE ) {
+      dispatch( {
+        type: "SET_DATE_OBSERVED_EXACT",
+        observed_on: d1 || today
+      } );
+    } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
+      dispatch( {
+        type: "SET_DATE_OBSERVED_MONTHS",
+        months: newMonths || allMonths
+      } );
+    }
+  };
+
   const updateObservedExact = date => {
     updateDateObserved(
       dateObservedValues.exactDate.value,
@@ -442,17 +469,24 @@ const FilterModal = ( {
   };
 
   const updateObservedMonths = monthInteger => {
-    const newMonths = month.includes( monthInteger )
-      ? month.filter( m => m !== monthInteger )
-      : [...month, monthInteger];
+    const newMonths = months.includes( monthInteger )
+      ? months.filter( m => m !== monthInteger )
+      : [...months, monthInteger];
     updateDateObserved( dateObservedValues.months.value, null, newMonths );
   };
 
-  const updateUploadedExact = date => {
-    updateDateUploaded(
-      dateUploadedValues.exactDate.value,
-      date.toISOString().split( "T" )[0]
-    );
+  const updateDateUploaded = ( newDateObserved, d1 ) => {
+    const today = new Date().toISOString().split( "T" )[0];
+    if ( newDateObserved === DATE_UPLOADED.ALL ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL
+      } );
+    } else if ( newDateObserved === DATE_UPLOADED.EXACT_DATE ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT,
+        created_on: d1 || today
+      } );
+    }
   };
 
   return (
@@ -709,7 +743,7 @@ const FilterModal = ( {
             className="shrink mb-7"
             dropdown
             onPress={() => {
-              setOpenSheet( DATE_OBSERVED );
+              setOpenSheet( DATE_OBSERVED_M );
             }}
           />
           {dateObserved === dateObservedValues.exactDate.value && (
@@ -736,12 +770,12 @@ const FilterModal = ( {
               <View className="flex-row items-center mb-5">
                 <Checkbox
                   text={monthValues[monthKey].label}
-                  isChecked={month.includes( monthValues[monthKey].value )}
+                  isChecked={months.includes( monthValues[monthKey].value )}
                   onPress={() => updateObservedMonths( monthValues[monthKey].value )}
                 />
               </View>
             ) )}
-          {openSheet === DATE_OBSERVED && (
+          {openSheet === DATE_OBSERVED_M && (
             <RadioButtonSheet
               headerText={t( "DATE-OBSERVED" )}
               confirm={newDateObserved => {
@@ -763,7 +797,7 @@ const FilterModal = ( {
             className="shrink mb-7"
             dropdown
             onPress={() => {
-              setOpenSheet( DATE_UPLOADED );
+              setOpenSheet( DATE_UPLOADED_M );
             }}
           />
           {dateUploaded === dateUploadedValues.exactDate.value && (
@@ -781,11 +815,14 @@ const FilterModal = ( {
               <DateTimePicker
                 isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
                 toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateUploadedExact( date )}
+                onDatePicked={date => updateDateUploaded(
+                  dateUploadedValues.exactDate.value,
+                  date.toISOString().split( "T" )[0]
+                )}
               />
             </View>
           )}
-          {openSheet === DATE_UPLOADED && (
+          {openSheet === DATE_UPLOADED_M && (
             <RadioButtonSheet
               headerText={t( "DATE-UPLOADED" )}
               confirm={newDate => {
@@ -807,7 +844,10 @@ const FilterModal = ( {
               keySubstring={mediaKey}
               value={mediaValues[mediaKey]}
               checked={mediaValues[mediaKey].value === media}
-              onPress={() => updateMedia( mediaValues[mediaKey].value )}
+              onPress={() => dispatch( {
+                type: "SET_MEDIA",
+                media: mediaValues[mediaKey].value
+              } )}
               label={mediaValues[mediaKey].label}
             />
           ) )}

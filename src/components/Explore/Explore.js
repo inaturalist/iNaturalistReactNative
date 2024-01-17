@@ -45,9 +45,6 @@ type Props = {
   updateCasual: Function,
   updateHighestTaxonomicRank: Function,
   updateLowestTaxonomicRank: Function,
-  updateDateObserved: Function,
-  updateDateUploaded: Function,
-  updateMedia: Function,
   updateNative: Function,
   updateEndemic: Function,
   updateIntroduced: Function,
@@ -76,9 +73,6 @@ const Explore = ( {
   updateCasual,
   updateHighestTaxonomicRank,
   updateLowestTaxonomicRank,
-  updateDateObserved,
-  updateDateUploaded,
-  updateMedia,
   updateNative,
   updateEndemic,
   updateIntroduced,
@@ -244,9 +238,6 @@ const Explore = ( {
         updateCasual={updateCasual}
         updateHighestTaxonomicRank={updateHighestTaxonomicRank}
         updateLowestTaxonomicRank={updateLowestTaxonomicRank}
-        updateDateObserved={updateDateObserved}
-        updateDateUploaded={updateDateUploaded}
-        updateMedia={updateMedia}
         updateNative={updateNative}
         updateEndemic={updateEndemic}
         updateIntroduced={updateIntroduced}

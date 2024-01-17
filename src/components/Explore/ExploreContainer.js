@@ -4,7 +4,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import {
   ExploreProvider,
-  REVIEWED_FILTER,
+  MEDIA,
+  REVIEWED,
   useExplore,
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
@@ -31,15 +32,7 @@ const ASC = "asc";
 const DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST";
 
 const ALL = "all";
-const EXACT_DATE = "exactDate";
-const MONTHS = "months";
 
-const PHOTOS = "photos";
-const SOUNDS = "sounds";
-
-const today = new Date( ).toISOString( ).split( "T" )[0];
-// Array with the numbers from 1 to 12
-const months = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
 const calculatedFilters = {
   user: undefined,
   project: undefined,
@@ -47,14 +40,11 @@ const calculatedFilters = {
   needsID: true,
   casual: false,
   hrank: undefined,
-  lrank: undefined,
-  dateObserved: ALL,
-  dateUploaded: ALL,
-  media: ALL,
-  introduced: true,
-  native: true,
-  endemic: true,
-  noStatus: true
+  lrank: undefined
+  // introduced: true
+  // native: true,
+  // endemic: true,
+  // noStatus: true
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -62,10 +52,7 @@ const defaultFilters = {
   ...calculatedFilters,
   sortBy: DATE_UPLOADED_NEWEST,
   user_id: undefined,
-  project_id: undefined,
-  observed_on: undefined,
-  created_on: undefined,
-  month: undefined
+  project_id: undefined
 };
 
 const initialState: {
@@ -96,16 +83,10 @@ const initialState: {
     casual: boolean,
     hrank: ?string,
     lrank: ?string,
-    dateObserved: string,
-    observed_on: ?string,
-    month: ?number[],
-    dateUploaded: string,
-    created_on: ?string,
-    media: string,
-    introduced: boolean,
-    native: boolean,
-    endemic: boolean,
-    noStatus: boolean
+    // introduced: boolean,
+    // native: boolean,
+    // endemic: boolean,
+    // noStatus: boolean
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -284,62 +265,6 @@ const reducer = ( state, action ) => {
         exploreParams: {
           ...state.exploreParams,
           lrank: action.lrank
-        }
-      };
-    case "SET_DATE_OBSERVED_ALL":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateObserved: ALL,
-          observed_on: null,
-          month: null
-        }
-      };
-    case "SET_DATE_OBSERVED_EXACT":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateObserved: EXACT_DATE,
-          observed_on: action.observed_on,
-          month: null
-        }
-      };
-    case "SET_DATE_OBSERVED_MONTHS":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateObserved: MONTHS,
-          observed_on: null,
-          month: action.month
-        }
-      };
-    case "SET_DATE_UPLOADED_ALL":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateUploaded: ALL,
-          created_on: null
-        }
-      };
-    case "SET_DATE_UPLOADED_EXACT":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateUploaded: EXACT_DATE,
-          created_on: action.created_on
-        }
-      };
-    case "SET_MEDIA":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          media: action.media
         }
       };
     case "TOGGLE_NATIVE":
@@ -528,44 +453,6 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateDateObserved = ( newDateObserved, d1, newMonths ) => {
-    if ( newDateObserved === ALL ) {
-      dispatch( {
-        type: "SET_DATE_OBSERVED_ALL"
-      } );
-    } else if ( newDateObserved === EXACT_DATE ) {
-      dispatch( {
-        type: "SET_DATE_OBSERVED_EXACT",
-        observed_on: d1 || today
-      } );
-    } else if ( newDateObserved === MONTHS ) {
-      dispatch( {
-        type: "SET_DATE_OBSERVED_MONTHS",
-        month: newMonths || months
-      } );
-    }
-  };
-
-  const updateDateUploaded = ( newDateObserved, d1 ) => {
-    if ( newDateObserved === ALL ) {
-      dispatch( {
-        type: "SET_DATE_UPLOADED_ALL"
-      } );
-    } else if ( newDateObserved === EXACT_DATE ) {
-      dispatch( {
-        type: "SET_DATE_UPLOADED_EXACT",
-        created_on: d1 || today
-      } );
-    }
-  };
-
-  const updateMedia = newMedia => {
-    dispatch( {
-      type: "SET_MEDIA",
-      media: newMedia
-    } );
-  };
-
   const updateNative = () => {
     dispatch( {
       type: "TOGGLE_NATIVE"
@@ -590,7 +477,12 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const filteredParams = Object.entries( exploreParams ).reduce(
+  const combinedParams = {
+    ...exploreParams,
+    ...explore.state.exploreParams
+  };
+
+  const filteredParams = Object.entries( combinedParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
         newParams[key] = value;
@@ -628,8 +520,16 @@ const ExploreContainer = ( ): Node => {
     filteredParams.order_by = "votes";
     filteredParams.order = DESC;
   }
-  filteredParams.photos = exploreParams.media === PHOTOS || exploreParams.media === ALL;
-  filteredParams.sounds = exploreParams.media === SOUNDS || exploreParams.media === ALL;
+
+  if ( filteredParams.months ) {
+    filteredParams.month = filteredParams.months;
+    delete filteredParams.months;
+  }
+
+  filteredParams.photos = explore.state.exploreParams.media === MEDIA.PHOTOS
+    || explore.state.exploreParams.media === MEDIA.ALL;
+  filteredParams.sounds = explore.state.exploreParams.media === MEDIA.SOUNDS
+    || explore.state.exploreParams.media === MEDIA.ALL;
 
   // TODO: How to handle those values (native, endemic, introduced, noStatus)
   // TODO: true = filter should be used, e.g. the query should be native=true
@@ -648,10 +548,10 @@ const ExploreContainer = ( ): Node => {
     filteredParams.captive = true;
   }
 
-  if ( explore.state.exploreParams.reviewedFilter === REVIEWED_FILTER.REVIEWED ) {
+  if ( explore.state.exploreParams.reviewedFilter === REVIEWED.REVIEWED ) {
     filteredParams.reviewed = true;
     filteredParams.viewer_id = currentUser?.id;
-  } else if ( explore.state.exploreParams.reviewedFilter === REVIEWED_FILTER.UNREVIEWED ) {
+  } else if ( explore.state.exploreParams.reviewedFilter === REVIEWED.UNREVIEWED ) {
     filteredParams.reviewed = false;
     filteredParams.viewer_id = currentUser?.id;
   }
@@ -694,9 +594,6 @@ const ExploreContainer = ( ): Node => {
       updateCasual={() => dispatch( { type: "TOGGLE_CASUAL" } )}
       updateHighestTaxonomicRank={updateHighestTaxonomicRank}
       updateLowestTaxonomicRank={updateLowestTaxonomicRank}
-      updateDateObserved={updateDateObserved}
-      updateDateUploaded={updateDateUploaded}
-      updateMedia={updateMedia}
       updateNative={updateNative}
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}
