@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import {
   ExploreProvider,
@@ -309,9 +309,7 @@ const ExploreContainer = ( ): Node => {
   const isOnline = useIsConnected( );
 
   const realm = useRealm();
-  const navigation = useNavigation();
   const currentUser = useCurrentUser();
-  console.log( "navigation :>> ", navigation );
 
   const [state, dispatch] = useReducer( reducer, initialState );
   const explore = useExplore();
@@ -586,7 +584,6 @@ const ExploreContainer = ( ): Node => {
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
       openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
-      // openFiltersModal={() => navigation.navigate( "ExploreFilterScreen" )}
       closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
       numberOfFilters={numberOfFilters}
       updateResearchGrade={() => dispatch( { type: "TOGGLE_RESEARCH_GRADE" } )}
