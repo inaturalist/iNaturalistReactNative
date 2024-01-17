@@ -492,7 +492,6 @@ const FilterModal = ( {
                   accessibilityRole="button"
                   // TODO: accessibilityLabel={t( "Change user or something like this" )}
                   onPress={() => {
-                    closeModal();
                     navigation.navigate( "ExploreTaxonSearch" );
                   }}
                 >
@@ -504,7 +503,6 @@ const FilterModal = ( {
                 <Button
                   text={t( "SEARCH-FOR-A-TAXON" )}
                   onPress={() => {
-                    closeModal();
                     navigation.navigate( "ExploreTaxonSearch" );
                   }}
                   accessibilityLabel={t( "Search" )}
@@ -528,7 +526,6 @@ const FilterModal = ( {
                   <Button
                     text={t( "EDIT-LOCATION" )}
                     onPress={() => {
-                      closeModal();
                       navigation.navigate( "ExploreLocationSearch" );
                     }}
                     accessibilityLabel={t( "Edit" )}
@@ -539,7 +536,6 @@ const FilterModal = ( {
                 <Button
                   text={t( "SEARCH-FOR-A-LOCATION" )}
                   onPress={() => {
-                    closeModal();
                     navigation.navigate( "ExploreLocationSearch" );
                   }}
                   accessibilityLabel={t( "Search" )}
@@ -557,7 +553,6 @@ const FilterModal = ( {
               className="shrink"
               dropdown
               onPress={() => {
-                closeModal();
                 setOpenSheet( SORT_BY );
               }}
             />
@@ -606,7 +601,6 @@ const FilterModal = ( {
                   accessibilityRole="button"
                   // TODO: accessibilityLabel={t( "Change user or something like this" )}
                   onPress={() => {
-                    closeModal();
                     navigation.navigate( "ExploreUserSearch" );
                   }}
                 >
@@ -622,7 +616,6 @@ const FilterModal = ( {
                 <Button
                   text={t( "FILTER-BY-A-USER" )}
                   onPress={() => {
-                    closeModal();
                     navigation.navigate( "ExploreUserSearch" );
                   }}
                   accessibilityLabel={t( "Filter" )}
@@ -642,7 +635,6 @@ const FilterModal = ( {
                   accessibilityRole="button"
                   // TODO: accessibilityLabel={t( "Change project or something like this" )}
                   onPress={() => {
-                    closeModal();
                     navigation.navigate( "ExploreProjectSearch" );
                   }}
                 >
@@ -654,7 +646,6 @@ const FilterModal = ( {
                 <Button
                   text={t( "FILTER-BY-A-PROJECT" )}
                   onPress={() => {
-                    closeModal();
                     navigation.navigate( "ExploreProjectSearch" );
                   }}
                   accessibilityLabel={t( "Filter" )}
@@ -674,7 +665,6 @@ const FilterModal = ( {
             className="shrink mb-7"
             dropdown
             onPress={() => {
-              closeModal();
               setOpenSheet( LRANK );
             }}
           />
@@ -698,7 +688,6 @@ const FilterModal = ( {
             className="shrink mb-7"
             dropdown
             onPress={() => {
-              closeModal();
               setOpenSheet( HRANK );
             }}
           />
@@ -725,7 +714,6 @@ const FilterModal = ( {
             className="shrink mb-7"
             dropdown
             onPress={() => {
-              closeModal();
               setOpenSheet( DATE_OBSERVED );
             }}
           />
@@ -780,7 +768,6 @@ const FilterModal = ( {
             className="shrink mb-7"
             dropdown
             onPress={() => {
-              closeModal();
               setOpenSheet( DATE_UPLOADED );
             }}
           />
@@ -898,7 +885,6 @@ const FilterModal = ( {
             className="shrink mb-7"
             dropdown
             onPress={() => {
-              closeModal();
               setOpenSheet( PHOTO_LICENSING );
             }}
           />

@@ -1,4 +1,3 @@
-import Modal from "components/SharedComponents/Modal";
 import type { Node } from "react";
 import React from "react";
 
@@ -57,40 +56,35 @@ const ExploreFilters = ( {
   updateReviewed,
   updatePhotoLicense
 }: Props ): Node => (
-  <Modal
-    showModal={showModal}
-    closeModal={closeModal}
-    fullScreen
-    modal={(
-      <FilterModal
-        exploreFilters={{
-          ...exploreParams,
-          region
-        }}
-        filtersNotDefault={filtersNotDefault}
-        resetFilters={resetFilters}
-        closeModal={closeModal}
-        updateTaxon={updateTaxon}
-        updateSortBy={updateSortBy}
-        numberOfFilters={numberOfFilters}
-        updateResearchGrade={updateResearchGrade}
-        updateNeedsID={updateNeedsID}
-        updateCasual={updateCasual}
-        updateHighestTaxonomicRank={updateHighestTaxonomicRank}
-        updateLowestTaxonomicRank={updateLowestTaxonomicRank}
-        updateDateObserved={updateDateObserved}
-        updateDateUploaded={updateDateUploaded}
-        updateMedia={updateMedia}
-        updateNative={updateNative}
-        updateEndemic={updateEndemic}
-        updateIntroduced={updateIntroduced}
-        updateNoStatus={updateNoStatus}
-        updateWildStatus={updateWildStatus}
-        updateReviewed={updateReviewed}
-        updatePhotoLicense={updatePhotoLicense}
-      />
-    )}
-  />
+  showModal && (
+    <FilterModal
+      exploreFilters={{
+        ...exploreParams,
+        region
+      }}
+      filtersNotDefault={filtersNotDefault}
+      resetFilters={resetFilters}
+      closeModal={closeModal}
+      updateTaxon={updateTaxon}
+      updateSortBy={updateSortBy}
+      numberOfFilters={numberOfFilters}
+      updateResearchGrade={updateResearchGrade}
+      updateNeedsID={updateNeedsID}
+      updateCasual={updateCasual}
+      updateHighestTaxonomicRank={updateHighestTaxonomicRank}
+      updateLowestTaxonomicRank={updateLowestTaxonomicRank}
+      updateDateObserved={updateDateObserved}
+      updateDateUploaded={updateDateUploaded}
+      updateMedia={updateMedia}
+      updateNative={updateNative}
+      updateEndemic={updateEndemic}
+      updateIntroduced={updateIntroduced}
+      updateNoStatus={updateNoStatus}
+      updateWildStatus={updateWildStatus}
+      updateReviewed={updateReviewed}
+      updatePhotoLicense={updatePhotoLicense}
+    />
+  )
 );
 
 export default ExploreFilters;

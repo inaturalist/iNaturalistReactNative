@@ -167,57 +167,59 @@ const Explore = ( {
 
   return (
     <>
-      <ViewWrapper testID="Explore">
-        {renderHeader( )}
-        {exploreView === "observations" && (
-          <ObservationsViewBar
-            observationsView={observationsView}
-            updateObservationsView={newView => setObservationsView( newView )}
-          />
-        )}
-        <INatIconButton
-          icon={exploreViewIcon[exploreView]}
-          color={theme.colors.onPrimary}
-          size={27}
-          className={classnames(
-            grayCircleClass,
-            "absolute bottom-5 z-10 right-5"
+      {!showFiltersModal && (
+        <ViewWrapper testID="Explore">
+          {renderHeader()}
+          {exploreView === "observations" && (
+            <ObservationsViewBar
+              observationsView={observationsView}
+              updateObservationsView={newView => setObservationsView( newView )}
+            />
           )}
-          accessibilityLabel={t( "Explore-View" )}
-          onPress={( ) => setShowExploreBottomSheet( true )}
-        />
-        {exploreView === "observations" && (
-          <ObservationsView
-            exploreParams={exploreParams}
-            observationsView={observationsView}
-            region={region}
+          <INatIconButton
+            icon={exploreViewIcon[exploreView]}
+            color={theme.colors.onPrimary}
+            size={27}
+            className={classnames(
+              grayCircleClass,
+              "absolute bottom-5 z-10 right-5"
+            )}
+            accessibilityLabel={t( "Explore-View" )}
+            onPress={() => setShowExploreBottomSheet( true )}
           />
-        )}
-        {exploreView === "species" && (
-          <SpeciesView
-            count={count}
-            isOnline={isOnline}
-            queryParams={queryParams}
-            updateCount={updateCount}
-          />
-        )}
-        {exploreView === "observers" && (
-          <ObserversView
-            count={count}
-            isOnline={isOnline}
-            queryParams={queryParams}
-            updateCount={updateCount}
-          />
-        )}
-        {exploreView === "identifiers" && (
-          <IdentifiersView
-            count={count}
-            isOnline={isOnline}
-            queryParams={queryParams}
-            updateCount={updateCount}
-          />
-        )}
-      </ViewWrapper>
+          {exploreView === "observations" && (
+            <ObservationsView
+              exploreParams={exploreParams}
+              observationsView={observationsView}
+              region={region}
+            />
+          )}
+          {exploreView === "species" && (
+            <SpeciesView
+              count={count}
+              isOnline={isOnline}
+              queryParams={queryParams}
+              updateCount={updateCount}
+            />
+          )}
+          {exploreView === "observers" && (
+            <ObserversView
+              count={count}
+              isOnline={isOnline}
+              queryParams={queryParams}
+              updateCount={updateCount}
+            />
+          )}
+          {exploreView === "identifiers" && (
+            <IdentifiersView
+              count={count}
+              isOnline={isOnline}
+              queryParams={queryParams}
+              updateCount={updateCount}
+            />
+          )}
+        </ViewWrapper>
+      )}
       {showExploreBottomSheet && (
         <BottomSheet headerText={t( "EXPLORE" )}>
           {Object.keys( exploreViewText ).map( view => (
