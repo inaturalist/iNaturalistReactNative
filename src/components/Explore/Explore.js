@@ -159,6 +159,7 @@ const Explore = ( {
       updatePlaceName={updatePlaceName}
       updateTaxon={updateTaxon}
       updateTaxonName={updateTaxonName}
+      openFiltersModal={openFiltersModal}
     />
   );
 

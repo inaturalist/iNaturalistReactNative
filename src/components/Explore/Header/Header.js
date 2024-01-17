@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
   Body3,
@@ -28,7 +27,8 @@ type Props = {
   updatePlace: Function,
   updatePlaceName: Function,
   updateTaxon: Function,
-  updateTaxonName: Function
+  updateTaxonName: Function,
+  openFiltersModal: Function,
 }
 
 const Header = ( {
@@ -40,14 +40,14 @@ const Header = ( {
   updatePlace,
   updatePlaceName,
   updateTaxon,
-  updateTaxonName
+  updateTaxonName,
+  openFiltersModal
 }: Props ): Node => {
   const { t } = useTranslation( );
   const taxonInput = useRef( );
   const placeInput = useRef( );
   const placeName = region.place_guess;
   const taxonName = exploreParams.taxon_name;
-  const navigation = useNavigation( );
   const theme = useTheme( );
   const [hideTaxonResults, setHideTaxonResults] = useState( true );
   const [hidePlaceResults, setHidePlaceResults] = useState( true );
@@ -165,7 +165,7 @@ const Header = ( {
             icon="sliders"
             color={colors.white}
             className="bg-darkGray rounded-md"
-            onPress={( ) => navigation.navigate( "ExploreFilters" )}
+            onPress={() => openFiltersModal()}
             accessibilityLabel={t( "Filters" )}
             accessibilityHint={t( "Navigates-to-explore" )}
           />
