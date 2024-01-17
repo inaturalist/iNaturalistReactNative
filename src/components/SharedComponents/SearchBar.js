@@ -18,6 +18,7 @@ const getShadow = shadowColor => getShadowStyle( {
 } );
 
 type Props = {
+  autoFocus?: boolean,
   clearSearch?: Function,
   containerClass?: string,
   handleTextChange: Function,
@@ -31,6 +32,7 @@ type Props = {
 // Ensure this component is placed outside of scroll views
 
 const SearchBar = ( {
+  autoFocus = false,
   clearSearch,
   containerClass,
   handleTextChange,
@@ -78,6 +80,7 @@ const SearchBar = ( {
         ref={input}
         accessibilityLabel={t( "Search-for-a-taxon" )}
         activeUnderlineColor={theme.colors.primary}
+        autoFocus={autoFocus}
         dense
         keyboardType="default"
         mode="outlined"
