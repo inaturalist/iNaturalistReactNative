@@ -20,7 +20,7 @@ import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import { RadioButtonRow } from "components/SharedComponents/Sheets/RadioButtonSheet";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
-import { useExplore } from "providers/ExploreContext.tsx";
+import { EXPLORE_ACTION, useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
@@ -51,8 +51,7 @@ type Props = {
   updateNative: Function,
   updateEndemic: Function,
   updateNoStatus: Function,
-  updateWildStatus: Function,
-  updateReviewed: Function,
+  updateWildStatus: Function
 };
 
 const FilterModal = ( {
@@ -75,8 +74,7 @@ const FilterModal = ( {
   updateNative,
   updateEndemic,
   updateNoStatus,
-  updateWildStatus,
-  updateReviewed
+  updateWildStatus
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -103,12 +101,11 @@ const FilterModal = ( {
     native,
     endemic,
     noStatus,
-    wildStatus,
-    reviewedFilter
+    wildStatus
   } = exploreFilters;
 
   const { state, dispatch } = useExplore();
-  const { photoLicense } = state.exploreParams;
+  const { reviewedFilter, photoLicense } = state.exploreParams;
 
   const NONE = "NONE";
   const SORT_BY = "SORT_BY";
@@ -872,7 +869,10 @@ const FilterModal = ( {
               keySubstring={reviewedKey}
               value={reviewedValues[reviewedKey]}
               checked={reviewedValues[reviewedKey].value === reviewedFilter}
-              onPress={() => updateReviewed( reviewedValues[reviewedKey].value )}
+              onPress={() => dispatch( {
+                type: EXPLORE_ACTION.SET_REVIEWED,
+                reviewedFilter: reviewedValues[reviewedKey].value
+              } )}
               label={reviewedValues[reviewedKey].label}
             />
           ) )}
@@ -894,7 +894,7 @@ const FilterModal = ( {
               headerText={t( "PHOTO-LICENSING" )}
               confirm={newLicense => {
                 dispatch( {
-                  type: "SET_PHOTO_LICENSE",
+                  type: EXPLORE_ACTION.SET_PHOTO_LICENSE,
                   photoLicense: newLicense
                 } );
                 setOpenSheet( NONE );

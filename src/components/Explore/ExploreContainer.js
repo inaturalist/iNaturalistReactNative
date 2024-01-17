@@ -56,8 +56,7 @@ const calculatedFilters = {
   native: true,
   endemic: true,
   noStatus: true,
-  wildStatus: ALL,
-  reviewedFilter: ALL
+  wildStatus: ALL
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -109,8 +108,7 @@ const initialState: {
     native: boolean,
     endemic: boolean,
     noStatus: boolean,
-    wildStatus: string,
-    reviewedFilter: string
+    wildStatus: string
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -387,14 +385,6 @@ const reducer = ( state, action ) => {
           wildStatus: action.wildStatus
         }
       };
-    case "SET_REVIEWED":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          reviewedFilter: action.reviewedFilter
-        }
-      };
     default:
       throw new Error();
   }
@@ -411,6 +401,7 @@ const ExploreContainer = ( ): Node => {
 
   const [state, dispatch] = useReducer( reducer, initialState );
   const explore = useExplore();
+  console.log( "explore :>> ", explore );
 
   const {
     region,
@@ -617,13 +608,6 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateReviewed = newReviewed => {
-    dispatch( {
-      type: "SET_REVIEWED",
-      reviewedFilter: newReviewed
-    } );
-  };
-
   const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -682,10 +666,10 @@ const ExploreContainer = ( ): Node => {
     filteredParams.captive = true;
   }
 
-  if ( exploreParams.reviewedFilter === REVIEWED ) {
+  if ( explore.state.exploreParams.reviewedFilter === REVIEWED ) {
     filteredParams.reviewed = true;
     filteredParams.viewer_id = currentUser?.id;
-  } else if ( exploreParams.reviewedFilter === UNREVIEWED ) {
+  } else if ( explore.state.exploreParams.reviewedFilter === UNREVIEWED ) {
     filteredParams.reviewed = false;
     filteredParams.viewer_id = currentUser?.id;
   }
@@ -736,7 +720,6 @@ const ExploreContainer = ( ): Node => {
       updateIntroduced={updateIntroduced}
       updateNoStatus={updateNoStatus}
       updateWildStatus={updateWildStatus}
-      updateReviewed={updateReviewed}
     />
   );
 };

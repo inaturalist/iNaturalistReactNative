@@ -1,9 +1,15 @@
 import * as React from "react";
 
-type Action = {type: 'SET_PHOTO_LICENSE', photoLicense: string}
+export enum EXPLORE_ACTION {
+  SET_PHOTO_LICENSE = 'SET_PHOTO_LICENSE',
+  SET_REVIEWED = 'SET_REVIEWED'
+}
+
+type Action = {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: string} | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: string}
 type Dispatch = (action: Action) => void
 type State = {
   exploreParams: {
+    reviewedFilter: string,
     photoLicense: string
   }
 }
@@ -16,6 +22,7 @@ const ExploreContext = React.createContext<
 const ALL = "all";
 
 const calculatedFilters = {
+  reviewedFilter: ALL,
   photoLicense: ALL
 };
 
@@ -32,12 +39,20 @@ const initialState = {
 
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
-    case "SET_PHOTO_LICENSE":
+    case EXPLORE_ACTION.SET_PHOTO_LICENSE:
       return {
         ...state,
         exploreParams: {
           ...state.exploreParams,
           photoLicense: action.photoLicense
+        }
+      };
+    case EXPLORE_ACTION.SET_REVIEWED:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          reviewedFilter: action.reviewedFilter
         }
       };
     default: {
