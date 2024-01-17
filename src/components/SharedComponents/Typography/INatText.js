@@ -12,9 +12,11 @@ type Props = {
 }
 
 const INatText = ( {
-  children, testID, style, className
+  children, testID, style, className, ...props
 }: Props ): Node => (
   <Text
+    /* eslint-disable react/jsx-props-no-spreading */
+    {...props}
     style={style}
     testID={testID}
     className={className}

@@ -77,6 +77,7 @@ const ObsGridItem = ( {
           }
           layout="vertical"
           color="text-white"
+          ellipsizeCommonName
         />
       </View>
     </ObsImagePreview>

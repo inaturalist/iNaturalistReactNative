@@ -30,6 +30,7 @@ const rankNames = {
 type Props = {
   bottomTextComponent?: Function,
   color?: string,
+  ellipsizeCommonName?: boolean,
   keyBase?: string,
   layout?: "horizontal" | "vertical",
   scientificNameFirst?: boolean,
@@ -42,6 +43,7 @@ type Props = {
 const DisplayTaxonName = ( {
   bottomTextComponent: BottomTextComponentProp,
   color,
+  ellipsizeCommonName,
   keyBase = "",
   layout = "vertical",
   scientificNameFirst = false,
@@ -96,7 +98,7 @@ const DisplayTaxonName = ( {
             <INatText
               // eslint-disable-next-line react/no-array-index-key
               key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
-              className={classNames( "italic font-normal", textClass() )}
+              className={classNames( "italic font-normal", textClass( ) )}
             >
               {text}
             </INatText>
@@ -122,6 +124,16 @@ const DisplayTaxonName = ( {
         : Body4;
     }
 
+    const setNumberOfLines = ( ) => {
+      if ( scientificNameFirst ) {
+        return 1;
+      }
+      if ( ellipsizeCommonName ) {
+        return 2;
+      }
+      return 3;
+    };
+
     return (
       <View
         testID="display-taxon-name"
@@ -130,10 +142,9 @@ const DisplayTaxonName = ( {
         } )}
       >
         <TopTextComponent
-          className={textClass()}
-          numberOfLines={scientificNameFirst
-            ? 1
-            : 3}
+          className={textClass( )}
+          numberOfLines={setNumberOfLines( )}
+          ellipsizeMode="tail"
         >
           {
             ( scientificNameFirst || !commonName )
@@ -146,7 +157,7 @@ const DisplayTaxonName = ( {
 
         {
           commonName && (
-            <BottomTextComponent className={textClass()}>
+            <BottomTextComponent className={textClass( )}>
               {scientificNameFirst
                 ? commonName
                 : scientificNameComponent}
@@ -157,6 +168,7 @@ const DisplayTaxonName = ( {
     );
   }, [
     BottomTextComponentProp,
+    ellipsizeCommonName,
     keyBase,
     layout,
     scientificNameFirst,
@@ -168,7 +180,7 @@ const DisplayTaxonName = ( {
 
   if ( !taxon ) {
     return (
-      <Body1Bold className={textClass()} numberOfLines={1}>
+      <Body1Bold className={textClass( )} numberOfLines={1}>
         {t( "unknown" )}
       </Body1Bold>
     );
