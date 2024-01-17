@@ -25,7 +25,6 @@ type Props = {
   updateEndemic: Function,
   updateIntroduced: Function,
   updateNoStatus: Function,
-  updateWildStatus: Function,
 };
 
 const ExploreFilters = ( {
@@ -49,8 +48,7 @@ const ExploreFilters = ( {
   updateNative,
   updateEndemic,
   updateIntroduced,
-  updateNoStatus,
-  updateWildStatus
+  updateNoStatus
 }: Props ): Node => (
   showModal && (
     <FilterModal
@@ -76,7 +74,6 @@ const ExploreFilters = ( {
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}
       updateNoStatus={updateNoStatus}
-      updateWildStatus={updateWildStatus}
     />
   )
 );

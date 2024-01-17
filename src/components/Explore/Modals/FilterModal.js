@@ -51,7 +51,6 @@ type Props = {
   updateNative: Function,
   updateEndemic: Function,
   updateNoStatus: Function,
-  updateWildStatus: Function
 };
 
 const FilterModal = ( {
@@ -73,8 +72,7 @@ const FilterModal = ( {
   updateIntroduced,
   updateNative,
   updateEndemic,
-  updateNoStatus,
-  updateWildStatus
+  updateNoStatus
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -100,12 +98,11 @@ const FilterModal = ( {
     introduced,
     native,
     endemic,
-    noStatus,
-    wildStatus
+    noStatus
   } = exploreFilters;
 
   const { state, dispatch } = useExplore();
-  const { reviewedFilter, photoLicense } = state.exploreParams;
+  const { wildStatus, reviewedFilter, photoLicense } = state.exploreParams;
 
   const NONE = "NONE";
   const SORT_BY = "SORT_BY";
@@ -855,7 +852,10 @@ const FilterModal = ( {
               keySubstring={wildKey}
               value={wildValues[wildKey]}
               checked={wildValues[wildKey].value === wildStatus}
-              onPress={() => updateWildStatus( wildValues[wildKey].value )}
+              onPress={() => dispatch( {
+                type: "SET_WILD_STATUS",
+                wildStatus: wildValues[wildKey].value
+              } )}
               label={wildValues[wildKey].label}
             />
           ) )}

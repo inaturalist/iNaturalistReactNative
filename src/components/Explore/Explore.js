@@ -52,7 +52,6 @@ type Props = {
   updateEndemic: Function,
   updateIntroduced: Function,
   updateNoStatus: Function,
-  updateWildStatus: Function,
 }
 
 const Explore = ( {
@@ -83,8 +82,7 @@ const Explore = ( {
   updateNative,
   updateEndemic,
   updateIntroduced,
-  updateNoStatus,
-  updateWildStatus
+  updateNoStatus
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -253,7 +251,6 @@ const Explore = ( {
         updateEndemic={updateEndemic}
         updateIntroduced={updateIntroduced}
         updateNoStatus={updateNoStatus}
-        updateWildStatus={updateWildStatus}
       />
     </>
   );

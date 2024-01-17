@@ -2,7 +2,12 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
-import { ExploreProvider, useExplore } from "providers/ExploreContext.tsx";
+import {
+  ExploreProvider,
+  REVIEWED_FILTER,
+  useExplore,
+  WILD_STATUS
+} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
 import { useCurrentUser, useIsConnected } from "sharedHooks";
@@ -32,12 +37,6 @@ const MONTHS = "months";
 const PHOTOS = "photos";
 const SOUNDS = "sounds";
 
-const WILD = "wild";
-const CAPTIVE = "captive";
-
-const REVIEWED = "reviewed";
-const UNREVIEWED = "unreviewed";
-
 const today = new Date( ).toISOString( ).split( "T" )[0];
 // Array with the numbers from 1 to 12
 const months = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
@@ -55,8 +54,7 @@ const calculatedFilters = {
   introduced: true,
   native: true,
   endemic: true,
-  noStatus: true,
-  wildStatus: ALL
+  noStatus: true
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -107,8 +105,7 @@ const initialState: {
     introduced: boolean,
     native: boolean,
     endemic: boolean,
-    noStatus: boolean,
-    wildStatus: string
+    noStatus: boolean
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -377,14 +374,6 @@ const reducer = ( state, action ) => {
           noStatus: !state.exploreParams.noStatus
         }
       };
-    case "SET_WILD_STATUS":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          wildStatus: action.wildStatus
-        }
-      };
     default:
       throw new Error();
   }
@@ -601,13 +590,6 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateWildStatus = newWildStatus => {
-    dispatch( {
-      type: "SET_WILD_STATUS",
-      wildStatus: newWildStatus
-    } );
-  };
-
   const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -660,16 +642,16 @@ const ExploreContainer = ( ): Node => {
   // filteredParams.introduced = exploreParams.introduced;
   // filteredParams.noStatus = exploreParams.noStatus;
 
-  if ( exploreParams.wildStatus === WILD ) {
+  if ( explore.state.exploreParams.wildStatus === WILD_STATUS.WILD ) {
     filteredParams.captive = false;
-  } else if ( exploreParams.wildStatus === CAPTIVE ) {
+  } else if ( explore.state.exploreParams.wildStatus === WILD_STATUS.CAPTIVE ) {
     filteredParams.captive = true;
   }
 
-  if ( explore.state.exploreParams.reviewedFilter === REVIEWED ) {
+  if ( explore.state.exploreParams.reviewedFilter === REVIEWED_FILTER.REVIEWED ) {
     filteredParams.reviewed = true;
     filteredParams.viewer_id = currentUser?.id;
-  } else if ( explore.state.exploreParams.reviewedFilter === UNREVIEWED ) {
+  } else if ( explore.state.exploreParams.reviewedFilter === REVIEWED_FILTER.UNREVIEWED ) {
     filteredParams.reviewed = false;
     filteredParams.viewer_id = currentUser?.id;
   }
@@ -719,7 +701,6 @@ const ExploreContainer = ( ): Node => {
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}
       updateNoStatus={updateNoStatus}
-      updateWildStatus={updateWildStatus}
     />
   );
 };

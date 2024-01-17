@@ -2,25 +2,36 @@ import * as React from "react";
 
 export enum EXPLORE_ACTION {
   SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
-  SET_REVIEWED = "SET_REVIEWED"
+  SET_REVIEWED = "SET_REVIEWED",
+  SET_WILD_STATUS = "SET_WILD_STATUS"
 }
 
-const ALL = "all";
+const DEFAULT = "all";
 
-enum REVIEWED_FILTER {
-  // TODO: use ALL const
-  ALL = "all",
+export enum WILD_STATUS {
+  ALL = DEFAULT,
+  WILD = "wild",
+  CAPTIVE = "captive"
+}
+
+export enum REVIEWED_FILTER {
+  ALL = DEFAULT,
   REVIEWED = "reviewed",
   UNREVIEWED = "unreviewed"
 }
 
-// TODO: photoLicense should be an enum
-type Action = {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: string} | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED_FILTER}
+enum PHOTO_LICENSE {
+  ALL = DEFAULT
+}
+
+// TODO: photoLicense should be only an enum
+type Action = {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE | string} | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED_FILTER} | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
 type Dispatch = (action: Action) => void
 type State = {
   exploreParams: {
-    reviewedFilter: string,
-    photoLicense: string
+    wildStatus: WILD_STATUS,
+    reviewedFilter: REVIEWED_FILTER,
+    photoLicense: PHOTO_LICENSE | string
   }
 }
 type CountProviderProps = {children: React.ReactNode}
@@ -30,8 +41,9 @@ const ExploreContext = React.createContext<
 >(undefined)
 
 const calculatedFilters = {
-  reviewedFilter: ALL,
-  photoLicense: ALL
+  wildStatus: WILD_STATUS.ALL,
+  reviewedFilter: REVIEWED_FILTER.ALL,
+  photoLicense: PHOTO_LICENSE.ALL
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -47,6 +59,14 @@ const initialState = {
 
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
+    case EXPLORE_ACTION.SET_WILD_STATUS:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          wildStatus: action.wildStatus
+        }
+      };
     case EXPLORE_ACTION.SET_PHOTO_LICENSE:
       return {
         ...state,
