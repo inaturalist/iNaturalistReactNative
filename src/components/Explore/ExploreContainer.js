@@ -2,7 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
-import { ExploreProvider } from "providers/ExploreContext.tsx";
+import { ExploreProvider, useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
 import { useCurrentUser, useIsConnected } from "sharedHooks";
@@ -57,8 +57,7 @@ const calculatedFilters = {
   endemic: true,
   noStatus: true,
   wildStatus: ALL,
-  reviewedFilter: ALL,
-  photoLicense: ALL
+  reviewedFilter: ALL
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -111,8 +110,7 @@ const initialState: {
     endemic: boolean,
     noStatus: boolean,
     wildStatus: string,
-    reviewedFilter: string,
-    photoLicense: string
+    reviewedFilter: string
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -397,14 +395,6 @@ const reducer = ( state, action ) => {
           reviewedFilter: action.reviewedFilter
         }
       };
-    case "SET_PHOTO_LICENSE":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          photoLicense: action.photoLicense
-        }
-      };
     default:
       throw new Error();
   }
@@ -420,6 +410,7 @@ const ExploreContainer = ( ): Node => {
   console.log( "navigation :>> ", navigation );
 
   const [state, dispatch] = useReducer( reducer, initialState );
+  const explore = useExplore();
 
   const {
     region,
@@ -633,13 +624,6 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updatePhotoLicense = newPhotoLicense => {
-    dispatch( {
-      type: "SET_PHOTO_LICENSE",
-      photoLicense: newPhotoLicense
-    } );
-  };
-
   const filteredParams = Object.entries( exploreParams ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -706,7 +690,7 @@ const ExploreContainer = ( ): Node => {
     filteredParams.viewer_id = currentUser?.id;
   }
 
-  if ( exploreParams.photoLicense !== ALL ) {
+  if ( explore.state.exploreParams.photoLicense !== ALL ) {
     const licenseParams = {
       all: "all",
       cc0: "cc0",
@@ -717,7 +701,7 @@ const ExploreContainer = ( ): Node => {
       ccbyncsa: "cc-by-nc-sa",
       ccbyncnd: "cc-by-nc-nd"
     };
-    filteredParams.photo_license = licenseParams[exploreParams.photoLicense];
+    filteredParams.photo_license = licenseParams[explore.state.exploreParams.photoLicense];
   }
 
   return (
@@ -753,7 +737,6 @@ const ExploreContainer = ( ): Node => {
       updateNoStatus={updateNoStatus}
       updateWildStatus={updateWildStatus}
       updateReviewed={updateReviewed}
-      updatePhotoLicense={updatePhotoLicense}
     />
   );
 };

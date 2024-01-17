@@ -1,22 +1,45 @@
 import * as React from "react";
 
-type Action = {type: 'setup1'} | {type: 'setup2'}
+type Action = {type: 'SET_PHOTO_LICENSE', photoLicense: string}
 type Dispatch = (action: Action) => void
-type State = {}
+type State = {
+  exploreParams: {
+    photoLicense: string
+  }
+}
 type CountProviderProps = {children: React.ReactNode}
 
 const ExploreContext = React.createContext<
   {state: State; dispatch: Dispatch} | undefined
 >(undefined)
 
+const ALL = "all";
+
+const calculatedFilters = {
+  photoLicense: ALL
+};
+
+// Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
+const defaultFilters = {
+  ...calculatedFilters,
+};
+
+const initialState = {
+  exploreParams: {
+    ...defaultFilters
+  }
+};
+
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
-    case "setup1": {
-      return { ...state };
-    }
-    case "setup2": {
-      return { };
-    }
+    case "SET_PHOTO_LICENSE":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          photoLicense: action.photoLicense
+        }
+      };
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );
     }
@@ -24,7 +47,6 @@ function exploreReducer( state: State, action: Action ) {
 }
 
 const ExploreProvider = ( { children }: CountProviderProps ) => {
-  const initialState = { };
   const [state, dispatch] = React.useReducer( exploreReducer, initialState );
   const value = { state, dispatch };
   return (

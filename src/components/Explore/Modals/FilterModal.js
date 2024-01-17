@@ -20,6 +20,7 @@ import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import { RadioButtonRow } from "components/SharedComponents/Sheets/RadioButtonSheet";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
+import { useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
@@ -52,7 +53,6 @@ type Props = {
   updateNoStatus: Function,
   updateWildStatus: Function,
   updateReviewed: Function,
-  updatePhotoLicense: Function
 };
 
 const FilterModal = ( {
@@ -76,8 +76,7 @@ const FilterModal = ( {
   updateEndemic,
   updateNoStatus,
   updateWildStatus,
-  updateReviewed,
-  updatePhotoLicense
+  updateReviewed
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -105,9 +104,11 @@ const FilterModal = ( {
     endemic,
     noStatus,
     wildStatus,
-    reviewedFilter,
-    photoLicense
+    reviewedFilter
   } = exploreFilters;
+
+  const { state, dispatch } = useExplore();
+  const { photoLicense } = state.exploreParams;
 
   const NONE = "NONE";
   const SORT_BY = "SORT_BY";
@@ -892,7 +893,10 @@ const FilterModal = ( {
             <RadioButtonSheet
               headerText={t( "PHOTO-LICENSING" )}
               confirm={newLicense => {
-                updatePhotoLicense( newLicense );
+                dispatch( {
+                  type: "SET_PHOTO_LICENSE",
+                  photoLicense: newLicense
+                } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}

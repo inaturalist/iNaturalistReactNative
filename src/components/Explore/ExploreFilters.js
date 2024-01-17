@@ -27,7 +27,6 @@ type Props = {
   updateNoStatus: Function,
   updateWildStatus: Function,
   updateReviewed: Function,
-  updatePhotoLicense: Function
 };
 
 const ExploreFilters = ( {
@@ -53,8 +52,7 @@ const ExploreFilters = ( {
   updateIntroduced,
   updateNoStatus,
   updateWildStatus,
-  updateReviewed,
-  updatePhotoLicense
+  updateReviewed
 }: Props ): Node => (
   showModal && (
     <FilterModal
@@ -82,7 +80,6 @@ const ExploreFilters = ( {
       updateNoStatus={updateNoStatus}
       updateWildStatus={updateWildStatus}
       updateReviewed={updateReviewed}
-      updatePhotoLicense={updatePhotoLicense}
     />
   )
 );
