@@ -1,11 +1,21 @@
 import * as React from "react";
 
 export enum EXPLORE_ACTION {
-  SET_PHOTO_LICENSE = 'SET_PHOTO_LICENSE',
-  SET_REVIEWED = 'SET_REVIEWED'
+  SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
+  SET_REVIEWED = "SET_REVIEWED"
 }
 
-type Action = {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: string} | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: string}
+const ALL = "all";
+
+enum REVIEWED_FILTER {
+  // TODO: use ALL const
+  ALL = "all",
+  REVIEWED = "reviewed",
+  UNREVIEWED = "unreviewed"
+}
+
+// TODO: photoLicense should be an enum
+type Action = {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: string} | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED_FILTER}
 type Dispatch = (action: Action) => void
 type State = {
   exploreParams: {
@@ -18,8 +28,6 @@ type CountProviderProps = {children: React.ReactNode}
 const ExploreContext = React.createContext<
   {state: State; dispatch: Dispatch} | undefined
 >(undefined)
-
-const ALL = "all";
 
 const calculatedFilters = {
   reviewedFilter: ALL,
