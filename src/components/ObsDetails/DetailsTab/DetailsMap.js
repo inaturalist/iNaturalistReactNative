@@ -30,7 +30,6 @@ const HEADER_BACK_BUTTON_STYLE = {
 type Props = {
   latitude: number,
   longitude: number,
-  mapType: string,
   obscured?: boolean,
   positionalAccuracy: number,
   mapViewRef: any,
@@ -40,7 +39,6 @@ type Props = {
   closeNotificationsModal: Function,
   copyCoordinates: Function,
   shareMap: Function,
-  cycleMapTypes: Function,
   closeModal: Function,
   tileMapParams: Object
 }
@@ -86,12 +84,10 @@ const DetailsMap = ( {
   closeModal,
   closeNotificationsModal,
   copyCoordinates,
-  cycleMapTypes,
   displayCoordinates,
   displayLocation,
   latitude,
   longitude,
-  mapType,
   mapViewRef,
   obscured,
   positionalAccuracy,
@@ -106,11 +102,11 @@ const DetailsMap = ( {
         <Map
           showLocationIndicator
           showCurrentLocationButton
+          showSwitchMapTypeButton
           obsLatitude={latitude}
           obsLongitude={longitude}
           mapHeight="100%"
           obscured={obscured}
-          mapType={mapType}
           positionalAccuracy={positionalAccuracy}
           mapViewRef={mapViewRef}
           withObsTiles={tileMapParams !== null}
@@ -134,13 +130,6 @@ const DetailsMap = ( {
               />
             </>
           )}
-          <FloatingActionButton
-            icon="map-layers"
-            onPress={( ) => cycleMapTypes( )}
-            accessibilityLabel={t( "Map-layers" )}
-            buttonClassName="bottom-0 left-0"
-            theme={theme}
-          />
         </Map>
       </View>
       <View className="bg-white w-fit flex-row items-end">

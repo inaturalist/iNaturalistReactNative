@@ -88,14 +88,7 @@ const ObservationLocation = ( {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {t( "Geoprivacy" )}
-          </TextComponent>
-          <TextComponent
-            className="text-darkGray"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {t( displayPrivacy )}
+            {t( "Geoprivacy-status", { status: t( displayPrivacy ) } )}
           </TextComponent>
         </View>
       </ContentWithIcon>

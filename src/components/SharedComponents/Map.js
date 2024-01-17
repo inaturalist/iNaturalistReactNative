@@ -406,7 +406,7 @@ const Map = ( {
         <INatIconButton
           icon="location-crosshairs"
           className={classnames(
-            "absolute bottom-40 right-5 bg-white rounded-full",
+            "absolute bottom-5 right-5 bg-white rounded-full",
             currentLocationButtonClassName
           )}
           style={getShadow( theme.colors.primary )}
@@ -423,7 +423,7 @@ const Map = ( {
           <INatIconButton
             icon="map-layers"
             className={classnames(
-              "absolute bottom-40 right-20 bg-white rounded-full",
+              "absolute bottom-5 left-5 bg-white rounded-full",
               switchMapTypeButtonClassName
             )}
             style={getShadow( theme.colors.primary )}

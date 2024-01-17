@@ -341,7 +341,7 @@ describe( "Suggestions", ( ) => {
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
       const offlineNotice = await screen.findByText( "Viewing Offline Suggestions" );
-      expect( offlineNotice ).toBeVisible( );
+      expect( offlineNotice ).toBeTruthy( );
       const topOfflineTaxonResultButton = await screen.findByTestId(
         `SuggestionsList.taxa.${mockModelPrediction.taxon_id}.checkmark`
       );

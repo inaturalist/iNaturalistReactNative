@@ -130,7 +130,7 @@ const ObsDetails = ( {
       {showCommentBox && (
         <TextInputSheet
           handleClose={hideCommentBox}
-          headerText={t( "ADD-OPTIONAL-COMMENT" )}
+          headerText={t( "ADD-COMMENT" )}
           textInputStyle={textInputStyle}
           confirm={textInput => onCommentAdded( textInput )}
         />
