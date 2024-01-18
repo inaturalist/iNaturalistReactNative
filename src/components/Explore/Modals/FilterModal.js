@@ -421,16 +421,16 @@ const FilterModal = ( {
 
     if ( newDateObserved === DATE_OBSERVED.ALL ) {
       dispatch( {
-        type: "SET_DATE_OBSERVED_ALL"
+        type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL
       } );
     } else if ( newDateObserved === DATE_OBSERVED.EXACT_DATE ) {
       dispatch( {
-        type: "SET_DATE_OBSERVED_EXACT",
+        type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT,
         observed_on: d1 || today
       } );
     } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
       dispatch( {
-        type: "SET_DATE_OBSERVED_MONTHS",
+        type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS,
         months: newMonths || allMonths
       } );
     }
@@ -831,7 +831,7 @@ const FilterModal = ( {
               value={mediaValues[mediaKey]}
               checked={mediaValues[mediaKey].value === media}
               onPress={() => dispatch( {
-                type: "SET_MEDIA",
+                type: EXPLORE_ACTION.SET_MEDIA,
                 media: mediaValues[mediaKey].value
               } )}
               label={mediaValues[mediaKey].label}
@@ -887,7 +887,7 @@ const FilterModal = ( {
               value={wildValues[wildKey]}
               checked={wildValues[wildKey].value === wildStatus}
               onPress={() => dispatch( {
-                type: "SET_WILD_STATUS",
+                type: EXPLORE_ACTION.SET_WILD_STATUS,
                 wildStatus: wildValues[wildKey].value
               } )}
               label={wildValues[wildKey].label}
