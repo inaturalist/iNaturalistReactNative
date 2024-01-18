@@ -75,10 +75,7 @@ const ProjectDetails = ( {
         <Button
           level="neutral"
           text={t( "VIEW-IN-EXPLORE" )}
-          onPress={( ) => navigation.navigate( "Explore", {
-            projectId: project.id,
-            placeId: project.place_id
-          } )}
+          onPress={( ) => navigation.navigate( "Explore", { project } )}
         />
         {!project.project_type && (
           <>
