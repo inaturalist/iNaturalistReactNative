@@ -19,7 +19,6 @@ type Props = {
 }
 
 type RowProps = {
-  keySubstring: string,
   value: string,
   checked: boolean,
   onPress: Function,
@@ -29,11 +28,11 @@ type RowProps = {
 
 // TODO: this is proably better in a standalone component
 export const RadioButtonRow = ( {
-  keySubstring, value, checked, onPress, label, description
+  value, checked, onPress, label, description
 }: RowProps ): Node => {
   const theme = useTheme( );
   return (
-    <RadioButton.Group key={`RadioButtonSheet-row-${keySubstring}`}>
+    <RadioButton.Group>
       <RadioButton.Item
         value={value}
         status={checked
@@ -75,7 +74,6 @@ const RadioButtonSheet = ( {
   const radioButtonRow = radioRow => (
     <RadioButtonRow
       key={radioRow}
-      keySubstring={radioRow}
       value={radioValues[radioRow]}
       checked={checked === radioValues[radioRow].value}
       onPress={() => setChecked( radioValues[radioRow].value )}
