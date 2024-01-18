@@ -827,6 +827,7 @@ const FilterModal = ( {
           <Heading4 className="mb-5">{t( "MEDIA" )}</Heading4>
           {Object.keys( mediaValues ).map( mediaKey => (
             <RadioButtonRow
+              key={mediaKey}
               keySubstring={mediaKey}
               value={mediaValues[mediaKey]}
               checked={mediaValues[mediaKey].value === media}
@@ -883,6 +884,7 @@ const FilterModal = ( {
           <Heading4 className="mb-5">{t( "WILD-STATUS" )}</Heading4>
           {Object.keys( wildValues ).map( wildKey => (
             <RadioButtonRow
+              key={wildKey}
               keySubstring={wildKey}
               value={wildValues[wildKey]}
               checked={wildValues[wildKey].value === wildStatus}
@@ -900,6 +902,7 @@ const FilterModal = ( {
           <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
           {Object.keys( reviewedValues ).map( reviewedKey => (
             <RadioButtonRow
+              key={reviewedKey}
               keySubstring={reviewedKey}
               value={reviewedValues[reviewedKey]}
               checked={reviewedValues[reviewedKey].value === reviewedFilter}

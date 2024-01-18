@@ -74,6 +74,7 @@ const RadioButtonSheet = ( {
 
   const radioButtonRow = radioRow => (
     <RadioButtonRow
+      key={radioRow}
       keySubstring={radioRow}
       value={radioValues[radioRow]}
       checked={checked === radioValues[radioRow].value}
