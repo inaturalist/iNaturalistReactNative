@@ -371,7 +371,7 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
     key => defaultFilters[key] !== exploreParams[key]
   );
 
-  const numberOfFilters: number = Object.keys( calculatedFilters ).reduce(
+  let numberOfFilters: number = Object.keys( calculatedFilters ).reduce(
     ( count, key ) => {
       if ( exploreParams[key] !== calculatedFilters[key] ) {
         return count + 1;
@@ -380,6 +380,9 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
     },
     0
   );
+  if (state.exploreParams.lrank && state.exploreParams.hrank) {
+    numberOfFilters -= 1;
+  }
 
   const value = { state, dispatch, filtersNotDefault, numberOfFilters };
   return (
