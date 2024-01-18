@@ -957,6 +957,7 @@ const FilterModal = ( {
           <Button
             disabled={!differsFromSnapshot}
             className="flex-1 ml-5"
+            level="focus"
             text={t( "APPLY-FILTERS" )}
             onPress={closeModal}
           />
