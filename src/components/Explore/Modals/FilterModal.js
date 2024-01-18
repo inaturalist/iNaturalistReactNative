@@ -57,7 +57,11 @@ const FilterModal = ( {
   } = exploreFilters;
 
   const {
-    state, dispatch, filtersNotDefault, numberOfFilters
+    state,
+    dispatch,
+    filtersNotDefault,
+    numberOfFilters,
+    differsFromSnapshot
   } = useExplore();
   const {
     user,
@@ -951,6 +955,7 @@ const FilterModal = ( {
             accessibilityLabel={t( "Back" )}
           />
           <Button
+            disabled={!differsFromSnapshot}
             className="flex-1 ml-5"
             text={t( "APPLY-FILTERS" )}
             onPress={closeModal}

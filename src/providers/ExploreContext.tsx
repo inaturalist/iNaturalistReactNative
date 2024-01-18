@@ -368,6 +368,18 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
   const [state, dispatch] = React.useReducer( exploreReducer, initialState );
   const { exploreParams } = state;
 
+  // To store a snapshot of the state, e.g when the user opens the filters modal
+  const [snapshot, setSnapshot] = React.useState<Object | undefined>( undefined );
+  const makeSnapshot = () => setSnapshot( exploreParams );
+  // Check if the current state is different from the snapshot
+  const checkSnapshot = () => {
+    if ( !snapshot ) {
+      return false;
+    }
+    return Object.keys( snapshot ).some( key => snapshot[key] !== exploreParams[key] );
+  }
+  const differsFromSnapshot: boolean = checkSnapshot();
+
   const filtersNotDefault: boolean = Object.keys( defaultFilters ).some(
     key => defaultFilters[key] !== exploreParams[key]
   );
@@ -385,7 +397,7 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
     numberOfFilters -= 1;
   }
 
-  const value = { state, dispatch, filtersNotDefault, numberOfFilters };
+  const value = { state, dispatch, filtersNotDefault, numberOfFilters, makeSnapshot, differsFromSnapshot };
   return (
     <ExploreContext.Provider value={value}>{children}</ExploreContext.Provider>
   );

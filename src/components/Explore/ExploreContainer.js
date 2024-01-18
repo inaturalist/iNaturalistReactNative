@@ -382,7 +382,10 @@ const ExploreContainerWithContext = ( ): Node => {
       updateTaxonName={updateTaxonName}
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
-      openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
+      openFiltersModal={() => {
+        dispatch( { type: "SHOW_FILTERS_MODAL" } );
+        explore.makeSnapshot( );
+      }}
       closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
     />
   );
