@@ -50,7 +50,10 @@ const ToolbarContainer = ( {
     uploadMultipleObservations
   ] );
 
-  const navToExplore = useCallback( ( ) => navigation.navigate( "Explore" ), [navigation] );
+  const navToExplore = useCallback(
+    ( ) => navigation.navigate( "Explore", { user: currentUser } ),
+    [navigation, currentUser]
+  );
 
   return (
     <Toolbar
