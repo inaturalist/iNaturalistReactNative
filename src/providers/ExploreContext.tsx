@@ -4,6 +4,10 @@ export enum EXPLORE_ACTION {
   SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
   SET_REVIEWED = "SET_REVIEWED",
   SET_WILD_STATUS = "SET_WILD_STATUS",
+  TOGGLE_INTRODUCED = "TOGGLE_INTRODUCED",
+  TOGGLE_NATIVE = "TOGGLE_NATIVE",
+  TOGGLE_ENDEMIC = "TOGGLE_ENDEMIC",
+  TOGGLE_NO_STATUS = "TOGGLE_NO_STATUS",
   SET_MEDIA = "SET_MEDIA",
   SET_DATE_UPLOADED_ALL = "SET_DATE_UPLOADED_ALL",
   SET_DATE_UPLOADED_EXACT = "SET_DATE_UPLOADED_EXACT",
@@ -66,6 +70,10 @@ type Action =
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, created_on: string}
   | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
+  | {type: EXPLORE_ACTION.TOGGLE_INTRODUCED}
+  | {type: EXPLORE_ACTION.TOGGLE_NATIVE}
+  | {type: EXPLORE_ACTION.TOGGLE_ENDEMIC}
+  | {type: EXPLORE_ACTION.TOGGLE_NO_STATUS}
   | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE | string}
@@ -85,6 +93,11 @@ type State = {
     // TODO: created_on type should be more stringent than string it is what is expected by the API 
     created_on: string | null | undefined,
     media: MEDIA,
+    // TODO: those values are not optional but idk how to set them
+    introduced?: boolean,
+    native?: boolean,
+    endemic?: boolean,
+    noStatus?: boolean
     wildStatus: WILD_STATUS,
     reviewedFilter: REVIEWED,
     photoLicense: PHOTO_LICENSE | string
@@ -105,6 +118,10 @@ const calculatedFilters = {
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,
+  // introduced: true
+  // native: true,
+  // endemic: true,
+  // noStatus: true
   wildStatus: WILD_STATUS.ALL,
   reviewedFilter: REVIEWED.ALL,
   photoLicense: PHOTO_LICENSE.ALL
@@ -220,6 +237,38 @@ function exploreReducer( state: State, action: Action ) {
         exploreParams: {
           ...state.exploreParams,
           media: action.media
+        }
+      };
+    case EXPLORE_ACTION.TOGGLE_INTRODUCED:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          introduced: !state.exploreParams.introduced
+        }
+      };
+    case EXPLORE_ACTION.TOGGLE_NATIVE:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          native: !state.exploreParams.native
+        }
+      };
+    case EXPLORE_ACTION.TOGGLE_ENDEMIC:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          endemic: !state.exploreParams.endemic
+        }
+      };
+    case EXPLORE_ACTION.TOGGLE_NO_STATUS:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          noStatus: !state.exploreParams.noStatus
         }
       };
     case EXPLORE_ACTION.SET_WILD_STATUS:

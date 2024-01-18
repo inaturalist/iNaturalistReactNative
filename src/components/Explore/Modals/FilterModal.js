@@ -44,11 +44,7 @@ type Props = {
   resetFilters: Function,
   updateTaxon: Function,
   updateSortBy: Function,
-  numberOfFilters: number,
-  updateIntroduced: Function,
-  updateNative: Function,
-  updateEndemic: Function,
-  updateNoStatus: Function,
+  numberOfFilters: number
 };
 
 const FilterModal = ( {
@@ -58,11 +54,7 @@ const FilterModal = ( {
   resetFilters,
   updateTaxon,
   updateSortBy,
-  numberOfFilters,
-  updateIntroduced,
-  updateNative,
-  updateEndemic,
-  updateNoStatus
+  numberOfFilters
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -71,12 +63,8 @@ const FilterModal = ( {
     region,
     sortBy,
     user,
-    project,
+    project
 
-    introduced,
-    native,
-    endemic,
-    noStatus
   } = exploreFilters;
 
   const { state, dispatch } = useExplore();
@@ -94,6 +82,10 @@ const FilterModal = ( {
     // eslint-disable-next-line camelcase
     created_on,
     media,
+    introduced,
+    native,
+    endemic,
+    noStatus,
     wildStatus,
     reviewedFilter,
     photoLicense
@@ -857,25 +849,33 @@ const FilterModal = ( {
           <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
           <Checkbox
             isChecked={introduced}
-            onPress={updateIntroduced}
+            onPress={() => dispatch( {
+              type: EXPLORE_ACTION.TOGGLE_INTRODUCED
+            } )}
             text={t( "Introduced" )}
           />
           <View className="mb-4" />
           <Checkbox
             isChecked={native}
-            onPress={updateNative}
+            onPress={() => dispatch( {
+              type: EXPLORE_ACTION.TOGGLE_NATIVE
+            } )}
             text={t( "Native" )}
           />
           <View className="mb-4" />
           <Checkbox
             isChecked={endemic}
-            onPress={updateEndemic}
+            onPress={() => dispatch( {
+              type: EXPLORE_ACTION.TOGGLE_ENDEMIC
+            } )}
             text={t( "Endemic" )}
           />
           <View className="mb-4" />
           <Checkbox
             isChecked={noStatus}
-            onPress={updateNoStatus}
+            onPress={() => dispatch( {
+              type: EXPLORE_ACTION.TOGGLE_NO_STATUS
+            } )}
             text={t( "No-Status" )}
           />
         </View>

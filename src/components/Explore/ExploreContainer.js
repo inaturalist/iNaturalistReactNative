@@ -36,11 +36,6 @@ const ALL = "all";
 const calculatedFilters = {
   user: undefined,
   project: undefined
-
-  // introduced: true
-  // native: true,
-  // endemic: true,
-  // noStatus: true
 };
 
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
@@ -74,10 +69,6 @@ const initialState: {
     sortBy: string,
     user: ?Object,
     user_id: ?number,
-    // introduced: boolean,
-    // native: boolean,
-    // endemic: boolean,
-    // noStatus: boolean
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -218,38 +209,6 @@ const reducer = ( state, action ) => {
         ...state,
         showFiltersModal: false
       };
-    case "TOGGLE_NATIVE":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          native: !state.exploreParams.native
-        }
-      };
-    case "TOGGLE_ENDEMIC":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          endemic: !state.exploreParams.endemic
-        }
-      };
-    case "TOGGLE_INTRODUCED":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          introduced: !state.exploreParams.introduced
-        }
-      };
-    case "TOGGLE_NO_STATUS":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          noStatus: !state.exploreParams.noStatus
-        }
-      };
     default:
       throw new Error();
   }
@@ -388,30 +347,6 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateNative = () => {
-    dispatch( {
-      type: "TOGGLE_NATIVE"
-    } );
-  };
-
-  const updateEndemic = () => {
-    dispatch( {
-      type: "TOGGLE_ENDEMIC"
-    } );
-  };
-
-  const updateIntroduced = () => {
-    dispatch( {
-      type: "TOGGLE_INTRODUCED"
-    } );
-  };
-
-  const updateNoStatus = () => {
-    dispatch( {
-      type: "TOGGLE_NO_STATUS"
-    } );
-  };
-
   const combinedParams = {
     ...exploreParams,
     ...explore.state.exploreParams
@@ -474,10 +409,10 @@ const ExploreContainer = ( ): Node => {
   // not include the query param or send to the API native=false?
   // TODO: how does no Status work alongside the other values?
 
-  // filteredParams.native = exploreParams.native;
-  // filteredParams.endemic = exploreParams.endemic;
-  // filteredParams.introduced = exploreParams.introduced;
-  // filteredParams.noStatus = exploreParams.noStatus;
+  // filteredParams.native = explore.state.exploreParams.native;
+  // filteredParams.endemic = explore.state.exploreParams.endemic;
+  // filteredParams.introduced = explore.state.exploreParams.introduced;
+  // filteredParams.noStatus = explore.state.exploreParams.noStatus;
 
   if ( explore.state.exploreParams.wildStatus === WILD_STATUS.WILD ) {
     filteredParams.captive = false;
@@ -525,10 +460,6 @@ const ExploreContainer = ( ): Node => {
       openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
       closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
       numberOfFilters={numberOfFilters}
-      updateNative={updateNative}
-      updateEndemic={updateEndemic}
-      updateIntroduced={updateIntroduced}
-      updateNoStatus={updateNoStatus}
     />
   );
 };

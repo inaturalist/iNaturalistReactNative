@@ -13,10 +13,6 @@ type Props = {
   updateTaxon: Function,
   numberOfFilters: number,
   updateSortBy: Function,
-  updateNative: Function,
-  updateEndemic: Function,
-  updateIntroduced: Function,
-  updateNoStatus: Function,
 };
 
 const ExploreFilters = ( {
@@ -28,11 +24,7 @@ const ExploreFilters = ( {
   closeModal,
   updateTaxon,
   updateSortBy,
-  numberOfFilters,
-  updateNative,
-  updateEndemic,
-  updateIntroduced,
-  updateNoStatus
+  numberOfFilters
 }: Props ): Node => (
   showModal && (
     <FilterModal
@@ -46,10 +38,6 @@ const ExploreFilters = ( {
       updateTaxon={updateTaxon}
       updateSortBy={updateSortBy}
       numberOfFilters={numberOfFilters}
-      updateNative={updateNative}
-      updateEndemic={updateEndemic}
-      updateIntroduced={updateIntroduced}
-      updateNoStatus={updateNoStatus}
     />
   )
 );
