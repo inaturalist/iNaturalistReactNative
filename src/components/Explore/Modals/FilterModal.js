@@ -25,6 +25,7 @@ import {
   DATE_UPLOADED,
   EXPLORE_ACTION,
   MEDIA,
+  SORT_BY,
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
@@ -85,7 +86,7 @@ const FilterModal = ( {
   } = state.exploreParams;
 
   const NONE = "NONE";
-  const SORT_BY = "SORT_BY";
+  const SORT_BY_M = "SORT_BY_M";
   const LRANK = "LRANK";
   const HRANK = "HRANK";
   const DATE_OBSERVED_M = "DATE_OBSERVED_M";
@@ -559,10 +560,10 @@ const FilterModal = ( {
               className="shrink"
               dropdown
               onPress={() => {
-                setOpenSheet( SORT_BY );
+                setOpenSheet( SORT_BY_M );
               }}
             />
-            {openSheet === SORT_BY && (
+            {openSheet === SORT_BY_M && (
               <SortBySheet
                 selectedValue={sortBy}
                 handleClose={() => setOpenSheet( NONE )}
