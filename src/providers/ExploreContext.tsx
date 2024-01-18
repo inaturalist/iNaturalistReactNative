@@ -9,7 +9,8 @@ export enum EXPLORE_ACTION {
   SET_DATE_UPLOADED_EXACT = "SET_DATE_UPLOADED_EXACT",
   SET_DATE_OBSERVED_ALL = "SET_DATE_OBSERVED_ALL",
   SET_DATE_OBSERVED_EXACT = "SET_DATE_OBSERVED_EXACT",
-  SET_DATE_OBSERVED_MONTHS = "SET_DATE_OBSERVED_MONTHS"
+  SET_DATE_OBSERVED_MONTHS = "SET_DATE_OBSERVED_MONTHS",
+  SET_LOWEST_TAXONOMIC_RANK = "SET_LOWEST_TAXONOMIC_RANK"
 }
 
 const DEFAULT = "all";
@@ -49,7 +50,8 @@ enum PHOTO_LICENSE {
 }
 
 // TODO: photoLicense should be only an enum
-type Action = {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
+type Action = {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: string}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observed_on: string}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
@@ -61,6 +63,7 @@ type Action = {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
 type Dispatch = (action: Action) => void
 type State = {
   exploreParams: {
+    lrank: string | undefined,
     dateObserved: DATE_OBSERVED,
     // TODO: observed_on type should be more stringent than string it is what is expected by the API 
     observed_on: string | null | undefined,
@@ -81,6 +84,7 @@ const ExploreContext = React.createContext<
 >(undefined)
 
 const calculatedFilters = {
+  lrank: undefined,
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,
@@ -105,7 +109,15 @@ const initialState = {
 
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
-        case EXPLORE_ACTION.SET_DATE_OBSERVED_ALL:
+    case EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          lrank: action.lrank
+        }
+      };
+    case EXPLORE_ACTION.SET_DATE_OBSERVED_ALL:
       return {
         ...state,
         exploreParams: {

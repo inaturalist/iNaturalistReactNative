@@ -17,7 +17,6 @@ type Props = {
   updateNeedsID: Function,
   updateCasual: Function,
   updateHighestTaxonomicRank: Function,
-  updateLowestTaxonomicRank: Function,
   updateNative: Function,
   updateEndemic: Function,
   updateIntroduced: Function,
@@ -38,7 +37,6 @@ const ExploreFilters = ( {
   updateNeedsID,
   updateCasual,
   updateHighestTaxonomicRank,
-  updateLowestTaxonomicRank,
   updateNative,
   updateEndemic,
   updateIntroduced,
@@ -60,7 +58,6 @@ const ExploreFilters = ( {
       updateNeedsID={updateNeedsID}
       updateCasual={updateCasual}
       updateHighestTaxonomicRank={updateHighestTaxonomicRank}
-      updateLowestTaxonomicRank={updateLowestTaxonomicRank}
       updateNative={updateNative}
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}

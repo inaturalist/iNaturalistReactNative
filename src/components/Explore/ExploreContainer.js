@@ -39,8 +39,7 @@ const calculatedFilters = {
   researchGrade: true,
   needsID: true,
   casual: false,
-  hrank: undefined,
-  lrank: undefined
+  hrank: undefined
   // introduced: true
   // native: true,
   // endemic: true,
@@ -82,7 +81,6 @@ const initialState: {
     needsID: boolean,
     casual: boolean,
     hrank: ?string,
-    lrank: ?string,
     // introduced: boolean,
     // native: boolean,
     // endemic: boolean,
@@ -257,14 +255,6 @@ const reducer = ( state, action ) => {
         exploreParams: {
           ...state.exploreParams,
           hrank: action.hrank
-        }
-      };
-    case "SET_LOWEST_TAXONOMIC_RANK":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          lrank: action.lrank
         }
       };
     case "TOGGLE_NATIVE":
@@ -444,13 +434,6 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateLowestTaxonomicRank = newRank => {
-    dispatch( {
-      type: "SET_LOWEST_TAXONOMIC_RANK",
-      lrank: newRank
-    } );
-  };
-
   const updateNative = () => {
     dispatch( {
       type: "TOGGLE_NATIVE"
@@ -590,7 +573,6 @@ const ExploreContainer = ( ): Node => {
       updateNeedsID={() => dispatch( { type: "TOGGLE_NEEDS_ID" } )}
       updateCasual={() => dispatch( { type: "TOGGLE_CASUAL" } )}
       updateHighestTaxonomicRank={updateHighestTaxonomicRank}
-      updateLowestTaxonomicRank={updateLowestTaxonomicRank}
       updateNative={updateNative}
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}

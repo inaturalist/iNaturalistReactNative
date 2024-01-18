@@ -48,7 +48,6 @@ type Props = {
   updateResearchGrade: Function,
   updateNeedsID: Function,
   updateCasual: Function,
-  updateLowestTaxonomicRank: Function,
   updateHighestTaxonomicRank: Function,
   updateIntroduced: Function,
   updateNative: Function,
@@ -67,7 +66,6 @@ const FilterModal = ( {
   updateResearchGrade,
   updateNeedsID,
   updateCasual,
-  updateLowestTaxonomicRank,
   updateHighestTaxonomicRank,
   updateIntroduced,
   updateNative,
@@ -701,7 +699,10 @@ const FilterModal = ( {
             <RadioButtonSheet
               headerText={t( "TAXONOMIC-RANKS" )}
               confirm={newRank => {
-                updateLowestTaxonomicRank( newRank );
+                dispatch( {
+                  type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
+                  lrank: newRank
+                } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
