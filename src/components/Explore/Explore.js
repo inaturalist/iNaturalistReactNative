@@ -33,13 +33,9 @@ type Props = {
   updatePlace: Function,
   updatePlaceName: Function,
   updateTaxonName: Function,
-  filtersNotDefault: boolean,
-  resetFilters: Function,
-  updateSortBy: Function,
   showFiltersModal: boolean,
   openFiltersModal: Function,
   closeFiltersModal: Function,
-  numberOfFilters: number,
 }
 
 const Explore = ( {
@@ -52,13 +48,9 @@ const Explore = ( {
   updatePlace,
   updatePlaceName,
   updateTaxonName,
-  filtersNotDefault,
-  resetFilters,
-  updateSortBy,
   showFiltersModal,
   openFiltersModal,
-  closeFiltersModal,
-  numberOfFilters
+  closeFiltersModal
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -208,13 +200,9 @@ const Explore = ( {
       <ExploreFilters
         exploreParams={exploreParams}
         region={region}
-        filtersNotDefault={filtersNotDefault}
-        resetFilters={resetFilters}
         showModal={showFiltersModal}
         closeModal={closeFiltersModal}
         updateTaxon={updateTaxon}
-        updateSortBy={updateSortBy}
-        numberOfFilters={numberOfFilters}
       />
     </>
   );

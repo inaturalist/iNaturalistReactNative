@@ -18,10 +18,22 @@ export enum EXPLORE_ACTION {
   SET_HIGHEST_TAXONOMIC_RANK = "SET_HIGHEST_TAXONOMIC_RANK",
   TOGGLE_CASUAL = "TOGGLE_CASUAL",
   TOGGLE_NEEDS_ID = "TOGGLE_NEEDS_ID",
-  TOGGLE_RESEARCH_GRADE = "TOGGLE_RESEARCH_GRADE"
+  TOGGLE_RESEARCH_GRADE = "TOGGLE_RESEARCH_GRADE",
+  CHANGE_SORT_BY = "CHANGE_SORT_BY",
+  SET_PROJECT = "SET_PROJECT",
+  SET_USER = "SET_USER",
+  RESET = "RESET"
 }
 
 const DEFAULT = "all";
+
+export enum SORT_BY {
+  DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST",
+  DATE_UPLOADED_OLDEST = "DATE_UPLOADED_OLDEST",
+  DATE_OBSERVED_NEWEST = "DATE_OBSERVED_NEWEST",
+  DATE_OBSERVED_OLDEST = "DATE_OBSERVED_OLDEST",
+  MOST_FAVED = "MOST_FAVED",
+}
 
 export enum DATE_OBSERVED {
   ALL = DEFAULT,
@@ -58,8 +70,11 @@ enum PHOTO_LICENSE {
 }
 
 // TODO: photoLicense should be only an enum
-type Action =
-  {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
+type Action = {type: EXPLORE_ACTION.RESET}
+  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
+  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
+  | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
+  | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
   | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
   | {type: EXPLORE_ACTION.TOGGLE_CASUAL}
   | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK, hrank: string}
@@ -80,6 +95,13 @@ type Action =
 type Dispatch = (action: Action) => void
 type State = {
   exploreParams: {
+    user_id: number | undefined,
+    // TODO: not any Object but a "User" type (from server?)
+    user: Object | undefined,
+    project_id: number | undefined,
+    // TODO: not any Object but a "Project" type (from server?)
+    project: Object | undefined,
+    sortBy: SORT_BY,
     researchGrade: boolean,
     needsID: boolean,
     casual: boolean,
@@ -109,7 +131,10 @@ const ExploreContext = React.createContext<
   {state: State; dispatch: Dispatch} | undefined
 >(undefined)
 
+// Every key in this object represents a numbered filter in the UI
 const calculatedFilters = {
+  user_id: undefined,
+  project_id: undefined,
   researchGrade: true,
   needsID: true,
   casual: false,
@@ -130,6 +155,9 @@ const calculatedFilters = {
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
 const defaultFilters = {
   ...calculatedFilters,
+  user: undefined,
+  project: undefined,
+  sortBy: SORT_BY.DATE_UPLOADED_NEWEST,
   observed_on: undefined,
   months: undefined,
   created_on: undefined,
@@ -143,6 +171,40 @@ const initialState = {
 
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
+    case EXPLORE_ACTION.RESET:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          ...defaultFilters
+        }
+      };
+    case EXPLORE_ACTION.SET_USER:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          user: action.user,
+          user_id: action.userId
+        }
+      };
+    case EXPLORE_ACTION.SET_PROJECT:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          project: action.project,
+          project_id: action.projectId
+        }
+      };
+    case EXPLORE_ACTION.CHANGE_SORT_BY:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          sortBy: action.sortBy
+        }
+      };
     case EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE:
       return {
         ...state,
@@ -303,7 +365,23 @@ function exploreReducer( state: State, action: Action ) {
 
 const ExploreProvider = ( { children }: CountProviderProps ) => {
   const [state, dispatch] = React.useReducer( exploreReducer, initialState );
-  const value = { state, dispatch };
+  const { exploreParams } = state;
+
+  const filtersNotDefault: boolean = Object.keys( defaultFilters ).some(
+    key => defaultFilters[key] !== exploreParams[key]
+  );
+
+  const numberOfFilters: number = Object.keys( calculatedFilters ).reduce(
+    ( count, key ) => {
+      if ( exploreParams[key] !== calculatedFilters[key] ) {
+        return count + 1;
+      }
+      return count;
+    },
+    0
+  );
+
+  const value = { state, dispatch, filtersNotDefault, numberOfFilters };
   return (
     <ExploreContext.Provider value={value}>{children}</ExploreContext.Provider>
   );

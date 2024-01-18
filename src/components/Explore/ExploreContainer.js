@@ -3,9 +3,11 @@
 import { useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import {
+  EXPLORE_ACTION,
   ExploreProvider,
   MEDIA,
   REVIEWED,
+  SORT_BY,
   useExplore,
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
@@ -29,22 +31,7 @@ const OBSERVED_ON = "observed_on";
 const DESC = "desc";
 const ASC = "asc";
 
-const DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST";
-
 const ALL = "all";
-
-const calculatedFilters = {
-  user: undefined,
-  project: undefined
-};
-
-// Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
-const defaultFilters = {
-  ...calculatedFilters,
-  sortBy: DATE_UPLOADED_NEWEST,
-  user_id: undefined,
-  project_id: undefined
-};
 
 const initialState: {
   region: {
@@ -64,11 +51,9 @@ const initialState: {
     lat?: number,
     lng?: number,
     radius?: number,
-    project: ?Object,
-    project_id: ?number,
-    sortBy: string,
-    user: ?Object,
-    user_id: ?number,
+    // TODO: this value will also be set in the ExploreContext and therefore
+    // will override this here, how to refactor so that the two do not collide?
+    project_id?: number,
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -90,7 +75,7 @@ const initialState: {
     lat: undefined,
     lng: undefined,
     radius: undefined,
-    ...defaultFilters
+    project_id: undefined
   },
   exploreView: "observations",
   showFiltersModal: false
@@ -141,14 +126,6 @@ const reducer = ( state, action ) => {
           place_guess: action.place_guess
         }
       };
-    case "CHANGE_SORT_BY":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          sortBy: action.sortBy
-        }
-      };
     case "SET_PLACE_NAME":
       return {
         ...state,
@@ -163,32 +140,6 @@ const reducer = ( state, action ) => {
         exploreParams: {
           ...state.exploreParams,
           taxon_name: action.taxonName
-        }
-      };
-    case "SET_USER":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          user: action.user,
-          user_id: action.userId
-        }
-      };
-    case "SET_PROJECT":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          project: action.project,
-          project_id: action.projectId
-        }
-      };
-    case "RESET_EXPLORE_FILTERS":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          ...defaultFilters
         }
       };
     case "SET_EXPLORE_FILTERS":
@@ -251,18 +202,18 @@ const ExploreContainer = ( ): Node => {
         place_guess: params.place?.display_name
       } );
     }
-    if ( params?.user ) {
-      dispatch( {
-        type: "SET_USER",
+    if ( params?.user && params?.user.id ) {
+      explore.dispatch( {
+        type: EXPLORE_ACTION.SET_USER,
         user: params.user,
         userId: params.user.id
       } );
     }
-    if ( params?.project ) {
-      dispatch( {
-        type: "SET_PROJECT",
-        project: params?.project,
-        projectId: params?.project.id
+    if ( params?.project && params?.project.id ) {
+      explore.dispatch( {
+        type: EXPLORE_ACTION.SET_PROJECT,
+        project: params.project,
+        projectId: params.project.id
       } );
     }
     if ( params?.projectId ) {
@@ -277,21 +228,8 @@ const ExploreContainer = ( ): Node => {
         }
       } );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params] );
-
-  const filtersNotDefault = () => Object.keys( defaultFilters ).some(
-    key => defaultFilters[key] !== exploreParams[key]
-  );
-
-  const numberOfFilters = Object.keys( calculatedFilters ).reduce(
-    ( count, key ) => {
-      if ( exploreParams[key] && exploreParams[key] !== calculatedFilters[key] ) {
-        return count + 1;
-      }
-      return count;
-    },
-    0
-  );
 
   const changeExploreView = newView => {
     dispatch( {
@@ -326,13 +264,6 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateSortBy = sortBy => {
-    dispatch( {
-      type: "CHANGE_SORT_BY",
-      sortBy
-    } );
-  };
-
   const updatePlaceName = newPlaceName => {
     dispatch( {
       type: "SET_PLACE_NAME",
@@ -361,22 +292,26 @@ const ExploreContainer = ( ): Node => {
     },
     {}
   );
+
+  delete filteredParams.user;
+  delete filteredParams.project;
+
   // DATE_UPLOADED_NEWEST is the default sort order
   filteredParams.order_by = CREATED_AT;
   filteredParams.order = DESC;
-  if ( exploreParams.sortBy === "DATE_UPLOADED_OLDEST" ) {
+  if ( explore.state.exploreParams.sortBy === SORT_BY.DATE_UPLOADED_OLDEST ) {
     filteredParams.order_by = CREATED_AT;
     filteredParams.order = ASC;
   }
-  if ( exploreParams.sortBy === "DATE_OBSERVED_NEWEST" ) {
+  if ( explore.state.exploreParams.sortBy === SORT_BY.DATE_OBSERVED_NEWEST ) {
     filteredParams.order_by = OBSERVED_ON;
     filteredParams.order = DESC;
   }
-  if ( exploreParams.sortBy === "DATE_OBSERVED_OLDEST" ) {
+  if ( explore.state.exploreParams.sortBy === SORT_BY.DATE_OBSERVED_OLDEST ) {
     filteredParams.order_by = OBSERVED_ON;
     filteredParams.order = ASC;
   }
-  if ( exploreParams.sortBy === "MOST_FAVED" ) {
+  if ( explore.state.exploreParams.sortBy === SORT_BY.MOST_FAVED ) {
     filteredParams.order_by = "votes";
     filteredParams.order = DESC;
   }
@@ -452,14 +387,10 @@ const ExploreContainer = ( ): Node => {
       updatePlace={updatePlace}
       updatePlaceName={updatePlaceName}
       updateTaxonName={updateTaxonName}
-      filtersNotDefault={filtersNotDefault()}
-      resetFilters={() => dispatch( { type: "RESET_EXPLORE_FILTERS" } )}
-      updateSortBy={updateSortBy}
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
       openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
       closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
-      numberOfFilters={numberOfFilters}
     />
   );
 };

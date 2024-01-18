@@ -40,35 +40,29 @@ const NumberBadge = ( { number } ): Node => (
 type Props = {
   closeModal: Function,
   exploreFilters: Object,
-  filtersNotDefault: boolean,
-  resetFilters: Function,
   updateTaxon: Function,
-  updateSortBy: Function,
-  numberOfFilters: number
 };
 
 const FilterModal = ( {
   closeModal,
   exploreFilters,
-  filtersNotDefault,
-  resetFilters,
-  updateTaxon,
-  updateSortBy,
-  numberOfFilters
+  updateTaxon
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const {
     taxon,
     region,
-    sortBy,
-    user,
-    project
+    user
 
   } = exploreFilters;
 
-  const { state, dispatch } = useExplore();
   const {
+    state, dispatch, filtersNotDefault, numberOfFilters
+  } = useExplore();
+  const {
+    project,
+    sortBy,
     researchGrade,
     needsID,
     casual,
@@ -104,15 +98,15 @@ const FilterModal = ( {
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
-      case "DATE_UPLOADED_OLDEST":
+      case SORT_BY.DATE_UPLOADED_OLDEST:
         return t( "DATE-UPLOADED-OLDEST" );
-      case "DATE_OBSERVED_NEWEST":
+      case SORT_BY.DATE_OBSERVED_NEWEST:
         return t( "DATE-OBSERVED-NEWEST" );
-      case "DATE_OBSERVED_OLDEST":
+      case SORT_BY.DATE_OBSERVED_OLDEST:
         return t( "DATE-OBSERVED-OLDEST" );
-      // case "MOST_FAVED":
-      //   return t( "MOST-FAVED" );
-      case "DATE_UPLOADED_NEWEST":
+      case SORT_BY.MOST_FAVED:
+        return t( "MOST-FAVED" );
+      case SORT_BY.DATE_UPLOADED_NEWEST:
       default:
         return t( "DATE-UPLOADED-NEWEST" );
     }
@@ -484,7 +478,9 @@ const FilterModal = ( {
         </View>
         {filtersNotDefault
           ? (
-            <Body3 onPress={resetFilters}>{t( "Reset" )}</Body3>
+            <Body3 onPress={() => dispatch( { type: EXPLORE_ACTION.RESET } )}>
+              {t( "Reset" )}
+            </Body3>
           )
           : (
             <Body3 className="opacity-50">{t( "Reset" )}</Body3>
@@ -571,7 +567,10 @@ const FilterModal = ( {
               <SortBySheet
                 selectedValue={sortBy}
                 handleClose={() => setOpenSheet( NONE )}
-                update={updateSortBy}
+                update={newSortBy => dispatch( {
+                  type: EXPLORE_ACTION.CHANGE_SORT_BY,
+                  sortBy: newSortBy
+                } )}
               />
             )}
           </View>
