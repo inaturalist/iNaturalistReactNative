@@ -369,6 +369,12 @@ FILTER-BY-A-PROJECT = FILTER BY A PROJECT
 
 FILTER-BY-A-USER = FILTER BY A USER
 
+Filter-by-observed-during-months = Filter by observations observed during specific months
+
+Filter-by-observed-on-date = Filter by observations observed on a specific date
+
+Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
+
 Finish = Finish
 
 Fish = Fish
