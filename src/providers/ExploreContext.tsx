@@ -22,7 +22,8 @@ export enum EXPLORE_ACTION {
   CHANGE_SORT_BY = "CHANGE_SORT_BY",
   SET_PROJECT = "SET_PROJECT",
   SET_USER = "SET_USER",
-  RESET = "RESET"
+  RESET = "RESET",
+  DISCARD = "DISCARD"
 }
 
 const DEFAULT = "all";
@@ -71,6 +72,7 @@ enum PHOTO_LICENSE {
 
 // TODO: photoLicense should be only an enum
 type Action = {type: EXPLORE_ACTION.RESET}
+  | {type: EXPLORE_ACTION.DISCARD, snapshot: Object}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
@@ -180,6 +182,11 @@ function exploreReducer( state: State, action: Action ) {
           ...defaultFilters
         }
       };
+    case EXPLORE_ACTION.DISCARD:
+      return {
+        ...state,
+        exploreParams: action.snapshot
+      };      
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,
@@ -371,6 +378,7 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
   // To store a snapshot of the state, e.g when the user opens the filters modal
   const [snapshot, setSnapshot] = React.useState<Object | undefined>( undefined );
   const makeSnapshot = () => setSnapshot( exploreParams );
+  
   // Check if the current state is different from the snapshot
   const checkSnapshot = () => {
     if ( !snapshot ) {
@@ -379,6 +387,13 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
     return Object.keys( snapshot ).some( key => snapshot[key] !== exploreParams[key] );
   }
   const differsFromSnapshot: boolean = checkSnapshot();
+
+  const discardChanges = () => {
+    if ( !snapshot ) {
+      return;
+    }
+    dispatch( { type: EXPLORE_ACTION.DISCARD, snapshot } );
+  }
 
   const filtersNotDefault: boolean = Object.keys( defaultFilters ).some(
     key => defaultFilters[key] !== exploreParams[key]
@@ -397,7 +412,7 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
     numberOfFilters -= 1;
   }
 
-  const value = { state, dispatch, filtersNotDefault, numberOfFilters, makeSnapshot, differsFromSnapshot };
+  const value = { state, dispatch, filtersNotDefault, numberOfFilters, makeSnapshot, differsFromSnapshot, discardChanges };
   return (
     <ExploreContext.Provider value={value}>{children}</ExploreContext.Provider>
   );

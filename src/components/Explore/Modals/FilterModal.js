@@ -61,7 +61,8 @@ const FilterModal = ( {
     dispatch,
     filtersNotDefault,
     numberOfFilters,
-    differsFromSnapshot
+    differsFromSnapshot,
+    discardChanges
   } = useExplore();
   const {
     user,
@@ -950,7 +951,10 @@ const FilterModal = ( {
         <View className="flex-1 flex-row items-center">
           <INatIconButton
             icon="chevron-left"
-            onPress={closeModal}
+            onPress={() => {
+              discardChanges();
+              closeModal();
+            }}
             size={22}
             accessibilityLabel={t( "Back" )}
           />

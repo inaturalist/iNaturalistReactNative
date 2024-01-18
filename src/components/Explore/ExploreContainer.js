@@ -174,7 +174,6 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const [state, dispatch] = useReducer( reducer, initialState );
   const explore = useExplore();
-  console.log( "explore :>> ", explore );
 
   const {
     region,
