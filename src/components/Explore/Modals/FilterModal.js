@@ -14,7 +14,8 @@ import {
   INatIcon,
   INatIconButton,
   RadioButtonSheet,
-  StickyToolbar
+  StickyToolbar,
+  WarningSheet
 } from "components/SharedComponents";
 import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import { RadioButtonRow } from "components/SharedComponents/Sheets/RadioButtonSheet";
@@ -99,6 +100,7 @@ const FilterModal = ( {
   const DATE_UPLOADED_M = "DATE_UPLOADED_M";
   const UPLOADED_EXACT = "UPLOADED_EXACT";
   const PHOTO_LICENSING = "PHOTO_LICENSING";
+  const CONFIRMATION = "CONFIRMATION";
   const [openSheet, setOpenSheet] = useState( NONE );
 
   const sortByButtonText = () => {
@@ -951,10 +953,14 @@ const FilterModal = ( {
         <View className="flex-1 flex-row items-center">
           <INatIconButton
             icon="chevron-left"
-            onPress={() => {
-              discardChanges();
-              closeModal();
-            }}
+            onPress={!differsFromSnapshot
+              ? () => {
+                discardChanges();
+                closeModal();
+              }
+              : () => {
+                setOpenSheet( CONFIRMATION );
+              }}
             size={22}
             accessibilityLabel={t( "Back" )}
           />
@@ -966,6 +972,21 @@ const FilterModal = ( {
             onPress={closeModal}
           />
         </View>
+        {openSheet === CONFIRMATION && (
+          <WarningSheet
+            handleClose={() => setOpenSheet( NONE )}
+            confirm={( ) => {
+              discardChanges();
+              closeModal();
+            }}
+            headerText={t( "DISCARD-FILTER-CHANGES" )}
+            text={t( "You-changed-filters-will-be-discarded" )}
+            buttonText={t( "DISCARD-CHANGES" )}
+            handleSecondButtonPress={( ) => setOpenSheet( NONE )}
+            secondButtonText={t( "CANCEL" )}
+
+          />
+        )}
       </StickyToolbar>
     </View>
   );
