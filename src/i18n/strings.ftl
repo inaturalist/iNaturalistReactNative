@@ -287,6 +287,8 @@ Description-Tags = Description/Tags
 
 DISCARD-ALL = DISCARD ALL
 
+DISCARD-FILTER-CHANGES = DISCARD FILTER CHANGES
+
 DISCARD-CHANGES = DISCARD CHANGES
 
 DISCARD-OBSERVATION = DISCARD OBSERVATION
@@ -1041,6 +1043,8 @@ Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 Record-a-sound = Record a sound
 
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
+
+You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
