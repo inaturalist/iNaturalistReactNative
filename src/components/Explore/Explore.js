@@ -197,13 +197,15 @@ const Explore = ( {
           ) )}
         </BottomSheet>
       )}
-      <ExploreFilters
-        exploreParams={exploreParams}
-        region={region}
-        showModal={showFiltersModal}
-        closeModal={closeFiltersModal}
-        updateTaxon={updateTaxon}
-      />
+      <ViewWrapper>
+        <ExploreFilters
+          exploreParams={exploreParams}
+          region={region}
+          showModal={showFiltersModal}
+          closeModal={closeFiltersModal}
+          updateTaxon={updateTaxon}
+        />
+      </ViewWrapper>
     </>
   );
 };
