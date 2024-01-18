@@ -267,10 +267,12 @@ const FilterModal = ( {
     },
     exactDate: {
       label: t( "Exact-Date" ),
+      text: t( "Filter-by-observed-on-date" ),
       value: DATE_OBSERVED.EXACT_DATE
     },
     months: {
       label: t( "Months" ),
+      text: t( "Filter-by-observed-during-months" ),
       value: DATE_OBSERVED.MONTHS
     }
   };
@@ -282,6 +284,7 @@ const FilterModal = ( {
     },
     exactDate: {
       label: t( "Exact-Date" ),
+      text: t( "Filter-by-uploaded-on-date" ),
       value: DATE_UPLOADED.EXACT_DATE
     }
   };
