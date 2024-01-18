@@ -214,18 +214,11 @@ const ExploreContainerWithContext = ( ): Node => {
         type: EXPLORE_ACTION.SET_PROJECT,
         project: params.project,
         projectId: params.project.id
-      } );
-    }
-    if ( params?.projectId ) {
-      dispatch( {
-        type: "SET_EXPLORE_FILTERS",
-        exploreFilters: {
-          project_id: params?.projectId,
-          place_id: params?.placeId || "any",
-          lat: null,
-          lng: null,
-          radius: null
-        }
+        // TODO: check web, do I need to set place_id as Amanda did before?
+        // place_id: params.project.place_id || "any"
+        // lat: null,
+        // lng: null,
+        // radius: null
       } );
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
