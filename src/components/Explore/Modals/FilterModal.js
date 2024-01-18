@@ -52,15 +52,14 @@ const FilterModal = ( {
   const navigation = useNavigation();
   const {
     taxon,
-    region,
-    user
-
+    region
   } = exploreFilters;
 
   const {
     state, dispatch, filtersNotDefault, numberOfFilters
   } = useExplore();
   const {
+    user,
     project,
     sortBy,
     researchGrade,
