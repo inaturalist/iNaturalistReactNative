@@ -45,10 +45,6 @@ type Props = {
   updateTaxon: Function,
   updateSortBy: Function,
   numberOfFilters: number,
-  updateResearchGrade: Function,
-  updateNeedsID: Function,
-  updateCasual: Function,
-  updateHighestTaxonomicRank: Function,
   updateIntroduced: Function,
   updateNative: Function,
   updateEndemic: Function,
@@ -63,10 +59,6 @@ const FilterModal = ( {
   updateTaxon,
   updateSortBy,
   numberOfFilters,
-  updateResearchGrade,
-  updateNeedsID,
-  updateCasual,
-  updateHighestTaxonomicRank,
   updateIntroduced,
   updateNative,
   updateEndemic,
@@ -80,11 +72,6 @@ const FilterModal = ( {
     sortBy,
     user,
     project,
-    researchGrade,
-    needsID,
-    casual,
-    lrank,
-    hrank,
 
     introduced,
     native,
@@ -94,6 +81,11 @@ const FilterModal = ( {
 
   const { state, dispatch } = useExplore();
   const {
+    researchGrade,
+    needsID,
+    casual,
+    hrank,
+    lrank,
     dateObserved,
     // eslint-disable-next-line camelcase
     observed_on,
@@ -600,19 +592,19 @@ const FilterModal = ( {
             <Checkbox
               text={t( "Research-Grade" )}
               isChecked={researchGrade}
-              onPress={updateResearchGrade}
+              onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE } )}
             />
             <View className="mb-4" />
             <Checkbox
               text={t( "Needs-ID" )}
               isChecked={needsID}
-              onPress={updateNeedsID}
+              onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_NEEDS_ID } )}
             />
             <View className="mb-4" />
             <Checkbox
               text={t( "Casual" )}
               isChecked={casual}
-              onPress={updateCasual}
+              onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_CASUAL } )}
             />
           </View>
         </View>
@@ -726,7 +718,10 @@ const FilterModal = ( {
             <RadioButtonSheet
               headerText={t( "TAXONOMIC-RANKS" )}
               confirm={newRank => {
-                updateHighestTaxonomicRank( newRank );
+                dispatch( {
+                  type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
+                  hrank: newRank
+                } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}

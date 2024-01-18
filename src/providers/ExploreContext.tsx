@@ -10,7 +10,11 @@ export enum EXPLORE_ACTION {
   SET_DATE_OBSERVED_ALL = "SET_DATE_OBSERVED_ALL",
   SET_DATE_OBSERVED_EXACT = "SET_DATE_OBSERVED_EXACT",
   SET_DATE_OBSERVED_MONTHS = "SET_DATE_OBSERVED_MONTHS",
-  SET_LOWEST_TAXONOMIC_RANK = "SET_LOWEST_TAXONOMIC_RANK"
+  SET_LOWEST_TAXONOMIC_RANK = "SET_LOWEST_TAXONOMIC_RANK",
+  SET_HIGHEST_TAXONOMIC_RANK = "SET_HIGHEST_TAXONOMIC_RANK",
+  TOGGLE_CASUAL = "TOGGLE_CASUAL",
+  TOGGLE_NEEDS_ID = "TOGGLE_NEEDS_ID",
+  TOGGLE_RESEARCH_GRADE = "TOGGLE_RESEARCH_GRADE"
 }
 
 const DEFAULT = "all";
@@ -50,7 +54,12 @@ enum PHOTO_LICENSE {
 }
 
 // TODO: photoLicense should be only an enum
-type Action = {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: string}
+type Action =
+  {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
+  | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
+  | {type: EXPLORE_ACTION.TOGGLE_CASUAL}
+  | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK, hrank: string}
+  | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: string}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observed_on: string}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
@@ -63,6 +72,10 @@ type Action = {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: string}
 type Dispatch = (action: Action) => void
 type State = {
   exploreParams: {
+    researchGrade: boolean,
+    needsID: boolean,
+    casual: boolean,
+    hrank: string | undefined,
     lrank: string | undefined,
     dateObserved: DATE_OBSERVED,
     // TODO: observed_on type should be more stringent than string it is what is expected by the API 
@@ -84,6 +97,10 @@ const ExploreContext = React.createContext<
 >(undefined)
 
 const calculatedFilters = {
+  researchGrade: true,
+  needsID: true,
+  casual: false,
+  hrank: undefined,
   lrank: undefined,
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
@@ -109,6 +126,38 @@ const initialState = {
 
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
+    case EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          researchGrade: !state.exploreParams.researchGrade
+        }
+      };
+    case EXPLORE_ACTION.TOGGLE_NEEDS_ID:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          needsID: !state.exploreParams.needsID
+        }
+      };
+    case EXPLORE_ACTION.TOGGLE_CASUAL:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          casual: !state.exploreParams.casual
+        }
+      };
+    case EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          hrank: action.hrank
+        }
+      };
     case EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK:
       return {
         ...state,

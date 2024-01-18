@@ -13,10 +13,6 @@ type Props = {
   updateTaxon: Function,
   numberOfFilters: number,
   updateSortBy: Function,
-  updateResearchGrade: Function,
-  updateNeedsID: Function,
-  updateCasual: Function,
-  updateHighestTaxonomicRank: Function,
   updateNative: Function,
   updateEndemic: Function,
   updateIntroduced: Function,
@@ -33,10 +29,6 @@ const ExploreFilters = ( {
   updateTaxon,
   updateSortBy,
   numberOfFilters,
-  updateResearchGrade,
-  updateNeedsID,
-  updateCasual,
-  updateHighestTaxonomicRank,
   updateNative,
   updateEndemic,
   updateIntroduced,
@@ -54,10 +46,6 @@ const ExploreFilters = ( {
       updateTaxon={updateTaxon}
       updateSortBy={updateSortBy}
       numberOfFilters={numberOfFilters}
-      updateResearchGrade={updateResearchGrade}
-      updateNeedsID={updateNeedsID}
-      updateCasual={updateCasual}
-      updateHighestTaxonomicRank={updateHighestTaxonomicRank}
       updateNative={updateNative}
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}

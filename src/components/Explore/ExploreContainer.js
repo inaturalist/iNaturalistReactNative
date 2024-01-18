@@ -35,11 +35,8 @@ const ALL = "all";
 
 const calculatedFilters = {
   user: undefined,
-  project: undefined,
-  researchGrade: true,
-  needsID: true,
-  casual: false,
-  hrank: undefined
+  project: undefined
+
   // introduced: true
   // native: true,
   // endemic: true,
@@ -77,10 +74,6 @@ const initialState: {
     sortBy: string,
     user: ?Object,
     user_id: ?number,
-    researchGrade: boolean,
-    needsID: boolean,
-    casual: boolean,
-    hrank: ?string,
     // introduced: boolean,
     // native: boolean,
     // endemic: boolean,
@@ -224,38 +217,6 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         showFiltersModal: false
-      };
-    case "TOGGLE_RESEARCH_GRADE":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          researchGrade: !state.exploreParams.researchGrade
-        }
-      };
-    case "TOGGLE_NEEDS_ID":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          needsID: !state.exploreParams.needsID
-        }
-      };
-    case "TOGGLE_CASUAL":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          casual: !state.exploreParams.casual
-        }
-      };
-    case "SET_HIGHEST_TAXONOMIC_RANK":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          hrank: action.hrank
-        }
       };
     case "TOGGLE_NATIVE":
       return {
@@ -427,13 +388,6 @@ const ExploreContainer = ( ): Node => {
     } );
   };
 
-  const updateHighestTaxonomicRank = newRank => {
-    dispatch( {
-      type: "SET_HIGHEST_TAXONOMIC_RANK",
-      hrank: newRank
-    } );
-  };
-
   const updateNative = () => {
     dispatch( {
       type: "TOGGLE_NATIVE"
@@ -472,16 +426,6 @@ const ExploreContainer = ( ): Node => {
     },
     {}
   );
-  filteredParams.quality_grade = [];
-  if ( exploreParams.researchGrade ) {
-    filteredParams.quality_grade.push( RESEARCH );
-  }
-  if ( exploreParams.needsID ) {
-    filteredParams.quality_grade.push( NEEDS_ID );
-  }
-  if ( exploreParams.casual ) {
-    filteredParams.quality_grade.push( CASUAL );
-  }
   // DATE_UPLOADED_NEWEST is the default sort order
   filteredParams.order_by = CREATED_AT;
   filteredParams.order = DESC;
@@ -500,6 +444,18 @@ const ExploreContainer = ( ): Node => {
   if ( exploreParams.sortBy === "MOST_FAVED" ) {
     filteredParams.order_by = "votes";
     filteredParams.order = DESC;
+  }
+
+  filteredParams.quality_grade = [];
+  if ( explore.state.exploreParams.researchGrade ) {
+    filteredParams.quality_grade.push( RESEARCH );
+  }
+  if ( explore.state.exploreParams.needsID ) {
+    filteredParams.quality_grade.push( NEEDS_ID );
+  }
+  if ( explore.state.exploreParams.casual ) {
+    filteredParams.quality_grade.push( CASUAL );
+    delete filteredParams.verifiable;
   }
 
   if ( filteredParams.months ) {
@@ -569,10 +525,6 @@ const ExploreContainer = ( ): Node => {
       openFiltersModal={() => dispatch( { type: "SHOW_FILTERS_MODAL" } )}
       closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
       numberOfFilters={numberOfFilters}
-      updateResearchGrade={() => dispatch( { type: "TOGGLE_RESEARCH_GRADE" } )}
-      updateNeedsID={() => dispatch( { type: "TOGGLE_NEEDS_ID" } )}
-      updateCasual={() => dispatch( { type: "TOGGLE_CASUAL" } )}
-      updateHighestTaxonomicRank={updateHighestTaxonomicRank}
       updateNative={updateNative}
       updateEndemic={updateEndemic}
       updateIntroduced={updateIntroduced}
