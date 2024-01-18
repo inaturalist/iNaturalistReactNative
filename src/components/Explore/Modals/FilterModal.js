@@ -753,7 +753,7 @@ const FilterModal = ( {
           )}
           {dateObserved === dateObservedValues.months.value
             && Object.keys( monthValues ).map( monthKey => (
-              <View className="flex-row items-center mb-5">
+              <View key={monthKey} className="flex-row items-center mb-5">
                 <Checkbox
                   text={monthValues[monthKey].label}
                   isChecked={months.includes( monthValues[monthKey].value )}
