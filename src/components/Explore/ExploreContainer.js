@@ -165,7 +165,7 @@ const reducer = ( state, action ) => {
   }
 };
 
-const ExploreContainer = ( ): Node => {
+const ExploreContainerWithContext = ( ): Node => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
 
@@ -395,10 +395,10 @@ const ExploreContainer = ( ): Node => {
   );
 };
 
-const ExploreContainerConnected = (): Node => (
+const ExploreContainer = (): Node => (
   <ExploreProvider>
-    <ExploreContainer />
+    <ExploreContainerWithContext />
   </ExploreProvider>
 );
 
-export default ExploreContainerConnected;
+export default ExploreContainer;
