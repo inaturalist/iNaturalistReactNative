@@ -25,7 +25,7 @@ import DetailsTab from "./DetailsTab/DetailsTab";
 import FaveButton from "./FaveButton";
 import ObsDetailsHeader from "./ObsDetailsHeader";
 import ObsDetailsOverview from "./ObsDetailsOverview";
-import PhotoDisplayContainer from "./PhotoDisplayContainer";
+import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 
 type Props = {
   activityItems: Array<Object>,
@@ -109,7 +109,7 @@ const ObsDetails = ( {
           // height of the nav header
           className="mt-[-44px]"
         >
-          <PhotoDisplayContainer
+          <ObsMediaDisplayContainer
             observation={observation}
             isOnline={isOnline}
           />

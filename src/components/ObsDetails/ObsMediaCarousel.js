@@ -20,7 +20,7 @@ type Props = {
   }>
 }
 
-const PhotoScroll = ( {
+const ObsMediaCarousel = ( {
   photos
 }: Props ): Node => {
   const { width } = Dimensions.get( "window" );
@@ -37,7 +37,7 @@ const PhotoScroll = ( {
 
     const image = (
       <Image
-        testID="PhotoScroll.photo"
+        testID="ObsMediaCarousel.photo"
         source={{ uri: photoUrl }}
         className="h-72 w-screen"
         resizeMode="contain"
@@ -122,4 +122,4 @@ const PhotoScroll = ( {
   );
 };
 
-export default PhotoScroll;
+export default ObsMediaCarousel;

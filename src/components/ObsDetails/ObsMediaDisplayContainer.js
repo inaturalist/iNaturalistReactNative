@@ -3,14 +3,14 @@ import _ from "lodash";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 
-import PhotoDisplay from "./PhotoDisplay";
+import ObsMediaDisplay from "./ObsMediaDisplay";
 
 type Props = {
   observation: Object,
   isOnline: boolean
 }
 
-const PhotoDisplayContainer = ( {
+const ObsMediaDisplayContainer = ( {
   observation,
   isOnline
 }: Props ): Node => {
@@ -20,7 +20,7 @@ const PhotoDisplayContainer = ( {
         observation?.observationPhotos || observation?.observation_photos || []
       ).map(
         // TODO replace this hack. Without this you get errors about the
-        // photo objects being invalidated down in PhotoScroll, but the
+        // photo objects being invalidated down in ObsMediaCarousel, but the
         // questions remains, why are these objects getting invalidated in
         // the first place? We are not deleting them, so what's happening
         // to them and why?
@@ -35,11 +35,11 @@ const PhotoDisplayContainer = ( {
   );
 
   return (
-    <PhotoDisplay
+    <ObsMediaDisplay
       photos={photos}
       isOnline={isOnline}
     />
   );
 };
 
-export default PhotoDisplayContainer;
+export default ObsMediaDisplayContainer;

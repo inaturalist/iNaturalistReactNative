@@ -1,8 +1,7 @@
 // @flow
 import {
   INatIcon,
-  PhotoCount,
-  PhotoScroll
+  PhotoCount
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -13,12 +12,14 @@ import {
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import ObsMediaCarousel from "./ObsMediaCarousel";
+
 type Props = {
   isOnline: boolean,
   photos: Array<Object>
 }
 
-const PhotoDisplay = ( {
+const ObsMediaDisplay = ( {
   isOnline,
   photos
 }: Props ): Node => {
@@ -30,7 +31,7 @@ const PhotoDisplay = ( {
         {
           isOnline
             ? (
-              <PhotoScroll
+              <ObsMediaCarousel
                 photos={photos}
               />
             )
@@ -73,4 +74,4 @@ const PhotoDisplay = ( {
   );
 };
 
-export default PhotoDisplay;
+export default ObsMediaDisplay;
