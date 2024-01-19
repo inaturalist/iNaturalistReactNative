@@ -118,10 +118,10 @@ type State = {
     created_on: string | null | undefined,
     media: MEDIA,
     // TODO: those values are not optional but idk how to set them
-    introduced?: boolean,
-    native?: boolean,
-    endemic?: boolean,
-    noStatus?: boolean
+    introduced: boolean,
+    native: boolean,
+    endemic: boolean,
+    noStatus: boolean
     wildStatus: WILD_STATUS,
     reviewedFilter: REVIEWED,
     photoLicense: PHOTO_LICENSE | string
@@ -145,10 +145,10 @@ const calculatedFilters = {
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,
-  // introduced: true
-  // native: true,
-  // endemic: true,
-  // noStatus: true
+  introduced: false,
+  native: false,
+  endemic: false,
+  noStatus: false,
   wildStatus: WILD_STATUS.ALL,
   // TODO: in the Figma designs this does not count towards the number of filters, error?
   reviewedFilter: REVIEWED.ALL,

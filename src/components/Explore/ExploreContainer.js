@@ -351,17 +351,6 @@ const ExploreContainerWithContext = ( ): Node => {
   filteredParams.sounds = explore.state.exploreParams.media === MEDIA.SOUNDS
     || explore.state.exploreParams.media === MEDIA.ALL;
 
-  // TODO: How to handle those values (native, endemic, introduced, noStatus)
-  // TODO: true = filter should be used, e.g. the query should be native=true
-  // TODO: ask Abhas what should happen when = false:
-  // not include the query param or send to the API native=false?
-  // TODO: how does no Status work alongside the other values?
-
-  // filteredParams.native = explore.state.exploreParams.native;
-  // filteredParams.endemic = explore.state.exploreParams.endemic;
-  // filteredParams.introduced = explore.state.exploreParams.introduced;
-  // filteredParams.noStatus = explore.state.exploreParams.noStatus;
-
   if ( explore.state.exploreParams.wildStatus === WILD_STATUS.WILD ) {
     filteredParams.captive = false;
   } else if ( explore.state.exploreParams.wildStatus === WILD_STATUS.CAPTIVE ) {
