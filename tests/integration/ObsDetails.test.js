@@ -10,6 +10,7 @@ import realmConfig from "realmModels/index";
 import Observation from "realmModels/Observation";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithComponent } from "tests/helpers/render";
+import { signIn, signOut } from "tests/helpers/user";
 
 // This is a bit crazy, but this ensures this test uses its own in-memory
 // database and doesn't interfere with the single, default in-memory database
@@ -69,6 +70,7 @@ const mockUpdate = factory( "RemoteUpdate", {
   comment_id: mockComment.id,
   viewed: false
 } );
+const mockUser = factory( "LocalUser" );
 
 // Mock api call to fetch observation so it looks like a remote copy exists
 inatjs.observations.fetch.mockResolvedValue( makeResponse( [mockObservation] ) );
@@ -99,11 +101,13 @@ describe( "ObsDetails", () => {
   beforeAll( async () => {
     await initI18next();
     jest.useFakeTimers( );
+    signIn( mockUser, { realm: global.mockRealms[__filename] } );
     Observation.upsertRemoteObservations( [mockObservation], global.mockRealms[__filename] );
   } );
 
   afterEach( () => {
     jest.clearAllMocks();
+    signOut( { realm: global.mockRealms[__filename] } );
   } );
 
   describe( "with an observation where we don't know if the user has viewed comments", ( ) => {

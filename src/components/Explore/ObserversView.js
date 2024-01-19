@@ -34,7 +34,7 @@ const ObserversView = ( {
     {
       ...queryParams,
       fields: {
-        user: User.USER_FIELDS
+        user: User.FIELDS
       }
     }
   );

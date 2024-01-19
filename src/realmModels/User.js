@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react";
 
 class User extends Realm.Object {
-  static USER_FIELDS = {
+  static FIELDS = {
     icon_url: true,
     id: true,
     login: true,
@@ -30,7 +30,8 @@ class User extends Realm.Object {
       signedIn: "bool?",
       locale: "string?",
       observations_count: "int?",
-      prefers_scientific_name_first: "bool?"
+      prefers_scientific_name_first: "bool?",
+      prefers_community_taxa: "bool?"
     }
   };
 }

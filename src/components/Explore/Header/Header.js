@@ -102,7 +102,8 @@ const Header = ( {
                     updateTaxonName( taxonText );
                   }
                 }}
-                value={taxonName || t( "All-organisms" )}
+                value={taxonName}
+                placeholder={t( "All-organisms" )}
                 testID="Explore.taxonSearch"
                 containerClass="w-[250px]"
                 input={taxonInput}
@@ -138,7 +139,8 @@ const Header = ( {
                     updatePlaceName( placeText );
                   }
                 }}
-                value={placeName || t( "Worldwide" )}
+                value={placeName}
+                placeholder={t( "Worldwide" )}
                 testID="Explore.placeSearch"
                 containerClass="w-[250px]"
                 input={placeInput}

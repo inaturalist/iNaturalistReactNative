@@ -39,13 +39,21 @@ class Observation extends Realm.Object {
     sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
-    user: User && User.USER_FIELDS,
+    user: User && {
+      ...User.FIELDS,
+      preferences: {
+        prefers_community_taxa: true
+      }
+    },
     updated_at: true,
     viewer_trusted_by_observer: true,
     private_geojson: true,
     private_location: true,
     private_place_guess: true,
-    positional_accuracy: true
+    positional_accuracy: true,
+    preferences: {
+      prefers_community_taxon: true
+    }
   };
 
   static LIST_FIELDS = {
@@ -64,7 +72,7 @@ class Observation extends Realm.Object {
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
-    user: User && User.USER_FIELDS
+    user: User && User.FIELDS
   };
 
   static async new( obs ) {
@@ -98,7 +106,7 @@ class Observation extends Realm.Object {
         obsToUpsert.forEach( obs => {
           realm.create(
             "Observation",
-            Observation.createOrModifyLocalObservation( obs, realm ),
+            Observation.mapApiToRealm( obs, realm ),
             "modified"
           );
         } );
@@ -106,17 +114,28 @@ class Observation extends Realm.Object {
     }
   }
 
-  static createOrModifyLocalObservation( obs, realm ) {
+  static mapApiToRealm( obs, realm = null ) {
+    if ( !obs ) return obs;
     const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
     const taxon = obs.taxon
-      ? Taxon.mapApiToRealm( obs.taxon )
+      ? Taxon.mapApiToRealm( obs.taxon, realm )
       : null;
     const observationPhotos = (
       obs.observation_photos || obs.observationPhotos || []
-    ).map( obsPhoto => ObservationPhoto.mapApiToRealm( obsPhoto, existingObs ) );
+    ).map( obsPhoto => {
+      const mappedObsPhoto = ObservationPhoto.mapApiToRealm( obsPhoto, realm );
+      const existingObsPhoto = existingObs?.observationPhotos?.find(
+        op => op.uuid === obsPhoto.uuid
+      );
+      if ( !existingObsPhoto ) {
+        mappedObsPhoto._created_at = new Date( );
+        mappedObsPhoto.photo._created_at = new Date( );
+      }
+      return mappedObsPhoto;
+    } );
 
     const identifications = obs.identifications
-      ? obs.identifications.map( id => Identification.mapApiToRealm( id ) )
+      ? obs.identifications.map( id => Identification.mapApiToRealm( id, realm ) )
       : [];
 
     const localObs = {
@@ -132,8 +151,16 @@ class Observation extends Realm.Object {
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
       observationPhotos,
+      prefers_community_taxon: obs.preferences?.prefers_community_taxon,
       taxon
     };
+
+    if ( localObs.user ) {
+      localObs.user.prefers_community_taxa = (
+        localObs.user.prefers_community_taxa
+        || localObs.user.preferences?.prefers_community_taxa
+      );
+    }
 
     if ( !existingObs ) {
       localObs._created_at = new Date( localObs.created_at );
@@ -314,6 +341,7 @@ class Observation extends Realm.Object {
       species_guess: "string?",
       place_guess: { type: "string", mapTo: "placeGuess", optional: true },
       positional_accuracy: "double?",
+      prefers_community_taxon: "bool?",
       quality_grade: { type: "string", mapTo: "qualityGrade", optional: true },
       taxon: "Taxon?",
       // datetime when the observer observed the organism; user-editable, but

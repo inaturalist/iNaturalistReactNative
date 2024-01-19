@@ -7,6 +7,7 @@ import useIsConnected from "sharedHooks/useIsConnected";
 const useUserMe = ( ): Object => {
   const currentUser = useCurrentUser( );
   const isConnected = useIsConnected( );
+  const enabled = !!isConnected && !!currentUser;
 
   const {
     data: remoteUser,
@@ -16,7 +17,7 @@ const useUserMe = ( ): Object => {
     ["fetchUserMe"],
     optsWithAuth => fetchUserMe( { }, optsWithAuth ),
     {
-      enabled: !!isConnected && !!currentUser
+      enabled
     }
   );
 

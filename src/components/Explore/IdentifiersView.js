@@ -35,7 +35,7 @@ const IdentifiersView = ( {
       ...queryParams,
       fields: {
         identifications_count: true,
-        user: User.USER_FIELDS
+        user: User.FIELDS
       }
     }
   );
