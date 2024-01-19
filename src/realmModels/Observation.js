@@ -151,7 +151,7 @@ class Observation extends Realm.Object {
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
       observationPhotos,
-      prefersCommunityTaxon: obs.preferences?.prefers_community_taxon,
+      prefers_community_taxon: obs.preferences?.prefers_community_taxon,
       taxon
     };
 
@@ -341,7 +341,7 @@ class Observation extends Realm.Object {
       species_guess: "string?",
       place_guess: { type: "string", mapTo: "placeGuess", optional: true },
       positional_accuracy: "double?",
-      prefers_community_taxon: { type: "bool", mapTo: "prefersCommunityTaxon", optional: true },
+      prefers_community_taxon: "bool?",
       quality_grade: { type: "string", mapTo: "qualityGrade", optional: true },
       taxon: "Taxon?",
       // datetime when the observer observed the organism; user-editable, but
