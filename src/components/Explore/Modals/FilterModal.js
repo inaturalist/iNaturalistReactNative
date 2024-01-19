@@ -53,7 +53,6 @@ const FilterModal = ( {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const {
-    taxon,
     region
   } = exploreFilters;
 
@@ -66,6 +65,7 @@ const FilterModal = ( {
     discardChanges
   } = useExplore();
   const {
+    taxon,
     user,
     project,
     sortBy,
@@ -185,79 +185,79 @@ const FilterModal = ( {
     superfamily: {
       label: tUp( "Ranks-superfamily" ),
       value: "superfamily"
+    },
+    epifamily: {
+      label: tUp( "Ranks-epifamily" ),
+      value: "epifamily"
+    },
+    family: {
+      label: tUp( "Ranks-family" ),
+      value: "family"
+    },
+    subfamily: {
+      label: tUp( "Ranks-subfamily" ),
+      value: "subfamily"
+    },
+    supertribe: {
+      label: tUp( "Ranks-supertribe" ),
+      value: "supertribe"
+    },
+    tribe: {
+      label: tUp( "Ranks-tribe" ),
+      value: "tribe"
+    },
+    subtribe: {
+      label: tUp( "Ranks-subtribe" ),
+      value: "subtribe"
+    },
+    genus: {
+      label: tUp( "Ranks-genus" ),
+      value: "genus"
+    },
+    genushybrid: {
+      label: tUp( "Ranks-genushybrid" ),
+      value: "genushybrid"
+    },
+    subgenus: {
+      label: tUp( "Ranks-subgenus" ),
+      value: "subgenus"
+    },
+    section: {
+      label: tUp( "Ranks-section" ),
+      value: "section"
+    },
+    subsection: {
+      label: tUp( "Ranks-subsection" ),
+      value: "subsection"
+    },
+    complex: {
+      label: tUp( "Ranks-complex" ),
+      value: "complex"
+    },
+    species: {
+      label: tUp( "Ranks-species" ),
+      value: "species"
+    },
+    hybrid: {
+      label: tUp( "Ranks-hybrid" ),
+      value: "hybrid"
+    },
+    subspecies: {
+      label: tUp( "Ranks-subspecies" ),
+      value: "subspecies"
+    },
+    variety: {
+      label: tUp( "Ranks-variety" ),
+      value: "variety"
+    },
+    form: {
+      label: tUp( "Ranks-form" ),
+      value: "form"
+    },
+    infrahybrid: {
+      label: tUp( "Ranks-infrahybrid" ),
+      value: "infrahybrid"
     }
-    // epifamily: {
-    //   label: tUp( "Ranks-epifamily" ),
-    //   value: "epifamily"
-    // },
-    // family: {
-    //   label: tUp( "Ranks-family" ),
-    //   value: "family"
-    // },
-    // subfamily: {
-    //   label: tUp( "Ranks-subfamily" ),
-    //   value: "subfamily"
-    // },
-    // supertribe: {
-    //   label: tUp( "Ranks-supertribe" ),
-    //   value: "supertribe"
-    // },
-    // tribe: {
-    //   label: tUp( "Ranks-tribe" ),
-    //   value: "tribe"
-    // },
-    // subtribe: {
-    //   label: tUp( "Ranks-subtribe" ),
-    //   value: "subtribe"
-    // },
-    // genus: {
-    //   label: tUp( "Ranks-genus" ),
-    //   value: "genus"
-    // },
-    // genushybrid: {
-    //   label: tUp( "Ranks-genushybrid" ),
-    //   value: "genushybrid"
-    // },
-    // subgenus: {
-    //   label: tUp( "Ranks-subgenus" ),
-    //   value: "subgenus"
-    // },
-    // section: {
-    //   label: tUp( "Ranks-section" ),
-    //   value: "section"
-    // },
-    // subsection: {
-    //   label: tUp( "Ranks-subsection" ),
-    //   value: "subsection"
-    // },
-    // complex: {
-    //   label: tUp( "Ranks-complex" ),
-    //   value: "complex"
-    // },
-    // species: {
-    //   label: tUp( "Ranks-species" ),
-    //   value: "species"
-    // },
-    // hybrid: {
-    //   label: tUp( "Ranks-hybrid" ),
-    //   value: "hybrid"
-    // },
-    // subspecies: {
-    //   label: tUp( "Ranks-subspecies" ),
-    //   value: "subspecies"
-    // },
-    // variety: {
-    //   label: tUp( "Ranks-variety" ),
-    //   value: "variety"
-    // },
-    // form: {
-    //   label: tUp( "Ranks-form" ),
-    //   value: "form"
-    // },
-    // infrahybrid: {
-    //   label: tUp( "Ranks-infrahybrid" ),
-    //   value: "infrahybrid"
-    // }
   };
 
   const dateObservedValues = {

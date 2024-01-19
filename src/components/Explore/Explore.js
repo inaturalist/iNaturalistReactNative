@@ -32,7 +32,6 @@ type Props = {
   updateTaxon: Function,
   updatePlace: Function,
   updatePlaceName: Function,
-  updateTaxonName: Function,
   showFiltersModal: boolean,
   openFiltersModal: Function,
   closeFiltersModal: Function,
@@ -47,7 +46,6 @@ const Explore = ( {
   updateTaxon,
   updatePlace,
   updatePlaceName,
-  updateTaxonName,
   showFiltersModal,
   openFiltersModal,
   closeFiltersModal
@@ -120,7 +118,6 @@ const Explore = ( {
       updatePlace={updatePlace}
       updatePlaceName={updatePlaceName}
       updateTaxon={updateTaxon}
-      updateTaxonName={updateTaxonName}
       openFiltersModal={openFiltersModal}
     />
   );

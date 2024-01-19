@@ -44,9 +44,6 @@ const initialState: {
   exploreParams: {
     verifiable: boolean,
     return_bounds: boolean,
-    taxon?: Object,
-    taxon_id?: number,
-    taxon_name?: string,
     place_id?: number,
     lat?: number,
     lng?: number,
@@ -68,9 +65,6 @@ const initialState: {
   exploreParams: {
     verifiable: true,
     return_bounds: true,
-    taxon: undefined,
-    taxon_id: undefined,
-    taxon_name: undefined,
     place_id: undefined,
     lat: undefined,
     lng: undefined,
@@ -99,16 +93,6 @@ const reducer = ( state, action ) => {
         ...state,
         exploreView: action.exploreView
       };
-    case "CHANGE_TAXON":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          taxon: action.taxon,
-          taxon_id: action.taxonId,
-          taxon_name: action.taxonName
-        }
-      };
     case "CHANGE_PLACE_ID":
       return {
         ...state,
@@ -132,14 +116,6 @@ const reducer = ( state, action ) => {
         region: {
           ...state.region,
           place_guess: action.placeName
-        }
-      };
-    case "SET_TAXON_NAME":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          taxon_name: action.taxonName
         }
       };
     case "SET_EXPLORE_FILTERS":
@@ -187,6 +163,8 @@ const ExploreContainerWithContext = ( ): Node => {
   const [state, dispatch] = useReducer( reducer, initialState );
   const explore = useExplore();
 
+  const { state: exploreState, dispatch: exploreDispatch } = explore;
+
   const {
     region,
     exploreParams,
@@ -205,8 +183,8 @@ const ExploreContainerWithContext = ( ): Node => {
       dispatch( { type: "SET_WORLWIDE" } );
     }
     if ( params?.taxon ) {
-      dispatch( {
-        type: "CHANGE_TAXON",
+      exploreDispatch( {
+        type: EXPLORE_ACTION.CHANGE_TAXON,
         taxon: params?.taxon,
         taxonId: params?.taxon.id,
         taxonName: params?.taxon.preferred_common_name || params?.taxon.name
@@ -223,14 +201,14 @@ const ExploreContainerWithContext = ( ): Node => {
       } );
     }
     if ( params?.user && params?.user.id ) {
-      explore.dispatch( {
+      exploreDispatch( {
         type: EXPLORE_ACTION.SET_USER,
         user: params.user,
         userId: params.user.id
       } );
     }
     if ( params?.project && params?.project.id ) {
-      explore.dispatch( {
+      exploreDispatch( {
         type: EXPLORE_ACTION.SET_PROJECT,
         project: params.project,
         projectId: params.project.id
@@ -258,8 +236,8 @@ const ExploreContainerWithContext = ( ): Node => {
     const taxon = selectedTaxon.length > 0
       ? selectedTaxon[0]
       : null;
-    dispatch( {
-      type: "CHANGE_TAXON",
+    exploreDispatch( {
+      type: EXPLORE_ACTION.CHANGE_TAXON,
       taxon,
       taxonId: taxon?.id,
       taxonName: taxon?.preferred_common_name || taxon?.name
@@ -284,16 +262,9 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   };
 
-  const updateTaxonName = newTaxonName => {
-    dispatch( {
-      type: "SET_TAXON_NAME",
-      taxonName: newTaxonName
-    } );
-  };
-
   const combinedParams = {
     ...exploreParams,
-    ...explore.state.exploreParams
+    ...exploreState.exploreParams
   };
 
   const filteredParams = Object.entries( combinedParams ).reduce(
@@ -312,31 +283,31 @@ const ExploreContainerWithContext = ( ): Node => {
   // DATE_UPLOADED_NEWEST is the default sort order
   filteredParams.order_by = CREATED_AT;
   filteredParams.order = DESC;
-  if ( explore.state.exploreParams.sortBy === SORT_BY.DATE_UPLOADED_OLDEST ) {
+  if ( exploreState.exploreParams.sortBy === SORT_BY.DATE_UPLOADED_OLDEST ) {
     filteredParams.order_by = CREATED_AT;
     filteredParams.order = ASC;
   }
-  if ( explore.state.exploreParams.sortBy === SORT_BY.DATE_OBSERVED_NEWEST ) {
+  if ( exploreState.exploreParams.sortBy === SORT_BY.DATE_OBSERVED_NEWEST ) {
     filteredParams.order_by = OBSERVED_ON;
     filteredParams.order = DESC;
   }
-  if ( explore.state.exploreParams.sortBy === SORT_BY.DATE_OBSERVED_OLDEST ) {
+  if ( exploreState.exploreParams.sortBy === SORT_BY.DATE_OBSERVED_OLDEST ) {
     filteredParams.order_by = OBSERVED_ON;
     filteredParams.order = ASC;
   }
-  if ( explore.state.exploreParams.sortBy === SORT_BY.MOST_FAVED ) {
+  if ( exploreState.exploreParams.sortBy === SORT_BY.MOST_FAVED ) {
     filteredParams.order_by = "votes";
     filteredParams.order = DESC;
   }
 
   filteredParams.quality_grade = [];
-  if ( explore.state.exploreParams.researchGrade ) {
+  if ( exploreState.exploreParams.researchGrade ) {
     filteredParams.quality_grade.push( RESEARCH );
   }
-  if ( explore.state.exploreParams.needsID ) {
+  if ( exploreState.exploreParams.needsID ) {
     filteredParams.quality_grade.push( NEEDS_ID );
   }
-  if ( explore.state.exploreParams.casual ) {
+  if ( exploreState.exploreParams.casual ) {
     filteredParams.quality_grade.push( CASUAL );
     delete filteredParams.verifiable;
   }
@@ -346,26 +317,26 @@ const ExploreContainerWithContext = ( ): Node => {
     delete filteredParams.months;
   }
 
-  filteredParams.photos = explore.state.exploreParams.media === MEDIA.PHOTOS
-    || explore.state.exploreParams.media === MEDIA.ALL;
-  filteredParams.sounds = explore.state.exploreParams.media === MEDIA.SOUNDS
-    || explore.state.exploreParams.media === MEDIA.ALL;
+  filteredParams.photos = exploreState.exploreParams.media === MEDIA.PHOTOS
+    || exploreState.exploreParams.media === MEDIA.ALL;
+  filteredParams.sounds = exploreState.exploreParams.media === MEDIA.SOUNDS
+    || exploreState.exploreParams.media === MEDIA.ALL;
 
-  if ( explore.state.exploreParams.wildStatus === WILD_STATUS.WILD ) {
+  if ( exploreState.exploreParams.wildStatus === WILD_STATUS.WILD ) {
     filteredParams.captive = false;
-  } else if ( explore.state.exploreParams.wildStatus === WILD_STATUS.CAPTIVE ) {
+  } else if ( exploreState.exploreParams.wildStatus === WILD_STATUS.CAPTIVE ) {
     filteredParams.captive = true;
   }
 
-  if ( explore.state.exploreParams.reviewedFilter === REVIEWED.REVIEWED ) {
+  if ( exploreState.exploreParams.reviewedFilter === REVIEWED.REVIEWED ) {
     filteredParams.reviewed = true;
     filteredParams.viewer_id = currentUser?.id;
-  } else if ( explore.state.exploreParams.reviewedFilter === REVIEWED.UNREVIEWED ) {
+  } else if ( exploreState.exploreParams.reviewedFilter === REVIEWED.UNREVIEWED ) {
     filteredParams.reviewed = false;
     filteredParams.viewer_id = currentUser?.id;
   }
 
-  if ( explore.state.exploreParams.photoLicense !== ALL ) {
+  if ( exploreState.exploreParams.photoLicense !== ALL ) {
     const licenseParams = {
       all: "all",
       cc0: "cc0",
@@ -376,7 +347,7 @@ const ExploreContainerWithContext = ( ): Node => {
       ccbyncsa: "cc-by-nc-sa",
       ccbyncnd: "cc-by-nc-nd"
     };
-    filteredParams.photo_license = licenseParams[explore.state.exploreParams.photoLicense];
+    filteredParams.photo_license = licenseParams[exploreState.exploreParams.photoLicense];
   }
 
   return (
@@ -388,7 +359,6 @@ const ExploreContainerWithContext = ( ): Node => {
       updateTaxon={updateTaxon}
       updatePlace={updatePlace}
       updatePlaceName={updatePlaceName}
-      updateTaxonName={updateTaxonName}
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
       openFiltersModal={() => {

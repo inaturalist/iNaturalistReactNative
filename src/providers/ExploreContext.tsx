@@ -22,6 +22,8 @@ export enum EXPLORE_ACTION {
   CHANGE_SORT_BY = "CHANGE_SORT_BY",
   SET_PROJECT = "SET_PROJECT",
   SET_USER = "SET_USER",
+  SET_TAXON_NAME = "SET_TAXON_NAME",
+  CHANGE_TAXON = "CHANGE_TAXON",
   RESET = "RESET",
   DISCARD = "DISCARD"
 }
@@ -74,6 +76,8 @@ enum PHOTO_LICENSE {
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: Object}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
+  | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
+  | {type: EXPLORE_ACTION.SET_TAXON_NAME, taxonName: string}
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
@@ -97,6 +101,10 @@ type Action = {type: EXPLORE_ACTION.RESET}
 type Dispatch = (action: Action) => void
 type State = {
   exploreParams: {
+    // TODO: not any Object but a "Taxon" type (from server?)
+    taxon: Object,
+    taxon_id: number,
+    taxon_name: string,
     user_id: number | undefined,
     // TODO: not any Object but a "User" type (from server?)
     user: Object | undefined,
@@ -168,7 +176,10 @@ const defaultFilters = {
 
 const initialState = {
   exploreParams: {
-    ...defaultFilters
+    taxon: undefined,
+    taxon_id: undefined,
+    taxon_name: undefined,
+    ...defaultFilters,
   }
 };
 
@@ -186,7 +197,25 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         exploreParams: action.snapshot
-      };      
+      };
+    case EXPLORE_ACTION.CHANGE_TAXON:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          taxon: action.taxon,
+          taxon_id: action.taxonId,
+          taxon_name: action.taxonName
+        }
+      };
+    case EXPLORE_ACTION.SET_TAXON_NAME:
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          taxon_name: action.taxonName
+        }
+      };
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,

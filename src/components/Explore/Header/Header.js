@@ -8,6 +8,7 @@ import {
 } from "components/SharedComponents";
 import SearchBar from "components/SharedComponents/SearchBar";
 import { Image, Pressable, View } from "components/styledComponents";
+import { EXPLORE_ACTION, useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Keyboard } from "react-native";
@@ -27,7 +28,6 @@ type Props = {
   updatePlace: Function,
   updatePlaceName: Function,
   updateTaxon: Function,
-  updateTaxonName: Function,
   openFiltersModal: Function,
 }
 
@@ -40,7 +40,6 @@ const Header = ( {
   updatePlace,
   updatePlaceName,
   updateTaxon,
-  updateTaxonName,
   openFiltersModal
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -51,6 +50,7 @@ const Header = ( {
   const theme = useTheme( );
   const [hideTaxonResults, setHideTaxonResults] = useState( true );
   const [hidePlaceResults, setHidePlaceResults] = useState( true );
+  const { dispatch } = useExplore( );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
@@ -99,7 +99,10 @@ const Header = ( {
                 handleTextChange={taxonText => {
                   if ( taxonInput?.current?.isFocused( ) ) {
                     setHideTaxonResults( false );
-                    updateTaxonName( taxonText );
+                    dispatch( {
+                      type: EXPLORE_ACTION.SET_TAXON_NAME,
+                      taxonName: taxonText
+                    } );
                   }
                 }}
                 value={taxonName || t( "All-organisms" )}
