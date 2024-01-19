@@ -11,7 +11,8 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   counts: Object,
-  onObservationPressed: Function
+  onObservationPressed: Function,
+  onSpeciesPressed: Function
 }
 
 type CountProps = {
@@ -43,7 +44,9 @@ const Count = ( {
   </Pressable>
 );
 
-const OverviewCounts = ( { counts, onObservationPressed }: Props ): React.Node => (
+const OverviewCounts = ( {
+  counts, onObservationPressed, onSpeciesPressed
+}: Props ): React.Node => (
   <View className="flex-row mt-6">
     <Count
       count={counts.observations_count}
@@ -55,6 +58,7 @@ const OverviewCounts = ( { counts, onObservationPressed }: Props ): React.Node =
       count={counts.species_count}
       label="SPECIES-WITHOUT-NUMBER"
       icon="leaf"
+      onPress={onSpeciesPressed}
     />
     {counts.identifications_count && (
       <Count

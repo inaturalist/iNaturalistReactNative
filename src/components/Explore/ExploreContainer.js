@@ -195,6 +195,12 @@ const ExploreContainerWithContext = ( ): Node => {
   } = state;
 
   useEffect( ( ) => {
+    if ( params?.viewSpecies ) {
+      dispatch( {
+        type: "CHANGE_EXPLORE_VIEW",
+        exploreView: "species"
+      } );
+    }
     if ( params?.worldwide ) {
       dispatch( { type: "SET_WORLWIDE" } );
     }

@@ -34,6 +34,11 @@ const ProjectDetails = ( {
     [navigation, project]
   );
 
+  const onSpeciesPressed = useCallback(
+    ( ) => navigation.navigate( "Explore", { project, worldwide: true, viewSpecies: true } ),
+    [navigation, project]
+  );
+
   if ( !project ) {
     return null;
   }
@@ -64,6 +69,7 @@ const ProjectDetails = ( {
             journal_posts_count: project.journal_posts_count
           }}
           onObservationPressed={onObservationPressed}
+          onSpeciesPressed={onSpeciesPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {/* eslint-disable-next-line react-native/no-inline-styles */}
