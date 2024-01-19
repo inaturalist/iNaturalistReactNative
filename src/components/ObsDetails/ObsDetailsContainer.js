@@ -151,7 +151,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
-  const observation = localObservation || remoteObservation;
+  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
 
   // In theory the only sitiation in which an observation would not have a
   // user is when a user is not signed but has made a new observation in the

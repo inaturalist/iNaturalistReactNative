@@ -46,6 +46,8 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
+  logger.debug( "[App.js] Need to open Realm in another app?" );
+  logger.debug( "[App.js] realm.path: ", realm?.path );
   const currentUser = useCurrentUser( );
   useIconicTaxa( { reload: true } );
   const { i18n } = useTranslation( );

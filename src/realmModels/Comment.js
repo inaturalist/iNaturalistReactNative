@@ -10,7 +10,7 @@ class Comment extends Realm.Object {
     created_at: true,
     flags: Flag.FLAG_FIELDS,
     id: true,
-    user: User && User.USER_FIELDS
+    user: User && User.FIELDS
   };
 
   static schema = {

@@ -17,7 +17,7 @@ class Identification extends Realm.Object {
     taxon: Taxon.TAXON_FIELDS,
     updated_at: true,
     // $FlowFixMe
-    user: User && ( { ...User.USER_FIELDS, id: true } ),
+    user: User && ( { ...User.FIELDS, id: true } ),
     uuid: true,
     vision: true
   };
@@ -31,10 +31,10 @@ class Identification extends Realm.Object {
     };
   }
 
-  static mapApiToRealm( id ) {
+  static mapApiToRealm( id, realm = null ) {
     const newId = {
       ...id,
-      taxon: Taxon.mapApiToRealm( id.taxon )
+      taxon: Taxon.mapApiToRealm( id.taxon, realm )
     };
     return newId;
   }

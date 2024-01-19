@@ -1475,3 +1475,6 @@ IDENTIFIERS = IDENTIFIERS
 OBSERVERS = OBSERVERS
 All-organisms = All organisms
 Worldwide = Worldwide
+
+This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
+You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon

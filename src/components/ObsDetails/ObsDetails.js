@@ -90,6 +90,7 @@ const ObsDetails = ( {
         <ObsDetailsHeader
           observation={observation}
           isOnline={isOnline}
+          belongsToCurrentUser={belongsToCurrentUser}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
