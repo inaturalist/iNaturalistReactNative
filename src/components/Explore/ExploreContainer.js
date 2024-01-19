@@ -160,6 +160,18 @@ const reducer = ( state, action ) => {
         ...state,
         showFiltersModal: false
       };
+    case "SET_WORLWIDE":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          lat: null,
+          lng: null,
+          radius: null,
+          place_id: null,
+          place_guess: ""
+        }
+      };
     default:
       throw new Error();
   }
@@ -183,6 +195,9 @@ const ExploreContainerWithContext = ( ): Node => {
   } = state;
 
   useEffect( ( ) => {
+    if ( params?.worldwide ) {
+      dispatch( { type: "SET_WORLWIDE" } );
+    }
     if ( params?.taxon ) {
       dispatch( {
         type: "CHANGE_TAXON",

@@ -51,7 +51,7 @@ const ToolbarContainer = ( {
   ] );
 
   const navToExplore = useCallback(
-    ( ) => navigation.navigate( "Explore", { user: currentUser } ),
+    ( ) => navigation.navigate( "Explore", { user: currentUser, worldwide: true } ),
     [navigation, currentUser]
   );
 
