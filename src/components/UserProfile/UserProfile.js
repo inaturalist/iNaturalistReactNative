@@ -57,6 +57,11 @@ const UserProfile = ( ): Node => {
     [navigation, user]
   );
 
+  const onSpeciesPressed = useCallback(
+    ( ) => navigation.navigate( "Explore", { user, worldwide: true, viewSpecies: true } ),
+    [navigation, user]
+  );
+
   if ( !user ) {
     return null;
   }
@@ -84,6 +89,7 @@ const UserProfile = ( ): Node => {
       <OverviewCounts
         counts={user}
         onObservationPressed={onObservationPressed}
+        onSpeciesPressed={onSpeciesPressed}
       />
       <View className="mx-3">
         {currentUser?.login !== user?.login && (
