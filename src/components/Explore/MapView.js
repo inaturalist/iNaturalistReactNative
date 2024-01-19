@@ -1,6 +1,7 @@
 // @flow
 
 import { Map } from "components/SharedComponents";
+import { useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React from "react";
 
@@ -17,7 +18,9 @@ const ObservationsView = ( {
 }: Props ): Node => {
   const tileMapParams = { };
 
-  if ( exploreParams?.taxon_id ) {
+  const { state } = useExplore( );
+
+  if ( state.exploreParams?.taxon_id ) {
     tileMapParams.taxon_id = exploreParams?.taxon_id;
   }
   if ( exploreParams?.place_id ) {

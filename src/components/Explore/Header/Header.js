@@ -21,7 +21,6 @@ import HeaderCount from "./HeaderCount";
 
 type Props = {
   count?: ?number,
-  exploreParams: Object,
   exploreView: string,
   exploreViewIcon: string,
   region: Object,
@@ -33,7 +32,6 @@ type Props = {
 
 const Header = ( {
   count,
-  exploreParams,
   exploreView,
   exploreViewIcon,
   region,
@@ -46,11 +44,11 @@ const Header = ( {
   const taxonInput = useRef( );
   const placeInput = useRef( );
   const placeName = region.place_guess;
-  const taxonName = exploreParams.taxon_name;
   const theme = useTheme( );
+  const { state, dispatch } = useExplore( );
+  const taxonName = state.exploreParams.taxon_name;
   const [hideTaxonResults, setHideTaxonResults] = useState( true );
   const [hidePlaceResults, setHidePlaceResults] = useState( true );
-  const { dispatch } = useExplore( );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,

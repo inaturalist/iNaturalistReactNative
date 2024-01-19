@@ -111,7 +111,6 @@ const Explore = ( {
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
-      exploreParams={exploreParams}
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
       region={region}
