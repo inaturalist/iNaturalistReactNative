@@ -1099,5 +1099,13 @@
   "All-organisms": "All organisms",
   "Worldwide": "Worldwide",
   "This-observer-has-opted-out-of-the-Community-Taxon": "This observer has opted out of the Community Taxon",
-  "You-have-opted-out-of-the-Community-Taxon": "You have opted out of the Community Taxon"
+  "You-have-opted-out-of-the-Community-Taxon": "You have opted out of the Community Taxon",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "You need to log in to do that."
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Error"
+  }
 }

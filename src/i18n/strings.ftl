@@ -1478,3 +1478,10 @@ Worldwide = Worldwide
 
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
+
+
+# Error message when you try to do something that requires log in
+You-need-log-in-to-do-that = You need to log in to do that.
+
+# Title of dialog or section describing an error
+Error-title = Error
