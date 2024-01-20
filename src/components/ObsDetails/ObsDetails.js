@@ -109,10 +109,7 @@ const ObsDetails = ( {
           // height of the nav header
           className="mt-[-44px]"
         >
-          <ObsMediaDisplayContainer
-            observation={observation}
-            isOnline={isOnline}
-          />
+          <ObsMediaDisplayContainer observation={observation} />
           { currentUser && (
             <FaveButton
               observation={observation}

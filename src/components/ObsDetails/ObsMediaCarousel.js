@@ -3,7 +3,7 @@
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Dimensions, StatusBar } from "react-native";
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
@@ -35,18 +35,21 @@ const ObsMediaCarousel = ( {
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const paginationColor = colors.white;
 
-  const CarouselSlide = useCallback( ( { item } ) => {
-    if ( item.file_url ) {
-      return <SoundSlide sound={item} />;
-    }
-    return <PhotoSlide photo={item} onPress={( ) => setMediaViewerVisible( true )} />;
-  }, [setMediaViewerVisible] );
+  const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
+
+  const CarouselSlide = useCallback( ( { item } ) => (
+    item.file_url
+      ? <SoundSlide sound={item} isVisible={items.indexOf( item ) === index} />
+      : <PhotoSlide photo={item} onPress={( ) => setMediaViewerVisible( true )} />
+  ), [
+    setMediaViewerVisible,
+    items,
+    index
+  ] );
 
   const currentPhotoUrl = index >= photos.length
     ? undefined
     : photos[index]?.url;
-
-  const items = [...photos, ...sounds];
 
   return (
     <View className="relative">

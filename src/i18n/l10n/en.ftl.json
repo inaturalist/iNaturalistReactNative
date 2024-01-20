@@ -800,7 +800,6 @@
   },
   "Edit": "Edit",
   "User-location": "User location",
-  "Loading-wheel": "Loading wheel",
   "Map-layers": "Map layers",
   "Share-map": "Share map",
   "Copy-map-coordinates": "Copy map coordinates",
@@ -1107,5 +1106,13 @@
   "Error-title": {
     "comment": "Title of dialog or section describing an error",
     "val": "Error"
+  },
+  "sound-playback-separator": {
+    "comment": "Character separating current position and total duration when playing a\nsound, e.g. 00:12 / 03:00 uses \"/\" as the separator. This can be anything,\nbut it should be very short.",
+    "val": "/"
+  },
+  "Photo-is-loading": {
+    "comment": "Accessibility label when a photo is loading",
+    "val": "Photo is loading"
   }
 }

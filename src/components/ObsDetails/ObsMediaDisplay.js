@@ -6,7 +6,6 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import {
   useTranslation
 } from "sharedHooks";
@@ -15,13 +14,11 @@ import colors from "styles/tailwindColors";
 import ObsMediaCarousel from "./ObsMediaCarousel";
 
 type Props = {
-  isOnline: boolean,
   photos: Array<Object>,
   sounds: Array<Object>
 }
 
 const ObsMediaDisplay = ( {
-  isOnline,
   photos = [],
   sounds = []
 }: Props ): Node => {
@@ -32,28 +29,10 @@ const ObsMediaDisplay = ( {
   if ( items.length > 0 ) {
     return (
       <View className="bg-black">
-        {
-          isOnline
-            ? (
-              <ObsMediaCarousel
-                photos={photos}
-                sounds={sounds}
-              />
-            )
-            : (
-              <View className="bg-black flex-row justify-center">
-                <IconMaterial
-                  name="wifi-off"
-                  color={colors.white}
-                  size={100}
-                  accessibilityRole="image"
-                  accessibilityLabel={t(
-                    "Observation-photos-unavailable-without-internet"
-                  )}
-                />
-              </View>
-            )
-        }
+        <ObsMediaCarousel
+          photos={photos}
+          sounds={sounds}
+        />
         <View className="absolute bottom-5 left-5">
           <PhotoCount count={items.length} />
         </View>
