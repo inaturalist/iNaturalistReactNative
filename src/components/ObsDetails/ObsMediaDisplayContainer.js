@@ -10,33 +10,43 @@ type Props = {
   isOnline: boolean
 }
 
+// TODO replace this hack. Without this you get errors about the
+// photo objects being invalidated down in ObsMediaCarousel, but the
+// questions remains, why are these objects getting invalidated in
+// the first place? We are not deleting them, so what's happening
+// to them and why?
+function jsonifyPotentialRealmObjects( objects ) {
+  return _.compact(
+    Array.from( objects || [] ).map(
+      object => (
+        object.toJSON
+          ? object.toJSON( )
+          : object
+      )
+    )
+  );
+}
+
 const ObsMediaDisplayContainer = ( {
   observation,
   isOnline
 }: Props ): Node => {
-  const photos = useMemo(
-    ( ) => _.compact(
-      Array.from(
-        observation?.observationPhotos || observation?.observation_photos || []
-      ).map(
-        // TODO replace this hack. Without this you get errors about the
-        // photo objects being invalidated down in ObsMediaCarousel, but the
-        // questions remains, why are these objects getting invalidated in
-        // the first place? We are not deleting them, so what's happening
-        // to them and why?
-        op => (
-          op.photo.toJSON
-            ? op.photo.toJSON( )
-            : op.photo
-        )
-      )
-    ),
+  const photos = useMemo( ( ) => jsonifyPotentialRealmObjects(
+    (
+      observation?.observationPhotos
+      || observation?.observation_photos
+      || []
+    ).map( op => op.photo )
+  ), [observation] );
+  const sounds = useMemo(
+    ( ) => jsonifyPotentialRealmObjects( observation?.observationSounds ),
     [observation]
   );
 
   return (
     <ObsMediaDisplay
       photos={photos}
+      sounds={sounds}
       isOnline={isOnline}
     />
   );

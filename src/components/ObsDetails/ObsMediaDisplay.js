@@ -16,16 +16,20 @@ import ObsMediaCarousel from "./ObsMediaCarousel";
 
 type Props = {
   isOnline: boolean,
-  photos: Array<Object>
+  photos: Array<Object>,
+  sounds: Array<Object>
 }
 
 const ObsMediaDisplay = ( {
   isOnline,
-  photos
+  photos = [],
+  sounds = []
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  if ( photos.length > 0 ) {
+  const items = [...photos, ...sounds];
+
+  if ( items.length > 0 ) {
     return (
       <View className="bg-black">
         {
@@ -33,6 +37,7 @@ const ObsMediaDisplay = ( {
             ? (
               <ObsMediaCarousel
                 photos={photos}
+                sounds={sounds}
               />
             )
             : (
@@ -50,10 +55,7 @@ const ObsMediaDisplay = ( {
             )
         }
         <View className="absolute bottom-5 left-5">
-          <PhotoCount count={photos.length
-            ? photos.length
-            : 0}
-          />
+          <PhotoCount count={items.length} />
         </View>
       </View>
     );

@@ -151,6 +151,14 @@ class Observation extends Realm.Object {
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
       observationPhotos,
+      observationSounds: obs.sounds?.map( sound => ( {
+        ...sound,
+        // TODO fix this... and rework the model. We need to get the sound
+        // UUID from the server, but we also need the server to reply with
+        // observation_sounds, otherwise we don't have the ability to delete
+        // sounds
+        uuid: uuid.v4( )
+      } ) ),
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
       taxon
     };
