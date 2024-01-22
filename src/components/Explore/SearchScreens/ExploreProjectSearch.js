@@ -14,11 +14,12 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { useAuthenticatedQuery } from "sharedHooks";
+import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
 const ExploreProjectSearch = ( ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const navigation = useNavigation( );
+  const { t } = useTranslation();
 
   const { data: projects } = useAuthenticatedQuery(
     ["searchProjects", userQuery],
@@ -40,7 +41,7 @@ const ExploreProjectSearch = ( ): Node => {
       <Pressable
         onPress={() => onProjectSelected( item )}
         accessibilityRole="button"
-        // TODO: accessibilityLabel={t( "Something like ?" )}
+        accessibilityLabel={t( "Change-project" )}
         accessibilityState={{ disabled: false }}
       >
         <ProjectListItem
@@ -48,7 +49,7 @@ const ExploreProjectSearch = ( ): Node => {
         />
       </Pressable>
     ),
-    [onProjectSelected]
+    [onProjectSelected, t]
   );
 
   const renderItemSeparator = () => (
