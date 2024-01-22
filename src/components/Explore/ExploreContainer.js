@@ -116,14 +116,6 @@ const reducer = ( state, action ) => {
           place_guess: action.placeName
         }
       };
-    case "SET_EXPLORE_FILTERS":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          ...action.exploreFilters
-        }
-      };
     case "SHOW_FILTERS_MODAL":
       return {
         ...state,
