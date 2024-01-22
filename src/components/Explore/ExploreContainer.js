@@ -12,7 +12,7 @@ import {
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
@@ -120,100 +120,6 @@ const mapParamsToAPI = ( params, currentUser ) => {
   return filteredParams;
 };
 
-const initialState: {
-  region: {
-    latitude: number,
-    longitude: number,
-    latitudeDelta: number,
-    longitudeDelta: number,
-    place_guess: string,
-  },
-  exploreParams: {
-    return_bounds: boolean,
-    place_id?: number,
-    lat?: number,
-    lng?: number,
-    radius?: number,
-  },
-  exploreView: string,
-} = {
-  region: {
-    latitude: 0.0,
-    longitude: 0.0,
-    latitudeDelta: DELTA,
-    longitudeDelta: DELTA,
-    place_guess: ""
-  },
-  exploreParams: {
-    return_bounds: true,
-    place_id: undefined,
-    lat: undefined,
-    lng: undefined,
-    radius: undefined
-  },
-  exploreView: "observations"
-};
-
-const reducer = ( state, action ) => {
-  switch ( action.type ) {
-    case "SET_LOCATION":
-      return {
-        ...state,
-        region: action.region,
-        exploreParams: {
-          ...state.exploreParams,
-          lat: action.region.latitude,
-          lng: action.region.longitude,
-          radius: 50
-        }
-      };
-    case "CHANGE_EXPLORE_VIEW":
-      return {
-        ...state,
-        exploreView: action.exploreView
-      };
-    case "CHANGE_PLACE_ID":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          lat: null,
-          lng: null,
-          radius: null,
-          place_id: action.placeId
-        },
-        region: {
-          ...state.region,
-          latitude: action.latitude,
-          longitude: action.longitude,
-          place_guess: action.place_guess
-        }
-      };
-    case "SET_PLACE_NAME":
-      return {
-        ...state,
-        region: {
-          ...state.region,
-          place_guess: action.placeName
-        }
-      };
-    case "SET_WORLWIDE":
-      return {
-        ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          lat: null,
-          lng: null,
-          radius: null,
-          place_id: null,
-          place_guess: ""
-        }
-      };
-    default:
-      throw new Error();
-  }
-};
-
 const ExploreContainerWithContext = ( ): Node => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
@@ -221,31 +127,32 @@ const ExploreContainerWithContext = ( ): Node => {
   const realm = useRealm();
   const currentUser = useCurrentUser();
 
-  const [state, dispatch] = useReducer( reducer, initialState );
   const explore = useExplore();
 
+  const [region, setRegion] = useState( {
+    latitude: 0.0,
+    longitude: 0.0,
+    latitudeDelta: DELTA,
+    longitudeDelta: DELTA
+  } );
   const [showFiltersModal, setShowFiltersModal] = useState( false );
+  const [exploreView, setExploreView] = useState( "observations" );
 
-  const { state: exploreState, dispatch: exploreDispatch } = explore;
-
-  const {
-    region,
-    exploreParams,
-    exploreView
-  } = state;
+  const { state, dispatch } = explore;
 
   useEffect( ( ) => {
     if ( params?.viewSpecies ) {
-      dispatch( {
-        type: "CHANGE_EXPLORE_VIEW",
-        exploreView: "species"
-      } );
+      setExploreView( "species" );
     }
     if ( params?.worldwide ) {
-      dispatch( { type: "SET_WORLWIDE" } );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeId: null,
+        placeName: ""
+      } );
     }
     if ( params?.taxon ) {
-      exploreDispatch( {
+      dispatch( {
         type: EXPLORE_ACTION.CHANGE_TAXON,
         taxon: params?.taxon,
         taxonId: params?.taxon.id,
@@ -254,41 +161,36 @@ const ExploreContainerWithContext = ( ): Node => {
     }
     if ( params?.place ) {
       const { coordinates } = params.place.point_geojson;
-      dispatch( {
-        type: "CHANGE_PLACE_ID",
-        placeId: params.place?.id,
+      setRegion( {
+        ...region,
         latitude: coordinates[1],
-        longitude: coordinates[0],
-        place_guess: params.place?.display_name
+        longitude: coordinates[0]
+      } );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeId: params.place?.id,
+        placeName: params.place?.display_name
       } );
     }
     if ( params?.user && params?.user.id ) {
-      exploreDispatch( {
+      dispatch( {
         type: EXPLORE_ACTION.SET_USER,
         user: params.user,
         userId: params.user.id
       } );
     }
     if ( params?.project && params?.project.id ) {
-      exploreDispatch( {
+      dispatch( {
         type: EXPLORE_ACTION.SET_PROJECT,
         project: params.project,
         projectId: params.project.id
-        // TODO: check web, do I need to set place_id as Amanda did before?
-        // place_id: params.project.place_id || "any"
-        // lat: null,
-        // lng: null,
-        // radius: null
       } );
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params] );
 
   const changeExploreView = newView => {
-    dispatch( {
-      type: "CHANGE_EXPLORE_VIEW",
-      exploreView: newView
-    } );
+    setExploreView( newView );
   };
 
   const updateTaxon = ( taxonName: string ) => {
@@ -298,7 +200,7 @@ const ExploreContainerWithContext = ( ): Node => {
     const taxon = selectedTaxon.length > 0
       ? selectedTaxon[0]
       : null;
-    exploreDispatch( {
+    dispatch( {
       type: EXPLORE_ACTION.CHANGE_TAXON,
       taxon,
       taxonId: taxon?.id,
@@ -308,28 +210,22 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const updatePlace = place => {
     const { coordinates } = place.point_geojson;
-    dispatch( {
-      type: "CHANGE_PLACE_ID",
-      placeId: place?.id,
+    setRegion( {
+      ...region,
       latitude: coordinates[1],
-      longitude: coordinates[0],
-      place_guess: place?.display_name
+      longitude: coordinates[0]
     } );
-  };
-
-  const updatePlaceName = newPlaceName => {
     dispatch( {
-      type: "SET_PLACE_NAME",
-      placeName: newPlaceName
+      type: EXPLORE_ACTION.SET_PLACE,
+      placeId: place?.id,
+      placeName: place?.display_name
     } );
   };
 
-  const combinedParams = {
-    ...exploreParams,
-    ...exploreState.exploreParams
-  };
-
-  const filteredParams = mapParamsToAPI( combinedParams, currentUser );
+  const filteredParams = mapParamsToAPI(
+    state.exploreParams,
+    currentUser
+  );
 
   return (
     <Explore
@@ -339,7 +235,6 @@ const ExploreContainerWithContext = ( ): Node => {
       changeExploreView={changeExploreView}
       updateTaxon={updateTaxon}
       updatePlace={updatePlace}
-      updatePlaceName={updatePlaceName}
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
       openFiltersModal={() => {

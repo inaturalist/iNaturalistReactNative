@@ -41,20 +41,15 @@ const NumberBadge = ( { number } ): Node => (
 
 type Props = {
   closeModal: Function,
-  exploreFilters: Object,
   updateTaxon: Function,
 };
 
 const FilterModal = ( {
   closeModal,
-  exploreFilters,
   updateTaxon
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const {
-    region
-  } = exploreFilters;
 
   const {
     state,
@@ -66,6 +61,7 @@ const FilterModal = ( {
   } = useExplore();
   const {
     taxon,
+    place_guess: placeGuess,
     user,
     project,
     sortBy,
@@ -533,12 +529,12 @@ const FilterModal = ( {
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
           <View className="mb-5">
-            {region.place_guess
+            {placeGuess
               ? (
                 <View>
                   <View className="flex-row items-center mb-5">
                     <INatIcon name="location" size={15} />
-                    <Body3 className="ml-4">{region.place_guess}</Body3>
+                    <Body3 className="ml-4">{placeGuess}</Body3>
                   </View>
                   <Button
                     text={t( "EDIT-LOCATION" )}

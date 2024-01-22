@@ -31,7 +31,6 @@ type Props = {
   region: Object,
   updateTaxon: Function,
   updatePlace: Function,
-  updatePlaceName: Function,
   showFiltersModal: boolean,
   openFiltersModal: Function,
   closeFiltersModal: Function,
@@ -45,7 +44,6 @@ const Explore = ( {
   region,
   updateTaxon,
   updatePlace,
-  updatePlaceName,
   showFiltersModal,
   openFiltersModal,
   closeFiltersModal
@@ -113,9 +111,7 @@ const Explore = ( {
       count={count[exploreView]}
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
-      region={region}
       updatePlace={updatePlace}
-      updatePlaceName={updatePlaceName}
       updateTaxon={updateTaxon}
       openFiltersModal={openFiltersModal}
     />
@@ -182,8 +178,6 @@ const Explore = ( {
         : (
           <ViewWrapper>
             <ExploreFilters
-              exploreParams={exploreParams}
-              region={region}
               showModal={showFiltersModal}
               closeModal={closeFiltersModal}
               updateTaxon={updateTaxon}
