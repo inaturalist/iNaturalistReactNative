@@ -15,9 +15,9 @@ import {
   useAuthenticatedQuery, useTranslation
 } from "sharedHooks";
 
-import ExploreFilters from "./ExploreFilters";
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
+import FilterModal from "./Modals/FilterModal";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
@@ -177,8 +177,7 @@ const Explore = ( {
         )
         : (
           <ViewWrapper>
-            <ExploreFilters
-              showModal={showFiltersModal}
+            <FilterModal
               closeModal={closeFiltersModal}
               updateTaxon={updateTaxon}
             />
