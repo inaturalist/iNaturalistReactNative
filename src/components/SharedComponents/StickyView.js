@@ -54,7 +54,10 @@ const StickyView = ( {
       // So by changing a state variable of the component, every time the user scroll the list -> we
       // make sure the component always gets re-rendered.
       currentScrollY.addListener( ( { value } ) => {
-        setScrollPosition( value );
+        if ( value <= 0 ) {
+          // Only force refresh of the state in case of an over-scroll (bounce effect)
+          setScrollPosition( value );
+        }
       } );
     }
 
