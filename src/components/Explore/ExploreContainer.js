@@ -33,6 +33,93 @@ const ASC = "asc";
 
 const ALL = "all";
 
+const mapParamsToAPI = ( params, currentUser ) => {
+  const filteredParams = Object.entries( params ).reduce(
+    ( newParams, [key, value] ) => {
+      if ( value ) {
+        newParams[key] = value;
+      }
+      return newParams;
+    },
+    {}
+  );
+
+  delete filteredParams.user;
+  delete filteredParams.project;
+
+  // DATE_UPLOADED_NEWEST is the default sort order
+  filteredParams.order_by = CREATED_AT;
+  filteredParams.order = DESC;
+  if ( params.sortBy === SORT_BY.DATE_UPLOADED_OLDEST ) {
+    filteredParams.order_by = CREATED_AT;
+    filteredParams.order = ASC;
+  }
+  if ( params.sortBy === SORT_BY.DATE_OBSERVED_NEWEST ) {
+    filteredParams.order_by = OBSERVED_ON;
+    filteredParams.order = DESC;
+  }
+  if ( params.sortBy === SORT_BY.DATE_OBSERVED_OLDEST ) {
+    filteredParams.order_by = OBSERVED_ON;
+    filteredParams.order = ASC;
+  }
+  if ( params.sortBy === SORT_BY.MOST_FAVED ) {
+    filteredParams.order_by = "votes";
+    filteredParams.order = DESC;
+  }
+
+  filteredParams.quality_grade = [];
+  if ( params.researchGrade ) {
+    filteredParams.quality_grade.push( RESEARCH );
+  }
+  if ( params.needsID ) {
+    filteredParams.quality_grade.push( NEEDS_ID );
+  }
+  if ( params.casual ) {
+    filteredParams.quality_grade.push( CASUAL );
+    delete filteredParams.verifiable;
+  }
+
+  if ( filteredParams.months ) {
+    filteredParams.month = filteredParams.months;
+    delete filteredParams.months;
+  }
+
+  filteredParams.photos
+      = params.media === MEDIA.PHOTOS || params.media === MEDIA.ALL;
+  filteredParams.sounds
+      = params.media === MEDIA.SOUNDS || params.media === MEDIA.ALL;
+
+  if ( params.wildStatus === WILD_STATUS.WILD ) {
+    filteredParams.captive = false;
+  } else if ( params.wildStatus === WILD_STATUS.CAPTIVE ) {
+    filteredParams.captive = true;
+  }
+
+  if ( params.reviewedFilter === REVIEWED.REVIEWED ) {
+    filteredParams.reviewed = true;
+    filteredParams.viewer_id = currentUser?.id;
+  } else if ( params.reviewedFilter === REVIEWED.UNREVIEWED ) {
+    filteredParams.reviewed = false;
+    filteredParams.viewer_id = currentUser?.id;
+  }
+
+  if ( params.photoLicense !== ALL ) {
+    const licenseParams = {
+      all: "all",
+      cc0: "cc0",
+      ccby: "cc-by",
+      ccbync: "cc-by-nc",
+      ccbysa: "cc-by-sa",
+      ccbynd: "cc-by-nd",
+      ccbyncsa: "cc-by-nc-sa",
+      ccbyncnd: "cc-by-nc-nd"
+    };
+    filteredParams.photo_license = licenseParams[params.photoLicense];
+  }
+
+  return filteredParams;
+};
+
 const initialState: {
   region: {
     latitude: number,
@@ -253,88 +340,7 @@ const ExploreContainerWithContext = ( ): Node => {
     ...exploreState.exploreParams
   };
 
-  const filteredParams = Object.entries( combinedParams ).reduce(
-    ( newParams, [key, value] ) => {
-      if ( value ) {
-        newParams[key] = value;
-      }
-      return newParams;
-    },
-    {}
-  );
-
-  delete filteredParams.user;
-  delete filteredParams.project;
-
-  // DATE_UPLOADED_NEWEST is the default sort order
-  filteredParams.order_by = CREATED_AT;
-  filteredParams.order = DESC;
-  if ( exploreState.exploreParams.sortBy === SORT_BY.DATE_UPLOADED_OLDEST ) {
-    filteredParams.order_by = CREATED_AT;
-    filteredParams.order = ASC;
-  }
-  if ( exploreState.exploreParams.sortBy === SORT_BY.DATE_OBSERVED_NEWEST ) {
-    filteredParams.order_by = OBSERVED_ON;
-    filteredParams.order = DESC;
-  }
-  if ( exploreState.exploreParams.sortBy === SORT_BY.DATE_OBSERVED_OLDEST ) {
-    filteredParams.order_by = OBSERVED_ON;
-    filteredParams.order = ASC;
-  }
-  if ( exploreState.exploreParams.sortBy === SORT_BY.MOST_FAVED ) {
-    filteredParams.order_by = "votes";
-    filteredParams.order = DESC;
-  }
-
-  filteredParams.quality_grade = [];
-  if ( exploreState.exploreParams.researchGrade ) {
-    filteredParams.quality_grade.push( RESEARCH );
-  }
-  if ( exploreState.exploreParams.needsID ) {
-    filteredParams.quality_grade.push( NEEDS_ID );
-  }
-  if ( exploreState.exploreParams.casual ) {
-    filteredParams.quality_grade.push( CASUAL );
-    delete filteredParams.verifiable;
-  }
-
-  if ( filteredParams.months ) {
-    filteredParams.month = filteredParams.months;
-    delete filteredParams.months;
-  }
-
-  filteredParams.photos = exploreState.exploreParams.media === MEDIA.PHOTOS
-    || exploreState.exploreParams.media === MEDIA.ALL;
-  filteredParams.sounds = exploreState.exploreParams.media === MEDIA.SOUNDS
-    || exploreState.exploreParams.media === MEDIA.ALL;
-
-  if ( exploreState.exploreParams.wildStatus === WILD_STATUS.WILD ) {
-    filteredParams.captive = false;
-  } else if ( exploreState.exploreParams.wildStatus === WILD_STATUS.CAPTIVE ) {
-    filteredParams.captive = true;
-  }
-
-  if ( exploreState.exploreParams.reviewedFilter === REVIEWED.REVIEWED ) {
-    filteredParams.reviewed = true;
-    filteredParams.viewer_id = currentUser?.id;
-  } else if ( exploreState.exploreParams.reviewedFilter === REVIEWED.UNREVIEWED ) {
-    filteredParams.reviewed = false;
-    filteredParams.viewer_id = currentUser?.id;
-  }
-
-  if ( exploreState.exploreParams.photoLicense !== ALL ) {
-    const licenseParams = {
-      all: "all",
-      cc0: "cc0",
-      ccby: "cc-by",
-      ccbync: "cc-by-nc",
-      ccbysa: "cc-by-sa",
-      ccbynd: "cc-by-nd",
-      ccbyncsa: "cc-by-nc-sa",
-      ccbyncnd: "cc-by-nc-nd"
-    };
-    filteredParams.photo_license = licenseParams[exploreState.exploreParams.photoLicense];
-  }
+  const filteredParams = mapParamsToAPI( combinedParams, currentUser );
 
   return (
     <Explore
