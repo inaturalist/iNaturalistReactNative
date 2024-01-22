@@ -81,6 +81,9 @@
   "CC-BY-NC-SA": "CC BY-NC-SA",
   "CC-BY-NC-ND": "CC BY-NC-ND",
   "CHANGE-DATE": "CHANGE DATE",
+  "Change-project": "Change project",
+  "Change-user": "Change user",
+  "Change-taxon": "Change taxon",
   "CHECK-YOUR-EMAIL": {
     "comment": "After pressing the reset password button",
     "val": "CHECK YOUR EMAIL!"

@@ -127,6 +127,12 @@ CC-BY-NC-ND = CC BY-NC-ND
 
 CHANGE-DATE = CHANGE DATE
 
+Change-project = Change project
+
+Change-user = Change user
+
+Change-taxon = Change taxon
+
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 

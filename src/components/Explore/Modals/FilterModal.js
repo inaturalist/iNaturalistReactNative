@@ -502,7 +502,7 @@ const FilterModal = ( {
                 <Pressable
                   className="flex-row justify-between items-center"
                   accessibilityRole="button"
-                  // TODO: accessibilityLabel={t( "Change user or something like this" )}
+                  accessibilityLabel={t( "Change-taxon" )}
                   onPress={() => {
                     navigation.navigate( "ExploreTaxonSearch" );
                   }}
@@ -614,7 +614,7 @@ const FilterModal = ( {
                 <Pressable
                   className="flex-row justify-between items-center"
                   accessibilityRole="button"
-                  // TODO: accessibilityLabel={t( "Change user or something like this" )}
+                  accessibilityLabel={t( "Change-user" )}
                   onPress={() => {
                     navigation.navigate( "ExploreUserSearch" );
                   }}
@@ -648,7 +648,7 @@ const FilterModal = ( {
                 <Pressable
                   className="flex-row justify-between items-center"
                   accessibilityRole="button"
-                  // TODO: accessibilityLabel={t( "Change project or something like this" )}
+                  accessibilityLabel={t( "Change-project" )}
                   onPress={() => {
                     navigation.navigate( "ExploreProjectSearch" );
                   }}
