@@ -28,6 +28,7 @@ const Count = ( {
   <Pressable
     onPress={onPress}
     accessibilityRole="button"
+    accessibilityLabel={t( label, { count } )}
     className="w-1/4 items-center"
   >
     <View className="bg-inatGreen w-[32px] h-[32px] rounded-lg items-center justify-center">
