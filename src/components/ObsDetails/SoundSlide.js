@@ -1,15 +1,21 @@
+import { useFocusEffect } from "@react-navigation/native";
 import { Body1, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import { log } from "sharedHelpers/logger";
 import { useTranslation } from "sharedHooks";
 
 const logger = log.extend( "SoundSlide" );
 
-const player = new AudioRecorderPlayer( );
-
 const SoundSlide = ( { isVisible, sound } ) => {
+  const playerRef = useRef( new AudioRecorderPlayer( ) );
+  const player = playerRef.current;
   const { t } = useTranslation( );
   // Track whether or not the sound is playing
   const [playing, setPlaying] = useState( false );
@@ -55,14 +61,15 @@ const SoundSlide = ( { isVisible, sound } ) => {
       player.removePlayBackListener( );
     };
   }, [
-    sound
+    player,
+    sound.file_url
   ] );
 
-  const stopSound = useCallback( ( ) => {
+  const stopSound = useCallback( async ( ) => {
     setPlaying( false );
     setSwipedAway( !isVisible );
     try {
-      player.pausePlayer( );
+      await player.pausePlayer( );
     } catch ( pausePlayerError ) {
       if ( pausePlayerError.message.match( /Player has already stopped/ ) ) {
         // Something else might be wrong, but it's not really something to
@@ -72,7 +79,11 @@ const SoundSlide = ( { isVisible, sound } ) => {
       }
       throw pausePlayerError;
     }
-  }, [isVisible] );
+    player.removePlayBackListener( );
+  }, [
+    isVisible,
+    player
+  ] );
 
   // Tapping the button can play, pause, or resume
   const togglePlay = useCallback( ( ) => {
@@ -100,13 +111,15 @@ const SoundSlide = ( { isVisible, sound } ) => {
   }, [
     playBackState.currentPosition,
     playBackState.duration,
+    player,
     playing,
     playSound,
     swipedAway,
     stopSound
   ] );
 
-  // If the sound is no longer visible, stop playback
+  // If the sound is no longer visible in the carousel (i.e. user swiped to a
+  // different media item), stop playback
   useEffect( ( ) => {
     if ( !isVisible ) {
       stopSound( );
@@ -117,6 +130,12 @@ const SoundSlide = ( { isVisible, sound } ) => {
     sound,
     stopSound
   ] );
+
+  // User navigated to a different screen, stop playback. Note that this is
+  // only using the cleanup function of useCallback
+  useFocusEffect( useCallback( ( ) => async ( ) => {
+    await stopSound( );
+  }, [stopSound] ) );
 
   const playBackPercent = ( playBackState.currentPosition / ( playBackState.duration || 1 ) ) * 100;
   return (
@@ -132,8 +151,8 @@ const SoundSlide = ( { isVisible, sound } ) => {
         mode="contained"
         color="white"
         accessibilityLabel="Play"
-        width={80}
-        height={80}
+        width={82}
+        height={82}
         size={80}
       />
       <View className="flex-row mt-[30px] mb-2">
