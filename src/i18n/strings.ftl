@@ -1567,3 +1567,16 @@ Worldwide = Worldwide
 
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
+
+January = January
+February = February
+March = March
+April = April
+May = May
+June = June
+July = July
+August = August
+September = September
+October = October
+November = November
+December = December

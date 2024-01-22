@@ -285,7 +285,6 @@ const FilterModal = ( {
     }
   };
 
-  // TODO: use this from i18n or moment ?
   const monthValues = {
     1: {
       label: t( "January" ),
