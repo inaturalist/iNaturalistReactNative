@@ -42,7 +42,6 @@ const initialState: {
     place_guess: string,
   },
   exploreParams: {
-    verifiable: boolean,
     return_bounds: boolean,
     place_id?: number,
     lat?: number,
@@ -63,7 +62,6 @@ const initialState: {
     place_guess: ""
   },
   exploreParams: {
-    verifiable: true,
     return_bounds: true,
     place_id: undefined,
     lat: undefined,

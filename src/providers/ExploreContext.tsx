@@ -101,6 +101,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
 type Dispatch = (action: Action) => void
 type State = {
   exploreParams: {
+    verifiable: boolean,
     // TODO: not any Object but a "Taxon" type (from server?)
     taxon: Object,
     taxon_id: number,
@@ -179,6 +180,7 @@ const initialState = {
     taxon: undefined,
     taxon_id: undefined,
     taxon_name: undefined,
+    verifiable: true,
     ...defaultFilters,
   }
 };
