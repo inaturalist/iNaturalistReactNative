@@ -60,16 +60,17 @@ class Observation extends Realm.Object {
     comments: Comment.COMMENT_FIELDS,
     created_at: true,
     geojson: true,
+    geoprivacy: true,
     id: true,
     identifications: Identification.ID_FIELDS,
-    geoprivacy: true,
     latitude: true,
     longitude: true,
     observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
     place_guess: true,
-    private_place_guess: true,
     private_geojson: true,
+    private_place_guess: true,
     quality_grade: true,
+    sounds: { file_url: true },
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
     user: User && User.FIELDS
@@ -151,6 +152,14 @@ class Observation extends Realm.Object {
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
       observationPhotos,
+      observationSounds: obs.sounds?.map( sound => ( {
+        ...sound,
+        // TODO fix this... and rework the model. We need to get the sound
+        // UUID from the server, but we also need the server to reply with
+        // observation_sounds, otherwise we don't have the ability to delete
+        // sounds
+        uuid: uuid.v4( )
+      } ) ),
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
       taxon
     };

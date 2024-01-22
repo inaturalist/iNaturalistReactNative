@@ -1162,7 +1162,6 @@ Checkmark = Checkmark
 Menu = Menu
 Edit = Edit
 User-location = User location
-Loading-wheel = Loading wheel
 Map-layers = Map layers
 Share-map = Share map
 Copy-map-coordinates = Copy map coordinates
@@ -1478,3 +1477,18 @@ Worldwide = Worldwide
 
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
+
+
+# Error message when you try to do something that requires log in
+You-need-log-in-to-do-that = You need to log in to do that.
+
+# Title of dialog or section describing an error
+Error-title = Error
+
+# Character separating current position and total duration when playing a
+# sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
+# but it should be very short.
+sound-playback-separator = /
+
+# Accessibility label when a photo is loading
+Photo-is-loading = Photo is loading

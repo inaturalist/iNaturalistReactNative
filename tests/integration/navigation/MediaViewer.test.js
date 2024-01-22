@@ -213,7 +213,7 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should show the first photo when tapped", async ( ) => {
       await navigateToObsDetail( );
-      const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+      const photos = await screen.findAllByTestId( "ObsMediaCarousel.photo" );
       expect( photos[0] ).toBeVisible( );
       await actor.press( photos[0] );
       expect(
@@ -228,7 +228,7 @@ describe( "MediaViewer navigation", ( ) => {
     it.todo( "should not show the first photo when second tapped" );
     // it( "should not show the first photo when second tapped", async ( ) => {
     //   await navigateToObsDetail( );
-    //   const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+    //   const photos = await screen.findAllByTestId( "ObsMediaCarousel.photo" );
     //   await actor.press( photos[1] );
     //   expect(
     //     await screen.findByTestId(
@@ -242,7 +242,7 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should not show delete button", async ( ) => {
       await navigateToObsDetail( );
-      const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+      const photos = await screen.findAllByTestId( "ObsMediaCarousel.photo" );
       expect( photos[0] ).toBeVisible( );
       await actor.press( photos[0] );
       expect(
