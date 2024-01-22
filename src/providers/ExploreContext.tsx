@@ -162,7 +162,6 @@ const calculatedFilters = {
   endemic: false,
   noStatus: false,
   wildStatus: WILD_STATUS.ALL,
-  // TODO: in the Figma designs this does not count towards the number of filters, error?
   reviewedFilter: REVIEWED.ALL,
   photoLicense: PHOTO_LICENSE.ALL
 };

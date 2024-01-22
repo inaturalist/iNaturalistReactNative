@@ -943,7 +943,8 @@ const FilterModal = ( {
           )}
         </View>
       </ScrollView>
-      <Body3 className="text-center mb-10">{t( "TODO: remove this" )}</Body3>
+      {/* This view is to offset the absolute StickyToolbar below */}
+      <View className="mb-10" />
       <StickyToolbar>
         <View className="flex-1 flex-row items-center">
           <INatIconButton
