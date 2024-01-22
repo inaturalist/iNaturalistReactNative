@@ -12,7 +12,7 @@ import {
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
@@ -136,7 +136,6 @@ const initialState: {
     radius?: number,
   },
   exploreView: string,
-  showFiltersModal: boolean,
 } = {
   region: {
     latitude: 0.0,
@@ -152,8 +151,7 @@ const initialState: {
     lng: undefined,
     radius: undefined
   },
-  exploreView: "observations",
-  showFiltersModal: false
+  exploreView: "observations"
 };
 
 const reducer = ( state, action ) => {
@@ -199,16 +197,6 @@ const reducer = ( state, action ) => {
           place_guess: action.placeName
         }
       };
-    case "SHOW_FILTERS_MODAL":
-      return {
-        ...state,
-        showFiltersModal: true
-      };
-    case "CLOSE_FILTERS_MODAL":
-      return {
-        ...state,
-        showFiltersModal: false
-      };
     case "SET_WORLWIDE":
       return {
         ...state,
@@ -236,13 +224,14 @@ const ExploreContainerWithContext = ( ): Node => {
   const [state, dispatch] = useReducer( reducer, initialState );
   const explore = useExplore();
 
+  const [showFiltersModal, setShowFiltersModal] = useState( false );
+
   const { state: exploreState, dispatch: exploreDispatch } = explore;
 
   const {
     region,
     exploreParams,
-    exploreView,
-    showFiltersModal
+    exploreView
   } = state;
 
   useEffect( ( ) => {
@@ -354,10 +343,10 @@ const ExploreContainerWithContext = ( ): Node => {
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
       openFiltersModal={() => {
-        dispatch( { type: "SHOW_FILTERS_MODAL" } );
+        setShowFiltersModal( true );
         explore.makeSnapshot( );
       }}
-      closeFiltersModal={() => dispatch( { type: "CLOSE_FILTERS_MODAL" } )}
+      closeFiltersModal={() => setShowFiltersModal( false )}
     />
   );
 };
