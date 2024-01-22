@@ -148,6 +148,7 @@ const PhotoCarousel = ( {
 
   const renderPhotoOrEvidenceButton = useCallback( ( { item: photoUri, index } ) => (
     <>
+      {index === 0 && renderSkeleton( )}
       <Animated.View style={!isTablet && animatedStyle}>
         <View
           className={classnames( IMAGE_CONTAINER_CLASSES )}
@@ -200,7 +201,6 @@ const PhotoCarousel = ( {
           </View>
         </View>
       </Animated.View>
-      {index === photoUris.length - 1 && renderSkeleton( )}
     </>
   ), [
     animatedStyle,
@@ -208,7 +208,6 @@ const PhotoCarousel = ( {
     deletePhotoMode,
     isTablet,
     photoClasses,
-    photoUris,
     renderSkeleton,
     showDeletePhotoMode,
     t,
