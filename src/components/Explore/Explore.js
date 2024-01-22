@@ -25,7 +25,7 @@ import SpeciesView from "./SpeciesView";
 
 type Props = {
   changeExploreView: Function,
-  exploreParams: Object,
+  exploreAPIParams: Object,
   exploreView: string,
   isOnline: boolean,
   region: Object,
@@ -38,7 +38,7 @@ type Props = {
 
 const Explore = ( {
   changeExploreView,
-  exploreParams,
+  exploreAPIParams,
   exploreView,
   isOnline,
   region,
@@ -82,13 +82,13 @@ const Explore = ( {
   };
 
   const queryParams = {
-    ...exploreParams,
+    ...exploreAPIParams,
     per_page: 20
   };
   delete queryParams.taxon_name;
 
   const paramsTotalResults = {
-    ...exploreParams,
+    ...exploreAPIParams,
     per_page: 0
   };
 
@@ -144,7 +144,7 @@ const Explore = ( {
             />
             {exploreView === "observations" && (
               <ObservationsView
-                exploreParams={exploreParams}
+                exploreAPIParams={exploreAPIParams}
                 observationsView={observationsView}
                 region={region}
               />

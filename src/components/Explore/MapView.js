@@ -6,13 +6,11 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  exploreParams: Object,
   region: Object,
   observations: Array<Object>
 }
 
 const ObservationsView = ( {
-  exploreParams,
   region,
   observations
 }: Props ): Node => {
@@ -21,10 +19,10 @@ const ObservationsView = ( {
   const { state } = useExplore( );
 
   if ( state.exploreParams?.taxon_id ) {
-    tileMapParams.taxon_id = exploreParams?.taxon_id;
+    tileMapParams.taxon_id = state.exploreParams?.taxon_id;
   }
-  if ( exploreParams?.place_id ) {
-    tileMapParams.place_id = exploreParams?.place_id;
+  if ( state.exploreParams?.place_id ) {
+    tileMapParams.place_id = state.exploreParams?.place_id;
   }
 
   return (

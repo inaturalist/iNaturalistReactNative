@@ -229,7 +229,7 @@ const ExploreContainerWithContext = ( ): Node => {
 
   return (
     <Explore
-      exploreParams={filteredParams}
+      exploreAPIParams={filteredParams}
       region={region}
       exploreView={exploreView}
       changeExploreView={changeExploreView}
