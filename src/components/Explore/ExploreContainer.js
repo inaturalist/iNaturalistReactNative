@@ -47,9 +47,6 @@ const initialState: {
     lat?: number,
     lng?: number,
     radius?: number,
-    // TODO: this value will also be set in the ExploreContext and therefore
-    // will override this here, how to refactor so that the two do not collide?
-    project_id?: number,
   },
   exploreView: string,
   showFiltersModal: boolean,
@@ -66,8 +63,7 @@ const initialState: {
     place_id: undefined,
     lat: undefined,
     lng: undefined,
-    radius: undefined,
-    project_id: undefined
+    radius: undefined
   },
   exploreView: "observations",
   showFiltersModal: false
