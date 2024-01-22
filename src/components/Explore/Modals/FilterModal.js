@@ -472,7 +472,7 @@ const FilterModal = ( {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-white" testID="filter-modal">
       {/* Header */}
       {/* TODO: add dropshadow */}
       <View className="flex-row items-center p-5 justify-between">

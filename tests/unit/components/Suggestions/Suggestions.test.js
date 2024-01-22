@@ -1,6 +1,7 @@
 import {
   fireEvent,
-  screen, waitFor
+  screen,
+  waitFor
 } from "@testing-library/react-native";
 import Suggestions from "components/Suggestions/Suggestions";
 import initI18next from "i18n/initI18next";
