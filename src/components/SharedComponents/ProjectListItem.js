@@ -20,7 +20,6 @@ const ProjectListItem = ( { item }: Props ): Node => {
   return (
     <View
       className="flex-row items-center"
-      testID={`Project.${item.id}`}
     >
       <Image
         className="w-[62px] h-[62px] rounded-xl mr-3"
