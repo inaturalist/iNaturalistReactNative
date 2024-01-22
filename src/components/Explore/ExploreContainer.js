@@ -127,7 +127,7 @@ const ExploreContainerWithContext = ( ): Node => {
   const realm = useRealm();
   const currentUser = useCurrentUser();
 
-  const explore = useExplore();
+  const { state, dispatch, makeSnapshot } = useExplore();
 
   const [region, setRegion] = useState( {
     latitude: 0.0,
@@ -137,8 +137,6 @@ const ExploreContainerWithContext = ( ): Node => {
   } );
   const [showFiltersModal, setShowFiltersModal] = useState( false );
   const [exploreView, setExploreView] = useState( "observations" );
-
-  const { state, dispatch } = explore;
 
   useEffect( ( ) => {
     if ( params?.viewSpecies ) {
@@ -223,7 +221,7 @@ const ExploreContainerWithContext = ( ): Node => {
   };
 
   const filteredParams = mapParamsToAPI(
-    state.exploreParams,
+    state,
     currentUser
   );
 
@@ -239,7 +237,7 @@ const ExploreContainerWithContext = ( ): Node => {
       showFiltersModal={showFiltersModal}
       openFiltersModal={() => {
         setShowFiltersModal( true );
-        explore.makeSnapshot( );
+        makeSnapshot( );
       }}
       closeFiltersModal={() => setShowFiltersModal( false )}
     />

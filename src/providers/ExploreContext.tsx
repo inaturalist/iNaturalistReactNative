@@ -102,44 +102,42 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE | string}
 type Dispatch = (action: Action) => void
 type State = {
-  exploreParams: {
-    verifiable: boolean,
-    return_bounds: boolean,
-    // TODO: not any Object but a "Taxon" type (from server?)
-    taxon: Object,
-    taxon_id: number,
-    taxon_name: string,
-    place_id: number | null | undefined,
-    place_guess: string,
-    user_id: number | undefined,
-    // TODO: not any Object but a "User" type (from server?)
-    user: Object | undefined,
-    project_id: number | undefined,
-    // TODO: not any Object but a "Project" type (from server?)
-    project: Object | undefined,
-    sortBy: SORT_BY,
-    researchGrade: boolean,
-    needsID: boolean,
-    casual: boolean,
-    hrank: string | undefined,
-    lrank: string | undefined,
-    dateObserved: DATE_OBSERVED,
-    // TODO: observed_on type should be more stringent than string it is what is expected by the API 
-    observed_on: string | null | undefined,
-    months: number[] | null | undefined,
-    dateUploaded: DATE_UPLOADED,
-    // TODO: created_on type should be more stringent than string it is what is expected by the API 
-    created_on: string | null | undefined,
-    media: MEDIA,
-    // TODO: those values are not optional but idk how to set them
-    introduced: boolean,
-    native: boolean,
-    endemic: boolean,
-    noStatus: boolean
-    wildStatus: WILD_STATUS,
-    reviewedFilter: REVIEWED,
-    photoLicense: PHOTO_LICENSE | string
-  }
+  verifiable: boolean,
+  return_bounds: boolean,
+  // TODO: not any Object but a "Taxon" type (from server?)
+  taxon: Object,
+  taxon_id: number | null | undefined,
+  taxon_name: string,
+  place_id: number | null | undefined,
+  place_guess: string,
+  user_id: number | undefined,
+  // TODO: not any Object but a "User" type (from server?)
+  user: Object | undefined,
+  project_id: number | undefined,
+  // TODO: not any Object but a "Project" type (from server?)
+  project: Object | undefined,
+  sortBy: SORT_BY,
+  researchGrade: boolean,
+  needsID: boolean,
+  casual: boolean,
+  hrank: string | undefined,
+  lrank: string | undefined,
+  dateObserved: DATE_OBSERVED,
+  // TODO: observed_on type should be more stringent than string it is what is expected by the API 
+  observed_on: string | null | undefined,
+  months: number[] | null | undefined,
+  dateUploaded: DATE_UPLOADED,
+  // TODO: created_on type should be more stringent than string it is what is expected by the API 
+  created_on: string | null | undefined,
+  media: MEDIA,
+  // TODO: those values are not optional but idk how to set them
+  introduced: boolean,
+  native: boolean,
+  endemic: boolean,
+  noStatus: boolean
+  wildStatus: WILD_STATUS,
+  reviewedFilter: REVIEWED,
+  photoLicense: PHOTO_LICENSE | string
 }
 type CountProviderProps = {children: React.ReactNode}
 
@@ -181,16 +179,14 @@ const defaultFilters = {
 };
 
 const initialState = {
-  exploreParams: {
-    taxon: undefined,
-    taxon_id: undefined,
-    taxon_name: undefined,
-    place_id: undefined,
-    place_guess: "",
-    verifiable: true,
-    return_bounds: true,
-    ...defaultFilters,
-  }
+  ...defaultFilters,
+  taxon: undefined,
+  taxon_id: undefined,
+  taxon_name: undefined,
+  place_id: undefined,
+  place_guess: "",
+  verifiable: true,
+  return_bounds: true,
 };
 
 function exploreReducer( state: State, action: Action ) {
@@ -198,220 +194,142 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.RESET:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          ...defaultFilters
-        }
+        ...defaultFilters
       };
     case EXPLORE_ACTION.DISCARD:
-      return {
-        ...state,
-        exploreParams: action.snapshot
-      };
+      return action.snapshot;
     case EXPLORE_ACTION.CHANGE_TAXON:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          taxon: action.taxon,
-          taxon_id: action.taxonId,
-          taxon_name: action.taxonName
-        }
+        taxon: action.taxon,
+        taxon_id: action.taxonId,
+        taxon_name: action.taxonName
       };
     case EXPLORE_ACTION.SET_TAXON_NAME:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          taxon_name: action.taxonName
-        }
+        taxon_name: action.taxonName
       };
     case EXPLORE_ACTION.SET_PLACE:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          place_id: action.placeId,
-          place_guess: action.placeName
-        }
+        place_id: action.placeId,
+        place_guess: action.placeName
       };
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          user: action.user,
-          user_id: action.userId
-        }
+        user: action.user,
+        user_id: action.userId
       };
     case EXPLORE_ACTION.SET_PROJECT:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
           project: action.project,
           project_id: action.projectId
-        }
       };
     case EXPLORE_ACTION.CHANGE_SORT_BY:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          sortBy: action.sortBy
-        }
+        sortBy: action.sortBy
       };
     case EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          researchGrade: !state.exploreParams.researchGrade
-        }
+        researchGrade: !state.researchGrade
       };
     case EXPLORE_ACTION.TOGGLE_NEEDS_ID:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          needsID: !state.exploreParams.needsID
-        }
+        needsID: !state.needsID
       };
     case EXPLORE_ACTION.TOGGLE_CASUAL:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          casual: !state.exploreParams.casual
-        }
+        casual: !state.casual
       };
     case EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          hrank: action.hrank
-        }
+        hrank: action.hrank
       };
     case EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          lrank: action.lrank
-        }
+        lrank: action.lrank
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_ALL:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateObserved: DATE_OBSERVED.ALL,
-          observed_on: null,
-          months: null
-        }
+        dateObserved: DATE_OBSERVED.ALL,
+        observed_on: null,
+        months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateObserved: DATE_OBSERVED.EXACT_DATE,
-          observed_on: action.observed_on,
-          months: null
-        }
+        dateObserved: DATE_OBSERVED.EXACT_DATE,
+        observed_on: action.observed_on,
+        months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateObserved: DATE_OBSERVED.MONTHS,
-          observed_on: null,
-          months: action.months
-        }
+        dateObserved: DATE_OBSERVED.MONTHS,
+        observed_on: null,
+        months: action.months
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_ALL:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateUploaded: DATE_UPLOADED.ALL,
-          created_on: null
-        }
+        dateUploaded: DATE_UPLOADED.ALL,
+        created_on: null
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          dateUploaded: DATE_UPLOADED.EXACT_DATE,
-          created_on: action.created_on
-        }
+        dateUploaded: DATE_UPLOADED.EXACT_DATE,
+        created_on: action.created_on
       };
     case EXPLORE_ACTION.SET_MEDIA:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          media: action.media
-        }
+        media: action.media
       };
     case EXPLORE_ACTION.TOGGLE_INTRODUCED:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          introduced: !state.exploreParams.introduced
-        }
+        introduced: !state.introduced
       };
     case EXPLORE_ACTION.TOGGLE_NATIVE:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          native: !state.exploreParams.native
-        }
+        native: !state.native
       };
     case EXPLORE_ACTION.TOGGLE_ENDEMIC:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          endemic: !state.exploreParams.endemic
-        }
+        endemic: !state.endemic
       };
     case EXPLORE_ACTION.TOGGLE_NO_STATUS:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          noStatus: !state.exploreParams.noStatus
-        }
+        noStatus: !state.noStatus
       };
     case EXPLORE_ACTION.SET_WILD_STATUS:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          wildStatus: action.wildStatus
-        }
+        wildStatus: action.wildStatus
       };
     case EXPLORE_ACTION.SET_PHOTO_LICENSE:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          photoLicense: action.photoLicense
-        }
+        photoLicense: action.photoLicense
       };
     case EXPLORE_ACTION.SET_REVIEWED:
       return {
         ...state,
-        exploreParams: {
-          ...state.exploreParams,
-          reviewedFilter: action.reviewedFilter
-        }
+        reviewedFilter: action.reviewedFilter
       };
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );
@@ -421,18 +339,17 @@ function exploreReducer( state: State, action: Action ) {
 
 const ExploreProvider = ( { children }: CountProviderProps ) => {
   const [state, dispatch] = React.useReducer( exploreReducer, initialState );
-  const { exploreParams } = state;
 
   // To store a snapshot of the state, e.g when the user opens the filters modal
   const [snapshot, setSnapshot] = React.useState<Object | undefined>( undefined );
-  const makeSnapshot = () => setSnapshot( exploreParams );
+  const makeSnapshot = () => setSnapshot( state );
   
   // Check if the current state is different from the snapshot
   const checkSnapshot = () => {
     if ( !snapshot ) {
       return false;
     }
-    return Object.keys( snapshot ).some( key => snapshot[key] !== exploreParams[key] );
+    return Object.keys( snapshot ).some( key => snapshot[key] !== state[key] );
   }
   const differsFromSnapshot: boolean = checkSnapshot();
 
@@ -444,19 +361,20 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
   }
 
   const filtersNotDefault: boolean = Object.keys( defaultFilters ).some(
-    key => defaultFilters[key] !== exploreParams[key]
+    key => defaultFilters[key] !== state[key]
   );
 
   let numberOfFilters: number = Object.keys( calculatedFilters ).reduce(
     ( count, key ) => {
-      if ( exploreParams[key] !== calculatedFilters[key] ) {
+      if ( state[key] !== calculatedFilters[key] ) {
         return count + 1;
       }
       return count;
     },
     0
   );
-  if (state.exploreParams.lrank && state.exploreParams.hrank) {
+  // If both low and high rank filters are set, we only count one filter
+  if (state.lrank && state.hrank) {
     numberOfFilters -= 1;
   }
 

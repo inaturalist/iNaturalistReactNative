@@ -85,7 +85,7 @@ const FilterModal = ( {
     wildStatus,
     reviewedFilter,
     photoLicense
-  } = state.exploreParams;
+  } = state;
 
   const NONE = "NONE";
   const SORT_BY_M = "SORT_BY_M";

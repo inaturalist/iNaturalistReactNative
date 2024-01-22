@@ -41,8 +41,8 @@ const Header = ( {
   const placeInput = useRef( );
   const theme = useTheme( );
   const { state, dispatch } = useExplore( );
-  const taxonName = state.exploreParams.taxon_name;
-  const placeName = state.exploreParams.place_guess;
+  const taxonName = state.taxon_name;
+  const placeName = state.place_guess;
   const [hideTaxonResults, setHideTaxonResults] = useState( true );
   const [hidePlaceResults, setHidePlaceResults] = useState( true );
 

@@ -18,11 +18,11 @@ const ObservationsView = ( {
 
   const { state } = useExplore( );
 
-  if ( state.exploreParams?.taxon_id ) {
-    tileMapParams.taxon_id = state.exploreParams?.taxon_id;
+  if ( state?.taxon_id ) {
+    tileMapParams.taxon_id = state?.taxon_id;
   }
-  if ( state.exploreParams?.place_id ) {
-    tileMapParams.place_id = state.exploreParams?.place_id;
+  if ( state?.place_id ) {
+    tileMapParams.place_id = state?.place_id;
   }
 
   return (
