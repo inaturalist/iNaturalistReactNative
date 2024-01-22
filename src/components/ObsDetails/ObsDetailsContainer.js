@@ -151,14 +151,34 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
-  const observation = localObservation || remoteObservation;
+  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
 
   // In theory the only sitiation in which an observation would not have a
   // user is when a user is not signed but has made a new observation in the
   // app. Also in theory that user should not be able to get to ObsDetail for
   // those observations, just ObsEdit. But.... let's be safe.
-  const belongsToCurrentUser = observation?.user?.id === currentUser?.id
-    || ( !observation?.user && !observation?.id );
+  const belongsToCurrentUser = (
+    observation?.user?.id === currentUser?.id
+    || ( !observation?.user && !observation?.id )
+  );
+
+  // Update local copy of a user's own observation
+  useEffect( ( ) => {
+    if (
+      remoteObservation
+      && currentUser
+      && remoteObservation?.user?.id === currentUser.id
+    ) {
+      Observation.upsertRemoteObservations(
+        [remoteObservation],
+        realm
+      );
+    }
+  }, [
+    currentUser,
+    realm,
+    remoteObservation
+  ] );
 
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
@@ -341,12 +361,14 @@ const ObsDetailsContainer = ( ): Node => {
   useEffect( ( ) => {
     if (
       remoteObservation
+      && currentUser
       && localObservation?.unviewed( )
       && !markViewedMutation.isLoading
     ) {
       markViewedMutation.mutate( { id: uuid } );
     }
   }, [
+    currentUser,
     localObservation,
     markViewedMutation,
     remoteObservation,

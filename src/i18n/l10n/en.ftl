@@ -568,7 +568,7 @@ none = none
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
-no-rights-reserved-cc0-cc0 = no rights reserved (CC0) (CC0)
+no-rights-reserved-cc0 = no rights reserved (CC0)
 
 No-Status = No Status
 
@@ -598,7 +598,7 @@ Obscured-observation-location-map-description = This observation’s location is
 
 Observation = Observation
 
-Observation-Attribution = Observation: © {$attribution} · {$restrictions}
+Observation-Attribution = Observation: © {$userName} · {$restrictions}
 
 OBSERVATIONS = OBSERVATIONS
 
@@ -1564,3 +1564,6 @@ IDENTIFIERS = IDENTIFIERS
 OBSERVERS = OBSERVERS
 All-organisms = All organisms
 Worldwide = Worldwide
+
+This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
+You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon

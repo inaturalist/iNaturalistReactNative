@@ -66,13 +66,6 @@ const PhotoDisplay = ( {
     </View>
   ), [observationId] );
 
-  const navigateToMediaViewer = useCallback(
-    ( _pressEvent, options ) => {
-      navigation.navigate( "UrlMediaViewer", { uri: options.uri, uris: photos.map( p => p.url ) } );
-    },
-    [navigation, photos]
-  );
-
   const displayPhoto = useCallback( ( ) => {
     if ( photos.length > 0 ) {
       return (
@@ -82,7 +75,6 @@ const PhotoDisplay = ( {
               ? (
                 <PhotoScroll
                   photos={photos}
-                  onPress={navigateToMediaViewer}
                 />
               )
               : (
@@ -160,7 +152,6 @@ const PhotoDisplay = ( {
     editButton,
     faveOrUnfave,
     isOnline,
-    navigateToMediaViewer,
     photos,
     t,
     userFav

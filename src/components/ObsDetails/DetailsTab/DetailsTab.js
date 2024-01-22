@@ -91,12 +91,12 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation.uuid;
-  const privacy = observation?.geoprivacy;
+  const geoprivacy = observation?.geoprivacy;
   const positionalAccuracy = observation?.positional_accuracy;
   const [showMapModal, setShowMapModal] = useState( false );
 
   const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
-  const isPrivate = privacy === "private" && !belongsToCurrentUser;
+  const isPrivate = geoprivacy === "private" && !belongsToCurrentUser;
   const isObscured = observation?.obscured && !belongsToCurrentUser;
   const showShareOptions = !isPrivate && !isObscured;
 

@@ -173,14 +173,6 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
     } );
   };
 
-  const toggleMapLayer = ( ) => {
-    if ( mapType === "standard" ) {
-      dispatch( { type: "SET_MAP_TYPE", mapType: "satellite" } );
-    } else {
-      dispatch( { type: "SET_MAP_TYPE", mapType: "standard" } );
-    }
-  };
-
   const updateLocationName = useCallback( name => {
     dispatch( { type: "UPDATE_LOCATION_NAME", locationName: name } );
   }, [] );
@@ -233,7 +225,6 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
       selectPlaceResult={selectPlaceResult}
       setMapReady={setMapReady}
       showCrosshairs={showCrosshairs}
-      toggleMapLayer={toggleMapLayer}
       updateLocationName={updateLocationName}
       updateRegion={updateRegion}
       updateObservationKeys={updateObservationKeys}

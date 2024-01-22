@@ -2,6 +2,7 @@
 import { useNavigation } from "@react-navigation/native";
 import {
   Body1,
+  Body4,
   DateDisplay, DisplayTaxon, InlineUser, ObservationLocation
 } from "components/SharedComponents";
 import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
@@ -13,11 +14,13 @@ import {
 } from "sharedHooks";
 
 type Props = {
+  belongsToCurrentUser?: boolean,
   observation: Object,
   isOnline: boolean,
 }
 
 const ObsDetailsHeader = ( {
+  belongsToCurrentUser,
   observation,
   isOnline
 }: Props ): Node => {
@@ -54,7 +57,7 @@ const ObsDetailsHeader = ( {
           }
         />
       </View>
-      <View className="flex-row my-[11px] mx-3">
+      <View className="flex-row my-[11px] mx-3 items-center">
         <View className="shrink">
           {showTaxon()}
         </View>
@@ -62,6 +65,20 @@ const ObsDetailsHeader = ( {
           <ObsStatus layout="vertical" observation={observation} />
         </View>
       </View>
+      {
+        (
+          observation.prefersCommunityTaxon === false
+          || observation.user?.prefers_community_taxa === false
+        ) && (
+          <Body4 className="mx-3 mt-0 mb-2 italic">
+            {
+              belongsToCurrentUser
+                ? t( "You-have-opted-out-of-the-Community-Taxon" )
+                : t( "This-observer-has-opted-out-of-the-Community-Taxon" )
+            }
+          </Body4>
+        )
+      }
       <ObservationLocation observation={observation} classNameMargin="mx-3 mb-2" />
     </View>
   );

@@ -2,8 +2,8 @@
 
 import classnames from "classnames";
 import {
-  CloseButton, Heading4,
-  INatIconButton,
+  CloseButton,
+  Heading4,
   Map,
   ViewWrapper
 } from "components/SharedComponents";
@@ -46,7 +46,6 @@ type Props = {
   selectPlaceResult: Function,
   setMapReady: Function,
   showCrosshairs: boolean,
-  toggleMapLayer: Function,
   updateLocationName: Function,
   updateRegion: Function,
   updateObservationKeys: Function
@@ -66,7 +65,6 @@ const LocationPicker = ( {
   selectPlaceResult,
   setMapReady = ( ) => { },
   showCrosshairs,
-  toggleMapLayer,
   updateLocationName,
   updateRegion,
   updateObservationKeys
@@ -132,24 +130,11 @@ const LocationPicker = ( {
           }}
           onMapReady={setMapReady}
           showCurrentLocationButton
+          showSwitchMapTypeButton
           obsLatitude={region.latitude}
           obsLongitude={region.longitude}
           testID="LocationPicker.Map"
         />
-        <View
-          style={getShadow( theme.colors.primary )}
-          className="absolute bottom-3 bg-white left-3 rounded-full"
-        >
-          <INatIconButton
-            icon="layers"
-            onPress={toggleMapLayer}
-            height={46}
-            width={46}
-            size={24}
-            accessibilityLabel={t( "Map-layers" )}
-            accessibilityHint={t( "Toggles-map-layer" )}
-          />
-        </View>
       </View>
       <Footer
         keysToUpdate={keysToUpdate}

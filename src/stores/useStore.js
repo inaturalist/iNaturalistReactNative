@@ -1,4 +1,5 @@
 // eslint-disable-next-line
+import { Realm } from "@realm/react";
 import { create } from "zustand";
 import _ from "lodash";
 
@@ -19,6 +20,10 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   return [];
 };
 
+const observationToJSON = observation => ( observation instanceof Realm.Object
+  ? observation.toJSON( )
+  : observation );
+
 const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const {
     observations,
@@ -27,9 +32,7 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   } = state;
   const updatedObservations = observations;
   const updatedObservation = {
-    ...( currentObservation.toJSON
-      ? currentObservation.toJSON( )
-      : currentObservation ),
+    ...observationToJSON( currentObservation ),
     ...keysAndValues
   };
   updatedObservations[currentObservationIndex] = updatedObservation;
@@ -91,14 +94,14 @@ const useStore = create( set => ( {
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,
-    currentObservation: state.observations[index]
+    currentObservation: observationToJSON( state.observations[index] )
   } ) ),
   setGroupedPhotos: photos => set( {
     groupedPhotos: photos
   } ),
   setObservations: updatedObservations => set( state => ( {
     observations: updatedObservations,
-    currentObservation: updatedObservations[state.currentObservationIndex]
+    currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )
   } ) ),
   setPhotoEvidenceUris: uris => set( {
     photoEvidenceUris: uris
@@ -109,13 +112,13 @@ const useStore = create( set => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     groupedPhotos: options?.groupedPhotos || state.groupedPhotos,
     observations: options?.observations || state.observations,
-    currentObservation: options?.observations?.[state.currentObservationIndex]
-    || state.observations?.[state.currentObservationIndex]
+    currentObservation: observationToJSON( options?.observations?.[state.currentObservationIndex]
+    || state.observations?.[state.currentObservationIndex] )
   } ) ),
   updateComment: newComment => set( { comment: newComment } ),
   updateObservations: updatedObservations => set( state => ( {
     observations: updatedObservations,
-    currentObservation: updatedObservations[state.currentObservationIndex],
+    currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
     unsavedChanges: true
   } ) ),
   updateObservationKeys: keysAndValues => set( state => ( {

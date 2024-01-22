@@ -11,7 +11,6 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  onPress: ?Function,
   photos: Array<{
     id?: number,
     url: string,
@@ -22,7 +21,6 @@ type Props = {
 }
 
 const PhotoScroll = ( {
-  onPress,
   photos
 }: Props ): Node => {
   const { width } = Dimensions.get( "window" );
@@ -46,9 +44,6 @@ const PhotoScroll = ( {
         accessibilityIgnoresInvertColors
       />
     );
-    if ( !onPress ) {
-      return image;
-    }
     return (
       <Pressable
         onPress={( ) => setMediaViewerVisible( true )}
@@ -58,7 +53,7 @@ const PhotoScroll = ( {
         {image}
       </Pressable>
     );
-  }, [onPress, t] );
+  }, [t] );
 
   return (
     <View className="relative">

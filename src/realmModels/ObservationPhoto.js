@@ -20,18 +20,12 @@ class ObservationPhoto extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static mapApiToRealm( observationPhoto, existingObs ) {
-    const obsPhotos = existingObs?.observationPhotos;
-    const existingObsPhoto = obsPhotos?.find( p => p.uuid === observationPhoto.uuid );
-
+  static mapApiToRealm( observationPhoto, realm = null ) {
     const localObsPhoto = {
       ...observationPhoto,
       _synced_at: new Date( ),
-      photo: Photo.mapApiToRealm( observationPhoto.photo, existingObsPhoto )
+      photo: Photo.mapApiToRealm( observationPhoto.photo, realm )
     };
-    if ( !existingObsPhoto ) {
-      localObsPhoto._created_at = new Date( );
-    }
     return localObsPhoto;
   }
 

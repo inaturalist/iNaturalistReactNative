@@ -19,6 +19,7 @@ async function signOut( options = {} ) {
   await RNSInfo.deleteItem( "jwtToken" );
   await RNSInfo.deleteItem( "jwtGeneratedAt" );
   await RNSInfo.deleteItem( "accessToken" );
+  inatjs.users.me.mockClear( );
 }
 
 async function signIn( user, options = {} ) {

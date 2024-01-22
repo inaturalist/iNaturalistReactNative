@@ -26,8 +26,6 @@ const DetailsMapContainer = ( {
   } );
 
   const [showNotificationModal, setShowNotificationModal] = useState( false );
-  const [mapTypeIndex, setMapTypeIndex] = useState( 0 );
-  const mapTypes = ["standard", "satellite", "hybrid"];
   const displayCoordinates = t( "Lat-Lon-Acc", {
     latitude,
     longitude,
@@ -52,14 +50,6 @@ const DetailsMapContainer = ( {
     setTimeout( closeShowNotificationModal, 2000 );
   };
 
-  const cycleMapTypes = () => {
-    if ( mapTypeIndex < 2 ) {
-      setMapTypeIndex( mapTypeIndex + 1 );
-    } else {
-      setMapTypeIndex( 0 );
-    }
-  };
-
   const shareMap = () => {
     // takes in a provider prop but opens in browser instead of in app(google maps on iOS)
     openMap( { query: `${latitude}, ${longitude}` } );
@@ -76,10 +66,8 @@ const DetailsMapContainer = ( {
       positionalAccuracy={observation.positional_accuracy}
       displayLocation={displayLocation}
       displayCoordinates={displayCoordinates}
-      mapType={mapTypes[mapTypeIndex]}
       copyCoordinates={copyCoordinates}
       shareMap={shareMap}
-      cycleMapTypes={cycleMapTypes}
       showNotificationModal={showNotificationModal}
       closeNotificationsModal={closeShowNotificationModal}
       closeModal={closeModal}

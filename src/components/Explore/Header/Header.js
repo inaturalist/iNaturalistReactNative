@@ -99,7 +99,8 @@ const Header = ( {
                     } );
                   }
                 }}
-                value={taxonName || t( "All-organisms" )}
+                value={taxonName}
+                placeholder={t( "All-organisms" )}
                 testID="Explore.taxonSearch"
                 containerClass="w-[250px]"
                 input={taxonInput}
@@ -139,7 +140,8 @@ const Header = ( {
                     } );
                   }
                 }}
-                value={placeName || t( "Worldwide" )}
+                value={placeName}
+                placeholder={t( "Worldwide" )}
                 testID="Explore.placeSearch"
                 containerClass="w-[250px]"
                 input={placeInput}

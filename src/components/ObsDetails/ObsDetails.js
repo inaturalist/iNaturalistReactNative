@@ -90,6 +90,7 @@ const ObsDetails = ( {
         <ObsDetailsHeader
           observation={observation}
           isOnline={isOnline}
+          belongsToCurrentUser={belongsToCurrentUser}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
@@ -130,7 +131,7 @@ const ObsDetails = ( {
       {showCommentBox && (
         <TextInputSheet
           handleClose={hideCommentBox}
-          headerText={t( "ADD-OPTIONAL-COMMENT" )}
+          headerText={t( "ADD-COMMENT" )}
           textInputStyle={textInputStyle}
           confirm={textInput => onCommentAdded( textInput )}
         />
