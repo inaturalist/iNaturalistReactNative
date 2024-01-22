@@ -25,7 +25,7 @@ const ExploreProjectSearch = ( ): Node => {
     optsWithAuth => searchProjects( { q: userQuery }, optsWithAuth )
   );
 
-  const onUserSelected = useCallback( async project => {
+  const onProjectSelected = useCallback( async project => {
     if ( !project.id ) {
       // If this is missing, we can not query by project
       // TODO: user facing error message
@@ -38,7 +38,7 @@ const ExploreProjectSearch = ( ): Node => {
   const renderItem = useCallback(
     ( { item } ) => (
       <Pressable
-        onPress={() => onUserSelected( item )}
+        onPress={() => onProjectSelected( item )}
         accessibilityRole="button"
         // TODO: accessibilityLabel={t( "Something like ?" )}
         accessibilityState={{ disabled: false }}
@@ -48,7 +48,7 @@ const ExploreProjectSearch = ( ): Node => {
         />
       </Pressable>
     ),
-    [onUserSelected]
+    [onProjectSelected]
   );
 
   const renderItemSeparator = () => (
