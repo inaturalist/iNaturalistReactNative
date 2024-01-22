@@ -847,9 +847,6 @@ const FilterModal = ( {
 
         {/* Establishment Means section */}
         <View className="mb-7">
-          <Heading4 className="mb-5">
-            {t( "TODO: this section does not use state on explore screen" )}
-          </Heading4>
           <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
           <Checkbox
             isChecked={introduced}
