@@ -14,11 +14,12 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { useAuthenticatedQuery } from "sharedHooks";
+import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
 const ExploreUserSearch = ( ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const navigation = useNavigation( );
+  const { t } = useTranslation();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
   const { data: userList } = useAuthenticatedQuery(
@@ -47,7 +48,7 @@ const ExploreUserSearch = ( ): Node => {
       <Pressable
         onPress={() => onUserSelected( item )}
         accessibilityRole="button"
-        // TODO: accessibilityLabel={t( "Something like ?" )}
+        accessibilityLabel={t( "Change-user" )}
         accessibilityState={{ disabled: false }}
       >
         <UserListItem
@@ -57,7 +58,7 @@ const ExploreUserSearch = ( ): Node => {
         />
       </Pressable>
     ),
-    [onUserSelected]
+    [onUserSelected, t]
   );
 
   // TODO: pagination like in ExploreFlashList ?
