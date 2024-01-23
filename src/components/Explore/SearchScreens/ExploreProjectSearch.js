@@ -4,10 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { searchProjects } from "api/projects";
 import {
+  ProjectListItem,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
-import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {

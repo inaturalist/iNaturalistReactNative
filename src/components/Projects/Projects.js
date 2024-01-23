@@ -2,11 +2,15 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  Body1, Button,
-  Heading1, INatIcon,
-  SearchBar, Tabs, ViewWrapper
+  Body1,
+  Button,
+  Heading1,
+  INatIcon,
+  ProjectListItem,
+  SearchBar,
+  Tabs,
+  ViewWrapper
 } from "components/SharedComponents";
-import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";

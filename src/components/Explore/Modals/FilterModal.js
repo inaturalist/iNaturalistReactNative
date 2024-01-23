@@ -13,12 +13,12 @@ import {
   IconicTaxonChooser,
   INatIcon,
   INatIconButton,
+  ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
   StickyToolbar,
   WarningSheet
 } from "components/SharedComponents";
-import ProjectListItem from "components/SharedComponents/ProjectListItem";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import {
