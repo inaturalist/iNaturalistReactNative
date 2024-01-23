@@ -55,6 +55,7 @@ export const RadioButtonRow = ( {
           textAlignVertical: "center"
         }}
         className="p-0"
+        accessibilityLabel={label}
       />
       {description && <List2 className="ml-[37px] mr-[33px] py-1">{description}</List2>}
     </RadioButton.Group>
@@ -99,6 +100,7 @@ const RadioButtonSheet = ( {
           text={t( "CONFIRM" )}
           onPress={( ) => confirm( checked )}
           className="mt-[15px]"
+          accessibilityLabel={t( "CONFIRM" )}
         />
       </View>
     </BottomSheet>

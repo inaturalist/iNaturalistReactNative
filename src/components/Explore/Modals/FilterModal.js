@@ -483,7 +483,10 @@ const FilterModal = ( {
         </View>
         {filtersNotDefault
           ? (
-            <Body3 onPress={() => dispatch( { type: EXPLORE_ACTION.RESET } )}>
+            <Body3
+              accessibilityRole="button"
+              onPress={() => dispatch( { type: EXPLORE_ACTION.RESET } )}
+            >
               {t( "Reset" )}
             </Body3>
           )
@@ -567,6 +570,7 @@ const FilterModal = ( {
               onPress={() => {
                 setOpenSheet( SORT_BY_M );
               }}
+              accessibilityLabel={t( "Sort-by" )}
             />
             {openSheet === SORT_BY_M && (
               <SortBySheet
@@ -682,6 +686,7 @@ const FilterModal = ( {
             onPress={() => {
               setOpenSheet( LRANK );
             }}
+            accessibilityLabel={t( "Lowest" )}
           />
           {openSheet === LRANK && (
             <RadioButtonSheet
@@ -708,6 +713,7 @@ const FilterModal = ( {
             onPress={() => {
               setOpenSheet( HRANK );
             }}
+            accessibilityLabel={t( "Highest" )}
           />
           {openSheet === HRANK && (
             // TODO: scrollable sheet
@@ -737,6 +743,7 @@ const FilterModal = ( {
             onPress={() => {
               setOpenSheet( DATE_OBSERVED_M );
             }}
+            accessibilityLabel={t( "Date-observed" )}
           />
           {dateObserved === dateObservedValues.exactDate.value && (
             <View className="items-center">
@@ -749,6 +756,7 @@ const FilterModal = ( {
                 onPress={() => {
                   setOpenSheet( OBSERVED_EXACT );
                 }}
+                accessibilityLabel={t( "Change-date" )}
               />
               <DateTimePicker
                 isDateTimePickerVisible={openSheet === OBSERVED_EXACT}
@@ -791,6 +799,7 @@ const FilterModal = ( {
             onPress={() => {
               setOpenSheet( DATE_UPLOADED_M );
             }}
+            accessibilityLabel={t( "Date-uploaded" )}
           />
           {dateUploaded === dateUploadedValues.exactDate.value && (
             <View className="items-center">
@@ -803,6 +812,7 @@ const FilterModal = ( {
                 onPress={() => {
                   setOpenSheet( UPLOADED_EXACT );
                 }}
+                accessibilityLabel={t( "Change-date" )}
               />
               <DateTimePicker
                 isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
@@ -925,6 +935,7 @@ const FilterModal = ( {
             onPress={() => {
               setOpenSheet( PHOTO_LICENSING );
             }}
+            accessibilityLabel={t( "Photo-licensing" )}
           />
           {openSheet === PHOTO_LICENSING && (
             <RadioButtonSheet
@@ -966,6 +977,8 @@ const FilterModal = ( {
             level="focus"
             text={t( "APPLY-FILTERS" )}
             onPress={closeModal}
+            accessibilityLabel={t( "Apply-filters" )}
+            accessibilityState={{ disabled: !differsFromSnapshot }}
           />
         </View>
         {openSheet === CONFIRMATION && (

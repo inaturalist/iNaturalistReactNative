@@ -63,6 +63,8 @@ An-Internet-connection-is-required = An Internet connection is required to load 
 
 APPLY-FILTERS = APPLY FILTERS
 
+Apply-filters = Apply filters
+
 Arachnids = Arachnids
 
 Are-you-sure = Are you sure?
@@ -126,6 +128,8 @@ CC-BY-NC-SA = CC BY-NC-SA
 CC-BY-NC-ND = CC BY-NC-ND
 
 CHANGE-DATE = CHANGE DATE
+
+Change-date = Change date
 
 Change-project = Change project
 
@@ -635,6 +639,8 @@ Paused = Paused
 Photo-Licensing = Photo Licensing
 
 PHOTO-LICENSING = PHOTO LICENSING
+
+Photo-Licensing = Photo Licensing
 
 Photos = Photos
 
