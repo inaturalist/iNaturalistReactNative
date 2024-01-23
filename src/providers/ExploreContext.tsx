@@ -37,6 +37,45 @@ export enum SORT_BY {
   MOST_FAVED = "MOST_FAVED",
 }
 
+// TODO: this should be imported from a central point, e.g. Taxon realm model
+// TODO: this is probably against conventioins to make it in lower case but I (Johannes) don't want to have to add another object somewhere else to map them to the values the API accepts
+export enum TAXONOMIC_RANK {
+    kingdom = "kingdom",
+    phylum = "phylum",
+    subphylum = "subphylum",
+    superclass = "superclass",
+    class = "class",
+    subclass = "subclass",
+    infraclass = "infraclass",
+    subterclass = "subterclass",
+    superorder = "superorder",
+    order = "order",
+    suborder = "suborder",
+    infraorder = "infraorder",
+    parvorder = "parvorder",
+    zoosection = "zoosection",
+    zoosubsection = "zoosubsection",
+    superfamily = "superfamily",
+    epifamily = "epifamily",
+    family = "family",
+    subfamily = "subfamily",
+    supertribe = "supertribe",
+    tribe = "tribe",
+    subtribe = "subtribe",
+    genus = "genus",
+    genushybrid = "genushybrid",
+    subgenus = "subgenus",
+    section = "section",
+    subsection = "subsection",
+    complex = "complex",
+    species = "species",
+    hybrid = "hybrid",
+    subspecies = "subspecies",
+    variety = "variety",
+    form = "form",
+    infrahybrid = "infrahybrid",
+  }
+
 export enum DATE_OBSERVED {
   ALL = "ALL",
   EXACT_DATE = "EXACT_DATE",
@@ -98,8 +137,8 @@ type State = {
   researchGrade: boolean,
   needsID: boolean,
   casual: boolean,
-  hrank: string | undefined,
-  lrank: string | undefined,
+  hrank: TAXONOMIC_RANK | undefined,
+  lrank: TAXONOMIC_RANK | undefined,
   dateObserved: DATE_OBSERVED,
   observed_on: string | null | undefined,
   months: number[] | null | undefined,
@@ -125,8 +164,8 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
   | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
   | {type: EXPLORE_ACTION.TOGGLE_CASUAL}
-  | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK, hrank: string}
-  | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: string}
+  | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK, hrank: TAXONOMIC_RANK}
+  | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: TAXONOMIC_RANK}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observed_on: string}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}

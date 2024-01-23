@@ -29,6 +29,7 @@ import {
   PHOTO_LICENSE,
   REVIEWED,
   SORT_BY,
+  TAXONOMIC_RANK,
   useExplore,
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
@@ -138,141 +139,141 @@ const FilterModal = ( {
   const tUp = key => t( key ).toUpperCase();
 
   const taxonomicRankValues = {
-    kingdom: {
+    [TAXONOMIC_RANK.kingdom]: {
       label: tUp( "Ranks-kingdom" ),
-      value: "kingdom"
+      value: TAXONOMIC_RANK.kingdom
     },
-    phylum: {
+    [TAXONOMIC_RANK.phylum]: {
       label: tUp( "Ranks-phylum" ),
-      value: "phylum"
+      value: TAXONOMIC_RANK.phylum
     },
-    subphylum: {
+    [TAXONOMIC_RANK.subphylum]: {
       label: tUp( "Ranks-subphylum" ),
-      value: "subphylum"
+      value: TAXONOMIC_RANK.subphylum
     },
-    superclass: {
+    [TAXONOMIC_RANK.superclass]: {
       label: tUp( "Ranks-superclass" ),
-      value: "superclass"
+      value: TAXONOMIC_RANK.superclass
     },
-    class: {
+    [TAXONOMIC_RANK.class]: {
       label: tUp( "Ranks-class" ),
-      value: "class"
+      value: TAXONOMIC_RANK.class
     },
-    subclass: {
+    [TAXONOMIC_RANK.subclass]: {
       label: tUp( "Ranks-subclass" ),
-      value: "subclass"
+      value: TAXONOMIC_RANK.subclass
     },
-    infraclass: {
+    [TAXONOMIC_RANK.infraclass]: {
       label: tUp( "Ranks-infraclass" ),
-      value: "infraclass"
+      value: TAXONOMIC_RANK.infraclass
     },
-    subterclass: {
+    [TAXONOMIC_RANK.subterclass]: {
       label: tUp( "Ranks-subterclass" ),
-      value: "subterclass"
+      value: TAXONOMIC_RANK.subterclass
     },
-    superorder: {
+    [TAXONOMIC_RANK.superorder]: {
       label: tUp( "Ranks-superorder" ),
-      value: "superorder"
+      value: TAXONOMIC_RANK.superorder
     },
-    order: {
+    [TAXONOMIC_RANK.order]: {
       label: tUp( "Ranks-order" ),
-      value: "order"
+      value: TAXONOMIC_RANK.order
     },
-    suborder: {
+    [TAXONOMIC_RANK.suborder]: {
       label: tUp( "Ranks-suborder" ),
-      value: "suborder"
+      value: TAXONOMIC_RANK.suborder
     },
-    infraorder: {
+    [TAXONOMIC_RANK.infraorder]: {
       label: tUp( "Ranks-infraorder" ),
-      value: "infraorder"
+      value: TAXONOMIC_RANK.infraorder
     },
-    parvorder: {
+    [TAXONOMIC_RANK.parvorder]: {
       label: tUp( "Ranks-parvorder" ),
-      value: "parvorder"
+      value: TAXONOMIC_RANK.parvorder
     },
-    zoosection: {
+    [TAXONOMIC_RANK.zoosection]: {
       label: tUp( "Ranks-zoosection" ),
-      value: "zoosection"
+      value: TAXONOMIC_RANK.zoosection
     },
-    zoosubsection: {
+    [TAXONOMIC_RANK.zoosubsection]: {
       label: tUp( "Ranks-zoosubsection" ),
-      value: "zoosubsection"
+      value: TAXONOMIC_RANK.zoosubsection
     },
-    superfamily: {
+    [TAXONOMIC_RANK.superfamily]: {
       label: tUp( "Ranks-superfamily" ),
-      value: "superfamily"
+      value: TAXONOMIC_RANK.superfamily
     },
-    epifamily: {
+    [TAXONOMIC_RANK.epifamily]: {
       label: tUp( "Ranks-epifamily" ),
-      value: "epifamily"
+      value: TAXONOMIC_RANK.epifamily
     },
-    family: {
+    [TAXONOMIC_RANK.family]: {
       label: tUp( "Ranks-family" ),
-      value: "family"
+      value: TAXONOMIC_RANK.family
     },
-    subfamily: {
+    [TAXONOMIC_RANK.subfamily]: {
       label: tUp( "Ranks-subfamily" ),
-      value: "subfamily"
+      value: TAXONOMIC_RANK.subfamily
     },
-    supertribe: {
+    [TAXONOMIC_RANK.supertribe]: {
       label: tUp( "Ranks-supertribe" ),
-      value: "supertribe"
+      value: TAXONOMIC_RANK.supertribe
     },
-    tribe: {
+    [TAXONOMIC_RANK.tribe]: {
       label: tUp( "Ranks-tribe" ),
-      value: "tribe"
+      value: TAXONOMIC_RANK.tribe
     },
-    subtribe: {
+    [TAXONOMIC_RANK.subtribe]: {
       label: tUp( "Ranks-subtribe" ),
-      value: "subtribe"
+      value: TAXONOMIC_RANK.subtribe
     },
-    genus: {
+    [TAXONOMIC_RANK.genus]: {
       label: tUp( "Ranks-genus" ),
-      value: "genus"
+      value: TAXONOMIC_RANK.genus
     },
-    genushybrid: {
+    [TAXONOMIC_RANK.genushybrid]: {
       label: tUp( "Ranks-genushybrid" ),
-      value: "genushybrid"
+      value: TAXONOMIC_RANK.genushybrid
     },
-    subgenus: {
+    [TAXONOMIC_RANK.subgenus]: {
       label: tUp( "Ranks-subgenus" ),
-      value: "subgenus"
+      value: TAXONOMIC_RANK.subgenus
     },
-    section: {
+    [TAXONOMIC_RANK.section]: {
       label: tUp( "Ranks-section" ),
-      value: "section"
+      value: TAXONOMIC_RANK.section
     },
-    subsection: {
+    [TAXONOMIC_RANK.subsection]: {
       label: tUp( "Ranks-subsection" ),
-      value: "subsection"
+      value: TAXONOMIC_RANK.subsection
     },
-    complex: {
+    [TAXONOMIC_RANK.complex]: {
       label: tUp( "Ranks-complex" ),
-      value: "complex"
+      value: TAXONOMIC_RANK.complex
     },
-    species: {
+    [TAXONOMIC_RANK.species]: {
       label: tUp( "Ranks-species" ),
-      value: "species"
+      value: TAXONOMIC_RANK.species
     },
-    hybrid: {
+    [TAXONOMIC_RANK.hybrid]: {
       label: tUp( "Ranks-hybrid" ),
-      value: "hybrid"
+      value: TAXONOMIC_RANK.hybrid
     },
-    subspecies: {
+    [TAXONOMIC_RANK.subspecies]: {
       label: tUp( "Ranks-subspecies" ),
-      value: "subspecies"
+      value: TAXONOMIC_RANK.subspecies
     },
-    variety: {
+    [TAXONOMIC_RANK.variety]: {
       label: tUp( "Ranks-variety" ),
-      value: "variety"
+      value: TAXONOMIC_RANK.variety
     },
-    form: {
+    [TAXONOMIC_RANK.form]: {
       label: tUp( "Ranks-form" ),
-      value: "form"
+      value: TAXONOMIC_RANK.form
     },
-    infrahybrid: {
+    [TAXONOMIC_RANK.infrahybrid]: {
       label: tUp( "Ranks-infrahybrid" ),
-      value: "infrahybrid"
+      value: TAXONOMIC_RANK.infrahybrid
     }
   };
 
