@@ -392,7 +392,7 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
   const [state, dispatch] = React.useReducer( exploreReducer, initialState );
 
   // To store a snapshot of the state, e.g when the user opens the filters modal
-  const [snapshot, setSnapshot] = React.useState<Object | undefined>( undefined );
+  const [snapshot, setSnapshot] = React.useState<State | undefined>( undefined );
   const makeSnapshot = () => setSnapshot( state );
   
   // Check if the current state is different from the snapshot
