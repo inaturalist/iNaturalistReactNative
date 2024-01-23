@@ -27,7 +27,8 @@ import {
   EXPLORE_ACTION,
   MEDIA,
   SORT_BY,
-  useExplore
+  useExplore,
+  WILD_STATUS
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -373,17 +374,17 @@ const FilterModal = ( {
   };
 
   const wildValues = {
-    all: {
+    [WILD_STATUS.ALL]: {
       label: t( "All" ),
-      value: "all"
+      value: WILD_STATUS.ALL
     },
-    wild: {
+    [WILD_STATUS.WILD]: {
       label: t( "Wild" ),
-      value: "wild"
+      value: WILD_STATUS.WILD
     },
-    captive: {
+    [WILD_STATUS.CAPTIVE]: {
       label: t( "Captive-Cultivated" ),
-      value: "captive"
+      value: WILD_STATUS.CAPTIVE
     }
   };
 

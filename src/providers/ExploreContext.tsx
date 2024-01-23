@@ -58,9 +58,9 @@ export enum MEDIA {
 }
 
 export enum WILD_STATUS {
-  ALL = DEFAULT,
-  WILD = "wild",
-  CAPTIVE = "captive"
+  ALL = "ALL",
+  WILD = "WILD",
+  CAPTIVE = "CAPTIVE"
 }
 
 export enum REVIEWED {
