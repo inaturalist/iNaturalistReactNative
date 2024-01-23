@@ -29,8 +29,6 @@ export enum EXPLORE_ACTION {
   SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE"
 }
 
-const DEFAULT = "all";
-
 export enum SORT_BY {
   DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST",
   DATE_UPLOADED_OLDEST = "DATE_UPLOADED_OLDEST",
@@ -69,11 +67,17 @@ export enum REVIEWED {
   UNREVIEWED = "UNREVIEWED"
 }
 
-enum PHOTO_LICENSE {
-  ALL = DEFAULT
+export enum PHOTO_LICENSE {
+  ALL = "ALL",
+  CC0 = "CC0",
+  CCBY = "CCBY",
+  CCBYNC = "CCBYNC",
+  CCBYSA = "CCBYSA",
+  CCBYND = "CCBYND",
+  CCBYNCSA = "CCBYNCSA",
+  CCBYNCND = "CCBYNCND",
 }
 
-// TODO: photoLicense should be only an enum
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: Object}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
@@ -99,13 +103,13 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.TOGGLE_NO_STATUS}
   | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
-  | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE | string}
+  | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
 type Dispatch = (action: Action) => void
 type State = {
   verifiable: boolean,
   return_bounds: boolean,
   // TODO: not any Object but a "Taxon" type (from server?)
-  taxon: Object,
+  taxon: Object | undefined,
   taxon_id: number | null | undefined,
   taxon_name: string,
   place_id: number | null | undefined,
@@ -137,7 +141,7 @@ type State = {
   noStatus: boolean
   wildStatus: WILD_STATUS,
   reviewedFilter: REVIEWED,
-  photoLicense: PHOTO_LICENSE | string
+  photoLicense: PHOTO_LICENSE
 }
 type CountProviderProps = {children: React.ReactNode}
 

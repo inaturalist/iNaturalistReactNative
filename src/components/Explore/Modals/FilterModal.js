@@ -26,6 +26,7 @@ import {
   DATE_UPLOADED,
   EXPLORE_ACTION,
   MEDIA,
+  PHOTO_LICENSE,
   REVIEWED,
   SORT_BY,
   useExplore,
@@ -405,37 +406,37 @@ const FilterModal = ( {
   };
 
   const photoLicensingValues = {
-    all: {
+    [PHOTO_LICENSE.ALL]: {
       label: t( "All" ),
-      value: "all"
+      value: PHOTO_LICENSE.ALL
     },
-    cc0: {
+    [PHOTO_LICENSE.CC0]: {
       label: t( "CC0" ),
-      value: "cc0"
+      value: PHOTO_LICENSE.CC0
     },
-    ccby: {
+    [PHOTO_LICENSE.CCBY]: {
       label: t( "CC-BY" ),
-      value: "ccby"
+      value: PHOTO_LICENSE.CCBY
     },
-    ccbync: {
+    [PHOTO_LICENSE.CCBYNC]: {
       label: t( "CC-BY-NC" ),
-      value: "ccbync"
+      value: PHOTO_LICENSE.CCBYNC
     },
-    ccbysa: {
+    [PHOTO_LICENSE.CCBYSA]: {
       label: t( "CC-BY-SA" ),
-      value: "ccbysa"
+      value: PHOTO_LICENSE.CCBYSA
     },
-    ccbynd: {
+    [PHOTO_LICENSE.CCBYND]: {
       label: t( "CC-BY-ND" ),
-      value: "ccbynd"
+      value: PHOTO_LICENSE.CCBYND
     },
-    ccbyncsa: {
+    [PHOTO_LICENSE.CCBYNCSA]: {
       label: t( "CC-BY-NC-SA" ),
-      value: "ccbyncsa"
+      value: PHOTO_LICENSE.CCBYNCSA
     },
-    ccbyncnd: {
+    [PHOTO_LICENSE.CCBYNCND]: {
       label: t( "CC-BY-NC-ND" ),
-      value: "ccbyncnd"
+      value: PHOTO_LICENSE.CCBYNCND
     }
   };
 

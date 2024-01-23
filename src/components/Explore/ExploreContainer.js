@@ -6,6 +6,7 @@ import {
   EXPLORE_ACTION,
   ExploreProvider,
   MEDIA,
+  PHOTO_LICENSE,
   REVIEWED,
   SORT_BY,
   useExplore,
@@ -30,8 +31,6 @@ const OBSERVED_ON = "observed_on";
 
 const DESC = "desc";
 const ASC = "asc";
-
-const ALL = "all";
 
 const mapParamsToAPI = ( params, currentUser ) => {
   const filteredParams = Object.entries( params ).reduce(
@@ -103,16 +102,15 @@ const mapParamsToAPI = ( params, currentUser ) => {
     filteredParams.viewer_id = currentUser?.id;
   }
 
-  if ( params.photoLicense !== ALL ) {
+  if ( params.photoLicense !== PHOTO_LICENSE.ALL ) {
     const licenseParams = {
-      all: "all",
-      cc0: "cc0",
-      ccby: "cc-by",
-      ccbync: "cc-by-nc",
-      ccbysa: "cc-by-sa",
-      ccbynd: "cc-by-nd",
-      ccbyncsa: "cc-by-nc-sa",
-      ccbyncnd: "cc-by-nc-nd"
+      [PHOTO_LICENSE.CC0]: "cc0",
+      [PHOTO_LICENSE.CCBY]: "cc-by",
+      [PHOTO_LICENSE.CCBYNC]: "cc-by-nc",
+      [PHOTO_LICENSE.CCBYSA]: "cc-by-sa",
+      [PHOTO_LICENSE.CCBYND]: "cc-by-nd",
+      [PHOTO_LICENSE.CCBYNCSA]: "cc-by-nc-sa",
+      [PHOTO_LICENSE.CCBYNCND]: "cc-by-nc-nd"
     };
     filteredParams.photo_license = licenseParams[params.photoLicense];
   }
