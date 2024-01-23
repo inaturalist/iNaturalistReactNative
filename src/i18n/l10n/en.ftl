@@ -826,6 +826,8 @@ Search-for-description-tags-text = Search for description/tags text
 
 SEARCH-LOCATION = SEARCH LOCATION
 
+SEARCH-PROJECT = SEARCH PROJECT
+
 SEARCH-TAXA = SEARCH TAXA
 
 SEARCH-USER = SEARCH USER
