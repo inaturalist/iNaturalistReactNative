@@ -1,7 +1,6 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
-import { RealmContext } from "providers/contexts";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
@@ -17,8 +16,6 @@ import React, { useEffect, useState } from "react";
 import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
-
-const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
@@ -125,7 +122,6 @@ const ExploreContainerWithContext = ( ): Node => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
 
-  const realm = useRealm();
   const currentUser = useCurrentUser();
 
   const { state, dispatch, makeSnapshot } = useExplore();
@@ -192,13 +188,7 @@ const ExploreContainerWithContext = ( ): Node => {
     setExploreView( newView );
   };
 
-  const updateTaxon = ( taxonName: string ) => {
-    const selectedTaxon = realm
-      ?.objects( "Taxon" )
-      .filtered( "name CONTAINS[c] $0", taxonName );
-    const taxon = selectedTaxon.length > 0
-      ? selectedTaxon[0]
-      : null;
+  const updateTaxon = ( taxon: Object ) => {
     dispatch( {
       type: EXPLORE_ACTION.CHANGE_TAXON,
       taxon,

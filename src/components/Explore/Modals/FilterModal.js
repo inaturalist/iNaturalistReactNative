@@ -20,6 +20,7 @@ import {
 } from "components/SharedComponents";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
@@ -37,6 +38,8 @@ import React, { useState } from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
+
+const { useRealm } = RealmContext;
 
 const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
@@ -70,6 +73,7 @@ const FilterModal = ( {
 }: Props ): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const realm = useRealm();
 
   const {
     state,
@@ -572,7 +576,18 @@ const FilterModal = ( {
                 />
               )}
           </View>
-          <IconicTaxonChooser taxon={taxon} onTaxonChosen={updateTaxon} />
+          <IconicTaxonChooser
+            taxon={taxon}
+            onTaxonChosen={( taxonName: string ) => {
+              const selectedTaxon = realm
+                ?.objects( "Taxon" )
+                .filtered( "name CONTAINS[c] $0", taxonName );
+              const iconicTaxon = selectedTaxon.length > 0
+                ? selectedTaxon[0]
+                : null;
+              updateTaxon( iconicTaxon );
+            }}
+          />
         </View>
 
         {/* Location Section */}
