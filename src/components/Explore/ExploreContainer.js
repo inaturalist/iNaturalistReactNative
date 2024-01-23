@@ -153,9 +153,9 @@ const ExploreContainerWithContext = ( ): Node => {
     if ( params?.taxon ) {
       dispatch( {
         type: EXPLORE_ACTION.CHANGE_TAXON,
-        taxon: params?.taxon,
-        taxonId: params?.taxon.id,
-        taxonName: params?.taxon.preferred_common_name || params?.taxon.name
+        taxon: params.taxon,
+        taxonId: params.taxon?.id,
+        taxonName: params.taxon?.preferred_common_name || params.taxon?.name
       } );
     }
     if ( params?.place ) {

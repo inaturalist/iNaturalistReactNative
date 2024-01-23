@@ -123,8 +123,8 @@ type State = {
   return_bounds: boolean,
   // TODO: technically this is not any Object but a "Taxon" and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
-  taxon_id: number | null | undefined,
-  taxon_name: string,
+  taxon_id: number | undefined,
+  taxon_name: string | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
