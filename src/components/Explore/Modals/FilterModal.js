@@ -710,7 +710,8 @@ const FilterModal = ( {
           />
           {openSheet === LRANK && (
             <RadioButtonSheet
-              headerText={t( "TAXONOMIC-RANKS" )}
+              headerText={t( "TODO: this sheet needs to be scrollable" )}
+              // headerText={t( "TAXONOMIC-RANKS" )}
               confirm={newRank => {
                 dispatch( {
                   type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
@@ -738,7 +739,8 @@ const FilterModal = ( {
           {openSheet === HRANK && (
             // TODO: scrollable sheet
             <RadioButtonSheet
-              headerText={t( "TAXONOMIC-RANKS" )}
+              headerText={t( "TODO: this sheet needs to be scrollable" )}
+              // headerText={t( "TAXONOMIC-RANKS" )}
               confirm={newRank => {
                 dispatch( {
                   type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
@@ -907,7 +909,8 @@ const FilterModal = ( {
             onPress={() => dispatch( {
               type: EXPLORE_ACTION.TOGGLE_NO_STATUS
             } )}
-            text={t( "No-Status" )}
+            text={t( "TODO: No-Status (does not change API request atm)" )}
+            // text={t( "No-Status" )}
           />
         </View>
 
