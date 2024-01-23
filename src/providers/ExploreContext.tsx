@@ -41,32 +41,32 @@ export enum SORT_BY {
 
 export enum DATE_OBSERVED {
   ALL = DEFAULT,
-  EXACT_DATE = "EXACT_DATE",
-  MONTHS = "MONTHS",
+  EXACT_DATE = "exactDate",
+  MONTHS = "months",
 }
 
 export enum DATE_UPLOADED {
   ALL = DEFAULT,
-  EXACT_DATE = "EXACT_DATE",
+  EXACT_DATE = "exactDate",
 }
 
 export enum MEDIA {
   ALL = DEFAULT,
-  PHOTOS = "PHOTOS",
-  SOUNDS = "SOUNDS",
-  NONE = "NONE"
+  PHOTOS = "photos",
+  SOUNDS = "sounds",
+  NONE = "noMedia"
 }
 
 export enum WILD_STATUS {
   ALL = DEFAULT,
-  WILD = "WILD",
-  CAPTIVE = "CAPTIVE"
+  WILD = "wild",
+  CAPTIVE = "captive"
 }
 
 export enum REVIEWED {
   ALL = DEFAULT,
-  REVIEWED = "REVIEWED",
-  UNREVIEWED = "UNREVIEWED"
+  REVIEWED = "reviewed",
+  UNREVIEWED = "unreviewed"
 }
 
 enum PHOTO_LICENSE {
