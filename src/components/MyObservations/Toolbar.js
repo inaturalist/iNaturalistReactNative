@@ -10,97 +10,49 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
-import { Dimensions, PixelRatio } from "react-native";
+import React from "react";
 import { ProgressBar, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
-const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
-
 type Props = {
-  layout: string,
+  error: ?string,
   handleSyncButtonPress: Function,
-  stopUploads: Function,
-  progress: number,
-  numUnuploadedObs: number,
-  showsExploreIcon: boolean,
+  layout: string,
   navToExplore: Function,
-  toggleLayout: Function,
-  uploadState: Object
+  needsSync: boolean,
+  progress: number,
+  rotating: boolean,
+  showsCancelUploadButton: boolean,
+  showsCheckmark: boolean,
+  showsExploreIcon: boolean,
+  statusText: ?string,
+  stopUploads: Function,
+  syncIconColor: string,
+  toggleLayout: Function
 }
 
 const Toolbar = ( {
-  layout,
+  error,
   handleSyncButtonPress,
-  stopUploads,
-  progress,
-  numUnuploadedObs,
-  showsExploreIcon,
+  layout,
   navToExplore,
-  toggleLayout,
-  uploadState
+  needsSync,
+  progress,
+  rotating,
+  showsCancelUploadButton,
+  showsCheckmark,
+  showsExploreIcon,
+  statusText,
+  stopUploads,
+  syncIconColor,
+  toggleLayout
 }: Props ): Node => {
-  const {
-    uploads,
-    error: uploadError,
-    uploadInProgress,
-    uploadsComplete,
-    currentUploadCount
-  } = uploadState;
-  const totalUploadCount = uploads?.length || 0;
-  const { t } = useTranslation( );
   const theme = useTheme( );
-  const uploading = uploadInProgress && !uploadsComplete;
+  const { t } = useTranslation( );
 
-  const needsSync = useCallback( ( ) => (
-    ( numUnuploadedObs > 0 && !uploadInProgress ) || ( uploadError && !uploadInProgress )
-  ), [
-    numUnuploadedObs,
-    uploadInProgress,
-    uploadError
-  ] );
-
-  const getStatusText = useCallback( ( ) => {
-    if ( progress === 1 ) {
-      return t( "X-observations-uploaded", { count: totalUploadCount } );
-    }
-
-    if ( !uploadInProgress ) {
-      return numUnuploadedObs !== 0
-        ? t( "Upload-x-observations", { count: numUnuploadedObs } )
-        : "";
-    }
-
-    const translationParams = {
-      total: totalUploadCount,
-      currentUploadCount
-    };
-
-    // iPhone 4 pixel width
-    if ( screenWidth <= 640 ) {
-      return t( "Uploading-x-of-y", translationParams );
-    }
-
-    return t( "Uploading-x-of-y-observations", translationParams );
-  }, [
-    currentUploadCount,
-    totalUploadCount,
-    progress,
-    numUnuploadedObs,
-    uploadInProgress,
-    t
-  ] );
-
-  const getSyncIconColor = useCallback( ( ) => {
-    if ( uploadError ) {
-      return theme.colors.error;
-    } if ( uploading || numUnuploadedObs > 0 ) {
-      return theme.colors.secondary;
-    }
-    return theme.colors.primary;
-  }, [theme, uploading, uploadError, numUnuploadedObs] );
-
-  const statusText = getStatusText( );
+  const handlePress = needsSync
+    ? handleSyncButtonPress
+    : ( ) => { };
 
   return (
     <View className={
@@ -127,51 +79,44 @@ const Toolbar = ( {
           />
         )}
         <View
-          // Note that without shrink, the center element will grow and push
-          // the grid/list button off the screen
+        // Note that without shrink, the center element will grow and push
+        // the grid/list button off the screen
           className="flex-row items-center shrink"
         >
           <RotatingINatIconButton
             icon={
-              needsSync( )
+              needsSync
                 ? "sync-unsynced"
                 : "sync"
             }
-            rotating={uploading && progress !== 1}
-            onPress={handleSyncButtonPress}
-            color={getSyncIconColor( )}
+            rotating={rotating}
+            onPress={handlePress}
+            color={syncIconColor}
             disabled={false}
             accessibilityLabel={t( "Sync-observations" )}
             size={30}
             testID="SyncButton"
           />
-
           {statusText && (
             <View className="flex ml-1 shrink">
               <View className="flex-row items-center shrink">
-                <Body2
-                  onPress={
-                    needsSync( )
-                      ? handleSyncButtonPress
-                      : ( ) => { }
-                  }
-                >
+                <Body2 onPress={handlePress}>
                   {statusText}
                 </Body2>
-                {( uploadsComplete && !uploadError ) && (
+                {showsCheckmark && (
                   <View className="ml-2">
                     <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
                   </View>
                 )}
               </View>
-              {uploadError && (
+              {error && (
                 <Body4 className="mt-[3px] color-warningRed">
-                  {uploadError}
+                  {error}
                 </Body4>
               )}
             </View>
           )}
-          {uploading && (
+          {showsCancelUploadButton && (
             <INatIconButton
               icon="close"
               size={11}
@@ -206,7 +151,7 @@ const Toolbar = ( {
         color={theme.colors.secondary}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ backgroundColor: "transparent" }}
-        visible={uploadInProgress && progress !== 0}
+        visible={progress > 0}
       />
     </View>
   );

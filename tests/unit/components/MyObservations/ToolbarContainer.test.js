@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import Toolbar from "components/MyObservations/Toolbar";
+import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
@@ -11,7 +11,7 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays a pending upload", async () => {
-    renderComponent( <Toolbar
+    renderComponent( <ToolbarContainer
       numUnuploadedObs={1}
       uploadState={{
         uploadInProgress: false,
@@ -27,7 +27,7 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays an upload in progress", async () => {
-    renderComponent( <Toolbar
+    renderComponent( <ToolbarContainer
       numUnuploadedObs={1}
       totalUploadCount={1}
       uploadState={{
@@ -47,7 +47,7 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays a completed upload", async () => {
-    renderComponent( <Toolbar
+    renderComponent( <ToolbarContainer
       progress={1}
       totalUploadCount={1}
       uploadState={{
@@ -67,7 +67,7 @@ describe( "Toolbar", () => {
 
   it( "displays an upload error", async () => {
     const error = "Couldn't complete upload";
-    renderComponent( <Toolbar
+    renderComponent( <ToolbarContainer
       uploadState={{
         uploadInProgress: false,
         uploads: [{}],
@@ -80,7 +80,7 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays multiple pending uploads", async () => {
-    renderComponent( <Toolbar
+    renderComponent( <ToolbarContainer
       numUnuploadedObs={4}
       uploadState={{
         uploadInProgress: false,
@@ -96,7 +96,7 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays multiple uploads in progress", async () => {
-    renderComponent( <Toolbar
+    renderComponent( <ToolbarContainer
       numUnuploadedObs={3}
       totalUploadCount={5}
       uploadState={{
@@ -116,7 +116,7 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays multiple completed uploads", async () => {
-    renderComponent( <Toolbar
+    renderComponent( <ToolbarContainer
       progress={1}
       totalUploadCount={7}
       uploadState={{
