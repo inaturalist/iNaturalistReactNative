@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import SortBySheet from "components/Explore/Sheets/SortBySheet";
 import {
   Body1,
   Body2,
@@ -133,6 +132,33 @@ const FilterModal = ( {
       case SORT_BY.DATE_UPLOADED_NEWEST:
       default:
         return t( "DATE-UPLOADED-NEWEST" );
+    }
+  };
+
+  const sortByValues = {
+    [SORT_BY.DATE_UPLOADED_NEWEST]: {
+      label: t( "Date-uploaded" ),
+      text: t( "Newest-to-oldest" ),
+      value: SORT_BY.DATE_UPLOADED_NEWEST
+    },
+    [SORT_BY.DATE_UPLOADED_OLDEST]: {
+      label: t( "Date-uploaded" ),
+      text: t( "Oldest-to-newest" ),
+      value: SORT_BY.DATE_UPLOADED_OLDEST
+    },
+    [SORT_BY.DATE_OBSERVED_NEWEST]: {
+      label: t( "Date-observed" ),
+      text: t( "Newest-to-oldest" ),
+      value: SORT_BY.DATE_OBSERVED_NEWEST
+    },
+    [SORT_BY.DATE_OBSERVED_OLDEST]: {
+      label: t( "Date-observed" ),
+      text: t( "Oldest-to-newest" ),
+      value: SORT_BY.DATE_OBSERVED_OLDEST
+    },
+    [SORT_BY.MOST_FAVED]: {
+      label: t( "Most-faved" ),
+      value: SORT_BY.MOST_FAVED
     }
   };
 
@@ -597,13 +623,18 @@ const FilterModal = ( {
               accessibilityLabel={t( "Sort-by" )}
             />
             {openSheet === SORT_BY_M && (
-              <SortBySheet
-                selectedValue={sortBy}
+              <RadioButtonSheet
+                headerText={t( "SORT-BY" )}
+                confirm={newSortBy => {
+                  dispatch( {
+                    type: EXPLORE_ACTION.CHANGE_SORT_BY,
+                    sortBy: newSortBy
+                  } );
+                  setOpenSheet( NONE );
+                }}
                 handleClose={() => setOpenSheet( NONE )}
-                update={newSortBy => dispatch( {
-                  type: EXPLORE_ACTION.CHANGE_SORT_BY,
-                  sortBy: newSortBy
-                } )}
+                radioValues={sortByValues}
+                selectedValue={sortBy}
               />
             )}
           </View>
