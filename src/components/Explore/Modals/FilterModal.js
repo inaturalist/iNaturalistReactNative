@@ -26,6 +26,7 @@ import {
   DATE_UPLOADED,
   EXPLORE_ACTION,
   MEDIA,
+  REVIEWED,
   SORT_BY,
   useExplore,
   WILD_STATUS
@@ -389,17 +390,17 @@ const FilterModal = ( {
   };
 
   const reviewedValues = {
-    all: {
+    [REVIEWED.ALL]: {
       label: t( "All-observations" ),
-      value: "all"
+      value: REVIEWED.ALL
     },
-    reviewed: {
+    [REVIEWED.REVIEWED]: {
       label: t( "Reviewed-observations-only" ),
-      value: "reviewed"
+      value: REVIEWED.REVIEWED
     },
-    unreviewed: {
+    [REVIEWED.UNREVIEWED]: {
       label: t( "Unreviewed-observations-only" ),
-      value: "unreviewed"
+      value: REVIEWED.UNREVIEWED
     }
   };
 

@@ -64,9 +64,9 @@ export enum WILD_STATUS {
 }
 
 export enum REVIEWED {
-  ALL = DEFAULT,
-  REVIEWED = "reviewed",
-  UNREVIEWED = "unreviewed"
+  ALL = "ALL",
+  REVIEWED = "REVIEWED",
+  UNREVIEWED = "UNREVIEWED"
 }
 
 enum PHOTO_LICENSE {
