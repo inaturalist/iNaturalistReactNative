@@ -19,6 +19,7 @@ import Observation from "realmModels/Observation";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
+import { log } from "sharedHelpers/logger";
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useCurrentUser,
@@ -31,6 +32,8 @@ import {
 } from "sharedHooks";
 
 import MyObservations from "./MyObservations";
+
+const logger = log.extend( "MyObservationsContainer" );
 
 export const INITIAL_UPLOAD_STATE = {
   currentUploadCount: 0,
@@ -348,16 +351,30 @@ const MyObservationsContainer = ( ): Node => {
   }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {
+    logger.info( "[MyObservationsContainer.js] syncObservations: starting" );
     if ( !uploadInProgress && uploadsComplete ) {
+      logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_UPLOAD_STATE" );
       dispatch( { type: "RESET_UPLOAD_STATE" } );
     }
+    logger.info( "[MyObservationsContainer.js] syncObservations: calling toggleLoginSheet" );
     toggleLoginSheet( );
+    logger.info( "[MyObservationsContainer.js] syncObservations: calling showInternetErrorAlert" );
     showInternetErrorAlert( );
+    logger.info( "[MyObservationsContainer.js] syncObservations: calling activateKeepAwake" );
     activateKeepAwake( );
+    logger.info(
+      "[MyObservationsContainer.js] syncObservations: calling syncRemoteDeletedObservations"
+    );
     await syncRemoteDeletedObservations( );
+    logger.info(
+      "[MyObservationsContainer.js] syncObservations: calling downloadRemoteObservationsFromServer"
+    );
     await downloadRemoteObservationsFromServer( );
+    logger.info( "[MyObservationsContainer.js] syncObservations: calling updateSyncTime" );
     updateSyncTime( );
+    logger.info( "[MyObservationsContainer.js] syncObservations: calling deactivateKeepAwake" );
     deactivateKeepAwake( );
+    logger.info( "[MyObservationsContainer.js] syncObservations: done" );
   }, [uploadInProgress,
     uploadsComplete,
     syncRemoteDeletedObservations,
