@@ -274,16 +274,16 @@ const FilterModal = ( {
   };
 
   const dateObservedValues = {
-    all: {
+    [DATE_OBSERVED.ALL]: {
       label: t( "All" ),
       value: DATE_OBSERVED.ALL
     },
-    exactDate: {
+    [DATE_OBSERVED.EXACT_DATE]: {
       label: t( "Exact-Date" ),
       text: t( "Filter-by-observed-on-date" ),
       value: DATE_OBSERVED.EXACT_DATE
     },
-    months: {
+    [DATE_OBSERVED.MONTHS]: {
       label: t( "Months" ),
       text: t( "Filter-by-observed-during-months" ),
       value: DATE_OBSERVED.MONTHS
@@ -461,7 +461,7 @@ const FilterModal = ( {
 
   const updateObservedExact = date => {
     updateDateObserved(
-      dateObservedValues.exactDate.value,
+      DATE_OBSERVED.EXACT_DATE,
       date.toISOString().split( "T" )[0]
     );
   };
@@ -470,7 +470,7 @@ const FilterModal = ( {
     const newMonths = months.includes( monthInteger )
       ? months.filter( m => m !== monthInteger )
       : [...months, monthInteger];
-    updateDateObserved( dateObservedValues.months.value, null, newMonths );
+    updateDateObserved( DATE_OBSERVED.MONTHS, null, newMonths );
   };
 
   const updateDateUploaded = ( newDateObserved, d1 ) => {
@@ -767,7 +767,7 @@ const FilterModal = ( {
             }}
             accessibilityLabel={t( "Date-observed" )}
           />
-          {dateObserved === dateObservedValues.exactDate.value && (
+          {dateObserved === DATE_OBSERVED.EXACT_DATE && (
             <View className="items-center">
               {/* eslint-disable-next-line camelcase */}
               <Body1 className="mb-5">{observed_on}</Body1>
@@ -787,7 +787,7 @@ const FilterModal = ( {
               />
             </View>
           )}
-          {dateObserved === dateObservedValues.months.value
+          {dateObserved === DATE_OBSERVED.MONTHS
             && Object.keys( monthValues ).map( monthKey => (
               <View key={monthKey} className="flex-row items-center mb-5">
                 <Checkbox

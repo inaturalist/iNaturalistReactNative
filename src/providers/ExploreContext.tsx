@@ -40,9 +40,9 @@ export enum SORT_BY {
 }
 
 export enum DATE_OBSERVED {
-  ALL = DEFAULT,
-  EXACT_DATE = "exactDate",
-  MONTHS = "months",
+  ALL = "ALL",
+  EXACT_DATE = "EXACT_DATE",
+  MONTHS = "MONTHS",
 }
 
 export enum DATE_UPLOADED {
