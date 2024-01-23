@@ -108,17 +108,17 @@ type Dispatch = (action: Action) => void
 type State = {
   verifiable: boolean,
   return_bounds: boolean,
-  // TODO: not any Object but a "Taxon" type (from server?)
+  // TODO: technically this is not any Object but a "Taxon" and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | null | undefined,
   taxon_name: string,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
-  // TODO: not any Object but a "User" type (from server?)
+  // TODO: technically this is not any Object but a "User" and should be typed as such (e.g., in realm model)
   user: Object | undefined,
   project_id: number | undefined,
-  // TODO: not any Object but a "Project" type (from server?)
+  // TODO: technically this is not any Object but a "Project" and should be typed as such (e.g., in realm model)
   project: Object | undefined,
   sortBy: SORT_BY,
   researchGrade: boolean,
@@ -127,14 +127,11 @@ type State = {
   hrank: string | undefined,
   lrank: string | undefined,
   dateObserved: DATE_OBSERVED,
-  // TODO: observed_on type should be more stringent than string it is what is expected by the API 
   observed_on: string | null | undefined,
   months: number[] | null | undefined,
   dateUploaded: DATE_UPLOADED,
-  // TODO: created_on type should be more stringent than string it is what is expected by the API 
   created_on: string | null | undefined,
   media: MEDIA,
-  // TODO: those values are not optional but idk how to set them
   introduced: boolean,
   native: boolean,
   endemic: boolean,
@@ -191,6 +188,12 @@ const initialState = {
   verifiable: true,
   return_bounds: true,
 };
+
+// Checks if the date is in the format XXXX-XX-XX
+function isValidDateFormat(date: string): boolean {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  return regex.test(date);
+}
 
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
@@ -269,6 +272,9 @@ function exploreReducer( state: State, action: Action ) {
         months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT:
+      if ( !isValidDateFormat( action.observed_on ) ) {
+        throw new Error( "Invalid date format given" );
+      }
       return {
         ...state,
         dateObserved: DATE_OBSERVED.EXACT_DATE,
@@ -289,6 +295,9 @@ function exploreReducer( state: State, action: Action ) {
         created_on: null
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT:
+      if ( !isValidDateFormat( action.created_on ) ) {
+        throw new Error( "Invalid date format given" );
+      }
       return {
         ...state,
         dateUploaded: DATE_UPLOADED.EXACT_DATE,
