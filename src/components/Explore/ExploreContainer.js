@@ -161,9 +161,10 @@ const ExploreContainerWithContext = ( ): Node => {
     if ( params?.place ) {
       const { coordinates } = params.place.point_geojson;
       setRegion( {
-        ...region,
         latitude: coordinates[1],
-        longitude: coordinates[0]
+        longitude: coordinates[0],
+        latitudeDelta: DELTA,
+        longitudeDelta: DELTA
       } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
@@ -185,8 +186,7 @@ const ExploreContainerWithContext = ( ): Node => {
         projectId: params.project.id
       } );
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params] );
+  }, [params, dispatch] );
 
   const changeExploreView = newView => {
     setExploreView( newView );
