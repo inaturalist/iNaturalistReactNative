@@ -710,7 +710,7 @@ const FilterModal = ( {
             }}
           />
           {openSheet === HRANK && (
-            // TODO: change as in Figma designs
+            // TODO: scrollable sheet
             <RadioButtonSheet
               headerText={t( "TAXONOMIC-RANKS" )}
               confirm={newRank => {
