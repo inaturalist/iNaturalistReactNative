@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import fetchSearchResults from "api/search";
 import {
   SearchBar,
   TaxonResult,
@@ -14,28 +13,13 @@ import React, {
   useState
 } from "react";
 import { FlatList } from "react-native";
-import Taxon from "realmModels/Taxon";
-import { useAuthenticatedQuery } from "sharedHooks";
+import useTaxonSearch from "sharedHooks/useTaxonSearch";
 
 const ExploreTaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
 
-  // TODO: this exactly the same as in src/components/Suggestions/TaxonSearch.js, so we should
-  // probably move it to a shared hook
-  const { data: taxonList } = useAuthenticatedQuery(
-    ["fetchSearchResults", taxonQuery],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: taxonQuery,
-        sources: "taxa",
-        fields: {
-          taxon: Taxon.TAXON_FIELDS
-        }
-      },
-      optsWithAuth
-    )
-  );
+  const taxonList = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
     navigation.navigate( "Explore", { taxon: newTaxon } );

@@ -12,10 +12,10 @@ import React, {
   useState
 } from "react";
 import { FlatList } from "react-native";
+import useTaxonSearch from "sharedHooks/useTaxonSearch";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import CommentBox from "./CommentBox";
-import useTaxonSearch from "./hooks/useTaxonSearch";
 import useTaxonSelected from "./hooks/useTaxonSelected";
 
 const TaxonSearch = ( ): Node => {
