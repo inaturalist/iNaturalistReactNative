@@ -354,19 +354,19 @@ const FilterModal = ( {
   };
 
   const mediaValues = {
-    all: {
+    [MEDIA.ALL]: {
       label: t( "All" ),
       value: MEDIA.ALL
     },
-    photos: {
+    [MEDIA.PHOTOS]: {
       label: t( "Photos" ),
       value: MEDIA.PHOTOS
     },
-    sounds: {
+    [MEDIA.SOUNDS]: {
       label: t( "Sounds" ),
       value: MEDIA.SOUNDS
     },
-    noMedia: {
+    [MEDIA.NONE]: {
       label: t( "No-Media" ),
       value: MEDIA.NONE
     }

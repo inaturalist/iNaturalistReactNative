@@ -51,10 +51,10 @@ export enum DATE_UPLOADED {
 }
 
 export enum MEDIA {
-  ALL = DEFAULT,
-  PHOTOS = "photos",
-  SOUNDS = "sounds",
-  NONE = "noMedia"
+  ALL = "ALL",
+  PHOTOS = "PHOTOS",
+  SOUNDS = "SOUNDS",
+  NONE = "NONE"
 }
 
 export enum WILD_STATUS {
