@@ -22,17 +22,19 @@ const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
-const RESEARCH = "research";
-const NEEDS_ID = "needs_id";
-const CASUAL = "casual";
-
-const CREATED_AT = "created_at"; // = date uploaded at
-const OBSERVED_ON = "observed_on";
-
-const DESC = "desc";
-const ASC = "asc";
-
 const mapParamsToAPI = ( params, currentUser ) => {
+  const RESEARCH = "research";
+  const NEEDS_ID = "needs_id";
+  const CASUAL = "casual";
+
+  const CREATED_AT = "created_at"; // = date uploaded at
+  const OBSERVED_ON = "observed_on";
+  const VOTES = "votes";
+
+  const DESC = "desc";
+  const ASC = "asc";
+
+  // Remove any params that is falsy
   const filteredParams = Object.entries( params ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -62,7 +64,7 @@ const mapParamsToAPI = ( params, currentUser ) => {
     filteredParams.order = ASC;
   }
   if ( params.sortBy === SORT_BY.MOST_FAVED ) {
-    filteredParams.order_by = "votes";
+    filteredParams.order_by = VOTES;
     filteredParams.order = DESC;
   }
 
@@ -103,6 +105,7 @@ const mapParamsToAPI = ( params, currentUser ) => {
   }
 
   if ( params.photoLicense !== PHOTO_LICENSE.ALL ) {
+    // How license filter maps to the API
     const licenseParams = {
       [PHOTO_LICENSE.CC0]: "cc0",
       [PHOTO_LICENSE.CCBY]: "cc-by",
