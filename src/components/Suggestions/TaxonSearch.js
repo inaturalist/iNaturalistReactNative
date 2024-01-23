@@ -46,6 +46,7 @@ const TaxonSearch = ( ): Node => {
         value={taxonQuery}
         testID="SearchTaxon"
         containerClass="my-5 mx-4"
+        autoFocus={taxonQuery === ""}
       />
       <FlatList
         keyboardShouldPersistTaps="always"

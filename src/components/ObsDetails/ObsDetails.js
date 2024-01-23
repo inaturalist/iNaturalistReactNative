@@ -2,12 +2,17 @@
 import { useRoute } from "@react-navigation/native";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
 import {
-  HideView, Tabs,
+  HideView,
+  Tabs,
   TextInputSheet
 } from "components/SharedComponents";
-import { SafeAreaView, ScrollView, View } from "components/styledComponents";
+import {
+  SafeAreaView,
+  ScrollView,
+  View
+} from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { Platform, StatusBar } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import {
@@ -17,8 +22,10 @@ import {
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
 import DetailsTab from "./DetailsTab/DetailsTab";
+import FaveButton from "./FaveButton";
 import ObsDetailsHeader from "./ObsDetailsHeader";
-import PhotoDisplayContainer from "./PhotoDisplayContainer";
+import ObsDetailsOverview from "./ObsDetailsOverview";
+import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 
 type Props = {
   activityItems: Array<Object>,
@@ -26,6 +33,7 @@ type Props = {
   agreeIdSheetDiscardChanges: Function,
   belongsToCurrentUser: boolean,
   currentTabId: string,
+  currentUser: Object,
   hideCommentBox: Function,
   isOnline: boolean,
   navToSuggestions: Function,
@@ -49,6 +57,7 @@ const ObsDetails = ( {
   agreeIdSheetDiscardChanges,
   belongsToCurrentUser,
   currentTabId,
+  currentUser,
   hideCommentBox,
   isOnline,
   navToSuggestions,
@@ -67,6 +76,7 @@ const ObsDetails = ( {
   const { params } = useRoute( );
   const { uuid } = params;
   const { t } = useTranslation( );
+  const [passedPhotos, setPassedPhotos] = useState( false );
 
   const textInputStyle = Platform.OS === "android" && {
     height: 125
@@ -77,17 +87,38 @@ const ObsDetails = ( {
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <ScrollView
         testID={`ObsDetails.${uuid}`}
-        stickyHeaderIndices={[2]}
+        stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
-        className="bg-white"
+        className="flex-1 flex-column"
+        stickyHeaderHiddenOnScroll
+        endFillColor="white"
+        onScroll={scrollEvent => {
+          if ( !passedPhotos && scrollEvent.nativeEvent.contentOffset.y > 244 ) {
+            setPassedPhotos( true );
+          } else if ( passedPhotos && scrollEvent.nativeEvent.contentOffset.y <= 244 ) {
+            setPassedPhotos( false );
+          }
+        }}
       >
-        <PhotoDisplayContainer
-          observation={observation}
-          refetchRemoteObservation={refetchRemoteObservation}
-          isOnline={isOnline}
-          belongsToCurrentUser={belongsToCurrentUser}
-        />
         <ObsDetailsHeader
+          belongsToCurrentUser={belongsToCurrentUser}
+          observation={observation}
+        />
+        <View
+          // TODO don't hardcode this, should be based on the calculated
+          // height of the nav header
+          className="mt-[-44px]"
+        >
+          <ObsMediaDisplayContainer observation={observation} />
+          { currentUser && (
+            <FaveButton
+              observation={observation}
+              currentUser={currentUser}
+              afterToggleFave={refetchRemoteObservation}
+            />
+          ) }
+        </View>
+        <ObsDetailsOverview
           observation={observation}
           isOnline={isOnline}
           belongsToCurrentUser={belongsToCurrentUser}
@@ -95,23 +126,25 @@ const ObsDetails = ( {
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
         </View>
-        <HideView show={showActivityTab}>
-          <ActivityTab
-            observation={observation}
-            refetchRemoteObservation={refetchRemoteObservation}
-            onIDAgreePressed={onIDAgreePressed}
-            activityItems={activityItems}
-            isOnline={isOnline}
-          />
-        </HideView>
-        <HideView noInitialRender show={!showActivityTab}>
-          <DetailsTab observation={observation} uuid={uuid} />
-        </HideView>
-        {addingActivityItem && (
-          <View className="flex-row items-center justify-center">
-            <ActivityIndicator size="large" />
-          </View>
-        )}
+        <View className="bg-white h-full">
+          <HideView show={showActivityTab}>
+            <ActivityTab
+              observation={observation}
+              refetchRemoteObservation={refetchRemoteObservation}
+              onIDAgreePressed={onIDAgreePressed}
+              activityItems={activityItems}
+              isOnline={isOnline}
+            />
+          </HideView>
+          <HideView noInitialRender show={!showActivityTab}>
+            <DetailsTab observation={observation} uuid={uuid} />
+          </HideView>
+          {addingActivityItem && (
+            <View className="flex-row items-center justify-center">
+              <ActivityIndicator size="large" />
+            </View>
+          )}
+        </View>
       </ScrollView>
       {showActivityTab && (
         <FloatingButtons

@@ -1,14 +1,16 @@
 // @flow
 
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import { Image, Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Dimensions, StatusBar } from "react-native";
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
-import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
+
+import PhotoSlide from "./PhotoSlide";
+import SoundSlide from "./SoundSlide";
 
 type Props = {
   photos: Array<{
@@ -17,43 +19,37 @@ type Props = {
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
+  }>,
+  sounds: Array<{
+    id: number,
+    file_url: string,
   }>
 }
 
-const PhotoScroll = ( {
-  photos
+const ObsMediaCarousel = ( {
+  photos = [],
+  sounds = []
 }: Props ): Node => {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState<number>( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const { t } = useTranslation( );
   const paginationColor = colors.white;
 
-  const CarouselImage = useCallback( ( { item: photo } ) => {
-    // check for local file path for unuploaded photos
-    const photoUrl = photo?.url
-      ? photo.url.replace( "square", "large" )
-      : photo.localFilePath;
+  const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
 
-    const image = (
-      <Image
-        testID="PhotoScroll.photo"
-        source={{ uri: photoUrl }}
-        className="h-72 w-screen"
-        resizeMode="contain"
-        accessibilityIgnoresInvertColors
-      />
-    );
-    return (
-      <Pressable
-        onPress={( ) => setMediaViewerVisible( true )}
-        accessibilityRole="link"
-        accessibilityHint={t( "View-photo" )}
-      >
-        {image}
-      </Pressable>
-    );
-  }, [t] );
+  const CarouselSlide = useCallback( ( { item } ) => (
+    item.file_url
+      ? <SoundSlide sound={item} isVisible={items.indexOf( item ) === index} />
+      : <PhotoSlide photo={item} onPress={( ) => setMediaViewerVisible( true )} />
+  ), [
+    setMediaViewerVisible,
+    items,
+    index
+  ] );
+
+  const currentPhotoUrl = index >= photos.length
+    ? undefined
+    : photos[index]?.url;
 
   return (
     <View className="relative">
@@ -65,21 +61,21 @@ const PhotoScroll = ( {
         width={width}
         height={288}
         scrollAnimationDuration={100}
-        data={photos}
-        renderItem={CarouselImage}
+        data={items}
+        renderItem={CarouselSlide}
         pagingEnabled
         onProgressChange={( _, absoluteProgress ) => {
           setIndex( Math.round( absoluteProgress ) );
         }}
       />
-      {photos.length > 1 && (
+      {items.length > 1 && (
         <View
           className="flex absolute bottom-0 w-full justify-evenly items-center p-[15px]"
         >
           <AnimatedDotsCarousel
-            length={photos.length}
+            length={items.length}
             currentIndex={index}
-            maxIndicators={photos.length}
+            maxIndicators={items.length}
             interpolateOpacityAndColor={false}
             activeIndicatorConfig={{
               color: paginationColor,
@@ -115,11 +111,11 @@ const PhotoScroll = ( {
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
-        uri={photos[index].url}
+        uri={currentPhotoUrl}
         photos={photos}
       />
     </View>
   );
 };
 
-export default PhotoScroll;
+export default ObsMediaCarousel;

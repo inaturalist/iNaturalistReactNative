@@ -54,7 +54,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
         params.page = 1;
       }
       const { results } = await searchObservations( params, options );
-      return results || [];
+      return results.map( observation => Observation.mapApiToRealm( observation ) ) || [];
     },
     getNextPageParam: lastPage => last( lastPage )?.id,
     // allow a user to see the Explore screen Observations

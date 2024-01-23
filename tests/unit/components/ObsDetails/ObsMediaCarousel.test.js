@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { render, screen } from "@testing-library/react-native";
-import PhotoScroll from "components/SharedComponents/PhotoScroll";
+import ObsMediaCarousel from "components/ObsDetails/ObsMediaCarousel";
+import initI18next from "i18n/initI18next";
 import _ from "lodash";
 import React from "react";
 import factory from "tests/factory";
@@ -24,21 +25,20 @@ const mockPhotos = _.compact(
   Array.from( mockObservation.observationPhotos ).map( op => op.photo )
 );
 
-describe( "PhotosScroll", () => {
-  it.todo( "should not have accessibility errors" );
-  // it( "should not have accessibility errors", async () => {
-  //   const photoScroll = <PhotoScroll photos={mockPhotos} />;
-  //   expect( photoScroll ).toBeAccessible( );
-  // } );
-
-  it( "should show the main carousel", async () => {
-    render( <PhotoScroll photos={mockPhotos} /> );
-    expect( screen.getByTestId( "photo-scroll" ) ).toBeTruthy();
+describe( "ObsMediaCarousel", () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
   } );
 
+  // it.todo( "should not have accessibility errors" );
+  // it( "should not have accessibility errors", async () => {
+  //   const ObsMediaCarousel = <ObsMediaCarousel photos={mockPhotos} />;
+  //   expect( ObsMediaCarousel ).toBeAccessible( );
+  // } );
+
   it( "should show photo with given url", async () => {
-    render( <PhotoScroll photos={mockPhotos} /> );
-    const photo = await screen.findByTestId( "PhotoScroll.photo" );
+    render( <ObsMediaCarousel photos={mockPhotos} /> );
+    const photo = await screen.findByTestId( "ObsMediaCarousel.photo" );
     expect( photo.props.source ).toStrictEqual(
       {
         uri: mockObservation.observationPhotos[0].photo.url

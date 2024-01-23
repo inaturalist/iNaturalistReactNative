@@ -1,4 +1,5 @@
 import Observation from "realmModels/Observation";
+import factory from "tests/factory";
 
 describe( "Observation", ( ) => {
   describe( "mapObservationForUpload", ( ) => {
@@ -26,8 +27,13 @@ describe( "Observation", ( ) => {
         ).toEqual( mockApiObservation.user.preferences.prefers_community_taxa );
       }
     );
-  } );
-  it( "should set _created_at to a date object without Realm", ( ) => {
-    expect( Observation.mapApiToRealm( { } )._created_at ).toBeInstanceOf( Date );
+    it( "should set _created_at to a date object without Realm", ( ) => {
+      expect( Observation.mapApiToRealm( { } )._created_at ).toBeInstanceOf( Date );
+    } );
+    it( "should create observationSounds from sounds", ( ) => {
+      const remoteSound = factory( "RemoteSound" );
+      const mappedObservation = Observation.mapApiToRealm( { sounds: [remoteSound] } );
+      expect( mappedObservation.observationSounds[0].file_url ).toEqual( remoteSound.file_url );
+    } );
   } );
 } );

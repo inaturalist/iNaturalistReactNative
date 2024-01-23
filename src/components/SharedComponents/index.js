@@ -31,7 +31,6 @@ export { default as ObservationsFlashList } from "./ObservationsFlashList/Observ
 export { default as OverviewCounts } from "./OverviewCounts";
 export { default as PermissionGate } from "./PermissionGate";
 export { default as PhotoCount } from "./PhotoCount";
-export { default as PhotoScroll } from "./PhotoScroll";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as ScrollViewWrapper } from "./ScrollViewWrapper";
 export { default as SearchBar } from "./SearchBar";

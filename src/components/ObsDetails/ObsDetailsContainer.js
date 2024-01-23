@@ -419,6 +419,7 @@ const ObsDetailsContainer = ( ): Node => {
       agreeIdSheetDiscardChanges={agreeIdSheetDiscardChanges}
       belongsToCurrentUser={belongsToCurrentUser}
       currentTabId={currentTabId}
+      currentUser={currentUser}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
       isOnline={isOnline}
       navToSuggestions={navToSuggestions}
