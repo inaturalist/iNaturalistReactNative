@@ -91,12 +91,10 @@ const FilterModal = ( {
     hrank,
     lrank,
     dateObserved,
-    // eslint-disable-next-line camelcase
-    observed_on,
+    observed_on: observedOn,
     months,
     dateUploaded,
-    // eslint-disable-next-line camelcase
-    created_on,
+    created_on: createdOn,
     media,
     introduced,
     native,
@@ -479,7 +477,7 @@ const FilterModal = ( {
     } else if ( newDateObserved === DATE_OBSERVED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT,
-        observed_on: d1 || today
+        observedOn: d1 || today
       } );
     } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
       dispatch( {
@@ -512,7 +510,7 @@ const FilterModal = ( {
     } else if ( newDateObserved === DATE_UPLOADED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT,
-        created_on: d1 || today
+        createdOn: d1 || today
       } );
     }
   };
@@ -804,8 +802,7 @@ const FilterModal = ( {
           />
           {dateObserved === DATE_OBSERVED.EXACT_DATE && (
             <View className="items-center">
-              {/* eslint-disable-next-line camelcase */}
-              <Body1 className="mb-5">{observed_on}</Body1>
+              <Body1 className="mb-5">{observedOn}</Body1>
               <Button
                 level="primary"
                 text={t( "CHANGE-DATE" )}
@@ -860,8 +857,7 @@ const FilterModal = ( {
           />
           {dateUploaded === DATE_UPLOADED.EXACT_DATE && (
             <View className="items-center">
-              {/* eslint-disable-next-line camelcase */}
-              <Body1 className="mb-5">{created_on}</Body1>
+              <Body1 className="mb-5">{createdOn}</Body1>
               <Button
                 level="primary"
                 text={t( "CHANGE-DATE" )}
