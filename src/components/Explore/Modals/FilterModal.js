@@ -291,11 +291,11 @@ const FilterModal = ( {
   };
 
   const dateUploadedValues = {
-    all: {
+    [DATE_UPLOADED.ALL]: {
       label: t( "All" ),
       value: DATE_UPLOADED.ALL
     },
-    exactDate: {
+    [DATE_UPLOADED.EXACT_DATE]: {
       label: t( "Exact-Date" ),
       text: t( "Filter-by-uploaded-on-date" ),
       value: DATE_UPLOADED.EXACT_DATE
@@ -823,7 +823,7 @@ const FilterModal = ( {
             }}
             accessibilityLabel={t( "Date-uploaded" )}
           />
-          {dateUploaded === dateUploadedValues.exactDate.value && (
+          {dateUploaded === DATE_UPLOADED.EXACT_DATE && (
             <View className="items-center">
               {/* eslint-disable-next-line camelcase */}
               <Body1 className="mb-5">{created_on}</Body1>
@@ -840,7 +840,7 @@ const FilterModal = ( {
                 isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
                 toggleDateTimePicker={() => setOpenSheet( NONE )}
                 onDatePicked={date => updateDateUploaded(
-                  dateUploadedValues.exactDate.value,
+                  DATE_UPLOADED.EXACT_DATE,
                   date.toISOString().split( "T" )[0]
                 )}
               />

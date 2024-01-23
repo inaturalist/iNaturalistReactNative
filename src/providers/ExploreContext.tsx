@@ -46,8 +46,8 @@ export enum DATE_OBSERVED {
 }
 
 export enum DATE_UPLOADED {
-  ALL = DEFAULT,
-  EXACT_DATE = "exactDate",
+  ALL = "ALL",
+  EXACT_DATE = "EXACT_DATE",
 }
 
 export enum MEDIA {
