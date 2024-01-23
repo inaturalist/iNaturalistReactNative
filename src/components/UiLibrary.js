@@ -30,7 +30,9 @@ import {
   List2,
   ObservationLocation,
   PhotoCount,
+  ProjectListItem,
   QualityGradeStatus,
+  RadioButtonRow,
   SearchBar,
   StickyToolbar,
   Subheading1,
@@ -653,6 +655,25 @@ const UiLibrary = (): Node => {
           topTextComponent={Heading5}
           bottomTextComponent={Heading3}
           taxon={species || taxonWithPhoto}
+        />
+
+        <Heading1 className="my-2">ProjectListItem</Heading1>
+        <ProjectListItem
+          item={{
+            id: 1,
+            title: "Project Title",
+            project_type: "collection",
+            icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
+          }}
+        />
+
+        <Heading1 className="my-2">RadioButtonRow</Heading1>
+        <RadioButtonRow
+          value="radio1"
+          checked
+          onPress={() => console.log( "radio1" )}
+          label="Radio 1"
+          description="This is a description"
         />
 
         <Heading1 className="my-2">More Stuff!</Heading1>
