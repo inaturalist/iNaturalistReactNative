@@ -1,13 +1,13 @@
 // @flow
 
 import {
-  BottomSheet, Button, List2
+  BottomSheet,
+  Button,
+  RadioButtonRow
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Platform } from "react-native";
-import { RadioButton, useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -17,50 +17,6 @@ type Props = {
   radioValues: Object,
   selectedValue?: any
 }
-
-type RowProps = {
-  value: string,
-  checked: boolean,
-  onPress: Function,
-  label: string,
-  description: ?string
-}
-
-// TODO: this is proably better in a standalone component
-export const RadioButtonRow = ( {
-  value, checked, onPress, label, description
-}: RowProps ): Node => {
-  const theme = useTheme( );
-  return (
-    <RadioButton.Group>
-      <RadioButton.Item
-        value={value}
-        status={checked
-          ? "checked"
-          : "unchecked"}
-        onPress={onPress}
-        mode="android"
-        label={label}
-        position="leading"
-        // eslint-disable-next-line react-native/no-inline-styles
-        labelStyle={{
-          fontSize: 18,
-          lineHeight: 22,
-          fontFamily: `Whitney-Light${Platform.OS === "ios"
-            ? ""
-            : "-Pro"}`,
-          color: theme.colors.primary,
-          fontWeight: "500",
-          textAlign: "left",
-          textAlignVertical: "center"
-        }}
-        className="p-0"
-        accessibilityLabel={label}
-      />
-      {description && <List2 className="ml-[37px] mr-[33px] py-1">{description}</List2>}
-    </RadioButton.Group>
-  );
-};
 
 const RadioButtonSheet = ( {
   handleClose,
