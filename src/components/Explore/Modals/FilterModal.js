@@ -430,7 +430,7 @@ const FilterModal = ( {
     }
   };
 
-  const photoLicensingValues = {
+  const photoLicenseValues = {
     [PHOTO_LICENSE.ALL]: {
       label: t( "All" ),
       value: PHOTO_LICENSE.ALL
@@ -983,7 +983,7 @@ const FilterModal = ( {
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "PHOTO-LICENSING" )}</Heading4>
           <Button
-            text={photoLicensingValues[photoLicense]?.label.toUpperCase()}
+            text={photoLicenseValues[photoLicense]?.label.toUpperCase()}
             className="shrink mb-7"
             dropdown
             onPress={() => {
@@ -1002,7 +1002,7 @@ const FilterModal = ( {
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
-              radioValues={photoLicensingValues}
+              radioValues={photoLicenseValues}
               selectedValue={photoLicense}
             />
           )}
