@@ -31,7 +31,9 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import { getShadowStyle } from "styles/global";
 
 const NumberBadge = ( { number } ): Node => (
   <View className="ml-3 w-5 h-5 justify-center items-center rounded-full bg-inatGreen">
@@ -470,11 +472,23 @@ const FilterModal = ( {
     }
   };
 
+  const getShadow = shadowColor => getShadowStyle( {
+    shadowColor,
+    offsetWidth: 0,
+    offsetHeight: 4,
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 6
+  } );
+  const theme = useTheme();
+
   return (
     <View className="flex-1 bg-white" testID="filter-modal">
       {/* Header */}
-      {/* TODO: add dropshadow */}
-      <View className="flex-row items-center p-5 justify-between">
+      <View
+        className="flex-row items-center p-5 justify-between bg-white"
+        style={getShadow( theme.colors.primary )}
+      >
         <View className="flex-row items-center">
           <INatIcon name="sliders" size={20} />
           <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
@@ -960,14 +974,16 @@ const FilterModal = ( {
         <View className="flex-1 flex-row items-center">
           <INatIconButton
             icon="chevron-left"
-            onPress={!differsFromSnapshot
-              ? () => {
-                discardChanges();
-                closeModal();
-              }
-              : () => {
-                setOpenSheet( CONFIRMATION );
-              }}
+            onPress={
+              !differsFromSnapshot
+                ? () => {
+                  discardChanges();
+                  closeModal();
+                }
+                : () => {
+                  setOpenSheet( CONFIRMATION );
+                }
+            }
             size={22}
             accessibilityLabel={t( "Back" )}
           />
@@ -993,7 +1009,6 @@ const FilterModal = ( {
             buttonText={t( "DISCARD-CHANGES" )}
             handleSecondButtonPress={( ) => setOpenSheet( NONE )}
             secondButtonText={t( "CANCEL" )}
-
           />
         )}
       </StickyToolbar>
