@@ -78,33 +78,7 @@ export enum PHOTO_LICENSE {
   CCBYNCND = "CCBYNCND",
 }
 
-type Action = {type: EXPLORE_ACTION.RESET}
-  | {type: EXPLORE_ACTION.DISCARD, snapshot: Object}
-  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
-  | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_TAXON_NAME, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string}
-  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
-  | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
-  | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
-  | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
-  | {type: EXPLORE_ACTION.TOGGLE_CASUAL}
-  | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK, hrank: string}
-  | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: string}
-  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
-  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observed_on: string}
-  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
-  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
-  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, created_on: string}
-  | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
-  | {type: EXPLORE_ACTION.TOGGLE_INTRODUCED}
-  | {type: EXPLORE_ACTION.TOGGLE_NATIVE}
-  | {type: EXPLORE_ACTION.TOGGLE_ENDEMIC}
-  | {type: EXPLORE_ACTION.TOGGLE_NO_STATUS}
-  | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
-  | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
-  | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
-type Dispatch = (action: Action) => void
+type CountProviderProps = {children: React.ReactNode}
 type State = {
   verifiable: boolean,
   return_bounds: boolean,
@@ -140,7 +114,33 @@ type State = {
   reviewedFilter: REVIEWED,
   photoLicense: PHOTO_LICENSE
 }
-type CountProviderProps = {children: React.ReactNode}
+type Action = {type: EXPLORE_ACTION.RESET}
+  | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
+  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
+  | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
+  | {type: EXPLORE_ACTION.SET_TAXON_NAME, taxonName: string}
+  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string}
+  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
+  | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
+  | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
+  | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
+  | {type: EXPLORE_ACTION.TOGGLE_CASUAL}
+  | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK, hrank: string}
+  | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: string}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observed_on: string}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
+  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
+  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, created_on: string}
+  | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
+  | {type: EXPLORE_ACTION.TOGGLE_INTRODUCED}
+  | {type: EXPLORE_ACTION.TOGGLE_NATIVE}
+  | {type: EXPLORE_ACTION.TOGGLE_ENDEMIC}
+  | {type: EXPLORE_ACTION.TOGGLE_NO_STATUS}
+  | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
+  | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
+  | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
+type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
   {state: State; dispatch: Dispatch} | undefined
