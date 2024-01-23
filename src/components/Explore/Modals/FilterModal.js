@@ -35,11 +35,26 @@ import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 
-const NumberBadge = ( { number } ): Node => (
-  <View className="ml-3 w-5 h-5 justify-center items-center rounded-full bg-inatGreen">
-    <Body3 className="text-white">{number}</Body3>
-  </View>
-);
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 6
+} );
+
+const NumberBadge = ( { number } ): Node => {
+  const theme = useTheme();
+  return (
+    <View
+      className="ml-3 w-5 h-5 justify-center items-center rounded-full bg-inatGreen"
+      style={getShadow( theme.colors.primary )}
+    >
+      <Body3 className="text-white">{number}</Body3>
+    </View>
+  );
+};
 
 type Props = {
   closeModal: Function,
@@ -472,14 +487,6 @@ const FilterModal = ( {
     }
   };
 
-  const getShadow = shadowColor => getShadowStyle( {
-    shadowColor,
-    offsetWidth: 0,
-    offsetHeight: 4,
-    shadowOpacity: 0.25,
-    shadowRadius: 2,
-    elevation: 6
-  } );
   const theme = useTheme();
 
   return (
@@ -492,7 +499,6 @@ const FilterModal = ( {
         <View className="flex-row items-center">
           <INatIcon name="sliders" size={20} />
           <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
-          {/* TODO: add shadow */}
           {numberOfFilters !== 0 && <NumberBadge number={numberOfFilters} />}
         </View>
         {filtersNotDefault
