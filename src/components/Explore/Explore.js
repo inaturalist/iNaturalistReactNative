@@ -17,6 +17,7 @@ import {
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
+import FilterModal from "./Modals/FilterModal";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
@@ -24,26 +25,28 @@ import SpeciesView from "./SpeciesView";
 
 type Props = {
   changeExploreView: Function,
-  exploreParams: Object,
+  exploreAPIParams: Object,
   exploreView: string,
   isOnline: boolean,
   region: Object,
   updateTaxon: Function,
   updatePlace: Function,
-  updatePlaceName: Function,
-  updateTaxonName: Function
+  showFiltersModal: boolean,
+  openFiltersModal: Function,
+  closeFiltersModal: Function,
 }
 
 const Explore = ( {
   changeExploreView,
-  exploreParams,
+  exploreAPIParams,
   exploreView,
   isOnline,
   region,
   updateTaxon,
   updatePlace,
-  updatePlaceName,
-  updateTaxonName
+  showFiltersModal,
+  openFiltersModal,
+  closeFiltersModal
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -79,13 +82,13 @@ const Explore = ( {
   };
 
   const queryParams = {
-    ...exploreParams,
+    ...exploreAPIParams,
     per_page: 20
   };
   delete queryParams.taxon_name;
 
   const paramsTotalResults = {
-    ...exploreParams,
+    ...exploreAPIParams,
     per_page: 0
   };
 
@@ -106,14 +109,11 @@ const Explore = ( {
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
-      exploreParams={exploreParams}
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
-      region={region}
       updatePlace={updatePlace}
-      updatePlaceName={updatePlaceName}
       updateTaxon={updateTaxon}
-      updateTaxonName={updateTaxonName}
+      openFiltersModal={openFiltersModal}
     />
   );
 
@@ -121,67 +121,76 @@ const Explore = ( {
 
   return (
     <>
-      <ViewWrapper testID="Explore">
-        {renderHeader( )}
-        {exploreView === "observations" && (
-          <ObservationsViewBar
-            observationsView={observationsView}
-            updateObservationsView={newView => setObservationsView( newView )}
-          />
+      {!showFiltersModal
+        ? (
+          <ViewWrapper testID="Explore">
+            {renderHeader()}
+            {exploreView === "observations" && (
+              <ObservationsViewBar
+                observationsView={observationsView}
+                updateObservationsView={newView => setObservationsView( newView )}
+              />
+            )}
+            <INatIconButton
+              icon={exploreViewIcon[exploreView]}
+              color={theme.colors.onPrimary}
+              size={27}
+              className={classnames(
+                grayCircleClass,
+                "absolute bottom-5 z-10 right-5"
+              )}
+              accessibilityLabel={t( "Explore-View" )}
+              onPress={() => setShowExploreBottomSheet( true )}
+            />
+            {exploreView === "observations" && (
+              <ObservationsView
+                exploreAPIParams={exploreAPIParams}
+                observationsView={observationsView}
+                region={region}
+              />
+            )}
+            {exploreView === "species" && (
+              <SpeciesView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+            {exploreView === "observers" && (
+              <ObserversView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+            {exploreView === "identifiers" && (
+              <IdentifiersView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+          </ViewWrapper>
+        )
+        : (
+          <ViewWrapper>
+            <FilterModal
+              closeModal={closeFiltersModal}
+              updateTaxon={updateTaxon}
+            />
+          </ViewWrapper>
         )}
-        <INatIconButton
-          icon={exploreViewIcon[exploreView]}
-          color={theme.colors.onPrimary}
-          size={27}
-          className={classnames(
-            grayCircleClass,
-            "absolute bottom-5 z-10 right-5"
-          )}
-          accessibilityLabel={t( "Explore-View" )}
-          onPress={( ) => setShowExploreBottomSheet( true )}
-        />
-        {exploreView === "observations" && (
-          <ObservationsView
-            exploreParams={exploreParams}
-            observationsView={observationsView}
-            region={region}
-          />
-        )}
-        {exploreView === "species" && (
-          <SpeciesView
-            count={count}
-            isOnline={isOnline}
-            queryParams={queryParams}
-            updateCount={updateCount}
-          />
-        )}
-        {exploreView === "observers" && (
-          <ObserversView
-            count={count}
-            isOnline={isOnline}
-            queryParams={queryParams}
-            updateCount={updateCount}
-          />
-        )}
-        {exploreView === "identifiers" && (
-          <IdentifiersView
-            count={count}
-            isOnline={isOnline}
-            queryParams={queryParams}
-            updateCount={updateCount}
-          />
-        )}
-      </ViewWrapper>
       {showExploreBottomSheet && (
-        <BottomSheet
-          headerText={t( "EXPLORE" )}
-        >
+        <BottomSheet headerText={t( "EXPLORE" )}>
           {Object.keys( exploreViewText ).map( view => (
             <Button
               text={exploreViewText[view]}
               key={exploreViewText[view]}
               className="mx-5 my-3"
-              onPress={( ) => {
+              onPress={() => {
                 changeExploreView( view );
                 setShowExploreBottomSheet( false );
               }}

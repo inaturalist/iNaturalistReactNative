@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
   Body3,
@@ -9,6 +8,7 @@ import {
 } from "components/SharedComponents";
 import SearchBar from "components/SharedComponents/SearchBar";
 import { Image, Pressable, View } from "components/styledComponents";
+import { EXPLORE_ACTION, useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Keyboard } from "react-native";
@@ -21,34 +21,28 @@ import HeaderCount from "./HeaderCount";
 
 type Props = {
   count?: ?number,
-  exploreParams: Object,
   exploreView: string,
   exploreViewIcon: string,
-  region: Object,
   updatePlace: Function,
-  updatePlaceName: Function,
   updateTaxon: Function,
-  updateTaxonName: Function
+  openFiltersModal: Function,
 }
 
 const Header = ( {
   count,
-  exploreParams,
   exploreView,
   exploreViewIcon,
-  region,
   updatePlace,
-  updatePlaceName,
   updateTaxon,
-  updateTaxonName
+  openFiltersModal
 }: Props ): Node => {
   const { t } = useTranslation( );
   const taxonInput = useRef( );
   const placeInput = useRef( );
-  const placeName = region.place_guess;
-  const taxonName = exploreParams.taxon_name;
-  const navigation = useNavigation( );
   const theme = useTheme( );
+  const { state, dispatch } = useExplore( );
+  const taxonName = state.taxon_name;
+  const placeName = state.place_guess;
   const [hideTaxonResults, setHideTaxonResults] = useState( true );
   const [hidePlaceResults, setHidePlaceResults] = useState( true );
 
@@ -99,7 +93,10 @@ const Header = ( {
                 handleTextChange={taxonText => {
                   if ( taxonInput?.current?.isFocused( ) ) {
                     setHideTaxonResults( false );
-                    updateTaxonName( taxonText );
+                    dispatch( {
+                      type: EXPLORE_ACTION.SET_TAXON_NAME,
+                      taxonName: taxonText
+                    } );
                   }
                 }}
                 value={taxonName}
@@ -136,7 +133,11 @@ const Header = ( {
                 handleTextChange={placeText => {
                   if ( placeInput?.current?.isFocused( ) ) {
                     setHidePlaceResults( false );
-                    updatePlaceName( placeText );
+                    dispatch( {
+                      type: EXPLORE_ACTION.SET_PLACE,
+                      placeId: null,
+                      placeName: placeText
+                    } );
                   }
                 }}
                 value={placeName}
@@ -167,7 +168,7 @@ const Header = ( {
             icon="sliders"
             color={colors.white}
             className="bg-darkGray rounded-md"
-            onPress={( ) => navigation.navigate( "ExploreFilters" )}
+            onPress={() => openFiltersModal()}
             accessibilityLabel={t( "Filters" )}
             accessibilityHint={t( "Navigates-to-explore" )}
           />

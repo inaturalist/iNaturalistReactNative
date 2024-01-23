@@ -8,18 +8,18 @@ import { useInfiniteObservationsScroll, useIsConnected } from "sharedHooks";
 import MapView from "./MapView";
 
 type Props = {
-  exploreParams: Object,
+  exploreAPIParams: Object,
   region: Object,
   observationsView: string
 }
 
 const ObservationsView = ( {
-  exploreParams,
+  exploreAPIParams,
   region,
   observationsView
 }: Props ): Node => {
   const params = {
-    ...exploreParams,
+    ...exploreAPIParams,
     per_page: 20
   };
 
@@ -32,7 +32,6 @@ const ObservationsView = ( {
   return observationsView === "map"
     ? (
       <MapView
-        exploreParams={exploreParams}
         region={region}
         observations={observations}
       />

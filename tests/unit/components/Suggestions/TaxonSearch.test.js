@@ -27,7 +27,7 @@ const mockTaxaList = [
   factory( "RemoteTaxon" )
 ];
 
-jest.mock( "components/Suggestions/hooks/useTaxonSearch", () => ( {
+jest.mock( "sharedHooks/useTaxonSearch", () => ( {
   __esModule: true,
   default: ( ) => mockTaxaList
 } ) );

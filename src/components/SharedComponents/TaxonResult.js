@@ -14,6 +14,8 @@ import ConfidenceInterval from "./ConfidenceInterval";
 
 type Props = {
   taxon: Object,
+  handlePress: Function,
+  showCheckmark?: boolean,
   handleCheckmarkPress: Function,
   testID: string,
   clearBackground?: boolean,
@@ -28,6 +30,8 @@ type Props = {
 const TaxonResult = ( {
   clearBackground,
   confidence,
+  handlePress,
+  showCheckmark = true,
   handleCheckmarkPress,
   taxon: taxonResult,
   testID,
@@ -65,7 +69,7 @@ const TaxonResult = ( {
     >
       <Pressable
         className="flex-row items-center w-16 grow"
-        onPress={navToTaxonDetails}
+        onPress={handlePress || navToTaxonDetails}
         accessible
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
@@ -112,20 +116,27 @@ const TaxonResult = ( {
           accessibilityLabel={t( "Information" )}
           accessibilityHint={t( "Navigate-to-taxon-details" )}
         />
-        <INatIconButton
-          className="ml-2"
-          icon={clearBackground
-            ? "checkmark-circle-outline"
-            : "checkmark-circle"}
-          size={40}
-          color={clearBackground
-            ? theme.colors.onSecondary
-            : theme.colors.secondary}
-          onPress={() => handleCheckmarkPress( taxon )}
-          accessibilityLabel={t( "Checkmark" )}
-          accessibilityHint={t( "Add-this-ID" )}
-          testID={`${testID}.checkmark`}
-        />
+        { showCheckmark
+          && (
+            <INatIconButton
+              className="ml-2"
+              icon={
+                clearBackground
+                  ? "checkmark-circle-outline"
+                  : "checkmark-circle"
+              }
+              size={40}
+              color={
+                clearBackground
+                  ? theme.colors.onSecondary
+                  : theme.colors.secondary
+              }
+              onPress={() => handleCheckmarkPress( taxon )}
+              accessibilityLabel={t( "Checkmark" )}
+              accessibilityHint={t( "Add-this-ID" )}
+              testID={`${testID}.checkmark`}
+            />
+          )}
       </View>
     </View>
   );
