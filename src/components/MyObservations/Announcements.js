@@ -9,7 +9,6 @@ import makeWebshell, {
 } from "@formidable-webview/webshell";
 import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
-import { USER_AGENT } from "components/LoginSignUp/AuthenticationService";
 import { ActivityIndicator, Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -65,11 +64,6 @@ const Announcements = ( {
       Alert.alert( `Don't know how to open this URL: ${url}` );
     }
   };
-
-  const headers = {};
-  headers["user-agent"] = USER_AGENT;
-  const options = { headers };
-  console.log( "options :>> ", options );
 
   const apiParams = {
     locale: currentUser?.locale || "en",
