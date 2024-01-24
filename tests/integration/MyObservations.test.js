@@ -53,6 +53,11 @@ jest.mock( "providers/contexts", ( ) => {
   };
 } );
 
+jest.mock( "components/MyObservations/Announcements", () => ( {
+  __esModule: true,
+  default: jest.fn()
+} ) );
+
 // Open a realm connection and stuff it in global
 beforeAll( async ( ) => {
   global.mockRealms = global.mockRealms || {};
