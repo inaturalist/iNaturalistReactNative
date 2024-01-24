@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import {
   SearchBar,
   TaxonResult,
@@ -14,44 +15,42 @@ import React, {
 import { FlatList } from "react-native";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
 
-import AddCommentPrompt from "./AddCommentPrompt";
-import CommentBox from "./CommentBox";
-import useTaxonSelected from "./hooks/useTaxonSelected";
-
-const TaxonSearch = ( ): Node => {
+const ExploreTaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
-  const [selectedTaxon, setSelectedTaxon] = useState( null );
+  const navigation = useNavigation( );
+
   const taxonList = useTaxonSearch( taxonQuery );
 
-  useTaxonSelected( selectedTaxon, { vision: false } );
+  const onTaxonSelected = useCallback( async newTaxon => {
+    navigation.navigate( "Explore", { taxon: newTaxon } );
+  }, [navigation] );
 
-  const renderFooter = useCallback( ( ) => <View className="pb-10" />, [] );
+  const renderFooter = ( ) => (
+    <View className="pb-10" />
+  );
 
-  const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
+  const renderItem = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       taxon={taxon}
-      handleCheckmarkPress={() => setSelectedTaxon( taxon )}
+      showCheckmark={false}
+      handlePress={() => onTaxonSelected( taxon )}
       testID={`Search.taxa.${taxon.id}`}
       first={index === 0}
-      fetchRemote={false}
     />
-  ), [setSelectedTaxon] );
+  ), [onTaxonSelected] );
 
   return (
-    <ViewWrapper>
-      <AddCommentPrompt />
-      <CommentBox />
+    <ViewWrapper className="flex-1">
       <SearchBar
         handleTextChange={setTaxonQuery}
         value={taxonQuery}
         testID="SearchTaxon"
         containerClass="my-5 mx-4"
-        autoFocus={taxonQuery === ""}
       />
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
-        renderItem={renderTaxonResult}
+        renderItem={renderItem}
         keyExtractor={item => item.id}
         ListFooterComponent={renderFooter}
       />
@@ -59,4 +58,4 @@ const TaxonSearch = ( ): Node => {
   );
 };
 
-export default TaxonSearch;
+export default ExploreTaxonSearch;

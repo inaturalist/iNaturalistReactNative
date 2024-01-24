@@ -11,7 +11,7 @@ import {
   Image, ImageBackground, View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 
 import AboutProjectType from "./AboutProjectType";
@@ -28,6 +28,16 @@ const ProjectDetails = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+
+  const onObservationPressed = useCallback(
+    ( ) => navigation.navigate( "Explore", { project, worldwide: true } ),
+    [navigation, project]
+  );
+
+  const onSpeciesPressed = useCallback(
+    ( ) => navigation.navigate( "Explore", { project, worldwide: true, viewSpecies: true } ),
+    [navigation, project]
+  );
 
   if ( !project ) {
     return null;
@@ -58,6 +68,8 @@ const ProjectDetails = ( {
             members_count: project.members_count,
             journal_posts_count: project.journal_posts_count
           }}
+          onObservationPressed={onObservationPressed}
+          onSpeciesPressed={onSpeciesPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {/* eslint-disable-next-line react-native/no-inline-styles */}
@@ -75,10 +87,7 @@ const ProjectDetails = ( {
         <Button
           level="neutral"
           text={t( "VIEW-IN-EXPLORE" )}
-          onPress={( ) => navigation.navigate( "Explore", {
-            projectId: project.id,
-            placeId: project.place_id
-          } )}
+          onPress={onObservationPressed}
         />
         {!project.project_type && (
           <>

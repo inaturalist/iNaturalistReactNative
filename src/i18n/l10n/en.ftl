@@ -44,6 +44,8 @@ Agree-with-ID-description = Would you like to agree with the ID and suggest the 
 
 All = All
 
+ALL = ALL
+
 ALL-SUGGESTIONS = ALL SUGGESTIONS
 
 All-observations = All observations
@@ -59,23 +61,15 @@ Amphibians = Amphibians
 
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 
+APPLY-FILTERS = APPLY FILTERS
+
+Apply-filters = Apply filters
+
 Arachnids = Arachnids
 
 Are-you-sure = Are you sure?
 
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
-
-attribution-cc-by = some rights reserved (CC BY)
-
-attribution-cc-by-sa = some rights reserved (CC BY-SA)
-
-attribution-cc-by-nc = some rights reserved (CC BY-NC)
-
-attribution-cc-by-nd = some rights reserved (CC BY-ND)
-
-attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
-
-attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
 
 attribution-cc-by = some rights reserved (CC BY)
 
@@ -118,6 +112,30 @@ CANCEL = CANCEL
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
+
+CC0 = CC0
+
+CC-BY = CC BY
+
+CC-BY-NC = CC BY-NC
+
+CC-BY-SA = CC BY-SA
+
+CC-BY-ND = CC BY-ND
+
+CC-BY-NC-SA = CC BY-NC-SA
+
+CC-BY-NC-ND = CC BY-NC-ND
+
+CHANGE-DATE = CHANGE DATE
+
+Change-date = Change date
+
+Change-project = Change project
+
+Change-user = Change user
+
+Change-taxon = Change taxon
 
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
@@ -225,13 +243,27 @@ Date = Date
 
 DATE = DATE
 
-DATE = DATE
-
 Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
 
+Date-observed = Date observed
+
+DATE-OBSERVED = DATE OBSERVED
+
+DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
+
+DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
+
 Date_observed_header_short = Observed
+
+Date-uploaded = Date uploaded
+
+DATE-UPLOADED = DATE UPLOADED
+
+DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
+
+DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
 
 Date-uploaded-header-short = Uploaded
 
@@ -264,6 +296,8 @@ DELETE-X-OBSERVATIONS = DELETE {$count ->
 Description-Tags = Description/Tags
 
 DISCARD-ALL = DISCARD ALL
+
+DISCARD-FILTER-CHANGES = DISCARD FILTER CHANGES
 
 DISCARD-CHANGES = DISCARD CHANGES
 
@@ -302,6 +336,8 @@ EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
 
 Email-Notifications = Email Notifications
 
+Endemic = Endemic
+
 Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload
 
 Error-Couldnt-Upload-Photo = Error: Couldn't Upload Photo
@@ -316,9 +352,15 @@ Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. C
 
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
 
+ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
+
 EVIDENCE = EVIDENCE
 
+Exact-Date = Exact Date
+
 Explore = Explore
+
+Explore-Filters = Explore Filters
 
 EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 
@@ -329,7 +371,19 @@ FEATURED = FEATURED
 
 Fetching-location = Fetching location...
 
+Filter = Filter
+
 Filters = Filters
+
+FILTER-BY-A-PROJECT = FILTER BY A PROJECT
+
+FILTER-BY-A-USER = FILTER BY A USER
+
+Filter-by-observed-during-months = Filter by observations observed during specific months
+
+Filter-by-observed-on-date = Filter by observations observed on a specific date
+
+Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 
 Finish = Finish
 
@@ -372,6 +426,8 @@ Has-Photos = Has Photos
 Has-Sounds = Has Sounds
 
 High = High
+
+Highest = Highest
 
 # Identification Status
 ID-Withdrawn = ID Withdrawn
@@ -424,8 +480,6 @@ Location = Location
 
 LOCATION = LOCATION
 
-LOCATION = LOCATION
-
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
@@ -447,6 +501,8 @@ Login-sub-title = Document living things, identify organisms & contribute to sci
 Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
 
 Low = Low
+
+Lowest = Lowest
 
 Mammals = Mammals
 
@@ -487,6 +543,8 @@ Months = Months
 
 Most-faved = Most faved
 
+MOST-FAVED = MOST FAVED
+
 Muted-Users = Muted Users
 
 Names = Names
@@ -496,7 +554,11 @@ Native = Native
 # Header for nearby projects
 NEARBY = NEARBY
 
+Needs-ID = Needs ID
+
 New-Observation = New Observation
+
+Newest-to-oldest = Newest to oldest
 
 Next = Next
 
@@ -507,6 +569,8 @@ No-account-found = No account found with that email
 
 No-Location = No Location
 
+No-Media = No Media
+
 No-model-found = No model found
 
 none = none
@@ -515,6 +579,8 @@ No-photos-found = No photos found. If this is your first time opening the app an
 
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
+
+No-Status = No Status
 
 # Header for observation description on observation detail
 NOTES = NOTES
@@ -554,6 +620,8 @@ Offensive-Inappropriate = Offensive/Inappropriate
 
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
 
+Oldest-to-newest = Oldest to newest
+
 Open = Open
 
 OPEN-EMAIL = OPEN EMAIL
@@ -569,6 +637,12 @@ PASSWORD = PASSWORD
 Paused = Paused
 
 Photo-Licensing = Photo Licensing
+
+PHOTO-LICENSING = PHOTO LICENSING
+
+Photo-Licensing = Photo Licensing
+
+Photos = Photos
 
 Photos-you-take-will-appear-here = Photos you take will appear here
 
@@ -592,6 +666,8 @@ Profile = Profile
 
 Profile-Picture = Profile Picture
 
+PROJECT = PROJECT
+
 Project-Settings = Project Settings
 
 PROJECTS = PROJECTS
@@ -599,6 +675,8 @@ PROJECTS = PROJECTS
 Projects = Projects
 
 Quality-Grade = Quality Grade
+
+QUALITY-GRADE = QUALITY GRADE
 
 # Quality grade options
 quality-grade-research = Research Grade
@@ -626,6 +704,8 @@ Ranks-SUBCLASS = SUBCLASS
 Ranks-subclass = subclass
 Ranks-INFRACLASS = INFRACLASS
 Ranks-infraclass = infraclass
+Ranks-SUBTERCLASS = SUBTERCLASS
+Ranks-subterclass = subterclass
 Ranks-SUPERORDER = SUPERORDER
 Ranks-superorder = superorder
 Ranks-ORDER = ORDER
@@ -634,8 +714,6 @@ Ranks-SUBORDER = SUBORDER
 Ranks-suborder = suborder
 Ranks-INFRAORDER = INFRAORDER
 Ranks-infraorder = infraorder
-Ranks-SUBTERCLASS = SUBTERCLASS
-Ranks-subterclass = subterclass
 Ranks-PARVORDER = PARVORDER
 Ranks-parvorder = parvorder
 Ranks-ZOOSECTION = ZOOSECTION
@@ -716,6 +794,8 @@ Return-to-login = Return to login
 
 Reviewed = Reviewed
 
+Reviewed-observations-only = Reviewed observations only
+
 Reviewed-only = Reviewed only
 
 Revoke = Revoke
@@ -744,6 +824,14 @@ Search-for-a-user = Search for a user
 
 Search-for-description-tags-text = Search for description/tags text
 
+SEARCH-LOCATION = SEARCH LOCATION
+
+SEARCH-PROJECT = SEARCH PROJECT
+
+SEARCH-TAXA = SEARCH TAXA
+
+SEARCH-USER = SEARCH USER
+
 Select = Select
 
 Separate-Photos = Separate Photos
@@ -769,6 +857,10 @@ Sort-By = Sort By
 
 Sort-by = Sort by
 
+SORT-BY = SORT BY
+
+Sounds = Sounds
+
 Spam = Spam
 
 Spam-Examples = Commercial solicitation, links to nowhere, etc.
@@ -788,6 +880,10 @@ Stay-on-this-screen = Stay on this screen while your location loads.
 Tap-to-search-for-taxa = Tap to search for taxa
 
 Taxon = Taxon
+
+TAXON = TAXON
+
+TAXONOMIC-RANKS = TAXONOMIC RANKS
 
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
@@ -817,6 +913,8 @@ Unknown-organism = Unknown organism
 Unmute = Unmute
 
 Missing-Location = Missing Location
+
+Unreviewed-observations-only = Unreviewed observations only
 
 Unreviewed-only = Unreviewed only
 
@@ -860,6 +958,8 @@ Upload-Progress = Upload {$uploadProgress} percent complete
 Upload-Complete = Upload Complete
 
 User = User
+
+USER = USER
 
 USERNAME = USERNAME
 
@@ -962,6 +1062,8 @@ Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 Record-a-sound = Record a sound
 
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
+
+You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
@@ -1161,7 +1263,6 @@ Checkmark = Checkmark
 Menu = Menu
 Edit = Edit
 User-location = User location
-Loading-wheel = Loading wheel
 Map-layers = Map layers
 Share-map = Share map
 Copy-map-coordinates = Copy map coordinates
@@ -1423,6 +1524,7 @@ LEAVE = LEAVE
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
+SEARCH-FOR-A-LOCATION = SEARCH FOR A LOCATION
 Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 NEARBY-SUGGESTIONS = NEARBY SUGGESTIONS
@@ -1486,3 +1588,30 @@ Deleting-x-of-y-observations = Deleting {$currentDeleteCount} of {$total ->
 
 # Shows the progress of deletions for X of Y
 Deleting-x-of-y = Deleting {$currentDeleteCount} of {$total}
+
+January = January
+February = February
+March = March
+April = April
+May = May
+June = June
+July = July
+August = August
+September = September
+October = October
+November = November
+December = December
+
+# Error message when you try to do something that requires log in
+You-need-log-in-to-do-that = You need to log in to do that.
+
+# Title of dialog or section describing an error
+Error-title = Error
+
+# Character separating current position and total duration when playing a
+# sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
+# but it should be very short.
+sound-playback-separator = /
+
+# Accessibility label when a photo is loading
+Photo-is-loading = Photo is loading

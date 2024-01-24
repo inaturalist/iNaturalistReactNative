@@ -202,7 +202,8 @@ const TaxonDetails = ( ): Node => {
             onPress={( ) => navigation.navigate( "TabNavigator", {
               screen: "ObservationsStackNavigator",
               params: {
-                screen: "Explore"
+                screen: "Explore",
+                params: { taxon, worldwide: true }
               }
             } )}
             accessibilityLabel={t( "Explore" )}

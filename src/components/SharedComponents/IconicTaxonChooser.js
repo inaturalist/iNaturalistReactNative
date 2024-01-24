@@ -11,7 +11,10 @@ import colors from "styles/tailwindColors";
 type Props = {
   before: any,
   onTaxonChosen: Function,
-  taxon: Object,
+  taxon: {
+    id: number,
+    name: string
+  },
   testID?: string
 };
 

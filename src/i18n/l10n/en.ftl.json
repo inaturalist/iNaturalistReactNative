@@ -32,6 +32,7 @@
   "AGREE-WITH-ID": "AGREE WITH ID?",
   "Agree-with-ID-description": "Would you like to agree with the ID and suggest the following identification?",
   "All": "All",
+  "ALL": "ALL",
   "ALL-SUGGESTIONS": "ALL SUGGESTIONS",
   "All-observations": "All observations",
   "all-rights-reserved": {
@@ -42,6 +43,8 @@
   "Already-have-an-account": "Already have an account? Log in",
   "Amphibians": "Amphibians",
   "An-Internet-connection-is-required": "An Internet connection is required to load more observations.",
+  "APPLY-FILTERS": "APPLY FILTERS",
+  "Apply-filters": "Apply filters",
   "Arachnids": "Arachnids",
   "Are-you-sure": "Are you sure?",
   "Are-you-sure-you-want-to-sign-out": "Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.",
@@ -71,6 +74,18 @@
   "CANCEL": "CANCEL",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
+  "CC0": "CC0",
+  "CC-BY": "CC BY",
+  "CC-BY-NC": "CC BY-NC",
+  "CC-BY-SA": "CC BY-SA",
+  "CC-BY-ND": "CC BY-ND",
+  "CC-BY-NC-SA": "CC BY-NC-SA",
+  "CC-BY-NC-ND": "CC BY-NC-ND",
+  "CHANGE-DATE": "CHANGE DATE",
+  "Change-date": "Change date",
+  "Change-project": "Change project",
+  "Change-user": "Change user",
+  "Change-taxon": "Change taxon",
   "CHECK-YOUR-EMAIL": {
     "comment": "After pressing the reset password button",
     "val": "CHECK YOUR EMAIL!"
@@ -130,7 +145,15 @@
   "DATE": "DATE",
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
   "Date-added-oldest-to-newest": "Date added - oldest to newest",
+  "Date-observed": "Date observed",
+  "DATE-OBSERVED": "DATE OBSERVED",
+  "DATE-OBSERVED-NEWEST": "DATE OBSERVED - NEWEST TO OLDEST",
+  "DATE-OBSERVED-OLDEST": "DATE OBSERVED - OLDEST TO NEWEST",
   "Date_observed_header_short": "Observed",
+  "Date-uploaded": "Date uploaded",
+  "DATE-UPLOADED": "DATE UPLOADED",
+  "DATE-UPLOADED-NEWEST": "DATE UPLOADED - NEWEST TO OLDEST",
+  "DATE-UPLOADED-OLDEST": "DATE UPLOADED - OLDEST TO NEWEST",
   "Date-uploaded-header-short": "Uploaded",
   "Default-Search-Place": "Default Search Place",
   "DELETE": "DELETE",
@@ -148,6 +171,7 @@
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION?\n *[other] { $count } OBSERVATIONS?\n}",
   "Description-Tags": "Description/Tags",
   "DISCARD-ALL": "DISCARD ALL",
+  "DISCARD-FILTER-CHANGES": "DISCARD FILTER CHANGES",
   "DISCARD-CHANGES": "DISCARD CHANGES",
   "DISCARD-OBSERVATION": "DISCARD OBSERVATION",
   "DISCARD-X-OBSERVATIONS": "{ $count ->\n  [one] DISCARD OBSERVATION\n *[other] DISCARD { $count } OBSERVATIONS\n}",
@@ -170,6 +194,7 @@
   },
   "EMAIL-DEBUG-LOGS": "EMAIL DEBUG LOGS",
   "Email-Notifications": "Email Notifications",
+  "Endemic": "Endemic",
   "Error-Couldnt-Complete-Upload": "Error: Couldn't Complete Upload",
   "Error-Couldnt-Upload-Photo": "Error: Couldn't Upload Photo",
   "Error-Could-Not-Fetch-Taxon": "Error: Could Not Fetch Taxon",
@@ -177,8 +202,11 @@
   "ERROR-LOADING-DQA": "ERROR LOADING IN DQA",
   "Error-voting-in-DQA-description": "Your vote may not have been cast in the DQA. Check your internet connection and try again.",
   "Offline-DQA-description": "The DQA may not be accurate. Check your internet connection and try again.",
+  "ESTABLISHMENT-MEANS": "ESTABLISHMENT MEANS",
   "EVIDENCE": "EVIDENCE",
+  "Exact-Date": "Exact Date",
   "Explore": "Explore",
+  "Explore-Filters": "Explore Filters",
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "External-Applications": "External Applications",
   "FEATURED": {
@@ -186,7 +214,13 @@
     "val": "FEATURED"
   },
   "Fetching-location": "Fetching location...",
+  "Filter": "Filter",
   "Filters": "Filters",
+  "FILTER-BY-A-PROJECT": "FILTER BY A PROJECT",
+  "FILTER-BY-A-USER": "FILTER BY A USER",
+  "Filter-by-observed-during-months": "Filter by observations observed during specific months",
+  "Filter-by-observed-on-date": "Filter by observations observed on a specific date",
+  "Filter-by-uploaded-on-date": "Filter by observations uploaded on a specific date",
   "Finish": "Finish",
   "Fish": "Fish",
   "Flag-An-Item": "Flag An Item",
@@ -216,6 +250,7 @@
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
+  "Highest": "Highest",
   "ID-Withdrawn": {
     "comment": "Identification Status",
     "val": "ID Withdrawn"
@@ -271,6 +306,7 @@
     "val": "Looks like you're not using Apple Mail"
   },
   "Low": "Low",
+  "Lowest": "Lowest",
   "Mammals": "Mammals",
   "Media": "Media",
   "Missing-Date": "Missing Date",
@@ -293,6 +329,7 @@
   "Month-December": "December",
   "Months": "Months",
   "Most-faved": "Most faved",
+  "MOST-FAVED": "MOST FAVED",
   "Muted-Users": "Muted Users",
   "Names": "Names",
   "Native": "Native",
@@ -300,7 +337,9 @@
     "comment": "Header for nearby projects",
     "val": "NEARBY"
   },
+  "Needs-ID": "Needs ID",
   "New-Observation": "New Observation",
+  "Newest-to-oldest": "Newest to oldest",
   "Next": "Next",
   "No": "No",
   "No-account-found": {
@@ -308,6 +347,7 @@
     "val": "No account found with that email"
   },
   "No-Location": "No Location",
+  "No-Media": "No Media",
   "No-model-found": "No model found",
   "none": "none",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
@@ -315,6 +355,7 @@
     "comment": "license code",
     "val": "no rights reserved (CC0)"
   },
+  "No-Status": "No Status",
   "NOTES": {
     "comment": "Header for observation description on observation detail",
     "val": "NOTES"
@@ -342,6 +383,7 @@
   "Observations-created-on-iNaturalist": "Observations created on iNaturalist are used by scientists around the world.",
   "Offensive-Inappropriate": "Offensive/Inappropriate",
   "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
+  "Oldest-to-newest": "Oldest to newest",
   "Open": "Open",
   "OPEN-EMAIL": "OPEN EMAIL",
   "Organism-is-captive": {
@@ -353,6 +395,8 @@
   "PASSWORD": "PASSWORD",
   "Paused": "Paused",
   "Photo-Licensing": "Photo Licensing",
+  "PHOTO-LICENSING": "PHOTO LICENSING",
+  "Photos": "Photos",
   "Photos-you-take-will-appear-here": "Photos you take will appear here",
   "Plants": "Plants",
   "Playing-Sound": {
@@ -369,10 +413,12 @@
   "Private": "Private",
   "Profile": "Profile",
   "Profile-Picture": "Profile Picture",
+  "PROJECT": "PROJECT",
   "Project-Settings": "Project Settings",
   "PROJECTS": "PROJECTS",
   "Projects": "Projects",
   "Quality-Grade": "Quality Grade",
+  "QUALITY-GRADE": "QUALITY GRADE",
   "quality-grade-research": {
     "comment": "Quality grade options",
     "val": "Research Grade"
@@ -401,6 +447,8 @@
   "Ranks-subclass": "subclass",
   "Ranks-INFRACLASS": "INFRACLASS",
   "Ranks-infraclass": "infraclass",
+  "Ranks-SUBTERCLASS": "SUBTERCLASS",
+  "Ranks-subterclass": "subterclass",
   "Ranks-SUPERORDER": "SUPERORDER",
   "Ranks-superorder": "superorder",
   "Ranks-ORDER": "ORDER",
@@ -409,8 +457,6 @@
   "Ranks-suborder": "suborder",
   "Ranks-INFRAORDER": "INFRAORDER",
   "Ranks-infraorder": "infraorder",
-  "Ranks-SUBTERCLASS": "SUBTERCLASS",
-  "Ranks-subterclass": "subterclass",
   "Ranks-PARVORDER": "PARVORDER",
   "Ranks-parvorder": "parvorder",
   "Ranks-ZOOSECTION": "ZOOSECTION",
@@ -483,6 +529,7 @@
   },
   "Return-to-login": "Return to login",
   "Reviewed": "Reviewed",
+  "Reviewed-observations-only": "Reviewed observations only",
   "Reviewed-only": "Reviewed only",
   "Revoke": "Revoke",
   "Save": "Save",
@@ -496,6 +543,10 @@
   "Search-for-a-taxon": "Search for a taxon",
   "Search-for-a-user": "Search for a user",
   "Search-for-description-tags-text": "Search for description/tags text",
+  "SEARCH-LOCATION": "SEARCH LOCATION",
+  "SEARCH-PROJECT": "SEARCH PROJECT",
+  "SEARCH-TAXA": "SEARCH TAXA",
+  "SEARCH-USER": "SEARCH USER",
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "Settings": "Settings",
@@ -510,6 +561,8 @@
   },
   "Sort-By": "Sort By",
   "Sort-by": "Sort by",
+  "SORT-BY": "SORT BY",
+  "Sounds": "Sounds",
   "Spam": "Spam",
   "Spam-Examples": "Commercial solicitation, links to nowhere, etc.",
   "SPECIES": "SPECIES",
@@ -525,6 +578,8 @@
   "Stay-on-this-screen": "Stay on this screen while your location loads.",
   "Tap-to-search-for-taxa": "Tap to search for taxa",
   "Taxon": "Taxon",
+  "TAXON": "TAXON",
+  "TAXONOMIC-RANKS": "TAXONOMIC RANKS",
   "TAXONOMY-header": {
     "comment": "Header for a block of text describing a taxon's taxonomy",
     "val": "TAXONOMY"
@@ -542,6 +597,7 @@
   "Unknown-organism": "Unknown organism",
   "Unmute": "Unmute",
   "Missing-Location": "Missing Location",
+  "Unreviewed-observations-only": "Unreviewed observations only",
   "Unreviewed-only": "Unreviewed only",
   "UPLOAD-NOW": "UPLOAD NOW",
   "Upload-x-observations": {
@@ -571,6 +627,7 @@
   "Upload-Progress": "Upload { $uploadProgress } percent complete",
   "Upload-Complete": "Upload Complete",
   "User": "User { $userHandle }",
+  "USER": "USER",
   "USERNAME": "USERNAME",
   "Username": "Username",
   "USERNAME-OR-EMAIL": {
@@ -622,6 +679,7 @@
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
   "Record-a-sound": "Record a sound",
   "You-can-also-explore-existing-observations": "You can also explore existing observations on iNaturalist to discover what's around you.",
+  "You-changed-filters-will-be-discarded": "You changed filters, but they were not applied to your explore search results.",
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
@@ -797,7 +855,6 @@
   },
   "Edit": "Edit",
   "User-location": "User location",
-  "Loading-wheel": "Loading wheel",
   "Map-layers": "Map layers",
   "Share-map": "Share map",
   "Copy-map-coordinates": "Copy map coordinates",
@@ -1052,6 +1109,7 @@
   "LEAVE": "LEAVE",
   "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue.",
   "SEARCH-FOR-A-TAXON": "SEARCH FOR A TAXON",
+  "SEARCH-FOR-A-LOCATION": "SEARCH FOR A LOCATION",
   "Select-the-identification-you-want-to-add": "Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.",
   "TOP-ID-SUGGESTION": "TOP ID SUGGESTION",
   "NEARBY-SUGGESTIONS": "NEARBY SUGGESTIONS",
@@ -1104,5 +1162,33 @@
   "Deleting-x-of-y": {
     "comment": "Shows the progress of deletions for X of Y",
     "val": "Deleting { $currentDeleteCount } of { $total }"
+  },
+  "January": "January",
+  "February": "February",
+  "March": "March",
+  "April": "April",
+  "May": "May",
+  "June": "June",
+  "July": "July",
+  "August": "August",
+  "September": "September",
+  "October": "October",
+  "November": "November",
+  "December": "December",
+  "You-need-log-in-to-do-that": {
+    "comment": "Error message when you try to do something that requires log in",
+    "val": "You need to log in to do that."
+  },
+  "Error-title": {
+    "comment": "Title of dialog or section describing an error",
+    "val": "Error"
+  },
+  "sound-playback-separator": {
+    "comment": "Character separating current position and total duration when playing a\nsound, e.g. 00:12 / 03:00 uses \"/\" as the separator. This can be anything,\nbut it should be very short.",
+    "val": "/"
+  },
+  "Photo-is-loading": {
+    "comment": "Accessibility label when a photo is loading",
+    "val": "Photo is loading"
   }
 }
