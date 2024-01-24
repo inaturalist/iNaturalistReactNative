@@ -7,15 +7,20 @@ import makeWebshell, {
   HandleLinkPressFeature,
   useAutoheight
 } from "@formidable-webview/webshell";
-import { getJWT, USER_AGENT } from "components/LoginSignUp/AuthenticationService";
+import { useQueryClient } from "@tanstack/react-query";
+import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
+import { USER_AGENT } from "components/LoginSignUp/AuthenticationService";
 import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import inatjs from "inaturalistjs";
 import type { Node } from "react";
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import { Alert, Linking } from "react-native";
 import { WebView } from "react-native-webview";
-import { useTranslation } from "sharedHooks";
+import {
+  useAuthenticatedQuery,
+  useTranslation
+} from "sharedHooks";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 const Webshell = makeWebshell(
   WebView,
@@ -46,9 +51,8 @@ const Announcements = ( {
   currentUser,
   isOnline
 }: Props ): Node => {
-  const [announcements, setAnnouncements] = React.useState( undefined );
-
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const onLinkPress = async target => {
     // Checking if the link is supported for links with custom URL scheme.
@@ -62,42 +66,44 @@ const Announcements = ( {
     }
   };
 
-  const fetchAnnouncements = useCallback( async ( locale: ?string ) => {
-    const params = {
-      fields: "id,body,dismissible,start,placement",
-      placement: "mobile",
-      locale: locale || "en",
-      per_page: 20
-    };
-    const apiToken = await getJWT();
-    const headers = {};
-    headers["user-agent"] = USER_AGENT;
-    const options = { api_token: apiToken, headers };
-    inatjs.announcements
-      .search( params, options )
-      .then( ( { results } ) => {
-        // TODO: if total_results > results, should we paginate and get more?
-        // Array of { id, body, dismissible }
-        const homeAnnouncements = results
-          // Filter by placement on mobile home screen
-          .filter( r => r.placement === "mobile/home" )
-          // Sort by start date, oldest first
-          .sort( ( a, b ) => new Date( a.start ) - new Date( b.start ) );
-        setAnnouncements( homeAnnouncements );
-      } )
-      .catch( err => {
-        // TODO: error handling / UI message?
-        console.log( err, "err fetching announcement" );
-      } );
-  }, [] );
+  const headers = {};
+  headers["user-agent"] = USER_AGENT;
+  const options = { headers };
+  console.log( "options :>> ", options );
 
-  useEffect( () => {
-    // If not online or not logged in, don't fetch announcements
-    if ( !isOnline || !currentUser ) {
-      return;
+  const apiParams = {
+    locale: currentUser?.locale || "en",
+    per_page: 20
+  };
+  // TODO: if there are more than 20 announcements, should we paginate and get more?
+  const {
+    data: announcements,
+    isLoading,
+    refetch: refetchAnnouncements,
+    isRefetching
+  } = useAuthenticatedQuery(
+    ["searchAnnouncements", apiParams],
+    optsWithAuth => searchAnnouncements( apiParams, optsWithAuth ),
+    {
+      enabled: !!isOnline && !!currentUser
     }
-    fetchAnnouncements( currentUser?.locale );
-  }, [isOnline, currentUser, fetchAnnouncements] );
+  );
+
+  const dismissAnnouncementMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => dismissAnnouncement( params, optsWithAuth ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries( ["searchAnnouncements"] );
+        if ( refetchAnnouncements ) {
+          refetchAnnouncements();
+        }
+      },
+      onError: err => {
+        // TODO: error handling / UI message?
+        console.log( err, "err dismissing announcement" );
+      }
+    }
+  );
 
   const showCard
     = isOnline && announcements && announcements.length > 0 && !!currentUser;
@@ -108,27 +114,20 @@ const Announcements = ( {
     return null;
   }
 
-  const topAnnouncement = announcements[0];
+  // Array of { id, body, dismissible }
+  const homeAnnouncements = announcements
+    // Sort by start date, oldest first
+    .sort( ( a, b ) => new Date( a.start ) - new Date( b.start ) );
+  const topAnnouncement = homeAnnouncements[0];
+  console.log( "topAnnouncement :>> ", topAnnouncement );
   const { id, dismissible, body } = topAnnouncement;
 
   const dismiss = async () => {
-    const apiToken = await getJWT();
-    const options = { api_token: apiToken, user_agent: USER_AGENT };
-    inatjs.announcements
-      .dismiss( { id }, options )
-      .then( () => {
-        // Optimistically remove the announcement from the list in state
-        const newAnnouncements = announcements.filter( a => a.id !== id );
-        setAnnouncements( newAnnouncements );
-
-        // Refetch announcements
-        fetchAnnouncements();
-      } )
-      .catch( err => {
-        // TODO: error handling / UI message?
-        console.log( err, "err dismissing announcement" );
-      } );
+    dismissAnnouncementMutation.mutate( { id } );
   };
+
+  console.log( "isLoading :>> ", isLoading );
+  console.log( "isRefetching :>> ", isRefetching );
 
   return (
     <View
