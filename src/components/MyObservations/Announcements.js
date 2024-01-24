@@ -7,13 +7,13 @@ import makeWebshell, {
   HandleLinkPressFeature,
   useAutoheight
 } from "@formidable-webview/webshell";
-import { useNavigation } from "@react-navigation/native";
 import { getJWT, USER_AGENT } from "components/LoginSignUp/AuthenticationService";
 import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
+import { Alert, Linking } from "react-native";
 import { WebView } from "react-native-webview";
 import { useTranslation } from "sharedHooks";
 
@@ -48,11 +48,11 @@ const Announcements = ( {
 }: Props ): Node => {
   const [announcements, setAnnouncements] = React.useState( undefined );
 
-  const fetchAnnouncements = useCallback( async () => {
+  const fetchAnnouncements = useCallback( async ( locale: ?string ) => {
     const params = {
       fields: "id,body,dismissible,start,placement",
       placement: "mobile",
-      locale: currentUser?.locale || "en",
+      locale: locale || "en",
       per_page: 20
     };
     const apiToken = await getJWT();
@@ -82,7 +82,7 @@ const Announcements = ( {
     if ( !isOnline || !currentUser ) {
       return;
     }
-    fetchAnnouncements();
+    fetchAnnouncements( currentUser?.locale );
   }, [isOnline, currentUser, fetchAnnouncements] );
 
   const showCard
