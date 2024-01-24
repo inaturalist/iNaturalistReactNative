@@ -71,8 +71,11 @@ const Announcements = ( {
           .sort( ( a, b ) => new Date( a.start ) - new Date( b.start ) );
         setAnnouncements( homeAnnouncements );
       } )
-      .catch( err => console.log( err, "err fetching announcements" ) );
-  }, [currentUser] );
+      .catch( err => {
+        // TODO: error handling / UI message?
+        console.log( err, "err fetching announcement" );
+      } );
+  }, [] );
 
   useEffect( () => {
     // If not online or not logged in, don't fetch announcements
@@ -107,7 +110,10 @@ const Announcements = ( {
         // Refetch announcements
         fetchAnnouncements();
       } )
-      .catch( err => console.log( err, "err dismissing announcement" ) );
+      .catch( err => {
+        // TODO: error handling / UI message?
+        console.log( err, "err dismissing announcement" );
+      } );
   };
 
   return (
