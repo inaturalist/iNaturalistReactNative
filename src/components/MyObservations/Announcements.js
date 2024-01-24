@@ -48,6 +48,8 @@ const Announcements = ( {
 }: Props ): Node => {
   const [announcements, setAnnouncements] = React.useState( undefined );
 
+  const { t } = useTranslation();
+
   const onLinkPress = async target => {
     // Checking if the link is supported for links with custom URL scheme.
     const url = target.uri;
