@@ -50,10 +50,6 @@ const Toolbar = ( {
   const theme = useTheme( );
   const { t } = useTranslation( );
 
-  const handlePress = needsSync
-    ? handleSyncButtonPress
-    : ( ) => { };
-
   return (
     <View className={
       classNames(
@@ -90,7 +86,7 @@ const Toolbar = ( {
                 : "sync"
             }
             rotating={rotating}
-            onPress={handlePress}
+            onPress={handleSyncButtonPress}
             color={syncIconColor}
             disabled={false}
             accessibilityLabel={t( "Sync-observations" )}
@@ -100,7 +96,7 @@ const Toolbar = ( {
           {statusText && (
             <View className="flex ml-1 shrink">
               <View className="flex-row items-center shrink">
-                <Body2 onPress={handlePress}>
+                <Body2 onPress={handleSyncButtonPress}>
                   {statusText}
                 </Body2>
                 {showsCheckmark && (
