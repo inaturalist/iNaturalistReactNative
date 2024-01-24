@@ -9,11 +9,13 @@ import makeWebshell, {
 } from "@formidable-webview/webshell";
 import { useNavigation } from "@react-navigation/native";
 import { getJWT, USER_AGENT } from "components/LoginSignUp/AuthenticationService";
+import { Button } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
 import { WebView } from "react-native-webview";
+import { useTranslation } from "sharedHooks";
 
 const Webshell = makeWebshell(
   WebView,
@@ -85,7 +87,6 @@ const Announcements = ( {
   if ( !showCard ) {
     return null;
   }
-
   if ( !announcements ) {
     return null;
   }
@@ -93,6 +94,10 @@ const Announcements = ( {
   const topAnnouncement = announcements[0];
   const { id, dismissible, body } = topAnnouncement;
   return (
+    <View
+      className="bg-white"
+      testID="announcements-container"
+    >
       <AutoheightWebView
         onDOMLinkPress={onLinkPress}
         originWhitelist={["*"]}
@@ -100,6 +105,8 @@ const Announcements = ( {
         scrollEnabled={false}
         testID="announcements-webview"
       />
+      {dismissible && <Button className="m-3" text={t( "DISMISS" )} onPress={dismiss} />}
+    </View>
   );
 };
 
