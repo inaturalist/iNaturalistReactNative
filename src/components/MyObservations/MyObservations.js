@@ -6,6 +6,7 @@ import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Animated, Platform } from "react-native";
 
+import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 
 type Props = {
@@ -108,6 +109,9 @@ const MyObservations = ( {
               testID="MyObservationsAnimatedList"
               uploadSingleObservation={uploadSingleObservation}
               uploadState={uploadState}
+              renderHeader={(
+                <Announcements currentUser={currentUser} isOnline={isOnline} />
+              )}
             />
           </StickyView>
         </View>
