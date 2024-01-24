@@ -93,6 +93,23 @@ const Announcements = ( {
 
   const topAnnouncement = announcements[0];
   const { id, dismissible, body } = topAnnouncement;
+
+  const dismiss = async () => {
+    const apiToken = await getJWT();
+    const options = { api_token: apiToken, user_agent: USER_AGENT };
+    inatjs.announcements
+      .dismiss( { id }, options )
+      .then( () => {
+        // Optimistically remove the announcement from the list in state
+        const newAnnouncements = announcements.filter( a => a.id !== id );
+        setAnnouncements( newAnnouncements );
+
+        // Refetch announcements
+        fetchAnnouncements();
+      } )
+      .catch( err => console.log( err, "err dismissing announcement" ) );
+  };
+
   return (
     <View
       className="bg-white"
