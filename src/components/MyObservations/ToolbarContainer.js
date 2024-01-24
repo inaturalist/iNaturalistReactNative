@@ -53,8 +53,6 @@ const ToolbarContainer = ( {
     ? currentDeleteCount / totalDeletions
     : 0;
 
-  console.log( deletionsProgress, "deletions progress" );
-
   const {
     uploads,
     error: uploadError,
