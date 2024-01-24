@@ -1,9 +1,37 @@
 import { screen } from "@testing-library/react-native";
+import * as useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
+
+jest.mock( "components/MyObservations/hooks/useDeleteObservations", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    currentDeleteCount: 1,
+    deletions: [],
+    deletionsComplete: false,
+    deletionsInProgress: false,
+    error: null
+  } )
+} ) );
+
+const deletionState = {
+  currentDeleteCount: 3,
+  deletions: [{}, {}, {}],
+  deletionsComplete: false,
+  deletionsInProgress: false,
+  error: null
+};
+
+const uploadState = {
+  uploadInProgress: false,
+  uploads: [{}],
+  uploadsComplete: false,
+  error: null,
+  currentUploadCount: 1
+};
 
 describe( "Toolbar", () => {
   beforeAll( async () => {
@@ -13,13 +41,7 @@ describe( "Toolbar", () => {
   it( "displays a pending upload", async () => {
     renderComponent( <ToolbarContainer
       numUnuploadedObs={1}
-      uploadState={{
-        uploadInProgress: false,
-        uploads: [{}, {}, {}, {}],
-        uploadsComplete: false,
-        error: null,
-        currentUploadCount: 1
-      }}
+      uploadState={uploadState}
     /> );
 
     const statusText = screen.getByText( i18next.t( "Upload-x-observations", { count: 1 } ) );
@@ -31,11 +53,8 @@ describe( "Toolbar", () => {
       numUnuploadedObs={1}
       totalUploadCount={1}
       uploadState={{
-        uploadInProgress: true,
-        uploads: [{}],
-        uploadsComplete: false,
-        error: null,
-        currentUploadCount: 1
+        ...uploadState,
+        uploadInProgress: true
       }}
     /> );
 
@@ -51,11 +70,8 @@ describe( "Toolbar", () => {
       progress={1}
       totalUploadCount={1}
       uploadState={{
-        uploadInProgress: false,
-        uploads: [{}],
-        uploadsComplete: true,
-        error: null,
-        currentUploadCount: 1
+        ...uploadState,
+        uploadsComplete: true
       }}
     /> );
 
@@ -69,11 +85,8 @@ describe( "Toolbar", () => {
     const error = "Couldn't complete upload";
     renderComponent( <ToolbarContainer
       uploadState={{
-        uploadInProgress: false,
-        uploads: [{}],
-        uploadsComplete: false,
-        error,
-        currentUploadCount: 1
+        ...uploadState,
+        error
       }}
     /> );
     expect( screen.getByText( error ) ).toBeVisible( );
@@ -83,11 +96,8 @@ describe( "Toolbar", () => {
     renderComponent( <ToolbarContainer
       numUnuploadedObs={4}
       uploadState={{
-        uploadInProgress: false,
-        uploads: [{}, {}, {}, {}],
-        uploadsComplete: false,
-        error: null,
-        currentUploadCount: 0
+        ...uploadState,
+        uploads: [{}, {}, {}, {}]
       }}
     /> );
 
@@ -100,10 +110,9 @@ describe( "Toolbar", () => {
       numUnuploadedObs={3}
       totalUploadCount={5}
       uploadState={{
+        ...uploadState,
         uploadInProgress: true,
         uploads: [{}, {}, {}, {}, {}],
-        uploadsComplete: false,
-        error: null,
         currentUploadCount: 2
       }}
     /> );
@@ -120,17 +129,55 @@ describe( "Toolbar", () => {
       progress={1}
       totalUploadCount={7}
       uploadState={{
-        uploadInProgress: false,
+        ...uploadState,
         uploads: [{}, {}, {}, {}, {}, {}, {}],
-        uploadsComplete: true,
-        error: null,
-        currentUploadCount: 1
+        uploadsComplete: true
       }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "X-observations-uploaded", {
       count: 7
     } ) );
+    expect( statusText ).toBeVisible( );
+  } );
+
+  it( "displays deletions in progress", async () => {
+    jest.spyOn( useDeleteObservations, "default" ).mockImplementation( ( ) => ( {
+      ...deletionState,
+      deletionsInProgress: true,
+      currentDeleteCount: 2
+    } ) );
+    renderComponent( <ToolbarContainer uploadState={uploadState} /> );
+
+    const statusText = screen.getByText( i18next.t( "Deleting-x-of-y-observations", {
+      total: 3,
+      currentDeleteCount: 2
+    } ) );
+    expect( statusText ).toBeVisible( );
+  } );
+
+  it( "displays deletions completed", async () => {
+    jest.spyOn( useDeleteObservations, "default" ).mockImplementation( ( ) => ( {
+      ...deletionState,
+      deletionsComplete: true
+    } ) );
+    renderComponent( <ToolbarContainer uploadState={uploadState} /> );
+
+    const statusText = screen.getByText( i18next.t( "X-observations-deleted", {
+      count: 3
+    } ) );
+    expect( statusText ).toBeVisible( );
+  } );
+
+  it( "displays deletion error", async () => {
+    const error = "Unknown problem deleting observations";
+    jest.spyOn( useDeleteObservations, "default" ).mockImplementation( ( ) => ( {
+      ...deletionState,
+      error
+    } ) );
+    renderComponent( <ToolbarContainer uploadState={uploadState} /> );
+
+    const statusText = screen.getByText( error );
     expect( statusText ).toBeVisible( );
   } );
 } );

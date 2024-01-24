@@ -11,11 +11,11 @@ const { useRealm } = RealmContext;
 
 export const INITIAL_DELETION_STATE = {
   currentDeleteCount: 1,
-  error: null,
-  deletionsInProgress: false,
   // $FlowIgnore
   deletions: [],
-  deletionsComplete: false
+  deletionsComplete: false,
+  deletionsInProgress: false,
+  error: null
 };
 
 const deletionReducer = ( state: Object, action: Function ): Object => {

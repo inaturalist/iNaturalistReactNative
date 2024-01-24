@@ -166,9 +166,7 @@ const ToolbarContainer = ( {
       stopUploads={stopUploads}
       syncIconColor={syncIconColor}
       toggleLayout={toggleLayout}
-      error={deletionsInProgress
-        ? deleteError
-        : uploadError}
+      error={deleteError || uploadError}
     />
   );
 };

@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationSheet";
 import initI18next from "i18n/initI18next";
@@ -17,9 +18,11 @@ afterEach( ( ) => {
   jest.clearAllMocks( );
 } );
 
+const mockNavigate = jest.fn( );
+
 const renderDeleteSheet = ( ) => renderComponent(
   <DeleteObservationSheet
-    navToObsList={( ) => jest.fn( )}
+    navToObsList={mockNavigate}
     currentObservation={currentObservation}
     observations={observations}
   />
@@ -63,6 +66,26 @@ describe( "delete observation", ( ) => {
       const cancelButton = screen.queryByText( /CANCEL/ );
       fireEvent.press( cancelButton );
       expect( localObservation._deleted_at ).toBeNull( );
+    } );
+  } );
+
+  describe( "handles multiple observation deletion", ( ) => {
+    it( "navigates back to MyObservations when observations are not in realm", ( ) => {
+      const unsavedObservations = [{
+        uuid: faker.string.uuid( )
+      }, {
+        uuid: faker.string.uuid( )
+      }];
+      renderComponent(
+        <DeleteObservationSheet
+          navToObsList={mockNavigate}
+          currentObservation={unsavedObservations[0]}
+          observations={unsavedObservations}
+        />
+      );
+      const deleteButton = screen.queryByText( /DELETE ALL/ );
+      fireEvent.press( deleteButton );
+      expect( mockNavigate ).toBeCalled( );
     } );
   } );
 } );

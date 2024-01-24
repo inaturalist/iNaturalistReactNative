@@ -12,14 +12,17 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
   } )
 } ) );
 
-const observationsQueuedForDeletion = [
-  factory( "LocalObservation", {
-    _deleted_at: faker.date.past( ),
-    _synced_at: null
-  } ),
+const syncedObservations = [
   factory( "LocalObservation", {
     _deleted_at: faker.date.past( ),
     _synced_at: faker.date.past( )
+  } )
+];
+
+const unsyncedObservations = [
+  factory( "LocalObservation", {
+    _deleted_at: faker.date.past( ),
+    _synced_at: null
   } )
 ];
 
@@ -29,44 +32,45 @@ const getLocalObservation = uuid => global.realm
 describe( "handle deletions", ( ) => {
   beforeEach( async ( ) => {
     await initI18next( );
+  } );
 
-    await global.realm.write( ( ) => {
-      global.realm.deleteAll( );
-    } );
-
-    observationsQueuedForDeletion.forEach( observation => {
+  it( "should not make deletion API call for unsynced observations", async ( ) => {
+    const deleteSpy = jest.spyOn( global.realm, "delete" );
+    unsyncedObservations.forEach( observation => {
       global.realm.write( ( ) => {
         global.realm.create( "Observation", observation );
       } );
     } );
+
+    const unsyncedObservation = getLocalObservation(
+      unsyncedObservations[0].uuid
+    );
+    expect( unsyncedObservation._synced_at ).toBeNull( );
+    renderHook( ( ) => useDeleteObservations( ) );
+
+    await waitFor( ( ) => {
+      expect( mockMutate ).not.toHaveBeenCalled( );
+    } );
+
+    expect( deleteSpy ).toHaveBeenCalled( );
   } );
 
   it( "should make deletion API call for previously synced observations", async ( ) => {
-    const unsyncedObservation = getLocalObservation( observationsQueuedForDeletion[0].uuid );
-    expect( unsyncedObservation._synced_at ).toBeNull( );
-    const syncedObservation = getLocalObservation( observationsQueuedForDeletion[1].uuid );
+    const deleteSpy = jest.spyOn( global.realm, "delete" );
+    syncedObservations.forEach( observation => {
+      global.realm.write( ( ) => {
+        global.realm.create( "Observation", observation );
+      } );
+    } );
+
+    const syncedObservation = getLocalObservation( syncedObservations[0].uuid );
     expect( syncedObservation._synced_at ).not.toBeNull( );
     renderHook( ( ) => useDeleteObservations( ) );
 
     await waitFor( ( ) => {
       expect( mockMutate )
-        .not.toHaveBeenCalledWith( { uuid: unsyncedObservation.uuid } );
+        .toHaveBeenCalledWith( { uuid: syncedObservation.uuid } );
     } );
-    expect( mockMutate )
-      .toHaveBeenCalledWith( { uuid: syncedObservation.uuid } );
+    expect( deleteSpy ).toHaveBeenCalled( );
   } );
-
-  // it( "should locally delete all observations", async ( ) => {
-  //   const unsyncedObservation = getLocalObservation( observationsQueuedForDeletion[0].uuid );
-  //   expect( unsyncedObservation._synced_at ).toBeNull( );
-  //   const syncedObservation = getLocalObservation( observationsQueuedForDeletion[1].uuid );
-  //   expect( syncedObservation._synced_at ).not.toBeNull( );
-  //   renderHook( ( ) => useDeleteObservations( ) );
-
-  //   const spy = jest.spyOn( global.realm, "delete" );
-
-  //   await waitFor( ( ) => {
-  //     expect( spy ).toHaveBeenCalledTimes( 2 );
-  //   } );
-  // } );
 } );
