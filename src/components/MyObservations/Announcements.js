@@ -48,6 +48,18 @@ const Announcements = ( {
 }: Props ): Node => {
   const [announcements, setAnnouncements] = React.useState( undefined );
 
+  const onLinkPress = async target => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const url = target.uri;
+    const supported = await Linking.canOpenURL( url );
+
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
+  };
+
   const fetchAnnouncements = useCallback( async ( locale: ?string ) => {
     const params = {
       fields: "id,body,dismissible,start,placement",
