@@ -92,8 +92,7 @@ const Announcements = ( {
         }
       },
       onError: err => {
-        // TODO: error handling / UI message?
-        console.log( err, "err dismissing announcement" );
+        throw err;
       }
     }
   );
