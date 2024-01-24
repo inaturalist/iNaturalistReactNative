@@ -10,7 +10,7 @@ import makeWebshell, {
 import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
 import { USER_AGENT } from "components/LoginSignUp/AuthenticationService";
-import { Button } from "components/SharedComponents";
+import { ActivityIndicator, Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -78,7 +78,6 @@ const Announcements = ( {
   // TODO: if there are more than 20 announcements, should we paginate and get more?
   const {
     data: announcements,
-    isLoading,
     refetch: refetchAnnouncements,
     isRefetching
   } = useAuthenticatedQuery(
@@ -105,12 +104,13 @@ const Announcements = ( {
     }
   );
 
-  const showCard
-    = isOnline && announcements && announcements.length > 0 && !!currentUser;
-  if ( !showCard ) {
+  if ( !isOnline ) {
     return null;
   }
-  if ( !announcements ) {
+  if ( !currentUser ) {
+    return null;
+  }
+  if ( !announcements || announcements.length === 0 ) {
     return null;
   }
 
@@ -126,8 +126,9 @@ const Announcements = ( {
     dismissAnnouncementMutation.mutate( { id } );
   };
 
-  console.log( "isLoading :>> ", isLoading );
-  console.log( "isRefetching :>> ", isRefetching );
+  if ( isRefetching ) {
+    return <ActivityIndicator size={32} />;
+  }
 
   return (
     <View
