@@ -63,6 +63,11 @@ jest.mock( "providers/contexts", ( ) => {
   };
 } );
 
+jest.mock( "components/MyObservations/Announcements", () => ( {
+  __esModule: true,
+  default: jest.fn()
+} ) );
+
 const initialStoreState = useStore.getState( );
 
 // Open a realm connection and stuff it in global

@@ -308,6 +308,8 @@ DISCARD-X-OBSERVATIONS = {$count ->
     *[other] DISCARD {$count} OBSERVATIONS
 }
 
+DISMISS = DISMISS
+
 Display = Display
 
 Display-Name = Display Name

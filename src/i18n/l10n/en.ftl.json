@@ -175,6 +175,7 @@
   "DISCARD-CHANGES": "DISCARD CHANGES",
   "DISCARD-OBSERVATION": "DISCARD OBSERVATION",
   "DISCARD-X-OBSERVATIONS": "{ $count ->\n  [one] DISCARD OBSERVATION\n *[other] DISCARD { $count } OBSERVATIONS\n}",
+  "DISMISS": "DISMISS",
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
