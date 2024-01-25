@@ -14,6 +14,7 @@ import {
 import type { Node } from "react";
 import React from "react";
 import { Platform, StatusBar } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
@@ -26,6 +27,8 @@ import FaveButton from "./FaveButton";
 import ObsDetailsHeader from "./ObsDetailsHeader";
 import ObsDetailsOverview from "./ObsDetailsOverview";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
+
+const isTablet = DeviceInfo.isTablet();
 
 type Props = {
   activityItems: Array<Object>,
@@ -81,9 +84,69 @@ const ObsDetails = ( {
     height: 125
   };
 
-  return (
-    <SafeAreaView className="flex-1 bg-black">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+  const renderTablet = () => (
+    <View className="flex-1 flex-row bg-white">
+      <View className="w-[33%]">
+        <ObsDetailsHeader
+          belongsToCurrentUser={belongsToCurrentUser}
+          observation={observation}
+        />
+        {/* <ObsMediaDisplayContainer observation={observation} /> */}
+      </View>
+      <View className="w-[66%]">
+        {/* TODO:
+        {currentUser && (
+          <FaveButton
+            observation={observation}
+            currentUser={currentUser}
+            afterToggleFave={refetchRemoteObservation}
+          />
+        )} */}
+        <ObsDetailsOverview
+          observation={observation}
+          isOnline={isOnline}
+          belongsToCurrentUser={belongsToCurrentUser}
+        />
+        <Tabs tabs={tabs} activeId={currentTabId} />
+        <ScrollView
+          testID={`ObsDetails.${uuid}`}
+          stickyHeaderIndices={[0, 3]}
+          scrollEventThrottle={16}
+          className="flex-1 flex-column"
+          stickyHeaderHiddenOnScroll
+          endFillColor="white"
+        >
+          <View className="bg-white h-full">
+            <HideView show={showActivityTab}>
+              <ActivityTab
+                observation={observation}
+                refetchRemoteObservation={refetchRemoteObservation}
+                onIDAgreePressed={onIDAgreePressed}
+                activityItems={activityItems}
+                isOnline={isOnline}
+              />
+            </HideView>
+            <HideView noInitialRender show={!showActivityTab}>
+              <DetailsTab observation={observation} uuid={uuid} />
+            </HideView>
+            {addingActivityItem && (
+              <View className="flex-row items-center justify-center">
+                <ActivityIndicator size="large" />
+              </View>
+            )}
+          </View>
+        </ScrollView>
+        {showActivityTab && (
+          <FloatingButtons
+            navToSuggestions={navToSuggestions}
+            openCommentBox={openCommentBox}
+            showCommentBox={showCommentBox}
+          />
+        )}
+      </View>
+    </View>
+  );
+
   const renderPhone = () => (
     <>
       <ScrollView
@@ -153,7 +216,9 @@ const ObsDetails = ( {
   return (
     <SafeAreaView className="flex-1 bg-black">
       <StatusBar barStyle="light-content" backgroundColor="black" />
-      {renderPhone()}
+      {!isTablet
+        ? renderPhone()
+        : renderTablet()}
       {showAgreeWithIdSheet && (
         <AgreeWithIDSheet
           taxon={taxonForAgreement}
