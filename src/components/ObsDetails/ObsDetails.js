@@ -12,7 +12,7 @@ import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { Platform, StatusBar } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import {
@@ -76,7 +76,6 @@ const ObsDetails = ( {
   const { params } = useRoute( );
   const { uuid } = params;
   const { t } = useTranslation( );
-  const [passedPhotos, setPassedPhotos] = useState( false );
 
   const textInputStyle = Platform.OS === "android" && {
     height: 125
@@ -92,13 +91,6 @@ const ObsDetails = ( {
         className="flex-1 flex-column"
         stickyHeaderHiddenOnScroll
         endFillColor="white"
-        onScroll={scrollEvent => {
-          if ( !passedPhotos && scrollEvent.nativeEvent.contentOffset.y > 244 ) {
-            setPassedPhotos( true );
-          } else if ( passedPhotos && scrollEvent.nativeEvent.contentOffset.y <= 244 ) {
-            setPassedPhotos( false );
-          }
-        }}
       >
         <ObsDetailsHeader
           belongsToCurrentUser={belongsToCurrentUser}
