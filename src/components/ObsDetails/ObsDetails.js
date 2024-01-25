@@ -84,6 +84,8 @@ const ObsDetails = ( {
   return (
     <SafeAreaView className="flex-1 bg-black">
       <StatusBar barStyle="light-content" backgroundColor="black" />
+  const renderPhone = () => (
+    <>
       <ScrollView
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[0, 3]}
@@ -145,6 +147,13 @@ const ObsDetails = ( {
           showCommentBox={showCommentBox}
         />
       )}
+    </>
+  );
+
+  return (
+    <SafeAreaView className="flex-1 bg-black">
+      <StatusBar barStyle="light-content" backgroundColor="black" />
+      {renderPhone()}
       {showAgreeWithIdSheet && (
         <AgreeWithIDSheet
           taxon={taxonForAgreement}
