@@ -3,30 +3,31 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchObservationUpdates } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import { flatten, last } from "lodash";
+import { flatten } from "lodash";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import { useCurrentUser } from "sharedHooks";
 
-const useInfiniteNotificationsScroll = ( { params: newInputParams }: Object ): Object => {
+const useInfiniteNotificationsScroll = ( ): Object => {
   const currentUser = useCurrentUser( );
 
   // Request params for fetching unviewed updates
   const baseParams = {
-    ...newInputParams,
     observations_by: "owner",
     viewed: true,
     fields: "all",
-    per_page: 10
+    per_page: 5,
+    ttl: -1
   };
 
-  // const queryKey = ["fetchNotifications"];
   const queryKey = ["useInfiniteNotificationsScroll", "fetchNotifications"];
 
   const {
-    data,
+    data: notifications,
     isFetchingNextPage,
     fetchNextPage,
-    status
+    dataCanBeFetched,
+    status,
+    refetch
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey,
@@ -49,7 +50,9 @@ const useInfiniteNotificationsScroll = ( { params: newInputParams }: Object ): O
 
       return response;
     },
-    getNextPageParam: lastPage => last( lastPage )?.id,
+    getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
+      ? allPages.length + 1
+      : undefined ),
     enabled: true,
     retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
       beforeRetry: ( ) => console.log( "error", error )
@@ -60,8 +63,10 @@ const useInfiniteNotificationsScroll = ( { params: newInputParams }: Object ): O
     && {
       isFetchingNextPage,
       fetchNextPage,
-      data: flatten( data.pages ),
-      status
+      dataCanBeFetched,
+      notifications: flatten( notifications?.pages ),
+      status,
+      refetch
     };
 };
 
