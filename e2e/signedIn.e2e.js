@@ -129,5 +129,7 @@ describe( "Signed in user", () => {
     // TODO test to make sure the exact observation we created was deleted.
     // Testing for the empty list UI isn't adequate because other test runs
     // happening in parallel might cause other observations to be there
+    const deletedObservationText = element( by.text( /1 observation deleted/ ) );
+    await waitFor( deletedObservationText ).toBeVisible().withTimeout( 10000 );
   } );
 } );
