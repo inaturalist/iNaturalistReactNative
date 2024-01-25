@@ -1,4 +1,4 @@
-import { View } from "components/styledComponents";
+import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 
@@ -60,15 +60,17 @@ const MasonryLayout = ( { items } ) => {
   );
 
   return (
-    <View className="flex-row">
-      <View className="flex-col flex-1">
-        {columns[0].map( ( item, index ) => renderImage( item, index, 1 ) )}
+    <ScrollView>
+      <View className="flex-row">
+        <View className="flex-col flex-1">
+          {columns[0].map( ( item, index ) => renderImage( item, index, 1 ) )}
+        </View>
+        <View className="w-[6px]" />
+        <View className="flex-col flex-1">
+          {columns[1].map( ( item, index ) => renderImage( item, index, 2 ) )}
+        </View>
       </View>
-      <View className="w-[6px]" />
-      <View className="flex-col flex-1">
-        {columns[1].map( ( item, index ) => renderImage( item, index, 2 ) )}
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
