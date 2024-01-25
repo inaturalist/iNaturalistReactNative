@@ -8,16 +8,23 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
+const observations = [factory( "LocalObservation", {
+  _deleted_at: null
+} )];
+
+const currentObservation = observations[0];
+
 afterEach( ( ) => {
   jest.clearAllMocks( );
 } );
 
-const renderDeleteSheet = obs => renderComponent(
+const mockNavigate = jest.fn( );
+
+const renderDeleteSheet = ( ) => renderComponent(
   <DeleteObservationSheet
-    handleClose={( ) => jest.fn( )}
-    navToObsList={( ) => jest.fn( )}
-    currentObservation={obs[0]}
-    observations={obs}
+    navToObsList={mockNavigate}
+    currentObservation={currentObservation}
+    observations={observations}
   />
 );
 
@@ -28,68 +35,57 @@ describe( "delete observation", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
 
-    // There's a timer buried somewhere in react-query and this prevents an open handle
-    jest.useFakeTimers( );
+    global.realm.write( ( ) => {
+      global.realm.create( "Observation", currentObservation );
+    } );
   } );
 
-  describe( "delete an unsynced observation", ( ) => {
-    it( "should delete an observation from realm", async ( ) => {
-      const observations = [factory( "LocalObservation", {
-        _synced_at: null
-      } )];
-      global.realm.write( ( ) => {
-        global.realm.create( "Observation", observations[0] );
-      } );
-      const localObservation = getLocalObservation( observations[0].uuid );
+  describe( "add observation to deletion queue", ( ) => {
+    it( "should handle adding _deleted_at date in realm", async ( ) => {
+      const localObservation = getLocalObservation( currentObservation.uuid );
       expect( localObservation ).toBeTruthy( );
-      renderDeleteSheet( observations );
+      renderDeleteSheet( );
       const deleteButtonText = i18next.t( "DELETE" );
       const deleteButton = screen.queryByText( deleteButtonText );
-      expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
       await waitFor( ( ) => {
         expect( inatjs.observations.delete ).not.toHaveBeenCalled( );
       } );
-      expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
-    } );
-  } );
-
-  describe( "delete a previously synced observation", ( ) => {
-    it( "should make a request to observations/delete", async ( ) => {
-      const observations = [factory( "LocalObservation", {
-        _synced_at: faker.date.past( )
-      } )];
-      global.realm.write( ( ) => {
-        global.realm.create( "Observation", observations[0] );
-      } );
-      const localObservation = getLocalObservation( observations[0].uuid );
-      expect( localObservation ).toBeTruthy( );
-      renderDeleteSheet( observations );
-      const deleteButtonText = i18next.t( "DELETE" );
-      const deleteButton = await screen.findByText( deleteButtonText );
-      expect( deleteButton ).toBeTruthy( );
-      fireEvent.press( deleteButton );
-      await waitFor( ( ) => {
-        expect( inatjs.observations.delete ).toHaveBeenCalledTimes( 1 );
-      } );
-      expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
+      expect( localObservation._deleted_at ).toBeTruthy( );
     } );
   } );
 
   describe( "cancel deletion", ( ) => {
-    it( "should not delete the observation from realm", ( ) => {
-      const observations = [factory( "LocalObservation" )];
+    it( "should not add _deleted_at date in realm", ( ) => {
+      const localObservation = getLocalObservation( currentObservation.uuid );
       global.realm.write( ( ) => {
-        global.realm.create( "Observation", observations[0] );
+        localObservation._deleted_at = null;
       } );
-      const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
-      renderDeleteSheet( observations );
-
+      renderDeleteSheet( );
       const cancelButton = screen.queryByText( /CANCEL/ );
-      expect( cancelButton ).toBeTruthy( );
       fireEvent.press( cancelButton );
-      expect( getLocalObservation( observations[0].uuid ) ).toBeTruthy( );
+      expect( localObservation._deleted_at ).toBeNull( );
+    } );
+  } );
+
+  describe( "handles multiple observation deletion", ( ) => {
+    it( "navigates back to MyObservations when observations are not in realm", ( ) => {
+      const unsavedObservations = [{
+        uuid: faker.string.uuid( )
+      }, {
+        uuid: faker.string.uuid( )
+      }];
+      renderComponent(
+        <DeleteObservationSheet
+          navToObsList={mockNavigate}
+          currentObservation={unsavedObservations[0]}
+          observations={unsavedObservations}
+        />
+      );
+      const deleteButton = screen.queryByText( /DELETE ALL/ );
+      fireEvent.press( deleteButton );
+      expect( mockNavigate ).toBeCalled( );
     } );
   } );
 } );

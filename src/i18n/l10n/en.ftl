@@ -946,12 +946,6 @@ Uploaded-via-application = Uploaded via: { $application }
 # Describes whether a user made this observation from web, iOS, or Android
 Uploaded-via-application = Uploaded via: { $application }
 
-# Shows the number of observations a user is currently uploading on my observations page
-Uploading-X-Observations = Uploading {$count ->
-    [one] 1 Observation
-    *[other] {$count} Observations
-}
-
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations = Uploading {$currentUploadCount} of {$total ->
     [one] 1 observation
@@ -1023,6 +1017,11 @@ X-Observations = {$count ->
 X-observations = {$count ->
     [one] 1 observation
     *[other] {$count} observations
+}
+
+X-observations-deleted = {$count ->
+    [one] 1 observation deleted
+    *[other] {$count} observations deleted
 }
 
 X-observations-uploaded = {$count ->
@@ -1582,6 +1581,15 @@ Worldwide = Worldwide
 
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
+
+# Shows the number of observations a user is currently deleting out of total on my observations page
+Deleting-x-of-y-observations = Deleting {$currentDeleteCount} of {$total ->
+    [one] 1 observation
+    *[other] {$total} observations
+}
+
+# Shows the progress of deletions for X of Y
+Deleting-x-of-y = Deleting {$currentDeleteCount} of {$total}
 
 January = January
 February = February

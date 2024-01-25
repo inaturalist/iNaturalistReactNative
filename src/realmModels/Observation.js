@@ -322,6 +322,8 @@ class Observation extends Realm.Object {
     properties: {
       // datetime the observation was created on the device
       _created_at: "date?",
+      // datetime the observation was requested to be deleted
+      _deleted_at: "date?",
       // datetime the observation was last synced with the server
       _synced_at: "date?",
       // datetime the observation was updated on the device (i.e. edited locally)

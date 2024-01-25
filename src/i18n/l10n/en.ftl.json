@@ -617,10 +617,6 @@
     "comment": "Describes whether a user made this observation from web, iOS, or Android",
     "val": "Uploaded via: { $application }"
   },
-  "Uploading-X-Observations": {
-    "comment": "Shows the number of observations a user is currently uploading on my observations page",
-    "val": "Uploading { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
-  },
   "Uploading-x-of-y-observations": {
     "comment": "Shows the number of observations a user is currently uploading out of total on my observations page",
     "val": "Uploading { $currentUploadCount } of { $total ->\n  [one] 1 observation\n *[other] { $total } observations\n}"
@@ -665,6 +661,7 @@
   },
   "X-Observations": "{ $count ->\n  [one] { $count } Observations\n *[other] { $count } Observations\n}",
   "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
+  "X-observations-deleted": "{ $count ->\n  [one] 1 observation deleted\n *[other] { $count } observations deleted\n}",
   "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
   "X-of-Y": "{ $count ->\n  [one] 1\n *[other] { $count }\n} { $totalObservationCount ->\n  [one] of { $totalObservationCount }\n *[other] of { $totalObservationCount }\n}",
   "X-PHOTOS": {
@@ -1159,6 +1156,14 @@
   "Worldwide": "Worldwide",
   "This-observer-has-opted-out-of-the-Community-Taxon": "This observer has opted out of the Community Taxon",
   "You-have-opted-out-of-the-Community-Taxon": "You have opted out of the Community Taxon",
+  "Deleting-x-of-y-observations": {
+    "comment": "Shows the number of observations a user is currently deleting out of total on my observations page",
+    "val": "Deleting { $currentDeleteCount } of { $total ->\n  [one] 1 observation\n *[other] { $total } observations\n}"
+  },
+  "Deleting-x-of-y": {
+    "comment": "Shows the progress of deletions for X of Y",
+    "val": "Deleting { $currentDeleteCount } of { $total }"
+  },
   "January": "January",
   "February": "February",
   "March": "March",

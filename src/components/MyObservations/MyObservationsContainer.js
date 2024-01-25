@@ -132,6 +132,7 @@ const MyObservationsContainer = ( ): Node => {
   const isOnline = useIsConnected( );
 
   const currentUser = useCurrentUser();
+
   useObservationsUpdates( !!currentUser );
   const {
     fetchNextPage,
