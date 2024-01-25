@@ -112,7 +112,6 @@ const Announcements = ( {
     // Sort by start date, oldest first
     .sort( ( a, b ) => new Date( a.start ) - new Date( b.start ) );
   const topAnnouncement = homeAnnouncements[0];
-  console.log( "topAnnouncement :>> ", topAnnouncement );
   const { id, dismissible, body } = topAnnouncement;
 
   const dismiss = async () => {
