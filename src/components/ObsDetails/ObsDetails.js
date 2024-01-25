@@ -91,7 +91,7 @@ const ObsDetails = ( {
           belongsToCurrentUser={belongsToCurrentUser}
           observation={observation}
         />
-        {/* <ObsMediaDisplayContainer observation={observation} /> */}
+        <ObsMediaDisplayContainer observation={observation} tablet />
       </View>
       <View className="w-[66%]">
         {/* TODO:
