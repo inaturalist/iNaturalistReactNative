@@ -2,6 +2,8 @@ import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 
+import SoundSlide from "./SoundSlide";
+
 const numColumns = 2;
 const spacing = 6;
 
@@ -22,17 +24,21 @@ const MasonryLayout = ( { items } ) => {
   );
 
   useEffect( () => {
-    const distributeImages = async () => {
+    const distributeItems = async () => {
       const newColumns = Array.from( { length: numColumns }, () => [] );
 
-      const imagePromises = items.map( async item => {
+      const tilePromises = items.map( async item => {
+        // If a sound, just return it
+        if ( item.file_url ) {
+          return item;
+        }
         const imageDimensions = await getImageDimensions( photoUrl( item ) );
         return { ...item, ...imageDimensions };
       } );
 
-      const images = await Promise.all( imagePromises );
+      const tileData = await Promise.all( tilePromises );
 
-      images.forEach( ( image, i ) => {
+      tileData.forEach( ( image, i ) => {
         const columnIndex = i % numColumns;
         newColumns[columnIndex].push( image );
       } );
@@ -40,7 +46,7 @@ const MasonryLayout = ( { items } ) => {
       setColumns( newColumns );
     };
 
-    distributeImages();
+    distributeItems();
   }, [items] );
 
   const imageStyle = item => ( {
@@ -59,15 +65,30 @@ const MasonryLayout = ( { items } ) => {
     />
   );
 
+  const renderSound = ( item, index, column ) => (
+    <SoundSlide
+      key={`MasonryLayout.column${column}.photo_${index}`}
+      sizeClass="w-full aspect-square"
+      sound={item}
+      isVisible
+    />
+  );
+
+  const renderItem = ( item, index, column ) => (
+    item.file_url
+      ? renderSound( item, index, column )
+      : renderImage( item, index, column )
+  );
+
   return (
     <ScrollView>
       <View className="flex-row">
         <View className="flex-col flex-1">
-          {columns[0].map( ( item, index ) => renderImage( item, index, 1 ) )}
+          {columns[0].map( ( item, index ) => renderItem( item, index, 1 ) )}
         </View>
         <View className="w-[6px]" />
         <View className="flex-col flex-1">
-          {columns[1].map( ( item, index ) => renderImage( item, index, 2 ) )}
+          {columns[1].map( ( item, index ) => renderItem( item, index, 2 ) )}
         </View>
       </View>
     </ScrollView>

@@ -40,15 +40,20 @@ const ObsMediaCarousel = ( {
 
   const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
 
-  const CarouselSlide = useCallback( ( { item } ) => (
-    item.file_url
-      ? <SoundSlide sound={item} isVisible={items.indexOf( item ) === index} />
-      : <PhotoSlide photo={item} onPress={( ) => setMediaViewerVisible( true )} />
-  ), [
-    setMediaViewerVisible,
-    items,
-    index
-  ] );
+  const CarouselSlide = useCallback(
+    ( { item } ) => ( item.file_url
+      ? (
+        <SoundSlide
+          className="h-72 w-screen"
+          sound={item}
+          isVisible={items.indexOf( item ) === index}
+        />
+      )
+      : (
+        <PhotoSlide photo={item} onPress={() => setMediaViewerVisible( true )} />
+      ) ),
+    [setMediaViewerVisible, items, index]
+  );
 
   const currentPhotoUrl = index >= photos.length
     ? undefined

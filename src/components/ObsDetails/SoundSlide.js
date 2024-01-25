@@ -13,8 +13,8 @@ import { useTranslation } from "sharedHooks";
 
 const logger = log.extend( "SoundSlide" );
 
-const SoundSlide = ( { isVisible, sound } ) => {
   const playerRef = useRef( new AudioRecorderPlayer( ) );
+const SoundSlide = ( { sizeClass, isVisible, sound } ) => {
   const player = playerRef.current;
   const { t } = useTranslation( );
   // Track whether or not the sound is playing
@@ -139,7 +139,7 @@ const SoundSlide = ( { isVisible, sound } ) => {
 
   const playBackPercent = ( playBackState.currentPosition / ( playBackState.duration || 1 ) ) * 100;
   return (
-    <View className="h-72 w-screen items-center justify-center">
+    <View className={`${sizeClass} items-center justify-center`}>
       <INatIconButton
         className="mx-auto"
         icon={
