@@ -98,11 +98,13 @@ const ObsDetails = ( {
             afterToggleFave={refetchRemoteObservation}
           />
         )} */}
-        <ObsDetailsOverview
-          observation={observation}
-          isOnline={isOnline}
-          belongsToCurrentUser={belongsToCurrentUser}
-        />
+        <View className="mr-8">
+          <ObsDetailsOverview
+            observation={observation}
+            isOnline={isOnline}
+            belongsToCurrentUser={belongsToCurrentUser}
+          />
+        </View>
         <Tabs tabs={tabs} activeId={currentTabId} />
         <ScrollView
           testID={`ObsDetails.${uuid}`}
