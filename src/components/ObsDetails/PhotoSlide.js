@@ -1,11 +1,20 @@
+// @flow
+
 import classnames from "classnames";
 import { ActivityIndicator } from "components/SharedComponents";
 import { Image, Pressable } from "components/styledComponents";
+import type { Node } from "react";
 import React, { useState } from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { useTranslation } from "sharedHooks";
 
-const PhotoSlide = ( { photo, onPress } ) => {
+type Props = {
+  photo: Object,
+  onPress: Function,
+  style?: Object
+}
+
+const PhotoSlide = ( { photo, onPress, style }: Props ): Node => {
   const { t } = useTranslation( );
   const [loadSuccess, setLoadSuccess] = useState( null );
   // check for local file path for unuploaded photos
@@ -22,6 +31,7 @@ const PhotoSlide = ( { photo, onPress } ) => {
         "w-screen",
         loadSuccess === false && "hidden"
       )}
+      style={style}
       resizeMode="contain"
       accessibilityIgnoresInvertColors
       onLoad={( ) => {
@@ -62,7 +72,7 @@ const PhotoSlide = ( { photo, onPress } ) => {
       onPress={onPress}
       accessibilityRole="link"
       accessibilityHint={t( "View-photo" )}
-      className="w-full h-full justify-center items-center"
+      className="justify-center items-center"
       accessibilityLabel={photo.attribution}
     >
       {loadingIndicator}
