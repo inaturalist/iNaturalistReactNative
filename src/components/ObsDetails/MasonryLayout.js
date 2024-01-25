@@ -19,7 +19,7 @@ const photoUrl = photo => ( photo?.url
   ? photo.url.replace( "square", "large" )
   : photo.localFilePath );
 
-const MasonryLayout = ( { items } ) => {
+const MasonryLayout = ( { items, onImagePress } ) => {
   const [columns, setColumns] = useState(
     Array.from( { length: numColumns }, () => [] )
   );
@@ -41,6 +41,7 @@ const MasonryLayout = ( { items } ) => {
 
       itemData.forEach( ( item, i ) => {
         const columnIndex = i % numColumns;
+        item.originalIndex = i;
         newColumns[columnIndex].push( item );
       } );
 
@@ -58,11 +59,11 @@ const MasonryLayout = ( { items } ) => {
   } );
 
   const renderImage = ( item, index, column ) => (
-    <Image
+    <PhotoSlide
       key={`MasonryLayout.column${column}.photo_${index}`}
-      source={{ uri: photoUrl( item ) }}
+      photo={item}
       style={imageStyle( item )}
-      accessibilityIgnoresInvertColors
+      onPress={() => onImagePress( item.originalIndex )}
     />
   );
 
