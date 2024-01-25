@@ -1,6 +1,5 @@
 // @flow
 
-import { MasonryFlashList } from "@shopify/flash-list";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -114,13 +113,8 @@ const ObsMediaCarousel = ( {
   );
 
   const renderTablet = () => (
-    <View className="h-full">
-      <MasonryFlashList
-        data={items}
-        renderItem={CarouselSlide}
-        numColumns={2}
-        keyExtractor={item => item.id}
-      />
+    <View>
+      {/* TODO: renderTablet */}
     </View>
   );
 
