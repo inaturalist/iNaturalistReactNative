@@ -122,6 +122,10 @@ const ObsMediaCarousel = ( {
     <View className="w-full h-full">
       <MasonryLayout
         items={items}
+        onImagePress={newIndex => {
+          setIndex( newIndex );
+          setMediaViewerVisible( true );
+        }}
       />
     </View>
   );
