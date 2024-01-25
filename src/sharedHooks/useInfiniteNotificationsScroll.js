@@ -25,7 +25,6 @@ const useInfiniteNotificationsScroll = ( ): Object => {
     data: notifications,
     isFetchingNextPage,
     fetchNextPage,
-    dataCanBeFetched,
     status,
     refetch
   } = useInfiniteQuery( {
@@ -63,7 +62,6 @@ const useInfiniteNotificationsScroll = ( ): Object => {
     && {
       isFetchingNextPage,
       fetchNextPage,
-      dataCanBeFetched,
       notifications: flatten( notifications?.pages ),
       status,
       refetch

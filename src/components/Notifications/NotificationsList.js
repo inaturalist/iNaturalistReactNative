@@ -17,14 +17,13 @@ const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 type Props = {
     data: Object,
     isOnline: boolean,
-    dataCanBeFetched:boolean,
     status: string,
     onEndReached: Function,
     isFetchingNextPage?: boolean
   };
 
 const NotificationsList = ( {
-  data, isOnline, dataCanBeFetched, status, onEndReached, isFetchingNextPage
+  data, isOnline, status, onEndReached, isFetchingNextPage
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -54,7 +53,6 @@ const NotificationsList = ( {
           {t( "Offline-No-Notifications" )}
         </Body2>
       );
-    console.log( status, dataCanBeFetched, isFetchingNextPage );
 
     return ( ( status === "loading" ) )
       ? (
@@ -63,7 +61,7 @@ const NotificationsList = ( {
         </View>
       )
       : showEmptyScreen;
-  }, [dataCanBeFetched, isFetchingNextPage, isOnline, status, t] );
+  }, [isOnline, status, t] );
 
   return (
     <View className="h-full">

@@ -14,7 +14,6 @@ const NotificationsContainer = (): Node => {
     notifications,
     isFetchingNextPage,
     fetchNextPage,
-    dataCanBeFetched,
     status,
     refetch
   } = useInfiniteNotificationsScroll( );
@@ -32,7 +31,6 @@ const NotificationsContainer = (): Node => {
       data={notifications}
       onEndReached={fetchNextPage}
       isFetchingNextPage={isFetchingNextPage}
-      dataCanBeFetched={dataCanBeFetched}
       status={status}
       isOnline={isOnline}
     />
