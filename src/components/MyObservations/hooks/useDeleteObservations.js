@@ -1,4 +1,5 @@
 // @flow
+import { useNavigation } from "@react-navigation/native";
 import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect, useReducer } from "react";
@@ -43,6 +44,8 @@ const deletionReducer = ( state: Object, action: Function ): Object => {
         deletionsInProgress: false,
         deletionsComplete: true
       };
+    case "RESET_STATE":
+      return INITIAL_DELETION_STATE;
     default:
       return state;
   }
@@ -51,6 +54,7 @@ const deletionReducer = ( state: Object, action: Function ): Object => {
 const useDeleteObservations = ( ): Object => {
   const realm = useRealm( );
   const [state, dispatch] = useReducer( deletionReducer, INITIAL_DELETION_STATE );
+  const navigation = useNavigation( );
 
   // currently sorting so oldest observations to delete are first
   const observationsFlaggedForDeletion = realm
@@ -152,6 +156,15 @@ const useDeleteObservations = ( ): Object => {
       } );
     }
   }, [deletions, deleteObservationAndCatchError, deletionsInProgress, deletionsComplete] );
+
+  useEffect(
+    ( ) => {
+      navigation.addListener( "blur", ( ) => {
+        dispatch( { type: "RESET_STATE" } );
+      } );
+    },
+    [navigation]
+  );
 
   return state;
 };
