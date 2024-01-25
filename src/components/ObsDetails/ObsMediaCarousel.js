@@ -44,7 +44,7 @@ const ObsMediaCarousel = ( {
     ( { item } ) => ( item.file_url
       ? (
         <SoundSlide
-          className="h-72 w-screen"
+          sizeClass="h-72 w-screen"
           sound={item}
           isVisible={items.indexOf( item ) === index}
         />
