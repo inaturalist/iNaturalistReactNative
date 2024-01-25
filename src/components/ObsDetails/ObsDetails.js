@@ -88,16 +88,16 @@ const ObsDetails = ( {
     <View className="flex-1 flex-row bg-white">
       <View className="w-[33%]">
         <ObsMediaDisplayContainer observation={observation} tablet />
-      </View>
-      <View className="w-[66%]">
-        {/* TODO:
         {currentUser && (
           <FaveButton
             observation={observation}
             currentUser={currentUser}
             afterToggleFave={refetchRemoteObservation}
+            top
           />
-        )} */}
+        )}
+      </View>
+      <View className="w-[66%]">
         <View className="mr-8">
           <ObsDetailsOverview
             observation={observation}

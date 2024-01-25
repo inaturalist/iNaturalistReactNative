@@ -3,6 +3,7 @@ import {
   faveObservation,
   unfaveObservation
 } from "api/observations";
+import classNames from "classnames";
 import {
   INatIconButton
 } from "components/SharedComponents";
@@ -18,13 +19,15 @@ import colors from "styles/tailwindColors";
 type Props = {
   observation: Object,
   currentUser?: Object,
-  afterToggleFave: ( wasFaved: boolean ) => void
+  afterToggleFave: ( wasFaved: boolean ) => void,
+  top?: boolean
 }
 
 const FaveButton = ( {
   observation,
   currentUser,
-  afterToggleFave = ( ) => { }
+  afterToggleFave = ( ) => { },
+  top = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { uuid } = observation;
@@ -103,7 +106,9 @@ const FaveButton = ( {
       size={25}
       onPress={toggleFave}
       color={colors.white}
-      className="absolute bottom-3 right-3"
+      className={classNames( "absolute bottom-3 right-3", {
+        "top-3": top
+      } )}
       accessibilityLabel={isFaved
         ? t( "Remove-favorite" )
         : t( "Add-favorite" )}
