@@ -48,7 +48,7 @@ const ObsMediaDisplay = ( {
       className={classNames(
         "bg-black flex-row justify-center items-center",
         tablet
-          ? "h-[100%]"
+          ? "h-full"
           : "h-72"
       )}
       accessible
