@@ -9,6 +9,7 @@ import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
 import colors from "styles/tailwindColors";
 
+import MasonryLayout from "./MasonryLayout";
 import PhotoSlide from "./PhotoSlide";
 import SoundSlide from "./SoundSlide";
 
@@ -113,8 +114,10 @@ const ObsMediaCarousel = ( {
   );
 
   const renderTablet = () => (
-    <View>
-      {/* TODO: renderTablet */}
+    <View className="w-full h-full">
+      <MasonryLayout
+        items={items}
+      />
     </View>
   );
 
