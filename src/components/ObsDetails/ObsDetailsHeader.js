@@ -20,12 +20,14 @@ import HeaderKebabMenu from "./HeaderKebabMenu";
 
 type Props = {
   belongsToCurrentUser?: boolean,
-  observation: Object
+  observation: Object,
+  rightIconBlack?: boolean
 }
 
 const ObsDetailsHeader = ( {
   belongsToCurrentUser,
-  observation
+  observation,
+  rightIconBlack = false
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -34,14 +36,14 @@ const ObsDetailsHeader = ( {
   return (
     <LinearGradient
       className={classnames(
+        "absolute",
+        "top-0",
+        "w-full",
         "flex-row",
         "justify-between",
-        "top-0",
-        "h-10",
-        "pr-3"
-        // "bg-red"
+        "h-10"
       )}
-      colors={["rgba(0,0,0,0.6)", "transparent"]}
+      colors={["rgba(0,0,0,0.1)", "transparent"]}
     >
       <BackButton color="white" inCustomHeader />
       {
@@ -54,12 +56,14 @@ const ObsDetailsHeader = ( {
                 navigation.navigate( "ObsEdit" );
               }}
               icon="pencil"
-              color={colors.white}
+              color={!rightIconBlack
+                ? colors.white
+                : colors.black}
               // className="absolute top-3 right-3"
               accessibilityLabel={t( "Edit" )}
             />
           )
-          : <HeaderKebabMenu observationId={observation?.id} />
+          : <HeaderKebabMenu observationId={observation?.id} white={false} />
       }
     </LinearGradient>
   );
