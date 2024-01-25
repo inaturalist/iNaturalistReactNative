@@ -2,6 +2,7 @@ import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 
+import PhotoSlide from "./PhotoSlide";
 import SoundSlide from "./SoundSlide";
 
 const numColumns = 2;
@@ -27,7 +28,7 @@ const MasonryLayout = ( { items } ) => {
     const distributeItems = async () => {
       const newColumns = Array.from( { length: numColumns }, () => [] );
 
-      const tilePromises = items.map( async item => {
+      const itemPromises = items.map( async item => {
         // If a sound, just return it
         if ( item.file_url ) {
           return item;
@@ -36,11 +37,11 @@ const MasonryLayout = ( { items } ) => {
         return { ...item, ...imageDimensions };
       } );
 
-      const tileData = await Promise.all( tilePromises );
+      const itemData = await Promise.all( itemPromises );
 
-      tileData.forEach( ( image, i ) => {
+      itemData.forEach( ( item, i ) => {
         const columnIndex = i % numColumns;
-        newColumns[columnIndex].push( image );
+        newColumns[columnIndex].push( item );
       } );
 
       setColumns( newColumns );
@@ -67,18 +68,16 @@ const MasonryLayout = ( { items } ) => {
 
   const renderSound = ( item, index, column ) => (
     <SoundSlide
-      key={`MasonryLayout.column${column}.photo_${index}`}
+      key={`MasonryLayout.column${column}.sound_${index}`}
       sizeClass="w-full aspect-square"
       sound={item}
       isVisible
     />
   );
 
-  const renderItem = ( item, index, column ) => (
-    item.file_url
-      ? renderSound( item, index, column )
-      : renderImage( item, index, column )
-  );
+  const renderItem = ( item, index, column ) => ( item.file_url
+    ? renderSound( item, index, column )
+    : renderImage( item, index, column ) );
 
   return (
     <ScrollView>
