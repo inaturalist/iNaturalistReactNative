@@ -1,6 +1,7 @@
 // @flow
 
 import { FlashList } from "@shopify/flash-list";
+import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
 import {
   Body2
@@ -8,33 +9,73 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
+import { ActivityIndicator, Animated } from "react-native";
+import { useTranslation } from "sharedHooks";
+
+const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
-    data: Object
+    data: Object,
+    isOnline: boolean,
+    status: string,
+    onEndReached: Function,
+    isFetchingNextPage?: boolean
   };
 
-const NotificationsList = ( { data }: Props ): Node => {
+const NotificationsList = ( {
+  data, isOnline, status, onEndReached, isFetchingNextPage
+}: Props ): Node => {
+  const { t } = useTranslation( );
+
   const renderItem = useCallback( ( { item } ) => (
     <NotificationsListItem item={item} />
   ), [] );
 
-  const noInfiniteScrollYet = () => (
-    // eslint-disable-next-line i18next/no-literal-string
-    <Body2>Infinite Scroll not implemented yet</Body2>
-  );
-
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
+
+  const renderFooter = useCallback( ( ) => (
+    <InfiniteScrollLoadingWheel
+      hideLoadingWheel={!isFetchingNextPage}
+      isOnline={isOnline}
+      explore={false}
+    />
+  ), [isFetchingNextPage, isOnline] );
+
+  const renderEmptyComponent = useCallback( ( ) => {
+    const showEmptyScreen = ( isOnline )
+      ? (
+        <Body2 className="mt-[150px] self-center mx-12">
+          {t( "No-Notifications-Found" )}
+        </Body2>
+      )
+      : (
+        <Body2 className="mt-[150px] self-center mx-12">
+          {t( "Offline-No-Notifications" )}
+        </Body2>
+      );
+
+    return ( ( status === "loading" ) )
+      ? (
+        <View className="self-center mt-[150px]">
+          <ActivityIndicator size="large" testID="NotificationsFlashList.loading" />
+        </View>
+      )
+      : showEmptyScreen;
+  }, [isOnline, status, t] );
 
   return (
     <View className="h-full">
-      <FlashList
+      <AnimatedFlashList
         data={data}
         keyExtractor={item => item.id}
         renderItem={renderItem}
         ItemSeparatorComponent={renderItemSeparator}
         estimatedItemSize={20}
+        onEndReached={onEndReached}
+        refreshing={isFetchingNextPage}
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmptyComponent}
       />
-      {noInfiniteScrollYet()}
     </View>
   );
 };
