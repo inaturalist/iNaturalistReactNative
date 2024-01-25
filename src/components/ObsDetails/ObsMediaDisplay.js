@@ -35,6 +35,7 @@ const ObsMediaDisplay = ( {
         <ObsMediaCarousel
           photos={photos}
           sounds={sounds}
+          tablet={tablet}
         />
         <View className="absolute bottom-5 left-5">
           <PhotoCount count={items.length} />

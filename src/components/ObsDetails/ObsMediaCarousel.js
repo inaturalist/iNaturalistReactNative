@@ -1,5 +1,6 @@
 // @flow
 
+import { MasonryFlashList } from "@shopify/flash-list";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -23,12 +24,14 @@ type Props = {
   sounds: Array<{
     id: number,
     file_url: string,
-  }>
+  }>,
+  tablet: boolean
 }
 
 const ObsMediaCarousel = ( {
   photos = [],
-  sounds = []
+  sounds = [],
+  tablet
 }: Props ): Node => {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState<number>( 0 );
@@ -51,9 +54,8 @@ const ObsMediaCarousel = ( {
     ? undefined
     : photos[index]?.url;
 
-  return (
-    <View className="relative">
-      <StatusBar hidden={mediaViewerVisible} />
+  const renderPhone = ( ) => (
+    <>
       <Carousel
         testID="photo-scroll"
         loop={false}
@@ -108,6 +110,26 @@ const ObsMediaCarousel = ( {
           />
         </View>
       )}
+    </>
+  );
+
+  const renderTablet = () => (
+    <View className="h-full">
+      <MasonryFlashList
+        data={items}
+        renderItem={CarouselSlide}
+        numColumns={2}
+        keyExtractor={item => item.id}
+      />
+    </View>
+  );
+
+  return (
+    <View className="relative">
+      <StatusBar hidden={mediaViewerVisible} />
+      {!tablet
+        ? renderPhone( )
+        : renderTablet( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
