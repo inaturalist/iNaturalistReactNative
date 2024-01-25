@@ -87,10 +87,6 @@ const ObsDetails = ( {
   const renderTablet = () => (
     <View className="flex-1 flex-row bg-white">
       <View className="w-[33%]">
-        <ObsDetailsHeader
-          belongsToCurrentUser={belongsToCurrentUser}
-          observation={observation}
-        />
         <ObsMediaDisplayContainer observation={observation} tablet />
       </View>
       <View className="w-[66%]">
@@ -144,6 +140,11 @@ const ObsDetails = ( {
           />
         )}
       </View>
+      <ObsDetailsHeader
+        belongsToCurrentUser={belongsToCurrentUser}
+        observation={observation}
+        rightIconBlack
+      />
     </View>
   );
 
