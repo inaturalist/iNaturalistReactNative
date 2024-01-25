@@ -13,8 +13,8 @@ import { useTranslation } from "sharedHooks";
 
 const logger = log.extend( "SoundSlide" );
 
-  const playerRef = useRef( new AudioRecorderPlayer( ) );
 const SoundSlide = ( { sizeClass, isVisible, sound } ) => {
+  const playerRef = useRef( new AudioRecorderPlayer( ) );
   const player = playerRef.current;
   const { t } = useTranslation( );
   // Track whether or not the sound is playing
