@@ -28,7 +28,7 @@ type Props = {
   tablet: boolean
 }
 
-const ObsMediaCarousel = ( {
+const ObsMedia = ( {
   photos = [],
   sounds = [],
   tablet
@@ -146,4 +146,4 @@ const ObsMediaCarousel = ( {
   );
 };
 
-export default ObsMediaCarousel;
+export default ObsMedia;

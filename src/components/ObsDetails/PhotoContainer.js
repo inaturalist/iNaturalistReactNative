@@ -24,7 +24,7 @@ const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
 
   const image = (
     <Image
-      testID="ObsMediaCarousel.photo"
+      testID="ObsMedia.photo"
       source={{ uri: photoUrl }}
       className={classnames(
         "h-72",
