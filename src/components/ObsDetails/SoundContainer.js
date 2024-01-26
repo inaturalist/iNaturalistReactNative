@@ -11,9 +11,9 @@ import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import { log } from "sharedHelpers/logger";
 import { useTranslation } from "sharedHooks";
 
-const logger = log.extend( "SoundSlide" );
+const logger = log.extend( "SoundContainer" );
 
-const SoundSlide = ( { sizeClass, isVisible, sound } ) => {
+const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
   const playerRef = useRef( new AudioRecorderPlayer( ) );
   const player = playerRef.current;
   const { t } = useTranslation( );
@@ -74,7 +74,7 @@ const SoundSlide = ( { sizeClass, isVisible, sound } ) => {
       if ( pausePlayerError.message.match( /Player has already stopped/ ) ) {
         // Something else might be wrong, but it's not really something to
         // bother the user with
-        logger.error( "[SoundSlide.js] Error pausing player: ", pausePlayerError );
+        logger.error( "[SoundContainer.js] Error pausing player: ", pausePlayerError );
         return;
       }
       throw pausePlayerError;
@@ -177,4 +177,4 @@ const SoundSlide = ( { sizeClass, isVisible, sound } ) => {
   );
 };
 
-export default SoundSlide;
+export default SoundContainer;

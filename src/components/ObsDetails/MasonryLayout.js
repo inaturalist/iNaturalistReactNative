@@ -2,8 +2,8 @@ import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 
-import PhotoSlide from "./PhotoSlide";
-import SoundSlide from "./SoundSlide";
+import PhotoContainer from "./PhotoContainer";
+import SoundContainer from "./SoundContainer";
 
 const numColumns = 2;
 const spacing = 6;
@@ -59,7 +59,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
   } );
 
   const renderImage = ( item, index, column ) => (
-    <PhotoSlide
+    <PhotoContainer
       key={`MasonryLayout.column${column}.photo_${index}`}
       photo={item}
       style={imageStyle( item )}
@@ -68,7 +68,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
   );
 
   const renderSound = ( item, index, column ) => (
-    <SoundSlide
+    <SoundContainer
       key={`MasonryLayout.column${column}.sound_${index}`}
       sizeClass="w-full aspect-square"
       sound={item}

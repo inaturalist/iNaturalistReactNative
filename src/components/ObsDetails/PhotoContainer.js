@@ -14,7 +14,7 @@ type Props = {
   style?: Object
 }
 
-const PhotoSlide = ( { photo, onPress, style }: Props ): Node => {
+const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
   const { t } = useTranslation( );
   const [loadSuccess, setLoadSuccess] = useState( null );
   // check for local file path for unuploaded photos
@@ -82,4 +82,4 @@ const PhotoSlide = ( { photo, onPress, style }: Props ): Node => {
   );
 };
 
-export default PhotoSlide;
+export default PhotoContainer;

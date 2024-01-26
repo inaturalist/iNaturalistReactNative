@@ -10,8 +10,8 @@ import Carousel from "react-native-reanimated-carousel";
 import colors from "styles/tailwindColors";
 
 import MasonryLayout from "./MasonryLayout";
-import PhotoSlide from "./PhotoSlide";
-import SoundSlide from "./SoundSlide";
+import PhotoContainer from "./PhotoContainer";
+import SoundContainer from "./SoundContainer";
 
 type Props = {
   photos: Array<{
@@ -43,14 +43,14 @@ const ObsMediaCarousel = ( {
   const CarouselSlide = useCallback(
     ( { item } ) => ( item.file_url
       ? (
-        <SoundSlide
+        <SoundContainer
           sizeClass="h-72 w-screen"
           sound={item}
           isVisible={items.indexOf( item ) === index}
         />
       )
       : (
-        <PhotoSlide photo={item} onPress={() => setMediaViewerVisible( true )} />
+        <PhotoContainer photo={item} onPress={() => setMediaViewerVisible( true )} />
       ) ),
     [setMediaViewerVisible, items, index]
   );
