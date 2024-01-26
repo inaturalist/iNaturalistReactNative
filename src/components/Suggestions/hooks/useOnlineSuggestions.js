@@ -3,6 +3,7 @@
 import ImageResizer from "@bam.tech/react-native-image-resizer";
 import scoreImage from "api/computerVision";
 import { FileUpload } from "inaturalistjs";
+import { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import {
   useAuthenticatedQuery
@@ -62,7 +63,8 @@ const flattenUploadParams = async (
 
 type OnlineSuggestionsResponse = {
   onlineSuggestions: Object,
-  loadingOnlineSuggestions: boolean
+  loadingOnlineSuggestions: boolean,
+  timedOut: boolean
 }
 
 const useOnlineSuggestions = (
@@ -72,6 +74,7 @@ const useOnlineSuggestions = (
     longitude?: number
   }
 ): OnlineSuggestionsResponse => {
+  const [timedOut, setTimedOut] = useState( false );
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
   // uploading images
@@ -98,9 +101,18 @@ const useOnlineSuggestions = (
     }
   );
 
+  useEffect( ( ) => {
+    const timer = setTimeout( ( ) => setTimedOut( true ), 2000 );
+
+    return ( ) => {
+      clearTimeout( timer );
+    };
+  }, [] );
+
   return {
-    onlineSuggestions,
-    loadingOnlineSuggestions: loadingOnlineSuggestions && !isError
+    onlineSuggestions: !timedOut && onlineSuggestions,
+    loadingOnlineSuggestions: !timedOut && ( loadingOnlineSuggestions && !isError ),
+    timedOut
   };
 };
 
