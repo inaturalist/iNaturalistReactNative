@@ -1,11 +1,10 @@
 // @flow
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
-import { Body3 } from "components/SharedComponents";
+import { ActivityIndicator, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { ActivityIndicator } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
@@ -56,7 +55,7 @@ const ExploreFlashList = ( {
     <View className="flex-1 justify-center items-center">
       {status === "loading"
         ? (
-          <ActivityIndicator size="large" testID="ExploreFlashList.loading" />
+          <ActivityIndicator size={50} testID="ExploreFlashList.loading" />
         )
         : <Body3>{t( "No-results-found" )}</Body3>}
     </View>

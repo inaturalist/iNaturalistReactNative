@@ -2,6 +2,7 @@
 import { useRoute } from "@react-navigation/native";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
 import {
+  ActivityIndicator,
   HideView,
   Tabs,
   TextInputSheet
@@ -15,7 +16,6 @@ import type { Node } from "react";
 import React from "react";
 import { Platform, StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
 } from "sharedHooks";
@@ -129,7 +129,7 @@ const ObsDetails = ( {
             </HideView>
             {addingActivityItem && (
               <View className="flex-row items-center justify-center">
-                <ActivityIndicator size="large" />
+                <ActivityIndicator size={50} />
               </View>
             )}
           </View>
@@ -201,7 +201,7 @@ const ObsDetails = ( {
           </HideView>
           {addingActivityItem && (
             <View className="flex-row items-center justify-center">
-              <ActivityIndicator size="large" />
+              <ActivityIndicator size={50} />
             </View>
           )}
         </View>

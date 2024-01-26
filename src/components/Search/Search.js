@@ -3,11 +3,9 @@
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import PlaceholderText from "components/PlaceholderText";
-import InputField from "components/SharedComponents/InputField";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
+import { ActivityIndicator, InputField, ViewWrapper } from "components/SharedComponents";
 import * as React from "react";
 import {
-  ActivityIndicator,
   FlatList,
   Image,
   Pressable,

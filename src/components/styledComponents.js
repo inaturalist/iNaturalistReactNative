@@ -5,7 +5,6 @@ import {
 } from "@gorhom/bottom-sheet";
 import { styled } from "nativewind";
 import {
-  ActivityIndicator as UnstyledActivityIndicator,
   Image as UnstyledImage,
   ImageBackground as UnstyledImageBackground,
   KeyboardAvoidingView as UnstyledKeyboardAvoidingView,
@@ -20,8 +19,6 @@ import {
 } from "react-native";
 import UnstyledLinearGradient from "react-native-linear-gradient";
 
-// $FlowIgnore
-const ActivityIndicator = styled( UnstyledActivityIndicator );
 // $FlowIgnore
 const View = styled( UnstyledView );
 // $FlowIgnore
@@ -65,7 +62,6 @@ const fontMonoClass: string = ( Platform.OS === "ios"
 const LinearGradient = styled( UnstyledLinearGradient );
 
 export {
-  ActivityIndicator,
   BottomSheetTextInput,
   fontMonoClass,
   Image,

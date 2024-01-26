@@ -4,13 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
+  ActivityIndicator,
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
 import DatePicker from "./DatePicker";
@@ -117,7 +118,10 @@ const EvidenceSection = ( {
       >
         <View className="w-[30px] items-center mr-1">
           {isFetchingLocation && (
-            <ActivityIndicator testID="EvidenceSection.fetchingLocationIndicator" />
+            <ActivityIndicator
+              testID="EvidenceSection.fetchingLocationIndicator"
+              size={25}
+            />
           )}
           <View className={isFetchingLocation && "bottom-5"}>
             <INatIcon size={14} name="map-marker-outline" />

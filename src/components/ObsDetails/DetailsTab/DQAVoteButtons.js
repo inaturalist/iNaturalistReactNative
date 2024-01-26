@@ -1,12 +1,13 @@
 // @flow
 
 import {
+  ActivityIndicator,
   Body3,
   INatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
 type Props = {

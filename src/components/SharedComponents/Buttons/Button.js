@@ -1,10 +1,10 @@
 // @flow
 
 import classnames from "classnames";
-import { Heading4, INatIcon } from "components/SharedComponents";
+import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 type ButtonProps = {
   accessibilityHint?: string,
