@@ -37,7 +37,17 @@ describe( "ObsMedia", () => {
   // } );
 
   it( "should show photo with given url", async () => {
-    render( <ObsMedia photos={mockPhotos} /> );
+    render( <ObsMedia photos={mockPhotos} tablet={false} /> );
+    const photo = await screen.findByTestId( "ObsMedia.photo" );
+    expect( photo.props.source ).toStrictEqual(
+      {
+        uri: mockObservation.observationPhotos[0].photo.url
+      }
+    );
+  } );
+
+  it( "should show photo with given url on tablet", async () => {
+    render( <ObsMedia photos={mockPhotos} tablet /> );
     const photo = await screen.findByTestId( "ObsMedia.photo" );
     expect( photo.props.source ).toStrictEqual(
       {
