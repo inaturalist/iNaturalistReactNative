@@ -2,13 +2,13 @@
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
-import { Body3 } from "components/SharedComponents";
+import { ActivityIndicator, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback, useMemo
 } from "react";
-import { ActivityIndicator, Animated } from "react-native";
+import { Animated } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation, useTranslation } from "sharedHooks";
 
@@ -128,7 +128,7 @@ const ObservationsFlashList = ( {
       ? showEmptyScreen
       : (
         <View className="self-center mt-[150px]">
-          <ActivityIndicator size="large" testID="ObservationsFlashList.loading" />
+          <ActivityIndicator size={50} testID="ObservationsFlashList.loading" />
         </View>
       );
   }, [

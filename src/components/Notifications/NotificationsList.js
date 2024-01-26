@@ -4,12 +4,13 @@ import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
 import {
+  ActivityIndicator,
   Body2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { ActivityIndicator, Animated } from "react-native";
+import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
@@ -57,7 +58,10 @@ const NotificationsList = ( {
     return ( ( status === "loading" ) )
       ? (
         <View className="self-center mt-[150px]">
-          <ActivityIndicator size="large" testID="NotificationsFlashList.loading" />
+          <ActivityIndicator
+            size={50}
+            testID="NotificationsFlashList.loading"
+          />
         </View>
       )
       : showEmptyScreen;

@@ -1,11 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
+import { ActivityIndicator, ViewWrapper } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   Button,
   Pressable,
   SafeAreaView,
@@ -218,7 +217,7 @@ const Settings = ( { children: _children }: Props ): Node => {
         <SettingsTabs activeTab={activeTab} onTabPress={setActiveTab} />
         {isLoading
           ? (
-            <ActivityIndicator size="large" />
+            <ActivityIndicator size={50} />
           )
           : (
             <ScrollView>

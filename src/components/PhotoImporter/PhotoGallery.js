@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import ActivityIndicator from "components/SharedComponents/ActivityIndicator";
+import { ActivityIndicator } from "components/SharedComponents";
 import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";

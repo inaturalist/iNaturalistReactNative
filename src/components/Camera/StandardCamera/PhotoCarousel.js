@@ -2,7 +2,7 @@
 
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import { INatIconButton } from "components/SharedComponents";
+import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -10,7 +10,6 @@ import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
 import {
-  ActivityIndicator,
   FlatList
 } from "react-native";
 import Modal from "react-native-modal";
@@ -117,7 +116,7 @@ const PhotoCarousel = ( {
             ...photoClasses
           )}
         >
-          <ActivityIndicator />
+          <ActivityIndicator size={25} />
         </View>
       </View>
     )

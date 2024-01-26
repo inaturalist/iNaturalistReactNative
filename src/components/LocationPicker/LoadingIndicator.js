@@ -1,10 +1,10 @@
 // @flow
 
 import classnames from "classnames";
+import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { ActivityIndicator } from "react-native-paper";
 
 type Props = {
   getShadow: Function,
@@ -24,7 +24,7 @@ const LoadingIndicator = ( { getShadow, theme }: Props ): Node => (
       "rounded-full"
     )}
   >
-    <ActivityIndicator large />
+    <ActivityIndicator size={50} />
   </View>
 );
 
