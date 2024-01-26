@@ -11,7 +11,7 @@ type Props = {
 }
 
 // TODO replace this hack. Without this you get errors about the
-// photo objects being invalidated down in ObsMediaCarousel, but the
+// photo objects being invalidated down in ObsMedia, but the
 // questions remains, why are these objects getting invalidated in
 // the first place? We are not deleting them, so what's happening
 // to them and why?

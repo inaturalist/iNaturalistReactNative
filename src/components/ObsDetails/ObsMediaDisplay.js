@@ -12,7 +12,7 @@ import {
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-import ObsMediaCarousel from "./ObsMediaCarousel";
+import ObsMedia from "./ObsMedia";
 
 type Props = {
   photos: Array<Object>,
@@ -32,7 +32,7 @@ const ObsMediaDisplay = ( {
   if ( items.length > 0 ) {
     return (
       <View className="bg-black">
-        <ObsMediaCarousel
+        <ObsMedia
           photos={photos}
           sounds={sounds}
           tablet={tablet}

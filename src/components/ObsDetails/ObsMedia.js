@@ -9,8 +9,9 @@ import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
 import colors from "styles/tailwindColors";
 
-import PhotoSlide from "./PhotoSlide";
-import SoundSlide from "./SoundSlide";
+import MasonryLayout from "./MasonryLayout";
+import PhotoContainer from "./PhotoContainer";
+import SoundContainer from "./SoundContainer";
 
 type Props = {
   photos: Array<{
@@ -27,7 +28,7 @@ type Props = {
   tablet: boolean
 }
 
-const ObsMediaCarousel = ( {
+const ObsMedia = ( {
   photos = [],
   sounds = [],
   tablet
@@ -39,15 +40,20 @@ const ObsMediaCarousel = ( {
 
   const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
 
-  const CarouselSlide = useCallback( ( { item } ) => (
-    item.file_url
-      ? <SoundSlide sound={item} isVisible={items.indexOf( item ) === index} />
-      : <PhotoSlide photo={item} onPress={( ) => setMediaViewerVisible( true )} />
-  ), [
-    setMediaViewerVisible,
-    items,
-    index
-  ] );
+  const CarouselSlide = useCallback(
+    ( { item } ) => ( item.file_url
+      ? (
+        <SoundContainer
+          sizeClass="h-72 w-screen"
+          sound={item}
+          isVisible={items.indexOf( item ) === index}
+        />
+      )
+      : (
+        <PhotoContainer photo={item} onPress={() => setMediaViewerVisible( true )} />
+      ) ),
+    [setMediaViewerVisible, items, index]
+  );
 
   const currentPhotoUrl = index >= photos.length
     ? undefined
@@ -113,8 +119,14 @@ const ObsMediaCarousel = ( {
   );
 
   const renderTablet = () => (
-    <View>
-      {/* TODO: renderTablet */}
+    <View className="w-full h-full">
+      <MasonryLayout
+        items={items}
+        onImagePress={newIndex => {
+          setIndex( newIndex );
+          setMediaViewerVisible( true );
+        }}
+      />
     </View>
   );
 
@@ -134,4 +146,4 @@ const ObsMediaCarousel = ( {
   );
 };
 
-export default ObsMediaCarousel;
+export default ObsMedia;
