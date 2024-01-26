@@ -1,6 +1,7 @@
 // @flow
 
 import ImageResizer from "@bam.tech/react-native-image-resizer";
+import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import { FileUpload } from "inaturalistjs";
 import { useEffect, useState } from "react";
@@ -74,6 +75,7 @@ const useOnlineSuggestions = (
     longitude?: number
   }
 ): OnlineSuggestionsResponse => {
+  const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
@@ -102,18 +104,29 @@ const useOnlineSuggestions = (
   );
 
   useEffect( ( ) => {
-    const timer = setTimeout( ( ) => setTimedOut( true ), 2000 );
+    const timer = setTimeout( ( ) => {
+      if ( onlineSuggestions === undefined ) {
+        queryClient.cancelQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
+        setTimedOut( true );
+      }
+    }, 2000 );
 
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [] );
+  }, [onlineSuggestions, selectedPhotoUri, queryClient] );
 
-  return {
-    onlineSuggestions: !timedOut && onlineSuggestions,
-    loadingOnlineSuggestions: !timedOut && ( loadingOnlineSuggestions && !isError ),
-    timedOut
-  };
+  return timedOut
+    ? {
+      onlineSuggestions: undefined,
+      loadingOnlineSuggestions: false,
+      timedOut
+    }
+    : {
+      onlineSuggestions,
+      loadingOnlineSuggestions: loadingOnlineSuggestions && !isError,
+      timedOut
+    };
 };
 
 export default useOnlineSuggestions;
