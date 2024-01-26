@@ -1,0 +1,15 @@
+NEW
+* Community taxon opt out notice
+* Explore filters
+* Announcements
+* Adds notifications infinite scroll
+* Sound Player + offline media + Tablet UI in ObsDetail
+
+FIXED
+* Android back button closes modals
+* Limit display taxon name
+* Search bar autofocuses
+* show photo previews in reverse order
+* automatically runs deletions
+
+And many smaller changes, too many to list here.
