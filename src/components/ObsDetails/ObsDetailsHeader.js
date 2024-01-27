@@ -63,7 +63,7 @@ const ObsDetailsHeader = ( {
               accessibilityLabel={t( "Edit" )}
             />
           )
-          : <HeaderKebabMenu observationId={observation?.id} white={false} />
+          : <HeaderKebabMenu observationId={observation?.id} white={!rightIconBlack} />
       }
     </LinearGradient>
   );
