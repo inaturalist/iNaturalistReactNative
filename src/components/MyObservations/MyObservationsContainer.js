@@ -1,6 +1,5 @@
 // @flow
 
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import {
@@ -27,6 +26,7 @@ import {
   useIsConnected,
   useLocalObservations,
   useObservationsUpdates,
+  useStoredLayout,
   useTranslation
 } from "sharedHooks";
 
@@ -124,11 +124,8 @@ const MyObservationsContainer = ( ): Node => {
   const { params: navParams } = useRoute( );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
   const { observationList: observations, allObsToUpload } = useLocalObservations( );
-  const {
-    getItem: getStoredLayout,
-    setItem: setStoredLayout
-  } = useAsyncStorage( "myObservationsLayout" );
-  const [layout, setLayout] = useState( null );
+  const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
+
   const isOnline = useIsConnected( );
 
   const currentUser = useCurrentUser();
@@ -163,26 +160,10 @@ const MyObservationsContainer = ( ): Node => {
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
-  const writeLayoutToStorage = useCallback( async newValue => {
-    await setStoredLayout( newValue );
-    setLayout( newValue );
-  }, [setStoredLayout] );
-
-  useEffect( ( ) => {
-    const readLayoutFromStorage = async ( ) => {
-      const storedLayout = await getStoredLayout( );
-      setLayout( storedLayout || "list" );
-    };
-
-    readLayoutFromStorage( );
-  }, [getStoredLayout, writeLayoutToStorage] );
-
   const toggleLayout = ( ) => {
-    if ( layout === "grid" ) {
-      writeLayoutToStorage( "list" );
-    } else {
-      writeLayoutToStorage( "grid" );
-    }
+    writeLayoutToStorage( layout === "grid"
+      ? "list"
+      : "grid" );
   };
 
   useEffect( ( ) => {

@@ -10,13 +10,13 @@ import MapView from "./MapView";
 type Props = {
   exploreAPIParams: Object,
   region: Object,
-  observationsView: string
+  layout: string
 }
 
 const ObservationsView = ( {
   exploreAPIParams,
   region,
-  observationsView
+  layout
 }: Props ): Node => {
   const params = {
     ...exploreAPIParams,
@@ -29,7 +29,9 @@ const ObservationsView = ( {
 
   const isOnline = useIsConnected( );
 
-  return observationsView === "map"
+  if ( !layout ) { return null; }
+
+  return layout === "map"
     ? (
       <MapView
         region={region}
@@ -44,7 +46,7 @@ const ObservationsView = ( {
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isOnline={isOnline}
-        layout={observationsView}
+        layout={layout}
         onEndReached={fetchNextPage}
         status={status}
         testID="ExploreObservationsAnimatedList"
