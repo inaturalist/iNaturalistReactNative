@@ -8,7 +8,7 @@ import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  layout: ?string,
+  layout: string,
   updateObservationsView: Function
 };
 

@@ -10,7 +10,7 @@ import MapView from "./MapView";
 type Props = {
   exploreAPIParams: Object,
   region: Object,
-  layout: ?string
+  layout: string
 }
 
 const ObservationsView = ( {

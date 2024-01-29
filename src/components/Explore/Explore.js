@@ -129,7 +129,7 @@ const Explore = ( {
             {exploreView === "observations" && (
               <ObservationsViewBar
                 layout={layout}
-                updateObservationsView={newView => writeLayoutToStorage( newView )}
+                updateObservationsView={writeLayoutToStorage}
               />
             )}
             <INatIconButton
