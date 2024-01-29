@@ -1221,6 +1221,10 @@ Camera-button-value-front = The front camera is being used.
 Cancel-comment = Cancel comment
 Clear-comment = Clear comment
 Edit-comment = Edit comment
+# Accessible label for the favorite button, when the observation is favorited
+Fave-button-label-unfave = Unfavorite this observation.
+# Accessible label for the favorite button, when the observation is not favorited
+Fave-button-label-fave = Favorite this observation.
 Flash-button-value-flash = The flash is turned on.
 Flash-button-value-flash-off = The flash is turned off.
 Navigate-back = Navigate back
