@@ -38,6 +38,11 @@ const EvidenceSectionContainer = ( {
   updateObservationKeys
 }: Props ): Node => {
   const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
+  const cameraRollUris = useStore( state => state.cameraRollUris );
+  const isNewObs = !!currentObservation?._synced_at || !( "_synced_at" in currentObservation );
+  const hasPhotos = currentObservation?.observationPhotos?.length > 0;
+  const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
+
   const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const photos = currentObservation?.observationPhotos?.map( obsPhoto => obsPhoto.photo ) || [];
   const mountedRef = useRef( true );
@@ -115,17 +120,24 @@ const EvidenceSectionContainer = ( {
     const positionalAccuracyDesireable = (
       currentObservation?.positional_accuracy || 0
     ) <= DESIRED_LOCATION_ACCURACY;
+    let validPositionalAccuracy = ( positionalAccuracyBlank || positionalAccuracyDesireable );
+
+    if ( isNewObs && hasImportedPhotos ) {
+      // Don't check for valid positional accuracy in case of a new observation with imported photos
+      validPositionalAccuracy = true;
+    }
+
     if (
       hasLocation
       && coordinatesExist
       && latitudeInRange
       && longitudeInRange
-      && ( positionalAccuracyBlank || positionalAccuracyDesireable )
+      && validPositionalAccuracy
     ) {
       return true;
     }
     return false;
-  }, [currentObservation, longitude, latitude, hasLocation] );
+  }, [currentObservation, longitude, latitude, hasLocation, isNewObs, hasImportedPhotos] );
 
   const hasValidDate = useMemo( ( ) => {
     const observationDate = parseISO(

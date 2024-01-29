@@ -46,6 +46,9 @@ const BottomButtons = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const navigation = useNavigation( );
+  const isNewObs = !!currentObservation?._synced_at || !( "_synced_at" in currentObservation );
+  const hasPhotos = currentObservation?.observationPhotos?.length > 0;
+  const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
   const { t } = useTranslation( );
   const realm = useRealm( );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
@@ -144,11 +147,14 @@ const BottomButtons = ( {
     }
     if ( currentObservation?.positional_accuracy
       && currentObservation?.positional_accuracy > DESIRED_LOCATION_ACCURACY ) {
-      setShowImpreciseLocationSheet( true );
-      return true;
+      // Don't check for valid positional accuracy in case of a new observation with imported photos
+      if ( !isNewObs || !hasImportedPhotos ) {
+        setShowImpreciseLocationSheet( true );
+        return true;
+      }
     }
     return false;
-  }, [allowUserToUpload, currentObservation, passesEvidenceTest] );
+  }, [allowUserToUpload, currentObservation, passesEvidenceTest, isNewObs, hasImportedPhotos] );
 
   const handlePress = useCallback( type => {
     logger.info( `tapped ${type}` );
