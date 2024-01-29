@@ -46,7 +46,8 @@ const BottomButtons = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const navigation = useNavigation( );
-  const isNewObs = !!currentObservation?._synced_at || !( "_synced_at" in currentObservation );
+  const isNewObs = !!currentObservation?._synced_at
+    || ( currentObservation && !( "_synced_at" in currentObservation ) );
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
   const { t } = useTranslation( );
