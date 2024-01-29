@@ -8,19 +8,19 @@ import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  observationsView: string,
+  layout: ?string,
   updateObservationsView: Function
 };
 
 const ObservationsViewBar = ( {
-  observationsView,
+  layout,
   updateObservationsView
 }: Props ): Node => {
   const theme = useTheme( );
 
   const buttonStyle = buttonValue => ( {
     minWidth: 55,
-    backgroundColor: buttonValue === observationsView
+    backgroundColor: buttonValue === layout
       ? colors.inatGreen
       : colors.white
   } );
@@ -28,7 +28,7 @@ const ObservationsViewBar = ( {
   return (
     <View className="bottom-5 absolute left-5 z-10">
       <SegmentedButtons
-        value={observationsView}
+        value={layout}
         onValueChange={updateObservationsView}
         theme={{
           colors: {

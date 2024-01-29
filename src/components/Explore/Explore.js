@@ -14,6 +14,7 @@ import { useTheme } from "react-native-paper";
 import {
   useAuthenticatedQuery, useTranslation
 } from "sharedHooks";
+import useStoredLayout from "sharedHooks/useStoredLayout";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
@@ -57,7 +58,7 @@ const Explore = ( {
     observers: null,
     identifiers: null
   } );
-  const [observationsView, setObservationsView] = useState( "list" );
+  const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
 
   const updateCount = useCallback( newCount => {
     setCount( {
@@ -127,8 +128,8 @@ const Explore = ( {
             {renderHeader()}
             {exploreView === "observations" && (
               <ObservationsViewBar
-                observationsView={observationsView}
-                updateObservationsView={newView => setObservationsView( newView )}
+                layout={layout}
+                updateObservationsView={newView => writeLayoutToStorage( newView )}
               />
             )}
             <INatIconButton
@@ -145,7 +146,7 @@ const Explore = ( {
             {exploreView === "observations" && (
               <ObservationsView
                 exploreAPIParams={exploreAPIParams}
-                observationsView={observationsView}
+                layout={layout}
                 region={region}
               />
             )}
