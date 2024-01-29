@@ -107,7 +107,7 @@ const FaveButton = ( {
       onPress={toggleFave}
       color={colors.white}
       className={classNames( "absolute bottom-3 right-3", {
-        "top-3": top
+        "top-0": top
       } )}
       accessibilityLabel={isFaved
         ? t( "Remove-favorite" )

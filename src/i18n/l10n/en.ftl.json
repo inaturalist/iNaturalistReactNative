@@ -810,14 +810,6 @@
   "Cancel-comment": "Cancel comment",
   "Clear-comment": "Clear comment",
   "Edit-comment": "Edit comment",
-  "Fave-button-label-unfave": {
-    "comment": "Accessible label for the favorite button, when the observation is favorited",
-    "val": "Unfavorite this observation."
-  },
-  "Fave-button-label-fave": {
-    "comment": "Accessible label for the favorite button, when the observation is not favorited",
-    "val": "Favorite this observation."
-  },
   "Flash-button-value-flash": "The flash is turned on.",
   "Flash-button-value-flash-off": "The flash is turned off.",
   "Navigate-back": "Navigate back",
