@@ -27,6 +27,12 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 ### Set up pre-commit hooks
 
 1. We're using [Husky](https://typicode.github.io/husky/#/) to automatically run `eslint` before each commit. Run `npm run postinstall` to install Husky locally.
+2. We use [GitGuardian](https://www.gitguardian.com/) to scan for secrets in our code. It uses the CL tool ggshield. To install ggshield, run the following commands with credentials shared by iNat staff:
+```bash
+brew install ggshield
+ggshield auth login
+ggshield install -m local --append
+```
 
 ### Run build
 
