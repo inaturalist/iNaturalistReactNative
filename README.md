@@ -35,7 +35,7 @@ ggshield install -m local --append
 ```
 
 You can test the pre-commit hook by running commenting out the next line:
-<!-- aws_secret_access_key = o6IniwYx7nbAiR4rtQGikqVlQatGRec106r7QIsG -->
+aws_secret_access_key = o6IniwYx7nbAiR4rtQGikqVlQatGRec106r7QIsG
 
 ### Run build
 
