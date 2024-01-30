@@ -3,6 +3,7 @@ import classnames from "classnames";
 import ActivityHeaderKebabMenu from "components/ObsDetails/ActivityTab/ActivityHeaderKebabMenu";
 import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
 import {
+  ActivityIndicator,
   Body4, INatIcon, InlineUser, TextInputSheet, WarningSheet
 } from "components/SharedComponents";
 import {
@@ -11,7 +12,6 @@ import {
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { ActivityIndicator } from "react-native";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
 

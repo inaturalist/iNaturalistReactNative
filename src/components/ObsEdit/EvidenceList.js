@@ -2,12 +2,11 @@
 
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import { INatIcon } from "components/SharedComponents";
+import { ActivityIndicator, INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { ActivityIndicator } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -66,7 +65,7 @@ const EvidenceList = ( {
         <View className={classnames( imageClass )} testID="EvidenceList.saving">
           <View className="rounded-lg overflow-hidden">
             <View className="bg-lightGray w-fit h-full justify-center">
-              <ActivityIndicator />
+              <ActivityIndicator size={25} />
             </View>
           </View>
         </View>

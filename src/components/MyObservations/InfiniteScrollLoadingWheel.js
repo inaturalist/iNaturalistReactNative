@@ -1,11 +1,10 @@
 // @flow
 
 import classnames from "classnames";
-import { Body3 } from "components/SharedComponents";
+import { ActivityIndicator, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { ActivityIndicator } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
@@ -37,7 +36,12 @@ const InfiniteScrollLoadingWheel = ( {
             {t( "An-Internet-connection-is-required" )}
           </Body3>
         )
-        : <ActivityIndicator testID="InfiniteScrollLoadingWheel.loading" />}
+        : (
+          <ActivityIndicator
+            testID="InfiniteScrollLoadingWheel.loading"
+            size={25}
+          />
+        )}
     </View>
   );
 };

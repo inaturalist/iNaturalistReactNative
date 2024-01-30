@@ -9,11 +9,13 @@ import { Menu } from "react-native-paper";
 const observationsUrl = "https://www.inaturalist.org/observations";
 
 type Props = {
-  observationId: number
+  observationId: number,
+  white?: boolean
 }
 
 const HeaderKebabMenu = ( {
-  observationId
+  observationId,
+  white = true
 }: Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
@@ -43,7 +45,7 @@ const HeaderKebabMenu = ( {
     <KebabMenu
       visible={kebabMenuVisible}
       setVisible={setKebabMenuVisible}
-      white
+      white={white}
       accessibilityLabel={t( "Observation-options" )}
       accessibilityHint={t( "Show-observation-options" )}
     >

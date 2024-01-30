@@ -15,6 +15,7 @@ export { default as useNumUnuploadedObservations } from "./useNumUnuploadedObser
 export { default as useObservationsUpdates } from "./useObservationsUpdates";
 export { default as useObservationUpdatesWhenFocused } from "./useObservationUpdatesWhenFocused";
 export { default as useShare } from "./useShare";
+export { default as useStoredLayout } from "./useStoredLayout";
 export { default as useTaxon } from "./useTaxon";
 export { default as useTranslation } from "./useTranslation";
 export { default as useUserLocation } from "./useUserLocation";

@@ -2,6 +2,7 @@
 import { useRoute } from "@react-navigation/native";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
 import {
+  ActivityIndicator,
   HideView,
   Tabs,
   TextInputSheet
@@ -12,9 +13,9 @@ import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { Platform, StatusBar } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
+import DeviceInfo from "react-native-device-info";
 import {
   useTranslation
 } from "sharedHooks";
@@ -26,6 +27,8 @@ import FaveButton from "./FaveButton";
 import ObsDetailsHeader from "./ObsDetailsHeader";
 import ObsDetailsOverview from "./ObsDetailsOverview";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
+
+const isTablet = DeviceInfo.isTablet();
 
 type Props = {
   activityItems: Array<Object>,
@@ -76,15 +79,79 @@ const ObsDetails = ( {
   const { params } = useRoute( );
   const { uuid } = params;
   const { t } = useTranslation( );
-  const [passedPhotos, setPassedPhotos] = useState( false );
 
   const textInputStyle = Platform.OS === "android" && {
     height: 125
   };
 
-  return (
-    <SafeAreaView className="flex-1 bg-black">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+  const renderTablet = () => (
+    <View className="flex-1 flex-row bg-white">
+      <View className="w-[33%]">
+        <ObsMediaDisplayContainer observation={observation} tablet />
+        {currentUser && (
+          <FaveButton
+            observation={observation}
+            currentUser={currentUser}
+            afterToggleFave={refetchRemoteObservation}
+            top
+          />
+        )}
+      </View>
+      <View className="w-[66%]">
+        <View className="mr-8">
+          <ObsDetailsOverview
+            observation={observation}
+            isOnline={isOnline}
+            belongsToCurrentUser={belongsToCurrentUser}
+          />
+        </View>
+        <Tabs tabs={tabs} activeId={currentTabId} />
+        <ScrollView
+          testID={`ObsDetails.${uuid}`}
+          stickyHeaderIndices={[0, 3]}
+          scrollEventThrottle={16}
+          className="flex-1 flex-column"
+          stickyHeaderHiddenOnScroll
+          endFillColor="white"
+        >
+          <View className="bg-white h-full">
+            <HideView show={showActivityTab}>
+              <ActivityTab
+                observation={observation}
+                refetchRemoteObservation={refetchRemoteObservation}
+                onIDAgreePressed={onIDAgreePressed}
+                activityItems={activityItems}
+                isOnline={isOnline}
+              />
+            </HideView>
+            <HideView noInitialRender show={!showActivityTab}>
+              <DetailsTab observation={observation} uuid={uuid} />
+            </HideView>
+            {addingActivityItem && (
+              <View className="flex-row items-center justify-center">
+                <ActivityIndicator size={50} />
+              </View>
+            )}
+          </View>
+        </ScrollView>
+        {showActivityTab && (
+          <FloatingButtons
+            navToSuggestions={navToSuggestions}
+            openCommentBox={openCommentBox}
+            showCommentBox={showCommentBox}
+          />
+        )}
+      </View>
+      <ObsDetailsHeader
+        belongsToCurrentUser={belongsToCurrentUser}
+        observation={observation}
+        rightIconBlack
+      />
+    </View>
+  );
+
+  const renderPhone = () => (
+    <>
       <ScrollView
         testID={`ObsDetails.${uuid}`}
         stickyHeaderIndices={[0, 3]}
@@ -92,13 +159,6 @@ const ObsDetails = ( {
         className="flex-1 flex-column"
         stickyHeaderHiddenOnScroll
         endFillColor="white"
-        onScroll={scrollEvent => {
-          if ( !passedPhotos && scrollEvent.nativeEvent.contentOffset.y > 244 ) {
-            setPassedPhotos( true );
-          } else if ( passedPhotos && scrollEvent.nativeEvent.contentOffset.y <= 244 ) {
-            setPassedPhotos( false );
-          }
-        }}
       >
         <ObsDetailsHeader
           belongsToCurrentUser={belongsToCurrentUser}
@@ -141,7 +201,7 @@ const ObsDetails = ( {
           </HideView>
           {addingActivityItem && (
             <View className="flex-row items-center justify-center">
-              <ActivityIndicator size="large" />
+              <ActivityIndicator size={50} />
             </View>
           )}
         </View>
@@ -153,6 +213,15 @@ const ObsDetails = ( {
           showCommentBox={showCommentBox}
         />
       )}
+    </>
+  );
+
+  return (
+    <SafeAreaView className="flex-1 bg-black">
+      <StatusBar barStyle="light-content" backgroundColor="black" />
+      {!isTablet
+        ? renderPhone()
+        : renderTablet()}
       {showAgreeWithIdSheet && (
         <AgreeWithIDSheet
           taxon={taxonForAgreement}

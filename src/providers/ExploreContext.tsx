@@ -167,10 +167,10 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK, hrank: TAXONOMIC_RANK}
   | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: TAXONOMIC_RANK}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
-  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observed_on: string}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observedOn: string}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
-  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, created_on: string}
+  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, createdOn: string}
   | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
   | {type: EXPLORE_ACTION.TOGGLE_INTRODUCED}
   | {type: EXPLORE_ACTION.TOGGLE_NATIVE}
@@ -311,13 +311,13 @@ function exploreReducer( state: State, action: Action ) {
         months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT:
-      if ( !isValidDateFormat( action.observed_on ) ) {
+      if ( !isValidDateFormat( action.observedOn ) ) {
         throw new Error( "Invalid date format given" );
       }
       return {
         ...state,
         dateObserved: DATE_OBSERVED.EXACT_DATE,
-        observed_on: action.observed_on,
+        observed_on: action.observedOn,
         months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS:
@@ -334,13 +334,13 @@ function exploreReducer( state: State, action: Action ) {
         created_on: null
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT:
-      if ( !isValidDateFormat( action.created_on ) ) {
+      if ( !isValidDateFormat( action.createdOn ) ) {
         throw new Error( "Invalid date format given" );
       }
       return {
         ...state,
         dateUploaded: DATE_UPLOADED.EXACT_DATE,
-        created_on: action.created_on
+        created_on: action.createdOn
       };
     case EXPLORE_ACTION.SET_MEDIA:
       return {

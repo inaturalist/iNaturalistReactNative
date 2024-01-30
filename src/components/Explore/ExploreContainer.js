@@ -82,10 +82,17 @@ const mapParamsToAPI = ( params, currentUser ) => {
     delete filteredParams.months;
   }
 
-  filteredParams.photos
-      = params.media === MEDIA.PHOTOS || params.media === MEDIA.ALL;
-  filteredParams.sounds
-      = params.media === MEDIA.SOUNDS || params.media === MEDIA.ALL;
+  // MEDIA.ALL is the default media filter and for it we don't need to pass any params
+  if ( params.media === MEDIA.PHOTOS ) {
+    filteredParams.photos = true;
+  }
+  if ( params.media === MEDIA.SOUNDS ) {
+    filteredParams.sounds = true;
+  }
+  if ( params.media === MEDIA.NONE ) {
+    filteredParams.photos = false;
+    filteredParams.sounds = false;
+  }
 
   if ( params.wildStatus === WILD_STATUS.WILD ) {
     filteredParams.captive = false;

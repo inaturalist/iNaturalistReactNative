@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
+  ActivityIndicator,
   Body1,
   Button,
   Heading1,
@@ -17,7 +18,6 @@ import React, { useEffect } from "react";
 import {
   FlatList
 } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
 } from "sharedHooks";
@@ -71,7 +71,7 @@ const Projects = ( {
 
   const renderEmptyList = ( ) => {
     if ( isLoading ) {
-      <ActivityIndicator large />;
+      <ActivityIndicator size={50} />;
     } else {
       return (
         <>

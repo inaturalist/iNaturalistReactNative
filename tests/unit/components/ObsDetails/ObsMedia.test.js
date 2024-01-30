@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { render, screen } from "@testing-library/react-native";
-import ObsMediaCarousel from "components/ObsDetails/ObsMediaCarousel";
+import ObsMedia from "components/ObsDetails/ObsMedia";
 import initI18next from "i18n/initI18next";
 import _ from "lodash";
 import React from "react";
@@ -25,20 +25,30 @@ const mockPhotos = _.compact(
   Array.from( mockObservation.observationPhotos ).map( op => op.photo )
 );
 
-describe( "ObsMediaCarousel", () => {
+describe( "ObsMedia", () => {
   beforeAll( async ( ) => {
     await initI18next( );
   } );
 
   // it.todo( "should not have accessibility errors" );
   // it( "should not have accessibility errors", async () => {
-  //   const ObsMediaCarousel = <ObsMediaCarousel photos={mockPhotos} />;
-  //   expect( ObsMediaCarousel ).toBeAccessible( );
+  //   const ObsMedia = <ObsMedia photos={mockPhotos} />;
+  //   expect( ObsMedia ).toBeAccessible( );
   // } );
 
   it( "should show photo with given url", async () => {
-    render( <ObsMediaCarousel photos={mockPhotos} /> );
-    const photo = await screen.findByTestId( "ObsMediaCarousel.photo" );
+    render( <ObsMedia photos={mockPhotos} tablet={false} /> );
+    const photo = await screen.findByTestId( "ObsMedia.photo" );
+    expect( photo.props.source ).toStrictEqual(
+      {
+        uri: mockObservation.observationPhotos[0].photo.url
+      }
+    );
+  } );
+
+  it( "should show photo with given url on tablet", async () => {
+    render( <ObsMedia photos={mockPhotos} tablet /> );
+    const photo = await screen.findByTestId( "ObsMedia.photo" );
     expect( photo.props.source ).toStrictEqual(
       {
         uri: mockObservation.observationPhotos[0].photo.url

@@ -6,11 +6,12 @@ import React, { useMemo } from "react";
 import ObsMediaDisplay from "./ObsMediaDisplay";
 
 type Props = {
-  observation: Object
+  observation: Object,
+  tablet?: boolean
 }
 
 // TODO replace this hack. Without this you get errors about the
-// photo objects being invalidated down in ObsMediaCarousel, but the
+// photo objects being invalidated down in ObsMedia, but the
 // questions remains, why are these objects getting invalidated in
 // the first place? We are not deleting them, so what's happening
 // to them and why?
@@ -27,7 +28,8 @@ function jsonifyPotentialRealmObjects( objects ) {
 }
 
 const ObsMediaDisplayContainer = ( {
-  observation
+  observation,
+  tablet = false
 }: Props ): Node => {
   const photos = useMemo( ( ) => jsonifyPotentialRealmObjects(
     (
@@ -45,6 +47,7 @@ const ObsMediaDisplayContainer = ( {
     <ObsMediaDisplay
       photos={photos}
       sounds={sounds}
+      tablet={tablet}
     />
   );
 };

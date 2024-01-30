@@ -1,12 +1,11 @@
 // @flow
 
 import {
-  Body2, Heading5, INatIcon
+  ActivityIndicator, Body2, Heading5, INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-import { ActivityIndicator } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -40,7 +39,7 @@ const Count = ( {
     </View>
     {typeof count === "number"
       ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
-      : <ActivityIndicator />}
+      : <ActivityIndicator size={25} />}
     <Heading5 className="mt-2 text-center">{t( label, { count } )}</Heading5>
   </Pressable>
 );

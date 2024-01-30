@@ -1,8 +1,10 @@
 // @flow
 
 import ImageResizer from "@bam.tech/react-native-image-resizer";
+import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import { FileUpload } from "inaturalistjs";
+import { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import {
   useAuthenticatedQuery
@@ -62,7 +64,8 @@ const flattenUploadParams = async (
 
 type OnlineSuggestionsResponse = {
   onlineSuggestions: Object,
-  loadingOnlineSuggestions: boolean
+  loadingOnlineSuggestions: boolean,
+  timedOut: boolean
 }
 
 const useOnlineSuggestions = (
@@ -72,6 +75,8 @@ const useOnlineSuggestions = (
     longitude?: number
   }
 ): OnlineSuggestionsResponse => {
+  const queryClient = useQueryClient( );
+  const [timedOut, setTimedOut] = useState( false );
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
   // uploading images
@@ -98,10 +103,30 @@ const useOnlineSuggestions = (
     }
   );
 
-  return {
-    onlineSuggestions,
-    loadingOnlineSuggestions: loadingOnlineSuggestions && !isError
-  };
+  useEffect( ( ) => {
+    const timer = setTimeout( ( ) => {
+      if ( onlineSuggestions === undefined ) {
+        queryClient.cancelQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
+        setTimedOut( true );
+      }
+    }, 2000 );
+
+    return ( ) => {
+      clearTimeout( timer );
+    };
+  }, [onlineSuggestions, selectedPhotoUri, queryClient] );
+
+  return timedOut
+    ? {
+      onlineSuggestions: undefined,
+      loadingOnlineSuggestions: false,
+      timedOut
+    }
+    : {
+      onlineSuggestions,
+      loadingOnlineSuggestions: loadingOnlineSuggestions && !isError,
+      timedOut
+    };
 };
 
 export default useOnlineSuggestions;

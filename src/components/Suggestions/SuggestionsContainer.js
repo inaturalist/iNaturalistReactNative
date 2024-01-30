@@ -21,13 +21,17 @@ const SuggestionsContainer = ( ): Node => {
 
   const {
     onlineSuggestions,
-    loadingOnlineSuggestions
+    loadingOnlineSuggestions,
+    timedOut
   } = useOnlineSuggestions( selectedPhotoUri, {
     latitude: currentObservation?.latitude,
     longitude: currentObservation?.longitude
   } );
 
-  const tryOfflineSuggestions = (
+  console.log( onlineSuggestions, loadingOnlineSuggestions, timedOut, "timed out status" );
+
+  // skip to offline suggestions if internet connection is spotty
+  const tryOfflineSuggestions = timedOut || (
     // Don't try offline while online is loading
     !loadingOnlineSuggestions
     && (
