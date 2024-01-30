@@ -212,6 +212,6 @@ fastlane prod
 1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.
 1. `npm install` to set the version in `package-lock.json`
 1. Commit changes
-1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote.
+1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
 1. `bundle exec fastlane release` to build and push a release to Github
 1. `bundle exec fastlane internal` to distribute the builds to TestFlight and the Play Store
