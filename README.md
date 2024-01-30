@@ -30,6 +30,7 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 2. We use [GitGuardian](https://www.gitguardian.com/) to scan for secrets in our code. It uses the CL tool ggshield. To install ggshield, run the following commands with credentials shared by iNat staff:
 ```bash
 brew install ggshield
+brew install pre-commit
 ggshield auth login
 ggshield install -m local --append
 ```
