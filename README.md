@@ -34,6 +34,9 @@ ggshield auth login
 ggshield install -m local --append
 ```
 
+You can test the pre-commit hook by running commenting out the next line:
+<!-- aws_secret_access_key = o6IniwYx7nbAiR4rtQGikqVlQatGRec106r7QIsG -->
+
 ### Run build
 
 1. Run `npm start -- --reset-cache` (`npm start` works too, but resetting the cache each time makes for a lot less build issues)
