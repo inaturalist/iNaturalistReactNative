@@ -1,6 +1,5 @@
 // @flow
 
-import { USER_AGENT } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 
 import handleError from "./error";
@@ -18,14 +17,11 @@ const PARAMS = {
   placement: "mobile"
 };
 
-const headers = {};
-headers["user-agent"] = USER_AGENT;
-
 const searchAnnouncements = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
     const { results } = await inatjs.announcements.search(
       { ...PARAMS, ...params },
-      { headers, ...opts }
+      opts
     );
     return results;
   } catch ( e ) {
@@ -35,7 +31,7 @@ const searchAnnouncements = async ( params: Object = {}, opts: Object = {} ): Pr
 
 const dismissAnnouncement = async ( params: Object = {}, opts: Object = {} ): Promise<?number> => {
   try {
-    return await inatjs.announcements.dismiss( params, { headers, ...opts } );
+    return await inatjs.announcements.dismiss( params, opts );
   } catch ( e ) {
     return handleError( e );
   }
