@@ -3,7 +3,9 @@ import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback, useEffect, useState
+} from "react";
 import { FlatList } from "react-native";
 import { useIconicTaxa, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -55,6 +57,14 @@ const IconicTaxonChooser = ( {
     setSelectedIcon( taxon.name.toLowerCase( ) );
   }, [isIconic, taxon] );
 
+  useEffect( ( ) => {
+    // reset selectedIcon state when navigating multiple observations
+    // on ObsEdit screen
+    if ( !taxon && selectedIcon ) {
+      setSelectedIcon( null );
+    }
+  }, [taxon, selectedIcon] );
+
   const renderIcon = useCallback( ( { item } ) => {
     const isSelected = selectedIcon === item;
     return (
@@ -105,13 +115,13 @@ const IconicTaxonChooser = ( {
 
   return (
     <FlatList
+      ListHeaderComponent={renderHeader}
+      contentContainerStyle={STYLESHEET}
       data={iconicTaxonIcons}
       horizontal
       renderItem={renderIcon}
       showsHorizontalScrollIndicator={false}
-      ListHeaderComponent={renderHeader}
       testID={testID}
-      contentContainerStyle={STYLESHEET}
     />
   );
 };

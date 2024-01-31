@@ -74,8 +74,6 @@ const ObsStatus = ( {
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
   }, [observation, theme, white] );
 
-  console.log( classNameMargin, "flex direction", margin );
-
   return (
     <View
       className={classNames( {
