@@ -32,7 +32,6 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 brew install ggshield
 brew install pre-commit
 ggshield auth login
-ggshield install -m local --append
 ```
 
 You can test the pre-commit hook by running commenting out the next line:
