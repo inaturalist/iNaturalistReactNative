@@ -17,7 +17,19 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   default: () => undefined
 } ) );
 
+const mockMutate = jest.fn();
+jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
+  __esModule: true,
+  default: () => ( {
+    mutate: mockMutate
+
+  } )
+} ) );
+
 describe( "CustomTabBar", () => {
+  beforeEach( ( ) => {
+    jest.useFakeTimers();
+  } );
   it( "should render correctly", async () => {
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
@@ -25,9 +37,9 @@ describe( "CustomTabBar", () => {
   } );
 
   it( "should not have accessibility errors", async () => {
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+    const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
 
-    await expect( screen ).toBeAccessible();
+    await expect( tabBar ).toBeAccessible();
   } );
 
   it( "should display person icon while user is logged out", async () => {
