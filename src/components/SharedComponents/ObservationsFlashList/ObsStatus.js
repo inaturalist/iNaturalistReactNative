@@ -32,9 +32,6 @@ const ObsStatus = ( {
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
     : "mr-2";
-  const flexDirection = layout === "vertical"
-    ? "flex-column"
-    : "flex-row";
 
   const showCurrentIdCount = useCallback( ( ) => {
     const numCurrentIdents = observation
@@ -77,8 +74,15 @@ const ObsStatus = ( {
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
   }, [observation, theme, white] );
 
+  console.log( classNameMargin, "flex direction", margin );
+
   return (
-    <View className={classNames( "flex-1", flexDirection, classNameMargin )} testID={testID}>
+    <View
+      className={classNames( {
+        "flex-row": layout === "horizontal"
+      }, classNameMargin )}
+      testID={testID}
+    >
       {showCurrentIdCount( )}
       {showCommentCount( )}
       {showQualityGrade( )}
