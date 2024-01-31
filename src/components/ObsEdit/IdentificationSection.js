@@ -18,16 +18,20 @@ import { useTranslation } from "sharedHooks";
 const { useRealm } = RealmContext;
 
 type Props = {
+  currentObservation: Object,
+  resetScreen: boolean,
+  setResetScreen: Function,
   passesIdentificationTest: boolean,
   setPassesIdentificationTest: Function,
-  currentObservation: Object,
   updateObservationKeys: Function
 }
 
 const IdentificationSection = ( {
+  currentObservation,
+  resetScreen,
+  setResetScreen,
   passesIdentificationTest,
   setPassesIdentificationTest,
-  currentObservation,
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -38,6 +42,11 @@ const IdentificationSection = ( {
   const identification = currentObservation?.taxon;
 
   const hasIdentification = identification && identification.rank_level !== 100;
+
+  const showIconicTaxonChooser = !identification
+    || identification.name === identification.iconic_taxon_name
+    || identification.isIconic
+    || identification.name === "Life";
 
   const onTaxonChosen = taxonName => {
     const selectedTaxon = realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName );
@@ -57,6 +66,47 @@ const IdentificationSection = ( {
       setPassesIdentificationTest( true );
     }
   }, [hasIdentification, setPassesIdentificationTest, passesIdentificationTest] );
+
+  useEffect( ( ) => {
+    // by adding resetScreen as a key in renderIconicTaxonChooser,
+    // we force React to rerender and reset the horizontal scroll position
+    // when a user navigates between multiple observations
+    if ( resetScreen ) {
+      setResetScreen( false );
+    }
+  }, [resetScreen, setResetScreen] );
+
+  const renderIconicTaxonChooser = ( ) => (
+    <View key={resetScreen.toString( )}>
+      <IconicTaxonChooser
+        before={(
+          <Button
+            level={identification
+              ? "neutral"
+              : "focus"}
+            onPress={navToSuggestions}
+            text={t( "ADD-AN-ID" )}
+            className={classnames( "rounded-full py-1 h-[36px] ml-4", {
+              "border border-darkGray border-[2px]": identification
+            } )}
+            testID="ObsEdit.Suggestions"
+            icon={(
+              <INatIcon
+                name="sparkly-label"
+                size={24}
+                color={identification
+                  ? theme.colors.primary
+                  : theme.colors.onPrimary}
+              />
+            )}
+            accessibilityLabel={t( "Navigate-to-identification-suggestions-screen" )}
+          />
+        )}
+        taxon={identification}
+        onTaxonChosen={onTaxonChosen}
+      />
+    </View>
+  );
 
   return (
     <View className="mt-6">
@@ -86,39 +136,7 @@ const IdentificationSection = ( {
           </View>
         )}
         <View className="mt-5">
-          {( !identification
-            || identification.name === identification.iconic_taxon_name
-            || identification.isIconic
-            || identification.name === "Life"
-          ) && (
-            <IconicTaxonChooser
-              before={(
-                <Button
-                  level={identification
-                    ? "neutral"
-                    : "focus"}
-                  onPress={navToSuggestions}
-                  text={t( "ADD-AN-ID" )}
-                  className={classnames( "rounded-full py-1 h-[36px] ml-4", {
-                    "border border-darkGray border-[2px]": identification
-                  } )}
-                  testID="ObsEdit.Suggestions"
-                  icon={(
-                    <INatIcon
-                      name="sparkly-label"
-                      size={24}
-                      color={identification
-                        ? theme.colors.primary
-                        : theme.colors.onPrimary}
-                    />
-                  )}
-                  accessibilityLabel={t( "Navigate-to-identification-suggestions-screen" )}
-                />
-              )}
-              taxon={identification}
-              onTaxonChosen={onTaxonChosen}
-            />
-          )}
+          {showIconicTaxonChooser && renderIconicTaxonChooser( )}
         </View>
       </View>
     </View>

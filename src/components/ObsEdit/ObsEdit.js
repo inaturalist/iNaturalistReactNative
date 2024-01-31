@@ -23,6 +23,7 @@ const ObsEdit = ( ): Node => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
+  const [resetScreen, setResetScreen] = useState( false );
 
   const isFocused = useIsFocused( );
 
@@ -31,8 +32,8 @@ const ObsEdit = ( ): Node => {
       <>
         <ViewWrapper testID="obs-edit">
           <Header
-            observations={observations}
             currentObservation={currentObservation}
+            observations={observations}
             updateObservations={updateObservations}
           />
           <KeyboardAwareScrollView className="bg-white mb-[80px]">
@@ -41,20 +42,23 @@ const ObsEdit = ( ): Node => {
                 {observations.length > 1 && (
                   <MultipleObservationsArrows
                     currentObservationIndex={currentObservationIndex}
-                    setCurrentObservationIndex={setCurrentObservationIndex}
                     observations={observations}
+                    setCurrentObservationIndex={setCurrentObservationIndex}
+                    setResetScreen={setResetScreen}
                   />
                 )}
                 <EvidenceSectionContainer
+                  currentObservation={currentObservation}
                   passesEvidenceTest={passesEvidenceTest}
                   setPassesEvidenceTest={setPassesEvidenceTest}
-                  currentObservation={currentObservation}
                   updateObservationKeys={updateObservationKeys}
                 />
                 <IdentificationSection
-                  passesIdentificationTest={passesIdentificationTest}
-                  setPassesIdentificationTest={setPassesIdentificationTest}
                   currentObservation={currentObservation}
+                  passesIdentificationTest={passesIdentificationTest}
+                  resetScreen={resetScreen}
+                  setPassesIdentificationTest={setPassesIdentificationTest}
+                  setResetScreen={setResetScreen}
                   updateObservationKeys={updateObservationKeys}
                 />
                 <OtherDataSection
@@ -66,11 +70,11 @@ const ObsEdit = ( ): Node => {
           </KeyboardAwareScrollView>
         </ViewWrapper>
         <BottomButtons
-          passesEvidenceTest={passesEvidenceTest}
-          passesIdentificationTest={passesIdentificationTest}
           currentObservation={currentObservation}
           currentObservationIndex={currentObservationIndex}
           observations={observations}
+          passesEvidenceTest={passesEvidenceTest}
+          passesIdentificationTest={passesIdentificationTest}
           setCurrentObservationIndex={setCurrentObservationIndex}
         />
       </>
