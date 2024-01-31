@@ -18,38 +18,38 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
 } ) );
 
 describe( "CustomTabBar", () => {
-  it( "should render correctly", () => {
+  it( "should render correctly", async () => {
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
-    expect( screen ).toMatchSnapshot();
+    await expect( screen ).toMatchSnapshot();
   } );
 
-  it( "should not have accessibility errors", () => {
-    const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
+  it( "should not have accessibility errors", async () => {
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
-    expect( tabBar ).toBeAccessible();
+    await expect( screen ).toBeAccessible();
   } );
 
-  it( "should display person icon while user is logged out", () => {
+  it( "should display person icon while user is logged out", async () => {
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
-    expect( personIcon ).toBeVisible( );
+    await expect( personIcon ).toBeVisible( );
   } );
 
-  it( "should display avatar while user is logged in", () => {
+  it( "should display avatar while user is logged in", async () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline /> );
 
     const avatar = screen.getByTestId( "UserIcon.photo" );
-    expect( avatar ).toBeVisible( );
+    await expect( avatar ).toBeVisible( );
   } );
 
-  it( "should display person icon when connectivity is low", ( ) => {
+  it( "should display person icon when connectivity is low", async ( ) => {
     jest.spyOn( useIsConnected, "default" ).mockImplementation( () => false );
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline={false} /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
-    expect( personIcon ).toBeVisible( );
+    await expect( personIcon ).toBeVisible( );
   } );
 } );

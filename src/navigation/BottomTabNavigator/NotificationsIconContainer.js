@@ -47,10 +47,12 @@ const NotificationsIconContainer = ( {
     ( params, optsWithAuth ) => fetchNotificationCounts( params, optsWithAuth ),
     {
       onSuccess: response => {
-        if ( response.updates_count > 0 ) {
-          setHasUnread( true );
-        } else {
-          setHasUnread( false );
+        if ( response?.updates_count ) {
+          if ( response?.updates_count > 0 ) {
+            setHasUnread( true );
+          } else {
+            setHasUnread( false );
+          }
         }
       }
     }
