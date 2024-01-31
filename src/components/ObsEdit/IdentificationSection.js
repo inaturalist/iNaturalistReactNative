@@ -77,7 +77,7 @@ const IdentificationSection = ( {
   }, [resetScreen, setResetScreen] );
 
   const renderIconicTaxonChooser = ( ) => (
-    <View key={resetScreen.toString( )}>
+    <View key={resetScreen?.toString( )}>
       <IconicTaxonChooser
         before={(
           <Button
