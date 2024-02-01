@@ -16,6 +16,7 @@ type Props = {
   onChangeText: Function,
   secureTextEntry?: boolean,
   testID: string,
+  textContentType?: string,
   value: string
 }
 
@@ -27,6 +28,7 @@ const LoginSignUpInputField = ( {
   onChangeText,
   secureTextEntry = false,
   testID,
+  textContentType,
   value
 }: Props ): Node => {
   const theme = useTheme( );
@@ -46,6 +48,7 @@ const LoginSignUpInputField = ( {
         secureTextEntry={secureTextEntry}
         selectionColor={theme.colors.tertiary}
         testID={testID}
+        textContentType={textContentType}
         value={value}
       />
     </View>

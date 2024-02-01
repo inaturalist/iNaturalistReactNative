@@ -83,6 +83,10 @@ const LoginForm = ( {
         keyboardType="email-address"
         onChangeText={text => setEmail( text )}
         testID="Login.email"
+        // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
+        // textContentType prevents visual flickering, which is a temporary issue
+        // in iOS 17
+        textContentType="oneTimeCode"
         value={email}
       />
       <LoginSignUpInputField
