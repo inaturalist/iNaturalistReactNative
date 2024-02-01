@@ -30,14 +30,12 @@ const SignUpForm = ( { hideFooter }: Props ): Node => {
         keyboardType="email-address"
         onChangeText={text => setEmail( text )}
         testID="Signup.email"
-        value={email}
       />
       <LoginSignUpInputField
         accessibilityLabel={t( "USERNAME" )}
         headerText={t( "USERNAME" )}
         onChangeText={text => setUsername( text )}
         testID="Signup.username"
-        value={username}
       />
       <LoginSignUpInputField
         accessibilityLabel={t( "PASSWORD" )}
@@ -45,7 +43,6 @@ const SignUpForm = ( { hideFooter }: Props ): Node => {
         onChangeText={text => setPassword( text )}
         secureTextEntry
         testID="Signup.password"
-        value={password}
       />
       <Button
         className="mt-[30px]"

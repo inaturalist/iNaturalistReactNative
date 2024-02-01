@@ -87,7 +87,6 @@ const LoginForm = ( {
         // textContentType prevents visual flickering, which is a temporary issue
         // in iOS 17
         textContentType="oneTimeCode"
-        value={email}
       />
       <LoginSignUpInputField
         accessibilityLabel={t( "PASSWORD" )}
@@ -95,7 +94,7 @@ const LoginForm = ( {
         onChangeText={text => setPassword( text )}
         secureTextEntry
         testID="Login.password"
-        value={password}
+        textContentType="oneTimeCode"
       />
       <View className="mx-4">
         <Body2

@@ -26,7 +26,6 @@ const ForgotPasswordForm = ( { reset }: Props ): Node => {
         keyboardType="email-address"
         onChangeText={text => setEmail( text )}
         testID="Login.email"
-        value={email}
       />
       <Button
         level="focus"
