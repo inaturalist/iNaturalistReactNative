@@ -59,6 +59,12 @@ const StandardBottomSheet = ( {
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
 
+  const handleBackdropPress = useCallback( position => {
+    if ( handleClose && position === -1 ) {
+      handleClose( );
+    }
+  }, [handleClose] );
+
   const handleClosePress = useCallback( ( ) => {
     if ( handleClose ) {
       handleClose( );
@@ -100,7 +106,7 @@ const StandardBottomSheet = ( {
       style={viewStyles.shadow}
       handleComponent={noHandle}
       backdropComponent={renderBackdrop}
-      onChange={onChange}
+      onChange={onChange || handleBackdropPress}
     >
       <BottomSheetView onLayout={handleContentLayout}>
         <View className="items-center">

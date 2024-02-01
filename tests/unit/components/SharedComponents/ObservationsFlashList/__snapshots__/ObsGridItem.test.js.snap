@@ -117,104 +117,88 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
     <View
       accessibilityLabel="Saved observation, in queue to upload"
       accessible={true}
-      style={
-        [
-          [
-            {
-              "alignItems": "center",
-            },
-            {
-              "justifyContent": "center",
-            },
-            {
-              "width": 49,
-            },
-            {
-              "height": 67,
-            },
-          ],
-        ]
-      }
     >
-      <View
-        accessibilityLabel="Start upload"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "height": 44,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 44,
-            },
-            false,
-            undefined,
-          ]
-        }
-        testID="UploadIcon.start.00000000-0000-0000-0000-000000000000"
-      >
+      <View>
         <View
+          accessibilityLabel="Start upload"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             [
-              [
-                {
-                  "position": "relative",
-                },
-              ],
+              {
+                "alignItems": "center",
+                "height": 44,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 44,
+              },
+              false,
+              undefined,
             ]
           }
+          testID="UploadIcon.start.00000000-0000-0000-0000-000000000000"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
             style={
               [
-                {
-                  "color": "rgba(255, 255, 255, 1)",
-                  "fontSize": 33,
-                },
-                undefined,
-                {
-                  "fontFamily": "INatIcon",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                [
+                  {
+                    "position": "relative",
+                  },
+                ],
               ]
             }
           >
-            
-          </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "rgba(255, 255, 255, 1)",
+                    "fontSize": 33,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "INatIcon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -470,104 +454,88 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
     <View
       accessibilityLabel="Saved observation, in queue to upload"
       accessible={true}
-      style={
-        [
-          [
-            {
-              "alignItems": "center",
-            },
-            {
-              "justifyContent": "center",
-            },
-            {
-              "width": 49,
-            },
-            {
-              "height": 67,
-            },
-          ],
-        ]
-      }
     >
-      <View
-        accessibilityLabel="Start upload"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "height": 44,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 44,
-            },
-            false,
-            undefined,
-          ]
-        }
-        testID="UploadIcon.start.00000000-0000-0000-0000-000000000000"
-      >
+      <View>
         <View
+          accessibilityLabel="Start upload"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             [
-              [
-                {
-                  "position": "relative",
-                },
-              ],
+              {
+                "alignItems": "center",
+                "height": 44,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 44,
+              },
+              false,
+              undefined,
             ]
           }
+          testID="UploadIcon.start.00000000-0000-0000-0000-000000000000"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
             style={
               [
-                {
-                  "color": "rgba(255, 255, 255, 1)",
-                  "fontSize": 33,
-                },
-                undefined,
-                {
-                  "fontFamily": "INatIcon",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                [
+                  {
+                    "position": "relative",
+                  },
+                ],
               ]
             }
           >
-            
-          </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "rgba(255, 255, 255, 1)",
+                    "fontSize": 33,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "INatIcon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>

@@ -53,11 +53,6 @@ const TextInputSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
-      onChange={position => {
-        if ( position === -1 ) {
-          handleClose();
-        }
-      }}
     >
       <View className="p-5">
         <BottomSheetTextInput

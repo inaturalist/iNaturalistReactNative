@@ -4,70 +4,54 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
 <View
   accessibilityLabel="Upload-Progress"
   accessible={true}
-  style={
-    [
-      [
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "width": 49,
-        },
-        {
-          "height": 67,
-        },
-      ],
-    ]
-  }
 >
-  <View
-    accessibilityLabel="Upload-in-progress"
-    style={
-      [
-        [
-          {
-            "position": "absolute",
-          },
-        ],
-      ]
-    }
-    testID="UploadIcon.progress.undefined"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
+  <View>
+    <View
+      accessibilityLabel="Upload-in-progress"
       style={
         [
-          {
-            "color": "#454545",
-            "fontSize": 15,
-          },
-          undefined,
-          {
-            "fontFamily": "INatIcon",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
+          [
+            {
+              "position": "absolute",
+            },
+          ],
         ]
       }
+      testID="UploadIcon.progress.undefined"
     >
-      
-    </Text>
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#454545",
+              "fontSize": 15,
+            },
+            undefined,
+            {
+              "fontFamily": "INatIcon",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <CircularProgress
+      activeStrokeColor="#454545"
+      activeStrokeWidth={2}
+      inActiveStrokeOpacity={0}
+      maxValue={1}
+      radius={18}
+      showProgressValue={false}
+      testID="UploadStatus.CircularProgress"
+      value={0.5}
+    />
   </View>
-  <CircularProgress
-    activeStrokeColor="#454545"
-    activeStrokeWidth={2}
-    inActiveStrokeOpacity={0}
-    maxValue={1}
-    radius={18}
-    showProgressValue={false}
-    testID="UploadStatus.CircularProgress"
-    value={0.5}
-  />
 </View>
 `;
 
@@ -75,106 +59,90 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
 <View
   accessibilityLabel="Saved-Observation"
   accessible={true}
-  style={
-    [
-      [
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "width": 49,
-        },
-        {
-          "height": 67,
-        },
-      ],
-    ]
-  }
 >
-  <View
-    accessibilityLabel="Upload-in-progress"
-    style={
-      [
-        [
-          {
-            "position": "absolute",
-          },
-        ],
-      ]
-    }
-    testID="UploadIcon.progress.undefined"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
+  <View>
+    <View
+      accessibilityLabel="Upload-in-progress"
       style={
         [
-          {
-            "color": "#454545",
-            "fontSize": 15,
-          },
-          undefined,
-          {
-            "fontFamily": "INatIcon",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
-  <View
-    animatedStyle={
-      {
-        "value": {
-          "transform": [
+          [
             {
-              "rotateZ": "0deg",
+              "position": "absolute",
             },
           ],
-        },
+        ]
       }
-    }
-    collapsable={false}
-    style={
-      [
+      testID="UploadIcon.progress.undefined"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#454545",
+              "fontSize": 15,
+            },
+            undefined,
+            {
+              "fontFamily": "INatIcon",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <View
+      animatedStyle={
         {
-          "transform": [
-            {
-              "rotateZ": "0deg",
-            },
-          ],
-        },
-      ]
-    }
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
+          "value": {
+            "transform": [
+              {
+                "rotateZ": "0deg",
+              },
+            ],
+          },
+        }
+      }
+      collapsable={false}
       style={
         [
           {
-            "color": "#454545",
-            "fontSize": 33,
+            "transform": [
+              {
+                "rotateZ": "0deg",
+              },
+            ],
           },
-          undefined,
-          {
-            "fontFamily": "INatIcon",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
         ]
       }
     >
-      
-    </Text>
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#454545",
+              "fontSize": 33,
+            },
+            undefined,
+            {
+              "fontFamily": "INatIcon",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
   </View>
 </View>
 `;

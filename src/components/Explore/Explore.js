@@ -184,21 +184,23 @@ const Explore = ( {
             />
           </ViewWrapper>
         )}
-      {showExploreBottomSheet && (
-        <BottomSheet headerText={t( "EXPLORE" )}>
-          {Object.keys( exploreViewText ).map( view => (
-            <Button
-              text={exploreViewText[view]}
-              key={exploreViewText[view]}
-              className="mx-5 my-3"
-              onPress={() => {
-                changeExploreView( view );
-                setShowExploreBottomSheet( false );
-              }}
-            />
-          ) )}
-        </BottomSheet>
-      )}
+      <BottomSheet
+        handleClose={( ) => setShowExploreBottomSheet( false )}
+        headerText={t( "EXPLORE" )}
+        hidden={!showExploreBottomSheet}
+      >
+        {Object.keys( exploreViewText ).map( view => (
+          <Button
+            className="mx-5 my-3"
+            key={exploreViewText[view]}
+            onPress={() => {
+              changeExploreView( view );
+              setShowExploreBottomSheet( false );
+            }}
+            text={exploreViewText[view]}
+          />
+        ) )}
+      </BottomSheet>
     </>
   );
 };

@@ -31,11 +31,6 @@ const TextSheet = ( {
       handleClose={handleClose}
       headerText={headerText}
       hideCloseButton
-      onChange={position => {
-        if ( position === -1 ) {
-          handleClose( );
-        }
-      }}
     >
       <View className="p-5">
         <Body3 className="pb-5">
