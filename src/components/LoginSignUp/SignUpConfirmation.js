@@ -14,9 +14,11 @@ import { openInbox } from "react-native-email-link";
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
+const textClass = "color-white self-center text-center mt-5 px-10";
+
 const SignUpConfirmation = ( ): Node => {
   const navigation = useNavigation( );
-  const textClass = "color-white self-center text-center mt-5 px-10";
+
   return (
     <LoginSignUpWrapper backgroundSource={require( "images/pink_flower.png" )}>
       <View className="flex-1 justify-between">
@@ -40,7 +42,7 @@ const SignUpConfirmation = ( ): Node => {
           />
           <Body1
             className="color-white self-center mt-[30px] underline"
-            onPress={( ) => navigation.navigate( "LoginNavigator" )}
+            onPress={( ) => navigation.navigate( "LoginNavigator", { screen: "Login" } )}
           >
             {t( "Return-to-Login" )}
           </Body1>

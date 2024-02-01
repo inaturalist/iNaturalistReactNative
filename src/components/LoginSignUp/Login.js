@@ -1,77 +1,53 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
-import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
-import { isLoggedIn } from "./AuthenticationService";
 import Header from "./Header";
+import useLoginState from "./hooks/useLoginState";
 import LoginForm from "./LoginForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 import Logout from "./Logout";
 
-const SCROLL_VIEW_STYLE = {
-  flex: 1,
-  justifyContent: "space-between"
-};
-
 const TARGET_NON_KEYBOARD_HEIGHT = 420;
+const HIDE_HEADER_HEIGHT = 540;
+const HIDE_FOOTER_HEIGHT = 580;
 
 const Login = ( ): Node => {
-  const { params } = useRoute( );
-  const emailConfirmed = params?.emailConfirmed;
-  const [loggedIn, setLoggedIn] = useState( false );
-  const { keyboardShown, nonKeyboardHeight } = useKeyboardInfo( );
+  const { loggedIn, setLoggedIn } = useLoginState( );
+  const {
+    keyboardShown,
+    keyboardVerticalOffset,
+    nonKeyboardHeight
+  } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
 
-  useEffect( ( ) => {
-    let isCurrent = true;
+  const hideHeader = keyboardShown && ( nonKeyboardHeight < HIDE_HEADER_HEIGHT );
+  const hideFooter = keyboardShown && ( nonKeyboardHeight < HIDE_FOOTER_HEIGHT );
 
-    const fetchLoggedIn = async ( ) => {
-      const login = await isLoggedIn( );
-      if ( !isCurrent ) { return; }
-      setLoggedIn( login );
-    };
-
-    fetchLoggedIn( );
-
-    return ( ) => {
-      isCurrent = false;
-    };
-  }, [loggedIn] );
-
-  const keyboardVerticalOffset = nonKeyboardHeight < TARGET_NON_KEYBOARD_HEIGHT
-    ? nonKeyboardHeight - TARGET_NON_KEYBOARD_HEIGHT
-    : 30;
+  const renderLoginForm = useCallback( ( ) => (
+    <>
+      <Header
+        headerText={t( "Login-sub-title" )}
+        hideHeader={hideHeader}
+      />
+      <LoginForm
+        hideFooter={hideFooter}
+        setLoggedIn={setLoggedIn}
+      />
+    </>
+  ), [hideHeader, hideFooter, setLoggedIn] );
 
   return (
     <LoginSignUpWrapper
       backgroundSource={require( "images/toucan.png" )}
       keyboardVerticalOffset={keyboardVerticalOffset}
+      scrollEnabled={!loggedIn}
     >
       {loggedIn
         ? <Logout onLogOut={() => setLoggedIn( false )} />
-        : (
-          <ScrollView
-            keyboardShouldPersistTaps="always"
-            contentContainerStyle={SCROLL_VIEW_STYLE}
-          >
-            <Header
-              hideLogo={nonKeyboardHeight < 520}
-              headerText={
-                nonKeyboardHeight < 540 && keyboardShown
-                  ? undefined
-                  : t( "Login-sub-title" )
-              }
-            />
-            <LoginForm
-              setLoggedIn={setLoggedIn}
-              emailConfirmed={emailConfirmed}
-            />
-          </ScrollView>
-        )}
+        : renderLoginForm( )}
     </LoginSignUpWrapper>
   );
 };

@@ -1,37 +1,36 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  Body1, Body2, Button, Heading4, INatIcon,
-  List2
+  Body1, Body2, Button, INatIcon, List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Keyboard } from "react-native";
-import { TextInput, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 import {
   authenticateUser
 } from "./AuthenticationService";
 import Error from "./Error";
+import LoginSignUpInputField from "./LoginSignUpInputField";
 
 const { useRealm } = RealmContext;
 
 type Props = {
-  setLoggedIn: Function,
-  handleInputFocus?: Function,
-  emailConfirmed: ?boolean
+  hideFooter: boolean,
+  setLoggedIn: Function
 }
 
 const LoginForm = ( {
-  emailConfirmed,
-  handleInputFocus,
+  hideFooter,
   setLoggedIn
 }: Props ): Node => {
+  const { params } = useRoute( );
+  const emailConfirmed = params?.emailConfirmed;
   const realm = useRealm( );
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
@@ -59,59 +58,48 @@ const LoginForm = ( {
     navigation.getParent( )?.goBack( );
   };
 
-  return (
-    <View className="px-4 mt-[9px] justify-end grow">
-      <View className="mx-4">
-        <View className="mb-2">
-          {emailConfirmed && (
-            <View className="flex-row mb-5 items-center justify-center">
-              <View className="bg-white rounded-full">
-                <INatIcon
-                  name="checkmark-circle"
-                  color={theme.colors.secondary}
-                  size={19}
-                />
-              </View>
-              <List2 className="ml-3 text-white font-medium">
-                {t( "Your-email-is-confirmed" )}
-              </List2>
-            </View>
-          )}
-          <Heading4 className="color-white mb-[11px]">{t( "USERNAME-OR-EMAIL" )}</Heading4>
-          <TextInput
-            accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-            className="h-[45px] rounded-md"
-            onChangeText={text => {
-              setError( null );
-              setEmail( text );
-            }}
-            value={email}
-            autoComplete="email"
-            testID="Login.email"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            selectionColor={theme.colors.tertiary}
-            onFocus={handleInputFocus}
-          />
-        </View>
-        <Heading4 className="color-white mb-[11px] mt-[9px]">{t( "PASSWORD" )}</Heading4>
-        <TextInput
-          accessibilityLabel={t( "PASSWORD" )}
-          className="h-[45px] rounded-md"
-          onChangeText={text => {
-            setError( null );
-            setPassword( text );
-          }}
-          value={password}
-          secureTextEntry
-          autoCapitalize="none"
-          testID="Login.password"
-          selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
+  const showEmailConfirmed = ( ) => (
+    <View className="flex-row mb-5 items-center justify-center mx-2">
+      <View className="bg-white rounded-full">
+        <INatIcon
+          name="checkmark-circle"
+          color={theme.colors.secondary}
+          size={19}
         />
+      </View>
+      <List2 className="ml-3 text-white font-medium">
+        {t( "Your-email-is-confirmed" )}
+      </List2>
+    </View>
+  );
+
+  return (
+    <View className="px-4 mt-[9px] justify-end">
+      {emailConfirmed && showEmailConfirmed( )}
+      <LoginSignUpInputField
+        accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+        autoComplete="email"
+        headerText={t( "USERNAME-OR-EMAIL" )}
+        keyboardType="email-address"
+        onChangeText={text => setEmail( text )}
+        testID="Login.email"
+        // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
+        // textContentType prevents visual flickering, which is a temporary issue
+        // in iOS 17
+        textContentType="oneTimeCode"
+      />
+      <LoginSignUpInputField
+        accessibilityLabel={t( "PASSWORD" )}
+        headerText={t( "PASSWORD" )}
+        onChangeText={text => setPassword( text )}
+        secureTextEntry
+        testID="Login.password"
+        textContentType="oneTimeCode"
+      />
+      <View className="mx-4">
         <Body2
-          className="underline mt-[15px] self-end color-white"
           accessibilityRole="button"
+          className="underline mt-[15px] self-end color-white"
           onPress={( ) => navigation.navigate( "ForgotPassword" )}
         >
           {t( "Forgot-Password" )}
@@ -119,18 +107,18 @@ const LoginForm = ( {
         {error && <Error error={error} />}
       </View>
       <Button
-        level="focus"
-        text={t( "LOG-IN" )}
-        onPress={login}
         className={classnames( "mt-[30px]", {
           "mt-5": error
         } )}
         disabled={!email || !password}
-        testID="Login.loginButton"
-        loading={loading}
         forceDark
+        level="focus"
+        loading={loading}
+        onPress={login}
+        testID="Login.loginButton"
+        text={t( "LOG-IN" )}
       />
-      {!Keyboard.isVisible( ) && (
+      {!hideFooter && (
         <Body1
           className="color-white self-center mt-[30px] underline"
           onPress={( ) => navigation.navigate( "SignUp" )}
