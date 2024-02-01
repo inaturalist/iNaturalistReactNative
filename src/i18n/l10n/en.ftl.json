@@ -1116,7 +1116,7 @@
   "NEARBY-SUGGESTIONS": "NEARBY SUGGESTIONS",
   "INCLUDE-TAXA-NOT-EXPECTED-NEARBY": "INCLUDE TAXA NOT EXPECTED NEARBY",
   "ONLY-SHOW-TAXA-EXPECTED-NEARBY": "ONLY-SHOW-TAXA-EXPECTED-NEARBY",
-  "iNaturalist-Identification-suggestions-are-trained-on": "iNaturalist's Identification suggestions are trained on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.",
+  "iNaturalist-identification-suggestions-are-based-on": "iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.",
   "SPECIES-NEARBY": "SPECIES NEARBY",
   "Below-are-all-the-species-observed-within-50km": "Below are all the species observed within 50 km of your location within the taxon:",
   "Species-Nearby-requires-internet-to-work": "Species Nearby requires internet to work. Please check your internet connection.",
