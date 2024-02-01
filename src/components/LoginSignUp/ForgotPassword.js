@@ -37,7 +37,7 @@ const ForgotPassword = ( ): Node => {
           secondButtonText={t( "BACK-TO-LOGIN" )}
           handleSecondButtonPress={( ) => {
             setShowSheet( false );
-            navigation.navigate( "LoginNavigator" );
+            navigation.navigate( "LoginNavigator", { screen: "Login" } );
           }}
           buttonType="focus"
         />
