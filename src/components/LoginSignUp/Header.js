@@ -9,27 +9,26 @@ import React from "react";
 
 type Props = {
   headerText?: string,
-  hideLogo?: boolean
+  hideHeader?: boolean
 }
 
-const Header = ( { headerText, hideLogo }: Props ): Node => (
-  <View className="shrink">
-    <View className="w-full items-center">
-      { !hideLogo && (
-        <Image
-          className="w-[234px] h-[43px]"
-          resizeMode="contain"
-          source={require( "images/inaturalist.png" )}
-          accessibilityIgnoresInvertColors
-        />
-      ) }
+const Header = ( { headerText, hideHeader }: Props ): Node => {
+  if ( hideHeader ) { return null; }
+  return (
+    <View className="w-full items-center shrink">
+      <Image
+        className="w-[234px] h-[43px]"
+        resizeMode="contain"
+        source={require( "images/inaturalist.png" )}
+        accessibilityIgnoresInvertColors
+      />
       {headerText && (
         <Body1 className="text-center color-white mt-[24px] max-w-[280px]">
           {headerText}
         </Body1>
       )}
     </View>
-  </View>
-);
+  );
+};
 
 export default Header;

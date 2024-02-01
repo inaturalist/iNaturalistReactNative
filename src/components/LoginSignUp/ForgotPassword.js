@@ -2,7 +2,6 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { WarningSheet } from "components/SharedComponents";
-import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -15,11 +14,6 @@ import {
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
-
-const SCROLL_VIEW_STYLE = {
-  flex: 1,
-  justifyContent: "space-between"
-};
 
 const ForgotPassword = ( ): Node => {
   const navigation = useNavigation( );
@@ -48,15 +42,8 @@ const ForgotPassword = ( ): Node => {
           buttonType="focus"
         />
       )}
-      <ScrollView
-        keyboardShouldPersistTaps="always"
-        contentContainerStyle={SCROLL_VIEW_STYLE}
-      >
-        <Header />
-        <ForgotPasswordForm
-          reset={reset}
-        />
-      </ScrollView>
+      <Header />
+      <ForgotPasswordForm reset={reset} />
     </LoginSignUpWrapper>
   );
 };

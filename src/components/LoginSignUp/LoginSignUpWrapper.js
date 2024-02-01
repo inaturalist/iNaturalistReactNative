@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import { ImageBackground, SafeAreaView } from "components/styledComponents";
+import { ImageBackground, SafeAreaView, ScrollView } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
@@ -13,7 +13,8 @@ import {
 type Props = {
   backgroundSource: any,
   children: any,
-  keyboardVerticalOffset?: number
+  keyboardVerticalOffset?: number,
+  scrollEnabled?: boolean
 }
 
 const KEYBOARD_AVOIDING_VIEW_STYLE = {
@@ -21,10 +22,16 @@ const KEYBOARD_AVOIDING_VIEW_STYLE = {
   flexGrow: 1
 };
 
+const SCROLL_VIEW_STYLE = {
+  flex: 1,
+  justifyContent: "space-between"
+};
+
 const LoginSignupWrapper = ( {
   backgroundSource,
   children,
-  keyboardVerticalOffset
+  keyboardVerticalOffset,
+  scrollEnabled = true
 }: Props ): Node => (
   <ImageBackground
     source={backgroundSource}
@@ -47,7 +54,13 @@ const LoginSignupWrapper = ( {
         behavior="padding"
         style={KEYBOARD_AVOIDING_VIEW_STYLE}
       >
-        {children}
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          contentContainerStyle={SCROLL_VIEW_STYLE}
+          scrollEnabled={scrollEnabled}
+        >
+          {children}
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   </ImageBackground>
