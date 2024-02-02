@@ -9,6 +9,7 @@ import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSea
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import { Heading4 } from "components/SharedComponents";
@@ -47,6 +48,10 @@ const ObservationsStackNavigator = ( ): Node => (
         options={{
           ...hideHeader
         }}
+      />
+      <Stack.Screen
+        name="Notifications"
+        component={NotificationsContainer}
       />
       <Stack.Screen
         name="ObsDetails"
