@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
-import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
@@ -8,7 +7,6 @@ import Mortal from "components/SharedComponents/Mortal";
 import { t } from "i18next";
 import {
   hideHeader,
-  hideHeaderLeft,
   showHeader
 } from "navigation/navigationOptions";
 import DeveloperStackNavigator from "navigation/StackNavigators/DeveloperStackNavigator";
@@ -41,11 +39,6 @@ const BottomTabs = ( ) => {
           name="ObservationsStackNavigator"
           component={ObservationsStackNavigator}
           options={hideHeader}
-        />
-        <Tab.Screen
-          name="Notifications"
-          component={NotificationsContainer}
-          options={hideHeaderLeft}
         />
         <Tab.Screen
           name="search"
