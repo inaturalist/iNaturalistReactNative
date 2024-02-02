@@ -4,8 +4,11 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchObservationUpdates } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { flatten } from "lodash";
+import { log } from "sharedHelpers/logger";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import { useCurrentUser } from "sharedHooks";
+
+const logger = log.extend( "useInfiniteNotificationsScroll" );
 
 const useInfiniteNotificationsScroll = ( ): Object => {
   const currentUser = useCurrentUser( );
@@ -13,9 +16,8 @@ const useInfiniteNotificationsScroll = ( ): Object => {
   // Request params for fetching unviewed updates
   const baseParams = {
     observations_by: "owner",
-    viewed: true,
     fields: "all",
-    per_page: 5,
+    per_page: 30,
     ttl: -1
   };
 
@@ -54,7 +56,7 @@ const useInfiniteNotificationsScroll = ( ): Object => {
       : undefined ),
     enabled: true,
     retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
-      beforeRetry: ( ) => console.log( "error", error )
+      beforeRetry: ( ) => logger.error( error )
     } )
   } );
 

@@ -590,18 +590,14 @@ NOTES = NOTES
 Notifications = Notifications
 
 # notification when someone adds an identification to your observation
-Notification-Identification = added an identification to an observation by you
+notifications-user-added-identification-to-observation-by-you = <0>{$userName}</0> added an identification to an observation by you
 
-# notification when someone adds an identification to your observation
-Notification-Comment = added a comment to an observation by you
-
-# notification when someone mentions you in a comment to an observations by you
-Notification-Comment = mentioned you in an observation by you
+# notification when someone adds a comment to your observation
+notifications-user-added-comment-to-observation-by-you = <0>{$userName}</0> added a comment to an observation by you
 
 No-Notifications-Found = You have no notifications! Get started by creating your own observations.
 
 Offline-No-Notifications = Cannot fetch notifications at this time.
-
 
 Obscured = Obscured
 
