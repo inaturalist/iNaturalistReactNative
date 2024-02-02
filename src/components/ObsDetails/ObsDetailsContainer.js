@@ -299,6 +299,7 @@ const ObsDetailsContainer = ( ): Node => {
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
+        console.log( data, "data in mutation" );
         if ( belongsToCurrentUser ) {
           realm?.write( ( ) => {
             const localIdentifications = localObservation?.identifications;
@@ -391,7 +392,7 @@ const ObsDetailsContainer = ( ): Node => {
   const onAgree = newComment => {
     const agreeParams = {
       observation_id: observation?.uuid,
-      taxon_id: observation?.taxon?.id,
+      taxon_id: taxonForAgreement?.id,
       body: newComment
     };
 
