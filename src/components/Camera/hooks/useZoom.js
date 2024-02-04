@@ -47,7 +47,6 @@ const useZoom = ( device: Object ): Object => {
   };
 
   const resetZoom = () => {
-    console.log('AAA resetZoom - ', initialZoom);
     zoom.value = initialZoom;
   };
 
