@@ -18,12 +18,11 @@ const MAX_ZOOM_FACTOR = 20;
 const SCALE_FULL_ZOOM = 3;
 
 const useZoom = ( device: Object ): Object => {
-  const zoom = useSharedValue( !device.isMultiCam
+  const initialZoom = !device.isMultiCam
     ? device.minZoom
-    : device.neutralZoom );
-  const startZoom = useSharedValue( !device.isMultiCam
-    ? device.minZoom
-    : device.neutralZoom );
+    : device.neutralZoom;
+  const zoom = useSharedValue( initialZoom );
+  const startZoom = useSharedValue( initialZoom );
   const [zoomTextValue, setZoomTextValue] = useState( "1" );
 
   const { minZoom } = device;
@@ -45,6 +44,11 @@ const useZoom = ( device: Object ): Object => {
 
   const onZoomStart = () => {
     startZoom.value = zoom.value;
+  };
+
+  const resetZoom = () => {
+    console.log('AAA resetZoom - ', initialZoom);
+    zoom.value = initialZoom;
   };
 
   const onZoomChange = scale => {
@@ -75,7 +79,8 @@ const useZoom = ( device: Object ): Object => {
     onZoomChange,
     onZoomStart,
     showZoomButton: device.isMultiCam,
-    zoomTextValue
+    zoomTextValue,
+    resetZoom
   };
 };
 
