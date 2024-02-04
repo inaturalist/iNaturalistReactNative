@@ -5,6 +5,7 @@ import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
 import { t } from "i18next";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useState
 } from "react";
 import {
@@ -46,6 +47,17 @@ const PhotoGallery = ( ): Node => {
     ? params.fromGroupPhotos
     : false;
 
+  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
+    screen: "ObservationsStackNavigator",
+    params: {
+      screen: "ObsList"
+    }
+  } ), [navigation] );
+
+  const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
+    lastScreen: "PhotoGallery"
+  } ), [navigation] );
+
   const showPhotoGallery = React.useCallback( async () => {
     if ( photoGalleryShown ) {
       return;
@@ -78,8 +90,10 @@ const PhotoGallery = ( ): Node => {
         // This screen was called from the plus button of the group photos screen - get back to it
         navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
         navigation.setParams( { fromGroupPhotos: false } );
+      } else if ( skipGroupPhotos ) {
+        navToObsEdit();
       } else {
-        navigation.goBack();
+        navToObsList();
       }
       setPhotoGalleryShown( false );
       return;
@@ -98,8 +112,6 @@ const PhotoGallery = ( ): Node => {
       setPhotoGalleryShown( false );
       return;
     }
-
-    const navToObsEdit = () => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
 
     if ( skipGroupPhotos ) {
       // add evidence to existing observation
@@ -136,11 +148,9 @@ const PhotoGallery = ( ): Node => {
       setPhotoGalleryShown( false );
     }
   }, [
-    photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
-    evidenceToAdd, galleryUris, navigation, setGroupedPhotos,
-    fromGroupPhotos, skipGroupPhotos, groupedPhotos, currentObservation,
-    updateObservations, observations,
-    currentObservationIndex] );
+    navToObsEdit, navToObsList, photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
+    evidenceToAdd, galleryUris, navigation, setGroupedPhotos, fromGroupPhotos, skipGroupPhotos,
+    groupedPhotos, currentObservation, updateObservations, observations, currentObservationIndex] );
 
   const onPermissionGranted = () => {
     setPermissionGranted( true );
