@@ -38,7 +38,7 @@ export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
   try {
     return readExif( photoUri );
   } catch ( e ) {
-    console.error( e, "Couldn't parse EXIF" );
+    console.info( e, "Couldn't parse EXIF" );
     return null;
   }
 };
