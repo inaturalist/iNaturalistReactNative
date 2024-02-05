@@ -601,7 +601,7 @@ const UiLibrary = (): Node => {
         <Heading2 className="my-2">PhotoCount</Heading2>
         <View className="my-2 bg-lightGray p-2 rounded-lg flex-row justify-evenly">
           <PhotoCount count={0} />
-          <PhotoCount count={1} />
+          <PhotoCount count={2} />
           <PhotoCount count={12} size={50} />
           <PhotoCount count={1000} size={50} shadow />
         </View>
