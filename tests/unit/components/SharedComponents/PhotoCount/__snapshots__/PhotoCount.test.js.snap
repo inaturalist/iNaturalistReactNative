@@ -42,9 +42,9 @@ exports[`PhotoCount renders correctly 1`] = `
             "color": "#454545",
           },
           {
-            "left": 5,
+            "paddingHorizontal": 12.5,
             "position": "absolute",
-            "top": 6,
+            "top": 22,
             "zIndex": 10,
           },
         ],
