@@ -36,8 +36,12 @@ const PhotoCount = ( {
   const textStyle = {
     position: "absolute",
     zIndex: 10,
-    left: 5,
-    top: 6
+    paddingHorizontal: size === 50
+      ? 12.5
+      : 5,
+    top: size === 50
+      ? 22
+      : 6
   };
 
   return (
