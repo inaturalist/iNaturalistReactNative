@@ -35,16 +35,8 @@ const useOfflineSuggestions = (
           ? result.predictions
           : result;
       } catch ( predictImageError ) {
-        if ( predictImageError.message.match( /getWidth/ ) ) {
-          // TODO fix this. There's a bug in the android side of vision-camera-plugin-inatvision
-          logger.error(
-            `HACK working around failure to getWidth of ${selectedPhotoUri}`,
-            predictImageError
-          );
-          predictions = [];
-        } else {
-          throw predictImageError;
-        }
+        logger.error( "Error predicting image offline", predictImageError );
+        throw predictImageError;
       }
       // using the same rank level for displaying predictions in AR Camera
       // this is all temporary, since we ultimately want predictions
