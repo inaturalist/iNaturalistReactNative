@@ -37,7 +37,6 @@ const GroupPhotoImage = ( {
         selected={isSelected}
         obsPhotosCount={item.photos.length}
         selectable
-        groupPhotos
       />
     </Pressable>
   );
