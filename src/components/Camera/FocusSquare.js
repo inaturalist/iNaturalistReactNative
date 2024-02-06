@@ -26,7 +26,7 @@ const FocusSquare = ( { tappedCoordinates, singleTapToFocusAnimation }: Props ):
 
   if ( !tappedCoordinates ) { return null; }
 
-  const HALF_SIZE_FOCUS_BOX = 40;
+  const HALF_SIZE_FOCUS_BOX = 33;
 
   return (
     // $FlowIgnore
