@@ -106,12 +106,12 @@ module.exports = {
       warningRedDisabled: "#b06365",
       warningYellow: "#E6A939",
       white: "#ffffff",
+      yellow: "#FFD600",
 
       // Mostly for debugging
       red: "#FF0000",
       green: "#00FF00",
-      blue: "#0000FF",
-      yellow: "#FFFF00"
+      blue: "#0000FF"
     },
     screens: {
       sm: "240px",
