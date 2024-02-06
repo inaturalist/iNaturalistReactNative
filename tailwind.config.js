@@ -86,6 +86,7 @@ module.exports = {
       borderRadius: {
         // tried using rem value here, but it wouldn't load on iOS or Android
         DEFAULT: "7px",
+        xs: "1px",
         sm: "4px",
         md: "9px",
         lg: "8px",
