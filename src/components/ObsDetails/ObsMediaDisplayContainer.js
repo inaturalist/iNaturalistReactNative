@@ -45,6 +45,7 @@ const ObsMediaDisplayContainer = ( {
 
   return (
     <ObsMediaDisplay
+      loading={!observation}
       photos={photos}
       sounds={sounds}
       tablet={tablet}

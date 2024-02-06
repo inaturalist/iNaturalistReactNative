@@ -34,9 +34,10 @@ const ObsStatus = ( {
     : "mr-2";
 
   const showCurrentIdCount = useCallback( ( ) => {
-    const numCurrentIdents = observation
-      .identifications?.filter( id => id.current === true )?.length || 0;
-    const identificationsFilled = observation.identifications_viewed === false;
+    const numCurrentIdents = observation?.identifications?.filter(
+      id => id.current === true
+    )?.length || 0;
+    const identificationsFilled = observation?.identifications_viewed === false;
 
     return (
       <IdentificationsCount
@@ -73,6 +74,10 @@ const ObsStatus = ( {
       : iconColorResearchCheck;
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
   }, [observation, theme, white] );
+
+  if ( !observation ) {
+    return null;
+  }
 
   return (
     <View
