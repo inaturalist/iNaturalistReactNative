@@ -53,10 +53,7 @@ const ObsMedia = ( {
         />
       )
       : (
-        <PhotoContainer
-          photo={item}
-          onPress={() => setMediaViewerVisible( true )}
-        />
+        <PhotoContainer photo={item} onPress={() => setMediaViewerVisible( true )} />
       ) ),
     [setMediaViewerVisible, items, index]
   );

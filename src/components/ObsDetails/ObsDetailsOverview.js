@@ -8,9 +8,9 @@ import {
   DateDisplay,
   DisplayTaxon,
   InlineUser,
-  ObservationLocation
+  ObservationLocation,
+  ObsStatus
 } from "components/SharedComponents";
-import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -37,8 +37,7 @@ const ObsDetailsOverview = ( {
   const loadingIndicator = (
     <ActivityIndicator
       className={classnames(
-        "absolute w-full",
-        observation && "hidden"
+        "absolute w-full"
       )}
       size={25}
     />
@@ -65,7 +64,7 @@ const ObsDetailsOverview = ( {
   return (
     <View className="bg-white">
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
-        {loadingIndicator}
+        {!observation && loadingIndicator}
         <InlineUser user={observation?.user} isOnline={isOnline} />
         {observation && (
           <DateDisplay

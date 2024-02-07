@@ -29,6 +29,7 @@ export { default as Modal } from "./Modal";
 export { default as Mortal } from "./Mortal";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as ObservationsFlashList } from "./ObservationsFlashList/ObservationsFlashList";
+export { default as ObsStatus } from "./ObsStatus";
 export { default as OverviewCounts } from "./OverviewCounts";
 export { default as PermissionGate } from "./PermissionGate";
 export { default as PhotoCount } from "./PhotoCount";

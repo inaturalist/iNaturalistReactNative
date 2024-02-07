@@ -1,11 +1,9 @@
 // @flow
 
-import { UploadStatus } from "components/SharedComponents";
+import { ObsStatus, UploadStatus } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-
-import ObsStatus from "./ObsStatus";
 
 type Props = {
   observation: Object,

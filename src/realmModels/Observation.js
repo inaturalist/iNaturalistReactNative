@@ -103,7 +103,7 @@ class Observation extends Realm.Object {
       const obsToUpsert = observations.filter(
         obs => !Observation.isUnsyncedObservation( realm, obs )
       );
-      realm.write( ( ) => {
+      realm?.write( ( ) => {
         obsToUpsert.forEach( obs => {
           realm.create(
             "Observation",

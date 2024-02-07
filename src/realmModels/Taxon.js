@@ -109,7 +109,7 @@ class Taxon extends Realm.Object {
   static saveRemoteTaxon = async ( remoteTaxon, realm ) => {
     if ( remoteTaxon ) {
       const localTaxon = Taxon.mapApiToRealm( remoteTaxon, realm );
-      realm.write( ( ) => {
+      realm?.write( ( ) => {
         realm.create( "Taxon", localTaxon, "modified" );
       } );
     }

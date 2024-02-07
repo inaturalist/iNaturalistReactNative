@@ -12,7 +12,7 @@ async function signOut( options = {} ) {
   const realm = options.realm || global.realm;
   i18next.language = undefined;
   // This is the nuclear option, maybe revisit if it's a source of bugs
-  realm.write( ( ) => {
+  realm?.write( ( ) => {
     realm.deleteAll( );
   } );
   await RNSInfo.deleteItem( "username" );
@@ -30,7 +30,7 @@ async function signIn( user, options = {} ) {
   await RNSInfo.setItem( "accessToken", TEST_ACCESS_TOKEN );
   inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
   user.signedIn = true;
-  realm.write( ( ) => {
+  realm?.write( ( ) => {
     realm.create( "User", user, "modified" );
   } );
   nock( API_HOST )

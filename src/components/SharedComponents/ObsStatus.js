@@ -50,8 +50,8 @@ const ObsStatus = ( {
   }, [observation, margin, white] );
 
   const showCommentCount = useCallback( ( ) => {
-    const numComments = observation.comments?.length || 0;
-    const commentsFilled = observation.comments_viewed === false;
+    const numComments = observation?.comments?.length || 0;
+    const commentsFilled = observation?.comments_viewed === false;
 
     return (
       <CommentsCount
@@ -74,10 +74,6 @@ const ObsStatus = ( {
       : iconColorResearchCheck;
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
   }, [observation, theme, white] );
-
-  if ( !observation ) {
-    return null;
-  }
 
   return (
     <View

@@ -1,12 +1,13 @@
 // @flow
-import { DateDisplay, DisplayTaxonName, ObservationLocation } from "components/SharedComponents";
+import {
+  DateDisplay, DisplayTaxonName, ObservationLocation, ObsStatus
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsStatus from "./ObsStatus";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
