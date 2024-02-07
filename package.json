@@ -72,7 +72,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^13.2.2",
-    "react-native": "0.71.15",
+    "react-native": "0.71.16",
     "react-native-animated-dots-carousel": "^1.0.2",
     "react-native-audio-recorder-player": "^3.6.0",
     "react-native-bouncy-checkbox": "^3.0.7",
