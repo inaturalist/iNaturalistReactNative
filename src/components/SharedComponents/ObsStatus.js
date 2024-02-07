@@ -34,9 +34,10 @@ const ObsStatus = ( {
     : "mr-2";
 
   const showCurrentIdCount = useCallback( ( ) => {
-    const numCurrentIdents = observation
-      .identifications?.filter( id => id.current === true )?.length || 0;
-    const identificationsFilled = observation.identifications_viewed === false;
+    const numCurrentIdents = observation?.identifications?.filter(
+      id => id.current === true
+    )?.length || 0;
+    const identificationsFilled = observation?.identifications_viewed === false;
 
     return (
       <IdentificationsCount
@@ -49,8 +50,8 @@ const ObsStatus = ( {
   }, [observation, margin, white] );
 
   const showCommentCount = useCallback( ( ) => {
-    const numComments = observation.comments?.length || 0;
-    const commentsFilled = observation.comments_viewed === false;
+    const numComments = observation?.comments?.length || 0;
+    const commentsFilled = observation?.comments_viewed === false;
 
     return (
       <CommentsCount

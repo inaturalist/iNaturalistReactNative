@@ -72,7 +72,7 @@ const useDeleteObservations = ( ): Object => {
   const deleteLocalObservation = useCallback( ( ) => {
     const realmObservation = realm.objectForPrimaryKey( "Observation", observationToDelete.uuid );
     logger.info( "Local observation to delete: ", realmObservation.uuid );
-    realm.write( ( ) => {
+    realm?.write( ( ) => {
       realm?.delete( realmObservation );
     } );
     logger.info( "Local observation deleted" );

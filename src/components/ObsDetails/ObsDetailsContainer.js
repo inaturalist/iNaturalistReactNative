@@ -408,10 +408,6 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
   };
 
-  if ( !observation ) {
-    return null;
-  }
-
   return (
     <ObsDetails
       activityItems={activityItems}

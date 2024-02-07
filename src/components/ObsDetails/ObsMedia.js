@@ -1,6 +1,7 @@
 // @flow
 
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
@@ -14,6 +15,7 @@ import PhotoContainer from "./PhotoContainer";
 import SoundContainer from "./SoundContainer";
 
 type Props = {
+  loading: boolean,
   photos: Array<{
     id?: number,
     url: string,
@@ -29,6 +31,7 @@ type Props = {
 }
 
 const ObsMedia = ( {
+  loading,
   photos = [],
   sounds = [],
   tablet
@@ -59,22 +62,34 @@ const ObsMedia = ( {
     ? undefined
     : photos[index]?.url;
 
+  const loadingIndicator = (
+    <View className="h-[288px] w-full items-center justify-center">
+      <ActivityIndicator
+        className="absolute"
+      />
+    </View>
+  );
+
   const renderPhone = ( ) => (
     <>
-      <Carousel
-        testID="photo-scroll"
-        loop={false}
-        horizontal
-        width={width}
-        height={288}
-        scrollAnimationDuration={100}
-        data={items}
-        renderItem={CarouselSlide}
-        pagingEnabled
-        onProgressChange={( _, absoluteProgress ) => {
-          setIndex( Math.round( absoluteProgress ) );
-        }}
-      />
+      {loading
+        ? loadingIndicator
+        : (
+          <Carousel
+            testID="photo-scroll"
+            loop={false}
+            horizontal
+            width={width}
+            height={288}
+            scrollAnimationDuration={100}
+            data={items}
+            renderItem={CarouselSlide}
+            pagingEnabled
+            onProgressChange={( _, absoluteProgress ) => {
+              setIndex( Math.round( absoluteProgress ) );
+            }}
+          />
+        )}
       {items.length > 1 && (
         <View
           className="flex absolute bottom-0 w-full justify-evenly items-center p-[15px]"

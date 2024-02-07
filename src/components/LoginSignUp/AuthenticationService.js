@@ -344,7 +344,7 @@ const authenticateUser = async (
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
-  realm.write( ( ) => {
+  realm?.write( ( ) => {
     realm.create( "User", currentUser, "modified" );
   } );
   const currentRealmUser = User.currentUser( realm );
