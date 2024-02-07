@@ -4,6 +4,7 @@ import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect, useReducer } from "react";
 import { log } from "sharedHelpers/logger";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedMutation } from "sharedHooks";
 
 const logger = log.extend( "useDeleteObservations" );
@@ -72,9 +73,9 @@ const useDeleteObservations = ( ): Object => {
   const deleteLocalObservation = useCallback( ( ) => {
     const realmObservation = realm.objectForPrimaryKey( "Observation", observationToDelete.uuid );
     logger.info( "Local observation to delete: ", realmObservation.uuid );
-    realm?.write( ( ) => {
+    safeRealmWrite( realm, ( ) => {
       realm?.delete( realmObservation );
-    } );
+    }, "deleting local observations in useDeleteObservations" );
     logger.info( "Local observation deleted" );
     return true;
   }, [realm, observationToDelete] );

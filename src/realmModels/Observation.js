@@ -2,6 +2,7 @@ import { Realm } from "@realm/react";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
 import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Application from "./Application";
 import Comment from "./Comment";
@@ -103,7 +104,7 @@ class Observation extends Realm.Object {
       const obsToUpsert = observations.filter(
         obs => !Observation.isUnsyncedObservation( realm, obs )
       );
-      realm?.write( ( ) => {
+      safeRealmWrite( realm, ( ) => {
         obsToUpsert.forEach( obs => {
           realm.create(
             "Observation",
@@ -111,7 +112,7 @@ class Observation extends Realm.Object {
             "modified"
           );
         } );
-      } );
+      }, "upserting remote observations in Observation" );
     }
   }
 
@@ -219,12 +220,12 @@ class Observation extends Realm.Object {
       observationSounds
     };
 
-    realm?.write( ( ) => {
+    safeRealmWrite( realm, ( ) => {
       // using 'modified' here for the case where a new observation has the same Taxon
       // as a previous observation; otherwise, realm will error out
       // also using modified for updating observations which were already saved locally
       realm?.create( "Observation", obsToSave, "modified" );
-    } );
+    }, "saving local observation for upload in Observation" );
     return realm.objectForPrimaryKey( "Observation", obs.uuid );
   }
 

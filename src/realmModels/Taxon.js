@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Photo from "./Photo";
 
@@ -109,9 +110,9 @@ class Taxon extends Realm.Object {
   static saveRemoteTaxon = async ( remoteTaxon, realm ) => {
     if ( remoteTaxon ) {
       const localTaxon = Taxon.mapApiToRealm( remoteTaxon, realm );
-      realm?.write( ( ) => {
+      safeRealmWrite( realm, ( ) => {
         realm.create( "Taxon", localTaxon, "modified" );
-      } );
+      }, "saving remote taxon in Taxon" );
     }
   };
 

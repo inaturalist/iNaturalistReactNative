@@ -2,6 +2,7 @@
 
 import { fetchObservationUpdates } from "api/observations";
 import { RealmContext } from "providers/contexts";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery, useIsConnected } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -82,9 +83,9 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
       existingObs.comments_viewed || existingObs.comments_viewed === null
     ) {
       if ( update.comment_id ) {
-        realm?.write( () => {
+        safeRealmWrite( realm, () => {
           existingObs.comments_viewed = false;
-        } );
+        }, "setting comments_viewed to false in useObservationsUpdates" );
       }
     }
     // If the update is an identification, set the observation's identifications_viewed to false
@@ -92,9 +93,9 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
       existingObs.identifications_viewed || existingObs.identifications_viewed === null
     ) {
       if ( update.identification_id ) {
-        realm?.write( () => {
+        safeRealmWrite( realm, () => {
           existingObs.identifications_viewed = false;
-        } );
+        }, "setting identifications_viewed to false in useObservationsUpdates" );
       }
     }
   } );

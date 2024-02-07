@@ -3,6 +3,7 @@
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import { AppState } from "react-native";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 const { useRealm } = RealmContext;
 
@@ -14,12 +15,13 @@ const useObservationUpdatesWhenFocused = () => {
     const observations = realm
       .objects( "Observation" )
       .filtered( "comments_viewed == false OR identifications_viewed == false" );
-    realm?.write( () => {
+    if ( observations.length === 0 ) { return; }
+    safeRealmWrite( realm, () => {
       observations.forEach( observation => {
         observation.comments_viewed = true;
         observation.identifications_viewed = true;
       } );
-    } );
+    }, "setting comments_viewed and ids_viewed to true in useObservationsUpdatesWhenFocused" );
   }, [realm] );
 
   const onAppStateChange = useCallback(

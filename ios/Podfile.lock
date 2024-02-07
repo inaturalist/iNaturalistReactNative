@@ -392,7 +392,7 @@ PODS:
     - React-perflogger (= 0.71.15)
   - ReactNativeExceptionHandler (2.10.10):
     - React-Core
-  - RealmJS (12.3.0):
+  - RealmJS (12.6.0):
     - React
   - RNAudioRecorderPlayer (3.6.0):
     - React-Core
@@ -742,7 +742,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 8f2ddd9db7874ec7de84f5c55d73aeaaf82908e2
   ReactCommon: 309d965cb51f058d07dea65bc04dcf462911f0a4
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
-  RealmJS: 4c52a15602e70b64cd9230b0a17a9c12741371f4
+  RealmJS: a62dc7a1f94b888fe9e8712cd650167ad97dc636
   RNAudioRecorderPlayer: 4690a7cd9e4fd8e58d9671936a7bc3b686e59051
   RNCAsyncStorage: f2974eca860c16a3e56eea5771fda8d12e2d2057
   RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
