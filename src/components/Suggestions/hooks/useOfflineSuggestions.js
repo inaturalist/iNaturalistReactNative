@@ -4,6 +4,7 @@ import {
   useEffect,
   useState
 } from "react";
+import { Platform } from "react-native";
 import { predictImage } from "sharedHelpers/cvModel";
 import { log } from "sharedHelpers/logger";
 
@@ -27,18 +28,15 @@ const useOfflineSuggestions = (
       setLoadingOfflineSuggestions( true );
       let predictions = [];
       try {
-        predictions = await predictImage( selectedPhotoUri );
+        const result = await predictImage( selectedPhotoUri );
+        // Android returns an object with a predictions key, while iOS returns an array because
+        // currently Seek codebase as well expects different return types for each platform
+        predictions = Platform.OS === "android"
+          ? result.predictions
+          : result;
       } catch ( predictImageError ) {
-        if ( predictImageError.message.match( /getWidth/ ) ) {
-          // TODO fix this. There's a bug in the android side of vision-camera-plugin-inatvision
-          logger.error(
-            `HACK working around failure to getWidth of ${selectedPhotoUri}`,
-            predictImageError
-          );
-          predictions = [];
-        } else {
-          throw predictImageError;
-        }
+        logger.error( "Error predicting image offline", predictImageError );
+        throw predictImageError;
       }
       // using the same rank level for displaying predictions in AR Camera
       // this is all temporary, since we ultimately want predictions
