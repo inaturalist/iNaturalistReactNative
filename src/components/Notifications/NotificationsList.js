@@ -7,10 +7,7 @@ import { Body2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
-
-const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
   data: Object,
@@ -58,7 +55,7 @@ const NotificationsList = ( {
 
   return (
     <View className="h-full">
-      <AnimatedFlashList
+      <FlashList
         data={data}
         keyExtractor={item => item.id}
         renderItem={renderItem}
