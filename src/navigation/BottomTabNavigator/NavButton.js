@@ -1,6 +1,7 @@
 // @flow
 import { INatIconButton, UserIcon } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
+import NotificationsIconContainer from "navigation/BottomTabNavigator/NotificationsIconContainer";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 
@@ -47,6 +48,16 @@ const NavButton = ( {
     height
   };
 
+  const notificationProps = {
+    testID,
+    onPress,
+    accessibilityRole,
+    accessibilityLabel,
+    accessibilityHint,
+    width,
+    height
+  };
+
   if ( userIconUri ) {
     return (
       <Pressable
@@ -55,6 +66,17 @@ const NavButton = ( {
       >
         <UserIcon uri={userIconUri} active={active} />
       </Pressable>
+    );
+  }
+
+  if ( icon === "notifications-bell" ) {
+    return (
+      <NotificationsIconContainer
+        icon={icon}
+        size={size}
+        active={active}
+        {...notificationProps}
+      />
     );
   }
 
