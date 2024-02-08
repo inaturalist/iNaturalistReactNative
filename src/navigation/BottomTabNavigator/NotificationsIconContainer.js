@@ -6,7 +6,8 @@ import React, { useEffect, useState } from "react";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useInterval
+  useInterval,
+  useIsConnected
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -37,7 +38,8 @@ const NotificationsIconContainer = ( {
 }: Props ): Node => {
   const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
-  const currentUser = useCurrentUser();
+  const currentUser = useCurrentUser( );
+  const isOnline = useIsConnected( );
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
@@ -52,7 +54,7 @@ const NotificationsIconContainer = ( {
     ],
     optsWithAuth => fetchUnviewedObservationUpdatesCount( optsWithAuth ),
     {
-      enabled: !!currentUser
+      enabled: !!currentUser && !!isOnline
     }
   );
 
