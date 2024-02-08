@@ -46,8 +46,6 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
-  logger.debug( "[App.js] Need to open Realm in another app?" );
-  logger.debug( "[App.js] realm.path: ", realm?.path );
   const currentUser = useCurrentUser( );
   useIconicTaxa( { reload: true } );
   const { i18n } = useTranslation( );
@@ -168,6 +166,13 @@ const App = ( { children }: Props ): Node => {
     };
     fetchInitialUrl( );
   }, [navigateConfirmedUser] );
+
+  useEffect( ( ) => {
+    if ( realm?.path ) {
+      logger.debug( "[App.js] Need to open Realm in another app?" );
+      logger.debug( "[App.js] realm.path: ", realm.path );
+    }
+  }, [realm?.path] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code
