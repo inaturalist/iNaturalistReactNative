@@ -59,7 +59,6 @@ const ObsDetailsHeader = ( {
               color={!rightIconBlack
                 ? colors.white
                 : colors.black}
-              // className="absolute top-3 right-3"
               accessibilityLabel={t( "Edit" )}
             />
           )
