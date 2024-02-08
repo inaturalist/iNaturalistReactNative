@@ -3,7 +3,11 @@ import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useAuthenticatedQuery, useInterval } from "sharedHooks";
+import {
+  useAuthenticatedQuery,
+  useCurrentUser,
+  useInterval
+} from "sharedHooks";
 
 type Props = {
   testID: string,
@@ -32,10 +36,14 @@ const NotificationsIconContainer = ( {
 }: Props ): Node => {
   const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
+  const currentUser = useCurrentUser();
 
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
     ["notificationsCount", numFetchIntervals],
-    optsWithAuth => fetchUnviewedObservationUpdatesCount( optsWithAuth )
+    optsWithAuth => fetchUnviewedObservationUpdatesCount( optsWithAuth ),
+    {
+      enabled: !!currentUser
+    }
   );
 
   // Show icon when there are unread updates
