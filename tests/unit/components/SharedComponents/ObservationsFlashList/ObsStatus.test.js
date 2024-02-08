@@ -1,7 +1,7 @@
 import {
   screen
 } from "@testing-library/react-native";
-import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
+import ObsStatus from "components/SharedComponents/ObsStatus";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";

@@ -29,6 +29,7 @@ import {
   List1,
   List2,
   ObservationLocation,
+  ObsStatus,
   PhotoCount,
   ProjectListItem,
   QualityGradeStatus,
@@ -39,21 +40,19 @@ import {
   Tabs,
   TaxonResult,
   UploadStatus,
-  UserIcon
+  UserIcon,
+  UserText,
+  ViewWrapper
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
-import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
-import UserText from "components/SharedComponents/UserText";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useTranslation from "sharedHooks/useTranslation";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 

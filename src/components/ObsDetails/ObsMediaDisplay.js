@@ -1,5 +1,5 @@
 // @flow
-import classNames from "classnames";
+import classnames from "classnames";
 import {
   INatIcon,
   PhotoCount
@@ -15,12 +15,14 @@ import colors from "styles/tailwindColors";
 import ObsMedia from "./ObsMedia";
 
 type Props = {
+  loading: boolean,
   photos: Array<Object>,
   sounds: Array<Object>,
   tablet: boolean
 }
 
 const ObsMediaDisplay = ( {
+  loading,
   photos = [],
   sounds = [],
   tablet
@@ -29,24 +31,27 @@ const ObsMediaDisplay = ( {
 
   const items = [...photos, ...sounds];
 
-  if ( items.length > 0 ) {
+  if ( items.length > 0 || loading ) {
     return (
       <View className="bg-black">
         <ObsMedia
+          loading={loading}
           photos={photos}
           sounds={sounds}
           tablet={tablet}
         />
-        <View className="absolute bottom-5 left-5">
-          <PhotoCount count={items.length} />
-        </View>
+        {!loading && (
+          <View className="absolute bottom-5 left-5">
+            <PhotoCount count={items.length} />
+          </View>
+        )}
       </View>
     );
   }
 
   return (
     <View
-      className={classNames(
+      className={classnames(
         "bg-black flex-row justify-center items-center",
         tablet
           ? "h-full"

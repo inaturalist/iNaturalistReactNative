@@ -325,7 +325,7 @@ const MyObservationsContainer = ( ): Node => {
     const deletedObservations = response?.results;
     if ( !deletedObservations ) { return; }
     if ( deletedObservations?.length > 0 ) {
-      realm.write( ( ) => {
+      realm?.write( ( ) => {
         deletedObservations.forEach( observationId => {
           const localObsToDelete = realm.objects( "Observation" )
             .filtered( `id == ${observationId}` );
@@ -337,7 +337,7 @@ const MyObservationsContainer = ( ): Node => {
 
   const updateSyncTime = useCallback( ( ) => {
     const currentSyncTime = new Date( );
-    realm.write( ( ) => {
+    realm?.write( ( ) => {
       const localPrefs = realm.objects( "LocalPreferences" )[0];
       if ( !localPrefs ) {
         realm.create( "LocalPreferences", {
