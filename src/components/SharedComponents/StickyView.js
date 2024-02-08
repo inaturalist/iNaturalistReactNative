@@ -66,14 +66,18 @@ const StickyView = ( {
     };
   }, [scrollY] );
 
+  const contentHeight = isTablet
+    ? screenHeight
+    : Math.max( screenWidth, screenHeight );
+
   return (
     <Animated.View
       style={[
         {
           transform: [{ translateY: offsetForHeader }],
-          height: isTablet
-            ? screenHeight
-            : Math.max( screenWidth, screenHeight )
+          // Set the height to flow off screen so that when we translate the
+          // view up, there's no gap at the bottom
+          height: contentHeight + heightAboveView
         }
       ]}
     >

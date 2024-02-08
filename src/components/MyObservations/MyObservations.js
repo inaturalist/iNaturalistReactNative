@@ -81,8 +81,11 @@ const MyObservations = ( {
   return (
     <>
       <ViewWrapper>
-        <View className="overflow-hidden">
-          <StickyView scrollY={scrollY} heightAboveView={heightAboveToolbar}>
+        <View className="overflow-hidden h-full">
+          <StickyView
+            scrollY={scrollY}
+            heightAboveView={heightAboveToolbar}
+          >
             <Header
               currentUser={currentUser}
               hideToolbar={observations.length === 0}
