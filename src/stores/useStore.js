@@ -54,6 +54,9 @@ const useStore = create( set => ( {
   galleryUris: [],
   groupedPhotos: [],
   observations: [],
+  // Track when any obs was last marked as viewed so we know when to update
+  // the notifications indicator
+  observationMarkedAsViewedAt: null,
   originalCameraUrisMap: {},
   photoEvidenceUris: [],
   savingPhoto: false,
@@ -98,6 +101,9 @@ const useStore = create( set => ( {
   } ) ),
   setGroupedPhotos: photos => set( {
     groupedPhotos: photos
+  } ),
+  setObservationMarkedAsViewedAt: date => set( {
+    observationMarkedAsViewedAt: date
   } ),
   setObservations: updatedObservations => set( state => ( {
     observations: updatedObservations,

@@ -8,6 +8,7 @@ import {
   useCurrentUser,
   useInterval
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
   testID: string,
@@ -37,9 +38,18 @@ const NotificationsIconContainer = ( {
   const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
   const currentUser = useCurrentUser();
+  const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
-    ["notificationsCount", numFetchIntervals],
+    [
+      "notificationsCount",
+      // We want to check for notifications at a set interval, so this gets
+      // bumped at that interval
+      numFetchIntervals,
+      // We want to check for notifications when the user views an
+      // observation, because that might make the indicator go away
+      observationMarkedAsViewedAt
+    ],
     optsWithAuth => fetchUnviewedObservationUpdatesCount( optsWithAuth ),
     {
       enabled: !!currentUser
