@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
+import initI18next from "i18n/initI18next";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
@@ -17,19 +18,22 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   default: () => undefined
 } ) );
 
-const mockMutate = jest.fn();
-jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
-    mutate: mockMutate
-
+    data: 0
   } )
 } ) );
 
 describe( "CustomTabBar", () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
   beforeEach( ( ) => {
     jest.useFakeTimers();
   } );
+
   it( "should render correctly", async () => {
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 

@@ -1,10 +1,9 @@
 // @flow
-import { fetchNotificationCounts } from "api/users";
+import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useInterval } from "sharedHooks";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import { useAuthenticatedQuery, useInterval } from "sharedHooks";
 
 type Props = {
   testID: string,
@@ -31,40 +30,23 @@ const NotificationsIconContainer = ( {
   width,
   height
 }: Props ): Node => {
-  /* eslint-disable react/jsx-props-no-spreading */
-  const sharedProps = {
-    testID,
-    onPress,
-    accessibilityRole,
-    accessibilityLabel,
-    accessibilityHint,
-    width,
-    height
-  };
-
   const [hasUnread, setHasUnread] = useState( false );
-  const { mutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => fetchNotificationCounts( params, optsWithAuth ),
-    {
-      onSuccess: response => {
-        if ( response?.updates_count ) {
-          if ( response?.updates_count > 0 ) {
-            setHasUnread( true );
-          } else {
-            setHasUnread( false );
-          }
-        }
-      }
-    }
+  const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
+
+  const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
+    ["notificationsCount", numFetchIntervals],
+    optsWithAuth => fetchUnviewedObservationUpdatesCount( optsWithAuth )
   );
 
+  // Show icon when there are unread updates
   useEffect( () => {
-    mutate( {} );
-  }, [mutate] );
+    setHasUnread( unviewedUpdatesCount > 0 );
+  }, [unviewedUpdatesCount] );
 
+  // Fetch new updates count every minute by changing the request key
   useInterval( () => {
-    mutate( {} );
-  }, 60000 );
+    setNumFetchIntervals( numFetchIntervals + 1 );
+  }, 60_000 );
 
   return (
     <NotificationsIcon
@@ -72,7 +54,13 @@ const NotificationsIconContainer = ( {
       unread={hasUnread}
       active={active}
       size={size}
-      {...sharedProps}
+      testID={testID}
+      onPress={onPress}
+      accessibilityRole={accessibilityRole}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}
+      width={width}
+      height={height}
     />
   );
 };

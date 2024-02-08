@@ -170,18 +170,9 @@ const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<an
   }
 };
 
-const fetchNotificationCounts = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
-  try {
-    return await inatjs.users.notification_counts( params, opts );
-  } catch ( e ) {
-    return handleError( e );
-  }
-};
-
 export {
   blockUser,
   fetchMemberProjects,
-  fetchNotificationCounts,
   fetchRemoteUser,
   fetchRemoteUsers,
   fetchUserMe,
