@@ -1,6 +1,10 @@
 // @flow
 import Header from "components/MyObservations/Header";
-import { ObservationsFlashList, StickyView, ViewWrapper } from "components/SharedComponents";
+import {
+  ObservationsFlashList,
+  ScrollableWithStickyHeader,
+  ViewWrapper
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
@@ -82,7 +86,7 @@ const MyObservations = ( {
     <>
       <ViewWrapper>
         <View className="overflow-hidden h-full">
-          <StickyView
+          <ScrollableWithStickyHeader
             scrollY={scrollY}
             heightAboveView={heightAboveToolbar}
           >
@@ -116,7 +120,7 @@ const MyObservations = ( {
                 <Announcements currentUser={currentUser} isOnline={isOnline} />
               )}
             />
-          </StickyView>
+          </ScrollableWithStickyHeader>
         </View>
       </ViewWrapper>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}

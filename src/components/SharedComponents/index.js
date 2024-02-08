@@ -45,7 +45,7 @@ export { default as TextInputSheet } from "./Sheets/TextInputSheet";
 export { default as TextSheet } from "./Sheets/TextSheet";
 export { default as WarningSheet } from "./Sheets/WarningSheet";
 export { default as StickyToolbar } from "./StickyToolbar";
-export { default as StickyView } from "./StickyView";
+export { default as ScrollableWithStickyHeader } from "./ScrollableWithStickyHeader";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as TaxonResult } from "./TaxonResult";
 export { default as Body1 } from "./Typography/Body1";

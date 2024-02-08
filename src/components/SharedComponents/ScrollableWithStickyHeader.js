@@ -12,7 +12,7 @@ type Props = {
   heightAboveView: number
 };
 
-const StickyView = ( {
+const ScrollableWithStickyHeader = ( {
   children,
   scrollY,
   heightAboveView
@@ -86,4 +86,4 @@ const StickyView = ( {
   );
 };
 
-export default StickyView;
+export default ScrollableWithStickyHeader;
