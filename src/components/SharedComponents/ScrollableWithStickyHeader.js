@@ -24,6 +24,10 @@
 // gets confined to the column width. The solution here uses an offset
 // transform to achive something similar. It also assumes it occupies full
 // height
+//
+// In case git loses some of the history, this approach was original authored
+// by @albullington, with modifications by @budowski to deal with overscroll
+// problems
 
 import { View } from "components/styledComponents";
 import type { Node } from "react";
