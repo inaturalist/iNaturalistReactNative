@@ -332,28 +332,23 @@ const MyObservationsContainer = ( ): Node => {
     if ( !deletedObservations ) { return; }
     if ( deletedObservations?.length > 0 ) {
       safeRealmWrite( realm, ( ) => {
-        deletedObservations.forEach( observationId => {
-          const localObsToDelete = realm.objects( "Observation" )
-            .filtered( `id == ${observationId}` );
-          if ( localObsToDelete.length === 0 ) { return; }
-          realm.delete( localObsToDelete );
+        const localObservationsToDelete = realm.objects( "Observation" )
+          .filtered( `id IN { ${deletedObservations} }` );
+        localObservationsToDelete.forEach( observation => {
+          realm.delete( observation );
         } );
       }, "deleting remote deleted observations in MyObservationsContainer" );
     }
   }, [realm] );
 
   const updateSyncTime = useCallback( ( ) => {
-    const currentSyncTime = new Date( );
+    const localPrefs = realm.objects( "LocalPreferences" )[0];
+    const updatedPrefs = {
+      ...localPrefs,
+      last_sync_time: new Date( )
+    };
     safeRealmWrite( realm, ( ) => {
-      const localPrefs = realm.objects( "LocalPreferences" )[0];
-      if ( !localPrefs ) {
-        realm.create( "LocalPreferences", {
-          ...localPrefs,
-          last_sync_time: currentSyncTime
-        } );
-      } else {
-        localPrefs.last_sync_time = currentSyncTime;
-      }
+      realm.create( "LocalPreferences", updatedPrefs, "modified" );
     }, "updating sync time in MyObservationsContainer" );
   }, [realm] );
 

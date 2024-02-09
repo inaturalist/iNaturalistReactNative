@@ -31,8 +31,6 @@ const useUserMe = ( options: ?Object ): Object => {
   )
     && updateRealm;
 
-  console.log( userLocaleChanged, updateRealm, remoteUser, "useUserME" );
-
   useEffect( ( ) => {
     if ( userLocaleChanged && remoteUser ) {
       safeRealmWrite( realm, ( ) => {

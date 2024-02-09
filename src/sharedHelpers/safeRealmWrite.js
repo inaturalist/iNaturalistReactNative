@@ -12,7 +12,6 @@ const safeRealmWrite = (
   action: Function,
   description: string = "No description given"
 ): any => {
-  console.log( description, "safe realm write" );
   if ( realm.isInTransaction ) {
     logger.info( "realm is in transaction:", realm.isInTransaction );
     realm.cancelTransaction( );

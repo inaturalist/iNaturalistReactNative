@@ -2,6 +2,7 @@
 
 import { fetchObservationUpdates } from "api/observations";
 import { RealmContext } from "providers/contexts";
+import { useEffect } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery, useIsConnected } from "sharedHooks";
 
@@ -60,45 +61,45 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     ]
   */
 
-  // Looping through all unviewed updates
-  const unviewed = data?.filter( result => result.viewed === false );
-  unviewed?.forEach( update => {
-    // Get the observation from local realm that matches the update's resource_uuid
-    const existingObs = realm?.objectForPrimaryKey(
-      "Observation",
-      update.resource_uuid
-    );
-    if ( !existingObs ) {
-      return;
-    }
-    // If both comments and identifications are already unviewed, nothing to do here
-    if (
-      existingObs.comments_viewed === false
-      && existingObs.identifications_viewed === false
-    ) {
-      return;
-    }
-    // If the update is a comment, set the observation's comments_viewed to false
-    if (
-      existingObs.comments_viewed || existingObs.comments_viewed === null
-    ) {
-      if ( update.comment_id ) {
-        safeRealmWrite( realm, () => {
-          existingObs.comments_viewed = false;
-        }, "setting comments_viewed to false in useObservationsUpdates" );
-      }
-    }
-    // If the update is an identification, set the observation's identifications_viewed to false
-    if (
-      existingObs.identifications_viewed || existingObs.identifications_viewed === null
-    ) {
-      if ( update.identification_id ) {
-        safeRealmWrite( realm, () => {
-          existingObs.identifications_viewed = false;
-        }, "setting identifications_viewed to false in useObservationsUpdates" );
-      }
-    }
-  } );
+  useEffect( ( ) => {
+    // Looping through all unviewed updates
+    const remoteUnviewed = data?.filter( result => result.viewed === false );
+    safeRealmWrite( realm, ( ) => {
+      remoteUnviewed?.forEach( update => {
+        // Get the observation from local realm that matches the update's resource_uuid
+        const existingObs = realm?.objectForPrimaryKey(
+          "Observation",
+          update.resource_uuid
+        );
+        if ( !existingObs ) {
+          return;
+        }
+        // If both comments and identifications are already unviewed, nothing to do here
+        if (
+          existingObs.comments_viewed === false
+          && existingObs.identifications_viewed === false
+        ) {
+          return;
+        }
+        // If the update is a comment, set the observation's comments_viewed to false
+        if (
+          existingObs.comments_viewed || existingObs.comments_viewed === null
+        ) {
+          if ( update.comment_id ) {
+            existingObs.comments_viewed = false;
+          }
+        }
+        // If the update is an identification, set the observation's identifications_viewed to false
+        if (
+          existingObs.identifications_viewed || existingObs.identifications_viewed === null
+        ) {
+          if ( update.identification_id ) {
+            existingObs.identifications_viewed = false;
+          }
+        }
+      } );
+    }, "setting comments and/or identifications false in useObservationsUpdates" );
+  }, [data, realm] );
 
   return { refetch };
 };
