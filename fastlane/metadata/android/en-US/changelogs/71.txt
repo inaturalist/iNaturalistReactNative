@@ -1,0 +1,14 @@
+NEW
+* Explore grid/list/map preference is now sticky
+* Tab bar shows indicator when you have unviewed updates
+
+FIXED
+* Iconic taxon chooser resets when importing a batch
+* No flicker on log in
+* Notifications navigation improvements
+* Agree from Explore agrees with the ident taxon
+* Notifications for comments display as comments
+* Fixed photo count layout problems after scrolling
+* LocationPicker shows actual coordinates
+* Zoom resets when returning to camera
+* Top-cropped photo on ObsDetail
