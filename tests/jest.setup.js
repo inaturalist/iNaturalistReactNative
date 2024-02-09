@@ -16,8 +16,7 @@ import factory, { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
-  mockUseCameraDevice,
-  mockUseCameraDevices
+  mockUseCameraDevice
 } from "./vision-camera/vision-camera";
 
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
@@ -43,9 +42,6 @@ require( "react-native-reanimated" ).setUpTests();
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
   sortDevices: mockSortDevices,
-  // react-native-vision-camera v2
-  useCameraDevices: mockUseCameraDevices,
-  // react-native-vision-camera v3
   useCameraDevice: mockUseCameraDevice,
   VisionCameraProxy: {
     initFrameProcessorPlugin: jest.fn( )

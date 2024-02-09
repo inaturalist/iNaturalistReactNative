@@ -23,15 +23,7 @@ module.exports = {
       }
     }],
     // Reanimated 2 plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
-    // react-native-vision-camera v3
-    // "react-native-reanimated/plugin",
-    // react-native-vision-camera v2
-    [
-      "react-native-reanimated/plugin",
-      {
-        globals: ["__inatVision"]
-      }
-    ]
+    "react-native-reanimated/plugin"
   ],
   env: {
     production: {

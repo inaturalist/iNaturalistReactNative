@@ -5,16 +5,12 @@ import React, {
   useEffect
 } from "react";
 import { Platform } from "react-native";
-import * as REA from "react-native-reanimated";
 import {
-  // react-native-vision-camera v3
-  // runAtTargetFps,
+  runAtTargetFps,
   useFrameProcessor
 } from "react-native-vision-camera";
-// react-native-vision-camera v3
-// import { Worklets } from "react-native-worklets-core";
-import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel";
 import { Worklets } from "react-native-worklets-core";
+import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel";
 import { orientationPatchFrameProcessor } from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
@@ -70,13 +66,12 @@ const FrameProcessorCamera = ( {
     };
   }, [onLog] );
 
-  // react-native-vision-camera v3
-  // const handleResults = Worklets.createRunInJsFn( predictions => {
-  //   onTaxaDetected( predictions );
-  // } );
-  // const handleError = Worklets.createRunInJsFn( error => {
-  //   onClassifierError( error );
-  // } );
+  const handleResults = Worklets.createRunInJsFn( predictions => {
+    onTaxaDetected( predictions );
+  } );
+  const handleError = Worklets.createRunInJsFn( error => {
+    onClassifierError( error );
+  } );
 
   const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
   const frameProcessor = useFrameProcessor(
@@ -87,43 +82,13 @@ const FrameProcessorCamera = ( {
         return;
       }
 
-      // react-native-vision-camera v2
-      // Reminder: this is a worklet, running on the UI thread.
-      try {
-        const results = InatVision.inatVision( frame, {
-          version: modelVersion,
-          modelPath,
-          taxonomyPath,
-          confidenceThreshold
-        } );
-        REA.runOnJS( onTaxaDetected )( results );
-      } catch ( classifierError ) {
-        console.log( `Error: ${classifierError.message}` );
-        REA.runOnJS( onClassifierError )( classifierError );
-      }
+      runAtTargetFps( 1, () => {
+        "worklet";
 
-      // react-native-vision-camera v3
-      // runAtTargetFps( 1, () => {
-      //   "worklet";
-      //   // Reminder: this is a worklet, running on the UI thread.
-      //   try {
-      //     const results = InatVision.inatVision( frame, {
-      //       version,
-      //       modelPath,
-      //       taxonomyPath,
-      //       confidenceThreshold,
-      //       patchedOrientationAndroid: deviceOrientation
-      //     } );
-      //     handleResults( results );
-      //   } catch ( classifierError ) {
-      //     console.log( `Error: ${classifierError.message}` );
-      //     handleError( classifierError );
-      //   }
-      // } );
         // Reminder: this is a worklet, running on the UI thread.
         try {
           const results = InatVision.inatVision( frame, {
-            version,
+            version: modelVersion,
             modelPath,
             taxonomyPath,
             confidenceThreshold,
@@ -136,7 +101,7 @@ const FrameProcessorCamera = ( {
         }
       } );
     },
-    [modelVersion, confidenceThreshold, takingPhoto, deviceOrientation]
+    [modelVersion, confidenceThreshold, takingPhoto, patchedOrientationAndroid]
   );
 
   return (

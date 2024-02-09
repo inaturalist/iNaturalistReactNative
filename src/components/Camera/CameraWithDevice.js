@@ -18,9 +18,6 @@ import Orientation from "react-native-orientation-locker";
 // remove if/when we return to the main repo
 import {
   Camera
-  // react-native-vision-camera v3
-  // useCameraDevice
-  // react-native-vision-camera v2
 } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
