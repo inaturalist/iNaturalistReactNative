@@ -125,10 +125,6 @@ const MyObservationsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );
-  logger.debug(
-    "Need to open Realm in another app? realm.path: ",
-    realm?.path
-  );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
