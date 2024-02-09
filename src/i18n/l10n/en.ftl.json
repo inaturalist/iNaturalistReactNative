@@ -362,6 +362,7 @@
     "val": "NOTES"
   },
   "Notifications": "Notifications",
+  "NOTIFICATIONS": "NOTIFICATIONS",
   "notifications-user-added-identification-to-observation-by-you": {
     "comment": "notification when someone adds an identification to your observation",
     "val": "<0>{ $userName }</0> added an identification to an observation by you"

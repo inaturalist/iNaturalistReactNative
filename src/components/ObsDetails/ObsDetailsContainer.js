@@ -104,6 +104,9 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
+  const setObservationMarkedAsViewedAt = useStore(
+    state => state.setObservationMarkedAsViewedAt
+  );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
@@ -246,6 +249,7 @@ const ObsDetailsContainer = ( ): Node => {
         queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
         refetchRemoteObservation( );
         refetchObservationUpdates( );
+        setObservationMarkedAsViewedAt( new Date( ) );
       }
     }
   );

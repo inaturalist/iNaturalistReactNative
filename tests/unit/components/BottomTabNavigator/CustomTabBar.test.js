@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
+import initI18next from "i18n/initI18next";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
@@ -17,39 +18,54 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   default: () => undefined
 } ) );
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: 0
+  } )
+} ) );
+
 describe( "CustomTabBar", () => {
-  it( "should render correctly", () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
+  beforeEach( ( ) => {
+    jest.useFakeTimers();
+  } );
+
+  it( "should render correctly", async () => {
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
-    expect( screen ).toMatchSnapshot();
+    await expect( screen ).toMatchSnapshot();
   } );
 
-  it( "should not have accessibility errors", () => {
+  it( "should not have accessibility errors", async () => {
     const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
 
-    expect( tabBar ).toBeAccessible();
+    await expect( tabBar ).toBeAccessible();
   } );
 
-  it( "should display person icon while user is logged out", () => {
+  it( "should display person icon while user is logged out", async () => {
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
-    expect( personIcon ).toBeVisible( );
+    await expect( personIcon ).toBeVisible( );
   } );
 
-  it( "should display avatar while user is logged in", () => {
+  it( "should display avatar while user is logged in", async () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline /> );
 
     const avatar = screen.getByTestId( "UserIcon.photo" );
-    expect( avatar ).toBeVisible( );
+    await expect( avatar ).toBeVisible( );
   } );
 
-  it( "should display person icon when connectivity is low", ( ) => {
+  it( "should display person icon when connectivity is low", async ( ) => {
     jest.spyOn( useIsConnected, "default" ).mockImplementation( () => false );
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline={false} /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
-    expect( personIcon ).toBeVisible( );
+    await expect( personIcon ).toBeVisible( );
   } );
 } );

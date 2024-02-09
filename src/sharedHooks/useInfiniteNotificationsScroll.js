@@ -4,34 +4,22 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchObservationUpdates } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { flatten } from "lodash";
-import { log } from "sharedHelpers/logger";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import { useCurrentUser } from "sharedHooks";
 
-const logger = log.extend( "useInfiniteNotificationsScroll" );
+const BASE_PARAMS = {
+  observations_by: "owner",
+  fields: "all",
+  per_page: 30,
+  ttl: -1,
+  page: 1
+};
 
 const useInfiniteNotificationsScroll = ( ): Object => {
   const currentUser = useCurrentUser( );
 
-  // Request params for fetching unviewed updates
-  const baseParams = {
-    observations_by: "owner",
-    fields: "all",
-    per_page: 30,
-    ttl: -1
-  };
-
-  const queryKey = ["useInfiniteNotificationsScroll", "fetchNotifications"];
-
-  const {
-    data: notifications,
-    isFetchingNextPage,
-    fetchNextPage,
-    status,
-    refetch
-  } = useInfiniteQuery( {
-    // eslint-disable-next-line
-    queryKey,
+  const infQueryResult = useInfiniteQuery( {
+    queryKey: ["useInfiniteNotificationsScroll"],
     keepPreviousData: false,
     queryFn: async ( { pageParam } ) => {
       const apiToken = await getJWT( );
@@ -39,35 +27,33 @@ const useInfiniteNotificationsScroll = ( ): Object => {
         api_token: apiToken
       };
 
+      const params = { ...BASE_PARAMS };
+
       if ( pageParam ) {
-        // $FlowIgnore
-        baseParams.page = pageParam;
+        params.page = pageParam;
       } else {
-        // $FlowIgnore
-        baseParams.page = 0;
+        params.page = 1;
       }
 
-      const response = await fetchObservationUpdates( baseParams, options );
+      const response = await fetchObservationUpdates( params, options );
 
       return response;
     },
     getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
       ? allPages.length + 1
       : undefined ),
-    enabled: true,
-    retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
-      beforeRetry: ( ) => logger.error( error )
-    } )
+    enabled: !!currentUser,
+    retry: reactQueryRetry
   } );
 
-  return currentUser
-    && {
-      isFetchingNextPage,
-      fetchNextPage,
-      notifications: flatten( notifications?.pages ),
-      status,
-      refetch
-    };
+  return {
+    ...infQueryResult,
+    // Disable fetchNextPage if signed out
+    fetchNextPage: currentUser
+      ? infQueryResult.fetchNextPage
+      : ( ) => { },
+    notifications: flatten( infQueryResult?.data?.pages )
+  };
 };
 
 export default useInfiniteNotificationsScroll;

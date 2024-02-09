@@ -1,11 +1,13 @@
 // @flow
 
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import { LogBox } from "react-native";
 import Realm from "realm";
 import { addARCameraFiles } from "sharedHelpers/cvModel";
+import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useIconicTaxa,
@@ -18,6 +20,10 @@ import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
 import useReactQueryRefetch from "./hooks/useReactQueryRefetch";
+
+const { useRealm } = RealmContext;
+
+const logger = log.extend( "App" );
 
 Realm.setLogLevel( "warn" );
 
@@ -34,9 +40,10 @@ type Props = {
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
 const App = ( { children }: Props ): Node => {
+  const realm = useRealm( );
+  const currentUser = useCurrentUser( );
   useIconicTaxa( { reload: true } );
   useReactQueryRefetch( );
-  const currentUser = useCurrentUser( );
   useFreshInstall( currentUser );
   useLinking( currentUser );
   useChangeLocale( currentUser );
@@ -48,6 +55,13 @@ const App = ( { children }: Props ): Node => {
   useEffect( ( ) => {
     addARCameraFiles( );
   }, [] );
+
+  useEffect( ( ) => {
+    if ( realm?.path ) {
+      logger.debug( "[App.js] Need to open Realm in another app?" );
+      logger.debug( "[App.js] realm.path: ", realm.path );
+    }
+  }, [realm?.path] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

@@ -589,6 +589,8 @@ NOTES = NOTES
 
 Notifications = Notifications
 
+NOTIFICATIONS = NOTIFICATIONS
+
 # notification when someone adds an identification to your observation
 notifications-user-added-identification-to-observation-by-you = <0>{$userName}</0> added an identification to an observation by you
 

@@ -84,7 +84,10 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
       height: 44,
       size: 32,
       onPress: ( ) => {
-        navigation.navigate( "Notifications" );
+        navigation.reset( {
+          index: 0,
+          routes: [{ name: "Notifications" }]
+        } );
         setActiveTab( NOTIFICATIONS_SCREEN_ID );
       },
       active: NOTIFICATIONS_SCREEN_ID === activeTab
