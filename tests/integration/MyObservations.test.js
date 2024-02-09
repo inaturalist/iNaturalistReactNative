@@ -358,12 +358,10 @@ describe( "MyObservations", ( ) => {
             expect( syncIcon ).toBeVisible( );
           } );
           fireEvent.press( syncIcon );
-          const spy = jest.spyOn( global.mockRealms[__filename], "write" );
           const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
           await waitFor( ( ) => {
-            expect( spy ).toHaveBeenCalled( );
+            expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
           } );
-          expect( deleteSpy ).toHaveBeenCalled( );
           expect( global.mockRealms[__filename].objects( "Observation" ).length ).toBe( 1 );
         } );
       } );

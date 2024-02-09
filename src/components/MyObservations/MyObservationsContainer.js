@@ -335,6 +335,7 @@ const MyObservationsContainer = ( ): Node => {
         deletedObservations.forEach( observationId => {
           const localObsToDelete = realm.objects( "Observation" )
             .filtered( `id == ${observationId}` );
+          if ( localObsToDelete.length === 0 ) { return; }
           realm.delete( localObsToDelete );
         } );
       }, "deleting remote deleted observations in MyObservationsContainer" );
