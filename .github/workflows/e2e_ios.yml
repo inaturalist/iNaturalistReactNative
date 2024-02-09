@@ -64,7 +64,7 @@ jobs:
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install --force
+      run: npm install
 
     - name: Cache Pods
       uses: actions/cache@v3
