@@ -224,7 +224,7 @@ class Observation extends Realm.Object {
       // using 'modified' here for the case where a new observation has the same Taxon
       // as a previous observation; otherwise, realm will error out
       // also using modified for updating observations which were already saved locally
-      realm?.create( "Observation", obsToSave, "modified" );
+      realm.create( "Observation", obsToSave, "modified" );
     }, "saving local observation for upload in Observation" );
     return realm.objectForPrimaryKey( "Observation", obs.uuid );
   }

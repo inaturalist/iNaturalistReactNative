@@ -31,10 +31,12 @@ const useUserMe = ( options: ?Object ): Object => {
   )
     && updateRealm;
 
+  console.log( userLocaleChanged, updateRealm, remoteUser, "useUserME" );
+
   useEffect( ( ) => {
     if ( userLocaleChanged && remoteUser ) {
       safeRealmWrite( realm, ( ) => {
-        realm?.create( "User", remoteUser, "modified" );
+        realm.create( "User", remoteUser, "modified" );
       }, "modifying current user via remote fetch in useUserMe" );
     }
   }, [realm, userLocaleChanged, remoteUser] );

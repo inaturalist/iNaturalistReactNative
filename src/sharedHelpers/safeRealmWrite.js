@@ -7,11 +7,12 @@ const logger = log.extend( "safeRealmWrite" );
 // this is based on safeWrite from this github issue, but customized for
 // realmjs: https://stackoverflow.com/questions/39366182/the-realm-is-already-in-a-write-transaction
 
-const safeRealmWrite = async (
+const safeRealmWrite = (
   realm: any,
   action: Function,
   description: string = "No description given"
 ): any => {
+  console.log( description, "safe realm write" );
   if ( realm.isInTransaction ) {
     logger.info( "realm is in transaction:", realm.isInTransaction );
     realm.cancelTransaction( );
@@ -20,13 +21,12 @@ const safeRealmWrite = async (
   realm.beginTransaction( );
   try {
     logger.info( "writing to realm:", description );
-    const response = await action( );
+    const response = action( );
     realm.commitTransaction( );
     return response;
   } catch ( e ) {
     logger.info( "couldn't write to realm: ", e );
-    realm.cancelTransaction( );
-    throw e.message;
+    throw new Error( `${description}: ${e.message}` );
   }
 };
 

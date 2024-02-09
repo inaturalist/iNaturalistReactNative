@@ -24,7 +24,7 @@ const useIconicTaxa = ( { reload }: Object ): Object => {
       setIsUpdatingRealm( true );
       safeRealmWrite( realm, ( ) => {
         iconicTaxa.forEach( taxa => {
-          realm?.create( "Taxon", {
+          realm.create( "Taxon", {
             ...taxa,
             isIconic: true
           }, "modified" );
