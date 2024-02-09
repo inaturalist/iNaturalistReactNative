@@ -141,7 +141,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "detox": "20.16",
+    "detox": "^20.17.1",
     "dotenv": "^16.3.1",
     "download": "^8.0.0",
     "eslint": "^8.49.0",
