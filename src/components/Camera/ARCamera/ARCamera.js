@@ -8,7 +8,7 @@ import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
@@ -73,9 +73,6 @@ const ARCamera = ( {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  // const [hasRunEffectOnce, setHasRunEffectOnce] = useState( false );
-  // const localTaxon = useTaxon( result?.taxon );
-
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
 
@@ -92,21 +89,6 @@ const ARCamera = ( {
       ? result.taxon
       : null );
   };
-
-  // This effect is triggered when the photo is saved but also every time the localTaxon changes,
-  //  i.e. a frame is processed. With react-native-vision-camera v.3.4 the camera keeps processing
-  // frames after the we have taken a photo. This leads to the effect being triggered multiple
-  // times. We only want to trigger the navToObsEdit cascade only once though, so we use the
-  // hasRunEffectOnce state variable to keep track of that.
-  // useEffect( () => {
-  //   if ( hasRunEffectOnce ) {
-  //     return;
-  //   }
-  //   if ( photoSaved ) {
-  //     setHasRunEffectOnce( true );
-  //     navToObsEdit( localTaxon );
-  //   }
-  // }, [hasRunEffectOnce, photoSaved, navToObsEdit, localTaxon] );
 
   return (
     <>
