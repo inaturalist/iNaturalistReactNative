@@ -20,6 +20,7 @@ import {
   convertOfflineScoreToConfidence,
   convertOnlineScoreToConfidence
 } from "sharedHelpers/convertScores";
+import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
 import AddCommentPrompt from "./AddCommentPrompt";
@@ -104,7 +105,7 @@ const Suggestions = ( {
       <View className="bg-yellow p-3">
         <Heading4>Diagnostics</Heading4>
         <Body3>Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
-        <Body3>Online suggestions updated at: {JSON.stringify( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
+        <Body3>Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
         <Body3>Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
         <Body3>Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
         <Body3>Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
