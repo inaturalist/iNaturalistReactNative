@@ -1,6 +1,7 @@
 import { Realm } from "@realm/react";
 import { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Photo from "./Photo";
 
@@ -90,9 +91,9 @@ class ObservationPhoto extends Realm.Object {
     // api v2, so just going to worry about deleting locally for now
     const obsPhotoToDelete = currentObservation?.observationPhotos.find( p => p.url === uri );
     if ( obsPhotoToDelete ) {
-      realm?.write( ( ) => {
+      safeRealmWrite( realm, ( ) => {
         realm?.delete( obsPhotoToDelete );
-      } );
+      }, "deleting remote observation photo in ObservationPhoto" );
     }
   }
 
@@ -102,9 +103,9 @@ class ObservationPhoto extends Realm.Object {
     const obsPhotoToDelete = currentObservation?.observationPhotos
       .find( p => p.localFilePath === uri );
     if ( obsPhotoToDelete ) {
-      realm?.write( ( ) => {
+      safeRealmWrite( realm, ( ) => {
         realm?.delete( obsPhotoToDelete );
-      } );
+      }, "deleting local observation photo in ObservationPhoto" );
     }
   }
 

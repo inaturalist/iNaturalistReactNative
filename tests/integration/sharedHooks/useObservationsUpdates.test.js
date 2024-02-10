@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { renderHook } from "@testing-library/react-native";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
 import factory from "tests/factory";
 
@@ -38,11 +39,11 @@ describe( "useObservationsUpdates", ( ) => {
   } );
 
   describe( "when there is no local observation with the resource_uuid", ( ) => {
-    beforeEach( async ( ) => {
+    beforeEach( ( ) => {
       // Write mock observation to realm
-      await global.realm.write( () => {
+      safeRealmWrite( global.realm, ( ) => {
         global.realm.create( "Observation", mockObservation );
-      } );
+      }, "write mock observation, useObservationUpdates test" );
     } );
 
     it( "should return without writing to a local observation", ( ) => {
@@ -66,16 +67,16 @@ describe( "useObservationsUpdates", ( ) => {
       ["not viewed comments and viewed identifications", false, true],
       ["not viewed comments and not viewed identifications", false, false]
     ] )( "when the local observation has %s", ( a1, viewedComments, viewedIdentifications ) => {
-      beforeEach( async ( ) => {
+      beforeEach( ( ) => {
       // Write mock observation to realm
-        await global.realm.write( () => {
+        safeRealmWrite( global.realm, ( ) => {
           global.realm.deleteAll( );
           global.realm.create( "Observation", {
             ...mockObservation,
             comments_viewed: viewedComments,
             identifications_viewed: viewedIdentifications
           } );
-        } );
+        }, "delete all and create observation, useObservationsUpdates test" );
       } );
 
       it( "should write correct viewed status for comments and identifications", ( ) => {
