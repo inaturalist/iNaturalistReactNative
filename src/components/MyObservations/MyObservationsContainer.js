@@ -20,6 +20,7 @@ import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
 import { log } from "sharedHelpers/logger";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useCurrentUser,
@@ -124,9 +125,10 @@ const MyObservationsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );
+  const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
-  const { observationList: observations, allObsToUpload } = useLocalObservations( );
+  const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const isOnline = useIsConnected( );
@@ -325,29 +327,25 @@ const MyObservationsContainer = ( ): Node => {
     const deletedObservations = response?.results;
     if ( !deletedObservations ) { return; }
     if ( deletedObservations?.length > 0 ) {
-      realm?.write( ( ) => {
-        deletedObservations.forEach( observationId => {
-          const localObsToDelete = realm.objects( "Observation" )
-            .filtered( `id == ${observationId}` );
-          realm.delete( localObsToDelete );
+      safeRealmWrite( realm, ( ) => {
+        const localObservationsToDelete = realm.objects( "Observation" )
+          .filtered( `id IN { ${deletedObservations} }` );
+        localObservationsToDelete.forEach( observation => {
+          realm.delete( observation );
         } );
-      } );
+      }, "deleting remote deleted observations in MyObservationsContainer" );
     }
   }, [realm] );
 
   const updateSyncTime = useCallback( ( ) => {
-    const currentSyncTime = new Date( );
-    realm?.write( ( ) => {
-      const localPrefs = realm.objects( "LocalPreferences" )[0];
-      if ( !localPrefs ) {
-        realm.create( "LocalPreferences", {
-          ...localPrefs,
-          last_sync_time: currentSyncTime
-        } );
-      } else {
-        localPrefs.last_sync_time = currentSyncTime;
-      }
-    } );
+    const localPrefs = realm.objects( "LocalPreferences" )[0];
+    const updatedPrefs = {
+      ...localPrefs,
+      last_sync_time: new Date( )
+    };
+    safeRealmWrite( realm, ( ) => {
+      realm.create( "LocalPreferences", updatedPrefs, "modified" );
+    }, "updating sync time in MyObservationsContainer" );
   }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {

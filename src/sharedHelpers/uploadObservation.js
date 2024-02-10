@@ -10,6 +10,7 @@ import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 const UPLOAD_PROGRESS_INCREMENT = 0.5;
 
@@ -28,10 +29,10 @@ const markRecordUploaded = ( observationUUID, recordUUID, type, response, realm 
   }
   // TODO: add ObservationSound
 
-  realm?.write( ( ) => {
+  safeRealmWrite( realm, ( ) => {
     record.id = id;
     record._synced_at = new Date( );
-  } );
+  }, "marking record uploaded in uploadObservation.js" );
 };
 
 const uploadEvidence = async (
