@@ -47,10 +47,24 @@ const PhotoGallery = ( ): Node => {
     ? params.fromGroupPhotos
     : false;
 
-  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
+  const navToObsList = useCallback( ( ) => {
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
+  }, [navigation] );
+
+  const navToObsDetails = useCallback( uuid => navigation.navigate( "TabNavigator", {
     screen: "ObservationsStackNavigator",
     params: {
-      screen: "ObsList"
+      // Need to return to ObsDetails but with a navigation stack that goes back to ObsList
+      screen: "ObsList",
+      params: {
+        navToObsDetails: true,
+        uuid
+      }
     }
   } ), [navigation] );
 
@@ -91,7 +105,12 @@ const PhotoGallery = ( ): Node => {
         navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
         navigation.setParams( { fromGroupPhotos: false } );
       } else if ( skipGroupPhotos ) {
+        // This only happens when being called from ObsEdit
         navToObsEdit();
+
+        // Determine if we need to go back to ObsList or ObsDetails screen
+      } else if ( params && params.previousScreen && params.previousScreen.name === "ObsDetails" ) {
+        navToObsDetails( params.previousScreen.params.uuid );
       } else {
         navToObsList();
       }
@@ -150,7 +169,9 @@ const PhotoGallery = ( ): Node => {
   }, [
     navToObsEdit, navToObsList, photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
     evidenceToAdd, galleryUris, navigation, setGroupedPhotos, fromGroupPhotos, skipGroupPhotos,
-    groupedPhotos, currentObservation, updateObservations, observations, currentObservationIndex] );
+    groupedPhotos, currentObservation, updateObservations, observations, currentObservationIndex,
+    navToObsDetails, params
+  ] );
 
   const onPermissionGranted = () => {
     setPermissionGranted( true );
