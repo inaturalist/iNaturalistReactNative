@@ -12,11 +12,7 @@ module.exports = {
     args: {
       config: "e2e/jest.config.js",
       _: ["e2e"],
-    },
-    jest: {
-      setupTimeout: 1800000,
-      teardownTimeout: 1800000,
-    },
+    }
   },
   apps: {
     "ios.debug": {

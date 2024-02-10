@@ -11,7 +11,7 @@ on:
 
 jobs:
   setup:
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - uses: fkirc/skip-duplicate-actions@master
         with:
@@ -21,7 +21,7 @@ jobs:
   checksecret:
     name: check for oauth client
     needs: setup
-    runs-on: macos-13
+    runs-on: macos-14
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -36,17 +36,11 @@ jobs:
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-13
-    # Kill the task if not finished after 100 minutes
-    timeout-minutes: 100
+    runs-on: macos-14
+    # Kill the task if not finished after 60 minutes
+    timeout-minutes: 60
 
-    steps:
-    # react-native-vision-camera > v3.4 requires Xcode 15 to compile, which is currently not the default in the runner
-    - name: Set up Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '15'
-  
+    steps:  
     - name: Check out Git repository
       uses: actions/checkout@v3
       with:
@@ -135,7 +129,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null
