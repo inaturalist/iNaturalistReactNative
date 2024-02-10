@@ -36,7 +36,8 @@ type Props = {
   setSelectedPhotoUri: Function,
   observers: Array<string>,
   topSuggestion: Object,
-  usingOfflineSuggestions: boolean
+  usingOfflineSuggestions: boolean,
+  debugData: any
 };
 
 const Suggestion = ( { suggestion, onChosen } ) => (
@@ -63,7 +64,8 @@ const Suggestions = ( {
   setSelectedPhotoUri,
   observers,
   topSuggestion,
-  usingOfflineSuggestions
+  usingOfflineSuggestions,
+  debugData
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -93,9 +95,26 @@ const Suggestions = ( {
     return null;
   }, [loadingSuggestions, suggestions, t] );
 
+  /* eslint-disable i18next/no-literal-string */
+  /* eslint-disable react/jsx-one-expression-per-line */
+  /* eslint-disable max-len */
   const renderFooter = useCallback( ( ) => (
-    <Attribution observers={observers} />
-  ), [observers] );
+    <>
+      <Attribution observers={observers} />
+      <View className="bg-yellow p-3">
+        <Heading4>Diagnostics</Heading4>
+        <Body3>Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
+        <Body3>Online suggestions updated at: {JSON.stringify( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
+        <Body3>Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
+        <Body3>Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
+        <Body3>Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
+        <Body3>Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
+      </View>
+    </>
+  ), [debugData, observers] );
+  /* eslint-enable i18next/no-literal-string */
+  /* eslint-enable react/jsx-one-expression-per-line */
+  /* eslint-enable max-len */
 
   const renderHeader = useCallback( ( ) => (
     <>
