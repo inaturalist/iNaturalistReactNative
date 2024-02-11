@@ -281,26 +281,42 @@ class Observation extends Realm.Object {
     return unsyncedObs.length > 0;
   };
 
-  static createObservationFromGalleryPhoto = async photo => {
-    const firstPhotoExif = await parseExif( photo?.image?.uri );
+  static createObservationFromGalleryPhotos = async photos => {
+    const newObservation = {};
 
-    const { latitude, longitude } = firstPhotoExif;
+    // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
+    // in case the first photo is missing EXIF
+    const allExifPhotos = await Promise.all(
+      photos.map( async photo => parseExif( photo?.image?.uri ) )
+    );
 
-    const newObservation = {
-      latitude,
-      longitude,
-      observed_on_string: formatExifDateAsString( firstPhotoExif.date ) || null
-    };
+    allExifPhotos.filter( x => x ).forEach(
+      currentPhotoExif => {
+        const {
+          latitude, longitude, positional_accuracy: positionalAccuracy, date
+        }
+        = currentPhotoExif;
 
-    if ( firstPhotoExif.positional_accuracy ) {
-      // $FlowIgnore
-      newObservation.positional_accuracy = firstPhotoExif.positional_accuracy;
-    }
+        if ( !newObservation.latitude ) {
+          newObservation.latitude = latitude;
+        }
+        if ( !newObservation.longitude ) {
+          newObservation.longitude = longitude;
+        }
+        if ( !newObservation.observed_on_string ) {
+          newObservation.observed_on_string = formatExifDateAsString( date ) || null;
+        }
+        if ( positionalAccuracy && !newObservation.positional_accuracy ) {
+          newObservation.positional_accuracy = positionalAccuracy;
+        }
+      }
+    );
+
     return Observation.new( newObservation );
   };
 
   static createObservationWithPhotos = async photos => {
-    const newLocalObs = await Observation.createObservationFromGalleryPhoto( photos[0] );
+    const newLocalObs = await Observation.createObservationFromGalleryPhotos( photos );
     newLocalObs.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( photos, { position: 0 } );
     return newLocalObs;
