@@ -12,7 +12,7 @@ module.exports = {
     args: {
       config: "e2e/jest.config.js",
       _: ["e2e"],
-    }
+    },
   },
   apps: {
     "ios.debug": {
