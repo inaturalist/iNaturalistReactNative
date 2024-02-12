@@ -40,7 +40,7 @@ jobs:
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 60
 
-    steps:  
+    steps:
     - name: Check out Git repository
       uses: actions/checkout@v3
       with:
