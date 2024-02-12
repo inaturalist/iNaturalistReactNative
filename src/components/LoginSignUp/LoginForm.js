@@ -80,21 +80,24 @@ const LoginForm = ( {
         accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
         autoComplete="email"
         headerText={t( "USERNAME-OR-EMAIL" )}
+        inputMode="email"
         keyboardType="email-address"
         onChangeText={text => setEmail( text )}
         testID="Login.email"
         // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
         // textContentType prevents visual flickering, which is a temporary issue
         // in iOS 17
-        textContentType="oneTimeCode"
+        textContentType="emailAddress"
       />
       <LoginSignUpInputField
         accessibilityLabel={t( "PASSWORD" )}
+        autoComplete="current-password"
         headerText={t( "PASSWORD" )}
+        inputMode="text"
         onChangeText={text => setPassword( text )}
         secureTextEntry
         testID="Login.password"
-        textContentType="oneTimeCode"
+        textContentType="password"
       />
       <View className="mx-4">
         <Body2
