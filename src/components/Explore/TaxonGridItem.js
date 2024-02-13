@@ -7,6 +7,7 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
+import { useTranslation } from "sharedHooks";
 
 import SpeciesSeenCheckmark from "./SpeciesSeenCheckmark";
 
@@ -17,18 +18,21 @@ type Props = {
   style?: Object
 };
 
-const ObsGridItem = ( {
+const TaxonGridItem = ( {
   taxon,
   width = "w-full",
   height,
   style
 }: Props ): Node => {
   const navigation = useNavigation( );
+  const { t } = useTranslation( );
 
   return (
     <Pressable
       accessibilityRole="button"
+      testID={`TaxonGridItem.Pressable.${taxon.id}`}
       onPress={( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
+      accessibilityLabel={t( "Navigate-to-taxon-details" )}
     >
       <ObsImagePreview
         source={{
@@ -62,4 +66,4 @@ const ObsGridItem = ( {
   );
 };
 
-export default ObsGridItem;
+export default TaxonGridItem;
