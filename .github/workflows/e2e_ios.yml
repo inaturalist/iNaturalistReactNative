@@ -34,12 +34,20 @@ jobs:
             echo "::set-output name=is_SECRETS_PRESENT_set::${{ env.SECRETS_PRESENT != '' }}"
       - name: Check iNat Node API connectivity
         run: curl --fail "https://api.inaturalist.org/v2/users/6429160"
-      - name: Check iNat Rails API connectivity
-        run: curl --fail "https://www.inaturalist.org/users/6429160.json"
+      - name: Check iNat Rails API connectivity & OAuth credentials
+        run: |
+          curl -XPOST \
+            --fail \
+            -F "client_id=${{ secrets.OAUTH_CLIENT_ID }}" \
+            -F "client_secret=${{ secrets.OAUTH_CLIENT_SECRET }}" \
+            -F "grant_type=password" \
+            -F "username=${{ secrets.E2E_TEST_USERNAME }}" \
+            -F "password=${{ secrets.E2E_TEST_PASSWORD }}" \
+            "https://www.inaturalist.org/oauth/token" > /dev/null
 
   test:
     needs: prechecks
-    if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
+    if: needs.prechecks.outputs.is_SECRETS_PRESENT_set == 'true'
     runs-on: macos-latest
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 60
