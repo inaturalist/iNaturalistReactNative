@@ -18,23 +18,27 @@ jobs:
           github_token: ${{ github.token }}
           cancel_others: true
 
-  checksecret:
-    name: check for oauth client
+  prechecks:
+    name: Pre-test checks
     needs: setup
     runs-on: macos-latest
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
-      - name: Check whether unity activation requests should be done
-        id: checksecret_job
+      - name: Check whether Github Actions secrets are set
+        id: checksecret
         env:
             SECRETS_PRESENT: ${{ secrets.OAUTH_CLIENT_SECRET }}
         run: |
             echo "is_SECRETS_PRESENT_set: ${{ env.SECRETS_PRESENT != '' }}"
             echo "::set-output name=is_SECRETS_PRESENT_set::${{ env.SECRETS_PRESENT != '' }}"
+      - name: Check iNat Node API connectivity
+        run: curl --fail "https://api.inaturalist.org/v2/users/6429160"
+      - name: Check iNat Rails API connectivity
+        run: curl --fail "https://www.inaturalist.org/users/6429160.json"
 
   test:
-    needs: checksecret
+    needs: prechecks
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
     runs-on: macos-latest
     # Kill the task if not finished after 60 minutes
