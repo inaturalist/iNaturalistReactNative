@@ -10,7 +10,6 @@ import React, { useMemo, useRef, useState } from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
-import colors from "styles/tailwindColors";
 
   type Props = {
     handleClose: Function,
@@ -42,10 +41,7 @@ const TextInputSheet = ( {
     fontSize: 14,
     lineHeight: 17,
     color: theme.colors.primary,
-    borderRadius: 8,
-    borderColor: colors.lightGray,
-    borderWidth: 1,
-    padding: 15,
+    marginBottom: 1,
     textAlignVertical: "top"
   } ), [theme] );
 
@@ -55,26 +51,28 @@ const TextInputSheet = ( {
       headerText={headerText}
     >
       <View className="p-5">
-        <BottomSheetTextInput
-          ref={textInputRef}
-          accessibilityLabel="Text input field"
-          keyboardType="default"
-          multiline
-          onChangeText={text => setInput( text )}
-          placeholder={placeholder}
-          testID="ObsEdit.notes"
-          style={[inputStyle, textInputStyle]}
-          autoFocus
-          defaultValue={input}
-        />
-        <Body3
-          className="z-50 absolute bottom-20 right-5 p-5"
-          onPress={() => {
-            textInputRef?.current?.clear();
-          }}
-        >
-          {t( "Clear" )}
-        </Body3>
+        <View className="border rounded-lg border-lightGray p-3 pt-0">
+          <BottomSheetTextInput
+            ref={textInputRef}
+            accessibilityLabel="Text input field"
+            keyboardType="default"
+            multiline
+            onChangeText={text => setInput( text )}
+            placeholder={placeholder}
+            testID="ObsEdit.notes"
+            style={[inputStyle, textInputStyle]}
+            autoFocus
+            defaultValue={input}
+          />
+          <Body3
+            className="absolute bottom-0 right-0 p-2"
+            onPress={() => {
+              textInputRef?.current?.clear();
+            }}
+          >
+            {t( "Clear" )}
+          </Body3>
+        </View>
         <Button
           testID="ObsEdit.confirm"
           className="mt-5"

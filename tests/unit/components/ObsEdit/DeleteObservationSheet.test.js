@@ -5,6 +5,7 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -35,9 +36,9 @@ describe( "delete observation", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
 
-    global.realm.write( ( ) => {
+    safeRealmWrite( global.realm, ( ) => {
       global.realm.create( "Observation", currentObservation );
-    } );
+    }, "write Observation, DeleteObservationSheet test" );
   } );
 
   describe( "add observation to deletion queue", ( ) => {
@@ -58,9 +59,9 @@ describe( "delete observation", ( ) => {
   describe( "cancel deletion", ( ) => {
     it( "should not add _deleted_at date in realm", ( ) => {
       const localObservation = getLocalObservation( currentObservation.uuid );
-      global.realm.write( ( ) => {
+      safeRealmWrite( global.realm, ( ) => {
         localObservation._deleted_at = null;
-      } );
+      }, "set _deleted_at to null, DeleteObservationSheet test" );
       expect( localObservation ).toBeTruthy( );
       renderDeleteSheet( );
       const cancelButton = screen.queryByText( /CANCEL/ );

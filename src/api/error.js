@@ -37,7 +37,8 @@ async function handleError( e: Object, options: Object = {} ): Object {
   // TODO: this will log all errors handled here to the log file, in a production build
   // we probably don't want to do that, so change this back to console.error at one point
   logger.error(
-    `Error requesting ${e.response.url} (status: ${e.response.status}): ${errorJson}`
+    `Error requesting ${e.response.url} (status: ${e.response.status}):
+    ${JSON.stringify( errorJson )}`
   );
   if ( typeof ( options.onApiError ) === "function" ) {
     options.onApiError( error );

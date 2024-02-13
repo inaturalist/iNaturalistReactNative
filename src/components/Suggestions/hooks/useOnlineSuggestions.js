@@ -10,6 +10,8 @@ import {
   useAuthenticatedQuery
 } from "sharedHooks";
 
+const SCORE_IMAGE_TIMEOUT = 5_000;
+
 const resizeImage = async (
   path: string,
   width: number,
@@ -63,9 +65,11 @@ const flattenUploadParams = async (
 };
 
 type OnlineSuggestionsResponse = {
+  dataUpdatedAt: Date,
   onlineSuggestions: Object,
   loadingOnlineSuggestions: boolean,
-  timedOut: boolean
+  timedOut: boolean,
+  error: Object
 }
 
 const useOnlineSuggestions = (
@@ -82,8 +86,10 @@ const useOnlineSuggestions = (
   // uploading images
   const {
     data: onlineSuggestions,
+    dataUpdatedAt,
     isLoading: loadingOnlineSuggestions,
-    isError
+    isError,
+    error
   } = useAuthenticatedQuery(
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => {
@@ -103,13 +109,14 @@ const useOnlineSuggestions = (
     }
   );
 
+  // Give up on suggestions request after a timeout
   useEffect( ( ) => {
     const timer = setTimeout( ( ) => {
       if ( onlineSuggestions === undefined ) {
         queryClient.cancelQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
         setTimedOut( true );
       }
-    }, 2000 );
+    }, SCORE_IMAGE_TIMEOUT );
 
     return ( ) => {
       clearTimeout( timer );
@@ -118,11 +125,15 @@ const useOnlineSuggestions = (
 
   return timedOut
     ? {
+      dataUpdatedAt,
+      error,
       onlineSuggestions: undefined,
       loadingOnlineSuggestions: false,
       timedOut
     }
     : {
+      dataUpdatedAt,
+      error,
       onlineSuggestions,
       loadingOnlineSuggestions: loadingOnlineSuggestions && !isError,
       timedOut

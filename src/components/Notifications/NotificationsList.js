@@ -3,28 +3,24 @@
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
-import {
-  ActivityIndicator,
-  Body2
-} from "components/SharedComponents";
+import { Body2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 
-const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
-
 type Props = {
-    data: Object,
-    isOnline: boolean,
-    status: string,
-    onEndReached: Function,
-    isFetchingNextPage?: boolean
-  };
+  data: Object,
+  isLoading?: boolean,
+  isOnline: boolean,
+  onEndReached: Function
+};
 
 const NotificationsList = ( {
-  data, isOnline, status, onEndReached, isFetchingNextPage
+  data,
+  isOnline,
+  onEndReached,
+  isLoading
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -36,47 +32,37 @@ const NotificationsList = ( {
 
   const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      hideLoadingWheel={!isFetchingNextPage}
+      hideLoadingWheel={!isLoading}
       isOnline={isOnline}
       explore={false}
     />
-  ), [isFetchingNextPage, isOnline] );
+  ), [isLoading, isOnline] );
 
   const renderEmptyComponent = useCallback( ( ) => {
-    const showEmptyScreen = ( isOnline )
+    if ( isLoading ) return null;
+    return isOnline
       ? (
-        <Body2 className="mt-[150px] self-center mx-12">
+        <Body2 className="mt-[150px] text-center mx-12">
           {t( "No-Notifications-Found" )}
         </Body2>
       )
       : (
-        <Body2 className="mt-[150px] self-center mx-12">
+        <Body2 className="mt-[150px] text-center mx-12">
           {t( "Offline-No-Notifications" )}
         </Body2>
       );
-
-    return ( ( status === "loading" ) )
-      ? (
-        <View className="self-center mt-[150px]">
-          <ActivityIndicator
-            size={50}
-            testID="NotificationsFlashList.loading"
-          />
-        </View>
-      )
-      : showEmptyScreen;
-  }, [isOnline, status, t] );
+  }, [isLoading, isOnline, t] );
 
   return (
     <View className="h-full">
-      <AnimatedFlashList
+      <FlashList
         data={data}
         keyExtractor={item => item.id}
         renderItem={renderItem}
         ItemSeparatorComponent={renderItemSeparator}
         estimatedItemSize={20}
         onEndReached={onEndReached}
-        refreshing={isFetchingNextPage}
+        refreshing={isLoading}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={renderEmptyComponent}
       />

@@ -29,6 +29,7 @@ import {
   List1,
   List2,
   ObservationLocation,
+  ObsStatus,
   PhotoCount,
   ProjectListItem,
   QualityGradeStatus,
@@ -39,21 +40,19 @@ import {
   Tabs,
   TaxonResult,
   UploadStatus,
-  UserIcon
+  UserIcon,
+  UserText,
+  ViewWrapper
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
-import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
-import UserText from "components/SharedComponents/UserText";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useTranslation from "sharedHooks/useTranslation";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -601,7 +600,7 @@ const UiLibrary = (): Node => {
         <Heading2 className="my-2">PhotoCount</Heading2>
         <View className="my-2 bg-lightGray p-2 rounded-lg flex-row justify-evenly">
           <PhotoCount count={0} />
-          <PhotoCount count={1} />
+          <PhotoCount count={2} />
           <PhotoCount count={12} size={50} />
           <PhotoCount count={1000} size={50} shadow />
         </View>

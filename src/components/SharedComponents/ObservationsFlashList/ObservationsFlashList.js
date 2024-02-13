@@ -168,8 +168,12 @@ const ObservationsFlashList = ( {
       // react thinks we've rendered a second item w/ a duplicate key
       keyExtractor={item => item.uuid || item.id}
       numColumns={numColumns}
-      onEndReached={onEndReached}
       onEndReachedThreshold={0.2}
+      onMomentumScrollEnd={( ) => {
+        if ( dataCanBeFetched ) {
+          onEndReached( );
+        }
+      }}
       onScroll={handleScroll}
       refreshing={isFetchingNextPage}
       renderItem={renderItem}

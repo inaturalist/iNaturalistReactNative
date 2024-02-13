@@ -1,11 +1,16 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import {
+  ActivityIndicator,
   Body1,
   Body4,
-  DateDisplay, DisplayTaxon, InlineUser, ObservationLocation
+  DateDisplay,
+  DisplayTaxon,
+  InlineUser,
+  ObservationLocation,
+  ObsStatus
 } from "components/SharedComponents";
-import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -29,6 +34,15 @@ const ObsDetailsOverview = ( {
 
   const taxon = observation?.taxon;
 
+  const loadingIndicator = (
+    <ActivityIndicator
+      className={classnames(
+        "absolute w-full"
+      )}
+      size={25}
+    />
+  );
+
   const showTaxon = () => {
     if ( !taxon ) {
       return (
@@ -50,16 +64,19 @@ const ObsDetailsOverview = ( {
   return (
     <View className="bg-white">
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
+        {!observation && loadingIndicator}
         <InlineUser user={observation?.user} isOnline={isOnline} />
-        <DateDisplay
-          dateString={
-            observation.time_observed_at || observation.observed_on_string
-          }
-        />
+        {observation && (
+          <DateDisplay
+            dateString={
+              observation.time_observed_at || observation.observed_on_string
+            }
+          />
+        )}
       </View>
       <View className="flex-row my-[11px] mx-3 items-center">
         <View className="shrink">
-          {showTaxon()}
+          {observation && showTaxon()}
         </View>
         <View className="ml-auto">
           <ObsStatus layout="vertical" observation={observation} />
@@ -67,8 +84,8 @@ const ObsDetailsOverview = ( {
       </View>
       {
         (
-          observation.prefersCommunityTaxon === false
-          || observation.user?.prefers_community_taxa === false
+          observation?.prefersCommunityTaxon === false
+          || observation?.user?.prefers_community_taxa === false
         ) && (
           <Body4 className="mx-3 mt-0 mb-2 italic">
             {

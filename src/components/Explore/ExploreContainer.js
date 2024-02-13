@@ -42,9 +42,6 @@ const mapParamsToAPI = ( params, currentUser ) => {
     {}
   );
 
-  delete filteredParams.user;
-  delete filteredParams.project;
-
   // DATE_UPLOADED_NEWEST is the default sort order
   filteredParams.order_by = CREATED_AT;
   filteredParams.order = DESC;
@@ -121,6 +118,26 @@ const mapParamsToAPI = ( params, currentUser ) => {
     };
     filteredParams.photo_license = licenseParams[params.photoLicense];
   }
+
+  delete filteredParams.taxon;
+  delete filteredParams.taxon_name;
+  delete filteredParams.place_guess;
+  delete filteredParams.user;
+  delete filteredParams.project;
+  delete filteredParams.sortBy;
+  delete filteredParams.researchGrade;
+  delete filteredParams.needsID;
+  delete filteredParams.casual;
+  delete filteredParams.dateObserved;
+  delete filteredParams.dateUploaded;
+  delete filteredParams.media;
+  delete filteredParams.introduced;
+  delete filteredParams.native;
+  delete filteredParams.endemic;
+  delete filteredParams.noStatus;
+  delete filteredParams.wildStatus;
+  delete filteredParams.reviewedFilter;
+  delete filteredParams.photoLicense;
 
   return filteredParams;
 };

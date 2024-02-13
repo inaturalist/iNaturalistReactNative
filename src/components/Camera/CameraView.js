@@ -61,13 +61,14 @@ const CameraView = ( {
   const { deviceOrientation } = useDeviceOrientation();
 
   const singleTapToFocus = async ( { x, y } ) => {
-    // If the device doesn't support focus, we don't want to do anything and show no animation
+    // Show the focus square at the tapped coordinates even if we do not actually set the focus
+    singleTapToFocusAnimation.setValue( 1 );
+    setTappedCoordinates( { x, y } );
+    // If the device doesn't support focus, we don't want the camera to focus
     if ( !device.supportsFocus && focusAvailable ) {
       return;
     }
     try {
-      singleTapToFocusAnimation.setValue( 1 );
-      setTappedCoordinates( { x, y } );
       await cameraRef.current.focus( { x, y } );
     } catch ( e ) {
       // Android often catches the following error from the Camera X library

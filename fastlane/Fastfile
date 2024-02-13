@@ -402,8 +402,6 @@ lane :internal do
   upload_to_play_store(
     aab: aab_path,
     track: "internal",
-    # TODO promote build to closed testing and jump through play store hoops
-    release_status: "draft",
     version_name: last_tag
   )
 

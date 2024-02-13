@@ -529,7 +529,21 @@ const FilterModal = ( {
         style={getShadow( theme.colors.primary )}
       >
         <View className="flex-row items-center">
-          <INatIcon name="sliders" size={20} />
+          <INatIconButton
+            icon="chevron-left"
+            onPress={
+              !differsFromSnapshot
+                ? () => {
+                  discardChanges();
+                  closeModal();
+                }
+                : () => {
+                  setOpenSheet( CONFIRMATION );
+                }
+            }
+            size={22}
+            accessibilityLabel={t( "Back" )}
+          />
           <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
           {numberOfFilters !== 0 && <NumberBadge number={numberOfFilters} />}
         </View>
@@ -1027,24 +1041,9 @@ const FilterModal = ( {
       <View className="mb-10" />
       <StickyToolbar>
         <View className="flex-1 flex-row items-center">
-          <INatIconButton
-            icon="chevron-left"
-            onPress={
-              !differsFromSnapshot
-                ? () => {
-                  discardChanges();
-                  closeModal();
-                }
-                : () => {
-                  setOpenSheet( CONFIRMATION );
-                }
-            }
-            size={22}
-            accessibilityLabel={t( "Back" )}
-          />
           <Button
             disabled={!differsFromSnapshot}
-            className="flex-1 ml-5"
+            className="flex-1"
             level="focus"
             text={t( "APPLY-FILTERS" )}
             onPress={closeModal}

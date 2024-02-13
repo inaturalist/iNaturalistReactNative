@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
@@ -11,6 +11,7 @@ import { View } from "components/styledComponents";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useEffect,
   useMemo,
   useState
@@ -62,7 +63,8 @@ const StandardCamera = ( {
     onZoomChange,
     onZoomStart,
     showZoomButton,
-    zoomTextValue
+    zoomTextValue,
+    resetZoom
   } = useZoom( device );
   const {
     rotatableAnimatedStyle,
@@ -122,6 +124,15 @@ const StandardCamera = ( {
   const { screenWidth } = useDeviceOrientation( );
 
   const photosTaken = totalObsPhotoUris > 0;
+
+  useFocusEffect(
+    useCallback( ( ) => {
+      // Reset camera zoom every time we get into a fresh camera view
+      resetZoom();
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [] )
+  );
 
   useEffect( ( ) => {
     // We do this navigation indirectly (vs doing it directly in DiscardChangesSheet),
