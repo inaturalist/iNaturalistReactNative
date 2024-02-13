@@ -23,7 +23,7 @@ jobs:
     needs: setup
     runs-on: macos-latest
     outputs:
-      is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
+      is_SECRETS_PRESENT_set: ${{ steps.checksecret.outputs.is_SECRETS_PRESENT_set }}
     steps:
       - name: Check whether Github Actions secrets are set
         id: checksecret
