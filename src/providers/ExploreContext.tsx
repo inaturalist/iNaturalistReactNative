@@ -147,6 +147,8 @@ type State = {
   lrank: TAXONOMIC_RANK | undefined,
   dateObserved: DATE_OBSERVED,
   observed_on: string | null | undefined,
+  d1: string | null | undefined,
+  d2: string | null | undefined,
   months: number[] | null | undefined,
   dateUploaded: DATE_UPLOADED,
   created_on: string | null | undefined,
@@ -211,6 +213,8 @@ const defaultFilters = {
   project: undefined,
   sortBy: SORT_BY.DATE_UPLOADED_NEWEST,
   observed_on: undefined,
+  d1: undefined,
+  d2: undefined,
   months: undefined,
   created_on: undefined,
 };
