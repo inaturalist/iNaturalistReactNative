@@ -577,6 +577,7 @@ const FilterModal = ( {
   const theme = useTheme();
 
   const endBeforeStart = d1 > d2;
+  const hasError = endBeforeStart;
 
   return (
     <View className="flex-1 bg-white" testID="filter-modal">
@@ -931,16 +932,14 @@ const FilterModal = ( {
                 }}
                 accessibilityLabel={t( "Change-end-date" )}
               />
-              { endBeforeStart && (
+              {endBeforeStart && (
                 <View className="flex-row mb-5">
                   <INatIcon
                     name="triangle-exclamation"
                     size={19}
                     color={theme.colors.error}
                   />
-                  <List2
-                    className="ml-3"
-                  >
+                  <List2 className="ml-3">
                     {t( "Start-must-be-before-end" )}
                   </List2>
                 </View>
@@ -1134,13 +1133,13 @@ const FilterModal = ( {
       <StickyToolbar>
         <View className="flex-1 flex-row items-center">
           <Button
-            disabled={!differsFromSnapshot}
+            disabled={!differsFromSnapshot || hasError}
             className="flex-1"
             level="focus"
             text={t( "APPLY-FILTERS" )}
             onPress={closeModal}
             accessibilityLabel={t( "Apply-filters" )}
-            accessibilityState={{ disabled: !differsFromSnapshot }}
+            accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
           />
         </View>
         {openSheet === CONFIRMATION && (
