@@ -259,6 +259,8 @@ DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 
 Date_observed_header_short = Observed
 
+Date-Range = Date Range
+
 Date-uploaded = Date uploaded
 
 DATE-UPLOADED = DATE UPLOADED
@@ -382,6 +384,8 @@ Filters = Filters
 FILTER-BY-A-PROJECT = FILTER BY A PROJECT
 
 FILTER-BY-A-USER = FILTER BY A USER
+
+Filter-by-observed-between-dates = Filter by observations observed between two specific dates
 
 Filter-by-observed-during-months = Filter by observations observed during specific months
 

@@ -76,6 +76,7 @@ export enum TAXONOMIC_RANK {
 export enum DATE_OBSERVED {
   ALL = "ALL",
   EXACT_DATE = "EXACT_DATE",
+  DATE_RANGE = "DATE_RANGE",
   MONTHS = "MONTHS",
 }
 

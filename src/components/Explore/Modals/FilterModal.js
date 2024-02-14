@@ -313,6 +313,11 @@ const FilterModal = ( {
       text: t( "Filter-by-observed-on-date" ),
       value: DATE_OBSERVED.EXACT_DATE
     },
+    [DATE_OBSERVED.DATE_RANGE]: {
+      label: t( "Date-Range" ),
+      text: t( "Filter-by-observed-between-dates" ),
+      value: DATE_OBSERVED.DATE_RANGE
+    },
     [DATE_OBSERVED.MONTHS]: {
       label: t( "Months" ),
       text: t( "Filter-by-observed-during-months" ),
