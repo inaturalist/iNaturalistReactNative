@@ -13,9 +13,21 @@ import React, {
   useState
 } from "react";
 import { FlatList } from "react-native";
+import { useTheme } from "react-native-paper";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
+import { getShadowStyle } from "styles/global";
+
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 5
+} );
 
 const ExploreTaxonSearch = ( ): Node => {
+  const theme = useTheme();
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
 
@@ -41,12 +53,17 @@ const ExploreTaxonSearch = ( ): Node => {
 
   return (
     <ViewWrapper className="flex-1">
-      <SearchBar
-        handleTextChange={setTaxonQuery}
-        value={taxonQuery}
-        testID="SearchTaxon"
-        containerClass="my-5 mx-4"
-      />
+      <View
+        className="bg-white px-6 pt-2 pb-8"
+        style={getShadow( theme.colors.primary )}
+      >
+        <SearchBar
+          handleTextChange={setTaxonQuery}
+          value={taxonQuery}
+          testID="SearchTaxon"
+        />
+      </View>
+
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
