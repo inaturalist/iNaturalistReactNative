@@ -26,7 +26,8 @@ export enum EXPLORE_ACTION {
   TOGGLE_INTRODUCED = "TOGGLE_INTRODUCED",
   SET_WILD_STATUS = "SET_WILD_STATUS",
   SET_REVIEWED = "SET_REVIEWED",
-  SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE"
+  SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
+  SET_MAP_BOUNDARIES = "SET_MAP_BOUNDARIES"
 }
 
 export enum SORT_BY {
@@ -151,7 +152,8 @@ type State = {
   noStatus: boolean
   wildStatus: WILD_STATUS,
   reviewedFilter: REVIEWED,
-  photoLicense: PHOTO_LICENSE
+  photoLicense: PHOTO_LICENSE,
+  mapBoundaries: Object
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
@@ -179,6 +181,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
+  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: Object}
 type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
@@ -381,6 +384,11 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         reviewedFilter: action.reviewedFilter
+      };
+    case EXPLORE_ACTION.SET_MAP_BOUNDARIES:
+      return {
+        ...state,
+        ...action.mapBoundaries
       };
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );

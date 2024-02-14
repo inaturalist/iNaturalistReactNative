@@ -5,7 +5,7 @@ import type { Node } from "react";
 import React from "react";
 import { useInfiniteObservationsScroll, useIsConnected } from "sharedHooks";
 
-import MapView from "./MapView";
+import MapViewContainer from "./MapViewContainer";
 
 type Props = {
   exploreAPIParams: Object,
@@ -33,7 +33,7 @@ const ObservationsView = ( {
 
   return layout === "map"
     ? (
-      <MapView
+      <MapViewContainer
         region={region}
         observations={observations}
       />

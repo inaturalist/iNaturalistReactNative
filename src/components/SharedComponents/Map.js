@@ -65,6 +65,7 @@ function obscurationCellForLatLng( lat, lng ) {
 type Props = {
   children?: any,
   className?: string,
+  getMapBoundaries?: Function,
   mapHeight?: number|string, // allows for height to be defined as px or percentage
   mapViewClassName?: string,
   mapViewRef?: Object,
@@ -73,6 +74,7 @@ type Props = {
   obsLatitude: number,
   obsLongitude: number,
   onMapReady?: Function,
+  onPanDrag?: Function,
   onRegionChange?: Function,
   onRegionChangeComplete?: Function,
   openMapScreen?: Function,
@@ -106,6 +108,7 @@ const getShadow = shadowColor => getShadowStyle( {
 const Map = ( {
   children,
   className = "flex-1",
+  getMapBoundaries,
   mapHeight,
   mapViewClassName,
   mapViewRef: mapViewRefProp,
@@ -114,6 +117,7 @@ const Map = ( {
   obsLatitude,
   obsLongitude,
   onMapReady = ( ) => { },
+  onPanDrag = ( ) => { },
   onRegionChange,
   onRegionChangeComplete,
   openMapScreen,
@@ -333,6 +337,10 @@ const Map = ( {
         showsUserLocation={showsUserLocation}
         loadingEnabled
         onRegionChangeComplete={async newRegion => {
+          if ( getMapBoundaries ) {
+            const boundaries = await mapViewRef?.current?.getMapBoundaries( );
+            getMapBoundaries( boundaries );
+          }
           if ( onRegionChangeComplete ) onRegionChangeComplete( newRegion );
           setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
         }}
@@ -346,6 +354,7 @@ const Map = ( {
         mapType={currentMapType}
         onMapReady={onMapReady}
         style={style}
+        onPanDrag={onPanDrag}
       >
         {( withPressableObsTiles || withObsTiles ) && urlTemplate && (
           <UrlTile

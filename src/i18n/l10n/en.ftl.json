@@ -1192,5 +1192,7 @@
   "Photo-is-loading": {
     "comment": "Accessibility label when a photo is loading",
     "val": "Photo is loading"
-  }
+  },
+  "Map-Area": "Map Area",
+  "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA"
 }

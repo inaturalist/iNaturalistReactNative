@@ -221,20 +221,6 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   };
 
-  const updatePlace = place => {
-    const { coordinates } = place.point_geojson;
-    setRegion( {
-      ...region,
-      latitude: coordinates[1],
-      longitude: coordinates[0]
-    } );
-    dispatch( {
-      type: EXPLORE_ACTION.SET_PLACE,
-      placeId: place?.id,
-      placeName: place?.display_name
-    } );
-  };
-
   const filteredParams = mapParamsToAPI(
     state,
     currentUser
@@ -247,7 +233,6 @@ const ExploreContainerWithContext = ( ): Node => {
       exploreView={exploreView}
       changeExploreView={changeExploreView}
       updateTaxon={updateTaxon}
-      updatePlace={updatePlace}
       isOnline={isOnline}
       showFiltersModal={showFiltersModal}
       openFiltersModal={() => {

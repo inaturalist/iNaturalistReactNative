@@ -1615,3 +1615,6 @@ sound-playback-separator = /
 
 # Accessibility label when a photo is loading
 Photo-is-loading = Photo is loading
+
+Map-Area = Map Area
+REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
