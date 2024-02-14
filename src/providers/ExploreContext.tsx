@@ -16,6 +16,7 @@ export enum EXPLORE_ACTION {
   SET_LOWEST_TAXONOMIC_RANK = "SET_LOWEST_TAXONOMIC_RANK",
   SET_DATE_OBSERVED_MONTHS = "SET_DATE_OBSERVED_MONTHS",
   SET_DATE_OBSERVED_EXACT = "SET_DATE_OBSERVED_EXACT",
+  SET_DATE_OBSERVED_RANGE = "SET_DATE_OBSERVED_RANGE",
   SET_DATE_OBSERVED_ALL = "SET_DATE_OBSERVED_ALL",
   SET_DATE_UPLOADED_EXACT = "SET_DATE_UPLOADED_EXACT",
   SET_DATE_UPLOADED_ALL = "SET_DATE_UPLOADED_ALL",
@@ -170,6 +171,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: TAXONOMIC_RANK}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observedOn: string}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE, d1: string, d2: string}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, createdOn: string}
@@ -304,6 +306,8 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         dateObserved: DATE_OBSERVED.ALL,
         observed_on: null,
+        d1: null,
+        d2: null,
         months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT:
@@ -314,6 +318,23 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         dateObserved: DATE_OBSERVED.EXACT_DATE,
         observed_on: action.observedOn,
+        d1: null,
+        d2: null,
+        months: null
+      };
+    case EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE:
+      if ( !isValidDateFormat( action.d1 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      if ( !isValidDateFormat( action.d2 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      return {
+        ...state,
+        dateObserved: DATE_OBSERVED.DATE_RANGE,
+        observed_on: null,
+        d1: action.d1,
+        d2: action.d2,
         months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS:
@@ -321,6 +342,8 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         dateObserved: DATE_OBSERVED.MONTHS,
         observed_on: null,
+        d1: null,
+        d2: null,
         months: action.months
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_ALL:

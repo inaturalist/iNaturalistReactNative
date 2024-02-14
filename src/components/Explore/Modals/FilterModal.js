@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import classNames from "classnames";
 import {
   Body1,
   Body2,
@@ -12,6 +13,7 @@ import {
   IconicTaxonChooser,
   INatIcon,
   INatIconButton,
+  List2,
   ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
@@ -97,6 +99,8 @@ const FilterModal = ( {
     lrank,
     dateObserved,
     observed_on: observedOn,
+    d1,
+    d2,
     months,
     dateUploaded,
     created_on: createdOn,
@@ -113,6 +117,8 @@ const FilterModal = ( {
   const HRANK = "HRANK";
   const DATE_OBSERVED_M = "DATE_OBSERVED_M";
   const OBSERVED_EXACT = "OBSERVED_EXACT";
+  const OBSERVED_START = "OBSERVED_START";
+  const OBSERVED_END = "OBSERVED_END";
   const DATE_UPLOADED_M = "DATE_UPLOADED_M";
   const UPLOADED_EXACT = "UPLOADED_EXACT";
   const PHOTO_LICENSING = "PHOTO_LICENSING";
@@ -491,7 +497,9 @@ const FilterModal = ( {
     }
   };
 
-  const updateDateObserved = ( newDateObserved, d1, newMonths ) => {
+  const updateDateObserved = ( {
+    newDateObserved, newObservedOn, newD1, newD2, newMonths
+  } ) => {
     const today = new Date( ).toISOString( ).split( "T" )[0];
     // Array with the numbers from 1 to 12
     const allMonths = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
@@ -503,7 +511,13 @@ const FilterModal = ( {
     } else if ( newDateObserved === DATE_OBSERVED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT,
-        observedOn: d1 || today
+        observedOn: newObservedOn || today
+      } );
+    } else if ( newDateObserved === DATE_OBSERVED.DATE_RANGE ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE,
+        d1: newD1 || today,
+        d2: newD2 || today
       } );
     } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
       dispatch( {
@@ -514,20 +528,39 @@ const FilterModal = ( {
   };
 
   const updateObservedExact = date => {
-    updateDateObserved(
-      DATE_OBSERVED.EXACT_DATE,
-      date.toISOString().split( "T" )[0]
-    );
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.EXACT_DATE,
+      newObservedOn: date.toISOString().split( "T" )[0]
+    } );
+  };
+
+  const updateObservedStart = date => {
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.DATE_RANGE,
+      newD1: date.toISOString().split( "T" )[0],
+      newD2: d2
+    } );
+  };
+
+  const updateObservedEnd = date => {
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.DATE_RANGE,
+      newD1: d1,
+      newD2: date.toISOString().split( "T" )[0]
+    } );
   };
 
   const updateObservedMonths = monthInteger => {
     const newMonths = months.includes( monthInteger )
       ? months.filter( m => m !== monthInteger )
       : [...months, monthInteger];
-    updateDateObserved( DATE_OBSERVED.MONTHS, null, newMonths );
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.MONTHS,
+      newMonths
+    } );
   };
 
-  const updateDateUploaded = ( newDateObserved, d1 ) => {
+  const updateDateUploaded = ( newDateObserved, newD1 ) => {
     const today = new Date().toISOString().split( "T" )[0];
     if ( newDateObserved === DATE_UPLOADED.ALL ) {
       dispatch( {
@@ -536,12 +569,14 @@ const FilterModal = ( {
     } else if ( newDateObserved === DATE_UPLOADED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT,
-        createdOn: d1 || today
+        createdOn: newD1 || today
       } );
     }
   };
 
   const theme = useTheme();
+
+  const endBeforeStart = d1 > d2;
 
   return (
     <View className="flex-1 bg-white" testID="filter-modal">
@@ -870,6 +905,58 @@ const FilterModal = ( {
               />
             </View>
           )}
+          {dateObserved === DATE_OBSERVED.DATE_RANGE && (
+            <View className="items-center">
+              <Body1
+                className={classNames( "mb-5", endBeforeStart && "color-warningRed" )}
+              >
+                {d1}
+              </Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-START-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( OBSERVED_START );
+                }}
+                accessibilityLabel={t( "Change-start-date" )}
+              />
+              <Body1 className="mb-5">{d2}</Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-END-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( OBSERVED_END );
+                }}
+                accessibilityLabel={t( "Change-end-date" )}
+              />
+              { endBeforeStart && (
+                <View className="flex-row mb-5">
+                  <INatIcon
+                    name="triangle-exclamation"
+                    size={19}
+                    color={theme.colors.error}
+                  />
+                  <List2
+                    className="ml-3"
+                  >
+                    {t( "Start-must-be-before-end" )}
+                  </List2>
+                </View>
+              )}
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === OBSERVED_START}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateObservedStart( date )}
+              />
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === OBSERVED_END}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateObservedEnd( date )}
+              />
+            </View>
+          )}
           {dateObserved === DATE_OBSERVED.MONTHS
             && Object.keys( monthValues ).map( monthKey => (
               <View key={monthKey} className="flex-row items-center mb-5">
@@ -884,7 +971,7 @@ const FilterModal = ( {
             <RadioButtonSheet
               headerText={t( "DATE-OBSERVED" )}
               confirm={newDateObserved => {
-                updateDateObserved( newDateObserved );
+                updateDateObserved( { newDateObserved } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
