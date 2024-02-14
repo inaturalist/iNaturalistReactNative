@@ -8,24 +8,19 @@ import { useInfiniteObservationsScroll, useIsConnected } from "sharedHooks";
 import MapViewContainer from "./MapViewContainer";
 
 type Props = {
-  exploreAPIParams: Object,
+  queryParams: Object,
   region: Object,
   layout: string
 }
 
 const ObservationsView = ( {
-  exploreAPIParams,
+  queryParams,
   region,
   layout
 }: Props ): Node => {
-  const params = {
-    ...exploreAPIParams,
-    per_page: 20
-  };
-
   const {
     observations, isFetchingNextPage, fetchNextPage, status
-  } = useInfiniteObservationsScroll( { upsert: false, params } );
+  } = useInfiniteObservationsScroll( { upsert: false, params: queryParams } );
 
   const isOnline = useIsConnected( );
 
@@ -34,6 +29,7 @@ const ObservationsView = ( {
   return layout === "map"
     ? (
       <MapViewContainer
+        queryParams={queryParams}
         region={region}
         observations={observations}
       />

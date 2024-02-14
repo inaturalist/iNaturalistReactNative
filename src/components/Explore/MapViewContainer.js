@@ -12,29 +12,20 @@ import { useTranslation } from "sharedHooks";
 import MapView from "./MapView";
 
 type Props = {
+  queryParams: Object,
   region: Object,
   observations: Array<Object>
 }
 
 const MapViewContainer = ( {
+  queryParams,
   region,
   observations
 }: Props ): Node => {
   const [mapBoundaries, setMapBoundaries] = useState( {} );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
-  const {
-    state,
-    dispatch
-  } = useExplore( );
+  const { dispatch } = useExplore( );
   const { t } = useTranslation( );
-  const tileMapParams = { };
-
-  if ( state?.taxon_id ) {
-    tileMapParams.taxon_id = state?.taxon_id;
-  }
-  if ( state?.place_id ) {
-    tileMapParams.place_id = state?.place_id;
-  }
 
   const onPanDrag = ( ) => setShowMapBoundaryButton( true );
 
@@ -68,7 +59,7 @@ const MapViewContainer = ( {
       redoSearchInMapArea={redoSearchInMapArea}
       region={region}
       showMapBoundaryButton={showMapBoundaryButton}
-      tileMapParams={tileMapParams}
+      tileMapParams={queryParams}
       updateMapBoundaries={updateMapBoundaries}
     />
   );
