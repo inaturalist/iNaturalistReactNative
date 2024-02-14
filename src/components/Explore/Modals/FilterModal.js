@@ -24,6 +24,7 @@ import { RealmContext } from "providers/contexts";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
+  ESTABLISHMENT_MEAN,
   EXPLORE_ACTION,
   MEDIA,
   PHOTO_LICENSE,
@@ -100,10 +101,7 @@ const FilterModal = ( {
     dateUploaded,
     created_on: createdOn,
     media,
-    introduced,
-    native,
-    endemic,
-    noStatus,
+    establishmentMean,
     wildStatus,
     reviewedFilter,
     photoLicense
@@ -401,6 +399,25 @@ const FilterModal = ( {
     [MEDIA.NONE]: {
       label: t( "No-Media" ),
       value: MEDIA.NONE
+    }
+  };
+
+  const establishmentValues = {
+    [ESTABLISHMENT_MEAN.ANY]: {
+      label: t( "Any" ),
+      value: ESTABLISHMENT_MEAN.ANY
+    },
+    [ESTABLISHMENT_MEAN.INTRODUCED]: {
+      label: t( "Introduced" ),
+      value: ESTABLISHMENT_MEAN.INTRODUCED
+    },
+    [ESTABLISHMENT_MEAN.NATIVE]: {
+      label: t( "Native" ),
+      value: ESTABLISHMENT_MEAN.NATIVE
+    },
+    [ESTABLISHMENT_MEAN.ENDEMIC]: {
+      label: t( "Endemic" ),
+      value: ESTABLISHMENT_MEAN.ENDEMIC
     }
   };
 
@@ -940,38 +957,21 @@ const FilterModal = ( {
         {/* Establishment Means section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
-          <Checkbox
-            isChecked={introduced}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_INTRODUCED
-            } )}
-            text={t( "Introduced" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={native}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_NATIVE
-            } )}
-            text={t( "Native" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={endemic}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_ENDEMIC
-            } )}
-            text={t( "Endemic" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={noStatus}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_NO_STATUS
-            } )}
-            text={t( "TODO: No-Status (does not change API request atm)" )}
-            // text={t( "No-Status" )}
-          />
+          {Object.keys( establishmentValues ).map( establishmentKey => (
+            <RadioButtonRow
+              key={establishmentKey}
+              value={establishmentValues[establishmentKey]}
+              checked={
+                establishmentValues[establishmentKey].value
+                === establishmentMean
+              }
+              onPress={() => dispatch( {
+                type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
+                establishmentMean: establishmentValues[establishmentKey].value
+              } )}
+              label={establishmentValues[establishmentKey].label}
+            />
+          ) )}
         </View>
 
         {/* Wild Status section */}

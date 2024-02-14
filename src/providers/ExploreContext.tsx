@@ -20,10 +20,7 @@ export enum EXPLORE_ACTION {
   SET_DATE_UPLOADED_EXACT = "SET_DATE_UPLOADED_EXACT",
   SET_DATE_UPLOADED_ALL = "SET_DATE_UPLOADED_ALL",
   SET_MEDIA = "SET_MEDIA",
-  TOGGLE_NO_STATUS = "TOGGLE_NO_STATUS",
-  TOGGLE_ENDEMIC = "TOGGLE_ENDEMIC",
-  TOGGLE_NATIVE = "TOGGLE_NATIVE",
-  TOGGLE_INTRODUCED = "TOGGLE_INTRODUCED",
+  SET_ESTABLISHMENT_MEAN = "SET_ESTABLISHMENT_MEAN",
   SET_WILD_STATUS = "SET_WILD_STATUS",
   SET_REVIEWED = "SET_REVIEWED",
   SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE"
@@ -94,6 +91,13 @@ export enum MEDIA {
   NONE = "NONE"
 }
 
+export enum ESTABLISHMENT_MEAN {
+  ANY = "ANY",
+  INTRODUCED = "INTRODUCED",
+  NATIVE = "NATIVE",
+  ENDEMIC = "ENDEMIC"
+}
+
 export enum WILD_STATUS {
   ALL = "ALL",
   WILD = "WILD",
@@ -145,10 +149,7 @@ type State = {
   dateUploaded: DATE_UPLOADED,
   created_on: string | null | undefined,
   media: MEDIA,
-  introduced: boolean,
-  native: boolean,
-  endemic: boolean,
-  noStatus: boolean
+  establishmentMean: ESTABLISHMENT_MEAN,
   wildStatus: WILD_STATUS,
   reviewedFilter: REVIEWED,
   photoLicense: PHOTO_LICENSE
@@ -172,10 +173,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, createdOn: string}
   | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
-  | {type: EXPLORE_ACTION.TOGGLE_INTRODUCED}
-  | {type: EXPLORE_ACTION.TOGGLE_NATIVE}
-  | {type: EXPLORE_ACTION.TOGGLE_ENDEMIC}
-  | {type: EXPLORE_ACTION.TOGGLE_NO_STATUS}
+  | {type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN, establishmentMean: ESTABLISHMENT_MEAN}
   | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
@@ -197,10 +195,7 @@ const calculatedFilters = {
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,
-  introduced: false,
-  native: false,
-  endemic: false,
-  noStatus: false,
+  establishmentMean: ESTABLISHMENT_MEAN.ANY,
   wildStatus: WILD_STATUS.ALL,
   reviewedFilter: REVIEWED.ALL,
   photoLicense: PHOTO_LICENSE.ALL
@@ -347,25 +342,10 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         media: action.media
       };
-    case EXPLORE_ACTION.TOGGLE_INTRODUCED:
+    case EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN:
       return {
         ...state,
-        introduced: !state.introduced
-      };
-    case EXPLORE_ACTION.TOGGLE_NATIVE:
-      return {
-        ...state,
-        native: !state.native
-      };
-    case EXPLORE_ACTION.TOGGLE_ENDEMIC:
-      return {
-        ...state,
-        endemic: !state.endemic
-      };
-    case EXPLORE_ACTION.TOGGLE_NO_STATUS:
-      return {
-        ...state,
-        noStatus: !state.noStatus
+        establishmentMean: action.establishmentMean
       };
     case EXPLORE_ACTION.SET_WILD_STATUS:
       return {

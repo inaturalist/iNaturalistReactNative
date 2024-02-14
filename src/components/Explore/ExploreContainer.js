@@ -2,6 +2,7 @@
 
 import { useRoute } from "@react-navigation/native";
 import {
+  ESTABLISHMENT_MEAN,
   EXPLORE_ACTION,
   ExploreProvider,
   MEDIA,
@@ -82,13 +83,20 @@ const mapParamsToAPI = ( params, currentUser ) => {
   // MEDIA.ALL is the default media filter and for it we don't need to pass any params
   if ( params.media === MEDIA.PHOTOS ) {
     filteredParams.photos = true;
-  }
-  if ( params.media === MEDIA.SOUNDS ) {
+  } else if ( params.media === MEDIA.SOUNDS ) {
     filteredParams.sounds = true;
-  }
-  if ( params.media === MEDIA.NONE ) {
+  } else if ( params.media === MEDIA.NONE ) {
     filteredParams.photos = false;
     filteredParams.sounds = false;
+  }
+
+  // ESTABLISHMENT_MEAN.ANY is the default here and for it we don't need to pass any params
+  if ( params.establishmentMean === ESTABLISHMENT_MEAN.NATIVE ) {
+    filteredParams.native = true;
+  } else if ( params.establishmentMean === ESTABLISHMENT_MEAN.INTRODUCED ) {
+    filteredParams.introduced = true;
+  } else if ( params.establishmentMean === ESTABLISHMENT_MEAN.ENDEMIC ) {
+    filteredParams.endemic = true;
   }
 
   if ( params.wildStatus === WILD_STATUS.WILD ) {
@@ -131,10 +139,7 @@ const mapParamsToAPI = ( params, currentUser ) => {
   delete filteredParams.dateObserved;
   delete filteredParams.dateUploaded;
   delete filteredParams.media;
-  delete filteredParams.introduced;
-  delete filteredParams.native;
-  delete filteredParams.endemic;
-  delete filteredParams.noStatus;
+  delete filteredParams.establishmentMean;
   delete filteredParams.wildStatus;
   delete filteredParams.reviewedFilter;
   delete filteredParams.photoLicense;
