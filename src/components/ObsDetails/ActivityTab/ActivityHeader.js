@@ -20,12 +20,12 @@ type Props = {
   currentUser: boolean,
   deleteComment: Function,
   flagged: boolean,
-  idWithdrawn: boolean,
-  isOnline: boolean,
+  idWithdrawn?: boolean,
+  isOnline?: boolean,
   item: Object,
   loading: boolean,
   updateCommentBody: Function,
-  withdrawOrRestoreIdentification: Function
+  updateIdentification: Function
 }
 
 const ActivityHeader = ( {
@@ -38,7 +38,7 @@ const ActivityHeader = ( {
   item,
   loading,
   updateCommentBody,
-  withdrawOrRestoreIdentification
+  updateIdentification
 }:Props ): Node => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
@@ -126,7 +126,7 @@ const ActivityHeader = ( {
                 itemType={itemType}
                 current={item.current}
                 setShowWithdrawIDSheet={setShowWithdrawIDSheet}
-                withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
+                updateIdentification={updateIdentification}
                 setShowEditCommentSheet={setShowEditCommentSheet}
                 setShowDeleteCommentSheet={setShowDeleteCommentSheet}
               />
@@ -136,7 +136,7 @@ const ActivityHeader = ( {
           <WithdrawIDSheet
             handleClose={() => setShowWithdrawIDSheet( false )}
             taxon={item.taxon}
-            withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
+            updateIdentification={updateIdentification}
           />
         )}
 
