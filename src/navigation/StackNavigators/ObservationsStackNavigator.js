@@ -29,8 +29,8 @@ import SharedStackScreens from "./SharedStackScreens";
 
 const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
 const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
-const userSearchTitle = () => <Heading4>{t( "SEARCH-USER" )}</Heading4>;
-const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECT" )}</Heading4>;
+const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
+const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
 const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
