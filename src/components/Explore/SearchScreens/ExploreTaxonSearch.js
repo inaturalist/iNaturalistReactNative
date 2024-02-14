@@ -9,8 +9,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback,
-  useState
+  useCallback, useLayoutEffect, useRef, useState
 } from "react";
 import { FlatList } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -30,6 +29,12 @@ const ExploreTaxonSearch = ( ): Node => {
   const theme = useTheme();
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
+  // Ref for the input field
+  const inputRef = useRef( null );
+  // Focus input field on mount
+  useLayoutEffect( ( ) => {
+    inputRef.current?.focus();
+  }, [] );
 
   const taxonList = useTaxonSearch( taxonQuery );
 
@@ -61,6 +66,7 @@ const ExploreTaxonSearch = ( ): Node => {
           handleTextChange={setTaxonQuery}
           value={taxonQuery}
           testID="SearchTaxon"
+          input={inputRef}
         />
       </View>
 
