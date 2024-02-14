@@ -13,6 +13,7 @@ import path from "path";
 import React from "react";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithComponent } from "tests/helpers/render";
 import { signIn, signOut } from "tests/helpers/user";
@@ -123,9 +124,9 @@ describe( "MyObservations", ( ) => {
     } );
 
     beforeEach( async ( ) => {
-      global.mockRealms[__filename].write( ( ) => {
+      safeRealmWrite( global.mockRealms[__filename], ( ) => {
         global.mockRealms[__filename].deleteAll( );
-      } );
+      }, "delete realm, MyObservations integration test when signed in" );
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
@@ -169,13 +170,13 @@ describe( "MyObservations", ( ) => {
         } )
       ];
 
-      beforeEach( async () => {
+      beforeEach( ( ) => {
         // Write local observation to Realm
-        await global.mockRealms[__filename].write( () => {
+        safeRealmWrite( global.mockRealms[__filename], ( ) => {
           mockObservations.forEach( mockObservation => {
             global.mockRealms[__filename].create( "Observation", mockObservation );
           } );
-        } );
+        }, "write local observation, MyObservations integration test with unsynced observations" );
       } );
 
       afterEach( ( ) => {
@@ -277,13 +278,13 @@ describe( "MyObservations", ( ) => {
         } )
       ];
 
-      beforeEach( async () => {
-        await global.mockRealms[__filename].write( () => {
+      beforeEach( ( ) => {
+        safeRealmWrite( global.mockRealms[__filename], ( ) => {
           global.mockRealms[__filename].deleteAll( );
           mockObservationsSynced.forEach( mockObservation => {
             global.mockRealms[__filename].create( "Observation", mockObservation );
           } );
-        } );
+        }, "delete all and create synced observations, MyObservations integration test" );
       } );
 
       afterEach( ( ) => {
@@ -321,12 +322,12 @@ describe( "MyObservations", ( ) => {
       } );
 
       describe( "after initial sync", ( ) => {
-        beforeEach( async () => {
-          await global.mockRealms[__filename].write( () => {
+        beforeEach( ( ) => {
+          safeRealmWrite( global.mockRealms[__filename], ( ) => {
             global.mockRealms[__filename].create( "LocalPreferences", {
               last_sync_time: new Date( "2023-11-01" )
             } );
-          } );
+          }, "add last_sync_time to LocalPreferences, MyObservations integration test" );
         } );
 
         it( "downloads deleted observations from server when sync button tapped", async ( ) => {
@@ -357,12 +358,10 @@ describe( "MyObservations", ( ) => {
             expect( syncIcon ).toBeVisible( );
           } );
           fireEvent.press( syncIcon );
-          const spy = jest.spyOn( global.mockRealms[__filename], "write" );
           const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
           await waitFor( ( ) => {
-            expect( spy ).toHaveBeenCalled( );
+            expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
           } );
-          expect( deleteSpy ).toHaveBeenCalled( );
           expect( global.mockRealms[__filename].objects( "Observation" ).length ).toBe( 1 );
         } );
       } );
@@ -370,10 +369,10 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "localization for current user", ( ) => {
-    beforeEach( async ( ) => {
-      await global.mockRealms[__filename].write( ( ) => {
+    beforeEach( ( ) => {
+      safeRealmWrite( global.mockRealms[__filename], ( ) => {
         global.mockRealms[__filename].deleteAll( );
-      } );
+      }, "delete all, MyObservations integration test, localization for current user" );
     } );
 
     afterEach( ( ) => {

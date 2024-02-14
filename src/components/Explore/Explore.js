@@ -86,6 +86,9 @@ const Explore = ( {
     ...exploreAPIParams,
     per_page: 20
   };
+  if ( exploreView === "observers" ) {
+    queryParams.order_by = "observation_count";
+  }
   delete queryParams.taxon_name;
 
   const paramsTotalResults = {

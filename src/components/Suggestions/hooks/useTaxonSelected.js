@@ -24,7 +24,7 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
     // screen (by adding an id) or they can first land on ObsEdit (by tapping the edit button)
     if ( lastScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
-        uuid: currentObservation.uuid,
+        uuid: currentObservation?.uuid,
         // TODO refactor so we're not passing complex objects as params; all
         // obs details really needs to know is the ID of the taxon
         suggestedTaxonId: selectedTaxon.id,
@@ -44,7 +44,7 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
     }
   }, [
     comment,
-    currentObservation.uuid,
+    currentObservation?.uuid,
     lastScreen,
     navigation,
     selectedTaxon,

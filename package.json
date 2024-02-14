@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.21.1",
+  "version": "0.22.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -118,7 +118,7 @@
     "react-native-vision-camera": "github:inaturalist/react-native-vision-camera#our-main-fork-2",
     "react-native-webview": "^11.26.1",
     "react-native-worklets-core": "^0.2.0",
-    "realm": "^12.3.0",
+    "realm": "^12.6.0",
     "reassure": "^0.10.1",
     "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",

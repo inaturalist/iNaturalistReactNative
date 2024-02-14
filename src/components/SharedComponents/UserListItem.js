@@ -1,9 +1,10 @@
 // @flow
+import { useNavigation } from "@react-navigation/native";
 import {
   Body1, INatIcon,
   List2, UserIcon
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import User from "realmModels/User";
@@ -18,11 +19,15 @@ type Props = {
 const UserListItem = ( { item, count, countText }: Props ): Node => {
   const { t } = useTranslation( );
   const user = item?.user;
+  const navigation = useNavigation( );
 
   return (
-    <View
+    <Pressable
+      accessibilityRole="button"
       className="flex-row items-center mx-3 my-2"
       testID={`UserProfile.${user?.id}`}
+      onPress={( ) => navigation.navigate( "UserProfile", { userId: user?.id } )}
+      accessibilityLabel={t( "Navigates-to-user-profile" )}
     >
 
       {user?.icon_url
@@ -34,12 +39,12 @@ const UserListItem = ( { item, count, countText }: Props ): Node => {
           />
         )}
       <View className="ml-3">
-        <Body1 className="mt-3">{user?.login}</Body1>
+        {user?.login && <Body1 className="mt-3">{user?.login}</Body1>}
         <List2 className="mt-1">
           {t( countText, { count } )}
         </List2>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

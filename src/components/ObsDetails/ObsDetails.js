@@ -164,11 +164,7 @@ const ObsDetails = ( {
           belongsToCurrentUser={belongsToCurrentUser}
           observation={observation}
         />
-        <View
-          // TODO don't hardcode this, should be based on the calculated
-          // height of the nav header
-          className="mt-[-44px]"
-        >
+        <View>
           <ObsMediaDisplayContainer observation={observation} />
           { currentUser && (
             <FaveButton
