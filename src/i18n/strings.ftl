@@ -133,11 +133,19 @@ CHANGE-DATE = CHANGE DATE
 
 Change-date = Change date
 
+CHANGE-END-DATE = CHANGE END DATE
+
+Change-end-date = Change end date
+
 Change-project = Change project
 
-Change-user = Change user
+CHANGE-START-DATE = CHANGE START DATE
+
+Change-start-date = Change start date
 
 Change-taxon = Change taxon
+
+Change-user = Change user
 
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
@@ -877,6 +885,8 @@ Status = Status
 
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
+
+Start-must-be-before-end = The start date must be before the end date.
 
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
