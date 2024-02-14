@@ -1621,3 +1621,6 @@ Comment-options = Comment options
 
 # Accessibility label for a button that shows options for an identification
 Identification-options = Identification options
+
+Map-Area = Map Area
+REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
