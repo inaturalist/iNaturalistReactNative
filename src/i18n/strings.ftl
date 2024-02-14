@@ -61,6 +61,8 @@ Amphibians = Amphibians
 
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 
+Any = Any
+
 APPLY-FILTERS = APPLY FILTERS
 
 Apply-filters = Apply filters
