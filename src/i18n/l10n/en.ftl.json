@@ -1192,5 +1192,13 @@
   "Photo-is-loading": {
     "comment": "Accessibility label when a photo is loading",
     "val": "Photo is loading"
+  },
+  "Comment-options": {
+    "comment": "Accessibility label for a button that shows options for a comment",
+    "val": "Comment options"
+  },
+  "Identification-options": {
+    "comment": "Accessibility label for a button that shows options for an identification",
+    "val": "Identification options"
   }
 }

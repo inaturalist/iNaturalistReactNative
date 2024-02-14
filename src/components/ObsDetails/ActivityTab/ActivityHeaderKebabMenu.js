@@ -9,19 +9,23 @@ import React, { useState } from "react";
 import { Menu } from "react-native-paper";
 
 type Props = {
-    itemType: string,
-    current: boolean,
-    currentUser: boolean,
-    setShowWithdrawIDSheet: Function,
-    withdrawOrRestoreIdentification: Function,
-    setShowEditCommentSheet: Function,
-    setShowDeleteCommentSheet: Function
+  current: boolean,
+  currentUser: boolean,
+  itemType: "Identification" | "Comment",
+  setShowDeleteCommentSheet: Function,
+  setShowEditCommentSheet: Function,
+  setShowWithdrawIDSheet: Function,
+  updateIdentification: Function,
 }
 
 const ActivityItemKebabMenu = ( {
-  itemType, current, currentUser, setShowWithdrawIDSheet,
-  withdrawOrRestoreIdentification, setShowEditCommentSheet,
-  setShowDeleteCommentSheet
+  current,
+  currentUser,
+  itemType,
+  setShowDeleteCommentSheet,
+  setShowEditCommentSheet,
+  setShowWithdrawIDSheet,
+  updateIdentification
 }:Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
@@ -36,6 +40,7 @@ const ActivityItemKebabMenu = ( {
       <KebabMenu
         visible={kebabMenuVisible}
         setVisible={setKebabMenuVisible}
+        accessibilityLabel={t( "Identification-options" )}
       >
         {current === true
           ? (
@@ -51,7 +56,7 @@ const ActivityItemKebabMenu = ( {
           : (
             <Menu.Item
               onPress={async ( ) => {
-                withdrawOrRestoreIdentification( true );
+                updateIdentification( { current: true } );
                 setKebabMenuVisible( false );
               }}
               title={t( "Restore" )}
@@ -65,6 +70,7 @@ const ActivityItemKebabMenu = ( {
     <KebabMenu
       visible={kebabMenuVisible}
       setVisible={setKebabMenuVisible}
+      accessibilityLabel={t( "Comment-options" )}
     >
       <Menu.Item
         onPress={async ( ) => {
