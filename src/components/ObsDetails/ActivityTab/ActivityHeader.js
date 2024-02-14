@@ -125,7 +125,6 @@ const ActivityHeader = ( {
                 currentUser={currentUser}
                 itemType={itemType}
                 current={item.current}
-                itemBody={item.body}
                 setShowWithdrawIDSheet={setShowWithdrawIDSheet}
                 withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
                 setShowEditCommentSheet={setShowEditCommentSheet}
