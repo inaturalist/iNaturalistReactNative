@@ -44,10 +44,6 @@ const ExploreTaxonSearch = ( ): Node => {
     navigation.navigate( "Explore", { taxon: newTaxon } );
   }, [navigation] );
 
-  const renderFooter = ( ) => (
-    <View className="pb-10" />
-  );
-
   const renderItem = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       taxon={taxon}
@@ -82,7 +78,6 @@ const ExploreTaxonSearch = ( ): Node => {
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        ListFooterComponent={renderFooter}
       />
     </ViewWrapper>
   );
