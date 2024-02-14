@@ -13,6 +13,7 @@ import React, {
 } from "react";
 import { FlatList } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useIconicTaxa } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
 import { getShadowStyle } from "styles/global";
 
@@ -36,6 +37,7 @@ const ExploreTaxonSearch = ( ): Node => {
     inputRef.current?.focus();
   }, [] );
 
+  const iconicTaxa = useIconicTaxa( { reload: false } );
   const taxonList = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
@@ -56,6 +58,11 @@ const ExploreTaxonSearch = ( ): Node => {
     />
   ), [onTaxonSelected] );
 
+  let data = iconicTaxa;
+  if ( taxonQuery.length > 0 ) {
+    data = taxonList;
+  }
+
   return (
     <ViewWrapper className="flex-1">
       <View
@@ -72,7 +79,7 @@ const ExploreTaxonSearch = ( ): Node => {
 
       <FlatList
         keyboardShouldPersistTaps="always"
-        data={taxonList}
+        data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         ListFooterComponent={renderFooter}
