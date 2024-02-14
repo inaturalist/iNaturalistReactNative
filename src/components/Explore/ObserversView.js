@@ -1,6 +1,6 @@
 // @flow
 import { fetchObservers } from "api/observations";
-import UserListItem from "components/SharedComponents/UserListItem";
+import { UserListItem } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
@@ -22,6 +22,7 @@ const ObserversView = ( {
   queryParams,
   updateCount
 }: Props ): Node => {
+  console.log( queryParams, "query params" );
   const {
     data,
     isFetchingNextPage,

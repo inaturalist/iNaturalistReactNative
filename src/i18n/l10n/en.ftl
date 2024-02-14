@@ -826,11 +826,11 @@ Search-for-description-tags-text = Search for description/tags text
 
 SEARCH-LOCATION = SEARCH LOCATION
 
-SEARCH-PROJECT = SEARCH PROJECT
+SEARCH-PROJECTS = SEARCH PROJECTS
 
 SEARCH-TAXA = SEARCH TAXA
 
-SEARCH-USER = SEARCH USER
+SEARCH-USERS = SEARCH USERS
 
 Select = Select
 
@@ -1615,6 +1615,12 @@ sound-playback-separator = /
 
 # Accessibility label when a photo is loading
 Photo-is-loading = Photo is loading
+
+# Accessibility label for a button that shows options for a comment
+Comment-options = Comment options
+
+# Accessibility label for a button that shows options for an identification
+Identification-options = Identification options
 
 Map-Area = Map Area
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA

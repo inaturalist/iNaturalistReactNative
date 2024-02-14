@@ -2,7 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments, updateComment } from "api/comments";
-import { updateIdentification } from "api/identifications";
+import { updateIdentification as apiUpdateIdentification } from "api/identifications";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
@@ -11,16 +11,19 @@ import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import ActivityHeader from "./ActivityHeader";
 
 type Props = {
-  item: Object,
-  refetchRemoteObservation?: Function,
   classNameMargin?: string,
-  idWithdrawn: boolean,
-  isOnline: boolean
+  idWithdrawn?: boolean,
+  isOnline?: boolean,
+  item: Object,
+  refetchRemoteObservation?: Function
 }
 
 const ActivityHeaderContainer = ( {
-  item, refetchRemoteObservation, classNameMargin,
-  idWithdrawn, isOnline
+  classNameMargin,
+  idWithdrawn,
+  isOnline,
+  item,
+  refetchRemoteObservation
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( false );
   const [flagged, setFlagged] = useState( false );
@@ -91,7 +94,7 @@ const ActivityHeaderContainer = ( {
   };
 
   const updateIdentificationMutation = useAuthenticatedMutation(
-    ( uuid, optsWithAuth ) => updateIdentification( uuid, optsWithAuth ),
+    ( uuid, optsWithAuth ) => apiUpdateIdentification( uuid, optsWithAuth ),
     {
       onSuccess: () => {
         setLoading( false );
@@ -106,13 +109,10 @@ const ActivityHeaderContainer = ( {
     }
   );
 
-  const withdrawOrRestoreIdentification = withdrawOrRestore => {
+  const updateIdentification = identification => {
     const updateIdentificationParams = {
       id: item.uuid,
-      identification: {
-        body: "",
-        current: withdrawOrRestore
-      }
+      identification
     };
     setLoading( true );
     updateIdentificationMutation.mutate( updateIdentificationParams );
@@ -128,7 +128,7 @@ const ActivityHeaderContainer = ( {
       flagged={flagged}
       updateCommentBody={updateCommentBody}
       deleteComment={deleteUserComment}
-      withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
+      updateIdentification={updateIdentification}
       isOnline={isOnline}
     />
   );

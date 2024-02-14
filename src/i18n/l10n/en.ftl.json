@@ -546,9 +546,9 @@
   "Search-for-a-user": "Search for a user",
   "Search-for-description-tags-text": "Search for description/tags text",
   "SEARCH-LOCATION": "SEARCH LOCATION",
-  "SEARCH-PROJECT": "SEARCH PROJECT",
+  "SEARCH-PROJECTS": "SEARCH PROJECTS",
   "SEARCH-TAXA": "SEARCH TAXA",
-  "SEARCH-USER": "SEARCH USER",
+  "SEARCH-USERS": "SEARCH USERS",
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "Settings": "Settings",
@@ -1192,6 +1192,14 @@
   "Photo-is-loading": {
     "comment": "Accessibility label when a photo is loading",
     "val": "Photo is loading"
+  },
+  "Comment-options": {
+    "comment": "Accessibility label for a button that shows options for a comment",
+    "val": "Comment options"
+  },
+  "Identification-options": {
+    "comment": "Accessibility label for a button that shows options for an identification",
+    "val": "Identification options"
   },
   "Map-Area": "Map Area",
   "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA"
