@@ -41,7 +41,7 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
-describe( "StandardCamera navigation", ( ) => {
+describe( "SoundRecorder navigation", ( ) => {
   const actor = userEvent.setup( );
 
   describe( "from MyObs", ( ) => {
@@ -50,10 +50,10 @@ describe( "StandardCamera navigation", ( ) => {
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
       const addObsButton = await screen.findByLabelText( "Add observations" );
       await actor.press( addObsButton );
-      const cameraButton = await screen.findByLabelText( "Camera" );
-      await actor.press( cameraButton );
-      const cameraNavButtons = await screen.findByTestId( "CameraNavButtons" );
-      const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
+      const recorderButton = await screen.findByLabelText( "Sound recorder" );
+      await actor.press( recorderButton );
+      const mediaNavButtons = await screen.findByTestId( "MediaNavButtons" );
+      const closeButton = await within( mediaNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
     } );

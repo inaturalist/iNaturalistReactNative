@@ -1,17 +1,22 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import PlaceholderText from "components/PlaceholderText";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
+import {
+  Body1,
+  Heading1,
+  INatIconButton,
+  MediaNavButtons,
+  ViewWrapper
+} from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
-import { Pressable, Text, View } from "react-native";
-// $FlowFixMe
+import React, { useCallback, useMemo, useState } from "react";
+import { Alert } from "react-native";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import Observation from "realmModels/Observation";
 import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
-import { textStyles, viewStyles } from "styles/soundRecorder/soundRecorder";
+import colors from "styles/tailwindColors";
 
 // needs to be outside of the component for stopRecorder to work correctly
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -44,7 +49,7 @@ const SoundRecorder = (): Node => {
     setObservations( [newObservation] );
   };
 
-  const startRecording = async () => {
+  const startRecording = useCallback( async () => {
     try {
       const cachedFile = await audioRecorderPlayer.startRecorder(
         null,
@@ -64,18 +69,18 @@ const SoundRecorder = (): Node => {
     } catch ( e ) {
       console.warn( "couldn't start sound recorder:", e );
     }
-  };
+  }, [sound] );
 
-  const resumeRecording = async () => {
+  const resumeRecording = useCallback( async () => {
     try {
       await audioRecorderPlayer.resumeRecorder();
       setStatus( "recording" );
     } catch ( e ) {
       console.warn( "couldn't resume sound recorder:", e );
     }
-  };
+  }, [] );
 
-  const stopRecording = async () => {
+  const stopRecording = useCallback( async () => {
     try {
       await audioRecorderPlayer.stopRecorder();
       setStatus( "paused" );
@@ -87,117 +92,123 @@ const SoundRecorder = (): Node => {
     } catch ( e ) {
       console.warn( "couldn't stop sound recorder:", e );
     }
-  };
+  }, [sound] );
 
-  const playRecording = async () => {
-    try {
-      setStatus( "playing" );
-      await audioRecorderPlayer.startPlayer( uri );
-      audioRecorderPlayer.addPlayBackListener( e => {
-        setSound( {
-          ...sound,
-          currentPositionSec: e.currentPosition,
-          currentDurationSec: e.duration,
-          playTime: audioRecorderPlayer.mmssss( Math.floor( e.currentPosition ) ),
-          duration: audioRecorderPlayer.mmssss( Math.floor( e.duration ) )
-        } );
-      } );
-    } catch ( e ) {
-      console.warn( "can't play recording: ", e );
-    }
-  };
+  // const playRecording = async () => {
+  //   try {
+  //     setStatus( "playing" );
+  //     await audioRecorderPlayer.startPlayer( uri );
+  //     audioRecorderPlayer.addPlayBackListener( e => {
+  //       setSound( {
+  //         ...sound,
+  //         currentPositionSec: e.currentPosition,
+  //         currentDurationSec: e.duration,
+  //         playTime: audioRecorderPlayer.mmssss( Math.floor( e.currentPosition ) ),
+  //         duration: audioRecorderPlayer.mmssss( Math.floor( e.duration ) )
+  //       } );
+  //     } );
+  //   } catch ( e ) {
+  //     console.warn( "can't play recording: ", e );
+  //   }
+  // };
 
-  const stopPlayback = async () => {
-    audioRecorderPlayer.stopPlayer();
-    audioRecorderPlayer.removePlayBackListener();
-    setStatus( "paused" );
-  };
+  // const stopPlayback = async () => {
+  //   audioRecorderPlayer.stopPlayer();
+  //   audioRecorderPlayer.removePlayBackListener();
+  //   setStatus( "paused" );
+  // };
 
-  const renderRecordButton = () => {
-    if ( status === "notStarted" ) {
-      return (
-        <Pressable accessibilityRole="button" onPress={startRecording}>
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>
-            {t( "Press-Record-to-Start" )}
-          </Text>
-        </Pressable>
-      );
-    }
-    if ( status === "paused" ) {
-      return (
-        <Pressable accessibilityRole="button" onPress={resumeRecording}>
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>
-            {t( "Paused" )}
-          </Text>
-        </Pressable>
-      );
-    }
-    if ( status === "playing" ) {
-      return (
-        <Text style={[textStyles.alignCenter, textStyles.duration]}>
-          {t( "Playing-Sound" )}
-        </Text>
-      );
-    }
-    return (
-      <Pressable accessibilityRole="button" onPress={stopRecording}>
-        <PlaceholderText
-          text="stop"
-          style={[textStyles.alignCenter, textStyles.duration]}
-        />
-      </Pressable>
-    );
-  };
-
-  const renderPlaybackButton = () => {
-    if ( status === "paused" ) {
-      return (
-        <Pressable
-          accessibilityRole="button"
-          onPress={playRecording}
-          style={viewStyles.playbackButton}
-        >
-          <Text>{t( "Play" )}</Text>
-        </Pressable>
-      );
-    }
-    if ( status === "playing" ) {
-      return (
-        <Pressable
-          accessibilityRole="button"
-          onPress={stopPlayback}
-          style={viewStyles.playbackButton}
-        >
-          <PlaceholderText text="stop" />
-        </Pressable>
-      );
-    }
-    // TODO does this ever have a status value that isn't paused or playing?
-    return <View />;
-  };
+  // const renderPlaybackButton = () => {
+  //   if ( status === "paused" ) {
+  //     return (
+  //       <Pressable
+  //         accessibilityRole="button"
+  //         onPress={playRecording}
+  //         style={viewStyles.playbackButton}
+  //       >
+  //         <Text>{t( "Play" )}</Text>
+  //       </Pressable>
+  //     );
+  //   }
+  //   if ( status === "playing" ) {
+  //     return (
+  //       <Pressable
+  //         accessibilityRole="button"
+  //         onPress={stopPlayback}
+  //         style={viewStyles.playbackButton}
+  //       >
+  //         <PlaceholderText text="stop" />
+  //       </Pressable>
+  //     );
+  //   }
+  //   // TODO does this ever have a status value that isn't paused or playing?
+  //   return <View />;
+  // };
 
   const navToObsEdit = () => {
     addSound();
     navigation.navigate( "ObsEdit" );
   };
 
+  const captureButton = useMemo( ( ) => {
+    let onPress = startRecording;
+    let icon = "microphone";
+    let accessibilityLabel = t( "Record-verb" );
+    let accessibilityHint = t( "Starts-recording-sound" );
+    if ( status === "recording" ) {
+      onPress = stopRecording;
+      icon = "pause";
+      accessibilityLabel = t( "Pause-verb" );
+      accessibilityHint = t( "Pauses-recording-sound" );
+    } else if ( status === "paused" ) {
+      onPress = resumeRecording;
+    }
+
+    return (
+      <INatIconButton
+        onPress={onPress}
+        backgroundColor={colors.red}
+        color={colors.white}
+        size={33}
+        icon={icon}
+        accessibilityLabel={accessibilityLabel}
+        accessibilityHint={accessibilityHint}
+        width={60}
+        height={60}
+        mode="contained"
+      />
+    );
+  }, [
+    resumeRecording,
+    startRecording,
+    stopRecording,
+    status,
+    t
+  ] );
+
   return (
-    <ViewWrapper>
-      <View style={viewStyles.center}>
-        <Text style={[textStyles.alignCenter, textStyles.duration]}>
+    <ViewWrapper wrapperClassName="bg-black justify-between">
+      <View className="flex-1 items-center justify-center">
+        <Heading1 className="text-white">
           {sound.recordTime}
-        </Text>
-        <View>{/* TODO: add visualization for sound recording */}</View>
-        <View>
-          <View style={viewStyles.recordButtonRow}>
-            {renderPlaybackButton()}
-            {renderRecordButton()}
-            <Pressable accessibilityRole="button" onPress={navToObsEdit}>
-              <Text>{t( "Finish" )}</Text>
-            </Pressable>
-          </View>
+        </Heading1>
+        <Body1 className="text-gray">{uri}</Body1>
+        <View className="absolute right-5 bottom-5">
+          <INatIconButton
+            icon="play"
+            onPress={( ) => Alert.alert( "Open the MediaViewer or something custom?" )}
+            accessibilityLabel="Play"
+            color="white"
+          />
         </View>
       </View>
+      <View>{/* TODO: add visualization for sound recording */}</View>
+      <MediaNavButtons
+        captureButton={captureButton}
+        onConfirm={navToObsEdit}
+        onClose={( ) => navigation.goBack( )}
+        mediaCaptured={!!sound}
+      />
     </ViewWrapper>
   );
 };

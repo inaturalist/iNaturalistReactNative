@@ -25,6 +25,7 @@ export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as InputField } from "./InputField";
 export { default as KebabMenu } from "./KebabMenu";
 export { default as Map } from "./Map";
+export { default as MediaNavButtons } from "./MediaNavButtons";
 export { default as Modal } from "./Modal";
 export { default as Mortal } from "./Mortal";
 export { default as ObservationLocation } from "./ObservationLocation";

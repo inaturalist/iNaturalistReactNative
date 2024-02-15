@@ -1640,3 +1640,15 @@ Identification-options = Identification options
 
 Map-Area = Map Area
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
+
+# Imperative verb for recording a sound
+Record-verb = Record
+
+# Accessibility hint for button that starts recording a sound
+Starts-recording-sound = Starts recording sound
+
+# Imperative verb for pausing the recording of a sound
+Pause-verb = Pause
+
+# Accessibility hint for a button that pauses the recording of a sound
+Pauses-recording-sound = Pauses recording sound

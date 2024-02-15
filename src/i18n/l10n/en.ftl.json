@@ -1210,5 +1210,21 @@
     "val": "Identification options"
   },
   "Map-Area": "Map Area",
-  "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA"
+  "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Record"
+  },
+  "Starts-recording-sound": {
+    "comment": "Accessibility hint for button that starts recording a sound",
+    "val": "Starts recording sound"
+  },
+  "Pause-verb": {
+    "comment": "Imperative verb for pausing the recording of a sound",
+    "val": "Pause"
+  },
+  "Pauses-recording-sound": {
+    "comment": "Accessibility hint for a button that pauses the recording of a sound",
+    "val": "Pauses recording sound"
+  }
 }
