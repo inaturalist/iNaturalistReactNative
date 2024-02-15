@@ -40,7 +40,10 @@ const CameraNavButtons = ( {
   rotatableAnimatedStyle,
   handleCheckmarkPress
 }: Props ): Node => !isTablet && (
-  <View className="h-32 flex-row justify-between items-center">
+  <View
+    className="h-32 flex-row justify-between items-center"
+    testID="CameraNavButtons"
+  >
     <CloseButton
       handleClose={handleClose}
       width="33%"
