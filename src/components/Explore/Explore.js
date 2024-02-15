@@ -39,7 +39,6 @@ type Props = {
   isOnline: boolean,
   openFiltersModal: Function,
   queryParams: Object,
-  region: Object,
   showFiltersModal: boolean,
   updateCount: Function,
   updateTaxon: Function
@@ -53,7 +52,6 @@ const Explore = ( {
   isOnline,
   openFiltersModal,
   queryParams,
-  region,
   showFiltersModal,
   updateCount,
   updateTaxon
@@ -109,7 +107,6 @@ const Explore = ( {
               <ObservationsView
                 queryParams={queryParams}
                 layout={layout}
-                region={region}
               />
             )}
             {exploreView === "species" && (

@@ -70,6 +70,7 @@ type Props = {
   mapViewClassName?: string,
   mapViewRef?: Object,
   mapType?: string,
+  minZoomLevel?: number,
   obscured?: boolean,
   obsLatitude: number,
   obsLongitude: number,
@@ -113,6 +114,7 @@ const Map = ( {
   mapViewClassName,
   mapViewRef: mapViewRefProp,
   mapType,
+  minZoomLevel,
   obscured,
   obsLatitude,
   obsLongitude,
@@ -324,8 +326,14 @@ const Map = ( {
         region={( region?.latitude )
           ? region
           : initialRegion}
-        onRegionChange={onRegionChange}
-        onUserLocationChange={locationChangeEvent => {
+        onRegionChange={async ( ) => {
+          if ( getMapBoundaries ) {
+            const boundaries = await mapViewRef?.current?.getMapBoundaries( );
+            getMapBoundaries( boundaries );
+          }
+          if ( onRegionChange ) { onRegionChange( ); }
+        }}
+        onUserLocationChange={async locationChangeEvent => {
           const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
           if (
             coordinate?.latitude
@@ -337,10 +345,6 @@ const Map = ( {
         showsUserLocation={showsUserLocation}
         loadingEnabled
         onRegionChangeComplete={async newRegion => {
-          if ( getMapBoundaries ) {
-            const boundaries = await mapViewRef?.current?.getMapBoundaries( );
-            getMapBoundaries( boundaries );
-          }
           if ( onRegionChangeComplete ) onRegionChangeComplete( newRegion );
           setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
         }}
@@ -355,6 +359,7 @@ const Map = ( {
         onMapReady={onMapReady}
         style={style}
         onPanDrag={onPanDrag}
+        minZoomLevel={minZoomLevel}
       >
         {( withPressableObsTiles || withObsTiles ) && urlTemplate && (
           <UrlTile

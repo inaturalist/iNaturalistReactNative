@@ -5,17 +5,15 @@ import type { Node } from "react";
 import React from "react";
 import { useInfiniteObservationsScroll, useIsConnected } from "sharedHooks";
 
-import MapViewContainer from "./MapViewContainer";
+import MapView from "./MapView";
 
 type Props = {
   queryParams: Object,
-  region: Object,
   layout: string
 }
 
 const ObservationsView = ( {
   queryParams,
-  region,
   layout
 }: Props ): Node => {
   const {
@@ -28,9 +26,8 @@ const ObservationsView = ( {
 
   return layout === "map"
     ? (
-      <MapViewContainer
+      <MapView
         queryParams={queryParams}
-        region={region}
         observations={observations}
       />
     )

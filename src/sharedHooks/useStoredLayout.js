@@ -17,11 +17,14 @@ const useStoredLayout = ( storageKey: string ): Object => {
   useEffect( ( ) => {
     const readLayoutFromStorage = async ( ) => {
       const storedLayout = await getStoredLayout( );
-      setLayout( storedLayout || "list" );
+      const defaultLayout = storageKey === "exploreObservationsLayout"
+        ? "map"
+        : "list";
+      setLayout( storedLayout || defaultLayout );
     };
 
     readLayoutFromStorage( );
-  }, [getStoredLayout, writeLayoutToStorage] );
+  }, [getStoredLayout, writeLayoutToStorage, storageKey] );
 
   return {
     layout,

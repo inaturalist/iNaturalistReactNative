@@ -24,6 +24,7 @@ export { default as INatIcon } from "./INatIcon";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as InputField } from "./InputField";
 export { default as KebabMenu } from "./KebabMenu";
+export { default as LocationPermissionGate } from "./LocationPermissionGate";
 export { default as Map } from "./Map";
 export { default as Modal } from "./Modal";
 export { default as Mortal } from "./Mortal";

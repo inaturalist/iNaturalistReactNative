@@ -1,12 +1,14 @@
 // @flow
 
-import { Button, Map } from "components/SharedComponents";
+import { Button, LocationPermissionGate, Map } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
+
+import useMapLocation from "./hooks/useMapLocation";
 
 const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
@@ -19,25 +21,31 @@ const getShadow = shadowColor => getShadowStyle( {
 
 type Props = {
   observations: Array<Object>,
-  onPanDrag: Function,
-  redoSearchInMapArea: Function,
-  region: Object,
-  tileMapParams: Object,
-  showMapBoundaryButton: boolean,
-  updateMapBoundaries: Function
+  queryParams: Object
 }
 
 const MapView = ( {
   observations,
-  onPanDrag,
-  redoSearchInMapArea,
-  region,
-  tileMapParams,
-  showMapBoundaryButton,
-  updateMapBoundaries
+  queryParams: tileMapParams
 }: Props ): Node => {
-  const { t } = useTranslation( );
   const theme = useTheme( );
+  const { t } = useTranslation( );
+
+  const {
+    onPanDrag,
+    onPermissionGranted,
+    permissionRequested,
+    redoSearchInMapArea,
+    region,
+    showMapBoundaryButton,
+    startAtUserLocation,
+    updateMapBoundaries
+  } = useMapLocation( );
+
+  // check location permissions before loading map
+  if ( startAtUserLocation === null ) {
+    return null;
+  }
 
   return (
     <>
@@ -60,6 +68,7 @@ const MapView = ( {
         currentLocationButtonClassName="left-5 bottom-20"
         getMapBoundaries={updateMapBoundaries}
         mapViewClassName="-mt-4"
+        minZoomLevel={startAtUserLocation && 10}
         observations={observations}
         onPanDrag={onPanDrag}
         region={region}
@@ -67,9 +76,15 @@ const MapView = ( {
         showExplore
         showSwitchMapTypeButton
         showsCompass={false}
+        startAtUserLocation={startAtUserLocation}
         switchMapTypeButtonClassName="left-20 bottom-20"
         tileMapParams={tileMapParams}
         withPressableObsTiles={tileMapParams !== null}
+      />
+      <LocationPermissionGate
+        permissionNeeded={permissionRequested}
+        onPermissionGranted={onPermissionGranted}
+        withoutNavigation
       />
     </>
   );

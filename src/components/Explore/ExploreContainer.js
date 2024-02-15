@@ -19,8 +19,6 @@ import { useAuthenticatedQuery, useCurrentUser, useIsConnected } from "sharedHoo
 
 import Explore from "./Explore";
 
-const DELTA = 0.2;
-
 const mapParamsToAPI = ( params, currentUser ) => {
   const RESEARCH = "research";
   const NEEDS_ID = "needs_id";
@@ -163,12 +161,6 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const { state, dispatch, makeSnapshot } = useExplore();
 
-  const [region, setRegion] = useState( {
-    latitude: 0.0,
-    longitude: 0.0,
-    latitudeDelta: DELTA,
-    longitudeDelta: DELTA
-  } );
   const [showFiltersModal, setShowFiltersModal] = useState( false );
   const [exploreView, setExploreView] = useState( "observations" );
 
@@ -192,13 +184,6 @@ const ExploreContainerWithContext = ( ): Node => {
       } );
     }
     if ( params?.place ) {
-      const { coordinates } = params.place.point_geojson;
-      setRegion( {
-        latitude: coordinates[1],
-        longitude: coordinates[0],
-        latitudeDelta: DELTA,
-        longitudeDelta: DELTA
-      } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         placeId: params.place?.id,
@@ -267,12 +252,14 @@ const ExploreContainerWithContext = ( ): Node => {
     ["searchObservations", paramsTotalResults],
     optsWithAuth => searchObservations( paramsTotalResults, optsWithAuth )
   );
+  const totalResults = data && data.total_results;
 
   useEffect( ( ) => {
-    if ( data?.total_results && count.observations !== data?.total_results ) {
-      updateCount( { observations: data?.total_results } );
+    if ( !totalResults ) { return; }
+    if ( totalResults && count.observations !== totalResults ) {
+      updateCount( { observations: totalResults } );
     }
-  }, [data?.total_results, updateCount, count] );
+  }, [totalResults, updateCount, count] );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -290,7 +277,6 @@ const ExploreContainerWithContext = ( ): Node => {
       isOnline={isOnline}
       openFiltersModal={openFiltersModal}
       queryParams={queryParams}
-      region={region}
       showFiltersModal={showFiltersModal}
       updateCount={updateCount}
       updateTaxon={updateTaxon}
