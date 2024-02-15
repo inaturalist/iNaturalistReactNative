@@ -88,14 +88,10 @@ describe( "MyObservations", ( ) => {
     } );
 
     beforeEach( async ( ) => {
-      safeRealmWrite( global.mockRealms[__filename], ( ) => {
-        global.mockRealms[__filename].deleteAll( );
-      }, "delete realm, MyObservations integration test when signed in" );
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
     afterEach( ( ) => {
-      jest.clearAllMocks( );
       signOut( { realm: global.mockRealms[__filename] } );
     } );
 
@@ -143,16 +139,14 @@ describe( "MyObservations", ( ) => {
         }, "write local observation, MyObservations integration test with unsynced observations" );
       } );
 
-      afterEach( ( ) => {
-        jest.clearAllMocks( );
-      } );
-
       it( "should make a request to observations/updates", async ( ) => {
         // Let's make sure the mock hasn't already been used
         expect( inatjs.observations.updates ).not.toHaveBeenCalled();
         renderAppWithComponent( <MyObservationsContainer /> );
         expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
-        expect( inatjs.observations.updates ).toHaveBeenCalled();
+        await waitFor( ( ) => {
+          expect( inatjs.observations.updates ).toHaveBeenCalled( );
+        } );
       } );
 
       it( "renders grid view on button press", async () => {
@@ -204,6 +198,10 @@ describe( "MyObservations", ( ) => {
           `UploadIcon.start.${mockObservations[1].uuid}`
         );
         expect( secondUploadIcon ).toBeVisible( );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /1 observation uploaded/ );
+          expect( toolbarText ).toBeVisible( );
+        } );
       } );
 
       it( "displays upload in progress status when toolbar tapped", async () => {
@@ -222,6 +220,10 @@ describe( "MyObservations", ( ) => {
         mockObservations.forEach( obs => {
           const uploadInProgressIcon = screen.getByTestId( `UploadIcon.progress.${obs.uuid}` );
           expect( uploadInProgressIcon ).toBeVisible( );
+        } );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /2 observations uploaded/ );
+          expect( toolbarText ).toBeVisible( );
         } );
       } );
     } );
@@ -333,14 +335,17 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "localization for current user", ( ) => {
-    beforeEach( ( ) => {
-      safeRealmWrite( global.mockRealms[__filename], ( ) => {
-        global.mockRealms[__filename].deleteAll( );
-      }, "delete all, MyObservations integration test, localization for current user" );
-    } );
+    // beforeEach( ( ) => {
+    //   safeRealmWrite( global.mockRealms[__filename], ( ) => {
+    //     global.mockRealms[__filename].deleteAll( );
+    //   }, "delete all, MyObservations integration test, localization for current user" );
+    // } );
 
-    afterEach( ( ) => {
-      jest.clearAllMocks( );
+    // afterEach( ( ) => {
+    //   jest.clearAllMocks( );
+    // } );
+    afterEach( async ( ) => {
+      signOut( { realm: global.mockRealms[__filename] } );
     } );
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser", {
