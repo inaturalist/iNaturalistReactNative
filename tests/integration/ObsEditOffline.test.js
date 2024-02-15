@@ -5,38 +5,22 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
 import fetchMock from "jest-fetch-mock";
-import os from "os";
-import path from "path";
 import React from "react";
-import Realm from "realm";
-import realmConfig from "realmModels/index";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderAppWithComponent } from "tests/helpers/render";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
 const initialStoreState = useStore.getState( );
 
-// REALM SETUP
-const mockRealmConfig = {
-  schema: realmConfig.schema,
-  schemaVersion: realmConfig.schemaVersion,
-  // No need to actually write to disk
-  inMemory: true,
-  // For an in memory db path is basically a unique identifier, *but* Realm
-  // may still write some metadata to disk, so this needs to be a real, but
-  // temporary, path. In theory this should prevent this test from
-  // interacting with other tests
-  path: path.join( os.tmpdir( ), `${path.basename( __filename )}.realm` )
-};
-
-// Mock the config so that all code that runs during this test talks to the same database
-jest.mock( "realmModels/index", ( ) => ( {
-  __esModule: true,
-  default: mockRealmConfig
-} ) );
-
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
   return {
@@ -44,24 +28,13 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[__filename]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
     }
   };
 } );
-
-// Open a realm connection and stuff it in global
-beforeAll( async ( ) => {
-  global.mockRealms = global.mockRealms || {};
-  global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
-  useStore.setState( initialStoreState, true );
-} );
-
-// Ensure the realm connection gets closed
-afterAll( ( ) => {
-  global.mockRealms[__filename]?.close( );
-  jest.clearAllMocks( );
-} );
-// /REALM SETUP
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
 beforeEach( async ( ) => {
   useStore.setState( initialStoreState, true );

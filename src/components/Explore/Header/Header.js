@@ -115,7 +115,7 @@ const Header = ( {
             </View>
             <Pressable
               accessibilityRole="button"
-              className="flex-row items-center justify-center"
+              className="flex-row items-center"
               onPress={( ) => navigation.navigate( "ExploreLocationSearch" )}
             >
               <INatIcon name="location" size={15} />
