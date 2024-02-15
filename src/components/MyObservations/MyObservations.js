@@ -81,7 +81,7 @@ const MyObservations = ( {
             uploadSingleObservation={uploadSingleObservation}
             uploadState={uploadState}
             renderHeader={(
-              <Announcements currentUser={currentUser} isOnline={isOnline} />
+              <Announcements isOnline={isOnline} />
             )}
           />
         )}
