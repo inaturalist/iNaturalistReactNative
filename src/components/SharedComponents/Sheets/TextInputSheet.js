@@ -41,7 +41,6 @@ const TextInputSheet = ( {
     fontSize: 14,
     lineHeight: 17,
     color: theme.colors.primary,
-    marginBottom: 1,
     textAlignVertical: "top"
   } ), [theme] );
 
