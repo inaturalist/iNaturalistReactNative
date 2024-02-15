@@ -44,6 +44,7 @@ exports[`Checkbox renders reliably 1`] = `
       "borderWidth": 2,
     }
   }
+  isChecked={false}
   onBlur={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
