@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import { Heading4 } from "components/SharedComponents";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
   CAMERA_PERMISSIONS
@@ -22,6 +23,10 @@ import React from "react";
 import SharedStackScreens from "./SharedStackScreens";
 
 const Stack = createNativeStackNavigator( );
+
+const soundRecorderTitle = ( ) => (
+  <Heading4 className="text-white">{t( "RECORD-NEW-SOUND" )}</Heading4>
+);
 
 const CameraContainerWithPermission = ( ) => (
   <PermissionGateContainer
@@ -95,7 +100,13 @@ const AddObsStackNavigator = ( ): Node => (
         name="SoundRecorder"
         component={SoundRecorderWithPermission}
         options={{
-          title: t( "Record-new-sound" )
+          headerTitle: soundRecorderTitle,
+          unmountOnBlur: true,
+          headerTintColor: "white",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "black"
+          }
         }}
       />
     </Stack.Group>

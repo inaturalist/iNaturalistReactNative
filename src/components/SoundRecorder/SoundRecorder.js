@@ -11,7 +11,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, StatusBar } from "react-native";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import Observation from "realmModels/Observation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -188,6 +188,7 @@ const SoundRecorder = (): Node => {
 
   return (
     <ViewWrapper wrapperClassName="bg-black justify-between">
+      <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-1 items-center justify-center">
         <Heading1 className="text-white">
           {sound.recordTime}

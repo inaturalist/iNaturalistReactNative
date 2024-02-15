@@ -778,6 +778,7 @@ Read-more-on-Wikipedia = Read more on Wikipedia
 Recently-observed = Recently observed
 
 Record-new-sound = Record new sound
+RECORD-NEW-SOUND = RECORD NEW SOUND
 
 Recording-Sound = Recording Sound
 
