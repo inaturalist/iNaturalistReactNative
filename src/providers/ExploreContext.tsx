@@ -1,4 +1,5 @@
 import * as React from "react";
+import { LatLng } from "react-native-maps";
 
 export enum EXPLORE_ACTION {
   DISCARD = "DISCARD",
@@ -126,6 +127,14 @@ export enum PHOTO_LICENSE {
   CCBYNCND = "CCBYNCND",
 }
 
+interface MapBoundaries {
+  swlat: LatLng["latitude"],
+  swlng: LatLng["longitude"],
+  nelat: LatLng["latitude"],
+  nelng: LatLng["longitude"],
+  place_guess: string
+}
+
 type CountProviderProps = {children: React.ReactNode}
 type State = {
   verifiable: boolean,
@@ -162,7 +171,7 @@ type State = {
   wildStatus: WILD_STATUS,
   reviewedFilter: REVIEWED,
   photoLicense: PHOTO_LICENSE,
-  mapBoundaries: Object
+  mapBoundaries: MapBoundaries
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
@@ -189,7 +198,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
-  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: Object}
+  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
 type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
