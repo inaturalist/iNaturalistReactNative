@@ -239,6 +239,12 @@ const DetailsTab = ( { observation }: Props ): Node => {
 
       <View className={sectionClass}>
         <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
+        <Heading4 className={headingClass}>
+          {
+          // eslint-disable-next-line i18next/no-literal-string
+          }
+          TODO: this section does nothing
+        </Heading4>
         <Button text={t( "VIEW-PROJECTS" )} />
       </View>
 
