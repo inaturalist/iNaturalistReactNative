@@ -31,6 +31,12 @@ describe( "Checkbox", () => {
     expect( screen ).toMatchSnapshot( );
   } );
 
+  it( "renders reliably being checked", () => {
+    render( <Checkbox text="Checkmark text" isChecked /> );
+
+    expect( screen ).toMatchSnapshot();
+  } );
+
   it( "has no accessibility errors", () => {
     const checkbox = <Checkbox text="Checkmark text" isChecked />;
 
