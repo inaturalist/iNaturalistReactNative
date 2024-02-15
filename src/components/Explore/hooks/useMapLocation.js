@@ -50,8 +50,6 @@ const useMapLocation = ( ): Object => {
       place_guess: t( "Map-Area" )
     };
 
-    logger.info( "setting local map boundaries: ", boundaryAPIParams );
-
     setMapBoundaries( boundaryAPIParams );
   };
 
