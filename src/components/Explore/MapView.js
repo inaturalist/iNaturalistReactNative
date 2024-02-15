@@ -42,11 +42,6 @@ const MapView = ( {
     updateMapBoundaries
   } = useMapLocation( );
 
-  // check location permissions before loading map
-  if ( startAtUserLocation === null ) {
-    return null;
-  }
-
   return (
     <>
       <View className="z-10">
@@ -64,23 +59,25 @@ const MapView = ( {
           </View>
         )}
       </View>
-      <Map
-        currentLocationButtonClassName="left-5 bottom-20"
-        getMapBoundaries={updateMapBoundaries}
-        mapViewClassName="-mt-4"
-        minZoomLevel={startAtUserLocation && 10}
-        observations={observations}
-        onPanDrag={onPanDrag}
-        region={region}
-        showCurrentLocationButton
-        showExplore
-        showSwitchMapTypeButton
-        showsCompass={false}
-        startAtUserLocation={startAtUserLocation}
-        switchMapTypeButtonClassName="left-20 bottom-20"
-        tileMapParams={tileMapParams}
-        withPressableObsTiles={tileMapParams !== null}
-      />
+      {startAtUserLocation !== null && (
+        <Map
+          currentLocationButtonClassName="left-5 bottom-20"
+          getMapBoundaries={updateMapBoundaries}
+          mapViewClassName="-mt-4"
+          minZoomLevel={startAtUserLocation && 10}
+          observations={observations}
+          onPanDrag={onPanDrag}
+          region={region}
+          showCurrentLocationButton
+          showExplore
+          showSwitchMapTypeButton
+          showsCompass={false}
+          startAtUserLocation={startAtUserLocation}
+          switchMapTypeButtonClassName="left-20 bottom-20"
+          tileMapParams={tileMapParams}
+          withPressableObsTiles={tileMapParams !== null}
+        />
+      )}
       <LocationPermissionGate
         permissionNeeded={permissionRequested}
         onPermissionGranted={onPermissionGranted}

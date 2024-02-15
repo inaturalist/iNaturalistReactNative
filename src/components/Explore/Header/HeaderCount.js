@@ -39,17 +39,16 @@ const HeaderCount = ( {
 
   return (
     <View className="h-[40px] flex-row items-center justify-center">
-      {count
-        && (
-          <>
-            <INatIcon
-              name={exploreViewIcon}
-              size={18}
-              color={theme.colors.onPrimary}
-            />
-            <Body2 className="text-white ml-3">{renderText( )}</Body2>
-          </>
-        )}
+      {count !== null && (
+        <>
+          <INatIcon
+            name={exploreViewIcon}
+            size={18}
+            color={theme.colors.onPrimary}
+          />
+          <Body2 className="text-white ml-3">{renderText( )}</Body2>
+        </>
+      )}
     </View>
   );
 };

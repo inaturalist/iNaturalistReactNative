@@ -29,7 +29,7 @@ const useMapLocation = ( ): Object => {
   const { state, dispatch } = useExplore( );
   const [mapBoundaries, setMapBoundaries] = useState( null );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
-  const [permissionRequested, setPermissionRequested] = useState( false );
+  const [permissionRequested, setPermissionRequested] = useState( null );
   const [permissionsGranted, setPermissionsGranted] = useState( null );
   const [region, setRegion] = useState( {
     latitude: 0.0,
@@ -78,6 +78,15 @@ const useMapLocation = ( ): Object => {
           localPrefs.explore_location_permission_shown = true;
         }
       }, "setting explore location permission shown to true in ExploreContainer" );
+    } else {
+      const checkLocationPermissions = async ( ) => {
+        const permissionResult = permissionResultFromMultiple(
+          await checkMultiple( LOCATION_PERMISSIONS )
+        );
+        logger.info( "location permissions:", permissionResult );
+        setPermissionsGranted( permissionResult === "granted" );
+      };
+      checkLocationPermissions( );
     }
   }, [realm] );
 
@@ -101,19 +110,6 @@ const useMapLocation = ( ): Object => {
     setPermissionRequested( false );
     setPermissionsGranted( true );
   }, [setPermissionRequested, setPermissionsGranted] );
-
-  useEffect( ( ) => {
-    const checkLocationPermissions = async ( ) => {
-      const permissionResult = permissionResultFromMultiple(
-        await checkMultiple( LOCATION_PERMISSIONS )
-      );
-      logger.info( "location permissions:", permissionResult );
-      if ( permissionResult === "granted" ) {
-        setPermissionsGranted( true );
-      }
-    };
-    checkLocationPermissions( );
-  }, [] );
 
   useEffect( ( ) => {
     if ( permissionsGranted && mapBoundaries ) {

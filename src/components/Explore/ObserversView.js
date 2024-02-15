@@ -50,7 +50,7 @@ const ObserversView = ( {
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
-    if ( totalResults && count.observers !== totalResults ) {
+    if ( count.observers !== totalResults ) {
       updateCount( { observers: totalResults } );
     }
   }, [totalResults, updateCount, count] );
