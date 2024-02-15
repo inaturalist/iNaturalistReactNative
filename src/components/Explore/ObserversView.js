@@ -22,7 +22,6 @@ const ObserversView = ( {
   queryParams,
   updateCount
 }: Props ): Node => {
-  console.log( queryParams, "query params" );
   const {
     data,
     isFetchingNextPage,

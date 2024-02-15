@@ -107,8 +107,8 @@ const useMapLocation = ( ): Object => {
       const permissionResult = permissionResultFromMultiple(
         await checkMultiple( LOCATION_PERMISSIONS )
       );
+      logger.info( "location permissions:", permissionResult );
       if ( permissionResult === "granted" ) {
-        logger.info( "location permissions were granted" );
         setPermissionsGranted( true );
       }
     };
@@ -142,7 +142,7 @@ const useMapLocation = ( ): Object => {
     redoSearchInMapArea,
     region,
     showMapBoundaryButton,
-    startAtUserLocation: permissionsGranted,
+    startAtUserLocation: permissionsGranted && !place,
     updateMapBoundaries
   };
 };

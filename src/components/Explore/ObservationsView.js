@@ -8,13 +8,13 @@ import { useInfiniteObservationsScroll, useIsConnected } from "sharedHooks";
 import MapView from "./MapView";
 
 type Props = {
-  queryParams: Object,
-  layout: string
+  layout: string,
+  queryParams: Object
 }
 
 const ObservationsView = ( {
-  queryParams,
-  layout
+  layout,
+  queryParams
 }: Props ): Node => {
   const {
     observations, isFetchingNextPage, fetchNextPage, status
@@ -27,8 +27,8 @@ const ObservationsView = ( {
   return layout === "map"
     ? (
       <MapView
-        queryParams={queryParams}
         observations={observations}
+        queryParams={queryParams}
       />
     )
     : (

@@ -11,7 +11,7 @@ import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  count?: ?number,
+  count: ?number,
   exploreView: string,
   exploreViewIcon: string
 }

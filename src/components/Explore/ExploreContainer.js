@@ -1,7 +1,6 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
-import { searchObservations } from "api/observations";
 import {
   ESTABLISHMENT_MEAN,
   EXPLORE_ACTION,
@@ -14,10 +13,11 @@ import {
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
-import { useAuthenticatedQuery, useCurrentUser, useIsConnected } from "sharedHooks";
+import React, { useEffect, useState } from "react";
+import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
+import useHeaderCount from "./hooks/useHeaderCount";
 
 const mapParamsToAPI = ( params, currentUser ) => {
   const RESEARCH = "research";
@@ -152,13 +152,6 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const currentUser = useCurrentUser();
 
-  const [count, setCount] = useState( {
-    observations: null,
-    species: null,
-    observers: null,
-    identifiers: null
-  } );
-
   const { state, dispatch, makeSnapshot } = useExplore();
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
@@ -219,13 +212,6 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   };
 
-  const updateCount = useCallback( newCount => {
-    setCount( {
-      ...count,
-      ...newCount
-    } );
-  }, [count] );
-
   const filteredParams = mapParamsToAPI(
     state,
     currentUser
@@ -240,26 +226,7 @@ const ExploreContainerWithContext = ( ): Node => {
   }
   delete queryParams.taxon_name;
 
-  const paramsTotalResults = {
-    ...filteredParams,
-    per_page: 0
-  };
-
-  // 011224 amanda - we might eventually want to fetch this from useInfiniteObservationsScroll
-  // instead of making a separate query, but per_page = 0 should make this extra query a low
-  // performance cost
-  const { data } = useAuthenticatedQuery(
-    ["searchObservations", paramsTotalResults],
-    optsWithAuth => searchObservations( paramsTotalResults, optsWithAuth )
-  );
-  const totalResults = data && data.total_results;
-
-  useEffect( ( ) => {
-    if ( !totalResults ) { return; }
-    if ( totalResults && count.observations !== totalResults ) {
-      updateCount( { observations: totalResults } );
-    }
-  }, [totalResults, updateCount, count] );
+  const { count, updateCount } = useHeaderCount( filteredParams );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
