@@ -47,8 +47,6 @@ const useHeaderCount = ( filteredParams: Object ): Object => {
 
   const memoizedCount = useMemo( ( ) => count, [count] );
 
-  console.log( memoizedCount, "memoized count" );
-
   return {
     count: memoizedCount,
     updateCount
