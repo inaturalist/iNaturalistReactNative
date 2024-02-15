@@ -1,6 +1,5 @@
 // @flow
 
-import { searchObservations } from "api/observations";
 import classnames from "classnames";
 import {
   BottomSheet,
@@ -9,10 +8,10 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTheme } from "react-native-paper";
 import {
-  useAuthenticatedQuery, useTranslation
+  useTranslation
 } from "sharedHooks";
 import useStoredLayout from "sharedHooks/useStoredLayout";
 
@@ -24,48 +23,45 @@ import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
+// TODO: observers and identifiers icons need replacement
+const exploreViewIcon = {
+  observations: "binoculars",
+  species: "leaf",
+  observers: "person",
+  identifiers: "person"
+};
+
 type Props = {
   changeExploreView: Function,
-  exploreAPIParams: Object,
+  closeFiltersModal: Function,
+  count: Object,
   exploreView: string,
   isOnline: boolean,
-  region: Object,
-  updateTaxon: Function,
-  updatePlace: Function,
-  showFiltersModal: boolean,
   openFiltersModal: Function,
-  closeFiltersModal: Function,
+  queryParams: Object,
+  region: Object,
+  showFiltersModal: boolean,
+  updateCount: Function,
+  updateTaxon: Function
 }
 
 const Explore = ( {
   changeExploreView,
-  exploreAPIParams,
+  closeFiltersModal,
+  count,
   exploreView,
   isOnline,
-  region,
-  updateTaxon,
-  updatePlace,
-  showFiltersModal,
   openFiltersModal,
-  closeFiltersModal
+  queryParams,
+  region,
+  showFiltersModal,
+  updateCount,
+  updateTaxon
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
-  const [count, setCount] = useState( {
-    observations: null,
-    species: null,
-    observers: null,
-    identifiers: null
-  } );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
-
-  const updateCount = useCallback( newCount => {
-    setCount( {
-      ...count,
-      ...newCount
-    } );
-  }, [count] );
 
   const exploreViewText = {
     observations: t( "OBSERVATIONS" ),
@@ -74,45 +70,11 @@ const Explore = ( {
     identifiers: t( "IDENTIFIERS" )
   };
 
-  // TODO: observers and identifiers icons need replacement
-  const exploreViewIcon = {
-    observations: "binoculars",
-    species: "leaf",
-    observers: "person",
-    identifiers: "person"
-  };
-
-  const queryParams = {
-    ...exploreAPIParams,
-    per_page: 20
-  };
-  delete queryParams.taxon_name;
-
-  const paramsTotalResults = {
-    ...exploreAPIParams,
-    per_page: 0
-  };
-
-  // 011224 amanda - we might eventually want to fetch this from useInfiniteObservationsScroll
-  // instead of making a separate query, but per_page = 0 should make this extra query a low
-  // performance cost
-  const { data } = useAuthenticatedQuery(
-    ["searchObservations"],
-    optsWithAuth => searchObservations( paramsTotalResults, optsWithAuth )
-  );
-
-  useEffect( ( ) => {
-    if ( data?.total_results && count.observations !== data?.total_results ) {
-      updateCount( { observations: data?.total_results } );
-    }
-  }, [data?.total_results, updateCount, count] );
-
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
-      updatePlace={updatePlace}
       updateTaxon={updateTaxon}
       openFiltersModal={openFiltersModal}
     />
@@ -145,7 +107,7 @@ const Explore = ( {
             />
             {exploreView === "observations" && (
               <ObservationsView
-                exploreAPIParams={exploreAPIParams}
+                queryParams={queryParams}
                 layout={layout}
                 region={region}
               />

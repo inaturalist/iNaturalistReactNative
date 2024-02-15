@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
   Body3,
@@ -23,28 +24,25 @@ type Props = {
   count?: ?number,
   exploreView: string,
   exploreViewIcon: string,
-  updatePlace: Function,
-  updateTaxon: Function,
   openFiltersModal: Function,
+  updateTaxon: Function
 }
 
 const Header = ( {
   count,
   exploreView,
   exploreViewIcon,
-  updatePlace,
-  updateTaxon,
-  openFiltersModal
+  openFiltersModal,
+  updateTaxon
 }: Props ): Node => {
+  const navigation = useNavigation( );
   const { t } = useTranslation( );
   const taxonInput = useRef( );
-  const placeInput = useRef( );
   const theme = useTheme( );
   const { state, dispatch } = useExplore( );
   const taxonName = state.taxon_name;
-  const placeName = state.place_guess;
+  const placeName = state.place_guess || t( "Worldwide" );
   const [hideTaxonResults, setHideTaxonResults] = useState( true );
-  const [hidePlaceResults, setHidePlaceResults] = useState( true );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
@@ -61,18 +59,6 @@ const Header = ( {
         fields: {
           taxon: Taxon.TAXON_FIELDS
         }
-      },
-      optsWithAuth
-    )
-  );
-
-  const { data: placeList } = useAuthenticatedQuery(
-    ["fetchSearchResults", placeName],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: placeName,
-        sources: "places",
-        fields: "place,place.display_name,place.point_geojson"
       },
       optsWithAuth
     )
@@ -127,42 +113,14 @@ const Header = ( {
                 </Pressable>
               ) )}
             </View>
-            <View className="flex-row items-center">
+            <Pressable
+              accessibilityRole="button"
+              className="flex-row items-center"
+              onPress={( ) => navigation.navigate( "ExploreLocationSearch" )}
+            >
               <INatIcon name="location" size={15} />
-              <SearchBar
-                handleTextChange={placeText => {
-                  if ( placeInput?.current?.isFocused( ) ) {
-                    setHidePlaceResults( false );
-                    dispatch( {
-                      type: EXPLORE_ACTION.SET_PLACE,
-                      placeId: null,
-                      placeName: placeText
-                    } );
-                  }
-                }}
-                value={placeName}
-                placeholder={t( "Worldwide" )}
-                testID="Explore.placeSearch"
-                containerClass="w-[250px]"
-                input={placeInput}
-              />
-            </View>
-            <View className="bg-white">
-              {!hidePlaceResults && placeList?.map( place => (
-                <Pressable
-                  accessibilityRole="button"
-                  key={place.id}
-                  className="p-2 border-[0.5px] border-lightGray flex-row items-center"
-                  onPress={( ) => {
-                    updatePlace( place );
-                    setHidePlaceResults( true );
-                    Keyboard.dismiss( );
-                  }}
-                >
-                  <Body3 className="ml-2">{place?.display_name}</Body3>
-                </Pressable>
-              ) )}
-            </View>
+              <Body3 className="m-3">{placeName}</Body3>
+            </Pressable>
           </View>
           <INatIconButton
             icon="sliders"

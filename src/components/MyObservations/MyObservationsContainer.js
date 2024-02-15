@@ -7,6 +7,7 @@ import {
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { format } from "date-fns";
+import { navigationRef } from "navigation/navigationUtils";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -20,6 +21,7 @@ import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
 import { log } from "sharedHelpers/logger";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useCurrentUser,
@@ -122,11 +124,13 @@ const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
   const navigation = useNavigation( );
+  const { params } = useRoute( );
   const { t } = useTranslation( );
   const realm = useRealm( );
+  const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
-  const { observationList: observations, allObsToUpload } = useLocalObservations( );
+  const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const isOnline = useIsConnected( );
@@ -168,6 +172,18 @@ const MyObservationsContainer = ( ): Node => {
       ? "list"
       : "grid" );
   };
+
+  useEffect( () => {
+    if ( navigationRef && navigationRef.isReady() ) {
+      if ( params && params.navToObsDetails ) {
+        // We wrap this in a setTimeout, since otherwise this routing doesn't work immediately
+        // when loading this screen
+        setTimeout( () => {
+          navigation.navigate( "ObsDetails", { uuid: params.uuid } );
+        }, 100 );
+      }
+    }
+  }, [navigation, params] );
 
   useEffect( ( ) => {
     // show progress in toolbar for observations uploaded on ObsEdit
@@ -295,12 +311,12 @@ const MyObservationsContainer = ( ): Node => {
 
   const downloadRemoteObservationsFromServer = useCallback( async ( ) => {
     const apiToken = await getJWT( );
-    const params = {
+    const searchParams = {
       user_id: currentUser?.id,
       per_page: 50,
       fields: Observation.FIELDS
     };
-    const { results } = await searchObservations( params, { api_token: apiToken } );
+    const { results } = await searchObservations( searchParams, { api_token: apiToken } );
 
     Observation.upsertRemoteObservations( results, realm );
   }, [currentUser, realm] );
@@ -309,10 +325,10 @@ const MyObservationsContainer = ( ): Node => {
   const syncRemoteDeletedObservations = useCallback( async ( ) => {
     const apiToken = await getJWT( );
     const lastSyncTime = realm.objects( "LocalPreferences" )?.[0]?.last_sync_time;
-    const params = { since: format( new Date( ), "yyyy-MM-dd" ) };
+    const deletedParams = { since: format( new Date( ), "yyyy-MM-dd" ) };
     if ( lastSyncTime ) {
       try {
-        params.since = format( lastSyncTime, "yyyy-MM-dd" );
+        deletedParams.since = format( lastSyncTime, "yyyy-MM-dd" );
       } catch ( lastSyncTimeFormatError ) {
         if ( lastSyncTimeFormatError instanceof RangeError ) {
           // If we can't parse that date, assume we've never synced and use the default
@@ -321,33 +337,29 @@ const MyObservationsContainer = ( ): Node => {
         }
       }
     }
-    const response = await checkForDeletedObservations( params, { api_token: apiToken } );
+    const response = await checkForDeletedObservations( deletedParams, { api_token: apiToken } );
     const deletedObservations = response?.results;
     if ( !deletedObservations ) { return; }
     if ( deletedObservations?.length > 0 ) {
-      realm.write( ( ) => {
-        deletedObservations.forEach( observationId => {
-          const localObsToDelete = realm.objects( "Observation" )
-            .filtered( `id == ${observationId}` );
-          realm.delete( localObsToDelete );
+      safeRealmWrite( realm, ( ) => {
+        const localObservationsToDelete = realm.objects( "Observation" )
+          .filtered( `id IN { ${deletedObservations} }` );
+        localObservationsToDelete.forEach( observation => {
+          realm.delete( observation );
         } );
-      } );
+      }, "deleting remote deleted observations in MyObservationsContainer" );
     }
   }, [realm] );
 
   const updateSyncTime = useCallback( ( ) => {
-    const currentSyncTime = new Date( );
-    realm.write( ( ) => {
-      const localPrefs = realm.objects( "LocalPreferences" )[0];
-      if ( !localPrefs ) {
-        realm.create( "LocalPreferences", {
-          ...localPrefs,
-          last_sync_time: currentSyncTime
-        } );
-      } else {
-        localPrefs.last_sync_time = currentSyncTime;
-      }
-    } );
+    const localPrefs = realm.objects( "LocalPreferences" )[0];
+    const updatedPrefs = {
+      ...localPrefs,
+      last_sync_time: new Date( )
+    };
+    safeRealmWrite( realm, ( ) => {
+      realm.create( "LocalPreferences", updatedPrefs, "modified" );
+    }, "updating sync time in MyObservationsContainer" );
   }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {

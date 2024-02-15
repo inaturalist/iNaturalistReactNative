@@ -1,11 +1,16 @@
 // @flow
 import { fetchUserMe } from "api/users";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useIsConnected from "sharedHooks/useIsConnected";
+import { RealmContext } from "providers/contexts";
+import { useEffect } from "react";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { useAuthenticatedQuery, useCurrentUser, useIsConnected } from "sharedHooks";
 
-const useUserMe = ( ): Object => {
+const { useRealm } = RealmContext;
+
+const useUserMe = ( options: ?Object ): Object => {
+  const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  const updateRealm = options?.updateRealm;
   const isConnected = useIsConnected( );
   const enabled = !!isConnected && !!currentUser;
 
@@ -20,6 +25,19 @@ const useUserMe = ( ): Object => {
       enabled
     }
   );
+
+  const userLocaleChanged = (
+    !currentUser?.locale || ( remoteUser?.locale !== currentUser?.locale )
+  )
+    && updateRealm;
+
+  useEffect( ( ) => {
+    if ( userLocaleChanged && remoteUser ) {
+      safeRealmWrite( realm, ( ) => {
+        realm.create( "User", remoteUser, "modified" );
+      }, "modifying current user via remote fetch in useUserMe" );
+    }
+  }, [realm, userLocaleChanged, remoteUser] );
 
   return {
     remoteUser,

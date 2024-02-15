@@ -11,7 +11,7 @@ import React from "react";
 
 type Props = {
   handleClose: Function,
-  withdrawOrRestoreIdentification: Function,
+  updateIdentification: Function,
   taxon: Object
 }
 
@@ -28,7 +28,7 @@ const showTaxon = taxon => {
 
 const WithdrawIDSheet = ( {
   handleClose,
-  withdrawOrRestoreIdentification,
+  updateIdentification,
   taxon
 }: Props ): Node => (
   <BottomSheet
@@ -55,7 +55,7 @@ const WithdrawIDSheet = ( {
       <Button
         text={t( "WITHDRAW-ID" )}
         onPress={( ) => {
-          withdrawOrRestoreIdentification( false );
+          updateIdentification( { current: false } );
           handleClose();
         }}
         className="mx-2 grow"

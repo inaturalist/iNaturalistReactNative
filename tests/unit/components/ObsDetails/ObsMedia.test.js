@@ -25,6 +25,28 @@ const mockPhotos = _.compact(
   Array.from( mockObservation.observationPhotos ).map( op => op.photo )
 );
 
+const expectedImageSource = [
+  {
+    height: 75,
+    uri: mockObservation.observationPhotos[0].photo.url,
+    width: 75
+  },
+  {
+    height: 240,
+    uri: mockObservation.observationPhotos[0].photo.url,
+    width: 240
+  }, {
+    height: 500,
+    uri: mockObservation.observationPhotos[0].photo.url,
+    width: 500
+  },
+  {
+    height: 1024,
+    uri: mockObservation.observationPhotos[0].photo.url,
+    width: 1024
+  }
+];
+
 describe( "ObsMedia", () => {
   beforeAll( async ( ) => {
     await initI18next( );
@@ -39,20 +61,12 @@ describe( "ObsMedia", () => {
   it( "should show photo with given url", async () => {
     render( <ObsMedia photos={mockPhotos} tablet={false} /> );
     const photo = await screen.findByTestId( "ObsMedia.photo" );
-    expect( photo.props.source ).toStrictEqual(
-      {
-        uri: mockObservation.observationPhotos[0].photo.url
-      }
-    );
+    expect( photo.props.source ).toStrictEqual( expectedImageSource );
   } );
 
   it( "should show photo with given url on tablet", async () => {
     render( <ObsMedia photos={mockPhotos} tablet /> );
     const photo = await screen.findByTestId( "ObsMedia.photo" );
-    expect( photo.props.source ).toStrictEqual(
-      {
-        uri: mockObservation.observationPhotos[0].photo.url
-      }
-    );
+    expect( photo.props.source ).toStrictEqual( expectedImageSource );
   } );
 } );

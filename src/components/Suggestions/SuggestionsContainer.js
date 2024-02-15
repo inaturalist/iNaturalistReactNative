@@ -20,6 +20,8 @@ const SuggestionsContainer = ( ): Node => {
   const [selectedTaxon, setSelectedTaxon] = useState( null );
 
   const {
+    dataUpdatedAt: onlineSuggestionsUpdatedAt,
+    error: onlineSuggestionsError,
     onlineSuggestions,
     loadingOnlineSuggestions,
     timedOut
@@ -73,6 +75,14 @@ const SuggestionsContainer = ( ): Node => {
       setSelectedPhotoUri={setSelectedPhotoUri}
       observers={observers}
       usingOfflineSuggestions={tryOfflineSuggestions && offlineSuggestions?.length > 0}
+      debugData={{
+        timedOut,
+        onlineSuggestions,
+        offlineSuggestions,
+        onlineSuggestionsError,
+        onlineSuggestionsUpdatedAt,
+        selectedPhotoUri
+      }}
     />
   );
 };

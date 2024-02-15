@@ -43,6 +43,7 @@
   "Already-have-an-account": "Already have an account? Log in",
   "Amphibians": "Amphibians",
   "An-Internet-connection-is-required": "An Internet connection is required to load more observations.",
+  "Any": "Any",
   "APPLY-FILTERS": "APPLY FILTERS",
   "Apply-filters": "Apply filters",
   "Arachnids": "Arachnids",
@@ -83,9 +84,13 @@
   "CC-BY-NC-ND": "CC BY-NC-ND",
   "CHANGE-DATE": "CHANGE DATE",
   "Change-date": "Change date",
+  "CHANGE-END-DATE": "CHANGE END DATE",
+  "Change-end-date": "Change end date",
   "Change-project": "Change project",
-  "Change-user": "Change user",
+  "CHANGE-START-DATE": "CHANGE START DATE",
+  "Change-start-date": "Change start date",
   "Change-taxon": "Change taxon",
+  "Change-user": "Change user",
   "CHECK-YOUR-EMAIL": {
     "comment": "After pressing the reset password button",
     "val": "CHECK YOUR EMAIL!"
@@ -150,6 +155,7 @@
   "DATE-OBSERVED-NEWEST": "DATE OBSERVED - NEWEST TO OLDEST",
   "DATE-OBSERVED-OLDEST": "DATE OBSERVED - OLDEST TO NEWEST",
   "Date_observed_header_short": "Observed",
+  "Date-Range": "Date Range",
   "Date-uploaded": "Date uploaded",
   "DATE-UPLOADED": "DATE UPLOADED",
   "DATE-UPLOADED-NEWEST": "DATE UPLOADED - NEWEST TO OLDEST",
@@ -219,6 +225,7 @@
   "Filters": "Filters",
   "FILTER-BY-A-PROJECT": "FILTER BY A PROJECT",
   "FILTER-BY-A-USER": "FILTER BY A USER",
+  "Filter-by-observed-between-dates": "Filter by observations observed between two specific dates",
   "Filter-by-observed-during-months": "Filter by observations observed during specific months",
   "Filter-by-observed-on-date": "Filter by observations observed on a specific date",
   "Filter-by-uploaded-on-date": "Filter by observations uploaded on a specific date",
@@ -362,6 +369,7 @@
     "val": "NOTES"
   },
   "Notifications": "Notifications",
+  "NOTIFICATIONS": "NOTIFICATIONS",
   "notifications-user-added-identification-to-observation-by-you": {
     "comment": "notification when someone adds an identification to your observation",
     "val": "<0>{ $userName }</0> added an identification to an observation by you"
@@ -545,9 +553,9 @@
   "Search-for-a-user": "Search for a user",
   "Search-for-description-tags-text": "Search for description/tags text",
   "SEARCH-LOCATION": "SEARCH LOCATION",
-  "SEARCH-PROJECT": "SEARCH PROJECT",
+  "SEARCH-PROJECTS": "SEARCH PROJECTS",
   "SEARCH-TAXA": "SEARCH TAXA",
-  "SEARCH-USER": "SEARCH USER",
+  "SEARCH-USERS": "SEARCH USERS",
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "Settings": "Settings",
@@ -572,6 +580,7 @@
     "comment": "Header for a block of text describing a taxon's conservation status",
     "val": "STATUS"
   },
+  "Start-must-be-before-end": "The start date must be before the end date.",
   "ESTABLISHMENT-MEANS-header": {
     "comment": "Header for a section describing how a taxon arrived in a given place",
     "val": "ESTABLISHMENT MEANS"
@@ -1191,5 +1200,15 @@
   "Photo-is-loading": {
     "comment": "Accessibility label when a photo is loading",
     "val": "Photo is loading"
-  }
+  },
+  "Comment-options": {
+    "comment": "Accessibility label for a button that shows options for a comment",
+    "val": "Comment options"
+  },
+  "Identification-options": {
+    "comment": "Accessibility label for a button that shows options for an identification",
+    "val": "Identification options"
+  },
+  "Map-Area": "Map Area",
+  "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA"
 }

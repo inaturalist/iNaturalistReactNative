@@ -1,4 +1,5 @@
 import { renderHook } from "@testing-library/react-native";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import useObservationUpdatesWhenFocused from "sharedHooks/useObservationUpdatesWhenFocused";
 import factory from "tests/factory";
 
@@ -16,13 +17,13 @@ const mockObservations = [
 ];
 
 describe( "useObservationUpdatesWhenFocused", () => {
-  beforeAll( async () => {
+  beforeAll( ( ) => {
     // Write mock observations to realm
-    await global.realm.write( () => {
+    safeRealmWrite( global.realm, ( ) => {
       mockObservations.forEach( o => {
         global.realm.create( "Observation", o );
       } );
-    } );
+    }, "write observations to realm, useObservationUpdatesWhenFocused test" );
   } );
 
   it( "should reset state of all observations in realm", () => {

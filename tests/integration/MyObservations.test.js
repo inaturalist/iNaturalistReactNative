@@ -8,39 +8,19 @@ import { format } from "date-fns";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
-import os from "os";
-import path from "path";
 import React from "react";
-import Realm from "realm";
-import realmConfig from "realmModels/index";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithComponent } from "tests/helpers/render";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
-// This is a bit crazy, but this ensures this test uses its own in-memory
-// database and doesn't interfere with the single, default in-memory database
-// used by other tests. In a perfect world, every parallel test worker would
-// have its own database, or at least this wouldn't be so manual, but it took
-// me long enough to figure this out. ~~~kueda 20231024
-// REALM SETUP
-const mockRealmConfig = {
-  schema: realmConfig.schema,
-  schemaVersion: realmConfig.schemaVersion,
-  // No need to actually write to disk
-  inMemory: true,
-  // For an in memory db path is basically a unique identifier, *but* Realm
-  // may still write some metadata to disk, so this needs to be a real, but
-  // temporary, path. In theory this should prevent this test from
-  // interacting with other tests
-  path: path.join( os.tmpdir( ), `${path.basename( __filename )}.realm` )
-};
-
-// Mock the config so that all code that runs during this test talks to the same database
-jest.mock( "realmModels/index", ( ) => ( {
-  __esModule: true,
-  default: mockRealmConfig
-} ) );
-
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
   return {
@@ -48,28 +28,13 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[__filename]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
     }
   };
 } );
-
-jest.mock( "components/MyObservations/Announcements", () => ( {
-  __esModule: true,
-  default: jest.fn()
-} ) );
-
-// Open a realm connection and stuff it in global
-beforeAll( async ( ) => {
-  global.mockRealms = global.mockRealms || {};
-  global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
-} );
-
-// Ensure the realm connection gets closed
-afterAll( ( ) => {
-  global.mockRealms[__filename]?.close( );
-  jest.clearAllMocks( );
-} );
-// /REALM SETUP
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
 describe( "MyObservations", ( ) => {
   beforeAll( async ( ) => {
@@ -123,9 +88,9 @@ describe( "MyObservations", ( ) => {
     } );
 
     beforeEach( async ( ) => {
-      global.mockRealms[__filename].write( ( ) => {
+      safeRealmWrite( global.mockRealms[__filename], ( ) => {
         global.mockRealms[__filename].deleteAll( );
-      } );
+      }, "delete realm, MyObservations integration test when signed in" );
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
@@ -169,13 +134,13 @@ describe( "MyObservations", ( ) => {
         } )
       ];
 
-      beforeEach( async () => {
+      beforeEach( ( ) => {
         // Write local observation to Realm
-        await global.mockRealms[__filename].write( () => {
+        safeRealmWrite( global.mockRealms[__filename], ( ) => {
           mockObservations.forEach( mockObservation => {
             global.mockRealms[__filename].create( "Observation", mockObservation );
           } );
-        } );
+        }, "write local observation, MyObservations integration test with unsynced observations" );
       } );
 
       afterEach( ( ) => {
@@ -277,13 +242,13 @@ describe( "MyObservations", ( ) => {
         } )
       ];
 
-      beforeEach( async () => {
-        await global.mockRealms[__filename].write( () => {
+      beforeEach( ( ) => {
+        safeRealmWrite( global.mockRealms[__filename], ( ) => {
           global.mockRealms[__filename].deleteAll( );
           mockObservationsSynced.forEach( mockObservation => {
             global.mockRealms[__filename].create( "Observation", mockObservation );
           } );
-        } );
+        }, "delete all and create synced observations, MyObservations integration test" );
       } );
 
       afterEach( ( ) => {
@@ -321,12 +286,12 @@ describe( "MyObservations", ( ) => {
       } );
 
       describe( "after initial sync", ( ) => {
-        beforeEach( async () => {
-          await global.mockRealms[__filename].write( () => {
+        beforeEach( ( ) => {
+          safeRealmWrite( global.mockRealms[__filename], ( ) => {
             global.mockRealms[__filename].create( "LocalPreferences", {
               last_sync_time: new Date( "2023-11-01" )
             } );
-          } );
+          }, "add last_sync_time to LocalPreferences, MyObservations integration test" );
         } );
 
         it( "downloads deleted observations from server when sync button tapped", async ( ) => {
@@ -357,12 +322,10 @@ describe( "MyObservations", ( ) => {
             expect( syncIcon ).toBeVisible( );
           } );
           fireEvent.press( syncIcon );
-          const spy = jest.spyOn( global.mockRealms[__filename], "write" );
           const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
           await waitFor( ( ) => {
-            expect( spy ).toHaveBeenCalled( );
+            expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
           } );
-          expect( deleteSpy ).toHaveBeenCalled( );
           expect( global.mockRealms[__filename].objects( "Observation" ).length ).toBe( 1 );
         } );
       } );
@@ -370,10 +333,10 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "localization for current user", ( ) => {
-    beforeEach( async ( ) => {
-      await global.mockRealms[__filename].write( ( ) => {
+    beforeEach( ( ) => {
+      safeRealmWrite( global.mockRealms[__filename], ( ) => {
         global.mockRealms[__filename].deleteAll( );
-      } );
+      }, "delete all, MyObservations integration test, localization for current user" );
     } );
 
     afterEach( ( ) => {

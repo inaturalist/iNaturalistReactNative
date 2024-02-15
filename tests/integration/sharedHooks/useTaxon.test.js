@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { renderHook } from "@testing-library/react-native";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTaxon } from "sharedHooks";
 import factory from "tests/factory";
 
@@ -26,9 +27,9 @@ describe( "useTaxon", ( ) => {
   describe( "with local taxon", ( ) => {
     beforeEach( async ( ) => {
       // Write mock taxon to realm
-      await global.realm.write( () => {
+      safeRealmWrite( global.realm, ( ) => {
         global.realm.create( "Taxon", mockTaxon, "modified" );
-      } );
+      }, "write mock taxon, useTaxon test" );
     } );
 
     it( "should return an object", ( ) => {
@@ -47,9 +48,9 @@ describe( "useTaxon", ( ) => {
 
   describe( "when there is no local taxon with taxon id", ( ) => {
     beforeEach( async ( ) => {
-      await global.realm.write( ( ) => {
+      safeRealmWrite( global.realm, ( ) => {
         global.realm.deleteAll( );
-      } );
+      }, "delete all realm, useTaxon test" );
     } );
 
     it( "should make an API call and return passed in taxon when fetchRemote is enabled", ( ) => {

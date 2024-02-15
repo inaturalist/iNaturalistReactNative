@@ -20,19 +20,20 @@ const ObservationLocation = ( {
   observation, classNameMargin, details, large, obscured
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const geoprivacy = observation?.geoprivacy;
   let displayLocation = useMemo(
     ( ) => checkCamelAndSnakeCase( observation, "placeGuess" ),
     [observation]
   );
 
   const displayGeoprivacy = useMemo( ( ) => {
-    if ( observation.geoprivacy === "obscured" ) {
+    if ( geoprivacy === "obscured" ) {
       return t( "Obscured" );
-    } if ( observation.geoprivacy === "private" ) {
+    } if ( geoprivacy === "private" ) {
       return t( "Private" );
     }
     return t( "Open" );
-  }, [observation.geoprivacy, t] );
+  }, [geoprivacy, t] );
 
   const TextComponent = large
     ? Body3
@@ -94,6 +95,10 @@ const ObservationLocation = ( {
       </ContentWithIcon>
     );
   }, [displayGeoprivacy, t] );
+
+  if ( !observation ) {
+    return null;
+  }
 
   return (
     <View

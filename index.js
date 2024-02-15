@@ -25,6 +25,7 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { USER_AGENT } from "./src/components/LoginSignUp/AuthenticationService";
+import { navigationRef } from "./src/navigation/navigationUtils";
 
 enableLatestRenderer( );
 
@@ -87,7 +88,7 @@ const AppWithProviders = ( ) => (
           <GestureHandlerRootView className="flex-1">
             <BottomSheetModalProvider>
               {/* NavigationContainer needs to be nested above ObsEditProvider */}
-              <NavigationContainer>
+              <NavigationContainer ref={navigationRef}>
                 <ErrorBoundary>
                   <App />
                 </ErrorBoundary>

@@ -10,6 +10,7 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import DeviceInfo from "react-native-device-info";
 import {
   useTranslation
 } from "sharedHooks";
@@ -17,6 +18,8 @@ import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import HeaderKebabMenu from "./HeaderKebabMenu";
+
+const isTablet = DeviceInfo.isTablet( );
 
 type Props = {
   belongsToCurrentUser?: boolean,
@@ -43,7 +46,12 @@ const ObsDetailsHeader = ( {
         "justify-between",
         "h-10"
       )}
-      colors={["rgba(0,0,0,0.1)", "transparent"]}
+      colors={[
+        isTablet
+          ? "rgba(0,0,0,0.1)"
+          : "rgba(0,0,0,0.6)",
+        "transparent"
+      ]}
     >
       <BackButton color="white" inCustomHeader />
       {
@@ -59,7 +67,6 @@ const ObsDetailsHeader = ( {
               color={!rightIconBlack
                 ? colors.white
                 : colors.black}
-              // className="absolute top-3 right-3"
               accessibilityLabel={t( "Edit" )}
             />
           )

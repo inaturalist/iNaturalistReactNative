@@ -6,7 +6,6 @@ import {
   useEffect, useRef,
   useState
 } from "react";
-import Observation from "realmModels/Observation";
 
 const { useRealm } = RealmContext;
 
@@ -17,7 +16,6 @@ const useLocalObservations = ( ): Object => {
   // views from rendering when they have focus.
   const stagedObservationList = useRef( [] );
   const [observationList, setObservationList] = useState( [] );
-  const [allObsToUpload, setAllObsToUpload] = useState( [] );
 
   const realm = useRealm( );
 
@@ -31,11 +29,8 @@ const useLocalObservations = ( ): Object => {
     localObservations.addListener( ( collection, _changes ) => {
       stagedObservationList.current = [...collection];
 
-      const unsyncedObs = Observation.filterUnsyncedObservations( realm );
-
       if ( isFocused ) {
         setObservationList( stagedObservationList.current );
-        setAllObsToUpload( unsyncedObs );
       }
     } );
     // eslint-disable-next-line consistent-return
@@ -43,11 +38,10 @@ const useLocalObservations = ( ): Object => {
       // remember to remove listeners to avoid async updates
       localObservations?.removeAllListeners( );
     };
-  }, [isFocused, allObsToUpload.length, realm] );
+  }, [isFocused, realm] );
 
   return {
-    observationList,
-    allObsToUpload
+    observationList
   };
 };
 

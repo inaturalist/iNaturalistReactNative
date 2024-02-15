@@ -30,7 +30,7 @@ const FaveButton = ( {
   top = false
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const { uuid } = observation;
+  const uuid = observation?.uuid;
 
   const observationFaved = useMemo( ( ) => {
     if ( currentUser && observation?.faves?.length > 0 ) {
@@ -97,6 +97,10 @@ const FaveButton = ( {
     isFaved,
     uuid
   ] );
+
+  if ( !observation ) {
+    return null;
+  }
 
   return (
     <INatIconButton
