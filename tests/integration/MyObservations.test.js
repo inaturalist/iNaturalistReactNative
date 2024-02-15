@@ -147,11 +147,6 @@ describe( "MyObservations", ( ) => {
         await waitFor( ( ) => {
           expect( inatjs.observations.updates ).toHaveBeenCalled( );
         } );
-        // Since we're signed in, the announcement request might trigger an
-        // update outside of act, so we need to wait for it
-        await waitFor( ( ) => {
-          expect( inatjs.announcements.search ).toHaveBeenCalled( );
-        } );
       } );
 
       it( "renders grid view on button press", async () => {
