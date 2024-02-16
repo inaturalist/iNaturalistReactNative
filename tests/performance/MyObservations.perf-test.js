@@ -1,5 +1,5 @@
 // ComponentUnderTest.perf-test.tsx
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import MyObservations from "components/MyObservations/MyObservations";
 import initI18next from "i18n/initI18next";
 import React from "react";

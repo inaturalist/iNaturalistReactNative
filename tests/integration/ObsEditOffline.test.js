@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
 import { screen, waitFor } from "@testing-library/react-native";

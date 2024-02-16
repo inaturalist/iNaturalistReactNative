@@ -1,7 +1,7 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import { format } from "date-fns";

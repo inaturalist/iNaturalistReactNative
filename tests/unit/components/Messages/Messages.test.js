@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { NavigationContainer } from "@react-navigation/native";
 import { render, screen } from "@testing-library/react-native";
 import Messages from "components/Messages/Messages";

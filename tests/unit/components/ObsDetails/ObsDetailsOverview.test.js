@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { screen } from "@testing-library/react-native";
 import ObsDetailsOverview from "components/ObsDetails/ObsDetailsOverview";
 import initI18next from "i18n/initI18next";

@@ -1,10 +1,10 @@
-import { faker } from "@faker-js/faker";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );

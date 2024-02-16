@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";

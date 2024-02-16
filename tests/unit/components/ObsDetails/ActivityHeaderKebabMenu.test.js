@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import ActivityHeader from "components/ObsDetails/ActivityTab/ActivityHeader";
 import initI18next from "i18n/initI18next";

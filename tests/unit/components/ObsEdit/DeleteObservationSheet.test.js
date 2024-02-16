@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationSheet";
 import initI18next from "i18n/initI18next";
@@ -7,6 +6,7 @@ import inatjs from "inaturalistjs";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const observations = [factory( "LocalObservation", {

@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import DQAContainer from "components/ObsDetails/DQAContainer";

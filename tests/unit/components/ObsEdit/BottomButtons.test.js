@@ -1,6 +1,6 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import BottomButtons from "components/ObsEdit/BottomButtons";
+import faker from "tests/helpers/faker";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";

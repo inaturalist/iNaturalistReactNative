@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { renderHook } from "@testing-library/react-native";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import useObservationsUpdates from "sharedHooks/useObservationsUpdates";

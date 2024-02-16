@@ -1,9 +1,9 @@
-import { faker } from "@faker-js/faker";
 import {
   fireEvent,
   screen
 } from "@testing-library/react-native";
 import { UserListItem } from "components/SharedComponents";
+import faker from "tests/helpers/faker";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
