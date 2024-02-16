@@ -104,6 +104,8 @@ const FilterModal = ( {
     months,
     dateUploaded,
     created_on: createdOn,
+    created_d1: createdD1,
+    created_d2: createdD2,
     media,
     establishmentMean,
     wildStatus,
@@ -121,6 +123,8 @@ const FilterModal = ( {
   const OBSERVED_END = "OBSERVED_END";
   const DATE_UPLOADED_M = "DATE_UPLOADED_M";
   const UPLOADED_EXACT = "UPLOADED_EXACT";
+  const UPLOADED_START = "UPLOADED_START";
+  const UPLOADED_END = "UPLOADED_END";
   const PHOTO_LICENSING = "PHOTO_LICENSING";
   const CONFIRMATION = "CONFIRMATION";
   const [openSheet, setOpenSheet] = useState( NONE );
@@ -340,6 +344,11 @@ const FilterModal = ( {
       label: t( "Exact-Date" ),
       text: t( "Filter-by-uploaded-on-date" ),
       value: DATE_UPLOADED.EXACT_DATE
+    },
+    [DATE_UPLOADED.DATE_RANGE]: {
+      label: t( "Date-Range" ),
+      text: t( "Filter-by-uploaded-between-dates" ),
+      value: DATE_UPLOADED.DATE_RANGE
     }
   };
 
@@ -560,24 +569,47 @@ const FilterModal = ( {
     } );
   };
 
-  const updateDateUploaded = ( newDateObserved, newD1 ) => {
+  const updateDateUploaded = ( { newDateUploaded, newD1, newD2 } ) => {
     const today = new Date().toISOString().split( "T" )[0];
-    if ( newDateObserved === DATE_UPLOADED.ALL ) {
+    if ( newDateUploaded === DATE_UPLOADED.ALL ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL
       } );
-    } else if ( newDateObserved === DATE_UPLOADED.EXACT_DATE ) {
+    } else if ( newDateUploaded === DATE_UPLOADED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT,
         createdOn: newD1 || today
       } );
+    } else if ( newDateUploaded === DATE_UPLOADED.DATE_RANGE ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE,
+        createdD1: newD1 || today,
+        createdD2: newD2 || today
+      } );
     }
+  };
+
+  const updateUploadedStart = date => {
+    updateDateUploaded( {
+      newDateUploaded: DATE_UPLOADED.DATE_RANGE,
+      newD1: date.toISOString().split( "T" )[0],
+      newD2: createdD2
+    } );
+  };
+
+  const updateUploadedEnd = date => {
+    updateDateUploaded( {
+      newDateUploaded: DATE_UPLOADED.DATE_RANGE,
+      newD1: createdD1,
+      newD2: date.toISOString().split( "T" )[0]
+    } );
   };
 
   const theme = useTheme();
 
-  const endBeforeStart = d1 > d2;
-  const hasError = endBeforeStart;
+  const observedEndBeforeStart = d1 > d2;
+  const uploadedEndBeforeStart = createdD1 > createdD2;
+  const hasError = observedEndBeforeStart || uploadedEndBeforeStart;
 
   return (
     <View className="flex-1 bg-white" testID="filter-modal">
@@ -654,9 +686,10 @@ const FilterModal = ( {
               const selectedTaxon = realm
                 ?.objects( "Taxon" )
                 .filtered( "name CONTAINS[c] $0", taxonName );
-              const iconicTaxon = selectedTaxon.length > 0
-                ? selectedTaxon[0]
-                : null;
+              const iconicTaxon
+                = selectedTaxon.length > 0
+                  ? selectedTaxon[0]
+                  : null;
               updateTaxon( iconicTaxon );
             }}
           />
@@ -909,7 +942,10 @@ const FilterModal = ( {
           {dateObserved === DATE_OBSERVED.DATE_RANGE && (
             <View className="items-center">
               <Body1
-                className={classNames( "mb-5", endBeforeStart && "color-warningRed" )}
+                className={classNames(
+                  "mb-5",
+                  observedEndBeforeStart && "color-warningRed"
+                )}
               >
                 {d1}
               </Body1>
@@ -932,7 +968,7 @@ const FilterModal = ( {
                 }}
                 accessibilityLabel={t( "Change-end-date" )}
               />
-              {endBeforeStart && (
+              {observedEndBeforeStart && (
                 <View className="flex-row mb-5">
                   <INatIcon
                     name="triangle-exclamation"
@@ -1007,18 +1043,71 @@ const FilterModal = ( {
               <DateTimePicker
                 isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
                 toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateDateUploaded(
-                  DATE_UPLOADED.EXACT_DATE,
-                  date.toISOString().split( "T" )[0]
+                onDatePicked={date => updateDateUploaded( {
+                  newDateUploaded: DATE_UPLOADED.EXACT_DATE,
+                  newD1: date.toISOString().split( "T" )[0]
+                } )}
+              />
+            </View>
+          )}
+          {dateUploaded === DATE_UPLOADED.DATE_RANGE && (
+            <View className="items-center">
+              <Body1
+                className={classNames(
+                  "mb-5",
+                  uploadedEndBeforeStart && "color-warningRed"
                 )}
+              >
+                {createdD1}
+              </Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-START-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( UPLOADED_START );
+                }}
+                accessibilityLabel={t( "Change-start-date" )}
+              />
+              <Body1 className="mb-5">{createdD2}</Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-END-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( UPLOADED_END );
+                }}
+                accessibilityLabel={t( "Change-end-date" )}
+              />
+              {uploadedEndBeforeStart && (
+                <View className="flex-row mb-5">
+                  <INatIcon
+                    name="triangle-exclamation"
+                    size={19}
+                    color={theme.colors.error}
+                  />
+                  <List2 className="ml-3">
+                    {t( "Start-must-be-before-end" )}
+                  </List2>
+                </View>
+              )}
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === UPLOADED_START}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateUploadedStart( date )}
+              />
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === UPLOADED_END}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateUploadedEnd( date )}
               />
             </View>
           )}
           {openSheet === DATE_UPLOADED_M && (
             <RadioButtonSheet
               headerText={t( "DATE-UPLOADED" )}
-              confirm={newDate => {
-                updateDateUploaded( newDate );
+              confirm={newDateUploaded => {
+                updateDateUploaded( { newDateUploaded } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
@@ -1058,7 +1147,8 @@ const FilterModal = ( {
               }
               onPress={() => dispatch( {
                 type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
-                establishmentMean: establishmentValues[establishmentKey].value
+                establishmentMean:
+                    establishmentValues[establishmentKey].value
               } )}
               label={establishmentValues[establishmentKey].label}
             />

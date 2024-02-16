@@ -31,6 +31,12 @@ describe( "Checkbox", () => {
     expect( screen ).toMatchSnapshot( );
   } );
 
+  it( "renders reliably being checked", () => {
+    render( <Checkbox text="Checkmark text" isChecked /> );
+
+    expect( screen ).toMatchSnapshot();
+  } );
+
   it( "has no accessibility errors", () => {
     const checkbox = <Checkbox text="Checkmark text" isChecked />;
 
@@ -61,7 +67,7 @@ describe( "Checkbox", () => {
     } );
   } );
 
-  it( "changes value when user presses checkbox", () => {
+  it( "changes value when user presses checkbox being not checked", () => {
     let checked = false;
     renderComponent(
       <Checkbox
@@ -77,6 +83,23 @@ describe( "Checkbox", () => {
     fireEvent.press( checkmark );
     expect( checked ).toBeTruthy( );
     rerenderCheckmarkComponent( checked );
+  } );
+
+  it( "changes value when user presses checkbox being checked", () => {
+    let checked = true;
+    renderComponent(
+      <Checkbox
+        text="Checkmark text"
+        isChecked={checked}
+        // eslint-disable-next-line no-return-assign
+        onPress={( ) => ( checked = !checked )}
+      />
+    );
+    const checkmark = screen.getByLabelText( /Checkmark/ );
+
+    expect( checked ).toBeTruthy( );
+    fireEvent.press( checkmark );
+    expect( checked ).toBeFalsy( );
   } );
 
   it( "renders text and changes value when user presses text", () => {
