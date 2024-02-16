@@ -6,6 +6,14 @@ import React from "react";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithComponent } from "tests/helpers/render";
 
+jest.mock( "sharedHooks/useStoredLayout", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    layout: "list",
+    writeLayoutToStorage: jest.fn( )
+  } )
+} ) );
+
 const mockRemoteObservation = factory( "RemoteObservation", {
   taxon: factory.states( "genus" )( "RemoteTaxon" )
 } );

@@ -12,6 +12,7 @@ type Props = {
   accessibilityLabel: string,
   autoComplete?: string,
   headerText: string,
+  inputMode?: string,
   keyboardType?: string,
   onChangeText: Function,
   secureTextEntry?: boolean,
@@ -23,6 +24,7 @@ const LoginSignUpInputField = ( {
   accessibilityLabel,
   autoComplete,
   headerText,
+  inputMode,
   keyboardType,
   onChangeText,
   secureTextEntry = false,
@@ -41,6 +43,7 @@ const LoginSignUpInputField = ( {
         autoCapitalize="none"
         autoComplete={autoComplete}
         className="h-[45px] rounded-md"
+        inputMode={inputMode}
         keyboardType={keyboardType}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}

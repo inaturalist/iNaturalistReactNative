@@ -14,9 +14,21 @@ import React, {
   useCallback,
   useState
 } from "react";
+import { useTheme } from "react-native-paper";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import { getShadowStyle } from "styles/global";
+
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 5
+} );
 
 const ExploreUserSearch = ( ): Node => {
+  const theme = useTheme();
   const [userQuery, setUserQuery] = useState( "" );
   const navigation = useNavigation( );
   const { t } = useTranslation();
@@ -69,12 +81,16 @@ const ExploreUserSearch = ( ): Node => {
 
   return (
     <ViewWrapper className="flex-1">
-      <SearchBar
-        handleTextChange={setUserQuery}
-        value={userQuery}
-        testID="SearchUser"
-        containerClass="my-5 mx-4"
-      />
+      <View
+        className="bg-white px-6 pt-2 pb-8"
+        style={getShadow( theme.colors.primary )}
+      >
+        <SearchBar
+          handleTextChange={setUserQuery}
+          value={userQuery}
+          testID="SearchUser"
+        />
+      </View>
       <FlashList
         data={userList}
         initialNumToRender={5}

@@ -34,7 +34,10 @@ const DatePicker = ( {
         ? "datetime"
         : "date"}
       onCancel={toggleDateTimePicker}
-      onConfirm={onDatePicked}
+      onConfirm={date => {
+        onDatePicked( date );
+        toggleDateTimePicker( );
+      }}
     />
   );
 };

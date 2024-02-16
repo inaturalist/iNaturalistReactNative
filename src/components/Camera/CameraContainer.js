@@ -13,7 +13,6 @@ import CameraWithDevice from "./CameraWithDevice";
 
 const CameraContainer = ( ): Node => {
   const { params } = useRoute( );
-  const backToObsEdit = params?.backToObsEdit;
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
   const [cameraPosition, setCameraPosition] = useState( "back" );
@@ -25,7 +24,6 @@ const CameraContainer = ( ): Node => {
 
   return (
     <CameraWithDevice
-      backToObsEdit={backToObsEdit}
       addEvidence={addEvidence}
       cameraType={cameraType}
       cameraPosition={cameraPosition}

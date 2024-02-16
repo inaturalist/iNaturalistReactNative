@@ -61,6 +61,8 @@ Amphibians = Amphibians
 
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 
+Any = Any
+
 APPLY-FILTERS = APPLY FILTERS
 
 Apply-filters = Apply filters
@@ -131,11 +133,19 @@ CHANGE-DATE = CHANGE DATE
 
 Change-date = Change date
 
+CHANGE-END-DATE = CHANGE END DATE
+
+Change-end-date = Change end date
+
 Change-project = Change project
 
-Change-user = Change user
+CHANGE-START-DATE = CHANGE START DATE
+
+Change-start-date = Change start date
 
 Change-taxon = Change taxon
+
+Change-user = Change user
 
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
@@ -256,6 +266,8 @@ DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 
 Date_observed_header_short = Observed
+
+Date-Range = Date Range
 
 Date-uploaded = Date uploaded
 
@@ -381,9 +393,13 @@ FILTER-BY-A-PROJECT = FILTER BY A PROJECT
 
 FILTER-BY-A-USER = FILTER BY A USER
 
+Filter-by-observed-between-dates = Filter by observations observed between two specific dates
+
 Filter-by-observed-during-months = Filter by observations observed during specific months
 
 Filter-by-observed-on-date = Filter by observations observed on a specific date
+
+Filter-by-uploaded-between-dates = Filter by observations uploaded between two specific dates
 
 Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 
@@ -826,11 +842,11 @@ Search-for-description-tags-text = Search for description/tags text
 
 SEARCH-LOCATION = SEARCH LOCATION
 
-SEARCH-PROJECT = SEARCH PROJECT
+SEARCH-PROJECTS = SEARCH PROJECTS
 
 SEARCH-TAXA = SEARCH TAXA
 
-SEARCH-USER = SEARCH USER
+SEARCH-USERS = SEARCH USERS
 
 Select = Select
 
@@ -871,6 +887,8 @@ Status = Status
 
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
+
+Start-must-be-before-end = The start date must be before the end date.
 
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
@@ -1615,3 +1633,12 @@ sound-playback-separator = /
 
 # Accessibility label when a photo is loading
 Photo-is-loading = Photo is loading
+
+# Accessibility label for a button that shows options for a comment
+Comment-options = Comment options
+
+# Accessibility label for a button that shows options for an identification
+Identification-options = Identification options
+
+Map-Area = Map Area
+REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA

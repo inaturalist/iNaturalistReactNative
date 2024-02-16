@@ -2,6 +2,7 @@
 
 import { useRoute } from "@react-navigation/native";
 import {
+  ESTABLISHMENT_MEAN,
   EXPLORE_ACTION,
   ExploreProvider,
   MEDIA,
@@ -16,8 +17,7 @@ import React, { useEffect, useState } from "react";
 import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
-
-const DELTA = 0.2;
+import useHeaderCount from "./hooks/useHeaderCount";
 
 const mapParamsToAPI = ( params, currentUser ) => {
   const RESEARCH = "research";
@@ -82,13 +82,20 @@ const mapParamsToAPI = ( params, currentUser ) => {
   // MEDIA.ALL is the default media filter and for it we don't need to pass any params
   if ( params.media === MEDIA.PHOTOS ) {
     filteredParams.photos = true;
-  }
-  if ( params.media === MEDIA.SOUNDS ) {
+  } else if ( params.media === MEDIA.SOUNDS ) {
     filteredParams.sounds = true;
-  }
-  if ( params.media === MEDIA.NONE ) {
+  } else if ( params.media === MEDIA.NONE ) {
     filteredParams.photos = false;
     filteredParams.sounds = false;
+  }
+
+  // ESTABLISHMENT_MEAN.ANY is the default here and for it we don't need to pass any params
+  if ( params.establishmentMean === ESTABLISHMENT_MEAN.NATIVE ) {
+    filteredParams.native = true;
+  } else if ( params.establishmentMean === ESTABLISHMENT_MEAN.INTRODUCED ) {
+    filteredParams.introduced = true;
+  } else if ( params.establishmentMean === ESTABLISHMENT_MEAN.ENDEMIC ) {
+    filteredParams.endemic = true;
   }
 
   if ( params.wildStatus === WILD_STATUS.WILD ) {
@@ -131,10 +138,7 @@ const mapParamsToAPI = ( params, currentUser ) => {
   delete filteredParams.dateObserved;
   delete filteredParams.dateUploaded;
   delete filteredParams.media;
-  delete filteredParams.introduced;
-  delete filteredParams.native;
-  delete filteredParams.endemic;
-  delete filteredParams.noStatus;
+  delete filteredParams.establishmentMean;
   delete filteredParams.wildStatus;
   delete filteredParams.reviewedFilter;
   delete filteredParams.photoLicense;
@@ -150,12 +154,6 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const { state, dispatch, makeSnapshot } = useExplore();
 
-  const [region, setRegion] = useState( {
-    latitude: 0.0,
-    longitude: 0.0,
-    latitudeDelta: DELTA,
-    longitudeDelta: DELTA
-  } );
   const [showFiltersModal, setShowFiltersModal] = useState( false );
   const [exploreView, setExploreView] = useState( "observations" );
 
@@ -179,13 +177,6 @@ const ExploreContainerWithContext = ( ): Node => {
       } );
     }
     if ( params?.place ) {
-      const { coordinates } = params.place.point_geojson;
-      setRegion( {
-        latitude: coordinates[1],
-        longitude: coordinates[0],
-        latitudeDelta: DELTA,
-        longitudeDelta: DELTA
-      } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         placeId: params.place?.id,
@@ -221,40 +212,41 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   };
 
-  const updatePlace = place => {
-    const { coordinates } = place.point_geojson;
-    setRegion( {
-      ...region,
-      latitude: coordinates[1],
-      longitude: coordinates[0]
-    } );
-    dispatch( {
-      type: EXPLORE_ACTION.SET_PLACE,
-      placeId: place?.id,
-      placeName: place?.display_name
-    } );
-  };
-
   const filteredParams = mapParamsToAPI(
     state,
     currentUser
   );
 
+  const queryParams = {
+    ...filteredParams,
+    per_page: 20
+  };
+  if ( exploreView === "observers" ) {
+    queryParams.order_by = "observation_count";
+  }
+  delete queryParams.taxon_name;
+
+  const { count, updateCount } = useHeaderCount( filteredParams );
+
+  const closeFiltersModal = ( ) => setShowFiltersModal( false );
+
+  const openFiltersModal = ( ) => {
+    setShowFiltersModal( true );
+    makeSnapshot( );
+  };
+
   return (
     <Explore
-      exploreAPIParams={filteredParams}
-      region={region}
-      exploreView={exploreView}
       changeExploreView={changeExploreView}
-      updateTaxon={updateTaxon}
-      updatePlace={updatePlace}
+      closeFiltersModal={closeFiltersModal}
+      count={count}
+      exploreView={exploreView}
       isOnline={isOnline}
+      openFiltersModal={openFiltersModal}
+      queryParams={queryParams}
       showFiltersModal={showFiltersModal}
-      openFiltersModal={() => {
-        setShowFiltersModal( true );
-        makeSnapshot( );
-      }}
-      closeFiltersModal={() => setShowFiltersModal( false )}
+      updateCount={updateCount}
+      updateTaxon={updateTaxon}
     />
   );
 };

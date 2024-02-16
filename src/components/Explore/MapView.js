@@ -1,45 +1,94 @@
 // @flow
 
-import { Map } from "components/SharedComponents";
-import { useExplore } from "providers/ExploreContext.tsx";
+import { Button, LocationPermissionGate, Map } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { useTheme } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
+import { getShadowStyle } from "styles/global";
+
+import useMapLocation from "./hooks/useMapLocation";
+
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 6
+} );
 
 type Props = {
-  region: Object,
-  observations: Array<Object>
+  observations: Array<Object>,
+  queryParams: Object
 }
 
-const ObservationsView = ( {
-  region,
-  observations
+const MapView = ( {
+  observations,
+  queryParams: tileMapParams
 }: Props ): Node => {
-  const tileMapParams = { };
+  const theme = useTheme( );
+  const { t } = useTranslation( );
 
-  const { state } = useExplore( );
-
-  if ( state?.taxon_id ) {
-    tileMapParams.taxon_id = state?.taxon_id;
-  }
-  if ( state?.place_id ) {
-    tileMapParams.place_id = state?.place_id;
-  }
+  const {
+    onPanDrag,
+    onPermissionBlocked,
+    onPermissionDenied,
+    onPermissionGranted,
+    permissionRequested,
+    redoSearchInMapArea,
+    region,
+    showMapBoundaryButton,
+    startAtUserLocation,
+    updateMapBoundaries
+  } = useMapLocation( );
 
   return (
-    <Map
-      currentLocationButtonClassName="left-5 bottom-20"
-      mapViewClassName="-mt-3"
-      observations={observations}
-      region={region}
-      showCurrentLocationButton
-      showExplore
-      showSwitchMapTypeButton
-      showsCompass={false}
-      switchMapTypeButtonClassName="left-20 bottom-20"
-      tileMapParams={tileMapParams}
-      withPressableObsTiles={tileMapParams !== null}
-    />
+    <>
+      <View className="z-10">
+        {showMapBoundaryButton && (
+          <View
+            className="mx-auto"
+            style={getShadow( theme.colors.primary )}
+          >
+            <Button
+              text={t( "REDO-SEARCH-IN-MAP-AREA" )}
+              level="focus"
+              className="top-6 absolute self-center"
+              onPress={redoSearchInMapArea}
+            />
+          </View>
+        )}
+      </View>
+      {startAtUserLocation !== null && (
+        <Map
+          currentLocationButtonClassName="left-5 bottom-20"
+          getMapBoundaries={updateMapBoundaries}
+          mapViewClassName="-mt-4"
+          minZoomLevel={startAtUserLocation && 10}
+          observations={observations}
+          onPanDrag={onPanDrag}
+          region={region}
+          showCurrentLocationButton
+          showExplore
+          showSwitchMapTypeButton
+          showsCompass={false}
+          startAtUserLocation={startAtUserLocation}
+          switchMapTypeButtonClassName="left-20 bottom-20"
+          tileMapParams={tileMapParams}
+          withPressableObsTiles={tileMapParams !== null}
+        />
+      )}
+      <LocationPermissionGate
+        onPermissionBlocked={onPermissionBlocked}
+        onPermissionDenied={onPermissionDenied}
+        onPermissionGranted={onPermissionGranted}
+        permissionNeeded={permissionRequested}
+        withoutNavigation
+      />
+    </>
   );
 };
 
-export default ObservationsView;
+export default MapView;
