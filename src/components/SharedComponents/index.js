@@ -1,3 +1,4 @@
+export { default as ActivityAnimation } from "./ActivityAnimation/ActivityAnimation.tsx";
 export { default as ActivityCount } from "./ActivityCount/ActivityCount";
 export { default as CommentsCount } from "./ActivityCount/CommentsCount";
 export { default as IdentificationsCount } from "./ActivityCount/IdentificationsCount";

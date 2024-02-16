@@ -1,7 +1,6 @@
 // @flow
 
-import { ObservationsFlashList, ViewWrapper } from "components/SharedComponents";
-import ActivityAnimation from "components/SharedComponents/ActivityAnimation";
+import { ActivityAnimation, ObservationsFlashList, ViewWrapper } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import {
