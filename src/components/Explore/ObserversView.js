@@ -22,7 +22,6 @@ const ObserversView = ( {
   queryParams,
   updateCount
 }: Props ): Node => {
-  console.log( queryParams, "query params" );
   const {
     data,
     isFetchingNextPage,
@@ -51,7 +50,7 @@ const ObserversView = ( {
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
-    if ( totalResults && count.observers !== totalResults ) {
+    if ( count.observers !== totalResults ) {
       updateCount( { observers: totalResults } );
     }
   }, [totalResults, updateCount, count] );

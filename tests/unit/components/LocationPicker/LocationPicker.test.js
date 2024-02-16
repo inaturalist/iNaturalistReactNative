@@ -101,6 +101,6 @@ describe( "LocationPicker", () => {
   it( "should not have a minimum zoom level", async ( ) => {
     renderLocationPicker( mockRegion );
     const map = screen.getByTestId( "LocationPicker.Map" );
-    expect( map ).not.toHaveProp( "minZoomLevel" );
+    expect( map ).toHaveProp( "minZoomLevel", null );
   } );
 } );
