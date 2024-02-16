@@ -1,8 +1,7 @@
 // @flow
 
-import { Heading1, ObservationsFlashList, ViewWrapper } from "components/SharedComponents";
+import { ObservationsFlashList, ViewWrapper } from "components/SharedComponents";
 import ActivityAnimation from "components/SharedComponents/ActivityAnimation";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
@@ -28,15 +27,6 @@ const Identify = (): Node => {
     observations, isFetchingNextPage, fetchNextPage, status
   }
     = useInfiniteObservationsScroll( { upsert: false, params } );
-
-  if ( !currentUser ) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        {/* eslint-disable-next-line i18next/no-literal-string */}
-        <Heading1>Log in to identify observations</Heading1>
-      </View>
-    );
-  }
 
   if ( !observations || !observations.length > 0 ) {
     return <ActivityAnimation />;
