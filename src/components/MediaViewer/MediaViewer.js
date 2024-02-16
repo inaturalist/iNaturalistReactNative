@@ -6,6 +6,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from "react";
@@ -14,9 +15,9 @@ import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 
-import MainPhotoDisplay from "./MainPhotoDisplay";
+import MainMediaDisplay from "./MainMediaDisplay";
+import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
-import PhotoSelector from "./PhotoSelector";
 
 type Props = {
   editable?: boolean,
@@ -24,14 +25,18 @@ type Props = {
   header?: Function,
   onClose?: Function,
   onDelete?: Function,
-  uri?: string,
   photos?: Array<{
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>
+  }>,
+  sounds?: Array<{
+    id?: number,
+    file_url: string
+  }>,
+  uri?: string
 }
 
 const MediaViewer = ( {
@@ -39,11 +44,16 @@ const MediaViewer = ( {
   header,
   onClose = ( ) => { },
   onDelete,
-  uri,
-  photos = []
+  photos = [],
+  sounds = [],
+  uri
 }: Props ): Node => {
-  const uris = photos.map( photo => photo.url || photo.localFilePath );
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(
+  const uris = useMemo( ( ) => ( [
+    ...photos.map( photo => photo.url || photo.localFilePath ),
+    ...sounds.map( sound => sound.file_url )
+  ] ), [photos, sounds] );
+
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(
     uris.indexOf( uri ) <= 0
       ? 0
       : uris.indexOf( uri )
@@ -57,27 +67,27 @@ const MediaViewer = ( {
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
   const scrollToIndex = useCallback( index => {
-    // when a user taps a photo in the carousel, the UI needs to automatically
-    // scroll to the index of the photo they selected
-    setSelectedPhotoIndex( index );
+    // when a user taps an item in the carousel, the UI needs to automatically
+    // scroll to the index of the item they selected
+    setSelectedMediaIndex( index );
     horizontalScroll?.current?.scrollToIndex( { index, animated: true } );
-  }, [setSelectedPhotoIndex] );
+  }, [setSelectedMediaIndex] );
 
-  // If we've removed an item the selectedPhoto index might refer to a photo
+  // If we've removed an item the selectedPhoto index might refer to a item
   // that no longer exists, so change it to the previous one
   useEffect( ( ) => {
-    if ( selectedPhotoIndex >= uris.length ) {
-      setSelectedPhotoIndex( Math.max( 0, selectedPhotoIndex - 1 ) );
+    if ( selectedMediaIndex >= uris.length ) {
+      setSelectedMediaIndex( Math.max( 0, selectedMediaIndex - 1 ) );
     }
-  }, [selectedPhotoIndex, setSelectedPhotoIndex, uris.length] );
+  }, [selectedMediaIndex, setSelectedMediaIndex, uris.length] );
 
   const deleteItem = useCallback( ( ) => {
-    const uriToDelete = uris[selectedPhotoIndex]?.toString( );
+    const uriToDelete = uris[selectedMediaIndex]?.toString( );
     setWarningSheet( false );
     if ( onDelete && uriToDelete ) onDelete( uriToDelete );
   }, [
     onDelete,
-    selectedPhotoIndex,
+    selectedMediaIndex,
     setWarningSheet,
     uris
   ] );
@@ -88,21 +98,29 @@ const MediaViewer = ( {
       {
         header
           ? header( { onClose, photoCount: uris.length } )
-          : <MediaViewerHeader onClose={onClose} photoCount={uris.length} />
+          : (
+            <MediaViewerHeader
+              onClose={onClose}
+              photoCount={photos.length}
+              soundCount={sounds.length}
+            />
+          )
       }
-      <MainPhotoDisplay
+      <MainMediaDisplay
         editable={editable}
         photos={photos}
-        selectedPhotoIndex={selectedPhotoIndex}
+        sounds={sounds}
+        selectedMediaIndex={selectedMediaIndex}
         horizontalScroll={horizontalScroll}
-        setSelectedPhotoIndex={setSelectedPhotoIndex}
+        setSelectedMediaIndex={setSelectedMediaIndex}
         onDelete={( ) => setWarningSheet( true )}
       />
-      <PhotoSelector
+      <MediaSelector
         photos={photos}
+        sounds={sounds}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
-        selectedPhotoIndex={selectedPhotoIndex}
+        selectedMediaIndex={selectedMediaIndex}
       />
       {warningSheet && (
         <WarningSheet

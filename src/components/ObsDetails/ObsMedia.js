@@ -24,7 +24,7 @@ type Props = {
     licenseCode?: string
   }>,
   sounds: Array<{
-    id: number,
+    id?: number,
     file_url: string,
   }>,
   tablet: boolean
@@ -156,6 +156,7 @@ const ObsMedia = ( {
         onClose={( ) => setMediaViewerVisible( false )}
         uri={currentPhotoUrl}
         photos={photos}
+        sounds={sounds}
       />
     </View>
   );

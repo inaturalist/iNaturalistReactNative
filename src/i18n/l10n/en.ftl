@@ -1653,3 +1653,20 @@ Pause-verb = Pause
 
 # Accessibility hint for a button that pauses the recording of a sound
 Pauses-recording-sound = Pauses recording sound
+
+# Displays number of sounds attached to an observation in the Media Viewer
+X-SOUNDS = {$count ->
+    [one] 1 SOUND
+    *[other] {$count} SOUNDS
+}
+
+# Displays number of photos and sounds attached to an observation in the Media
+# Viewer
+X-PHOTOS-Y-SOUNDS =
+    {$photoCount ->
+        [one] 1 PHOTO
+        *[other] {$photoCount} PHOTOS
+    }, {$soundCount ->
+        [one] 1 SOUND
+        *[other] {$soundCount} SOUNDS
+    }

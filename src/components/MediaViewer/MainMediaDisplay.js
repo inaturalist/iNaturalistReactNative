@@ -1,11 +1,12 @@
 // @flow
 
+import SoundContainer from "components/ObsDetails/SoundContainer";
 import {
   TransparentCircleButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { FlatList } from "react-native";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -26,26 +27,35 @@ type Props = {
     attribution?: string,
     licenseCode?: string
   }>,
-  selectedPhotoIndex: number,
-  setSelectedPhotoIndex: Function
+  sounds?: Array<{
+    id?: number,
+    file_url: string
+  }>,
+  selectedMediaIndex: number,
+  setSelectedMediaIndex: Function
 }
 
-const MainPhotoDisplay = ( {
+const MainMediaDisplay = ( {
   editable,
   horizontalScroll,
   onDelete = ( ) => { },
   photos,
-  selectedPhotoIndex,
-  setSelectedPhotoIndex
+  sounds = [],
+  selectedMediaIndex,
+  setSelectedMediaIndex
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
-  const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === photos.length - 1;
+  const atFirstItem = selectedMediaIndex === 0;
+  const items = useMemo( ( ) => ( [
+    ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
+    ...sounds.map( sound => ( { ...sound, type: "sound" } ) )
+  ] ), [photos, sounds] );
+  const atLastItem = selectedMediaIndex === items.length - 1;
 
-  const renderImage = useCallback( ( { item: photo } ) => (
+  const renderPhoto = useCallback( photo => (
     <View>
       <CustomImageZoom
         source={{ uri: Photo.displayLargePhoto( photo.url || photo.localFilePath ) }}
@@ -80,6 +90,36 @@ const MainPhotoDisplay = ( {
     t
   ] );
 
+  const renderSound = useCallback( sound => (
+    <View
+      className="justify-center"
+      style={{
+        width: screenWidth,
+        height: displayHeight
+      }}
+    >
+      <SoundContainer
+        sizeClass="h-72 w-screen"
+        sound={sound}
+        isVisible={items.indexOf( sound ) === selectedMediaIndex}
+      />
+    </View>
+  ), [
+    displayHeight,
+    screenWidth,
+    items,
+    selectedMediaIndex
+  ] );
+
+  const renderItem = useCallback( ( { item } ) => (
+    item.type === "photo"
+      ? renderPhoto( item )
+      : renderSound( item )
+  ), [
+    renderPhoto,
+    renderSound
+  ] );
+
   // need getItemLayout for setting initial scroll index
   const getItemLayout = useCallback( ( data, idx ) => ( {
     length: screenWidth,
@@ -88,20 +128,20 @@ const MainPhotoDisplay = ( {
   } ), [screenWidth] );
 
   const handleScrollLeft = useCallback( index => {
-    if ( atFirstPhoto ) { return; }
-    setSelectedPhotoIndex( index );
-  }, [atFirstPhoto, setSelectedPhotoIndex] );
+    if ( atFirstItem ) { return; }
+    setSelectedMediaIndex( index );
+  }, [atFirstItem, setSelectedMediaIndex] );
 
   const handleScrollRight = useCallback( index => {
-    if ( atLastPhoto ) { return; }
-    setSelectedPhotoIndex( index );
-  }, [atLastPhoto, setSelectedPhotoIndex] );
+    if ( atLastItem ) { return; }
+    setSelectedMediaIndex( index );
+  }, [atLastItem, setSelectedMediaIndex] );
 
   const handleScrollEndDrag = useCallback( e => {
     const { contentOffset, layoutMeasurement } = e.nativeEvent;
     const { x } = contentOffset;
 
-    const currentOffset = screenWidth * selectedPhotoIndex;
+    const currentOffset = screenWidth * selectedMediaIndex;
 
     // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
     const index = Math.floor(
@@ -117,7 +157,7 @@ const MainPhotoDisplay = ( {
     handleScrollLeft,
     handleScrollRight,
     screenWidth,
-    selectedPhotoIndex
+    selectedMediaIndex
   ] );
 
   return (
@@ -129,9 +169,9 @@ const MainPhotoDisplay = ( {
       }}
     >
       <FlatList
-        data={photos}
-        renderItem={renderImage}
-        initialScrollIndex={selectedPhotoIndex}
+        data={items}
+        renderItem={renderItem}
+        initialScrollIndex={selectedMediaIndex}
         getItemLayout={getItemLayout}
         horizontal
         pagingEnabled
@@ -145,4 +185,4 @@ const MainPhotoDisplay = ( {
   );
 };
 
-export default MainPhotoDisplay;
+export default MainMediaDisplay;
