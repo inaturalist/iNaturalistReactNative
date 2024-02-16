@@ -33,6 +33,8 @@ const MapView = ( {
 
   const {
     onPanDrag,
+    onPermissionBlocked,
+    onPermissionDenied,
     onPermissionGranted,
     permissionRequested,
     redoSearchInMapArea,
@@ -79,8 +81,10 @@ const MapView = ( {
         />
       )}
       <LocationPermissionGate
-        permissionNeeded={permissionRequested}
+        onPermissionBlocked={onPermissionBlocked}
+        onPermissionDenied={onPermissionDenied}
         onPermissionGranted={onPermissionGranted}
+        permissionNeeded={permissionRequested}
         withoutNavigation
       />
     </>

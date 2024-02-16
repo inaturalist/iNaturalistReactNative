@@ -111,6 +111,18 @@ const useMapLocation = ( ): Object => {
     setPermissionsGranted( true );
   }, [setPermissionRequested, setPermissionsGranted] );
 
+  const onPermissionBlocked = useCallback( ( ) => {
+    logger.info( "onPermissionBlocked" );
+    setPermissionRequested( false );
+    setPermissionsGranted( false );
+  }, [setPermissionRequested, setPermissionsGranted] );
+
+  const onPermissionDenied = useCallback( ( ) => {
+    logger.info( "onPermissionDenied" );
+    setPermissionRequested( false );
+    setPermissionsGranted( false );
+  }, [setPermissionRequested, setPermissionsGranted] );
+
   useEffect( ( ) => {
     if ( permissionsGranted && mapBoundaries ) {
       showUserLocation( );
@@ -133,6 +145,8 @@ const useMapLocation = ( ): Object => {
 
   return {
     onPanDrag,
+    onPermissionBlocked,
+    onPermissionDenied,
     onPermissionGranted,
     permissionRequested,
     redoSearchInMapArea,
