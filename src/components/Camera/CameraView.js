@@ -184,6 +184,8 @@ const CameraView = ( {
             pixelFormat={pixelFormatPatch()}
             animatedProps={animatedProps}
             resizeMode={resizeMode || "cover"}
+            // Required for most non-Samsung Android devices, can cause crashes on Samsung devices
+            enableGpuBuffers
           />
         </GestureDetector>
         <FocusSquare
