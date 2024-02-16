@@ -11,9 +11,9 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTheme } from "react-native-paper";
 import {
+  useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import useStoredLayout from "sharedHooks/useStoredLayout";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
