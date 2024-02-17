@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { Checkbox } from "components/SharedComponents";
-import initI18next from "i18n/initI18next";
+
 import React from "react";
 import colors from "styles/tailwindColors";
 import { renderComponent } from "tests/helpers/render";
@@ -21,9 +21,7 @@ const rerenderCheckmarkComponent = checked => {
 };
 
 describe( "Checkbox", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
+
 
   it( "renders reliably", () => {
     render( <Checkbox text="Checkmark text" /> );

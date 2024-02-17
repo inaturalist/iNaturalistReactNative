@@ -3,7 +3,6 @@ import {
   screen,
   userEvent
 } from "@testing-library/react-native";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -60,7 +59,6 @@ describe( "Suggestions", ( ) => {
   }
 
   beforeAll( async () => {
-    await initI18next();
     // userEvent recommends fake timers
     jest.useFakeTimers( );
   } );

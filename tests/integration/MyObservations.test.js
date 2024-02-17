@@ -1,16 +1,15 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import { format } from "date-fns";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory, { makeResponse } from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -37,10 +36,6 @@ afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
 describe( "MyObservations", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   // For some reason this interferes with the "should not make a request to
   // users/me" test below, can't figure out why ~~~kueda 20230105
   // TODO: this looks to me more like it should be covered by unit tests - @jtklein

@@ -1,11 +1,10 @@
 // ComponentUnderTest.perf-test.tsx
-import { faker } from "@faker-js/faker";
 import MyObservations from "components/MyObservations/MyObservations";
-import initI18next from "i18n/initI18next";
 import React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { measurePerformance } from "reassure";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 
 jest.setTimeout( 60_000 );
 
@@ -74,10 +73,6 @@ jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
 } ) );
 
 describe( "MyObservations Performance", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   test( "Test list loading time in MyObservations", async () => {
     await measurePerformance( <MyObservations
       observations={mockObservations}

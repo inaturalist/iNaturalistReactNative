@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import TaxonSearch from "components/Suggestions/TaxonSearch";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
@@ -57,10 +56,6 @@ jest.mock( "react-native-paper", () => {
 } );
 
 describe( "TaxonSearch", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   test( "should not have accessibility errors", async ( ) => {
     const taxonSearch = (
       <TaxonSearch />

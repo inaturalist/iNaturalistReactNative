@@ -1,6 +1,5 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import Announcements from "components/MyObservations/Announcements";
-import initI18next from "i18n/initI18next";
 import inaturalistjs from "inaturalistjs";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
@@ -47,10 +46,6 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
 const containerID = "announcements-container";
 
 describe( "Announcements", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   beforeEach( ( ) => {
     inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
       total_results: 0,

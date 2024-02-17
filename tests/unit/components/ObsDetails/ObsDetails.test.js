@@ -1,8 +1,6 @@
-import { faker } from "@faker-js/faker";
 import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import initI18next from "i18n/initI18next";
 import i18next, { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
@@ -12,6 +10,7 @@ import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
@@ -153,7 +152,6 @@ const renderObsDetails = ( ) => renderComponent(
 
 describe( "ObsDetails", () => {
   beforeAll( async () => {
-    await initI18next();
     jest.useFakeTimers( );
   } );
 

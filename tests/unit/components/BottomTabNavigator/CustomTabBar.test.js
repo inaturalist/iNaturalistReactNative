@@ -1,11 +1,10 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
-import initI18next from "i18n/initI18next";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import * as useIsConnected from "sharedHooks/useIsConnected";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockUser = factory( "LocalUser", {
@@ -26,10 +25,6 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 } ) );
 
 describe( "CustomTabBar", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   beforeEach( ( ) => {
     jest.useFakeTimers();
   } );

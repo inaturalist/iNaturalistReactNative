@@ -1,7 +1,7 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { render, screen } from "@testing-library/react-native";
 import ObsMedia from "components/ObsDetails/ObsMedia";
-import initI18next from "i18n/initI18next";
+
 import _ from "lodash";
 import React from "react";
 import factory from "tests/factory";
@@ -48,9 +48,7 @@ const expectedImageSource = [
 ];
 
 describe( "ObsMedia", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
+
 
   // it.todo( "should not have accessibility errors" );
   // it( "should not have accessibility errors", async () => {

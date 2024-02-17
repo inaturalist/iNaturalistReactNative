@@ -1,6 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ActivityHeaderContainer from "components/ObsDetails/ActivityTab/ActivityHeaderContainer";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 import factory, { makeResponse } from "tests/factory";
@@ -32,10 +31,6 @@ afterAll( uniqueRealmAfterAll );
 const mockUser = factory( "LocalUser" );
 
 describe( "ActivityHeaderContainer", ( ) => {
-  beforeAll( async () => {
-    await initI18next( );
-  } );
-
   beforeEach( ( ) => {
     signIn( mockUser, { realm: global.mockRealms[__filename] } );
   } );

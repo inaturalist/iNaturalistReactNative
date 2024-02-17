@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native";
 import MyObservations from "components/MyObservations/MyObservations";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -60,7 +59,6 @@ jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
 
 describe( "MyObservations", () => {
   beforeAll( async () => {
-    await initI18next();
     jest.useFakeTimers( );
   } );
 
