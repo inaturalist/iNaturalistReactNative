@@ -1,13 +1,11 @@
 import { render, screen } from "@testing-library/react-native";
 import PermissionGate from "components/SharedComponents/PermissionGate";
-import initI18next from "i18n/initI18next";
+
 import React from "react";
 import { RESULTS } from "react-native-permissions";
 
 describe( "PermissionGate", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
+
 
   it( "should show the GRANT PERMISSION button when permission unknown", ( ) => {
     render(

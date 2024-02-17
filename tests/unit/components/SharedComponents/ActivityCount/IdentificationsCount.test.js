@@ -1,14 +1,11 @@
 import { render, screen } from "@testing-library/react-native";
 import { IdentificationsCount } from "components/SharedComponents";
-import initI18next from "i18n/initI18next";
+
 import React from "react";
 
 const count = 1;
 
 describe( "IdentificationsCount", () => {
-  beforeAll( async () => {
-    await initI18next();
-  } );
 
   it( "renders default reliably", () => {
     // Snapshot test

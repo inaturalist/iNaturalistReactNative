@@ -1,10 +1,9 @@
-import faker from "tests/helpers/faker";
 import { render, screen } from "@testing-library/react-native";
 import { DisplayTaxonName } from "components/SharedComponents";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 
 const capitalizeFirstLetter = s => s.charAt( 0 ).toUpperCase( ) + s.slice( 1 );
 
@@ -44,10 +43,6 @@ const uncapitalizedTaxon = factory( "LocalTaxon", {
 } );
 
 describe( "DisplayTaxonName", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   describe( "when common name is first", ( ) => {
     test( "renders correct taxon for species", ( ) => {
       render( <DisplayTaxonName taxon={speciesTaxon} /> );

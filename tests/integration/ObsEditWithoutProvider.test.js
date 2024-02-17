@@ -1,11 +1,10 @@
-import faker from "tests/helpers/faker";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );
@@ -62,7 +61,6 @@ const mockTaxon = factory( "RemoteTaxon", {
 describe( "basic rendering", ( ) => {
   beforeAll( async () => {
     useStore.setState( initialStoreState, true );
-    await initI18next();
   } );
 
   it( "should render place_guess and latitude", ( ) => {
@@ -91,7 +89,6 @@ describe( "basic rendering", ( ) => {
 describe( "location fetching", () => {
   beforeAll( async () => {
     useStore.setState( initialStoreState, true );
-    await initI18next();
   } );
 
   beforeEach( () => {

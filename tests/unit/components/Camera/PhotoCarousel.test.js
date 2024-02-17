@@ -2,7 +2,6 @@ import {
   fireEvent, render, screen, waitFor
 } from "@testing-library/react-native";
 import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import useStore from "stores/useStore";
 
@@ -18,7 +17,6 @@ const mockPhotoUris = [
 describe( "PhotoCarousel", ( ) => {
   beforeAll( async () => {
     useStore.setState( initialStoreState, true );
-    await initI18next( );
   } );
   // There were some tests of photo sizes responding to the isLargeScreen prop
   // but somewhat dynamic tailwind classes don't seem to create style props

@@ -1,6 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationSheet";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
@@ -34,8 +33,6 @@ const getLocalObservation = uuid => global.realm
 
 describe( "delete observation", ( ) => {
   beforeAll( async ( ) => {
-    await initI18next( );
-
     safeRealmWrite( global.realm, ( ) => {
       global.realm.create( "Observation", currentObservation );
     }, "write Observation, DeleteObservationSheet test" );

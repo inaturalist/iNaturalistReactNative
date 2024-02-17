@@ -1,14 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import OtherDataSection from "components/ObsEdit/OtherDataSection";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
 describe( "OtherDataSection", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "has no accessibility errors", () => {
     const otherData = (
       <OtherDataSection />

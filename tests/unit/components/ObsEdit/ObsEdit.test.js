@@ -1,6 +1,5 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
@@ -47,7 +46,6 @@ const renderObsEdit = ( ) => renderComponent( <ObsEdit /> );
 describe( "ObsEdit", () => {
   beforeAll( async ( ) => {
     useStore.setState( initialStoreState, true );
-    await initI18next( );
   } );
 
   it( "should not have accessibility errors", async () => {

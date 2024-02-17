@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -33,9 +32,6 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 describe( "ProjectDetails", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
   test( "should not have accessibility errors", async ( ) => {
     renderComponent( <ProjectDetailsContainer /> );
     const projectDetails = await screen.findByTestId( "project-details" );

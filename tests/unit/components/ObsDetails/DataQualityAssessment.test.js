@@ -2,7 +2,7 @@ import faker from "tests/helpers/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import DQAContainer from "components/ObsDetails/DQAContainer";
-import initI18next from "i18n/initI18next";
+
 import { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
@@ -94,9 +94,7 @@ jest.mock( "@react-navigation/native", () => {
 } );
 
 describe( "Data Quality Assessment", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
+
   test( "renders correct quality grade status", async ( ) => {
     renderComponent( <DQAContainer qualityGrade={mockObservation.quality_grade} /> );
 
@@ -185,9 +183,7 @@ describe( "Data Quality Assessment", ( ) => {
 } );
 
 describe( "DQA Vote Buttons", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
+
   test( "renders DQA vote buttons", async ( ) => {
     renderComponent( <DQAContainer observation={mockObservation} /> );
 

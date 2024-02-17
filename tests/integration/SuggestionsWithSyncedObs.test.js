@@ -1,15 +1,14 @@
-import faker from "tests/helpers/faker";
 import {
   act,
   screen,
   userEvent,
   within
 } from "@testing-library/react-native";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import Identification from "realmModels/Identification";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
@@ -48,7 +47,6 @@ afterAll( uniqueRealmAfterAll );
 const initialStoreState = useStore.getState( );
 beforeAll( async ( ) => {
   useStore.setState( initialStoreState, true );
-  await initI18next( );
   // userEvent recommends fake timers
   jest.useFakeTimers( );
 } );

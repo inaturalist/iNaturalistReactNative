@@ -1,7 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
-import initI18next from "i18n/initI18next";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
@@ -74,9 +73,6 @@ jest.mock(
 );
 
 describe( "TaxonDetails", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
   test( "renders taxon details from API call", async ( ) => {
     renderTaxonDetails( );
     expect( screen.getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );

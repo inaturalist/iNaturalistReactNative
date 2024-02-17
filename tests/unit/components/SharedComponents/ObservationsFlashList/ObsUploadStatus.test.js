@@ -2,7 +2,6 @@ import {
   screen
 } from "@testing-library/react-native";
 import ObsUploadStatus from "components/SharedComponents/ObservationsFlashList/ObsUploadStatus";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import factory from "tests/factory";
@@ -19,10 +18,6 @@ const mockEditedObservation = factory( "LocalObservation", {
 } );
 
 describe( "ObsUploadStatus", () => {
-  beforeAll( async () => {
-    await initI18next();
-  } );
-
   it( "displays a pending upload for an unsynced observation", () => {
     renderComponent(
       <ObsUploadStatus
