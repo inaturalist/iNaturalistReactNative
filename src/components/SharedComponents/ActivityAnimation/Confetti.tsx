@@ -35,7 +35,6 @@ const AnimatedElement = memo(
     const { width, height } = useWindowDimensions()
     const style = useAnimatedStyle(() => {
       return {
-        // Maybe rely on the children?
         opacity: 0.8,
         position: 'absolute',
         transform: [
@@ -176,9 +175,8 @@ function randomNumberInRange(min: number, max: number) {
 
 function getAnimationConfigForElement(duration: number, index: number, count: number) {
   'worklet'
-  // I don't really know what I was doing here :-)
-  // But in a nutshell, I wanted to constrain the duration
-  // of each element and also ensure that I am evenly
+  // In a nutshell, to constrain the duration
+  // of each element and also to ensure that it is evenly
   // distributing the elements across the duration [0, 1]
   const minDuration = duration / 4
   const maxDuration = clamp(2000, minDuration, duration * 0.7)
