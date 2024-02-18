@@ -50,11 +50,7 @@ const IndeterminateProgressBar = ( {
   } ) );
 
   return (
-    <View
-      className="flex-1 h-1 background-transparent"
-    >
-      <Animated.View style={[progress, { backgroundColor: foregroundColor }]} />
-    </View>
+    <Animated.View style={[progress, { backgroundColor: foregroundColor }]} />
   );
 };
 
