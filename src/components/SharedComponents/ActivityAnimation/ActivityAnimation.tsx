@@ -10,7 +10,7 @@ export default function ActivityAnimation() {
   const theme = useTheme();
   return (
     <View className="flex-1">
-      {/* A view that animates back and forth */}
+      {/* A view that animates in a loop */}
       <IndeterminateProgressBar
         color={theme.colors.secondary}
       />
