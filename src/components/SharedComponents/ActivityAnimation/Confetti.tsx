@@ -8,6 +8,10 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
+import { INatIcon } from "components/SharedComponents";
+import { View } from "components/styledComponents";
+import classNames from "classnames";
+import { useTheme } from "react-native-paper";
 
 type ConfettiProps = PropsWithChildren<{
   count: number
@@ -63,6 +67,7 @@ const AnimatedElement = memo(
 )
 
 export function Confetti({ count, duration = 5000, children }: ConfettiProps) {
+  const theme = useTheme();
   const animation = useSharedValue(0)
   const [autoDestroy, setAutoDestroy] = useState(false)
 
@@ -92,9 +97,28 @@ export function Confetti({ count, duration = 5000, children }: ConfettiProps) {
     return null
   }
 
+  const iconicTaxonIcons = [
+    "plantae",
+    "insecta",
+    "aves",
+    "animalia",
+    "fungi",
+    "arachnida",
+    "mollusca",
+    "mammalia",
+    "reptilia",
+    "amphibia",
+    "actinopterygii",
+    "chromista",
+    "protozoa",
+    "unknown"
+  ];
+
   return (
     <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFillObject, stylez]}>
       {[...Array(count).keys()].map((i) => {
+        // With the index loop through the iconicTaxonIcons multiple times
+        const randomIconicTaxon = iconicTaxonIcons[i % iconicTaxonIcons.length];
         return (
           <AnimatedElement
             key={`animated-element-${i}`}
@@ -103,7 +127,20 @@ export function Confetti({ count, duration = 5000, children }: ConfettiProps) {
             animation={animation}
             duration={duration}
           >
-            {children}
+            <View
+              className={
+                classNames(
+                  "border-inatGreen border-[2px] mr-4 justify-center items-center",
+                  "h-[36px] w-[36px] rounded-full"
+                )
+              }
+            >
+              <INatIcon
+                name={`iconic-${randomIconicTaxon}`}
+                size={22}
+                color={theme.colors.secondary}
+              />
+            </View>
           </AnimatedElement>
         )
       })}
