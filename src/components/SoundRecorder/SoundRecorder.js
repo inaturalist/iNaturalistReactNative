@@ -3,7 +3,6 @@
 import { useNavigation } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
-  Body1,
   Heading1,
   INatIconButton,
   MediaNavButtons,
@@ -124,6 +123,7 @@ const SoundRecorder = (): Node => {
     let icon = "microphone";
     let accessibilityLabel = t( "Record-verb" );
     let accessibilityHint = t( "Starts-recording-sound" );
+    let backgroundColor = colors.red;
     if ( status === "recording" ) {
       onPress = stopRecording;
       icon = "pause";
@@ -132,12 +132,13 @@ const SoundRecorder = (): Node => {
     } else if ( status === "stopped" ) {
       onPress = resetRecording;
       icon = "rotate-right";
+      backgroundColor = colors.darkGray;
     }
 
     return (
       <INatIconButton
         onPress={onPress}
-        backgroundColor={colors.red}
+        backgroundColor={backgroundColor}
         color={colors.white}
         size={33}
         icon={icon}
@@ -167,7 +168,9 @@ const SoundRecorder = (): Node => {
         <Heading1 className="text-white">
           {sound.recordTime}
         </Heading1>
-        <Body1 className="text-gray">{uri}</Body1>
+        {/*
+          <Body1 className="text-gray">{uri}</Body1>
+        */}
         { uri && (
           <View className="absolute right-5 bottom-5">
             <INatIconButton
