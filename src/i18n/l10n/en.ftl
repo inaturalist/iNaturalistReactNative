@@ -447,6 +447,8 @@ High = High
 
 Highest = Highest
 
+HIGHEST-RANK = HIGHEST RANK
+
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 
@@ -521,6 +523,8 @@ Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
 Low = Low
 
 Lowest = Lowest
+
+LOWEST-RANK = LOWEST RANK
 
 Mammals = Mammals
 
