@@ -302,7 +302,7 @@ PODS:
     - React-Core
   - react-native-webview (11.26.1):
     - React-Core
-  - react-native-worklets-core (0.2.4):
+  - react-native-worklets-core (0.3.0):
     - React
     - React-callinvoker
     - React-Core
@@ -730,7 +730,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
   react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
-  react-native-worklets-core: b4094f51cb2bc649e297206425cb8956f4945e3e
+  react-native-worklets-core: a894d572639fcf37c6d284cc799882d25d00c93d
   React-perflogger: c944b06edad34f5ecded0f29a6e66290a005d365
   React-RCTActionSheet: fa467f37777dacba2c72da4be7ae065da4482d7d
   React-RCTAnimation: 0591ee5f9e3d8c864a0937edea2165fe968e7099
