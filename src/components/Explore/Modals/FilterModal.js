@@ -175,6 +175,10 @@ const FilterModal = ( {
   const tUp = key => t( key ).toUpperCase();
 
   const taxonomicRankValues = {
+    [TAXONOMIC_RANK.none]: {
+      label: tUp( "none" ),
+      value: TAXONOMIC_RANK.none
+    },
     [TAXONOMIC_RANK.kingdom]: {
       label: tUp( "Ranks-kingdom" ),
       value: TAXONOMIC_RANK.kingdom
