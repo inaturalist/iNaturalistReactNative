@@ -863,8 +863,7 @@ const FilterModal = ( {
           />
           {openSheet === LRANK && (
             <RadioButtonSheet
-              headerText={t( "TODO: this sheet needs to be scrollable" )}
-              // headerText={t( "TAXONOMIC-RANKS" )}
+              headerText={t( "LOWEST-RANK" )}
               confirm={newRank => {
                 dispatch( {
                   type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
@@ -890,10 +889,8 @@ const FilterModal = ( {
             accessibilityLabel={t( "Highest" )}
           />
           {openSheet === HRANK && (
-            // TODO: scrollable sheet
             <RadioButtonSheet
-              headerText={t( "TODO: this sheet needs to be scrollable" )}
-              // headerText={t( "TAXONOMIC-RANKS" )}
+              headerText={t( "HIGHEST-RANK" )}
               confirm={newRank => {
                 dispatch( {
                   type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
