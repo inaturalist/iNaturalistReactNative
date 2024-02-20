@@ -21,7 +21,7 @@ import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
 const { useRealm } = RealmContext;
 
-const DESIRED_LOCATION_ACCURACY = 4000000;
+const DESIRED_LOCATION_ACCURACY = 600000;
 
 type Props = {
   passesEvidenceTest: boolean,
@@ -46,8 +46,7 @@ const BottomButtons = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const navigation = useNavigation( );
-  const isNewObs = !!currentObservation?._synced_at
-    || ( currentObservation && !( "_synced_at" in currentObservation ) );
+  const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
   const { t } = useTranslation( );
@@ -141,11 +140,7 @@ const BottomButtons = ( {
   const showMissingEvidence = useCallback( ( ) => {
     if ( allowUserToUpload ) { return false; }
     // missing evidence sheet takes precedence over the location imprecise sheet
-    if ( !passesEvidenceTest ) {
-      setShowMissingEvidenceSheet( true );
-      setAllowUserToUpload( true );
-      return true;
-    }
+
     if ( currentObservation?.positional_accuracy
       && currentObservation?.positional_accuracy > DESIRED_LOCATION_ACCURACY ) {
       // Don't check for valid positional accuracy in case of a new observation with imported photos
@@ -154,6 +149,12 @@ const BottomButtons = ( {
         return true;
       }
     }
+    if ( !passesEvidenceTest ) {
+      setShowMissingEvidenceSheet( true );
+      setAllowUserToUpload( true );
+      return true;
+    }
+
     return false;
   }, [allowUserToUpload, currentObservation, passesEvidenceTest, isNewObs, hasImportedPhotos] );
 
