@@ -5,48 +5,42 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+import { Trans } from "react-i18next";
 
-    type Props = {
-        type: string,
-        notifier: string
-    };
+type Props = {
+    type: string,
+    userName: string
+};
 
-const ObsNotificationText = ( { type, notifier }: Props ): Node => {
-  const { t } = useTranslation( );
-
-  const renderNotifierUsername = () => (
-    <List2 className="font-bold pr-[2px]">{ notifier }</List2> );
-
-  if ( type === "Identification" ) {
-    return (
-      <View className="flex-row">
-        <List2>
-          {renderNotifierUsername()}
-          {" "}
-          {t( "Notification-Identification" )}
-        </List2>
-      </View>
-    );
-  }
+const ObsNotificationText = ( { type, userName }: Props ): Node => {
+  let content = `unknown notification type: ${type}`;
 
   if ( type === "Comment" ) {
-    return (
-      <View className="flex-row">
-        <List2>
-          {renderNotifierUsername()}
-          {" "}
-          {t( "Notification-Comment" )}
-        </List2>
-      </View>
+    content = (
+      <Trans
+        i18nKey="notifications-user-added-comment-to-observation-by-you"
+        values={{ userName }}
+        components={[
+          <List2 className="font-bold pr-[2px]" />
+        ]}
+      />
+    );
+  } else if ( type === "Identification" ) {
+    content = (
+      <Trans
+        i18nKey="notifications-user-added-identification-to-observation-by-you"
+        values={{ userName }}
+        components={[
+          <List2 className="font-bold pr-[2px]" />
+        ]}
+      />
     );
   }
 
   return (
     <View className="flex-row">
       <List2>
-        {renderNotifierUsername()}
-        {t( "Notification-Mention" )}
+        { content }
       </List2>
     </View>
   );

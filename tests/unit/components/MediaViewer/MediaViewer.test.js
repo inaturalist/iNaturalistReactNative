@@ -1,15 +1,10 @@
 import { screen } from "@testing-library/react-native";
 import MediaViewer from "components/MediaViewer/MediaViewer";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 describe( "MediaViewer", ( ) => {
-  beforeAll( async () => {
-    await initI18next();
-  } );
-
   describe( "without media", ( ) => {
     it( "should not have accessibility errors", async () => {
       renderComponent( <MediaViewer /> );

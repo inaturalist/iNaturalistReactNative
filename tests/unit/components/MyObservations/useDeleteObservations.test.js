@@ -1,8 +1,8 @@
-import { faker } from "@faker-js/faker";
 import { renderHook, waitFor } from "@testing-library/react-native";
 import useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations";
-import initI18next from "i18n/initI18next";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
@@ -30,17 +30,17 @@ const getLocalObservation = uuid => global.realm
   .objectForPrimaryKey( "Observation", uuid );
 
 describe( "handle deletions", ( ) => {
-  beforeEach( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "should not make deletion API call for unsynced observations", async ( ) => {
     const deleteSpy = jest.spyOn( global.realm, "delete" );
-    unsyncedObservations.forEach( observation => {
-      global.realm.write( ( ) => {
-        global.realm.create( "Observation", observation );
-      } );
-    } );
+    safeRealmWrite(
+      global.realm,
+      ( ) => {
+        unsyncedObservations.forEach( observation => {
+          global.realm.create( "Observation", observation );
+        } );
+      },
+      "write unsyncedObservations, useDeleteObservations test"
+    );
 
     const unsyncedObservation = getLocalObservation(
       unsyncedObservations[0].uuid
@@ -51,17 +51,20 @@ describe( "handle deletions", ( ) => {
     await waitFor( ( ) => {
       expect( mockMutate ).not.toHaveBeenCalled( );
     } );
-
     expect( deleteSpy ).toHaveBeenCalled( );
   } );
 
   it( "should make deletion API call for previously synced observations", async ( ) => {
     const deleteSpy = jest.spyOn( global.realm, "delete" );
-    syncedObservations.forEach( observation => {
-      global.realm.write( ( ) => {
-        global.realm.create( "Observation", observation );
-      } );
-    } );
+    safeRealmWrite(
+      global.realm,
+      ( ) => {
+        syncedObservations.forEach( observation => {
+          global.realm.create( "Observation", observation );
+        } );
+      },
+      "write syncedObservations, useDeleteObservations test"
+    );
 
     const syncedObservation = getLocalObservation( syncedObservations[0].uuid );
     expect( syncedObservation._synced_at ).not.toBeNull( );

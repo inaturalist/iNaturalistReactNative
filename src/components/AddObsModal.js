@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -31,6 +32,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   const navigation = useNavigation( );
 
   const navAndCloseModal = async ( screen, params ) => {
+    const currentRoute = getCurrentRoute();
     resetStore( );
     if ( screen === "ObsEdit" ) {
       const newObservation = await Observation.new( );
@@ -39,7 +41,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     // access nested screen
     navigation.navigate( "CameraNavigator", {
       screen,
-      params
+      params: { ...params, previousScreen: currentRoute }
     } );
     closeModal( );
   };

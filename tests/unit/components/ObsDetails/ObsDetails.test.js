@@ -1,8 +1,6 @@
-import { faker } from "@faker-js/faker";
 import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import initI18next from "i18n/initI18next";
 import i18next, { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
@@ -12,6 +10,7 @@ import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
@@ -114,6 +113,14 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   } ) )
 } ) );
 
+const mockMutate = jest.fn();
+jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    mutate: mockMutate
+  } )
+} ) );
+
 jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
   __esModule: true,
   default: jest.fn( () => ( {
@@ -145,7 +152,7 @@ const renderObsDetails = ( ) => renderComponent(
 
 describe( "ObsDetails", () => {
   beforeAll( async () => {
-    await initI18next();
+    jest.useFakeTimers( );
   } );
 
   it.todo( "should not have accessibility errors" );
@@ -156,7 +163,7 @@ describe( "ObsDetails", () => {
   // react-native-reanimated-carousel that needs investigation. ~~~kueda
   // 20240119
   // it( "should not have accessibility errors", async () => {
-  //   renderObsDetails( [mockObservation] );
+  //   renderObsDetails( );
   //   const obsDetails = await screen.findByTestId(
   //     `ObsDetails.${mockObservation.uuid}`
   //   );
@@ -165,7 +172,7 @@ describe( "ObsDetails", () => {
 
   it( "renders obs details from remote call", async () => {
     useIsConnected.mockImplementation( () => true );
-    renderObsDetails( [mockObservation] );
+    renderObsDetails( );
 
     const obs = await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` );
 
@@ -176,7 +183,7 @@ describe( "ObsDetails", () => {
   } );
 
   it( "renders data tab on button press", async () => {
-    renderObsDetails( [mockObservation] );
+    renderObsDetails( );
     const button = await screen.findByTestId( "ObsDetails.DetailsTab" );
     expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy();
 
@@ -185,7 +192,7 @@ describe( "ObsDetails", () => {
   } );
 
   it( "renders observed date of observation in header", async ( ) => {
-    renderObsDetails( [mockObservation] );
+    renderObsDetails( );
     const observedDate = await screen.findByText(
       formatApiDatetime( mockObservation.time_observed_at, i18next.t )
     );
@@ -205,7 +212,7 @@ describe( "ObsDetails", () => {
 
     it( "should render fallback image icon instead of photos", async () => {
       useIsConnected.mockImplementation( () => true );
-      renderObsDetails( [mockObservation] );
+      renderObsDetails( );
 
       const labelText = t( "Observation-has-no-photos-and-no-sounds" );
       const fallbackImage = await screen.findByLabelText( labelText );
@@ -221,7 +228,7 @@ describe( "ObsDetails", () => {
 
   describe( "activity tab", () => {
     it( "navigates to taxon details on button press", async () => {
-      renderObsDetails( [mockObservation] );
+      renderObsDetails( );
       fireEvent.press(
         await screen.findByTestId(
           `ObsDetails.taxon.${mockObservation.taxon.id}`
@@ -240,7 +247,7 @@ describe( "ObsDetails", () => {
     //   "shows network error image instead of observation photos if user is offline",
     //   async () => {
     //     useIsConnected.mockImplementation( () => false );
-    //     renderObsDetails( [mockObservation] );
+    //     renderObsDetails( );
     //     const labelText = t( "Observation-photos-unavailable-without-internet" );
     //     const noInternet = await screen.findByLabelText( labelText );
     //     expect( noInternet ).toBeTruthy();
@@ -263,7 +270,7 @@ describe( "ObsDetails", () => {
       const mockOwnObservation = factory( "LocalObservation", { user: mockUser } );
       jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => mockOwnObservation );
       jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockOwnObservation.user );
-      renderObsDetails( [mockOwnObservation] );
+      renderObsDetails( );
       expect( mockOwnObservation.user.id ).toEqual( mockUser.id );
       await expectEditAndNotMenu( );
     } );
@@ -275,7 +282,7 @@ describe( "ObsDetails", () => {
         jest.spyOn( useLocalObservation, "default" )
           .mockImplementation( () => observation );
         jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => observation.user );
-        renderObsDetails( [observation] );
+        renderObsDetails( );
         // An unuploaded observation *should* be the only situation where an
         // observation has no user, b/c a user can make observations before
         // signing in
@@ -288,10 +295,10 @@ describe( "ObsDetails", () => {
   describe( "viewing someone else's observation", ( ) => {
     it( "should show the menu and not the edit button", async ( ) => {
       expect( mockObservation.user.id ).not.toEqual( mockUser.id );
-      renderObsDetails( [mockObservation] );
+      renderObsDetails( );
       jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => mockObservation );
       jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => null );
-      renderObsDetails( [mockObservation] );
+      renderObsDetails( );
       expect( await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
       const kebabMenuLabelText = t( "Observation-options" );
       const kebabMenu = await screen.findByLabelText( kebabMenuLabelText );
@@ -299,6 +306,45 @@ describe( "ObsDetails", () => {
       const editLabelText = t( "Edit" );
       const editButton = screen.queryByLabelText( editLabelText );
       expect( editButton ).toBeFalsy( );
+    } );
+
+    it( "should agree with another user's identification when agree button pressed", async ( ) => {
+      const firstIdentification = factory( "RemoteIdentification", {
+        taxon: factory( "RemoteTaxon", {
+          preferred_common_name: "Red Fox",
+          name: "Vulpes vulpes",
+          is_active: true
+        } ),
+        user: factory( "RemoteUser" )
+      } );
+      const otherUserObservation = mockObservation;
+      otherUserObservation.identifications = [
+        firstIdentification
+      ];
+
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => null );
+
+      useAuthenticatedQuery.mockReturnValue( {
+        data: otherUserObservation
+      } );
+
+      jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => null );
+      renderObsDetails( );
+      const agreeButton = screen.getByTestId(
+        `ActivityItem.AgreeIdButton.${firstIdentification.taxon.id}`
+      );
+      expect( agreeButton ).toBeTruthy( );
+      fireEvent.press( agreeButton );
+      const confirmButton = screen.getByTestId( "ObsDetail.AgreeId.cvSuggestionsButton" );
+      expect( confirmButton ).toBeTruthy( );
+      fireEvent.press( confirmButton );
+      expect( mockMutate ).toHaveBeenCalledWith( {
+        identification: {
+          observation_id: otherUserObservation.uuid,
+          taxon_id: firstIdentification.taxon.id,
+          body: ""
+        }
+      } );
     } );
   } );
 } );

@@ -1,4 +1,5 @@
 import { renderHook } from "@testing-library/react-native";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useCurrentUser } from "sharedHooks";
 import factory from "tests/factory";
 
@@ -9,10 +10,10 @@ const mockUser = factory( "LocalUser", {
 
 describe( "useCurrentUser", () => {
   beforeEach( async ( ) => {
-    // Write mock observations to realm
-    await global.realm.write( () => {
+    // Write mock user to realm
+    safeRealmWrite( global.realm, ( ) => {
       global.realm.create( "User", mockUser );
-    } );
+    }, "create current user, useCurrentUser test" );
   } );
 
   it( "should return current user", () => {

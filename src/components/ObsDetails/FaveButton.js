@@ -30,7 +30,7 @@ const FaveButton = ( {
   top = false
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const { uuid } = observation;
+  const uuid = observation?.uuid;
 
   const observationFaved = useMemo( ( ) => {
     if ( currentUser && observation?.faves?.length > 0 ) {
@@ -98,6 +98,10 @@ const FaveButton = ( {
     uuid
   ] );
 
+  if ( !observation ) {
+    return null;
+  }
+
   return (
     <INatIconButton
       icon={isFaved
@@ -107,7 +111,7 @@ const FaveButton = ( {
       onPress={toggleFave}
       color={colors.white}
       className={classNames( "absolute bottom-3 right-3", {
-        "top-3": top
+        "top-0": top
       } )}
       accessibilityLabel={isFaved
         ? t( "Remove-favorite" )

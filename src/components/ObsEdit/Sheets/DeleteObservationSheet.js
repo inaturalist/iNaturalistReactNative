@@ -7,6 +7,7 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { log } from "sharedHelpers/logger";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -41,9 +42,9 @@ const DeleteObservationSheet = ( {
       navToObsList( );
     } else {
       logger.info( "Observation to add to deletion queue: ", localObsToDelete.uuid );
-      realm?.write( ( ) => {
+      safeRealmWrite( realm, ( ) => {
         localObsToDelete._deleted_at = new Date( );
-      } );
+      }, "adding _deleted_at date in DeleteObservationSheet" );
       logger.info(
         "Observation added to deletion queue; returning to MyObservations"
       );

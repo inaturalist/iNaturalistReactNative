@@ -57,8 +57,8 @@ exports[`CustomTabBar should render correctly 1`] = `
       }
     >
       <View
-        accessibilityHint="Opens-the-side-drawer-menu"
-        accessibilityLabel="Open-drawer"
+        accessibilityHint="Opens the side drawer menu."
+        accessibilityLabel="Open drawer"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -139,7 +139,7 @@ exports[`CustomTabBar should render correctly 1`] = `
         </View>
       </View>
       <View
-        accessibilityHint="Navigates-to-explore"
+        accessibilityHint="Navigates to explore."
         accessibilityLabel="Explore"
         accessibilityRole="button"
         accessibilityState={
@@ -251,6 +251,8 @@ exports[`CustomTabBar should render correctly 1`] = `
         visible={false}
       />
       <View
+        accessibilityHint="Opens add observation modal."
+        accessibilityLabel="Add observations"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -385,7 +387,7 @@ exports[`CustomTabBar should render correctly 1`] = `
         </BVLinearGradient>
       </View>
       <View
-        accessibilityHint="Navigates-to-observations"
+        accessibilityHint="Navigates to observations."
         accessibilityLabel="Observations"
         accessibilityRole="button"
         accessibilityState={

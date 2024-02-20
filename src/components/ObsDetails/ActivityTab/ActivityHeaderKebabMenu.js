@@ -9,59 +9,68 @@ import React, { useState } from "react";
 import { Menu } from "react-native-paper";
 
 type Props = {
-    itemType: string,
-    itemBody: string,
-    current: boolean,
-    currentUser: boolean,
-    setShowWithdrawIDSheet: Function,
-    withdrawOrRestoreIdentification: Function,
-    setShowEditCommentSheet: Function,
-    setShowDeleteCommentSheet: Function
+  current: boolean,
+  currentUser: boolean,
+  itemType: "Identification" | "Comment",
+  setShowDeleteCommentSheet: Function,
+  setShowEditCommentSheet: Function,
+  setShowWithdrawIDSheet: Function,
+  updateIdentification: Function,
 }
 
 const ActivityItemKebabMenu = ( {
-  itemType, itemBody, current, currentUser, setShowWithdrawIDSheet,
-  withdrawOrRestoreIdentification, setShowEditCommentSheet,
-  setShowDeleteCommentSheet
+  current,
+  currentUser,
+  itemType,
+  setShowDeleteCommentSheet,
+  setShowEditCommentSheet,
+  setShowWithdrawIDSheet,
+  updateIdentification
 }:Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
+  if ( !currentUser ) {
+    // flags removed from mvp
+    // placeholder for kebabmenu
+    return <View className="h-[44px] mr-[15px]" />;
+  }
+
+  if ( itemType === "Identification" ) {
+    return (
+      <KebabMenu
+        visible={kebabMenuVisible}
+        setVisible={setKebabMenuVisible}
+        accessibilityLabel={t( "Identification-options" )}
+      >
+        {current === true
+          ? (
+            <Menu.Item
+              onPress={async ( ) => {
+                setShowWithdrawIDSheet( true );
+                setKebabMenuVisible( false );
+              }}
+              title={t( "Withdraw" )}
+              testID="MenuItem.Withdraw"
+            />
+          )
+          : (
+            <Menu.Item
+              onPress={async ( ) => {
+                updateIdentification( { current: true } );
+                setKebabMenuVisible( false );
+              }}
+              title={t( "Restore" )}
+            />
+          )}
+      </KebabMenu>
+    );
+  }
+
   return (
-    <View>
-      { ( itemType === "Identification" && currentUser )
-&& (
-  <KebabMenu
-    visible={kebabMenuVisible}
-    setVisible={setKebabMenuVisible}
-  >
-    {current === true
-      ? (
-        <Menu.Item
-          onPress={async ( ) => {
-            setShowWithdrawIDSheet( true );
-            setKebabMenuVisible( false );
-          }}
-          title={t( "Withdraw" )}
-          testID="MenuItem.Withdraw"
-        />
-      )
-      : (
-        <Menu.Item
-          onPress={async ( ) => {
-            withdrawOrRestoreIdentification( true );
-            setKebabMenuVisible( false );
-          }}
-          title={t( "Restore" )}
-        />
-      )}
-  </KebabMenu>
-) }
-      {
-        ( itemType === "Comment" && itemBody && currentUser )
-  && (
     <KebabMenu
       visible={kebabMenuVisible}
       setVisible={setKebabMenuVisible}
+      accessibilityLabel={t( "Comment-options" )}
     >
       <Menu.Item
         onPress={async ( ) => {
@@ -80,17 +89,6 @@ const ActivityItemKebabMenu = ( {
         testID="MenuItem.DeleteComment"
       />
     </KebabMenu>
-  )
-      }
-      {
-        !currentUser
-&& (
-        // flags removed from mvp
-        // placeholder for kebabmenu
-  <View className="h-[44px] mr-[15px]" />
-)
-      }
-    </View>
   );
 };
 

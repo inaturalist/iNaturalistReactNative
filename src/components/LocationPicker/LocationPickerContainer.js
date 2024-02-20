@@ -55,8 +55,14 @@ const reducer = ( state, action ) => {
           ...state.region,
           // This was causing a crash when getting to the location picker before
           // current location was fetched in the observation viewer
-          latitude: action.currentObservation?.latitude || 0.0,
-          longitude: action.currentObservation?.longitude || 0.0,
+          latitude:
+            action.currentObservation?.privateLatitude
+            || action.currentObservation?.latitude
+            || 0.0,
+          longitude:
+            action.currentObservation?.privateLongitude
+            || action.currentObservation?.longitude
+            || 0.0,
           latitudeDelta: DELTA,
           longitudeDelta: DELTA
         }

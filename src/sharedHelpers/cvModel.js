@@ -37,7 +37,8 @@ export const predictImage = ( uri: string ): Promise<Object> => getPredictionsFo
   uri,
   modelPath,
   taxonomyPath,
-  version: modelVersion
+  version: modelVersion,
+  confidenceThreshold: "0.2"
 } );
 
 const addCameraFilesAndroid = () => {

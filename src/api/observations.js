@@ -130,6 +130,21 @@ const fetchObservationUpdates = async (
   }
 };
 
+const fetchUnviewedObservationUpdatesCount = async (
+  opts: Object
+): Promise<Number> => {
+  try {
+    const { total_results: updatesCount } = await inatjs.observations.updates( {
+      observations_by: "owner",
+      viewed: false,
+      per_page: 0
+    }, opts );
+    return updatesCount;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 const deleteRemoteObservation = async (
   params: Object = {},
   opts: Object = {}
@@ -187,6 +202,7 @@ export {
   fetchObservers,
   fetchRemoteObservation,
   fetchSpeciesCounts,
+  fetchUnviewedObservationUpdatesCount,
   markAsReviewed,
   markObservationUpdatesViewed,
   searchObservations,

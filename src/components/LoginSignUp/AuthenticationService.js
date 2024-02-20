@@ -14,6 +14,7 @@ import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import { log } from "../../../react-native-logs.config";
 
@@ -344,9 +345,10 @@ const authenticateUser = async (
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
-  realm.write( ( ) => {
+  logger.debug( "writing current user to realm: ", currentUser );
+  safeRealmWrite( realm, ( ) => {
     realm.create( "User", currentUser, "modified" );
-  } );
+  }, "saving current user in AuthenticationService" );
   const currentRealmUser = User.currentUser( realm );
   logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
   const realmPathExists = await RNFS.exists( realm.path );

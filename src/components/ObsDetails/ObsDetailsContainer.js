@@ -14,6 +14,7 @@ import React, {
 } from "react";
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
   useAuthenticatedQuery,
@@ -103,6 +104,9 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
+  const setObservationMarkedAsViewedAt = useStore(
+    state => state.setObservationMarkedAsViewedAt
+  );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
@@ -225,11 +229,11 @@ const ObsDetailsContainer = ( ): Node => {
 
   const markViewedLocally = async () => {
     if ( !localObservation ) { return; }
-    realm?.write( () => {
+    safeRealmWrite( realm, ( ) => {
       // Flags if all comments and identifications have been viewed
       localObservation.comments_viewed = true;
       localObservation.identifications_viewed = true;
-    } );
+    }, "marking viewed locally in ObsDetailsContainer" );
   };
 
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
@@ -245,6 +249,7 @@ const ObsDetailsContainer = ( ): Node => {
         queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
         refetchRemoteObservation( );
         refetchObservationUpdates( );
+        setObservationMarkedAsViewedAt( new Date( ) );
       }
     }
   );
@@ -260,12 +265,12 @@ const ObsDetailsContainer = ( ): Node => {
     {
       onSuccess: data => {
         if ( belongsToCurrentUser ) {
-          realm?.write( ( ) => {
+          safeRealmWrite( realm, ( ) => {
             const localComments = localObservation?.comments;
             const newComment = data[0];
             newComment.user = currentUser;
             localComments.push( newComment );
-          } );
+          }, "setting local comment in ObsDetailsContainer" );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
         } else {
@@ -300,7 +305,7 @@ const ObsDetailsContainer = ( ): Node => {
     {
       onSuccess: data => {
         if ( belongsToCurrentUser ) {
-          realm?.write( ( ) => {
+          safeRealmWrite( realm, ( ) => {
             const localIdentifications = localObservation?.identifications;
             const newIdentification = data[0];
             newIdentification.user = currentUser;
@@ -312,7 +317,7 @@ const ObsDetailsContainer = ( ): Node => {
               newIdentification.vision = true;
             }
             localIdentifications.push( newIdentification );
-          } );
+          }, "setting local identification in ObsDetailsContainer" );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
         } else {
@@ -391,7 +396,7 @@ const ObsDetailsContainer = ( ): Node => {
   const onAgree = newComment => {
     const agreeParams = {
       observation_id: observation?.uuid,
-      taxon_id: observation?.taxon?.id,
+      taxon_id: taxonForAgreement?.id,
       body: newComment
     };
 
@@ -407,10 +412,6 @@ const ObsDetailsContainer = ( ): Node => {
   const onIDAgreePressed = taxon => {
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
   };
-
-  if ( !observation ) {
-    return null;
-  }
 
   return (
     <ObsDetails

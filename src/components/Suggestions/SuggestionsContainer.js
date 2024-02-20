@@ -20,6 +20,8 @@ const SuggestionsContainer = ( ): Node => {
   const [selectedTaxon, setSelectedTaxon] = useState( null );
 
   const {
+    dataUpdatedAt: onlineSuggestionsUpdatedAt,
+    error: onlineSuggestionsError,
     onlineSuggestions,
     loadingOnlineSuggestions,
     timedOut
@@ -27,8 +29,6 @@ const SuggestionsContainer = ( ): Node => {
     latitude: currentObservation?.latitude,
     longitude: currentObservation?.longitude
   } );
-
-  console.log( onlineSuggestions, loadingOnlineSuggestions, timedOut, "timed out status" );
 
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = timedOut || (
@@ -75,6 +75,14 @@ const SuggestionsContainer = ( ): Node => {
       setSelectedPhotoUri={setSelectedPhotoUri}
       observers={observers}
       usingOfflineSuggestions={tryOfflineSuggestions && offlineSuggestions?.length > 0}
+      debugData={{
+        timedOut,
+        onlineSuggestions,
+        offlineSuggestions,
+        onlineSuggestionsError,
+        onlineSuggestionsUpdatedAt,
+        selectedPhotoUri
+      }}
     />
   );
 };

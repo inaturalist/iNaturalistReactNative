@@ -40,7 +40,6 @@ type Props = {
   cameraPosition: string,
   device: Object,
   setCameraPosition: Function,
-  backToObsEdit: ?boolean
 }
 
 const CameraWithDevice = ( {
@@ -48,8 +47,7 @@ const CameraWithDevice = ( {
   cameraType,
   cameraPosition,
   device,
-  setCameraPosition,
-  backToObsEdit
+  setCameraPosition
 }: Props ): Node => {
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
@@ -139,7 +137,6 @@ const CameraWithDevice = ( {
         ? (
           <StandardCamera
             addEvidence={addEvidence}
-            backToObsEdit={backToObsEdit}
             camera={camera}
             device={device}
             flipCamera={flipCamera}

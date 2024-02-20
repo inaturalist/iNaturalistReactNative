@@ -9,18 +9,26 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   currentObservationIndex: number,
   setCurrentObservationIndex: Function,
-  observations: Array<Object>
+  observations: Array<Object>,
+  setResetScreen: Function
 }
 
 const MultipleObservationsArrows = ( {
   currentObservationIndex,
   setCurrentObservationIndex,
-  observations
+  observations,
+  setResetScreen
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const showNextObservation = ( ) => setCurrentObservationIndex( currentObservationIndex + 1 );
-  const showPrevObservation = ( ) => setCurrentObservationIndex( currentObservationIndex - 1 );
+  const showNextObservation = ( ) => {
+    setCurrentObservationIndex( currentObservationIndex + 1 );
+    setResetScreen( true );
+  };
+  const showPrevObservation = ( ) => {
+    setCurrentObservationIndex( currentObservationIndex - 1 );
+    setResetScreen( true );
+  };
 
   return (
     <View className="flex-row items-center justify-between pt-5">

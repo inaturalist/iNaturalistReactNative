@@ -1,0 +1,4 @@
+FIXED
+- Fixed a few crashes and UI issues on Explore filters
+- Uses custom activity indicator on all screens
+- Offline use of suggestions now times out

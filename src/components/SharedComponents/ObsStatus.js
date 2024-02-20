@@ -32,14 +32,12 @@ const ObsStatus = ( {
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
     : "mr-2";
-  const flexDirection = layout === "vertical"
-    ? "flex-column"
-    : "flex-row";
 
   const showCurrentIdCount = useCallback( ( ) => {
-    const numCurrentIdents = observation
-      .identifications?.filter( id => id.current === true )?.length || 0;
-    const identificationsFilled = observation.identifications_viewed === false;
+    const numCurrentIdents = observation?.identifications?.filter(
+      id => id.current === true
+    )?.length || 0;
+    const identificationsFilled = observation?.identifications_viewed === false;
 
     return (
       <IdentificationsCount
@@ -52,8 +50,8 @@ const ObsStatus = ( {
   }, [observation, margin, white] );
 
   const showCommentCount = useCallback( ( ) => {
-    const numComments = observation.comments?.length || 0;
-    const commentsFilled = observation.comments_viewed === false;
+    const numComments = observation?.comments?.length || 0;
+    const commentsFilled = observation?.comments_viewed === false;
 
     return (
       <CommentsCount
@@ -78,7 +76,12 @@ const ObsStatus = ( {
   }, [observation, theme, white] );
 
   return (
-    <View className={classNames( "flex-1", flexDirection, classNameMargin )} testID={testID}>
+    <View
+      className={classNames( {
+        "flex-row": layout === "horizontal"
+      }, classNameMargin )}
+      testID={testID}
+    >
       {showCurrentIdCount( )}
       {showCommentCount( )}
       {showQualityGrade( )}

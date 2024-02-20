@@ -8,68 +8,92 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import inatPlaceTypes from "dictionaries/places";
 import type { Node } from "react";
 import React, {
   useCallback,
   useState
 } from "react";
 import { FlatList } from "react-native";
+import { useTheme } from "react-native-paper";
 import { useAuthenticatedQuery } from "sharedHooks";
+import { getShadowStyle } from "styles/global";
+
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 5
+} );
 
 const ExploreLocationSearch = ( ): Node => {
-  const [query, setQuery] = useState( "" );
-  const navigation = useNavigation( );
+  const theme = useTheme();
+  const navigation = useNavigation();
 
-  const { data: placeList } = useAuthenticatedQuery(
-    ["fetchSearchResults", query],
+  const [locationName, setLocationName] = useState( "" );
+
+  const { data: placeResults } = useAuthenticatedQuery(
+    ["fetchSearchResults", locationName],
     optsWithAuth => fetchSearchResults(
       {
-        q: query,
+        q: locationName,
         sources: "places",
-        fields: "place,place.display_name,place.point_geojson"
+        fields:
+            "place,place.display_name,place.point_geojson,place.place_type",
+        per_page: 50
       },
       optsWithAuth
-    )
+    ),
+    {
+      enabled: locationName.length > 0
+    }
   );
 
-  const onPlaceSelected = useCallback( async newPlace => {
-    navigation.navigate( "Explore", { place: newPlace } );
-  }, [navigation] );
-
-  const renderFooter = ( ) => (
-    <View className="pb-10" />
+  const onPlaceSelected = useCallback(
+    place => {
+      navigation.navigate( "Explore", { place } );
+    },
+    [navigation]
   );
 
   const renderItem = useCallback(
-    ( { item } ) => (
+    ( { item: place } ) => (
       <Pressable
         accessibilityRole="button"
-        key={item.id}
-        className="p-2 border-[0.5px] border-lightGray flex-row items-center"
-        onPress={() => {
-          onPlaceSelected( item );
-        }}
+        key={place.id}
+        className="p-2 border-[0.5px] border-lightGray"
+        onPress={() => onPlaceSelected( place )}
       >
-        <Body3 className="ml-2">{item?.display_name}</Body3>
+        <Body3>{place.display_name}</Body3>
+        {!!place.place_type && (
+          <Body3>{inatPlaceTypes[place.place_type]}</Body3>
+        )}
       </Pressable>
     ),
     [onPlaceSelected]
   );
 
+  const data = placeResults || [];
+
   return (
-    <ViewWrapper className="flex-1">
-      <SearchBar
-        handleTextChange={setQuery}
-        value={query}
-        testID="SearchLocation"
-        containerClass="my-5 mx-4"
-      />
+    <ViewWrapper testID="explore-location-search" className="flex-1">
+      <View
+        className="bg-white px-6 pt-2 pb-8"
+        style={getShadow( theme.colors.primary )}
+      >
+        <SearchBar
+          handleTextChange={locationText => setLocationName( locationText )}
+          value={locationName}
+          testID="LocationPicker.locationSearch"
+        />
+      </View>
       <FlatList
         keyboardShouldPersistTaps="always"
-        data={placeList}
+        data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        ListFooterComponent={renderFooter}
       />
     </ViewWrapper>
   );

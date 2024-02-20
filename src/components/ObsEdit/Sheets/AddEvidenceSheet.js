@@ -39,8 +39,7 @@ const AddEvidenceSheet = ( {
             screen: "Camera",
             params: {
               addEvidence: true,
-              camera: "Standard",
-              backToObsEdit: true
+              camera: "Standard"
             }
           } );
         } else if ( choice === "import" ) {

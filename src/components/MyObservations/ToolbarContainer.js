@@ -7,7 +7,6 @@ import { Dimensions, PixelRatio } from "react-native";
 import { useTheme } from "react-native-paper";
 import {
   useCurrentUser,
-  useObservationsUpdates,
   useTranslation
 } from "sharedHooks";
 
@@ -61,19 +60,15 @@ const ToolbarContainer = ( {
     currentUploadCount
   } = uploadState;
 
-  const { refetch } = useObservationsUpdates( false );
-
   const handleSyncButtonPress = useCallback( ( ) => {
     if ( numUnuploadedObs > 0 ) {
       uploadMultipleObservations( );
     } else {
       syncObservations( );
-      refetch( );
     }
   }, [
     numUnuploadedObs,
     syncObservations,
-    refetch,
     uploadMultipleObservations
   ] );
 

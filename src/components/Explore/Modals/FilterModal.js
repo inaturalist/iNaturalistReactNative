@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import classNames from "classnames";
 import {
   Body1,
   Body2,
@@ -12,6 +13,7 @@ import {
   IconicTaxonChooser,
   INatIcon,
   INatIconButton,
+  List2,
   ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
@@ -24,6 +26,7 @@ import { RealmContext } from "providers/contexts";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
+  ESTABLISHMENT_MEAN,
   EXPLORE_ACTION,
   MEDIA,
   PHOTO_LICENSE,
@@ -96,14 +99,15 @@ const FilterModal = ( {
     lrank,
     dateObserved,
     observed_on: observedOn,
+    d1,
+    d2,
     months,
     dateUploaded,
     created_on: createdOn,
+    created_d1: createdD1,
+    created_d2: createdD2,
     media,
-    introduced,
-    native,
-    endemic,
-    noStatus,
+    establishmentMean,
     wildStatus,
     reviewedFilter,
     photoLicense
@@ -115,8 +119,12 @@ const FilterModal = ( {
   const HRANK = "HRANK";
   const DATE_OBSERVED_M = "DATE_OBSERVED_M";
   const OBSERVED_EXACT = "OBSERVED_EXACT";
+  const OBSERVED_START = "OBSERVED_START";
+  const OBSERVED_END = "OBSERVED_END";
   const DATE_UPLOADED_M = "DATE_UPLOADED_M";
   const UPLOADED_EXACT = "UPLOADED_EXACT";
+  const UPLOADED_START = "UPLOADED_START";
+  const UPLOADED_END = "UPLOADED_END";
   const PHOTO_LICENSING = "PHOTO_LICENSING";
   const CONFIRMATION = "CONFIRMATION";
   const [openSheet, setOpenSheet] = useState( NONE );
@@ -315,6 +323,11 @@ const FilterModal = ( {
       text: t( "Filter-by-observed-on-date" ),
       value: DATE_OBSERVED.EXACT_DATE
     },
+    [DATE_OBSERVED.DATE_RANGE]: {
+      label: t( "Date-Range" ),
+      text: t( "Filter-by-observed-between-dates" ),
+      value: DATE_OBSERVED.DATE_RANGE
+    },
     [DATE_OBSERVED.MONTHS]: {
       label: t( "Months" ),
       text: t( "Filter-by-observed-during-months" ),
@@ -331,6 +344,11 @@ const FilterModal = ( {
       label: t( "Exact-Date" ),
       text: t( "Filter-by-uploaded-on-date" ),
       value: DATE_UPLOADED.EXACT_DATE
+    },
+    [DATE_UPLOADED.DATE_RANGE]: {
+      label: t( "Date-Range" ),
+      text: t( "Filter-by-uploaded-between-dates" ),
+      value: DATE_UPLOADED.DATE_RANGE
     }
   };
 
@@ -404,6 +422,25 @@ const FilterModal = ( {
     }
   };
 
+  const establishmentValues = {
+    [ESTABLISHMENT_MEAN.ANY]: {
+      label: t( "Any" ),
+      value: ESTABLISHMENT_MEAN.ANY
+    },
+    [ESTABLISHMENT_MEAN.INTRODUCED]: {
+      label: t( "Introduced" ),
+      value: ESTABLISHMENT_MEAN.INTRODUCED
+    },
+    [ESTABLISHMENT_MEAN.NATIVE]: {
+      label: t( "Native" ),
+      value: ESTABLISHMENT_MEAN.NATIVE
+    },
+    [ESTABLISHMENT_MEAN.ENDEMIC]: {
+      label: t( "Endemic" ),
+      value: ESTABLISHMENT_MEAN.ENDEMIC
+    }
+  };
+
   const wildValues = {
     [WILD_STATUS.ALL]: {
       label: t( "All" ),
@@ -469,7 +506,9 @@ const FilterModal = ( {
     }
   };
 
-  const updateDateObserved = ( newDateObserved, d1, newMonths ) => {
+  const updateDateObserved = ( {
+    newDateObserved, newObservedOn, newD1, newD2, newMonths
+  } ) => {
     const today = new Date( ).toISOString( ).split( "T" )[0];
     // Array with the numbers from 1 to 12
     const allMonths = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
@@ -481,7 +520,13 @@ const FilterModal = ( {
     } else if ( newDateObserved === DATE_OBSERVED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT,
-        observedOn: d1 || today
+        observedOn: newObservedOn || today
+      } );
+    } else if ( newDateObserved === DATE_OBSERVED.DATE_RANGE ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE,
+        d1: newD1 || today,
+        d2: newD2 || today
       } );
     } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
       dispatch( {
@@ -492,34 +537,79 @@ const FilterModal = ( {
   };
 
   const updateObservedExact = date => {
-    updateDateObserved(
-      DATE_OBSERVED.EXACT_DATE,
-      date.toISOString().split( "T" )[0]
-    );
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.EXACT_DATE,
+      newObservedOn: date.toISOString().split( "T" )[0]
+    } );
+  };
+
+  const updateObservedStart = date => {
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.DATE_RANGE,
+      newD1: date.toISOString().split( "T" )[0],
+      newD2: d2
+    } );
+  };
+
+  const updateObservedEnd = date => {
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.DATE_RANGE,
+      newD1: d1,
+      newD2: date.toISOString().split( "T" )[0]
+    } );
   };
 
   const updateObservedMonths = monthInteger => {
     const newMonths = months.includes( monthInteger )
       ? months.filter( m => m !== monthInteger )
       : [...months, monthInteger];
-    updateDateObserved( DATE_OBSERVED.MONTHS, null, newMonths );
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.MONTHS,
+      newMonths
+    } );
   };
 
-  const updateDateUploaded = ( newDateObserved, d1 ) => {
+  const updateDateUploaded = ( { newDateUploaded, newD1, newD2 } ) => {
     const today = new Date().toISOString().split( "T" )[0];
-    if ( newDateObserved === DATE_UPLOADED.ALL ) {
+    if ( newDateUploaded === DATE_UPLOADED.ALL ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL
       } );
-    } else if ( newDateObserved === DATE_UPLOADED.EXACT_DATE ) {
+    } else if ( newDateUploaded === DATE_UPLOADED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT,
-        createdOn: d1 || today
+        createdOn: newD1 || today
+      } );
+    } else if ( newDateUploaded === DATE_UPLOADED.DATE_RANGE ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE,
+        createdD1: newD1 || today,
+        createdD2: newD2 || today
       } );
     }
   };
 
+  const updateUploadedStart = date => {
+    updateDateUploaded( {
+      newDateUploaded: DATE_UPLOADED.DATE_RANGE,
+      newD1: date.toISOString().split( "T" )[0],
+      newD2: createdD2
+    } );
+  };
+
+  const updateUploadedEnd = date => {
+    updateDateUploaded( {
+      newDateUploaded: DATE_UPLOADED.DATE_RANGE,
+      newD1: createdD1,
+      newD2: date.toISOString().split( "T" )[0]
+    } );
+  };
+
   const theme = useTheme();
+
+  const observedEndBeforeStart = d1 > d2;
+  const uploadedEndBeforeStart = createdD1 > createdD2;
+  const hasError = observedEndBeforeStart || uploadedEndBeforeStart;
 
   return (
     <View className="flex-1 bg-white" testID="filter-modal">
@@ -529,7 +619,21 @@ const FilterModal = ( {
         style={getShadow( theme.colors.primary )}
       >
         <View className="flex-row items-center">
-          <INatIcon name="sliders" size={20} />
+          <INatIconButton
+            icon="chevron-left"
+            onPress={
+              !differsFromSnapshot
+                ? () => {
+                  discardChanges();
+                  closeModal();
+                }
+                : () => {
+                  setOpenSheet( CONFIRMATION );
+                }
+            }
+            size={22}
+            accessibilityLabel={t( "Back" )}
+          />
           <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
           {numberOfFilters !== 0 && <NumberBadge number={numberOfFilters} />}
         </View>
@@ -582,9 +686,10 @@ const FilterModal = ( {
               const selectedTaxon = realm
                 ?.objects( "Taxon" )
                 .filtered( "name CONTAINS[c] $0", taxonName );
-              const iconicTaxon = selectedTaxon.length > 0
-                ? selectedTaxon[0]
-                : null;
+              const iconicTaxon
+                = selectedTaxon.length > 0
+                  ? selectedTaxon[0]
+                  : null;
               updateTaxon( iconicTaxon );
             }}
           />
@@ -834,6 +939,59 @@ const FilterModal = ( {
               />
             </View>
           )}
+          {dateObserved === DATE_OBSERVED.DATE_RANGE && (
+            <View className="items-center">
+              <Body1
+                className={classNames(
+                  "mb-5",
+                  observedEndBeforeStart && "color-warningRed"
+                )}
+              >
+                {d1}
+              </Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-START-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( OBSERVED_START );
+                }}
+                accessibilityLabel={t( "Change-start-date" )}
+              />
+              <Body1 className="mb-5">{d2}</Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-END-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( OBSERVED_END );
+                }}
+                accessibilityLabel={t( "Change-end-date" )}
+              />
+              {observedEndBeforeStart && (
+                <View className="flex-row mb-5">
+                  <INatIcon
+                    name="triangle-exclamation"
+                    size={19}
+                    color={theme.colors.error}
+                  />
+                  <List2 className="ml-3">
+                    {t( "Start-must-be-before-end" )}
+                  </List2>
+                </View>
+              )}
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === OBSERVED_START}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateObservedStart( date )}
+              />
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === OBSERVED_END}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateObservedEnd( date )}
+              />
+            </View>
+          )}
           {dateObserved === DATE_OBSERVED.MONTHS
             && Object.keys( monthValues ).map( monthKey => (
               <View key={monthKey} className="flex-row items-center mb-5">
@@ -848,7 +1006,7 @@ const FilterModal = ( {
             <RadioButtonSheet
               headerText={t( "DATE-OBSERVED" )}
               confirm={newDateObserved => {
-                updateDateObserved( newDateObserved );
+                updateDateObserved( { newDateObserved } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
@@ -885,18 +1043,71 @@ const FilterModal = ( {
               <DateTimePicker
                 isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
                 toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateDateUploaded(
-                  DATE_UPLOADED.EXACT_DATE,
-                  date.toISOString().split( "T" )[0]
+                onDatePicked={date => updateDateUploaded( {
+                  newDateUploaded: DATE_UPLOADED.EXACT_DATE,
+                  newD1: date.toISOString().split( "T" )[0]
+                } )}
+              />
+            </View>
+          )}
+          {dateUploaded === DATE_UPLOADED.DATE_RANGE && (
+            <View className="items-center">
+              <Body1
+                className={classNames(
+                  "mb-5",
+                  uploadedEndBeforeStart && "color-warningRed"
                 )}
+              >
+                {createdD1}
+              </Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-START-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( UPLOADED_START );
+                }}
+                accessibilityLabel={t( "Change-start-date" )}
+              />
+              <Body1 className="mb-5">{createdD2}</Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-END-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( UPLOADED_END );
+                }}
+                accessibilityLabel={t( "Change-end-date" )}
+              />
+              {uploadedEndBeforeStart && (
+                <View className="flex-row mb-5">
+                  <INatIcon
+                    name="triangle-exclamation"
+                    size={19}
+                    color={theme.colors.error}
+                  />
+                  <List2 className="ml-3">
+                    {t( "Start-must-be-before-end" )}
+                  </List2>
+                </View>
+              )}
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === UPLOADED_START}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateUploadedStart( date )}
+              />
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === UPLOADED_END}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateUploadedEnd( date )}
               />
             </View>
           )}
           {openSheet === DATE_UPLOADED_M && (
             <RadioButtonSheet
               headerText={t( "DATE-UPLOADED" )}
-              confirm={newDate => {
-                updateDateUploaded( newDate );
+              confirm={newDateUploaded => {
+                updateDateUploaded( { newDateUploaded } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
@@ -926,38 +1137,22 @@ const FilterModal = ( {
         {/* Establishment Means section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
-          <Checkbox
-            isChecked={introduced}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_INTRODUCED
-            } )}
-            text={t( "Introduced" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={native}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_NATIVE
-            } )}
-            text={t( "Native" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={endemic}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_ENDEMIC
-            } )}
-            text={t( "Endemic" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={noStatus}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_NO_STATUS
-            } )}
-            text={t( "TODO: No-Status (does not change API request atm)" )}
-            // text={t( "No-Status" )}
-          />
+          {Object.keys( establishmentValues ).map( establishmentKey => (
+            <RadioButtonRow
+              key={establishmentKey}
+              value={establishmentValues[establishmentKey]}
+              checked={
+                establishmentValues[establishmentKey].value
+                === establishmentMean
+              }
+              onPress={() => dispatch( {
+                type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
+                establishmentMean:
+                    establishmentValues[establishmentKey].value
+              } )}
+              label={establishmentValues[establishmentKey].label}
+            />
+          ) )}
         </View>
 
         {/* Wild Status section */}
@@ -1027,29 +1222,14 @@ const FilterModal = ( {
       <View className="mb-10" />
       <StickyToolbar>
         <View className="flex-1 flex-row items-center">
-          <INatIconButton
-            icon="chevron-left"
-            onPress={
-              !differsFromSnapshot
-                ? () => {
-                  discardChanges();
-                  closeModal();
-                }
-                : () => {
-                  setOpenSheet( CONFIRMATION );
-                }
-            }
-            size={22}
-            accessibilityLabel={t( "Back" )}
-          />
           <Button
-            disabled={!differsFromSnapshot}
-            className="flex-1 ml-5"
+            disabled={!differsFromSnapshot || hasError}
+            className="flex-1"
             level="focus"
             text={t( "APPLY-FILTERS" )}
             onPress={closeModal}
             accessibilityLabel={t( "Apply-filters" )}
-            accessibilityState={{ disabled: !differsFromSnapshot }}
+            accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
           />
         </View>
         {openSheet === CONFIRMATION && (

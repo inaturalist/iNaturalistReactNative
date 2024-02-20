@@ -24,6 +24,8 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
+import { USER_AGENT } from "./src/components/LoginSignUp/AuthenticationService";
+import { navigationRef } from "./src/navigation/navigationUtils";
 
 enableLatestRenderer( );
 
@@ -66,7 +68,8 @@ initI18next();
 // Configure inatjs to use the chosen URLs
 inatjs.setConfig( {
   apiURL: Config.API_URL,
-  writeApiURL: Config.API_URL
+  writeApiURL: Config.API_URL,
+  userAgent: USER_AGENT
 } );
 
 const queryClient = new QueryClient( {
@@ -85,7 +88,7 @@ const AppWithProviders = ( ) => (
           <GestureHandlerRootView className="flex-1">
             <BottomSheetModalProvider>
               {/* NavigationContainer needs to be nested above ObsEditProvider */}
-              <NavigationContainer>
+              <NavigationContainer ref={navigationRef}>
                 <ErrorBoundary>
                   <App />
                 </ErrorBoundary>

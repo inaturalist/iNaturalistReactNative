@@ -1,6 +1,6 @@
 // @flow
 import { fetchObservers } from "api/observations";
-import UserListItem from "components/SharedComponents/UserListItem";
+import { UserListItem } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
@@ -50,7 +50,7 @@ const ObserversView = ( {
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
-    if ( totalResults && count.observers !== totalResults ) {
+    if ( count.observers !== totalResults ) {
       updateCount( { observers: totalResults } );
     }
   }, [totalResults, updateCount, count] );

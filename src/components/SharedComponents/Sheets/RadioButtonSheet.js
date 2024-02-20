@@ -43,11 +43,6 @@ const RadioButtonSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
-      onChange={position => {
-        if ( position === -1 ) {
-          handleClose( );
-        }
-      }}
     >
       <View className="p-5">
         {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}

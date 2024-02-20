@@ -9,6 +9,7 @@ import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSea
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import { Heading4 } from "components/SharedComponents";
@@ -28,8 +29,9 @@ import SharedStackScreens from "./SharedStackScreens";
 
 const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
 const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
-const userSearchTitle = () => <Heading4>{t( "SEARCH-USER" )}</Heading4>;
-const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECT" )}</Heading4>;
+const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
+const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
+const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
 
@@ -46,6 +48,15 @@ const ObservationsStackNavigator = ( ): Node => (
         component={MyObservationsContainer}
         options={{
           ...hideHeader
+        }}
+      />
+      <Stack.Screen
+        name="Notifications"
+        component={NotificationsContainer}
+        options={{
+          ...showHeader,
+          headerTitle: notificationsTitle,
+          headerTitleAlign: "center"
         }}
       />
       <Stack.Screen
