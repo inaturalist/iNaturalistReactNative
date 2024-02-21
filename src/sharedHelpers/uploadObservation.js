@@ -9,6 +9,7 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -66,16 +67,17 @@ const uploadEvidence = async (
   const responses = await Promise.all( evidence.map( item => {
     const currentEvidence = item.toJSON( );
 
-    // Remove all null values, b/c the API doesn't seem to like them
-    const newPhoto = {};
-    const photo = currentEvidence?.photo;
-    Object.keys( photo ).forEach( k => {
-      if ( photo[k] !== null ) {
-        newPhoto[k] = photo[k];
-      }
-    } );
-
-    currentEvidence.photo = newPhoto;
+    if ( currentEvidence.photo ) {
+      // Remove all null values, b/c the API doesn't seem to like them
+      const newPhoto = {};
+      const { photo } = currentEvidence;
+      Object.keys( photo ).forEach( k => {
+        if ( photo[k] !== null ) {
+          newPhoto[k] = photo[k];
+        }
+      } );
+      currentEvidence.photo = newPhoto;
+    }
 
     return uploadToServer( currentEvidence );
   } ) );
@@ -127,6 +129,25 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
         ObservationPhoto.mapPhotoForUpload,
         null,
         inatjs.photos.create,
+        options,
+        obs.uuid,
+        realm
+      )
+      : null
+  ] );
+
+  const hasSounds = obs.observationSounds.length > 0;
+  const unsyncedSounds = hasSounds
+    ? obs.observationSounds.filter( item => !item.wasSynced( ) )
+    : [];
+  await Promise.all( [
+    unsyncedSounds.length > 0
+      ? await uploadEvidence(
+        unsyncedSounds,
+        "ObservationSound",
+        ObservationSound.mapSoundForUpload,
+        null,
+        inatjs.sounds.create,
         options,
         obs.uuid,
         realm
