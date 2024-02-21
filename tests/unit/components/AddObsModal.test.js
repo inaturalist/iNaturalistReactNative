@@ -1,6 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import AddObsModal from "components/AddObsModal";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 // eslint-disable-next-line import/no-unresolved
@@ -25,10 +24,6 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
 } ) );
 
 describe( "AddObsModal", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   afterEach( () => {
     jest.clearAllMocks( );
   } );

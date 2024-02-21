@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import * as useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
@@ -34,10 +33,6 @@ const uploadState = {
 };
 
 describe( "Toolbar", () => {
-  beforeAll( async () => {
-    await initI18next();
-  } );
-
   it( "displays a pending upload", async () => {
     renderComponent( <ToolbarContainer
       numUnuploadedObs={1}

@@ -1,7 +1,7 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { screen } from "@testing-library/react-native";
 import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
-import initI18next from "i18n/initI18next";
+
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
@@ -42,9 +42,7 @@ jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
 const baseUrl = "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
 
 describe( "DetailsTab", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
+
   test( "should show description of observation", async ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} /> );
 

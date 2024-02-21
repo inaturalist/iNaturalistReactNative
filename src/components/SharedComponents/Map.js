@@ -114,7 +114,7 @@ const Map = ( {
   mapViewClassName,
   mapViewRef: mapViewRefProp,
   mapType,
-  minZoomLevel = null,
+  minZoomLevel = 0, // default in react-native-maps
   obscured,
   obsLatitude,
   obsLongitude,

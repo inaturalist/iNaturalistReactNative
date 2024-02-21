@@ -53,6 +53,11 @@ const Developer = (): Node => {
           text="Log"
           className="mb-5"
         />
+        <Button
+          onPress={() => navigation.navigate( "Identify" )}
+          text="Identify"
+          className="mb-5"
+        />
         <H1>Version</H1>
         <P>{`${appVersion} (${buildVersion})`}</P>
         <H1>Computer Vision</H1>

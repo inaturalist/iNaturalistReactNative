@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import faker from "tests/helpers/faker";
 import { readExif } from "react-native-exif-reader";
 import {
   formatExifDateAsString,

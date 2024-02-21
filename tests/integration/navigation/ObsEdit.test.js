@@ -1,14 +1,13 @@
-import { faker } from "@faker-js/faker";
 import {
   screen,
   userEvent
 } from "@testing-library/react-native";
-import initI18next from "i18n/initI18next";
 // import os from "os";
 // import path from "path";
 // import Realm from "realm";
 // import realmConfig from "realmModels/index";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import {
   renderAppWithObservations
 } from "tests/helpers/render";
@@ -56,7 +55,6 @@ describe( "ObsEdit", ( ) => {
   } );
 
   beforeAll( async () => {
-    await initI18next();
     jest.useFakeTimers( );
   } );
 

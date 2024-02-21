@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ExploreContainer from "components/Explore/ExploreContainer";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 import factory, { makeResponse } from "tests/factory";
@@ -19,10 +18,6 @@ const mockRemoteObservation = factory( "RemoteObservation", {
 } );
 
 describe( "Explore", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "should render", async ( ) => {
     inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
     renderAppWithComponent( <ExploreContainer /> );

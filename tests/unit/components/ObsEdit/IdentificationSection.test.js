@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native";
 import IdentificationSection from "components/ObsEdit/IdentificationSection";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -42,10 +41,6 @@ const renderIdentificationSection = ( obs, index = 0, resetState = false ) => re
 );
 
 describe( "IdentificationSection", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "should show IconicTaxonChooser when there is no identification", ( ) => {
     const observations = [
       factory( "RemoteObservation", {

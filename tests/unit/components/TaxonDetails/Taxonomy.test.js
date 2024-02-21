@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import Taxonomy from "components/TaxonDetails/Taxonomy";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 
@@ -39,10 +38,6 @@ const currentTaxon = factory( "RemoteTaxon", {
 } );
 
 describe( "Taxonomy", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   test( "renders current taxon", ( ) => {
     render( <Taxonomy taxon={currentTaxon} /> );
 
