@@ -1,4 +1,5 @@
 import * as React from "react";
+import { LatLng } from "react-native-maps";
 
 export enum EXPLORE_ACTION {
   DISCARD = "DISCARD",
@@ -19,6 +20,7 @@ export enum EXPLORE_ACTION {
   SET_DATE_OBSERVED_RANGE = "SET_DATE_OBSERVED_RANGE",
   SET_DATE_OBSERVED_ALL = "SET_DATE_OBSERVED_ALL",
   SET_DATE_UPLOADED_EXACT = "SET_DATE_UPLOADED_EXACT",
+  SET_DATE_UPLOADED_RANGE = "SET_DATE_UPLOADED_RANGE",
   SET_DATE_UPLOADED_ALL = "SET_DATE_UPLOADED_ALL",
   SET_MEDIA = "SET_MEDIA",
   SET_ESTABLISHMENT_MEAN = "SET_ESTABLISHMENT_MEAN",
@@ -85,6 +87,7 @@ export enum DATE_OBSERVED {
 export enum DATE_UPLOADED {
   ALL = "ALL",
   EXACT_DATE = "EXACT_DATE",
+  DATE_RANGE = "DATE_RANGE"
 }
 
 export enum MEDIA {
@@ -124,6 +127,14 @@ export enum PHOTO_LICENSE {
   CCBYNCND = "CCBYNCND",
 }
 
+interface MapBoundaries {
+  swlat: LatLng["latitude"],
+  swlng: LatLng["longitude"],
+  nelat: LatLng["latitude"],
+  nelng: LatLng["longitude"],
+  place_guess: string
+}
+
 type CountProviderProps = {children: React.ReactNode}
 type State = {
   verifiable: boolean,
@@ -153,12 +164,14 @@ type State = {
   months: number[] | null | undefined,
   dateUploaded: DATE_UPLOADED,
   created_on: string | null | undefined,
+  created_d1: string | null | undefined,
+  created_d2: string | null | undefined,
   media: MEDIA,
   establishmentMean: ESTABLISHMENT_MEAN,
   wildStatus: WILD_STATUS,
   reviewedFilter: REVIEWED,
   photoLicense: PHOTO_LICENSE,
-  mapBoundaries: Object
+  mapBoundaries: MapBoundaries
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
@@ -179,12 +192,13 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, createdOn: string}
+  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE, createdD1: string, createdD2: string}
   | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
   | {type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN, establishmentMean: ESTABLISHMENT_MEAN}
   | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
-  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: Object}
+  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
 type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
@@ -220,6 +234,8 @@ const defaultFilters = {
   d2: undefined,
   months: undefined,
   created_on: undefined,
+  created_d1: undefined,
+  created_d2: undefined,
 };
 
 const initialState = {
@@ -357,7 +373,9 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         dateUploaded: DATE_UPLOADED.ALL,
-        created_on: null
+        created_on: null,
+        created_d1: null,
+        created_d2: null
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT:
       if ( !isValidDateFormat( action.createdOn ) ) {
@@ -366,7 +384,23 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         dateUploaded: DATE_UPLOADED.EXACT_DATE,
-        created_on: action.createdOn
+        created_on: action.createdOn,
+        created_d1: null,
+        created_d2: null
+      };
+    case EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE:
+      if ( !isValidDateFormat( action.createdD1 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      if ( !isValidDateFormat( action.createdD2 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      return {
+        ...state,
+        dateUploaded: DATE_UPLOADED.DATE_RANGE,
+        created_on: null,
+        created_d1: action.createdD1,
+        created_d2: action.createdD2
       };
     case EXPLORE_ACTION.SET_MEDIA:
       return {

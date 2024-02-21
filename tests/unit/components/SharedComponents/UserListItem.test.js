@@ -1,10 +1,10 @@
-import { faker } from "@faker-js/faker";
 import {
   fireEvent,
   screen
 } from "@testing-library/react-native";
 import { UserListItem } from "components/SharedComponents";
-import initI18next from "i18n/initI18next";
+import faker from "tests/helpers/faker";
+
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -27,9 +27,6 @@ jest.mock( "@react-navigation/native", () => {
 } );
 
 describe( "UserListItem", ( ) => {
-  beforeAll( async () => {
-    await initI18next();
-  } );
 
   it( "should be accessible", ( ) => {
     const userListItem = (

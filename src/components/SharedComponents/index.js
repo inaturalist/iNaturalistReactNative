@@ -1,3 +1,4 @@
+export { default as ActivityAnimation } from "./ActivityAnimation/ActivityAnimation.tsx";
 export { default as ActivityCount } from "./ActivityCount/ActivityCount";
 export { default as CommentsCount } from "./ActivityCount/CommentsCount";
 export { default as IdentificationsCount } from "./ActivityCount/IdentificationsCount";
@@ -24,6 +25,7 @@ export { default as INatIcon } from "./INatIcon";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as InputField } from "./InputField";
 export { default as KebabMenu } from "./KebabMenu";
+export { default as LocationPermissionGate } from "./LocationPermissionGate";
 export { default as Map } from "./Map";
 export { default as MediaNavButtons } from "./MediaNavButtons";
 export { default as Modal } from "./Modal";

@@ -2,12 +2,12 @@
 
 exports[`UploadStatus displays progress bar when progress is greater than 5% correctly 1`] = `
 <View
-  accessibilityLabel="Upload-Progress"
+  accessibilityLabel="Upload 50 percent complete"
   accessible={true}
 >
   <View>
     <View
-      accessibilityLabel="Upload-in-progress"
+      accessibilityLabel="Upload in progress"
       style={
         [
           [
@@ -57,12 +57,12 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
 
 exports[`UploadStatus displays progress bar when progress is less than 5% correctly 1`] = `
 <View
-  accessibilityLabel="Saved-Observation"
+  accessibilityLabel="Saved observation, in queue to upload"
   accessible={true}
 >
   <View>
     <View
-      accessibilityLabel="Upload-in-progress"
+      accessibilityLabel="Upload in progress"
       style={
         [
           [
@@ -97,7 +97,8 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
       </Text>
     </View>
     <View
-      animatedStyle={
+      collapsable={false}
+      jestAnimatedStyle={
         {
           "value": {
             "transform": [
@@ -108,7 +109,6 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
           },
         }
       }
-      collapsable={false}
       style={
         [
           {

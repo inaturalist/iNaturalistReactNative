@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
-import initI18next from "i18n/initI18next";
+
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -16,9 +16,7 @@ const mockIdentification = factory( "LocalIdentification", {
 } );
 
 describe( "ActivityItem", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
+
   it( "renders", async ( ) => {
     renderComponent(
       <ActivityItem

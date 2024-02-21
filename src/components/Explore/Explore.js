@@ -11,9 +11,9 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTheme } from "react-native-paper";
 import {
+  useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import useStoredLayout from "sharedHooks/useStoredLayout";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
@@ -39,7 +39,6 @@ type Props = {
   isOnline: boolean,
   openFiltersModal: Function,
   queryParams: Object,
-  region: Object,
   showFiltersModal: boolean,
   updateCount: Function,
   updateTaxon: Function
@@ -53,7 +52,6 @@ const Explore = ( {
   isOnline,
   openFiltersModal,
   queryParams,
-  region,
   showFiltersModal,
   updateCount,
   updateTaxon
@@ -107,9 +105,8 @@ const Explore = ( {
             />
             {exploreView === "observations" && (
               <ObservationsView
-                queryParams={queryParams}
                 layout={layout}
-                region={region}
+                queryParams={queryParams}
               />
             )}
             {exploreView === "species" && (

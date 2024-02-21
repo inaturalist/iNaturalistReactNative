@@ -2,7 +2,6 @@ import {
   fireEvent, render, screen
 } from "@testing-library/react-native";
 import CameraContainer from "components/Camera/CameraContainer";
-import initI18next from "i18n/initI18next";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { View } from "react-native";
@@ -61,7 +60,6 @@ const renderCameraContainer = () => render(
 
 describe( "CameraContainer", ( ) => {
   beforeAll( async ( ) => {
-    await initI18next();
     jest.useFakeTimers( );
   } );
 

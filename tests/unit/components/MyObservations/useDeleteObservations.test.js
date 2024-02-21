@@ -1,9 +1,8 @@
-import { faker } from "@faker-js/faker";
 import { renderHook, waitFor } from "@testing-library/react-native";
 import useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations";
-import initI18next from "i18n/initI18next";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
@@ -31,10 +30,6 @@ const getLocalObservation = uuid => global.realm
   .objectForPrimaryKey( "Observation", uuid );
 
 describe( "handle deletions", ( ) => {
-  beforeEach( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "should not make deletion API call for unsynced observations", async ( ) => {
     const deleteSpy = jest.spyOn( global.realm, "delete" );
     safeRealmWrite(

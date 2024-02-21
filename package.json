@@ -122,7 +122,7 @@
     "reassure": "^0.10.1",
     "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#image-prediction-from-file",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
@@ -177,7 +177,12 @@
     "yargs": "^17.7.2"
   },
   "jest": {
+    "automock": false,
+    "moduleNameMapper": {
+      "\\.svg": "<rootDir>/tests/mocks/svgMock.js"
+    },
     "preset": "react-native",
+    "resetMocks": false,
     "setupFiles": [
       "./node_modules/react-native-gesture-handler/jestSetup.js",
       "<rootDir>/tests/jest.setup.js"
@@ -185,17 +190,13 @@
     "setupFilesAfterEnv": [
       "react-native-accessibility-engine",
       "<rootDir>/tests/jest.post-setup.js",
-      "<rootDir>/tests/realm.setup.js"
+      "<rootDir>/tests/realm.setup.js",
+      "<rootDir>/tests/helpers/globalSetup"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base||(?!react-native-redash))|jest-runner"
     ],
-    "automock": false,
-    "resetMocks": false,
-    "verbose": true,
-    "moduleNameMapper": {
-      "\\.svg": "<rootDir>/tests/mocks/svgMock.js"
-    }
+    "verbose": true
   },
   "husky": {
     "hooks": {

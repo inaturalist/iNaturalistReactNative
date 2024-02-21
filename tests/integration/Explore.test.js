@@ -1,20 +1,23 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ExploreContainer from "components/Explore/ExploreContainer";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithComponent } from "tests/helpers/render";
+
+jest.mock( "sharedHooks/useStoredLayout", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    layout: "list",
+    writeLayoutToStorage: jest.fn( )
+  } )
+} ) );
 
 const mockRemoteObservation = factory( "RemoteObservation", {
   taxon: factory.states( "genus" )( "RemoteTaxon" )
 } );
 
 describe( "Explore", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "should render", async ( ) => {
     inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
     renderAppWithComponent( <ExploreContainer /> );

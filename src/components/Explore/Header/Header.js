@@ -21,7 +21,7 @@ import colors from "styles/tailwindColors";
 import HeaderCount from "./HeaderCount";
 
 type Props = {
-  count?: ?number,
+  count: ?number,
   exploreView: string,
   exploreViewIcon: string,
   openFiltersModal: Function,

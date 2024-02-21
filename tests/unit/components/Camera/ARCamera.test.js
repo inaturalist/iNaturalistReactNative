@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
 import ARCamera from "components/Camera/ARCamera/ARCamera";
 import * as usePredictions from "components/Camera/ARCamera/hooks/usePredictions";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import * as useTaxon from "sharedHooks/useTaxon";
@@ -59,9 +58,6 @@ jest.mock( "components/Camera/hooks/useZoom", () => ( {
 } ) );
 
 describe( "AR Camera", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
   it( "shows a taxon prediction when result & rank_level < 40", async () => {
     jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,

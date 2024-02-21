@@ -68,18 +68,6 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     //   navigation: "search",
     //   icon: "magnifying-glass"
     // },
-    // identify: {
-    //   label: t( "IDENTIFY" ),
-    //   navigation: "TabNavigator",
-    //   params: {
-    //     screen: "ObservationsStackNavigator",
-    //     params: {
-    //       screen: "Identify"
-    //     }
-    //   },
-    //   icon: "label",
-    //   loggedInOnly: true
-    // },
     projects: {
       label: t( "PROJECTS" ),
       navigation: "TabNavigator",

@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native";
 import ActivityTab from "components/ObsDetails/ActivityTab/ActivityTab";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -50,7 +49,6 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
 
 describe( "ActivityTab", () => {
   it( "renders", async ( ) => {
-    await initI18next( );
     renderComponent(
       <ActivityTab
         observation={mockObservation}

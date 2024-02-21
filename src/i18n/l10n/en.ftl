@@ -399,6 +399,8 @@ Filter-by-observed-during-months = Filter by observations observed during specif
 
 Filter-by-observed-on-date = Filter by observations observed on a specific date
 
+Filter-by-uploaded-between-dates = Filter by observations uploaded between two specific dates
+
 Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 
 Finish = Finish

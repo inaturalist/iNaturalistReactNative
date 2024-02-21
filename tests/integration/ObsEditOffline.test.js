@@ -1,14 +1,13 @@
-import { faker } from "@faker-js/faker";
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import initI18next from "i18n/initI18next";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
 import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -52,10 +51,6 @@ afterEach( ( ) => {
 } );
 
 describe( "ObsEdit offline", ( ) => {
-  beforeAll( async () => {
-    await initI18next();
-  } );
-
   beforeEach( ( ) => {
     // Turn on fetch mocks and make all fetch requests throw an error
     fetchMock.doMock( );

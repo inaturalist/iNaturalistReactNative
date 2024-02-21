@@ -1,6 +1,5 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 import Observation from "realmModels/Observation";
@@ -68,7 +67,6 @@ jest.mock( "@react-navigation/native", () => {
 
 describe( "ObsDetails", () => {
   beforeAll( async () => {
-    await initI18next();
     jest.useFakeTimers( );
     signIn( mockUser, { realm: global.mockRealms[__filename] } );
     Observation.upsertRemoteObservations( [mockObservation], global.mockRealms[__filename] );
