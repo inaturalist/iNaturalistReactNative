@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import { Platform } from "react-native";
 import {
-  runAtTargetFps,
+  runAsync,
   useFrameProcessor
 } from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
@@ -82,7 +82,7 @@ const FrameProcessorCamera = ( {
         return;
       }
 
-      runAtTargetFps( 1, () => {
+      runAsync( frame, () => {
         "worklet";
 
         // Reminder: this is a worklet, running on the UI thread.
