@@ -23,9 +23,10 @@ type Props = {
     attribution?: string,
     licenseCode?: string
   }>,
-  sounds: Array<{
+  sounds?: Array<{
     id?: number,
     file_url: string,
+    uuid: string
   }>,
   tablet: boolean
 }

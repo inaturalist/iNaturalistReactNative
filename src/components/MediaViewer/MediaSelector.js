@@ -23,8 +23,9 @@ type Props = {
   selectedMediaIndex?: number,
   sounds?: Array<{
     id?: number,
-    file_url: string
-  }>
+    file_url: string,
+    uuid: string
+  }>,
 }
 
 const SMALL_ITEM_CLASS = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";

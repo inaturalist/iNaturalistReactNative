@@ -40,6 +40,7 @@ const EvidenceSectionContainer = ( {
   const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
   const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const photos = currentObservation?.observationPhotos?.map( obsPhoto => obsPhoto.photo ) || [];
+  const sounds = currentObservation?.observationSounds || [];
   const mountedRef = useRef( true );
   const obsPhotoUris = photos.map(
     photo => photo.url || photo.localFilePath
@@ -223,6 +224,7 @@ const EvidenceSectionContainer = ( {
       photos={currentObservation?.observationPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
+      sounds={sounds}
       onLocationPermissionGranted={( ) => {
         setShouldRetryCurrentObservationLocation( true );
       }}

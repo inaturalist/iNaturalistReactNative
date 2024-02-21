@@ -158,7 +158,7 @@ const SoundRecorder = (): Node => {
   ] );
 
   const sounds = uri
-    ? [{ file_url: uri }]
+    ? [{ file_url: uri, uuid: "fake-uuid" }]
     : [];
 
   return (

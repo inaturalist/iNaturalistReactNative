@@ -2,12 +2,11 @@
 
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import { ActivityIndicator, INatIcon } from "components/SharedComponents";
+import { ActivityIndicator, INatIcon, INatIconButton } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
@@ -17,62 +16,89 @@ import colors from "styles/tailwindColors";
 const { useRealm } = RealmContext;
 
 type Props = {
-  photos?: Array<Object>,
   handleAddEvidence?: Function,
-  handleDragAndDrop: Function
+  handleDragAndDrop: Function,
+  photos?: Array<Object>,
+  sounds?: Array<{
+    id?: number,
+    file_url: string,
+    uuid: string
+  }>
 }
 
 const EvidenceList = ( {
-  photos = [],
   handleAddEvidence,
-  handleDragAndDrop
+  handleDragAndDrop,
+  photos = [],
+  sounds = []
 }: Props ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
-  const [tappedMediaIndex, setTappedMediaIndex] = useState( -1 );
+  const [tappedMediaUri, setTappedMediaUri]: [string | null, Function] = useState( null );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
   const photoUris = photos.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
   const innerPhotos = photos.map( obsPhoto => obsPhoto.photo );
+  const mediaUris = [
+    ...photoUris,
+    ...sounds.map( sound => sound.file_url )
+  ];
 
-  const renderPhoto = useCallback( ( { item: obsPhoto, getIndex, drag } ) => (
-    <ScaleDecorator>
-      <Pressable
-        onLongPress={drag}
-        accessibilityRole="button"
-        onPress={( ) => {
-          setTappedMediaIndex( getIndex( ) );
-        }}
-        className={classnames( imageClass )}
-        testID={`EvidenceList.${obsPhoto.photo?.url || obsPhoto.photo?.localFilePath}`}
-      >
-        <View className="rounded-lg overflow-hidden">
-          <Image
-            source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo ) }}
-            testID="ObsEdit.photo"
-            className="w-fit h-full flex items-center justify-center"
-            accessibilityIgnoresInvertColors
-          />
-        </View>
-      </Pressable>
-    </ScaleDecorator>
-  ), [setTappedMediaIndex] );
-
-  const renderFooter = useCallback( ( ) => {
-    if ( savingPhoto ) {
-      return (
-        <View className={classnames( imageClass )} testID="EvidenceList.saving">
+  const renderPhoto = useCallback( ( { item: obsPhoto, _getIndex, drag } ) => {
+    const uri = Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo );
+    return (
+      <ScaleDecorator>
+        <Pressable
+          onLongPress={drag}
+          accessibilityRole="button"
+          onPress={( ) => {
+            setTappedMediaUri( uri );
+          }}
+          className={classnames( imageClass )}
+          testID={`EvidenceList.${obsPhoto.photo?.url || obsPhoto.photo?.localFilePath}`}
+        >
           <View className="rounded-lg overflow-hidden">
-            <View className="bg-lightGray w-fit h-full justify-center">
-              <ActivityIndicator size={25} />
-            </View>
+            <Image
+              source={{ uri }}
+              testID="ObsEdit.photo"
+              className="w-fit h-full flex items-center justify-center"
+              accessibilityIgnoresInvertColors
+            />
+          </View>
+        </Pressable>
+      </ScaleDecorator>
+    );
+  }, [setTappedMediaUri] );
+
+  const renderFooter = useCallback( ( ) => (
+    <View className="flex-1 flex-row">
+      <View className="flex-row">
+        { sounds.map( sound => (
+          <View
+            key={`sound-${sound.uuid}`}
+            className={classnames( imageClass, "border-2" )}
+          >
+            <INatIconButton
+              icon="sound-outline"
+              onPress={( ) => setTappedMediaUri( sound.file_url )}
+              accessibilityLabel="Sound"
+              width={60}
+              height={60}
+              size={26}
+            />
+          </View>
+        ) ) }
+      </View>
+      { savingPhoto && (
+        <View className={classnames( imageClass )} testID="EvidenceList.saving">
+          <View className="border-2 rounded-lg overflow-hidden w-fit h-full justify-center">
+            <ActivityIndicator size={26} />
           </View>
         </View>
-      );
-    }
-    return null;
-  }, [savingPhoto] );
+      ) }
+    </View>
+  ), [savingPhoto, setTappedMediaUri, sounds] );
 
   const renderHeader = useCallback( ( ) => (
     <Pressable
@@ -102,15 +128,16 @@ const EvidenceList = ( {
       />
       <MediaViewerModal
         editable
-        showModal={tappedMediaIndex >= 0}
-        onClose={( ) => setTappedMediaIndex( -1 )}
+        showModal={!!tappedMediaUri}
+        onClose={( ) => setTappedMediaUri( null )}
         onDelete={async uriToDelete => {
           await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
           deletePhotoFromObservation( uriToDelete );
-          setTappedMediaIndex( tappedMediaIndex - 1 );
+          setTappedMediaUri( mediaUris[mediaUris.length - 1] );
         }}
-        uri={photoUris[tappedMediaIndex]}
+        uri={tappedMediaUri}
         photos={innerPhotos}
+        sounds={sounds}
       />
     </>
   );

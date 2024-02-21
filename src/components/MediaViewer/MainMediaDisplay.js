@@ -29,7 +29,8 @@ type Props = {
   }>,
   sounds?: Array<{
     id?: number,
-    file_url: string
+    file_url: string,
+    uuid: string
   }>,
   selectedMediaIndex: number,
   setSelectedMediaIndex: Function
