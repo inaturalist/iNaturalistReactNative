@@ -57,7 +57,7 @@ const SoundRecorder = (): Node => {
   audioRecorderPlayer.setSubscriptionDuration( 0.09 ); // optional. Default is 0.1
 
   const addSound = async ( ) => {
-    const newObservation = await Observation.createObsWithSounds( );
+    const newObservation = await Observation.createObsWithSoundPath( uri );
     setObservations( [newObservation] );
   };
 
@@ -113,8 +113,9 @@ const SoundRecorder = (): Node => {
   //   setStatus( "paused" );
   // }, [audioRecorderPlayer] );
 
-  const navToObsEdit = () => {
-    addSound();
+  const navToObsEdit = async ( ) => {
+    await stopRecording( );
+    await addSound( );
     navigation.navigate( "ObsEdit" );
   };
 

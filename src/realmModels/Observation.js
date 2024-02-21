@@ -92,9 +92,9 @@ class Observation extends Realm.Object {
     };
   }
 
-  static async createObsWithSounds( ) {
+  static async createObsWithSoundPath( soundPath ) {
     const observation = await Observation.new( );
-    const sound = await ObservationSound.new( );
+    const sound = await ObservationSound.new( { file_url: soundPath } );
     observation.observationSounds = [sound];
     return observation;
   }

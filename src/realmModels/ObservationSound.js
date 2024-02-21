@@ -22,31 +22,39 @@ class ObservationSound extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static async moveFromCacheToDocumentDirectory( soundUUID ) {
-    const fileExt = Platform.OS === "android"
-      ? "mp4"
-      : "m4a";
-    const soundPath = `${soundUUID}.${fileExt}`;
-    // in theory, should be able to pass in a path to the audio recorder
-    // but that's buggy so moving the file from cache to document directory instead
-
-    const audioFile = `${RNFS.CachesDirectoryPath}/sound.${fileExt}`;
+  static async moveFromCacheToDocumentDirectory( srcPath, options = {} ) {
+    const srcFileName = srcPath.split( "/" ).at( -1 );
+    const srcFileExt = srcFileName.split( "." ).at( -1 );
+    let fileName = srcFileName;
+    if ( options.basename ) {
+      fileName = `${options.basename}.${srcFileExt}`;
+    }
     const soundUploadsFolder = `${RNFS.DocumentDirectoryPath}/soundUploads`;
     await RNFS.mkdir( soundUploadsFolder );
-    const soundDirectory = `${soundUploadsFolder}/${soundPath}`;
+    const dstPath = `${soundUploadsFolder}/${fileName}`;
 
-    await RNFS.moveFile( audioFile, soundDirectory );
-    return soundDirectory;
+    await RNFS.moveFile( srcPath, dstPath );
+    return dstPath;
   }
 
-  static async new( ) {
+  static async new( sound ) {
     const soundUUID = uuid.v4( );
-    const uri = await ObservationSound.moveFromCacheToDocumentDirectory( soundUUID );
+    /* eslint-disable camelcase */
+    let { file_url } = sound;
+    if ( sound?.file_url.match( /file:\/\// ) ) {
+      file_url = await ObservationSound.moveFromCacheToDocumentDirectory( sound.file_url, {
+        basename: soundUUID
+      } );
+      // this needs a protocol for the sound player to play it when it's local
+      file_url = `file://${file_url}`;
+    }
 
     return {
-      file_url: uri,
+      ...sound,
+      file_url,
       uuid: soundUUID
     };
+    /* eslint-enable camelcase */
   }
 
   static mapSoundForUpload( id, observationSound ) {
