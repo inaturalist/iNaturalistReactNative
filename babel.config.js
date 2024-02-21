@@ -23,7 +23,12 @@ module.exports = {
       }
     }],
     // Reanimated 2 plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
-    "react-native-reanimated/plugin"
+    [
+      "react-native-reanimated/plugin",
+      {
+        processNestedWorklets: true
+      }
+    ]
   ],
   env: {
     production: {
