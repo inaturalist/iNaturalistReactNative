@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetailsHeader from "components/ObsDetails/ObsDetailsHeader";
-
 import i18next from "i18next";
 import React from "react";
 import factory from "tests/factory";
@@ -16,8 +15,6 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
 } ) );
 
 describe( "ObsDetailsHeader", () => {
-
-
   it( "shows options menu when viewing someone else's observation", async ( ) => {
     renderComponent(
       <ObsDetailsHeader

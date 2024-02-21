@@ -9,7 +9,7 @@
     "ios:release": "npx react-native run-ios --device --mode Release",
     "start": "react-native start",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start -- --reset-cache",
-    "test": "TZ=UTC jest",
+    "test": "jest",
     "lint": "npm run lint:eslint && npm run lint:flow",
     "lint:eslint": "eslint . --fix --quiet",
     "lint:flow": "flow check",
@@ -187,11 +187,12 @@
       "./node_modules/react-native-gesture-handler/jestSetup.js",
       "<rootDir>/tests/jest.setup.js"
     ],
+    "globalSetup": "<rootDir>/tests/jest.globalSetup.js",
     "setupFilesAfterEnv": [
       "react-native-accessibility-engine",
       "<rootDir>/tests/jest.post-setup.js",
       "<rootDir>/tests/realm.setup.js",
-      "<rootDir>/tests/helpers/globalSetup"
+      "<rootDir>/tests/initI18next.setup.js"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base||(?!react-native-redash))|jest-runner"

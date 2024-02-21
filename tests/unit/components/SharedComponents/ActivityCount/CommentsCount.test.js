@@ -1,12 +1,10 @@
 import { render, screen } from "@testing-library/react-native";
 import { CommentsCount } from "components/SharedComponents";
-
 import React from "react";
 
 const count = 1;
 
 describe( "CommentsCount", () => {
-
   it( "renders default reliably", () => {
     // Snapshot test
     render( <CommentsCount count={count} /> );

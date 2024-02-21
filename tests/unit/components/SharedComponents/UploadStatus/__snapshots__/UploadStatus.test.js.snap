@@ -97,8 +97,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
       </Text>
     </View>
     <View
-      collapsable={false}
-      jestAnimatedStyle={
+      animatedStyle={
         {
           "value": {
             "transform": [
@@ -109,6 +108,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
           },
         }
       }
+      collapsable={false}
       style={
         [
           {

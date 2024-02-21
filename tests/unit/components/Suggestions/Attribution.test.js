@@ -15,8 +15,6 @@ const renderAttribution = ( ) => renderComponent(
 );
 
 describe( "Attribution", ( ) => {
-
-
   it( "should show attributions", async ( ) => {
     renderAttribution( );
     const observerName = screen.getByText( new RegExp( mockObservers[0] ) );
