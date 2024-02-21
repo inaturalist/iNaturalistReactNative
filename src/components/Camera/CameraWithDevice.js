@@ -14,8 +14,6 @@ import Orientation from "react-native-orientation-locker";
 // import {
 //   RESULTS as PERMISSION_RESULTS
 // } from "react-native-permissions";
-// Temporarily using a fork so this is to avoid that eslint error. Need to
-// remove if/when we return to the main repo
 import {
   Camera
 } from "react-native-vision-camera";
