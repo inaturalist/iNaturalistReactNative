@@ -1,10 +1,9 @@
-import faker from "tests/helpers/faker";
 import { screen } from "@testing-library/react-native";
 import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
-
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
@@ -42,7 +41,6 @@ jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
 const baseUrl = "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
 
 describe( "DetailsTab", ( ) => {
-
   test( "should show description of observation", async ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} /> );
 

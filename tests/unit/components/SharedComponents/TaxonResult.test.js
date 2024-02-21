@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
 import { TaxonResult } from "components/SharedComponents";
-
 import React from "react";
 
 const mockTaxon = {
@@ -17,7 +16,6 @@ jest.mock( "sharedHooks/useTaxon", () => ( {
 } ) );
 
 describe( "TaxonResult", () => {
-
   it( "should render correctly", () => {
     render(
       <TaxonResult

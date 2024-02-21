@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native";
 import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
-
 import { t } from "i18next";
 import React from "react";
 import factory from "tests/factory";
@@ -16,8 +15,6 @@ const mockMutate = jest.fn();
 const mockHandleClose = jest.fn();
 
 describe( "WithdrawIDSheet", () => {
-
-
   it( "renders sheet correctly", async ( ) => {
     renderComponent(
       <WithdrawIDSheet

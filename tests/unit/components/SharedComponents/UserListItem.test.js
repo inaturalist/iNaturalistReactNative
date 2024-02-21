@@ -3,10 +3,9 @@ import {
   screen
 } from "@testing-library/react-native";
 import { UserListItem } from "components/SharedComponents";
-import faker from "tests/helpers/faker";
-
 import React from "react";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockUser = factory( "RemoteUser", {
@@ -27,7 +26,6 @@ jest.mock( "@react-navigation/native", () => {
 } );
 
 describe( "UserListItem", ( ) => {
-
   it( "should be accessible", ( ) => {
     const userListItem = (
       <UserListItem

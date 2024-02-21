@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { InlineUser } from "components/SharedComponents";
-
 import React from "react";
 import factory from "tests/factory";
 
@@ -30,7 +29,6 @@ jest.mock(
 );
 
 describe( "InlineUser", ( ) => {
-
   it( "should not have accessibility erros", () => {
     const inlineUser = <InlineUser user={mockUser} />;
     expect( inlineUser ).toBeAccessible();

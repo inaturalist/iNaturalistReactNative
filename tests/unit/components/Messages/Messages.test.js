@@ -1,11 +1,10 @@
-import faker from "tests/helpers/faker";
 import { NavigationContainer } from "@react-navigation/native";
 import { render, screen } from "@testing-library/react-native";
 import Messages from "components/Messages/Messages";
-
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 
 const mockedNavigate = jest.fn( );
 const mockMessage = factory( "RemoteMessage", {
@@ -54,8 +53,6 @@ jest.mock( "@tanstack/react-query", ( ) => ( {
 } ) );
 
 describe( "Messages", ( ) => {
-
-
   it( "should not have accessibility errors", () => {
     const messages = (
       <INatPaperProvider>

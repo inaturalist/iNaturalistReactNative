@@ -1,10 +1,9 @@
-import faker from "tests/helpers/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import ActivityHeader from "components/ObsDetails/ActivityTab/ActivityHeader";
-
 import { t } from "i18next";
 import React from "react";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockUser = factory( "LocalUser", {
@@ -14,8 +13,6 @@ const mockUser = factory( "LocalUser", {
 } );
 
 describe( "ActivityHeaderKebabMenu", () => {
-
-
   it( "renders kebab menu buttons", async ( ) => {
     const mockId = factory( "LocalIdentification", {
       uuid: "123456789",

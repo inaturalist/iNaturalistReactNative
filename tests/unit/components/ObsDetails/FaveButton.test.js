@@ -1,12 +1,9 @@
 import FaveButton from "components/ObsDetails/FaveButton";
-
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 describe( "FaveButton", () => {
-
-
   it( "should survive no currentUser", ( ) => {
     expect(
       ( ) => renderComponent(

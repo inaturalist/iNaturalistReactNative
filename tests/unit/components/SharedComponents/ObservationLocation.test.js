@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
 import { ObservationLocation } from "components/SharedComponents";
-
 import React from "react";
 import factory from "tests/factory";
 
@@ -47,8 +46,6 @@ const testData = [
 ];
 
 describe( "ObservationLocation", () => {
-
-
   it( "should be accessible", () => {
     const mockObservation = factory( "RemoteObservation" );
     expect(

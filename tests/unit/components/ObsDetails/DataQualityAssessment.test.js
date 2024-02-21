@@ -1,12 +1,11 @@
-import faker from "tests/helpers/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import DQAContainer from "components/ObsDetails/DQAContainer";
-
 import { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
@@ -94,7 +93,6 @@ jest.mock( "@react-navigation/native", () => {
 } );
 
 describe( "Data Quality Assessment", ( ) => {
-
   test( "renders correct quality grade status", async ( ) => {
     renderComponent( <DQAContainer qualityGrade={mockObservation.quality_grade} /> );
 
@@ -183,7 +181,6 @@ describe( "Data Quality Assessment", ( ) => {
 } );
 
 describe( "DQA Vote Buttons", ( ) => {
-
   test( "renders DQA vote buttons", async ( ) => {
     renderComponent( <DQAContainer observation={mockObservation} /> );
 
