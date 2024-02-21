@@ -155,7 +155,7 @@ const CameraView = ( {
       onZoomChange?.( e.scale );
     } );
 
-  // react-native-vision-camera v3.3.1:
+  // react-native-vision-camera v3.9.0:
   // iPad camera preview is wrong in anything else than portrait, hence the
   // VeryBadIpadRotator, which will rotate its contents us a style transform
   // and adjust position accordingly
@@ -173,7 +173,7 @@ const CameraView = ( {
             isActive={isFocused}
             style={StyleSheet.absoluteFill}
             onError={e => onError( e )}
-            // react-native-vision-camera v3.3.1: This prop is undocumented, but does work on iOS
+            // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
             // it does nothing on Android so we set it to null there
             orientation={orientationPatch( deviceOrientation )}
             ref={cameraRef}
