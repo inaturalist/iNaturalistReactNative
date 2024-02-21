@@ -14,6 +14,7 @@ import {
   INatIcon,
   INatIconButton,
   List2,
+  PickerSheet,
   ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
@@ -866,7 +867,7 @@ const FilterModal = ( {
             accessibilityLabel={t( "Lowest" )}
           />
           {openSheet === LRANK && (
-            <RadioButtonSheet
+            <PickerSheet
               headerText={t( "LOWEST-RANK" )}
               confirm={newRank => {
                 dispatch( {
@@ -876,7 +877,7 @@ const FilterModal = ( {
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
-              radioValues={taxonomicRankValues}
+              pickerValues={taxonomicRankValues}
               selectedValue={lrank}
             />
           )}
@@ -893,7 +894,7 @@ const FilterModal = ( {
             accessibilityLabel={t( "Highest" )}
           />
           {openSheet === HRANK && (
-            <RadioButtonSheet
+            <PickerSheet
               headerText={t( "HIGHEST-RANK" )}
               confirm={newRank => {
                 dispatch( {
@@ -903,7 +904,7 @@ const FilterModal = ( {
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
-              radioValues={taxonomicRankValues}
+              pickerValues={taxonomicRankValues}
               selectedValue={hrank}
             />
           )}
@@ -1236,14 +1237,14 @@ const FilterModal = ( {
         {openSheet === CONFIRMATION && (
           <WarningSheet
             handleClose={() => setOpenSheet( NONE )}
-            confirm={( ) => {
+            confirm={() => {
               discardChanges();
               closeModal();
             }}
             headerText={t( "DISCARD-FILTER-CHANGES" )}
             text={t( "You-changed-filters-will-be-discarded" )}
             buttonText={t( "DISCARD-CHANGES" )}
-            handleSecondButtonPress={( ) => setOpenSheet( NONE )}
+            handleSecondButtonPress={() => setOpenSheet( NONE )}
             secondButtonText={t( "CANCEL" )}
           />
         )}
