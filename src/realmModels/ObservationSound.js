@@ -88,37 +88,16 @@ class ObservationSound extends Realm.Object {
     } );
   }
 
-  static async deleteRemoteSound( realm, uri, currentObservation ) {
-    // TODO make this actually delete the sound
-    const realmObs = realm.objectForPrimaryKey( "Observation", currentObservation.uuid );
-    const obsSoundToDelete = realmObs?.observationSounds
-      .find( os => os.file_url === uri );
-    if ( obsSoundToDelete ) {
-      console.log( "[DEBUG ObservationSound.js] deleting obsSoundToDelete: ", obsSoundToDelete );
-      safeRealmWrite( realm, ( ) => {
-        realm?.delete( obsSoundToDelete );
-      }, "deleting remote observation sound in ObservationSound" );
-    }
-  }
-
-  static async deleteLocalSound( realm, uri, currentObservation ) {
+  static async deleteLocalSound( realm, uri, obsUUID ) {
     // delete uri on disk
     ObservationSound.deleteSoundFromDeviceStorage( uri );
-    const realmObs = realm.objectForPrimaryKey( "Observation", currentObservation.uuid );
+    const realmObs = realm.objectForPrimaryKey( "Observation", obsUUID );
     const obsSoundToDelete = realmObs?.observationSounds
       .find( p => p.file_url === uri );
     if ( obsSoundToDelete ) {
       safeRealmWrite( realm, ( ) => {
         realm?.delete( obsSoundToDelete );
       }, "deleting local observation sound in ObservationSound" );
-    }
-  }
-
-  static async deleteSound( realm, uri, currentObservation ) {
-    if ( uri.includes( "https://" ) ) {
-      ObservationSound.deleteRemoteSound( realm, uri, currentObservation );
-    } else {
-      ObservationSound.deleteLocalSound( realm, uri, currentObservation );
     }
   }
 

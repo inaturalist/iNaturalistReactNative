@@ -32,7 +32,7 @@ const removeObsSoundFromObservation = ( currentObservation, uri ) => {
     updatedObservation.observationSounds = obsSounds;
     return [updatedObservation];
   }
-  return [];
+  return [currentObservation];
 };
 
 const observationToJSON = observation => ( observation instanceof Realm.Object
@@ -85,13 +85,19 @@ const useStore = create( set => ( {
       uri
     )
   } ) ),
-  deleteSoundFromObservation: uri => set( state => ( {
-    observations: removeObsSoundFromObservation(
+  deleteSoundFromObservation: uri => set( state => {
+    const newObservations = removeObsSoundFromObservation(
       state.observations[state.currentObservationIndex],
       uri
-    ),
-    currentObservation: removeObsSoundFromObservation( state.currentObservation, uri )[0]
-  } ) ),
+    );
+    // FWIW, i don't really understand why this *isn't* necessary in
+    // deletePhotoFromObservation ~~~kueda20240222
+    const newObservation = removeObsSoundFromObservation( state.currentObservation, uri )[0];
+    return {
+      observations: newObservations,
+      currentObservation: newObservation
+    };
+  } ),
   resetStore: ( ) => set( {
     cameraPreviewUris: [],
     cameraRollUris: [],
