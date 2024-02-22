@@ -34,7 +34,7 @@ type Props = {
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  setSelectedPhotoUri: Function,
+  onPressPhoto: Function,
   observers: Array<string>,
   topSuggestion: Object,
   usingOfflineSuggestions: boolean,
@@ -62,7 +62,7 @@ const Suggestions = ( {
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  setSelectedPhotoUri,
+  onPressPhoto,
   observers,
   topSuggestion,
   usingOfflineSuggestions,
@@ -124,7 +124,7 @@ const Suggestions = ( {
         <ObsPhotoSelectionList
           photoUris={photoUris}
           selectedPhotoUri={selectedPhotoUri}
-          setSelectedPhotoUri={setSelectedPhotoUri}
+          onPressPhoto={onPressPhoto}
         />
         <Body3 className="my-4 mx-3">{t( "Select-the-identification-you-want-to-add" )}</Body3>
         <Button
@@ -165,7 +165,7 @@ const Suggestions = ( {
     topSuggestion,
     photoUris,
     selectedPhotoUri,
-    setSelectedPhotoUri,
+    onPressPhoto,
     suggestions,
     onTaxonChosen,
     usingOfflineSuggestions
