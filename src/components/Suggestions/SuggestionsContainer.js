@@ -15,8 +15,9 @@ import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
-  const photoList = ObservationPhoto.mapObsPhotoUris( currentObservation );
-  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoList[0] );
+  const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
+  const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
 
   const {
@@ -62,7 +63,7 @@ const SuggestionsContainer = ( ): Node => {
   useTaxonSelected( selectedTaxon, { vision: true } );
 
   const loadingSuggestions = ( loadingOnlineSuggestions || loadingOfflineSuggestions )
-    && photoList.length > 0;
+    && photoUris.length > 0;
 
   return (
     <Suggestions
