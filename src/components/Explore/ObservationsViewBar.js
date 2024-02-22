@@ -87,6 +87,7 @@ const ObservationsViewBar = ( {
 
         return (
           <INatIconButton
+            key={value}
             accessibilityLabel={accessibilityLabel}
             color={value === layout
               ? colors.white
