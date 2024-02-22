@@ -15,8 +15,8 @@ type Props = {
   setSelectedPhotoUri: Function
 };
 
-const PhotoSelectionList = ( {
   photoUris, selectedPhotoUri, setSelectedPhotoUri
+const ObsPhotoSelectionList = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -59,4 +59,4 @@ const PhotoSelectionList = ( {
   );
 };
 
-export default PhotoSelectionList;
+export default ObsPhotoSelectionList;
