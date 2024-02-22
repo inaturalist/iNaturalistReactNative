@@ -20,6 +20,21 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   return [];
 };
 
+const removeObsSoundFromObservation = ( currentObservation, uri ) => {
+  if ( _.isEmpty( currentObservation ) ) { return []; }
+  const updatedObservation = currentObservation;
+  const obsSounds = Array.from( currentObservation?.observationSounds );
+  if ( obsSounds.length > 0 ) {
+    _.remove(
+      obsSounds,
+      obsPhoto => obsPhoto.file_url === uri
+    );
+    updatedObservation.observationSounds = obsSounds;
+    return [updatedObservation];
+  }
+  return [];
+};
+
 const observationToJSON = observation => ( observation instanceof Realm.Object
   ? observation.toJSON( )
   : observation );
@@ -70,6 +85,13 @@ const useStore = create( set => ( {
       uri
     )
   } ) ),
+  deleteSoundFromObservation: uri => set( state => ( {
+    observations: removeObsSoundFromObservation(
+      state.observations[state.currentObservationIndex],
+      uri
+    ),
+    currentObservation: removeObsSoundFromObservation( state.currentObservation, uri )[0]
+  } ) ),
   resetStore: ( ) => set( {
     cameraPreviewUris: [],
     cameraRollUris: [],
@@ -106,7 +128,7 @@ const useStore = create( set => ( {
     observationMarkedAsViewedAt: date
   } ),
   setObservations: updatedObservations => set( state => ( {
-    observations: updatedObservations,
+    observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )
   } ) ),
   setPhotoEvidenceUris: uris => set( {

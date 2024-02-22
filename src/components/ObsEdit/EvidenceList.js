@@ -9,6 +9,7 @@ import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationSound from "realmModels/ObservationSound";
 import Photo from "realmModels/Photo";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -34,6 +35,7 @@ const EvidenceList = ( {
 }: Props ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
+  const deleteSoundFromObservation = useStore( state => state.deleteSoundFromObservation );
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
   const [tappedMediaUri, setTappedMediaUri]: [string | null, Function] = useState( null );
@@ -130,10 +132,19 @@ const EvidenceList = ( {
         editable
         showModal={!!tappedMediaUri}
         onClose={( ) => setTappedMediaUri( null )}
-        onDelete={async uriToDelete => {
+        onDeletePhoto={async uriToDelete => {
           await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
           deletePhotoFromObservation( uriToDelete );
           setTappedMediaUri( mediaUris[mediaUris.length - 1] );
+        }}
+        onDeleteSound={async uriToDelete => {
+          deleteSoundFromObservation( uriToDelete );
+          await ObservationSound.deleteSound( realm, uriToDelete, currentObservation );
+          if ( mediaUris.length === 1 ) {
+            setTappedMediaUri( null );
+          } else {
+            setTappedMediaUri( mediaUris[mediaUris.length - 1] );
+          }
         }}
         uri={tappedMediaUri}
         photos={innerPhotos}

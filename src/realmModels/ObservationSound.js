@@ -3,6 +3,10 @@ import { FileUpload } from "inaturalistjs";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+
+const SOUND_UPLOADS_DIRNAME = "soundUploads";
+const SOUND_UPLOADS_PATH = `${RNFS.DocumentDirectoryPath}/${SOUND_UPLOADS_DIRNAME}`;
 
 class ObservationSound extends Realm.Object {
   static OBSERVATION_SOUNDS_FIELDS = {
@@ -29,9 +33,8 @@ class ObservationSound extends Realm.Object {
     if ( options.basename ) {
       fileName = `${options.basename}.${srcFileExt}`;
     }
-    const soundUploadsFolder = `${RNFS.DocumentDirectoryPath}/soundUploads`;
-    await RNFS.mkdir( soundUploadsFolder );
-    const dstPath = `${soundUploadsFolder}/${fileName}`;
+    await RNFS.mkdir( SOUND_UPLOADS_PATH );
+    const dstPath = `${SOUND_UPLOADS_PATH}/${fileName}`;
 
     await RNFS.moveFile( srcPath, dstPath );
     return dstPath;
@@ -77,6 +80,46 @@ class ObservationSound extends Realm.Object {
       "observation_sound[observation_id]": id,
       "observation_sound[sound_id]": observationSound.id
     };
+  }
+
+  static deleteSoundFromDeviceStorage( path ) {
+    RNFS.exists( path ).then( fileExists => {
+      if ( fileExists ) RNFS.unlink( path );
+    } );
+  }
+
+  static async deleteRemoteSound( realm, uri, currentObservation ) {
+    // TODO make this actually delete the sound
+    const realmObs = realm.objectForPrimaryKey( "Observation", currentObservation.uuid );
+    const obsSoundToDelete = realmObs?.observationSounds
+      .find( os => os.file_url === uri );
+    if ( obsSoundToDelete ) {
+      console.log( "[DEBUG ObservationSound.js] deleting obsSoundToDelete: ", obsSoundToDelete );
+      safeRealmWrite( realm, ( ) => {
+        realm?.delete( obsSoundToDelete );
+      }, "deleting remote observation sound in ObservationSound" );
+    }
+  }
+
+  static async deleteLocalSound( realm, uri, currentObservation ) {
+    // delete uri on disk
+    ObservationSound.deleteSoundFromDeviceStorage( uri );
+    const realmObs = realm.objectForPrimaryKey( "Observation", currentObservation.uuid );
+    const obsSoundToDelete = realmObs?.observationSounds
+      .find( p => p.file_url === uri );
+    if ( obsSoundToDelete ) {
+      safeRealmWrite( realm, ( ) => {
+        realm?.delete( obsSoundToDelete );
+      }, "deleting local observation sound in ObservationSound" );
+    }
+  }
+
+  static async deleteSound( realm, uri, currentObservation ) {
+    if ( uri.includes( "https://" ) ) {
+      ObservationSound.deleteRemoteSound( realm, uri, currentObservation );
+    } else {
+      ObservationSound.deleteLocalSound( realm, uri, currentObservation );
+    }
   }
 
   static schema = {

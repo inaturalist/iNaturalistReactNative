@@ -19,7 +19,8 @@ import CustomImageZoom from "./CustomImageZoom";
 type Props = {
   editable?: boolean,
   horizontalScroll: any,
-  onDelete?: Function,
+  onDeletePhoto?: Function,
+  onDeleteSound?: Function,
   photos: Array<{
     id?: number,
     url: string,
@@ -39,7 +40,8 @@ type Props = {
 const MainMediaDisplay = ( {
   editable,
   horizontalScroll,
-  onDelete = ( ) => { },
+  onDeletePhoto = ( ) => { },
+  onDeleteSound = ( ) => { },
   photos,
   sounds = [],
   selectedMediaIndex,
@@ -56,38 +58,41 @@ const MainMediaDisplay = ( {
   ] ), [photos, sounds] );
   const atLastItem = selectedMediaIndex === items.length - 1;
 
-  const renderPhoto = useCallback( photo => (
-    <View>
-      <CustomImageZoom
-        source={{ uri: Photo.displayLargePhoto( photo.url || photo.localFilePath ) }}
-        height={displayHeight}
-        setZooming={setZooming}
-      />
-      {
-        editable
-          ? (
-            <View className="absolute bottom-4 right-4">
-              <TransparentCircleButton
-                onPress={onDelete}
-                icon="trash-outline"
-                color={colors.white}
-                accessibilityLabel={t( "Delete-photo" )}
+  const renderPhoto = useCallback( photo => {
+    const uri = Photo.displayLargePhoto( photo.url || photo.localFilePath );
+    return (
+      <View>
+        <CustomImageZoom
+          source={{ uri }}
+          height={displayHeight}
+          setZooming={setZooming}
+        />
+        {
+          editable
+            ? (
+              <View className="absolute bottom-4 right-4">
+                <TransparentCircleButton
+                  onPress={( ) => onDeletePhoto( uri )}
+                  icon="trash-outline"
+                  color={colors.white}
+                  accessibilityLabel={t( "Delete-photo" )}
+                />
+              </View>
+            )
+            : (
+              <AttributionButton
+                licenseCode={photo.licenseCode}
+                attribution={photo.attribution}
+                optionalClasses="absolute top-4 right-4"
               />
-            </View>
-          )
-          : (
-            <AttributionButton
-              licenseCode={photo.licenseCode}
-              attribution={photo.attribution}
-              optionalClasses="absolute top-4 right-4"
-            />
-          )
-      }
-    </View>
-  ), [
+            )
+        }
+      </View>
+    );
+  }, [
     displayHeight,
     editable,
-    onDelete,
+    onDeletePhoto,
     t
   ] );
 
@@ -104,12 +109,27 @@ const MainMediaDisplay = ( {
         sound={sound}
         isVisible={items.indexOf( sound ) === selectedMediaIndex}
       />
+      {
+        editable && (
+          <View className="absolute bottom-4 right-4">
+            <TransparentCircleButton
+              onPress={( ) => onDeleteSound( sound.file_url )}
+              icon="trash-outline"
+              color={colors.white}
+              accessibilityLabel={t( "Delete-sound" )}
+            />
+          </View>
+        )
+      }
     </View>
   ), [
     displayHeight,
-    screenWidth,
+    editable,
     items,
-    selectedMediaIndex
+    onDeleteSound,
+    screenWidth,
+    selectedMediaIndex,
+    t
   ] );
 
   const renderItem = useCallback( ( { item } ) => (

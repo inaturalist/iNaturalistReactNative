@@ -24,7 +24,8 @@ type Props = {
   // Optional component to use as the header
   header?: Function,
   onClose?: Function,
-  onDelete?: Function,
+  onDeletePhoto?: Function,
+  onDeleteSound?: Function,
   photos?: Array<{
     id?: number,
     url: string,
@@ -44,7 +45,8 @@ const MediaViewer = ( {
   editable,
   header,
   onClose = ( ) => { },
-  onDelete,
+  onDeletePhoto,
+  onDeleteSound,
   photos = [],
   sounds = [],
   uri
@@ -60,7 +62,10 @@ const MediaViewer = ( {
       : uris.indexOf( uri )
   );
   const { t } = useTranslation( );
-  const [warningSheet, setWarningSheet] = useState( false );
+  const [
+    mediaToDelete,
+    setMediaToDelete
+  ]: [null | { type: string, uri: string }, Function] = useState( null );
 
   const horizontalScroll = useRef( null );
 
@@ -82,15 +87,19 @@ const MediaViewer = ( {
     }
   }, [selectedMediaIndex, setSelectedMediaIndex, uris.length] );
 
-  const deleteItem = useCallback( ( ) => {
-    const uriToDelete = uris[selectedMediaIndex]?.toString( );
-    setWarningSheet( false );
-    if ( onDelete && uriToDelete ) onDelete( uriToDelete );
+  const confirmDelete = useCallback( ( ) => {
+    if ( mediaToDelete?.type === "photo" && onDeletePhoto ) {
+      onDeletePhoto( mediaToDelete.uri );
+    } else if ( mediaToDelete?.type === "sound" && onDeleteSound ) {
+      onDeleteSound( mediaToDelete.uri );
+    }
+    setMediaToDelete( null );
   }, [
-    onDelete,
-    selectedMediaIndex,
-    setWarningSheet,
-    uris
+    onDeletePhoto,
+    onDeleteSound,
+    mediaToDelete?.type,
+    mediaToDelete?.uri,
+    setMediaToDelete
   ] );
 
   return (
@@ -114,7 +123,8 @@ const MediaViewer = ( {
         selectedMediaIndex={selectedMediaIndex}
         horizontalScroll={horizontalScroll}
         setSelectedMediaIndex={setSelectedMediaIndex}
-        onDelete={( ) => setWarningSheet( true )}
+        onDeletePhoto={photoUri => setMediaToDelete( { type: "photo", uri: photoUri } )}
+        onDeleteSound={soundUri => setMediaToDelete( { type: "sound", uri: soundUri } )}
       />
       <MediaSelector
         photos={photos}
@@ -123,14 +133,14 @@ const MediaViewer = ( {
         isLargeScreen={isLargeScreen}
         selectedMediaIndex={selectedMediaIndex}
       />
-      {warningSheet && (
+      {mediaToDelete && (
         <WarningSheet
-          handleClose={( ) => setWarningSheet( false )}
-          confirm={deleteItem}
+          handleClose={( ) => setMediaToDelete( null )}
+          confirm={confirmDelete}
           headerText={t( "DISCARD-MEDIA" )}
           buttonText={t( "DISCARD" )}
           secondButtonText={t( "CANCEL" )}
-          handleSecondButtonPress={( ) => setWarningSheet( false )}
+          handleSecondButtonPress={( ) => setMediaToDelete( null )}
           insideModal
         />
       )}
