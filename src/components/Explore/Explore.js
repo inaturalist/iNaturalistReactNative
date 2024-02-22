@@ -14,6 +14,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import { getShadowStyle } from "styles/global";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
@@ -22,6 +23,15 @@ import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
+
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 6
+} );
 
 // TODO: observers and identifiers icons need replacement
 const exploreViewIcon = {
@@ -102,6 +112,7 @@ const Explore = ( {
               )}
               accessibilityLabel={t( "Explore-View" )}
               onPress={() => setShowExploreBottomSheet( true )}
+              style={getShadow( theme.colors.primary )}
             />
             {exploreView === "observations" && (
               <ObservationsView
