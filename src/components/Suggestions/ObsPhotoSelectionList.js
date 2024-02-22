@@ -24,7 +24,7 @@ const ObsPhotoSelectionList = ( {
     <Pressable
       accessibilityRole="button"
       onPress={( ) => {
-        setSelectedPhotoUri( item );
+        onPressPhoto( item );
       }}
       className={classnames(
         "w-[83px] h-[83px] justify-center mx-1.5 rounded-lg"
@@ -48,7 +48,7 @@ const ObsPhotoSelectionList = ( {
         />
       </View>
     </Pressable>
-  ), [selectedPhotoUri, setSelectedPhotoUri, t] );
+  ), [selectedPhotoUri, onPressPhoto, t] );
 
   return (
     <FlatList
