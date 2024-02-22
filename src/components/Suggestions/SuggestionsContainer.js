@@ -1,7 +1,9 @@
 // @flow
 
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -19,6 +21,7 @@ const SuggestionsContainer = ( ): Node => {
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
@@ -65,26 +68,46 @@ const SuggestionsContainer = ( ): Node => {
   const loadingSuggestions = ( loadingOnlineSuggestions || loadingOfflineSuggestions )
     && photoUris.length > 0;
 
+  const onPressPhoto = useCallback(
+    uri => {
+      if ( uri === selectedPhotoUri ) {
+        setMediaViewerVisible( true );
+      }
+      setSelectedPhotoUri( uri );
+    },
+    [selectedPhotoUri]
+  );
+
   return (
-    <Suggestions
-      loadingSuggestions={loadingSuggestions}
-      topSuggestion={topSuggestion}
-      suggestions={suggestions}
-      onTaxonChosen={setSelectedTaxon}
-      photoUris={photoList}
-      selectedPhotoUri={selectedPhotoUri}
-      setSelectedPhotoUri={setSelectedPhotoUri}
-      observers={observers}
-      usingOfflineSuggestions={tryOfflineSuggestions && offlineSuggestions?.length > 0}
-      debugData={{
-        timedOut,
-        onlineSuggestions,
-        offlineSuggestions,
-        onlineSuggestionsError,
-        onlineSuggestionsUpdatedAt,
-        selectedPhotoUri
-      }}
-    />
+    <>
+      <Suggestions
+        loadingSuggestions={loadingSuggestions}
+        topSuggestion={topSuggestion}
+        suggestions={suggestions}
+        onTaxonChosen={setSelectedTaxon}
+        photoUris={photoUris}
+        selectedPhotoUri={selectedPhotoUri}
+        onPressPhoto={onPressPhoto}
+        observers={observers}
+        usingOfflineSuggestions={
+          tryOfflineSuggestions && offlineSuggestions?.length > 0
+        }
+        debugData={{
+          timedOut,
+          onlineSuggestions,
+          offlineSuggestions,
+          onlineSuggestionsError,
+          onlineSuggestionsUpdatedAt,
+          selectedPhotoUri
+        }}
+      />
+      <MediaViewerModal
+        showModal={mediaViewerVisible}
+        onClose={() => setMediaViewerVisible( false )}
+        uri={selectedPhotoUri}
+        photos={innerPhotos}
+      />
+    </>
   );
 };
 
