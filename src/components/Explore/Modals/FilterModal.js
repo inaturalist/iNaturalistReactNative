@@ -854,33 +854,6 @@ const FilterModal = ( {
         {/* Taxonomic Ranks section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
-          <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
-          <Button
-            text={lrank
-              ? taxonomicRankValues[lrank]?.label
-              : t( "ALL" )}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              setOpenSheet( LRANK );
-            }}
-            accessibilityLabel={t( "Lowest" )}
-          />
-          {openSheet === LRANK && (
-            <PickerSheet
-              headerText={t( "LOWEST-RANK" )}
-              confirm={newRank => {
-                dispatch( {
-                  type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
-                  lrank: newRank
-                } );
-                setOpenSheet( NONE );
-              }}
-              handleClose={() => setOpenSheet( NONE )}
-              pickerValues={taxonomicRankValues}
-              selectedValue={lrank}
-            />
-          )}
           <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
           <Button
             text={hrank
@@ -906,6 +879,33 @@ const FilterModal = ( {
               handleClose={() => setOpenSheet( NONE )}
               pickerValues={taxonomicRankValues}
               selectedValue={hrank}
+            />
+          )}
+          <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
+          <Button
+            text={lrank
+              ? taxonomicRankValues[lrank]?.label
+              : t( "ALL" )}
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              setOpenSheet( LRANK );
+            }}
+            accessibilityLabel={t( "Lowest" )}
+          />
+          {openSheet === LRANK && (
+            <PickerSheet
+              headerText={t( "LOWEST-RANK" )}
+              confirm={newRank => {
+                dispatch( {
+                  type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
+                  lrank: newRank
+                } );
+                setOpenSheet( NONE );
+              }}
+              handleClose={() => setOpenSheet( NONE )}
+              pickerValues={taxonomicRankValues}
+              selectedValue={lrank}
             />
           )}
         </View>
