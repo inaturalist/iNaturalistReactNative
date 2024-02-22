@@ -30,7 +30,7 @@ const ObsPhotoSelectionList = ( {
         "w-[83px] h-[83px] justify-center mx-1.5 rounded-lg"
       )}
       accessibilityLabel={t( "Select-photo" )}
-      testID={`PhotoSelectionList.${item}`}
+      testID={`ObsPhotoSelectionList.${item}`}
     >
       <View
         className={classnames(
@@ -39,7 +39,7 @@ const ObsPhotoSelectionList = ( {
             "border border-inatGreen border-[3px]": selectedPhotoUri === item
           }
         )}
-        testID={`PhotoSelectionList.border.${item}`}
+        testID={`ObsPhotoSelectionList.border.${item}`}
       >
         <Image
           source={{ uri: item }}
