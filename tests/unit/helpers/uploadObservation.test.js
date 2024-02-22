@@ -22,9 +22,20 @@ function makeObservationWithPhotos( ) {
   return mockObservation;
 }
 
+function makeObservationWithSounds( ) {
+  const mockObservationSound = factory( "LocalObservationSound" );
+  mockObservationSound.toJSON.mockImplementation( ( ) => mockObservationSound );
+  const mockObservation = factory( "LocalObservation", {
+    observationSounds: [mockObservationSound]
+  } );
+  return mockObservation;
+}
+
 describe( "uploadObservation", ( ) => {
   beforeEach( ( ) => {
     inatjs.observations.create.mockReset( );
+    inatjs.observation_photos.create.mockReset( );
+    inatjs.observation_sounds.create.mockReset( );
     inatjs.photos.create.mockReset( );
     inatjs.sounds.create.mockReset( );
   } );
@@ -39,19 +50,30 @@ describe( "uploadObservation", ( ) => {
     expect( inatjs.photos.create ).toHaveBeenCalledTimes( 1 );
   } );
 
+  it( "should call inatjs.observation_photos.create for an obs w/ photos", async ( ) => {
+    inatjs.observations.create.mockResolvedValue(
+      makeResponse( [factory( "RemoteObservation" )] )
+    );
+    await uploadObservation( makeObservationWithPhotos( ) );
+    expect( inatjs.observation_photos.create ).toHaveBeenCalledTimes( 1 );
+  } );
+
   it( "should not call inatjs.photos.create for an obs w/o photos", async ( ) => {
     await uploadObservation( factory( "LocalObservation" ) );
     expect( inatjs.photos.create ).not.toHaveBeenCalled( );
   } );
 
   it( "should call inatjs.sounds.create for an obs w/ sounds", async ( ) => {
-    const mockObservationSound = factory( "LocalObservationSound" );
-    mockObservationSound.toJSON.mockImplementation( ( ) => mockObservationSound );
-    const mockObservation = factory( "LocalObservation", {
-      observationSounds: [mockObservationSound]
-    } );
-    await uploadObservation( mockObservation );
+    await uploadObservation( makeObservationWithSounds( ) );
     expect( inatjs.sounds.create ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  it( "should call inatjs.observation_sounds.create for an obs w/ photos", async ( ) => {
+    inatjs.observations.create.mockResolvedValue(
+      makeResponse( [factory( "RemoteObservation" )] )
+    );
+    await uploadObservation( makeObservationWithSounds( ) );
+    expect( inatjs.observation_sounds.create ).toHaveBeenCalledTimes( 1 );
   } );
 
   it( "should not call inatjs.sounds.create for an obs w/o sounds", async ( ) => {

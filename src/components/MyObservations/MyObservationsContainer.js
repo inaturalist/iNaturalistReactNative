@@ -251,7 +251,6 @@ const MyObservationsContainer = ( ): Node => {
     try {
       await uploadObservation( observation, realm );
     } catch ( uploadError ) {
-      console.warn( "MyObservationsContainer, uploadError: ", uploadError );
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
@@ -262,6 +261,7 @@ const MyObservationsContainer = ( ): Node => {
           return error.message;
         } ).join( ", " );
       } else {
+        logger.error( "[MyObservationsContainer.js] upload failed: ", uploadError );
         throw uploadError;
       }
       dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
@@ -288,7 +288,7 @@ const MyObservationsContainer = ( ): Node => {
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
 
-    uploads.forEach( async ( obsToUpload, i ) => {
+    await Promise.all( uploads.map( async ( obsToUpload, i ) => {
       await uploadObservationAndCatchError( obsToUpload );
       if ( i > 0 ) {
         dispatch( { type: "START_NEXT_UPLOAD" } );
@@ -296,7 +296,7 @@ const MyObservationsContainer = ( ): Node => {
       if ( i === uploads.length - 1 ) {
         dispatch( { type: "UPLOADS_COMPLETE" } );
       }
-    } );
+    } ) );
   }, [
     uploadsComplete,
     uploadObservationAndCatchError,

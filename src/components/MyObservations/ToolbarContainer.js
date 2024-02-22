@@ -60,9 +60,9 @@ const ToolbarContainer = ( {
     currentUploadCount
   } = uploadState;
 
-  const handleSyncButtonPress = useCallback( ( ) => {
+  const handleSyncButtonPress = useCallback( async ( ) => {
     if ( numUnuploadedObs > 0 ) {
-      uploadMultipleObservations( );
+      await uploadMultipleObservations( );
     } else {
       syncObservations( );
     }
