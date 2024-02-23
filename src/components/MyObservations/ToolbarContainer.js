@@ -57,7 +57,7 @@ const ToolbarContainer = ( {
     error: uploadError,
     uploadInProgress,
     uploadsComplete,
-    currentUploadCount,
+    numToUpload,
     syncInProgress
   } = uploadState;
 
@@ -88,7 +88,6 @@ const ToolbarContainer = ( {
     && ( numUnuploadedObs > 0 || uploadError );
 
   const getStatusText = useCallback( ( ) => {
-    const totalUploadCount = uploads?.length || 0;
     const deletionParams = {
       total: totalDeletions,
       currentDeleteCount
@@ -112,8 +111,8 @@ const ToolbarContainer = ( {
 
     if ( uploadInProgress ) {
       const translationParams = {
-        total: totalUploadCount,
-        currentUploadCount
+        total: numToUpload,
+        currentUploadCount: numToUpload - uploads.length
       };
       // iPhone 4 pixel width
       if ( screenWidth <= 640 ) {
@@ -124,7 +123,7 @@ const ToolbarContainer = ( {
     }
 
     if ( uploadsComplete ) {
-      return t( "X-observations-uploaded", { count: totalUploadCount } );
+      return t( "X-observations-uploaded", { count: numToUpload } );
     }
 
     return numUnuploadedObs !== 0
@@ -132,12 +131,12 @@ const ToolbarContainer = ( {
       : "";
   }, [
     currentDeleteCount,
-    currentUploadCount,
     deletionsComplete,
     numUnuploadedObs,
     t,
     totalDeletions,
     uploads,
+    numToUpload,
     uploadsComplete,
     uploadInProgress,
     syncInProgress

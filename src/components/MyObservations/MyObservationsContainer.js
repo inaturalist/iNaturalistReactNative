@@ -38,7 +38,6 @@ import MyObservations from "./MyObservations";
 const logger = log.extend( "MyObservationsContainer" );
 
 export const INITIAL_STATE = {
-  currentUploadCount: 0,
   error: null,
   singleUpload: true,
   totalProgressIncrements: 0,
@@ -47,6 +46,7 @@ export const INITIAL_STATE = {
   uploadProgress: { },
   // $FlowIgnore
   uploads: [],
+  numToUpload: 0,
   uploadsComplete: false,
   syncInProgress: false
 };
@@ -56,8 +56,8 @@ const startUploadState = uploads => ( {
   uploadInProgress: true,
   uploadsComplete: false,
   uploads,
+  numToUpload: uploads.length,
   uploadProgress: { },
-  currentUploadCount: 1,
   totalProgressIncrements: uploads
     .reduce(
       ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
@@ -90,11 +90,6 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
           ? [action.observation]
           : state.uploads ),
         singleUpload: action.singleUpload
-      };
-    case "START_NEXT_UPLOAD":
-      return {
-        ...state,
-        currentUploadCount: state.currentUploadCount + 1
       };
     case "STOP_UPLOADS":
       return {
@@ -294,15 +289,10 @@ const MyObservationsContainer = ( ): Node => {
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
 
-    await Promise.all( uploads.map( async ( obsToUpload, i ) => {
+    await Promise.all( uploads.map( async obsToUpload => {
       await uploadObservationAndCatchError( obsToUpload );
-      if ( i > 0 ) {
-        dispatch( { type: "START_NEXT_UPLOAD" } );
-      }
-      if ( i === uploads.length - 1 ) {
-        dispatch( { type: "UPLOADS_COMPLETE" } );
-      }
     } ) );
+    dispatch( { type: "UPLOADS_COMPLETE" } );
   }, [
     uploadsComplete,
     uploadObservationAndCatchError,
