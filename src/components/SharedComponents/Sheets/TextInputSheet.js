@@ -11,14 +11,14 @@ import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
-  type Props = {
-    handleClose: Function,
-    confirm: Function,
-    initialInput?: ?string,
-    placeholder: string,
-    headerText: string,
-    textInputStyle?: Object
-  }
+type Props = {
+  handleClose: Function,
+  confirm: Function,
+  initialInput?: ?string,
+  placeholder: string,
+  headerText: string,
+  textInputStyle?: Object
+}
 
 const TextInputSheet = ( {
   handleClose,

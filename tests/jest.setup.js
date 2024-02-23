@@ -11,6 +11,7 @@ import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-
 import mockRNLocalize from "react-native-localize/mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
+import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
 
 import factory, { makeResponse } from "./factory";
 import {
@@ -358,3 +359,5 @@ jest.mock( "react-native-jwt-io", ( ) => ( {
 
 inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
+
+jest.mock( "react-native-audio-recorder-player", ( ) => MockAudioRecorderPlayer );

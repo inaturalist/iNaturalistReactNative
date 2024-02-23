@@ -37,7 +37,7 @@ class Observation extends Realm.Object {
     observed_on: true,
     place_guess: true,
     quality_grade: true,
-    sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
+    observation_sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
     user: User && {
@@ -71,7 +71,7 @@ class Observation extends Realm.Object {
     private_geojson: true,
     private_place_guess: true,
     quality_grade: true,
-    sounds: { file_url: true },
+    observation_sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
     user: User && User.FIELDS
@@ -92,9 +92,9 @@ class Observation extends Realm.Object {
     };
   }
 
-  static async createObsWithSounds( ) {
+  static async createObsWithSoundPath( soundPath ) {
     const observation = await Observation.new( );
-    const sound = await ObservationSound.new( );
+    const sound = await ObservationSound.new( { file_url: soundPath } );
     observation.observationSounds = [sound];
     return observation;
   }
@@ -153,13 +153,10 @@ class Observation extends Realm.Object {
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
       observationPhotos,
-      observationSounds: obs.sounds?.map( sound => ( {
-        ...sound,
-        // TODO fix this... and rework the model. We need to get the sound
-        // UUID from the server, but we also need the server to reply with
-        // observation_sounds, otherwise we don't have the ability to delete
-        // sounds
-        uuid: uuid.v4( )
+      observationSounds: obs.observation_sounds?.map( observationSound => ( {
+        id: observationSound.id,
+        uuid: observationSound.uuid,
+        file_url: observationSound.sound.file_url
       } ) ),
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
       taxon
@@ -378,7 +375,12 @@ class Observation extends Realm.Object {
   needsSync( ) {
     const obsPhotosNeedSync = this.observationPhotos
       .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
-    return !this._synced_at || this._synced_at <= this._updated_at || obsPhotosNeedSync;
+    const obsSoundsNeedSync = this.observationSounds
+      .filter( obsSound => obsSound.needsSync( ) ).length > 0;
+    return !this._synced_at
+      || this._synced_at <= this._updated_at
+      || obsPhotosNeedSync
+      || obsSoundsNeedSync;
   }
 
   wasSynced( ) {

@@ -74,7 +74,7 @@ const StandardCamera = ( {
   const { params } = useRoute();
   const onBack = () => {
     const currentRoute = getCurrentRoute();
-    if ( currentRoute.params && currentRoute.params.addEvidence ) {
+    if ( currentRoute?.params?.addEvidence ) {
       navigation.navigate( "ObsEdit" );
     } else {
       const previousScreen = params && params.previousScreen

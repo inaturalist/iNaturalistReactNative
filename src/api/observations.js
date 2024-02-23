@@ -106,6 +106,10 @@ const updateObservation = async (
   }
 };
 
+// TODO replace this. It doesn't do anything specific to creating or updateing
+// evidence, it just wraps an API call, so it could be renamed
+// to "callEndpoint", or maybe we should preserve abstraction from inatjs and
+// not accept an inatjs endpoint and replace this with several functions
 const createOrUpdateEvidence = async (
   apiEndpoint: Function,
   params: Object = {},

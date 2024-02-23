@@ -134,8 +134,7 @@ const PermissionGateContainer = ( {
 
   useEffect( ( ) => {
     if (
-      withoutNavigation
-      && permissionNeeded
+      permissionNeeded
       && result !== RESULTS.GRANTED
       && result !== null
     ) {

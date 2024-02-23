@@ -9,12 +9,21 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 const UPLOAD_PROGRESS_INCREMENT = 0.5;
 
-const markRecordUploaded = ( observationUUID, recordUUID, type, response, realm ) => {
+const markRecordUploaded = (
+  observationUUID: string,
+  recordUUID: string | null,
+  type: string,
+  response: {
+    results: Array<{id: Number}>
+  },
+  realm: Object
+) => {
   const { id } = response.results[0];
   const observation = realm?.objectForPrimaryKey( "Observation", observationUUID );
 
@@ -23,11 +32,12 @@ const markRecordUploaded = ( observationUUID, recordUUID, type, response, realm 
   if ( type === "Observation" ) {
     record = observation;
   } else if ( type === "ObservationPhoto" ) {
-    const obsPhotos = observation.observationPhotos;
-    const existingObsPhoto = obsPhotos?.find( p => p.uuid === recordUUID );
+    const existingObsPhoto = observation.observationPhotos?.find( p => p.uuid === recordUUID );
     record = existingObsPhoto;
+  } else if ( type === "ObservationSound" ) {
+    const existingObsSound = observation.observationSounds?.find( p => p.uuid === recordUUID );
+    record = existingObsSound;
   }
-  // TODO: add ObservationSound
 
   safeRealmWrite( realm, ( ) => {
     record.id = id;
@@ -56,26 +66,29 @@ const uploadEvidence = async (
       options
     );
 
-    if ( response ) {
+    if ( response && observationUUID ) {
       emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
       // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
       markRecordUploaded( observationUUID, evidenceUUID, type, response, realm );
     }
+
+    return response;
   };
 
   const responses = await Promise.all( evidence.map( item => {
     const currentEvidence = item.toJSON( );
 
-    // Remove all null values, b/c the API doesn't seem to like them
-    const newPhoto = {};
-    const photo = currentEvidence?.photo;
-    Object.keys( photo ).forEach( k => {
-      if ( photo[k] !== null ) {
-        newPhoto[k] = photo[k];
-      }
-    } );
-
-    currentEvidence.photo = newPhoto;
+    if ( currentEvidence.photo ) {
+      // Remove all null values, b/c the API doesn't seem to like them
+      const newPhoto = {};
+      const { photo } = currentEvidence;
+      Object.keys( photo ).forEach( k => {
+        if ( photo[k] !== null ) {
+          newPhoto[k] = photo[k];
+        }
+      } );
+      currentEvidence.photo = newPhoto;
+    }
 
     return uploadToServer( currentEvidence );
   } ) );
@@ -134,6 +147,25 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
       : null
   ] );
 
+  const hasSounds = obs.observationSounds.length > 0;
+  const unsyncedSounds = hasSounds
+    ? obs.observationSounds.filter( item => !item.wasSynced( ) )
+    : [];
+  await Promise.all( [
+    unsyncedSounds.length > 0
+      ? await uploadEvidence(
+        unsyncedSounds,
+        "ObservationSound",
+        ObservationSound.mapSoundForUpload,
+        null,
+        inatjs.sounds.create,
+        options,
+        obs.uuid,
+        realm
+      )
+      : null
+  ] );
+
   const wasPreviouslySynced = obs.wasSynced( );
   const uploadParams = {
     observation: { ...newObs },
@@ -168,6 +200,18 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
         ObservationPhoto.mapPhotoForAttachingToObs,
         obsUUID,
         inatjs.observation_photos.create,
+        options,
+        obsUUID,
+        realm
+      )
+      : null,
+    unsyncedSounds.length > 0
+      ? await uploadEvidence(
+        unsyncedSounds,
+        "ObservationSound",
+        ObservationSound.mapSoundForAttachingToObs,
+        obsUUID,
+        inatjs.observation_sounds.create,
         options,
         obsUUID,
         realm

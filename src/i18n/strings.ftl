@@ -780,6 +780,7 @@ Read-more-on-Wikipedia = Read more on Wikipedia
 Recently-observed = Recently observed
 
 Record-new-sound = Record new sound
+RECORD-NEW-SOUND = RECORD NEW SOUND
 
 Recording-Sound = Recording Sound
 
@@ -1642,3 +1643,59 @@ Identification-options = Identification options
 
 Map-Area = Map Area
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
+
+# Imperative verb for recording a sound
+Record-verb = Record
+
+# Accessibility hint for button that starts recording a sound
+Starts-recording-sound = Starts recording sound
+
+# Imperative verb for stopping the recording of a sound
+Stop-verb = Stop
+
+# Accessibility hint for a button that stops the recording of a sound
+Stops-recording-sound = Stops recording sound
+
+# Displays number of sounds attached to an observation in the Media Viewer
+X-SOUNDS = {$count ->
+    [one] 1 SOUND
+    *[other] {$count} SOUNDS
+}
+
+# Displays number of photos and sounds attached to an observation in the Media
+# Viewer
+X-PHOTOS-Y-SOUNDS =
+    {$photoCount ->
+        [one] 1 PHOTO
+        *[other] {$photoCount} PHOTOS
+    }, {$soundCount ->
+        [one] 1 SOUND
+        *[other] {$soundCount} SOUNDS
+    }
+
+sound-recorder-help-One-organism = One organism
+sound-recorder-help-Try-to-isolate = Try to isolate the sound of a single organism. If you can’t, make sure to leave a note of which organism you’re recording.
+sound-recorder-help-Stop-moving = Stop moving
+sound-recorder-help-Make-sure = Make sure the sound of your own movement doesn’t cover up the sound of the organism.
+sound-recorder-help-Get-closer = Get closer
+sound-recorder-help-Get-as-close-as-you-can = Get as close as you safely can to record the organism.
+sound-recorder-help-Keep-it-short = Keep it short
+sound-recorder-help-A-recording-of = A recording of 5-15 seconds is best to help identifiers.
+
+# Header of a popup confirming that the user wants to discard a sound
+# recording
+DISCARD-SOUND-header = DISCARD SOUND?
+# Label for a button that discards a sound recording
+DISCARD-RECORDING = DISCARD RECORDING
+By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
+
+# Header of a popup confirming that the user wants to reset a sound
+# recording
+RESET-SOUND-header = RESET SOUND?
+# Label for a button that resets a sound recording
+RESET-RECORDING = RESET RECORDING
+Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
+
+Press-record-to-start = Press record to start
+Recoding-sound = Recoding sound
+Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play the current recording.

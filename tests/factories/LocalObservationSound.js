@@ -1,12 +1,9 @@
 import { define } from "factoria";
 
-import photoFactory from "./LocalPhoto";
-
-export default define( "LocalObservationPhoto", faker => ( {
+export default define( "LocalObservationSound", faker => ( {
   uuid: faker.string.uuid( ),
-  photo: photoFactory( "LocalPhoto" ),
+  file_url: faker.system.filePath( ),
   wasSynced: jest.fn( ( ) => false ),
-  needsSync: jest.fn( ( ) => true ),
   toJSON: jest.fn( ( ) => ( { } ) )
 } ), {
   uploaded: faker => ( {
