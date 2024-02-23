@@ -52,6 +52,7 @@ const Checkbox = ( {
       unfillColor={theme.colors.onPrimary}
       iconComponent={renderIcon}
       onPress={onPress}
+      isChecked={isChecked}
       textComponent={renderCheckboxText}
       iconStyle={iconStyle}
       innerIconStyle={innerIconStyle}

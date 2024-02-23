@@ -27,22 +27,27 @@ const SignUpForm = ( { hideFooter }: Props ): Node => {
         accessibilityLabel={t( "EMAIL" )}
         autoComplete="email"
         headerText={t( "EMAIL" )}
+        inputMode="email"
         keyboardType="email-address"
         onChangeText={text => setEmail( text )}
         testID="Signup.email"
+        textContentType="emailAddress"
       />
       <LoginSignUpInputField
         accessibilityLabel={t( "USERNAME" )}
         headerText={t( "USERNAME" )}
         onChangeText={text => setUsername( text )}
         testID="Signup.username"
+        textContentType="username"
       />
       <LoginSignUpInputField
         accessibilityLabel={t( "PASSWORD" )}
+        autoComplete="new-password"
         headerText={t( "PASSWORD" )}
         onChangeText={text => setPassword( text )}
         secureTextEntry
         testID="Signup.password"
+        textContentType="newPassword"
       />
       <Button
         className="mt-[30px]"

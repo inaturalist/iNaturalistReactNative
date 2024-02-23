@@ -7,6 +7,7 @@ import {
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { format } from "date-fns";
+import { navigationRef } from "navigation/navigationUtils";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -36,8 +37,7 @@ import MyObservations from "./MyObservations";
 
 const logger = log.extend( "MyObservationsContainer" );
 
-export const INITIAL_UPLOAD_STATE = {
-  currentUploadCount: 0,
+export const INITIAL_STATE = {
   error: null,
   singleUpload: true,
   totalProgressIncrements: 0,
@@ -46,7 +46,10 @@ export const INITIAL_UPLOAD_STATE = {
   uploadProgress: { },
   // $FlowIgnore
   uploads: [],
-  uploadsComplete: false
+  numToUpload: 0,
+  numFinishedUploads: 0,
+  uploadsComplete: false,
+  syncInProgress: false
 };
 
 const startUploadState = uploads => ( {
@@ -54,13 +57,13 @@ const startUploadState = uploads => ( {
   uploadInProgress: true,
   uploadsComplete: false,
   uploads,
+  numToUpload: uploads.length,
+  numFinishedUploads: 0,
   uploadProgress: { },
-  currentUploadCount: 1,
-  totalProgressIncrements: uploads
-    .reduce(
-      ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
-      uploads.length
-    )
+  totalProgressIncrements: uploads.reduce(
+    ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+    uploads.length
+  )
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
@@ -92,12 +95,12 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
     case "START_NEXT_UPLOAD":
       return {
         ...state,
-        currentUploadCount: state.currentUploadCount + 1
+        numFinishedUploads: state.numFinishedUploads + 1
       };
     case "STOP_UPLOADS":
       return {
         ...state,
-        ...INITIAL_UPLOAD_STATE
+        ...INITIAL_STATE
       };
     case "UPLOADS_COMPLETE":
       return {
@@ -110,9 +113,14 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
         ...state,
         uploadProgress: action.uploadProgress
       };
-    case "RESET_UPLOAD_STATE":
+    case "RESET_STATE":
       return {
-        ...INITIAL_UPLOAD_STATE
+        ...INITIAL_STATE
+      };
+    case "START_SYNC":
+      return {
+        ...state,
+        syncInProgress: true
       };
     default:
       return state;
@@ -123,11 +131,12 @@ const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
   const navigation = useNavigation( );
+  const { params } = useRoute( );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
-  const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
+  const [state, dispatch] = useReducer( uploadReducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
@@ -170,6 +179,18 @@ const MyObservationsContainer = ( ): Node => {
       ? "list"
       : "grid" );
   };
+
+  useEffect( () => {
+    if ( navigationRef && navigationRef.isReady() ) {
+      if ( params && params.navToObsDetails ) {
+        // We wrap this in a setTimeout, since otherwise this routing doesn't work immediately
+        // when loading this screen
+        setTimeout( () => {
+          navigation.navigate( "ObsDetails", { uuid: params.uuid } );
+        }, 100 );
+      }
+    }
+  }, [navigation, params] );
 
   useEffect( ( ) => {
     // show progress in toolbar for observations uploaded on ObsEdit
@@ -237,7 +258,6 @@ const MyObservationsContainer = ( ): Node => {
     try {
       await uploadObservation( observation, realm );
     } catch ( uploadError ) {
-      console.warn( "MyObservationsContainer, uploadError: ", uploadError );
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
@@ -248,6 +268,7 @@ const MyObservationsContainer = ( ): Node => {
           return error.message;
         } ).join( ", " );
       } else {
+        logger.error( "[MyObservationsContainer.js] upload failed: ", uploadError );
         throw uploadError;
       }
       dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
@@ -274,15 +295,11 @@ const MyObservationsContainer = ( ): Node => {
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
 
-    uploads.forEach( async ( obsToUpload, i ) => {
+    await Promise.all( uploads.map( async obsToUpload => {
       await uploadObservationAndCatchError( obsToUpload );
-      if ( i > 0 ) {
-        dispatch( { type: "START_NEXT_UPLOAD" } );
-      }
-      if ( i === uploads.length - 1 ) {
-        dispatch( { type: "UPLOADS_COMPLETE" } );
-      }
-    } );
+      dispatch( { type: "START_NEXT_UPLOAD" } );
+    } ) );
+    dispatch( { type: "UPLOADS_COMPLETE" } );
   }, [
     uploadsComplete,
     uploadObservationAndCatchError,
@@ -297,12 +314,12 @@ const MyObservationsContainer = ( ): Node => {
 
   const downloadRemoteObservationsFromServer = useCallback( async ( ) => {
     const apiToken = await getJWT( );
-    const params = {
+    const searchParams = {
       user_id: currentUser?.id,
       per_page: 50,
       fields: Observation.FIELDS
     };
-    const { results } = await searchObservations( params, { api_token: apiToken } );
+    const { results } = await searchObservations( searchParams, { api_token: apiToken } );
 
     Observation.upsertRemoteObservations( results, realm );
   }, [currentUser, realm] );
@@ -311,10 +328,10 @@ const MyObservationsContainer = ( ): Node => {
   const syncRemoteDeletedObservations = useCallback( async ( ) => {
     const apiToken = await getJWT( );
     const lastSyncTime = realm.objects( "LocalPreferences" )?.[0]?.last_sync_time;
-    const params = { since: format( new Date( ), "yyyy-MM-dd" ) };
+    const deletedParams = { since: format( new Date( ), "yyyy-MM-dd" ) };
     if ( lastSyncTime ) {
       try {
-        params.since = format( lastSyncTime, "yyyy-MM-dd" );
+        deletedParams.since = format( lastSyncTime, "yyyy-MM-dd" );
       } catch ( lastSyncTimeFormatError ) {
         if ( lastSyncTimeFormatError instanceof RangeError ) {
           // If we can't parse that date, assume we've never synced and use the default
@@ -323,7 +340,7 @@ const MyObservationsContainer = ( ): Node => {
         }
       }
     }
-    const response = await checkForDeletedObservations( params, { api_token: apiToken } );
+    const response = await checkForDeletedObservations( deletedParams, { api_token: apiToken } );
     const deletedObservations = response?.results;
     if ( !deletedObservations ) { return; }
     if ( deletedObservations?.length > 0 ) {
@@ -351,9 +368,10 @@ const MyObservationsContainer = ( ): Node => {
   const syncObservations = useCallback( async ( ) => {
     logger.info( "[MyObservationsContainer.js] syncObservations: starting" );
     if ( !uploadInProgress && uploadsComplete ) {
-      logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_UPLOAD_STATE" );
-      dispatch( { type: "RESET_UPLOAD_STATE" } );
+      logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_STATE" );
+      dispatch( { type: "RESET_STATE" } );
     }
+    dispatch( { type: "START_SYNC" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling toggleLoginSheet" );
     toggleLoginSheet( );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling showInternetErrorAlert" );
@@ -372,6 +390,7 @@ const MyObservationsContainer = ( ): Node => {
     updateSyncTime( );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling deactivateKeepAwake" );
     deactivateKeepAwake( );
+    dispatch( { type: "RESET_STATE" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: done" );
   }, [uploadInProgress,
     uploadsComplete,
@@ -394,7 +413,7 @@ const MyObservationsContainer = ( ): Node => {
   useEffect(
     ( ) => {
       navigation.addListener( "focus", ( ) => {
-        dispatch( { type: "RESET_UPLOAD_STATE" } );
+        dispatch( { type: "RESET_STATE" } );
       } );
     },
     [navigation, realm]

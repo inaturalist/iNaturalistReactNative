@@ -1,10 +1,9 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import BottomButtons from "components/ObsEdit/BottomButtons";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
@@ -19,10 +18,6 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
 } ) );
 
 describe( "BottomButtons", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "has no accessibility errors", () => {
     const bottomButtons = (
       <BottomButtons />

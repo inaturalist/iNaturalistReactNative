@@ -1,8 +1,8 @@
-import { faker } from "@faker-js/faker";
 import { renderHook } from "@testing-library/react-native";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 
 jest.mock( "api/observations" );
 

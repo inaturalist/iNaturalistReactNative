@@ -17,15 +17,39 @@ type Props = {
 const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
   const { t } = useTranslation( );
   const [loadSuccess, setLoadSuccess] = useState( null );
-  // check for local file path for unuploaded photos
-  const photoUrl = photo?.url
-    ? photo.url.replace( "square", "large" )
-    : photo.localFilePath;
+
+  const imageSources = [];
+  if ( photo.localFilePath ) {
+    imageSources.push( { uri: photo.localFilePath } );
+  }
+  if ( photo.url ) {
+    imageSources.push( {
+      uri: photo.url,
+      width: 75,
+      height: 75
+    } );
+    imageSources.push( {
+      uri: photo.url.replace( "square", "small" ),
+      width: 240,
+      height: 240
+    } );
+    imageSources.push( {
+      uri: photo.url.replace( "square", "medium" ),
+      width: 500,
+      height: 500
+    } );
+    imageSources.push( {
+      uri: photo.url.replace( "square", "large" ),
+      width: 1024,
+      height: 1024
+    } );
+  }
 
   const image = (
     <Image
       testID="ObsMedia.photo"
-      source={{ uri: photoUrl }}
+      source={imageSources}
+      progressiveRenderingEnabled
       className={classnames(
         "h-72",
         "w-screen",

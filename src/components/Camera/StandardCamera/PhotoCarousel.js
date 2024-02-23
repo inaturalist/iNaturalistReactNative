@@ -299,7 +299,7 @@ const PhotoCarousel = ( {
         editable
         showModal={tappedPhotoIndex >= 0}
         onClose={( ) => setTappedPhotoIndex( -1 )}
-        onDelete={async photoUri => {
+        onDeletePhoto={async photoUri => {
           await deletePhotoByUri( photoUri );
           setTappedPhotoIndex( tappedPhotoIndex - 1 );
         }}

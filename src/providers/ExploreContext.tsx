@@ -1,4 +1,5 @@
 import * as React from "react";
+import { LatLng } from "react-native-maps";
 
 export enum EXPLORE_ACTION {
   DISCARD = "DISCARD",
@@ -16,17 +17,17 @@ export enum EXPLORE_ACTION {
   SET_LOWEST_TAXONOMIC_RANK = "SET_LOWEST_TAXONOMIC_RANK",
   SET_DATE_OBSERVED_MONTHS = "SET_DATE_OBSERVED_MONTHS",
   SET_DATE_OBSERVED_EXACT = "SET_DATE_OBSERVED_EXACT",
+  SET_DATE_OBSERVED_RANGE = "SET_DATE_OBSERVED_RANGE",
   SET_DATE_OBSERVED_ALL = "SET_DATE_OBSERVED_ALL",
   SET_DATE_UPLOADED_EXACT = "SET_DATE_UPLOADED_EXACT",
+  SET_DATE_UPLOADED_RANGE = "SET_DATE_UPLOADED_RANGE",
   SET_DATE_UPLOADED_ALL = "SET_DATE_UPLOADED_ALL",
   SET_MEDIA = "SET_MEDIA",
-  TOGGLE_NO_STATUS = "TOGGLE_NO_STATUS",
-  TOGGLE_ENDEMIC = "TOGGLE_ENDEMIC",
-  TOGGLE_NATIVE = "TOGGLE_NATIVE",
-  TOGGLE_INTRODUCED = "TOGGLE_INTRODUCED",
+  SET_ESTABLISHMENT_MEAN = "SET_ESTABLISHMENT_MEAN",
   SET_WILD_STATUS = "SET_WILD_STATUS",
   SET_REVIEWED = "SET_REVIEWED",
-  SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE"
+  SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
+  SET_MAP_BOUNDARIES = "SET_MAP_BOUNDARIES"
 }
 
 export enum SORT_BY {
@@ -40,51 +41,54 @@ export enum SORT_BY {
 // TODO: this should be imported from a central point, e.g. Taxon realm model
 // TODO: this is probably against conventioins to make it in lower case but I (Johannes) don't want to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
-    kingdom = "kingdom",
-    phylum = "phylum",
-    subphylum = "subphylum",
-    superclass = "superclass",
-    class = "class",
-    subclass = "subclass",
-    infraclass = "infraclass",
-    subterclass = "subterclass",
-    superorder = "superorder",
-    order = "order",
-    suborder = "suborder",
-    infraorder = "infraorder",
-    parvorder = "parvorder",
-    zoosection = "zoosection",
-    zoosubsection = "zoosubsection",
-    superfamily = "superfamily",
-    epifamily = "epifamily",
-    family = "family",
-    subfamily = "subfamily",
-    supertribe = "supertribe",
-    tribe = "tribe",
-    subtribe = "subtribe",
-    genus = "genus",
-    genushybrid = "genushybrid",
-    subgenus = "subgenus",
-    section = "section",
-    subsection = "subsection",
-    complex = "complex",
-    species = "species",
-    hybrid = "hybrid",
-    subspecies = "subspecies",
-    variety = "variety",
-    form = "form",
-    infrahybrid = "infrahybrid",
-  }
+  none = "none",
+  kingdom = "kingdom",
+  phylum = "phylum",
+  subphylum = "subphylum",
+  superclass = "superclass",
+  class = "class",
+  subclass = "subclass",
+  infraclass = "infraclass",
+  subterclass = "subterclass",
+  superorder = "superorder",
+  order = "order",
+  suborder = "suborder",
+  infraorder = "infraorder",
+  parvorder = "parvorder",
+  zoosection = "zoosection",
+  zoosubsection = "zoosubsection",
+  superfamily = "superfamily",
+  epifamily = "epifamily",
+  family = "family",
+  subfamily = "subfamily",
+  supertribe = "supertribe",
+  tribe = "tribe",
+  subtribe = "subtribe",
+  genus = "genus",
+  genushybrid = "genushybrid",
+  subgenus = "subgenus",
+  section = "section",
+  subsection = "subsection",
+  complex = "complex",
+  species = "species",
+  hybrid = "hybrid",
+  subspecies = "subspecies",
+  variety = "variety",
+  form = "form",
+  infrahybrid = "infrahybrid",
+}
 
 export enum DATE_OBSERVED {
   ALL = "ALL",
   EXACT_DATE = "EXACT_DATE",
+  DATE_RANGE = "DATE_RANGE",
   MONTHS = "MONTHS",
 }
 
 export enum DATE_UPLOADED {
   ALL = "ALL",
   EXACT_DATE = "EXACT_DATE",
+  DATE_RANGE = "DATE_RANGE"
 }
 
 export enum MEDIA {
@@ -92,6 +96,13 @@ export enum MEDIA {
   PHOTOS = "PHOTOS",
   SOUNDS = "SOUNDS",
   NONE = "NONE"
+}
+
+export enum ESTABLISHMENT_MEAN {
+  ANY = "ANY",
+  INTRODUCED = "INTRODUCED",
+  NATIVE = "NATIVE",
+  ENDEMIC = "ENDEMIC"
 }
 
 export enum WILD_STATUS {
@@ -115,6 +126,14 @@ export enum PHOTO_LICENSE {
   CCBYND = "CCBYND",
   CCBYNCSA = "CCBYNCSA",
   CCBYNCND = "CCBYNCND",
+}
+
+interface MapBoundaries {
+  swlat: LatLng["latitude"],
+  swlng: LatLng["longitude"],
+  nelat: LatLng["latitude"],
+  nelng: LatLng["longitude"],
+  place_guess: string
 }
 
 type CountProviderProps = {children: React.ReactNode}
@@ -141,17 +160,19 @@ type State = {
   lrank: TAXONOMIC_RANK | undefined,
   dateObserved: DATE_OBSERVED,
   observed_on: string | null | undefined,
+  d1: string | null | undefined,
+  d2: string | null | undefined,
   months: number[] | null | undefined,
   dateUploaded: DATE_UPLOADED,
   created_on: string | null | undefined,
+  created_d1: string | null | undefined,
+  created_d2: string | null | undefined,
   media: MEDIA,
-  introduced: boolean,
-  native: boolean,
-  endemic: boolean,
-  noStatus: boolean
+  establishmentMean: ESTABLISHMENT_MEAN,
   wildStatus: WILD_STATUS,
   reviewedFilter: REVIEWED,
-  photoLicense: PHOTO_LICENSE
+  photoLicense: PHOTO_LICENSE,
+  mapBoundaries: MapBoundaries
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
@@ -168,17 +189,17 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK, lrank: TAXONOMIC_RANK}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT, observedOn: string}
+  | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE, d1: string, d2: string}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, createdOn: string}
+  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE, createdD1: string, createdD2: string}
   | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
-  | {type: EXPLORE_ACTION.TOGGLE_INTRODUCED}
-  | {type: EXPLORE_ACTION.TOGGLE_NATIVE}
-  | {type: EXPLORE_ACTION.TOGGLE_ENDEMIC}
-  | {type: EXPLORE_ACTION.TOGGLE_NO_STATUS}
+  | {type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN, establishmentMean: ESTABLISHMENT_MEAN}
   | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
+  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
 type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
@@ -197,10 +218,7 @@ const calculatedFilters = {
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,
-  introduced: false,
-  native: false,
-  endemic: false,
-  noStatus: false,
+  establishmentMean: ESTABLISHMENT_MEAN.ANY,
   wildStatus: WILD_STATUS.ALL,
   reviewedFilter: REVIEWED.ALL,
   photoLicense: PHOTO_LICENSE.ALL
@@ -213,8 +231,12 @@ const defaultFilters = {
   project: undefined,
   sortBy: SORT_BY.DATE_UPLOADED_NEWEST,
   observed_on: undefined,
+  d1: undefined,
+  d2: undefined,
   months: undefined,
   created_on: undefined,
+  created_d1: undefined,
+  created_d2: undefined,
 };
 
 const initialState = {
@@ -308,6 +330,8 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         dateObserved: DATE_OBSERVED.ALL,
         observed_on: null,
+        d1: null,
+        d2: null,
         months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT:
@@ -318,6 +342,23 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         dateObserved: DATE_OBSERVED.EXACT_DATE,
         observed_on: action.observedOn,
+        d1: null,
+        d2: null,
+        months: null
+      };
+    case EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE:
+      if ( !isValidDateFormat( action.d1 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      if ( !isValidDateFormat( action.d2 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      return {
+        ...state,
+        dateObserved: DATE_OBSERVED.DATE_RANGE,
+        observed_on: null,
+        d1: action.d1,
+        d2: action.d2,
         months: null
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS:
@@ -325,13 +366,17 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         dateObserved: DATE_OBSERVED.MONTHS,
         observed_on: null,
+        d1: null,
+        d2: null,
         months: action.months
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_ALL:
       return {
         ...state,
         dateUploaded: DATE_UPLOADED.ALL,
-        created_on: null
+        created_on: null,
+        created_d1: null,
+        created_d2: null
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT:
       if ( !isValidDateFormat( action.createdOn ) ) {
@@ -340,32 +385,33 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         dateUploaded: DATE_UPLOADED.EXACT_DATE,
-        created_on: action.createdOn
+        created_on: action.createdOn,
+        created_d1: null,
+        created_d2: null
+      };
+    case EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE:
+      if ( !isValidDateFormat( action.createdD1 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      if ( !isValidDateFormat( action.createdD2 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      return {
+        ...state,
+        dateUploaded: DATE_UPLOADED.DATE_RANGE,
+        created_on: null,
+        created_d1: action.createdD1,
+        created_d2: action.createdD2
       };
     case EXPLORE_ACTION.SET_MEDIA:
       return {
         ...state,
         media: action.media
       };
-    case EXPLORE_ACTION.TOGGLE_INTRODUCED:
+    case EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN:
       return {
         ...state,
-        introduced: !state.introduced
-      };
-    case EXPLORE_ACTION.TOGGLE_NATIVE:
-      return {
-        ...state,
-        native: !state.native
-      };
-    case EXPLORE_ACTION.TOGGLE_ENDEMIC:
-      return {
-        ...state,
-        endemic: !state.endemic
-      };
-    case EXPLORE_ACTION.TOGGLE_NO_STATUS:
-      return {
-        ...state,
-        noStatus: !state.noStatus
+        establishmentMean: action.establishmentMean
       };
     case EXPLORE_ACTION.SET_WILD_STATUS:
       return {
@@ -381,6 +427,11 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         reviewedFilter: action.reviewedFilter
+      };
+    case EXPLORE_ACTION.SET_MAP_BOUNDARIES:
+      return {
+        ...state,
+        ...action.mapBoundaries
       };
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );

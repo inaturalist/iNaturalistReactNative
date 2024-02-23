@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Developer from "components/Developer/Developer";
 import Log from "components/Developer/Log";
+import Identify from "components/Identify/Identify";
 import NetworkLogging from "components/NetworkLogging";
 import UiLibrary from "components/UiLibrary";
 import type { Node } from "react";
@@ -27,6 +28,11 @@ const DeveloperStackNavigator = ( ): Node => (
     <Stack.Screen
       name="log"
       component={Log}
+    />
+    <Stack.Screen
+      name="Identify"
+      label="Identify"
+      component={Identify}
     />
   </Stack.Navigator>
 );

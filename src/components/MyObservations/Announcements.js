@@ -17,6 +17,7 @@ import { Alert, Linking } from "react-native";
 import { WebView } from "react-native-webview";
 import {
   useAuthenticatedQuery,
+  useCurrentUser,
   useTranslation
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
@@ -42,16 +43,15 @@ const AutoheightWebView = ( webshellProps ): Node => {
 };
 
 type Props = {
-  currentUser: Object,
   isOnline: boolean
 }
 
 const Announcements = ( {
-  currentUser,
   isOnline
 }: Props ): Node => {
-  const { t } = useTranslation();
-  const queryClient = useQueryClient();
+  const { t } = useTranslation( );
+  const queryClient = useQueryClient( );
+  const currentUser = useCurrentUser( );
 
   const onLinkPress = async target => {
     // Checking if the link is supported for links with custom URL scheme.

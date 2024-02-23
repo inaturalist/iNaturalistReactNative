@@ -1,6 +1,6 @@
 // @flow
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
@@ -8,6 +8,7 @@ import useRotation from "components/Camera/hooks/useRotation";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto";
 import useZoom from "components/Camera/hooks/useZoom";
 import { View } from "components/styledComponents";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -40,7 +41,6 @@ export const MAX_PHOTOS_ALLOWED = 20;
 
 type Props = {
   addEvidence: ?boolean,
-  backToObsEdit: ?boolean,
   camera: any,
   device: any,
   flipCamera: Function,
@@ -50,7 +50,6 @@ type Props = {
 
 const StandardCamera = ( {
   addEvidence,
-  backToObsEdit,
   camera,
   device,
   flipCamera,
@@ -71,11 +70,37 @@ const StandardCamera = ( {
     rotatableAnimatedStyle,
     rotation
   } = useRotation( );
+  const navigation = useNavigation( );
+  const { params } = useRoute();
+  const onBack = () => {
+    const currentRoute = getCurrentRoute();
+    if ( currentRoute?.params?.addEvidence ) {
+      navigation.navigate( "ObsEdit" );
+    } else {
+      const previousScreen = params && params.previousScreen
+        ? params.previousScreen
+        : null;
+      const screenParams = previousScreen && previousScreen.name === "ObsDetails"
+        ? {
+          navToObsDetails: true,
+          uuid: previousScreen.params.uuid
+        }
+        : {};
+
+      navigation.navigate( "TabNavigator", {
+        screen: "ObservationsStackNavigator",
+        params: {
+          screen: "ObsList",
+          params: screenParams
+        }
+      } );
+    }
+  };
   const {
     handleBackButtonPress,
     setShowDiscardSheet,
     showDiscardSheet
-  } = useBackPress( backToObsEdit );
+  } = useBackPress( onBack );
   const {
     takePhoto,
     takePhotoOptions,
@@ -83,7 +108,6 @@ const StandardCamera = ( {
     toggleFlash
   } = useTakePhoto( camera, addEvidence, device );
 
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
 
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );

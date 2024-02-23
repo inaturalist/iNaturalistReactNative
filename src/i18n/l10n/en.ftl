@@ -61,6 +61,8 @@ Amphibians = Amphibians
 
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 
+Any = Any
+
 APPLY-FILTERS = APPLY FILTERS
 
 Apply-filters = Apply filters
@@ -131,11 +133,19 @@ CHANGE-DATE = CHANGE DATE
 
 Change-date = Change date
 
+CHANGE-END-DATE = CHANGE END DATE
+
+Change-end-date = Change end date
+
 Change-project = Change project
 
-Change-user = Change user
+CHANGE-START-DATE = CHANGE START DATE
+
+Change-start-date = Change start date
 
 Change-taxon = Change taxon
+
+Change-user = Change user
 
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
@@ -256,6 +266,8 @@ DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 
 Date_observed_header_short = Observed
+
+Date-Range = Date Range
 
 Date-uploaded = Date uploaded
 
@@ -381,9 +393,13 @@ FILTER-BY-A-PROJECT = FILTER BY A PROJECT
 
 FILTER-BY-A-USER = FILTER BY A USER
 
+Filter-by-observed-between-dates = Filter by observations observed between two specific dates
+
 Filter-by-observed-during-months = Filter by observations observed during specific months
 
 Filter-by-observed-on-date = Filter by observations observed on a specific date
+
+Filter-by-uploaded-between-dates = Filter by observations uploaded between two specific dates
 
 Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 
@@ -430,6 +446,8 @@ Has-Sounds = Has Sounds
 High = High
 
 Highest = Highest
+
+HIGHEST-RANK = HIGHEST RANK
 
 # Identification Status
 ID-Withdrawn = ID Withdrawn
@@ -506,6 +524,8 @@ Low = Low
 
 Lowest = Lowest
 
+LOWEST-RANK = LOWEST RANK
+
 Mammals = Mammals
 
 Media = Media
@@ -576,6 +596,8 @@ No-Media = No Media
 No-model-found = No model found
 
 none = none
+
+NONE = NONE
 
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
@@ -764,6 +786,7 @@ Read-more-on-Wikipedia = Read more on Wikipedia
 Recently-observed = Recently observed
 
 Record-new-sound = Record new sound
+RECORD-NEW-SOUND = RECORD NEW SOUND
 
 Recording-Sound = Recording Sound
 
@@ -826,11 +849,11 @@ Search-for-description-tags-text = Search for description/tags text
 
 SEARCH-LOCATION = SEARCH LOCATION
 
-SEARCH-PROJECT = SEARCH PROJECT
+SEARCH-PROJECTS = SEARCH PROJECTS
 
 SEARCH-TAXA = SEARCH TAXA
 
-SEARCH-USER = SEARCH USER
+SEARCH-USERS = SEARCH USERS
 
 Select = Select
 
@@ -872,10 +895,14 @@ Status = Status
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
 
+Start-must-be-before-end = The start date must be before the end date.
+
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
 
 Stay-on-this-screen = Stay on this screen while your location loads.
+
+Syncing = Syncing...
 
 Tap-to-search-for-taxa = Tap to search for taxa
 
@@ -1084,7 +1111,7 @@ You-can-still-share-the-file =
 Zoom-in-as-much-as-possible-to-improve =
     Zoom in as much as possible to improve location accuracy and get better identifications.
 
-Your-location-uncertainty-is-over-4000km = Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+Your-location-uncertainty-is-over-x-km = Your location uncertainty is over {$x} km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 
 # Identification category
 Category-leading = Leading
@@ -1615,3 +1642,68 @@ sound-playback-separator = /
 
 # Accessibility label when a photo is loading
 Photo-is-loading = Photo is loading
+
+# Accessibility label for a button that shows options for a comment
+Comment-options = Comment options
+
+# Accessibility label for a button that shows options for an identification
+Identification-options = Identification options
+
+Map-Area = Map Area
+REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
+
+# Imperative verb for recording a sound
+Record-verb = Record
+
+# Accessibility hint for button that starts recording a sound
+Starts-recording-sound = Starts recording sound
+
+# Imperative verb for stopping the recording of a sound
+Stop-verb = Stop
+
+# Accessibility hint for a button that stops the recording of a sound
+Stops-recording-sound = Stops recording sound
+
+# Displays number of sounds attached to an observation in the Media Viewer
+X-SOUNDS = {$count ->
+    [one] 1 SOUND
+    *[other] {$count} SOUNDS
+}
+
+# Displays number of photos and sounds attached to an observation in the Media
+# Viewer
+X-PHOTOS-Y-SOUNDS =
+    {$photoCount ->
+        [one] 1 PHOTO
+        *[other] {$photoCount} PHOTOS
+    }, {$soundCount ->
+        [one] 1 SOUND
+        *[other] {$soundCount} SOUNDS
+    }
+
+sound-recorder-help-One-organism = One organism
+sound-recorder-help-Try-to-isolate = Try to isolate the sound of a single organism. If you can’t, make sure to leave a note of which organism you’re recording.
+sound-recorder-help-Stop-moving = Stop moving
+sound-recorder-help-Make-sure = Make sure the sound of your own movement doesn’t cover up the sound of the organism.
+sound-recorder-help-Get-closer = Get closer
+sound-recorder-help-Get-as-close-as-you-can = Get as close as you safely can to record the organism.
+sound-recorder-help-Keep-it-short = Keep it short
+sound-recorder-help-A-recording-of = A recording of 5-15 seconds is best to help identifiers.
+
+# Header of a popup confirming that the user wants to discard a sound
+# recording
+DISCARD-SOUND-header = DISCARD SOUND?
+# Label for a button that discards a sound recording
+DISCARD-RECORDING = DISCARD RECORDING
+By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
+
+# Header of a popup confirming that the user wants to reset a sound
+# recording
+RESET-SOUND-header = RESET SOUND?
+# Label for a button that resets a sound recording
+RESET-RECORDING = RESET RECORDING
+Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
+
+Press-record-to-start = Press record to start
+Recoding-sound = Recoding sound
+Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play the current recording.

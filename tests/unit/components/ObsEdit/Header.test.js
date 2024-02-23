@@ -1,9 +1,8 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import Header from "components/ObsEdit/Header";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockObservations = [
@@ -12,10 +11,6 @@ const mockObservations = [
 ];
 
 describe( "Header", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "has no accessibility errors", () => {
     const button = (
       <Header

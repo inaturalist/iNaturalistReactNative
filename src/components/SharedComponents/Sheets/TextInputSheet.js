@@ -11,14 +11,14 @@ import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
-  type Props = {
-    handleClose: Function,
-    confirm: Function,
-    initialInput?: ?string,
-    placeholder: string,
-    headerText: string,
-    textInputStyle?: Object
-  }
+type Props = {
+  handleClose: Function,
+  confirm: Function,
+  initialInput?: ?string,
+  placeholder: string,
+  headerText: string,
+  textInputStyle?: Object
+}
 
 const TextInputSheet = ( {
   handleClose,
@@ -41,7 +41,6 @@ const TextInputSheet = ( {
     fontSize: 14,
     lineHeight: 17,
     color: theme.colors.primary,
-    marginBottom: 1,
     textAlignVertical: "top"
   } ), [theme] );
 
@@ -51,7 +50,7 @@ const TextInputSheet = ( {
       headerText={headerText}
     >
       <View className="p-5">
-        <View className="border rounded-lg border-lightGray p-3 pt-0">
+        <View className="border rounded-lg border-lightGray p-3 pt-1">
           <BottomSheetTextInput
             ref={textInputRef}
             accessibilityLabel="Text input field"
@@ -65,7 +64,7 @@ const TextInputSheet = ( {
             defaultValue={input}
           />
           <Body3
-            className="absolute bottom-0 right-0 p-2"
+            className="self-end"
             onPress={() => {
               textInputRef?.current?.clear();
             }}

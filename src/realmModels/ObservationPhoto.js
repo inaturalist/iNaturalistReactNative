@@ -125,6 +125,14 @@ class ObservationPhoto extends Realm.Object {
     return obsPhotoUris;
   }
 
+  static mapInnerPhotos( observation ) {
+    const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
+    const innerPhotos = ( obsPhotos || [] ).map(
+      obsPhoto => obsPhoto.photo
+    );
+    return innerPhotos;
+  }
+
   static schema = {
     name: "ObservationPhoto",
     embedded: true,

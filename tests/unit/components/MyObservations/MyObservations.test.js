@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native";
 import MyObservations from "components/MyObservations/MyObservations";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -60,7 +59,6 @@ jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
 
 describe( "MyObservations", () => {
   beforeAll( async () => {
-    await initI18next();
     jest.useFakeTimers( );
   } );
 
@@ -76,7 +74,7 @@ describe( "MyObservations", () => {
         uploadState={{
           uploads: [],
           error: null,
-          currentUploadCount: 0,
+          numToUpload: 0,
           uploadInProgress: false
         }}
       />
@@ -103,7 +101,7 @@ describe( "MyObservations", () => {
         uploadState={{
           uploads: [],
           error: null,
-          currentUploadCount: 0,
+          numToUpload: 0,
           uploadInProgress: false
         }}
       />
@@ -133,7 +131,7 @@ describe( "MyObservations", () => {
         uploadState={{
           uploads: [],
           error: null,
-          currentUploadCount: 0,
+          numToUpload: 0,
           uploadInProgress: false
         }}
       />
@@ -155,7 +153,7 @@ describe( "MyObservations", () => {
         uploadState={{
           uploads: [],
           error: null,
-          currentUploadCount: 0,
+          numToUpload: 0,
           uploadInProgress: false
         }}
       />

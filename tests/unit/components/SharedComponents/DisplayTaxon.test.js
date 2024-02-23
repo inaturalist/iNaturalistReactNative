@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native";
 import { DisplayTaxon } from "components/SharedComponents";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -23,10 +22,6 @@ const taxonWithIconicTaxonPhoto = factory( "LocalTaxon", {
 } );
 
 describe( "DisplayTaxon", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "should be accessible", () => {
     expect( <DisplayTaxon taxon={mockTaxon} handlePress={( ) => { }} /> ).toBeAccessible( );
   } );

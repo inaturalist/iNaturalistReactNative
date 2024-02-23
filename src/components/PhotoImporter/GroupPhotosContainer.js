@@ -122,8 +122,10 @@ const GroupPhotosContainer = ( ): Node => {
         removedFromGroup.push( { photos: filteredGroupedPhotos } );
       }
     } );
+
     // remove from group photos screen
     setGroupedPhotos( removedFromGroup );
+    setSelectedObservations( [] );
   };
 
   const navToObsEdit = async ( ) => {

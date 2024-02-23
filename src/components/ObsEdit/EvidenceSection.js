@@ -31,6 +31,11 @@ type Props = {
   photos: Array<Object>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
+  sounds?: Array<{
+    id?: number,
+    file_url: string,
+    uuid: string
+  }>,
   updateObservationKeys: Function,
 }
 
@@ -47,6 +52,7 @@ const EvidenceSection = ( {
   photos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
+  sounds,
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -106,9 +112,10 @@ const EvidenceSection = ( {
         </View>
       </View>
       <EvidenceList
-        photos={photos}
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
+        photos={photos}
+        sounds={sounds}
       />
       <Pressable
         accessibilityRole="button"

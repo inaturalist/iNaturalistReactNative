@@ -10,7 +10,8 @@ type Props = {
   // Optional component to use as the header
   header?: Function,
   onClose?: Function,
-  onDelete?: Function,
+  onDeletePhoto?: Function,
+  onDeleteSound?: Function,
   photos?: Array<{
     id?: number,
     url: string,
@@ -18,17 +19,24 @@ type Props = {
     attribution?: string,
     licenseCode?: string
   }>,
+  sounds?: Array<{
+    id?: number,
+    file_url: string,
+    uuid: string
+  }>,
   showModal: boolean,
-  uri?: string
+  uri?: string | null
 }
 
 const MediaViewerModal = ( {
   editable,
   header,
   onClose = ( ) => { },
-  onDelete,
+  onDeletePhoto,
+  onDeleteSound,
   photos = [],
   showModal,
+  sounds,
   uri
 }: Props ): Node => (
   <Modal
@@ -41,8 +49,10 @@ const MediaViewerModal = ( {
         editable={editable}
         header={header}
         onClose={onClose}
-        onDelete={onDelete}
+        onDeletePhoto={onDeletePhoto}
+        onDeleteSound={onDeleteSound}
         photos={photos}
+        sounds={sounds}
         uri={uri}
       />
     )}

@@ -38,6 +38,11 @@ const mockUser = {
   locale: "en"
 };
 
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockUser
+} ) );
+
 const containerID = "announcements-container";
 
 describe( "Announcements", () => {
@@ -49,7 +54,7 @@ describe( "Announcements", () => {
   } );
 
   test( "should call inaturalistjs with locale as param", async () => {
-    renderComponent( <Announcements currentUser={mockUser} isOnline /> );
+    renderComponent( <Announcements isOnline /> );
     await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalledWith(
       expect.objectContaining( { locale: "en" } ),
       expect.anything()
@@ -57,7 +62,7 @@ describe( "Announcements", () => {
   } );
 
   test( "should not render without announcements", async () => {
-    renderComponent( <Announcements currentUser={mockUser} isOnline /> );
+    renderComponent( <Announcements isOnline /> );
 
     await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
@@ -74,7 +79,7 @@ describe( "Announcements", () => {
     } );
 
     test( "should render correctly", async () => {
-      renderComponent( <Announcements currentUser={mockUser} isOnline /> );
+      renderComponent( <Announcements isOnline /> );
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
@@ -83,7 +88,7 @@ describe( "Announcements", () => {
     } );
 
     test( "should show body text", async () => {
-      renderComponent( <Announcements currentUser={mockUser} isOnline /> );
+      renderComponent( <Announcements isOnline /> );
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
@@ -95,7 +100,7 @@ describe( "Announcements", () => {
     } );
 
     test( "should not show dismiss button", async () => {
-      renderComponent( <Announcements currentUser={mockUser} isOnline /> );
+      renderComponent( <Announcements isOnline /> );
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
@@ -113,7 +118,7 @@ describe( "Announcements", () => {
     } );
 
     test( "should show dismiss button", async () => {
-      renderComponent( <Announcements currentUser={mockUser} isOnline /> );
+      renderComponent( <Announcements isOnline /> );
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
@@ -132,7 +137,7 @@ describe( "Announcements", () => {
     } );
 
     test( "show announcement with oldest start date", async () => {
-      renderComponent( <Announcements currentUser={mockUser} isOnline /> );
+      renderComponent( <Announcements isOnline /> );
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 

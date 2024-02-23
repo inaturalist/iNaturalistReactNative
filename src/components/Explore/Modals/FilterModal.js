@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import classNames from "classnames";
 import {
   Body1,
   Body2,
@@ -12,6 +13,8 @@ import {
   IconicTaxonChooser,
   INatIcon,
   INatIconButton,
+  List2,
+  PickerSheet,
   ProjectListItem,
   RadioButtonRow,
   RadioButtonSheet,
@@ -24,6 +27,7 @@ import { RealmContext } from "providers/contexts";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
+  ESTABLISHMENT_MEAN,
   EXPLORE_ACTION,
   MEDIA,
   PHOTO_LICENSE,
@@ -96,14 +100,15 @@ const FilterModal = ( {
     lrank,
     dateObserved,
     observed_on: observedOn,
+    d1,
+    d2,
     months,
     dateUploaded,
     created_on: createdOn,
+    created_d1: createdD1,
+    created_d2: createdD2,
     media,
-    introduced,
-    native,
-    endemic,
-    noStatus,
+    establishmentMean,
     wildStatus,
     reviewedFilter,
     photoLicense
@@ -115,8 +120,12 @@ const FilterModal = ( {
   const HRANK = "HRANK";
   const DATE_OBSERVED_M = "DATE_OBSERVED_M";
   const OBSERVED_EXACT = "OBSERVED_EXACT";
+  const OBSERVED_START = "OBSERVED_START";
+  const OBSERVED_END = "OBSERVED_END";
   const DATE_UPLOADED_M = "DATE_UPLOADED_M";
   const UPLOADED_EXACT = "UPLOADED_EXACT";
+  const UPLOADED_START = "UPLOADED_START";
+  const UPLOADED_END = "UPLOADED_END";
   const PHOTO_LICENSING = "PHOTO_LICENSING";
   const CONFIRMATION = "CONFIRMATION";
   const [openSheet, setOpenSheet] = useState( NONE );
@@ -164,143 +173,145 @@ const FilterModal = ( {
     }
   };
 
-  const tUp = key => t( key ).toUpperCase();
-
   const taxonomicRankValues = {
+    [TAXONOMIC_RANK.none]: {
+      label: t( "NONE" ),
+      value: TAXONOMIC_RANK.none
+    },
     [TAXONOMIC_RANK.kingdom]: {
-      label: tUp( "Ranks-kingdom" ),
+      label: t( "Ranks-KINGDOM" ),
       value: TAXONOMIC_RANK.kingdom
     },
     [TAXONOMIC_RANK.phylum]: {
-      label: tUp( "Ranks-phylum" ),
+      label: t( "Ranks-PHYLUM" ),
       value: TAXONOMIC_RANK.phylum
     },
     [TAXONOMIC_RANK.subphylum]: {
-      label: tUp( "Ranks-subphylum" ),
+      label: t( "Ranks-SUBPHYLUM" ),
       value: TAXONOMIC_RANK.subphylum
     },
     [TAXONOMIC_RANK.superclass]: {
-      label: tUp( "Ranks-superclass" ),
+      label: t( "Ranks-SUPERCLASS" ),
       value: TAXONOMIC_RANK.superclass
     },
     [TAXONOMIC_RANK.class]: {
-      label: tUp( "Ranks-class" ),
+      label: t( "Ranks-CLASS" ),
       value: TAXONOMIC_RANK.class
     },
     [TAXONOMIC_RANK.subclass]: {
-      label: tUp( "Ranks-subclass" ),
+      label: t( "Ranks-SUBCLASS" ),
       value: TAXONOMIC_RANK.subclass
     },
     [TAXONOMIC_RANK.infraclass]: {
-      label: tUp( "Ranks-infraclass" ),
+      label: t( "Ranks-INFRACLASS" ),
       value: TAXONOMIC_RANK.infraclass
     },
     [TAXONOMIC_RANK.subterclass]: {
-      label: tUp( "Ranks-subterclass" ),
+      label: t( "Ranks-SUBTERCLASS" ),
       value: TAXONOMIC_RANK.subterclass
     },
     [TAXONOMIC_RANK.superorder]: {
-      label: tUp( "Ranks-superorder" ),
+      label: t( "Ranks-SUPERORDER" ),
       value: TAXONOMIC_RANK.superorder
     },
     [TAXONOMIC_RANK.order]: {
-      label: tUp( "Ranks-order" ),
+      label: t( "Ranks-ORDER" ),
       value: TAXONOMIC_RANK.order
     },
     [TAXONOMIC_RANK.suborder]: {
-      label: tUp( "Ranks-suborder" ),
+      label: t( "Ranks-SUBORDER" ),
       value: TAXONOMIC_RANK.suborder
     },
     [TAXONOMIC_RANK.infraorder]: {
-      label: tUp( "Ranks-infraorder" ),
+      label: t( "Ranks-INFRAORDER" ),
       value: TAXONOMIC_RANK.infraorder
     },
     [TAXONOMIC_RANK.parvorder]: {
-      label: tUp( "Ranks-parvorder" ),
+      label: t( "Ranks-PARVORDER" ),
       value: TAXONOMIC_RANK.parvorder
     },
     [TAXONOMIC_RANK.zoosection]: {
-      label: tUp( "Ranks-zoosection" ),
+      label: t( "Ranks-ZOOSECTION" ),
       value: TAXONOMIC_RANK.zoosection
     },
     [TAXONOMIC_RANK.zoosubsection]: {
-      label: tUp( "Ranks-zoosubsection" ),
+      label: t( "Ranks-ZOOSUBSECTION" ),
       value: TAXONOMIC_RANK.zoosubsection
     },
     [TAXONOMIC_RANK.superfamily]: {
-      label: tUp( "Ranks-superfamily" ),
+      label: t( "Ranks-SUPERFAMILY" ),
       value: TAXONOMIC_RANK.superfamily
     },
     [TAXONOMIC_RANK.epifamily]: {
-      label: tUp( "Ranks-epifamily" ),
+      label: t( "Ranks-EPIFAMILY" ),
       value: TAXONOMIC_RANK.epifamily
     },
     [TAXONOMIC_RANK.family]: {
-      label: tUp( "Ranks-family" ),
+      label: t( "Ranks-FAMILY" ),
       value: TAXONOMIC_RANK.family
     },
     [TAXONOMIC_RANK.subfamily]: {
-      label: tUp( "Ranks-subfamily" ),
+      label: t( "Ranks-SUBFAMILY" ),
       value: TAXONOMIC_RANK.subfamily
     },
     [TAXONOMIC_RANK.supertribe]: {
-      label: tUp( "Ranks-supertribe" ),
+      label: t( "Ranks-SUPERTRIBE" ),
       value: TAXONOMIC_RANK.supertribe
     },
     [TAXONOMIC_RANK.tribe]: {
-      label: tUp( "Ranks-tribe" ),
+      label: t( "Ranks-TRIBE" ),
       value: TAXONOMIC_RANK.tribe
     },
     [TAXONOMIC_RANK.subtribe]: {
-      label: tUp( "Ranks-subtribe" ),
+      label: t( "Ranks-SUBTRIBE" ),
       value: TAXONOMIC_RANK.subtribe
     },
     [TAXONOMIC_RANK.genus]: {
-      label: tUp( "Ranks-genus" ),
+      label: t( "Ranks-GENUS" ),
       value: TAXONOMIC_RANK.genus
     },
     [TAXONOMIC_RANK.genushybrid]: {
-      label: tUp( "Ranks-genushybrid" ),
+      label: t( "Ranks-GENUSHYBRID" ),
       value: TAXONOMIC_RANK.genushybrid
     },
     [TAXONOMIC_RANK.subgenus]: {
-      label: tUp( "Ranks-subgenus" ),
+      label: t( "Ranks-SUBGENUS" ),
       value: TAXONOMIC_RANK.subgenus
     },
     [TAXONOMIC_RANK.section]: {
-      label: tUp( "Ranks-section" ),
+      label: t( "Ranks-SECTION" ),
       value: TAXONOMIC_RANK.section
     },
     [TAXONOMIC_RANK.subsection]: {
-      label: tUp( "Ranks-subsection" ),
+      label: t( "Ranks-SUBSECTION" ),
       value: TAXONOMIC_RANK.subsection
     },
     [TAXONOMIC_RANK.complex]: {
-      label: tUp( "Ranks-complex" ),
+      label: t( "Ranks-COMPLEX" ),
       value: TAXONOMIC_RANK.complex
     },
     [TAXONOMIC_RANK.species]: {
-      label: tUp( "Ranks-species" ),
+      label: t( "Ranks-SPECIES" ),
       value: TAXONOMIC_RANK.species
     },
     [TAXONOMIC_RANK.hybrid]: {
-      label: tUp( "Ranks-hybrid" ),
+      label: t( "Ranks-HYBRID" ),
       value: TAXONOMIC_RANK.hybrid
     },
     [TAXONOMIC_RANK.subspecies]: {
-      label: tUp( "Ranks-subspecies" ),
+      label: t( "Ranks-SUBSPECIES" ),
       value: TAXONOMIC_RANK.subspecies
     },
     [TAXONOMIC_RANK.variety]: {
-      label: tUp( "Ranks-variety" ),
+      label: t( "Ranks-VARIETY" ),
       value: TAXONOMIC_RANK.variety
     },
     [TAXONOMIC_RANK.form]: {
-      label: tUp( "Ranks-form" ),
+      label: t( "Ranks-FORM" ),
       value: TAXONOMIC_RANK.form
     },
     [TAXONOMIC_RANK.infrahybrid]: {
-      label: tUp( "Ranks-infrahybrid" ),
+      label: t( "Ranks-INFRAHYBRID" ),
       value: TAXONOMIC_RANK.infrahybrid
     }
   };
@@ -314,6 +325,11 @@ const FilterModal = ( {
       label: t( "Exact-Date" ),
       text: t( "Filter-by-observed-on-date" ),
       value: DATE_OBSERVED.EXACT_DATE
+    },
+    [DATE_OBSERVED.DATE_RANGE]: {
+      label: t( "Date-Range" ),
+      text: t( "Filter-by-observed-between-dates" ),
+      value: DATE_OBSERVED.DATE_RANGE
     },
     [DATE_OBSERVED.MONTHS]: {
       label: t( "Months" ),
@@ -331,6 +347,11 @@ const FilterModal = ( {
       label: t( "Exact-Date" ),
       text: t( "Filter-by-uploaded-on-date" ),
       value: DATE_UPLOADED.EXACT_DATE
+    },
+    [DATE_UPLOADED.DATE_RANGE]: {
+      label: t( "Date-Range" ),
+      text: t( "Filter-by-uploaded-between-dates" ),
+      value: DATE_UPLOADED.DATE_RANGE
     }
   };
 
@@ -404,6 +425,25 @@ const FilterModal = ( {
     }
   };
 
+  const establishmentValues = {
+    [ESTABLISHMENT_MEAN.ANY]: {
+      label: t( "Any" ),
+      value: ESTABLISHMENT_MEAN.ANY
+    },
+    [ESTABLISHMENT_MEAN.INTRODUCED]: {
+      label: t( "Introduced" ),
+      value: ESTABLISHMENT_MEAN.INTRODUCED
+    },
+    [ESTABLISHMENT_MEAN.NATIVE]: {
+      label: t( "Native" ),
+      value: ESTABLISHMENT_MEAN.NATIVE
+    },
+    [ESTABLISHMENT_MEAN.ENDEMIC]: {
+      label: t( "Endemic" ),
+      value: ESTABLISHMENT_MEAN.ENDEMIC
+    }
+  };
+
   const wildValues = {
     [WILD_STATUS.ALL]: {
       label: t( "All" ),
@@ -469,7 +509,9 @@ const FilterModal = ( {
     }
   };
 
-  const updateDateObserved = ( newDateObserved, d1, newMonths ) => {
+  const updateDateObserved = ( {
+    newDateObserved, newObservedOn, newD1, newD2, newMonths
+  } ) => {
     const today = new Date( ).toISOString( ).split( "T" )[0];
     // Array with the numbers from 1 to 12
     const allMonths = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
@@ -481,7 +523,13 @@ const FilterModal = ( {
     } else if ( newDateObserved === DATE_OBSERVED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT,
-        observedOn: d1 || today
+        observedOn: newObservedOn || today
+      } );
+    } else if ( newDateObserved === DATE_OBSERVED.DATE_RANGE ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE,
+        d1: newD1 || today,
+        d2: newD2 || today
       } );
     } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
       dispatch( {
@@ -492,34 +540,79 @@ const FilterModal = ( {
   };
 
   const updateObservedExact = date => {
-    updateDateObserved(
-      DATE_OBSERVED.EXACT_DATE,
-      date.toISOString().split( "T" )[0]
-    );
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.EXACT_DATE,
+      newObservedOn: date.toISOString().split( "T" )[0]
+    } );
+  };
+
+  const updateObservedStart = date => {
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.DATE_RANGE,
+      newD1: date.toISOString().split( "T" )[0],
+      newD2: d2
+    } );
+  };
+
+  const updateObservedEnd = date => {
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.DATE_RANGE,
+      newD1: d1,
+      newD2: date.toISOString().split( "T" )[0]
+    } );
   };
 
   const updateObservedMonths = monthInteger => {
     const newMonths = months.includes( monthInteger )
       ? months.filter( m => m !== monthInteger )
       : [...months, monthInteger];
-    updateDateObserved( DATE_OBSERVED.MONTHS, null, newMonths );
+    updateDateObserved( {
+      newDateObserved: DATE_OBSERVED.MONTHS,
+      newMonths
+    } );
   };
 
-  const updateDateUploaded = ( newDateObserved, d1 ) => {
+  const updateDateUploaded = ( { newDateUploaded, newD1, newD2 } ) => {
     const today = new Date().toISOString().split( "T" )[0];
-    if ( newDateObserved === DATE_UPLOADED.ALL ) {
+    if ( newDateUploaded === DATE_UPLOADED.ALL ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL
       } );
-    } else if ( newDateObserved === DATE_UPLOADED.EXACT_DATE ) {
+    } else if ( newDateUploaded === DATE_UPLOADED.EXACT_DATE ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT,
-        createdOn: d1 || today
+        createdOn: newD1 || today
+      } );
+    } else if ( newDateUploaded === DATE_UPLOADED.DATE_RANGE ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE,
+        createdD1: newD1 || today,
+        createdD2: newD2 || today
       } );
     }
   };
 
+  const updateUploadedStart = date => {
+    updateDateUploaded( {
+      newDateUploaded: DATE_UPLOADED.DATE_RANGE,
+      newD1: date.toISOString().split( "T" )[0],
+      newD2: createdD2
+    } );
+  };
+
+  const updateUploadedEnd = date => {
+    updateDateUploaded( {
+      newDateUploaded: DATE_UPLOADED.DATE_RANGE,
+      newD1: createdD1,
+      newD2: date.toISOString().split( "T" )[0]
+    } );
+  };
+
   const theme = useTheme();
+
+  const observedEndBeforeStart = d1 > d2;
+  const uploadedEndBeforeStart = createdD1 > createdD2;
+  const hasError = observedEndBeforeStart || uploadedEndBeforeStart;
 
   return (
     <View className="flex-1 bg-white" testID="filter-modal">
@@ -596,9 +689,10 @@ const FilterModal = ( {
               const selectedTaxon = realm
                 ?.objects( "Taxon" )
                 .filtered( "name CONTAINS[c] $0", taxonName );
-              const iconicTaxon = selectedTaxon.length > 0
-                ? selectedTaxon[0]
-                : null;
+              const iconicTaxon
+                = selectedTaxon.length > 0
+                  ? selectedTaxon[0]
+                  : null;
               updateTaxon( iconicTaxon );
             }}
           />
@@ -758,34 +852,6 @@ const FilterModal = ( {
         {/* Taxonomic Ranks section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
-          <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
-          <Button
-            text={lrank
-              ? taxonomicRankValues[lrank]?.label
-              : t( "ALL" )}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              setOpenSheet( LRANK );
-            }}
-            accessibilityLabel={t( "Lowest" )}
-          />
-          {openSheet === LRANK && (
-            <RadioButtonSheet
-              headerText={t( "TODO: this sheet needs to be scrollable" )}
-              // headerText={t( "TAXONOMIC-RANKS" )}
-              confirm={newRank => {
-                dispatch( {
-                  type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
-                  lrank: newRank
-                } );
-                setOpenSheet( NONE );
-              }}
-              handleClose={() => setOpenSheet( NONE )}
-              radioValues={taxonomicRankValues}
-              selectedValue={lrank}
-            />
-          )}
           <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
           <Button
             text={hrank
@@ -799,10 +865,8 @@ const FilterModal = ( {
             accessibilityLabel={t( "Highest" )}
           />
           {openSheet === HRANK && (
-            // TODO: scrollable sheet
-            <RadioButtonSheet
-              headerText={t( "TODO: this sheet needs to be scrollable" )}
-              // headerText={t( "TAXONOMIC-RANKS" )}
+            <PickerSheet
+              headerText={t( "HIGHEST-RANK" )}
               confirm={newRank => {
                 dispatch( {
                   type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
@@ -811,8 +875,35 @@ const FilterModal = ( {
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
-              radioValues={taxonomicRankValues}
+              pickerValues={taxonomicRankValues}
               selectedValue={hrank}
+            />
+          )}
+          <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
+          <Button
+            text={lrank
+              ? taxonomicRankValues[lrank]?.label
+              : t( "ALL" )}
+            className="shrink mb-7"
+            dropdown
+            onPress={() => {
+              setOpenSheet( LRANK );
+            }}
+            accessibilityLabel={t( "Lowest" )}
+          />
+          {openSheet === LRANK && (
+            <PickerSheet
+              headerText={t( "LOWEST-RANK" )}
+              confirm={newRank => {
+                dispatch( {
+                  type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
+                  lrank: newRank
+                } );
+                setOpenSheet( NONE );
+              }}
+              handleClose={() => setOpenSheet( NONE )}
+              pickerValues={taxonomicRankValues}
+              selectedValue={lrank}
             />
           )}
         </View>
@@ -848,6 +939,59 @@ const FilterModal = ( {
               />
             </View>
           )}
+          {dateObserved === DATE_OBSERVED.DATE_RANGE && (
+            <View className="items-center">
+              <Body1
+                className={classNames(
+                  "mb-5",
+                  observedEndBeforeStart && "color-warningRed"
+                )}
+              >
+                {d1}
+              </Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-START-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( OBSERVED_START );
+                }}
+                accessibilityLabel={t( "Change-start-date" )}
+              />
+              <Body1 className="mb-5">{d2}</Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-END-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( OBSERVED_END );
+                }}
+                accessibilityLabel={t( "Change-end-date" )}
+              />
+              {observedEndBeforeStart && (
+                <View className="flex-row mb-5">
+                  <INatIcon
+                    name="triangle-exclamation"
+                    size={19}
+                    color={theme.colors.error}
+                  />
+                  <List2 className="ml-3">
+                    {t( "Start-must-be-before-end" )}
+                  </List2>
+                </View>
+              )}
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === OBSERVED_START}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateObservedStart( date )}
+              />
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === OBSERVED_END}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateObservedEnd( date )}
+              />
+            </View>
+          )}
           {dateObserved === DATE_OBSERVED.MONTHS
             && Object.keys( monthValues ).map( monthKey => (
               <View key={monthKey} className="flex-row items-center mb-5">
@@ -862,7 +1006,7 @@ const FilterModal = ( {
             <RadioButtonSheet
               headerText={t( "DATE-OBSERVED" )}
               confirm={newDateObserved => {
-                updateDateObserved( newDateObserved );
+                updateDateObserved( { newDateObserved } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
@@ -899,18 +1043,71 @@ const FilterModal = ( {
               <DateTimePicker
                 isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
                 toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateDateUploaded(
-                  DATE_UPLOADED.EXACT_DATE,
-                  date.toISOString().split( "T" )[0]
+                onDatePicked={date => updateDateUploaded( {
+                  newDateUploaded: DATE_UPLOADED.EXACT_DATE,
+                  newD1: date.toISOString().split( "T" )[0]
+                } )}
+              />
+            </View>
+          )}
+          {dateUploaded === DATE_UPLOADED.DATE_RANGE && (
+            <View className="items-center">
+              <Body1
+                className={classNames(
+                  "mb-5",
+                  uploadedEndBeforeStart && "color-warningRed"
                 )}
+              >
+                {createdD1}
+              </Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-START-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( UPLOADED_START );
+                }}
+                accessibilityLabel={t( "Change-start-date" )}
+              />
+              <Body1 className="mb-5">{createdD2}</Body1>
+              <Button
+                level="primary"
+                text={t( "CHANGE-END-DATE" )}
+                className="w-full mb-7"
+                onPress={() => {
+                  setOpenSheet( UPLOADED_END );
+                }}
+                accessibilityLabel={t( "Change-end-date" )}
+              />
+              {uploadedEndBeforeStart && (
+                <View className="flex-row mb-5">
+                  <INatIcon
+                    name="triangle-exclamation"
+                    size={19}
+                    color={theme.colors.error}
+                  />
+                  <List2 className="ml-3">
+                    {t( "Start-must-be-before-end" )}
+                  </List2>
+                </View>
+              )}
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === UPLOADED_START}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateUploadedStart( date )}
+              />
+              <DateTimePicker
+                isDateTimePickerVisible={openSheet === UPLOADED_END}
+                toggleDateTimePicker={() => setOpenSheet( NONE )}
+                onDatePicked={date => updateUploadedEnd( date )}
               />
             </View>
           )}
           {openSheet === DATE_UPLOADED_M && (
             <RadioButtonSheet
               headerText={t( "DATE-UPLOADED" )}
-              confirm={newDate => {
-                updateDateUploaded( newDate );
+              confirm={newDateUploaded => {
+                updateDateUploaded( { newDateUploaded } );
                 setOpenSheet( NONE );
               }}
               handleClose={() => setOpenSheet( NONE )}
@@ -940,38 +1137,22 @@ const FilterModal = ( {
         {/* Establishment Means section */}
         <View className="mb-7">
           <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
-          <Checkbox
-            isChecked={introduced}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_INTRODUCED
-            } )}
-            text={t( "Introduced" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={native}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_NATIVE
-            } )}
-            text={t( "Native" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={endemic}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_ENDEMIC
-            } )}
-            text={t( "Endemic" )}
-          />
-          <View className="mb-4" />
-          <Checkbox
-            isChecked={noStatus}
-            onPress={() => dispatch( {
-              type: EXPLORE_ACTION.TOGGLE_NO_STATUS
-            } )}
-            text={t( "TODO: No-Status (does not change API request atm)" )}
-            // text={t( "No-Status" )}
-          />
+          {Object.keys( establishmentValues ).map( establishmentKey => (
+            <RadioButtonRow
+              key={establishmentKey}
+              value={establishmentValues[establishmentKey]}
+              checked={
+                establishmentValues[establishmentKey].value
+                === establishmentMean
+              }
+              onPress={() => dispatch( {
+                type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
+                establishmentMean:
+                    establishmentValues[establishmentKey].value
+              } )}
+              label={establishmentValues[establishmentKey].label}
+            />
+          ) )}
         </View>
 
         {/* Wild Status section */}
@@ -1042,26 +1223,26 @@ const FilterModal = ( {
       <StickyToolbar>
         <View className="flex-1 flex-row items-center">
           <Button
-            disabled={!differsFromSnapshot}
+            disabled={!differsFromSnapshot || hasError}
             className="flex-1"
             level="focus"
             text={t( "APPLY-FILTERS" )}
             onPress={closeModal}
             accessibilityLabel={t( "Apply-filters" )}
-            accessibilityState={{ disabled: !differsFromSnapshot }}
+            accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
           />
         </View>
         {openSheet === CONFIRMATION && (
           <WarningSheet
             handleClose={() => setOpenSheet( NONE )}
-            confirm={( ) => {
+            confirm={() => {
               discardChanges();
               closeModal();
             }}
             headerText={t( "DISCARD-FILTER-CHANGES" )}
             text={t( "You-changed-filters-will-be-discarded" )}
             buttonText={t( "DISCARD-CHANGES" )}
-            handleSecondButtonPress={( ) => setOpenSheet( NONE )}
+            handleSecondButtonPress={() => setOpenSheet( NONE )}
             secondButtonText={t( "CANCEL" )}
           />
         )}

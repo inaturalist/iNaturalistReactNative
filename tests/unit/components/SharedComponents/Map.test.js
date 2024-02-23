@@ -1,7 +1,7 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import { Map } from "components/SharedComponents";
 import React from "react";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 describe( "Map", ( ) => {

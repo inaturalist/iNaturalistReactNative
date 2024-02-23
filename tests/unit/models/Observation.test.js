@@ -30,10 +30,34 @@ describe( "Observation", ( ) => {
     it( "should set _created_at to a date object without Realm", ( ) => {
       expect( Observation.mapApiToRealm( { } )._created_at ).toBeInstanceOf( Date );
     } );
-    it( "should create observationSounds from sounds", ( ) => {
-      const remoteSound = factory( "RemoteSound" );
-      const mappedObservation = Observation.mapApiToRealm( { sounds: [remoteSound] } );
-      expect( mappedObservation.observationSounds[0].file_url ).toEqual( remoteSound.file_url );
+    it( "should create observationSounds from observation_sounds", ( ) => {
+      const remoteObservationSound = factory( "RemoteObservationSound" );
+      const mappedObservation = Observation.mapApiToRealm( {
+        observation_sounds: [remoteObservationSound]
+      } );
+      expect( mappedObservation.observationSounds[0].file_url )
+        .toEqual( remoteObservationSound.sound.file_url );
+      expect( mappedObservation.observationSounds[0].uuid )
+        .toEqual( remoteObservationSound.uuid );
     } );
+  } );
+
+  // It would be nice to test an Observation instance
+  describe( "needsSync", ( ) => {
+    it.todo( "should need sync when a photo needs sync" );
+    // it( "should need sync when a photo needs sync", ( ) => {
+    //   const syncDate = faker.date.past( );
+    //   const observation = new Observation( {
+    //     _synced_at: syncDate,
+    //     _updated_at: syncDate
+    //   } );
+    //   expect( observation.needsSync( ) ).toEqual( false );
+    //   const mockObservationPhoto = factory.states( "uploaded" )( "LocalObservationPhoto" );
+    //   observation.observationPhotos = [mockObservationPhoto];
+    //   expect( observation.needsSync( ) ).toEqual( false );
+    //   mockObservationPhoto.needsSync.mockImplementation( ( ) => true );
+    //   expect( observation.needsSync( ) ).toEqual( true );
+    // } );
+    it.todo( "should need sync when a sound needs sync" );
   } );
 } );

@@ -1,47 +1,25 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import { format } from "date-fns";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
-import os from "os";
-import path from "path";
 import React from "react";
-import Realm from "realm";
-import realmConfig from "realmModels/index";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory, { makeResponse } from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
-// This is a bit crazy, but this ensures this test uses its own in-memory
-// database and doesn't interfere with the single, default in-memory database
-// used by other tests. In a perfect world, every parallel test worker would
-// have its own database, or at least this wouldn't be so manual, but it took
-// me long enough to figure this out. ~~~kueda 20231024
-// REALM SETUP
-const mockRealmConfig = {
-  schema: realmConfig.schema,
-  schemaVersion: realmConfig.schemaVersion,
-  // No need to actually write to disk
-  inMemory: true,
-  // For an in memory db path is basically a unique identifier, *but* Realm
-  // may still write some metadata to disk, so this needs to be a real, but
-  // temporary, path. In theory this should prevent this test from
-  // interacting with other tests
-  path: path.join( os.tmpdir( ), `${path.basename( __filename )}.realm` )
-};
-
-// Mock the config so that all code that runs during this test talks to the same database
-jest.mock( "realmModels/index", ( ) => ( {
-  __esModule: true,
-  default: mockRealmConfig
-} ) );
-
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
   return {
@@ -49,34 +27,15 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[__filename]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
     }
   };
 } );
-
-jest.mock( "components/MyObservations/Announcements", () => ( {
-  __esModule: true,
-  default: jest.fn()
-} ) );
-
-// Open a realm connection and stuff it in global
-beforeAll( async ( ) => {
-  global.mockRealms = global.mockRealms || {};
-  global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
-} );
-
-// Ensure the realm connection gets closed
-afterAll( ( ) => {
-  global.mockRealms[__filename]?.close( );
-  jest.clearAllMocks( );
-} );
-// /REALM SETUP
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
 describe( "MyObservations", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   // For some reason this interferes with the "should not make a request to
   // users/me" test below, can't figure out why ~~~kueda 20230105
   // TODO: this looks to me more like it should be covered by unit tests - @jtklein
@@ -124,14 +83,10 @@ describe( "MyObservations", ( ) => {
     } );
 
     beforeEach( async ( ) => {
-      safeRealmWrite( global.mockRealms[__filename], ( ) => {
-        global.mockRealms[__filename].deleteAll( );
-      }, "delete realm, MyObservations integration test when signed in" );
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
     afterEach( ( ) => {
-      jest.clearAllMocks( );
       signOut( { realm: global.mockRealms[__filename] } );
     } );
 
@@ -179,16 +134,14 @@ describe( "MyObservations", ( ) => {
         }, "write local observation, MyObservations integration test with unsynced observations" );
       } );
 
-      afterEach( ( ) => {
-        jest.clearAllMocks( );
-      } );
-
       it( "should make a request to observations/updates", async ( ) => {
         // Let's make sure the mock hasn't already been used
         expect( inatjs.observations.updates ).not.toHaveBeenCalled();
         renderAppWithComponent( <MyObservationsContainer /> );
         expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
-        expect( inatjs.observations.updates ).toHaveBeenCalled();
+        await waitFor( ( ) => {
+          expect( inatjs.observations.updates ).toHaveBeenCalled( );
+        } );
       } );
 
       it( "renders grid view on button press", async () => {
@@ -240,6 +193,10 @@ describe( "MyObservations", ( ) => {
           `UploadIcon.start.${mockObservations[1].uuid}`
         );
         expect( secondUploadIcon ).toBeVisible( );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /1 observation uploaded/ );
+          expect( toolbarText ).toBeVisible( );
+        } );
       } );
 
       it( "displays upload in progress status when toolbar tapped", async () => {
@@ -258,6 +215,10 @@ describe( "MyObservations", ( ) => {
         mockObservations.forEach( obs => {
           const uploadInProgressIcon = screen.getByTestId( `UploadIcon.progress.${obs.uuid}` );
           expect( uploadInProgressIcon ).toBeVisible( );
+        } );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /2 observations uploaded/ );
+          expect( toolbarText ).toBeVisible( );
         } );
       } );
     } );
@@ -369,14 +330,17 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "localization for current user", ( ) => {
-    beforeEach( ( ) => {
-      safeRealmWrite( global.mockRealms[__filename], ( ) => {
-        global.mockRealms[__filename].deleteAll( );
-      }, "delete all, MyObservations integration test, localization for current user" );
-    } );
+    // beforeEach( ( ) => {
+    //   safeRealmWrite( global.mockRealms[__filename], ( ) => {
+    //     global.mockRealms[__filename].deleteAll( );
+    //   }, "delete all, MyObservations integration test, localization for current user" );
+    // } );
 
-    afterEach( ( ) => {
-      jest.clearAllMocks( );
+    // afterEach( ( ) => {
+    //   jest.clearAllMocks( );
+    // } );
+    afterEach( async ( ) => {
+      signOut( { realm: global.mockRealms[__filename] } );
     } );
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser", {

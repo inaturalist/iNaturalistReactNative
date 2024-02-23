@@ -43,6 +43,7 @@
   "Already-have-an-account": "Already have an account? Log in",
   "Amphibians": "Amphibians",
   "An-Internet-connection-is-required": "An Internet connection is required to load more observations.",
+  "Any": "Any",
   "APPLY-FILTERS": "APPLY FILTERS",
   "Apply-filters": "Apply filters",
   "Arachnids": "Arachnids",
@@ -83,9 +84,13 @@
   "CC-BY-NC-ND": "CC BY-NC-ND",
   "CHANGE-DATE": "CHANGE DATE",
   "Change-date": "Change date",
+  "CHANGE-END-DATE": "CHANGE END DATE",
+  "Change-end-date": "Change end date",
   "Change-project": "Change project",
-  "Change-user": "Change user",
+  "CHANGE-START-DATE": "CHANGE START DATE",
+  "Change-start-date": "Change start date",
   "Change-taxon": "Change taxon",
+  "Change-user": "Change user",
   "CHECK-YOUR-EMAIL": {
     "comment": "After pressing the reset password button",
     "val": "CHECK YOUR EMAIL!"
@@ -150,6 +155,7 @@
   "DATE-OBSERVED-NEWEST": "DATE OBSERVED - NEWEST TO OLDEST",
   "DATE-OBSERVED-OLDEST": "DATE OBSERVED - OLDEST TO NEWEST",
   "Date_observed_header_short": "Observed",
+  "Date-Range": "Date Range",
   "Date-uploaded": "Date uploaded",
   "DATE-UPLOADED": "DATE UPLOADED",
   "DATE-UPLOADED-NEWEST": "DATE UPLOADED - NEWEST TO OLDEST",
@@ -219,8 +225,10 @@
   "Filters": "Filters",
   "FILTER-BY-A-PROJECT": "FILTER BY A PROJECT",
   "FILTER-BY-A-USER": "FILTER BY A USER",
+  "Filter-by-observed-between-dates": "Filter by observations observed between two specific dates",
   "Filter-by-observed-during-months": "Filter by observations observed during specific months",
   "Filter-by-observed-on-date": "Filter by observations observed on a specific date",
+  "Filter-by-uploaded-between-dates": "Filter by observations uploaded between two specific dates",
   "Filter-by-uploaded-on-date": "Filter by observations uploaded on a specific date",
   "Finish": "Finish",
   "Fish": "Fish",
@@ -252,6 +260,7 @@
   "Has-Sounds": "Has Sounds",
   "High": "High",
   "Highest": "Highest",
+  "HIGHEST-RANK": "HIGHEST RANK",
   "ID-Withdrawn": {
     "comment": "Identification Status",
     "val": "ID Withdrawn"
@@ -308,6 +317,7 @@
   },
   "Low": "Low",
   "Lowest": "Lowest",
+  "LOWEST-RANK": "LOWEST RANK",
   "Mammals": "Mammals",
   "Media": "Media",
   "Missing-Date": "Missing Date",
@@ -351,6 +361,7 @@
   "No-Media": "No Media",
   "No-model-found": "No model found",
   "none": "none",
+  "NONE": "NONE",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved-cc0": {
     "comment": "license code",
@@ -506,6 +517,7 @@
   "Read-more-on-Wikipedia": "Read more on Wikipedia",
   "Recently-observed": "Recently observed",
   "Record-new-sound": "Record new sound",
+  "RECORD-NEW-SOUND": "RECORD NEW SOUND",
   "Recording-Sound": "Recording Sound",
   "Relationships": "Relationships",
   "Remove-Photos": "Remove Photos",
@@ -546,9 +558,9 @@
   "Search-for-a-user": "Search for a user",
   "Search-for-description-tags-text": "Search for description/tags text",
   "SEARCH-LOCATION": "SEARCH LOCATION",
-  "SEARCH-PROJECT": "SEARCH PROJECT",
+  "SEARCH-PROJECTS": "SEARCH PROJECTS",
   "SEARCH-TAXA": "SEARCH TAXA",
-  "SEARCH-USER": "SEARCH USER",
+  "SEARCH-USERS": "SEARCH USERS",
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "Settings": "Settings",
@@ -573,11 +585,13 @@
     "comment": "Header for a block of text describing a taxon's conservation status",
     "val": "STATUS"
   },
+  "Start-must-be-before-end": "The start date must be before the end date.",
   "ESTABLISHMENT-MEANS-header": {
     "comment": "Header for a section describing how a taxon arrived in a given place",
     "val": "ESTABLISHMENT MEANS"
   },
   "Stay-on-this-screen": "Stay on this screen while your location loads.",
+  "Syncing": "Syncing...",
   "Tap-to-search-for-taxa": "Tap to search for taxa",
   "Taxon": "Taxon",
   "TAXON": "TAXON",
@@ -691,7 +705,7 @@
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
   "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
   "Zoom-in-as-much-as-possible-to-improve": "Zoom in as much as possible to improve location accuracy and get better identifications.",
-  "Your-location-uncertainty-is-over-4000km": "Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
+  "Your-location-uncertainty-is-over-x-km": "Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
   "Category-leading": {
     "comment": "Identification category",
     "val": "Leading"
@@ -1192,5 +1206,68 @@
   "Photo-is-loading": {
     "comment": "Accessibility label when a photo is loading",
     "val": "Photo is loading"
-  }
+  },
+  "Comment-options": {
+    "comment": "Accessibility label for a button that shows options for a comment",
+    "val": "Comment options"
+  },
+  "Identification-options": {
+    "comment": "Accessibility label for a button that shows options for an identification",
+    "val": "Identification options"
+  },
+  "Map-Area": "Map Area",
+  "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA",
+  "Record-verb": {
+    "comment": "Imperative verb for recording a sound",
+    "val": "Record"
+  },
+  "Starts-recording-sound": {
+    "comment": "Accessibility hint for button that starts recording a sound",
+    "val": "Starts recording sound"
+  },
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Stop"
+  },
+  "Stops-recording-sound": {
+    "comment": "Accessibility hint for a button that stops the recording of a sound",
+    "val": "Stops recording sound"
+  },
+  "X-SOUNDS": {
+    "comment": "Displays number of sounds attached to an observation in the Media Viewer",
+    "val": "{ $count ->\n  [one] 1 SOUND\n *[other] { $count } SOUNDS\n}"
+  },
+  "X-PHOTOS-Y-SOUNDS": {
+    "comment": "Displays number of photos and sounds attached to an observation in the Media\nViewer",
+    "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}, { $soundCount ->\n  [one] 1 SOUND\n *[other] { $soundCount } SOUNDS\n}"
+  },
+  "sound-recorder-help-One-organism": "One organism",
+  "sound-recorder-help-Try-to-isolate": "Try to isolate the sound of a single organism. If you can’t, make sure to leave a note of which organism you’re recording.",
+  "sound-recorder-help-Stop-moving": "Stop moving",
+  "sound-recorder-help-Make-sure": "Make sure the sound of your own movement doesn’t cover up the sound of the organism.",
+  "sound-recorder-help-Get-closer": "Get closer",
+  "sound-recorder-help-Get-as-close-as-you-can": "Get as close as you safely can to record the organism.",
+  "sound-recorder-help-Keep-it-short": "Keep it short",
+  "sound-recorder-help-A-recording-of": "A recording of 5-15 seconds is best to help identifiers.",
+  "DISCARD-SOUND-header": {
+    "comment": "Header of a popup confirming that the user wants to discard a sound\nrecording",
+    "val": "DISCARD SOUND?"
+  },
+  "DISCARD-RECORDING": {
+    "comment": "Label for a button that discards a sound recording",
+    "val": "DISCARD RECORDING"
+  },
+  "By-exiting-your-recorded-sound-will-not-be-saved": "By exiting, your recorded sound will not be saved.",
+  "RESET-SOUND-header": {
+    "comment": "Header of a popup confirming that the user wants to reset a sound\nrecording",
+    "val": "RESET SOUND?"
+  },
+  "RESET-RECORDING": {
+    "comment": "Label for a button that resets a sound recording",
+    "val": "RESET RECORDING"
+  },
+  "Would-you-like-to-discard-your-current-recording-and-start-over": "Would you like to discard your current recording and start over?",
+  "Press-record-to-start": "Press record to start",
+  "Recoding-sound": "Recoding sound",
+  "Recording-stopped-Tap-play-the-current-recording": "Recording stopped. Tap play the current recording."
 }
