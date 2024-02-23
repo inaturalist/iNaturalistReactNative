@@ -112,7 +112,7 @@ const ToolbarContainer = ( {
     if ( uploadInProgress ) {
       const translationParams = {
         total: numToUpload,
-        currentUploadCount: numToUpload - uploads.length
+        currentUploadCount: numToUpload - uploads.length + 1
       };
       // iPhone 4 pixel width
       if ( screenWidth <= 640 ) {
