@@ -25,11 +25,12 @@ const deletionState = {
 };
 
 const uploadState = {
-  uploadInProgress: false,
   uploads: [{}],
+  numToUpload: 1,
+  numFinishedUploads: 0,
+  uploadInProgress: false,
   uploadsComplete: false,
-  error: null,
-  currentUploadCount: 1
+  error: null
 };
 
 describe( "Toolbar", () => {
@@ -46,10 +47,10 @@ describe( "Toolbar", () => {
   it( "displays an upload in progress", async () => {
     renderComponent( <ToolbarContainer
       numUnuploadedObs={1}
-      totalUploadCount={1}
       uploadState={{
         ...uploadState,
-        uploadInProgress: true
+        uploadInProgress: true,
+        numToUpload: 1
       }}
     /> );
 
@@ -63,10 +64,10 @@ describe( "Toolbar", () => {
   it( "displays a completed upload", async () => {
     renderComponent( <ToolbarContainer
       progress={1}
-      totalUploadCount={1}
       uploadState={{
         ...uploadState,
-        uploadsComplete: true
+        uploadsComplete: true,
+        numToUpload: 1
       }}
     /> );
 
@@ -102,13 +103,13 @@ describe( "Toolbar", () => {
 
   it( "displays multiple uploads in progress", async () => {
     renderComponent( <ToolbarContainer
-      numUnuploadedObs={3}
-      totalUploadCount={5}
+      numUnuploadedObs={5}
       uploadState={{
         ...uploadState,
         uploadInProgress: true,
-        uploads: [{}, {}, {}, {}, {}],
-        currentUploadCount: 2
+        uploads: [{}, {}, {}, {}],
+        numToUpload: 5,
+        numFinishedUploads: 1
       }}
     /> );
 
@@ -122,11 +123,11 @@ describe( "Toolbar", () => {
   it( "displays multiple completed uploads", async () => {
     renderComponent( <ToolbarContainer
       progress={1}
-      totalUploadCount={7}
       uploadState={{
         ...uploadState,
         uploads: [{}, {}, {}, {}, {}, {}, {}],
-        uploadsComplete: true
+        uploadsComplete: true,
+        numToUpload: 7
       }}
     /> );
 

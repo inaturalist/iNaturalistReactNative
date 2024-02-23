@@ -902,6 +902,8 @@ ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
 
 Stay-on-this-screen = Stay on this screen while your location loads.
 
+Syncing = Syncing...
+
 Tap-to-search-for-taxa = Tap to search for taxa
 
 Taxon = Taxon

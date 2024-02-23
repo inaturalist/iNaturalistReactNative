@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { ActivityIndicator } from "components/SharedComponents";
+import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
@@ -199,22 +199,24 @@ const PhotoGallery = ( ): Node => {
   );
 
   return (
-    <View className="flex-1 w-full h-full justify-center items-center">
-      <ActivityIndicator />
-      {!permissionGranted && (
-        <PermissionGateContainer
-          permissions={READ_MEDIA_PERMISSIONS}
-          title={t( "Observe-and-identify-organisms-from-your-gallery" )}
-          titleDenied={t( "Please-Allow-Gallery-Access" )}
-          body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
-          blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
-          buttonText={t( "CHOOSE-PHOTOS" )}
-          icon="gallery"
-          image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
-          onPermissionGranted={onPermissionGranted}
-        />
-      )}
-    </View>
+    <ViewWrapper testID="PhotoGallery" className="flex-1">
+      <View className="flex-1 w-full h-full justify-center items-center">
+        <ActivityAnimation />
+        {!permissionGranted && (
+          <PermissionGateContainer
+            permissions={READ_MEDIA_PERMISSIONS}
+            title={t( "Observe-and-identify-organisms-from-your-gallery" )}
+            titleDenied={t( "Please-Allow-Gallery-Access" )}
+            body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
+            blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
+            buttonText={t( "CHOOSE-PHOTOS" )}
+            icon="gallery"
+            image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+            onPermissionGranted={onPermissionGranted}
+          />
+        )}
+      </View>
+    </ViewWrapper>
   );
 };
 

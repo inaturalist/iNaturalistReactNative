@@ -74,7 +74,7 @@ describe( "MyObservations", () => {
         uploadState={{
           uploads: [],
           error: null,
-          currentUploadCount: 0,
+          numToUpload: 0,
           uploadInProgress: false
         }}
       />
@@ -101,7 +101,7 @@ describe( "MyObservations", () => {
         uploadState={{
           uploads: [],
           error: null,
-          currentUploadCount: 0,
+          numToUpload: 0,
           uploadInProgress: false
         }}
       />
@@ -131,7 +131,7 @@ describe( "MyObservations", () => {
         uploadState={{
           uploads: [],
           error: null,
-          currentUploadCount: 0,
+          numToUpload: 0,
           uploadInProgress: false
         }}
       />
@@ -153,7 +153,7 @@ describe( "MyObservations", () => {
         uploadState={{
           uploads: [],
           error: null,
-          currentUploadCount: 0,
+          numToUpload: 0,
           uploadInProgress: false
         }}
       />
