@@ -116,6 +116,11 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
       return {
         ...INITIAL_STATE
       };
+    case "START_SYNC":
+      return {
+        ...state,
+        syncInProgress: true
+      };
     default:
       return state;
   }
@@ -369,6 +374,7 @@ const MyObservationsContainer = ( ): Node => {
       logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_STATE" );
       dispatch( { type: "RESET_STATE" } );
     }
+    dispatch( { type: "START_SYNC" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling toggleLoginSheet" );
     toggleLoginSheet( );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling showInternetErrorAlert" );
