@@ -185,6 +185,7 @@
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
+  "DONATE-TO-INATURALIST": "DONATE TO INATURALIST",
   "DONE": {
     "comment": "Label for a button the user taps when a task is complete",
     "val": "DONE"
@@ -276,6 +277,8 @@
   "iNaturalist-Applications": "iNaturalist Applications",
   "iNaturalist-Network-Affiliation": "iNaturalist Network Affiliation",
   "iNaturalist-is-a-community-of-naturalists": "iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.",
+  "iNaturalist-is-a-501": "iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).",
+  "INATURALIST-STORE": "INATURALIST STORE",
   "Insects": "Insects",
   "Introduced": "Introduced",
   "Invalid-login": {
@@ -297,6 +300,7 @@
     "comment": "Shows date user last active on iNaturalist on user profile",
     "val": "Last Active: { $date }"
   },
+  "LEAVE-US-A-REVIEW": "LEAVE US A REVIEW!",
   "Licensing": "Licensing",
   "Location": "Location",
   "LOCATION": "LOCATION",
@@ -542,6 +546,7 @@
     "val": "RESET PASSWORD"
   },
   "Return-to-login": "Return to login",
+  "REVIEW-INATURALIST": "REVIEW INATURALIST",
   "Reviewed": "Reviewed",
   "Reviewed-observations-only": "Reviewed observations only",
   "Reviewed-only": "Reviewed only",
@@ -567,6 +572,7 @@
   "Share": "Share",
   "SHARE-DEBUG-LOGS": "SHARE DEBUG LOGS",
   "Share-location": "Share Location",
+  "SHOP-INATURALIST-MERCH": "SHOP INATURALIST MERCH",
   "Sign-out": "Sign out",
   "Sign-Up": "Sign Up",
   "some-rights-reserved": {
@@ -696,6 +702,7 @@
   "Take-a-photo-with-your-camera": "Take a photo with your camera",
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
   "Record-a-sound": "Record a sound",
+  "You-can-also-check-out-merchandise": "You can also check out merchandise for iNaturalist and Seek at our store below!",
   "You-can-also-explore-existing-observations": "You can also explore existing observations on iNaturalist to discover what's around you.",
   "You-changed-filters-will-be-discarded": "You changed filters, but they were not applied to your explore search results.",
   "You-denied-iNaturalist-permission-to-do-that": {
@@ -706,6 +713,7 @@
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
   "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
+  "Your-donation-to-iNaturalist": "Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!",
   "Zoom-in-as-much-as-possible-to-improve": "Zoom in as much as possible to improve location accuracy and get better identifications.",
   "Your-location-uncertainty-is-over-x-km": "Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
   "Category-leading": {
@@ -1013,7 +1021,6 @@
   "IDENTIFY": "IDENTIFY",
   "HELP": "HELP",
   "BLOG": "BLOG",
-  "DONATE": "DONATE",
   "SETTINGS": "SETTINGS",
   "LOG-OUT": "LOG OUT",
   "Log-out": "Log out",
