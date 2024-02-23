@@ -37,7 +37,7 @@ import MyObservations from "./MyObservations";
 
 const logger = log.extend( "MyObservationsContainer" );
 
-export const INITIAL_UPLOAD_STATE = {
+export const INITIAL_STATE = {
   currentUploadCount: 0,
   error: null,
   singleUpload: true,
@@ -99,7 +99,7 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
     case "STOP_UPLOADS":
       return {
         ...state,
-        ...INITIAL_UPLOAD_STATE
+        ...INITIAL_STATE
       };
     case "UPLOADS_COMPLETE":
       return {
@@ -112,9 +112,9 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
         ...state,
         uploadProgress: action.uploadProgress
       };
-    case "RESET_UPLOAD_STATE":
+    case "RESET_STATE":
       return {
-        ...INITIAL_UPLOAD_STATE
+        ...INITIAL_STATE
       };
     default:
       return state;
@@ -130,7 +130,7 @@ const MyObservationsContainer = ( ): Node => {
   const realm = useRealm( );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
-  const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
+  const [state, dispatch] = useReducer( uploadReducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
@@ -366,8 +366,8 @@ const MyObservationsContainer = ( ): Node => {
   const syncObservations = useCallback( async ( ) => {
     logger.info( "[MyObservationsContainer.js] syncObservations: starting" );
     if ( !uploadInProgress && uploadsComplete ) {
-      logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_UPLOAD_STATE" );
-      dispatch( { type: "RESET_UPLOAD_STATE" } );
+      logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_STATE" );
+      dispatch( { type: "RESET_STATE" } );
     }
     logger.info( "[MyObservationsContainer.js] syncObservations: calling toggleLoginSheet" );
     toggleLoginSheet( );
@@ -387,6 +387,7 @@ const MyObservationsContainer = ( ): Node => {
     updateSyncTime( );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling deactivateKeepAwake" );
     deactivateKeepAwake( );
+    dispatch( { type: "RESET_STATE" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: done" );
   }, [uploadInProgress,
     uploadsComplete,
@@ -409,7 +410,7 @@ const MyObservationsContainer = ( ): Node => {
   useEffect(
     ( ) => {
       navigation.addListener( "focus", ( ) => {
-        dispatch( { type: "RESET_UPLOAD_STATE" } );
+        dispatch( { type: "RESET_STATE" } );
       } );
     },
     [navigation, realm]
