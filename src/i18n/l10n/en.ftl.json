@@ -1221,13 +1221,13 @@
     "comment": "Accessibility hint for button that starts recording a sound",
     "val": "Starts recording sound"
   },
-  "Pause-verb": {
-    "comment": "Imperative verb for pausing the recording of a sound",
-    "val": "Pause"
+  "Stop-verb": {
+    "comment": "Imperative verb for stopping the recording of a sound",
+    "val": "Stop"
   },
-  "Pauses-recording-sound": {
-    "comment": "Accessibility hint for a button that pauses the recording of a sound",
-    "val": "Pauses recording sound"
+  "Stops-recording-sound": {
+    "comment": "Accessibility hint for a button that stops the recording of a sound",
+    "val": "Stops recording sound"
   },
   "X-SOUNDS": {
     "comment": "Displays number of sounds attached to an observation in the Media Viewer",
@@ -1236,5 +1236,31 @@
   "X-PHOTOS-Y-SOUNDS": {
     "comment": "Displays number of photos and sounds attached to an observation in the Media\nViewer",
     "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}, { $soundCount ->\n  [one] 1 SOUND\n *[other] { $soundCount } SOUNDS\n}"
-  }
+  },
+  "sound-recorder-help-One-organism": "One organism",
+  "sound-recorder-help-Try-to-isolate": "Try to isolate the sound of a single organism. If you can’t, make sure to leave a note of which organism you’re recording.",
+  "sound-recorder-help-Stop-moving": "Stop moving",
+  "sound-recorder-help-Make-sure": "Make sure the sound of your own movement doesn’t cover up the sound of the organism.",
+  "sound-recorder-help-Get-closer": "Get closer",
+  "sound-recorder-help-Get-as-close-as-you-can": "Get as close as you safely can to record the organism.",
+  "sound-recorder-help-Keep-it-short": "Keep it short",
+  "sound-recorder-help-A-recording-of": "A recording of 5-15 seconds is best to help identifiers.",
+  "DISCARD-SOUND-header": {
+    "comment": "Header of a popup confirming that the user wants to discard a sound\nrecording",
+    "val": "DISCARD SOUND?"
+  },
+  "DISCARD-RECORDING": {
+    "comment": "Label for a button that discards a sound recording",
+    "val": "DISCARD RECORDING"
+  },
+  "By-exiting-your-recorded-sound-will-not-be-saved": "By exiting, your recorded sound will not be saved.",
+  "RESET-SOUND-header": {
+    "comment": "Header of a popup confirming that the user wants to reset a sound\nrecording",
+    "val": "RESET SOUND?"
+  },
+  "RESET-RECORDING": {
+    "comment": "Label for a button that resets a sound recording",
+    "val": "RESET RECORDING"
+  },
+  "Would-you-like-to-discard-your-current-recording-and-start-over": "Would you like to discard your current recording and start over?"
 }

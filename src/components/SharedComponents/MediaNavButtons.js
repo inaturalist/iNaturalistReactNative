@@ -48,7 +48,7 @@ const MediaNavButtons = ( {
     testID="MediaNavButtons"
   >
     <CloseButton
-      onClose={onClose}
+      handleClose={onClose}
       buttonClassName="w-1/3"
     />
     {captureButton}

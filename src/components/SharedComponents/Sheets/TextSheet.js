@@ -9,9 +9,9 @@ import React, { useCallback } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-    headerText: string,
-    text: string,
-    setShowSheet: Function
+  headerText: string,
+  text: string,
+  setShowSheet: Function
 }
 
 const TextSheet = ( {

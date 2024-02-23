@@ -3,10 +3,15 @@
 import { useNavigation } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
+  Body1,
+  BottomSheet,
   Heading1,
   INatIconButton,
+  List2,
   MediaNavButtons,
-  ViewWrapper
+  P,
+  ViewWrapper,
+  WarningSheet
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -23,9 +28,6 @@ import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
-// needs to be outside of the component for stopRecorder to work correctly
-// const audioRecorderPlayer = new AudioRecorderPlayer();
-
 const INITIAL_SOUND = {
   // recording
   recordSecs: 0,
@@ -39,6 +41,8 @@ const INITIAL_SOUND = {
 };
 
 const NOT_STARTED = "notStarted";
+const RECORDING = "recording";
+const STOPPED = "stopped";
 
 const SoundRecorder = (): Node => {
   const audioRecorderPlayerRef = useRef( new AudioRecorderPlayer( ) );
@@ -47,12 +51,19 @@ const SoundRecorder = (): Node => {
   const setObservations = useStore( state => state.setObservations );
   const navigation = useNavigation();
   const { t } = useTranslation();
-  // https://www.npmjs.com/package/react-native-audio-recorder-player
   const [sound, setSound] = useState( INITIAL_SOUND );
   const [uri, setUri] = useState( null );
+  const [helpShown, setHelpShown] = useState( false );
+  const [exitWarningShown, setExitWarningShown] = useState( false );
+  const [resetWarningShown, setResetWarningShown] = useState( false );
 
-  // notStarted, recording, paused, or playing
-  const [status, setStatus] = useState( NOT_STARTED );
+  const [
+    status,
+    setStatus
+  ]: [
+    "notStarted" | "recording" | "stopped",
+    Function
+  ] = useState( NOT_STARTED );
 
   audioRecorderPlayer.setSubscriptionDuration( 0.09 ); // optional. Default is 0.1
 
@@ -74,7 +85,7 @@ const SoundRecorder = (): Node => {
       null,
       true
     );
-    setStatus( "recording" );
+    setStatus( RECORDING );
     audioRecorderPlayer.addRecordBackListener( e => {
       setSound( {
         ...sound,
@@ -86,19 +97,10 @@ const SoundRecorder = (): Node => {
     setUri( cachedFile );
   }, [audioRecorderPlayer, sound] );
 
-  // const resumeRecording = useCallback( async () => {
-  //   try {
-  //     await audioRecorderPlayer.resumeRecorder();
-  //     setStatus( "recording" );
-  //   } catch ( e ) {
-  //     console.warn( "couldn't resume sound recorder:", e );
-  //   }
-  // }, [audioRecorderPlayer] );
-
   const stopRecording = useCallback( async () => {
     try {
       await audioRecorderPlayer.stopRecorder();
-      setStatus( "stopped" );
+      setStatus( STOPPED );
       audioRecorderPlayer.removeRecordBackListener();
       setSound( {
         ...sound,
@@ -108,10 +110,6 @@ const SoundRecorder = (): Node => {
       console.warn( "couldn't stop sound recorder:", e );
     }
   }, [audioRecorderPlayer, sound] );
-  // const pauseRecording = useCallback( async () => {
-  //   await audioRecorderPlayer.stopRecorder();
-  //   setStatus( "paused" );
-  // }, [audioRecorderPlayer] );
 
   const navToObsEdit = async ( ) => {
     await stopRecording( );
@@ -125,14 +123,16 @@ const SoundRecorder = (): Node => {
     let accessibilityLabel = t( "Record-verb" );
     let accessibilityHint = t( "Starts-recording-sound" );
     let backgroundColor = colors.red;
+    let size = 33;
     if ( status === "recording" ) {
       onPress = stopRecording;
-      icon = "pause";
-      accessibilityLabel = t( "Pause-verb" );
-      accessibilityHint = t( "Pauses-recording-sound" );
-    } else if ( status === "stopped" ) {
-      onPress = resetRecording;
-      icon = "rotate-right";
+      icon = "stop";
+      accessibilityLabel = t( "Stop-verb" );
+      accessibilityHint = t( "Stops-recording-sound" );
+    } else if ( status === STOPPED ) {
+      onPress = ( ) => setMediaViewerVisible( true );
+      icon = "play";
+      size = 24;
       backgroundColor = colors.darkGray;
     }
 
@@ -141,7 +141,7 @@ const SoundRecorder = (): Node => {
         onPress={onPress}
         backgroundColor={backgroundColor}
         color={colors.white}
-        size={33}
+        size={size}
         icon={icon}
         accessibilityLabel={accessibilityLabel}
         accessibilityHint={accessibilityHint}
@@ -151,7 +151,6 @@ const SoundRecorder = (): Node => {
       />
     );
   }, [
-    resetRecording,
     startRecording,
     stopRecording,
     status,
@@ -172,12 +171,20 @@ const SoundRecorder = (): Node => {
         {/*
           <Body1 className="text-gray">{uri}</Body1>
         */}
-        { uri && (
+        <View className="absolute left-5 bottom-5">
+          <INatIconButton
+            icon="help"
+            onPress={( ) => setHelpShown( !helpShown )}
+            accessibilityLabel={t( "Reset-verb" )}
+            color="white"
+          />
+        </View>
+        { uri && status === STOPPED && (
           <View className="absolute right-5 bottom-5">
             <INatIconButton
-              icon="play"
-              onPress={( ) => setMediaViewerVisible( true )}
-              accessibilityLabel="Play"
+              icon="rotate-right"
+              onPress={( ) => setResetWarningShown( true )}
+              accessibilityLabel={t( "Reset-verb" )}
               color="white"
             />
           </View>
@@ -187,13 +194,63 @@ const SoundRecorder = (): Node => {
       <MediaNavButtons
         captureButton={captureButton}
         onConfirm={navToObsEdit}
-        onClose={( ) => navigation.goBack( )}
+        onClose={( ) => {
+          console.log( "[DEBUG SoundRecorder.js] onClose, uri: ", uri );
+          if ( uri ) {
+            setExitWarningShown( true );
+          } else {
+            navigation.goBack( );
+          }
+        }}
         mediaCaptured={uri}
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
         sounds={sounds}
+      />
+      <BottomSheet
+        headerText="RECORDING SOUNDS"
+        hidden={!helpShown}
+        handleClose={( ) => setHelpShown( false )}
+      >
+        <View className="m-[43px] mt-[20px]">
+          <P>
+            <Body1>{t( "sound-recorder-help-One-organism" )}</Body1>
+            <List2>{t( "sound-recorder-help-Try-to-isolate" )}</List2>
+          </P>
+          <P>
+            <Body1>{t( "sound-recorder-help-Stop-moving" )}</Body1>
+            <List2>{t( "sound-recorder-help-Make-sure" )}</List2>
+          </P>
+          <P>
+            <Body1>{t( "sound-recorder-help-Get-closer" )}</Body1>
+            <List2>{t( "sound-recorder-help-Get-as-close-as-you-can" )}</List2>
+          </P>
+          <P>
+            <Body1>{t( "sound-recorder-help-Keep-it-short" )}</Body1>
+            <List2>{t( "sound-recorder-help-A-recording-of" )}</List2>
+          </P>
+        </View>
+      </BottomSheet>
+      <WarningSheet
+        hidden={!exitWarningShown}
+        headerText={t( "DISCARD-SOUND-header" )}
+        text={t( "By-exiting-your-recorded-sound-will-not-be-saved" )}
+        confirm={( ) => navigation.goBack( )}
+        handleClose={( ) => setExitWarningShown( false )}
+        buttonText={t( "DISCARD-RECORDING" )}
+      />
+      <WarningSheet
+        hidden={!resetWarningShown}
+        headerText={t( "RESET-SOUND-header" )}
+        text={t( "Would-you-like-to-discard-your-current-recording-and-start-over" )}
+        confirm={( ) => {
+          resetRecording( );
+          setResetWarningShown( false );
+        }}
+        handleClose={( ) => setResetWarningShown( false )}
+        buttonText={t( "RESET-RECORDING" )}
       />
     </ViewWrapper>
   );
