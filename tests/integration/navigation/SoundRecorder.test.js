@@ -1,13 +1,9 @@
 import {
-  // act,
   screen,
   userEvent,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
-// import inatjs from "inaturalistjs";
-// import useStore from "stores/useStore";
-// import factory, { makeResponse } from "tests/factory";
 import { renderApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
