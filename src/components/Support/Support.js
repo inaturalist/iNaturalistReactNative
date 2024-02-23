@@ -7,14 +7,33 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
+import { Alert, Linking } from "react-native";
 
 const Support = (): Node => {
-  const onDonatePress = ( ) => {
-    console.log( "Donate pressed" );
+  const onDonatePress = async ( ) => {
+    const url = "https://inaturalist.org/donate";
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL( url );
+
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
   };
-  const onShopPress = ( ) => {
-    console.log( "Shop pressed" );
+
+  const onShopPress = async ( ) => {
+    const url = "https://inaturalist.threadless.com";
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL( url );
+
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
   };
+
   const onReviewPress = ( ) => {
     console.log( "Review pressed" );
   };
