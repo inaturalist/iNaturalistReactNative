@@ -4,6 +4,7 @@ import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
+import Support from "components/Support/Support";
 import { t } from "i18next";
 import {
   hideHeader,
@@ -52,6 +53,11 @@ const BottomTabs = ( ) => {
           name="settings"
           component={Settings}
           options={{ headerTitle: t( "Settings" ) }}
+        />
+        <Tab.Screen
+          name="Support"
+          component={Support}
+          options={{ headerTitle: t( "Support" ) }}
         />
         <Tab.Screen
           name="about"
