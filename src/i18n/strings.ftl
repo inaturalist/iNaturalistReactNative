@@ -447,6 +447,8 @@ High = High
 
 Highest = Highest
 
+HIGHEST-RANK = HIGHEST RANK
+
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 
@@ -522,6 +524,8 @@ Low = Low
 
 Lowest = Lowest
 
+LOWEST-RANK = LOWEST RANK
+
 Mammals = Mammals
 
 Media = Media
@@ -592,6 +596,8 @@ No-Media = No Media
 No-model-found = No model found
 
 none = none
+
+NONE = NONE
 
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 

@@ -44,6 +44,7 @@ export { default as ScrollViewWrapper } from "./ScrollViewWrapper";
 export { default as SearchBar } from "./SearchBar";
 export { default as BottomSheet } from "./Sheets/BottomSheet";
 export { default as BottomSheetStandardBackdrop } from "./Sheets/BottomSheetStandardBackdrop";
+export { default as PickerSheet } from "./Sheets/PickerSheet";
 export { default as RadioButtonSheet } from "./Sheets/RadioButtonSheet";
 export { default as TextInputSheet } from "./Sheets/TextInputSheet";
 export { default as TextSheet } from "./Sheets/TextSheet";

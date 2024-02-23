@@ -260,6 +260,7 @@
   "Has-Sounds": "Has Sounds",
   "High": "High",
   "Highest": "Highest",
+  "HIGHEST-RANK": "HIGHEST RANK",
   "ID-Withdrawn": {
     "comment": "Identification Status",
     "val": "ID Withdrawn"
@@ -316,6 +317,7 @@
   },
   "Low": "Low",
   "Lowest": "Lowest",
+  "LOWEST-RANK": "LOWEST RANK",
   "Mammals": "Mammals",
   "Media": "Media",
   "Missing-Date": "Missing Date",
@@ -359,6 +361,7 @@
   "No-Media": "No Media",
   "No-model-found": "No model found",
   "none": "none",
+  "NONE": "NONE",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved-cc0": {
     "comment": "license code",
