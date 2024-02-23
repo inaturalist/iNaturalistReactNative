@@ -152,7 +152,7 @@ const useMapLocation = ( ): Object => {
     redoSearchInMapArea,
     region,
     showMapBoundaryButton,
-    startAtUserLocation: permissionsGranted && !place,
+    startAtNearby: permissionsGranted && !place,
     updateMapBoundaries
   };
 };

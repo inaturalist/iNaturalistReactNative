@@ -35,8 +35,8 @@ const calculateZoom = ( width, delta ) => Math.round(
 
 const POINT_TILES_ENDPOINT = "https://tiles.inaturalist.org/v1/points";
 const API_ENDPOINT = "https://api.inaturalist.org/v2";
-
 const OBSCURATION_CELL_SIZE = 0.2;
+const NEARBY_DIM_M = 50_000;
 
 // Adapted from
 // https://github.com/inaturalist/inaturalist/blob/main/app/assets/javascripts/inaturalist/map3.js.erb#L1500
@@ -70,7 +70,7 @@ type Props = {
   mapViewClassName?: string,
   mapViewRef?: Object,
   mapType?: string,
-  minZoomLevel?: ?number,
+  minZoomLevel?: number | null,
   obscured?: boolean,
   obsLatitude: number,
   obsLongitude: number,
@@ -88,6 +88,7 @@ type Props = {
   showLocationIndicator?: boolean,
   showsCompass?: boolean,
   startAtUserLocation?: boolean,
+  startAtNearby?: boolean,
   style?: Object,
   tileMapParams?: Object,
   withObsTiles?: boolean,
@@ -132,6 +133,7 @@ const Map = ( {
   showLocationIndicator,
   showsCompass,
   startAtUserLocation = false,
+  startAtNearby = false,
   style,
   tileMapParams,
   withObsTiles,
@@ -174,6 +176,10 @@ const Map = ( {
     startAtUserLocation
   );
 
+  const [zoomToUserNearbyRequested, setZoomToNearbyRequested] = useState(
+    startAtNearby
+  );
+
   // Adapted from iNat Android LocationChooserActivity.java computeOffset function
   const EARTH_RADIUS = 6371000; // Earth radius in meters
   function metersToLatitudeDelta( meters, latitude ) {
@@ -209,6 +215,18 @@ const Map = ( {
       setZoomToUserLocationRequested( false );
     }
   }, [userLocation, zoomToUserLocationRequested] );
+
+  useEffect( ( ) => {
+    if ( userLocation && zoomToUserNearbyRequested && mapViewRef?.current ) {
+      mapViewRef.current.animateToRegion( {
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+        latitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, userLocation.latitude ),
+        longitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, userLocation.latitude )
+      } );
+      setZoomToNearbyRequested( false );
+    }
+  }, [userLocation, zoomToUserNearbyRequested] );
 
   // Kludge for the fact that the onUserLocationChange callback in MapView
   // won't fire if showsUserLocation is true on the first render
@@ -360,6 +378,8 @@ const Map = ( {
         style={style}
         onPanDrag={onPanDrag}
         minZoomLevel={minZoomLevel}
+        rotateEnabled={false}
+        pitchEnabled={false}
       >
         {( withPressableObsTiles || withObsTiles ) && urlTemplate && (
           <UrlTile

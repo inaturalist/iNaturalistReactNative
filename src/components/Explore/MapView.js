@@ -40,7 +40,7 @@ const MapView = ( {
     redoSearchInMapArea,
     region,
     showMapBoundaryButton,
-    startAtUserLocation,
+    startAtNearby,
     updateMapBoundaries
   } = useMapLocation( );
 
@@ -61,12 +61,11 @@ const MapView = ( {
           </View>
         )}
       </View>
-      {startAtUserLocation !== null && (
+      {startAtNearby !== null && (
         <Map
           currentLocationButtonClassName="left-5 bottom-20"
           getMapBoundaries={updateMapBoundaries}
           mapViewClassName="-mt-4"
-          minZoomLevel={startAtUserLocation && 10}
           observations={observations}
           onPanDrag={onPanDrag}
           region={region}
@@ -74,7 +73,7 @@ const MapView = ( {
           showExplore
           showSwitchMapTypeButton
           showsCompass={false}
-          startAtUserLocation={startAtUserLocation}
+          startAtNearby={startAtNearby}
           switchMapTypeButtonClassName="left-20 bottom-20"
           tileMapParams={tileMapParams}
           withPressableObsTiles={tileMapParams !== null}
