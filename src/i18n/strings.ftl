@@ -597,6 +597,8 @@ No-model-found = No model found
 
 none = none
 
+NONE = NONE
+
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
