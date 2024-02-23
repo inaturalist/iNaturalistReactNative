@@ -171,7 +171,12 @@ const EvidenceSectionContainer = ( {
     if ( hasValidLocation && hasValidDate && !passesEvidenceTest ) {
       setPassesEvidenceTest( true );
     }
-  }, [hasValidLocation, hasValidDate, setPassesEvidenceTest, passesEvidenceTest] );
+  }, [
+    hasValidDate,
+    hasValidLocation,
+    passesEvidenceTest,
+    setPassesEvidenceTest
+  ] );
 
   const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
 

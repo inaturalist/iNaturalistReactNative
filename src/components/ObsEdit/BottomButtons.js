@@ -2,8 +2,10 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
-  Button, StickyToolbar
+  Button,
+  StickyToolbar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -20,8 +22,6 @@ import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
 const { useRealm } = RealmContext;
-
-const DESIRED_LOCATION_ACCURACY = 600000;
 
 type Props = {
   passesEvidenceTest: boolean,
@@ -141,13 +141,14 @@ const BottomButtons = ( {
     if ( allowUserToUpload ) { return false; }
     // missing evidence sheet takes precedence over the location imprecise sheet
 
-    if ( currentObservation?.positional_accuracy
-      && currentObservation?.positional_accuracy > DESIRED_LOCATION_ACCURACY ) {
+    if (
+      currentObservation?.positional_accuracy
+      && currentObservation?.positional_accuracy > REQUIRED_LOCATION_ACCURACY
       // Don't check for valid positional accuracy in case of a new observation with imported photos
-      if ( !isNewObs || !hasImportedPhotos ) {
-        setShowImpreciseLocationSheet( true );
-        return true;
-      }
+      && ( !isNewObs || !hasImportedPhotos )
+    ) {
+      setShowImpreciseLocationSheet( true );
+      return true;
     }
     if ( !passesEvidenceTest ) {
       setShowMissingEvidenceSheet( true );
@@ -156,7 +157,13 @@ const BottomButtons = ( {
     }
 
     return false;
-  }, [allowUserToUpload, currentObservation, passesEvidenceTest, isNewObs, hasImportedPhotos] );
+  }, [
+    allowUserToUpload,
+    currentObservation,
+    hasImportedPhotos,
+    isNewObs,
+    passesEvidenceTest
+  ] );
 
   const handlePress = useCallback( type => {
     logger.info( `tapped ${type}` );
