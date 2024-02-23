@@ -30,29 +30,37 @@ const CHECKMARK_CLASSES = [
 
 type Props = {
   captureButton: Function,
-  onClose: Function,
+  closeHidden?: boolean,
+  confirmHidden?: boolean,
   mediaCaptured?: boolean,
+  onClose: Function,
+  onConfirm: Function,
   rotatableAnimatedStyle?: Object,
-  onConfirm: Function
 }
 
 const MediaNavButtons = ( {
   captureButton,
-  onConfirm,
-  onClose,
+  closeHidden,
+  confirmHidden,
   mediaCaptured,
+  onClose,
+  onConfirm,
   rotatableAnimatedStyle
 }: Props ): Node => (
   <View
     className="h-32 flex-row justify-between items-center bg-black"
     testID="MediaNavButtons"
   >
-    <CloseButton
-      handleClose={onClose}
-      buttonClassName="w-1/3"
-    />
+    {closeHidden
+      ? <View className="w-1/3" />
+      : (
+        <CloseButton
+          handleClose={onClose}
+          buttonClassName="w-1/3"
+        />
+      )}
     {captureButton}
-    {mediaCaptured
+    {mediaCaptured && !confirmHidden
       ? (
         <Animated.View
           style={!isTablet && rotatableAnimatedStyle}

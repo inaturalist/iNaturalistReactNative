@@ -122,7 +122,7 @@ const SoundRecorder = (): Node => {
     let icon = "microphone";
     let accessibilityLabel = t( "Record-verb" );
     let accessibilityHint = t( "Starts-recording-sound" );
-    let backgroundColor = colors.red;
+    let backgroundColor = colors.warningRed;
     let size = 33;
     if ( status === "recording" ) {
       onPress = stopRecording;
@@ -161,6 +161,18 @@ const SoundRecorder = (): Node => {
     ? [{ file_url: uri, uuid: "fake-uuid" }]
     : [];
 
+  let helpText = t( "Press-record-to-start" );
+  switch ( status ) {
+    case RECORDING:
+      helpText = t( "Recoding-sound" );
+      break;
+    case STOPPED:
+      helpText = t( "Recording-stopped-Tap-play-the-current-recording" );
+      break;
+    default:
+      helpText = t( "Press-record-to-start" );
+  }
+
   return (
     <ViewWrapper wrapperClassName="bg-black justify-between">
       <StatusBar barStyle="light-content" backgroundColor="black" />
@@ -171,14 +183,16 @@ const SoundRecorder = (): Node => {
         {/*
           <Body1 className="text-gray">{uri}</Body1>
         */}
-        <View className="absolute left-5 bottom-5">
-          <INatIconButton
-            icon="help"
-            onPress={( ) => setHelpShown( !helpShown )}
-            accessibilityLabel={t( "Reset-verb" )}
-            color="white"
-          />
-        </View>
+        { status !== RECORDING && (
+          <View className="absolute left-5 bottom-5">
+            <INatIconButton
+              icon="help"
+              onPress={( ) => setHelpShown( !helpShown )}
+              accessibilityLabel={t( "Reset-verb" )}
+              color="white"
+            />
+          </View>
+        ) }
         { uri && status === STOPPED && (
           <View className="absolute right-5 bottom-5">
             <INatIconButton
@@ -191,6 +205,9 @@ const SoundRecorder = (): Node => {
         ) }
       </View>
       <View>{/* TODO: add visualization for sound recording */}</View>
+      <View className="justify-center h-[60px]">
+        <Body1 className="text-white text-center p-2">{helpText}</Body1>
+      </View>
       <MediaNavButtons
         captureButton={captureButton}
         onConfirm={navToObsEdit}
@@ -203,6 +220,8 @@ const SoundRecorder = (): Node => {
           }
         }}
         mediaCaptured={uri}
+        confirmHidden={status === RECORDING}
+        closeHidden={status === RECORDING}
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}
