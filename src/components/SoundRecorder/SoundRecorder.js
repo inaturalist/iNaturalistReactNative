@@ -4,8 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   Body1,
+  Body2,
   BottomSheet,
-  Heading1,
   INatIconButton,
   List2,
   MediaNavButtons,
@@ -31,13 +31,7 @@ import colors from "styles/tailwindColors";
 const INITIAL_SOUND = {
   // recording
   recordSecs: 0,
-  recordTime: "00:00:00",
-  currentMetering: 0,
-  // playback
-  currentPositionSec: 0,
-  currentDurationSec: 0,
-  playTime: "00:00:00",
-  duration: "00:00:00"
+  recordTime: "00:00"
 };
 
 const NOT_STARTED = "notStarted";
@@ -56,6 +50,7 @@ const SoundRecorder = (): Node => {
   const [helpShown, setHelpShown] = useState( false );
   const [exitWarningShown, setExitWarningShown] = useState( false );
   const [resetWarningShown, setResetWarningShown] = useState( false );
+  const meteringHistory = useRef( [] );
 
   const [
     status,
@@ -76,6 +71,7 @@ const SoundRecorder = (): Node => {
     setSound( INITIAL_SOUND );
     setUri( null );
     setStatus( NOT_STARTED );
+    meteringHistory.current = [];
   }, [
   ] );
 
@@ -90,12 +86,18 @@ const SoundRecorder = (): Node => {
       setSound( {
         ...sound,
         recordSecs: e.currentPosition,
-        recordTime: audioRecorderPlayer.mmssss( Math.floor( e.currentPosition ) ),
-        currentMetering: e.currentMetering
+        recordTime: audioRecorderPlayer.mmss( Math.floor( e.currentPosition / 1000 ) )
       } );
+      meteringHistory.current.push( [e.currentPosition, e.currentMetering] );
+      if ( meteringHistory.current.length > 200 ) {
+        meteringHistory.current = meteringHistory.current.slice(
+          meteringHistory.current.length - 200,
+          meteringHistory.current.length
+        );
+      }
     } );
     setUri( cachedFile );
-  }, [audioRecorderPlayer, sound] );
+  }, [audioRecorderPlayer, meteringHistory, sound] );
 
   const stopRecording = useCallback( async () => {
     try {
@@ -124,6 +126,7 @@ const SoundRecorder = (): Node => {
     let accessibilityHint = t( "Starts-recording-sound" );
     let backgroundColor = colors.warningRed;
     let size = 33;
+    const style = {};
     if ( status === "recording" ) {
       onPress = stopRecording;
       icon = "stop";
@@ -134,6 +137,7 @@ const SoundRecorder = (): Node => {
       icon = "play";
       size = 24;
       backgroundColor = colors.darkGray;
+      style.paddingLeft = 5;
     }
 
     return (
@@ -148,6 +152,7 @@ const SoundRecorder = (): Node => {
         width={60}
         height={60}
         mode="contained"
+        style={style}
       />
     );
   }, [
@@ -177,12 +182,29 @@ const SoundRecorder = (): Node => {
     <ViewWrapper wrapperClassName="bg-black justify-between">
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-1 items-center justify-center">
-        <Heading1 className="text-white">
-          {sound.recordTime}
-        </Heading1>
-        {/*
-          <Body1 className="text-gray">{uri}</Body1>
-        */}
+        <View className="justify-center items-center w-full h-full">
+          { status !== NOT_STARTED && (
+            <View className="w-full h-full flex-row items-center overflow-hidden justify-end">
+              { meteringHistory.current?.map( item => {
+                const [position, metering] = item;
+                return (
+                  <View
+                    key={`metering-${position}`}
+                    className="m-0.5 bg-warningRed b-1 w-1 h-full"
+                    style={{
+                      height: `${-100 / metering}%`
+                    }}
+                  />
+                );
+              } )}
+            </View>
+          ) }
+        </View>
+        <View className="absolute bottom-5 h-[44px] justify-center">
+          <Body2 className="text-white">
+            {sound.recordTime}
+          </Body2>
+        </View>
         { status !== RECORDING && (
           <View className="absolute left-5 bottom-5">
             <INatIconButton
@@ -204,7 +226,6 @@ const SoundRecorder = (): Node => {
           </View>
         ) }
       </View>
-      <View>{/* TODO: add visualization for sound recording */}</View>
       <View className="justify-center h-[60px]">
         <Body1 className="text-white text-center p-2">{helpText}</Body1>
       </View>
@@ -212,7 +233,6 @@ const SoundRecorder = (): Node => {
         captureButton={captureButton}
         onConfirm={navToObsEdit}
         onClose={( ) => {
-          console.log( "[DEBUG SoundRecorder.js] onClose, uri: ", uri );
           if ( uri ) {
             setExitWarningShown( true );
           } else {

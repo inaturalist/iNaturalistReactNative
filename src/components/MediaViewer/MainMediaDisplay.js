@@ -98,7 +98,7 @@ const MainMediaDisplay = ( {
 
   const renderSound = useCallback( sound => (
     <View
-      className="justify-center"
+      className="justify-center items-center"
       style={{
         width: screenWidth,
         height: displayHeight
