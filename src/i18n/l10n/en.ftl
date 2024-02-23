@@ -904,6 +904,8 @@ Stay-on-this-screen = Stay on this screen while your location loads.
 
 Support = Support
 
+SUPPORT = SUPPORT
+
 Syncing = Syncing...
 
 Tap-to-search-for-taxa = Tap to search for taxa

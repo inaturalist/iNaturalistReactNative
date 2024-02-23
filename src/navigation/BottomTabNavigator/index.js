@@ -71,10 +71,6 @@ const BottomTabs = ( ) => {
           component={PlaceholderComponent}
         />
         <Tab.Screen
-          name="Donate"
-          component={PlaceholderComponent}
-        />
-        <Tab.Screen
           name="ProjectsStackNavigator"
           component={ProjectsStackNavigator}
           options={hideHeader}
