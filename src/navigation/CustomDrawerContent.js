@@ -96,7 +96,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       navigation: "about",
       icon: "inaturalist"
     },
-    donate: {
+    support: {
       label: t( "SUPPORT" ),
       navigation: "Support",
       icon: "heart"
