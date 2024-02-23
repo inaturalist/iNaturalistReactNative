@@ -27,6 +27,7 @@ const deletionState = {
 const uploadState = {
   uploads: [{}],
   numToUpload: 1,
+  numFinishedUploads: 0,
   uploadInProgress: false,
   uploadsComplete: false,
   error: null
@@ -102,18 +103,19 @@ describe( "Toolbar", () => {
 
   it( "displays multiple uploads in progress", async () => {
     renderComponent( <ToolbarContainer
-      numUnuploadedObs={3}
+      numUnuploadedObs={5}
       uploadState={{
         ...uploadState,
         uploadInProgress: true,
-        uploads: [{}, {}, {}],
-        numToUpload: 5
+        uploads: [{}, {}, {}, {}],
+        numToUpload: 5,
+        numFinishedUploads: 1
       }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "Uploading-x-of-y-observations", {
       total: 5,
-      currentUploadCount: 3
+      currentUploadCount: 2
     } ) );
     expect( statusText ).toBeVisible( );
   } );

@@ -53,11 +53,11 @@ const ToolbarContainer = ( {
     : 0;
 
   const {
-    uploads,
     error: uploadError,
     uploadInProgress,
     uploadsComplete,
     numToUpload,
+    numFinishedUploads,
     syncInProgress
   } = uploadState;
 
@@ -112,7 +112,7 @@ const ToolbarContainer = ( {
     if ( uploadInProgress ) {
       const translationParams = {
         total: numToUpload,
-        currentUploadCount: numToUpload - uploads.length + 1
+        currentUploadCount: numFinishedUploads + 1
       };
       // iPhone 4 pixel width
       if ( screenWidth <= 640 ) {
@@ -135,8 +135,8 @@ const ToolbarContainer = ( {
     numUnuploadedObs,
     t,
     totalDeletions,
-    uploads,
     numToUpload,
+    numFinishedUploads,
     uploadsComplete,
     uploadInProgress,
     syncInProgress

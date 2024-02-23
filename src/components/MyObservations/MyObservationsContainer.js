@@ -47,6 +47,7 @@ export const INITIAL_STATE = {
   // $FlowIgnore
   uploads: [],
   numToUpload: 0,
+  numFinishedUploads: 0,
   uploadsComplete: false,
   syncInProgress: false
 };
@@ -57,12 +58,12 @@ const startUploadState = uploads => ( {
   uploadsComplete: false,
   uploads,
   numToUpload: uploads.length,
+  numFinishedUploads: 0,
   uploadProgress: { },
-  totalProgressIncrements: uploads
-    .reduce(
-      ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
-      uploads.length
-    )
+  totalProgressIncrements: uploads.reduce(
+    ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+    uploads.length
+  )
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
@@ -90,6 +91,11 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
           ? [action.observation]
           : state.uploads ),
         singleUpload: action.singleUpload
+      };
+    case "START_NEXT_UPLOAD":
+      return {
+        ...state,
+        numFinishedUploads: state.numFinishedUploads + 1
       };
     case "STOP_UPLOADS":
       return {
@@ -291,6 +297,7 @@ const MyObservationsContainer = ( ): Node => {
 
     await Promise.all( uploads.map( async obsToUpload => {
       await uploadObservationAndCatchError( obsToUpload );
+      dispatch( { type: "START_NEXT_UPLOAD" } );
     } ) );
     dispatch( { type: "UPLOADS_COMPLETE" } );
   }, [
