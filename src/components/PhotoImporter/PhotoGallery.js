@@ -101,16 +101,26 @@ const PhotoGallery = ( ): Node => {
 
     const navToObsEdit = () => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
 
+    const importedPhotoUris = response.assets.map( x => x.uri );
+
     if ( skipGroupPhotos ) {
       // add evidence to existing observation
       setPhotoImporterState( {
-        galleryUris: [...galleryUris, ...response.assets.map( x => x.uri )],
-        evidenceToAdd: [...evidenceToAdd, ...response.assets.map( x => x.uri )]
+        galleryUris: [...galleryUris, ...importedPhotoUris],
+        evidenceToAdd: [...evidenceToAdd, ...importedPhotoUris]
       } );
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos } );
-      const updatedCurrentObservation = Observation
-        .appendObsPhotos( obsPhotos, currentObservation );
+
+      // If the current observation is not synced, update the EXIF data from imported photos
+      const unsynced = !currentObservation?._synced_at;
+      let updatedCurrentObservation = unsynced
+        ? await Observation
+          .updateObsExifFromPhotos( importedPhotoUris, currentObservation )
+        : currentObservation;
+
+      updatedCurrentObservation = Observation
+        .appendObsPhotos( obsPhotos, updatedCurrentObservation );
       observations[currentObservationIndex] = updatedCurrentObservation;
       updateObservations( observations );
       navToObsEdit();
@@ -126,7 +136,7 @@ const PhotoGallery = ( ): Node => {
     } else {
       // navigate to group photos
       setPhotoImporterState( {
-        galleryUris: [...galleryUris, ...response.assets.map( x => x.uri )],
+        galleryUris: [...galleryUris, ...importedPhotoUris],
         groupedPhotos: selectedImages.map( photo => ( {
           photos: [photo]
         } ) )

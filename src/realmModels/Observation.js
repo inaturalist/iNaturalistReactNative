@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
-import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
+import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Application from "./Application";
@@ -282,34 +282,8 @@ class Observation extends Realm.Object {
   };
 
   static createObservationFromGalleryPhotos = async photos => {
-    const newObservation = {};
-
-    // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
-    // in case the first photo is missing EXIF
-    const allExifPhotos = await Promise.all(
-      photos.map( async photo => parseExif( photo?.image?.uri ) )
-    );
-
-    allExifPhotos.filter( x => x ).forEach(
-      currentPhotoExif => {
-        const {
-          latitude, longitude, positional_accuracy: positionalAccuracy, date
-        }
-        = currentPhotoExif;
-
-        if ( !newObservation.latitude ) {
-          newObservation.latitude = latitude;
-        }
-        if ( !newObservation.longitude ) {
-          newObservation.longitude = longitude;
-        }
-        if ( !newObservation.observed_on_string ) {
-          newObservation.observed_on_string = formatExifDateAsString( date ) || null;
-        }
-        if ( positionalAccuracy && !newObservation.positional_accuracy ) {
-          newObservation.positional_accuracy = positionalAccuracy;
-        }
-      }
+    const newObservation = await readExifFromMultiplePhotos(
+      photos.map( photo => photo?.image?.uri )
     );
 
     return Observation.new( newObservation );
@@ -320,6 +294,27 @@ class Observation extends Realm.Object {
     newLocalObs.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( photos, { position: 0 } );
     return newLocalObs;
+  };
+
+  static updateObsExifFromPhotos = async ( photoUris, currentObservation ) => {
+    const updatedObs = currentObservation;
+
+    const unifiedExif = await readExifFromMultiplePhotos( photoUris );
+
+    if ( unifiedExif.latitude && !currentObservation.latitude ) {
+      updatedObs.latitude = unifiedExif.latitude;
+    }
+    if ( unifiedExif.longitude && !currentObservation.longitude ) {
+      updatedObs.longitude = unifiedExif.longitude;
+    }
+    if ( unifiedExif.observed_on_string && !currentObservation.observed_on_string ) {
+      updatedObs.observed_on_string = unifiedExif.observed_on_string;
+    }
+    if ( unifiedExif.positional_accuracy && !currentObservation.positional_accuracy ) {
+      updatedObs.positional_accuracy = unifiedExif.positional_accuracy;
+    }
+
+    return updatedObs;
   };
 
   static appendObsPhotos = ( obsPhotos, currentObservation ) => {
