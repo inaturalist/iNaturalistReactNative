@@ -200,11 +200,13 @@ const SoundRecorder = (): Node => {
             </View>
           ) }
         </View>
-        <View className="absolute bottom-5 h-[44px] justify-center">
-          <Body2 className="text-white">
-            {sound.recordTime}
-          </Body2>
-        </View>
+        { status !== NOT_STARTED && (
+          <View className="absolute bottom-5 h-[44px] justify-center">
+            <Body2 className="text-white">
+              {sound.recordTime}
+            </Body2>
+          </View>
+        ) }
         { status !== RECORDING && (
           <View className="absolute left-5 bottom-5">
             <INatIconButton
