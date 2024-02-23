@@ -47,7 +47,8 @@ export const INITIAL_UPLOAD_STATE = {
   uploadProgress: { },
   // $FlowIgnore
   uploads: [],
-  uploadsComplete: false
+  uploadsComplete: false,
+  syncInProgress: false
 };
 
 const startUploadState = uploads => ( {

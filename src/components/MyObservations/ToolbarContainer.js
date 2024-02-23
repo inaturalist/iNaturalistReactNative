@@ -57,7 +57,8 @@ const ToolbarContainer = ( {
     error: uploadError,
     uploadInProgress,
     uploadsComplete,
-    currentUploadCount
+    currentUploadCount,
+    syncInProgress
   } = uploadState;
 
   const handleSyncButtonPress = useCallback( async ( ) => {
@@ -80,7 +81,7 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
   const progress = toolbarProgress;
-  const rotating = uploadInProgress || deletionsInProgress;
+  const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadError )
     || ( deletionsComplete && !deleteError );
   const needsSync = !uploadInProgress
@@ -88,11 +89,15 @@ const ToolbarContainer = ( {
 
   const getStatusText = useCallback( ( ) => {
     const totalUploadCount = uploads?.length || 0;
-
     const deletionParams = {
       total: totalDeletions,
       currentDeleteCount
     };
+
+    if ( syncInProgress ) {
+      return t( "Syncing" );
+    }
+
     if ( totalDeletions > 0 ) {
       if ( deletionsComplete ) {
         return t( "X-observations-deleted", { count: totalDeletions } );
@@ -134,7 +139,8 @@ const ToolbarContainer = ( {
     totalDeletions,
     uploads,
     uploadsComplete,
-    uploadInProgress
+    uploadInProgress,
+    syncInProgress
   ] );
 
   const getSyncIconColor = useCallback( ( ) => {
