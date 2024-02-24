@@ -260,6 +260,7 @@
   "Has-Sounds": "Has Sounds",
   "High": "High",
   "Highest": "Highest",
+  "HIGHEST-RANK": "HIGHEST RANK",
   "ID-Withdrawn": {
     "comment": "Identification Status",
     "val": "ID Withdrawn"
@@ -316,6 +317,7 @@
   },
   "Low": "Low",
   "Lowest": "Lowest",
+  "LOWEST-RANK": "LOWEST RANK",
   "Mammals": "Mammals",
   "Media": "Media",
   "Missing-Date": "Missing Date",
@@ -359,6 +361,7 @@
   "No-Media": "No Media",
   "No-model-found": "No model found",
   "none": "none",
+  "NONE": "NONE",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved-cc0": {
     "comment": "license code",
@@ -588,6 +591,7 @@
     "val": "ESTABLISHMENT MEANS"
   },
   "Stay-on-this-screen": "Stay on this screen while your location loads.",
+  "Syncing": "Syncing...",
   "Tap-to-search-for-taxa": "Tap to search for taxa",
   "Taxon": "Taxon",
   "TAXON": "TAXON",
@@ -701,7 +705,7 @@
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
   "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
   "Zoom-in-as-much-as-possible-to-improve": "Zoom in as much as possible to improve location accuracy and get better identifications.",
-  "Your-location-uncertainty-is-over-4000km": "Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
+  "Your-location-uncertainty-is-over-x-km": "Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
   "Category-leading": {
     "comment": "Identification category",
     "val": "Leading"

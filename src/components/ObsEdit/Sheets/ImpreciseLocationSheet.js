@@ -1,5 +1,6 @@
 // @flow
 
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import { TextSheet } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
@@ -15,7 +16,11 @@ const ImpreciseLocationSheet = ( { setShowImpreciseLocationSheet }: Props ): Nod
   return (
     <TextSheet
       headerText={t( "LOCATION-TOO-IMPRECISE" )}
-      text={t( "Your-location-uncertainty-is-over-4000km" )}
+      text={
+        t( "Your-location-uncertainty-is-over-x-km", {
+          x: Math.round( REQUIRED_LOCATION_ACCURACY / 1000 )
+        } )
+      }
       setShowSheet={setShowImpreciseLocationSheet}
     />
   );

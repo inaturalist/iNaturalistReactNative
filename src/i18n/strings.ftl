@@ -447,6 +447,8 @@ High = High
 
 Highest = Highest
 
+HIGHEST-RANK = HIGHEST RANK
+
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 
@@ -522,6 +524,8 @@ Low = Low
 
 Lowest = Lowest
 
+LOWEST-RANK = LOWEST RANK
+
 Mammals = Mammals
 
 Media = Media
@@ -592,6 +596,8 @@ No-Media = No Media
 No-model-found = No model found
 
 none = none
+
+NONE = NONE
 
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
@@ -896,6 +902,8 @@ ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
 
 Stay-on-this-screen = Stay on this screen while your location loads.
 
+Syncing = Syncing...
+
 Tap-to-search-for-taxa = Tap to search for taxa
 
 Taxon = Taxon
@@ -1103,7 +1111,7 @@ You-can-still-share-the-file =
 Zoom-in-as-much-as-possible-to-improve =
     Zoom in as much as possible to improve location accuracy and get better identifications.
 
-Your-location-uncertainty-is-over-4000km = Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+Your-location-uncertainty-is-over-x-km = Your location uncertainty is over {$x} km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 
 # Identification category
 Category-leading = Leading
