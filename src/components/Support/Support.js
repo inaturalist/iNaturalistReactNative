@@ -8,6 +8,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Alert, Linking } from "react-native";
+import * as StoreReview from "react-native-store-review";
 
 const Support = (): Node => {
   const onDonatePress = async ( ) => {
@@ -35,8 +36,9 @@ const Support = (): Node => {
   };
 
   const onReviewPress = ( ) => {
-    console.log( "Review pressed" );
+    StoreReview.requestReview( );
   };
+
   return (
     <ScrollViewWrapper>
       <View className="p-4">
