@@ -18,6 +18,8 @@ type Props = {
   queryParams: Object
 }
 
+const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
+
 const { width: defaultScreenWidth } = Dimensions.get( "screen" );
 
 const ObservationsView = ( {
@@ -57,6 +59,7 @@ const ObservationsView = ( {
       }}
     >
       <ObservationsFlashList
+        contentContainerStyle={OBS_LIST_CONTAINER_STYLE}
         data={observations}
         dataCanBeFetched
         explore

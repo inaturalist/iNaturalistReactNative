@@ -56,7 +56,7 @@ const MapView = ( {
             <Button
               text={t( "REDO-SEARCH-IN-MAP-AREA" )}
               level="focus"
-              className="top-6 absolute self-center"
+              className="top-[60px] absolute self-center"
               onPress={redoSearchInMapArea}
             />
           </View>
@@ -64,7 +64,6 @@ const MapView = ( {
       </View>
       <Map
         currentLocationButtonClassName="left-5 bottom-20"
-        mapViewClassName="-mt-4"
         observations={observations}
         onPanDrag={onPanDrag}
         onRegionChangeComplete={async ( _newRegion, boundaries ) => {
