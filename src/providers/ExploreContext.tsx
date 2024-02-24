@@ -277,11 +277,16 @@ function exploreReducer( state: State, action: Action ) {
         taxon_name: action.taxonName
       };
     case EXPLORE_ACTION.SET_PLACE:
-      return {
+      const placeState = {
         ...state,
         place_id: action.placeId,
         place_guess: action.placeName
       };
+      delete placeState.swlat;
+      delete placeState.swlng;
+      delete placeState.nelat;
+      delete placeState.nelng;
+      return placeState;
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,
@@ -428,10 +433,13 @@ function exploreReducer( state: State, action: Action ) {
         reviewedFilter: action.reviewedFilter
       };
     case EXPLORE_ACTION.SET_MAP_BOUNDARIES:
-      return {
+      const boundState = {
         ...state,
         ...action.mapBoundaries
       };
+      delete boundState.place_id;
+      delete boundState.place_guess;
+      return boundState;
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );
     }
