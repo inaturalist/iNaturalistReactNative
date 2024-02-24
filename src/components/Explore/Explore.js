@@ -144,7 +144,7 @@ const Explore = ( {
         )}
       </ViewWrapper>
       {showFiltersModal && (
-        <ViewWrapper wrapperClassName="absolute h-full overflow-hidden">
+        <ViewWrapper wrapperClassName="absolute w-full h-full overflow-hidden">
           <FilterModal
             closeModal={closeFiltersModal}
             updateTaxon={updateTaxon}
