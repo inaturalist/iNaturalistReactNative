@@ -17,6 +17,7 @@ import ObsItem from "./ObsItem";
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
+  contentContainerStyle?: Object,
   data: Array<Object>,
   dataCanBeFetched?: boolean,
   explore: boolean,
@@ -37,6 +38,7 @@ type Props = {
 const GUTTER = 15;
 
 const ObservationsFlashList = ( {
+  contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
   explore,
@@ -112,12 +114,16 @@ const ObservationsFlashList = ( {
   ), [hideLoadingWheel, layout, isOnline, explore] );
 
   const contentContainerStyle = useMemo( ( ) => {
-    if ( layout === "list" ) { return {}; }
+    if ( layout === "list" ) { return contentContainerStyleProp; }
     return {
+      ...contentContainerStyleProp,
       paddingLeft: GUTTER / 2,
       paddingRight: GUTTER / 2
     };
-  }, [layout] );
+  }, [
+    contentContainerStyleProp,
+    layout
+  ] );
 
   const renderEmptyComponent = useCallback( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
