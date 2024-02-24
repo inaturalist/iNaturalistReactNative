@@ -6,28 +6,46 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
   item: Object,
   count: number,
-  countText: string
+  countText: string,
+  onPress?: Function,
+  accessibilityLabel?: string
 };
 
-const UserListItem = ( { item, count, countText }: Props ): Node => {
+const UserListItem = ( {
+  item,
+  count,
+  countText,
+  onPress: onPressProp,
+  accessibilityLabel: accessibilityLabelProp
+}: Props ): Node => {
   const { t } = useTranslation( );
   const user = item?.user;
   const navigation = useNavigation( );
+
+  const onPress = useCallback( ( ) => {
+    if ( onPressProp ) return onPressProp( );
+    return navigation.navigate( "UserProfile", { userId: user?.id } );
+  }, [
+    navigation,
+    onPressProp,
+    user?.id
+  ] );
 
   return (
     <Pressable
       accessibilityRole="button"
       className="flex-row items-center mx-3 my-2"
       testID={`UserProfile.${user?.id}`}
-      onPress={( ) => navigation.navigate( "UserProfile", { userId: user?.id } )}
-      accessibilityLabel={t( "Navigates-to-user-profile" )}
+      onPress={onPress}
+      accessibilityLabel={accessibilityLabelProp || t( "Navigates-to-user-profile" )}
+      accessibilityState={{ disabled: false }}
     >
 
       {user?.icon_url
