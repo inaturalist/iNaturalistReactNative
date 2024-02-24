@@ -94,7 +94,7 @@ const Explore = ( {
     <>
       {!showFiltersModal
         ? (
-          <ViewWrapper testID="Explore">
+          <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
             {renderHeader()}
             {exploreView === "observations" && (
               <ObservationsViewBar

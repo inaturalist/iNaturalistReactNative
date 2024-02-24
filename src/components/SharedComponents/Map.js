@@ -65,35 +65,39 @@ function obscurationCellForLatLng( lat, lng ) {
 type Props = {
   children?: any,
   className?: string,
-  getMapBoundaries?: Function,
+  currentLocationButtonClassName?: string,
   mapHeight?: number|string, // allows for height to be defined as px or percentage
+  mapType?: string,
   mapViewClassName?: string,
   mapViewRef?: Object,
-  mapType?: string,
   minZoomLevel?: number | null,
   obscured?: boolean,
   obsLatitude: number,
   obsLongitude: number,
   onMapReady?: Function,
   onPanDrag?: Function,
+  onPermissionBlocked?: Function,
+  onPermissionDenied?: Function,
+  onPermissionGranted?: Function,
   onRegionChange?: Function,
   onRegionChangeComplete?: Function,
+  onZoomToNearby?: Function,
   openMapScreen?: Function,
+  permissionRequested?: boolean,
   positionalAccuracy?: number,
   region?: Object,
   showCurrentLocationButton?: boolean,
-  currentLocationButtonClassName?: string,
-  showSwitchMapTypeButton?: boolean,
-  switchMapTypeButtonClassName?: string,
   showLocationIndicator?: boolean,
   showsCompass?: boolean,
-  startAtUserLocation?: boolean,
+  showSwitchMapTypeButton?: boolean,
   startAtNearby?: boolean,
+  startAtUserLocation?: boolean,
   style?: Object,
+  switchMapTypeButtonClassName?: string,
+  testID?: string,
   tileMapParams?: Object,
   withObsTiles?: boolean,
   withPressableObsTiles?: boolean,
-  testID?: string
 }
 
 const getShadow = shadowColor => getShadowStyle( {
@@ -110,35 +114,39 @@ const getShadow = shadowColor => getShadowStyle( {
 const Map = ( {
   children,
   className = "flex-1",
-  getMapBoundaries,
+  currentLocationButtonClassName,
   mapHeight,
+  mapType,
   mapViewClassName,
   mapViewRef: mapViewRefProp,
-  mapType,
   minZoomLevel = 0, // default in react-native-maps
   obscured,
   obsLatitude,
   obsLongitude,
   onMapReady = ( ) => { },
   onPanDrag = ( ) => { },
+  onPermissionBlocked: onPermissionBlockedProp,
+  onPermissionDenied: onPermissionDeniedProp,
+  onPermissionGranted: onPermissionGrantedProp,
   onRegionChange,
   onRegionChangeComplete,
+  onZoomToNearby,
   openMapScreen,
+  permissionRequested: permissionRequestedProp,
   positionalAccuracy,
   region,
   showCurrentLocationButton,
-  currentLocationButtonClassName,
-  showSwitchMapTypeButton,
-  switchMapTypeButtonClassName,
   showLocationIndicator,
   showsCompass,
-  startAtUserLocation = false,
+  showSwitchMapTypeButton,
   startAtNearby = false,
+  startAtUserLocation = false,
   style,
+  switchMapTypeButtonClassName,
+  testID,
   tileMapParams,
   withObsTiles,
-  withPressableObsTiles,
-  testID
+  withPressableObsTiles
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
@@ -148,7 +156,7 @@ const Map = ( {
   );
   const navigation = useNavigation( );
   const theme = useTheme( );
-  const [permissionRequested, setPermissionRequested] = useState( false );
+  const [permissionRequested, setPermissionRequested] = useState( permissionRequestedProp );
   const [showsUserLocation, setShowsUserLocation] = useState( false );
   const [userLocation, setUserLocation] = useState( null );
   const { t } = useTranslation( );
@@ -176,7 +184,7 @@ const Map = ( {
     startAtUserLocation
   );
 
-  const [zoomToUserNearbyRequested, setZoomToNearbyRequested] = useState(
+  const [zoomToNearbyRequested, setZoomToNearbyRequested] = useState(
     startAtNearby
   );
 
@@ -191,6 +199,20 @@ const Map = ( {
     const latitudeDelta = ( latitudeDeltaRadians * 180 ) / Math.PI;
     return latitudeDelta;
   }
+
+  // Prop kind of functions as a signal. Would make more sense if it was
+  // declarative and not reactive, but hey, it's React
+  useEffect( ( ) => {
+    if ( permissionRequestedProp && permissionRequested === null ) {
+      setPermissionRequested( true );
+    }
+  }, [permissionRequestedProp, permissionRequested] );
+
+  useEffect( ( ) => {
+    if ( startAtNearby && zoomToNearbyRequested === null ) {
+      setZoomToNearbyRequested( true );
+    }
+  }, [startAtNearby, zoomToNearbyRequested] );
 
   useEffect( () => {
     AsyncStorage.getItem( "mapType" ).then( value => {
@@ -216,9 +238,11 @@ const Map = ( {
     }
   }, [userLocation, zoomToUserLocationRequested] );
 
+  // Zoom to nearby region if requested. Note that if you want to do something
+  // after the map zooms, you need to use onRegionChangeComplete
   useEffect( ( ) => {
-    if ( userLocation && zoomToUserNearbyRequested && mapViewRef?.current ) {
-      mapViewRef.current.animateToRegion( {
+    if ( userLocation && zoomToNearbyRequested && mapViewRef?.current ) {
+      mapViewRef.current?.animateToRegion( {
         latitude: userLocation.latitude,
         longitude: userLocation.longitude,
         latitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, userLocation.latitude ),
@@ -226,7 +250,11 @@ const Map = ( {
       } );
       setZoomToNearbyRequested( false );
     }
-  }, [userLocation, zoomToUserNearbyRequested] );
+  }, [
+    onZoomToNearby,
+    userLocation,
+    zoomToNearbyRequested
+  ] );
 
   // Kludge for the fact that the onUserLocationChange callback in MapView
   // won't fire if showsUserLocation is true on the first render
@@ -237,24 +265,47 @@ const Map = ( {
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
   const onPermissionGranted = useCallback( ( ) => {
+    if ( typeof ( onPermissionGrantedProp ) === "function" ) onPermissionGrantedProp( );
     setPermissionRequested( false );
     setShowsUserLocation( true );
-    setZoomToUserLocationRequested( true );
-  }, [setPermissionRequested, setShowsUserLocation, setZoomToUserLocationRequested] );
+    if ( startAtNearby ) {
+      setZoomToNearbyRequested( true );
+    }
+  }, [
+    onPermissionGrantedProp,
+    setPermissionRequested,
+    setZoomToNearbyRequested,
+    startAtNearby
+  ] );
   const onPermissionBlocked = useCallback( ( ) => {
+    if ( typeof ( onPermissionBlockedProp ) === "function" ) onPermissionBlockedProp( );
     setPermissionRequested( false );
     setShowsUserLocation( false );
-  }, [setPermissionRequested, setShowsUserLocation] );
+  }, [
+    onPermissionBlockedProp,
+    setPermissionRequested,
+    setShowsUserLocation
+  ] );
   const onPermissionDenied = useCallback( ( ) => {
+    if ( typeof ( onPermissionDeniedProp ) === "function" ) onPermissionDeniedProp( );
     setPermissionRequested( false );
     setShowsUserLocation( false );
-  }, [setPermissionRequested, setShowsUserLocation] );
+  }, [
+    onPermissionDeniedProp,
+    setPermissionRequested,
+    setShowsUserLocation
+  ] );
 
-  const params = useMemo( ( ) => ( {
-    ...tileMapParams,
-    color: "%2374ac00",
-    verifiable: "true"
-  } ), [tileMapParams] );
+  const params = useMemo( ( ) => {
+    const newTileParams: any = {
+      color: "%2374ac00",
+      ...tileMapParams
+    };
+    delete newTileParams.order;
+    delete newTileParams.order_by;
+    delete newTileParams.per_page;
+    return newTileParams;
+  }, [tileMapParams] );
 
   const changeMapType = async newMapType => {
     setCurrentMapType( newMapType );
@@ -345,10 +396,6 @@ const Map = ( {
           ? region
           : initialRegion}
         onRegionChange={async ( ) => {
-          if ( getMapBoundaries ) {
-            const boundaries = await mapViewRef?.current?.getMapBoundaries( );
-            getMapBoundaries( boundaries );
-          }
           if ( onRegionChange ) { onRegionChange( ); }
         }}
         onUserLocationChange={async locationChangeEvent => {
@@ -363,7 +410,10 @@ const Map = ( {
         showsUserLocation={showsUserLocation}
         loadingEnabled
         onRegionChangeComplete={async newRegion => {
-          if ( onRegionChangeComplete ) onRegionChangeComplete( newRegion );
+          if ( onRegionChangeComplete ) {
+            const boundaries = await mapViewRef?.current?.getMapBoundaries( );
+            onRegionChangeComplete( newRegion, boundaries );
+          }
           setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
         }}
         onPress={e => {
