@@ -438,7 +438,6 @@ function exploreReducer( state: State, action: Action ) {
         ...action.mapBoundaries
       };
       delete boundState.place_id;
-      delete boundState.place_guess;
       return boundState;
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );
