@@ -408,6 +408,7 @@ const Map = ( {
           }
         }}
         showsUserLocation={showsUserLocation}
+        showsMyLocationButton={false}
         loadingEnabled
         onRegionChangeComplete={async newRegion => {
           if ( onRegionChangeComplete ) {
