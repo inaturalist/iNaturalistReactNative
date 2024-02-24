@@ -21,7 +21,7 @@ const useMapLocation = ( ): Object => {
   const { params } = useRoute( );
   const place = params?.place;
   const realm = useRealm( );
-  const { dispatch } = useExplore( );
+  const { dispatch, state } = useExplore( );
   const [mapBoundaries, setMapBoundaries] = useState( null );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
   const [permissionRequested, setPermissionRequested] = useState( null );
@@ -31,7 +31,7 @@ const useMapLocation = ( ): Object => {
     latitudeDelta: DELTA,
     longitudeDelta: DELTA
   } );
-  const [startAtNearby, setStartAtNearby] = useState( true );
+  const [startAtNearby, setStartAtNearby] = useState( !state.swlat );
   const { t } = useTranslation( );
 
   const onPanDrag = ( ) => setShowMapBoundaryButton( true );

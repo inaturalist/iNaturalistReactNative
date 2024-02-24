@@ -33,20 +33,28 @@ const ObservationsView = ( {
 
   if ( !layout ) { return null; }
 
-  if ( layout === "map" ) return <MapView observations={observations} queryParams={queryParams} />;
+  // if ( layout === "map" ) return map;
 
   // We're rendering the map for grid and list views because we need the map
   // to zoom to the nearby location and calculate the query bounding box even
   // when we're on grid/list view. To do this, the map has to actually render
   // with something like it's real width and height, so we're rendering the
   // map and the list side by side in a view that's double the screen width
-  // and overflowing, keeping the map off screen
-  // TODO calculate the bounding box without rendering the map. Probably
-  // doable w/ turf.js
+  // and overflowing, keeping the map off screen in grid/list view, moving it
+  // on screen otherwise. This also prevents both the list and the map from
+  // re-rendering every time you leave Explore and come back
+  const containerWidth = screenWidth || defaultScreenWidth;
   return (
     <View
-      className="flex-row h-full justify-end"
-      style={{ width: ( screenWidth || defaultScreenWidth ) * 2 }}
+      className="flex-1 flex-row h-full overflow-hidden"
+      // We need these dynamic styles
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{
+        width: containerWidth * 2,
+        left: layout === "map"
+          ? -containerWidth
+          : 0
+      }}
     >
       <ObservationsFlashList
         data={observations}

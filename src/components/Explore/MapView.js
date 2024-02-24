@@ -46,7 +46,7 @@ const MapView = ( {
   } = useMapLocation( );
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 overflow-hidden h-full">
       <View className="z-10">
         {showMapBoundaryButton && (
           <View

@@ -92,68 +92,65 @@ const Explore = ( {
 
   return (
     <>
-      {!showFiltersModal
-        ? (
-          <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
-            {renderHeader()}
-            {exploreView === "observations" && (
-              <ObservationsViewBar
-                layout={layout}
-                updateObservationsView={writeLayoutToStorage}
-              />
-            )}
-            <INatIconButton
-              icon={exploreViewIcon[exploreView]}
-              color={theme.colors.onPrimary}
-              size={27}
-              className={classnames(
-                grayCircleClass,
-                "absolute bottom-5 z-10 right-5"
-              )}
-              accessibilityLabel={t( "Explore-View" )}
-              onPress={() => setShowExploreBottomSheet( true )}
-              style={getShadow( theme.colors.primary )}
-            />
-            {exploreView === "observations" && (
-              <ObservationsView
-                layout={layout}
-                queryParams={queryParams}
-              />
-            )}
-            {exploreView === "species" && (
-              <SpeciesView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-            {exploreView === "observers" && (
-              <ObserversView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-            {exploreView === "identifiers" && (
-              <IdentifiersView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-          </ViewWrapper>
-        )
-        : (
-          <ViewWrapper>
-            <FilterModal
-              closeModal={closeFiltersModal}
-              updateTaxon={updateTaxon}
-            />
-          </ViewWrapper>
+      <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
+        {renderHeader()}
+        {exploreView === "observations" && (
+          <ObservationsViewBar
+            layout={layout}
+            updateObservationsView={writeLayoutToStorage}
+          />
         )}
+        <INatIconButton
+          icon={exploreViewIcon[exploreView]}
+          color={theme.colors.onPrimary}
+          size={27}
+          className={classnames(
+            grayCircleClass,
+            "absolute bottom-5 z-10 right-5"
+          )}
+          accessibilityLabel={t( "Explore-View" )}
+          onPress={() => setShowExploreBottomSheet( true )}
+          style={getShadow( theme.colors.primary )}
+        />
+        {exploreView === "observations" && (
+          <ObservationsView
+            layout={layout}
+            queryParams={queryParams}
+          />
+        )}
+        {exploreView === "species" && (
+          <SpeciesView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+        {exploreView === "observers" && (
+          <ObserversView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+        {exploreView === "identifiers" && (
+          <IdentifiersView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+      </ViewWrapper>
+      {showFiltersModal && (
+        <ViewWrapper wrapperClassName="absolute h-full overflow-hidden">
+          <FilterModal
+            closeModal={closeFiltersModal}
+            updateTaxon={updateTaxon}
+          />
+        </ViewWrapper>
+      )}
       <BottomSheet
         handleClose={( ) => setShowExploreBottomSheet( false )}
         headerText={t( "EXPLORE" )}
