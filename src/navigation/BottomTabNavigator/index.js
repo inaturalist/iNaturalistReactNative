@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
+import FullPageWebView from "components/FullPageWebView/FullPageWebView";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
@@ -52,6 +53,11 @@ const BottomTabs = ( ) => {
           name="settings"
           component={Settings}
           options={{ headerTitle: t( "Settings" ) }}
+        />
+        <Tab.Screen
+          name="FullPageWebView"
+          component={FullPageWebView}
+          options={{ headerTitle: "" }}
         />
         <Tab.Screen
           name="about"
