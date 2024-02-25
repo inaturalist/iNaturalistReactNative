@@ -375,6 +375,24 @@ const Map = ( {
     />
   );
 
+  // Not clear why but nesting <UrlTile> directly under <MapView> seems to
+  // cause it not to update in Android when you change the URL
+  const ObsUrlTile = useCallback( ( ) => {
+    if ( !urlTemplate ) return <View />;
+    if ( !withPressableObsTiles && !withObsTiles ) return <View />;
+    return (
+      <UrlTile
+        testID="Map.UrlTile"
+        tileSize={512}
+        urlTemplate={urlTemplate}
+      />
+    );
+  }, [
+    urlTemplate,
+    withPressableObsTiles,
+    withObsTiles
+  ] );
+
   return (
     <View
       style={[
@@ -432,13 +450,7 @@ const Map = ( {
         rotateEnabled={false}
         pitchEnabled={false}
       >
-        {( withPressableObsTiles || withObsTiles ) && urlTemplate && (
-          <UrlTile
-            testID="Map.UrlTile"
-            tileSize={512}
-            urlTemplate={urlTemplate}
-          />
-        )}
+        <ObsUrlTile />
         {( showLocationIndicator && ( !obscured ) ) && (
           <>
             <Circle

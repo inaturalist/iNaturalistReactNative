@@ -40,8 +40,6 @@ const ObservationsView = ( {
 
   if ( !layout ) { return null; }
 
-  // if ( layout === "map" ) return map;
-
   // We're rendering the map for grid and list views because we need the map
   // to zoom to the nearby location and calculate the query bounding box even
   // when we're on grid/list view. To do this, the map has to actually render
