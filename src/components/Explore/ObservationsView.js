@@ -29,7 +29,12 @@ const ObservationsView = ( {
   const {
     observations, isFetchingNextPage, fetchNextPage, status
   } = useInfiniteObservationsScroll( { upsert: false, params: queryParams } );
-  const { screenWidth } = useDeviceOrientation( );
+  const {
+    isLandscapeMode,
+    isTablet,
+    screenHeight,
+    screenWidth
+  } = useDeviceOrientation( );
 
   const isOnline = useIsConnected( );
 
@@ -45,14 +50,20 @@ const ObservationsView = ( {
   // and overflowing, keeping the map off screen in grid/list view, moving it
   // on screen otherwise. This also prevents both the list and the map from
   // re-rendering every time you leave Explore and come back
-  const containerWidth = screenWidth || defaultScreenWidth;
+  let containerWidth = defaultScreenWidth;
+  if ( isTablet ) {
+    containerWidth = screenWidth;
+  } else if ( screenWidth ) {
+    containerWidth = isLandscapeMode
+      ? screenHeight
+      : screenWidth;
+  }
   return (
     <View
-      className="flex-1 flex-row h-full overflow-hidden"
+      className="flex-1 flex-row h-full overflow-hidden w-[200%]"
       // We need these dynamic styles
       // eslint-disable-next-line react-native/no-inline-styles
       style={{
-        width: containerWidth * 2,
         left: layout === "map"
           ? -containerWidth
           : 0
