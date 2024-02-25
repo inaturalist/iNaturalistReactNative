@@ -3,7 +3,9 @@ import About from "components/About";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
+import { Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
+import Support from "components/Support/Support";
 import { t } from "i18next";
 import {
   hideHeader,
@@ -26,6 +28,8 @@ const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
 const BottomTabs = ( ) => {
   const isOnline = useIsConnected( );
   const renderTabBar = props => <CustomTabBarContainer {...props} isOnline={isOnline} />;
+
+  const supportTitle = () => <Heading4>{t( "SUPPORT" )}</Heading4>;
 
   return (
     <Mortal>
@@ -54,26 +58,22 @@ const BottomTabs = ( ) => {
           options={{ headerTitle: t( "Settings" ) }}
         />
         <Tab.Screen
+          name="Support"
+          component={Support}
+          options={{
+            ...showHeader,
+            headerTitle: supportTitle,
+            headerTitleAlign: "center"
+          }}
+        />
+        <Tab.Screen
           name="about"
           component={About}
           options={{ headerTitle: t( "About-iNaturalist" ) }}
         />
-        <Tab.Screen
-          name="help"
-          component={PlaceholderComponent}
-        />
-        <Tab.Screen
-          name="Help"
-          component={PlaceholderComponent}
-        />
-        <Tab.Screen
-          name="Blog"
-          component={PlaceholderComponent}
-        />
-        <Tab.Screen
-          name="Donate"
-          component={PlaceholderComponent}
-        />
+        <Tab.Screen name="help" component={PlaceholderComponent} />
+        <Tab.Screen name="Help" component={PlaceholderComponent} />
+        <Tab.Screen name="Blog" component={PlaceholderComponent} />
         <Tab.Screen
           name="ProjectsStackNavigator"
           component={ProjectsStackNavigator}

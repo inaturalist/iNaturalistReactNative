@@ -328,6 +328,8 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
+DONATE-TO-INATURALIST = DONATE TO INATURALIST
+
 # Label for a button the user taps when a task is complete
 DONE = DONE
 
@@ -472,6 +474,10 @@ iNaturalist-Network-Affiliation = iNaturalist Network Affiliation
 
 iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
 
+iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
+
+INATURALIST-STORE = INATURALIST STORE
+
 Insects = Insects
 
 Introduced = Introduced
@@ -493,6 +499,8 @@ Language-Locale = Language/Locale
 
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: {$date}
+
+LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 
 Licensing = Licensing
 
@@ -815,6 +823,8 @@ RESET-PASSWORD = RESET PASSWORD
 
 Return-to-login = Return to login
 
+REVIEW-INATURALIST = REVIEW INATURALIST
+
 Reviewed = Reviewed
 
 Reviewed-observations-only = Reviewed observations only
@@ -869,6 +879,8 @@ Share-location = Share Location
 
 Share-location = Share Location
 
+SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
+
 Sign-out = Sign out
 
 Sign-Up = Sign Up
@@ -901,6 +913,10 @@ Start-must-be-before-end = The start date must be before the end date.
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
 
 Stay-on-this-screen = Stay on this screen while your location loads.
+
+Support = Support
+
+SUPPORT = SUPPORT
 
 Syncing = Syncing...
 
@@ -1088,6 +1104,8 @@ Take-a-photo-with-your-camera = Take a photo with your camera
 Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 Record-a-sound = Record a sound
 
+You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
+
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
 
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
@@ -1107,6 +1125,9 @@ You-will-lose-all-existing-observations = {$count ->
 
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
+
+Your-donation-to-iNaturalist =
+    Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 
 Zoom-in-as-much-as-possible-to-improve =
     Zoom in as much as possible to improve location accuracy and get better identifications.
@@ -1446,7 +1467,6 @@ IDENTIFY = IDENTIFY
 PROJECTS = PROJECTS
 HELP = HELP
 BLOG = BLOG
-DONATE = DONATE
 SETTINGS = SETTINGS
 LOG-OUT = LOG OUT
 Log-out = Log out
