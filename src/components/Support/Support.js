@@ -13,9 +13,7 @@ import * as StoreReview from "react-native-store-review";
 const Support = (): Node => {
   const onDonatePress = async ( ) => {
     const url = "https://inaturalist.org/donate";
-    // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL( url );
-
     if ( supported ) {
       await Linking.openURL( url );
     } else {
@@ -25,9 +23,7 @@ const Support = (): Node => {
 
   const onShopPress = async ( ) => {
     const url = "https://inaturalist.threadless.com";
-    // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL( url );
-
     if ( supported ) {
       await Linking.openURL( url );
     } else {
