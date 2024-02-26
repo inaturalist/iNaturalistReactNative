@@ -1,13 +1,11 @@
 // @flow
 
-import { Body1, Tabs } from "components/SharedComponents";
+import { Body1, Tabs, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { getBuildNumber, getVersion } from "react-native-device-info";
-
-import ScrollViewWrapper from "./SharedComponents/ScrollViewWrapper";
 
 const aboutID = "about";
 const teamID = "team";
@@ -18,7 +16,7 @@ const About = (): Node => {
   const buildVersion = getBuildNumber();
 
   return (
-    <ScrollViewWrapper>
+    <ViewWrapper>
       <Tabs
         tabs={[
           {
@@ -44,7 +42,7 @@ const About = (): Node => {
           <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
         </View>
       </View>
-    </ScrollViewWrapper>
+    </ViewWrapper>
   );
 };
 
