@@ -49,7 +49,6 @@ const ALIASES = {
   geoprivacy: "globe",
   gridview: "grid-square",
   listview: "list-square",
-  "help-circle": "help-circle-outline",
   "id-large-fill": "label",
   "id-small-outline": "label-outline",
   journalposts: "book",
