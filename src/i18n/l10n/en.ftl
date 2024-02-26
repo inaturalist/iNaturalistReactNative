@@ -8,6 +8,13 @@ WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
+INATURALIST-TEAM = INATURALIST TEAM
+iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Angie Ta, & Ken-ichi Ueda.
+INATURALIST-COMMUNITY = INATURALIST COMMUNITY
+iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who assist in the curation of taxonomy and moderation, to the volunteer translators at who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful for all the people of our community who make iNaturalist the platform it is.
+INATURALIST-NETWORK = INATURALIST NETWORK
+The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
+COLLABORATORS = COLLABORATORS
 
 ABOUT-INATURALIST = ABOUT INATURALIST
 

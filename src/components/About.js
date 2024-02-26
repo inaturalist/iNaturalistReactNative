@@ -61,7 +61,22 @@ const About = (): Node => {
             <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
           </View>
         </HideView>
-        <HideView noInitialRender show={activeTab === teamID} />
+        <HideView noInitialRender show={activeTab === teamID}>
+          <Heading4 className="mb-3">{t( "INATURALIST-TEAM" )}</Heading4>
+          <Body2 className="mb-5">
+            {t( "iNaturalists-apps-are-designed-and-developed" )}
+          </Body2>
+          <Heading4 className="mb-3">{t( "INATURALIST-COMMUNITY" )}</Heading4>
+          <Body2 className="mb-5">
+            {t( "iNaturalist-is-supported-by-community" )}
+          </Body2>
+          <Heading4 className="mb-3">{t( "INATURALIST-NETWORK" )}</Heading4>
+          <Body2 className="mb-5">{t( "The-iNaturalist-Network" )}</Body2>
+          <Heading4 className="mb-3">{t( "COLLABORATORS" )}</Heading4>
+          <Body2 className="mb-5">
+            {t( "The-iNaturalist-team-has-collaborated" )}
+          </Body2>
+        </HideView>
       </ScrollView>
     </ViewWrapper>
   );
