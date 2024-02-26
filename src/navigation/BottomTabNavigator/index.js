@@ -30,6 +30,7 @@ const BottomTabs = ( ) => {
   const isOnline = useIsConnected( );
   const renderTabBar = props => <CustomTabBarContainer {...props} isOnline={isOnline} />;
 
+  const aboutTitle = () => <Heading4>{t( "ABOUT-INATURALIST" )}</Heading4>;
   const supportTitle = () => <Heading4>{t( "SUPPORT" )}</Heading4>;
   const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
 
@@ -60,6 +61,15 @@ const BottomTabs = ( ) => {
           options={{ headerTitle: t( "Settings" ) }}
         />
         <Tab.Screen
+          name="About"
+          component={About}
+          options={{
+            ...showHeader,
+            headerTitle: aboutTitle,
+            headerTitleAlign: "center"
+          }}
+        />
+        <Tab.Screen
           name="Support"
           component={Support}
           options={{
@@ -76,11 +86,6 @@ const BottomTabs = ( ) => {
             headerTitle: helpTitle,
             headerTitleAlign: "center"
           }}
-        />
-        <Tab.Screen
-          name="about"
-          component={About}
-          options={{ headerTitle: t( "About-iNaturalist" ) }}
         />
         <Tab.Screen name="help" component={PlaceholderComponent} />
         <Tab.Screen name="Blog" component={PlaceholderComponent} />
