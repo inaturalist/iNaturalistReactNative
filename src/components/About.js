@@ -4,7 +4,7 @@ import {
   Body1,
   Body2,
   Heading4,
-  HideView,
+  ScrollViewWrapper,
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
@@ -44,8 +44,6 @@ const About = (): Node => {
         activeId={activeTab}
       />
 
-      <ScrollView className="p-4">
-        <HideView show={activeTab === aboutID}>
           <Heading4 className="mb-3">
             {t( "INATURALIST-MISSION-VISION" )}
           </Heading4>
@@ -60,9 +58,13 @@ const About = (): Node => {
 
           <View className="mb-8 items-center justify-center">
             <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
+      <ScrollViewWrapper>
+        {activeTab === aboutID && (
+          <View className="px-4 py-8">
           </View>
-        </HideView>
-        <HideView noInitialRender show={activeTab === teamID}>
+        )}
+        {activeTab === teamID && (
+          </View>
           <Heading4 className="mb-3">{t( "INATURALIST-TEAM" )}</Heading4>
           <Body2 className="mb-5">
             {t( "iNaturalists-apps-are-designed-and-developed" )}
@@ -77,8 +79,8 @@ const About = (): Node => {
           <Body2 className="mb-5">
             {t( "The-iNaturalist-team-has-collaborated" )}
           </Body2>
-        </HideView>
-      </ScrollView>
+        )}
+      </ScrollViewWrapper>
     </ViewWrapper>
   );
 };
