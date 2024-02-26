@@ -40,7 +40,7 @@ import {
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 
 const { useRealm } = RealmContext;
@@ -78,6 +78,7 @@ const FilterModal = ( {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const realm = useRealm();
+  const currentUser = useCurrentUser();
 
   const {
     state,
@@ -1173,21 +1174,23 @@ const FilterModal = ( {
         </View>
 
         {/* Reviewed section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
-          {Object.keys( reviewedValues ).map( reviewedKey => (
-            <RadioButtonRow
-              key={reviewedKey}
-              value={reviewedValues[reviewedKey]}
-              checked={reviewedValues[reviewedKey].value === reviewedFilter}
-              onPress={() => dispatch( {
-                type: EXPLORE_ACTION.SET_REVIEWED,
-                reviewedFilter: reviewedValues[reviewedKey].value
-              } )}
-              label={reviewedValues[reviewedKey].label}
-            />
-          ) )}
-        </View>
+        { currentUser && (
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
+            {Object.keys( reviewedValues ).map( reviewedKey => (
+              <RadioButtonRow
+                key={reviewedKey}
+                value={reviewedValues[reviewedKey]}
+                checked={reviewedValues[reviewedKey].value === reviewedFilter}
+                onPress={() => dispatch( {
+                  type: EXPLORE_ACTION.SET_REVIEWED,
+                  reviewedFilter: reviewedValues[reviewedKey].value
+                } )}
+                label={reviewedValues[reviewedKey].label}
+              />
+            ) )}
+          </View>
+        )}
 
         {/* Photo licensing section */}
         <View className="mb-7">
