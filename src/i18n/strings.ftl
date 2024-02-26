@@ -1129,10 +1129,21 @@ You-can-still-share-the-file =
 Your-donation-to-iNaturalist =
     Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 
+Your-location-uncertainty-is-over-x-km = Your location uncertainty is over {$x} km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+
 Zoom-in-as-much-as-possible-to-improve =
     Zoom in as much as possible to improve location accuracy and get better identifications.
 
-Your-location-uncertainty-is-over-x-km = Your location uncertainty is over {$x} km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
+You-can-find-answers-on-our-help-page = You can find answers on our help page.
+VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
+CONTACT-SUPPORT = CONTACT SUPPORT
+Still-need-help = Still need help? You can file a support request here.
+TEACHERS = TEACHERS
+Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
+VIEW-TEACHERS-GUIDE = VIEW TEACHERS’ GUIDE
+INATURALIST-FORUM = INATURALIST FORUM
+Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 
 # Identification category
 Category-leading = Leading
