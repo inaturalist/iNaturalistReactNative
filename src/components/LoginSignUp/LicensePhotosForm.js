@@ -39,9 +39,7 @@ const LicensePhotosForm = ( ): Node => {
       links: [
         {
           label: t( "Learn-More" ),
-          onPress: () => {
-            setLearnSheet( LICENSES );
-          }
+          onPress: () => setLearnSheet( LICENSES )
         }
       ]
     },
@@ -51,9 +49,7 @@ const LicensePhotosForm = ( ): Node => {
       links: [
         {
           label: t( "Learn-More" ),
-          onPress: () => {
-            setLearnSheet( PERSONAL_INFO );
-          }
+          onPress: () => setLearnSheet( PERSONAL_INFO )
         }
       ]
     },
@@ -63,9 +59,7 @@ const LicensePhotosForm = ( ): Node => {
       links: [
         {
           label: t( "Learn-More" ),
-          onPress: () => {
-            setLearnSheet( INFO_TRANSFER );
-          }
+          onPress: () => setLearnSheet( INFO_TRANSFER )
         }
       ]
     },
@@ -75,21 +69,15 @@ const LicensePhotosForm = ( ): Node => {
       links: [
         {
           label: t( "Terms-of-Use" ),
-          onPress: () => {
-            onTermsPressed();
-          }
+          onPress: () => onTermsPressed()
         },
         {
           label: t( "Privacy-Policy" ),
-          onPress: () => {
-            onPrivacyPressed();
-          }
+          onPress: () => onPrivacyPressed()
         },
         {
           label: t( "Community-Guidelines" ),
-          onPress: () => {
-            onGuidelinesPressed();
-          }
+          onPress: () => onGuidelinesPressed()
         }
       ]
     },
