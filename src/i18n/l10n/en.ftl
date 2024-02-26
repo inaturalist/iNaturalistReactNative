@@ -69,6 +69,8 @@ Apply-filters = Apply filters
 
 Arachnids = Arachnids
 
+Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
+
 Are-you-sure = Are you sure?
 
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
@@ -158,7 +160,11 @@ Community-Moderation-Settings = Community Moderation Settings
 
 CONFIRM = CONFIRM
 
+Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
+
 Connected-Accounts = Connected Accounts
+
+CONTACT-SUPPORT = CONTACT SUPPORT
 
 Content-Display = Content & Display
 
@@ -469,6 +475,10 @@ Import-X-photos = Import {$count ->
 iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
 
 iNaturalist-Applications = iNaturalist Applications
+
+INATURALIST-FORUM = INATURALIST FORUM
+
+INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 
 iNaturalist-Network-Affiliation = iNaturalist Network Affiliation
 
@@ -914,6 +924,8 @@ ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
 
 Stay-on-this-screen = Stay on this screen while your location loads.
 
+Still-need-help = Still need help? You can file a support request here.
+
 Support = Support
 
 SUPPORT = SUPPORT
@@ -932,6 +944,8 @@ TAXONOMIC-RANKS = TAXONOMIC RANKS
 TAXONOMY-header = TAXONOMY
 
 Taxonomy-Settings = Taxonomy Settings
+
+TEACHERS = TEACHERS
 
 The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.
 
@@ -1021,9 +1035,13 @@ VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
 View-in-browser = View in Browser
 
+VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
+
 # Button or accessibility label for an element that lets the user view a
 # photo
 View-photo = View photo
+
+VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
 
 Visually-search-iNaturalist-data = Visually search iNaturalist's wealth of data. Search by a taxon in a location
 
@@ -1108,6 +1126,8 @@ You-can-also-check-out-merchandise = You can also check out merchandise for iNat
 
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
 
+You-can-find-answers-on-our-help-page = You can find answers on our help page.
+
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 
 # Message shown when a permission is required to use a part of the app
@@ -1133,17 +1153,6 @@ Your-location-uncertainty-is-over-x-km = Your location uncertainty is over {$x} 
 
 Zoom-in-as-much-as-possible-to-improve =
     Zoom in as much as possible to improve location accuracy and get better identifications.
-
-Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
-CONTACT-SUPPORT = CONTACT SUPPORT
-Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
-INATURALIST-FORUM = INATURALIST FORUM
-INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
-Still-need-help = Still need help? You can file a support request here.
-TEACHERS = TEACHERS
-VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
-VIEW-TEACHERS-GUIDE = VIEW TEACHERS’ GUIDE
-You-can-find-answers-on-our-help-page = You can find answers on our help page.
 
 # Identification category
 Category-leading = Leading
