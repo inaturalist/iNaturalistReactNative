@@ -15,7 +15,7 @@ import { Alert, Linking } from "react-native";
 const Help = (): Node => {
   const onHelpPressed = async () => {
     // TODO: add the correct URL
-    const url = "";
+    const url = "https://help.inaturalist.org/";
     const supported = await Linking.canOpenURL( url );
     if ( supported ) {
       await Linking.openURL( url );
@@ -27,11 +27,22 @@ const Help = (): Node => {
   const onContactPressed = async () => {
     // TODO: Should it use react-native-mail or Linking?
     const url = "mailto:support@inaturalist.org";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
+    try {
+      const supported = await Linking.canOpenURL( url );
+      if ( supported ) {
+        await Linking.openURL( url );
+      } else {
+        Alert.alert( `Don't know how to open this URL: ${url}` );
+      }
+    } catch ( canOpenURLError ) {
+      if ( canOpenURLError.message.match( /Info.plist/ ) ) {
+        Alert.alert(
+          "No email in the Simulator",
+          "This way of sending email doesn't work in the Simulator. Try it on a physical devicek."
+        );
+      } else {
+        throw canOpenURLError;
+      }
     }
   };
 

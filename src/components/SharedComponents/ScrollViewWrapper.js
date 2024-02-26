@@ -1,6 +1,6 @@
 // @flow
 
-import { SafeAreaView, ScrollView, View } from "components/styledComponents";
+import { SafeAreaView, ScrollView } from "components/styledComponents";
 import * as React from "react";
 import { Keyboard, StatusBar } from "react-native";
 
@@ -22,7 +22,6 @@ const ScrollViewWrapper = ( { children, testID, style }: Props ): React.Node => 
         scrollEventThrottle={16}
       >
         {children}
-        <View className="pb-64" />
       </ScrollView>
     </SafeAreaView>
   );
