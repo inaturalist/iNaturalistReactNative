@@ -101,6 +101,11 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       navigation: "Support",
       icon: "heart"
     },
+    help: {
+      label: t( "HELP" ),
+      navigation: "Help",
+      icon: "help-circle"
+    },
     settings: {
       label: t( "SETTINGS" ),
       navigation: "settings",
