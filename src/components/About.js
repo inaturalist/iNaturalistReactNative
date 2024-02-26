@@ -1,24 +1,21 @@
 // @flow
 
-import { Button } from "components/SharedComponents";
-import { Text, View } from "components/styledComponents";
-import { t } from "i18next";
+import { Body1 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
+import { getBuildNumber, getVersion } from "react-native-device-info";
 
 import ScrollViewWrapper from "./SharedComponents/ScrollViewWrapper";
 
 const About = (): Node => {
+  const appVersion = getVersion();
+  const buildVersion = getBuildNumber();
 
-  /* eslint-disable i18next/no-literal-string */
   return (
     <ScrollViewWrapper>
       <View className="p-4">
-        <Text>
-          This is an app under development! Right now this page just shows some
-          details for developers.
-        </Text>
+        <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
       </View>
     </ScrollViewWrapper>
   );

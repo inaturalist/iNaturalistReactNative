@@ -11,10 +11,6 @@ import type { Node } from "react";
 import React from "react";
 import { Platform } from "react-native";
 import Config from "react-native-config";
-import {
-  getBuildNumber,
-  getVersion
-} from "react-native-device-info";
 import RNFS from "react-native-fs";
 import useLogs from "sharedHooks/useLogs";
 
@@ -35,8 +31,6 @@ const taxonomyFileName = Platform.select( {
 /* eslint-disable i18next/no-literal-string */
 const Developer = (): Node => {
   const navigation = useNavigation( );
-  const appVersion = getVersion( );
-  const buildVersion = getBuildNumber( );
   const { shareLogFile, emailLogFile } = useLogs();
   return (
     <ScrollViewWrapper>
@@ -61,8 +55,6 @@ const Developer = (): Node => {
           text="Identify"
           className="mb-5"
         />
-        <H1>Version</H1>
-        <P>{`${appVersion} (${buildVersion})`}</P>
         <H1>Computer Vision</H1>
         <View className="flex-row">
           <Text className="font-bold">Model: </Text>
