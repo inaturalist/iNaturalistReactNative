@@ -10,13 +10,13 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   headerText: string,
-  text: string,
+  texts: [string],
   setShowSheet: Function
 }
 
 const TextSheet = ( {
   headerText,
-  text,
+  texts,
   setShowSheet
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -33,9 +33,11 @@ const TextSheet = ( {
       hideCloseButton
     >
       <View className="p-5">
-        <Body3 className="pb-5">
-          {text}
-        </Body3>
+        {texts.map( text => (
+          <Body3 className="pb-5" key={text}>
+            {text}
+          </Body3>
+        ) )}
         <Button
           text={t( "OK" )}
           onPress={handleClose}
