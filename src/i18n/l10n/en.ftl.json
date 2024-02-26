@@ -3,6 +3,13 @@
     "comment": "Header above user biography / user description on user profile",
     "val": "ABOUT"
   },
+  "INATURALIST-MISSION-VISION": "INATURALIST’S MISSION & VISION",
+  "iNaturalist-mission-is-to-connect": "iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.",
+  "iNaturalist-vision-is-a-world": "iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.",
+  "WHAT-IS-INATURALIST": "WHAT IS INATURALIST?",
+  "iNaturalist-helps-you-identify": "iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!",
+  "Whats-more-by-recording": "What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!",
+  "iNaturalist-is-supported-by": "iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.",
   "ABOUT-INATURALIST": "ABOUT INATURALIST",
   "ABOUT-THE-DQA": {
     "comment": "About the Data Quality Assement",
