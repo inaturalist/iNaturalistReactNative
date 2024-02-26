@@ -57,6 +57,7 @@ const About = (): Node => {
           <Body2 className="mb-5">{t( "iNaturalist-helps-you-identify" )}</Body2>
           <Body2 className="mb-5">{t( "Whats-more-by-recording" )}</Body2>
           <Body2 className="mb-5">{t( "iNaturalist-is-supported-by" )}</Body2>
+
           <View className="mb-8 items-center justify-center">
             <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
           </View>

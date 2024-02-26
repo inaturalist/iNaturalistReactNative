@@ -15,6 +15,7 @@ iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing 
 INATURALIST-NETWORK = INATURALIST NETWORK
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 COLLABORATORS = COLLABORATORS
+The-iNaturalist-team-has-collaborated =  The iNaturalist team has collaborated with...
 
 ABOUT-INATURALIST = ABOUT INATURALIST
 
