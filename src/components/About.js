@@ -22,6 +22,18 @@ const About = (): Node => {
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
 
+  const onTermsPressed = () => {
+    console.log( "onTermsPressed" );
+  };
+
+  const onPrivacyPressed = () => {
+    console.log( "onPrivacyPressed" );
+  };
+
+  const onGuidelinesPressed = () => {
+    console.log( "onGuidelinesPressed" );
+  };
+
   return (
     <ViewWrapper>
       <Tabs
@@ -43,7 +55,6 @@ const About = (): Node => {
         ]}
         activeId={activeTab}
       />
-
       <ScrollViewWrapper>
         {activeTab === aboutID && (
           <View className="px-4 py-8">
@@ -68,9 +79,22 @@ const About = (): Node => {
             </Body2>
             <Body2 className="mb-5">{t( "Whats-more-by-recording" )}</Body2>
             <Body2 className="mb-8">{t( "iNaturalist-is-supported-by" )}</Body2>
-            <Body2 className="mb-5 underline font-bold">{t( "Terms-of-Use" )}</Body2>
-            <Body2 className="mb-5 underline font-bold">{t( "Privacy-Policy" )}</Body2>
-            <Body2 className="mb-8 underline font-bold">
+            <Body2
+              className="mb-5 underline font-bold"
+              onPress={() => onTermsPressed()}
+            >
+              {t( "Terms-of-Use" )}
+            </Body2>
+            <Body2
+              className="mb-5 underline font-bold"
+              onPress={() => onPrivacyPressed()}
+            >
+              {t( "Privacy-Policy" )}
+            </Body2>
+            <Body2
+              className="mb-8 underline font-bold"
+              onPress={() => onGuidelinesPressed()}
+            >
               {t( "Community-Guidelines" )}
             </Body2>
             <View className="items-center justify-center">
