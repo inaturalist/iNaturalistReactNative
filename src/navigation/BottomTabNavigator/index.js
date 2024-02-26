@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
+import Help from "components/Help/Help";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
@@ -30,6 +31,7 @@ const BottomTabs = ( ) => {
   const renderTabBar = props => <CustomTabBarContainer {...props} isOnline={isOnline} />;
 
   const supportTitle = () => <Heading4>{t( "SUPPORT" )}</Heading4>;
+  const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
 
   return (
     <Mortal>
@@ -67,12 +69,20 @@ const BottomTabs = ( ) => {
           }}
         />
         <Tab.Screen
+          name="Help"
+          component={Help}
+          options={{
+            ...showHeader,
+            headerTitle: helpTitle,
+            headerTitleAlign: "center"
+          }}
+        />
+        <Tab.Screen
           name="about"
           component={About}
           options={{ headerTitle: t( "About-iNaturalist" ) }}
         />
         <Tab.Screen name="help" component={PlaceholderComponent} />
-        <Tab.Screen name="Help" component={PlaceholderComponent} />
         <Tab.Screen name="Blog" component={PlaceholderComponent} />
         <Tab.Screen
           name="ProjectsStackNavigator"
