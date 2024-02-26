@@ -1,7 +1,7 @@
 # Header above user biography / user description on user profile
 ABOUT = ABOUT
 
-About-iNaturalist = About iNaturalist
+ABOUT-INATURALIST = ABOUT INATURALIST
 
 # About the Data Quality Assement
 ABOUT-THE-DQA = ABOUT THE DQA
@@ -155,6 +155,8 @@ Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you w
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 
 Clear = Clear
+
+COLLABORATORS = COLLABORATORS
 
 Combine-Photos = Combine Photos
 
@@ -478,9 +480,13 @@ iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
 
 iNaturalist-Applications = iNaturalist Applications
 
+INATURALIST-COMMUNITY = INATURALIST COMMUNITY
+
 INATURALIST-FORUM = INATURALIST FORUM
 
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
+
+iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 
 iNaturalist-Network-Affiliation = iNaturalist Network Affiliation
 
@@ -488,7 +494,23 @@ iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of natura
 
 iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
 
+iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
+
+iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who assist in the curation of taxonomy and moderation, to the volunteer translators at who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful for all the people of our community who make iNaturalist the platform it is.
+
+iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
+
+INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
+
+INATURALIST-NETWORK = INATURALIST NETWORK
+
 INATURALIST-STORE = INATURALIST STORE
+
+INATURALIST-TEAM = INATURALIST TEAM
+
+iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
+
+iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Angie Ta, & Ken-ichi Ueda.
 
 INFO-TRANSFER = INFO TRANSFER
 
@@ -957,6 +979,12 @@ Taxonomy-Settings = Taxonomy Settings
 
 TEACHERS = TEACHERS
 
+TEAM = TEAM
+
+The-iNaturalist-team-has-collaborated =  The iNaturalist team has collaborated with...
+
+The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
+
 The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.
 
 There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
@@ -1064,6 +1092,10 @@ Visually-search-iNaturalist-data = Visually search iNaturalist's wealth of data.
 We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 
 Welcome-to-iNaturalist = Welcome to iNaturalist!
+
+WHAT-IS-INATURALIST = WHAT IS INATURALIST?
+
+Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
