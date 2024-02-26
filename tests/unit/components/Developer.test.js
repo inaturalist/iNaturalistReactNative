@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import Developer from "components/Developer";
+import Developer from "components/Developer/Developer";
 import React from "react";
 import Mailer from "react-native-mail";
 import { renderComponent } from "tests/helpers/render";
