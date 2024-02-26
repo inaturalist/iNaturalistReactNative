@@ -1,7 +1,7 @@
 # Header above user biography / user description on user profile
 ABOUT = ABOUT
 
-About-iNaturalist = About iNaturalist
+ABOUT-INATURALIST = ABOUT INATURALIST
 
 # About the Data Quality Assement
 ABOUT-THE-DQA = ABOUT THE DQA

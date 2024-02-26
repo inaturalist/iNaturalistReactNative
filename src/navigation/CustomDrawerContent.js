@@ -93,7 +93,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     // },
     about: {
       label: t( "ABOUT" ),
-      navigation: "about",
+      navigation: "About",
       icon: "inaturalist"
     },
     support: {
