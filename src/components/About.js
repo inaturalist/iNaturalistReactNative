@@ -30,8 +30,8 @@ const About = (): Node => {
     console.log( "onPrivacyPressed" );
   };
 
-  const onGuidelinesPressed = () => {
-    console.log( "onGuidelinesPressed" );
+  const onCommunityPressed = () => {
+    console.log( "onCommunityPressed" );
   };
 
   return (
@@ -93,7 +93,7 @@ const About = (): Node => {
             </Body2>
             <Body2
               className="mb-8 underline font-bold"
-              onPress={() => onGuidelinesPressed()}
+              onPress={() => onCommunityPressed()}
             >
               {t( "Community-Guidelines" )}
             </Body2>

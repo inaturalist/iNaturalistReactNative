@@ -28,8 +28,8 @@ const LicensePhotosForm = ( ): Node => {
   const onPrivacyPressed = ( ) => {
     console.log( "onPrivacyPressed" );
   };
-  const onGuidelinesPressed = ( ) => {
-    console.log( "onGuidelinesPressed" );
+  const onCommunityPressed = ( ) => {
+    console.log( "onCommunityPressed" );
   };
 
   const initialCheckboxState = {
@@ -77,7 +77,7 @@ const LicensePhotosForm = ( ): Node => {
         },
         {
           label: t( "Community-Guidelines" ),
-          onPress: () => onGuidelinesPressed()
+          onPress: () => onCommunityPressed()
         }
       ]
     },
