@@ -40,7 +40,9 @@ const About = (): Node => {
       />
 
       <View className="p-4">
-        <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
+        <View className="mb-8 items-center justify-center">
+          <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
+        </View>
       </View>
     </ScrollViewWrapper>
   );
