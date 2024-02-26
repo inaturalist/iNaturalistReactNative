@@ -72,7 +72,7 @@ const About = (): Node => {
             <Body2 className="mb-5">
               {t( "iNaturalist-mission-is-to-connect" )}
             </Body2>
-            <Body2 className="mb-8">{t( "iNaturalist-vision-is-a-world" )}</Body2>
+            <Body2 className="mb-8">{t( "iNaturalists-vision-is-a-world" )}</Body2>
             <Heading4 className="mb-3">{t( "WHAT-IS-INATURALIST" )}</Heading4>
             <Body2 className="mb-5">
               {t( "iNaturalist-helps-you-identify" )}
