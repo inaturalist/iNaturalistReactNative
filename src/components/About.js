@@ -61,16 +61,16 @@ const About = (): Node => {
             <Body2 className="mb-5">
               {t( "iNaturalist-mission-is-to-connect" )}
             </Body2>
-            <Body2 className="mb-5">{t( "iNaturalist-vision-is-a-world" )}</Body2>
+            <Body2 className="mb-8">{t( "iNaturalist-vision-is-a-world" )}</Body2>
             <Heading4 className="mb-3">{t( "WHAT-IS-INATURALIST" )}</Heading4>
             <Body2 className="mb-5">
               {t( "iNaturalist-helps-you-identify" )}
             </Body2>
             <Body2 className="mb-5">{t( "Whats-more-by-recording" )}</Body2>
-            <Body2 className="mb-5">{t( "iNaturalist-is-supported-by" )}</Body2>
-            <Body2 className="underline font-bold">{t( "Terms-of-Use" )}</Body2>
-            <Body2 className="underline font-bold">{t( "Privacy-Policy" )}</Body2>
-            <Body2 className="underline font-bold">
+            <Body2 className="mb-8">{t( "iNaturalist-is-supported-by" )}</Body2>
+            <Body2 className="mb-5 underline font-bold">{t( "Terms-of-Use" )}</Body2>
+            <Body2 className="mb-5 underline font-bold">{t( "Privacy-Policy" )}</Body2>
+            <Body2 className="mb-8 underline font-bold">
               {t( "Community-Guidelines" )}
             </Body2>
             <View className="items-center justify-center">
@@ -81,15 +81,15 @@ const About = (): Node => {
         {activeTab === teamID && (
           <View className="px-4 py-8">
             <Heading4 className="mb-3">{t( "INATURALIST-TEAM" )}</Heading4>
-            <Body2 className="mb-5">
+            <Body2 className="mb-8">
               {t( "iNaturalists-apps-are-designed-and-developed" )}
             </Body2>
             <Heading4 className="mb-3">{t( "INATURALIST-COMMUNITY" )}</Heading4>
-            <Body2 className="mb-5">
+            <Body2 className="mb-8">
               {t( "iNaturalist-is-supported-by-community" )}
             </Body2>
             <Heading4 className="mb-3">{t( "INATURALIST-NETWORK" )}</Heading4>
-            <Body2 className="mb-5">{t( "The-iNaturalist-Network" )}</Body2>
+            <Body2 className="mb-8">{t( "The-iNaturalist-Network" )}</Body2>
             <Heading4 className="mb-3">{t( "COLLABORATORS" )}</Heading4>
             <Body2>{t( "The-iNaturalist-team-has-collaborated" )}</Body2>
           </View>
