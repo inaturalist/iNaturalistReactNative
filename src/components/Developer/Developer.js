@@ -3,7 +3,7 @@ import {
   Button,
   Heading1,
   Heading2,
-  ViewWrapper
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import { fontMonoClass, Text, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -39,7 +39,7 @@ const Developer = (): Node => {
   const buildVersion = getBuildNumber( );
   const { shareLogFile, emailLogFile } = useLogs();
   return (
-    <ViewWrapper>
+    <ScrollViewWrapper>
       <View className="p-5">
         <Button
           onPress={() => navigation.navigate( "UILibrary" )}
@@ -94,7 +94,7 @@ const Developer = (): Node => {
           className="mb-5"
         />
       </View>
-    </ViewWrapper>
+    </ScrollViewWrapper>
   );
 };
 
