@@ -1,18 +1,6 @@
 # Header above user biography / user description on user profile
 ABOUT = ABOUT
 
-LICENSES = LICENSES
-Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons Attribution-NonCommercial license to uploaded content. This means anyone can copy and reuse your photos and/or observations without asking for permission as long as they give you credit and don't use the works commercially. You can choose a different license or remove the license later, but this is the best license for sharing with researchers.
-PERSONAL-INFO = PERSONAL INFO
-We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
-There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
-INFO-TRANSFER = INFO TRANSFER
-Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
-Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
-To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
-Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
-
-
 About-iNaturalist = About iNaturalist
 
 # About the Data Quality Assement
@@ -160,6 +148,8 @@ Change-start-date = Change start date
 Change-taxon = Change taxon
 
 Change-user = Change user
+
+Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons Attribution-NonCommercial license to uploaded content. This means anyone can copy and reuse your photos and/or observations without asking for permission as long as they give you credit and don't use the works commercially. You can choose a different license or remove the license later, but this is the best license for sharing with researchers.
 
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
@@ -500,6 +490,8 @@ iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United State
 
 INATURALIST-STORE = INATURALIST STORE
 
+INFO-TRANSFER = INFO TRANSFER
+
 Insects = Insects
 
 Introduced = Introduced
@@ -523,6 +515,8 @@ Language-Locale = Language/Locale
 Last-Active-date = Last Active: {$date}
 
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
+
+LICENSES = LICENSES
 
 Licensing = Licensing
 
@@ -687,6 +681,8 @@ OTHER-DATA = OTHER DATA
 PASSWORD = PASSWORD
 
 Paused = Paused
+
+PERSONAL-INFO = PERSONAL INFO
 
 Photo-Licensing = Photo Licensing
 
@@ -907,6 +903,8 @@ Sign-out = Sign out
 
 Sign-Up = Sign Up
 
+Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
+
 # license code
 some-rights-reserved = some rights reserved
 
@@ -961,6 +959,8 @@ TEACHERS = TEACHERS
 
 The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.
 
+There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
+
 This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist = This is how all taxon names will be displayed to you across iNaturalist
 
 This-sets-your-language-and-date-formatting-preferences-across-iNaturalist = This sets your language and date formatting preferences across iNaturalist based on your locale.
@@ -968,6 +968,8 @@ This-sets-your-language-and-date-formatting-preferences-across-iNaturalist = Thi
 This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This will be your default place for all searches in Explore and Identify.
 
 Threatened = Threatened
+
+To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 
@@ -1037,6 +1039,8 @@ Username = Username
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 
+Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
+
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
@@ -1056,6 +1060,8 @@ View-photo = View photo
 VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
 
 Visually-search-iNaturalist-data = Visually search iNaturalist's wealth of data. Search by a taxon in a location
+
+We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 
 Welcome-to-iNaturalist = Welcome to iNaturalist!
 
