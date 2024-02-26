@@ -933,6 +933,8 @@ TAXONOMY-header = TAXONOMY
 
 Taxonomy-Settings = Taxonomy Settings
 
+TEAM = TEAM
+
 The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.
 
 This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist = This is how all taxon names will be displayed to you across iNaturalist
