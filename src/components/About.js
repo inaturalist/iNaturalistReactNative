@@ -1,7 +1,12 @@
 // @flow
 
-import { Body1, Tabs, ViewWrapper } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import {
+  Body1,
+  HideView,
+  Tabs,
+  ViewWrapper
+} from "components/SharedComponents";
+import { ScrollView, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -37,11 +42,14 @@ const About = (): Node => {
         activeId={activeTab}
       />
 
-      <View className="p-4">
-        <View className="mb-8 items-center justify-center">
-          <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
-        </View>
-      </View>
+      <ScrollView className="p-4">
+        <HideView show={activeTab === aboutID}>
+          <View className="mb-8 items-center justify-center">
+            <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
+          </View>
+        </HideView>
+        <HideView noInitialRender show={activeTab === teamID} />
+      </ScrollView>
     </ViewWrapper>
   );
 };
