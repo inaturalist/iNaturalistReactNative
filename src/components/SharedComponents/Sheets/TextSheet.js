@@ -30,7 +30,6 @@ const TextSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
-      hideCloseButton
     >
       <View className="p-5">
         {texts.map( text => (
