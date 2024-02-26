@@ -10,7 +10,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Alert } from "react-native";
+// import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
 import {
   useStoredLayout,
@@ -103,7 +103,7 @@ const Explore = ( {
           />
         )}
         <View className="flex-1">
-          <INatIconButton
+          {/* <INatIconButton
             icon="triangle-exclamation"
             className="absolute h-[55px] w-[55px] top-5 right-5 bg-white rounded-full z-10"
             color="white"
@@ -120,7 +120,7 @@ const Explore = ( {
                 `queryParams: ${JSON.stringify( queryParams )}`
               );
             }}
-          />
+          /> */}
           <INatIconButton
             icon={exploreViewIcon[exploreView]}
             color={theme.colors.onPrimary}
