@@ -1134,16 +1134,16 @@ Your-location-uncertainty-is-over-x-km = Your location uncertainty is over {$x} 
 Zoom-in-as-much-as-possible-to-improve =
     Zoom in as much as possible to improve location accuracy and get better identifications.
 
-INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
-You-can-find-answers-on-our-help-page = You can find answers on our help page.
-VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
+Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
 CONTACT-SUPPORT = CONTACT SUPPORT
+Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
+INATURALIST-FORUM = INATURALIST FORUM
+INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 Still-need-help = Still need help? You can file a support request here.
 TEACHERS = TEACHERS
-Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
+VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
 VIEW-TEACHERS-GUIDE = VIEW TEACHERS’ GUIDE
-INATURALIST-FORUM = INATURALIST FORUM
-Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
+You-can-find-answers-on-our-help-page = You can find answers on our help page.
 
 # Identification category
 Category-leading = Leading
