@@ -1,6 +1,11 @@
 # Header above user biography / user description on user profile
 ABOUT = ABOUT
 
+Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
+Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
+iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
+iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
+
 ABOUT-INATURALIST = ABOUT INATURALIST
 
 # About the Data Quality Assement
@@ -680,8 +685,6 @@ Observation = Observation
 
 Observation-Attribution = Observation: © {$userName} · {$restrictions}
 
-OBSERVATIONS = OBSERVATIONS
-
 Observations = Observations
 
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
@@ -944,7 +947,7 @@ Spam = Spam
 
 Spam-Examples = Commercial solicitation, links to nowhere, etc.
 
-SPECIES = SPECIES
+Species = Species
 
 Status = Status
 
@@ -1687,8 +1690,8 @@ iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNatur
 SAVE-PHOTOS = SAVE PHOTOS
 
 Explore-View = Explore View
-IDENTIFIERS = IDENTIFIERS
-OBSERVERS = OBSERVERS
+Identifiers = Identifiers
+Observers = Observers
 All-organisms = All organisms
 Worldwide = Worldwide
 
