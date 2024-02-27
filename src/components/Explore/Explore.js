@@ -86,32 +86,32 @@ const Explore = ( {
     if ( !showExploreBottomSheet ) {
       return null;
     }
-    const values = [
-      {
+    const values = {
+      species: {
         label: t( "Species" ),
         text: t( "Organisms-that-are-identified-to-species" ),
         buttonText: t( "EXPLORE-SPECIES" ),
         value: "species"
       },
-      {
+      observations: {
         label: t( "Observations" ),
         text: t( "Individual-encounters-with-organisms" ),
         buttonText: t( "EXPLORE-OBSERVATIONS" ),
         value: "observations"
       },
-      {
+      observers: {
         label: t( "Observers" ),
         text: t( "iNaturalist-users-who-have-observed" ),
         buttonText: t( "EXPLORE-OBSERVERS" ),
         value: "observers"
       },
-      {
+      identifiers: {
         label: t( "Identifiers" ),
         text: t( "iNaturalist-users-who-have-left-an-identification" ),
         buttonText: t( "EXPLORE-IDENTIFIERS" ),
         value: "identifiers"
       }
-    ];
+    };
 
     return (
       <RadioButtonSheet
