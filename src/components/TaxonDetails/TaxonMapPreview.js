@@ -25,6 +25,8 @@ const TaxonMapPreview = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [showMapModal, setShowMapModal] = useState( false );
+
+  // TODO: add a loading indicator for map preview
   const {
     data: taxonList
   } = useAuthenticatedQuery(

@@ -167,7 +167,7 @@ const DetailsMap = ( {
         animationIn="fadeIn"
         animationOut="fadeOut"
         showModal={showNotificationModal}
-        closeModal={( ) => closeShowNotificationModal( false )}
+        closeModal={( ) => closeShowNotificationModal( )}
         modal={(
           <CoordinatesCopiedNotification />
         )}
