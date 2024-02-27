@@ -225,7 +225,10 @@
   "Exact-Date": "Exact Date",
   "Explore": "Explore",
   "Explore-Filters": "Explore Filters",
+  "EXPLORE-IDENTIFIERS": "EXPLORE IDENTIFIERS",
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
+  "EXPLORE-OBSERVERS": "EXPLORE OBSERVERS",
+  "EXPLORE-SPECIES": "EXPLORE SPECIES",
   "External-Applications": "External Applications",
   "FEATURED": {
     "comment": "Header for featured projects",

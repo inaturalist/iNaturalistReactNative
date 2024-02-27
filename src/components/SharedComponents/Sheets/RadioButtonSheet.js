@@ -48,10 +48,10 @@ const RadioButtonSheet = ( {
         {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
         <Button
           level="primary"
-          text={t( "CONFIRM" )}
           onPress={( ) => confirm( checked )}
+          text={radioValues[checked].buttonText ?? t( "CONFIRM" )}
           className="mt-[15px]"
-          accessibilityLabel={t( "CONFIRM" )}
+          accessibilityLabel={radioValues[checked].buttonText ?? t( "CONFIRM" )}
         />
       </View>
     </BottomSheet>
