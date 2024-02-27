@@ -49,9 +49,9 @@ const RadioButtonSheet = ( {
         <Button
           level="primary"
           onPress={( ) => confirm( checked )}
-          text={radioValues[checked].buttonText ?? t( "CONFIRM" )}
+          text={radioValues[checked]?.buttonText ?? t( "CONFIRM" )}
           className="mt-[15px]"
-          accessibilityLabel={radioValues[checked].buttonText ?? t( "CONFIRM" )}
+          accessibilityLabel={radioValues[checked]?.buttonText ?? t( "CONFIRM" )}
         />
       </View>
     </BottomSheet>
