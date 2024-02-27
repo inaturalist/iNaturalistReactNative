@@ -6,6 +6,7 @@ import {
   Heading3,
   Heading4
 } from "components/SharedComponents";
+import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import {
   View
 } from "components/styledComponents";
@@ -16,7 +17,8 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   optionalClasses?: any,
   taxon?: {
-    rank: string
+    rank: string,
+    id: number
   }
 }
 
@@ -29,7 +31,14 @@ const TaxonDetailsTitle = ( {
   return (
     <View className="flex-1 flex-col">
       { taxon?.rank && (
-        <Heading4 className={optionalClasses}>{t( `Ranks-${taxon.rank.toUpperCase( )}` )}</Heading4>
+        <View className="flex-row items-center">
+          <Heading4 className={optionalClasses}>
+            {t( `Ranks-${taxon.rank.toUpperCase( )}` )}
+          </Heading4>
+          <View className="ml-3">
+            <SpeciesSeenCheckmark taxonId={taxon.id} />
+          </View>
+        </View>
       ) }
       <DisplayTaxonName
         taxon={taxon}

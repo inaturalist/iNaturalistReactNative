@@ -28,7 +28,6 @@ const SpeciesSeenCheckmark = ( {
 }: Props ): Node => {
   const realm = useRealm( );
   const theme = useTheme( );
-  console.log( "taxonId :>> ", taxonId );
   const userObservation = realm?.objectForPrimaryKey( "Taxon", taxonId );
 
   if ( !userObservation ) { return null; }
