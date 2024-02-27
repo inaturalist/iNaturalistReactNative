@@ -1,12 +1,17 @@
 // @flow
 
-import Clipboard from "@react-native-clipboard/clipboard";
-import DetailsMap from "components/ObsDetails/DetailsTab/DetailsMap";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import {
+  Body2,
+  Body4
+} from "components/SharedComponents";
+import DetailsMap from "components/SharedComponents/DetailsMap";
+import {
+  View
+} from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useRef, useState } from "react";
-import openMap from "react-native-open-maps";
+import React, { useRef } from "react";
 
 type Props = {
   observation: Object,
@@ -17,6 +22,35 @@ type Props = {
   tileMapParams: ?Object
 }
 
+const DetailsMapHeader = ( {
+  displayLocation,
+  displayCoordinates,
+  obscured
+} ) => (
+  <View className="flex-col">
+    <Body2
+      className="text-darkGray"
+      numberOfLines={1}
+      ellipsizeMode="tail"
+    >
+      {displayLocation}
+    </Body2>
+
+    <Body2
+      className="text-darkGray"
+      numberOfLines={1}
+      ellipsizeMode="tail"
+    >
+      {displayCoordinates}
+    </Body2>
+    {obscured && (
+      <Body4 className="italic">
+        {t( "Obscured-observation-location-map-description" )}
+      </Body4>
+    ) }
+  </View>
+);
+
 const DetailsMapContainer = ( {
   observation, latitude, longitude, closeModal, obscured, tileMapParams
 }: Props ): Node => {
@@ -25,7 +59,6 @@ const DetailsMapContainer = ( {
     longitude
   } );
 
-  const [showNotificationModal, setShowNotificationModal] = useState( false );
   const displayCoordinates = t( "Lat-Lon-Acc", {
     latitude,
     longitude,
@@ -40,21 +73,6 @@ const DetailsMapContainer = ( {
     displayLocation = t( "No-Location" );
   }
 
-  const closeShowNotificationModal = () => {
-    setShowNotificationModal( false );
-  };
-  const copyCoordinates = () => {
-    Clipboard.setString( coordinateString );
-    setShowNotificationModal( true );
-    // notification disappears after 2 secs
-    setTimeout( closeShowNotificationModal, 2000 );
-  };
-
-  const shareMap = () => {
-    // takes in a provider prop but opens in browser instead of in app(google maps on iOS)
-    openMap( { query: `${latitude}, ${longitude}` } );
-  };
-
   const mapViewRef = useRef<any>( null );
 
   return (
@@ -63,15 +81,18 @@ const DetailsMapContainer = ( {
       latitude={latitude}
       longitude={longitude}
       obscured={obscured}
-      positionalAccuracy={observation.positional_accuracy}
-      displayLocation={displayLocation}
-      displayCoordinates={displayCoordinates}
-      copyCoordinates={copyCoordinates}
-      shareMap={shareMap}
-      showNotificationModal={showNotificationModal}
-      closeNotificationsModal={closeShowNotificationModal}
+      coordinateString={coordinateString}
       closeModal={closeModal}
+      positionalAccuracy={observation.positional_accuracy}
       tileMapParams={tileMapParams}
+      showLocationIndicator
+      headerTitle={(
+        <DetailsMapHeader
+          displayCoordinates={displayCoordinates}
+          displayLocation={displayLocation}
+          obscured={obscured}
+        />
+      )}
     />
   );
 };

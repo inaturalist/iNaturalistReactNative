@@ -32,6 +32,7 @@ import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
+import TaxonMapPreview from "./TaxonMapPreview";
 import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
 
@@ -119,6 +120,7 @@ const TaxonDetails = ( ): Node => {
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} />
+        <TaxonMapPreview taxon={taxon} />
       </View>
     );
   };
