@@ -2,9 +2,8 @@
 
 import classnames from "classnames";
 import {
-  BottomSheet,
-  Button,
   INatIconButton,
+  RadioButtonSheet,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -73,13 +72,6 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
 
-  const exploreViewText = {
-    observations: t( "OBSERVATIONS" ),
-    species: t( "SPECIES" ),
-    observers: t( "OBSERVERS" ),
-    identifiers: t( "IDENTIFIERS" )
-  };
-
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
@@ -89,6 +81,48 @@ const Explore = ( {
       openFiltersModal={openFiltersModal}
     />
   );
+
+  const renderSheet = () => {
+    if ( !showExploreBottomSheet ) {
+      return null;
+    }
+    const values = [
+      {
+        label: t( "Species" ),
+        text: t( "Organisms-that-are-identified-to-species" ),
+        value: "species"
+      },
+      {
+        label: t( "Observations" ),
+        text: t( "Individual-encounters-with-organisms" ),
+        value: "observations"
+      },
+      {
+        label: t( "Observers" ),
+        text: t( "iNaturalist-users-who-have-observed" ),
+        value: "observers"
+      },
+      {
+        label: t( "Identifiers" ),
+        text: t( "iNaturalist-users-who-have-left-an-identification" ),
+        value: "identifiers"
+      }
+    ];
+
+    return (
+      <RadioButtonSheet
+        handleClose={() => setShowExploreBottomSheet( false )}
+        headerText={t( "EXPLORE" )}
+        hidden={!showExploreBottomSheet}
+        confirm={newView => {
+          changeExploreView( newView );
+          setShowExploreBottomSheet( false );
+        }}
+        radioValues={values}
+        selectedValue={exploreView}
+      />
+    );
+  };
 
   const grayCircleClass = "bg-darkGray rounded-full h-[55px] w-[55px]";
 
@@ -173,23 +207,7 @@ const Explore = ( {
           />
         </ViewWrapper>
       )}
-      <BottomSheet
-        handleClose={( ) => setShowExploreBottomSheet( false )}
-        headerText={t( "EXPLORE" )}
-        hidden={!showExploreBottomSheet}
-      >
-        {Object.keys( exploreViewText ).map( view => (
-          <Button
-            className="mx-5 my-3"
-            key={exploreViewText[view]}
-            onPress={() => {
-              changeExploreView( view );
-              setShowExploreBottomSheet( false );
-            }}
-            text={exploreViewText[view]}
-          />
-        ) )}
-      </BottomSheet>
+      {renderSheet()}
     </>
   );
 };
