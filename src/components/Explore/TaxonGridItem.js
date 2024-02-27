@@ -49,9 +49,9 @@ const TaxonGridItem = ( {
         testID={`TaxonGridItem.${taxon.id}`}
         iconicTaxonName={taxon.iconic_taxon_name}
       >
-        <SpeciesSeenCheckmark
-          taxonId={taxon.id}
-        />
+        <View className="absolute top-3 left-3">
+          <SpeciesSeenCheckmark taxonId={taxon.id} />
+        </View>
         <View className="absolute bottom-0 flex p-2 w-full">
           <DisplayTaxonName
             keyBase={taxon?.id}
