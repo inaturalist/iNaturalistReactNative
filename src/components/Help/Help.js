@@ -14,7 +14,6 @@ import { Alert, Linking } from "react-native";
 
 const Help = (): Node => {
   const onHelpPressed = async () => {
-    // TODO: add the correct URL
     const url = "https://help.inaturalist.org/";
     const supported = await Linking.canOpenURL( url );
     if ( supported ) {
