@@ -997,8 +997,6 @@ This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This 
 
 Threatened = Threatened
 
-To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
-
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 
 Trust-with-hidden-coordinates = Trust with hidden coordinates
@@ -1067,7 +1065,7 @@ Username = Username
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 
-Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
+Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 

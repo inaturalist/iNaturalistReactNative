@@ -209,7 +209,6 @@ const LicensePhotosForm = ( ): Node => {
             texts={[
               t( "Some-data-privacy-laws" ),
               t( "Using-iNaturalist-requires-the-storage" ),
-              t( "To-learn-more-about-what-information" ),
               t( "There-is-no-way" )
             ]}
             setShowSheet={setLearnSheet}
