@@ -338,6 +338,8 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
+DONATE = DONATE
+
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 
 # Label for a button the user taps when a task is complete
@@ -957,10 +959,6 @@ ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
 Stay-on-this-screen = Stay on this screen while your location loads.
 
 Still-need-help = Still need help? You can file a support request here.
-
-Support = Support
-
-SUPPORT = SUPPORT
 
 Syncing = Syncing...
 

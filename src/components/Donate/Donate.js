@@ -10,7 +10,7 @@ import React from "react";
 import { Alert, Linking } from "react-native";
 import * as StoreReview from "react-native-store-review";
 
-const Support = (): Node => {
+const Donate = (): Node => {
   const onDonatePress = async ( ) => {
     const url = "https://inaturalist.org/donate";
     const supported = await Linking.canOpenURL( url );
@@ -69,4 +69,4 @@ const Support = (): Node => {
   );
 };
 
-export default Support;
+export default Donate;
