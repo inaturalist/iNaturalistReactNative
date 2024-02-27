@@ -390,7 +390,13 @@ Explore = Explore
 
 Explore-Filters = Explore Filters
 
+EXPLORE-IDENTIFIERS = EXPLORE IDENTIFIERS
+
 EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
+
+EXPLORE-OBSERVERS = EXPLORE OBSERVERS
+
+EXPLORE-SPECIES = EXPLORE SPECIES
 
 External-Applications = External Applications
 
@@ -510,9 +516,15 @@ INATURALIST-STORE = INATURALIST STORE
 
 INATURALIST-TEAM = INATURALIST TEAM
 
+iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
+
+iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
+
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 
 iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Angie Ta, & Ken-ichi Ueda.
+
+Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
 
 INFO-TRANSFER = INFO TRANSFER
 
@@ -680,8 +692,6 @@ Observation = Observation
 
 Observation-Attribution = Observation: © {$userName} · {$restrictions}
 
-OBSERVATIONS = OBSERVATIONS
-
 Observations = Observations
 
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
@@ -699,6 +709,8 @@ OPEN-EMAIL = OPEN EMAIL
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
 Organism-is-wild = Organism is wild
+
+Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
 
 OTHER-DATA = OTHER DATA
 
@@ -944,7 +956,7 @@ Spam = Spam
 
 Spam-Examples = Commercial solicitation, links to nowhere, etc.
 
-SPECIES = SPECIES
+Species = Species
 
 Status = Status
 
@@ -1687,8 +1699,8 @@ iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNatur
 SAVE-PHOTOS = SAVE PHOTOS
 
 Explore-View = Explore View
-IDENTIFIERS = IDENTIFIERS
-OBSERVERS = OBSERVERS
+Identifiers = Identifiers
+Observers = Observers
 All-organisms = All organisms
 Worldwide = Worldwide
 

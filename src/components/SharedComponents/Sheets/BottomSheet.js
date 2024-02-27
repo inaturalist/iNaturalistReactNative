@@ -98,7 +98,7 @@ const StandardBottomSheet = ( {
     : BottomSheetModal;
 
   const { width } = Dimensions.get( "window" );
-  const tabletMargin = {
+  const marginOnWide = {
     marginHorizontal: width > 500
       ? ( width - 500 ) / 2
       : 0
@@ -111,7 +111,7 @@ const StandardBottomSheet = ( {
       snapPoints={animatedSnapPoints}
       handleHeight={animatedHandleHeight}
       contentHeight={animatedContentHeight}
-      style={[viewStyles.shadow, tabletMargin]}
+      style={[viewStyles.shadow, marginOnWide]}
       handleComponent={noHandle}
       backdropComponent={renderBackdrop}
       onChange={onChange || handleBackdropPress}
