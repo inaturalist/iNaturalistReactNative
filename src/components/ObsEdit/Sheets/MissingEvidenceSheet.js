@@ -17,7 +17,7 @@ const MissingEvidenceSheet = ( { setShowMissingEvidenceSheet }: Props ): Node =>
   return (
     <TextSheet
       headerText={t( "MISSING-EVIDENCE" )}
-      text={t( "Every-observation-needs" )}
+      texts={[t( "Every-observation-needs" )]}
       setShowSheet={setShowMissingEvidenceSheet}
     />
   );

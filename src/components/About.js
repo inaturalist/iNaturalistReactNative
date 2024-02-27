@@ -12,6 +12,7 @@ import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { Alert, Linking } from "react-native";
 import { getBuildNumber, getVersion } from "react-native-device-info";
 
 const aboutID = "about";
@@ -22,16 +23,34 @@ const About = (): Node => {
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
 
-  const onTermsPressed = () => {
-    console.log( "onTermsPressed" );
+  const onTermsPressed = async () => {
+    const url = "https://www.inaturalist.org/pages/terms";
+    const supported = await Linking.canOpenURL( url );
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
   };
 
-  const onPrivacyPressed = () => {
-    console.log( "onPrivacyPressed" );
+  const onPrivacyPressed = async () => {
+    const url = "https://www.inaturalist.org/pages/privacy";
+    const supported = await Linking.canOpenURL( url );
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
   };
 
-  const onGuidelinesPressed = () => {
-    console.log( "onGuidelinesPressed" );
+  const onCommunityPressed = async () => {
+    const url = "https://www.inaturalist.org/pages/community+guidelines";
+    const supported = await Linking.canOpenURL( url );
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
   };
 
   return (
@@ -93,7 +112,7 @@ const About = (): Node => {
             </Body2>
             <Body2
               className="mb-8 underline font-bold"
-              onPress={() => onGuidelinesPressed()}
+              onPress={() => onCommunityPressed()}
             >
               {t( "Community-Guidelines" )}
             </Body2>
