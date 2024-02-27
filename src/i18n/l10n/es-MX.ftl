@@ -9,7 +9,6 @@ date-uploaded = Date uploaded: { $date }
 Grid-View = Grid View
 # Label for a view that shows observations a list
 List-View = List View
-OBSERVATIONS = OBSERVATIONS
 Observations = Observations
 Your-Observations = Tus observaciones
 date-format-short = d/M/yy
