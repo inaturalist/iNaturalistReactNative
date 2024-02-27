@@ -3,13 +3,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { DisplayTaxonName } from "components/SharedComponents";
 import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
+import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { useTranslation } from "sharedHooks";
-
-import SpeciesSeenCheckmark from "./SpeciesSeenCheckmark";
 
 type Props = {
   taxon: Object,
