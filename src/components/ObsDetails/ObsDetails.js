@@ -128,7 +128,7 @@ const ObsDetails = ( {
               <DetailsTab observation={observation} uuid={uuid} />
             </HideView>
             {addingActivityItem && (
-              <View className="flex-row items-center justify-center">
+              <View className="flex-row items-center justify-center p-10">
                 <ActivityIndicator size={50} />
               </View>
             )}
@@ -196,7 +196,7 @@ const ObsDetails = ( {
             <DetailsTab observation={observation} uuid={uuid} />
           </HideView>
           {addingActivityItem && (
-            <View className="flex-row items-center justify-center">
+            <View className="flex-row items-center justify-center p-10">
               <ActivityIndicator size={50} />
             </View>
           )}
