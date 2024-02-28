@@ -117,9 +117,28 @@ const CameraWithDevice = ( {
     addPhotoPermissionResult
   ] );
 
+  // Hide the StatusBar. Using a component doesn't guarantee that it will get
+  // hidden here if another component renders the status bar later when this
+  // screen his blurred but still mounted
+  useEffect( ( ) => {
+    // Hide on first render
+    StatusBar.setHidden( true );
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
+      // Hide when focused
+      StatusBar.setHidden( true );
+    } );
+    return unsubscribe;
+  }, [navigation] );
+
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      StatusBar.setHidden( false );
+    } );
+    return unsubscribe;
+  }, [navigation] );
+
   return (
     <View className={`flex-1 bg-black ${flexDirection}`}>
-      <StatusBar hidden />
       <PermissionGateContainer
         permissions={WRITE_MEDIA_PERMISSIONS}
         titleDenied={t( "Save-photos-to-your-gallery" )}
