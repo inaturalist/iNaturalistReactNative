@@ -20,7 +20,7 @@ import {
   convertOfflineScoreToConfidence,
   convertOnlineScoreToConfidence
 } from "sharedHelpers/convertScores";
-import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
+// import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
 import AddCommentPrompt from "./AddCommentPrompt";
@@ -38,6 +38,7 @@ type Props = {
   observers: Array<string>,
   topSuggestion: Object,
   usingOfflineSuggestions: boolean,
+  // eslint-disable-next-line react/no-unused-prop-types
   debugData: any
 };
 
@@ -65,8 +66,8 @@ const Suggestions = ( {
   onPressPhoto,
   observers,
   topSuggestion,
-  usingOfflineSuggestions,
-  debugData
+  usingOfflineSuggestions
+  // debugData
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -102,7 +103,7 @@ const Suggestions = ( {
   const renderFooter = useCallback( ( ) => (
     <>
       <Attribution observers={observers} />
-      <View className="bg-yellow p-3">
+      {/* <View className="bg-yellow p-3">
         <Heading4>Diagnostics</Heading4>
         <Body3>Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
         <Body3>Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
@@ -110,9 +111,12 @@ const Suggestions = ( {
         <Body3>Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
         <Body3>Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
         <Body3>Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
-      </View>
+      </View> */}
     </>
-  ), [debugData, observers] );
+  ), [
+    // debugData,
+    observers
+  ] );
   /* eslint-enable i18next/no-literal-string */
   /* eslint-enable react/jsx-one-expression-per-line */
   /* eslint-enable max-len */

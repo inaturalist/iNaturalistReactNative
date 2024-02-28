@@ -88,7 +88,8 @@ const SpeciesView = ( {
 
   const contentContainerStyle = useMemo( ( ) => ( {
     paddingLeft: GUTTER / 2,
-    paddingRight: GUTTER / 2
+    paddingRight: GUTTER / 2,
+    paddingTop: 50
   } ), [] );
 
   return (

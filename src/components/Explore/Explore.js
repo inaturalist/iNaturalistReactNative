@@ -2,13 +2,14 @@
 
 import classnames from "classnames";
 import {
-  BottomSheet,
-  Button,
   INatIconButton,
+  RadioButtonSheet,
   ViewWrapper
 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
+// import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
 import {
   useStoredLayout,
@@ -71,13 +72,6 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
 
-  const exploreViewText = {
-    observations: t( "OBSERVATIONS" ),
-    species: t( "SPECIES" ),
-    observers: t( "OBSERVERS" ),
-    identifiers: t( "IDENTIFIERS" )
-  };
-
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
@@ -88,89 +82,136 @@ const Explore = ( {
     />
   );
 
+  const renderSheet = () => {
+    if ( !showExploreBottomSheet ) {
+      return null;
+    }
+    const values = {
+      species: {
+        label: t( "Species" ),
+        text: t( "Organisms-that-are-identified-to-species" ),
+        buttonText: t( "EXPLORE-SPECIES" ),
+        value: "species"
+      },
+      observations: {
+        label: t( "Observations" ),
+        text: t( "Individual-encounters-with-organisms" ),
+        buttonText: t( "EXPLORE-OBSERVATIONS" ),
+        value: "observations"
+      },
+      observers: {
+        label: t( "Observers" ),
+        text: t( "iNaturalist-users-who-have-observed" ),
+        buttonText: t( "EXPLORE-OBSERVERS" ),
+        value: "observers"
+      },
+      identifiers: {
+        label: t( "Identifiers" ),
+        text: t( "iNaturalist-users-who-have-left-an-identification" ),
+        buttonText: t( "EXPLORE-IDENTIFIERS" ),
+        value: "identifiers"
+      }
+    };
+
+    return (
+      <RadioButtonSheet
+        handleClose={() => setShowExploreBottomSheet( false )}
+        headerText={t( "EXPLORE" )}
+        hidden={!showExploreBottomSheet}
+        confirm={newView => {
+          changeExploreView( newView );
+          setShowExploreBottomSheet( false );
+        }}
+        radioValues={values}
+        selectedValue={exploreView}
+      />
+    );
+  };
+
   const grayCircleClass = "bg-darkGray rounded-full h-[55px] w-[55px]";
 
   return (
     <>
-      {!showFiltersModal
-        ? (
-          <ViewWrapper testID="Explore">
-            {renderHeader()}
-            {exploreView === "observations" && (
-              <ObservationsViewBar
-                layout={layout}
-                updateObservationsView={writeLayoutToStorage}
-              />
-            )}
-            <INatIconButton
-              icon={exploreViewIcon[exploreView]}
-              color={theme.colors.onPrimary}
-              size={27}
-              className={classnames(
-                grayCircleClass,
-                "absolute bottom-5 z-10 right-5"
-              )}
-              accessibilityLabel={t( "Explore-View" )}
-              onPress={() => setShowExploreBottomSheet( true )}
-              style={getShadow( theme.colors.primary )}
-            />
-            {exploreView === "observations" && (
-              <ObservationsView
-                layout={layout}
-                queryParams={queryParams}
-              />
-            )}
-            {exploreView === "species" && (
-              <SpeciesView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-            {exploreView === "observers" && (
-              <ObserversView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-            {exploreView === "identifiers" && (
-              <IdentifiersView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-          </ViewWrapper>
-        )
-        : (
-          <ViewWrapper>
-            <FilterModal
-              closeModal={closeFiltersModal}
-              updateTaxon={updateTaxon}
-            />
-          </ViewWrapper>
-        )}
-      <BottomSheet
-        handleClose={( ) => setShowExploreBottomSheet( false )}
-        headerText={t( "EXPLORE" )}
-        hidden={!showExploreBottomSheet}
-      >
-        {Object.keys( exploreViewText ).map( view => (
-          <Button
-            className="mx-5 my-3"
-            key={exploreViewText[view]}
-            onPress={() => {
-              changeExploreView( view );
-              setShowExploreBottomSheet( false );
-            }}
-            text={exploreViewText[view]}
+      <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
+        {renderHeader()}
+        {exploreView === "observations" && (
+          <ObservationsViewBar
+            layout={layout}
+            updateObservationsView={writeLayoutToStorage}
           />
-        ) )}
-      </BottomSheet>
+        )}
+        <View className="flex-1">
+          {/* <INatIconButton
+            icon="triangle-exclamation"
+            className="absolute h-[55px] w-[55px] top-5 right-5 bg-white rounded-full z-10"
+            color="white"
+            size={27}
+            style={[
+              getShadow( theme.colors.primary ),
+              // eslint-disable-next-line react-native/no-inline-styles
+              { backgroundColor: "orange" }
+            ]}
+            accessibilityLabel="Diagnostics"
+            onPress={( ) => {
+              Alert.alert(
+                "Explore Info",
+                `queryParams: ${JSON.stringify( queryParams )}`
+              );
+            }}
+          /> */}
+          <INatIconButton
+            icon={exploreViewIcon[exploreView]}
+            color={theme.colors.onPrimary}
+            size={27}
+            className={classnames(
+              grayCircleClass,
+              "absolute bottom-5 z-10 right-5"
+            )}
+            accessibilityLabel={t( "Explore-View" )}
+            onPress={() => setShowExploreBottomSheet( true )}
+            style={getShadow( theme.colors.primary )}
+          />
+          {exploreView === "observations" && (
+            <ObservationsView
+              layout={layout}
+              queryParams={queryParams}
+            />
+          )}
+          {exploreView === "species" && (
+            <SpeciesView
+              count={count}
+              isOnline={isOnline}
+              queryParams={queryParams}
+              updateCount={updateCount}
+            />
+          )}
+          {exploreView === "observers" && (
+            <ObserversView
+              count={count}
+              isOnline={isOnline}
+              queryParams={queryParams}
+              updateCount={updateCount}
+            />
+          )}
+          {exploreView === "identifiers" && (
+            <IdentifiersView
+              count={count}
+              isOnline={isOnline}
+              queryParams={queryParams}
+              updateCount={updateCount}
+            />
+          )}
+        </View>
+      </ViewWrapper>
+      {showFiltersModal && (
+        <ViewWrapper wrapperClassName="absolute w-full h-full overflow-hidden">
+          <FilterModal
+            closeModal={closeFiltersModal}
+            updateTaxon={updateTaxon}
+          />
+        </ViewWrapper>
+      )}
+      {renderSheet()}
     </>
   );
 };

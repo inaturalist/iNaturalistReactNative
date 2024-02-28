@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
-import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
+import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Application from "./Application";
@@ -278,29 +278,40 @@ class Observation extends Realm.Object {
     return unsyncedObs.length > 0;
   };
 
-  static createObservationFromGalleryPhoto = async photo => {
-    const firstPhotoExif = await parseExif( photo?.image?.uri );
+  static createObservationFromGalleryPhotos = async photos => {
+    const newObservation = await readExifFromMultiplePhotos(
+      photos.map( photo => photo?.image?.uri )
+    );
 
-    const { latitude, longitude } = firstPhotoExif;
-
-    const newObservation = {
-      latitude,
-      longitude,
-      observed_on_string: formatExifDateAsString( firstPhotoExif.date ) || null
-    };
-
-    if ( firstPhotoExif.positional_accuracy ) {
-      // $FlowIgnore
-      newObservation.positional_accuracy = firstPhotoExif.positional_accuracy;
-    }
     return Observation.new( newObservation );
   };
 
   static createObservationWithPhotos = async photos => {
-    const newLocalObs = await Observation.createObservationFromGalleryPhoto( photos[0] );
+    const newLocalObs = await Observation.createObservationFromGalleryPhotos( photos );
     newLocalObs.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( photos, { position: 0 } );
     return newLocalObs;
+  };
+
+  static updateObsExifFromPhotos = async ( photoUris, currentObservation ) => {
+    const updatedObs = currentObservation;
+
+    const unifiedExif = await readExifFromMultiplePhotos( photoUris );
+
+    if ( unifiedExif.latitude && !currentObservation.latitude ) {
+      updatedObs.latitude = unifiedExif.latitude;
+    }
+    if ( unifiedExif.longitude && !currentObservation.longitude ) {
+      updatedObs.longitude = unifiedExif.longitude;
+    }
+    if ( unifiedExif.observed_on_string && !currentObservation.observed_on_string ) {
+      updatedObs.observed_on_string = unifiedExif.observed_on_string;
+    }
+    if ( unifiedExif.positional_accuracy && !currentObservation.positional_accuracy ) {
+      updatedObs.positional_accuracy = unifiedExif.positional_accuracy;
+    }
+
+    return updatedObs;
   };
 
   static appendObsPhotos = ( obsPhotos, currentObservation ) => {

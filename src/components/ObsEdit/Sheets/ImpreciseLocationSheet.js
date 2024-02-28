@@ -16,11 +16,11 @@ const ImpreciseLocationSheet = ( { setShowImpreciseLocationSheet }: Props ): Nod
   return (
     <TextSheet
       headerText={t( "LOCATION-TOO-IMPRECISE" )}
-      text={
+      texts={[
         t( "Your-location-uncertainty-is-over-x-km", {
           x: Math.round( REQUIRED_LOCATION_ACCURACY / 1000 )
         } )
-      }
+      ]}
       setShowSheet={setShowImpreciseLocationSheet}
     />
   );

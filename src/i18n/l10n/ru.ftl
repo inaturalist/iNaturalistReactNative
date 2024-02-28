@@ -11,6 +11,5 @@ date-uploaded = Дата загрузки: { $date }
 Grid-View = Вид сетки
 # Label for a view that shows observations a list
 List-View = Вид списка
-OBSERVATIONS = ОБСЕРВАНИЯ
 Observations = Замечания
 Your-Observations = Your Observations

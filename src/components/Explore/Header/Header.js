@@ -47,7 +47,8 @@ const Header = ( {
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
     borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20
+    borderBottomRightRadius: 20,
+    marginBottom: -40
   };
 
   const { data: taxonList } = useAuthenticatedQuery(
@@ -68,7 +69,6 @@ const Header = ( {
     <View className="z-10">
       <Surface
         style={surfaceStyle}
-        className="bg-darkGray"
         elevation={5}
       >
         <View className="bg-white px-5 flex-row justify-between items-center">

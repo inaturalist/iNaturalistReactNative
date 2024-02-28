@@ -27,7 +27,7 @@ const Count = ( {
   <Pressable
     onPress={onPress}
     accessibilityRole="button"
-    accessibilityLabel={t( label, { count } )}
+    accessibilityLabel={label}
     className="w-1/4 items-center"
   >
     <View className="bg-inatGreen w-[32px] h-[32px] rounded-lg items-center justify-center">
@@ -40,7 +40,7 @@ const Count = ( {
     {typeof count === "number"
       ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
       : <ActivityIndicator size={25} />}
-    <Heading5 className="mt-2 text-center">{t( label, { count } )}</Heading5>
+    <Heading5 className="mt-2 text-center">{label}</Heading5>
   </Pressable>
 );
 
@@ -50,33 +50,34 @@ const OverviewCounts = ( {
   <View className="flex-row mt-6">
     <Count
       count={counts.observations_count}
-      label="OBSERVATIONS-WITHOUT-NUMBER"
+      label={t( "OBSERVATIONS-WITHOUT-NUMBER", { count: counts.observations_count } )}
       icon="binoculars"
       onPress={onObservationPressed}
     />
     <Count
       count={counts.species_count}
-      label="SPECIES-WITHOUT-NUMBER"
+      label={t( "SPECIES-WITHOUT-NUMBER", { count: counts.species_count } )}
       icon="leaf"
       onPress={onSpeciesPressed}
     />
-    {counts.identifications_count && (
+    {typeof ( counts.identifications_count ) === "number" && (
       <Count
         count={counts.identifications_count}
-        label="IDENTIFICATIONS-WITHOUT-NUMBER"
+        label={t( "IDENTIFICATIONS-WITHOUT-NUMBER", { count: counts.identifications_count } )}
         icon="person"
+        onPress={onSpeciesPressed}
       />
     )}
-    {counts.members_count && (
+    {typeof ( counts.members_count ) === "number" && (
       <Count
         count={counts.members_count}
-        label="MEMBERS-WITHOUT-NUMBER"
+        label={t( "MEMBERS-WITHOUT-NUMBER", { count: counts.members_count } )}
         icon="person"
       />
     )}
     <Count
       count={counts.journal_posts_count}
-      label="JOURNAL-POSTS-WITHOUT-NUMBER"
+      label={t( "JOURNAL-POSTS-WITHOUT-NUMBER", { count: counts.journal_posts_count } )}
       icon="book"
     />
   </View>

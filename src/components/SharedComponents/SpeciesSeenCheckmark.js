@@ -33,7 +33,7 @@ const SpeciesSeenCheckmark = ( {
   if ( !userObservation ) { return null; }
   return (
     <View
-      className="absolute top-3 left-3 bg-white rounded-full"
+      className="bg-white rounded-full"
       style={getShadow( theme.colors.primary )}
     >
       <INatIcon

@@ -109,7 +109,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
 
   const tileMapParams = observation?.taxon?.id
     ? {
-      taxon_id: observation.taxon.id
+      taxon_id: observation.taxon.id,
+      verifiable: true
     }
     : null;
 

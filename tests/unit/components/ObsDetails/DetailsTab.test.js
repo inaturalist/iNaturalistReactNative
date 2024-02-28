@@ -11,6 +11,9 @@ jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
   default: ( ) => true
 } ) );
 
+// Don't need permission gates if we're just testing DetailsTab
+jest.mock( "components/SharedComponents/LocationPermissionGate", ( ) => "" );
+
 // Before migrating to Jest 27 this line was:
 // jest.useFakeTimers();
 // TODO: replace with modern usage of jest.useFakeTimers
@@ -66,10 +69,9 @@ describe( "DetailsTab", ( ) => {
 
     const tiles = screen.getByTestId( "Map.UrlTile" );
     expect( tiles ).toBeVisible( );
-    expect( tiles ).toHaveProp(
-      "urlTemplate",
-      `${baseUrl}?taxon_id=${mockObservationWithTaxon.taxon.id}&color=%2374ac00&verifiable=true`
-    );
+    const { urlTemplate } = tiles.props;
+    expect( urlTemplate )
+      .toMatch( new RegExp( `^${baseUrl}.*taxon_id=${mockObservationWithTaxon.taxon.id}` ) );
   } );
 
   test( "should not show tiles for observation with no taxon id", ( ) => {

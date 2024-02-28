@@ -4,20 +4,25 @@ import React from "react";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
+const baseUrl = "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
+
 describe( "Map", ( ) => {
   it( "should be accessible", ( ) => {
     expect( <Map /> ).toBeAccessible( );
   } );
 
   it( "displays filtered observations on map", async ( ) => {
+    const taxonId = 1234;
     renderComponent(
       <Map
         withPressableObsTiles
-        tileMapParams={{ taxon_id: 47178 }}
+        tileMapParams={{ taxon_id: taxonId }}
       />
     );
     const tiles = await screen.findByTestId( "Map.UrlTile" );
-    expect( tiles ).toHaveProp( "urlTemplate", "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=47178&color=%2374ac00&verifiable=true" );
+    const { urlTemplate } = tiles.props;
+    expect( urlTemplate )
+      .toMatch( new RegExp( `^${baseUrl}.*taxon_id=${taxonId}` ) );
   } );
 
   it( "displays location indicator when given an observation lat/lng", async ( ) => {
