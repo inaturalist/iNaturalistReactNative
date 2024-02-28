@@ -6,7 +6,7 @@ import { INatIconButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
-import { Platform } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
@@ -68,6 +68,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
 
   return (
     <>
+      <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-row justify-center">
         <View className="bg-white rounded-xl p-5 mb-12 max-w-sm">
           <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
