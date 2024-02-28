@@ -184,6 +184,7 @@ const CameraView = ( {
             pixelFormat={pixelFormatPatch()}
             animatedProps={animatedProps}
             resizeMode={resizeMode || "cover"}
+            frameProcessorFps={1}
           />
         </GestureDetector>
         <FocusSquare
