@@ -1,10 +1,14 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { getAPIToken } from "components/LoginSignUp/AuthenticationService";
+import { getAPIToken, USER_AGENT } from "components/LoginSignUp/AuthenticationService";
 import { ViewWrapper } from "components/SharedComponents";
 import React, { useState } from "react";
+import { Linking } from "react-native";
 import WebView from "react-native-webview";
+import { log } from "sharedHelpers/logger";
 
-const FullPageWebView = () => {
+const logger = log.extend( "FullPageWebView" );
+
+const FullPageWebView = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const [source, setSource] = useState( { uri: params.initialUrl } );
@@ -46,9 +50,19 @@ const FullPageWebView = () => {
           onShouldStartLoadWithRequest={request => {
             if ( request.url === source.uri ) return true;
 
+            if ( params.openLinksInBrowser ) {
+              Linking.openURL( request.url ).catch( linkingError => {
+                logger.info( "User refused to open ", request.url, ", error: ", linkingError );
+              } );
+              return false;
+            }
+
+            // Note: this will cause infinite re-renders if the page has
+            // iframes
             setSource( { ...source, uri: request.url } );
-            return false;
+            return true;
           }}
+          userAgent={USER_AGENT}
         />
       )}
     </ViewWrapper>

@@ -8,15 +8,15 @@ import {
 } from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
 import {
-  SafeAreaView,
-  StatusBar, View
+  StatusBar,
+  View
 } from "react-native";
+import Config from "react-native-config";
 import { useTranslation } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useUserMe from "sharedHooks/useUserMe";
-import { viewStyles } from "styles/settings/settings";
 
-const SETTINGS_URL = "https://www.inaturalist.org/users/edit";
+const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 
 const Settings = ( ) => {
   const navigation = useNavigation( );
@@ -71,9 +71,8 @@ const Settings = ( ) => {
 
   return (
     <ViewWrapper>
-      <SafeAreaView style={viewStyles.container} className="p-5">
-        <StatusBar barStyle="dark-content" />
-
+      <StatusBar barStyle="dark-content" />
+      <View className="p-5">
         <Heading4>{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
         <Body2 className="mt-2">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
         <RadioButtonRow
@@ -103,13 +102,13 @@ const Settings = ( ) => {
             navigation.navigate( "FullPageWebView", {
               title: t( "Settings" ),
               loggedIn: true,
-              initialUrl: SETTINGS_URL
+              initialUrl: SETTINGS_URL,
+              openLinksInBrowser: true
             } );
           }}
           accessibilityLabel={t( "Edit" )}
         />
-      </SafeAreaView>
-
+      </View>
       {( isSaving || isLoading ) && (
         <View className="absolute z-10 bg-lightGray/70
          w-full h-full flex items-center justify-center"
