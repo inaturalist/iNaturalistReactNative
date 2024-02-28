@@ -53,14 +53,13 @@ const EstablishmentMeans = ( { taxon }: Props ): React.Node => {
     } else if ( taxon.establishment_means.id ) {
       url += `/listed_taxa/${taxon.establishment_means.id}`;
     }
-    const source = listedTaxon
-      ? listedTaxon.list.title
-      : null;
+
+    if ( !listedTaxon?.list?.title ) return null;
 
     return (
       <Trans
         i18nKey="Source-List"
-        values={{ source }}
+        values={{ source: listedTaxon.listtitle }}
         components={[
           <Body2 />,
           <Body2

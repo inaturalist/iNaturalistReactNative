@@ -107,7 +107,7 @@ const TaxonDetails = ( ): Node => {
 
   const displayTaxonDetails = ( ) => {
     if ( isLoading ) {
-      return <View className="m-3"><ActivityIndicator /></View>;
+      return <View className="m-3 flex-1 h-full"><ActivityIndicator /></View>;
     }
 
     if ( isError || !taxon ) {
@@ -132,9 +132,15 @@ const TaxonDetails = ( ): Node => {
       testID={`TaxonDetails.${taxon?.id}`}
       className="bg-black"
     >
+      {/*
+        Making the bar dark here seems like the right thing, but I haven't
+        figured a way to do that *and* not making the bg of the scrollview
+        black, which reveals a dark area at the bottom of the screen on
+        overscroll in iOS ~~~kueda20240228
+      */}
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
-      <View className="flex-1">
-        <View className="w-full h-[420px] bg-green shrink-1">
+      <View className="flex-1 h-full bg-black">
+        <View className="w-full h-[420px] shrink-1">
           <Pressable
             onPress={() => setMediaViewerVisible( true )}
             accessibilityLabel={t( "View-photo" )}
@@ -225,7 +231,7 @@ const TaxonDetails = ( ): Node => {
             />
           </View>
         </View>
-        <View className="bg-white pt-5 h-full">
+        <View className="bg-white pt-5 h-full flex-1">
           {displayTaxonDetails( )}
         </View>
       </View>

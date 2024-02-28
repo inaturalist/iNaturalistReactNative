@@ -10,6 +10,11 @@ type Props = {
   style?: Object
 };
 
+const CONTENT_CONTAINER_STYLE = {
+  display: "flex",
+  minHeight: "100%"
+};
+
 const ScrollViewWrapper = ( {
   children,
   testID,
@@ -24,6 +29,7 @@ const ScrollViewWrapper = ( {
         keyboardDismissMode="on-drag"
         onScroll={dismissKeyboard}
         scrollEventThrottle={16}
+        contentContainerStyle={CONTENT_CONTAINER_STYLE}
       >
         {children}
       </ScrollView>
