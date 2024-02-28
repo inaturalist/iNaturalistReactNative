@@ -300,8 +300,7 @@ PODS:
     - React-Core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
-  - react-native-webview (13.8.1):
-    - RCT-Folly (= 2021.07.22.00)
+  - react-native-webview (12.4.0):
     - React-Core
   - react-native-worklets-core (0.2.0):
     - React
@@ -732,7 +731,7 @@ SPEC CHECKSUMS:
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
-  react-native-webview: bdc091de8cf7f8397653e30182efcd9f772e03b3
+  react-native-webview: 65f1143983cfeaedf02fd25b2621d3f4a37075de
   react-native-worklets-core: 7ad416a8965086b98b07964f7f6932560a54a14c
   React-perflogger: c944b06edad34f5ecded0f29a6e66290a005d365
   React-RCTActionSheet: fa467f37777dacba2c72da4be7ae065da4482d7d
@@ -772,4 +771,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 77ed9526d4011b245ce5afa1ea331dea4c67d753
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.15.2
