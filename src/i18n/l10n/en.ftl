@@ -1,7 +1,7 @@
 # Header above user biography / user description on user profile
 ABOUT = ABOUT
 
-About-iNaturalist = About iNaturalist
+ABOUT-INATURALIST = ABOUT INATURALIST
 
 # About the Data Quality Assement
 ABOUT-THE-DQA = ABOUT THE DQA
@@ -68,6 +68,8 @@ APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 
 Arachnids = Arachnids
+
+Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
 
 Are-you-sure = Are you sure?
 
@@ -147,10 +149,14 @@ Change-taxon = Change taxon
 
 Change-user = Change user
 
+Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons Attribution-NonCommercial license to uploaded content. This means anyone can copy and reuse your photos and/or observations without asking for permission as long as they give you credit and don't use the works commercially. You can choose a different license or remove the license later, but this is the best license for sharing with researchers.
+
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 
 Clear = Clear
+
+COLLABORATORS = COLLABORATORS
 
 Combine-Photos = Combine Photos
 
@@ -158,7 +164,11 @@ Community-Moderation-Settings = Community Moderation Settings
 
 CONFIRM = CONFIRM
 
+Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
+
 Connected-Accounts = Connected Accounts
+
+CONTACT-SUPPORT = CONTACT SUPPORT
 
 Content-Display = Content & Display
 
@@ -328,6 +338,10 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
+DONATE = DONATE
+
+DONATE-TO-INATURALIST = DONATE TO INATURALIST
+
 # Label for a button the user taps when a task is complete
 DONE = DONE
 
@@ -376,7 +390,13 @@ Explore = Explore
 
 Explore-Filters = Explore Filters
 
+EXPLORE-IDENTIFIERS = EXPLORE IDENTIFIERS
+
 EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
+
+EXPLORE-OBSERVERS = EXPLORE OBSERVERS
+
+EXPLORE-SPECIES = EXPLORE SPECIES
 
 External-Applications = External Applications
 
@@ -468,9 +488,45 @@ iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
 
 iNaturalist-Applications = iNaturalist Applications
 
+INATURALIST-COMMUNITY = INATURALIST COMMUNITY
+
+INATURALIST-FORUM = INATURALIST FORUM
+
+INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
+
+iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
+
 iNaturalist-Network-Affiliation = iNaturalist Network Affiliation
 
 iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
+
+iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
+
+iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
+
+iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who assist in the curation of taxonomy and moderation, to the volunteer translators at who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful for all the people of our community who make iNaturalist the platform it is.
+
+iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
+
+INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
+
+INATURALIST-NETWORK = INATURALIST NETWORK
+
+INATURALIST-STORE = INATURALIST STORE
+
+INATURALIST-TEAM = INATURALIST TEAM
+
+iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
+
+iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
+
+iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
+
+iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Angie Ta, & Ken-ichi Ueda.
+
+Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
+
+INFO-TRANSFER = INFO TRANSFER
 
 Insects = Insects
 
@@ -493,6 +549,10 @@ Language-Locale = Language/Locale
 
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: {$date}
+
+LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
+
+LICENSES = LICENSES
 
 Licensing = Licensing
 
@@ -632,8 +692,6 @@ Observation = Observation
 
 Observation-Attribution = Observation: © {$userName} · {$restrictions}
 
-OBSERVATIONS = OBSERVATIONS
-
 Observations = Observations
 
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
@@ -652,11 +710,15 @@ OPEN-EMAIL = OPEN EMAIL
 Organism-is-captive = Organism is captive
 Organism-is-wild = Organism is wild
 
+Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
+
 OTHER-DATA = OTHER DATA
 
 PASSWORD = PASSWORD
 
 Paused = Paused
+
+PERSONAL-INFO = PERSONAL INFO
 
 Photo-Licensing = Photo Licensing
 
@@ -815,6 +877,8 @@ RESET-PASSWORD = RESET PASSWORD
 
 Return-to-login = Return to login
 
+REVIEW-INATURALIST = REVIEW INATURALIST
+
 Reviewed = Reviewed
 
 Reviewed-observations-only = Reviewed observations only
@@ -869,9 +933,13 @@ Share-location = Share Location
 
 Share-location = Share Location
 
+SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
+
 Sign-out = Sign out
 
 Sign-Up = Sign Up
+
+Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 
 # license code
 some-rights-reserved = some rights reserved
@@ -888,7 +956,7 @@ Spam = Spam
 
 Spam-Examples = Commercial solicitation, links to nowhere, etc.
 
-SPECIES = SPECIES
+Species = Species
 
 Status = Status
 
@@ -901,6 +969,8 @@ Start-must-be-before-end = The start date must be before the end date.
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
 
 Stay-on-this-screen = Stay on this screen while your location loads.
+
+Still-need-help = Still need help? You can file a support request here.
 
 Syncing = Syncing...
 
@@ -917,7 +987,17 @@ TAXONOMY-header = TAXONOMY
 
 Taxonomy-Settings = Taxonomy Settings
 
+TEACHERS = TEACHERS
+
+TEAM = TEAM
+
+The-iNaturalist-team-has-collaborated =  The iNaturalist team has collaborated with...
+
+The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
+
 The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.
+
+There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
 
 This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist = This is how all taxon names will be displayed to you across iNaturalist
 
@@ -926,6 +1006,8 @@ This-sets-your-language-and-date-formatting-preferences-across-iNaturalist = Thi
 This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This will be your default place for all searches in Explore and Identify.
 
 Threatened = Threatened
+
+To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 
@@ -995,6 +1077,8 @@ Username = Username
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 
+Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
+
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
@@ -1005,13 +1089,23 @@ VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
 View-in-browser = View in Browser
 
+VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
+
 # Button or accessibility label for an element that lets the user view a
 # photo
 View-photo = View photo
 
+VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
+
 Visually-search-iNaturalist-data = Visually search iNaturalist's wealth of data. Search by a taxon in a location
 
+We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
+
 Welcome-to-iNaturalist = Welcome to iNaturalist!
+
+WHAT-IS-INATURALIST = WHAT IS INATURALIST?
+
+Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
@@ -1088,7 +1182,11 @@ Take-a-photo-with-your-camera = Take a photo with your camera
 Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 Record-a-sound = Record a sound
 
+You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
+
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
+
+You-can-find-answers-on-our-help-page = You can find answers on our help page.
 
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 
@@ -1108,10 +1206,13 @@ You-will-lose-all-existing-observations = {$count ->
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
 
-Zoom-in-as-much-as-possible-to-improve =
-    Zoom in as much as possible to improve location accuracy and get better identifications.
+Your-donation-to-iNaturalist =
+    Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over {$x} km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+
+Zoom-in-as-much-as-possible-to-improve =
+    Zoom in as much as possible to improve location accuracy and get better identifications.
 
 # Identification category
 Category-leading = Leading
@@ -1446,7 +1547,6 @@ IDENTIFY = IDENTIFY
 PROJECTS = PROJECTS
 HELP = HELP
 BLOG = BLOG
-DONATE = DONATE
 SETTINGS = SETTINGS
 LOG-OUT = LOG OUT
 Log-out = Log out
@@ -1599,8 +1699,8 @@ iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNatur
 SAVE-PHOTOS = SAVE PHOTOS
 
 Explore-View = Explore View
-IDENTIFIERS = IDENTIFIERS
-OBSERVERS = OBSERVERS
+Identifiers = Identifiers
+Observers = Observers
 All-organisms = All organisms
 Worldwide = Worldwide
 

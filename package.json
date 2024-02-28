@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -111,6 +111,7 @@
     "react-native-screens": "^3.21.1",
     "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-share-menu": "^6.0.0",
+    "react-native-store-review": "^0.4.3",
     "react-native-svg": "^13.14.0",
     "react-native-svg-transformer": "^1.1.0",
     "react-native-uuid": "^2.0.1",

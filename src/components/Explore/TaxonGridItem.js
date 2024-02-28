@@ -3,13 +3,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { DisplayTaxonName } from "components/SharedComponents";
 import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
+import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { useTranslation } from "sharedHooks";
-
-import SpeciesSeenCheckmark from "./SpeciesSeenCheckmark";
 
 type Props = {
   taxon: Object,
@@ -50,9 +49,9 @@ const TaxonGridItem = ( {
         testID={`TaxonGridItem.${taxon.id}`}
         iconicTaxonName={taxon.iconic_taxon_name}
       >
-        <SpeciesSeenCheckmark
-          taxonId={taxon.id}
-        />
+        <View className="absolute top-3 left-3">
+          <SpeciesSeenCheckmark taxonId={taxon.id} />
+        </View>
         <View className="absolute bottom-0 flex p-2 w-full">
           <DisplayTaxonName
             keyBase={taxon?.id}

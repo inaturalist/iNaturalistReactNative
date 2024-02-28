@@ -102,11 +102,9 @@ const ActivityHeader = ( {
   return (
     <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
       <InlineUser user={user} isOnline={isOnline} />
-      <View className="flex-row items-center space-x-[15px]">
+      <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
-        {
-          renderStatus()
-        }
+        {renderStatus()}
         {item.created_at
             && (
               <Body4>
