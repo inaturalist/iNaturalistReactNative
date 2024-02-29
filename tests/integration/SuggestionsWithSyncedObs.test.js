@@ -14,10 +14,12 @@ import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
-const mockModelPrediction = factory( "ModelPrediction", {
+const mockModelResult = {
+  predictions: [factory( "ModelPrediction", {
   // useOfflineSuggestions will filter out taxa w/ rank_level > 40
-  rank: 20
-} );
+    rank_level: 20
+  } )]
+};
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -305,14 +307,14 @@ describe( "Suggestions", ( ) => {
     async ( ) => {
       inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
       getPredictionsForImage.mockImplementation(
-        async ( ) => ( [mockModelPrediction] )
+        async ( ) => ( mockModelResult )
       );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
       const offlineNotice = await screen.findByText( "Viewing Offline Suggestions" );
       expect( offlineNotice ).toBeTruthy( );
       const topOfflineTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockModelPrediction.taxon_id}.checkmark`
+        `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
       );
       expect( topOfflineTaxonResultButton ).toBeTruthy( );
       await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );
