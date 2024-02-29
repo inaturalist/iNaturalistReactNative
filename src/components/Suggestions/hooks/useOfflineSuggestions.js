@@ -4,7 +4,6 @@ import {
   useEffect,
   useState
 } from "react";
-import { Platform } from "react-native";
 import { predictImage } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
 
@@ -26,14 +25,12 @@ const useOfflineSuggestions = (
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
       setLoadingOfflineSuggestions( true );
-      let predictions = [];
+      let rawPredictions = [];
       try {
         const result = await predictImage( selectedPhotoUri );
         // Android returns an object with a predictions key, while iOS returns an array because
         // currently Seek codebase as well expects different return types for each platform
-        predictions = Platform.OS === "android"
-          ? result.predictions
-          : result;
+        rawPredictions = result.predictions;
       } catch ( predictImageError ) {
         logger.error( "Error predicting image offline", predictImageError );
         throw predictImageError;
@@ -42,14 +39,14 @@ const useOfflineSuggestions = (
       // this is all temporary, since we ultimately want predictions
       // returned similarly to how we return them on web; this is returning a
       // single branch like on the AR Camera 2023-12-08
-      const formattedPredictions = predictions?.reverse( )
-        .filter( prediction => prediction.rank <= 40 )
+      const formattedPredictions = rawPredictions?.reverse( )
+        .filter( prediction => prediction.rank_level <= 40 )
         .map( prediction => ( {
           score: prediction.score,
           taxon: {
             id: Number( prediction.taxon_id ),
             name: prediction.name,
-            rank_level: prediction.rank
+            rank_level: prediction.rank_level
           }
         } ) );
       setOfflineSuggestions( formattedPredictions );
