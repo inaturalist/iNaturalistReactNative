@@ -185,19 +185,19 @@ const StandardCamera = ( {
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
         <CameraOptionsButtons
-          takePhoto={handleTakePhoto}
-          handleClose={handleBackButtonPress}
+          changeZoom={changeZoom}
           disallowAddingPhotos={disallowAddingPhotos}
+          flipCamera={flipCamera}
+          handleCheckmarkPress={handleCheckmarkPress}
+          handleClose={handleBackButtonPress}
+          hasFlash={hasFlash}
           photosTaken={photosTaken}
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          handleCheckmarkPress={handleCheckmarkPress}
-          toggleFlash={toggleFlash}
-          flipCamera={flipCamera}
-          hasFlash={hasFlash}
-          takePhotoOptions={takePhotoOptions}
-          changeZoom={changeZoom}
-          zoomTextValue={zoomTextValue}
           showZoomButton={showZoomButton}
+          takePhoto={handleTakePhoto}
+          takePhotoOptions={takePhotoOptions}
+          toggleFlash={toggleFlash}
+          zoomTextValue={zoomTextValue}
         />
       </View>
       <CameraNavButtons

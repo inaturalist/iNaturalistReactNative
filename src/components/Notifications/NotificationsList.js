@@ -3,7 +3,7 @@
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
-import { Body2 } from "components/SharedComponents";
+import { Body2, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
@@ -54,7 +54,7 @@ const NotificationsList = ( {
   }, [isLoading, isOnline, t] );
 
   return (
-    <View className="h-full">
+    <ViewWrapper className="h-full">
       <FlashList
         data={data}
         keyExtractor={item => item.id}
@@ -66,7 +66,7 @@ const NotificationsList = ( {
         ListFooterComponent={renderFooter}
         ListEmptyComponent={renderEmptyComponent}
       />
-    </View>
+    </ViewWrapper>
   );
 };
 

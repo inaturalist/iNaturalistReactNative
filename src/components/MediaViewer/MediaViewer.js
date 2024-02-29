@@ -104,7 +104,7 @@ const MediaViewer = ( {
 
   return (
     <SafeAreaView className="flex-1 bg-black" testID="MediaViewer">
-      <StatusBar hidden barStyle="light-content" backgroundColor="black" />
+      <StatusBar barStyle="light-content" backgroundColor="black" />
       {
         header
           ? header( { onClose, photoCount: uris.length } )

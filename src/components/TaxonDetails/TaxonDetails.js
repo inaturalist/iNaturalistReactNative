@@ -22,7 +22,11 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import {
-  Alert, Linking, Platform, Share
+  Alert,
+  Linking,
+  Platform,
+  Share,
+  StatusBar
 } from "react-native";
 import { Menu, useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
@@ -103,7 +107,7 @@ const TaxonDetails = ( ): Node => {
 
   const displayTaxonDetails = ( ) => {
     if ( isLoading ) {
-      return <View className="m-3"><ActivityIndicator /></View>;
+      return <View className="m-3 flex-1 h-full"><ActivityIndicator /></View>;
     }
 
     if ( isError || !taxon ) {
@@ -124,101 +128,113 @@ const TaxonDetails = ( ): Node => {
   };
 
   return (
-    <ScrollViewWrapper testID={`TaxonDetails.${taxon?.id}`}>
-      <View
-        className="w-full h-[420px] mb-5"
-      >
-        <Pressable
-          onPress={() => setMediaViewerVisible( true )}
-          accessibilityLabel={t( "View-photo" )}
-          accessibilityRole="link"
-        >
-          <Image
-            testID="TaxonDetails.photo"
-            className="w-full h-full"
-            source={{
-              uri: Photo.displayMediumPhoto( photos.at( 0 )?.url )
-            }}
-            accessibilityIgnoresInvertColors
-          />
-          <LinearGradient
-            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-            className="absolute w-full h-full"
-          />
-        </Pressable>
-        <View className="absolute left-5 top-5">
-          <BackButton
-            color={theme.colors.onPrimary}
-            onPress={( ) => navigation.goBack( )}
-          />
-        </View>
-
-        <View className="absolute right-5 top-5">
-          <KebabMenu
-            visible={kebabMenuVisible}
-            setVisible={setKebabMenuVisible}
-            large
-            white
+    <ScrollViewWrapper
+      testID={`TaxonDetails.${taxon?.id}`}
+      className="bg-black"
+    >
+      {/*
+        Making the bar dark here seems like the right thing, but I haven't
+        figured a way to do that *and* not making the bg of the scrollview
+        black, which reveals a dark area at the bottom of the screen on
+        overscroll in iOS ~~~kueda20240228
+      */}
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <View className="flex-1 h-full bg-black">
+        <View className="w-full h-[420px] shrink-1">
+          <Pressable
+            onPress={() => setMediaViewerVisible( true )}
+            accessibilityLabel={t( "View-photo" )}
+            accessibilityRole="link"
           >
-            <Menu.Item
-              testID="MenuItem.OpenInBrowser"
-              onPress={( ) => {
-                openURLInBrowser( taxonUrl );
-                setKebabMenuVisible( false );
+            <Image
+              testID="TaxonDetails.photo"
+              className="w-full h-full"
+              source={{
+                uri: Photo.displayMediumPhoto( photos.at( 0 )?.url )
               }}
-              title={t( "View-in-browser" )}
+              accessibilityIgnoresInvertColors
             />
-            <Menu.Item
-              testID="MenuItem.Share"
-              onPress={async ( ) => {
-                const sharingOptions = {
-                  url: "",
-                  message: ""
-                };
-
-                if ( Platform.OS === "ios" ) {
-                  sharingOptions.url = taxonUrl;
-                } else {
-                  sharingOptions.message = taxonUrl;
-                }
-
-                setKebabMenuVisible( false );
-
-                try {
-                  return await Share.share( sharingOptions );
-                } catch ( err ) {
-                  Alert.alert( err.message );
-                  return null;
-                }
-              }}
-              title={t( "Share" )}
+            <LinearGradient
+              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+              className="absolute w-full h-full"
             />
-          </KebabMenu>
+          </Pressable>
+          <View className="absolute left-5 top-5">
+            <BackButton
+              color={theme.colors.onPrimary}
+              onPress={( ) => navigation.goBack( )}
+            />
+          </View>
+
+          <View className="absolute right-5 top-5">
+            <KebabMenu
+              visible={kebabMenuVisible}
+              setVisible={setKebabMenuVisible}
+              large
+              white
+            >
+              <Menu.Item
+                testID="MenuItem.OpenInBrowser"
+                onPress={( ) => {
+                  openURLInBrowser( taxonUrl );
+                  setKebabMenuVisible( false );
+                }}
+                title={t( "View-in-browser" )}
+              />
+              <Menu.Item
+                testID="MenuItem.Share"
+                onPress={async ( ) => {
+                  const sharingOptions = {
+                    url: "",
+                    message: ""
+                  };
+
+                  if ( Platform.OS === "ios" ) {
+                    sharingOptions.url = taxonUrl;
+                  } else {
+                    sharingOptions.message = taxonUrl;
+                  }
+
+                  setKebabMenuVisible( false );
+
+                  try {
+                    return await Share.share( sharingOptions );
+                  } catch ( err ) {
+                    Alert.alert( err.message );
+                    return null;
+                  }
+                }}
+                title={t( "Share" )}
+              />
+            </KebabMenu>
+          </View>
+          <View className="absolute bottom-0 p-5 w-full flex-row items-center">
+            <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
+            <INatIconButton
+              icon="compass-rose-outline"
+              onPress={( ) => navigation.navigate( "TabNavigator", {
+                screen: "ObservationsStackNavigator",
+                params: {
+                  screen: "Explore",
+                  params: { taxon, worldwide: true }
+                }
+              } )}
+              accessibilityLabel={t( "Explore" )}
+              accessibilityHint={t( "Navigates-to-explore" )}
+              size={30}
+              color={theme.colors.onPrimary}
+              // FWIW, IconButton has a little margin we can control and a
+              // little padding that we can't control, so the negative margin
+              // here is to ensure the visible icon is flush with the edge of
+              // the container
+              className="ml-5 bg-inatGreen rounded-full"
+            />
+          </View>
         </View>
-        <View className="absolute bottom-0 p-5 w-full flex-row items-center">
-          <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
-          <INatIconButton
-            icon="compass-rose-outline"
-            onPress={( ) => navigation.navigate( "TabNavigator", {
-              screen: "ObservationsStackNavigator",
-              params: {
-                screen: "Explore",
-                params: { taxon, worldwide: true }
-              }
-            } )}
-            accessibilityLabel={t( "Explore" )}
-            accessibilityHint={t( "Navigates-to-explore" )}
-            size={30}
-            color={theme.colors.onPrimary}
-            // FWIW, IconButton has a little margin we can control and a
-            // little padding that we can't control, so the negative margin
-            // here is to ensure the visible icon is flush with the edge of
-            // the container
-            className="ml-5 bg-inatGreen rounded-full"
-          />
+        <View className="bg-white pt-5 h-full flex-1">
+          {displayTaxonDetails( )}
         </View>
       </View>
-      {displayTaxonDetails( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
