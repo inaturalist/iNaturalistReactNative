@@ -458,7 +458,7 @@ PODS:
     - React
     - React-callinvoker
     - React-Core
-  - VisionCameraPluginInatVision (1.1.0):
+  - VisionCameraPluginInatVision (2.1.0):
     - React-Core
   - Yoga (1.14.0)
 
@@ -766,7 +766,7 @@ SPEC CHECKSUMS:
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   VisionCamera: 523b49054bee9dace64189ab6631cb41e8b83fe0
-  VisionCameraPluginInatVision: 5b0b033c61a771a2cde2e26288b701856db3af4d
+  VisionCameraPluginInatVision: fe709128703108569c60cee63edbac3cb135f595
   Yoga: e29645ec5a66fb00934fad85338742d1c247d4cb
 
 PODFILE CHECKSUM: 77ed9526d4011b245ce5afa1ea331dea4c67d753

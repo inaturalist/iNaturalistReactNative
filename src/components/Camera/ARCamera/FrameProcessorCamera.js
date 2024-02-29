@@ -13,7 +13,7 @@ import {
 } from "react-native-vision-camera";
 // react-native-vision-camera v3
 // import { Worklets } from "react-native-worklets-core";
-import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel";
+import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
 import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
@@ -87,13 +87,13 @@ const FrameProcessorCamera = ( {
       // react-native-vision-camera v2
       // Reminder: this is a worklet, running on the UI thread.
       try {
-        const results = InatVision.inatVision( frame, {
+        const result = InatVision.inatVision( frame, {
           version: modelVersion,
           modelPath,
           taxonomyPath,
           confidenceThreshold
         } );
-        REA.runOnJS( onTaxaDetected )( results );
+        REA.runOnJS( onTaxaDetected )( result );
       } catch ( classifierError ) {
         console.log( `Error: ${classifierError.message}` );
         REA.runOnJS( onClassifierError )( classifierError );

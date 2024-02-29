@@ -22,7 +22,7 @@ import {
 } from "./vision-camera/vision-camera";
 
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
-  getPredictionsForImage: jest.fn( () => Promise.resolve( [] ) )
+  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) )
 } ) );
 
 jest.mock( "react-native-worklets-core", () => ( {
