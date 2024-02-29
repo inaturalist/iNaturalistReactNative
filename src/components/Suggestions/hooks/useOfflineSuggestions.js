@@ -5,7 +5,7 @@ import {
   useState
 } from "react";
 import { Platform } from "react-native";
-import { predictImage } from "sharedHelpers/cvModel";
+import { predictImage } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "useOfflineSuggestions" );

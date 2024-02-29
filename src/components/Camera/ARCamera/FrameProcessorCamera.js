@@ -13,7 +13,7 @@ import {
 } from "react-native-vision-camera";
 // react-native-vision-camera v3
 // import { Worklets } from "react-native-worklets-core";
-import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel";
+import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
 import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 

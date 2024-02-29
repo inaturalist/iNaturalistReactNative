@@ -1,4 +1,3 @@
-// @flow
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
@@ -33,7 +32,7 @@ export const taxonomyPath: string = Platform.select( {
 
 export const modelVersion = Config.CV_MODEL_VERSION;
 
-export const predictImage = ( uri: string ): Promise<Object> => getPredictionsForImage( {
+export const predictImage = ( uri: string ) => getPredictionsForImage( {
   uri,
   modelPath,
   taxonomyPath,

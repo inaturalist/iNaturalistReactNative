@@ -6,7 +6,7 @@ import type { Node } from "react";
 import React, { useEffect } from "react";
 import { LogBox } from "react-native";
 import Realm from "realm";
-import { addARCameraFiles } from "sharedHelpers/cvModel";
+import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
