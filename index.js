@@ -1,5 +1,8 @@
 // @flow
 
+// React Native doesn't have a functional URL as of Feb 2024
+import "react-native-url-polyfill/auto";
+
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
 import {

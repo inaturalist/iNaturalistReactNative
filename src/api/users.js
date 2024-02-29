@@ -32,7 +32,9 @@ const REMOTE_USER_FIELDS = {
     name: true
   },
   species_count: true,
-  updated_at: true
+  updated_at: true,
+  prefers_common_names: true,
+  prefers_scientific_name_first: true
 };
 
 const REMOTE_USER_PARAMS = {

@@ -1807,3 +1807,13 @@ Would-you-like-to-discard-your-current-recording-and-start-over = Would you like
 Press-record-to-start = Press record to start
 Recoding-sound = Recoding sound
 Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play the current recording.
+
+# Settings screen
+TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
+This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
+Common-Name-Scientific-Name = Common Name (Scientific Name)
+Scientific-Name-Common-Name = Scientific Name (Common Name)
+Scientific-Name = Scientific Name
+INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
+To-access-all-other-settings = To access all other account settings, click here:
+INATURALIST-SETTINGS = INATURALIST SETTINGS
