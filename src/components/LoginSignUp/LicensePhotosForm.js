@@ -2,11 +2,12 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { Body2, Button } from "components/SharedComponents";
+import { Body2, Button, TextSheet } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { Alert, Linking } from "react-native";
 import { Checkbox, useTheme } from "react-native-paper";
 
 import {
@@ -15,26 +16,91 @@ import {
 import Error from "./Error";
 
 const LicensePhotosForm = ( ): Node => {
+  const NONE = "NONE";
+  const LICENSES = "LICENSES";
+  const PERSONAL_INFO = "PERSONAL_INFO";
+  const INFO_TRANSFER = "INFO_TRANSFER";
+
+  const [learnSheet, setLearnSheet] = useState( NONE );
+
+  const onTermsPressed = async () => {
+    const url = "https://www.inaturalist.org/pages/terms";
+    const supported = await Linking.canOpenURL( url );
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
+  };
+
+  const onPrivacyPressed = async () => {
+    const url = "https://www.inaturalist.org/pages/privacy";
+    const supported = await Linking.canOpenURL( url );
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
+  };
+
+  const onCommunityPressed = async () => {
+    const url = "https://www.inaturalist.org/pages/community+guidelines";
+    const supported = await Linking.canOpenURL( url );
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
+  };
+
   const initialCheckboxState = {
     first: {
       text: t( "Yes-license-my-photos" ),
       checked: true,
-      links: [t( "Learn-More" )]
+      links: [
+        {
+          label: t( "Learn-More" ),
+          onPress: () => setLearnSheet( LICENSES )
+        }
+      ]
     },
     second: {
       text: t( "I-consent-to-allow-iNaturalist-to-store" ),
       checked: false,
-      links: [t( "Learn-More" )]
+      links: [
+        {
+          label: t( "Learn-More" ),
+          onPress: () => setLearnSheet( PERSONAL_INFO )
+        }
+      ]
     },
     third: {
       text: t( "I-consent-to-allow-my-personal-information" ),
       checked: false,
-      links: [t( "Learn-More" )]
+      links: [
+        {
+          label: t( "Learn-More" ),
+          onPress: () => setLearnSheet( INFO_TRANSFER )
+        }
+      ]
     },
     fourth: {
       text: t( "I-agree-to-the-Terms-of-Use" ),
       checked: false,
-      links: [t( "Terms-of-Use" ), t( "Privacy-Policy" ), t( "Community-Guidelines" )]
+      links: [
+        {
+          label: t( "Terms-of-Use" ),
+          onPress: () => onTermsPressed()
+        },
+        {
+          label: t( "Privacy-Policy" ),
+          onPress: () => onPrivacyPressed()
+        },
+        {
+          label: t( "Community-Guidelines" ),
+          onPress: () => onCommunityPressed()
+        }
+      ]
     },
     fifth: {
       text: t( "Agree-to-all-of-the-above" ),
@@ -102,13 +168,57 @@ const LicensePhotosForm = ( ): Node => {
         <View className="mt-2 flex-1">
           <Body2 className="flex-wrap color-white">{text}</Body2>
           {links && links.map( link => (
-            <Body2 className="color-white underline font-bold mt-[9px]" key={link}>
-              {link}
+            <Body2
+              className="color-white underline font-bold mt-[9px]"
+              key={link.label}
+              onPress={link.onPress}
+            >
+              {link.label}
             </Body2>
           ) )}
         </View>
       </View>
     );
+  };
+
+  const renderLearnSheet = ( ) => {
+    switch ( learnSheet ) {
+      case LICENSES:
+        return (
+          <TextSheet
+            headerText={t( "LICENSES" )}
+            texts={[t( "Check-this-box-if-you-want-to-apply-a-Creative-Commons" )]}
+            setShowSheet={setLearnSheet}
+          />
+        );
+      case PERSONAL_INFO:
+        return (
+          <TextSheet
+            headerText={t( "PERSONAL-INFO" )}
+            texts={[
+              t( "We-store-personal-information" ),
+              t( "There-is-no-way" )
+            ]}
+            setShowSheet={setLearnSheet}
+          />
+        );
+      case INFO_TRANSFER:
+        return (
+          <TextSheet
+            headerText={t( "INFO-TRANSFER" )}
+            texts={[
+              t( "Some-data-privacy-laws" ),
+              t( "Using-iNaturalist-requires-the-storage" ),
+              t( "To-learn-more-about-what-information" ),
+              t( "There-is-no-way" )
+            ]}
+            setShowSheet={setLearnSheet}
+          />
+        );
+      case NONE:
+      default:
+        return null;
+    }
   };
 
   return (
@@ -121,10 +231,13 @@ const LicensePhotosForm = ( ): Node => {
         onPress={register}
         className="mt-[30px]"
         disabled={
-          !checkboxes.second.checked || !checkboxes.third.checked || !checkboxes.fourth.checked
+          !checkboxes.second.checked
+          || !checkboxes.third.checked
+          || !checkboxes.fourth.checked
         }
         testID="LicensePhotos.signupButton"
       />
+      {renderLearnSheet( )}
     </View>
   );
 };

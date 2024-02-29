@@ -10,12 +10,12 @@ const { useRealm } = RealmContext;
 const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
   const realm = useRealm( );
 
-  const existingTaxon = taxon?.id && realm.objectForPrimaryKey( "Taxon", taxon?.id );
+  const existingTaxon = taxon.id && realm.objectForPrimaryKey( "Taxon", taxon?.id );
 
   const {
     data: remoteTaxon
   } = useAuthenticatedQuery(
-    ["fetchTaxon"],
+    ["fetchTaxon", taxon?.id],
     optsWithAuth => fetchTaxon( taxon.id, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
     {
       enabled: !!( taxon?.id && fetchRemote )

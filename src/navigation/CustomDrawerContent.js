@@ -74,10 +74,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         label: t( "PROJECTS" ),
         navigation: "TabNavigator",
         params: {
-          screen: "ProjectsStackNavigator",
-          params: {
-            screen: "Projects"
-          }
+          screen: "Projects"
         },
         icon: "briefcase"
       },
@@ -91,9 +88,9 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         navigation: "About",
         icon: "inaturalist"
       },
-      support: {
-        label: t( "SUPPORT" ),
-        navigation: "Support",
+      donate: {
+        label: t( "DONATE" ),
+        navigation: "Donate",
         icon: "heart"
       },
       help: {

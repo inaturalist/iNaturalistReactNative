@@ -1,12 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
+import Donate from "components/Donate/Donate";
 import Help from "components/Help/Help";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
-import Support from "components/Support/Support";
 import { t } from "i18next";
 import {
   hideHeader,
@@ -31,7 +31,7 @@ const BottomTabs = ( ) => {
   const renderTabBar = props => <CustomTabBarContainer {...props} isOnline={isOnline} />;
 
   const aboutTitle = () => <Heading4>{t( "ABOUT-INATURALIST" )}</Heading4>;
-  const supportTitle = () => <Heading4>{t( "SUPPORT" )}</Heading4>;
+  const donateTitle = () => <Heading4>{t( "DONATE" )}</Heading4>;
   const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
 
   return (
@@ -70,11 +70,11 @@ const BottomTabs = ( ) => {
           }}
         />
         <Tab.Screen
-          name="Support"
-          component={Support}
+          name="Donate"
+          component={Donate}
           options={{
             ...showHeader,
-            headerTitle: supportTitle,
+            headerTitle: donateTitle,
             headerTitleAlign: "center"
           }}
         />

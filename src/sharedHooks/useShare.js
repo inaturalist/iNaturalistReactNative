@@ -21,6 +21,7 @@ const useShare = ( ): void => {
   const navigation = useNavigation( );
   const resetStore = useStore( state => state.resetStore );
   const setObservations = useStore( state => state.setObservations );
+  const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
 
   const handleShare = useCallback( async ( item: ?SharedItem ) => {
     if ( !item ) {
@@ -63,14 +64,27 @@ const useShare = ( ): void => {
         .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
         .map( x => ( { image: { uri: x.data } } ) );
     }
-    logger.info( "creating observations in useShare with photoUris: ", photoUris );
-    const newObservations = await Promise.all( [{ photos: photoUris }].map(
-      ( { photos } ) => Observation.createObservationWithPhotos( photos )
-    ) );
-    setObservations( newObservations );
 
-    navigation.navigate( "ObsEdit" );
-  }, [setObservations, navigation, resetStore] );
+    if ( photoUris.length === 1 ) {
+      // Only one photo - go to ObsEdit directly
+      logger.info( "creating observations in useShare with photoUris: ", photoUris );
+      const newObservations = await Promise.all( [{ photos: photoUris }].map(
+        ( { photos } ) => Observation.createObservationWithPhotos( photos )
+      ) );
+      setObservations( newObservations );
+
+      navigation.navigate( "ObsEdit" );
+    } else {
+      // Go to GroupPhotos screen
+      setPhotoImporterState( {
+        galleryUris: photoUris.map( x => x.image.uri ),
+        groupedPhotos: photoUris.map( photo => ( {
+          photos: [photo]
+        } ) )
+      } );
+      navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+    }
+  }, [resetStore, setObservations, navigation, setPhotoImporterState] );
 
   useEffect( () => {
     ShareMenu.getInitialShare( handleShare );

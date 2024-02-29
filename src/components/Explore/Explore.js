@@ -2,9 +2,8 @@
 
 import classnames from "classnames";
 import {
-  BottomSheet,
-  Button,
   INatIconButton,
+  RadioButtonSheet,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -75,13 +74,6 @@ const Explore = ( {
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
 
-  const exploreViewText = {
-    observations: t( "OBSERVATIONS" ),
-    species: t( "SPECIES" ),
-    observers: t( "OBSERVERS" ),
-    identifiers: t( "IDENTIFIERS" )
-  };
-
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
@@ -91,6 +83,52 @@ const Explore = ( {
       openFiltersModal={openFiltersModal}
     />
   );
+
+  const renderSheet = () => {
+    if ( !showExploreBottomSheet ) {
+      return null;
+    }
+    const values = {
+      species: {
+        label: t( "Species" ),
+        text: t( "Organisms-that-are-identified-to-species" ),
+        buttonText: t( "EXPLORE-SPECIES" ),
+        value: "species"
+      },
+      observations: {
+        label: t( "Observations" ),
+        text: t( "Individual-encounters-with-organisms" ),
+        buttonText: t( "EXPLORE-OBSERVATIONS" ),
+        value: "observations"
+      },
+      observers: {
+        label: t( "Observers" ),
+        text: t( "iNaturalist-users-who-have-observed" ),
+        buttonText: t( "EXPLORE-OBSERVERS" ),
+        value: "observers"
+      },
+      identifiers: {
+        label: t( "Identifiers" ),
+        text: t( "iNaturalist-users-who-have-left-an-identification" ),
+        buttonText: t( "EXPLORE-IDENTIFIERS" ),
+        value: "identifiers"
+      }
+    };
+
+    return (
+      <RadioButtonSheet
+        handleClose={() => setShowExploreBottomSheet( false )}
+        headerText={t( "EXPLORE" )}
+        hidden={!showExploreBottomSheet}
+        confirm={newView => {
+          changeExploreView( newView );
+          setShowExploreBottomSheet( false );
+        }}
+        radioValues={values}
+        selectedValue={exploreView}
+      />
+    );
+  };
 
   const grayCircleClass = "bg-darkGray rounded-full h-[55px] w-[55px]";
 
@@ -186,23 +224,7 @@ const Explore = ( {
           />
         </ViewWrapper>
       )}
-      <BottomSheet
-        handleClose={( ) => setShowExploreBottomSheet( false )}
-        headerText={t( "EXPLORE" )}
-        hidden={!showExploreBottomSheet}
-      >
-        {Object.keys( exploreViewText ).map( view => (
-          <Button
-            className="mx-5 my-3"
-            key={exploreViewText[view]}
-            onPress={() => {
-              changeExploreView( view );
-              setShowExploreBottomSheet( false );
-            }}
-            text={exploreViewText[view]}
-          />
-        ) )}
-      </BottomSheet>
+      {renderSheet()}
     </>
   );
 };

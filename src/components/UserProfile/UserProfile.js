@@ -5,11 +5,15 @@ import { updateRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
 import {
   Body2,
-  Button, Heading1, Heading4,
+  Button,
+  Heading1,
+  Heading4,
   INatIconButton,
   OverviewCounts,
   ScrollViewWrapper,
-  Subheading1, UserIcon
+  Subheading1,
+  UserIcon,
+  UserText
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -19,8 +23,6 @@ import User from "realmModels/User";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
-
-import UserDescription from "./UserDescription";
 
 const UserProfile = ( ): Node => {
   const navigation = useNavigation( );
@@ -110,8 +112,12 @@ const UserProfile = ( ): Node => {
             />
           </View>
         )}
-        <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
-        <UserDescription description={user?.description} />
+        { user?.description && (
+          <>
+            <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
+            <UserText text={user?.description} />
+          </>
+        ) }
         <Heading4 className="mb-2 mt-5">{t( "PROJECTS" )}</Heading4>
         <Button
           className="mb-6"

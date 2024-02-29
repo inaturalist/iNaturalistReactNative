@@ -5,7 +5,6 @@ Grid-View = Ver rejilla
 # Label for a view that shows observations a list
 List-View = Ver lista
 Observation = Observación
-OBSERVATIONS = OBSERVACIONES
 Observations = Observaciones
 Your-Observations = Sus observaciones
 TAXONOMY-header = TAXONOMIE es bueno
