@@ -124,7 +124,7 @@
     "reassure": "^0.10.1",
     "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#consolidate-returns",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
