@@ -1,8 +1,10 @@
 // @flow
 
+import classnames from "classnames";
 import {
   Body1,
   Body2,
+  Button,
   Heading4,
   ScrollViewWrapper,
   Tabs,
@@ -14,6 +16,7 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert, Linking } from "react-native";
 import { getBuildNumber, getVersion } from "react-native-device-info";
+import { useDebugMode } from "sharedHooks";
 
 const aboutID = "about";
 const teamID = "team";
@@ -22,6 +25,7 @@ const About = (): Node => {
   const [activeTab, setActiveTab] = useState( aboutID );
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
+  const { isDebug, toggleDebug } = useDebugMode( );
 
   const onTermsPressed = async () => {
     const url = "https://www.inaturalist.org/pages/terms";
@@ -119,6 +123,22 @@ const About = (): Node => {
             <View className="items-center justify-center">
               <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
             </View>
+            <Button
+              // eslint-disable-next-line multiline-ternary
+              text={`Debug Mode: ${isDebug ? "on" : "off"}`}
+              className={classnames(
+                "mt-5",
+                isDebug
+                  ? "bg-deeppink"
+                  : "border-deeppink"
+              )}
+              level={
+                isDebug
+                  ? "primary"
+                  : null
+              }
+              onPress={toggleDebug}
+            />
           </View>
         )}
         {activeTab === teamID && (

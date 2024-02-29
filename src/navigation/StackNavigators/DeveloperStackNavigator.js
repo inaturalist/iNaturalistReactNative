@@ -10,10 +10,16 @@ import React from "react";
 const Stack = createNativeStackNavigator( );
 
 const DeveloperStackNavigator = ( ): Node => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: "deeppink", color: "white" },
+      headerTintColor: "white",
+      headerTitleStyle: { color: "white" }
+    }}
+  >
     <Stack.Screen
-      name="developer"
-      label="Developer"
+      name="debug"
+      label="Debug"
       component={Developer}
     />
     <Stack.Screen

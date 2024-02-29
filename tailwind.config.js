@@ -112,7 +112,10 @@ module.exports = {
       // Mostly for debugging
       red: "#FF0000",
       green: "#00FF00",
-      blue: "#0000FF"
+      blue: "#0000FF",
+      deepPink: "#FF1493",
+      deeppink: "#FF1493",
+      DeepPink: "#FF1493"
     },
     screens: {
       sm: "240px",

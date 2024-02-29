@@ -17,6 +17,7 @@ if ( process?.env?.NODE_ENV !== "test" ) {
 }
 
 const config = {
+  dateFormat: "iso",
   // eslint-disable-next-line no-undef
   severity: __DEV__
     ? "debug"

@@ -50,11 +50,6 @@ const Developer = (): Node => {
           text="Log"
           className="mb-5"
         />
-        <Button
-          onPress={() => navigation.navigate( "Identify" )}
-          text="Identify"
-          className="mb-5"
-        />
         <H1>Computer Vision</H1>
         <View className="flex-row">
           <Text className="font-bold">Model: </Text>
