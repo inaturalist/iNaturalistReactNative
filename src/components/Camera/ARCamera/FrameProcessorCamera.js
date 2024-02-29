@@ -87,13 +87,13 @@ const FrameProcessorCamera = ( {
       // react-native-vision-camera v2
       // Reminder: this is a worklet, running on the UI thread.
       try {
-        const results = InatVision.inatVision( frame, {
+        const result = InatVision.inatVision( frame, {
           version: modelVersion,
           modelPath,
           taxonomyPath,
           confidenceThreshold
         } );
-        REA.runOnJS( onTaxaDetected )( results );
+        REA.runOnJS( onTaxaDetected )( result );
       } catch ( classifierError ) {
         console.log( `Error: ${classifierError.message}` );
         REA.runOnJS( onClassifierError )( classifierError );
