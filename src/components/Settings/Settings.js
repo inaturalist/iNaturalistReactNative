@@ -12,11 +12,13 @@ import {
   View
 } from "react-native";
 import Config from "react-native-config";
+import { EventRegister } from "react-native-event-listeners";
 import { useTranslation } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useUserMe from "sharedHooks/useUserMe";
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
+const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
 const Settings = ( ) => {
   const navigation = useNavigation( );
@@ -32,6 +34,7 @@ const Settings = ( ) => {
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
       onSuccess: () => {
+        console.log( "[DEBUG Settings.js] updated user, refetching userMe" );
         queryClient.invalidateQueries( ["fetchUserMe"] );
         refetchUserMe();
       },
@@ -47,6 +50,18 @@ const Settings = ( ) => {
       setIsSaving( false );
     }
   }, [remoteUser] );
+
+  // Listen for the webview to finish so we can fetch the updates users/me
+  // response
+  useEffect( ( ) => {
+    const listener = EventRegister.addEventListener(
+      FINISHED_WEB_SETTINGS,
+      refetchUserMe
+    );
+    return ( ) => {
+      EventRegister?.removeEventListener( listener );
+    };
+  }, [refetchUserMe] );
 
   const changeTaxonNameDisplay = v => {
     setIsSaving( true );
@@ -103,7 +118,8 @@ const Settings = ( ) => {
               title: t( "Settings" ),
               loggedIn: true,
               initialUrl: SETTINGS_URL,
-              openLinksInBrowser: true
+              openLinksInBrowser: true,
+              blurEvent: FINISHED_WEB_SETTINGS
             } );
           }}
           accessibilityLabel={t( "Edit" )}
