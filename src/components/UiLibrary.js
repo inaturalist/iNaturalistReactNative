@@ -96,8 +96,16 @@ const UiLibrary = (): Node => {
     vision: false
   };
 
-  const taxonWithPhoto = realm.objects( "Taxon" ).filtered( "defaultPhoto.url != nil" )[0];
-  const iconicTaxon = realm.objects( "Taxon" ).filtered( "isIconic == true" )[0];
+  const aves = {
+    id: 1,
+    name: "Aves",
+    preferred_common_name: "Birds",
+    rank: "family",
+    rank_level: 60,
+    iconic_taxon_name: "Aves",
+    isIconic: true
+  };
+  const taxonWithPhoto = realm.objects( "Taxon" ).filtered( "defaultPhoto.url != nil" )[0] || aves;
   const species = realm.objects( "Taxon" )
     .filtered( "preferred_common_name != nil AND rank = 'species'" )[0];
 
@@ -612,20 +620,11 @@ const UiLibrary = (): Node => {
         <Heading2 className="my-2">Confidence Interval</Heading2>
         <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
         <Heading2 className="my-2">Taxon Result</Heading2>
-        <TaxonResult
-          taxon={{
-            id: 1,
-            name: "Aves",
-            preferred_common_name: "Birds",
-            rank: "family",
-            rank_level: 60,
-            iconic_taxon_name: "Aves"
-          }}
-        />
+        <TaxonResult taxon={aves} />
         <Heading3>Taxon w/ photo</Heading3>
         <TaxonResult taxon={taxonWithPhoto} />
         <Heading3>Iconic taxon</Heading3>
-        <TaxonResult taxon={iconicTaxon} />
+        <TaxonResult taxon={aves} fetchRemote={false} fromLocal={false} />
         <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
         <IconicTaxonChooser
           taxon={{
