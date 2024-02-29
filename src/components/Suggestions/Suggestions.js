@@ -21,7 +21,7 @@ import {
   convertOnlineScoreToConfidence
 } from "sharedHelpers/convertScores";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
-import { useTranslation } from "sharedHooks";
+import { useDebugMode, useTranslation } from "sharedHooks";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import Attribution from "./Attribution";
@@ -72,6 +72,7 @@ const Suggestions = ( {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
+  const { isDebug } = useDebugMode( );
 
   const renderItem = useCallback( ( { item: suggestion } ) => (
     <Suggestion suggestion={suggestion} onChosen={onTaxonChosen} />
@@ -102,17 +103,19 @@ const Suggestions = ( {
   const renderFooter = useCallback( ( ) => (
     <>
       <Attribution observers={observers} />
-      <View className="bg-yellow p-3">
-        <Heading4>Diagnostics</Heading4>
-        <Body3>Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
-        <Body3>Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
-        <Body3>Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
-        <Body3>Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
-        <Body3>Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
-        <Body3>Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
-      </View>
+      { isDebug && (
+        <View className="bg-deeppink text-white p-3">
+          <Heading4 className="text-white">Diagnostics</Heading4>
+          <Body3 className="text-white">Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
+          <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
+          <Body3 className="text-white">Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
+          <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
+          <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
+          <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
+        </View>
+      )}
     </>
-  ), [debugData, observers] );
+  ), [debugData, isDebug, observers] );
   /* eslint-enable i18next/no-literal-string */
   /* eslint-enable react/jsx-one-expression-per-line */
   /* eslint-enable max-len */

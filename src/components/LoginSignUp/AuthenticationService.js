@@ -16,7 +16,7 @@ import realmConfig from "realmModels/index";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
-import { log } from "../../../react-native-logs.config";
+import { log, logFilePath } from "../../../react-native-logs.config";
 
 const logger = log.extend( "AuthenticationService" );
 
@@ -112,6 +112,9 @@ const signOut = async (
   await RNSInfo.deleteItem( "jwtGeneratedAt", {} );
   await RNSInfo.deleteItem( "username", {} );
   await RNSInfo.deleteItem( "accessToken", {} );
+  RNFS.exists( logFilePath ).then( fileExists => {
+    if ( fileExists ) RNFS.unlink( logFilePath );
+  } );
 };
 
 /**

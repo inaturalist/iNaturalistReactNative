@@ -18,7 +18,7 @@ import { Dimensions, Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useCurrentUser, useDebugMode, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 const { width } = Dimensions.get( "screen" );
@@ -41,6 +41,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const theme = useTheme( );
   const { t } = useTranslation( );
+  const { isDebug } = useDebugMode( );
 
   const labelStyle = useMemo( ( ) => ( {
     fontSize: 16,
@@ -62,79 +63,76 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       : -5
   } ), [] );
 
-  const drawerItems = useMemo( ( ) => ( {
-    // search: {
-    //   label: t( "SEARCH" ),
-    //   navigation: "search",
-    //   icon: "magnifying-glass"
-    // },
-    projects: {
-      label: t( "PROJECTS" ),
-      navigation: "TabNavigator",
-      params: {
-        screen: "ProjectsStackNavigator",
+  const drawerItems = useMemo( ( ) => {
+    const items: any = {
+      // search: {
+      //   label: t( "SEARCH" ),
+      //   navigation: "search",
+      //   icon: "magnifying-glass"
+      // },
+      projects: {
+        label: t( "PROJECTS" ),
+        navigation: "TabNavigator",
         params: {
-          screen: "Projects"
-        }
+          screen: "ProjectsStackNavigator",
+          params: {
+            screen: "Projects"
+          }
+        },
+        icon: "briefcase"
       },
-      icon: "briefcase"
-    },
-    // help: {
-    //   label: t( "HELP" ),
-    //   navigation: "Help",
-    //   icon: "help",
-    //   color: colors.white,
-    //   backgroundColor: colors.darkGray
-    // },
-    // blog: {
-    //   label: t( "BLOG" ),
-    //   navigation: "Blog",
-    //   icon: "laptop"
-    // },
-    about: {
-      label: t( "ABOUT" ),
-      navigation: "About",
-      icon: "inaturalist"
-    },
-    support: {
-      label: t( "SUPPORT" ),
-      navigation: "Support",
-      icon: "heart"
-    },
-    help: {
-      label: t( "HELP" ),
-      navigation: "Help",
-      icon: "help-circle"
-    },
-    settings: {
-      label: t( "SETTINGS" ),
-      navigation: "settings",
-      icon: "gear",
-      loggedInOnly: true
-    },
-    // TODO on release we probably want to hide this item for non-staff, or
-    // provide a developer mode that can be turned on in settings
-    developer: {
-      label: "DEVELOPER",
-      navigation: "DeveloperStackNavigator",
-      icon: "triangle-exclamation",
-      color: "orange"
-    },
-    login: {
-      label: currentUser
-        ? t( "LOG-OUT" )
-        : t( "LOG-IN" ),
-      navigation: "LoginNavigator",
-      icon: "door-exit",
-      style: {
-        opacity: 0.5,
-        display: currentUser
-          ? "flex"
-          : "none"
+      // blog: {
+      //   label: t( "BLOG" ),
+      //   navigation: "Blog",
+      //   icon: "laptop"
+      // },
+      about: {
+        label: t( "ABOUT" ),
+        navigation: "About",
+        icon: "inaturalist"
+      },
+      support: {
+        label: t( "SUPPORT" ),
+        navigation: "Support",
+        icon: "heart"
+      },
+      help: {
+        label: t( "HELP" ),
+        navigation: "Help",
+        icon: "help-circle"
+      },
+      settings: {
+        label: t( "SETTINGS" ),
+        navigation: "settings",
+        icon: "gear",
+        loggedInOnly: true
+      },
+      login: {
+        label: currentUser
+          ? t( "LOG-OUT" )
+          : t( "LOG-IN" ),
+        navigation: "LoginNavigator",
+        icon: "door-exit",
+        style: {
+          opacity: 0.5,
+          display: currentUser
+            ? "flex"
+            : "none"
+        }
       }
+    };
+    if ( isDebug ) {
+      items.debug = {
+        label: "DEBUG",
+        navigation: "DeveloperStackNavigator",
+        icon: "triangle-exclamation",
+        color: "deeppink"
+      };
     }
-  } ), [
+    return items;
+  }, [
     currentUser,
+    isDebug,
     t
   ] );
 

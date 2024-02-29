@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
 import {
+  useDebugMode,
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
@@ -72,6 +73,7 @@ const Explore = ( {
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
+  const { isDebug } = useDebugMode( );
 
   const exploreViewText = {
     observations: t( "OBSERVATIONS" ),
@@ -103,24 +105,35 @@ const Explore = ( {
           />
         )}
         <View className="flex-1">
-          <INatIconButton
-            icon="triangle-exclamation"
-            className="absolute h-[55px] w-[55px] top-5 right-5 bg-white rounded-full z-10"
-            color="white"
-            size={27}
-            style={[
-              getShadow( theme.colors.primary ),
-              // eslint-disable-next-line react-native/no-inline-styles
-              { backgroundColor: "orange" }
-            ]}
-            accessibilityLabel="Diagnostics"
-            onPress={( ) => {
-              Alert.alert(
-                "Explore Info",
-                `queryParams: ${JSON.stringify( queryParams )}`
-              );
-            }}
-          />
+          { isDebug && (
+            <INatIconButton
+              icon="triangle-exclamation"
+              className={classnames(
+                "absolute",
+                "bg-white",
+                "bottom-[100px]",
+                "h-[55px]",
+                "right-5",
+                "rounded-full",
+                "w-[55px]",
+                "z-10"
+              )}
+              color="white"
+              size={27}
+              style={[
+                getShadow( theme.colors.primary ),
+                // eslint-disable-next-line react-native/no-inline-styles
+                { backgroundColor: "deeppink" }
+              ]}
+              accessibilityLabel="Diagnostics"
+              onPress={( ) => {
+                Alert.alert(
+                  "Explore Info",
+                  `queryParams: ${JSON.stringify( queryParams )}`
+                );
+              }}
+            />
+          ) }
           <INatIconButton
             icon={exploreViewIcon[exploreView]}
             color={theme.colors.onPrimary}
