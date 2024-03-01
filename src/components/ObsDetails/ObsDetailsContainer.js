@@ -179,7 +179,7 @@ const ObsDetailsContainer = ( ): Node => {
   const confirmRemoteObsWasDeleted = useCallback( ( ) => {
     if ( localObservation ) {
       safeRealmWrite( realm, ( ) => {
-        // localObservation._deleted_at = new Date( );
+        localObservation._deleted_at = new Date( );
       }, "adding _deleted_at date in ObsDetailsContainer" );
     }
     if ( navigation.canGoBack( ) ) navigation.goBack( );
