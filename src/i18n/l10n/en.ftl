@@ -1817,3 +1817,8 @@ Scientific-Name = Scientific Name
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 To-access-all-other-settings = To access all other account settings, click here:
 INATURALIST-SETTINGS = INATURALIST SETTINGS
+
+OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
+Sorry-this-observation-was-deleted = Sorry, this observation was deleted
+# Generic confirmation, e.g. button on a warning alert
+OK = OK
