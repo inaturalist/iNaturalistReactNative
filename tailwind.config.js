@@ -116,7 +116,8 @@ module.exports = {
       blue: "#0000FF",
       deepPink: "#FF1493",
       deeppink: "#FF1493",
-      DeepPink: "#FF1493"
+      DeepPink: "#FF1493",
+      orange: "#FFA500"
     },
     screens: {
       sm: "240px",

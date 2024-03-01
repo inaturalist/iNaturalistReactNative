@@ -1,4 +1,5 @@
 // @flow
+import classnames from "classnames";
 import {
   DateDisplay, DisplayTaxonName, ObservationLocation, ObsStatus
 } from "components/SharedComponents";
@@ -53,7 +54,12 @@ const ObsListItem = ( {
           classNameMargin="mt-1"
         />
       </View>
-      <View className="items-center ml-auto justify-center">
+      <View
+        className={classnames(
+          "flex-0 justify-start flex-row",
+          { "justify-center": uploadState }
+        )}
+      >
         {explore
           ? (
             <ObsStatus
