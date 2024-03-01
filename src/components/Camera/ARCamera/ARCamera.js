@@ -82,7 +82,6 @@ const ARCamera = ( {
   } = useTakePhoto( camera, null, device );
   const { t } = useTranslation();
   const theme = useTheme();
-  console.log( "[DEBUG ARCamera.js] confidenceThreshold: ", confidenceThreshold );
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
