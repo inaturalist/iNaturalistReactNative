@@ -23,6 +23,7 @@ import {
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import uploadObservation from "sharedHelpers/uploadObservation";
+import { sleep } from "sharedHelpers/util";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -33,6 +34,7 @@ import {
   useTranslation
 } from "sharedHooks";
 
+import useDeleteObservations from "./hooks/useDeleteObservations";
 import MyObservations from "./MyObservations";
 
 const logger = log.extend( "MyObservationsContainer" );
@@ -139,6 +141,7 @@ const MyObservationsContainer = ( ): Node => {
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
+  const { deletionsCompletedAt } = useDeleteObservations( );
 
   const isOnline = useIsConnected( );
 
@@ -317,12 +320,31 @@ const MyObservationsContainer = ( ): Node => {
     const searchParams = {
       user_id: currentUser?.id,
       per_page: 50,
-      fields: Observation.FIELDS
+      fields: Observation.FIELDS,
+      ttl: -1
     };
+    // Between elasticsearch update time and API caches, there's no absolute
+    // guarantee fetching observations won't include something we just
+    // deleted, so we check to see if deletions recently completed and if
+    // they did, make sure 10s have elapsed since deletions complated before
+    // fetching new obs
+    if ( deletionsCompletedAt ) {
+      const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
+      if ( msSinceDeletionsCompleted < 5_000 ) {
+        const naptime = 10_000 - msSinceDeletionsCompleted;
+        logger.debug(
+          `[MyObservationsContainer.js] finished deleting recently, waiting ${naptime} ms`
+        );
+        await sleep( naptime );
+      }
+    }
     const { results } = await searchObservations( searchParams, { api_token: apiToken } );
-
     Observation.upsertRemoteObservations( results, realm );
-  }, [currentUser, realm] );
+  }, [
+    currentUser,
+    deletionsCompletedAt,
+    realm
+  ] );
 
   // TODO move this logic to a helper or a model so it can be more easily unit tested
   const syncRemoteDeletedObservations = useCallback( async ( ) => {

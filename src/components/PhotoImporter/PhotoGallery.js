@@ -16,13 +16,10 @@ import {
 import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import { sleep } from "sharedHelpers/util";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
-
-const sleep = ms => new Promise( resolve => {
-  setTimeout( resolve, ms );
-} );
 
 const PhotoGallery = ( ): Node => {
   const navigation = useNavigation( );

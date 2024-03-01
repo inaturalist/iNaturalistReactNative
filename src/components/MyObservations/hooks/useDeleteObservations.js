@@ -16,6 +16,7 @@ export const INITIAL_DELETION_STATE = {
   // $FlowIgnore
   deletions: [],
   deletionsComplete: false,
+  deletionsCompletedAt: null,
   deletionsInProgress: false,
   error: null
 };
@@ -43,7 +44,8 @@ const deletionReducer = ( state: Object, action: Function ): Object => {
       return {
         ...state,
         deletionsInProgress: false,
-        deletionsComplete: true
+        deletionsComplete: true,
+        deletionsCompletedAt: new Date( )
       };
     case "RESET_STATE":
       return INITIAL_DELETION_STATE;

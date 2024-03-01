@@ -5,7 +5,8 @@ import {
   ActivityIndicator,
   HideView,
   Tabs,
-  TextInputSheet
+  TextInputSheet,
+  WarningSheet
 } from "components/SharedComponents";
 import {
   SafeAreaView,
@@ -35,6 +36,7 @@ type Props = {
   addingActivityItem: Function,
   agreeIdSheetDiscardChanges: Function,
   belongsToCurrentUser: boolean,
+  confirmRemoteObsWasDeleted?: Function,
   currentTabId: string,
   currentUser: Object,
   hideCommentBox: Function,
@@ -47,6 +49,7 @@ type Props = {
   openCommentBox: Function,
   openCommentBox: Function,
   refetchRemoteObservation: Function,
+  remoteObsWasDeleted?: boolean,
   showActivityTab: boolean,
   showAgreeWithIdSheet: boolean,
   showCommentBox: Function,
@@ -59,6 +62,7 @@ const ObsDetails = ( {
   addingActivityItem,
   agreeIdSheetDiscardChanges,
   belongsToCurrentUser,
+  confirmRemoteObsWasDeleted,
   currentTabId,
   currentUser,
   hideCommentBox,
@@ -70,6 +74,7 @@ const ObsDetails = ( {
   onIDAgreePressed,
   openCommentBox,
   refetchRemoteObservation,
+  remoteObsWasDeleted,
   showActivityTab,
   showAgreeWithIdSheet,
   showCommentBox,
@@ -234,6 +239,23 @@ const ObsDetails = ( {
           confirm={textInput => onCommentAdded( textInput )}
         />
       )}
+      {/*
+        * FWIW, some situations in which this could happen are
+        * 1. User loaded obs in explore and it was deleted between then and
+          when they tapped on it
+        * 2. Some process fetched observations between when they were deleted
+          and the search index was updated to reflect that
+        *
+      */}
+      { remoteObsWasDeleted && confirmRemoteObsWasDeleted && (
+        <WarningSheet
+          handleClose={confirmRemoteObsWasDeleted}
+          headerText={t( "OBSERVATION-WAS-DELETED" )}
+          text={t( "Sorry-this-observation-was-deleted" )}
+          buttonText={t( "OK" )}
+          confirm={confirmRemoteObsWasDeleted}
+        />
+      ) }
     </SafeAreaView>
   );
 };

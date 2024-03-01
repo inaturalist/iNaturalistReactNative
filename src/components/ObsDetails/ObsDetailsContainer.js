@@ -10,7 +10,11 @@ import {
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useReducer
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState
 } from "react";
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
@@ -121,6 +125,7 @@ const ObsDetailsContainer = ( ): Node => {
   const isOnline = useIsConnected( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
+  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 
   const {
     activityItems,
@@ -136,12 +141,22 @@ const ObsDetailsContainer = ( ): Node => {
 
   const localObservation = useLocalObservation( uuid );
 
+  const fetchRemoteObservationQueryKey = useMemo(
+    ( ) => ( ["fetchRemoteObservation", uuid] ),
+    [uuid]
+  );
+  const fetchRemoteObservationEnabled = (
+    !remoteObsWasDeleted
+    && !!isOnline
+    && localObservation?.wasSynced( )
+  );
   const {
     data: remoteObservation,
     refetch: refetchRemoteObservation,
-    isRefetching
+    isRefetching,
+    error: fetchRemoteObservationError
   } = useAuthenticatedQuery(
-    ["fetchRemoteObservation", uuid],
+    fetchRemoteObservationQueryKey,
     optsWithAuth => fetchRemoteObservation(
       uuid,
       {
@@ -151,9 +166,28 @@ const ObsDetailsContainer = ( ): Node => {
     ),
     {
       keepPreviousData: false,
-      enabled: !!isOnline && localObservation?.wasSynced( )
+      enabled: fetchRemoteObservationEnabled
     }
   );
+
+  // If we tried to get a remote observation but it no longer exists, the user
+  // can't do anything so we need to send them back and remove the local
+  // copy of this observation
+  useEffect( ( ) => {
+    setRemoteObsWasDeleted( fetchRemoteObservationError?.status === 404 );
+  }, [fetchRemoteObservationError?.status] );
+  const confirmRemoteObsWasDeleted = useCallback( ( ) => {
+    if ( localObservation ) {
+      safeRealmWrite( realm, ( ) => {
+        // localObservation._deleted_at = new Date( );
+      }, "adding _deleted_at date in ObsDetailsContainer" );
+    }
+    if ( navigation.canGoBack( ) ) navigation.goBack( );
+  }, [
+    localObservation,
+    navigation,
+    realm
+  ] );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
 
@@ -419,6 +453,7 @@ const ObsDetailsContainer = ( ): Node => {
       addingActivityItem={addingActivityItem}
       agreeIdSheetDiscardChanges={agreeIdSheetDiscardChanges}
       belongsToCurrentUser={belongsToCurrentUser}
+      confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
       currentTabId={currentTabId}
       currentUser={currentUser}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
@@ -430,6 +465,7 @@ const ObsDetailsContainer = ( ): Node => {
       onIDAgreePressed={onIDAgreePressed}
       openCommentBox={openCommentBox}
       refetchRemoteObservation={refetchObservation}
+      remoteObsWasDeleted={remoteObsWasDeleted}
       showActivityTab={showActivityTab}
       showAgreeWithIdSheet={showAgreeWithIdSheet}
       showCommentBox={showCommentBox}
