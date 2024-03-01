@@ -16,14 +16,16 @@ type Props = {
   height?: string,
   style?: Object,
   uploadSingleObservation?: Function,
-  uploadState: Object,
+  uploadState: {
+    uploadProgress: Number
+  },
   explore: boolean
 };
 
 const ObsGridItem = ( {
   observation,
-  width = "w-full",
-  height,
+  width = "w-[200px]",
+  height = "w-[200px]",
   style,
   uploadSingleObservation,
   uploadState,

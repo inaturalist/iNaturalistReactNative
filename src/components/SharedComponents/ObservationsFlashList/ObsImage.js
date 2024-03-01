@@ -10,11 +10,13 @@ type URI = {
 };
 
 type Props = {
-  uri?: URI,
-  opaque?: boolean,
+  iconicTaxonIconSize?: number,
   iconicTaxonName?: string,
-  white?: boolean,
-  imageClassName: string
+  imageClassName: string,
+  isBackground?: boolean,
+  opaque?: boolean,
+  uri?: URI,
+  white?: boolean
 };
 
 const CLASS_NAMES = [
@@ -23,11 +25,13 @@ const CLASS_NAMES = [
 ];
 
 const ObsImage = ( {
-  uri,
-  opaque = false,
   iconicTaxonName = "unknown",
+  imageClassName,
+  isBackground = false,
+  opaque = false,
+  uri,
   white = false,
-  imageClassName
+  iconicTaxonIconSize
 }: Props ): Node => {
   const noImg = !uri?.uri;
 
@@ -41,6 +45,8 @@ const ObsImage = ( {
         ]}
         iconicTaxonName={iconicTaxonName}
         white={white}
+        isBackground={isBackground}
+        size={iconicTaxonIconSize}
       />
     );
   }

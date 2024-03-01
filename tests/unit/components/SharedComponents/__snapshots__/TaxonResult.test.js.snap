@@ -156,6 +156,11 @@ exports[`TaxonResult should render correctly 1`] = `
                 "width": 62,
               },
               {
+                "flexBasis": "0%",
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+              {
                 "justifyContent": "center",
               },
               {

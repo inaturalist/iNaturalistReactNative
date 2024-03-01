@@ -13,33 +13,35 @@ import { useTaxon, useTranslation } from "sharedHooks";
 import ConfidenceInterval from "./ConfidenceInterval";
 
 type Props = {
-  taxon: Object,
-  handlePress: Function,
-  showCheckmark?: boolean,
-  handleCheckmarkPress: Function,
-  testID: string,
+  activeColor?: string,
   clearBackground?: boolean,
   confidence?: number,
-  white?: boolean,
-  activeColor?: string,
   confidencePosition?: string,
+  fetchRemote?: boolean,
   first?: boolean,
-  fetchRemote?: boolean
+  fromLocal?: boolean,
+  handleCheckmarkPress: Function,
+  handlePress: Function,
+  showCheckmark?: boolean,
+  taxon: Object,
+  testID: string,
+  white?: boolean
 };
 
 const TaxonResult = ( {
+  activeColor,
   clearBackground,
   confidence,
+  confidencePosition = "photo",
+  fetchRemote = true,
+  first = false,
+  fromLocal = true,
+  handleCheckmarkPress,
   handlePress,
   showCheckmark = true,
-  handleCheckmarkPress,
   taxon: taxonResult,
   testID,
-  white = false,
-  activeColor,
-  confidencePosition = "photo",
-  first = false,
-  fetchRemote = true
+  white = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -48,7 +50,10 @@ const TaxonResult = ( {
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AR camera &
   // a short list of taxa from offline Suggestions
-  const taxon = useTaxon( taxonResult, fetchRemote );
+  const localTaxon = useTaxon( taxonResult, fetchRemote );
+  const taxon = fromLocal
+    ? localTaxon
+    : taxonResult;
   const taxonImage = { uri: taxon?.default_photo?.url };
 
   const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: taxon.id } );

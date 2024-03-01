@@ -21,10 +21,10 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
           "borderTopRightRadius": 15,
         },
         {
-          "height": 62,
+          "width": 200,
         },
         {
-          "width": "100%",
+          "width": 200,
         },
       ],
     ]
@@ -61,14 +61,14 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
     }
     endPoint={
       {
-        "x": 0.5,
-        "y": 1,
+        "x": 0,
+        "y": 0.75,
       }
     }
     locations={null}
     startPoint={
       {
-        "x": 0.5,
+        "x": 0,
         "y": 0,
       }
     }
@@ -117,6 +117,18 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
     <View
       accessibilityLabel="Saved observation, in queue to upload"
       accessible={true}
+      style={
+        [
+          [
+            {
+              "height": 44,
+            },
+            {
+              "justifyContent": "flex-end",
+            },
+          ],
+        ]
+      }
     >
       <View>
         <View
@@ -258,10 +270,10 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
           "borderTopRightRadius": 15,
         },
         {
-          "height": 62,
+          "width": 200,
         },
         {
-          "width": "100%",
+          "width": 200,
         },
       ],
     ]
@@ -294,13 +306,18 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
             "borderTopRightRadius": 15,
           },
           {
-            "height": 62,
+            "width": 200,
           },
           {
-            "width": "100%",
+            "width": 200,
           },
           {
             "backgroundColor": "#454545",
+          },
+          {
+            "flexBasis": "0%",
+            "flexGrow": 1,
+            "flexShrink": 1,
           },
           {
             "justifyContent": "center",
@@ -322,8 +339,8 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
       style={
         [
           {
-            "color": "#ffffff",
-            "fontSize": 22,
+            "color": "#BFBFBF33",
+            "fontSize": 100,
           },
           undefined,
           {
@@ -347,14 +364,14 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
     }
     endPoint={
       {
-        "x": 0.5,
-        "y": 1,
+        "x": 0,
+        "y": 0.75,
       }
     }
     locations={null}
     startPoint={
       {
-        "x": 0.5,
+        "x": 0,
         "y": 0,
       }
     }
@@ -454,6 +471,18 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
     <View
       accessibilityLabel="Saved observation, in queue to upload"
       accessible={true}
+      style={
+        [
+          [
+            {
+              "height": 44,
+            },
+            {
+              "justifyContent": "flex-end",
+            },
+          ],
+        ]
+      }
     >
       <View>
         <View
