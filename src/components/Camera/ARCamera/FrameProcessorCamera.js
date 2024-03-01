@@ -132,7 +132,7 @@ const FrameProcessorCamera = ( {
       //   }
       // } );
     },
-    [modelVersion, confidenceThreshold, takingPhoto, deviceOrientation]
+    [modelVersion, confidenceThreshold, takingPhoto, deviceOrientation, numStoredResults, cropRatio]
   );
 
   return (
