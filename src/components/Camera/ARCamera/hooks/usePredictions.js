@@ -7,8 +7,12 @@ import {
 const usePredictions = ( ): Object => {
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
+  const [confidenceThreshold, setConfidenceThreshold] = useState( 0.5 );
+  const [fps, setFPS] = useState( 1 );
+  const [numStoredResults, setNumStoredResults] = useState( 4 );
 
   const handleTaxaDetected = cvResult => {
+    console.log( "[DEBUG usePredictions.js] cvResult: ", cvResult );
     if ( cvResult && !modelLoaded ) {
       setModelLoaded( true );
     }
@@ -30,9 +34,15 @@ const usePredictions = ( ): Object => {
   };
 
   return {
+    confidenceThreshold,
+    fps,
     handleTaxaDetected,
     modelLoaded,
-    result
+    numStoredResults,
+    result,
+    setConfidenceThreshold,
+    setFPS,
+    setNumStoredResults
   };
 };
 

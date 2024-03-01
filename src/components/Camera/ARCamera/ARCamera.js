@@ -63,7 +63,17 @@ const ARCamera = ( {
   const {
     rotatableAnimatedStyle
   } = useRotation( );
-  const { result, modelLoaded, handleTaxaDetected } = usePredictions( );
+  const {
+    confidenceThreshold,
+    fps,
+    handleTaxaDetected,
+    modelLoaded,
+    numStoredResults,
+    result,
+    setConfidenceThreshold,
+    setFPS,
+    setNumStoredResults
+  } = usePredictions( );
   const {
     takePhoto,
     takePhotoOptions,
@@ -72,6 +82,7 @@ const ARCamera = ( {
   } = useTakePhoto( camera, null, device );
   const { t } = useTranslation();
   const theme = useTheme();
+  console.log( "[DEBUG ARCamera.js] confidenceThreshold: ", confidenceThreshold );
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
@@ -96,7 +107,10 @@ const ARCamera = ( {
         <View className="w-full h-full absolute z-0">
           <FrameProcessorCamera
             cameraRef={camera}
+            confidenceThreshold={confidenceThreshold}
             device={device}
+            fps={fps}
+            numStoredResults={numStoredResults}
             onTaxaDetected={handleTaxaDetected}
             onClassifierError={handleClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
@@ -169,6 +183,12 @@ const ARCamera = ( {
         zoomTextValue={zoomTextValue}
         showZoomButton={showZoomButton}
         changeZoom={changeZoom}
+        confidenceThreshold={confidenceThreshold}
+        setConfidenceThreshold={setConfidenceThreshold}
+        fps={fps}
+        setFPS={setFPS}
+        numStoredResults={numStoredResults}
+        setNumStoredResults={setNumStoredResults}
       />
     </>
   );

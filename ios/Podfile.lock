@@ -300,6 +300,9 @@ PODS:
     - React-Core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
+  - react-native-slider (4.5.0):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-webview (11.23.1):
     - React-Core
   - react-native-worklets-core (0.2.0):
@@ -501,6 +504,7 @@ DEPENDENCIES:
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - react-native-worklets-core (from `../node_modules/react-native-worklets-core`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -617,6 +621,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-sensitive-info:
     :path: "../node_modules/react-native-sensitive-info"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   react-native-worklets-core:
@@ -731,6 +737,7 @@ SPEC CHECKSUMS:
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
+  react-native-slider: cc89964e1432fa31aa9db7a0fa9b21e26b5d5152
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   react-native-worklets-core: 7ad416a8965086b98b07964f7f6932560a54a14c
   React-perflogger: c944b06edad34f5ecded0f29a6e66290a005d365
