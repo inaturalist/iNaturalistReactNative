@@ -51,10 +51,12 @@ type Props = {
   fps?: number,
   hasFlash: boolean,
   numStoredResults?: number,
+  cropRatio?: string,
   rotatableAnimatedStyle: Object,
   setConfidenceThreshold?: Function,
   setFPS?: Function,
   setNumStoredResults?: Function,
+  setCropRatio?: Function,
   showPrediction: boolean,
   showZoomButton: boolean,
   takePhoto: Function,
@@ -70,10 +72,12 @@ const ARCameraButtons = ( {
   fps,
   hasFlash,
   numStoredResults,
+  cropRatio,
   rotatableAnimatedStyle,
   setConfidenceThreshold,
   setFPS,
   setNumStoredResults,
+  setCropRatio,
   showPrediction,
   showZoomButton,
   takePhoto,
@@ -114,6 +118,8 @@ const ARCameraButtons = ( {
         setFPS={setFPS}
         numStoredResults={numStoredResults}
         setNumStoredResults={setNumStoredResults}
+        cropRatio={cropRatio}
+        setCropRatio={setCropRatio}
         // TODO: The following are just to get accessibility tests to pass...
         // without making anything truly accessible. The test seems to think
         // ARDebugButton is itself not accessible, but it's really

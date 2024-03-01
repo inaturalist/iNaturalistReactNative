@@ -24,6 +24,7 @@ type Props = {
   device: Object,
   fps?: number,
   numStoredResults?: number,
+  cropRatio?: number,
   onCameraError: Function,
   onCaptureError: Function,
   onClassifierError: Function,
@@ -37,6 +38,7 @@ type Props = {
 
 const DEFAULT_CONFIDENCE_THRESHOLD = 0.5;
 const DEFAULT_NUM_STORED_RESULTS = 4;
+const DEFAULT_CROP_RATIO = 1.0;
 
 const FrameProcessorCamera = ( {
   animatedProps,
@@ -45,6 +47,7 @@ const FrameProcessorCamera = ( {
   device,
   fps,
   numStoredResults = DEFAULT_NUM_STORED_RESULTS,
+  cropRatio = DEFAULT_CROP_RATIO,
   onCameraError,
   onCaptureError,
   onClassifierError,
@@ -101,7 +104,8 @@ const FrameProcessorCamera = ( {
           // Maybe, the intention would look clearer if we refactor to use a
           // number here.
           confidenceThreshold: confidenceThreshold.toString( ),
-          numStoredResults
+          numStoredResults,
+          cropRatio
         } );
         REA.runOnJS( onTaxaDetected )( result );
       } catch ( classifierError ) {

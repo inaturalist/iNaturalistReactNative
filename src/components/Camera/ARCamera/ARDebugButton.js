@@ -55,7 +55,9 @@ const ARDebugButton = ( {
   fps,
   setFPS,
   numStoredResults,
-  setNumStoredResults
+  setNumStoredResults,
+  cropRatio,
+  setCropRatio
 } ) => {
   const [modalVisible, setModalVisible] = useState( false );
   const { isDebug } = useDebugMode( );
@@ -108,6 +110,15 @@ const ARDebugButton = ( {
               max={1}
               value={confidenceThreshold}
               setValue={setConfidenceThreshold}
+              precision={2}
+              step={0.05}
+            />
+            <SliderControl
+              name="Center Crop Ratio (Android only)"
+              min={0.5}
+              max={1}
+              value={cropRatio}
+              setValue={setCropRatio}
               precision={2}
               step={0.05}
             />

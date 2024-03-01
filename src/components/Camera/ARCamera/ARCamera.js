@@ -70,9 +70,11 @@ const ARCamera = ( {
     modelLoaded,
     numStoredResults,
     result,
+    cropRatio,
     setConfidenceThreshold,
     setFPS,
-    setNumStoredResults
+    setNumStoredResults,
+    setCropRatio
   } = usePredictions( );
   const {
     takePhoto,
@@ -110,6 +112,7 @@ const ARCamera = ( {
             device={device}
             fps={fps}
             numStoredResults={numStoredResults}
+            cropRatio={cropRatio}
             onTaxaDetected={handleTaxaDetected}
             onClassifierError={handleClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
@@ -188,6 +191,8 @@ const ARCamera = ( {
         setFPS={setFPS}
         numStoredResults={numStoredResults}
         setNumStoredResults={setNumStoredResults}
+        cropRatio={cropRatio}
+        setCropRatio={setCropRatio}
       />
     </>
   );

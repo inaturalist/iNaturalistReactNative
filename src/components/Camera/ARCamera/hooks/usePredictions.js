@@ -10,6 +10,7 @@ const usePredictions = ( ): Object => {
   const [confidenceThreshold, setConfidenceThreshold] = useState( 0.5 );
   const [fps, setFPS] = useState( 1 );
   const [numStoredResults, setNumStoredResults] = useState( 4 );
+  const [cropRatio, setCropRatio] = useState( 1 );
 
   const handleTaxaDetected = cvResult => {
     console.log( "[DEBUG usePredictions.js] cvResult: ", cvResult );
@@ -39,10 +40,12 @@ const usePredictions = ( ): Object => {
     handleTaxaDetected,
     modelLoaded,
     numStoredResults,
+    cropRatio,
     result,
     setConfidenceThreshold,
     setFPS,
-    setNumStoredResults
+    setNumStoredResults,
+    setCropRatio
   };
 };
 
