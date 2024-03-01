@@ -18,6 +18,7 @@ import Modal from "components/SharedComponents/Modal";
 import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import { compact } from "lodash";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { Alert, Linking } from "react-native";
@@ -218,14 +219,19 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Button
             testID="DetailsTab.DQA"
             text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
+            // TODO refactor this so the DQA just receives an obs UUID and
+            // loads it independently. There's no need to pass this much
+            // stuff in params.
             onPress={() => navigation.navigate( "DataQualityAssessment", {
               qualityGrade,
               observationUUID,
               observation: {
                 date: observation.observed_on,
                 location: [observation.latitude, observation.longitude],
-                evidence: [observation.observationPhotos || observation.observation_photos,
-                  observation.observationSounds || observation.sounds],
+                evidence: compact( [
+                  observation.observationPhotos || observation.observation_photos,
+                  observation.observationSounds || observation.sounds
+                ] ),
                 taxon: {
                   id: observation.taxon.id,
                   rank_level: observation.taxon.rank_level
