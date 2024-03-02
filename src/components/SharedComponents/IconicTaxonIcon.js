@@ -32,7 +32,7 @@ const IconicTaxonIcon = ( {
     <View
       className={classnames(
         imageClassName,
-        "flex-1 justify-center items-center",
+        "shrink justify-center items-center",
         {
           "bg-darkGray": white,
           "border border-lightGray": !white

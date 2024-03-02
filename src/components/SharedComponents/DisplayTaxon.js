@@ -65,7 +65,7 @@ const DisplayTaxon = ( {
                 iconicTaxonName={iconicTaxonName}
               />
             )}
-          <View className="ml-3 shrink">
+          <View className="ml-3 grow">
             <DisplayTaxonName taxon={taxon} withdrawn={withdrawn} />
           </View>
         </View>
