@@ -169,7 +169,7 @@ const SoundRecorder = (): Node => {
   let helpText = t( "Press-record-to-start" );
   switch ( status ) {
     case RECORDING:
-      helpText = t( "Recoding-sound" );
+      helpText = t( "Recording-sound" );
       break;
     case STOPPED:
       helpText = t( "Recording-stopped-Tap-play-the-current-recording" );
