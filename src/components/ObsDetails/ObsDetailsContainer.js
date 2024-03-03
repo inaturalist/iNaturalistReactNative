@@ -261,7 +261,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   ];
 
-  const markViewedLocally = async () => {
+  const markViewedLocally = async ( ) => {
     if ( !localObservation ) { return; }
     safeRealmWrite( realm, ( ) => {
       // Flags if all comments and identifications have been viewed
@@ -277,11 +277,9 @@ const ObsDetailsContainer = ( ): Node => {
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
     {
-      onSuccess: () => {
+      onSuccess: ( ) => {
         markViewedLocally( );
-        queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
         queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
-        refetchRemoteObservation( );
         refetchObservationUpdates( );
         setObservationMarkedAsViewedAt( new Date( ) );
       }
@@ -297,20 +295,7 @@ const ObsDetailsContainer = ( ): Node => {
   const createCommentMutation = useAuthenticatedMutation(
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
-      onSuccess: data => {
-        if ( belongsToCurrentUser ) {
-          safeRealmWrite( realm, ( ) => {
-            const localComments = localObservation?.comments;
-            const newComment = data[0];
-            newComment.user = currentUser;
-            localComments.push( newComment );
-          }, "setting local comment in ObsDetailsContainer" );
-          const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-          dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
-        } else {
-          refetchRemoteObservation( );
-        }
-      },
+      onSuccess: ( ) => refetchRemoteObservation( ),
       onError: e => {
         let error = null;
         if ( e ) {
@@ -337,27 +322,7 @@ const ObsDetailsContainer = ( ): Node => {
   const createIdentificationMutation = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
-      onSuccess: data => {
-        if ( belongsToCurrentUser ) {
-          safeRealmWrite( realm, ( ) => {
-            const localIdentifications = localObservation?.identifications;
-            const newIdentification = data[0];
-            newIdentification.user = currentUser;
-            newIdentification.taxon = realm?.objectForPrimaryKey(
-              "Taxon",
-              newIdentification.taxon.id
-            ) || newIdentification.taxon;
-            if ( vision ) {
-              newIdentification.vision = true;
-            }
-            localIdentifications.push( newIdentification );
-          }, "setting local identification in ObsDetailsContainer" );
-          const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-          dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
-        } else {
-          refetchRemoteObservation( );
-        }
-      },
+      onSuccess: ( ) => refetchRemoteObservation( ),
       onError: e => {
         let error = null;
         if ( e ) {
@@ -458,6 +423,7 @@ const ObsDetailsContainer = ( ): Node => {
       currentUser={currentUser}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
       isOnline={isOnline}
+      isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
       observation={observation}
       onAgree={onAgree}
