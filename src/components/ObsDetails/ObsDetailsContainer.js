@@ -261,7 +261,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   ];
 
-  const markViewedLocally = async () => {
+  const markViewedLocally = async ( ) => {
     if ( !localObservation ) { return; }
     safeRealmWrite( realm, ( ) => {
       // Flags if all comments and identifications have been viewed
@@ -277,11 +277,9 @@ const ObsDetailsContainer = ( ): Node => {
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
     {
-      onSuccess: () => {
+      onSuccess: ( ) => {
         markViewedLocally( );
-        queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
         queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
-        refetchRemoteObservation( );
         refetchObservationUpdates( );
         setObservationMarkedAsViewedAt( new Date( ) );
       }
@@ -298,6 +296,7 @@ const ObsDetailsContainer = ( ): Node => {
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
       onSuccess: data => {
+        refetchRemoteObservation( );
         if ( belongsToCurrentUser ) {
           safeRealmWrite( realm, ( ) => {
             const localComments = localObservation?.comments;
@@ -307,8 +306,6 @@ const ObsDetailsContainer = ( ): Node => {
           }, "setting local comment in ObsDetailsContainer" );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
-        } else {
-          refetchRemoteObservation( );
         }
       },
       onError: e => {
@@ -338,6 +335,7 @@ const ObsDetailsContainer = ( ): Node => {
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
+        refetchRemoteObservation( );
         if ( belongsToCurrentUser ) {
           safeRealmWrite( realm, ( ) => {
             const localIdentifications = localObservation?.identifications;
@@ -354,8 +352,6 @@ const ObsDetailsContainer = ( ): Node => {
           }, "setting local identification in ObsDetailsContainer" );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
-        } else {
-          refetchRemoteObservation( );
         }
       },
       onError: e => {
@@ -458,6 +454,7 @@ const ObsDetailsContainer = ( ): Node => {
       currentUser={currentUser}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
       isOnline={isOnline}
+      isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
       observation={observation}
       onAgree={onAgree}

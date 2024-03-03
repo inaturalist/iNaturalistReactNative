@@ -41,6 +41,7 @@ type Props = {
   currentUser: Object,
   hideCommentBox: Function,
   isOnline: boolean,
+  isRefetching: boolean,
   navToSuggestions: Function,
   observation: Object,
   onAgree: Function,
@@ -67,6 +68,7 @@ const ObsDetails = ( {
   currentUser,
   hideCommentBox,
   isOnline,
+  isRefetching,
   navToSuggestions,
   observation,
   onAgree,
@@ -105,9 +107,10 @@ const ObsDetails = ( {
       <View className="w-[66%]">
         <View className="mr-8">
           <ObsDetailsOverview
-            observation={observation}
-            isOnline={isOnline}
             belongsToCurrentUser={belongsToCurrentUser}
+            isOnline={isOnline}
+            isRefetching={isRefetching}
+            observation={observation}
           />
         </View>
         <Tabs tabs={tabs} activeId={currentTabId} />
@@ -180,9 +183,10 @@ const ObsDetails = ( {
           ) }
         </View>
         <ObsDetailsOverview
-          observation={observation}
-          isOnline={isOnline}
           belongsToCurrentUser={belongsToCurrentUser}
+          isOnline={isOnline}
+          isRefetching={isRefetching}
+          observation={observation}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
