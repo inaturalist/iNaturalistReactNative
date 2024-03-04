@@ -5,7 +5,7 @@ import { useAuthenticatedQuery } from "sharedHooks";
 
 const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
   const { data: taxonList } = useAuthenticatedQuery(
-    ["fetchTaxa", taxonQuery],
+    ["fetchTaxonSuggestions", taxonQuery],
     optsWithAuth => searchTaxa(
       {
         q: taxonQuery
