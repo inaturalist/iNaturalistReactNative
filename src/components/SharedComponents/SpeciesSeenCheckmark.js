@@ -1,14 +1,15 @@
 // @flow
 
+import {
+  searchObservations
+} from "api/observations";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
+import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
-
-const { useRealm } = RealmContext;
 
 const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
@@ -26,23 +27,42 @@ type Props = {
 const SpeciesSeenCheckmark = ( {
   taxonId
 }: Props ): Node => {
-  const realm = useRealm( );
   const theme = useTheme( );
-  const userObservation = realm?.objectForPrimaryKey( "Taxon", taxonId );
+  const currentUser = useCurrentUser( );
 
-  if ( !userObservation ) { return null; }
-  return (
-    <View
-      className="bg-white rounded-full"
-      style={getShadow( theme.colors.primary )}
-    >
-      <INatIcon
-        name="checkmark-circle"
-        size={20}
-        color={theme.colors.secondary}
-      />
-    </View>
+  const {
+    data
+  } = useAuthenticatedQuery(
+    ["searchObservations", taxonId],
+    optsWithAuth => searchObservations(
+      {
+        user_id: currentUser.id,
+        per_page: 0,
+        taxon_id: taxonId
+      },
+      optsWithAuth
+    ),
+    {
+      keepPreviousData: false
+    }
   );
+
+  if ( data?.total_results > 0 ) {
+    return (
+      <View
+        className="bg-white rounded-full"
+        style={getShadow( theme.colors.primary )}
+        testID="SpeciesSeenCheckmark"
+      >
+        <INatIcon
+          name="checkmark-circle"
+          size={20}
+          color={theme.colors.secondary}
+        />
+      </View>
+    );
+  }
+  return null;
 };
 
 export default SpeciesSeenCheckmark;
