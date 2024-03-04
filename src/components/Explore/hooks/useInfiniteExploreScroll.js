@@ -9,7 +9,7 @@ import Observation from "realmModels/Observation";
 const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object => {
   const baseParams = {
     ...newInputParams,
-    fields: Observation.LIST_FIELDS,
+    fields: Observation.EXPLORE_LIST_FIELDS,
     ttl: -1
   };
 

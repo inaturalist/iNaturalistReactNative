@@ -57,23 +57,44 @@ class Observation extends Realm.Object {
     }
   };
 
-  static LIST_FIELDS = {
-    comments: Comment.COMMENT_FIELDS,
-    created_at: true,
+  static EXPLORE_LIST_FIELDS = {
+    comments: {
+      current: true
+    },
     geojson: true,
     geoprivacy: true,
     id: true,
-    identifications: Identification.ID_FIELDS,
+    identifications: {
+      current: true
+    },
     latitude: true,
     longitude: true,
     observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
     place_guess: true,
+    quality_grade: true,
+    observation_sounds: {
+      id: true
+    },
+    taxon: {
+      iconic_taxon_name: true,
+      is_active: true,
+      name: true,
+      preferred_common_name: true,
+      rank: true,
+      rank_level: true
+    },
+    time_observed_at: true
+  };
+
+  static LIST_FIELDS = {
+    ...Observation.EXPLORE_LIST_FIELDS,
+    comments: Comment.COMMENT_FIELDS,
+    created_at: true,
+    identifications: Identification.ID_FIELDS,
+    observation_sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     private_geojson: true,
     private_place_guess: true,
-    quality_grade: true,
-    observation_sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     taxon: Taxon.TAXON_FIELDS,
-    time_observed_at: true,
     user: User && User.FIELDS
   };
 
