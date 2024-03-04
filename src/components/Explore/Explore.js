@@ -49,6 +49,7 @@ type Props = {
   count: Object,
   exploreView: string,
   isOnline: boolean,
+  loadingStatus: boolean,
   openFiltersModal: Function,
   queryParams: Object,
   showFiltersModal: boolean,
@@ -62,6 +63,7 @@ const Explore = ( {
   count,
   exploreView,
   isOnline,
+  loadingStatus,
   openFiltersModal,
   queryParams,
   showFiltersModal,
@@ -79,6 +81,7 @@ const Explore = ( {
       count={count[exploreView]}
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
+      loadingStatus={loadingStatus}
       updateTaxon={updateTaxon}
       openFiltersModal={openFiltersModal}
     />

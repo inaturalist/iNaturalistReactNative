@@ -11,18 +11,23 @@ const useHeaderCount = ( ): Object => {
     observers: null,
     identifiers: null
   } );
+  const [loadingStatus, setLoadingStatus] = useState( true );
 
-  const updateCount = useCallback( newCount => {
+  const updateCount = useCallback( ( newCount, status = false ) => {
     setCount( {
       ...count,
       ...newCount
     } );
+    if ( status ) {
+      setLoadingStatus( status );
+    }
   }, [count] );
 
   const memoizedCount = useMemo( ( ) => count, [count] );
 
   return {
     count: memoizedCount,
+    loadingStatus,
     updateCount
   };
 };

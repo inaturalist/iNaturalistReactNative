@@ -43,9 +43,9 @@ const ObservationsView = ( {
 
   useEffect( ( ) => {
     if ( count.observations !== totalResults ) {
-      updateCount( { observations: totalResults } );
+      updateCount( { observations: totalResults }, isFetchingNextPage );
     }
-  }, [totalResults, updateCount, count] );
+  }, [totalResults, updateCount, count, isFetchingNextPage] );
 
   const isOnline = useIsConnected( );
 
