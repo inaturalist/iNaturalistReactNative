@@ -226,7 +226,8 @@ const ExploreContainerWithContext = ( ): Node => {
   }
   delete queryParams.taxon_name;
 
-  const { count, updateCount } = useHeaderCount( filteredParams );
+  // need this hook to be top-level enough that HeaderCount rerenders
+  const { count, updateCount } = useHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 

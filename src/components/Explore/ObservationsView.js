@@ -1,21 +1,23 @@
 // @flow
 
+import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
 import { ObservationsFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
 import {
   useDeviceOrientation,
-  useInfiniteObservationsScroll,
   useIsConnected
 } from "sharedHooks";
 
 import MapView from "./MapView";
 
 type Props = {
+  count: Object,
   layout: string,
-  queryParams: Object
+  queryParams: Object,
+  updateCount: Function
 }
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
@@ -23,18 +25,27 @@ const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
 const { width: defaultScreenWidth } = Dimensions.get( "screen" );
 
 const ObservationsView = ( {
+  count,
   layout,
-  queryParams
+  queryParams,
+  updateCount
 }: Props ): Node => {
   const {
-    observations, isFetchingNextPage, fetchNextPage, status
-  } = useInfiniteObservationsScroll( { upsert: false, params: queryParams } );
+    observations, isFetchingNextPage, fetchNextPage, status,
+    totalResults
+  } = useInfiniteExploreScroll( { params: queryParams } );
   const {
     isLandscapeMode,
     isTablet,
     screenHeight,
     screenWidth
   } = useDeviceOrientation( );
+
+  useEffect( ( ) => {
+    if ( count.observations !== totalResults ) {
+      updateCount( { observations: totalResults } );
+    }
+  }, [totalResults, updateCount, count] );
 
   const isOnline = useIsConnected( );
 

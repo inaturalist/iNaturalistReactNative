@@ -186,8 +186,10 @@ const Explore = ( {
           />
           {exploreView === "observations" && (
             <ObservationsView
+              count={count}
               layout={layout}
               queryParams={queryParams}
+              updateCount={updateCount}
             />
           )}
           {exploreView === "species" && (
