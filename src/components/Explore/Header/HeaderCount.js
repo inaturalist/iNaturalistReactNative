@@ -37,6 +37,8 @@ const HeaderCount = ( {
     return t( "X-Observers", { count } );
   };
 
+  console.log( count, "count in header count" );
+
   return (
     <View className="h-[40px] flex-row items-center justify-center">
       {count !== null && (

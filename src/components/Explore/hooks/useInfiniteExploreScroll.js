@@ -50,7 +50,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
   } );
 
   const observations = flatten( data?.pages?.map( r => r.results ) ) || [];
-  const totalResults = data?.pages?.[0].total_results;
+  const totalResults = data?.pages?.[0].total_results || null;
 
   return {
     isFetchingNextPage,
