@@ -24,6 +24,7 @@ type Props = {
   count: ?number,
   exploreView: string,
   exploreViewIcon: string,
+  loadingStatus: boolean,
   openFiltersModal: Function,
   updateTaxon: Function
 }
@@ -32,6 +33,7 @@ const Header = ( {
   count,
   exploreView,
   exploreViewIcon,
+  loadingStatus,
   openFiltersModal,
   updateTaxon
 }: Props ): Node => {
@@ -135,6 +137,7 @@ const Header = ( {
           count={count}
           exploreView={exploreView}
           exploreViewIcon={exploreViewIcon}
+          loadingStatus={loadingStatus}
         />
       </Surface>
     </View>
