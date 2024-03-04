@@ -16,7 +16,6 @@ const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
       enabled: !!( taxonQuery.length > 0 )
     }
   );
-  console.log( taxonList?.[0] );
   return taxonList;
 };
 

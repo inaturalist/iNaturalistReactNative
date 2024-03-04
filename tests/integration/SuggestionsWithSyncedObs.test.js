@@ -98,6 +98,7 @@ beforeEach( async ( ) => {
       user: mockUser
     } )]
   } );
+  inatjs.taxa.search.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 } );
 
@@ -114,10 +115,8 @@ describe( "TaxonSearch", ( ) => {
   const mockSearchResultTaxon = factory( "RemoteTaxon" );
 
   beforeEach( ( ) => {
-    inatjs.search.mockResolvedValue( makeResponse( [
-      {
-        taxon: mockSearchResultTaxon
-      }
+    inatjs.taxa.search.mockResolvedValue( makeResponse( [
+      mockSearchResultTaxon
     ] ) );
     inatjs.observations.observers.mockResolvedValue( makeResponse( [
       {
@@ -130,7 +129,7 @@ describe( "TaxonSearch", ( ) => {
   } );
 
   afterEach( ( ) => {
-    inatjs.search.mockReset( );
+    inatjs.taxa.search.mockReset( );
     inatjs.observations.observers.mockReset( );
     inatjs.taxa.fetch.mockReset( );
   } );
