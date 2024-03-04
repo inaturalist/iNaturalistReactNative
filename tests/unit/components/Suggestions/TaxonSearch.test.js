@@ -69,7 +69,7 @@ describe( "TaxonSearch", ( ) => {
   } );
 
   it( "show taxon search results", async ( ) => {
-    inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
+    inatjs.taxa.search.mockResolvedValue( makeResponse( mockTaxaList ) );
     renderComponent( <TaxonSearch /> );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
