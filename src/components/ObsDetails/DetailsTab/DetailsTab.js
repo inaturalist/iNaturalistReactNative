@@ -233,8 +233,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
                   observation.observationSounds || observation.sounds
                 ] ),
                 taxon: {
-                  id: observation.taxon.id,
-                  rank_level: observation.taxon.rank_level
+                  id: observation.taxon?.id,
+                  rank_level: observation.taxon?.rank_level
                 },
                 identifications: observation.identifications
               }
