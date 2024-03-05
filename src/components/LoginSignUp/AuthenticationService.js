@@ -1,7 +1,6 @@
 // @flow
 import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
-import axios from "axios";
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
@@ -31,10 +30,6 @@ export const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Bui
 
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
 const JWT_EXPIRATION_MINS = 25;
-
-const axiosInstance = axios.create( {
-  baseURL: API_HOST
-} );
 
 /**
  * Creates base API client for all requests
