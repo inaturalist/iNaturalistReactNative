@@ -1,6 +1,7 @@
 // @flow
 import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
+import axios from "axios";
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
@@ -23,6 +24,10 @@ const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "h
 
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
 const JWT_EXPIRATION_MINS = 25;
+
+const axiosInstance = axios.create( {
+  baseURL: API_HOST
+} );
 
 /**
  * Creates base API client for all requests
