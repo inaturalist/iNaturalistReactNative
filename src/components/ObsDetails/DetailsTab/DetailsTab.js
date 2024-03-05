@@ -204,7 +204,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
         />
       </View>
       <Divider />
-
       <View className={`${sectionClass} flex-col`}>
         <Heading4 className={headingClass}>{t( "DATA-QUALITY" )}</Heading4>
         <View className="space-y-[15px]">

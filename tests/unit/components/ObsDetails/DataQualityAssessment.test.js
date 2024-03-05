@@ -1,46 +1,21 @@
+import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen } from "@testing-library/react-native";
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import { t } from "i18next";
 import React from "react";
-import { View } from "react-native";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
-jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
 const mockObservation = factory( "LocalObservation", {
-  created_at: "2022-11-27T19:07:41-08:00",
-  time_observed_at: "2023-12-14T21:07:41-09:30",
   observed_on: "2023-12-14T21:07:41-09:30",
-  taxon: factory( "LocalTaxon", {
-    id: "1234",
-    rank_level: 10
-  } ),
-  observationPhotos: [
-    factory( "LocalObservationPhoto", {
-      photo: {
-        id: faker.number.int( ),
-        attribution: faker.lorem.sentence( ),
-        licenseCode: "cc-by-nc",
-        url: faker.image.url( )
-      }
-    } )
-  ],
-  identifications: [factory( "LocalIdentification", {
-    taxon: factory( "LocalTaxon", {
-      id: "1234",
-      rank_level: 10
-    } )
-  } )],
+  observationPhotos: [factory( "LocalObservationPhoto" )],
   latitude: Number( faker.location.latitude( ) ),
   longitude: Number( faker.location.longitude( ) ),
-  description: faker.lorem.paragraph( ),
-  quality_grade: "casual"
+  // casual is the default, so using needs_id here ensures test
+  // is using our mock observation, not just showing the default screen
+  quality_grade: "needs_id"
 } );
 
 const mockQualityMetrics = [
@@ -57,10 +32,10 @@ const mockObservationObject = {
   location: [mockObservation.latitude, mockObservation.longitude],
   evidence: mockObservation.observationPhotos,
   taxon: {
-    id: mockObservation.taxon.id,
-    rank_level: mockObservation.taxon.rank_level
+    id: undefined,
+    rank_level: undefined
   },
-  identifications: mockObservation.identifications
+  identifications: []
 };
 
 const mockMutate = jest.fn();
@@ -68,33 +43,20 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
   default: () => ( {
     mutate: mockMutate
-
   } )
 } ) );
 
-const mockAttribution = <View testID="mock-attribution" />;
-jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
-  __esModule: true,
-  default: () => mockAttribution
+useRoute.mockImplementation( ( ) => ( {
+  params: {
+    observationUUID: mockObservation.uuid,
+    observation: mockObservationObject,
+    qualityGrade: mockObservation.quality_grade
+  }
 } ) );
-
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: () => ( {
-      params: {
-        observationUUID: mockObservation.uuid,
-        observation: mockObservationObject,
-        qualityGrade: mockObservation.quality_grade
-      }
-    } )
-  };
-} );
 
 describe( "Data Quality Assessment", ( ) => {
   test( "renders correct quality grade status", async ( ) => {
-    renderComponent( <DQAContainer qualityGrade={mockObservation.quality_grade} /> );
+    renderComponent( <DQAContainer /> );
 
     const qualityGrade = await screen.findByTestId(
       `QualityGrade.${mockObservation.quality_grade}`
@@ -102,23 +64,23 @@ describe( "Data Quality Assessment", ( ) => {
     expect( qualityGrade ).toBeTruthy( );
   } );
   test( "renders correct quality grade status title", async ( ) => {
-    renderComponent( <DQAContainer observation={mockObservation} /> );
+    renderComponent( <DQAContainer /> );
 
     const qualityGrade = await screen.findByText(
-      t( "Data-quality-assessment-title-casual" )
+      t( "Data-quality-assessment-title-needs-id" )
     );
     expect( qualityGrade ).toBeTruthy( );
   } );
   test( "renders correct quality grade status description", async ( ) => {
-    renderComponent( <DQAContainer observation={mockObservation} /> );
+    renderComponent( <DQAContainer /> );
 
     const qualityGrade = await screen.findByText(
-      t( "Data-quality-assessment-description-casual" )
+      t( "Data-quality-assessment-description-needs-id" )
     );
     expect( qualityGrade ).toBeTruthy( );
   } );
   test( "renders correct metric titles", async ( ) => {
-    renderComponent( <DQAContainer observation={mockObservation} /> );
+    renderComponent( <DQAContainer /> );
 
     const dateSpecified = await screen.findByText(
       t( "Data-quality-assessment-date-specified" )
@@ -143,7 +105,7 @@ describe( "Data Quality Assessment", ( ) => {
   } );
 
   test( "renders correct metric vote titles", async ( ) => {
-    renderComponent( <DQAContainer observation={mockObservation} /> );
+    renderComponent( <DQAContainer /> );
 
     const dateAccurate = await screen.findByText(
       t( "Data-quality-assessment-date-is-accurate" )
@@ -166,8 +128,9 @@ describe( "Data Quality Assessment", ( ) => {
     expect( organismEvidence ).toBeTruthy( );
     expect( recentEvidence ).toBeTruthy( );
   } );
+
   test( "renders about section", async ( ) => {
-    renderComponent( <DQAContainer observation={mockObservation} /> );
+    renderComponent( <DQAContainer /> );
 
     const title = await screen.findByText(
       t( "ABOUT-THE-DQA" )
@@ -182,7 +145,7 @@ describe( "Data Quality Assessment", ( ) => {
 
 describe( "DQA Vote Buttons", ( ) => {
   test( "renders DQA vote buttons", async ( ) => {
-    renderComponent( <DQAContainer observation={mockObservation} /> );
+    renderComponent( <DQAContainer /> );
 
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );
     fireEvent.press( emptyDisagreeButtons[0] );
@@ -191,7 +154,7 @@ describe( "DQA Vote Buttons", ( ) => {
   } );
 
   test( "calls api when DQA disagree button is pressed", async ( ) => {
-    renderComponent( <DQAContainer observation={mockObservation} /> );
+    renderComponent( <DQAContainer /> );
 
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );
     fireEvent.press( emptyDisagreeButtons[0] );
@@ -200,7 +163,7 @@ describe( "DQA Vote Buttons", ( ) => {
   } );
 
   test( "calls api when DQA agree button is pressed", async ( ) => {
-    renderComponent( <DQAContainer observation={mockObservation} /> );
+    renderComponent( <DQAContainer /> );
 
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyAgree" );
     fireEvent.press( emptyDisagreeButtons[0] );
