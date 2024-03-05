@@ -1,5 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { getAPIToken, USER_AGENT } from "components/LoginSignUp/AuthenticationService";
+import { getUserAgent } from "api/userAgent";
+import { getAPIToken } from "components/LoginSignUp/AuthenticationService";
 import { ActivityIndicator, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
@@ -97,7 +98,7 @@ const FullPageWebView = ( ) => {
           }}
           renderLoading={LoadingView}
           startInLoadingState
-          userAgent={USER_AGENT}
+          userAgent={getUserAgent()}
         />
       )}
     </ViewWrapper>
