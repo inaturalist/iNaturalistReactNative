@@ -34,8 +34,8 @@ const axiosInstance = axios.create( {
  * @param additionalHeaders any additional headers that will be passed to the API
  */
 const createAPI = ( additionalHeaders: any ) => create( {
-  baseURL: API_HOST,
   headers: { "User-Agent": getUserAgent( ), ...additionalHeaders }
+  axiosInstance,
 } );
 
 /**
