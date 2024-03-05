@@ -4,7 +4,6 @@ import {
   getBrand,
   getBuildNumber,
   getDeviceId,
-  getDeviceName,
   getDeviceType,
   getSystemName,
   getSystemVersion,
@@ -19,7 +18,7 @@ const DETAILS = [
 ];
 
 async function getOtherDetails( ) {
-  DETAILS.push( `${getBrand( )} ${await getDeviceName( )}` );
+  DETAILS.push( `${getBrand( )}` );
   if ( Platform.OS === "android" ) {
     DETAILS.push( `SDK ${await getApiLevel( )}` );
   }
