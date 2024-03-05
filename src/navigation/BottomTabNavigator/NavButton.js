@@ -29,8 +29,8 @@ const NavButton = ( {
   accessibilityLabel,
   accessibilityHint,
   accessibilityRole = "tab",
-  width,
-  height
+  width = 44,
+  height = 44
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
@@ -57,6 +57,7 @@ const NavButton = ( {
     width,
     height
   };
+  console.log( userIconUri, "user icon uri" );
 
   if ( userIconUri ) {
     return (

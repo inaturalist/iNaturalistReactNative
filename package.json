@@ -85,6 +85,7 @@
     "react-native-event-listeners": "^1.0.7",
     "react-native-exception-handler": "^2.10.10",
     "react-native-exif-reader": "github:inaturalist/react-native-exif-reader",
+    "react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",
     "react-native-geocoder-reborn": "^0.9.0",
     "react-native-gesture-handler": "^2.13.0",
