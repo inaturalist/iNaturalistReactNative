@@ -11,17 +11,6 @@ import React, {
 import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-// import {
-//   RESULTS as PERMISSION_RESULTS
-// } from "react-native-permissions";
-// Temporarily using a fork so this is to avoid that eslint error. Need to
-// remove if/when we return to the main repo
-import {
-  Camera
-  // react-native-vision-camera v3
-  // useCameraDevice
-  // react-native-vision-camera v2
-} from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
@@ -55,13 +44,16 @@ const CameraWithDevice = ( {
   }
   const navigation = useNavigation();
   const { t } = useTranslation( );
-  // $FlowFixMe
-  const camera = useRef<Camera>( null );
+  const camera = useRef( null );
   const { deviceOrientation } = useDeviceOrientation( );
   const [addPhotoPermissionResult, setAddPhotoPermissionResult] = useState( null );
   const [checkmarkTapped, setCheckmarkTapped] = useState( false );
   const [taxonResult, setTaxonResult] = useState( null );
-  const [modalWasClosed, setModalWasClosed] = useState( false );
+  // We track this because we only want to navigate away when the permission
+  // gate is completely closed, because there's a good chance another will
+  // try to open when the user lands on the next screen, e.g. the location
+  // permission gate on ObsEdit
+  const [addPhotoPermissionGateWasClosed, setAddPhotoPermissionGateWasClosed] = useState( false );
 
   const {
     prepareStateForObsEdit
@@ -104,16 +96,21 @@ const CameraWithDevice = ( {
   };
 
   useEffect( ( ) => {
-    if ( checkmarkTapped
-        && ( modalWasClosed || addPhotoPermissionResult === "granted" ) ) {
+    if (
+      checkmarkTapped
+      && (
+        addPhotoPermissionGateWasClosed
+        || addPhotoPermissionResult === "granted"
+      )
+    ) {
       setCheckmarkTapped( false );
-      setModalWasClosed( false );
+      setAddPhotoPermissionGateWasClosed( false );
       navToObsEdit( );
     }
   }, [
     navToObsEdit,
     checkmarkTapped,
-    modalWasClosed,
+    addPhotoPermissionGateWasClosed,
     addPhotoPermissionResult
   ] );
 
@@ -146,10 +143,10 @@ const CameraWithDevice = ( {
         buttonText={t( "SAVE-PHOTOS" )}
         icon="gallery"
         image={require( "images/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
+        onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
         onPermissionGranted={onPermissionGranted}
         onPermissionDenied={onPermissionDenied}
         withoutNavigation
-        setModalWasClosed={setModalWasClosed}
         permissionNeeded={checkmarkTapped}
       />
       {cameraType === "Standard"
