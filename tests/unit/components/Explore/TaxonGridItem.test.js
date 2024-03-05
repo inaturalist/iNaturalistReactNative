@@ -21,6 +21,15 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: {
+      total_results: 0
+    }
+  } )
+} ) );
+
 describe( "TaxonGridItem", ( ) => {
   it( "should be accessible", ( ) => {
     const taxonGridItem = (
