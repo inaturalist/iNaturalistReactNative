@@ -23,10 +23,11 @@ const useIconicTaxa = ( { reload }: Object ): Object => {
     if ( iconicTaxa?.length > 0 && !isUpdatingRealm ) {
       setIsUpdatingRealm( true );
       safeRealmWrite( realm, ( ) => {
-        iconicTaxa.forEach( taxa => {
+        iconicTaxa.forEach( taxon => {
           realm.create( "Taxon", {
-            ...taxa,
-            isIconic: true
+            ...taxon,
+            isIconic: true,
+            _synced_at: new Date( )
           }, "modified" );
         } );
       }, "modifying iconic taxa in useIconicTaxa" );

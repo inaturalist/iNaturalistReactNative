@@ -13,7 +13,6 @@ const usePredictions = ( ): Object => {
   const [cropRatio, setCropRatio] = useState( 1 );
 
   const handleTaxaDetected = cvResult => {
-    console.log( "[DEBUG usePredictions.js] cvResult: ", cvResult );
     if ( cvResult && !modelLoaded ) {
       setModelLoaded( true );
     }

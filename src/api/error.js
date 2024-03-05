@@ -43,10 +43,10 @@ async function handleError( e: Object, options: Object = {} ): Object {
   if ( typeof ( options.onApiError ) === "function" ) {
     options.onApiError( error );
   }
-  // Default to throw errors. We almost never want handle supress an error at
+  // Default to throw errors. We almost never want supress an error at
   // this low level
   if ( options.throw === false ) {
-    return null;
+    return error;
   }
   throw error;
 }
