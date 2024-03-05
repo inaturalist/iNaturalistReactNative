@@ -20,7 +20,7 @@ const iNatLogstashTransport: transportFunctionType = async (props) => {
   const formData = {
     level: props.level.text,
     message,
-    context: props.extension,
+    context: props.extension
   };
   const response = await api.post( "/log", formData );
 };
