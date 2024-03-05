@@ -73,8 +73,9 @@ describe( "useTaxon", ( ) => {
       it( "should return local taxon with default photo", ( ) => {
         const { result } = renderHook( ( ) => useTaxon( mockTaxon ) );
         expect( inatjs.taxa.fetch ).not.toHaveBeenCalled( );
-        expect( result.current ).toHaveProperty( "default_photo" );
-        expect( result.current.default_photo.url ).toEqual( mockTaxon.default_photo.url );
+        const { taxon: resultTaxon } = result.current;
+        expect( resultTaxon ).toHaveProperty( "default_photo" );
+        expect( resultTaxon.default_photo.url ).toEqual( mockTaxon.default_photo.url );
       } );
 
       it( "should request a taxon from the API if the local copy is out of date", async ( ) => {
@@ -116,14 +117,14 @@ describe( "useTaxon", ( ) => {
         } ) );
         const partialTaxon = { id: faker.number.int( ), foo: "bar" };
         const { result } = renderHook( ( ) => useTaxon( partialTaxon ) );
-        expect( result.current.foo ).toEqual( "bar" );
+        expect( result.current.taxon.foo ).toEqual( "bar" );
         jest.unmock( "@tanstack/react-query" );
       } );
 
       it( "should return a taxon like a local taxon record if the request succeeds", async ( ) => {
         const { result } = renderHook( ( ) => useTaxon( { id: mockTaxon.id } ) );
         await waitFor( ( ) => expect( inatjs.taxa.fetch ).toHaveBeenCalled( ) );
-        expect( result.current ).toHaveProperty( "default_photo" );
+        expect( result.current.taxon ).toHaveProperty( "default_photo" );
       } );
     } );
 
@@ -135,8 +136,8 @@ describe( "useTaxon", ( ) => {
         ).toBeNull( );
         const { result } = renderHook( ( ) => useTaxon( { id: taxonId, foo: "bar" }, false ) );
         expect( inatjs.taxa.fetch ).not.toHaveBeenCalled( );
-        expect( result.current ).not.toHaveProperty( "default_photo" );
-        expect( result.current.foo ).toEqual( "bar" );
+        expect( result.current.taxon ).not.toHaveProperty( "default_photo" );
+        expect( result.current.taxon.foo ).toEqual( "bar" );
       } );
     } );
   } );

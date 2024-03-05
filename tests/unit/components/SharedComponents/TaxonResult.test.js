@@ -12,7 +12,7 @@ const mockTaxon = {
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => mockTaxon
+  default: () => ( { taxon: mockTaxon } )
 } ) );
 
 describe( "TaxonResult", () => {

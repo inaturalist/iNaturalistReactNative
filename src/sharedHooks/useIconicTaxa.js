@@ -7,7 +7,8 @@ import { useAuthenticatedQuery, useIsConnected } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const useIconicTaxa = ( { reload }: Object ): Object => {
+const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ): Object => {
+  const { reload } = options;
   const realm = useRealm( );
   const isConnected = useIsConnected( );
   const [isUpdatingRealm, setIsUpdatingRealm] = useState( );

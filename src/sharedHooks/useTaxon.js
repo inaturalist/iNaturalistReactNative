@@ -30,14 +30,16 @@ const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
       localTaxon._synced_at && ( Date.now( ) - localTaxon._synced_at > ONE_WEEK_MS )
     )
   );
+  const enabled = canFetchTaxon && fetchRemote && localTaxonNeedsSync;
 
   const {
-    data: remoteTaxon
+    data: remoteTaxon,
+    isLoading
   } = useAuthenticatedQuery(
     ["fetchTaxon", taxon?.id],
     optsWithAuth => fetchTaxon( taxon.id, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
     {
-      enabled: canFetchTaxon && fetchRemote && localTaxonNeedsSync
+      enabled
     }
   );
 
@@ -57,7 +59,11 @@ const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
 
   // Local is best, local-ish version of remote will be available sooner, use
   // whatever was passed in as a last resort
-  return localTaxon || mappedRemoteTaxon || taxon;
+  return {
+    taxon: localTaxon || mappedRemoteTaxon || taxon,
+    // Apparently useQuery isLoading is true if the query is disabled
+    isLoading: enabled && isLoading
+  };
 };
 
 export default useTaxon;
