@@ -1,4 +1,4 @@
-import { getUserAgent } from "api/userAgent.ts";
+import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
 import Config from "react-native-config";
 import { transportFunctionType } from "react-native-logs";
