@@ -1,9 +1,14 @@
 // @flow
 import { fetchUserMe } from "api/users";
 import { RealmContext } from "providers/contexts";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { useAuthenticatedQuery, useCurrentUser, useIsConnected } from "sharedHooks";
+import {
+  useAuthenticatedQuery,
+  useBustUserIconCache,
+  useCurrentUser,
+  useIsConnected
+} from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -13,6 +18,7 @@ const useUserMe = ( options: ?Object ): Object => {
   const updateRealm = options?.updateRealm;
   const isConnected = useIsConnected( );
   const enabled = !!isConnected && !!currentUser;
+  const [remoteUserUpdated, setRemoteUserUpdated] = useState( false );
 
   const {
     data: remoteUser,
@@ -32,12 +38,15 @@ const useUserMe = ( options: ?Object ): Object => {
       safeRealmWrite( realm, ( ) => {
         realm.create( "User", remoteUser, "modified" );
       }, "modifying current user via remote fetch in useUserMe" );
+      setRemoteUserUpdated( true );
     }
   }, [
     realm,
     remoteUser,
     updateRealm
   ] );
+
+  useBustUserIconCache( remoteUserUpdated );
 
   useEffect( ( ) => {
     if ( dataUpdatedAt && updateUser ) {

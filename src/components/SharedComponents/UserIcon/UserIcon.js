@@ -3,9 +3,7 @@
 import classNames from "classnames";
 import { FastImage as Image } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect } from "react";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import FastImage from "react-native-fast-image";
+import React from "react";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -37,12 +35,6 @@ const UserIcon = ( {
     "rounded-full",
     size
   );
-
-  useEffect( ( ) => {
-    if ( uri ) {
-      FastImage.preload( [uri] );
-    }
-  }, [uri] );
 
   // For unknown reasons, the green border doesn't show up on Android using nativewind classNames
   // but it works with style, might warrant further investigation or an issue in nativewind

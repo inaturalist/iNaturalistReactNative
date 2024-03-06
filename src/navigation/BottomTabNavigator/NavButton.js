@@ -57,7 +57,6 @@ const NavButton = ( {
     width,
     height
   };
-  console.log( userIconUri, "user icon uri" );
 
   if ( userIconUri ) {
     return (

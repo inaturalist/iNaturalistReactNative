@@ -1,5 +1,7 @@
 export { default as useAuthenticatedMutation } from "./useAuthenticatedMutation";
 export { default as useAuthenticatedQuery } from "./useAuthenticatedQuery";
+export { default as useBustUserIconCache } from "./useBustUserIconCache";
+export { default as useCacheBust } from "./useCacheBust";
 export { default as useCurrentObservationLocation } from "./useCurrentObservationLocation";
 export { default as useCurrentUser } from "./useCurrentUser";
 export { default as useDebugMode } from "./useDebugMode";
