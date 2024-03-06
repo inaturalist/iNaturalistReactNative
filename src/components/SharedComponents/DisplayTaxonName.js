@@ -1,7 +1,8 @@
 // @flow
 import classNames from "classnames";
 import {
-  Body1Bold, Body3, Body4, INatText
+  Body1, Body3, Body4,
+  INatTextMedium
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -95,13 +96,13 @@ const DisplayTaxonName = ( {
       return (
         isItalics
           ? (
-            <INatText
+            <INatTextMedium
               // eslint-disable-next-line react/no-array-index-key
               key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
-              className={classNames( "italic font-normal", textClass( ) )}
+              className={classNames( "italic font-light", textClass( ) )}
             >
               {text}
-            </INatText>
+            </INatTextMedium>
           )
           : text
       );
@@ -114,7 +115,7 @@ const DisplayTaxonName = ( {
     let TopTextComponent = TopTextComponentProp;
     if ( !TopTextComponent ) {
       TopTextComponent = !small
-        ? Body1Bold
+        ? Body1
         : Body3;
     }
     let BottomTextComponent = BottomTextComponentProp;
@@ -180,9 +181,9 @@ const DisplayTaxonName = ( {
 
   if ( !taxon ) {
     return (
-      <Body1Bold className={textClass( )} numberOfLines={1}>
+      <Body1 className={textClass( )} numberOfLines={1}>
         {t( "unknown" )}
-      </Body1Bold>
+      </Body1>
     );
   }
 

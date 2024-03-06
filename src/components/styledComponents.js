@@ -31,6 +31,13 @@ const ScrollView = styled( UnstyledScrollView );
 const Text = styled(
   UnstyledText,
   Platform.OS === "ios"
+    ? "font-Whitney-Semibold"
+    : "font-Whitney-Semibold-Pro"
+);
+// $FlowIgnore
+const MediumText = styled(
+  UnstyledText,
+  Platform.OS === "ios"
     ? "font-Whitney-Medium"
     : "font-Whitney-Medium-Pro"
 );
@@ -38,8 +45,8 @@ const Text = styled(
 const LightText = styled(
   UnstyledText,
   Platform.OS === "ios"
-    ? "font-Whitney-Light"
-    : "font-Whitney-Light-Pro"
+    ? "font-Whitney-Book"
+    : "font-Whitney-Book-Pro"
 );
 // $FlowIgnore
 const TextInput = styled( UntyledTextInput );
@@ -69,6 +76,7 @@ export {
   KeyboardAvoidingView,
   LightText,
   LinearGradient,
+  MediumText,
   Modal,
   Pressable,
   SafeAreaView,
