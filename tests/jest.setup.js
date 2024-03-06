@@ -21,6 +21,8 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
+// Mock the react-native-logs config because it has a dependency on AuthenticationService
+// instead use console.logs for tests
 jest.mock( "../react-native-logs.config", () => {
   const log = {
     extend: jest.fn( () => ( {

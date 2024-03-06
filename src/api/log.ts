@@ -37,9 +37,10 @@ const iNatLogstashTransport: transportFunctionType = async props => {
     context: props.extension,
     timestamp: new Date().toISOString(),
     // TODO: I couldn't really find a good way to get the error type and backtrace
-    // being forced to the react-native-logs transporter. There could be some string handling to get it
-    // but that seems excessive to me because it would need to be adapted to logger.error call because
-    // sometimes the error is used in a template string and sometimes it's an object.
+    // within the react-native-logs transporter paradigm. There could be some string handling to get it
+    // but that seems excessive to me because it would need to be adapted to every logger.error call because
+    // sometimes the error is used in a template string and sometimes it's an object. Maybe at one point we
+    // need to build a solution outside of the transporter paradigm.
     // error_type: some_error_type,
     // backtrace: some_backtrace
   };
