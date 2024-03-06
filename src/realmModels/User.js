@@ -12,16 +12,8 @@ class User extends Realm.Object {
   };
 
   // getting user icon data from production instead of staging
-  static uri = user => {
-    // if user is current user and has cached icon, prioritize this
-    if ( user?.cached_icon_url ) {
-      return { uri: user.cached_icon_url.replace( "staticdev", "static" ) };
-    }
-    if ( user?.icon_url ) {
-      return { uri: user?.icon_url.replace( "staticdev", "static" ) };
-    }
-    return null;
-  };
+  static uri = user => user?.icon_url
+    && { uri: user?.icon_url.replace( "staticdev", "static" ) };
 
   static userHandle = user => ( user && user.login ) && `@${user.login}`;
 

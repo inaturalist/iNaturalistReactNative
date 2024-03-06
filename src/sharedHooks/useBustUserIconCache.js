@@ -1,6 +1,6 @@
 // @flow
 import { RealmContext } from "providers/contexts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
@@ -15,27 +15,28 @@ const logger = log.extend( "useBustUserIconCache" );
 const useBustUserIconCache = ( remoteUserUpdated: boolean ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
-
-  const IMAGE_URL = currentUser?.cached_icon_url || currentUser?.icon_url;
-
+  const IMAGE_URL = currentUser?.icon_url;
   const { url: uri, bust } = useCacheBust( IMAGE_URL );
 
-  useEffect( ( ) => {
-    if ( !remoteUserUpdated ) { return; }
-    logger.info( "Busting cache for user icon in useBustUserIconCache" );
-    bust( );
-  }, [bust, remoteUserUpdated] );
+  const [prevUri, setPrevUri] = useState( null );
+
+  const skipCacheBust = !currentUser || !remoteUserUpdated || prevUri;
 
   useEffect( ( ) => {
-    if ( uri ) {
+    if ( skipCacheBust ) { return; }
+    setPrevUri( uri );
+    logger.info( "Busting cache for user icon in useBustUserIconCache" );
+    bust( );
+  }, [skipCacheBust, uri, bust] );
+
+  useEffect( ( ) => {
+    if ( !currentUser ) { return; }
+    if ( uri !== prevUri ) {
       safeRealmWrite( realm, ( ) => {
-        realm.create( "User", {
-          ...currentUser,
-          cached_icon_url: uri
-        }, "modified" );
+        currentUser.cached_icon_url = uri;
       }, "updating cached_icon_url in useBustUserIconCache" );
     }
-  }, [uri, currentUser, realm] );
+  }, [uri, currentUser, realm, prevUri] );
 
   return null;
 };
