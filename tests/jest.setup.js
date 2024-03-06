@@ -21,6 +21,21 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
+jest.mock( "../react-native-logs.config", () => {
+  const log = {
+    extend: jest.fn( () => ( {
+      debug: msg => console.debug( msg ),
+      info: msg => console.info( msg ),
+      warn: msg => console.warn( msg ),
+      error: msg => console.error( msg )
+    } ) )
+  };
+  return {
+    log,
+    logFilePath: "inaturalist-rn-log.txt"
+  };
+} );
+
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
   getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) )
 } ) );
