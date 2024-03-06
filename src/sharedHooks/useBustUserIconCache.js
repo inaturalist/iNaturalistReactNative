@@ -1,6 +1,6 @@
 // @flow
 import { RealmContext } from "providers/contexts";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
@@ -12,7 +12,9 @@ const { useRealm } = RealmContext;
 
 const logger = log.extend( "useBustUserIconCache" );
 
-const useBustUserIconCache = ( remoteUserUpdated: boolean ): Object => {
+const useBustUserIconCache = ( ): Object => {
+  // use this ref to make sure cache is only busted once per app open
+  const calledOncePerAppLoad = useRef( false );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const IMAGE_URL = currentUser?.icon_url;
@@ -20,11 +22,12 @@ const useBustUserIconCache = ( remoteUserUpdated: boolean ): Object => {
 
   const [prevUri, setPrevUri] = useState( null );
 
-  const skipCacheBust = !currentUser || !remoteUserUpdated || prevUri;
+  const skipCacheBust = !currentUser || prevUri || calledOncePerAppLoad.current;
 
   useEffect( ( ) => {
     if ( skipCacheBust ) { return; }
     setPrevUri( uri );
+    calledOncePerAppLoad.current = true;
     logger.info( "Busting cache for user icon in useBustUserIconCache" );
     bust( );
   }, [skipCacheBust, uri, bust] );
