@@ -31,12 +31,12 @@ const useBustUserIconCache = ( remoteUserUpdated: boolean ): Object => {
 
   useEffect( ( ) => {
     if ( !currentUser ) { return; }
-    if ( uri !== currentUser.cached_icon_url ) {
+    if ( uri !== currentUser.cached_icon_url && prevUri ) {
       safeRealmWrite( realm, ( ) => {
         currentUser.cached_icon_url = uri;
       }, "updating cached_icon_url in useBustUserIconCache" );
     }
-  }, [uri, currentUser, realm] );
+  }, [uri, currentUser, realm, prevUri] );
 
   return null;
 };
