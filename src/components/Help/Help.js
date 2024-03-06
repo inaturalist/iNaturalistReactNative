@@ -37,7 +37,7 @@ const Help = (): Node => {
       if ( canOpenURLError.message.match( /Info.plist/ ) ) {
         Alert.alert(
           "No email in the Simulator",
-          "This way of sending email doesn't work in the Simulator. Try it on a physical devicek."
+          "This way of sending email doesn't work in the Simulator. Try it on a physical device."
         );
       } else {
         throw canOpenURLError;
