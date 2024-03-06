@@ -1,4 +1,5 @@
 // @flow
+import { fetchUserMe } from "api/users";
 import { create } from "apisauce";
 import axios from "axios";
 import i18next from "i18next";
@@ -348,9 +349,23 @@ const authenticateUser = async (
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
-  logger.debug( "writing current user to realm: ", currentUser );
+
+  // try to fetch user data (especially for loading user icon) from userMe
+  const apiToken = await getJWT( );
+  const options = {
+    api_token: apiToken
+  };
+  const remoteUser = await fetchUserMe( { }, options );
+  const localUser = remoteUser
+    ? {
+      ...remoteUser,
+      signedIn: true
+    }
+    : currentUser;
+
+  logger.debug( "writing current user to realm: ", localUser );
   safeRealmWrite( realm, ( ) => {
-    realm.create( "User", currentUser, "modified" );
+    realm.create( "User", localUser, "modified" );
   }, "saving current user in AuthenticationService" );
   const currentRealmUser = User.currentUser( realm );
   logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
