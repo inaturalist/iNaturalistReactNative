@@ -33,7 +33,7 @@ jest.mock( "sharedHooks/useTaxonSearch", () => ( {
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => mockTaxaList[0]
+  default: () => ( { taxon: mockTaxaList[0] } )
 } ) );
 
 // react-native-paper's TextInput does a bunch of async stuff that's hard to

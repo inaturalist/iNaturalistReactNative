@@ -18,7 +18,7 @@ const mockTaxon = factory( "RemoteTaxon" );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => mockTaxon
+  default: () => ( { taxon: mockTaxon } )
 } ) );
 
 const mockSuggestionsList = [{
