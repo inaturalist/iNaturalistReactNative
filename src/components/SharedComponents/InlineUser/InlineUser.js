@@ -10,10 +10,13 @@ import UserIcon from "components/SharedComponents/UserIcon/UserIcon";
 import {
   Pressable, View
 } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import User from "realmModels/User";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   user: any,
@@ -21,8 +24,9 @@ type Props = {
 };
 
 const InlineUser = ( { user, isOnline }: Props ): Node => {
+  const realm = useRealm( );
   const navigation = useNavigation();
-  const userImgUri = User.uri( user );
+  const userImgUri = User.uri( user, realm );
   const userHandle = User.userHandle( user );
 
   const { t } = useTranslation( );
