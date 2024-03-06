@@ -1,12 +1,10 @@
 // @flow
+import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
 import axios from "axios";
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
-import {
-  getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion
-} from "react-native-device-info";
 import RNFS from "react-native-fs";
 import jwt from "react-native-jwt-io";
 import * as RNLocalize from "react-native-localize";
@@ -24,10 +22,6 @@ const logger = log.extend( "AuthenticationService" );
 // either by placing it in .env file, or in an environment variable.
 const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
 
-// User agent being used, when calling the iNat APIs
-// eslint-disable-next-line max-len
-export const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
-
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
 const JWT_EXPIRATION_MINS = 25;
 
@@ -41,7 +35,7 @@ const axiosInstance = axios.create( {
  */
 const createAPI = ( additionalHeaders: any ) => create( {
   axiosInstance,
-  headers: { "User-Agent": USER_AGENT, ...additionalHeaders }
+  headers: { "User-Agent": getUserAgent(), ...additionalHeaders }
 } );
 
 /**
@@ -122,7 +116,7 @@ const signOut = async (
  * when getting taxon suggestions)
  * @returns encoded anonymous JWT
  */
-const getAnonymousJWT = () => {
+const getAnonymousJWT = (): string => {
   const claims = {
     application: Platform.OS,
     exp: Date.now() / 1000 + 300
@@ -290,7 +284,7 @@ const verifyCredentials = async (
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "User-Agent": USER_AGENT
+        "User-Agent": getUserAgent( )
       }
     }
   );
@@ -432,6 +426,7 @@ const resetPassword = async (
 export {
   API_HOST,
   authenticateUser,
+  getAnonymousJWT,
   getAPIToken,
   getJWT,
   getUsername,
