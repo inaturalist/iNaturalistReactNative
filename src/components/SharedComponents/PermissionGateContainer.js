@@ -57,12 +57,12 @@ type Props = {
   children?: Node,
   icon?: string,
   image?: Object,
+  onModalHide?: Function,
   onPermissionBlocked?: Function,
   onPermissionDenied?: Function,
   onPermissionGranted?: Function,
   permissionNeeded?: boolean,
   permissions: Array<string>,
-  setModalWasClosed?: Function,
   testID?: string,
   title?: string,
   titleDenied: string,
@@ -100,12 +100,13 @@ const PermissionGateContainer = ( {
   children,
   icon,
   image,
+  /** Callback when modal is completely hidden (pass through to react-native-modal) */
+  onModalHide: onModalHideProp,
   onPermissionBlocked,
   onPermissionDenied,
   onPermissionGranted,
   permissionNeeded = true,
   permissions,
-  setModalWasClosed,
   testID,
   title,
   titleDenied,
@@ -166,15 +167,19 @@ const PermissionGateContainer = ( {
 
   const closeModal = useCallback( ( ) => {
     setModalShown( false );
-    if ( setModalWasClosed ) {
-      setModalWasClosed( true );
+  }, [
+    setModalShown
+  ] );
+
+  const onModalHide = useCallback( ( ) => {
+    if ( onModalHideProp ) {
+      onModalHideProp( );
     }
     if ( !withoutNavigation ) navigation.goBack( );
   }, [
     navigation,
-    setModalShown,
-    withoutNavigation,
-    setModalWasClosed
+    onModalHideProp,
+    withoutNavigation
   ] );
 
   // If the result changes, notify the parent component
@@ -203,6 +208,7 @@ const PermissionGateContainer = ( {
       showModal={modalShown}
       closeModal={closeModal}
       fullScreen
+      onModalHide={onModalHide}
       modal={(
         <PermissionGate
           requestPermission={requestPermission}
