@@ -116,7 +116,7 @@ const signOut = async (
  * when getting taxon suggestions)
  * @returns encoded anonymous JWT
  */
-const getAnonymousJWT = () => {
+const getAnonymousJWT = (): string => {
   const claims = {
     application: Platform.OS,
     exp: Date.now() / 1000 + 300
@@ -426,6 +426,7 @@ const resetPassword = async (
 export {
   API_HOST,
   authenticateUser,
+  getAnonymousJWT,
   getAPIToken,
   getJWT,
   getUsername,

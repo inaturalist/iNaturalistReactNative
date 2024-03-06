@@ -1,6 +1,6 @@
 import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT, getAnonymousJWT } from "components/LoginSignUp/AuthenticationService";
 import Config from "react-native-config";
 import { transportFunctionType } from "react-native-logs";
 
@@ -9,8 +9,12 @@ const API_HOST: string
 
 // Custom transport for posting to iNat API logging
 const iNatLogstashTransport: transportFunctionType = async (props) => {
-  const userToken = await getJWT(); // Removed the import causing the dependency cycle
+  const userToken = await getJWT();
   if ( !userToken ) {
+    return;
+  }
+  const anonymousToken = getAnonymousJWT();
+  if ( !anonymousToken ) {
     return;
   }
   const api = create( {
@@ -19,6 +23,7 @@ const iNatLogstashTransport: transportFunctionType = async (props) => {
       "User-Agent": getUserAgent(),
       Authorization: [
         userToken,
+        anonymousToken
       ].join( ", " )
     }
   } );
@@ -31,7 +36,7 @@ const iNatLogstashTransport: transportFunctionType = async (props) => {
     message,
     context: props.extension
   };
-  const response = await api.post( "/log", formData );
+  await api.post( "/log", formData );
 };
 
 export default iNatLogstashTransport;
