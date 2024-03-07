@@ -63,7 +63,9 @@ const startUploadState = uploads => ( {
   numFinishedUploads: 0,
   uploadProgress: { },
   totalProgressIncrements: uploads.reduce(
-    ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+    ( count, current ) => count
+      + ( current?.observationPhotos?.length || 0 )
+      + ( current?.observationSounds?.length || 0 ),
     // We set one initial progress increment on upload start to show the toolbar with one increment
     uploads.length + 1
   )
