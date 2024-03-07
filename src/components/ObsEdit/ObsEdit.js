@@ -1,9 +1,9 @@
 // @flow
 
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { ViewWrapper } from "components/SharedComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useStore from "stores/useStore";
 
@@ -26,6 +26,17 @@ const ObsEdit = ( ): Node => {
   const [resetScreen, setResetScreen] = useState( false );
 
   const isFocused = useIsFocused( );
+  const navigation = useNavigation( );
+
+  useEffect(
+    ( ) => {
+      const removeListener = navigation.addListener( "focus", ( ) => {
+        navigation.setParams( { tabBarHidden: true } );
+      } );
+      return removeListener;
+    },
+    [navigation]
+  );
 
   return isFocused
     ? (

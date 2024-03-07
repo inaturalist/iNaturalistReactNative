@@ -22,7 +22,7 @@ const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
   const localTaxon = taxon.id && realm.objectForPrimaryKey( "Taxon", taxon.id );
 
   const canFetchTaxon = !!taxon?.id;
-  const localTaxonNeedsSync = (
+  const localTaxonNeedsSync = !!(
     // Definitely sync if there's no local copy
     !localTaxon
     || (

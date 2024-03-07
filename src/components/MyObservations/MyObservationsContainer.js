@@ -434,9 +434,11 @@ const MyObservationsContainer = ( ): Node => {
 
   useEffect(
     ( ) => {
-      navigation.addListener( "focus", ( ) => {
+      const removeListener = navigation.addListener( "focus", ( ) => {
+        navigation.setParams( { tabBarHidden: false } );
         dispatch( { type: "RESET_STATE" } );
       } );
+      return removeListener;
     },
     [navigation, realm]
   );
