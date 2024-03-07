@@ -171,9 +171,10 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
     fields: { id: true }
   };
 
-  // every observation, observation photo, and observation sound counts for 1 progress each
-  // we're emitting a progress increment:
-  // when the upload of obs/obsPhoto/obsSound successfully completes
+  // we're emitting progress increments:
+  // one when the upload of obs
+  // half one when obsPhoto/obsSound is successfully uploaded
+  // half one when the obsPhoto/obsSound is attached to the obs
   if ( wasPreviouslySynced ) {
     response = await updateObservation( {
       ...uploadParams,
