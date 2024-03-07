@@ -66,10 +66,11 @@ const uploadEvidence = async (
     );
 
     if ( response && observationUUID ) {
-      // every observation, observation photo, and observation sound counts for 1 progress each
-      // we're emitting a progress increment:
-      // when the upload of obs/obsPhoto/obsSound successfully completes
-      emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
+      // we're emitting progress increments:
+      // one when the upload of obs
+      // half one when obsPhoto/obsSound is successfully uploaded
+      // half one when the obsPhoto/obsSound is attached to the obs
+      emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
       // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
       markRecordUploaded( observationUUID, evidenceUUID, type, response, realm );
     }
