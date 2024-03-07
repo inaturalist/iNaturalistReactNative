@@ -152,73 +152,109 @@ exports[`TaxonResult should render correctly 1`] = `
                   "aspectRatio": 1,
                 },
                 {
-                  "maxHeight": 210,
-                },
-                {
-                  "overflow": "hidden",
-                },
-                {
                   "position": "relative",
-                },
-                {
-                  "borderBottomLeftRadius": 8,
-                  "borderBottomRightRadius": 8,
-                  "borderTopLeftRadius": 8,
-                  "borderTopRightRadius": 8,
-                },
-                {
-                  "height": 62,
-                },
-                {
-                  "width": 62,
-                },
-                {
-                  "flexShrink": 1,
-                },
-                {
-                  "justifyContent": "center",
-                },
-                {
-                  "alignItems": "center",
-                },
-                {
-                  "borderBottomWidth": 1,
-                  "borderLeftWidth": 1,
-                  "borderRightWidth": 1,
-                  "borderTopWidth": 1,
-                },
-                {
-                  "borderBottomColor": "#E8E8E8",
-                  "borderLeftColor": "#E8E8E8",
-                  "borderRightColor": "#E8E8E8",
-                  "borderTopColor": "#E8E8E8",
                 },
               ],
             ]
           }
-          testID="IconicTaxonName.iconicTaxonIcon"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
             style={
               [
-                {
-                  "color": "rgba(103, 80, 164, 1)",
-                  "fontSize": 22,
-                },
-                undefined,
-                {
-                  "fontFamily": "INatIcon",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
+                [
+                  {
+                    "position": "absolute",
+                  },
+                  {
+                    "width": "100%",
+                  },
+                  {
+                    "height": "100%",
+                  },
+                ],
               ]
             }
           >
-            
-          </Text>
+            <View
+              style={
+                [
+                  [
+                    {
+                      "flexGrow": 1,
+                    },
+                    {
+                      "aspectRatio": 1,
+                    },
+                    {
+                      "maxHeight": 210,
+                    },
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "position": "relative",
+                    },
+                    {
+                      "borderBottomLeftRadius": 8,
+                      "borderBottomRightRadius": 8,
+                      "borderTopLeftRadius": 8,
+                      "borderTopRightRadius": 8,
+                    },
+                    {
+                      "height": 62,
+                    },
+                    {
+                      "width": 62,
+                    },
+                    {
+                      "flexShrink": 1,
+                    },
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "alignItems": "center",
+                    },
+                    {
+                      "borderBottomWidth": 1,
+                      "borderLeftWidth": 1,
+                      "borderRightWidth": 1,
+                      "borderTopWidth": 1,
+                    },
+                    {
+                      "borderBottomColor": "#E8E8E8",
+                      "borderLeftColor": "#E8E8E8",
+                      "borderRightColor": "#E8E8E8",
+                      "borderTopColor": "#E8E8E8",
+                    },
+                  ],
+                ]
+              }
+              testID="IconicTaxonName.iconicTaxonIcon"
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "rgba(103, 80, 164, 1)",
+                      "fontSize": 22,
+                    },
+                    undefined,
+                    {
+                      "fontFamily": "INatIcon",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </View>
         </View>
         <View
           style={
