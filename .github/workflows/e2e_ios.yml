@@ -100,10 +100,17 @@ jobs:
     # Install prerequisites for detox and build app, and test
     - run: brew tap wix/brew
     - run: brew install applesimutils
-    
+
     - name: Build test app
       run: npm run e2e:build:ios
-    
+
+    - name: Ensure servers are running
+      run: |
+        # is rails running?
+        curl -I --fail "https://staging.inaturalist.org/ping"
+        # is node running & is ES working?
+        curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
+
     - name: Run e2e test
       run: npm run e2e:test:ios -- --cleanup --take-screenshots failing --record-videos failing -l debug
     
