@@ -190,7 +190,7 @@ const SoundRecorder = (): Node => {
                 return (
                   <View
                     key={`metering-${position}`}
-                    className="m-0.5 bg-warningRed b-1 w-1 h-full"
+                    className="m-0.5 bg-warningRed b-1 w-1 h-full rounded-full"
                     style={{
                       height: `${-100 / metering}%`
                     }}
