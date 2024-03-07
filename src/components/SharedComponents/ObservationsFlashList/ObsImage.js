@@ -32,40 +32,33 @@ const ObsImage = ( {
   uri,
   white = false,
   iconicTaxonIconSize
-}: Props ): Node => {
-  const noImg = !uri?.uri;
-
-  const iconicTaxon = (
-    <IconicTaxonIcon
-      imageClassName={[
-        ...CLASS_NAMES,
-        imageClassName,
-        { "bg-darkGray": white }
-      ]}
-      iconicTaxonName={iconicTaxonName}
-      white={white}
-      isBackground={isBackground}
-      size={iconicTaxonIconSize}
-    />
-  );
-
-  if ( noImg ) {
-    return iconicTaxon;
-  }
-
-  return (
-    <View className={classNames( CLASS_NAMES, "relative" )}>
-      <View className="absolute w-full h-full">
-        {iconicTaxon}
-      </View>
+}: Props ): Node => (
+  <View className={classNames( CLASS_NAMES, "relative" )}>
+    <View className="absolute w-full h-full">
+      <IconicTaxonIcon
+        imageClassName={[
+          ...CLASS_NAMES,
+          imageClassName,
+          { "bg-darkGray": white }
+        ]}
+        iconicTaxonName={iconicTaxonName}
+        white={white}
+        isBackground={isBackground}
+        size={iconicTaxonIconSize}
+      />
+    </View>
+    { uri?.uri && (
       <Image
         source={uri}
-        className={classNames( ...CLASS_NAMES, { "opacity-50": opaque } )}
+        className={classNames( CLASS_NAMES )}
         testID="ObsList.photo"
         accessibilityIgnoresInvertColors
       />
-    </View>
-  );
-};
+    ) }
+    { opaque && (
+      <View className="absolute w-full h-full bg-white opacity-50" />
+    ) }
+  </View>
+);
 
 export default ObsImage;

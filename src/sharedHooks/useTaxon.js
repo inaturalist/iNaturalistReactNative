@@ -30,7 +30,7 @@ const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
       localTaxon._synced_at && ( Date.now( ) - localTaxon._synced_at > ONE_WEEK_MS )
     )
   );
-  const enabled = canFetchTaxon && fetchRemote && localTaxonNeedsSync;
+  const enabled = !!( canFetchTaxon && fetchRemote && localTaxonNeedsSync );
 
   const {
     data: remoteTaxon,
