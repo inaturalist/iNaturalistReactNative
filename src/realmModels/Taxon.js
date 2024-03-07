@@ -1,5 +1,4 @@
 import { Realm } from "@realm/react";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Photo from "./Photo";
 
@@ -107,15 +106,6 @@ class Taxon extends Realm.Object {
 
   static uri = item => ( item && item.default_photo ) && { uri: item.default_photo.url };
 
-  static saveRemoteTaxon = async ( remoteTaxon, realm ) => {
-    if ( remoteTaxon ) {
-      const localTaxon = Taxon.mapApiToRealm( remoteTaxon, realm );
-      safeRealmWrite( realm, ( ) => {
-        realm.create( "Taxon", localTaxon, "modified" );
-      }, "saving remote taxon in Taxon" );
-    }
-  };
-
   static schema = {
     name: "Taxon",
     primaryKey: "id",
@@ -136,7 +126,8 @@ class Taxon extends Realm.Object {
       rank: "string?",
       rank_level: "float?",
       isIconic: "bool?",
-      iconic_taxon_name: "string?"
+      iconic_taxon_name: "string?",
+      _synced_at: "date?"
     }
   };
 }

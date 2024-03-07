@@ -204,7 +204,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
         />
       </View>
       <Divider />
-
       <View className={`${sectionClass} flex-col`}>
         <Heading4 className={headingClass}>{t( "DATA-QUALITY" )}</Heading4>
         <View className="space-y-[15px]">
@@ -233,8 +232,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
                   observation.observationSounds || observation.sounds
                 ] ),
                 taxon: {
-                  id: observation.taxon.id,
-                  rank_level: observation.taxon.rank_level
+                  id: observation.taxon?.id,
+                  rank_level: observation.taxon?.rank_level
                 },
                 identifications: observation.identifications
               }

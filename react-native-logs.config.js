@@ -1,3 +1,4 @@
+import iNatLogstashTransport from "api/log.ts";
 import RNFS from "react-native-fs";
 import {
   consoleTransport,
@@ -8,13 +9,10 @@ import {
 const fileName = "inaturalist-rn-log.txt";
 const logFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
-// Configure without transport for test. If you want to write output during
-// tests, use console.log
 const transport = [];
-if ( process?.env?.NODE_ENV !== "test" ) {
-  transport.push( consoleTransport );
-  transport.push( fileAsyncTransport );
-}
+transport.push( consoleTransport );
+transport.push( fileAsyncTransport );
+transport.push( iNatLogstashTransport );
 
 const config = {
   dateFormat: "iso",
