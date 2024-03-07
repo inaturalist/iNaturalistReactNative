@@ -1,6 +1,5 @@
 // @flow
 import { useDrawerStatus } from "@react-navigation/drawer";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
 import User from "realmModels/User";
@@ -13,14 +12,11 @@ const EXPLORE_SCREEN_ID = "Explore";
 const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
 const NOTIFICATIONS_SCREEN_ID = "Notifications";
 
-const { useRealm } = RealmContext;
-
 type Props = {
   navigation: Object
 };
 
 const CustomTabBarContainer = ( { navigation }: Props ): Node => {
-  const realm = useRealm( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
@@ -55,7 +51,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
     },
     {
       icon: "person",
-      userIconUri: User.uri( currentUser, realm ),
+      userIconUri: User.uri( currentUser ),
       testID: "NavButton.personIcon",
       accessibilityLabel: t( "Observations" ),
       accessibilityHint: t( "Navigates-to-observations" ),
@@ -88,8 +84,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
     currentUser,
     isDrawerOpen,
     navigation,
-    t,
-    realm
+    t
   ] );
 
   return (

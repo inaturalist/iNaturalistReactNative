@@ -17,7 +17,6 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
 import User from "realmModels/User";
@@ -25,10 +24,7 @@ import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-const { useRealm } = RealmContext;
-
 const UserProfile = ( ): Node => {
-  const realm = useRealm( );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
@@ -83,7 +79,7 @@ const UserProfile = ( ): Node => {
         className="items-center"
         testID={`UserProfile.${userId}`}
       >
-        <UserIcon uri={User.uri( user, realm )} large />
+        <UserIcon uri={User.uri( user )} large />
         <Heading1 className="mt-3">{User.userHandle( user )}</Heading1>
         <Subheading1 className="mt-1">{user.name}</Subheading1>
         {user?.roles?.length > 0 && (

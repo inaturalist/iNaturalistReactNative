@@ -5,13 +5,10 @@ import {
   List2, UserIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
-
-const { useRealm } = RealmContext;
 
 type Props = {
   item: Object,
@@ -28,7 +25,6 @@ const UserListItem = ( {
   onPress: onPressProp,
   accessibilityLabel: accessibilityLabelProp
 }: Props ): Node => {
-  const realm = useRealm( );
   const { t } = useTranslation( );
   const user = item?.user;
   const navigation = useNavigation( );
@@ -53,7 +49,7 @@ const UserListItem = ( {
     >
 
       {user?.icon_url
-        ? <UserIcon uri={User.uri( user, realm )} medium />
+        ? <UserIcon uri={User.uri( user )} medium />
         : (
           <INatIcon
             name="person"

@@ -12,7 +12,6 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions, Platform } from "react-native";
@@ -23,7 +22,6 @@ import { useCurrentUser, useDebugMode, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 const { width } = Dimensions.get( "screen" );
-const { useRealm } = RealmContext;
 
 const drawerScrollViewStyle = {
   backgroundColor: "white",
@@ -41,7 +39,6 @@ type Props = {
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
   const { state, navigation, descriptors } = props;
   const currentUser = useCurrentUser( );
-  const realm = useRealm( );
   const theme = useTheme( );
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
@@ -173,7 +170,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       {currentUser
         ? (
           <UserIcon
-            uri={User.uri( currentUser, realm )}
+            uri={User.uri( currentUser )}
           />
         )
         : (
@@ -198,7 +195,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         )}
       </View>
     </Pressable>
-  ), [currentUser, navigation, t, realm] );
+  ), [currentUser, navigation, t] );
 
   const renderDrawerItem = useCallback( item => {
     if ( drawerItems[item].loggedInOnly && !currentUser ) {

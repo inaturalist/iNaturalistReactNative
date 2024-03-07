@@ -1,5 +1,4 @@
 import { Realm } from "@realm/react";
-import { isEqual } from "lodash";
 
 class User extends Realm.Object {
   static FIELDS = {
@@ -12,24 +11,13 @@ class User extends Realm.Object {
     prefers_scientific_name_first: true
   };
 
-  static currentUser = realm => realm.objects( "User" ).filtered( "signedIn == true" )[0];
-
   // getting user icon data from production instead of staging
-  static uri = ( user, realm ) => {
-    const isCurrentUser = isEqual(
-      user?.icon_url,
-      User.currentUser( realm )?.icon_url
-    );
-    if ( isCurrentUser && User.currentUser( realm )?.cached_icon_url ) {
-      return { uri: User.currentUser( realm ).cached_icon_url.replace( "staticdev", "static" ) };
-    }
-    if ( user?.icon_url ) {
-      return { uri: user?.icon_url.replace( "staticdev", "static" ) };
-    }
-    return null;
-  };
+  static uri = user => user?.icon_url
+               && { uri: user?.icon_url.replace( "staticdev", "static" ) };
 
   static userHandle = user => ( user && user.login ) && `@${user.login}`;
+
+  static currentUser = realm => realm.objects( "User" ).filtered( "signedIn == true" )[0];
 
   static schema = {
     name: "User",
@@ -43,8 +31,7 @@ class User extends Realm.Object {
       locale: "string?",
       observations_count: "int?",
       prefers_scientific_name_first: "bool?",
-      prefers_community_taxa: "bool?",
-      cached_icon_url: { type: "string", optional: true }
+      prefers_community_taxa: "bool?"
     }
   };
 }

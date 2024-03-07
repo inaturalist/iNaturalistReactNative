@@ -9,7 +9,6 @@ import Realm from "realm";
 import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
 import {
-  useBustUserIconCache,
   useCurrentUser,
   useIconicTaxa,
   useObservationUpdatesWhenFocused,
@@ -42,7 +41,6 @@ type Props = {
 // normally we would never do this in code
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
-  useBustUserIconCache( );
   const currentUser = useCurrentUser( );
 
   useIconicTaxa( { reload: true } );
