@@ -13,7 +13,7 @@ import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
-const UPLOAD_PROGRESS_INCREMENT = 0.5;
+const UPLOAD_PROGRESS_INCREMENT = 1;
 
 const markRecordUploaded = (
   observationUUID: string,
@@ -59,7 +59,6 @@ const uploadEvidence = async (
     const params = apiSchemaMapper( observationId, currentEvidence );
     const evidenceUUID = currentEvidence.uuid;
 
-    emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
     const response = await createOrUpdateEvidence(
       apiEndpoint,
       params,
@@ -67,6 +66,9 @@ const uploadEvidence = async (
     );
 
     if ( response && observationUUID ) {
+      // every observation, observation photo, and observation sound counts for 1 progress each
+      // we're emitting a progress increment:
+      // when the upload of obs/obsPhoto/obsSound successfully completes
       emitUploadProgress( observationUUID, UPLOAD_PROGRESS_INCREMENT );
       // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
       markRecordUploaded( observationUUID, evidenceUUID, type, response, realm );
@@ -104,11 +106,7 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
       "Gack, tried to upload an observation without API token!"
     );
   }
-  activateKeepAwake( );
-  // every observation and observation photo counts for a total of 1 progress
-  // we're showing progress in 0.5 increments: when an upload of obs/obsPhoto starts
-  // and when the upload of obs/obsPhoto successfully completes
-  emitUploadProgress( obs.uuid, UPLOAD_PROGRESS_INCREMENT );
+  activateKeepAwake();
   const obsToUpload = Observation.mapObservationForUpload( obs );
   const options = { api_token: apiToken };
 
@@ -172,6 +170,9 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
     fields: { id: true }
   };
 
+  // every observation, observation photo, and observation sound counts for 1 progress each
+  // we're emitting a progress increment:
+  // when the upload of obs/obsPhoto/obsSound successfully completes
   if ( wasPreviouslySynced ) {
     response = await updateObservation( {
       ...uploadParams,
