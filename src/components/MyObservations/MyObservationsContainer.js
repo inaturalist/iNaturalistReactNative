@@ -64,6 +64,7 @@ const startUploadState = uploads => ( {
   uploadProgress: { },
   totalProgressIncrements: uploads.reduce(
     ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+    // We set one initial progress increment on upload start to show the toolbar with one increment
     uploads.length + 1
   )
 } );
@@ -170,6 +171,7 @@ const MyObservationsContainer = ( ): Node => {
 
   const currentUploadProgress = Object.values( uploadProgress )
     .reduce( ( count, current ) => count + Number( current ), 1 );
+  // We set one initial progress increment on upload start to show the toolbar with one increment
 
   const toolbarProgress = totalProgressIncrements > 0
     ? currentUploadProgress / totalProgressIncrements
