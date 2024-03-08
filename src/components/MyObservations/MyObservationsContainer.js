@@ -176,7 +176,7 @@ const MyObservationsContainer = ( ): Node => {
   );
 
   let toolbarProgress = 0;
-  if ( totalProgressIncrements > 0 ) {
+  if ( uploadInProgress && totalProgressIncrements > 0 ) {
     toolbarProgress = 0.1 / totalProgressIncrements;
   }
   if ( totalProgressIncrements > 0 && currentUploadProgress > 0 ) {
@@ -232,8 +232,17 @@ const MyObservationsContainer = ( ): Node => {
 
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
 
-        if ( state.singleUpload
-          && state.uploadProgress[uuid] >= state.totalProgressIncrements ) {
+        const isOne = state.totalProgressIncrements === 1;
+        if (
+          state.singleUpload
+          && ( state.uploadProgress[uuid] >= state.totalProgressIncrements || isOne )
+        ) {
+          if ( isOne ) {
+            dispatch( {
+              type: "UPDATE_PROGRESS",
+              uploadProgress: currentProgress
+            } );
+          }
           dispatch( {
             type: "UPLOADS_COMPLETE"
           } );
