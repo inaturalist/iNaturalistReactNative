@@ -70,7 +70,7 @@ exports[`InlineUser renders reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Book",
         },
         [
           {
@@ -181,7 +181,7 @@ exports[`InlineUser when offline renders reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Book",
         },
         [
           {
@@ -292,7 +292,7 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Book",
         },
         [
           {

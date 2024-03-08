@@ -343,7 +343,7 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "fontFamily": "Whitney-Light",
+                "fontFamily": "Whitney-Book",
               },
               [
                 {
