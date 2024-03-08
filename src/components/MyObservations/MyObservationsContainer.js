@@ -232,6 +232,10 @@ const MyObservationsContainer = ( ): Node => {
 
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
 
+        // This is really hacky, but our obs upload logic is distributed so much that I can not
+        // figure out a better way to do this. This is true for an observation without media
+        // for which this useEffect is only triggered once, and therefore the UPLOADS_COMPLETE
+        // action is never dispatched.
         const isOne = state.totalProgressIncrements === 1;
         if (
           state.singleUpload
