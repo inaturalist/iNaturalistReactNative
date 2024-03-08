@@ -94,7 +94,9 @@ const INatIconButton = ( {
           alignItems: "center"
         },
         mode === "contained" && {
-          backgroundColor,
+          backgroundColor: preventTransparency
+            ? null
+            : backgroundColor,
           borderRadius: 9999
         },
         style
