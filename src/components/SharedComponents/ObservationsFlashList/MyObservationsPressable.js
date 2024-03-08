@@ -25,7 +25,7 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
     if ( unsynced ) {
       setObservations( [observation] );
       navigation.navigate( "CameraNavigator", {
-        screen: "ObsEdit",
+        screen: "ObsEdit"
       } );
     } else {
       navigation.navigate( "ObsDetails", { uuid } );

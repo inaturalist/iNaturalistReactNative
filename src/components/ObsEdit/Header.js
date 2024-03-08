@@ -1,6 +1,9 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect, useNavigation, useRoute
+} from "@react-navigation/native";
+import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -39,18 +42,6 @@ const Header = ( {
   const savedLocally = currentObservation?._created_at;
   const unsynced = !currentObservation?._synced_at;
 
-  const navToObsDetails = useCallback( ( ) => {
-    navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator",
-      params: {
-        screen: "ObsDetails",
-        params: {
-          uuid: currentObservation?.uuid
-        }
-      }
-    } );
-  }, [navigation, currentObservation] );
-
   const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
     screen: "ObservationsStackNavigator",
     params: {
@@ -61,8 +52,8 @@ const Header = ( {
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
     updateObservations( [] );
-    navToObsDetails( );
-  }, [updateObservations, navToObsDetails] );
+    navigateToObsDetails( navigation, currentObservation?.uuid );
+  }, [currentObservation?.uuid, navigation, updateObservations] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
@@ -101,15 +92,10 @@ const Header = ( {
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navToObsDetails( );
+      navigateToObsDetails( navigation, currentObservation?.uuid );
     }
   }, [
-    unsynced,
-    savedLocally,
-    navigation,
-    unsavedChanges,
-    params,
-    navToObsDetails
+    params?.lastScreen, unsynced, savedLocally, unsavedChanges, navigation, currentObservation?.uuid
   ] );
 
   const renderBackButton = useCallback( ( ) => {

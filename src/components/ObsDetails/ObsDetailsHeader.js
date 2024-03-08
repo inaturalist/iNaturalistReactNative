@@ -62,7 +62,7 @@ const ObsDetailsHeader = ( {
               onPress={() => {
                 setObservations( [observation] );
                 navigation.navigate( "CameraNavigator", {
-                  screen: "ObsEdit",
+                  screen: "ObsEdit"
                 } );
               }}
               icon="pencil"
