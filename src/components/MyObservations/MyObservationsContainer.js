@@ -63,7 +63,9 @@ const startUploadState = uploads => ( {
   numFinishedUploads: 0,
   uploadProgress: { },
   totalProgressIncrements: uploads.reduce(
-    ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+    ( count, current ) => count
+      + ( current?.observationPhotos?.length || 0 )
+      + ( current?.observationSounds?.length || 0 ),
     uploads.length
   )
 } );
@@ -168,12 +170,18 @@ const MyObservationsContainer = ( ): Node => {
     totalProgressIncrements
   } = state;
 
-  const currentUploadProgress = Object.values( uploadProgress )
-    .reduce( ( count, current ) => count + Number( current ), 0 );
+  const currentUploadProgress = Object.values( uploadProgress ).reduce(
+    ( count, current ) => count + Number( current ),
+    0
+  );
 
-  const toolbarProgress = totalProgressIncrements > 0
-    ? currentUploadProgress / totalProgressIncrements
-    : 0;
+  let toolbarProgress = 0;
+  if ( uploadInProgress && totalProgressIncrements > 0 ) {
+    toolbarProgress = 0.1 / totalProgressIncrements;
+  }
+  if ( totalProgressIncrements > 0 && currentUploadProgress > 0 ) {
+    toolbarProgress = currentUploadProgress / totalProgressIncrements;
+  }
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
@@ -224,8 +232,21 @@ const MyObservationsContainer = ( ): Node => {
 
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
 
-        if ( state.singleUpload
-          && state.uploadProgress[uuid] >= state.totalProgressIncrements ) {
+        // This is really hacky, but our obs upload logic is distributed so much that I can not
+        // figure out a better way to do this. This is true for an observation without media
+        // for which this useEffect is only triggered once, and therefore the UPLOADS_COMPLETE
+        // action is never dispatched.
+        const isOne = state.totalProgressIncrements === 1;
+        if (
+          state.singleUpload
+          && ( state.uploadProgress[uuid] >= state.totalProgressIncrements || isOne )
+        ) {
+          if ( isOne ) {
+            dispatch( {
+              type: "UPDATE_PROGRESS",
+              uploadProgress: currentProgress
+            } );
+          }
           dispatch( {
             type: "UPLOADS_COMPLETE"
           } );
