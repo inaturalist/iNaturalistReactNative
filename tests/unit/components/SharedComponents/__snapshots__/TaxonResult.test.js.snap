@@ -439,6 +439,15 @@ exports[`TaxonResult should render correctly 1`] = `
               {
                 "position": "relative",
               },
+              {
+                "position": "relative",
+              },
+              {
+                "left": 0.2,
+              },
+              {
+                "top": 0.1,
+              },
             ],
           ]
         }
@@ -524,6 +533,15 @@ exports[`TaxonResult should render correctly 1`] = `
             [
               {
                 "position": "relative",
+              },
+              {
+                "position": "relative",
+              },
+              {
+                "left": 0.2,
+              },
+              {
+                "top": 0.1,
               },
             ],
           ]

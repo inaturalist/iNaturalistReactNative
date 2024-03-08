@@ -59,7 +59,7 @@ const EstablishmentMeans = ( { taxon }: Props ): React.Node => {
     return (
       <Trans
         i18nKey="Source-List"
-        values={{ source: listedTaxon.listtitle }}
+        values={{ source: listedTaxon.list.title }}
         components={[
           <Body2 />,
           <Body2

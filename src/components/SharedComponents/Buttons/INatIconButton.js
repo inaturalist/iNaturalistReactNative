@@ -1,10 +1,11 @@
 // @flow
 
+import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Pressable } from "react-native";
+import { Platform, Pressable } from "react-native";
 import { useTheme } from "react-native-paper";
 
 type Props = {
@@ -103,7 +104,17 @@ const INatIconButton = ( {
       ]}
       testID={testID}
     >
-      <View className="relative">
+      <View
+        className={classnames(
+          "relative relative",
+          // This degree of pixel pushing was meant for a ~22px icon, so it
+          // might have to be made relative, but it's barely noticeable for
+          // most icons
+          Platform.OS === "android"
+            ? "top-[0.8px]"
+            : "left-[0.2px] top-[0.1px]"
+        )}
+      >
         { backgroundColor && preventTransparency && (
           <View
             // Position and size need to be dynamic

@@ -332,6 +332,29 @@ const UiLibrary = (): Node => {
             />
           </View>
         </View>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2>preventTransparency</Body2>
+            <INatIconButton
+              icon="arrow-down-bold-circle"
+              accessibilityLabel="Notifications"
+              mode="contained"
+              preventTransparency
+              color={theme.colors.deepPink}
+              backgroundColor={theme.colors.yellow}
+              size={44}
+            />
+            <INatIconButton
+              icon="chevron-right-circle"
+              accessibilityLabel="Notifications"
+              mode="contained"
+              preventTransparency
+              color={theme.colors.deepPink}
+              backgroundColor={theme.colors.yellow}
+              size={44}
+            />
+          </View>
+        </View>
         <Body2>More INatIconButton</Body2>
         <Body3>Default</Body3>
         <INatIconButton
