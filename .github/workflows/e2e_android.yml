@@ -129,6 +129,13 @@ jobs:
         $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
         echo "Emulator started"
 
+    - name: Ensure servers are running
+      run: |
+        # is rails running?
+        curl -I --fail "https://staging.inaturalist.org/ping"
+        # is node running & is ES working?
+        curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
+
     # Start the Android e2e tests with extensive logging and screen captures for failing tests
     - name: Android Detox
       run: npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
