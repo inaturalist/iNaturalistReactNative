@@ -175,9 +175,13 @@ const MyObservationsContainer = ( ): Node => {
     0
   );
 
-  const toolbarProgress = totalProgressIncrements > 0
-    ? currentUploadProgress / totalProgressIncrements
-    : 0;
+  let toolbarProgress = 0;
+  if ( totalProgressIncrements > 0 ) {
+    toolbarProgress = 0.1 / totalProgressIncrements;
+  }
+  if ( totalProgressIncrements > 0 && currentUploadProgress > 0 ) {
+    toolbarProgress = currentUploadProgress / totalProgressIncrements;
+  }
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
