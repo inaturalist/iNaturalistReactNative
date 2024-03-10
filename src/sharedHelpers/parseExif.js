@@ -1,7 +1,7 @@
 // @flow
 
 import { utcToZonedTime } from "date-fns-tz";
-import { readExif, writeExif } from "react-native-exif-reader";
+import { readExif, writeLocation } from "react-native-exif-reader";
 import * as RNLocalize from "react-native-localize";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 
@@ -52,7 +52,7 @@ interface ExifToWrite {
 export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): Promise<Object> => {
   logger.debug( "writeExifToFile, photoUri: ", photoUri );
   try {
-    return writeExif( photoUri, exif );
+    return writeLocation( photoUri, exif );
   } catch ( e ) {
     console.error( e, "Couldn't write EXIF" );
     return null;
