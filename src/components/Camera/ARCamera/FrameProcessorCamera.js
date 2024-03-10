@@ -115,7 +115,14 @@ const FrameProcessorCamera = ( {
         }
       } );
     },
-    [modelVersion, confidenceThreshold, takingPhoto, patchedOrientationAndroid, numStoredResults, cropRatio]
+    [
+      modelVersion,
+      confidenceThreshold,
+      takingPhoto,
+      patchedOrientationAndroid,
+      numStoredResults,
+      cropRatio
+    ]
   );
 
   return (
