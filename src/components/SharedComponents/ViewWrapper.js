@@ -22,7 +22,7 @@ const ViewWrapper = ( {
     className={classnames( "flex-1", "bg-white", wrapperClassName )}
     testID={testID}
   >
-    <StatusBar barStyle="dark-content" />
+    <StatusBar barStyle="dark-content" backgroundColor="white" />
     {children}
   </SafeAreaView>
 );

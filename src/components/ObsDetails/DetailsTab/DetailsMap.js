@@ -97,7 +97,36 @@ const DetailsMap = ( {
 }: Props ): Node => {
   const theme = useTheme( );
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1">
+      <View className="bg-white w-fit flex-row items-end">
+        <HeaderBackButton
+          tintColor={theme.colors.primary}
+          onPress={( ) => closeModal()}
+          style={HEADER_BACK_BUTTON_STYLE}
+        />
+        <View className="pt-5 pr-5 pb-5 flex-1">
+          <Body2
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {displayLocation}
+          </Body2>
+
+          <Body2
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {displayCoordinates}
+          </Body2>
+          {obscured && (
+            <Body4 className="italic">
+              {t( "Obscured-observation-location-map-description" )}
+            </Body4>
+          ) }
+        </View>
+      </View>
       <View className="flex-1 h-full">
         <Map
           showLocationIndicator
@@ -131,35 +160,6 @@ const DetailsMap = ( {
             </>
           )}
         </Map>
-      </View>
-      <View className="bg-white w-fit flex-row items-end">
-        <HeaderBackButton
-          tintColor={theme.colors.primary}
-          onPress={( ) => closeModal()}
-          style={HEADER_BACK_BUTTON_STYLE}
-        />
-        <View className="pt-5 pr-5 pb-5 flex-1">
-          <Body2
-            className="text-darkGray"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {displayLocation}
-          </Body2>
-
-          <Body2
-            className="text-darkGray"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {displayCoordinates}
-          </Body2>
-          {obscured && (
-            <Body4 className="italic">
-              {t( "Obscured-observation-location-map-description" )}
-            </Body4>
-          ) }
-        </View>
       </View>
       <Modal
         // eslint-disable-next-line react-native/no-inline-styles

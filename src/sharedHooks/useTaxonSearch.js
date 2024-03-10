@@ -1,22 +1,20 @@
 // @flow
 
-import fetchSearchResults from "api/search";
-import Taxon from "realmModels/Taxon";
+import { searchTaxa } from "api/taxa";
 import { useAuthenticatedQuery } from "sharedHooks";
 
 const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
   const { data: taxonList } = useAuthenticatedQuery(
-    ["fetchSearchResults", taxonQuery],
-    optsWithAuth => fetchSearchResults(
+    ["fetchTaxonSuggestions", taxonQuery],
+    optsWithAuth => searchTaxa(
       {
-        q: taxonQuery,
-        sources: "taxa",
-        fields: {
-          taxon: Taxon.TAXON_FIELDS
-        }
+        q: taxonQuery
       },
       optsWithAuth
-    )
+    ),
+    {
+      enabled: !!( taxonQuery.length > 0 )
+    }
   );
   return taxonList;
 };

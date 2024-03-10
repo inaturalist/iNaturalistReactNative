@@ -1,0 +1,16 @@
+NEW
+* Account settings in an in-app web view
+* Debug mode accessed from About
+
+UPDATED
+* App name is now "iNat Beta"
+* Narrow bottom sheets on tablets
+* Show extra info on SignUp in bottom sheets
+* Rename Support to Donate in drawer menu
+* Restyled Explore view picker
+* Observed checkmark on TaxonDetails
+* Sharing multiple photos takes you to GroupPhotos
+
+FIXED
+* ARCamera suggestions should show common name and photo
+* ARCamera averages over last few predictions like Seek

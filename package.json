@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.22.0",
+  "version": "0.26.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -9,7 +9,7 @@
     "ios:release": "npx react-native run-ios --device --mode Release",
     "start": "react-native start",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start -- --reset-cache",
-    "test": "TZ=UTC jest",
+    "test": "jest",
     "lint": "npm run lint:eslint && npm run lint:flow",
     "lint:eslint": "eslint . --fix --quiet",
     "lint:flow": "flow check",
@@ -43,6 +43,7 @@
     "@react-native-community/datetimepicker": "^7.6.0",
     "@react-native-community/geolocation": "^3.1.0",
     "@react-native-community/netinfo": "^9.4.1",
+    "@react-native-community/slider": "^4.5.0",
     "@react-native-picker/picker": "^2.5.0",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/drawer": "^6.6.6",
@@ -111,12 +112,14 @@
     "react-native-screens": "^3.21.1",
     "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-share-menu": "^6.0.0",
+    "react-native-store-review": "^0.4.3",
     "react-native-svg": "^13.14.0",
     "react-native-svg-transformer": "^1.1.0",
+    "react-native-url-polyfill": "^2.0.0",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.1.0",
     "react-native-vision-camera": "3.9.1",
-    "react-native-webview": "^11.26.1",
+    "react-native-webview": "11.23.1",
     "react-native-worklets-core": "0.3.0",
     "realm": "^12.6.0",
     "reassure": "^0.10.1",
@@ -141,7 +144,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "detox": "^20.17.1",
+    "detox": "20.17.1",
     "dotenv": "^16.3.1",
     "download": "^8.0.0",
     "eslint": "^8.49.0",
@@ -187,11 +190,12 @@
       "./node_modules/react-native-gesture-handler/jestSetup.js",
       "<rootDir>/tests/jest.setup.js"
     ],
+    "globalSetup": "<rootDir>/tests/jest.globalSetup.js",
     "setupFilesAfterEnv": [
       "react-native-accessibility-engine",
       "<rootDir>/tests/jest.post-setup.js",
       "<rootDir>/tests/realm.setup.js",
-      "<rootDir>/tests/helpers/globalSetup"
+      "<rootDir>/tests/initI18next.setup.js"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base||(?!react-native-redash))|jest-runner"

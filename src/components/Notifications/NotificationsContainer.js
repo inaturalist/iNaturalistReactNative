@@ -15,7 +15,8 @@ const NotificationsContainer = (): Node => {
     fetchNextPage,
     refetch,
     isInitialLoading,
-    isFetching
+    isFetching,
+    isError
   } = useInfiniteNotificationsScroll( );
 
   useEffect( ( ) => {
@@ -32,6 +33,7 @@ const NotificationsContainer = (): Node => {
       onEndReached={fetchNextPage}
       isOnline={isOnline}
       isLoading={isInitialLoading || isFetching}
+      isError={isError}
     />
   );
 };

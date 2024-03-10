@@ -35,7 +35,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => mockLocalTaxon
+  default: () => ( { taxon: mockLocalTaxon } )
 } ) );
 
 const mockModelLoaded = {
@@ -120,9 +120,11 @@ describe( "AR Camera", ( ) => {
 
   it( "displays iconic taxon icon if taxon does not exist in realm", ( ) => {
     jest.spyOn( useTaxon, "default" ).mockImplementation( () => ( {
-      ...mockLocalTaxon,
-      default_photo: {
-        url: null
+      taxon: {
+        ...mockLocalTaxon,
+        default_photo: {
+          url: null
+        }
       }
     } ) );
     jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {

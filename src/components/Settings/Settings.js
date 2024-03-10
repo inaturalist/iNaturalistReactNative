@@ -1,165 +1,32 @@
+import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
-import { ActivityIndicator, ViewWrapper } from "components/SharedComponents";
-import { t } from "i18next";
-import type { Node } from "react";
+import {
+  ActivityIndicator,
+  Body2, Button, Heading4, RadioButtonRow,
+  ViewWrapper
+} from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
 import {
-  Button,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
   StatusBar,
-  Text,
   View
 } from "react-native";
+import Config from "react-native-config";
+import { EventRegister } from "react-native-event-listeners";
+import { useTranslation } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useUserMe from "sharedHooks/useUserMe";
-import { textStyles, viewStyles } from "styles/settings/settings";
 
-import SettingsAccount from "./SettingsAccount";
-import SettingsApplications from "./SettingsApplications";
-import SettingsContentDisplay from "./SettingsContentDisplay";
-import {
-  EMAIL_NOTIFICATIONS,
-  SettingsNotifications
-} from "./SettingsNotifications";
-import SettingsProfile from "./SettingsProfile";
-import SettingsRelationships from "./SettingsRelationships";
+const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
+const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
-const TAB_TYPE_PROFILE = "profile";
-const TAB_TYPE_ACCOUNT = "account";
-const TAB_TYPE_NOTIFICATIONS = "notifications";
-const TAB_TYPE_RELATIONSHIPS = "relationships";
-const TAB_TYPE_CONTENT_DISPLAY = "content_display";
-const TAB_TYPE_APPLICATIONS = "applications";
-
-// List of all user settings that will be saved (when calling the API to update the settings).
-// $FlowIgnore
-const emailNotificationsValues: Array<string> = Object.values( EMAIL_NOTIFICATIONS );
-const SETTINGS_PROPERTIES_LIST: Array<string> = [
-  "login",
-  "email",
-  "name",
-  "description",
-  "prefers_receive_mentions",
-  "prefers_redundant_identification_notifications",
-  "prefers_no_email",
-  "time_zone",
-  "locale",
-  "search_place_id",
-  "prefers_no_tracking",
-  "site_id",
-  "preferred_project_addition_by",
-  "prefers_common_names",
-  "prefers_scientific_name_first",
-  "place_id",
-  "prefers_community_taxa",
-  "preferred_observation_fields_by",
-  "preferred_observation_license",
-  "preferred_photo_license",
-  "preferred_sound_license",
-  "make_observation_licenses_same",
-  "make_photo_licenses_same",
-  "make_sound_licenses_same",
-  ...emailNotificationsValues
-];
-
-type Props = {
-  children: React.Node,
-};
-
-const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
-  <View style={[viewStyles.tabsRow, viewStyles.shadow]}>
-    <Pressable
-      onPress={() => onTabPress( TAB_TYPE_PROFILE )}
-      accessibilityRole="link"
-    >
-      <Text
-        style={activeTab === TAB_TYPE_PROFILE
-          ? textStyles.activeTab
-          : null}
-      >
-        {t( "Profile" )}
-      </Text>
-    </Pressable>
-    <Pressable
-      onPress={() => onTabPress( TAB_TYPE_ACCOUNT )}
-      accessibilityRole="link"
-    >
-      <Text
-        style={activeTab === TAB_TYPE_ACCOUNT
-          ? textStyles.activeTab
-          : null}
-      >
-        {t( "Account" )}
-      </Text>
-    </Pressable>
-    <Pressable
-      onPress={() => onTabPress( TAB_TYPE_NOTIFICATIONS )}
-      accessibilityRole="link"
-    >
-      <Text
-        style={
-          activeTab === TAB_TYPE_NOTIFICATIONS
-            ? textStyles.activeTab
-            : null
-        }
-      >
-        {t( "Notifications" )}
-      </Text>
-    </Pressable>
-    <Pressable
-      onPress={() => onTabPress( TAB_TYPE_RELATIONSHIPS )}
-      accessibilityRole="link"
-    >
-      <Text
-        style={
-          activeTab === TAB_TYPE_RELATIONSHIPS
-            ? textStyles.activeTab
-            : null
-        }
-      >
-        {t( "Relationships" )}
-      </Text>
-    </Pressable>
-    <Pressable
-      onPress={() => onTabPress( TAB_TYPE_CONTENT_DISPLAY )}
-      accessibilityRole="link"
-    >
-      <Text
-        style={
-          activeTab === TAB_TYPE_CONTENT_DISPLAY
-            ? textStyles.activeTab
-            : null
-        }
-      >
-        {t( "Content-Display" )}
-      </Text>
-    </Pressable>
-    <Pressable
-      onPress={() => onTabPress( TAB_TYPE_APPLICATIONS )}
-      accessibilityRole="link"
-    >
-      <Text
-        style={
-          activeTab === TAB_TYPE_APPLICATIONS
-            ? textStyles.activeTab
-            : null
-        }
-      >
-        {t( "Applications" )}
-      </Text>
-    </Pressable>
-  </View>
-);
-
-const Settings = ( { children: _children }: Props ): Node => {
-  const [activeTab, setActiveTab] = useState( TAB_TYPE_PROFILE );
+const Settings = ( ) => {
+  const navigation = useNavigation( );
+  const { t } = useTranslation();
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
 
-  const { remoteUser: user, isLoading, refetchUserMe } = useUserMe();
+  const { remoteUser, isLoading, refetchUserMe } = useUserMe();
 
   const queryClient = useQueryClient();
 
@@ -167,94 +34,104 @@ const Settings = ( { children: _children }: Props ): Node => {
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
       onSuccess: () => {
+        console.log( "[DEBUG Settings.js] updated user, refetching userMe" );
         queryClient.invalidateQueries( ["fetchUserMe"] );
         refetchUserMe();
+      },
+      onError: () => {
+        setIsSaving( false );
       }
     }
   );
 
   useEffect( () => {
-    if ( user ) {
-      setSettings( user );
+    if ( remoteUser ) {
+      setSettings( remoteUser );
+      setIsSaving( false );
     }
-  }, [user] );
+  }, [remoteUser] );
 
-  const saveSettings = async () => {
+  // Listen for the webview to finish so we can fetch the updates users/me
+  // response
+  useEffect( ( ) => {
+    const listener = EventRegister.addEventListener(
+      FINISHED_WEB_SETTINGS,
+      refetchUserMe
+    );
+    return ( ) => {
+      EventRegister?.removeEventListener( listener );
+    };
+  }, [refetchUserMe] );
+
+  const changeTaxonNameDisplay = v => {
     setIsSaving( true );
+
     const payload = {
       id: settings?.id
     };
-    SETTINGS_PROPERTIES_LIST.forEach( ( v: string ) => {
-      payload[`user[${v}]`] = settings[v];
-    } );
 
-    if ( settings.removeProfilePhoto ) {
-      payload.icon_delete = true;
+    if ( v === 1 ) {
+      payload["user[prefers_common_names]"] = true;
+      payload["user[prefers_scientific_name_first]"] = false;
+    } else if ( v === 2 ) {
+      payload["user[prefers_common_names]"] = true;
+      payload["user[prefers_scientific_name_first]"] = true;
+    } else if ( v === 3 ) {
+      payload["user[prefers_common_names]"] = false;
+      payload["user[prefers_scientific_name_first]"] = false;
     }
-    if ( settings.newProfilePhoto ) {
-      payload["user[icon]"] = {
-        type: "custom",
-        value: {
-          uri: settings.newProfilePhoto.uri,
-          type: settings.newProfilePhoto.type,
-          name: settings.newProfilePhoto.fileName
-        }
-      };
-    }
+
     updateUserMutation.mutate( payload );
-    setIsSaving( false );
   };
 
   return (
     <ViewWrapper>
-      <SafeAreaView style={viewStyles.container}>
-        <StatusBar barStyle="dark-content" />
-        <Button
-          title="Save"
-          onPress={saveSettings}
-          disabled={isLoading || isSaving}
+      <StatusBar barStyle="dark-content" />
+      <View className="p-5">
+        <Heading4>{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
+        <Body2 className="mt-2">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
+        <RadioButtonRow
+          className="mt-4"
+          checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
+          onPress={() => changeTaxonNameDisplay( 1 )}
+          label={t( "Common-Name-Scientific-Name" )}
         />
-        <SettingsTabs activeTab={activeTab} onTabPress={setActiveTab} />
-        {isLoading
-          ? (
-            <ActivityIndicator size={50} />
-          )
-          : (
-            <ScrollView>
-              {activeTab === TAB_TYPE_PROFILE && (
-                <SettingsProfile
-                  settings={settings}
-                  onSettingsModified={setSettings}
-                />
-              )}
-              {activeTab === TAB_TYPE_ACCOUNT && (
-                <SettingsAccount
-                  settings={settings}
-                  onSettingsModified={setSettings}
-                />
-              )}
-              {activeTab === TAB_TYPE_NOTIFICATIONS && (
-                <SettingsNotifications
-                  settings={settings}
-                  onSettingsModified={setSettings}
-                />
-              )}
-              {activeTab === TAB_TYPE_CONTENT_DISPLAY && (
-                <SettingsContentDisplay
-                  settings={settings}
-                  onSettingsModified={setSettings}
-                />
-              )}
-              {activeTab === TAB_TYPE_APPLICATIONS && <SettingsApplications />}
-              {activeTab === TAB_TYPE_RELATIONSHIPS && (
-                <SettingsRelationships
-                  settings={settings}
-                  refetchUserMe={refetchUserMe}
-                />
-              )}
-            </ScrollView>
-          )}
-      </SafeAreaView>
+        <RadioButtonRow
+          className="mt-2"
+          checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
+          onPress={() => changeTaxonNameDisplay( 2 )}
+          label={t( "Scientific-Name-Common-Name" )}
+        />
+        <RadioButtonRow
+          className="mt-2"
+          checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}
+          onPress={() => changeTaxonNameDisplay( 3 )}
+          label={t( "Scientific-Name" )}
+        />
+        <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
+        <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
+        <Button
+          className="mt-4"
+          text={t( "INATURALIST-SETTINGS" )}
+          onPress={() => {
+            navigation.navigate( "FullPageWebView", {
+              title: t( "Settings" ),
+              loggedIn: true,
+              initialUrl: SETTINGS_URL,
+              openLinksInBrowser: true,
+              blurEvent: FINISHED_WEB_SETTINGS
+            } );
+          }}
+          accessibilityLabel={t( "Edit" )}
+        />
+      </View>
+      {( isSaving || isLoading ) && (
+        <View className="absolute z-10 bg-lightGray/70
+         w-full h-full flex items-center justify-center"
+        >
+          <ActivityIndicator size={50} />
+        </View>
+      )}
     </ViewWrapper>
   );
 };

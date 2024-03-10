@@ -226,7 +226,8 @@ const ExploreContainerWithContext = ( ): Node => {
   }
   delete queryParams.taxon_name;
 
-  const { count, updateCount } = useHeaderCount( filteredParams );
+  // need this hook to be top-level enough that HeaderCount rerenders
+  const { count, loadingStatus, updateCount } = useHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -242,6 +243,7 @@ const ExploreContainerWithContext = ( ): Node => {
       count={count}
       exploreView={exploreView}
       isOnline={isOnline}
+      loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
       queryParams={queryParams}
       showFiltersModal={showFiltersModal}

@@ -1,6 +1,7 @@
 // @flow
 
 import {
+  ActivityIndicator,
   Body2,
   INatIcon
 } from "components/SharedComponents";
@@ -13,13 +14,15 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   count: ?number,
   exploreView: string,
-  exploreViewIcon: string
+  exploreViewIcon: string,
+  loadingStatus: boolean
 }
 
 const HeaderCount = ( {
   count,
   exploreView,
-  exploreViewIcon
+  exploreViewIcon,
+  loadingStatus
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -39,6 +42,7 @@ const HeaderCount = ( {
 
   return (
     <View className="h-[40px] flex-row items-center justify-center">
+      {( loadingStatus && !count ) && <ActivityIndicator size={25} />}
       {count !== null && (
         <>
           <INatIcon

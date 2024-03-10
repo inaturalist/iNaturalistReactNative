@@ -41,41 +41,42 @@ export enum SORT_BY {
 // TODO: this should be imported from a central point, e.g. Taxon realm model
 // TODO: this is probably against conventioins to make it in lower case but I (Johannes) don't want to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
-    kingdom = "kingdom",
-    phylum = "phylum",
-    subphylum = "subphylum",
-    superclass = "superclass",
-    class = "class",
-    subclass = "subclass",
-    infraclass = "infraclass",
-    subterclass = "subterclass",
-    superorder = "superorder",
-    order = "order",
-    suborder = "suborder",
-    infraorder = "infraorder",
-    parvorder = "parvorder",
-    zoosection = "zoosection",
-    zoosubsection = "zoosubsection",
-    superfamily = "superfamily",
-    epifamily = "epifamily",
-    family = "family",
-    subfamily = "subfamily",
-    supertribe = "supertribe",
-    tribe = "tribe",
-    subtribe = "subtribe",
-    genus = "genus",
-    genushybrid = "genushybrid",
-    subgenus = "subgenus",
-    section = "section",
-    subsection = "subsection",
-    complex = "complex",
-    species = "species",
-    hybrid = "hybrid",
-    subspecies = "subspecies",
-    variety = "variety",
-    form = "form",
-    infrahybrid = "infrahybrid",
-  }
+  none = "none",
+  kingdom = "kingdom",
+  phylum = "phylum",
+  subphylum = "subphylum",
+  superclass = "superclass",
+  class = "class",
+  subclass = "subclass",
+  infraclass = "infraclass",
+  subterclass = "subterclass",
+  superorder = "superorder",
+  order = "order",
+  suborder = "suborder",
+  infraorder = "infraorder",
+  parvorder = "parvorder",
+  zoosection = "zoosection",
+  zoosubsection = "zoosubsection",
+  superfamily = "superfamily",
+  epifamily = "epifamily",
+  family = "family",
+  subfamily = "subfamily",
+  supertribe = "supertribe",
+  tribe = "tribe",
+  subtribe = "subtribe",
+  genus = "genus",
+  genushybrid = "genushybrid",
+  subgenus = "subgenus",
+  section = "section",
+  subsection = "subsection",
+  complex = "complex",
+  species = "species",
+  hybrid = "hybrid",
+  subspecies = "subspecies",
+  variety = "variety",
+  form = "form",
+  infrahybrid = "infrahybrid",
+}
 
 export enum DATE_OBSERVED {
   ALL = "ALL",
@@ -277,11 +278,16 @@ function exploreReducer( state: State, action: Action ) {
         taxon_name: action.taxonName
       };
     case EXPLORE_ACTION.SET_PLACE:
-      return {
+      const placeState = {
         ...state,
         place_id: action.placeId,
         place_guess: action.placeName
       };
+      delete placeState.swlat;
+      delete placeState.swlng;
+      delete placeState.nelat;
+      delete placeState.nelng;
+      return placeState;
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,
@@ -428,10 +434,12 @@ function exploreReducer( state: State, action: Action ) {
         reviewedFilter: action.reviewedFilter
       };
     case EXPLORE_ACTION.SET_MAP_BOUNDARIES:
-      return {
+      const boundState = {
         ...state,
         ...action.mapBoundaries
       };
+      delete boundState.place_id;
+      return boundState;
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );
     }

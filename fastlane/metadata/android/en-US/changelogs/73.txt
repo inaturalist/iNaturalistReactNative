@@ -1,0 +1,12 @@
+NEW
+* Support screen
+* Help screen
+* About screen
+
+UPDATED
+* Only show "reviewed by" Explore filter when signed in
+
+FIXED
+* Explore layout glitches on rotation
+* Explore should update map tile boundary when zooming to nearby in Android
+* Explore map tiles should update when the tile URL updates

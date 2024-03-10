@@ -53,16 +53,17 @@ const ToolbarContainer = ( {
     : 0;
 
   const {
-    uploads,
     error: uploadError,
     uploadInProgress,
     uploadsComplete,
-    currentUploadCount
+    numToUpload,
+    numFinishedUploads,
+    syncInProgress
   } = uploadState;
 
-  const handleSyncButtonPress = useCallback( ( ) => {
+  const handleSyncButtonPress = useCallback( async ( ) => {
     if ( numUnuploadedObs > 0 ) {
-      uploadMultipleObservations( );
+      await uploadMultipleObservations( );
     } else {
       syncObservations( );
     }
@@ -80,19 +81,22 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
   const progress = toolbarProgress;
-  const rotating = uploadInProgress || deletionsInProgress;
+  const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadError )
     || ( deletionsComplete && !deleteError );
   const needsSync = !uploadInProgress
     && ( numUnuploadedObs > 0 || uploadError );
 
   const getStatusText = useCallback( ( ) => {
-    const totalUploadCount = uploads?.length || 0;
-
     const deletionParams = {
       total: totalDeletions,
       currentDeleteCount
     };
+
+    if ( syncInProgress ) {
+      return t( "Syncing" );
+    }
+
     if ( totalDeletions > 0 ) {
       if ( deletionsComplete ) {
         return t( "X-observations-deleted", { count: totalDeletions } );
@@ -107,8 +111,8 @@ const ToolbarContainer = ( {
 
     if ( uploadInProgress ) {
       const translationParams = {
-        total: totalUploadCount,
-        currentUploadCount
+        total: numToUpload,
+        currentUploadCount: numFinishedUploads + 1
       };
       // iPhone 4 pixel width
       if ( screenWidth <= 640 ) {
@@ -119,7 +123,7 @@ const ToolbarContainer = ( {
     }
 
     if ( uploadsComplete ) {
-      return t( "X-observations-uploaded", { count: totalUploadCount } );
+      return t( "X-observations-uploaded", { count: numToUpload } );
     }
 
     return numUnuploadedObs !== 0
@@ -127,14 +131,15 @@ const ToolbarContainer = ( {
       : "";
   }, [
     currentDeleteCount,
-    currentUploadCount,
     deletionsComplete,
     numUnuploadedObs,
     t,
     totalDeletions,
-    uploads,
+    numToUpload,
+    numFinishedUploads,
     uploadsComplete,
-    uploadInProgress
+    uploadInProgress,
+    syncInProgress
   ] );
 
   const getSyncIconColor = useCallback( ( ) => {

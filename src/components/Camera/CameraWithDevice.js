@@ -11,12 +11,6 @@ import React, {
 import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-// import {
-//   RESULTS as PERMISSION_RESULTS
-// } from "react-native-permissions";
-import {
-  Camera
-} from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
@@ -50,13 +44,16 @@ const CameraWithDevice = ( {
   }
   const navigation = useNavigation();
   const { t } = useTranslation( );
-  // $FlowFixMe
-  const camera = useRef<Camera>( null );
+  const camera = useRef( null );
   const { deviceOrientation } = useDeviceOrientation( );
   const [addPhotoPermissionResult, setAddPhotoPermissionResult] = useState( null );
   const [checkmarkTapped, setCheckmarkTapped] = useState( false );
   const [taxonResult, setTaxonResult] = useState( null );
-  const [modalWasClosed, setModalWasClosed] = useState( false );
+  // We track this because we only want to navigate away when the permission
+  // gate is completely closed, because there's a good chance another will
+  // try to open when the user lands on the next screen, e.g. the location
+  // permission gate on ObsEdit
+  const [addPhotoPermissionGateWasClosed, setAddPhotoPermissionGateWasClosed] = useState( false );
 
   const {
     prepareStateForObsEdit
@@ -99,22 +96,46 @@ const CameraWithDevice = ( {
   };
 
   useEffect( ( ) => {
-    if ( checkmarkTapped
-        && ( modalWasClosed || addPhotoPermissionResult === "granted" ) ) {
+    if (
+      checkmarkTapped
+      && (
+        addPhotoPermissionGateWasClosed
+        || addPhotoPermissionResult === "granted"
+      )
+    ) {
       setCheckmarkTapped( false );
-      setModalWasClosed( false );
+      setAddPhotoPermissionGateWasClosed( false );
       navToObsEdit( );
     }
   }, [
     navToObsEdit,
     checkmarkTapped,
-    modalWasClosed,
+    addPhotoPermissionGateWasClosed,
     addPhotoPermissionResult
   ] );
 
+  // Hide the StatusBar. Using a component doesn't guarantee that it will get
+  // hidden here if another component renders the status bar later when this
+  // screen his blurred but still mounted
+  useEffect( ( ) => {
+    // Hide on first render
+    StatusBar.setHidden( true );
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
+      // Hide when focused
+      StatusBar.setHidden( true );
+    } );
+    return unsubscribe;
+  }, [navigation] );
+
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      StatusBar.setHidden( false );
+    } );
+    return unsubscribe;
+  }, [navigation] );
+
   return (
     <View className={`flex-1 bg-black ${flexDirection}`}>
-      <StatusBar hidden />
       <PermissionGateContainer
         permissions={WRITE_MEDIA_PERMISSIONS}
         titleDenied={t( "Save-photos-to-your-gallery" )}
@@ -122,10 +143,10 @@ const CameraWithDevice = ( {
         buttonText={t( "SAVE-PHOTOS" )}
         icon="gallery"
         image={require( "images/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
+        onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
         onPermissionGranted={onPermissionGranted}
         onPermissionDenied={onPermissionDenied}
         withoutNavigation
-        setModalWasClosed={setModalWasClosed}
         permissionNeeded={checkmarkTapped}
       />
       {cameraType === "Standard"

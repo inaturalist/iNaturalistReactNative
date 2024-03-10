@@ -65,3 +65,36 @@ export const formatExifDateAsString = ( datetime: string ): string => {
   // photo timestamp instead of exif data
   return formatISONoTimezone( zonedDate );
 };
+
+// Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
+// in case the first photo is missing EXIF
+export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Promise<Object> => {
+  const unifiedExif = {};
+
+  const allExifPhotos = await Promise.all(
+    photoUris.map( async uri => parseExif( uri ) )
+  );
+
+  allExifPhotos.filter( x => x ).forEach(
+    currentPhotoExif => {
+      const {
+        latitude, longitude, positional_accuracy: positionalAccuracy, date
+      }
+        = currentPhotoExif;
+
+      if ( !unifiedExif.latitude ) {
+        unifiedExif.latitude = latitude;
+      }
+      if ( !unifiedExif.longitude ) {
+        unifiedExif.longitude = longitude;
+      }
+      if ( !unifiedExif.observed_on_string ) {
+        unifiedExif.observed_on_string = formatExifDateAsString( date ) || null;
+      }
+      if ( positionalAccuracy && !unifiedExif.positional_accuracy ) {
+        unifiedExif.positional_accuracy = positionalAccuracy;
+      }
+    }
+  );
+  return unifiedExif;
+};

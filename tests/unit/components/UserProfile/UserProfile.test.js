@@ -39,8 +39,6 @@ jest.mock(
   }
 );
 
-jest.mock( "components/UserProfile/UserDescription" );
-
 describe( "UserProfile", () => {
   it( "should render inside mocked container for testing", () => {
     renderComponent( <UserProfile /> );

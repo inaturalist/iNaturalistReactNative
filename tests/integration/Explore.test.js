@@ -30,6 +30,7 @@ describe( "Explore", ( ) => {
       screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` )
     ).toBeFalsy( );
   } );
+
   it( "should display grid item correctly", async ( ) => {
     inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
     renderAppWithComponent( <ExploreContainer /> );

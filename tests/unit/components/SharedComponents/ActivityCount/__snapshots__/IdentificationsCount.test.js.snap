@@ -42,7 +42,7 @@ exports[`IdentificationsCount renders default reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Book",
         },
         [
           {
@@ -111,7 +111,7 @@ exports[`IdentificationsCount renders filled reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Book",
         },
         [
           {
@@ -180,7 +180,7 @@ exports[`IdentificationsCount renders white reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Book",
         },
         [
           {

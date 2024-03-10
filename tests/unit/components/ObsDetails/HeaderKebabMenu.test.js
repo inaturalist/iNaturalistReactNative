@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import HeaderKebabMenu from "components/ObsDetails/HeaderKebabMenu";
-
 import i18next from "i18next";
 import React from "react";
 import { Platform, Share } from "react-native";
@@ -19,8 +18,6 @@ const observationId = 1234;
 const url = `https://www.inaturalist.org/observations/${observationId}`;
 
 describe( "HeaderKebabMenu", () => {
-
-
   it( "renders and opens kebab menu share button", async ( ) => {
     renderComponent( <HeaderKebabMenu observationId={observationId} /> );
     const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );

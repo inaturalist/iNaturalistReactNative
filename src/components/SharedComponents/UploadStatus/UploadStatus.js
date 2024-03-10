@@ -128,17 +128,24 @@ const UploadStatus = ( {
     />
   );
 
+  const iconClasses = [
+    "items-center",
+    "justify-center",
+    "w-[44px]",
+    "h-[44px]"
+  ];
+
   const uploadTappedIcon = (
-    <>
+    <View className={classnames( iconClasses )}>
       {showProgressArrow( )}
       <AnimatedView style={rotate}>
         <INatIcon name="circle-dots" color={color || defaultColor} size={33} />
       </AnimatedView>
-    </>
+    </View>
   );
 
   const uploadInProgressIcon = (
-    <>
+    <View className={classnames( iconClasses )}>
       {showProgressArrow( )}
       <CircularProgressBase
         testID="UploadStatus.CircularProgress"
@@ -154,15 +161,11 @@ const UploadStatus = ( {
         inActiveStrokeOpacity={0}
         activeStrokeWidth={2}
       />
-    </>
+    </View>
   );
 
   const uploadCompleteIcon = (
-    <AnimatedView
-      className="absolute"
-      entering={keyframe.duration( 2000 )}
-      testID={`UploadIcon.complete.${uuid}`}
-    >
+    <View className={classnames( iconClasses )}>
       <INatIcon
         size={28}
         name="upload-complete"
@@ -172,51 +175,85 @@ const UploadStatus = ( {
             : theme.colors.onSecondary
         }
       />
+    </View>
+  );
+
+  const fadeOutUploadCompleteIcon = (
+    <AnimatedView
+      entering={keyframe.duration( 2000 )}
+      testID={`UploadIcon.complete.${uuid}`}
+    >
+      { uploadCompleteIcon }
     </AnimatedView>
   );
 
   const fadeInObsStatusComponent = (
-    <AnimatedView
-      entering={FadeIn.duration( 1000 ).delay( 2000 )}
-      className={classnames( {
-        "justify-end": layout === "horizontal",
-        absolute: layout === "vertical"
-      } )}
-    >
+    <AnimatedView entering={FadeIn.duration( 1000 ).delay( 2000 )}>
       {children}
     </AnimatedView>
   );
 
-  const iconViewClassName = classnames( {
-    "items-center justify-center w-[49px] h-[67px]": layout === "vertical"
+  const iconWraperClasses = classnames( {
+    "items-center justify-center w-[49px]": layout === "vertical"
   } );
 
   const displayUploadStatus = ( ) => {
     if ( progress === 0 ) {
       return (
-        <View className={iconViewClassName}>
+        <View className={iconWraperClasses}>
           {startUploadIcon}
         </View>
       );
     }
     if ( progress <= 0.05 ) {
       return (
-        <View className={iconViewClassName}>
+        <View className={iconWraperClasses}>
           {uploadTappedIcon}
         </View>
       );
     }
     if ( progress > 0.05 && progress < 1 ) {
       return (
-        <View className={iconViewClassName}>
+        <View className={iconWraperClasses}>
           {uploadInProgressIcon}
+        </View>
+      );
+    }
+    // Test of end state before animation
+    if ( progress === 10 ) {
+      return (
+        <View className={iconWraperClasses}>
+          {uploadCompleteIcon}
+        </View>
+      );
+    }
+    // Test of end state with all elements overlayed
+    if ( progress === 11 ) {
+      return (
+        <View className="justify-center">
+          <View
+            className={classnames( "absolute", {
+              "bottom-0": layout === "horizontal"
+            } )}
+          >
+            <View className={iconWraperClasses}>
+              {uploadCompleteIcon}
+            </View>
+          </View>
+          {children}
         </View>
       );
     }
     return (
       <>
-        <View className={iconViewClassName}>
-          {uploadCompleteIcon}
+        <View
+          className={classnames( "absolute", {
+            "bottom-0": layout === "horizontal"
+          } )}
+        >
+          <View className={iconWraperClasses}>
+            {fadeOutUploadCompleteIcon}
+          </View>
         </View>
         {fadeInObsStatusComponent}
       </>
@@ -227,6 +264,10 @@ const UploadStatus = ( {
     <View
       accessible
       accessibilityLabel={accessibilityLabelText( )}
+      className={classnames( {
+        "h-[44px] justify-end": layout === "horizontal",
+        "justify-center": layout !== "horizontal"
+      } )}
     >
       {displayUploadStatus( )}
     </View>

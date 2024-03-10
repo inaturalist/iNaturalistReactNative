@@ -23,6 +23,7 @@ import {
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import uploadObservation from "sharedHelpers/uploadObservation";
+import { sleep } from "sharedHelpers/util";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -33,12 +34,12 @@ import {
   useTranslation
 } from "sharedHooks";
 
+import useDeleteObservations from "./hooks/useDeleteObservations";
 import MyObservations from "./MyObservations";
 
 const logger = log.extend( "MyObservationsContainer" );
 
-export const INITIAL_UPLOAD_STATE = {
-  currentUploadCount: 0,
+export const INITIAL_STATE = {
   error: null,
   singleUpload: true,
   totalProgressIncrements: 0,
@@ -47,7 +48,10 @@ export const INITIAL_UPLOAD_STATE = {
   uploadProgress: { },
   // $FlowIgnore
   uploads: [],
-  uploadsComplete: false
+  numToUpload: 0,
+  numFinishedUploads: 0,
+  uploadsComplete: false,
+  syncInProgress: false
 };
 
 const startUploadState = uploads => ( {
@@ -55,13 +59,15 @@ const startUploadState = uploads => ( {
   uploadInProgress: true,
   uploadsComplete: false,
   uploads,
+  numToUpload: uploads.length,
+  numFinishedUploads: 0,
   uploadProgress: { },
-  currentUploadCount: 1,
-  totalProgressIncrements: uploads
-    .reduce(
-      ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
-      uploads.length
-    )
+  totalProgressIncrements: uploads.reduce(
+    ( count, current ) => count
+      + ( current?.observationPhotos?.length || 0 )
+      + ( current?.observationSounds?.length || 0 ),
+    uploads.length
+  )
 } );
 
 const uploadReducer = ( state: Object, action: Function ): Object => {
@@ -93,12 +99,12 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
     case "START_NEXT_UPLOAD":
       return {
         ...state,
-        currentUploadCount: state.currentUploadCount + 1
+        numFinishedUploads: state.numFinishedUploads + 1
       };
     case "STOP_UPLOADS":
       return {
         ...state,
-        ...INITIAL_UPLOAD_STATE
+        ...INITIAL_STATE
       };
     case "UPLOADS_COMPLETE":
       return {
@@ -111,9 +117,14 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
         ...state,
         uploadProgress: action.uploadProgress
       };
-    case "RESET_UPLOAD_STATE":
+    case "RESET_STATE":
       return {
-        ...INITIAL_UPLOAD_STATE
+        ...INITIAL_STATE
+      };
+    case "START_SYNC":
+      return {
+        ...state,
+        syncInProgress: true
       };
     default:
       return state;
@@ -129,9 +140,10 @@ const MyObservationsContainer = ( ): Node => {
   const realm = useRealm( );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
-  const [state, dispatch] = useReducer( uploadReducer, INITIAL_UPLOAD_STATE );
+  const [state, dispatch] = useReducer( uploadReducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
+  const { deletionsCompletedAt } = useDeleteObservations( );
 
   const isOnline = useIsConnected( );
 
@@ -158,12 +170,18 @@ const MyObservationsContainer = ( ): Node => {
     totalProgressIncrements
   } = state;
 
-  const currentUploadProgress = Object.values( uploadProgress )
-    .reduce( ( count, current ) => count + Number( current ), 0 );
+  const currentUploadProgress = Object.values( uploadProgress ).reduce(
+    ( count, current ) => count + Number( current ),
+    0
+  );
 
-  const toolbarProgress = totalProgressIncrements > 0
-    ? currentUploadProgress / totalProgressIncrements
-    : 0;
+  let toolbarProgress = 0;
+  if ( uploadInProgress && totalProgressIncrements > 0 ) {
+    toolbarProgress = 0.1 / totalProgressIncrements;
+  }
+  if ( totalProgressIncrements > 0 && currentUploadProgress > 0 ) {
+    toolbarProgress = currentUploadProgress / totalProgressIncrements;
+  }
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
@@ -214,8 +232,21 @@ const MyObservationsContainer = ( ): Node => {
 
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
 
-        if ( state.singleUpload
-          && state.uploadProgress[uuid] >= state.totalProgressIncrements ) {
+        // This is really hacky, but our obs upload logic is distributed so much that I can not
+        // figure out a better way to do this. This is true for an observation without media
+        // for which this useEffect is only triggered once, and therefore the UPLOADS_COMPLETE
+        // action is never dispatched.
+        const isOne = state.totalProgressIncrements === 1;
+        if (
+          state.singleUpload
+          && ( state.uploadProgress[uuid] >= state.totalProgressIncrements || isOne )
+        ) {
+          if ( isOne ) {
+            dispatch( {
+              type: "UPDATE_PROGRESS",
+              uploadProgress: currentProgress
+            } );
+          }
           dispatch( {
             type: "UPLOADS_COMPLETE"
           } );
@@ -251,7 +282,6 @@ const MyObservationsContainer = ( ): Node => {
     try {
       await uploadObservation( observation, realm );
     } catch ( uploadError ) {
-      console.warn( "MyObservationsContainer, uploadError: ", uploadError );
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
@@ -262,6 +292,7 @@ const MyObservationsContainer = ( ): Node => {
           return error.message;
         } ).join( ", " );
       } else {
+        logger.error( "[MyObservationsContainer.js] upload failed: ", uploadError );
         throw uploadError;
       }
       dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
@@ -288,15 +319,11 @@ const MyObservationsContainer = ( ): Node => {
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
 
-    uploads.forEach( async ( obsToUpload, i ) => {
+    await Promise.all( uploads.map( async obsToUpload => {
       await uploadObservationAndCatchError( obsToUpload );
-      if ( i > 0 ) {
-        dispatch( { type: "START_NEXT_UPLOAD" } );
-      }
-      if ( i === uploads.length - 1 ) {
-        dispatch( { type: "UPLOADS_COMPLETE" } );
-      }
-    } );
+      dispatch( { type: "START_NEXT_UPLOAD" } );
+    } ) );
+    dispatch( { type: "UPLOADS_COMPLETE" } );
   }, [
     uploadsComplete,
     uploadObservationAndCatchError,
@@ -314,12 +341,31 @@ const MyObservationsContainer = ( ): Node => {
     const searchParams = {
       user_id: currentUser?.id,
       per_page: 50,
-      fields: Observation.FIELDS
+      fields: Observation.FIELDS,
+      ttl: -1
     };
+    // Between elasticsearch update time and API caches, there's no absolute
+    // guarantee fetching observations won't include something we just
+    // deleted, so we check to see if deletions recently completed and if
+    // they did, make sure 10s have elapsed since deletions complated before
+    // fetching new obs
+    if ( deletionsCompletedAt ) {
+      const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
+      if ( msSinceDeletionsCompleted < 5_000 ) {
+        const naptime = 10_000 - msSinceDeletionsCompleted;
+        logger.debug(
+          `[MyObservationsContainer.js] finished deleting recently, waiting ${naptime} ms`
+        );
+        await sleep( naptime );
+      }
+    }
     const { results } = await searchObservations( searchParams, { api_token: apiToken } );
-
     Observation.upsertRemoteObservations( results, realm );
-  }, [currentUser, realm] );
+  }, [
+    currentUser,
+    deletionsCompletedAt,
+    realm
+  ] );
 
   // TODO move this logic to a helper or a model so it can be more easily unit tested
   const syncRemoteDeletedObservations = useCallback( async ( ) => {
@@ -365,9 +411,10 @@ const MyObservationsContainer = ( ): Node => {
   const syncObservations = useCallback( async ( ) => {
     logger.info( "[MyObservationsContainer.js] syncObservations: starting" );
     if ( !uploadInProgress && uploadsComplete ) {
-      logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_UPLOAD_STATE" );
-      dispatch( { type: "RESET_UPLOAD_STATE" } );
+      logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_STATE" );
+      dispatch( { type: "RESET_STATE" } );
     }
+    dispatch( { type: "START_SYNC" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling toggleLoginSheet" );
     toggleLoginSheet( );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling showInternetErrorAlert" );
@@ -386,6 +433,7 @@ const MyObservationsContainer = ( ): Node => {
     updateSyncTime( );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling deactivateKeepAwake" );
     deactivateKeepAwake( );
+    dispatch( { type: "RESET_STATE" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: done" );
   }, [uploadInProgress,
     uploadsComplete,
@@ -408,7 +456,7 @@ const MyObservationsContainer = ( ): Node => {
   useEffect(
     ( ) => {
       navigation.addListener( "focus", ( ) => {
-        dispatch( { type: "RESET_UPLOAD_STATE" } );
+        dispatch( { type: "RESET_STATE" } );
       } );
     },
     [navigation, realm]

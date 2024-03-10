@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { Checkbox } from "components/SharedComponents";
-
 import React from "react";
 import colors from "styles/tailwindColors";
 import { renderComponent } from "tests/helpers/render";
@@ -21,8 +20,6 @@ const rerenderCheckmarkComponent = checked => {
 };
 
 describe( "Checkbox", () => {
-
-
   it( "renders reliably", () => {
     render( <Checkbox text="Checkmark text" /> );
 

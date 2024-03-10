@@ -12,11 +12,11 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  setSelectedPhotoUri: Function
+  onPressPhoto: Function
 };
 
-const PhotoSelectionList = ( {
-  photoUris, selectedPhotoUri, setSelectedPhotoUri
+const ObsPhotoSelectionList = ( {
+  photoUris, selectedPhotoUri, onPressPhoto
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -24,13 +24,13 @@ const PhotoSelectionList = ( {
     <Pressable
       accessibilityRole="button"
       onPress={( ) => {
-        setSelectedPhotoUri( item );
+        onPressPhoto( item );
       }}
       className={classnames(
         "w-[83px] h-[83px] justify-center mx-1.5 rounded-lg"
       )}
       accessibilityLabel={t( "Select-photo" )}
-      testID={`PhotoSelectionList.${item}`}
+      testID={`ObsPhotoSelectionList.${item}`}
     >
       <View
         className={classnames(
@@ -39,7 +39,7 @@ const PhotoSelectionList = ( {
             "border border-inatGreen border-[3px]": selectedPhotoUri === item
           }
         )}
-        testID={`PhotoSelectionList.border.${item}`}
+        testID={`ObsPhotoSelectionList.border.${item}`}
       >
         <Image
           source={{ uri: item }}
@@ -48,7 +48,7 @@ const PhotoSelectionList = ( {
         />
       </View>
     </Pressable>
-  ), [selectedPhotoUri, setSelectedPhotoUri, t] );
+  ), [selectedPhotoUri, onPressPhoto, t] );
 
   return (
     <FlatList
@@ -59,4 +59,4 @@ const PhotoSelectionList = ( {
   );
 };
 
-export default PhotoSelectionList;
+export default ObsPhotoSelectionList;

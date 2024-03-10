@@ -1,0 +1,17 @@
+NEW
+* Redo search in map area
+* Explore defaults to your location... sometimes
+* MediaViewer from Suggestions
+* Sound recording
+* Status while syncing on MyObs
+* Missing date & loc. filled in by new photos on ObsEdit
+
+UPDATED
+* Icon rotates clockwise while syncing
+* Species, Observers, and Identifiers views link to content
+* Password managers fill in login info
+* Skip acc. check for imported photos
+
+FIXED
+* 5s timeout for online suggestions
+* Withdrawing ID no longer deletes remarks

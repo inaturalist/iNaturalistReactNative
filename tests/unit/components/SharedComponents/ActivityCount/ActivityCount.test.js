@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
 import { ActivityCount } from "components/SharedComponents";
-
 import React from "react";
 
 const count = 1;
@@ -8,7 +7,6 @@ const icon = "comments";
 const testID = "some_id";
 
 describe( "ActivityCount", () => {
-
   it( "renders reliably", () => {
     // Snapshot test
     render( <ActivityCount count={count} icon={icon} testID={testID} /> );

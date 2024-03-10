@@ -5,6 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
+import { useCurrentUser } from "sharedHooks";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
@@ -15,21 +16,24 @@ type Props = {
   height?: string,
   style?: Object,
   uploadSingleObservation?: Function,
-  uploadState: Object,
+  uploadState: {
+    uploadProgress: Number
+  },
   explore: boolean
 };
 
 const ObsGridItem = ( {
   observation,
-  width = "w-full",
-  height,
+  width = "w-[200px]",
+  height = "w-[200px]",
   style,
   uploadSingleObservation,
   uploadState,
   explore
 }: Props ): Node => {
   const photoCount = observation?.observationPhotos?.length
-  || observation?.observation_photos?.length;
+    || observation?.observation_photos?.length;
+  const currentUser = useCurrentUser( );
   return (
     <ObsImagePreview
       source={{
@@ -72,7 +76,7 @@ const ObsGridItem = ( {
           keyBase={observation?.uuid}
           taxon={observation?.taxon}
           scientificNameFirst={
-            observation?.user?.prefers_scientific_name_first
+            currentUser?.prefers_scientific_name_first
           }
           layout="vertical"
           color="text-white"

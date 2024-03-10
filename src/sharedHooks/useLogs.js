@@ -28,12 +28,28 @@ const useLogs = ( ) => {
     recipients: ["help+mobile@inaturalist.org"]
   } ), [device, appVersion, buildVersion] );
   const [logContents, setLogContents] = useState( "" );
-  const { mtime: logFileMtime } = RNFS.stat( logFilePath );
+  const [logFileMtime, setLogFileMtime] = useState( null );
+
+  useEffect( ( ) => {
+    async function getLogfileStat( ) {
+      const { mtime } = await RNFS.stat( logFilePath );
+      setLogFileMtime( mtime );
+    }
+    getLogfileStat( );
+  }, [] );
 
   useEffect( () => {
     async function fetchLogContents() {
-      const contents = await RNFS.readFile( logFilePath );
-      setLogContents( contents.split( "\n" ).join( "\n" ) );
+      try {
+        const contents = await RNFS.readFile( logFilePath );
+        setLogContents( contents.split( "\n" ).join( "\n" ) );
+      } catch ( readFileError ) {
+        if ( readFileError.message.match( /no such file/ ) ) {
+          setLogContents( "" );
+        } else {
+          throw readFileError;
+        }
+      }
     }
     fetchLogContents();
   }, [logFileMtime] );

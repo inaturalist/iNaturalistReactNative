@@ -1,12 +1,10 @@
 import { render, screen } from "@testing-library/react-native";
 import { IdentificationsCount } from "components/SharedComponents";
-
 import React from "react";
 
 const count = 1;
 
 describe( "IdentificationsCount", () => {
-
   it( "renders default reliably", () => {
     // Snapshot test
     render( <IdentificationsCount count={count} /> );

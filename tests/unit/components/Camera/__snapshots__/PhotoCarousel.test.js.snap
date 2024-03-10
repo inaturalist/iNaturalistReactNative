@@ -51,8 +51,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          collapsable={false}
-          jestAnimatedStyle={
+          animatedStyle={
             {
               "value": {
                 "transform": [
@@ -63,6 +62,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
+          collapsable={false}
           style={
             {
               "transform": [
@@ -220,8 +220,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          collapsable={false}
-          jestAnimatedStyle={
+          animatedStyle={
             {
               "value": {
                 "transform": [
@@ -232,6 +231,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
+          collapsable={false}
           style={
             {
               "transform": [
@@ -389,8 +389,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          collapsable={false}
-          jestAnimatedStyle={
+          animatedStyle={
             {
               "value": {
                 "transform": [
@@ -401,6 +400,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
+          collapsable={false}
           style={
             {
               "transform": [
@@ -631,8 +631,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          collapsable={false}
-          jestAnimatedStyle={
+          animatedStyle={
             {
               "value": {
                 "transform": [
@@ -643,6 +642,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
+          collapsable={false}
           style={
             {
               "transform": [
@@ -805,8 +805,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          collapsable={false}
-          jestAnimatedStyle={
+          animatedStyle={
             {
               "value": {
                 "transform": [
@@ -817,6 +816,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
+          collapsable={false}
           style={
             {
               "transform": [
@@ -979,8 +979,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          collapsable={false}
-          jestAnimatedStyle={
+          animatedStyle={
             {
               "value": {
                 "transform": [
@@ -991,6 +990,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
+          collapsable={false}
           style={
             {
               "transform": [

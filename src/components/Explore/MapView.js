@@ -1,9 +1,13 @@
 // @flow
 
-import { Button, LocationPermissionGate, Map } from "components/SharedComponents";
+import {
+  Button,
+  Map
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
@@ -37,15 +41,16 @@ const MapView = ( {
     onPermissionDenied,
     onPermissionGranted,
     permissionRequested,
+    onZoomToNearby,
     redoSearchInMapArea,
     region,
     showMapBoundaryButton,
-    startAtUserLocation,
+    startAtNearby,
     updateMapBoundaries
   } = useMapLocation( );
 
   return (
-    <>
+    <View className="flex-1 overflow-hidden h-full">
       <View className="z-10">
         {showMapBoundaryButton && (
           <View
@@ -55,39 +60,45 @@ const MapView = ( {
             <Button
               text={t( "REDO-SEARCH-IN-MAP-AREA" )}
               level="focus"
-              className="top-6 absolute self-center"
+              className="top-[60px] absolute self-center"
               onPress={redoSearchInMapArea}
             />
           </View>
         )}
       </View>
-      {startAtUserLocation !== null && (
-        <Map
-          currentLocationButtonClassName="left-5 bottom-20"
-          getMapBoundaries={updateMapBoundaries}
-          mapViewClassName="-mt-4"
-          minZoomLevel={startAtUserLocation && 10}
-          observations={observations}
-          onPanDrag={onPanDrag}
-          region={region}
-          showCurrentLocationButton
-          showExplore
-          showSwitchMapTypeButton
-          showsCompass={false}
-          startAtUserLocation={startAtUserLocation}
-          switchMapTypeButtonClassName="left-20 bottom-20"
-          tileMapParams={tileMapParams}
-          withPressableObsTiles={tileMapParams !== null}
-        />
-      )}
-      <LocationPermissionGate
+      <Map
+        currentLocationButtonClassName="left-5 bottom-20"
+        observations={observations}
+        onPanDrag={onPanDrag}
+        onRegionChangeComplete={async ( newRegion, boundaries ) => {
+          // Seems to be a bug in react-native-maps where
+          // onRegionChangeComplete fires once on initial load before the
+          // region actually changes, so we're just ignoring that update
+          // here
+          if ( Platform.OS === "android" && Math.round( newRegion.latitude ) === 0 ) {
+            return;
+          }
+          await updateMapBoundaries( boundaries );
+          if ( startAtNearby ) {
+            onZoomToNearby( boundaries );
+          }
+        }}
+        onZoomToNearby={onZoomToNearby}
+        region={region}
+        showCurrentLocationButton
+        showExplore
+        showSwitchMapTypeButton
+        showsCompass={false}
+        startAtNearby={startAtNearby}
+        switchMapTypeButtonClassName="left-20 bottom-20"
+        tileMapParams={tileMapParams}
+        withPressableObsTiles={tileMapParams !== null}
         onPermissionBlocked={onPermissionBlocked}
         onPermissionDenied={onPermissionDenied}
         onPermissionGranted={onPermissionGranted}
-        permissionNeeded={permissionRequested}
-        withoutNavigation
+        permissionRequested={permissionRequested}
       />
-    </>
+    </View>
   );
 };
 

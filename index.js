@@ -1,5 +1,8 @@
 // @flow
 
+// React Native doesn't have a functional URL as of Feb 2024
+import "react-native-url-polyfill/auto";
+
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -24,7 +27,7 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
-import { USER_AGENT } from "./src/components/LoginSignUp/AuthenticationService";
+import { getUserAgent } from "./src/api/userAgent";
 import { navigationRef } from "./src/navigation/navigationUtils";
 
 enableLatestRenderer( );
@@ -69,7 +72,7 @@ initI18next();
 inatjs.setConfig( {
   apiURL: Config.API_URL,
   writeApiURL: Config.API_URL,
-  userAgent: USER_AGENT
+  userAgent: getUserAgent()
 } );
 
 const queryClient = new QueryClient( {

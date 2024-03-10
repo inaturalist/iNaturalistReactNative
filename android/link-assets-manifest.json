@@ -3,7 +3,7 @@
   "data": [
     {
       "path": "assets/fonts/INatIcon.ttf",
-      "sha1": "bb88abe4cdee0812e5158400b1769607f685d310"
+      "sha1": "9f7e321421207b57e03952ef1b9386e8b618f98f"
     },
     {
       "path": "assets/fonts/Whitney Book Regular.otf",
@@ -18,6 +18,10 @@
       "sha1": "fc560886d72adf37cccbad5bf8c58d7e0e546027"
     },
     {
+      "path": "assets/fonts/Whitney-Book-Pro.otf",
+      "sha1": "639b8a8bf3e1cc3de30d0f49e666aca3999ca65a"
+    },
+    {
       "path": "assets/fonts/Whitney-BookItalic-Pro.otf",
       "sha1": "15854f60175a0e82b794c259431ec45ea4b40103"
     },
@@ -28,6 +32,14 @@
     {
       "path": "assets/fonts/Whitney-Medium-Pro.otf",
       "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
+    },
+    {
+      "path": "assets/fonts/Whitney-MediumItalic-Pro.otf",
+      "sha1": "cfd53e87d774dd1f2abaa92054ce7f810804c986"
+    },
+    {
+      "path": "assets/fonts/Whitney-Semibold-Pro.otf",
+      "sha1": "7a107095a453c8cd8046d9ccded5d88e6809e89f"
     },
     {
       "path": "assets/fonts/inaturalisticons.ttf",

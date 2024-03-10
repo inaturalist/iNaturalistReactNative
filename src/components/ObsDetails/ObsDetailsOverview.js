@@ -20,19 +20,21 @@ import {
 
 type Props = {
   belongsToCurrentUser?: boolean,
-  observation: Object,
   isOnline: boolean,
+  isRefetching: boolean,
+  observation: Object,
 }
 
 const ObsDetailsOverview = ( {
   belongsToCurrentUser,
-  observation,
-  isOnline
+  isOnline,
+  isRefetching,
+  observation
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
-  const taxon = observation?.taxon;
+  const communityTaxon = observation?.taxon;
 
   const loadingIndicator = (
     <ActivityIndicator
@@ -43,8 +45,8 @@ const ObsDetailsOverview = ( {
     />
   );
 
-  const showTaxon = () => {
-    if ( !taxon ) {
+  const showCommunityTaxon = ( ) => {
+    if ( !communityTaxon ) {
       return (
         <View className="justify-center ml-1">
           <Body1>{t( "Unknown" )}</Body1>
@@ -53,9 +55,9 @@ const ObsDetailsOverview = ( {
     }
     return (
       <DisplayTaxon
-        taxon={taxon}
-        handlePress={( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
-        testID={`ObsDetails.taxon.${taxon.id}`}
+        taxon={communityTaxon}
+        handlePress={( ) => navigation.navigate( "TaxonDetails", { id: communityTaxon.id } )}
+        testID={`ObsDetails.taxon.${communityTaxon.id}`}
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
       />
     );
@@ -64,7 +66,7 @@ const ObsDetailsOverview = ( {
   return (
     <View className="bg-white">
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
-        {!observation && loadingIndicator}
+        {( !observation || isRefetching ) && loadingIndicator}
         <InlineUser user={observation?.user} isOnline={isOnline} />
         {observation && (
           <DateDisplay
@@ -76,7 +78,7 @@ const ObsDetailsOverview = ( {
       </View>
       <View className="flex-row my-[11px] mx-3 items-center">
         <View className="shrink">
-          {observation && showTaxon()}
+          {observation && showCommunityTaxon( )}
         </View>
         <View className="ml-auto">
           <ObsStatus layout="vertical" observation={observation} />
