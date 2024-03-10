@@ -73,8 +73,8 @@ const FrameProcessorCamera = ( {
     };
   }, [onLog] );
 
-  const handleResults = Worklets.createRunInJsFn( predictions => {
-    onTaxaDetected( predictions );
+  const handleResults = Worklets.createRunInJsFn( result => {
+    onTaxaDetected( result );
   } );
   const handleError = Worklets.createRunInJsFn( error => {
     onClassifierError( error );
