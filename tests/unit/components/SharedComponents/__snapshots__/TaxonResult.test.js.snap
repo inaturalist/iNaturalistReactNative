@@ -343,30 +343,56 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "fontFamily": "Whitney-Book",
+                "fontFamily": "Whitney-Medium",
               },
               [
-                {
-                  "fontSize": 14,
-                  "lineHeight": 18,
-                },
-                {
-                  "fontWeight": "400",
-                },
-                {
-                  "color": "#454545",
-                },
                 [
+                  {
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontWeight": "400",
+                  },
                   {
                     "color": "#454545",
                   },
+                  [
+                    {
+                      "color": "#454545",
+                    },
+                  ],
                 ],
               ],
             ]
           }
         >
           Family 
-          Aves
+          <Text
+            style={
+              [
+                {
+                  "fontFamily": "Whitney-Medium",
+                },
+                [
+                  [
+                    {
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontWeight": "400",
+                    },
+                    {
+                      "color": "#454545",
+                    },
+                  ],
+                ],
+              ]
+            }
+          >
+            Aves
+          </Text>
         </Text>
       </View>
     </View>
