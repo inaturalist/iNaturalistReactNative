@@ -273,10 +273,8 @@ const MyObservationsContainer = ( ): Node => {
   }, [isOnline, t] );
 
   const toggleLoginSheet = useCallback( ( ) => {
-    if ( !currentUser ) {
-      setShowLoginSheet( true );
-    }
-  }, [currentUser] );
+    setShowLoginSheet( true );
+  }, [] );
 
   const uploadObservationAndCatchError = useCallback( async observation => {
     try {
@@ -300,20 +298,23 @@ const MyObservationsContainer = ( ): Node => {
   }, [realm] );
 
   const uploadSingleObservation = useCallback( async ( observation, options ) => {
-    toggleLoginSheet( );
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      return;
+    }
     showInternetErrorAlert( );
     if ( !options || options?.singleUpload !== false ) {
       dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
     }
     await uploadObservationAndCatchError( observation );
     dispatch( { type: "UPLOADS_COMPLETE" } );
-  }, [
-    showInternetErrorAlert,
-    toggleLoginSheet,
-    uploadObservationAndCatchError
-  ] );
+  }, [currentUser, showInternetErrorAlert, toggleLoginSheet, uploadObservationAndCatchError] );
 
   const uploadMultipleObservations = useCallback( async ( ) => {
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      return;
+    }
     if ( uploadsComplete || uploadInProgress ) {
       return;
     }
@@ -324,12 +325,12 @@ const MyObservationsContainer = ( ): Node => {
       dispatch( { type: "START_NEXT_UPLOAD" } );
     } ) );
     dispatch( { type: "UPLOADS_COMPLETE" } );
-  }, [
+  }, [currentUser,
     uploadsComplete,
-    uploadObservationAndCatchError,
+    uploadInProgress,
     uploads,
-    uploadInProgress
-  ] );
+    toggleLoginSheet,
+    uploadObservationAndCatchError] );
 
   const stopUploads = useCallback( ( ) => {
     dispatch( { type: "STOP_UPLOADS" } );
