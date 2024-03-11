@@ -273,8 +273,10 @@ const MyObservationsContainer = ( ): Node => {
   }, [isOnline, t] );
 
   const toggleLoginSheet = useCallback( ( ) => {
-    setShowLoginSheet( true );
-  }, [] );
+    if ( !currentUser ) {
+      setShowLoginSheet( true );
+    }
+  }, [currentUser] );
 
   const uploadObservationAndCatchError = useCallback( async observation => {
     try {
