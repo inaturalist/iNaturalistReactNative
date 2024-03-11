@@ -1822,3 +1822,5 @@ OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
+
+Connection-problem-please-try-again-later = Connection problem. Please try again later.

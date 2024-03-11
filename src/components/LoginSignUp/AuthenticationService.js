@@ -159,7 +159,13 @@ const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> =>
 
     const accessToken = await RNSInfo.getItem( "accessToken", {} );
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
-    const response = await api.get( "/users/api_token.json" );
+    let response;
+    try {
+      response = await api.get( "/users/api_token.json" );
+    } catch ( getUsersApiTokenError ) {
+      logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
+      throw getUsersApiTokenError;
+    }
 
     // TODO: this means that if the server doesn't respond with a successful
     // token *for any reason* it just deletes the entire local database. That

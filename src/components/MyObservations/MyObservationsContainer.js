@@ -291,6 +291,12 @@ const MyObservationsContainer = ( ): Node => {
           }
           return error.message;
         } ).join( ", " );
+      } else if ( uploadError.message.match( /Network request failed/ ) ) {
+        message = "Connection problem. Please try again later.";
+        logger.error(
+          "[MyObservationsContainer.js] upload failed due to network problem: ",
+          uploadError
+        );
       } else {
         logger.error( "[MyObservationsContainer.js] upload failed: ", uploadError );
         throw uploadError;
