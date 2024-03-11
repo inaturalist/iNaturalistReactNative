@@ -32,6 +32,7 @@
 		B197D1A2DFD9440C9581D513 /* Whitney-Book-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 62CACBCC44D64A7EB95AACF1 /* Whitney-Book-Pro.otf */; };
 		42832120F7C944B980FD13BC /* Whitney-MediumItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */; };
 		B4518F59A698433CA0271ED5 /* Whitney-Semibold-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */; };
+		280FAE242B484613ABA3200C /* Whitney Medium Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CBAAB44CD6EE4BF88D9A69C6 /* Whitney Medium Italic.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 		62CACBCC44D64A7EB95AACF1 /* Whitney-Book-Pro.otf */ = {isa = PBXFileReference; name = "Whitney-Book-Pro.otf"; path = "../assets/fonts/Whitney-Book-Pro.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */ = {isa = PBXFileReference; name = "Whitney-MediumItalic-Pro.otf"; path = "../assets/fonts/Whitney-MediumItalic-Pro.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */ = {isa = PBXFileReference; name = "Whitney-Semibold-Pro.otf"; path = "../assets/fonts/Whitney-Semibold-Pro.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CBAAB44CD6EE4BF88D9A69C6 /* Whitney Medium Italic.otf */ = {isa = PBXFileReference; name = "Whitney Medium Italic.otf"; path = "../assets/fonts/Whitney Medium Italic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +255,7 @@
 				62CACBCC44D64A7EB95AACF1 /* Whitney-Book-Pro.otf */,
 				097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */,
 				B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */,
+				CBAAB44CD6EE4BF88D9A69C6 /* Whitney Medium Italic.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				B197D1A2DFD9440C9581D513 /* Whitney-Book-Pro.otf in Resources */,
 				42832120F7C944B980FD13BC /* Whitney-MediumItalic-Pro.otf in Resources */,
 				B4518F59A698433CA0271ED5 /* Whitney-Semibold-Pro.otf in Resources */,
+				280FAE242B484613ABA3200C /* Whitney Medium Italic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,13 +1,12 @@
 // @flow
 import classNames from "classnames";
 import {
-  Body1, Body3, Body4,
-  INatTextMedium
+  Body1, Body3, Body4
 } from "components/SharedComponents";
+import ScientificName from "components/SharedComponents/ScientificName";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -85,33 +84,6 @@ const DisplayTaxonName = ( {
       ? " "
       : "" );
 
-    const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
-      const isItalics = piece !== rankPiece && (
-        rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
-      );
-      const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal )
-        ? " "
-        : "";
-      const text = piece + spaceChar;
-      return (
-        isItalics
-          ? (
-            <INatTextMedium
-              // eslint-disable-next-line react/no-array-index-key
-              key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
-              className={classNames( "italic font-light", textClass( ) )}
-            >
-              {text}
-            </INatTextMedium>
-          )
-          : text
-      );
-    } );
-
-    if ( rank && rankLevel > 10 ) {
-      scientificNameComponent.unshift( `${rank} ` );
-    }
-
     let TopTextComponent = TopTextComponentProp;
     if ( !TopTextComponent ) {
       TopTextComponent = !small
@@ -149,7 +121,20 @@ const DisplayTaxonName = ( {
         >
           {
             ( scientificNameFirst || !commonName )
-              ? scientificNameComponent
+              ? (
+                <ScientificName
+                  scientificNamePieces={scientificNamePieces}
+                  rankPiece={rankPiece}
+                  rankLevel={rankLevel}
+                  rank={rank}
+                  fontComponent={TopTextComponent}
+                  isHorizontal={isHorizontal}
+                  textClass={textClass}
+                  taxonId={taxon.id}
+                  keyBase={keyBase}
+                  isTitle
+                />
+              )
               : `${commonName}${
                 getSpaceChar( !scientificNameFirst )
               }`
@@ -161,7 +146,19 @@ const DisplayTaxonName = ( {
             <BottomTextComponent className={textClass( )}>
               {scientificNameFirst
                 ? commonName
-                : scientificNameComponent}
+                : (
+                  <ScientificName
+                    scientificNamePieces={scientificNamePieces}
+                    rankPiece={rankPiece}
+                    rankLevel={rankLevel}
+                    rank={rank}
+                    fontComponent={BottomTextComponent}
+                    isHorizontal={isHorizontal}
+                    textClass={textClass}
+                    taxonId={taxon.id}
+                    keyBase={keyBase}
+                  />
+                )}
             </BottomTextComponent>
           )
         }
