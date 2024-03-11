@@ -1805,7 +1805,7 @@ RESET-RECORDING = RESET RECORDING
 Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
 
 Press-record-to-start = Press record to start
-Recoding-sound = Recoding sound
+Recording-sound = Recording sound
 Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play the current recording.
 
 # Settings screen

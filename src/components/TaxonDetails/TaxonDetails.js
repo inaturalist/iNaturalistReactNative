@@ -228,6 +228,8 @@ const TaxonDetails = ( ): Node => {
               // here is to ensure the visible icon is flush with the edge of
               // the container
               className="ml-5 bg-inatGreen rounded-full"
+              mode="contained"
+              preventTransparency
             />
           </View>
         </View>

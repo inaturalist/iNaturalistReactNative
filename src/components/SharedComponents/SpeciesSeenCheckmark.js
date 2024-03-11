@@ -47,22 +47,27 @@ const SpeciesSeenCheckmark = ( {
     }
   );
 
-  if ( data?.total_results > 0 ) {
-    return (
-      <View
-        className="bg-white rounded-full"
-        style={getShadow( theme.colors.primary )}
-        testID="SpeciesSeenCheckmark"
-      >
+  if ( !data?.total_results ) return null;
+  if ( data.total_results === 0 ) return null;
+
+  // Styling the outer element to be the white background wasn't looking right
+  // in android, so instead we insert smaller white circle behind the icon
+  return (
+    <View
+      className="rounded-full"
+      style={getShadow( theme.colors.primary )}
+      testID="SpeciesSeenCheckmark"
+    >
+      <View className="w-[18px] h-[18px] top-[1px] bg-white absolute rounded-full" />
+      <View className="-mt-[0.5px]">
         <INatIcon
           name="checkmark-circle"
           size={20}
           color={theme.colors.secondary}
         />
       </View>
-    );
-  }
-  return null;
+    </View>
+  );
 };
 
 export default SpeciesSeenCheckmark;

@@ -110,7 +110,7 @@ const DisplayTaxonName = ( {
     return (
       <View
         testID="display-taxon-name"
-        className={classNames( "flex", null, {
+        className={classNames( "flex", {
           "flex-row items-end flex-wrap w-11/12": isHorizontal
         } )}
       >

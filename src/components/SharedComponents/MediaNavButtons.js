@@ -28,6 +28,15 @@ const CHECKMARK_CLASSES = [
   "items-center"
 ];
 
+const CLOSE_CLASSES = [
+  "bg-mediumGrayGhost",
+  "rounded-full",
+  `h-[${BUTTON_DIM}px]`,
+  `w-[${BUTTON_DIM}px]`,
+  "justify-center",
+  "items-center"
+];
+
 type Props = {
   captureButton: Function,
   closeHidden?: boolean,
@@ -54,10 +63,15 @@ const MediaNavButtons = ( {
     {closeHidden
       ? <View className="w-1/3" />
       : (
-        <CloseButton
-          handleClose={onClose}
-          buttonClassName="w-1/3"
-        />
+        <Animated.View
+          style={!isTablet && rotatableAnimatedStyle}
+          className={classnames( CLOSE_CLASSES, SIDE_BUTTON_CLASSES )}
+        >
+          <CloseButton
+            handleClose={onClose}
+            buttonClassName={classnames( CLOSE_CLASSES, "bg-[#232323]" )}
+          />
+        </Animated.View>
       )}
     {captureButton}
     {mediaCaptured && !confirmHidden

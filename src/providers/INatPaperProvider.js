@@ -14,6 +14,7 @@ const theme = {
   version: 3,
   colors: {
     ...DefaultTheme.colors,
+    ...colors,
     primary: colors.darkGray,
     onPrimary: colors.white,
     secondary: colors.inatGreen, // TODO: change to accessibleGreen for accessibility

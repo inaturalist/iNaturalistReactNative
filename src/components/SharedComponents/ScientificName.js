@@ -1,9 +1,10 @@
 // @flow
 import classNames from "classnames";
-import INatTextMedium from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import Taxon from "realmModels/Taxon";
+
+import INatTextMedium from "./Typography/INatTextMedium";
 
 type Props = {
     scientificNamePieces: Object,
@@ -46,7 +47,10 @@ const ScientificName = ( {
       );
     }
     return (
-      <FontComponent>
+      <FontComponent
+        // eslint-disable-next-line react/no-array-index-key
+        key={`DisplayTaxonName-${keyBase}-${taxonId}-${index}`}
+      >
         {text}
       </FontComponent>
     );
