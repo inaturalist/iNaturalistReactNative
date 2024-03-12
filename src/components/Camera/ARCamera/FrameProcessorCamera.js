@@ -34,6 +34,7 @@ type Props = {
   takingPhoto: boolean
 };
 
+const DEFAULT_FPS = 1;
 const DEFAULT_CONFIDENCE_THRESHOLD = 0.5;
 const DEFAULT_NUM_STORED_RESULTS = 4;
 const DEFAULT_CROP_RATIO = 1.0;
@@ -43,7 +44,7 @@ const FrameProcessorCamera = ( {
   cameraRef,
   confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
   device,
-  fps,
+  fps = DEFAULT_FPS,
   numStoredResults = DEFAULT_NUM_STORED_RESULTS,
   cropRatio = DEFAULT_CROP_RATIO,
   onCameraError,
@@ -129,7 +130,6 @@ const FrameProcessorCamera = ( {
     <CameraView
       cameraRef={cameraRef}
       device={device}
-      fps={fps}
       onClassifierError={onClassifierError}
       onDeviceNotSupported={onDeviceNotSupported}
       onCaptureError={onCaptureError}
