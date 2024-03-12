@@ -31,7 +31,7 @@ const mapParamsToAPI = ( params, currentUser ) => {
   const DESC = "desc";
   const ASC = "asc";
 
-  // Remove any params that is falsy
+  // Remove all params that are falsy
   const filteredParams = Object.entries( params ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
