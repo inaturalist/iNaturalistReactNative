@@ -42,7 +42,7 @@ const HeaderCount = ( {
 
   return (
     <View className="h-[40px] flex-row items-center justify-center">
-      {( loadingStatus && !count ) && <ActivityIndicator size={25} />}
+      {( loadingStatus && count === null ) && <ActivityIndicator size={25} />}
       {count !== null && (
         <>
           <INatIcon
