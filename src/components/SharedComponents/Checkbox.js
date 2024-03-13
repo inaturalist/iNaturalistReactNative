@@ -53,6 +53,7 @@ const Checkbox = ( {
       iconComponent={renderIcon}
       onPress={onPress}
       isChecked={isChecked}
+      disableBuiltInState
       textComponent={renderCheckboxText}
       iconStyle={iconStyle}
       innerIconStyle={innerIconStyle}

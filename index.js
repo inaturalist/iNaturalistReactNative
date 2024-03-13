@@ -34,6 +34,27 @@ enableLatestRenderer( );
 
 const logger = log.extend( "index.js" );
 
+// Log all unhandled promise rejections in release builds. Otherwise they will
+// die in silence. Debug builds have a more useful UI w/ desymbolicated stack
+// traces
+/* eslint-disable no-undef */
+if (
+  !__DEV__
+  && typeof (
+    // $FlowIgnore
+    HermesInternal?.enablePromiseRejectionTracker === "function"
+  )
+) {
+  // $FlowIgnore
+  HermesInternal.enablePromiseRejectionTracker( {
+    allRejections: true,
+    onUnhandled: ( id, error ) => {
+      logger.error( "Unhandled promise rejection: ", error );
+    }
+  } );
+}
+/* eslint-enable no-undef */
+
 // I'm not convinced this ever catches anything... ~~~kueda 20240110
 const jsErrorHandler = ( e, isFatal ) => {
   logger.info( "[DEBUG index.js] jsErrorHandler called with error: ", e );

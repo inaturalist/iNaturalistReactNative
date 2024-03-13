@@ -28,25 +28,27 @@ exports[`PhotoCount renders correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 14,
-            "lineHeight": 18,
-          },
-          {
-            "fontWeight": "400",
-          },
-          {
-            "color": "#454545",
-          },
-          {
-            "paddingHorizontal": 12.5,
-            "position": "absolute",
-            "top": 22,
-            "zIndex": 10,
-          },
+          [
+            {
+              "fontSize": 14,
+              "lineHeight": 18,
+            },
+            {
+              "fontWeight": "400",
+            },
+            {
+              "color": "#454545",
+            },
+            {
+              "paddingHorizontal": 12.5,
+              "position": "absolute",
+              "top": 22,
+              "zIndex": 10,
+            },
+          ],
         ],
       ]
     }

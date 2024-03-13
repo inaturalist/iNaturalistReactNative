@@ -1,4 +1,5 @@
 // @flow
+import classnames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import {
   Pressable, View
@@ -63,8 +64,30 @@ const NotificationsIcon = ( {
           size={size}
 
         />
-        <View className="bg-warningRed h-[10px] w-[10px] rounded-full absolute top-1 right-2.5" />
-
+        <View
+          className={classnames(
+            "absolute",
+            "bg-white",
+            "h-[15px]",
+            "right-1.5",
+            "rounded-full",
+            "top-1",
+            "w-[15px]",
+            "justify-center",
+            "items-center"
+          )}
+        >
+          <View
+            className={classnames(
+              active
+                ? "bg-warningRed"
+                : "bg-inatGreen",
+              "h-[9px]",
+              "rounded-full",
+              "w-[9px]"
+            )}
+          />
+        </View>
       </Pressable>
     );
   }

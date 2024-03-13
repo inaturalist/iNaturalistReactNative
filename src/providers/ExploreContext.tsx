@@ -421,6 +421,7 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.SET_WILD_STATUS:
       return {
         ...state,
+        casual: action.wildStatus === WILD_STATUS.CAPTIVE ? true : state.casual,
         wildStatus: action.wildStatus
       };
     case EXPLORE_ACTION.SET_PHOTO_LICENSE:
