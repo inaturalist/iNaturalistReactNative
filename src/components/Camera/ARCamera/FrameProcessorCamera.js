@@ -2,7 +2,8 @@
 import CameraView from "components/Camera/CameraView";
 import type { Node } from "react";
 import React, {
-  useEffect
+  useEffect,
+  useState
 } from "react";
 import { Platform } from "react-native";
 import {
@@ -58,6 +59,7 @@ const FrameProcessorCamera = ( {
   takingPhoto
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
+  const [lastTimestamp, setLastTimestamp] = useState( Date.now() );
 
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
@@ -84,6 +86,7 @@ const FrameProcessorCamera = ( {
       predictions = Object.keys( predictions ).map( key => predictions[key] );
     }
     const handledResult = { ...result, predictions };
+    setLastTimestamp( Date.now() );
     onTaxaDetected( handledResult );
   } );
 
@@ -100,10 +103,17 @@ const FrameProcessorCamera = ( {
         return;
       }
 
+      const timestamp = Date.now();
+      const timeSinceLastFrame = timestamp - lastTimestamp;
+      if ( timeSinceLastFrame < 1000 / fps ) {
+        return;
+      }
+
       runAsync( frame, () => {
         "worklet";
 
-        // Reminder: this is a worklet, running on the UI thread.
+        // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
+        // react-native-worklets-core documentation for what is supported in those worklets.
         try {
           const result = InatVision.inatVision( frame, {
             version: modelVersion,
@@ -127,7 +137,9 @@ const FrameProcessorCamera = ( {
       takingPhoto,
       patchedOrientationAndroid,
       numStoredResults,
-      cropRatio
+      cropRatio,
+      lastTimestamp,
+      fps
     ]
   );
 
