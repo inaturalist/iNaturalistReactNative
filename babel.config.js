@@ -22,7 +22,7 @@ module.exports = {
         tests: "./tests"
       }
     }],
-    // Reanimated 2 plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
+    // Reanimated plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
     [
       "react-native-reanimated/plugin",
       {
