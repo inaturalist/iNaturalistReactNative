@@ -65,14 +65,20 @@
 		<string>Whitney-Medium-Pro.otf</string>
 		<string>Whitney-BookItalic-Pro.otf</string>
 		<string>inaturalisticons.ttf</string>
-		<string>Whitney Semibold Regular.otf</string>
-		<string>Whitney Semibold Italic.otf</string>
-		<string>Whitney Book Regular.otf</string>
 		<string>INatIcon.ttf</string>
 		<string>Whitney-Book-Pro.otf</string>
 		<string>Whitney-MediumItalic-Pro.otf</string>
 		<string>Whitney-Semibold-Pro.otf</string>
-		<string>Whitney Medium Italic.otf</string>
+		<string>Whitney-Book-Italic.otf</string>
+		<string>Whitney-Book.otf</string>
+		<string>Whitney-Light-Italic.otf</string>
+		<string>Whitney-Light.otf</string>
+		<string>Whitney-LightItalic-Pro.otf</string>
+		<string>Whitney-Medium-Italic.otf</string>
+		<string>Whitney-Medium.otf</string>
+		<string>Whitney-Semibold-Italic.otf</string>
+		<string>Whitney-Semibold.otf</string>
+		<string>Whitney-SemiboldItalic-Pro.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
