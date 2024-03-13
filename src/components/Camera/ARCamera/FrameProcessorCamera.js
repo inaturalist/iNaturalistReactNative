@@ -40,6 +40,8 @@ const DEFAULT_CONFIDENCE_THRESHOLD = 0.5;
 const DEFAULT_NUM_STORED_RESULTS = 4;
 const DEFAULT_CROP_RATIO = 1.0;
 
+let framesProcessingTime = [];
+
 const FrameProcessorCamera = ( {
   animatedProps,
   cameraRef,
@@ -76,7 +78,7 @@ const FrameProcessorCamera = ( {
     };
   }, [onLog] );
 
-  const handleResults = Worklets.createRunInJsFn( result => {
+  const handleResults = Worklets.createRunInJsFn( ( result, timeTaken ) => {
     // I am don't know if it is a temporary thing but as of vision-camera@3.9.1
     // and react-native-woklets-core@0.3.0 the Array in the worklet does not have all
     // the methods of a normal array, so we need to convert it to a normal array here
@@ -86,7 +88,14 @@ const FrameProcessorCamera = ( {
       predictions = Object.keys( predictions ).map( key => predictions[key] );
     }
     const handledResult = { ...result, predictions };
+    // TODO: using current time here now, for some reason result.timestamp is not working
     setLastTimestamp( Date.now() );
+    framesProcessingTime.push( timeTaken );
+    if ( framesProcessingTime.length === 10 ) {
+      const avgTime = framesProcessingTime.reduce( ( a, b ) => a + b, 0 ) / 10;
+      onLog( { log: `Average frame processing time over 10 frames: ${avgTime}ms` } );
+      framesProcessingTime = [];
+    }
     onTaxaDetected( handledResult );
   } );
 
@@ -102,10 +111,9 @@ const FrameProcessorCamera = ( {
       if ( takingPhoto ) {
         return;
       }
-
       const timestamp = Date.now();
       const timeSinceLastFrame = timestamp - lastTimestamp;
-      if ( timeSinceLastFrame < 1000 / fps ) {
+      if ( timeSinceLastFrame < ( 1000 / fps ) ) {
         return;
       }
 
@@ -114,6 +122,7 @@ const FrameProcessorCamera = ( {
 
         // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
         // react-native-worklets-core documentation for what is supported in those worklets.
+        const timeBefore = Date.now();
         try {
           const result = InatVision.inatVision( frame, {
             version: modelVersion,
@@ -124,7 +133,9 @@ const FrameProcessorCamera = ( {
             cropRatio,
             patchedOrientationAndroid
           } );
-          handleResults( result );
+          const timeAfter = Date.now();
+          const timeTaken = timeAfter - timeBefore;
+          handleResults( result, timeTaken );
         } catch ( classifierError ) {
           console.log( `Error: ${classifierError.message}` );
           handleError( classifierError );
