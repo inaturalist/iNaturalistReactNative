@@ -75,8 +75,18 @@ const FrameProcessorCamera = ( {
   }, [onLog] );
 
   const handleResults = Worklets.createRunInJsFn( result => {
-    onTaxaDetected( result );
+    // I am don't know if it is a temporary thing but as of vision-camera@3.9.1
+    // and react-native-woklets-core@0.3.0 the Array in the worklet does not have all
+    // the methods of a normal array, so we need to convert it to a normal array here
+    // getPredictionsForImage is fine
+    let { predictions } = result;
+    if ( !Array.isArray( predictions ) ) {
+      predictions = Object.keys( predictions ).map( key => predictions[key] );
+    }
+    const handledResult = { ...result, predictions };
+    onTaxaDetected( handledResult );
   } );
+
   const handleError = Worklets.createRunInJsFn( error => {
     onClassifierError( error );
   } );
