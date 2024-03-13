@@ -112,7 +112,7 @@ const ToolbarContainer = ( {
     if ( uploadInProgress ) {
       const translationParams = {
         total: numToUpload,
-        currentUploadCount: numFinishedUploads + 1
+        currentUploadCount: Math.min( numFinishedUploads + 1, numToUpload )
       };
       // iPhone 4 pixel width
       if ( screenWidth <= 640 ) {
@@ -122,13 +122,15 @@ const ToolbarContainer = ( {
       return t( "Uploading-x-of-y-observations", translationParams );
     }
 
-    if ( uploadsComplete ) {
-      return t( "X-observations-uploaded", { count: numToUpload } );
+    if ( numUnuploadedObs && numUnuploadedObs !== 0 ) {
+      return t( "Upload-x-observations", { count: numUnuploadedObs } );
     }
 
-    return numUnuploadedObs !== 0
-      ? t( "Upload-x-observations", { count: numUnuploadedObs } )
-      : "";
+    if ( uploadsComplete ) {
+      return t( "X-observations-uploaded", { count: numFinishedUploads } );
+    }
+
+    return "";
   }, [
     currentDeleteCount,
     deletionsComplete,

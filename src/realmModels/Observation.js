@@ -1,6 +1,7 @@
 import { Realm } from "@realm/react";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
+import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -12,6 +13,8 @@ import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
+
+const logger = log.extend( "Observation" );
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
@@ -120,16 +123,22 @@ class Observation extends Realm.Object {
     return observation;
   }
 
-  static upsertRemoteObservations( observations, realm ) {
-    if ( observations && observations.length > 0 ) {
-      const obsToUpsert = observations.filter(
+  static upsertRemoteObservations( remoteObservations, realm ) {
+    if ( remoteObservations && remoteObservations.length > 0 ) {
+      const obsToUpsert = remoteObservations.filter(
         obs => !Observation.isUnsyncedObservation( realm, obs )
       );
+      const msg = obsToUpsert.map( remoteObservation => {
+        const obsPhotoUUIDs = remoteObservation.observation_photos?.map( op => op.uuid );
+        return `obs ${remoteObservation.uuid}, ops: ${obsPhotoUUIDs}`;
+      } );
+      // Trying to debug disappearing photos
+      logger.info( "upsertRemoteObservations, upserting: ", msg );
       safeRealmWrite( realm, ( ) => {
-        obsToUpsert.forEach( obs => {
+        obsToUpsert.forEach( remoteObservation => {
           realm.create(
             "Observation",
-            Observation.mapApiToRealm( obs, realm ),
+            Observation.mapApiToRealm( remoteObservation, realm ),
             "modified"
           );
         } );

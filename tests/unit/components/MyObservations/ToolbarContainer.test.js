@@ -26,6 +26,7 @@ const deletionState = {
 
 const uploadState = {
   uploads: [{}],
+  numUnuploadedObs: 1,
   numToUpload: 1,
   numFinishedUploads: 0,
   uploadInProgress: false,
@@ -62,17 +63,18 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays a completed upload", async () => {
+    const numFinishedUploads = 1;
     renderComponent( <ToolbarContainer
       progress={1}
       uploadState={{
         ...uploadState,
         uploadsComplete: true,
-        numToUpload: 1
+        numFinishedUploads
       }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "X-observations-uploaded", {
-      count: 1
+      count: numFinishedUploads
     } ) );
     expect( statusText ).toBeVisible( );
   } );
@@ -84,6 +86,7 @@ describe( "Toolbar", () => {
         ...uploadState,
         error
       }}
+      numUnuploadedObs={1}
     /> );
     expect( screen.getByText( error ) ).toBeVisible( );
   } );
@@ -127,7 +130,7 @@ describe( "Toolbar", () => {
         ...uploadState,
         uploads: [{}, {}, {}, {}, {}, {}, {}],
         uploadsComplete: true,
-        numToUpload: 7
+        numFinishedUploads: 7
       }}
     /> );
 
