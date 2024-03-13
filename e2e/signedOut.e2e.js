@@ -20,17 +20,12 @@ describe( "Signed out user", () => {
 
   it( "should add an observation without evidence", async () => {
     const addObsButton = element( by.id( "add-obs-button" ) );
-    await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
-    await addObsButton.tap();
-    await expect( element( by.id( "evidence-text" ) ) ).toBeVisible();
-    const obsWithoutEvidenceButton = element(
-      by.id( "observe-without-evidence-button" )
-    );
-    await expect( obsWithoutEvidenceButton ).toBeVisible();
-    await obsWithoutEvidenceButton.tap();
-
-    await waitFor( element( by.id( "new-observation-text" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
+    await waitFor( addObsButton ).toBeVisible( ).withTimeout( 10000 );
+    await addObsButton.tap( );
+    await expect( element( by.id( "evidence-text" ) ) ).toBeVisible( );
+    const obsWithoutEvidenceButton = element( by.id( "observe-without-evidence-button" ) );
+    await expect( obsWithoutEvidenceButton ).toBeVisible( );
+    await obsWithoutEvidenceButton.tap( );
+    await waitFor( element( by.id( "new-observation-text" ) ) ).toBeVisible( ).withTimeout( 10000 );
   } );
 } );
