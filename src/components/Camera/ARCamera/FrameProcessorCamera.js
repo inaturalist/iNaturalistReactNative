@@ -7,12 +7,14 @@ import React, {
 } from "react";
 import { Platform } from "react-native";
 import {
-  runAsync,
   useFrameProcessor
 } from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
 import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
-import { orientationPatchFrameProcessor } from "sharedHelpers/visionCameraPatches";
+import {
+  orientationPatchFrameProcessor,
+  usePatchedRunAsync
+} from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
@@ -104,6 +106,7 @@ const FrameProcessorCamera = ( {
   } );
 
   const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
+  const patchedRunAsync = usePatchedRunAsync( );
   const frameProcessor = useFrameProcessor(
     frame => {
       "worklet";
@@ -117,7 +120,7 @@ const FrameProcessorCamera = ( {
         return;
       }
 
-      runAsync( frame, () => {
+      patchedRunAsync( frame, () => {
         "worklet";
 
         // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
@@ -143,6 +146,7 @@ const FrameProcessorCamera = ( {
       } );
     },
     [
+      patchedRunAsync,
       modelVersion,
       confidenceThreshold,
       takingPhoto,
