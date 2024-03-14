@@ -15,7 +15,6 @@ import {
 } from "navigation/navigationOptions";
 import DeveloperStackNavigator from "navigation/StackNavigators/DeveloperStackNavigator";
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
-import ProjectsStackNavigator from "navigation/StackNavigators/ProjectsStackNavigator";
 import React from "react";
 
 import CustomTabBarContainer from "./CustomTabBarContainer";
@@ -93,11 +92,6 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen name="help" component={PlaceholderComponent} />
         <Tab.Screen name="Blog" component={PlaceholderComponent} />
-        <Tab.Screen
-          name="ProjectsStackNavigator"
-          component={ProjectsStackNavigator}
-          options={hideHeader}
-        />
         <Tab.Screen
           name="DeveloperStackNavigator"
           component={DeveloperStackNavigator}
