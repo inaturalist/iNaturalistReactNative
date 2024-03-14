@@ -17,7 +17,6 @@ import DeveloperStackNavigator from "navigation/StackNavigators/DeveloperStackNa
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import ProjectsStackNavigator from "navigation/StackNavigators/ProjectsStackNavigator";
 import React from "react";
-import { useIsConnected } from "sharedHooks";
 
 import CustomTabBarContainer from "./CustomTabBarContainer";
 
@@ -28,8 +27,7 @@ const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
 /* eslint-disable react/jsx-props-no-spreading */
 
 const BottomTabs = ( ) => {
-  const isOnline = useIsConnected( );
-  const renderTabBar = props => <CustomTabBarContainer {...props} isOnline={isOnline} />;
+  const renderTabBar = props => <CustomTabBarContainer {...props} />;
 
   const aboutTitle = () => <Heading4>{t( "ABOUT-INATURALIST" )}</Heading4>;
   const donateTitle = () => <Heading4>{t( "DONATE" )}</Heading4>;
