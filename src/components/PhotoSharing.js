@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Alert, Platform } from "react-native";
 import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
@@ -19,6 +19,23 @@ const PhotoSharing = ( ): Node => {
   const resetStore = useStore( state => state.resetStore );
   const setObservations = useStore( state => state.setObservations );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
+  const [navigationHandled, setNavigationHandled] = useState( null );
+
+  const createObservationAndNavToObsEdit = useCallback( async photoUris => {
+    try {
+      const newObservation = await Observation.createObservationWithPhotos( photoUris );
+      setObservations( [newObservation] );
+      navigation.navigate( "ObsEdit" );
+    } catch ( e ) {
+      Alert.alert(
+        "Photo sharing failed: couldn't create new observation:",
+        e
+      );
+    }
+  }, [
+    navigation,
+    setObservations
+  ] );
 
   useEffect( ( ) => {
     const { mimeType, data } = item;
@@ -31,20 +48,6 @@ const PhotoSharing = ( ): Node => {
     // Move to ObsEdit screen (new observation, with shared photos).
     logger.info( "calling resetStore" );
     resetStore( );
-
-    const createObservation = async photoUris => {
-      try {
-        const newObservation = await Observation.createObservationWithPhotos( photoUris );
-        setObservations( [newObservation] );
-        navigation.navigate( "ObsEdit" );
-      } catch ( e ) {
-        Alert
-          .alert(
-            "Photo sharing failed: couldn't create new observation:",
-            e
-          );
-      }
-    };
 
     // Create a new observation with multiple shared photos (one or more)
     let photoUris:any[];
@@ -71,7 +74,7 @@ const PhotoSharing = ( ): Node => {
     if ( photoUris.length === 1 ) {
       // Only one photo - go to ObsEdit directly
       logger.info( "creating observation in useShare with photoUris: ", photoUris );
-      createObservation( photoUris );
+      createObservationAndNavToObsEdit( photoUris );
     } else {
       // Go to GroupPhotos screen
       setPhotoImporterState( {
@@ -82,7 +85,33 @@ const PhotoSharing = ( ): Node => {
       } );
       navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
     }
-  }, [item, navigation, resetStore, setObservations, setPhotoImporterState] );
+  }, [
+    createObservationAndNavToObsEdit,
+    item,
+    navigation,
+    resetStore,
+    setObservations,
+    setPhotoImporterState
+  ] );
+
+  // When the user leaves this screen, we record the fact that navigation was handled...
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      setNavigationHandled( true );
+    } );
+    return unsubscribe;
+  }, [navigation] );
+  // ...and if they focus on this screen again, that means they backed out of
+  // obs edit and need to back to the previous screen in the nav
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
+      if ( navigationHandled ) navigation.goBack( );
+    } );
+    return unsubscribe;
+  }, [
+    navigation,
+    navigationHandled
+  ] );
 
   return (
     <ViewWrapper testID="PhotoSharing">
