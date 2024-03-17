@@ -5,7 +5,6 @@ import inatjs from "inaturalistjs";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
-import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const observations = [factory( "LocalObservation", {
@@ -13,6 +12,8 @@ const observations = [factory( "LocalObservation", {
 } )];
 
 const currentObservation = observations[0];
+
+const mockUpdateObservations = jest.fn( );
 
 afterEach( ( ) => {
   jest.clearAllMocks( );
@@ -22,9 +23,11 @@ const mockNavigate = jest.fn( );
 
 const renderDeleteSheet = ( ) => renderComponent(
   <DeleteObservationSheet
+    handleClose={jest.fn( )}
     navToObsList={mockNavigate}
     currentObservation={currentObservation}
     observations={observations}
+    updateObservations={mockUpdateObservations}
   />
 );
 
@@ -67,23 +70,44 @@ describe( "delete observation", ( ) => {
     } );
   } );
 
-  describe( "handles multiple observation deletion", ( ) => {
-    it( "navigates back to MyObservations when observations are not in realm", ( ) => {
-      const unsavedObservations = [{
-        uuid: faker.string.uuid( )
-      }, {
-        uuid: faker.string.uuid( )
-      }];
+  it( "navigates back when there's only one observation", ( ) => {
+    expect( observations.length ).toEqual( 1 );
+    renderDeleteSheet( );
+    const deleteButton = screen.queryByText( "DELETE" );
+    fireEvent.press( deleteButton );
+    expect( mockNavigate ).toBeCalled( );
+  } );
+
+  describe( "with multiple observations", ( ) => {
+    const unsavedObservations = [
+      factory( "LocalObservation" ),
+      factory( "LocalObservation" )
+    ];
+
+    function renderDeleteSheetWithMultiple( ) {
       renderComponent(
         <DeleteObservationSheet
+          handleClose={jest.fn( )}
           navToObsList={mockNavigate}
           currentObservation={unsavedObservations[0]}
           observations={unsavedObservations}
+          updateObservations={mockUpdateObservations}
         />
       );
-      const deleteButton = screen.queryByText( /DELETE ALL/ );
+    }
+
+    it( "does not navigate back when there's more than one observation", ( ) => {
+      renderDeleteSheetWithMultiple( );
+      const deleteButton = screen.queryByText( "DELETE" );
       fireEvent.press( deleteButton );
-      expect( mockNavigate ).toBeCalled( );
+      expect( mockNavigate ).not.toBeCalled( );
+    } );
+
+    it( "removes observation from state when there's more than one observation", ( ) => {
+      renderDeleteSheetWithMultiple( );
+      const deleteButton = screen.queryByText( "DELETE" );
+      fireEvent.press( deleteButton );
+      expect( mockUpdateObservations ).toBeCalledWith( [unsavedObservations[1]] );
     } );
   } );
 } );
