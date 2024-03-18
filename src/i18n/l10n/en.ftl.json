@@ -176,6 +176,7 @@
   "DELETE-COMMENT-QUESTION": "DELETE COMMENT?",
   "Delete-comment": "Delete comment",
   "DELETE-OBSERVATION": "DELETE OBSERVATION?",
+  "Delete-all-observations": "Delete all observations",
   "Delete-observation": "Delete observation",
   "Delete-observations": "Delete observations",
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION?\n *[other] { $count } OBSERVATIONS?\n}",

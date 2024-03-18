@@ -304,6 +304,8 @@ Delete-comment = Delete comment
 
 DELETE-OBSERVATION = DELETE OBSERVATION?
 
+Delete-all-observations = Delete all observations
+
 Delete-observation = Delete observation
 
 Delete-observations = Delete observations
