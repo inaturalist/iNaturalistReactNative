@@ -20,8 +20,6 @@ ADD-COMMENT = ADD COMMENT
 
 Add-Date-Time = Add Date/Time
 
-Add-evidence-of-an-organism = Add evidence of an organism. This helps others identify what you saw.
-
 Add-Location = Add Location
 
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
@@ -477,6 +475,8 @@ ID-Withdrawn = ID Withdrawn
 IDENTIFICATION = IDENTIFICATION
 
 IDENTIFICATIONS = IDENTIFICATIONS
+
+Identify-an-organism = Identify an organism
 
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 
@@ -1185,10 +1185,11 @@ Yes-delete-observation = Yes, delete observation
 
 Yes-delete-photo = Yes, delete photo
 
-You-can = You can:
-Take-a-photo-with-your-camera = Take a photo with your camera
-Upload-a-photo-from-your-gallery = Upload a photo from your gallery
-Record-a-sound = Record a sound
+Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real-time
+Take-photos-with-the-camera = Take photos of a single organism with the camera
+Upload-photos-from-your-gallery = Upload photos of multiple organisms from your gallery
+Record-sounds = Record sounds with your microphone
+Create-an-observation-evidence = Create an observation with no evidence
 
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
 
