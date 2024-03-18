@@ -2,6 +2,8 @@
 
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
+import classNames from "classnames";
+import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
   Body3,
   INatIcon,
@@ -41,7 +43,7 @@ const Header = ( {
   const { t } = useTranslation( );
   const taxonInput = useRef( );
   const theme = useTheme( );
-  const { state, dispatch } = useExplore( );
+  const { state, dispatch, numberOfFilters } = useExplore( );
   const taxonName = state.taxon_name;
   const placeName = state.place_guess || t( "Worldwide" );
   const [hideTaxonResults, setHideTaxonResults] = useState( true );
@@ -124,14 +126,26 @@ const Header = ( {
               <Body3 className="m-3">{placeName}</Body3>
             </Pressable>
           </View>
-          <INatIconButton
-            icon="sliders"
-            color={colors.white}
-            className="bg-darkGray rounded-md"
-            onPress={() => openFiltersModal()}
-            accessibilityLabel={t( "Filters" )}
-            accessibilityHint={t( "Navigates-to-explore" )}
-          />
+          <View>
+            <INatIconButton
+              icon="sliders"
+              color={colors.white}
+              className={classNames(
+                numberOfFilters !== 0
+                  ? "bg-inatGreen"
+                  : "bg-darkGray",
+                "rounded-md"
+              )}
+              onPress={() => openFiltersModal()}
+              accessibilityLabel={t( "Filters" )}
+              accessibilityHint={t( "Navigates-to-explore" )}
+            />
+            {numberOfFilters !== 0 && (
+              <View className="absolute top-[-10] right-[-10]">
+                <NumberBadge number={numberOfFilters} light />
+              </View>
+            )}
+          </View>
         </View>
         <HeaderCount
           count={count}
