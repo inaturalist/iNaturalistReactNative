@@ -494,6 +494,8 @@ INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 
 INATURALIST-FORUM = INATURALIST FORUM
 
+iNaturalist-Help = iNaturalist Help
+
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
@@ -992,6 +994,8 @@ TAXONOMY-header = TAXONOMY
 Taxonomy-Settings = Taxonomy Settings
 
 TEACHERS = TEACHERS
+
+Teachers-Guide = Teachers' Guide
 
 TEAM = TEAM
 
