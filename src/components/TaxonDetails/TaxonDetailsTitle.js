@@ -18,6 +18,7 @@ type Props = {
   optionalClasses?: any,
   taxon?: {
     rank: string,
+    rank_level: number,
     id: number
   }
 }
@@ -35,9 +36,11 @@ const TaxonDetailsTitle = ( {
           <Heading4 className={optionalClasses}>
             {t( `Ranks-${taxon.rank.toUpperCase( )}` )}
           </Heading4>
-          <View className="ml-3">
-            <SpeciesSeenCheckmark taxonId={taxon.id} />
-          </View>
+          {taxon.rank_level <= 10 && (
+            <View className="ml-3">
+              <SpeciesSeenCheckmark taxonId={taxon.id} />
+            </View>
+          )}
         </View>
       ) }
       <DisplayTaxonName
