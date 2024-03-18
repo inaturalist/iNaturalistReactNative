@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
+import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
   Body1,
   Body2,
@@ -53,18 +54,6 @@ const getShadow = shadowColor => getShadowStyle( {
   shadowRadius: 2,
   elevation: 6
 } );
-
-const NumberBadge = ( { number } ): Node => {
-  const theme = useTheme();
-  return (
-    <View
-      className="ml-3 w-5 h-5 justify-center items-center rounded-full bg-inatGreen"
-      style={getShadow( theme.colors.primary )}
-    >
-      <Body3 className="text-white">{number}</Body3>
-    </View>
-  );
-};
 
 type Props = {
   closeModal: Function,
@@ -639,7 +628,11 @@ const FilterModal = ( {
             accessibilityLabel={t( "Back" )}
           />
           <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
-          {numberOfFilters !== 0 && <NumberBadge number={numberOfFilters} />}
+          {numberOfFilters !== 0 && (
+            <View className="ml-3">
+              <NumberBadge number={numberOfFilters} />
+            </View>
+          )}
         </View>
         {filtersNotDefault
           ? (
