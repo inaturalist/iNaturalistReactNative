@@ -340,6 +340,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 
 DONATE = DONATE
 
+Donate-to-iNaturalist = Donate to iNaturalist
+
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 
 # Label for a button the user taps when a task is complete
@@ -932,6 +934,8 @@ SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Share Location
 
 Share-location = Share Location
+
+Shop-iNaturalist-Merch = Shop iNaturalist Merch
 
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 
