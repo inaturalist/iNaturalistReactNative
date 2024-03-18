@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import {
   Body2, Button, Heading4, ScrollViewWrapper
 } from "components/SharedComponents";
@@ -7,28 +8,28 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Alert, Linking } from "react-native";
 import * as StoreReview from "react-native-store-review";
 
 const Donate = (): Node => {
+  const navigation = useNavigation( );
   const onDonatePress = async ( ) => {
     const url = "https://inaturalist.org/donate";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Donate-to-iNaturalist" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const onShopPress = async ( ) => {
     const url = "https://inaturalist.threadless.com";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Shop-iNaturalist-Merch" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const onReviewPress = ( ) => {
