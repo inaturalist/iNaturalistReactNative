@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import {
   Body2,
   Button,
@@ -13,14 +14,15 @@ import React from "react";
 import { Alert, Linking } from "react-native";
 
 const Help = (): Node => {
+  const navigation = useNavigation();
   const onHelpPressed = async () => {
     const url = "https://help.inaturalist.org/";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "iNaturalist-Help" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const onContactPressed = async () => {
@@ -47,12 +49,12 @@ const Help = (): Node => {
 
   const onTeacherPressed = async () => {
     const url = "https://www.inaturalist.org/pages/teacher's+guide";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Teachers-Guide" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const onForumPressed = async () => {
