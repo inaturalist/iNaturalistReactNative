@@ -21,7 +21,8 @@ const Help = (): Node => {
       title: t( "iNaturalist-Help" ),
       initialUrl: url,
       loggedIn: false,
-      openLinksInBrowser: true
+      openLinksInBrowser: false,
+      skipSetSourceInShouldStartLoadWithRequest: true
     } );
   };
 
