@@ -340,6 +340,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 
 DONATE = DONATE
 
+Donate-to-iNaturalist = Donate to iNaturalist
+
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 
 # Label for a button the user taps when a task is complete
@@ -491,6 +493,8 @@ iNaturalist-Applications = iNaturalist Applications
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 
 INATURALIST-FORUM = INATURALIST FORUM
+
+iNaturalist-Help = iNaturalist Help
 
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 
@@ -933,6 +937,8 @@ Share-location = Share Location
 
 Share-location = Share Location
 
+Shop-iNaturalist-Merch = Shop iNaturalist Merch
+
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 
 Sign-out = Sign out
@@ -988,6 +994,8 @@ TAXONOMY-header = TAXONOMY
 Taxonomy-Settings = Taxonomy Settings
 
 TEACHERS = TEACHERS
+
+Teachers-Guide = Teachers' Guide
 
 TEAM = TEAM
 
