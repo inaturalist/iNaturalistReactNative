@@ -74,7 +74,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     <>
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-row justify-center">
-        <View className="bg-white rounded-xl p-5 mb-12 max-w-sm">
+        <View className="bg-white rounded-xl p-6 mb-12 mx-7 max-w-sm">
           <Heading2 testID="identify-text">
             {t( "Identify-an-organism" )}
           </Heading2>
