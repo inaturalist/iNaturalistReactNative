@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { INatIconButton } from "components/SharedComponents";
+import { Heading2, INatIconButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
@@ -71,7 +71,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-row justify-center">
         <View className="bg-white rounded-xl p-5 mb-12 max-w-sm">
-          <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
+          <Heading2 testID="identify-text">{t( "Identify-an-organism" )}</Heading2>
           <Text className="color-darkGray my-2">{t( "Add-evidence-of-an-organism" )}</Text>
           <Text className="color-darkGray my-2">{t( "You-can" )}</Text>
           {bulletedText.map( string => (

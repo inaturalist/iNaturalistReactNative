@@ -478,6 +478,8 @@ IDENTIFICATION = IDENTIFICATION
 
 IDENTIFICATIONS = IDENTIFICATIONS
 
+Identify-an-organism = Identify an organism
+
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 
 # Shows the number of photos a user selected from the camera roll for upload
