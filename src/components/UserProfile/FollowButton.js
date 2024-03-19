@@ -15,11 +15,12 @@ type Props = {
     user: Object,
     userId: number,
     setShowLoginSheet: Function,
+    setShowUnfollowSheet: Function,
     currentUser: Object
   };
 
 const FollowButton = ( {
-  userId, setShowLoginSheet, currentUser, user
+  userId, setShowLoginSheet, setShowUnfollowSheet, currentUser, user
 }: Props ): Node => {
   const [loading, setLoading] = useState( false );
   const [following, setFollowing] = useState( false );
@@ -50,9 +51,9 @@ const FollowButton = ( {
     ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )
   );
 
-  const followOrUnfollowUser = ( ) => updateRelationshipsMutation.mutate( {
+  const followUser = ( ) => updateRelationshipsMutation.mutate( {
     id: userId,
-    relationship: { following: !following }
+    relationship: { following: true }
   }, {
     onSuccess: () => {
     //   console.log( "follow or unfollow", data );
@@ -65,6 +66,14 @@ const FollowButton = ( {
     }
   } );
 
+  const unfollowUser = ( ) => {
+    if ( !currentUser ) {
+      setShowLoginSheet( true );
+      return;
+    }
+    setShowUnfollowSheet( true );
+  };
+
   const handlePress = () => {
     console.log( "handlepress" );
     if ( !currentUser ) {
@@ -73,7 +82,7 @@ const FollowButton = ( {
     } if ( currentUser?.login !== user?.login ) {
       console.log( "loading..." );
       setLoading( true );
-      followOrUnfollowUser();
+      followUser();
     }
   };
 
@@ -95,7 +104,7 @@ const FollowButton = ( {
             level="primary"
             className="grow"
             text={t( "UNFOLLOW" )}
-            onPress={handlePress}
+            onPress={unfollowUser}
             testID="UserProfile.followButton"
           />
         )}

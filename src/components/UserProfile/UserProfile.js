@@ -5,7 +5,6 @@ import { fetchRemoteUser } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
   Body2,
-  Button,
   Heading1,
   Heading4,
   INatIconButton,
@@ -25,6 +24,7 @@ import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import FollowButton from "./FollowButton";
+import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ): Node => {
   const navigation = useNavigation( );
@@ -32,6 +32,7 @@ const UserProfile = ( ): Node => {
   const { params } = useRoute( );
   const { userId } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
+  const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
 
   const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", userId],
@@ -95,6 +96,7 @@ const UserProfile = ( ): Node => {
               userId={userId}
               setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
+              setShowUnfollowSheet={setShowUnfollowSheet}
             />
           )}
         </View>
@@ -104,26 +106,6 @@ const UserProfile = ( ): Node => {
             <UserText text={user?.description} />
           </>
         ) }
-        <Heading4 className="mb-2 mt-5">{t( "PROJECTS" )}</Heading4>
-        <Button
-          className="mb-6"
-          text={t( "VIEW-PROJECTS" )}
-          onPress={( ) => navigation.navigate( "Projects" )}
-        />
-        <Heading4 className="mb-2">{t( "PEOPLE" )}</Heading4>
-        <Button
-          className="mb-6"
-          text={t( "VIEW-FOLLOWERS" )}
-        />
-        <Button
-          className="mb-6"
-          text={t( "VIEW-FOLLOWING" )}
-        />
-        <Heading4 className="mb-2">{t( "JOURNAL-POSTS" )}</Heading4>
-        <Button
-          className="mb-6"
-          text={t( "VIEW-JOURNAL-POSTS" )}
-        />
         <Body2 className="mb-5">
           {t( "Joined-date", { date: formatUserProfileDate( user.created_at, t ) } )}
         </Body2>
@@ -142,6 +124,7 @@ const UserProfile = ( ): Node => {
         )}
       </View>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
+      {showUnfollowSheet && <UnfollowSheet setShowUnfollowSheet={setShowUnfollowSheet} />}
     </ScrollViewWrapper>
   );
 };

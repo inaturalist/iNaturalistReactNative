@@ -436,7 +436,10 @@ Flag-Item-Other-Description = Some other reason you can explain below.
 Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 
 FOLLOW = FOLLOW
+
 UNFOLLOW = UNFOLLOW
+
+UNFOLLOW-USER = UNFOLLOW USER?
 
 Following = Following
 

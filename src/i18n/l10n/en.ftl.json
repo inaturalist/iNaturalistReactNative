@@ -248,6 +248,7 @@
   "Flag-Item-Other-Input-Hint": "Specify the reason you're flagging this item",
   "FOLLOW": "FOLLOW",
   "UNFOLLOW": "UNFOLLOW",
+  "UNFOLLOW-USER": "UNFOLLOW USER?",
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
