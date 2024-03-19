@@ -22,15 +22,14 @@ interface Props {
 
 const NumberBadge = ( { number, light }: Props ): Node => {
   const theme = useTheme();
+  const backgroundColor = light ? "bg-white" : "bg-inatGreen";
+  const textColor = light ? "text-darkGray" : "text-white";
   return (
     <View
-      className={classNames(
-        "w-5 h-5 justify-center items-center rounded-full",
-        light ? "bg-white" : "bg-inatGreen"
-      )}
+      className={classNames("w-5 h-5 justify-center items-center rounded-full", backgroundColor)}
       style={getShadow( theme.colors.primary )}
     >
-      <Body3 className={light ? "text-darkGray" : "text-white"}>{number}</Body3>
+      <Body3 className={textColor}>{number}</Body3>
     </View>
   );
 };

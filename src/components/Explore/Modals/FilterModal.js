@@ -1167,7 +1167,7 @@ const FilterModal = ( {
         </View>
 
         {/* Reviewed section */}
-        { currentUser && (
+        {currentUser && (
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
             {Object.keys( reviewedValues ).map( reviewedKey => (
