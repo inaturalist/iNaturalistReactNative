@@ -1,21 +1,20 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import fetchSearchResults from "api/search";
+import classNames from "classnames";
+import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
   Body3,
   INatIcon,
-  INatIconButton
+  INatIconButton,
+  TaxonResult
 } from "components/SharedComponents";
-import SearchBar from "components/SharedComponents/SearchBar";
-import { Image, Pressable, View } from "components/styledComponents";
-import { EXPLORE_ACTION, useExplore } from "providers/ExploreContext.tsx";
+import { Pressable, View } from "components/styledComponents";
+import { useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useRef, useState } from "react";
-import { Keyboard } from "react-native";
+import React from "react";
 import { Surface, useTheme } from "react-native-paper";
-import Taxon from "realmModels/Taxon";
-import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import HeaderCount from "./HeaderCount";
@@ -26,7 +25,6 @@ type Props = {
   exploreViewIcon: string,
   loadingStatus: boolean,
   openFiltersModal: Function,
-  updateTaxon: Function
 }
 
 const Header = ( {
@@ -34,17 +32,14 @@ const Header = ( {
   exploreView,
   exploreViewIcon,
   loadingStatus,
-  openFiltersModal,
-  updateTaxon
+  openFiltersModal
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  const taxonInput = useRef( );
   const theme = useTheme( );
-  const { state, dispatch } = useExplore( );
-  const taxonName = state.taxon_name;
+  const { state, numberOfFilters } = useExplore( );
+  const { taxon } = state;
   const placeName = state.place_guess || t( "Worldwide" );
-  const [hideTaxonResults, setHideTaxonResults] = useState( true );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
@@ -53,85 +48,60 @@ const Header = ( {
     marginBottom: -40
   };
 
-  const { data: taxonList } = useAuthenticatedQuery(
-    ["fetchSearchResults", taxonName],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: taxonName,
-        sources: "taxa",
-        fields: {
-          taxon: Taxon.TAXON_FIELDS
-        }
-      },
-      optsWithAuth
-    )
-  );
-
   return (
     <View className="z-10">
-      <Surface
-        style={surfaceStyle}
-        elevation={5}
-      >
-        <View className="bg-white px-5 flex-row justify-between items-center">
+      <Surface style={surfaceStyle} elevation={5}>
+        <View className="bg-white px-6 py-4 flex-row justify-between items-center">
           <View>
-            <View className="flex-row items-center">
-              <INatIcon name="label-outline" size={15} />
-              <SearchBar
-                handleTextChange={taxonText => {
-                  if ( taxonInput?.current?.isFocused( ) ) {
-                    setHideTaxonResults( false );
-                    dispatch( {
-                      type: EXPLORE_ACTION.SET_TAXON_NAME,
-                      taxonName: taxonText
-                    } );
-                  }
-                }}
-                value={taxonName}
-                placeholder={t( "All-organisms" )}
-                testID="Explore.taxonSearch"
-                containerClass="w-[250px]"
-                input={taxonInput}
-              />
-            </View>
-            <View className="bg-white">
-              {!hideTaxonResults && taxonList?.map( taxon => (
+            {taxon
+              ? (
+                <TaxonResult
+                  asListItem={false}
+                  taxon={taxon}
+                  showInfoButton={false}
+                  showCheckmark={false}
+                  handlePress={() => navigation.navigate( "ExploreTaxonSearch" )}
+                />
+              )
+              : (
                 <Pressable
                   accessibilityRole="button"
-                  key={taxon.id}
-                  className="p-2 border-[0.5px] border-lightGray flex-row items-center"
-                  onPress={( ) => {
-                    updateTaxon( taxon );
-                    setHideTaxonResults( true );
-                    Keyboard.dismiss( );
-                  }}
+                  className="flex-row items-center"
+                  onPress={() => navigation.navigate( "ExploreTaxonSearch" )}
                 >
-                  <Image
-                    source={{ uri: taxon?.default_photo?.url }}
-                    className="w-[25px] h-[25px]"
-                    accessibilityIgnoresInvertColors
-                  />
-                  <Body3 className="ml-2">{taxon?.preferred_common_name || taxon?.name}</Body3>
+                  <INatIcon name="label-outline" size={15} />
+                  <Body3 className="ml-3">{t( "All-organisms" )}</Body3>
                 </Pressable>
-              ) )}
-            </View>
+              )}
             <Pressable
               accessibilityRole="button"
-              className="flex-row items-center"
               onPress={( ) => navigation.navigate( "ExploreLocationSearch" )}
+              className="flex-row items-center pt-3"
             >
               <INatIcon name="location" size={15} />
-              <Body3 className="m-3">{placeName}</Body3>
+              <Body3 className="ml-3">{placeName}</Body3>
             </Pressable>
           </View>
-          <INatIconButton
-            icon="sliders"
-            color={colors.white}
-            className="bg-darkGray rounded-md"
-            onPress={() => openFiltersModal()}
-            accessibilityLabel={t( "Filters" )}
-            accessibilityHint={t( "Navigates-to-explore" )}
-          />
+          <View>
+            <INatIconButton
+              icon="sliders"
+              color={colors.white}
+              className={classNames(
+                numberOfFilters !== 0
+                  ? "bg-inatGreen"
+                  : "bg-darkGray",
+                "rounded-md"
+              )}
+              onPress={() => openFiltersModal()}
+              accessibilityLabel={t( "Filters" )}
+              accessibilityHint={t( "Navigates-to-explore" )}
+            />
+            {numberOfFilters !== 0 && (
+              <View className="absolute top-[-10] right-[-10]">
+                <NumberBadge number={numberOfFilters} light />
+              </View>
+            )}
+          </View>
         </View>
         <HeaderCount
           count={count}
