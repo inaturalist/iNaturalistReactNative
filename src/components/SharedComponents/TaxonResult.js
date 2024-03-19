@@ -18,6 +18,7 @@ import ConfidenceInterval from "./ConfidenceInterval";
 
 type Props = {
   activeColor?: string,
+  asListItem?: boolean,
   clearBackground?: boolean,
   confidence?: number,
   confidencePosition?: string,
@@ -34,6 +35,7 @@ type Props = {
 
 const TaxonResult = ( {
   activeColor,
+  asListItem = true,
   clearBackground,
   confidence,
   confidencePosition = "photo",
@@ -66,9 +68,10 @@ const TaxonResult = ( {
     <View
       className={
         classnames(
-          "flex-row items-center justify-between px-4 py-3",
+          "flex-row items-center justify-between",
           {
-            "border-b-[1px] border-lightGray": !clearBackground,
+            "px-4 py-3": asListItem,
+            "border-b-[1px] border-lightGray": asListItem,
             "border-t-[1px]": first
           }
         )
