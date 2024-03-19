@@ -170,6 +170,18 @@ const MyObservationsContainer = ( ): Node => {
     totalProgressIncrements
   } = state;
 
+  useEffect( () => {
+    let timer;
+    if ( uploadsComplete ) {
+      timer = setTimeout( () => {
+        dispatch( { type: "RESET_STATE" } );
+      }, 5000 );
+    }
+    return () => {
+      clearTimeout( timer );
+    };
+  }, [uploadsComplete] );
+
   const currentUploadProgress = Object.values( uploadProgress ).reduce(
     ( count, current ) => count + Number( current ),
     0
