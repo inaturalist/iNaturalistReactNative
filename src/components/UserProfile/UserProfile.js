@@ -1,8 +1,8 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { updateRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
+import LoginSheet from "components/MyObservations/LoginSheet";
 import {
   Body2,
   Button,
@@ -18,17 +18,20 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import User from "realmModels/User";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
-import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
+import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
+
+import FollowButton from "./FollowButton";
 
 const UserProfile = ( ): Node => {
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
   const { userId } = params;
+  const [showLoginSheet, setShowLoginSheet] = useState( false );
 
   const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", userId],
@@ -36,10 +39,6 @@ const UserProfile = ( ): Node => {
   );
 
   const user = remoteUser || null;
-
-  const updateRelationshipsMutation = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )
-  );
 
   useEffect( ( ) => {
     const headerRight = ( ) => currentUser?.login === user?.login && (
@@ -68,11 +67,6 @@ const UserProfile = ( ): Node => {
     return null;
   }
 
-  const followUser = ( ) => updateRelationshipsMutation.mutate( {
-    id: userId,
-    relationship: { following: true }
-  } );
-
   return (
     <ScrollViewWrapper testID="UserProfile">
       <View
@@ -94,24 +88,16 @@ const UserProfile = ( ): Node => {
         onSpeciesPressed={onSpeciesPressed}
       />
       <View className="mx-3">
-        {currentUser?.login !== user?.login && (
-          <View className="flex-row justify-evenly mt-8 mb-4">
-            <Button
-              level="primary"
-              className="grow"
-              text={t( "FOLLOW" )}
-              onPress={followUser}
-              testID="UserProfile.followButton"
+        <View className="mt-8 mb-4">
+          {currentUser?.login !== user?.login && (
+            <FollowButton
+              user={user}
+              userId={userId}
+              setShowLoginSheet={setShowLoginSheet}
+              currentUser={currentUser}
             />
-            <Button
-              className="grow ml-3"
-              level="primary"
-              text={t( "MESSAGE" )}
-              onPress={( ) => navigation.navigate( "Messages" )}
-              testID="UserProfile.messagesButton"
-            />
-          </View>
-        )}
+          )}
+        </View>
         { user?.description && (
           <>
             <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
@@ -155,6 +141,7 @@ const UserProfile = ( ): Node => {
           </Body2>
         )}
       </View>
+      {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
     </ScrollViewWrapper>
   );
 };
