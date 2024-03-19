@@ -36,11 +36,7 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
         owners_identification_from_vision: vision,
         taxon: selectedTaxon
       } );
-      if ( vision ) {
-        navigation.goBack( );
-      } else {
-        navigation.navigate( "ObsEdit" );
-      }
+      navigation.navigate( "ObsEdit" );
     }
   }, [
     comment,

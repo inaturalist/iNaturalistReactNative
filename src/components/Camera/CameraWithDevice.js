@@ -77,7 +77,7 @@ const CameraWithDevice = ( {
     if ( taxonResult ) {
       setTaxonResult( null );
     }
-    navigation.navigate( "ObsEdit" );
+    navigation.navigate( "Suggestions", { lastScreen: "CameraWithDevice" } );
   }, [taxonResult, prepareStateForObsEdit, navigation] );
 
   const handleCheckmarkPress = localTaxon => {

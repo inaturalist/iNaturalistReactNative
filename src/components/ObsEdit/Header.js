@@ -51,24 +51,25 @@ const Header = ( {
     } );
   }, [navigation, currentObservation] );
 
-  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
-    screen: "ObservationsStackNavigator",
-    params: {
-      screen: "ObsList"
-    }
-  } ), [navigation] );
+  const navToObsList = useCallback( ( ) => {
+    updateObservations( [] );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
+  }, [navigation, updateObservations] );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    updateObservations( [] );
     navToObsDetails( );
-  }, [updateObservations, navToObsDetails] );
+  }, [navToObsDetails] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
-    updateObservations( [] );
     navToObsList( );
-  }, [updateObservations, navToObsList] );
+  }, [navToObsList] );
 
   const renderHeaderTitle = useCallback( ( ) => {
     let headingText = "";

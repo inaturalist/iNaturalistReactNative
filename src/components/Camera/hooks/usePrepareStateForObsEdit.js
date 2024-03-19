@@ -6,6 +6,7 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
@@ -51,6 +52,13 @@ const usePrepareStateForObsEdit = (
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, localTaxon ) => {
     const newObservation = await Observation.new( );
+
+    // location is needed for fetching online Suggestions on the next screen
+    const location = await fetchUserLocation( );
+    if ( location?.latitude ) {
+      newObservation.latitude = location?.latitude;
+      newObservation.longitude = location?.longitude;
+    }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( localFilePaths, {
         position: 0,
