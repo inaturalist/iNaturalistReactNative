@@ -143,7 +143,6 @@ type State = {
   // TODO: technically this is not any Object but a "Taxon" and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | undefined,
-  taxon_name: string | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
@@ -178,7 +177,6 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
   | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_TAXON_NAME, taxonName: string}
   | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string}
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
@@ -243,7 +241,6 @@ const initialState = {
   ...defaultFilters,
   taxon: undefined,
   taxon_id: undefined,
-  taxon_name: undefined,
   place_id: undefined,
   place_guess: "",
   verifiable: true,
@@ -269,13 +266,7 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         taxon: action.taxon,
-        taxon_id: action.taxonId,
-        taxon_name: action.taxonName
-      };
-    case EXPLORE_ACTION.SET_TAXON_NAME:
-      return {
-        ...state,
-        taxon_name: action.taxonName
+        taxon_id: action.taxonId
       };
     case EXPLORE_ACTION.SET_PLACE:
       const placeState = {

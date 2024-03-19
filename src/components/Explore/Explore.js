@@ -82,7 +82,6 @@ const Explore = ( {
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
       loadingStatus={loadingStatus}
-      updateTaxon={updateTaxon}
       openFiltersModal={openFiltersModal}
     />
   );
