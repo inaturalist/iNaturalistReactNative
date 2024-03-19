@@ -4,7 +4,7 @@ import {
   useEffect,
   useState
 } from "react";
-import { predictImage } from "sharedHelpers/cvModel";
+import { predictImage } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "useOfflineSuggestions" );
@@ -25,33 +25,28 @@ const useOfflineSuggestions = (
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
       setLoadingOfflineSuggestions( true );
-      let predictions = [];
+      let rawPredictions = [];
       try {
-        predictions = await predictImage( selectedPhotoUri );
+        const result = await predictImage( selectedPhotoUri );
+        // Android returns an object with a predictions key, while iOS returns an array because
+        // currently Seek codebase as well expects different return types for each platform
+        rawPredictions = result.predictions;
       } catch ( predictImageError ) {
-        if ( predictImageError.message.match( /getWidth/ ) ) {
-          // TODO fix this. There's a bug in the android side of vision-camera-plugin-inatvision
-          logger.error(
-            `HACK working around failure to getWidth of ${selectedPhotoUri}`,
-            predictImageError
-          );
-          predictions = [];
-        } else {
-          throw predictImageError;
-        }
+        logger.error( "Error predicting image offline", predictImageError );
+        throw predictImageError;
       }
       // using the same rank level for displaying predictions in AR Camera
       // this is all temporary, since we ultimately want predictions
       // returned similarly to how we return them on web; this is returning a
       // single branch like on the AR Camera 2023-12-08
-      const formattedPredictions = predictions?.reverse( )
-        .filter( prediction => prediction.rank <= 40 )
+      const formattedPredictions = rawPredictions?.reverse( )
+        .filter( prediction => prediction.rank_level <= 40 )
         .map( prediction => ( {
           score: prediction.score,
           taxon: {
             id: Number( prediction.taxon_id ),
             name: prediction.name,
-            rank_level: prediction.rank
+            rank_level: prediction.rank_level
           }
         } ) );
       setOfflineSuggestions( formattedPredictions );

@@ -38,6 +38,11 @@ function reactQueryRetry( failureCount, error, options = {} ) {
       options
     );
   }
+  // 404 means the record does not exist, so no need to retry
+  if ( error.status === 404 ) {
+    shouldRetry = false;
+    logger.info( "reactQueryRetry, handling 404, not retrying" );
+  }
   handleError( error, {
     throw: false,
     onApiError: apiError => {

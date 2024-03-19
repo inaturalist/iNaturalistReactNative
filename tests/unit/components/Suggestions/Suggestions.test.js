@@ -1,9 +1,9 @@
 import {
   fireEvent,
-  screen, waitFor
+  screen,
+  waitFor
 } from "@testing-library/react-native";
 import Suggestions from "components/Suggestions/Suggestions";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import useStore from "stores/useStore";
@@ -18,7 +18,7 @@ const mockTaxon = factory( "RemoteTaxon" );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => mockTaxon
+  default: () => ( { taxon: mockTaxon } )
 } ) );
 
 const mockSuggestionsList = [{
@@ -28,7 +28,6 @@ const mockSuggestionsList = [{
 describe( "Suggestions", ( ) => {
   beforeAll( async ( ) => {
     useStore.setState( initialStoreState, true );
-    await initI18next( );
   } );
 
   test( "should not have accessibility errors", async ( ) => {

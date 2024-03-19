@@ -1,56 +1,36 @@
-import { faker } from "@faker-js/faker";
 import {
   act,
   screen,
   userEvent,
   within
 } from "@testing-library/react-native";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
-import os from "os";
-import path from "path";
-import Realm from "realm";
 import Identification from "realmModels/Identification";
-// eslint-disable-next-line import/extensions
-import realmConfig from "realmModels/index";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
-const mockModelPrediction = factory( "ModelPrediction", {
+const mockModelResult = {
+  predictions: [factory( "ModelPrediction", {
   // useOfflineSuggestions will filter out taxa w/ rank_level > 40
-  rank: 20
-} );
+    rank_level: 20
+  } )]
+};
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
 
-// This is a bit crazy, but this ensures this test uses its own in-memory
-// database and doesn't interfere with the single, default in-memory database
-// used by other tests. In a perfect world, every parallel test worker would
-// have its own database, or at least this wouldn't be so manual, but it took
-// me long enough to figure this out. ~~~kueda 20231024 REALM SETUP
-const mockRealmConfig = {
-  schema: realmConfig.schema,
-  schemaVersion: realmConfig.schemaVersion,
-  // No need to actually write to disk
-  inMemory: true,
-  // For an in memory db path is basically a unique identifier, *but* Realm
-  // may still write some metadata to disk, so this needs to be a real, but
-  // temporary, path. In theory this should prevent this test from
-  // interacting with other tests
-  path: path.join( os.tmpdir( ), `${path.basename( __filename )}.realm` )
-};
-
-// Mock the config so that all code that runs during this test talks to the same database
-jest.mock( "realmModels/index", ( ) => ( {
-  __esModule: true,
-  default: mockRealmConfig
-} ) );
-
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
   return {
@@ -58,29 +38,20 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[__filename]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
     }
   };
 } );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
 const initialStoreState = useStore.getState( );
-
-// Open a realm connection and stuff it in global
 beforeAll( async ( ) => {
-  global.mockRealms = global.mockRealms || {};
-  global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
   useStore.setState( initialStoreState, true );
-  await initI18next();
   // userEvent recommends fake timers
   jest.useFakeTimers( );
 } );
-
-// Ensure the realm connection gets closed
-afterAll( ( ) => {
-  global.mockRealms[__filename]?.close( );
-  // jest.clearAllMocks( );
-} );
-// /REALM SETUP
 
 const mockUser = factory( "LocalUser" );
 
@@ -127,6 +98,7 @@ beforeEach( async ( ) => {
       user: mockUser
     } )]
   } );
+  inatjs.taxa.search.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 } );
 
@@ -143,10 +115,8 @@ describe( "TaxonSearch", ( ) => {
   const mockSearchResultTaxon = factory( "RemoteTaxon" );
 
   beforeEach( ( ) => {
-    inatjs.search.mockResolvedValue( makeResponse( [
-      {
-        taxon: mockSearchResultTaxon
-      }
+    inatjs.taxa.search.mockResolvedValue( makeResponse( [
+      mockSearchResultTaxon
     ] ) );
     inatjs.observations.observers.mockResolvedValue( makeResponse( [
       {
@@ -159,7 +129,7 @@ describe( "TaxonSearch", ( ) => {
   } );
 
   afterEach( ( ) => {
-    inatjs.search.mockReset( );
+    inatjs.taxa.search.mockReset( );
     inatjs.observations.observers.mockReset( );
     inatjs.taxa.fetch.mockReset( );
   } );
@@ -336,14 +306,14 @@ describe( "Suggestions", ( ) => {
     async ( ) => {
       inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
       getPredictionsForImage.mockImplementation(
-        async ( ) => ( [mockModelPrediction] )
+        async ( ) => ( mockModelResult )
       );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
       const offlineNotice = await screen.findByText( "Viewing Offline Suggestions" );
       expect( offlineNotice ).toBeTruthy( );
       const topOfflineTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockModelPrediction.taxon_id}.checkmark`
+        `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
       );
       expect( topOfflineTaxonResultButton ).toBeTruthy( );
       await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );

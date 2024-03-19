@@ -91,7 +91,7 @@ const PhotoPreview = ( {
           ? noPhotosNotice
           : (
             <PhotoCarousel
-              photoUris={cameraPreviewUris}
+              photoUris={cameraPreviewUris.slice().reverse()}
               rotation={rotation}
               takingPhoto={takingPhoto}
               isLargeScreen={isLargeScreen}

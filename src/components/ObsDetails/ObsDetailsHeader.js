@@ -1,69 +1,78 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import {
-  Body1,
-  DateDisplay, DisplayTaxon, InlineUser, ObservationLocation
+  BackButton,
+  INatIconButton
 } from "components/SharedComponents";
-import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
-import { View } from "components/styledComponents";
+import {
+  LinearGradient
+} from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import DeviceInfo from "react-native-device-info";
 import {
   useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
+
+import HeaderKebabMenu from "./HeaderKebabMenu";
+
+const isTablet = DeviceInfo.isTablet( );
 
 type Props = {
+  belongsToCurrentUser?: boolean,
   observation: Object,
-  isOnline: boolean,
+  rightIconBlack?: boolean
 }
 
 const ObsDetailsHeader = ( {
+  belongsToCurrentUser,
   observation,
-  isOnline
+  rightIconBlack = false
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-
-  const taxon = observation?.taxon;
-
-  const showTaxon = () => {
-    if ( !taxon ) {
-      return (
-        <View className="justify-center ml-1">
-          <Body1>{t( "Unknown" )}</Body1>
-        </View>
-      );
-    }
-    return (
-      <DisplayTaxon
-        taxon={taxon}
-        handlePress={( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
-        testID={`ObsDetails.taxon.${taxon.id}`}
-        accessibilityLabel={t( "Navigate-to-taxon-details" )}
-      />
-    );
-  };
+  const setObservations = useStore( state => state.setObservations );
 
   return (
-    <View className="bg-white">
-      <View className="flex-row justify-between mx-[15px] mt-[13px]">
-        <InlineUser user={observation?.user} isOnline={isOnline} />
-        <DateDisplay
-          dateString={
-            observation.time_observed_at || observation.observed_on_string
-          }
-        />
-      </View>
-      <View className="flex-row my-[11px] mx-3">
-        <View className="shrink">
-          {showTaxon()}
-        </View>
-        <View className="ml-auto">
-          <ObsStatus layout="vertical" observation={observation} />
-        </View>
-      </View>
-      <ObservationLocation observation={observation} classNameMargin="mx-3 mb-2" />
-    </View>
+    <LinearGradient
+      className={classnames(
+        "absolute",
+        "top-0",
+        "w-full",
+        "flex-row",
+        "justify-between",
+        "h-10"
+      )}
+      colors={[
+        isTablet
+          ? "rgba(0,0,0,0.1)"
+          : "rgba(0,0,0,0.6)",
+        "transparent"
+      ]}
+    >
+      <BackButton color="white" inCustomHeader />
+      {
+        belongsToCurrentUser
+          ? (
+            <INatIconButton
+              testID="ObsDetail.editButton"
+              onPress={() => {
+                setObservations( [observation] );
+                navigation.navigate( "ObsEdit" );
+              }}
+              icon="pencil"
+              color={!rightIconBlack
+                ? colors.white
+                : colors.black}
+              accessibilityLabel={t( "Edit" )}
+            />
+          )
+          : <HeaderKebabMenu observationId={observation?.id} white={!rightIconBlack} />
+      }
+    </LinearGradient>
   );
 };
 

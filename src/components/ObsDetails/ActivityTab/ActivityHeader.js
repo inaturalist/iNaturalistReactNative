@@ -3,6 +3,7 @@ import classnames from "classnames";
 import ActivityHeaderKebabMenu from "components/ObsDetails/ActivityTab/ActivityHeaderKebabMenu";
 import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
 import {
+  ActivityIndicator,
   Body4, INatIcon, InlineUser, TextInputSheet, WarningSheet
 } from "components/SharedComponents";
 import {
@@ -11,7 +12,6 @@ import {
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { ActivityIndicator } from "react-native";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
 
@@ -20,12 +20,12 @@ type Props = {
   currentUser: boolean,
   deleteComment: Function,
   flagged: boolean,
-  idWithdrawn: boolean,
-  isOnline: boolean,
+  idWithdrawn?: boolean,
+  isOnline?: boolean,
   item: Object,
   loading: boolean,
   updateCommentBody: Function,
-  withdrawOrRestoreIdentification: Function
+  updateIdentification: Function
 }
 
 const ActivityHeader = ( {
@@ -38,7 +38,7 @@ const ActivityHeader = ( {
   item,
   loading,
   updateCommentBody,
-  withdrawOrRestoreIdentification
+  updateIdentification
 }:Props ): Node => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
@@ -102,11 +102,9 @@ const ActivityHeader = ( {
   return (
     <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
       <InlineUser user={user} isOnline={isOnline} />
-      <View className="flex-row items-center space-x-[15px]">
+      <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
-        {
-          renderStatus()
-        }
+        {renderStatus()}
         {item.created_at
             && (
               <Body4>
@@ -125,9 +123,8 @@ const ActivityHeader = ( {
                 currentUser={currentUser}
                 itemType={itemType}
                 current={item.current}
-                itemBody={item.body}
                 setShowWithdrawIDSheet={setShowWithdrawIDSheet}
-                withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
+                updateIdentification={updateIdentification}
                 setShowEditCommentSheet={setShowEditCommentSheet}
                 setShowDeleteCommentSheet={setShowDeleteCommentSheet}
               />
@@ -137,7 +134,7 @@ const ActivityHeader = ( {
           <WithdrawIDSheet
             handleClose={() => setShowWithdrawIDSheet( false )}
             taxon={item.taxon}
-            withdrawOrRestoreIdentification={withdrawOrRestoreIdentification}
+            updateIdentification={updateIdentification}
           />
         )}
 

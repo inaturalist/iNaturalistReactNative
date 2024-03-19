@@ -11,7 +11,7 @@ import {
   Image, ImageBackground, View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 
 import AboutProjectType from "./AboutProjectType";
@@ -29,9 +29,21 @@ const ProjectDetails = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
+  const onObservationPressed = useCallback(
+    ( ) => navigation.navigate( "Explore", { project, worldwide: true } ),
+    [navigation, project]
+  );
+
+  const onSpeciesPressed = useCallback(
+    ( ) => navigation.navigate( "Explore", { project, worldwide: true, viewSpecies: true } ),
+    [navigation, project]
+  );
+
   if ( !project ) {
     return null;
   }
+
+  const userTextStyle = { lineHeight: 26 };
 
   return (
     <ScrollViewWrapper testID="project-details">
@@ -58,10 +70,12 @@ const ProjectDetails = ( {
             members_count: project.members_count,
             journal_posts_count: project.journal_posts_count
           }}
+          onObservationPressed={onObservationPressed}
+          onSpeciesPressed={onSpeciesPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
-        <UserText text={project.description} htmlStyle={{ lineHeight: 26 }} />
+        {project?.description
+          && <UserText text={project.description} htmlStyle={userTextStyle} />}
         {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
@@ -75,10 +89,7 @@ const ProjectDetails = ( {
         <Button
           level="neutral"
           text={t( "VIEW-IN-EXPLORE" )}
-          onPress={( ) => navigation.navigate( "Explore", {
-            projectId: project.id,
-            placeId: project.place_id
-          } )}
+          onPress={onObservationPressed}
         />
         {!project.project_type && (
           <>

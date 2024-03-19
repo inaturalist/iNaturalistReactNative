@@ -2,13 +2,13 @@
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
-import { Body3 } from "components/SharedComponents";
+import { ActivityIndicator, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback, useMemo
 } from "react";
-import { ActivityIndicator, Animated } from "react-native";
+import { Animated } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation, useTranslation } from "sharedHooks";
 
@@ -17,6 +17,7 @@ import ObsItem from "./ObsItem";
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
+  contentContainerStyle?: Object,
   data: Array<Object>,
   dataCanBeFetched?: boolean,
   explore: boolean,
@@ -37,6 +38,7 @@ type Props = {
 const GUTTER = 15;
 
 const ObservationsFlashList = ( {
+  contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
   explore,
@@ -112,12 +114,16 @@ const ObservationsFlashList = ( {
   ), [hideLoadingWheel, layout, isOnline, explore] );
 
   const contentContainerStyle = useMemo( ( ) => {
-    if ( layout === "list" ) { return {}; }
+    if ( layout === "list" ) { return contentContainerStyleProp; }
     return {
+      ...contentContainerStyleProp,
       paddingLeft: GUTTER / 2,
       paddingRight: GUTTER / 2
     };
-  }, [layout] );
+  }, [
+    contentContainerStyleProp,
+    layout
+  ] );
 
   const renderEmptyComponent = useCallback( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
@@ -128,7 +134,7 @@ const ObservationsFlashList = ( {
       ? showEmptyScreen
       : (
         <View className="self-center mt-[150px]">
-          <ActivityIndicator size="large" testID="ObservationsFlashList.loading" />
+          <ActivityIndicator size={50} testID="ObservationsFlashList.loading" />
         </View>
       );
   }, [
@@ -168,8 +174,12 @@ const ObservationsFlashList = ( {
       // react thinks we've rendered a second item w/ a duplicate key
       keyExtractor={item => item.uuid || item.id}
       numColumns={numColumns}
-      onEndReached={onEndReached}
       onEndReachedThreshold={0.2}
+      onMomentumScrollEnd={( ) => {
+        if ( dataCanBeFetched ) {
+          onEndReached( );
+        }
+      }}
       onScroll={handleScroll}
       refreshing={isFetchingNextPage}
       renderItem={renderItem}

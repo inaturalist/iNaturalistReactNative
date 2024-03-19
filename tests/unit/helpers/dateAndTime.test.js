@@ -16,10 +16,6 @@ const remoteComment = factory( "RemoteComment", {
 
 describe( "formatApiDatetime", ( ) => {
   describe( "in default locale", ( ) => {
-    beforeAll( async ( ) => {
-      await initI18next( );
-    } );
-
     it( "should return missing date string if no date is present", async ( ) => {
       expect( formatApiDatetime( null, i18next.t ) ).toEqual( "Missing Date" );
     } );

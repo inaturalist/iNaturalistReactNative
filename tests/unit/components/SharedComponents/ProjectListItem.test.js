@@ -1,0 +1,16 @@
+import { ProjectListItem } from "components/SharedComponents";
+import React from "react";
+
+const mockProject = {
+  id: 1,
+  title: "Project Title",
+  icon: "https://static.inaturalist.org/projects/1/iconic_taxa_photos/medium.jpg?1521796076",
+  project_type: "collection"
+};
+
+describe( "ProjectListItem", () => {
+  it( "should be accessible", () => {
+    const projectListItem = <ProjectListItem item={mockProject} />;
+    expect( projectListItem ).toBeAccessible();
+  } );
+} );

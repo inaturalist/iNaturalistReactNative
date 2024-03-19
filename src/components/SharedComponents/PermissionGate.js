@@ -14,7 +14,8 @@ import {
 import { t } from "i18next";
 import React from "react";
 import {
-  Linking
+  Linking,
+  StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { RESULTS } from "react-native-permissions";
@@ -41,6 +42,7 @@ const PermissionGate = ( {
   testID
 } ) => (
   <ViewWrapper wrapperClassName="bg-black" testID={testID}>
+    <StatusBar barStyle="light-content" backgroundColor="black" />
     <ImageBackground
       source={image}
       imageStyle={BACKGROUND_IMAGE_STYLE}

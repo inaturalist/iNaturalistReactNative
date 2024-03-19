@@ -1,23 +1,33 @@
-import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationSheet";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
+
+const observations = [factory( "LocalObservation", {
+  _deleted_at: null
+} )];
+
+const currentObservation = observations[0];
+
+const mockUpdateObservations = jest.fn( );
 
 afterEach( ( ) => {
   jest.clearAllMocks( );
 } );
 
-const renderDeleteSheet = obs => renderComponent(
+const mockNavigate = jest.fn( );
+
+const renderDeleteSheet = ( ) => renderComponent(
   <DeleteObservationSheet
-    handleClose={( ) => jest.fn( )}
-    navToObsList={( ) => jest.fn( )}
-    currentObservation={obs[0]}
-    observations={obs}
+    handleClose={jest.fn( )}
+    navToObsList={mockNavigate}
+    currentObservation={currentObservation}
+    observations={observations}
+    updateObservations={mockUpdateObservations}
   />
 );
 
@@ -26,70 +36,78 @@ const getLocalObservation = uuid => global.realm
 
 describe( "delete observation", ( ) => {
   beforeAll( async ( ) => {
-    await initI18next( );
-
-    // There's a timer buried somewhere in react-query and this prevents an open handle
-    jest.useFakeTimers( );
+    safeRealmWrite( global.realm, ( ) => {
+      global.realm.create( "Observation", currentObservation );
+    }, "write Observation, DeleteObservationSheet test" );
   } );
 
-  describe( "delete an unsynced observation", ( ) => {
-    it( "should delete an observation from realm", async ( ) => {
-      const observations = [factory( "LocalObservation", {
-        _synced_at: null
-      } )];
-      global.realm.write( ( ) => {
-        global.realm.create( "Observation", observations[0] );
-      } );
-      const localObservation = getLocalObservation( observations[0].uuid );
+  describe( "add observation to deletion queue", ( ) => {
+    it( "should handle adding _deleted_at date in realm", async ( ) => {
+      const localObservation = getLocalObservation( currentObservation.uuid );
       expect( localObservation ).toBeTruthy( );
-      renderDeleteSheet( observations );
+      renderDeleteSheet( );
       const deleteButtonText = i18next.t( "DELETE" );
       const deleteButton = screen.queryByText( deleteButtonText );
-      expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
       await waitFor( ( ) => {
         expect( inatjs.observations.delete ).not.toHaveBeenCalled( );
       } );
-      expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
-    } );
-  } );
-
-  describe( "delete a previously synced observation", ( ) => {
-    it( "should make a request to observations/delete", async ( ) => {
-      const observations = [factory( "LocalObservation", {
-        _synced_at: faker.date.past( )
-      } )];
-      global.realm.write( ( ) => {
-        global.realm.create( "Observation", observations[0] );
-      } );
-      const localObservation = getLocalObservation( observations[0].uuid );
-      expect( localObservation ).toBeTruthy( );
-      renderDeleteSheet( observations );
-      const deleteButtonText = i18next.t( "DELETE" );
-      const deleteButton = await screen.findByText( deleteButtonText );
-      expect( deleteButton ).toBeTruthy( );
-      fireEvent.press( deleteButton );
-      await waitFor( ( ) => {
-        expect( inatjs.observations.delete ).toHaveBeenCalledTimes( 1 );
-      } );
-      expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
+      expect( localObservation._deleted_at ).toBeTruthy( );
     } );
   } );
 
   describe( "cancel deletion", ( ) => {
-    it( "should not delete the observation from realm", ( ) => {
-      const observations = [factory( "LocalObservation" )];
-      global.realm.write( ( ) => {
-        global.realm.create( "Observation", observations[0] );
-      } );
-      const localObservation = getLocalObservation( observations[0].uuid );
+    it( "should not add _deleted_at date in realm", ( ) => {
+      const localObservation = getLocalObservation( currentObservation.uuid );
+      safeRealmWrite( global.realm, ( ) => {
+        localObservation._deleted_at = null;
+      }, "set _deleted_at to null, DeleteObservationSheet test" );
       expect( localObservation ).toBeTruthy( );
-      renderDeleteSheet( observations );
-
+      renderDeleteSheet( );
       const cancelButton = screen.queryByText( /CANCEL/ );
-      expect( cancelButton ).toBeTruthy( );
       fireEvent.press( cancelButton );
-      expect( getLocalObservation( observations[0].uuid ) ).toBeTruthy( );
+      expect( localObservation._deleted_at ).toBeNull( );
+    } );
+  } );
+
+  it( "navigates back when there's only one observation", ( ) => {
+    expect( observations.length ).toEqual( 1 );
+    renderDeleteSheet( );
+    const deleteButton = screen.queryByText( "DELETE" );
+    fireEvent.press( deleteButton );
+    expect( mockNavigate ).toBeCalled( );
+  } );
+
+  describe( "with multiple observations", ( ) => {
+    const unsavedObservations = [
+      factory( "LocalObservation" ),
+      factory( "LocalObservation" )
+    ];
+
+    function renderDeleteSheetWithMultiple( ) {
+      renderComponent(
+        <DeleteObservationSheet
+          handleClose={jest.fn( )}
+          navToObsList={mockNavigate}
+          currentObservation={unsavedObservations[0]}
+          observations={unsavedObservations}
+          updateObservations={mockUpdateObservations}
+        />
+      );
+    }
+
+    it( "does not navigate back when there's more than one observation", ( ) => {
+      renderDeleteSheetWithMultiple( );
+      const deleteButton = screen.queryByText( "DELETE" );
+      fireEvent.press( deleteButton );
+      expect( mockNavigate ).not.toBeCalled( );
+    } );
+
+    it( "removes observation from state when there's more than one observation", ( ) => {
+      renderDeleteSheetWithMultiple( );
+      const deleteButton = screen.queryByText( "DELETE" );
+      fireEvent.press( deleteButton );
+      expect( mockUpdateObservations ).toBeCalledWith( [unsavedObservations[1]] );
     } );
   } );
 } );

@@ -2,8 +2,10 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
-  Button, StickyToolbar
+  Button,
+  StickyToolbar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -20,8 +22,6 @@ import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
 const { useRealm } = RealmContext;
-
-const DESIRED_LOCATION_ACCURACY = 4000000;
 
 type Props = {
   passesEvidenceTest: boolean,
@@ -46,6 +46,9 @@ const BottomButtons = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const navigation = useNavigation( );
+  const isNewObs = !currentObservation?._created_at;
+  const hasPhotos = currentObservation?.observationPhotos?.length > 0;
+  const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
   const { t } = useTranslation( );
   const realm = useRealm( );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
@@ -137,18 +140,30 @@ const BottomButtons = ( {
   const showMissingEvidence = useCallback( ( ) => {
     if ( allowUserToUpload ) { return false; }
     // missing evidence sheet takes precedence over the location imprecise sheet
+
+    if (
+      currentObservation?.positional_accuracy
+      && currentObservation?.positional_accuracy > REQUIRED_LOCATION_ACCURACY
+      // Don't check for valid positional accuracy in case of a new observation with imported photos
+      && ( !isNewObs || !hasImportedPhotos )
+    ) {
+      setShowImpreciseLocationSheet( true );
+      return true;
+    }
     if ( !passesEvidenceTest ) {
       setShowMissingEvidenceSheet( true );
       setAllowUserToUpload( true );
       return true;
     }
-    if ( currentObservation?.positional_accuracy
-      && currentObservation?.positional_accuracy > DESIRED_LOCATION_ACCURACY ) {
-      setShowImpreciseLocationSheet( true );
-      return true;
-    }
+
     return false;
-  }, [allowUserToUpload, currentObservation, passesEvidenceTest] );
+  }, [
+    allowUserToUpload,
+    currentObservation,
+    hasImportedPhotos,
+    isNewObs,
+    passesEvidenceTest
+  ] );
 
   const handlePress = useCallback( type => {
     logger.info( `tapped ${type}` );

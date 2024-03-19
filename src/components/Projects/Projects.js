@@ -1,20 +1,23 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
-  Body1, Button,
-  Heading1, INatIcon,
-  List2,
-  SearchBar, Tabs, ViewWrapper
+  ActivityIndicator,
+  Body1,
+  Button,
+  Heading1,
+  INatIcon,
+  ProjectListItem,
+  SearchBar,
+  Tabs,
+  ViewWrapper
 } from "components/SharedComponents";
-import { Image, Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import {
   FlatList
 } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import {
   useTranslation
 } from "sharedHooks";
@@ -54,6 +57,7 @@ const Projects = ( {
 
   const renderProject = ( { item: project } ) => (
     <Pressable
+      className="px-4"
       onPress={( ) => navigation.navigate( "ProjectDetails", { id: project.id } )}
       style={viewStyles.row}
       testID={`Project.${project.id}`}
@@ -61,22 +65,13 @@ const Projects = ( {
       accessibilityRole="button"
       accessibilityLabel={t( "Navigate-to-project-details" )}
     >
-      <Image
-        className="w-[62px] h-[62px] rounded-xl ml-4 mr-3"
-        source={{ uri: project.icon }}
-        testID={`Project.${project.id}.photo`}
-        accessibilityIgnoresInvertColors
-      />
-      <View className="shrink mr-4">
-        <Body1>{project.title}</Body1>
-        <List2 className="mt-2">{displayProjectType( project.project_type, t )}</List2>
-      </View>
+      <ProjectListItem item={project} />
     </Pressable>
   );
 
   const renderEmptyList = ( ) => {
     if ( isLoading ) {
-      <ActivityIndicator large />;
+      <ActivityIndicator size={50} />;
     } else {
       return (
         <>

@@ -10,16 +10,15 @@ import React, { useMemo, useRef, useState } from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
-import colors from "styles/tailwindColors";
 
-  type Props = {
-    handleClose: Function,
-    confirm: Function,
-    initialInput?: ?string,
-    placeholder: string,
-    headerText: string,
-    textInputStyle?: Object
-  }
+type Props = {
+  handleClose: Function,
+  confirm: Function,
+  initialInput?: ?string,
+  placeholder: string,
+  headerText: string,
+  textInputStyle?: Object
+}
 
 const TextInputSheet = ( {
   handleClose,
@@ -42,10 +41,6 @@ const TextInputSheet = ( {
     fontSize: 14,
     lineHeight: 17,
     color: theme.colors.primary,
-    borderRadius: 8,
-    borderColor: colors.lightGray,
-    borderWidth: 1,
-    padding: 15,
     textAlignVertical: "top"
   } ), [theme] );
 
@@ -53,33 +48,30 @@ const TextInputSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
-      onChange={position => {
-        if ( position === -1 ) {
-          handleClose();
-        }
-      }}
     >
       <View className="p-5">
-        <BottomSheetTextInput
-          ref={textInputRef}
-          accessibilityLabel="Text input field"
-          keyboardType="default"
-          multiline
-          onChangeText={text => setInput( text )}
-          placeholder={placeholder}
-          testID="ObsEdit.notes"
-          style={[inputStyle, textInputStyle]}
-          autoFocus
-          defaultValue={input}
-        />
-        <Body3
-          className="z-50 absolute bottom-20 right-5 p-5"
-          onPress={() => {
-            textInputRef?.current?.clear();
-          }}
-        >
-          {t( "Clear" )}
-        </Body3>
+        <View className="border rounded-lg border-lightGray p-3 pt-1">
+          <BottomSheetTextInput
+            ref={textInputRef}
+            accessibilityLabel="Text input field"
+            keyboardType="default"
+            multiline
+            onChangeText={text => setInput( text )}
+            placeholder={placeholder}
+            testID="ObsEdit.notes"
+            style={[inputStyle, textInputStyle]}
+            autoFocus
+            defaultValue={input}
+          />
+          <Body3
+            className="self-end"
+            onPress={() => {
+              textInputRef?.current?.clear();
+            }}
+          >
+            {t( "Clear" )}
+          </Body3>
+        </View>
         <Button
           testID="ObsEdit.confirm"
           className="mt-5"

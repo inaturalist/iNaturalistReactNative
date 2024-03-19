@@ -1,6 +1,7 @@
 import { Realm } from "@realm/react";
 import { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Photo from "./Photo";
 
@@ -20,18 +21,12 @@ class ObservationPhoto extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static mapApiToRealm( observationPhoto, existingObs ) {
-    const obsPhotos = existingObs?.observationPhotos;
-    const existingObsPhoto = obsPhotos?.find( p => p.uuid === observationPhoto.uuid );
-
+  static mapApiToRealm( observationPhoto, realm = null ) {
     const localObsPhoto = {
       ...observationPhoto,
       _synced_at: new Date( ),
-      photo: Photo.mapApiToRealm( observationPhoto.photo, existingObsPhoto )
+      photo: Photo.mapApiToRealm( observationPhoto.photo, realm )
     };
-    if ( !existingObsPhoto ) {
-      localObsPhoto._created_at = new Date( );
-    }
     return localObsPhoto;
   }
 
@@ -96,9 +91,9 @@ class ObservationPhoto extends Realm.Object {
     // api v2, so just going to worry about deleting locally for now
     const obsPhotoToDelete = currentObservation?.observationPhotos.find( p => p.url === uri );
     if ( obsPhotoToDelete ) {
-      realm?.write( ( ) => {
+      safeRealmWrite( realm, ( ) => {
         realm?.delete( obsPhotoToDelete );
-      } );
+      }, "deleting remote observation photo in ObservationPhoto" );
     }
   }
 
@@ -108,9 +103,9 @@ class ObservationPhoto extends Realm.Object {
     const obsPhotoToDelete = currentObservation?.observationPhotos
       .find( p => p.localFilePath === uri );
     if ( obsPhotoToDelete ) {
-      realm?.write( ( ) => {
+      safeRealmWrite( realm, ( ) => {
         realm?.delete( obsPhotoToDelete );
-      } );
+      }, "deleting local observation photo in ObservationPhoto" );
     }
   }
 
@@ -128,6 +123,14 @@ class ObservationPhoto extends Realm.Object {
       obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
     );
     return obsPhotoUris;
+  }
+
+  static mapInnerPhotos( observation ) {
+    const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
+    const innerPhotos = ( obsPhotos || [] ).map(
+      obsPhoto => obsPhoto.photo
+    );
+    return innerPhotos;
   }
 
   static schema = {

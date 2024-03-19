@@ -3,11 +3,17 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExploreContainer from "components/Explore/ExploreContainer";
-import Identify from "components/Identify/Identify";
+import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
+import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
+import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
+import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import PlaceholderComponent from "components/PlaceholderComponent";
+import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
+import ProjectsContainer from "components/Projects/ProjectsContainer";
+import { Heading4 } from "components/SharedComponents";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import {
@@ -21,6 +27,12 @@ import type { Node } from "react";
 import React from "react";
 
 import SharedStackScreens from "./SharedStackScreens";
+
+const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
+const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
+const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
+const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
+const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
 
@@ -37,6 +49,15 @@ const ObservationsStackNavigator = ( ): Node => (
         component={MyObservationsContainer}
         options={{
           ...hideHeader
+        }}
+      />
+      <Stack.Screen
+        name="Notifications"
+        component={NotificationsContainer}
+        options={{
+          ...showHeader,
+          headerTitle: notificationsTitle,
+          headerTitleAlign: "center"
         }}
       />
       <Stack.Screen
@@ -75,23 +96,59 @@ const ObservationsStackNavigator = ( ): Node => (
         options={hideHeader}
       />
       <Stack.Screen
-        name="ExploreFilters"
-        component={PlaceholderComponent}
+        name="ExploreTaxonSearch"
+        component={ExploreTaxonSearch}
         options={{
-          ...showHeader,
-          ...removeBottomBorder
+          ...removeBottomBorder,
+          headerTitle: taxonSearchTitle,
+          headerTitleAlign: "center"
+        }}
+      />
+      <Stack.Screen
+        name="ExploreLocationSearch"
+        component={ExploreLocationSearch}
+        options={{
+          ...removeBottomBorder,
+          headerTitle: locationSearchTitle,
+          headerTitleAlign: "center"
+        }}
+      />
+      <Stack.Screen
+        name="ExploreUserSearch"
+        component={ExploreUserSearch}
+        options={{
+          ...removeBottomBorder,
+          headerTitle: userSearchTitle,
+          headerTitleAlign: "center"
+        }}
+      />
+      <Stack.Screen
+        name="ExploreProjectSearch"
+        component={ExploreProjectSearch}
+        options={{
+          ...removeBottomBorder,
+          headerTitle: projectSearchTitle,
+          headerTitleAlign: "center"
+        }}
+      />
+      <Stack.Screen
+        name="Projects"
+        component={ProjectsContainer}
+        options={{
+          ...removeBottomBorder,
+          ...blankHeaderTitle
+        }}
+      />
+      <Stack.Screen
+        name="ProjectDetails"
+        component={ProjectDetailsContainer}
+        options={{
+          ...blankHeaderTitle,
+          ...removeBottomBorder,
+          ...showHeader
         }}
       />
     </Stack.Group>
-    <Stack.Screen
-      name="Identify"
-      component={Identify}
-      options={{
-        ...removeBottomBorder,
-        ...showHeader,
-        headerTitle: t( "Identify" )
-      }}
-    />
   </Stack.Navigator>
 );
 

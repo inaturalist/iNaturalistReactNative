@@ -5,7 +5,7 @@ exports[`List2 renders correctly 1`] = `
   style={
     [
       {
-        "fontFamily": "Whitney-Light",
+        "fontFamily": "Whitney-Book",
       },
       [
         {

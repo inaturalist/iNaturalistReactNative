@@ -1,51 +1,28 @@
 import {
+  act,
   screen,
   userEvent
 } from "@testing-library/react-native";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
-import os from "os";
-import path from "path";
-import Realm from "realm";
-import realmConfig from "realmModels/index";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import {
   renderApp,
   renderAppWithObservations
 } from "tests/helpers/render";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
-
-const initialStoreState = useStore.getState( );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
 
-// This is a bit crazy, but this ensures this test uses its own in-memory
-// database and doesn't interfere with the single, default in-memory database
-// used by other tests. In a perfect world, every parallel test worker would
-// have its own database, or at least this wouldn't be so manual, but it took
-// me long enough to figure this out. ~~~kueda 20231024
-// REALM SETUP
-const mockRealmConfig = {
-  schema: realmConfig.schema,
-  schemaVersion: realmConfig.schemaVersion,
-  // No need to actually write to disk
-  inMemory: true,
-  // For an in memory db path is basically a unique identifier, *but* Realm
-  // may still write some metadata to disk, so this needs to be a real, but
-  // temporary, path. In theory this should prevent this test from
-  // interacting with other tests
-  path: path.join( os.tmpdir( ), `${path.basename( __filename )}.realm` )
-};
-
-// Mock the config so that all code that runs during this test talks to the same database
-jest.mock( "realmModels/index", ( ) => ( {
-  __esModule: true,
-  default: mockRealmConfig
-} ) );
-
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
   return {
@@ -53,26 +30,29 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[__filename]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
     }
   };
 } );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
-// Open a realm connection and stuff it in global
-beforeAll( async ( ) => {
-  global.mockRealms = global.mockRealms || {};
-  global.mockRealms[__filename] = await Realm.open( mockRealmConfig );
+const initialStoreState = useStore.getState( );
+beforeAll( ( ) => {
   useStore.setState( initialStoreState, true );
 } );
 
-// Ensure the realm connection gets closed
-afterAll( ( ) => {
-  global.mockRealms[__filename]?.close( );
-  jest.clearAllMocks( );
-} );
-// /REALM SETUP
-
 const mockUser = factory( "LocalUser" );
+
+jest.mock( "components/Suggestions/hooks/useOnlineSuggestions", ( ) => jest.fn( () => ( {
+  dataUpdatedAt: new Date( ),
+  error: null,
+  loadingOnlineSuggestions: false,
+  onlineSuggestions: {
+    results: []
+  }
+} ) ) );
 
 describe( "MediaViewer navigation", ( ) => {
   const actor = userEvent.setup( );
@@ -90,7 +70,6 @@ describe( "MediaViewer navigation", ( ) => {
   }
 
   beforeAll( async () => {
-    await initI18next();
     jest.useFakeTimers( );
   } );
 
@@ -132,7 +111,7 @@ describe( "MediaViewer navigation", ( ) => {
       await navigateToObsEdit( );
       const obsEditPhotos = await screen.findAllByTestId( "ObsEdit.photo" );
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
-      await actor.press( obsEditPhotos[0] );
+      await act( async ( ) => actor.press( obsEditPhotos[0] ) );
       expect(
         await screen.findByTestId( `CustomImageZoom.${observation.observationPhotos[0].photo.url}` )
       ).toBeVisible( );
@@ -142,7 +121,7 @@ describe( "MediaViewer navigation", ( ) => {
       await navigateToObsEdit( );
       const obsEditPhotos = await screen.findAllByTestId( "ObsEdit.photo" );
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
-      await actor.press( obsEditPhotos[1] );
+      await act( async ( ) => actor.press( obsEditPhotos[1] ) );
       expect(
         await screen.findByTestId( `CustomImageZoom.${observation.observationPhotos[1].photo.url}` )
       ).toBeVisible( );
@@ -155,7 +134,7 @@ describe( "MediaViewer navigation", ( ) => {
       await navigateToObsEdit( );
       const obsEditPhotos = await screen.findAllByTestId( "ObsEdit.photo" );
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
-      await actor.press( obsEditPhotos[0] );
+      await act( async ( ) => actor.press( obsEditPhotos[0] ) );
       const deleteButtons = await screen.findAllByLabelText( "Delete photo" );
       expect( deleteButtons.length ).toEqual( observation.observationPhotos.length );
       expect( deleteButtons[0] ).toBeVisible( );
@@ -213,9 +192,9 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should show the first photo when tapped", async ( ) => {
       await navigateToObsDetail( );
-      const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+      const photos = await screen.findAllByTestId( "ObsMedia.photo" );
       expect( photos[0] ).toBeVisible( );
-      await actor.press( photos[0] );
+      await act( async ( ) => actor.press( photos[0] ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${observation.observation_photos[0].photo.url}`
@@ -228,7 +207,7 @@ describe( "MediaViewer navigation", ( ) => {
     it.todo( "should not show the first photo when second tapped" );
     // it( "should not show the first photo when second tapped", async ( ) => {
     //   await navigateToObsDetail( );
-    //   const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+    //   const photos = await screen.findAllByTestId( "ObsMedia.photo" );
     //   await actor.press( photos[1] );
     //   expect(
     //     await screen.findByTestId(
@@ -242,9 +221,9 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should not show delete button", async ( ) => {
       await navigateToObsDetail( );
-      const photos = await screen.findAllByTestId( "PhotoScroll.photo" );
+      const photos = await screen.findAllByTestId( "ObsMedia.photo" );
       expect( photos[0] ).toBeVisible( );
-      await actor.press( photos[0] );
+      await act( async ( ) => actor.press( photos[0] ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${observation.observation_photos[0].photo.url}`
@@ -283,7 +262,7 @@ describe( "MediaViewer navigation", ( ) => {
       await actor.press( observationRow );
       expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
       const displayedTaxon = await screen.findByText( taxon.name );
-      await actor.press( displayedTaxon );
+      await act( async ( ) => actor.press( displayedTaxon ) );
       expect( await screen.findByTestId( `TaxonDetails.${taxon.id}` ) ).toBeVisible( );
     }
 
@@ -291,7 +270,7 @@ describe( "MediaViewer navigation", ( ) => {
       await navigateToTaxonDetail( );
       const photo = await screen.findByTestId( "TaxonDetails.photo" );
       expect( photo ).toBeVisible( );
-      await actor.press( photo );
+      await act( async ( ) => actor.press( photo ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
@@ -303,13 +282,87 @@ describe( "MediaViewer navigation", ( ) => {
       await navigateToTaxonDetail( );
       const photo = await screen.findByTestId( "TaxonDetails.photo" );
       expect( photo ).toBeVisible( );
-      await actor.press( photo );
+      await act( async ( ) => actor.press( photo ) );
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`
         )
       ).toBeVisible( );
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
+    } );
+  } );
+
+  describe( "from Suggestions", ( ) => {
+    const observation = factory( "RemoteObservation", {
+      observation_photos: [
+        factory( "RemoteObservationPhoto" ),
+        factory( "RemoteObservationPhoto" )
+      ]
+    } );
+    const observations = [observation];
+    useStore.setState( { observations } );
+
+    async function navigateToSuggestions( ) {
+      await renderAppWithObservations( observations, __filename );
+      const observationRow = await screen.findByTestId(
+        `MyObservations.obsListItem.${observation.uuid}`
+      );
+      await actor.press( observationRow );
+      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
+      const suggestButton = await screen.findByTestId(
+        "ObsDetail.cvSuggestionsButton"
+      );
+      await act( async () => actor.press( suggestButton ) );
+      const firstPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+      );
+      expect( firstPhoto ).toBeVisible();
+      const secondPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[1].photo.url}`
+      );
+      expect( secondPhoto ).toBeVisible();
+    }
+
+    it( "should show the selected photo when tapped", async () => {
+      await navigateToSuggestions( );
+      const firstPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+      );
+      expect( firstPhoto ).toBeVisible();
+      await act( async () => actor.press( firstPhoto ) );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+        )
+      ).toBeVisible();
+    } );
+
+    it( "should not show the currently not selected photo when tapped", async () => {
+      await navigateToSuggestions( );
+      const secondPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[1].photo.url}`
+      );
+      expect( secondPhoto ).toBeVisible();
+      await act( async () => actor.press( secondPhoto ) );
+      expect(
+        screen.queryByTestId(
+          `CustomImageZoom.${observation.observation_photos[1].photo.url}`
+        )
+      ).toBeFalsy();
+    } );
+
+    it( "should not show delete button", async () => {
+      await navigateToSuggestions();
+      const firstPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+      );
+      await act( async () => actor.press( firstPhoto ) );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+        )
+      ).toBeVisible();
+      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy();
     } );
   } );
 } );

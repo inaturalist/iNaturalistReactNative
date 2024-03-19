@@ -2,7 +2,7 @@
 
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import { INatIconButton } from "components/SharedComponents";
+import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -10,7 +10,6 @@ import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
 import {
-  ActivityIndicator,
   FlatList
 } from "react-native";
 import Modal from "react-native-modal";
@@ -117,7 +116,7 @@ const PhotoCarousel = ( {
             ...photoClasses
           )}
         >
-          <ActivityIndicator />
+          <ActivityIndicator size={25} />
         </View>
       </View>
     )
@@ -148,6 +147,7 @@ const PhotoCarousel = ( {
 
   const renderPhotoOrEvidenceButton = useCallback( ( { item: photoUri, index } ) => (
     <>
+      {index === 0 && renderSkeleton( )}
       <Animated.View style={!isTablet && animatedStyle}>
         <View
           className={classnames( IMAGE_CONTAINER_CLASSES )}
@@ -200,7 +200,6 @@ const PhotoCarousel = ( {
           </View>
         </View>
       </Animated.View>
-      {index === photoUris.length - 1 && renderSkeleton( )}
     </>
   ), [
     animatedStyle,
@@ -208,7 +207,6 @@ const PhotoCarousel = ( {
     deletePhotoMode,
     isTablet,
     photoClasses,
-    photoUris,
     renderSkeleton,
     showDeletePhotoMode,
     t,
@@ -301,7 +299,7 @@ const PhotoCarousel = ( {
         editable
         showModal={tappedPhotoIndex >= 0}
         onClose={( ) => setTappedPhotoIndex( -1 )}
-        onDelete={async photoUri => {
+        onDeletePhoto={async photoUri => {
           await deletePhotoByUri( photoUri );
           setTappedPhotoIndex( tappedPhotoIndex - 1 );
         }}

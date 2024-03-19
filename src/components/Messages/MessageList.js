@@ -1,7 +1,8 @@
 // @flow
 
+import { ActivityIndicator } from "components/SharedComponents";
 import * as React from "react";
-import { ActivityIndicator, FlatList, Text } from "react-native";
+import { FlatList, Text } from "react-native";
 import { textStyles } from "styles/messages/messages";
 
 type Props = {
@@ -19,6 +20,7 @@ const MessageList = ( {
     return (
       <ActivityIndicator
         testID="Messages.activityIndicator"
+        size={25}
       />
     );
   }

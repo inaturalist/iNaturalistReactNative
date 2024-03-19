@@ -1,10 +1,11 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import ActivityIndicator from "components/SharedComponents/ActivityIndicator";
+import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useState
 } from "react";
 import {
@@ -15,13 +16,10 @@ import {
 import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import { sleep } from "sharedHelpers/util";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
-
-const sleep = ms => new Promise( resolve => {
-  setTimeout( resolve, ms );
-} );
 
 const PhotoGallery = ( ): Node => {
   const navigation = useNavigation( );
@@ -45,6 +43,31 @@ const PhotoGallery = ( ): Node => {
   const fromGroupPhotos = params
     ? params.fromGroupPhotos
     : false;
+
+  const navToObsList = useCallback( ( ) => {
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
+  }, [navigation] );
+
+  const navToObsDetails = useCallback( uuid => navigation.navigate( "TabNavigator", {
+    screen: "ObservationsStackNavigator",
+    params: {
+      // Need to return to ObsDetails but with a navigation stack that goes back to ObsList
+      screen: "ObsList",
+      params: {
+        navToObsDetails: true,
+        uuid
+      }
+    }
+  } ), [navigation] );
+
+  const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
+    lastScreen: "PhotoGallery"
+  } ), [navigation] );
 
   const showPhotoGallery = React.useCallback( async () => {
     if ( photoGalleryShown ) {
@@ -78,8 +101,15 @@ const PhotoGallery = ( ): Node => {
         // This screen was called from the plus button of the group photos screen - get back to it
         navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
         navigation.setParams( { fromGroupPhotos: false } );
+      } else if ( skipGroupPhotos ) {
+        // This only happens when being called from ObsEdit
+        navToObsEdit();
+
+        // Determine if we need to go back to ObsList or ObsDetails screen
+      } else if ( params && params.previousScreen && params.previousScreen.name === "ObsDetails" ) {
+        navToObsDetails( params.previousScreen.params.uuid );
       } else {
-        navigation.goBack();
+        navToObsList();
       }
       setPhotoGalleryShown( false );
       return;
@@ -99,18 +129,26 @@ const PhotoGallery = ( ): Node => {
       return;
     }
 
-    const navToObsEdit = () => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+    const importedPhotoUris = response.assets.map( x => x.uri );
 
     if ( skipGroupPhotos ) {
       // add evidence to existing observation
       setPhotoImporterState( {
-        galleryUris: [...galleryUris, ...response.assets.map( x => x.uri )],
-        evidenceToAdd: [...evidenceToAdd, ...response.assets.map( x => x.uri )]
+        galleryUris: [...galleryUris, ...importedPhotoUris],
+        evidenceToAdd: [...evidenceToAdd, ...importedPhotoUris]
       } );
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos } );
-      const updatedCurrentObservation = Observation
-        .appendObsPhotos( obsPhotos, currentObservation );
+
+      // If the current observation is not synced, update the EXIF data from imported photos
+      const unsynced = !currentObservation?._synced_at;
+      let updatedCurrentObservation = unsynced
+        ? await Observation
+          .updateObsExifFromPhotos( importedPhotoUris, currentObservation )
+        : currentObservation;
+
+      updatedCurrentObservation = Observation
+        .appendObsPhotos( obsPhotos, updatedCurrentObservation );
       observations[currentObservationIndex] = updatedCurrentObservation;
       updateObservations( observations );
       navToObsEdit();
@@ -126,7 +164,7 @@ const PhotoGallery = ( ): Node => {
     } else {
       // navigate to group photos
       setPhotoImporterState( {
-        galleryUris: [...galleryUris, ...response.assets.map( x => x.uri )],
+        galleryUris: [...galleryUris, ...importedPhotoUris],
         groupedPhotos: selectedImages.map( photo => ( {
           photos: [photo]
         } ) )
@@ -136,11 +174,11 @@ const PhotoGallery = ( ): Node => {
       setPhotoGalleryShown( false );
     }
   }, [
-    photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
-    evidenceToAdd, galleryUris, navigation, setGroupedPhotos,
-    fromGroupPhotos, skipGroupPhotos, groupedPhotos, currentObservation,
-    updateObservations, observations,
-    currentObservationIndex] );
+    navToObsEdit, navToObsList, photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
+    evidenceToAdd, galleryUris, navigation, setGroupedPhotos, fromGroupPhotos, skipGroupPhotos,
+    groupedPhotos, currentObservation, updateObservations, observations, currentObservationIndex,
+    navToObsDetails, params
+  ] );
 
   const onPermissionGranted = () => {
     setPermissionGranted( true );
@@ -168,22 +206,24 @@ const PhotoGallery = ( ): Node => {
   );
 
   return (
-    <View className="flex-1 w-full h-full justify-center items-center">
-      <ActivityIndicator />
-      {!permissionGranted && (
-        <PermissionGateContainer
-          permissions={READ_MEDIA_PERMISSIONS}
-          title={t( "Observe-and-identify-organisms-from-your-gallery" )}
-          titleDenied={t( "Please-Allow-Gallery-Access" )}
-          body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
-          blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
-          buttonText={t( "CHOOSE-PHOTOS" )}
-          icon="gallery"
-          image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
-          onPermissionGranted={onPermissionGranted}
-        />
-      )}
-    </View>
+    <ViewWrapper testID="PhotoGallery" className="flex-1">
+      <View className="flex-1 w-full h-full justify-center items-center">
+        <ActivityAnimation />
+        {!permissionGranted && (
+          <PermissionGateContainer
+            permissions={READ_MEDIA_PERMISSIONS}
+            title={t( "Observe-and-identify-organisms-from-your-gallery" )}
+            titleDenied={t( "Please-Allow-Gallery-Access" )}
+            body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
+            blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
+            buttonText={t( "CHOOSE-PHOTOS" )}
+            icon="gallery"
+            image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+            onPermissionGranted={onPermissionGranted}
+          />
+        )}
+      </View>
+    </ViewWrapper>
   );
 };
 

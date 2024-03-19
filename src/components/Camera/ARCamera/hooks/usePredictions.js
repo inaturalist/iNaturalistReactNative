@@ -3,78 +3,55 @@
 import {
   useState
 } from "react";
-import {
-  Platform
-} from "react-native";
+import { useIconicTaxa } from "sharedHooks";
 
 const usePredictions = ( ): Object => {
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
+  const [confidenceThreshold, setConfidenceThreshold] = useState( 0.5 );
+  const [fps, setFPS] = useState( 1 );
+  const [numStoredResults, setNumStoredResults] = useState( 4 );
+  const [cropRatio, setCropRatio] = useState( 1 );
+  const iconicTaxa = useIconicTaxa( );
 
-  const handleTaxaDetected = cvResults => {
-    if ( cvResults && !modelLoaded ) {
+  const handleTaxaDetected = cvResult => {
+    if ( cvResult && !modelLoaded ) {
       setModelLoaded( true );
     }
-    /*
-      Using FrameProcessorCamera results in this as cvResults atm on Android
-      [
-        {
-          "stateofmatter": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        },
-        {
-          "order": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        },
-        {
-          "species": [
-            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
-          ]
-        }
-      ]
-    */
-    /*
-      Using FrameProcessorCamera results in this as cvResults atm on iOS (= top prediction)
-      [
-        {"name": "Aves", "rank": 50, "score": 0.7627944946289062, "taxon_id": 3}
-      ]
-    */
-    const standardizePrediction = finestPrediction => ( {
-      taxon: {
-        rank_level: finestPrediction.rank,
-        id: Number( finestPrediction.taxon_id ),
-        name: finestPrediction.name
-      },
-      score: finestPrediction.score
-    } );
     let prediction = null;
-    let predictions = [];
-    if ( Platform.OS === "ios" ) {
-      if ( cvResults.length > 0 ) {
-        const finestPrediction = cvResults[cvResults.length - 1];
-        prediction = standardizePrediction( finestPrediction );
-      }
-    } else {
-      predictions = cvResults
-        ?.map( r => {
-          const rank = Object.keys( r )[0];
-          return r[rank][0];
-        } )
-        .sort( ( a, b ) => a.rank - b.rank );
-      if ( predictions.length > 0 ) {
-        const finestPrediction = predictions[0];
-        prediction = standardizePrediction( finestPrediction );
-      }
+    const { predictions: branch } = cvResult;
+    branch.sort( ( a, b ) => a.rank_level - b.rank_level );
+    const branchIDs = branch.map( t => t.taxon_id );
+    if ( branch.length > 0 ) {
+      const finestPrediction = branch[0];
+      // Try to find a known iconic taxon in the model results so we can show
+      // an icon if we can't show a photo
+      const iconicTaxon = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 );
+      prediction = {
+        taxon: {
+          rank_level: finestPrediction.rank_level,
+          id: finestPrediction.taxon_id,
+          name: finestPrediction.name,
+          iconic_taxon_name: iconicTaxon?.name
+        },
+        score: finestPrediction.score
+      };
     }
     setResult( prediction );
   };
 
   return {
+    confidenceThreshold,
+    fps,
     handleTaxaDetected,
     modelLoaded,
-    result
+    numStoredResults,
+    cropRatio,
+    result,
+    setConfidenceThreshold,
+    setFPS,
+    setNumStoredResults,
+    setCropRatio
   };
 };
 

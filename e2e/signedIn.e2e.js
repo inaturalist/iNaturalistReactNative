@@ -50,7 +50,7 @@ describe( "Signed in user", () => {
     const addObsButton = element( by.id( "add-obs-button" ) );
     await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
     await addObsButton.tap();
-    await expect( element( by.id( "evidence-text" ) ) ).toBeVisible();
+    await expect( element( by.id( "identify-text" ) ) ).toBeVisible();
     // Observe without evidence
     const obsWithoutEvidenceButton = element(
       by.id( "observe-without-evidence-button" )
@@ -129,5 +129,7 @@ describe( "Signed in user", () => {
     // TODO test to make sure the exact observation we created was deleted.
     // Testing for the empty list UI isn't adequate because other test runs
     // happening in parallel might cause other observations to be there
+    const deletedObservationText = element( by.text( /1 observation deleted/ ) );
+    await waitFor( deletedObservationText ).toBeVisible().withTimeout( 10000 );
   } );
 } );

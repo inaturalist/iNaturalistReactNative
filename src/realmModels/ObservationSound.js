@@ -3,50 +3,61 @@ import { FileUpload } from "inaturalistjs";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+
+const SOUND_UPLOADS_DIRNAME = "soundUploads";
+const SOUND_UPLOADS_PATH = `${RNFS.DocumentDirectoryPath}/${SOUND_UPLOADS_DIRNAME}`;
 
 class ObservationSound extends Realm.Object {
   static OBSERVATION_SOUNDS_FIELDS = {
     id: true,
-    file_url: true,
-    flags: {
+    uuid: true,
+    sound: {
       id: true,
-      created_at: true,
-      resolved_at: true,
-      updated_at: true,
-      uuid: true
-    },
-    uuid: true
+      file_url: true
+    }
   };
+
+  needsSync( ) {
+    return !this._synced_at || this._synced_at <= this._updated_at;
+  }
 
   wasSynced( ) {
     return this._synced_at !== null;
   }
 
-  static async moveFromCacheToDocumentDirectory( soundUUID ) {
-    const fileExt = Platform.OS === "android"
-      ? "mp4"
-      : "m4a";
-    const soundPath = `${soundUUID}.${fileExt}`;
-    // in theory, should be able to pass in a path to the audio recorder
-    // but that's buggy so moving the file from cache to document directory instead
+  static async moveFromCacheToDocumentDirectory( srcPath, options = {} ) {
+    const srcFileName = srcPath.split( "/" ).at( -1 );
+    const srcFileExt = srcFileName.split( "." ).at( -1 );
+    let fileName = srcFileName;
+    if ( options.basename ) {
+      fileName = `${options.basename}.${srcFileExt}`;
+    }
+    await RNFS.mkdir( SOUND_UPLOADS_PATH );
+    const dstPath = `${SOUND_UPLOADS_PATH}/${fileName}`;
 
-    const audioFile = `${RNFS.CachesDirectoryPath}/sound.${fileExt}`;
-    const soundUploadsFolder = `${RNFS.DocumentDirectoryPath}/soundUploads`;
-    await RNFS.mkdir( soundUploadsFolder );
-    const soundDirectory = `${soundUploadsFolder}/${soundPath}`;
-
-    await RNFS.moveFile( audioFile, soundDirectory );
-    return soundDirectory;
+    await RNFS.moveFile( srcPath, dstPath );
+    return dstPath;
   }
 
-  static async new( ) {
+  static async new( sound ) {
     const soundUUID = uuid.v4( );
-    const uri = await ObservationSound.moveFromCacheToDocumentDirectory( soundUUID );
+    /* eslint-disable camelcase */
+    let { file_url } = sound;
+    if ( sound?.file_url.match( /file:\/\// ) ) {
+      file_url = await ObservationSound.moveFromCacheToDocumentDirectory( sound.file_url, {
+        basename: soundUUID
+      } );
+      // this needs a protocol for the sound player to play it when it's local
+      file_url = `file://${file_url}`;
+    }
 
     return {
-      file_url: uri,
+      ...sound,
+      file_url,
       uuid: soundUUID
     };
+    /* eslint-enable camelcase */
   }
 
   static mapSoundForUpload( id, observationSound ) {
@@ -69,6 +80,25 @@ class ObservationSound extends Realm.Object {
       "observation_sound[observation_id]": id,
       "observation_sound[sound_id]": observationSound.id
     };
+  }
+
+  static deleteSoundFromDeviceStorage( path ) {
+    RNFS.exists( path ).then( fileExists => {
+      if ( fileExists ) RNFS.unlink( path );
+    } );
+  }
+
+  static async deleteLocalSound( realm, uri, obsUUID ) {
+    // delete uri on disk
+    ObservationSound.deleteSoundFromDeviceStorage( uri );
+    const realmObs = realm.objectForPrimaryKey( "Observation", obsUUID );
+    const obsSoundToDelete = realmObs?.observationSounds
+      .find( p => p.file_url === uri );
+    if ( obsSoundToDelete ) {
+      safeRealmWrite( realm, ( ) => {
+        realm?.delete( obsSoundToDelete );
+      }, "deleting local observation sound in ObservationSound" );
+    }
   }
 
   static schema = {

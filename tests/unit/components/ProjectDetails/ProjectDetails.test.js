@@ -1,9 +1,9 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
+import ProjectDetails from "components/ProjectDetails/ProjectDetails";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockProject = factory( "RemoteProject", {
@@ -33,9 +33,6 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 describe( "ProjectDetails", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
   test( "should not have accessibility errors", async ( ) => {
     renderComponent( <ProjectDetailsContainer /> );
     const projectDetails = await screen.findByTestId( "project-details" );
@@ -53,5 +50,17 @@ describe( "ProjectDetails", ( ) => {
     expect(
       screen.getByTestId( "ProjectDetails.projectIcon" ).props.source
     ).toStrictEqual( { uri: mockProject.icon } );
+  } );
+
+  it( "renders when project has no description", ( ) => {
+    renderComponent(
+      <ProjectDetails
+        project={{
+          ...mockProject,
+          description: null
+        }}
+      />
+    );
+    expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
   } );
 } );

@@ -1,40 +1,32 @@
 // @flow
 
 import {
-  Button, Heading4
+  Button
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { TextInput, useTheme } from "react-native-paper";
+
+import LoginSignUpInputField from "./LoginSignUpInputField";
 
 type Props = {
-  handleInputFocus?: Function,
   reset: Function
 }
 
-const ForgotPasswordForm = ( { handleInputFocus, reset }: Props ): Node => {
+const ForgotPasswordForm = ( { reset }: Props ): Node => {
   const [email, setEmail] = useState( "" );
-  const theme = useTheme( );
 
   return (
     <View className="px-4 my-5 justify-end">
-      <View>
-        <Heading4 className="color-white mb-[11px]">{t( "USERNAME-OR-EMAIL" )}</Heading4>
-        <TextInput
-          accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-          className="h-[45px] rounded-md"
-          onChangeText={text => setEmail( text )}
-          value={email}
-          autoComplete="email"
-          testID="Login.email"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          selectionColor={theme.colors.tertiary}
-          onFocus={handleInputFocus}
-        />
-      </View>
+      <LoginSignUpInputField
+        accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+        autoComplete="email"
+        headerText={t( "USERNAME-OR-EMAIL" )}
+        keyboardType="email-address"
+        onChangeText={text => setEmail( text )}
+        testID="Login.email"
+      />
       <Button
         level="focus"
         text={t( "RESET-PASSWORD" )}

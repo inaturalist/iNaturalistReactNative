@@ -1,4 +1,5 @@
 // eslint-disable-next-line
+import { Realm } from "@realm/react";
 import { create } from "zustand";
 import _ from "lodash";
 
@@ -19,6 +20,25 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   return [];
 };
 
+const removeObsSoundFromObservation = ( currentObservation, uri ) => {
+  if ( _.isEmpty( currentObservation ) ) { return []; }
+  const updatedObservation = currentObservation;
+  const obsSounds = Array.from( currentObservation?.observationSounds );
+  if ( obsSounds.length > 0 ) {
+    _.remove(
+      obsSounds,
+      obsPhoto => obsPhoto.file_url === uri
+    );
+    updatedObservation.observationSounds = obsSounds;
+    return [updatedObservation];
+  }
+  return [currentObservation];
+};
+
+const observationToJSON = observation => ( observation instanceof Realm.Object
+  ? observation.toJSON( )
+  : observation );
+
 const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const {
     observations,
@@ -27,9 +47,7 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   } = state;
   const updatedObservations = observations;
   const updatedObservation = {
-    ...( currentObservation.toJSON
-      ? currentObservation.toJSON( )
-      : currentObservation ),
+    ...observationToJSON( currentObservation ),
     ...keysAndValues
   };
   updatedObservations[currentObservationIndex] = updatedObservation;
@@ -51,6 +69,9 @@ const useStore = create( set => ( {
   galleryUris: [],
   groupedPhotos: [],
   observations: [],
+  // Track when any obs was last marked as viewed so we know when to update
+  // the notifications indicator
+  observationMarkedAsViewedAt: null,
   originalCameraUrisMap: {},
   photoEvidenceUris: [],
   savingPhoto: false,
@@ -64,6 +85,19 @@ const useStore = create( set => ( {
       uri
     )
   } ) ),
+  deleteSoundFromObservation: uri => set( state => {
+    const newObservations = removeObsSoundFromObservation(
+      state.observations[state.currentObservationIndex],
+      uri
+    );
+    // FWIW, i don't really understand why this *isn't* necessary in
+    // deletePhotoFromObservation ~~~kueda20240222
+    const newObservation = removeObsSoundFromObservation( state.currentObservation, uri )[0];
+    return {
+      observations: newObservations,
+      currentObservation: newObservation
+    };
+  } ),
   resetStore: ( ) => set( {
     cameraPreviewUris: [],
     cameraRollUris: [],
@@ -91,14 +125,17 @@ const useStore = create( set => ( {
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,
-    currentObservation: state.observations[index]
+    currentObservation: observationToJSON( state.observations[index] )
   } ) ),
   setGroupedPhotos: photos => set( {
     groupedPhotos: photos
   } ),
+  setObservationMarkedAsViewedAt: date => set( {
+    observationMarkedAsViewedAt: date
+  } ),
   setObservations: updatedObservations => set( state => ( {
-    observations: updatedObservations,
-    currentObservation: updatedObservations[state.currentObservationIndex]
+    observations: updatedObservations.map( observationToJSON ),
+    currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )
   } ) ),
   setPhotoEvidenceUris: uris => set( {
     photoEvidenceUris: uris
@@ -109,13 +146,13 @@ const useStore = create( set => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     groupedPhotos: options?.groupedPhotos || state.groupedPhotos,
     observations: options?.observations || state.observations,
-    currentObservation: options?.observations?.[state.currentObservationIndex]
-    || state.observations?.[state.currentObservationIndex]
+    currentObservation: observationToJSON( options?.observations?.[state.currentObservationIndex]
+    || state.observations?.[state.currentObservationIndex] )
   } ) ),
   updateComment: newComment => set( { comment: newComment } ),
   updateObservations: updatedObservations => set( state => ( {
     observations: updatedObservations,
-    currentObservation: updatedObservations[state.currentObservationIndex],
+    currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
     unsavedChanges: true
   } ) ),
   updateObservationKeys: keysAndValues => set( state => ( {

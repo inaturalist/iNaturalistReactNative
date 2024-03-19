@@ -46,7 +46,7 @@ const useInfiniteScroll = (
     data: flatten( allResults ),
     totalResults: pages?.[0]
       ? pages?.[0].total_results
-      : 0,
+      : null,
     status
   };
 };

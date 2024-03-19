@@ -3,66 +3,173 @@
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useCallback } from "react";
+import { Dimensions, PixelRatio } from "react-native";
+import { useTheme } from "react-native-paper";
 import {
   useCurrentUser,
-  useObservationsUpdates
+  useTranslation
 } from "sharedHooks";
 
+import useDeleteObservations from "./hooks/useDeleteObservations";
 import Toolbar from "./Toolbar";
 
+const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
+
 type Props = {
-  toggleLayout: Function,
   layout: string,
   numUnuploadedObs: number,
-  uploadState: Object,
-  uploadMultipleObservations: Function,
   stopUploads: Function,
   syncObservations: Function,
-  toolbarProgress: number
+  toggleLayout: Function,
+  toolbarProgress: number,
+  uploadMultipleObservations: Function,
+  uploadState: Object
 }
 
 const ToolbarContainer = ( {
-  toggleLayout,
   layout,
   numUnuploadedObs,
-  uploadState,
-  uploadMultipleObservations,
   stopUploads,
   syncObservations,
-  toolbarProgress
+  toggleLayout,
+  toolbarProgress,
+  uploadMultipleObservations,
+  uploadState
 }: Props ): Node => {
+  const deletionState = useDeleteObservations( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
 
-  const { refetch } = useObservationsUpdates( false );
+  const {
+    currentDeleteCount,
+    deletions,
+    deletionsInProgress,
+    deletionsComplete,
+    error: deleteError
+  } = deletionState;
+  const totalDeletions = deletions.length;
+  const deletionsProgress = totalDeletions > 0
+    ? currentDeleteCount / totalDeletions
+    : 0;
 
-  const handleSyncButtonPress = useCallback( ( ) => {
+  const {
+    error: uploadError,
+    uploadInProgress,
+    uploadsComplete,
+    numToUpload,
+    numFinishedUploads,
+    syncInProgress
+  } = uploadState;
+
+  const handleSyncButtonPress = useCallback( async ( ) => {
     if ( numUnuploadedObs > 0 ) {
-      uploadMultipleObservations( );
+      await uploadMultipleObservations( );
     } else {
       syncObservations( );
-      refetch( );
     }
   }, [
     numUnuploadedObs,
     syncObservations,
-    refetch,
     uploadMultipleObservations
   ] );
 
-  const navToExplore = useCallback( ( ) => navigation.navigate( "Explore" ), [navigation] );
+  const navToExplore = useCallback(
+    ( ) => navigation.navigate( "Explore", { user: currentUser, worldwide: true } ),
+    [navigation, currentUser]
+  );
+
+  const { t } = useTranslation( );
+  const theme = useTheme( );
+  const progress = toolbarProgress;
+  const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
+  const showsCheckmark = ( uploadsComplete && !uploadError )
+    || ( deletionsComplete && !deleteError );
+  const needsSync = !uploadInProgress
+    && ( numUnuploadedObs > 0 || uploadError );
+
+  const getStatusText = useCallback( ( ) => {
+    const deletionParams = {
+      total: totalDeletions,
+      currentDeleteCount
+    };
+
+    if ( syncInProgress ) {
+      return t( "Syncing" );
+    }
+
+    if ( totalDeletions > 0 ) {
+      if ( deletionsComplete ) {
+        return t( "X-observations-deleted", { count: totalDeletions } );
+      }
+      // iPhone 4 pixel width
+      if ( screenWidth <= 640 ) {
+        return t( "Deleting-x-of-y", deletionParams );
+      }
+
+      return t( "Deleting-x-of-y-observations", deletionParams );
+    }
+
+    if ( uploadInProgress ) {
+      const translationParams = {
+        total: numToUpload,
+        currentUploadCount: numFinishedUploads + 1
+      };
+      // iPhone 4 pixel width
+      if ( screenWidth <= 640 ) {
+        return t( "Uploading-x-of-y", translationParams );
+      }
+
+      return t( "Uploading-x-of-y-observations", translationParams );
+    }
+
+    if ( uploadsComplete ) {
+      return t( "X-observations-uploaded", { count: numToUpload } );
+    }
+
+    return numUnuploadedObs !== 0
+      ? t( "Upload-x-observations", { count: numUnuploadedObs } )
+      : "";
+  }, [
+    currentDeleteCount,
+    deletionsComplete,
+    numUnuploadedObs,
+    t,
+    totalDeletions,
+    numToUpload,
+    numFinishedUploads,
+    uploadsComplete,
+    uploadInProgress,
+    syncInProgress
+  ] );
+
+  const getSyncIconColor = useCallback( ( ) => {
+    if ( uploadError ) {
+      return theme.colors.error;
+    } if ( uploadInProgress || numUnuploadedObs > 0 ) {
+      return theme.colors.secondary;
+    }
+    return theme.colors.primary;
+  }, [theme, uploadInProgress, uploadError, numUnuploadedObs] );
+
+  const statusText = getStatusText( );
+  const syncIconColor = getSyncIconColor( );
 
   return (
     <Toolbar
       handleSyncButtonPress={handleSyncButtonPress}
-      stopUploads={stopUploads}
-      progress={toolbarProgress}
-      numUnuploadedObs={numUnuploadedObs}
-      showsExploreIcon={currentUser}
-      navToExplore={navToExplore}
-      toggleLayout={toggleLayout}
       layout={layout}
-      uploadState={uploadState}
+      navToExplore={navToExplore}
+      needsSync={needsSync}
+      progress={deletionsProgress || progress}
+      rotating={rotating}
+      showsCancelUploadButton={uploadInProgress}
+      showsCheckmark={showsCheckmark}
+      showsExploreIcon={currentUser}
+      statusText={statusText}
+      stopUploads={stopUploads}
+      syncIconColor={syncIconColor}
+      toggleLayout={toggleLayout}
+      error={deleteError || uploadError}
     />
   );
 };

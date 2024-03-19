@@ -2,10 +2,13 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { INatIconButton } from "components/SharedComponents";
-import { Text, View } from "components/styledComponents";
+import {
+  Body3, Heading2, INatIcon, INatIconButton
+} from "components/SharedComponents";
+import { View } from "components/styledComponents";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
-import { Platform } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
@@ -31,6 +34,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   const navigation = useNavigation( );
 
   const navAndCloseModal = async ( screen, params ) => {
+    const currentRoute = getCurrentRoute();
     resetStore( );
     if ( screen === "ObsEdit" ) {
       const newObservation = await Observation.new( );
@@ -39,7 +43,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     // access nested screen
     navigation.navigate( "CameraNavigator", {
       screen,
-      params
+      params: { ...params, previousScreen: currentRoute }
     } );
     closeModal( );
   };
@@ -57,24 +61,36 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
   const bulletedText = [
-    t( "Take-a-photo-with-your-camera" ),
-    t( "Upload-a-photo-from-your-gallery" ),
-    t( "Record-a-sound" )
+    { text: t( "Use-iNaturalists-AI-Camera" ), icon: "arcamera" },
+    { text: t( "Take-photos-with-the-camera" ), icon: "camera" },
+    { text: t( "Upload-photos-from-your-gallery" ), icon: "gallery" },
+    { text: t( "Record-sounds" ), icon: "microphone" },
+    { text: t( "Create-an-observation-evidence" ), icon: "noevidence" }
   ];
 
   const greenCircleClass = "bg-inatGreen rounded-full h-[46px] w-[46px]";
 
   return (
     <>
+      <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-row justify-center">
-        <View className="bg-white rounded-xl p-5 mb-12 max-w-sm">
-          <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
-          <Text className="color-darkGray my-2">{t( "Add-evidence-of-an-organism" )}</Text>
-          <Text className="color-darkGray my-2">{t( "You-can" )}</Text>
-          {bulletedText.map( string => (
-            <Text className="color-darkGray" key={string}>
-              {`\u2022 ${string}`}
-            </Text>
+        <View className="bg-white rounded-xl p-6 mb-12 mx-7 max-w-sm">
+          <Heading2 testID="identify-text">
+            {t( "Identify-an-organism" )}
+          </Heading2>
+          {bulletedText.map( ( { text, icon } ) => (
+            <View key={text} className="flex-row items-center mt-4">
+              <INatIcon
+                name={icon}
+                size={30}
+                color={
+                  icon === "arcamera"
+                    ? theme.colors.secondary
+                    : theme.colors.primary
+                }
+              />
+              <Body3 className="ml-5">{text}</Body3>
+            </View>
           ) )}
         </View>
       </View>
@@ -101,10 +117,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             size={30}
             icon="arcamera"
             color={theme.colors.onSecondary}
-            className={classnames(
-              greenCircleClass,
-              "absolute bottom-[26px]"
-            )}
+            className={classnames( greenCircleClass, "absolute bottom-[26px]" )}
             onPress={navToARCamera}
             accessibilityLabel={t( "AR-Camera" )}
             accessibilityHint={t( "Navigates-to-AR-camera" )}

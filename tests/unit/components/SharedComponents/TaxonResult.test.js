@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
 import { TaxonResult } from "components/SharedComponents";
-import initI18next from "i18n/initI18next";
 import React from "react";
 
 const mockTaxon = {
@@ -13,14 +12,10 @@ const mockTaxon = {
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => mockTaxon
+  default: () => ( { taxon: mockTaxon } )
 } ) );
 
 describe( "TaxonResult", () => {
-  beforeAll( async () => {
-    await initI18next();
-  } );
-
   it( "should render correctly", () => {
     render(
       <TaxonResult

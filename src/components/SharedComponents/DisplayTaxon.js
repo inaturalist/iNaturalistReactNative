@@ -43,28 +43,32 @@ const DisplayTaxon = ( {
       testID={testID}
       accessibilityLabel={accessibilityLabel || t( "Taxon-photo-and-name" )}
     >
-      {taxonPhoto
-        ? (
-          <Image
-            source={{ uri: taxonPhoto }}
-            className={classnames(
-              imageClassName,
-              {
-                "opacity-50": withdrawn
-              }
+      <View className="justify-between flex-row items-center w-full">
+        <View className="flex-row items-center">
+          {taxonPhoto
+            ? (
+              <Image
+                source={{ uri: taxonPhoto }}
+                className={classnames(
+                  imageClassName,
+                  {
+                    "opacity-50": withdrawn
+                  }
+                )}
+                accessibilityIgnoresInvertColors
+                testID="DisplayTaxon.image"
+              />
+            )
+            : (
+              <IconicTaxonIcon
+                imageClassName={imageClassName}
+                iconicTaxonName={iconicTaxonName}
+              />
             )}
-            accessibilityIgnoresInvertColors
-            testID="DisplayTaxon.image"
-          />
-        )
-        : (
-          <IconicTaxonIcon
-            imageClassName={imageClassName}
-            iconicTaxonName={iconicTaxonName}
-          />
-        )}
-      <View className="ml-3 shrink">
-        <DisplayTaxonName taxon={taxon} withdrawn={withdrawn} />
+          <View className="ml-3 shrink">
+            <DisplayTaxonName taxon={taxon} withdrawn={withdrawn} />
+          </View>
+        </View>
       </View>
     </Pressable>
   );

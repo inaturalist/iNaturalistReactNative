@@ -4,13 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
+  ActivityIndicator,
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
 import DatePicker from "./DatePicker";
@@ -30,6 +31,11 @@ type Props = {
   photos: Array<Object>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
+  sounds?: Array<{
+    id?: number,
+    file_url: string,
+    uuid: string
+  }>,
   updateObservationKeys: Function,
 }
 
@@ -46,6 +52,7 @@ const EvidenceSection = ( {
   photos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
+  sounds,
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -105,9 +112,10 @@ const EvidenceSection = ( {
         </View>
       </View>
       <EvidenceList
-        photos={photos}
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
+        photos={photos}
+        sounds={sounds}
       />
       <Pressable
         accessibilityRole="button"
@@ -117,7 +125,10 @@ const EvidenceSection = ( {
       >
         <View className="w-[30px] items-center mr-1">
           {isFetchingLocation && (
-            <ActivityIndicator testID="EvidenceSection.fetchingLocationIndicator" />
+            <ActivityIndicator
+              testID="EvidenceSection.fetchingLocationIndicator"
+              size={25}
+            />
           )}
           <View className={isFetchingLocation && "bottom-5"}>
             <INatIcon size={14} name="map-marker-outline" />

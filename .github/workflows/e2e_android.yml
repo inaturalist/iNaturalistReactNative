@@ -84,7 +84,7 @@ jobs:
         E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
         JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
         GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=small_inception_tf1.tflite\nANDROID_TAXONOMY_FILE_NAME=small_export_tax.csv\nIOS_MODEL_FILE_NAME=small_inception_tf1.mlmodel\nIOS_TAXONOMY_FILE_NAME=small_export_tax.json\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=small_inception_tf1.tflite\nANDROID_TAXONOMY_FILE_NAME=small_export_tax.csv\nIOS_MODEL_FILE_NAME=small_inception_tf1.mlmodel\nIOS_TAXONOMY_FILE_NAME=small_export_tax.json\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
     - name: Create keystore.properties file
       env:
         ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
@@ -128,6 +128,13 @@ jobs:
         $ANDROID_HOME/platform-tools/adb devices
         $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
         echo "Emulator started"
+
+    - name: Ensure servers are running
+      run: |
+        # is rails running?
+        curl -I --fail "https://staging.inaturalist.org/ping"
+        # is node running & is ES working?
+        curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
     # Start the Android e2e tests with extensive logging and screen captures for failing tests
     - name: Android Detox

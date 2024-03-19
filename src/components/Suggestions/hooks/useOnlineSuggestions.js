@@ -1,12 +1,16 @@
 // @flow
 
 import ImageResizer from "@bam.tech/react-native-image-resizer";
+import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import { FileUpload } from "inaturalistjs";
+import { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import {
   useAuthenticatedQuery
 } from "sharedHooks";
+
+const SCORE_IMAGE_TIMEOUT = 5_000;
 
 const resizeImage = async (
   path: string,
@@ -61,8 +65,11 @@ const flattenUploadParams = async (
 };
 
 type OnlineSuggestionsResponse = {
+  dataUpdatedAt: Date,
   onlineSuggestions: Object,
-  loadingOnlineSuggestions: boolean
+  loadingOnlineSuggestions: boolean,
+  timedOut: boolean,
+  error: Object
 }
 
 const useOnlineSuggestions = (
@@ -72,13 +79,17 @@ const useOnlineSuggestions = (
     longitude?: number
   }
 ): OnlineSuggestionsResponse => {
+  const queryClient = useQueryClient( );
+  const [timedOut, setTimedOut] = useState( false );
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
   // uploading images
   const {
     data: onlineSuggestions,
+    dataUpdatedAt,
     isLoading: loadingOnlineSuggestions,
-    isError
+    isError,
+    error
   } = useAuthenticatedQuery(
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => {
@@ -98,10 +109,35 @@ const useOnlineSuggestions = (
     }
   );
 
-  return {
-    onlineSuggestions,
-    loadingOnlineSuggestions: loadingOnlineSuggestions && !isError
-  };
+  // Give up on suggestions request after a timeout
+  useEffect( ( ) => {
+    const timer = setTimeout( ( ) => {
+      if ( onlineSuggestions === undefined ) {
+        queryClient.cancelQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
+        setTimedOut( true );
+      }
+    }, SCORE_IMAGE_TIMEOUT );
+
+    return ( ) => {
+      clearTimeout( timer );
+    };
+  }, [onlineSuggestions, selectedPhotoUri, queryClient] );
+
+  return timedOut
+    ? {
+      dataUpdatedAt,
+      error,
+      onlineSuggestions: undefined,
+      loadingOnlineSuggestions: false,
+      timedOut
+    }
+    : {
+      dataUpdatedAt,
+      error,
+      onlineSuggestions,
+      loadingOnlineSuggestions: loadingOnlineSuggestions && !isError,
+      timedOut
+    };
 };
 
 export default useOnlineSuggestions;

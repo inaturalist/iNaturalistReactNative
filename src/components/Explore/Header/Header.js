@@ -9,6 +9,7 @@ import {
 } from "components/SharedComponents";
 import SearchBar from "components/SharedComponents/SearchBar";
 import { Image, Pressable, View } from "components/styledComponents";
+import { EXPLORE_ACTION, useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Keyboard } from "react-native";
@@ -20,42 +21,36 @@ import colors from "styles/tailwindColors";
 import HeaderCount from "./HeaderCount";
 
 type Props = {
-  count?: ?number,
-  exploreParams: Object,
+  count: ?number,
   exploreView: string,
   exploreViewIcon: string,
-  region: Object,
-  updatePlace: Function,
-  updatePlaceName: Function,
-  updateTaxon: Function,
-  updateTaxonName: Function
+  loadingStatus: boolean,
+  openFiltersModal: Function,
+  updateTaxon: Function
 }
 
 const Header = ( {
   count,
-  exploreParams,
   exploreView,
   exploreViewIcon,
-  region,
-  updatePlace,
-  updatePlaceName,
-  updateTaxon,
-  updateTaxonName
+  loadingStatus,
+  openFiltersModal,
+  updateTaxon
 }: Props ): Node => {
+  const navigation = useNavigation( );
   const { t } = useTranslation( );
   const taxonInput = useRef( );
-  const placeInput = useRef( );
-  const placeName = region.place_guess;
-  const taxonName = exploreParams.taxon_name;
-  const navigation = useNavigation( );
   const theme = useTheme( );
+  const { state, dispatch } = useExplore( );
+  const taxonName = state.taxon_name;
+  const placeName = state.place_guess || t( "Worldwide" );
   const [hideTaxonResults, setHideTaxonResults] = useState( true );
-  const [hidePlaceResults, setHidePlaceResults] = useState( true );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
     borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20
+    borderBottomRightRadius: 20,
+    marginBottom: -40
   };
 
   const { data: taxonList } = useAuthenticatedQuery(
@@ -72,23 +67,10 @@ const Header = ( {
     )
   );
 
-  const { data: placeList } = useAuthenticatedQuery(
-    ["fetchSearchResults", placeName],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: placeName,
-        sources: "places",
-        fields: "place,place.display_name,place.point_geojson"
-      },
-      optsWithAuth
-    )
-  );
-
   return (
     <View className="z-10">
       <Surface
         style={surfaceStyle}
-        className="bg-darkGray"
         elevation={5}
       >
         <View className="bg-white px-5 flex-row justify-between items-center">
@@ -99,10 +81,14 @@ const Header = ( {
                 handleTextChange={taxonText => {
                   if ( taxonInput?.current?.isFocused( ) ) {
                     setHideTaxonResults( false );
-                    updateTaxonName( taxonText );
+                    dispatch( {
+                      type: EXPLORE_ACTION.SET_TAXON_NAME,
+                      taxonName: taxonText
+                    } );
                   }
                 }}
-                value={taxonName || t( "All-organisms" )}
+                value={taxonName}
+                placeholder={t( "All-organisms" )}
                 testID="Explore.taxonSearch"
                 containerClass="w-[250px]"
                 input={taxonInput}
@@ -129,43 +115,20 @@ const Header = ( {
                 </Pressable>
               ) )}
             </View>
-            <View className="flex-row items-center">
+            <Pressable
+              accessibilityRole="button"
+              className="flex-row items-center"
+              onPress={( ) => navigation.navigate( "ExploreLocationSearch" )}
+            >
               <INatIcon name="location" size={15} />
-              <SearchBar
-                handleTextChange={placeText => {
-                  if ( placeInput?.current?.isFocused( ) ) {
-                    setHidePlaceResults( false );
-                    updatePlaceName( placeText );
-                  }
-                }}
-                value={placeName || t( "Worldwide" )}
-                testID="Explore.placeSearch"
-                containerClass="w-[250px]"
-                input={placeInput}
-              />
-            </View>
-            <View className="bg-white">
-              {!hidePlaceResults && placeList?.map( place => (
-                <Pressable
-                  accessibilityRole="button"
-                  key={place.id}
-                  className="p-2 border-[0.5px] border-lightGray flex-row items-center"
-                  onPress={( ) => {
-                    updatePlace( place );
-                    setHidePlaceResults( true );
-                    Keyboard.dismiss( );
-                  }}
-                >
-                  <Body3 className="ml-2">{place?.display_name}</Body3>
-                </Pressable>
-              ) )}
-            </View>
+              <Body3 className="m-3">{placeName}</Body3>
+            </Pressable>
           </View>
           <INatIconButton
             icon="sliders"
             color={colors.white}
             className="bg-darkGray rounded-md"
-            onPress={( ) => navigation.navigate( "ExploreFilters" )}
+            onPress={() => openFiltersModal()}
             accessibilityLabel={t( "Filters" )}
             accessibilityHint={t( "Navigates-to-explore" )}
           />
@@ -174,6 +137,7 @@ const Header = ( {
           count={count}
           exploreView={exploreView}
           exploreViewIcon={exploreViewIcon}
+          loadingStatus={loadingStatus}
         />
       </Surface>
     </View>

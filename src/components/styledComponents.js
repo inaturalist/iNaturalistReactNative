@@ -5,7 +5,6 @@ import {
 } from "@gorhom/bottom-sheet";
 import { styled } from "nativewind";
 import {
-  ActivityIndicator as UnstyledActivityIndicator,
   Image as UnstyledImage,
   ImageBackground as UnstyledImageBackground,
   KeyboardAvoidingView as UnstyledKeyboardAvoidingView,
@@ -18,10 +17,10 @@ import {
   TextInput as UntyledTextInput,
   View as UnstyledView
 } from "react-native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import UnstyledFastImage from "react-native-fast-image";
 import UnstyledLinearGradient from "react-native-linear-gradient";
 
-// $FlowIgnore
-const ActivityIndicator = styled( UnstyledActivityIndicator );
 // $FlowIgnore
 const View = styled( UnstyledView );
 // $FlowIgnore
@@ -34,6 +33,13 @@ const ScrollView = styled( UnstyledScrollView );
 const Text = styled(
   UnstyledText,
   Platform.OS === "ios"
+    ? "font-Whitney-Semibold"
+    : "font-Whitney-Semibold-Pro"
+);
+// $FlowIgnore
+const MediumText = styled(
+  UnstyledText,
+  Platform.OS === "ios"
     ? "font-Whitney-Medium"
     : "font-Whitney-Medium-Pro"
 );
@@ -41,8 +47,8 @@ const Text = styled(
 const LightText = styled(
   UnstyledText,
   Platform.OS === "ios"
-    ? "font-Whitney-Light"
-    : "font-Whitney-Light-Pro"
+    ? "font-Whitney-Book"
+    : "font-Whitney-Book-Pro"
 );
 // $FlowIgnore
 const TextInput = styled( UntyledTextInput );
@@ -64,15 +70,19 @@ const fontMonoClass: string = ( Platform.OS === "ios"
 // $FlowIgnore
 const LinearGradient = styled( UnstyledLinearGradient );
 
+// $FlowIgnore
+const FastImage = styled( UnstyledFastImage );
+
 export {
-  ActivityIndicator,
   BottomSheetTextInput,
+  FastImage,
   fontMonoClass,
   Image,
   ImageBackground,
   KeyboardAvoidingView,
   LightText,
   LinearGradient,
+  MediumText,
   Modal,
   Pressable,
   SafeAreaView,

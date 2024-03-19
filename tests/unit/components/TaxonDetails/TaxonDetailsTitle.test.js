@@ -1,13 +1,17 @@
 import TaxonDetailsTitle from "components/TaxonDetails/TaxonDetailsTitle";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 
-describe( "TaxonDetailsTitle", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: {
+      total_results: 0
+    }
+  } )
+} ) );
 
+describe( "TaxonDetailsTitle", ( ) => {
   it( "should be accessible with a taxon", ( ) => {
     expect( <TaxonDetailsTitle taxon={factory( "LocalTaxon" )} /> ).toBeAccessible( );
   } );

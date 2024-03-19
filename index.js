@@ -1,5 +1,8 @@
 // @flow
 
+// React Native doesn't have a functional URL as of Feb 2024
+import "react-native-url-polyfill/auto";
+
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -24,10 +27,33 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
+import { getUserAgent } from "./src/api/userAgent";
+import { navigationRef } from "./src/navigation/navigationUtils";
 
 enableLatestRenderer( );
 
 const logger = log.extend( "index.js" );
+
+// Log all unhandled promise rejections in release builds. Otherwise they will
+// die in silence. Debug builds have a more useful UI w/ desymbolicated stack
+// traces
+/* eslint-disable no-undef */
+if (
+  !__DEV__
+  && typeof (
+    // $FlowIgnore
+    HermesInternal?.enablePromiseRejectionTracker === "function"
+  )
+) {
+  // $FlowIgnore
+  HermesInternal.enablePromiseRejectionTracker( {
+    allRejections: true,
+    onUnhandled: ( id, error ) => {
+      logger.error( "Unhandled promise rejection: ", error );
+    }
+  } );
+}
+/* eslint-enable no-undef */
 
 // I'm not convinced this ever catches anything... ~~~kueda 20240110
 const jsErrorHandler = ( e, isFatal ) => {
@@ -66,7 +92,8 @@ initI18next();
 // Configure inatjs to use the chosen URLs
 inatjs.setConfig( {
   apiURL: Config.API_URL,
-  writeApiURL: Config.API_URL
+  writeApiURL: Config.API_URL,
+  userAgent: getUserAgent()
 } );
 
 const queryClient = new QueryClient( {
@@ -85,7 +112,7 @@ const AppWithProviders = ( ) => (
           <GestureHandlerRootView className="flex-1">
             <BottomSheetModalProvider>
               {/* NavigationContainer needs to be nested above ObsEditProvider */}
-              <NavigationContainer>
+              <NavigationContainer ref={navigationRef}>
                 <ErrorBoundary>
                   <App />
                 </ErrorBoundary>

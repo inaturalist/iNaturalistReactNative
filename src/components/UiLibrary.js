@@ -29,29 +29,32 @@ import {
   List1,
   List2,
   ObservationLocation,
+  ObsStatus,
   PhotoCount,
+  ProjectListItem,
   QualityGradeStatus,
+  RadioButtonRow,
   SearchBar,
   StickyToolbar,
   Subheading1,
   Tabs,
   TaxonResult,
   UploadStatus,
-  UserIcon
+  UserIcon,
+  UserText,
+  ViewWrapper
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
-import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
-import UserText from "components/SharedComponents/UserText";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
+import ObsGridItem from "components/SharedComponents/ObservationsFlashList/ObsGridItem";
+import ObsListItem from "components/SharedComponents/ObservationsFlashList/ObsListItem";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useTranslation from "sharedHooks/useTranslation";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -95,8 +98,16 @@ const UiLibrary = (): Node => {
     vision: false
   };
 
-  const taxonWithPhoto = realm.objects( "Taxon" ).filtered( "defaultPhoto.url != nil" )[0];
-  const iconicTaxon = realm.objects( "Taxon" ).filtered( "isIconic == true" )[0];
+  const aves = {
+    id: 1,
+    name: "Aves",
+    preferred_common_name: "Birds",
+    rank: "family",
+    rank_level: 60,
+    iconic_taxon_name: "Aves",
+    isIconic: true
+  };
+  const taxonWithPhoto = realm.objects( "Taxon" ).filtered( "defaultPhoto.url != nil" )[0] || aves;
   const species = realm.objects( "Taxon" )
     .filtered( "preferred_common_name != nil AND rank = 'species'" )[0];
 
@@ -318,6 +329,29 @@ const UiLibrary = (): Node => {
               backgroundColor={theme.colors.primary}
               color={theme.colors.onPrimary}
               disabled
+            />
+          </View>
+        </View>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2>preventTransparency</Body2>
+            <INatIconButton
+              icon="arrow-down-bold-circle"
+              accessibilityLabel="Notifications"
+              mode="contained"
+              preventTransparency
+              color={theme.colors.deepPink}
+              backgroundColor={theme.colors.yellow}
+              size={44}
+            />
+            <INatIconButton
+              icon="chevron-right-circle"
+              accessibilityLabel="Notifications"
+              mode="contained"
+              preventTransparency
+              color={theme.colors.deepPink}
+              backgroundColor={theme.colors.yellow}
+              size={44}
             />
           </View>
         </View>
@@ -599,7 +633,7 @@ const UiLibrary = (): Node => {
         <Heading2 className="my-2">PhotoCount</Heading2>
         <View className="my-2 bg-lightGray p-2 rounded-lg flex-row justify-evenly">
           <PhotoCount count={0} />
-          <PhotoCount count={1} />
+          <PhotoCount count={2} />
           <PhotoCount count={12} size={50} />
           <PhotoCount count={1000} size={50} shadow />
         </View>
@@ -611,20 +645,11 @@ const UiLibrary = (): Node => {
         <Heading2 className="my-2">Confidence Interval</Heading2>
         <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
         <Heading2 className="my-2">Taxon Result</Heading2>
-        <TaxonResult
-          taxon={{
-            id: 1,
-            name: "Aves",
-            preferred_common_name: "Birds",
-            rank: "family",
-            rank_level: 60,
-            iconic_taxon_name: "Aves"
-          }}
-        />
+        <TaxonResult taxon={aves} />
         <Heading3>Taxon w/ photo</Heading3>
         <TaxonResult taxon={taxonWithPhoto} />
         <Heading3>Iconic taxon</Heading3>
-        <TaxonResult taxon={iconicTaxon} />
+        <TaxonResult taxon={aves} fetchRemote={false} fromLocal={false} />
         <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
         <IconicTaxonChooser
           taxon={{
@@ -653,6 +678,85 @@ const UiLibrary = (): Node => {
           topTextComponent={Heading5}
           bottomTextComponent={Heading3}
           taxon={species || taxonWithPhoto}
+        />
+
+        <Heading1 className="my-2">ProjectListItem</Heading1>
+        <ProjectListItem
+          item={{
+            id: 1,
+            title: "Project Title",
+            project_type: "collection",
+            icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
+          }}
+        />
+
+        <Heading1 className="my-2">RadioButtonRow</Heading1>
+        <RadioButtonRow
+          value="radio1"
+          checked
+          onPress={() => console.log( "radio1" )}
+          label="Radio 1"
+          description="This is a description"
+        />
+
+        <Heading1 className="my-2">ObsGridItem</Heading1>
+        <Heading2 className="my-2">Synced</Heading2>
+        <ObsGridItem
+          observation={{ uuid: "the-uuid", _synced_at: new Date( ) }}
+          uploadState={false}
+        />
+        <Heading2 className="my-2">Upload needed</Heading2>
+        <ObsGridItem observation={{ uuid: "the-uuid" }} />
+        <Heading2 className="my-2">Upload in progress</Heading2>
+        <ObsGridItem
+          observation={{ uuid: "the-uuid" }}
+          uploadState={{ uploadProgress: { "the-uuid": 0.4 } }}
+        />
+        <Heading2 className="my-2">Upload complete, w/ animation</Heading2>
+        <ObsGridItem
+          observation={{
+            uuid: "the-uuid"
+          }}
+          uploadState={{ uploadProgress: { "the-uuid": 1 } }}
+        />
+        <Heading2 className="my-2">Upload complete, before animation</Heading2>
+        <ObsGridItem
+          observation={{ uuid: "the-uuid" }}
+          uploadState={{ uploadProgress: { "the-uuid": 10 } }}
+        />
+        <Heading2 className="my-2">Upload complete, overlay of animated elements</Heading2>
+        <ObsGridItem
+          observation={{ uuid: "the-uuid" }}
+          uploadState={{ uploadProgress: { "the-uuid": 11 } }}
+        />
+
+        <Heading1 className="my-2">ObsListItem</Heading1>
+        <Heading2 className="my-2">Synced</Heading2>
+        <ObsListItem
+          observation={{ uuid: "the-uuid", _synced_at: new Date( ) }}
+          uploadState={false}
+        />
+        <Heading2 className="my-2">Upload needed</Heading2>
+        <ObsListItem observation={{ uuid: "the-uuid" }} />
+        <Heading2 className="my-2">Upload in progress</Heading2>
+        <ObsListItem
+          observation={{ uuid: "the-uuid" }}
+          uploadState={{ uploadProgress: { "the-uuid": 0.4 } }}
+        />
+        <Heading2 className="my-2">Upload complete, w/ animation</Heading2>
+        <ObsListItem
+          observation={{ uuid: "the-uuid" }}
+          uploadState={{ uploadProgress: { "the-uuid": 1 } }}
+        />
+        <Heading2 className="my-2">Upload complete, before animation</Heading2>
+        <ObsListItem
+          observation={{ uuid: "the-uuid" }}
+          uploadState={{ uploadProgress: { "the-uuid": 10 } }}
+        />
+        <Heading2 className="my-2">Upload complete, overlay of animated elements</Heading2>
+        <ObsListItem
+          observation={{ uuid: "the-uuid" }}
+          uploadState={{ uploadProgress: { "the-uuid": 11 } }}
         />
 
         <Heading1 className="my-2">More Stuff!</Heading1>

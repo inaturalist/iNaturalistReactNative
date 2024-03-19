@@ -1,11 +1,9 @@
 // @flow
 
-import { UploadStatus } from "components/SharedComponents";
+import { ObsStatus, UploadStatus } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-
-import ObsStatus from "./ObsStatus";
 
 type Props = {
   observation: Object,
@@ -29,36 +27,32 @@ const ObsUploadStatus = ( {
   const theme = useTheme( );
   const whiteColor = white && theme.colors.onPrimary;
 
-  const displayUploadStatus = ( ) => {
-    const obsStatus = (
-      <ObsStatus
-        observation={observation}
-        layout={layout}
-        white={white}
-        classNameMargin={classNameMargin}
-        testID={`ObsStatus.${observation.uuid}`}
-      />
-    );
+  const obsStatus = (
+    <ObsStatus
+      observation={observation}
+      layout={layout}
+      white={white}
+      classNameMargin={classNameMargin}
+      testID={`ObsStatus.${observation.uuid}`}
+    />
+  );
 
-    if ( !showUploadStatus ) {
-      return obsStatus;
-    }
+  if ( !showUploadStatus ) {
+    return obsStatus;
+  }
 
-    return (
-      <UploadStatus
-        progress={progress}
-        uploadObservation={uploadSingleObservation}
-        color={whiteColor}
-        completeColor={whiteColor}
-        layout={layout}
-        uuid={observation.uuid}
-      >
-        {obsStatus}
-      </UploadStatus>
-    );
-  };
-
-  return displayUploadStatus( );
+  return (
+    <UploadStatus
+      progress={progress}
+      uploadObservation={uploadSingleObservation}
+      color={whiteColor}
+      completeColor={whiteColor}
+      layout={layout}
+      uuid={observation.uuid}
+    >
+      {obsStatus}
+    </UploadStatus>
+  );
 };
 
 export default ObsUploadStatus;

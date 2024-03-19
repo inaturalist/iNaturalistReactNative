@@ -37,11 +37,6 @@ const WarningSheet = ( {
     headerText={headerText}
     hidden={hidden}
     insideModal={insideModal}
-    onChange={position => {
-      if ( position === -1 ) {
-        handleClose( );
-      }
-    }}
   >
     <View className="items-center p-5">
       {text && <List2 className="mb-6">{text}</List2>}

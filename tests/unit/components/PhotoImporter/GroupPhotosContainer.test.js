@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
@@ -31,7 +30,6 @@ const mockGroupedPhotos = [{
 describe( "GroupPhotosContainer", ( ) => {
   beforeAll( async ( ) => {
     useStore.setState( initialStoreState, true );
-    await initI18next( );
   } );
 
   afterEach( () => {

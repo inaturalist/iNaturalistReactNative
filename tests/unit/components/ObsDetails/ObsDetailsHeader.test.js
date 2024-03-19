@@ -1,45 +1,44 @@
-import { faker } from "@faker-js/faker";
-import { screen } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetailsHeader from "components/ObsDetails/ObsDetailsHeader";
-import initI18next from "i18n/initI18next";
+import i18next from "i18next";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.person.firstName( ),
-  rank: "genus",
-  preferred_common_name: faker.person.fullName( )
-} );
+jest.mock( "react-native/Libraries/Share/Share", () => ( {
+  share: jest.fn( () => Promise.resolve( "mockResolve" ) )
+} ) );
+
+jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
+  OS: "ios",
+  select: jest.fn( )
+} ) );
 
 describe( "ObsDetailsHeader", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
-  it( "displays unknown text if no taxon", async ( ) => {
+  it( "shows options menu when viewing someone else's observation", async ( ) => {
     renderComponent(
       <ObsDetailsHeader
-        observation={{
-          taxon: null
-        }}
+        observation={factory( "RemoteObservation" )}
+        belongsToCurrentUser={false}
       />
     );
-
-    const unknownText = screen.getByText( /Unknown/ );
-    expect( unknownText ).toBeVisible( );
+    const anchorButton = screen.getByLabelText( i18next.t( "Observation-options" ) );
+    expect( anchorButton ).toBeTruthy( );
+    fireEvent.press( anchorButton );
+    const shareButton = await screen.findByTestId( "MenuItem.Share" );
+    expect( shareButton ).toBeTruthy( );
   } );
 
-  it( "displays taxon", async ( ) => {
+  it( "does not show options menu when observation belongs to current user", ( ) => {
     renderComponent(
       <ObsDetailsHeader
-        observation={{
-          taxon: mockTaxon
-        }}
+        observation={factory( "RemoteObservation" )}
+        belongsToCurrentUser
       />
     );
-
-    const taxonName = screen.getByText( mockTaxon.name );
-    expect( taxonName ).toBeVisible( );
+    const editButton = screen.getByTestId( "ObsDetail.editButton" );
+    expect( editButton ).toBeVisible( );
+    const anchorButton = screen.queryByLabelText( i18next.t( "Observation-options" ) );
+    expect( anchorButton ).toBeFalsy( );
   } );
 } );

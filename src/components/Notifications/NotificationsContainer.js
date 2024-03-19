@@ -1,69 +1,40 @@
 // @flow
-
-import { fetchObservationUpdates } from "api/observations";
+import { useNavigation } from "@react-navigation/native";
 import NotificationsList from "components/Notifications/NotificationsList";
-import {
-  Body2
-} from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
-import { useIsConnected, useTranslation } from "sharedHooks";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useCurrentUser from "sharedHooks/useCurrentUser";
+import React, { useEffect } from "react";
+import { useIsConnected } from "sharedHooks";
+import useInfiniteNotificationsScroll from "sharedHooks/useInfiniteNotificationsScroll";
 
 const NotificationsContainer = (): Node => {
+  const navigation = useNavigation( );
   const isOnline = useIsConnected( );
-  const currentUser = useCurrentUser();
-  const { t } = useTranslation( );
-
-  // const { data } = useInfiniteNotificationsScroll( {} );
-  // console.log( "data in notifications container", data );
-
-  // Request params for fetching unviewed updates
-  const params = {
-    observations_by: "owner",
-    viewed: true,
-    fields: "all",
-    per_page: 50,
-    page: 0
-  };
 
   const {
-    data
-  } = useAuthenticatedQuery(
-    ["fetchObservationNotificationUpdates"],
-    optsWithAuth => fetchObservationUpdates( params, optsWithAuth ),
-    { enabled: true }
-  );
+    notifications,
+    fetchNextPage,
+    refetch,
+    isInitialLoading,
+    isFetching,
+    isError
+  } = useInfiniteNotificationsScroll( );
 
-  const messageClassName = "flex justify-center items-center h-full mx-12";
+  useEffect( ( ) => {
+    navigation.addListener( "focus", ( ) => {
+      if ( isOnline ) {
+        refetch();
+      }
+    } );
+  }, [isOnline, navigation, refetch] );
 
-  if ( !data && isOnline && currentUser ) {
-    return (
-      <View className={messageClassName}>
-        <Body2>{t( "No-Notifications-Found" )}</Body2>
-      </View>
-    );
-  }
-
-  if ( !data && !isOnline && currentUser ) {
-    return (
-      <View className={messageClassName}>
-        <Body2>{t( "Offline-No-Notifications" )}</Body2>
-      </View>
-    );
-  }
-
-  if ( !currentUser ) {
-    return (
-      <View className={messageClassName}>
-        <Body2>{t( "No-Notifications-Found" )}</Body2>
-      </View>
-    );
-  }
   return (
-    <NotificationsList data={data} />
+    <NotificationsList
+      data={notifications}
+      onEndReached={fetchNextPage}
+      isOnline={isOnline}
+      isLoading={isInitialLoading || isFetching}
+      isError={isError}
+    />
   );
 };
 

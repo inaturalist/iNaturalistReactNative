@@ -51,7 +51,7 @@ const ObsNotification = ( { item }: Props ): Node => {
     >
       <ObservationIcon uri={photoUrl} />
       <View className="flex-col w-2/3 justify-between p-1 space-y-[8px]">
-        <ObsNotificationText type={type} notifier={user.login} />
+        <ObsNotificationText type={type} userName={user.login} />
         <View className="flex-row space-x-[8px]">
           {
             type

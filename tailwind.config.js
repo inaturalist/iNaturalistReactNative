@@ -86,6 +86,7 @@ module.exports = {
       borderRadius: {
         // tried using rem value here, but it wouldn't load on iOS or Android
         DEFAULT: "7px",
+        xs: "1px",
         sm: "4px",
         md: "9px",
         lg: "8px",
@@ -102,16 +103,21 @@ module.exports = {
       inatGreenDisabledDark: "#3A5600",
       lightGray: "#E8E8E8",
       mediumGray: "#BFBFBF",
+      mediumGrayGhost: "#BFBFBF33",
       warningRed: "#9B1010",
       warningRedDisabled: "#b06365",
       warningYellow: "#E6A939",
       white: "#ffffff",
+      yellow: "#FFD600",
 
       // Mostly for debugging
       red: "#FF0000",
       green: "#00FF00",
       blue: "#0000FF",
-      yellow: "#FFFF00"
+      deepPink: "#FF1493",
+      deeppink: "#FF1493",
+      DeepPink: "#FF1493",
+      orange: "#FFA500"
     },
     screens: {
       sm: "240px",

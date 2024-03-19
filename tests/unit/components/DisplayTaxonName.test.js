@@ -1,9 +1,9 @@
-import { faker } from "@faker-js/faker";
 import { render, screen } from "@testing-library/react-native";
 import { DisplayTaxonName } from "components/SharedComponents";
-import initI18next from "i18n/initI18next";
 import React from "react";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 
 const capitalizeFirstLetter = s => s.charAt( 0 ).toUpperCase( ) + s.slice( 1 );
 
@@ -43,10 +43,6 @@ const uncapitalizedTaxon = factory( "LocalTaxon", {
 } );
 
 describe( "DisplayTaxonName", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   describe( "when common name is first", ( ) => {
     test( "renders correct taxon for species", ( ) => {
       render( <DisplayTaxonName taxon={speciesTaxon} /> );
@@ -158,7 +154,7 @@ describe( "DisplayTaxonName", ( ) => {
   describe( "when taxon is a Realm object", ( ) => {
     it( "fills in a missing genus rank from the rank_level", ( ) => {
       let taxon;
-      global.realm.write( ( ) => {
+      safeRealmWrite( global.realm, ( ) => {
         taxon = global.realm.create(
           "Taxon",
           {
@@ -168,7 +164,7 @@ describe( "DisplayTaxonName", ( ) => {
           },
           "modified"
         );
-      } );
+      }, "create taxon, DisplayTaxonName test" );
       render( <DisplayTaxonName taxon={taxon} /> );
       expect( screen.getByText( /Genus/ ) ).toBeTruthy( );
     } );

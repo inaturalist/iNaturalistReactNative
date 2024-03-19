@@ -32,7 +32,9 @@ const REMOTE_USER_FIELDS = {
     name: true
   },
   species_count: true,
-  updated_at: true
+  updated_at: true,
+  prefers_common_names: true,
+  prefers_scientific_name_first: true
 };
 
 const REMOTE_USER_PARAMS = {
@@ -41,8 +43,8 @@ const REMOTE_USER_PARAMS = {
 
 const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
-    const { results } = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
-    return results[0];
+    const response = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
+    return response?.results[0];
   } catch ( e ) {
     return handleError( e, { throw: true } );
   }

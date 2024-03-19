@@ -9,6 +9,7 @@ type Props = {
   hidesWhenStopped?: boolean,
   size?: number,
   style?: Object,
+  testID?: string,
   theme?: Object,
 }
 
@@ -18,6 +19,7 @@ const ActivityIndicator = ( {
   hidesWhenStopped,
   size = 100,
   style,
+  testID,
   theme
 }: Props ): Node => (
   <RNPActivityIndicator
@@ -26,6 +28,7 @@ const ActivityIndicator = ( {
     hidesWhenStopped={hidesWhenStopped}
     size={size}
     style={style}
+    testID={testID}
     theme={theme}
   />
 );

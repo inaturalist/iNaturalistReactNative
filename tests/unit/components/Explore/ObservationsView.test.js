@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ObservationsFlashList
   from "components/SharedComponents/ObservationsFlashList/ObservationsFlashList";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
@@ -17,10 +16,6 @@ jest.mock( "sharedHooks/useInfiniteObservationsScroll", () => ( {
 } ) );
 
 describe( "ObservationsView", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "should show a footer loading wheel when new observations are fetched", ( ) => {
     renderComponent(
       <ObservationsFlashList

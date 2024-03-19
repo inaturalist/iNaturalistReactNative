@@ -16,7 +16,6 @@ type SOURCE = {
 type Props = {
   children?: Node,
   className?: string,
-  groupPhotos?: boolean,
   hasSound?: boolean,
   height?: string,
   iconicTaxonName?: string,
@@ -36,7 +35,6 @@ type Props = {
 const ObsImagePreview = ( {
   children,
   className,
-  groupPhotos = false,
   hasSound = false,
   height = "h-[62px]",
   iconicTaxonName = "unknown",
@@ -77,13 +75,18 @@ const ObsImagePreview = ( {
             "p-2": !isSmall
           } )}
         >
-          { !( isSmall && obsPhotosCount === 0 )
-            && <PhotoCount count={obsPhotosCount} groupPhotos={groupPhotos} /> }
+          { !hasSound && !( isSmall && obsPhotosCount === 0 )
+            && <PhotoCount count={obsPhotosCount} /> }
         </View>
       );
     }
     return null;
-  }, [isMultiplePhotosTop, isSmall, obsPhotosCount, groupPhotos] );
+  }, [
+    hasSound,
+    isMultiplePhotosTop,
+    isSmall,
+    obsPhotosCount
+  ] );
 
   const renderSelectable = useCallback( ( ) => {
     if ( selectable ) {
@@ -116,6 +119,8 @@ const ObsImagePreview = ( {
         <LinearGradient
           colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
           className="absolute w-full h-full"
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 0.75 }}
         />
       );
     }
@@ -150,6 +155,12 @@ const ObsImagePreview = ( {
         imageClassName={imageClassName}
         iconicTaxonName={iconicTaxonName}
         white={white}
+        isBackground
+        iconicTaxonIconSize={
+          isSmall
+            ? 22
+            : 100
+        }
       />
       {renderGradient( )}
       {renderSelectable( )}

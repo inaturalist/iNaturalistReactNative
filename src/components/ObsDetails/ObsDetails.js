@@ -2,14 +2,21 @@
 import { useRoute } from "@react-navigation/native";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
 import {
-  HideView, Tabs,
-  TextInputSheet
+  ActivityIndicator,
+  HideView,
+  Tabs,
+  TextInputSheet,
+  WarningSheet
 } from "components/SharedComponents";
-import { SafeAreaView, ScrollView, View } from "components/styledComponents";
+import {
+  SafeAreaView,
+  ScrollView,
+  View
+} from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Platform, StatusBar } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
+import DeviceInfo from "react-native-device-info";
 import {
   useTranslation
 } from "sharedHooks";
@@ -17,17 +24,24 @@ import {
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
 import DetailsTab from "./DetailsTab/DetailsTab";
+import FaveButton from "./FaveButton";
 import ObsDetailsHeader from "./ObsDetailsHeader";
-import PhotoDisplayContainer from "./PhotoDisplayContainer";
+import ObsDetailsOverview from "./ObsDetailsOverview";
+import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
+
+const isTablet = DeviceInfo.isTablet();
 
 type Props = {
   activityItems: Array<Object>,
   addingActivityItem: Function,
   agreeIdSheetDiscardChanges: Function,
   belongsToCurrentUser: boolean,
+  confirmRemoteObsWasDeleted?: Function,
   currentTabId: string,
+  currentUser: Object,
   hideCommentBox: Function,
   isOnline: boolean,
+  isRefetching: boolean,
   navToSuggestions: Function,
   observation: Object,
   onAgree: Function,
@@ -36,6 +50,7 @@ type Props = {
   openCommentBox: Function,
   openCommentBox: Function,
   refetchRemoteObservation: Function,
+  remoteObsWasDeleted?: boolean,
   showActivityTab: boolean,
   showAgreeWithIdSheet: boolean,
   showCommentBox: Function,
@@ -48,9 +63,12 @@ const ObsDetails = ( {
   addingActivityItem,
   agreeIdSheetDiscardChanges,
   belongsToCurrentUser,
+  confirmRemoteObsWasDeleted,
   currentTabId,
+  currentUser,
   hideCommentBox,
   isOnline,
+  isRefetching,
   navToSuggestions,
   observation,
   onAgree,
@@ -58,6 +76,7 @@ const ObsDetails = ( {
   onIDAgreePressed,
   openCommentBox,
   refetchRemoteObservation,
+  remoteObsWasDeleted,
   showActivityTab,
   showAgreeWithIdSheet,
   showCommentBox,
@@ -72,45 +91,125 @@ const ObsDetails = ( {
     height: 125
   };
 
-  return (
-    <SafeAreaView className="flex-1 bg-black">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+  const renderTablet = () => (
+    <View className="flex-1 flex-row bg-white">
+      <View className="w-[33%]">
+        <ObsMediaDisplayContainer observation={observation} tablet />
+        {currentUser && (
+          <FaveButton
+            observation={observation}
+            currentUser={currentUser}
+            afterToggleFave={refetchRemoteObservation}
+            top
+          />
+        )}
+      </View>
+      <View className="w-[66%]">
+        <View className="mr-8">
+          <ObsDetailsOverview
+            belongsToCurrentUser={belongsToCurrentUser}
+            isOnline={isOnline}
+            isRefetching={isRefetching}
+            observation={observation}
+          />
+        </View>
+        <Tabs tabs={tabs} activeId={currentTabId} />
+        <ScrollView
+          testID={`ObsDetails.${uuid}`}
+          stickyHeaderIndices={[0, 3]}
+          scrollEventThrottle={16}
+          className="flex-1 flex-column"
+          stickyHeaderHiddenOnScroll
+          endFillColor="white"
+        >
+          <View className="bg-white h-full">
+            <HideView show={showActivityTab}>
+              <ActivityTab
+                observation={observation}
+                refetchRemoteObservation={refetchRemoteObservation}
+                onIDAgreePressed={onIDAgreePressed}
+                activityItems={activityItems}
+                isOnline={isOnline}
+              />
+            </HideView>
+            <HideView noInitialRender show={!showActivityTab}>
+              <DetailsTab observation={observation} uuid={uuid} />
+            </HideView>
+            {addingActivityItem && (
+              <View className="flex-row items-center justify-center p-10">
+                <ActivityIndicator size={50} />
+              </View>
+            )}
+          </View>
+        </ScrollView>
+        {showActivityTab && (
+          <FloatingButtons
+            navToSuggestions={navToSuggestions}
+            openCommentBox={openCommentBox}
+            showCommentBox={showCommentBox}
+          />
+        )}
+      </View>
+      <ObsDetailsHeader
+        belongsToCurrentUser={belongsToCurrentUser}
+        observation={observation}
+        rightIconBlack
+      />
+    </View>
+  );
+
+  const renderPhone = () => (
+    <>
       <ScrollView
         testID={`ObsDetails.${uuid}`}
-        stickyHeaderIndices={[2]}
+        stickyHeaderIndices={[0, 3]}
         scrollEventThrottle={16}
-        className="bg-white"
+        className="flex-1 flex-column"
+        stickyHeaderHiddenOnScroll
+        endFillColor="white"
       >
-        <PhotoDisplayContainer
-          observation={observation}
-          refetchRemoteObservation={refetchRemoteObservation}
-          isOnline={isOnline}
-          belongsToCurrentUser={belongsToCurrentUser}
-        />
         <ObsDetailsHeader
+          belongsToCurrentUser={belongsToCurrentUser}
           observation={observation}
+        />
+        <View>
+          <ObsMediaDisplayContainer observation={observation} />
+          { currentUser && (
+            <FaveButton
+              observation={observation}
+              currentUser={currentUser}
+              afterToggleFave={refetchRemoteObservation}
+            />
+          ) }
+        </View>
+        <ObsDetailsOverview
+          belongsToCurrentUser={belongsToCurrentUser}
           isOnline={isOnline}
+          isRefetching={isRefetching}
+          observation={observation}
         />
         <View className="bg-white">
           <Tabs tabs={tabs} activeId={currentTabId} />
         </View>
-        <HideView show={showActivityTab}>
-          <ActivityTab
-            observation={observation}
-            refetchRemoteObservation={refetchRemoteObservation}
-            onIDAgreePressed={onIDAgreePressed}
-            activityItems={activityItems}
-            isOnline={isOnline}
-          />
-        </HideView>
-        <HideView noInitialRender show={!showActivityTab}>
-          <DetailsTab observation={observation} uuid={uuid} />
-        </HideView>
-        {addingActivityItem && (
-          <View className="flex-row items-center justify-center">
-            <ActivityIndicator size="large" />
-          </View>
-        )}
+        <View className="bg-white h-full">
+          <HideView show={showActivityTab}>
+            <ActivityTab
+              observation={observation}
+              refetchRemoteObservation={refetchRemoteObservation}
+              onIDAgreePressed={onIDAgreePressed}
+              activityItems={activityItems}
+              isOnline={isOnline}
+            />
+          </HideView>
+          <HideView noInitialRender show={!showActivityTab}>
+            <DetailsTab observation={observation} uuid={uuid} />
+          </HideView>
+          {addingActivityItem && (
+            <View className="flex-row items-center justify-center p-10">
+              <ActivityIndicator size={50} />
+            </View>
+          )}
+        </View>
       </ScrollView>
       {showActivityTab && (
         <FloatingButtons
@@ -119,6 +218,15 @@ const ObsDetails = ( {
           showCommentBox={showCommentBox}
         />
       )}
+    </>
+  );
+
+  return (
+    <SafeAreaView className="flex-1 bg-black">
+      <StatusBar barStyle="light-content" backgroundColor="black" />
+      {!isTablet
+        ? renderPhone()
+        : renderTablet()}
       {showAgreeWithIdSheet && (
         <AgreeWithIDSheet
           taxon={taxonForAgreement}
@@ -135,6 +243,23 @@ const ObsDetails = ( {
           confirm={textInput => onCommentAdded( textInput )}
         />
       )}
+      {/*
+        * FWIW, some situations in which this could happen are
+        * 1. User loaded obs in explore and it was deleted between then and
+          when they tapped on it
+        * 2. Some process fetched observations between when they were deleted
+          and the search index was updated to reflect that
+        *
+      */}
+      { remoteObsWasDeleted && confirmRemoteObsWasDeleted && (
+        <WarningSheet
+          handleClose={confirmRemoteObsWasDeleted}
+          headerText={t( "OBSERVATION-WAS-DELETED" )}
+          text={t( "Sorry-this-observation-was-deleted" )}
+          buttonText={t( "OK" )}
+          confirm={confirmRemoteObsWasDeleted}
+        />
+      ) }
     </SafeAreaView>
   );
 };

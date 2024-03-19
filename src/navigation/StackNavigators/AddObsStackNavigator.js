@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import { Heading4 } from "components/SharedComponents";
+import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
   CAMERA_PERMISSIONS
@@ -23,6 +25,10 @@ import SharedStackScreens from "./SharedStackScreens";
 
 const Stack = createNativeStackNavigator( );
 
+const soundRecorderTitle = ( ) => (
+  <Heading4 className="text-white">{t( "RECORD-NEW-SOUND" )}</Heading4>
+);
+
 const CameraContainerWithPermission = ( ) => (
   <PermissionGateContainer
     permissions={CAMERA_PERMISSIONS}
@@ -38,18 +44,20 @@ const CameraContainerWithPermission = ( ) => (
 );
 
 const SoundRecorderWithPermission = ( ) => (
-  <PermissionGateContainer
-    permissions={AUDIO_PERMISSIONS}
-    title={t( "Record-organism-sounds-with-the-microphone" )}
-    titleDenied={t( "Please-allow-Microphone-Access" )}
-    body={t( "Use-your-devices-microphone-to-record" )}
-    blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
-    buttonText={t( "RECORD-SOUND" )}
-    icon="microphone"
-    image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
-  >
-    <SoundRecorder />
-  </PermissionGateContainer>
+  <Mortal>
+    <PermissionGateContainer
+      permissions={AUDIO_PERMISSIONS}
+      title={t( "Record-organism-sounds-with-the-microphone" )}
+      titleDenied={t( "Please-allow-Microphone-Access" )}
+      body={t( "Use-your-devices-microphone-to-record" )}
+      blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
+      buttonText={t( "RECORD-SOUND" )}
+      icon="microphone"
+      image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
+    >
+      <SoundRecorder />
+    </PermissionGateContainer>
+  </Mortal>
 );
 
 const AddObsStackNavigator = ( ): Node => (
@@ -95,7 +103,13 @@ const AddObsStackNavigator = ( ): Node => (
         name="SoundRecorder"
         component={SoundRecorderWithPermission}
         options={{
-          title: t( "Record-new-sound" )
+          headerTitle: soundRecorderTitle,
+          unmountOnBlur: true,
+          headerTintColor: "white",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "black"
+          }
         }}
       />
     </Stack.Group>

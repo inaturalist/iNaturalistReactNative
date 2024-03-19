@@ -1,6 +1,5 @@
 // @flow
 
-import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -11,34 +10,27 @@ import LoginSignUpWrapper from "./LoginSignUpWrapper";
 import SignUpForm from "./SignUpForm";
 
 const TARGET_NON_KEYBOARD_HEIGHT = 440;
+const HIDE_HEADER_HEIGHT = 580;
 
-const SignUp = (): Node => {
-  const { nonKeyboardHeight } = useKeyboardInfo( );
+const SignUp = ( ): Node => {
+  const {
+    keyboardVerticalOffset,
+    nonKeyboardHeight
+  } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
 
-  const hideHeader = nonKeyboardHeight < 580;
-
-  const keyboardVerticalOffset = nonKeyboardHeight < TARGET_NON_KEYBOARD_HEIGHT
-    ? nonKeyboardHeight - TARGET_NON_KEYBOARD_HEIGHT
-    : 30;
+  const hideHeader = nonKeyboardHeight < HIDE_HEADER_HEIGHT;
+  const hideFooter = nonKeyboardHeight < HIDE_HEADER_HEIGHT;
 
   return (
     <LoginSignUpWrapper
       backgroundSource={require( "images/frog.png" )}
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
-      <ScrollView
-        keyboardShouldPersistTaps="always"
-        // eslint-disable-next-line react-native/no-inline-styles
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: "space-between"
-        }}
-      >
-        {!hideHeader && (
-          <Header headerText={t( "Join-the-largest-community-of-naturalists" )} />
-        )}
-        <SignUpForm />
-      </ScrollView>
+      <Header
+        headerText={t( "Join-the-largest-community-of-naturalists" )}
+        hideHeader={hideHeader}
+      />
+      <SignUpForm hideFooter={hideFooter} />
     </LoginSignUpWrapper>
   );
 };

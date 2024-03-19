@@ -106,6 +106,10 @@ const updateObservation = async (
   }
 };
 
+// TODO: replace this. It doesn't do anything specific to creating or updateing
+// evidence, it just wraps an API call, so it could be renamed
+// to "callEndpoint", or maybe we should preserve abstraction from inatjs and
+// not accept an inatjs endpoint and replace this with several functions
 const createOrUpdateEvidence = async (
   apiEndpoint: Function,
   params: Object = {},
@@ -130,7 +134,25 @@ const fetchObservationUpdates = async (
   }
 };
 
-const deleteObservation = async ( params: Object = {}, opts: Object = {} ) : Promise<?any> => {
+const fetchUnviewedObservationUpdatesCount = async (
+  opts: Object
+): Promise<Number> => {
+  try {
+    const { total_results: updatesCount } = await inatjs.observations.updates( {
+      observations_by: "owner",
+      viewed: false,
+      per_page: 0
+    }, opts );
+    return updatesCount;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const deleteRemoteObservation = async (
+  params: Object = {},
+  opts: Object = {}
+) : Promise<?any> => {
   try {
     return await inatjs.observations.delete( params, opts );
   } catch ( e ) {
@@ -177,13 +199,14 @@ export {
   checkForDeletedObservations,
   createObservation,
   createOrUpdateEvidence,
-  deleteObservation,
+  deleteRemoteObservation,
   faveObservation,
   fetchIdentifiers,
   fetchObservationUpdates,
   fetchObservers,
   fetchRemoteObservation,
   fetchSpeciesCounts,
+  fetchUnviewedObservationUpdatesCount,
   markAsReviewed,
   markObservationUpdatesViewed,
   searchObservations,

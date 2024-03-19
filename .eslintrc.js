@@ -130,7 +130,10 @@ module.exports = {
   ignorePatterns: ["/coverage/*", "/vendor/*"],
   settings: {
     "import/resolver": {
-      "babel-module": { allowExistingDirectories: true }
+      "babel-module": { allowExistingDirectories: true },
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"]
+      }
     }
   }
 };

@@ -1,16 +1,18 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
   __esModule: true,
   default: ( ) => true
 } ) );
+
+// Don't need permission gates if we're just testing DetailsTab
+jest.mock( "components/SharedComponents/LocationPermissionGate", ( ) => "" );
 
 // Before migrating to Jest 27 this line was:
 // jest.useFakeTimers();
@@ -42,9 +44,6 @@ jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
 const baseUrl = "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
 
 describe( "DetailsTab", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
   test( "should show description of observation", async ( ) => {
     renderComponent( <DetailsTab observation={mockObservation} /> );
 
@@ -70,10 +69,9 @@ describe( "DetailsTab", ( ) => {
 
     const tiles = screen.getByTestId( "Map.UrlTile" );
     expect( tiles ).toBeVisible( );
-    expect( tiles ).toHaveProp(
-      "urlTemplate",
-      `${baseUrl}?taxon_id=${mockObservationWithTaxon.taxon.id}&color=%2374ac00&verifiable=true`
-    );
+    const { urlTemplate } = tiles.props;
+    expect( urlTemplate )
+      .toMatch( new RegExp( `^${baseUrl}.*taxon_id=${mockObservationWithTaxon.taxon.id}` ) );
   } );
 
   test( "should not show tiles for observation with no taxon id", ( ) => {

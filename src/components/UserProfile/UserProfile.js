@@ -5,22 +5,24 @@ import { updateRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
 import {
   Body2,
-  Button, Heading1, Heading4,
+  Button,
+  Heading1,
+  Heading4,
   INatIconButton,
   OverviewCounts,
   ScrollViewWrapper,
-  Subheading1, UserIcon
+  Subheading1,
+  UserIcon,
+  UserText
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import User from "realmModels/User";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
-
-import UserDescription from "./UserDescription";
 
 const UserProfile = ( ): Node => {
   const navigation = useNavigation( );
@@ -52,6 +54,16 @@ const UserProfile = ( ): Node => {
     navigation.setOptions( { headerRight } );
   }, [navigation, user, currentUser] );
 
+  const onObservationPressed = useCallback(
+    ( ) => navigation.navigate( "Explore", { user, worldwide: true } ),
+    [navigation, user]
+  );
+
+  const onSpeciesPressed = useCallback(
+    ( ) => navigation.navigate( "Explore", { user, worldwide: true, viewSpecies: true } ),
+    [navigation, user]
+  );
+
   if ( !user ) {
     return null;
   }
@@ -76,7 +88,11 @@ const UserProfile = ( ): Node => {
           </Heading4>
         )}
       </View>
-      <OverviewCounts counts={user} />
+      <OverviewCounts
+        counts={user}
+        onObservationPressed={onObservationPressed}
+        onSpeciesPressed={onSpeciesPressed}
+      />
       <View className="mx-3">
         {currentUser?.login !== user?.login && (
           <View className="flex-row justify-evenly mt-8 mb-4">
@@ -96,8 +112,12 @@ const UserProfile = ( ): Node => {
             />
           </View>
         )}
-        <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
-        <UserDescription description={user?.description} />
+        { user?.description && (
+          <>
+            <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
+            <UserText text={user?.description} />
+          </>
+        ) }
         <Heading4 className="mb-2 mt-5">{t( "PROJECTS" )}</Heading4>
         <Button
           className="mb-6"

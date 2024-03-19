@@ -1,6 +1,6 @@
 // @flow
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   useCallback,
   useState
@@ -10,20 +10,17 @@ import {
 } from "react-native";
 import useStore from "stores/useStore";
 
-const useBackPress = ( backToObsEdit: ?boolean ): Object => {
+const useBackPress = ( onBack: Function ): Object => {
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
-  const navigation = useNavigation( );
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
 
   const handleBackButtonPress = useCallback( ( ) => {
     if ( cameraPreviewUris.length > 0 ) {
       setShowDiscardSheet( true );
-    } else if ( backToObsEdit ) {
-      navigation.navigate( "ObsEdit" );
     } else {
-      navigation.goBack( );
+      onBack();
     }
-  }, [backToObsEdit, setShowDiscardSheet, cameraPreviewUris, navigation] );
+  }, [setShowDiscardSheet, cameraPreviewUris, onBack] );
 
   useFocusEffect(
     // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator

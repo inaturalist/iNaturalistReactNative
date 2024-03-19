@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import TaxonSearch from "components/Suggestions/TaxonSearch";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
@@ -27,14 +26,14 @@ const mockTaxaList = [
   factory( "RemoteTaxon" )
 ];
 
-jest.mock( "components/Suggestions/hooks/useTaxonSearch", () => ( {
+jest.mock( "sharedHooks/useTaxonSearch", () => ( {
   __esModule: true,
   default: ( ) => mockTaxaList
 } ) );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => mockTaxaList[0]
+  default: () => ( { taxon: mockTaxaList[0] } )
 } ) );
 
 // react-native-paper's TextInput does a bunch of async stuff that's hard to
@@ -57,10 +56,6 @@ jest.mock( "react-native-paper", () => {
 } );
 
 describe( "TaxonSearch", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   test( "should not have accessibility errors", async ( ) => {
     const taxonSearch = (
       <TaxonSearch />
@@ -74,7 +69,7 @@ describe( "TaxonSearch", ( ) => {
   } );
 
   it( "show taxon search results", async ( ) => {
-    inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
+    inatjs.taxa.search.mockResolvedValue( makeResponse( mockTaxaList ) );
     renderComponent( <TaxonSearch /> );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];

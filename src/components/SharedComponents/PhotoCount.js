@@ -1,43 +1,26 @@
 // @flow
 
-import { useIsFocused } from "@react-navigation/native";
 import { Body3, Body3Bold, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
-import Svg, { ForeignObject, Path } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 import { dropShadow } from "styles/global";
 
 type Props = {
   count: number,
-  groupPhotos: boolean,
   size?: number,
-  shadow?: boolean,
+  shadow?: boolean
 };
 
 const PhotoCount = ( {
-  count, groupPhotos, size, shadow
+  count,
+  size,
+  shadow
 }: Props ): Node => {
   const theme = useTheme( );
-  const isFocused = useIsFocused( );
-  const [idx, setIdx] = useState( 0 );
-
-  useEffect( ( ) => {
-    if ( isFocused ) {
-      setIdx( i => i + 1 );
-    }
-  }, [isFocused, setIdx] );
-
-  useEffect( ( ) => {
-    // we need a different tactic for updating the PhotoCount in GroupPhotos
-    // since the SVG remains in the same place with a new count;
-    // in ObsListItem we can use isFocused to update PhotoCounts rendered on screen
-    if ( count && groupPhotos ) {
-      setIdx( i => i + 1 );
-    }
-  }, [count, groupPhotos] );
 
   if ( count === 0 ) {
     return <INatIcon name="noevidence" size={size} color={theme.colors.inverseOnSurface} />;
@@ -52,11 +35,25 @@ const PhotoCount = ( {
     ? Body3
     : Body3Bold;
 
+  const textStyle = {
+    position: "absolute",
+    zIndex: 10,
+    paddingHorizontal: size === 50
+      ? 12.5
+      : 5,
+    top: size === 50
+      ? 22
+      : 6
+  };
+
   return (
     <View
       style={[{ height: size, width: size }, shadow && dropShadow]}
       testID="photo-count"
     >
+      <TextComponent style={textStyle}>
+        {photoCount}
+      </TextComponent>
       <Svg
         height={size}
         width={size}
@@ -71,23 +68,12 @@ const PhotoCount = ( {
           fill={theme.colors.background}
         />
         <Path
-          // eslint-disable-next-line max-len
+        // eslint-disable-next-line max-len
           d="M15.364 3.636h-9.53A4 4 0 019.818 0H20a4 4 0 014 4v10.182a4 4 0 01-3.636 3.984v-9.53a5 5 0 00-5-5z"
           fill={theme.colors.background}
           clipRule="evenodd"
           fillRule="nonzero"
         />
-        <ForeignObject
-          x="5%"
-          y={Platform.OS === "ios"
-            ? "26%"
-            : "20%"}
-          key={idx}
-        >
-          <TextComponent className="text-center w-[16px]">
-            {photoCount}
-          </TextComponent>
-        </ForeignObject>
       </Svg>
     </View>
   );

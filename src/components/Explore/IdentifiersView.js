@@ -16,6 +16,8 @@ type Props = {
   updateCount: Function
 };
 
+const LIST_STYLE = { paddingTop: 44 };
+
 const IdentifiersView = ( {
   count,
   isOnline,
@@ -35,7 +37,7 @@ const IdentifiersView = ( {
       ...queryParams,
       fields: {
         identifications_count: true,
-        user: User.USER_FIELDS
+        user: User.FIELDS
       }
     }
   );
@@ -58,6 +60,7 @@ const IdentifiersView = ( {
 
   return (
     <ExploreFlashList
+      contentContainerStyle={LIST_STYLE}
       data={data}
       estimatedItemSize={98}
       fetchNextPage={fetchNextPage}

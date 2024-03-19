@@ -1,7 +1,7 @@
 // @flow
 import classNames from "classnames";
 import { IconicTaxonIcon } from "components/SharedComponents";
-import { Image } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 
@@ -10,11 +10,13 @@ type URI = {
 };
 
 type Props = {
-  uri?: URI,
-  opaque?: boolean,
+  iconicTaxonIconSize?: number,
   iconicTaxonName?: string,
-  white?: boolean,
-  imageClassName: string
+  imageClassName: string,
+  isBackground?: boolean,
+  opaque?: boolean,
+  uri?: URI,
+  white?: boolean
 };
 
 const CLASS_NAMES = [
@@ -23,16 +25,16 @@ const CLASS_NAMES = [
 ];
 
 const ObsImage = ( {
-  uri,
-  opaque = false,
   iconicTaxonName = "unknown",
+  imageClassName,
+  isBackground = false,
+  opaque = false,
+  uri,
   white = false,
-  imageClassName
-}: Props ): Node => {
-  const noImg = !uri?.uri;
-
-  if ( noImg ) {
-    return (
+  iconicTaxonIconSize
+}: Props ): Node => (
+  <View className={classNames( CLASS_NAMES, "relative" )}>
+    <View className="absolute w-full h-full">
       <IconicTaxonIcon
         imageClassName={[
           ...CLASS_NAMES,
@@ -41,18 +43,22 @@ const ObsImage = ( {
         ]}
         iconicTaxonName={iconicTaxonName}
         white={white}
+        isBackground={isBackground}
+        size={iconicTaxonIconSize}
       />
-    );
-  }
-
-  return (
-    <Image
-      source={uri}
-      className={classNames( ...CLASS_NAMES, { "opacity-50": opaque } )}
-      testID="ObsList.photo"
-      accessibilityIgnoresInvertColors
-    />
-  );
-};
+    </View>
+    { uri?.uri && (
+      <Image
+        source={uri}
+        className={classNames( CLASS_NAMES )}
+        testID="ObsList.photo"
+        accessibilityIgnoresInvertColors
+      />
+    ) }
+    { opaque && (
+      <View className="absolute w-full h-full bg-white opacity-50" />
+    ) }
+  </View>
+);
 
 export default ObsImage;

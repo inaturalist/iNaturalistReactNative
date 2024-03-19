@@ -1,0 +1,13 @@
+ADDED
+* New fonts and restyled texts
+* Extra logging and messaging for network errors, promise rejections, photo sharing
+
+UPDATED
+* Higher contrast notifications icon indicator
+* Improved tapping on observations in Explore map
+
+FIXED
+* Minor UI fixes for: sound recorder, species seen checkmark, taxon details, establishment means
+* Uploading status progress bar counts sounds and 100% means done
+* User icon flicker
+* Navigation to Projects; crash on Projects screen

@@ -9,14 +9,14 @@ import React, { useCallback } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-    headerText: string,
-    text: string,
-    setShowSheet: Function
+  headerText: string,
+  texts: [string],
+  setShowSheet: Function
 }
 
 const TextSheet = ( {
   headerText,
-  text,
+  texts,
   setShowSheet
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -30,17 +30,13 @@ const TextSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
-      hideCloseButton
-      onChange={position => {
-        if ( position === -1 ) {
-          handleClose( );
-        }
-      }}
     >
       <View className="p-5">
-        <Body3 className="pb-5">
-          {text}
-        </Body3>
+        {texts.map( text => (
+          <Body3 className="pb-5" key={text}>
+            {text}
+          </Body3>
+        ) )}
         <Button
           text={t( "OK" )}
           onPress={handleClose}

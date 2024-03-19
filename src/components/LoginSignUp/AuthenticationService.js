@@ -1,12 +1,11 @@
 // @flow
+import { getUserAgent } from "api/userAgent";
+import { fetchUserMe } from "api/users";
 import { create } from "apisauce";
 import axios from "axios";
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
-import {
-  getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion
-} from "react-native-device-info";
 import RNFS from "react-native-fs";
 import jwt from "react-native-jwt-io";
 import * as RNLocalize from "react-native-localize";
@@ -14,18 +13,15 @@ import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
-import { log } from "../../../react-native-logs.config";
+import { log, logFilePath } from "../../../react-native-logs.config";
 
 const logger = log.extend( "AuthenticationService" );
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
 const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
-
-// User agent being used, when calling the iNat APIs
-// eslint-disable-next-line max-len
-const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
 
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
 const JWT_EXPIRATION_MINS = 25;
@@ -40,7 +36,7 @@ const axiosInstance = axios.create( {
  */
 const createAPI = ( additionalHeaders: any ) => create( {
   axiosInstance,
-  headers: { "User-Agent": USER_AGENT, ...additionalHeaders }
+  headers: { "User-Agent": getUserAgent(), ...additionalHeaders }
 } );
 
 /**
@@ -111,6 +107,9 @@ const signOut = async (
   await RNSInfo.deleteItem( "jwtGeneratedAt", {} );
   await RNSInfo.deleteItem( "username", {} );
   await RNSInfo.deleteItem( "accessToken", {} );
+  RNFS.exists( logFilePath ).then( fileExists => {
+    if ( fileExists ) RNFS.unlink( logFilePath );
+  } );
 };
 
 /**
@@ -118,7 +117,7 @@ const signOut = async (
  * when getting taxon suggestions)
  * @returns encoded anonymous JWT
  */
-const getAnonymousJWT = () => {
+const getAnonymousJWT = (): string => {
   const claims = {
     application: Platform.OS,
     exp: Date.now() / 1000 + 300
@@ -161,7 +160,13 @@ const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> =>
 
     const accessToken = await RNSInfo.getItem( "accessToken", {} );
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
-    const response = await api.get( "/users/api_token.json" );
+    let response;
+    try {
+      response = await api.get( "/users/api_token.json" );
+    } catch ( getUsersApiTokenError ) {
+      logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
+      throw getUsersApiTokenError;
+    }
 
     // TODO: this means that if the server doesn't respond with a successful
     // token *for any reason* it just deletes the entire local database. That
@@ -286,7 +291,7 @@ const verifyCredentials = async (
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "User-Agent": USER_AGENT
+        "User-Agent": getUserAgent( )
       }
     }
   );
@@ -344,9 +349,24 @@ const authenticateUser = async (
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
-  realm.write( ( ) => {
-    realm.create( "User", currentUser, "modified" );
-  } );
+
+  // try to fetch user data (especially for loading user icon) from userMe
+  const apiToken = await getJWT( );
+  const options = {
+    api_token: apiToken
+  };
+  const remoteUser = await fetchUserMe( { }, options );
+  const localUser = remoteUser
+    ? {
+      ...remoteUser,
+      signedIn: true
+    }
+    : currentUser;
+
+  logger.debug( "writing current user to realm: ", localUser );
+  safeRealmWrite( realm, ( ) => {
+    realm.create( "User", localUser, "modified" );
+  }, "saving current user in AuthenticationService" );
   const currentRealmUser = User.currentUser( realm );
   logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
   const realmPathExists = await RNFS.exists( realm.path );
@@ -427,6 +447,7 @@ const resetPassword = async (
 export {
   API_HOST,
   authenticateUser,
+  getAnonymousJWT,
   getAPIToken,
   getJWT,
   getUsername,

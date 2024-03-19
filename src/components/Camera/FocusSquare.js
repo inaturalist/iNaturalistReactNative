@@ -1,5 +1,6 @@
 // @flow
 
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import { Animated } from "react-native";
@@ -25,19 +26,24 @@ const FocusSquare = ( { tappedCoordinates, singleTapToFocusAnimation }: Props ):
 
   if ( !tappedCoordinates ) { return null; }
 
-  const HALF_SIZE_FOCUS_BOX = 40;
+  const HALF_SIZE_FOCUS_BOX = 33;
 
   return (
     // $FlowIgnore
     <Animated.View
-      className="w-16 h-16 absolute border border-white rounded-lg"
+      className="w-[66px] h-[66px] absolute border-2 border-yellow rounded-xs"
       style={[{
         left: tappedCoordinates.x - HALF_SIZE_FOCUS_BOX,
         top: tappedCoordinates.y - HALF_SIZE_FOCUS_BOX,
         opacity: singleTapToFocusAnimation
       }
       ]}
-    />
+    >
+      <View className="absolute left-0 top-[30px] w-[5px] h-[2px] bg-yellow" />
+      <View className="absolute left-[30px] top-0 w-[2px] h-[5px] bg-yellow" />
+      <View className="absolute right-0 top-[30px] w-[5px] h-[2px] bg-yellow" />
+      <View className="absolute left-[30px] bottom-0 w-[2px] h-[5px] bg-yellow" />
+    </Animated.View>
   );
 };
 

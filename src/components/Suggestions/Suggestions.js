@@ -20,7 +20,8 @@ import {
   convertOfflineScoreToConfidence,
   convertOnlineScoreToConfidence
 } from "sharedHelpers/convertScores";
-import { useTranslation } from "sharedHooks";
+import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
+import { useDebugMode, useTranslation } from "sharedHooks";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import Attribution from "./Attribution";
@@ -33,10 +34,11 @@ type Props = {
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  setSelectedPhotoUri: Function,
+  onPressPhoto: Function,
   observers: Array<string>,
   topSuggestion: Object,
-  usingOfflineSuggestions: boolean
+  usingOfflineSuggestions: boolean,
+  debugData: any
 };
 
 const Suggestion = ( { suggestion, onChosen } ) => (
@@ -60,15 +62,17 @@ const Suggestions = ( {
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  setSelectedPhotoUri,
+  onPressPhoto,
   observers,
   topSuggestion,
-  usingOfflineSuggestions
+  usingOfflineSuggestions,
+  debugData
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
+  const { isDebug } = useDebugMode( );
 
   const renderItem = useCallback( ( { item: suggestion } ) => (
     <Suggestion suggestion={suggestion} onChosen={onTaxonChosen} />
@@ -93,9 +97,28 @@ const Suggestions = ( {
     return null;
   }, [loadingSuggestions, suggestions, t] );
 
+  /* eslint-disable i18next/no-literal-string */
+  /* eslint-disable react/jsx-one-expression-per-line */
+  /* eslint-disable max-len */
   const renderFooter = useCallback( ( ) => (
-    <Attribution observers={observers} />
-  ), [observers] );
+    <>
+      <Attribution observers={observers} />
+      { isDebug && (
+        <View className="bg-deeppink text-white p-3">
+          <Heading4 className="text-white">Diagnostics</Heading4>
+          <Body3 className="text-white">Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
+          <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
+          <Body3 className="text-white">Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
+          <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
+          <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
+          <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
+        </View>
+      )}
+    </>
+  ), [debugData, isDebug, observers] );
+  /* eslint-enable i18next/no-literal-string */
+  /* eslint-enable react/jsx-one-expression-per-line */
+  /* eslint-enable max-len */
 
   const renderHeader = useCallback( ( ) => (
     <>
@@ -104,7 +127,7 @@ const Suggestions = ( {
         <ObsPhotoSelectionList
           photoUris={photoUris}
           selectedPhotoUri={selectedPhotoUri}
-          setSelectedPhotoUri={setSelectedPhotoUri}
+          onPressPhoto={onPressPhoto}
         />
         <Body3 className="my-4 mx-3">{t( "Select-the-identification-you-want-to-add" )}</Body3>
         <Button
@@ -145,7 +168,7 @@ const Suggestions = ( {
     topSuggestion,
     photoUris,
     selectedPhotoUri,
-    setSelectedPhotoUri,
+    onPressPhoto,
     suggestions,
     onTaxonChosen,
     usingOfflineSuggestions

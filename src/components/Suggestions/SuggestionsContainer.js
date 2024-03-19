@@ -1,7 +1,9 @@
 // @flow
 
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -15,19 +17,25 @@ import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
-  const photoList = ObservationPhoto.mapObsPhotoUris( currentObservation );
-  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoList[0] );
+  const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
+  const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
   const {
+    dataUpdatedAt: onlineSuggestionsUpdatedAt,
+    error: onlineSuggestionsError,
     onlineSuggestions,
-    loadingOnlineSuggestions
+    loadingOnlineSuggestions,
+    timedOut
   } = useOnlineSuggestions( selectedPhotoUri, {
     latitude: currentObservation?.latitude,
     longitude: currentObservation?.longitude
   } );
 
-  const tryOfflineSuggestions = (
+  // skip to offline suggestions if internet connection is spotty
+  const tryOfflineSuggestions = timedOut || (
     // Don't try offline while online is loading
     !loadingOnlineSuggestions
     && (
@@ -58,20 +66,48 @@ const SuggestionsContainer = ( ): Node => {
   useTaxonSelected( selectedTaxon, { vision: true } );
 
   const loadingSuggestions = ( loadingOnlineSuggestions || loadingOfflineSuggestions )
-    && photoList.length > 0;
+    && photoUris.length > 0;
+
+  const onPressPhoto = useCallback(
+    uri => {
+      if ( uri === selectedPhotoUri ) {
+        setMediaViewerVisible( true );
+      }
+      setSelectedPhotoUri( uri );
+    },
+    [selectedPhotoUri]
+  );
 
   return (
-    <Suggestions
-      loadingSuggestions={loadingSuggestions}
-      topSuggestion={topSuggestion}
-      suggestions={suggestions}
-      onTaxonChosen={setSelectedTaxon}
-      photoUris={photoList}
-      selectedPhotoUri={selectedPhotoUri}
-      setSelectedPhotoUri={setSelectedPhotoUri}
-      observers={observers}
-      usingOfflineSuggestions={tryOfflineSuggestions && offlineSuggestions?.length > 0}
-    />
+    <>
+      <Suggestions
+        loadingSuggestions={loadingSuggestions}
+        topSuggestion={topSuggestion}
+        suggestions={suggestions}
+        onTaxonChosen={setSelectedTaxon}
+        photoUris={photoUris}
+        selectedPhotoUri={selectedPhotoUri}
+        onPressPhoto={onPressPhoto}
+        observers={observers}
+        usingOfflineSuggestions={
+          tryOfflineSuggestions && offlineSuggestions?.length > 0
+        }
+        debugData={{
+          timedOut,
+          onlineSuggestions,
+          offlineSuggestions,
+          onlineSuggestionsError,
+          onlineSuggestionsUpdatedAt,
+          selectedPhotoUri
+        }}
+      />
+      <MediaViewerModal
+        showModal={mediaViewerVisible}
+        onClose={() => setMediaViewerVisible( false )}
+        uri={selectedPhotoUri}
+        photos={innerPhotos}
+      />
+    </>
   );
 };
 

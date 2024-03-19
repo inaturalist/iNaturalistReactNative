@@ -1,6 +1,7 @@
 // @flow
 
 import {
+  ActivityIndicator,
   Body2,
   INatIcon
 } from "components/SharedComponents";
@@ -11,15 +12,17 @@ import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  count?: ?number,
+  count: ?number,
   exploreView: string,
-  exploreViewIcon: string
+  exploreViewIcon: string,
+  loadingStatus: boolean
 }
 
 const HeaderCount = ( {
   count,
   exploreView,
-  exploreViewIcon
+  exploreViewIcon,
+  loadingStatus
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -39,17 +42,17 @@ const HeaderCount = ( {
 
   return (
     <View className="h-[40px] flex-row items-center justify-center">
-      {count
-        && (
-          <>
-            <INatIcon
-              name={exploreViewIcon}
-              size={18}
-              color={theme.colors.onPrimary}
-            />
-            <Body2 className="text-white ml-3">{renderText( )}</Body2>
-          </>
-        )}
+      {( loadingStatus && count === null ) && <ActivityIndicator size={25} />}
+      {count !== null && (
+        <>
+          <INatIcon
+            name={exploreViewIcon}
+            size={18}
+            color={theme.colors.onPrimary}
+          />
+          <Body2 className="text-white ml-3">{renderText( )}</Body2>
+        </>
+      )}
     </View>
   );
 };

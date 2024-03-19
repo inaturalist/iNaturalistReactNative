@@ -6,7 +6,7 @@ import BottomSheet, {
   useBottomSheetDynamicSnapPoints
 } from "@gorhom/bottom-sheet";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { SafeAreaView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -14,6 +14,7 @@ import React, {
   useMemo,
   useRef
 } from "react";
+import { Dimensions } from "react-native";
 import { useTranslation } from "sharedHooks";
 import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
@@ -59,6 +60,12 @@ const StandardBottomSheet = ( {
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
 
+  const handleBackdropPress = useCallback( position => {
+    if ( handleClose && position === -1 ) {
+      handleClose( );
+    }
+  }, [handleClose] );
+
   const handleClosePress = useCallback( ( ) => {
     if ( handleClose ) {
       handleClose( );
@@ -90,6 +97,13 @@ const StandardBottomSheet = ( {
     ? BottomSheet
     : BottomSheetModal;
 
+  const { width } = Dimensions.get( "window" );
+  const marginOnWide = {
+    marginHorizontal: width > 500
+      ? ( width - 500 ) / 2
+      : 0
+  };
+
   return (
     <BottomSheetComponent
       ref={sheetRef}
@@ -97,27 +111,29 @@ const StandardBottomSheet = ( {
       snapPoints={animatedSnapPoints}
       handleHeight={animatedHandleHeight}
       contentHeight={animatedContentHeight}
-      style={viewStyles.shadow}
+      style={[viewStyles.shadow, marginOnWide]}
       handleComponent={noHandle}
       backdropComponent={renderBackdrop}
-      onChange={onChange}
+      onChange={onChange || handleBackdropPress}
     >
-      <BottomSheetView onLayout={handleContentLayout}>
-        <View className="items-center">
-          <Heading4 className="pt-7">{headerText}</Heading4>
-        </View>
-        {children}
-        {!hideCloseButton && (
-          <INatIconButton
-            icon="close"
-            onPress={handleClose}
-            size={19}
-            className="absolute top-3.5 right-3"
-            accessibilityState={{ disabled: hidden }}
-            accessibilityLabel={t( "Close" )}
-          />
-        )}
-      </BottomSheetView>
+      <SafeAreaView>
+        <BottomSheetView onLayout={handleContentLayout}>
+          <View className="items-center">
+            <Heading4 className="pt-7">{headerText}</Heading4>
+          </View>
+          {children}
+          {!hideCloseButton && (
+            <INatIconButton
+              icon="close"
+              onPress={handleClose}
+              size={19}
+              className="absolute top-3.5 right-3"
+              accessibilityState={{ disabled: hidden }}
+              accessibilityLabel={t( "Close" )}
+            />
+          )}
+        </BottomSheetView>
+      </SafeAreaView>
     </BottomSheetComponent>
   );
 };

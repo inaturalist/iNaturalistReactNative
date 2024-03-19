@@ -1,6 +1,6 @@
 // @flow
 import { fetchObservers } from "api/observations";
-import UserListItem from "components/SharedComponents/UserListItem";
+import { UserListItem } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
@@ -15,6 +15,8 @@ type Props = {
   queryParams: Object,
   updateCount: Function
 };
+
+const LIST_STYLE = { paddingTop: 44 };
 
 const ObserversView = ( {
   count,
@@ -34,7 +36,7 @@ const ObserversView = ( {
     {
       ...queryParams,
       fields: {
-        user: User.USER_FIELDS
+        user: User.FIELDS
       }
     }
   );
@@ -50,13 +52,14 @@ const ObserversView = ( {
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
-    if ( totalResults && count.observers !== totalResults ) {
+    if ( count.observers !== totalResults ) {
       updateCount( { observers: totalResults } );
     }
   }, [totalResults, updateCount, count] );
 
   return (
     <ExploreFlashList
+      contentContainerStyle={LIST_STYLE}
       data={data}
       estimatedItemSize={98}
       fetchNextPage={fetchNextPage}

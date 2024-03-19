@@ -1,10 +1,10 @@
-import { faker } from "@faker-js/faker";
 import { readExif } from "react-native-exif-reader";
 import {
   formatExifDateAsString,
   parseExif,
   parseExifDateToLocalTimezone
 } from "sharedHelpers/parseExif";
+import faker from "tests/helpers/faker";
 
 // Expected EXIF metadata of the above file
 

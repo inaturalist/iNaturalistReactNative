@@ -13,42 +13,49 @@ import {
 } from "react-native-vision-camera";
 // react-native-vision-camera v3
 // import { Worklets } from "react-native-worklets-core";
-import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel";
+import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
 import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
+  animatedProps: any,
   cameraRef: Object,
+  confidenceThreshold?: number,
   device: Object,
-  onTaxaDetected: Function,
+  fps?: number,
+  numStoredResults?: number,
+  cropRatio?: number,
+  onCameraError: Function,
+  onCaptureError: Function,
   onClassifierError: Function,
   onDeviceNotSupported: Function,
-  onCaptureError: Function,
-  onCameraError: Function,
   onLog: Function,
-  animatedProps: any,
-  onZoomStart?: Function,
+  onTaxaDetected: Function,
   onZoomChange?: Function,
-  takingPhoto: boolean,
+  onZoomStart?: Function,
+  takingPhoto: boolean
 };
 
-// Johannes: when I copied over the native code from the legacy react-native-camera on Android
-// this value had to be a string. On iOS I changed the API to also accept a string (was number).
-// Maybe, the intention would look clearer if we refactor to use a number here.
-const confidenceThreshold = "0.5";
+const DEFAULT_CONFIDENCE_THRESHOLD = 0.5;
+const DEFAULT_NUM_STORED_RESULTS = 4;
+const DEFAULT_CROP_RATIO = 1.0;
 
 const FrameProcessorCamera = ( {
+  animatedProps,
   cameraRef,
+  confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
   device,
-  onTaxaDetected,
+  fps,
+  numStoredResults = DEFAULT_NUM_STORED_RESULTS,
+  cropRatio = DEFAULT_CROP_RATIO,
+  onCameraError,
+  onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
-  onCaptureError,
-  onCameraError,
   onLog,
-  animatedProps,
-  onZoomStart,
+  onTaxaDetected,
   onZoomChange,
+  onZoomStart,
   takingPhoto
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
@@ -87,13 +94,20 @@ const FrameProcessorCamera = ( {
       // react-native-vision-camera v2
       // Reminder: this is a worklet, running on the UI thread.
       try {
-        const results = InatVision.inatVision( frame, {
+        const result = InatVision.inatVision( frame, {
           version: modelVersion,
           modelPath,
           taxonomyPath,
-          confidenceThreshold
+          // Johannes: when I copied over the native code from the legacy
+          // react-native-camera on Android this value had to be a string. On
+          // iOS I changed the API to also accept a string (was number).
+          // Maybe, the intention would look clearer if we refactor to use a
+          // number here.
+          confidenceThreshold: confidenceThreshold.toString( ),
+          numStoredResults,
+          cropRatio
         } );
-        REA.runOnJS( onTaxaDetected )( results );
+        REA.runOnJS( onTaxaDetected )( result );
       } catch ( classifierError ) {
         console.log( `Error: ${classifierError.message}` );
         REA.runOnJS( onClassifierError )( classifierError );
@@ -118,13 +132,14 @@ const FrameProcessorCamera = ( {
       //   }
       // } );
     },
-    [modelVersion, confidenceThreshold, takingPhoto, deviceOrientation]
+    [modelVersion, confidenceThreshold, takingPhoto, deviceOrientation, numStoredResults, cropRatio]
   );
 
   return (
     <CameraView
       cameraRef={cameraRef}
       device={device}
+      fps={fps}
       onClassifierError={onClassifierError}
       onDeviceNotSupported={onDeviceNotSupported}
       onCaptureError={onCaptureError}
