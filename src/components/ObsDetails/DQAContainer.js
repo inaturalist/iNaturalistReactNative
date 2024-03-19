@@ -1,5 +1,6 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
+import { faveObservation, unfaveObservation } from "api/observations";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import {
@@ -67,6 +68,30 @@ const DQAContainer = ( ): React.Node => {
     } );
   }, [mutate, params] );
 
+  const faveMutation = useAuthenticatedMutation(
+    ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
+    {
+      onSuccess: () => {
+        // TODO: refetch observation to get updated votes
+      },
+      onError: () => {
+        setHideErrorSheet( false );
+      }
+    }
+  );
+
+  const unfaveMutation = useAuthenticatedMutation(
+    ( faveParams, optsWithAuth ) => unfaveObservation( faveParams, optsWithAuth ),
+    {
+      onSuccess: () => {
+        // TODO: refetch observation to get updated votes
+      },
+      onError: () => {
+        setHideErrorSheet( false );
+      }
+    }
+  );
+
   const createQualityMetricMutation = useAuthenticatedMutation(
     ( qualityMetricParams, optsWithAuth ) => setQualityMetric( qualityMetricParams, optsWithAuth ),
     {
@@ -81,18 +106,32 @@ const DQAContainer = ( ): React.Node => {
   );
 
   const setMetricVote = ( metric, vote ) => {
-    const qualityMetricParams = {
-      id: observationUUID,
-      metric,
-      agree: vote,
-      ttyl: -1
-    };
     setLoadingMetric( metric );
     if ( vote ) {
       setLoadingAgree( true );
     } else {
       setLoadingDisagree( true );
     }
+
+    // Special case for needs_id metric which is a fave/unfave kind of action
+    if ( metric === "needs_id" ) {
+      const faveParams = {
+        id: observationUUID,
+        scope: metric,
+        vote: vote === false
+          ? "no"
+          : "yes"
+      };
+      faveMutation.mutate( faveParams );
+      return;
+    }
+
+    const qualityMetricParams = {
+      id: observationUUID,
+      metric,
+      agree: vote,
+      ttyl: -1
+    };
     createQualityMetricMutation.mutate( qualityMetricParams );
   };
 
@@ -113,17 +152,28 @@ const DQAContainer = ( ): React.Node => {
   );
 
   const removeMetricVote = ( metric, vote ) => {
-    const qualityMetricParams = {
-      id: observationUUID,
-      metric,
-      ttyl: -1
-    };
     setLoadingMetric( metric );
     if ( vote ) {
       setLoadingAgree( true );
     } else {
       setLoadingDisagree( true );
     }
+
+    // Special case for needs_id metric which is a fave/unfave kind of action
+    if ( metric === "needs_id" ) {
+      const unfaveParams = {
+        id: observationUUID,
+        scope: metric
+      };
+      unfaveMutation.mutate( unfaveParams );
+      return;
+    }
+
+    const qualityMetricParams = {
+      id: observationUUID,
+      metric,
+      ttyl: -1
+    };
     createRemoveQualityMetricMutation.mutate( qualityMetricParams );
   };
 
