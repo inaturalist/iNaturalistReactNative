@@ -171,6 +171,18 @@ const useDeleteObservations = ( ): Object => {
     [navigation]
   );
 
+  useEffect( () => {
+    let timer;
+    if ( deletionsComplete ) {
+      timer = setTimeout( () => {
+        dispatch( { type: "RESET_STATE" } );
+      }, 5000 );
+    }
+    return () => {
+      clearTimeout( timer );
+    };
+  }, [deletionsComplete] );
+
   return state;
 };
 
