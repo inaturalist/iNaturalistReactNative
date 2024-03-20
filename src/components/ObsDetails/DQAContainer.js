@@ -209,31 +209,42 @@ const DQAContainer = ( ): React.Node => {
   };
 
   const checkTest = metric => {
-    if ( observation ) {
+    const obsDataToCheck = {
+      date: observation.observed_on,
+      location: [observation.latitude, observation.longitude],
+      evidence: compact( [
+        observation.observationPhotos || observation.observation_photos,
+        observation.observationSounds || observation.sounds
+      ] ),
+      taxonId: observation.taxon?.id,
+      rankLevel: observation.taxon?.rank_level,
+      identifications: observation.identifications
+    };
+    if ( obsDataToCheck ) {
       if ( metric === "date" ) {
-        return observation[metric] !== null;
+        return obsDataToCheck[metric] !== null;
       }
       if ( metric === "location" ) {
-        const removedNull = observation[metric]
-          .filter( value => ( value !== null ) );
+        const removedNull = obsDataToCheck[metric].filter(
+          value => value !== null
+        );
         return removedNull.length !== 0;
       }
       if ( metric === "evidence" ) {
-        const removedEmpty = observation[metric]
-          .filter( value => ( Object.keys( value ).length !== 0 ) );
+        const removedEmpty = obsDataToCheck[metric].filter(
+          value => Object.keys( value ).length !== 0
+        );
         return removedEmpty.length !== 0;
       }
-      if ( observation.taxon ) {
-        if ( metric === "id_supported" ) {
-          const taxonId = observation.taxon.id;
-          const supportedIDs = observation.identifications.filter(
-            identification => ( identification.taxon.id === taxonId )
-          ).length;
-          return supportedIDs >= 2;
-        }
-        if ( metric === "rank" && observation.taxon.rank_level <= 10 ) {
-          return true;
-        }
+      if ( metric === "id_supported" ) {
+        const { taxonId } = obsDataToCheck;
+        const supportedIDs = obsDataToCheck.identifications.filter(
+          identification => identification.taxon.id === taxonId
+        ).length;
+        return supportedIDs >= 2;
+      }
+      if ( metric === "rank" && obsDataToCheck.rankLevel <= 10 ) {
+        return true;
       }
     }
     return false;
