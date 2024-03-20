@@ -13,6 +13,11 @@ const mockObservation = factory( "LocalObservation", {
   observationPhotos: [factory( "LocalObservationPhoto" )],
   latitude: Number( faker.location.latitude( ) ),
   longitude: Number( faker.location.longitude( ) ),
+  taxon: {
+    id: undefined,
+    rank_level: undefined
+  },
+  identifications: [],
   // casual is the default, so using needs_id here ensures test
   // is using our mock observation, not just showing the default screen
   quality_grade: "needs_id"
@@ -27,17 +32,6 @@ const mockQualityMetrics = [
   }
 ];
 
-const mockObservationObject = {
-  date: mockObservation.observed_on,
-  location: [mockObservation.latitude, mockObservation.longitude],
-  evidence: mockObservation.observationPhotos,
-  taxon: {
-    id: undefined,
-    rank_level: undefined
-  },
-  identifications: []
-};
-
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
@@ -46,11 +40,14 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   } )
 } ) );
 
+jest.mock( "sharedHooks/useLocalObservation", () => ( {
+  __esModule: true,
+  default: jest.fn( ( ) => mockObservation )
+} ) );
+
 useRoute.mockImplementation( ( ) => ( {
   params: {
-    observationUUID: mockObservation.uuid,
-    observation: mockObservationObject,
-    qualityGrade: mockObservation.quality_grade
+    observationUUID: mockObservation.uuid
   }
 } ) );
 
