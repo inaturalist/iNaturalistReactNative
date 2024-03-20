@@ -26,6 +26,9 @@ const getUserVote = ( metric, votes ) => {
     // Or is this supposed to be the first one that matches the current user?
     const match = votes.find( element => ( element.user_id ) );
     if ( match ) {
+      if ( metric === "needs_id" ) {
+        return match.vote_flag === true;
+      }
       return match.agree === true;
     }
   }
@@ -37,6 +40,9 @@ const renderVoteCount = ( status, metric, votes ) => {
 
   const count = votes
     ?.filter( qualityMetric => {
+      if ( metric === "needs_id" ) {
+        return qualityMetric.vote_flag === status;
+      }
       return qualityMetric.agree === status;
     } )
     ?.length;
