@@ -142,8 +142,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const fetchRemoteObservationEnabled = (
     !remoteObsWasDeleted
-    && !!isOnline
-    && localObservation?.wasSynced( )
+    && ( !localObservation || localObservation?.wasSynced( ) )
   );
 
   const {

@@ -35,8 +35,7 @@ const DQAContainer = ( ): React.Node => {
   const [hideOfflineSheet, setHideOfflineSheet] = useState( true );
 
   const localObservation = useLocalObservation( observationUUID );
-  const fetchRemoteObservationEnabled
-    = !!isOnline && localObservation?.wasSynced();
+  const fetchRemoteObservationEnabled = !localObservation || localObservation?.wasSynced();
   const {
     remoteObservation,
     refetchRemoteObservation,
