@@ -171,7 +171,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="date"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.date}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -188,7 +188,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="location"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.location}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -205,7 +205,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="wild"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.wild}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -222,7 +222,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="evidence"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.evidence}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -241,7 +241,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="recent"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.recent}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -260,7 +260,7 @@ const DataQualityAssessment = ( {
         </Body3>
         <DQAVoteButtons
           metric="needs_id"
-          qualityMetrics={qualityMetrics}
+          votes={qualityMetrics?.needs_id}
           setVote={setMetricVote}
           loadingAgree={loadingAgree}
           loadingDisagree={loadingDisagree}
