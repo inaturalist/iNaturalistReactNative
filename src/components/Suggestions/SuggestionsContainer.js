@@ -57,9 +57,16 @@ const SuggestionsContainer = ( ): Node => {
     tryOfflineSuggestions
   } );
 
-  const suggestions = onlineSuggestions?.results?.length > 0
+  const hideVisionResultFromAllSuggestions = list => {
+    if ( !hasVisionSuggestion ) { return list; }
+    return list.filter(
+      result => result.taxon.id !== currentObservation.taxon.id
+    ).map( r => r );
+  };
+
+  const suggestions = hideVisionResultFromAllSuggestions( onlineSuggestions?.results?.length > 0
     ? onlineSuggestions.results
-    : offlineSuggestions;
+    : offlineSuggestions );
 
   const topSuggestion = hasVisionSuggestion
     ? currentObservation

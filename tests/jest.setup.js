@@ -39,7 +39,8 @@ jest.mock( "../react-native-logs.config", () => {
 } );
 
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
-  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) )
+  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) ),
+  removeLogListener: jest.fn( )
 } ) );
 
 jest.mock( "react-native-worklets-core", () => ( {
@@ -67,7 +68,8 @@ jest.mock( "react-native-vision-camera", ( ) => ( {
   useCameraDevice: mockUseCameraDevice,
   VisionCameraProxy: {
     getFrameProcessorPlugin: jest.fn( )
-  }
+  },
+  useFrameProcessor: jest.fn( )
 } ) );
 
 jest.mock( "react-native-localize", () => mockRNLocalize );
