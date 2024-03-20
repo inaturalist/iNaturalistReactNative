@@ -51,6 +51,16 @@ const DQAContainer = ( ): React.Node => {
     ttl: -1
   };
 
+  const setNotLoading = ( ) => {
+    setLoadingMetric( "none" );
+    if ( loadingAgree ) {
+      setLoadingAgree( false );
+    }
+    if ( loadingDisagree ) {
+      setLoadingDisagree( false );
+    }
+  };
+
   // destructured mutate to pass into useEffect to prevent infinite
   // rerender and disabling eslint useEffect dependency rule
   const { mutate } = useAuthenticatedMutation(
@@ -60,13 +70,7 @@ const DQAContainer = ( ): React.Node => {
     ),
     {
       onSuccess: response => {
-        setLoadingMetric( "none" );
-        if ( loadingAgree ) {
-          setLoadingAgree( false );
-        }
-        if ( loadingDisagree ) {
-          setLoadingDisagree( false );
-        }
+        setNotLoading();
         setQualityMetrics( response );
       },
       onError: () => {
@@ -90,6 +94,7 @@ const DQAContainer = ( ): React.Node => {
     {
       onSuccess: () => {
         // TODO: refetch observation to get updated votes
+        setNotLoading();
       },
       onError: () => {
         setHideErrorSheet( false );
@@ -102,6 +107,7 @@ const DQAContainer = ( ): React.Node => {
     {
       onSuccess: () => {
         // TODO: refetch observation to get updated votes
+        setNotLoading();
       },
       onError: () => {
         setHideErrorSheet( false );
@@ -251,9 +257,7 @@ const DQAContainer = ( ): React.Node => {
   };
 
   const resetButtonsOnError = () => {
-    setLoadingAgree( false );
-    setLoadingDisagree( false );
-    setLoadingMetric( "none" );
+    setNotLoading();
     setHideErrorSheet( true );
   };
 
