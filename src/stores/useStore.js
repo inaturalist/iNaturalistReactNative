@@ -146,8 +146,11 @@ const useStore = create( set => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     groupedPhotos: options?.groupedPhotos || state.groupedPhotos,
     observations: options?.observations || state.observations,
-    currentObservation: observationToJSON( options?.observations?.[state.currentObservationIndex]
-    || state.observations?.[state.currentObservationIndex] )
+    currentObservation: observationToJSON(
+      options?.observations?.[state.currentObservationIndex]
+      || state.observations?.[state.currentObservationIndex]
+    ),
+    firstObservationDefaults: options?.firstObservationDefaults
   } ) ),
   updateComment: newComment => set( { comment: newComment } ),
   updateObservations: updatedObservations => set( state => ( {
