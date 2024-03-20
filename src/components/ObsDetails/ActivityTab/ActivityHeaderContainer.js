@@ -7,6 +7,7 @@ import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import { fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation.ts";
 
 import ActivityHeader from "./ActivityHeader";
 
@@ -50,7 +51,7 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: ( ) => {
         setLoading( false );
-        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
+        queryClient.invalidateQueries( [fetchRemoteObservationKey, item.uuid] );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
@@ -71,7 +72,7 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: () => {
         setLoading( false );
-        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
+        queryClient.invalidateQueries( [fetchRemoteObservationKey, item.uuid] );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
@@ -98,7 +99,7 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: () => {
         setLoading( false );
-        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
+        queryClient.invalidateQueries( [fetchRemoteObservationKey, item.uuid] );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
