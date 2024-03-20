@@ -23,14 +23,23 @@ const mockObservation = factory( "LocalObservation", {
   quality_grade: "needs_id"
 } );
 
+const mockUserID = "some_user_id";
 const mockQualityMetrics = [
   {
     id: 0,
     agree: true,
     metric: "wild",
-    user_id: "0"
+    user_id: mockUserID
   }
 ];
+
+// Mock useCurrentUser hook
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ( ) => ( {
+    id: mockUserID
+  } ) )
+} ) );
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
