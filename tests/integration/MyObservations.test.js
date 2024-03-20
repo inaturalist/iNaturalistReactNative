@@ -99,7 +99,6 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.number.int( ),
                 url: faker.image.url( ),
                 position: 0
               }
@@ -111,14 +110,12 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.number.int( ),
                 url: `${faker.image.url( )}/100`,
                 position: 0
               }
             } ),
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.number.int( ),
                 url: `${faker.image.url( )}/200`,
                 position: 1
               }
@@ -135,7 +132,7 @@ describe( "MyObservations", ( ) => {
       inatjs.observation_photos.create.mockImplementation( async ( params, _opts ) => {
         const mockObsPhotos = flatten( mockObservations.map( o => o.observationPhotos ) );
         const mockObsPhoto = mockObsPhotos.find(
-          op => op.photo.id === params.observation_photo.photo_id
+          op => op.uuid === params.observation_photo.uuid
         );
         // Pretend this takes a bit
         await sleep( 500 );
@@ -144,17 +141,9 @@ describe( "MyObservations", ( ) => {
           uuid: mockObsPhoto.uuid
         }] );
       } );
-      inatjs.photos.create.mockImplementation( ( params, _opts ) => {
-        const mockObsPhotos = flatten( mockObservations.map( o => o.observationPhotos ) );
-        const mockPhotos = mockObsPhotos.map( op => op.photo );
-        const mockPhoto = mockPhotos.find( p => p.id === params.photo.id );
-        // Pretend this takes a bit
-        // await sleep( 200 );
-        return Promise.resolve( makeResponse( [{
-          id: faker.number.int( ),
-          uuid: mockPhoto.uuid
-        }] ) );
-      } );
+      inatjs.photos.create.mockImplementation( ( ) => Promise.resolve( makeResponse( [{
+        id: faker.number.int( )
+      }] ) ) );
 
       beforeEach( ( ) => {
         // Write local observation to Realm
@@ -363,15 +352,6 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "localization for current user", ( ) => {
-    // beforeEach( ( ) => {
-    //   safeRealmWrite( global.mockRealms[__filename], ( ) => {
-    //     global.mockRealms[__filename].deleteAll( );
-    //   }, "delete all, MyObservations integration test, localization for current user" );
-    // } );
-
-    // afterEach( ( ) => {
-    //   jest.clearAllMocks( );
-    // } );
     afterEach( async ( ) => {
       signOut( { realm: global.mockRealms[__filename] } );
     } );
