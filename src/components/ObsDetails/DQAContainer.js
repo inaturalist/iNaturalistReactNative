@@ -265,9 +265,9 @@ const DQAContainer = ( ): React.Node => {
   return (
     <>
       <DataQualityAssessment
-        loadingAgree={loadingAgree}
-        loadingDisagree={loadingDisagree}
         qualityMetrics={combinedQualityMetrics}
+        loadingAgree={loadingAgree || isRefetching}
+        loadingDisagree={loadingDisagree || isRefetching}
         loadingMetric={loadingMetric}
         qualityGrade={observation?.quality_grade}
         setMetricVote={setMetricVote}
