@@ -48,6 +48,7 @@ class Observation extends Realm.Object {
     },
     updated_at: true,
     viewer_trusted_by_observer: true,
+    votes: Vote.VOTE_FIELDS,
     private_geojson: true,
     private_location: true,
     private_place_guess: true,
@@ -397,6 +398,7 @@ class Observation extends Realm.Object {
         mapTo: "viewerTrustedByObserver",
         optional: true
       },
+      votes: "Vote[]",
       private_place_guess: { type: "string", mapTo: "privatePlaceGuess", optional: true },
       private_location: { type: "string", mapTo: "privateLocation", optional: true },
       privateLatitude: "double?",
