@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { fetchRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
@@ -40,6 +41,18 @@ const UserProfile = ( ): Node => {
   );
 
   const user = remoteUser || null;
+
+  const {
+    data,
+    refetch
+  } = useAuthenticatedQuery(
+    ["fetchRelationships"],
+    optsWithAuth => fetchRelationships( {
+      q: user?.login,
+      fields: "following,friend_user",
+      ttl: -1
+    }, optsWithAuth )
+  );
 
   useEffect( ( ) => {
     const headerRight = ( ) => currentUser?.login === user?.login && (
@@ -92,6 +105,8 @@ const UserProfile = ( ): Node => {
         <View className="mt-8 mb-4">
           {currentUser?.login !== user?.login && (
             <FollowButton
+              refetchRelationship={refetch}
+              data={data}
               user={user}
               userId={userId}
               setShowLoginSheet={setShowLoginSheet}
@@ -124,7 +139,13 @@ const UserProfile = ( ): Node => {
         )}
       </View>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
-      {showUnfollowSheet && <UnfollowSheet setShowUnfollowSheet={setShowUnfollowSheet} />}
+      {showUnfollowSheet && (
+        <UnfollowSheet
+          userId={userId}
+          setShowUnfollowSheet={setShowUnfollowSheet}
+          refetchRelationship={refetch}
+        />
+      )}
     </ScrollViewWrapper>
   );
 };

@@ -1,6 +1,6 @@
 // @flow
 
-import { fetchRelationships, updateRelationships } from "api/relationships";
+import { createRelationships } from "api/relationships";
 import {
   Button
 } from "components/SharedComponents";
@@ -9,35 +9,26 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { useAuthenticatedMutation, useAuthenticatedQuery } from "sharedHooks";
+import { useAuthenticatedMutation } from "sharedHooks";
 
 type Props = {
     user: Object,
     userId: number,
+    data: Object,
+    refetchRelationship: Function,
     setShowLoginSheet: Function,
     setShowUnfollowSheet: Function,
     currentUser: Object
   };
 
 const FollowButton = ( {
-  userId, setShowLoginSheet, setShowUnfollowSheet, currentUser, user
+  userId, setShowLoginSheet, setShowUnfollowSheet, currentUser, user, data, refetchRelationship
 }: Props ): Node => {
   const [loading, setLoading] = useState( false );
   const [following, setFollowing] = useState( false );
 
-  const {
-    data,
-    refetch
-  } = useAuthenticatedQuery(
-    ["fetchRelationships"],
-    optsWithAuth => fetchRelationships( {
-      q: user.login,
-      fields: "following",
-      ttl: -1
-    }, optsWithAuth )
-  );
-
-  const relationshipResults = data?.results[0];
+  const relationshipResults = data?.results
+    .find( relationship => relationship.friendUser.id === userId );
 
   useEffect( ( ) => {
     if ( relationshipResults?.following === true ) {
@@ -45,19 +36,20 @@ const FollowButton = ( {
       return;
     }
     setFollowing( false );
-  }, [relationshipResults] );
+  }, [data, refetchRelationship, relationshipResults] );
 
-  const updateRelationshipsMutation = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )
+  const createRelationshipsMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => createRelationships( id, optsWithAuth )
   );
 
-  const followUser = ( ) => updateRelationshipsMutation.mutate( {
-    id: userId,
-    relationship: { following: true }
+  const followUser = ( ) => createRelationshipsMutation.mutate( {
+    relationship: {
+      friend_id: userId,
+      following: true
+    }
   }, {
     onSuccess: () => {
-    //   console.log( "follow or unfollow", data );
-      refetch();
+      refetchRelationship();
       setLoading( false );
     },
     onError: error => {
@@ -75,12 +67,10 @@ const FollowButton = ( {
   };
 
   const handlePress = () => {
-    console.log( "handlepress" );
     if ( !currentUser ) {
       setShowLoginSheet( true );
       return;
     } if ( currentUser?.login !== user?.login ) {
-      console.log( "loading..." );
       setLoading( true );
       followUser();
     }
