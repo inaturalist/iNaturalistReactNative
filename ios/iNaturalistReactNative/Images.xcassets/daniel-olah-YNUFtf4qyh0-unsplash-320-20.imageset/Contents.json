@@ -1,19 +1,29 @@
 {
   "images" : [
     {
-      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-320-20.jpg",
-      "idiom" : "iphone",
+      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-o66-w320-q20.jpg",
+      "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-640-20.jpg",
-      "idiom" : "iphone",
+      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-o66-w640-q20.jpg",
+      "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-1024-20.jpg",
-      "idiom" : "iphone",
+      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-o66-w960-q20.jpg",
+      "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-o66-w960-q20.jpg",
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-o66-w1024-q20.jpg",
+      "idiom" : "ipad",
+      "scale" : "2x"
     }
   ],
   "info" : {
