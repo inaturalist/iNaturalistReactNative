@@ -8,7 +8,7 @@ import {
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
   metric: string,
@@ -20,11 +20,9 @@ type Props = {
   removeVote: Function
 }
 
-const getUserVote = ( metric, votes ) => {
+const getUserVote = ( currentUser, metric, votes ) => {
   if ( votes && votes.length > 0 ) {
-    // TODO: is this really what we want here? Returning the first vote that has a user_id key?
-    // Or is this supposed to be the first one that matches the current user?
-    const match = votes.find( element => ( element.user_id ) );
+    const match = votes.find( element => ( element.user_id === currentUser.id ) );
     if ( match ) {
       if ( metric === "needs_id" ) {
         return match.vote_flag === true;
@@ -62,7 +60,8 @@ const DQAVoteButtons = ( {
 }: Props ): React.Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const userAgrees = getUserVote( metric, votes );
+  const currentUser = useCurrentUser( );
+  const userAgrees = getUserVote( currentUser, metric, votes );
   const activityIndicatorOffset = "mx-[7px]";
 
   const renderAgree = () => {
