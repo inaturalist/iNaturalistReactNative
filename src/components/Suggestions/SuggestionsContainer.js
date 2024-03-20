@@ -1,5 +1,6 @@
 // @flow
 
+import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import type { Node } from "react";
 import React, {
@@ -16,12 +17,17 @@ import useTaxonSelected from "./hooks/useTaxonSelected";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
+  const { params } = useRoute( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+
+  const hasVisionSuggestion = params?.lastScreen === "CameraWithDevice"
+    && currentObservation?.owners_identification_from_vision === true
+    && currentObservation?.taxon !== null;
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
@@ -55,7 +61,9 @@ const SuggestionsContainer = ( ): Node => {
     ? onlineSuggestions.results
     : offlineSuggestions;
 
-  const topSuggestion = onlineSuggestions?.common_ancestor;
+  const topSuggestion = hasVisionSuggestion
+    ? currentObservation
+    : onlineSuggestions?.common_ancestor;
 
   const taxonIds = suggestions?.map(
     suggestion => suggestion.taxon.id

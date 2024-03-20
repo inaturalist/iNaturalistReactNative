@@ -48,7 +48,7 @@ const CameraWithDevice = ( {
   const { deviceOrientation } = useDeviceOrientation( );
   const [addPhotoPermissionResult, setAddPhotoPermissionResult] = useState( null );
   const [checkmarkTapped, setCheckmarkTapped] = useState( false );
-  const [taxonResult, setTaxonResult] = useState( null );
+  const [visionCameraResult, setVisionCameraResult] = useState( null );
   // We track this because we only want to navigate away when the permission
   // gate is completely closed, because there's a good chance another will
   // try to open when the user lands on the next screen, e.g. the location
@@ -57,7 +57,7 @@ const CameraWithDevice = ( {
 
   const {
     prepareStateForObsEdit
-  } = usePrepareStateForObsEdit( addPhotoPermissionResult, addEvidence );
+  } = usePrepareStateForObsEdit( addPhotoPermissionResult, addEvidence, checkmarkTapped );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -73,16 +73,16 @@ const CameraWithDevice = ( {
     : "flex-col";
 
   const navToSuggestions = useCallback( async ( ) => {
-    await prepareStateForObsEdit( taxonResult );
-    if ( taxonResult ) {
-      setTaxonResult( null );
+    await prepareStateForObsEdit( visionCameraResult );
+    if ( visionCameraResult ) {
+      setVisionCameraResult( null );
     }
     navigation.navigate( "Suggestions", { lastScreen: "CameraWithDevice" } );
-  }, [taxonResult, prepareStateForObsEdit, navigation] );
+  }, [visionCameraResult, prepareStateForObsEdit, navigation] );
 
-  const handleCheckmarkPress = localTaxon => {
-    setTaxonResult( localTaxon?.id
-      ? localTaxon
+  const handleCheckmarkPress = visionResult => {
+    setVisionCameraResult( visionResult?.taxon
+      ? visionResult
       : null );
     setCheckmarkTapped( true );
   };

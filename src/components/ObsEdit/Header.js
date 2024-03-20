@@ -18,16 +18,15 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 
 type Props = {
   observations: Array<Object>,
-  updateObservations: Function,
   currentObservation: Object
 }
 
 const Header = ( {
   observations,
-  updateObservations,
   currentObservation
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
+  const updateObservations = useStore( state => state.updateObservations );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -52,14 +51,13 @@ const Header = ( {
   }, [navigation, currentObservation] );
 
   const navToObsList = useCallback( ( ) => {
-    updateObservations( [] );
     navigation.navigate( "TabNavigator", {
       screen: "ObservationsStackNavigator",
       params: {
         screen: "ObsList"
       }
     } );
-  }, [navigation, updateObservations] );
+  }, [navigation] );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );

@@ -129,6 +129,7 @@ const TaxonResult = ( {
             </View>
           )}
         </View>
+
       </Pressable>
       <View className="flex-row items-center">
         { showInfoButton && (

@@ -15,7 +15,7 @@ type Props = {
     isHorizontal: boolean,
     textClass: Function,
     keyBase: string,
-    taxonId: string,
+    taxonId: number,
     isTitle?: boolean
 };
 

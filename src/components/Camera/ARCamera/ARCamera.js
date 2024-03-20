@@ -98,7 +98,7 @@ const ARCamera = ( {
   const handlePress = async ( ) => {
     await takePhoto( );
     handleCheckmarkPress( showPrediction
-      ? result.taxon
+      ? result
       : null );
   };
 

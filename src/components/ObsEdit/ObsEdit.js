@@ -19,7 +19,6 @@ const ObsEdit = ( ): Node => {
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
-  const updateObservations = useStore( state => state.updateObservations );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
@@ -34,7 +33,6 @@ const ObsEdit = ( ): Node => {
           <Header
             currentObservation={currentObservation}
             observations={observations}
-            updateObservations={updateObservations}
           />
           <KeyboardAwareScrollView className="bg-white mb-[80px]">
             {currentObservation && (

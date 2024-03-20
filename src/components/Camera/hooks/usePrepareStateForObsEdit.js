@@ -14,7 +14,8 @@ const logger = log.extend( "usePrepareStateForObsEdit" );
 
 const usePrepareStateForObsEdit = (
   permissionGranted: ?string,
-  addEvidence: ?boolean
+  addEvidence: ?boolean,
+  checkmarkTapped: boolean
 ): Object => {
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
@@ -50,7 +51,7 @@ const usePrepareStateForObsEdit = (
     setCameraRollUris( savedUris );
   }, [originalCameraUrisMap, setCameraRollUris, permissionGranted] );
 
-  const createObsWithCameraPhotos = useCallback( async ( localFilePaths, localTaxon ) => {
+  const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
     const newObservation = await Observation.new( );
 
     // location is needed for fetching online Suggestions on the next screen
@@ -65,9 +66,13 @@ const usePrepareStateForObsEdit = (
         local: true
       } );
 
-    if ( localTaxon ) {
-      newObservation.taxon = localTaxon;
+    if ( visionResult ) {
+      console.log( visionResult, "local vision result" );
+      // make sure taxon id is stored as a number, not a string, from ARCamera
+      visionResult.taxon.id = Number( visionResult.taxon.id );
+      newObservation.taxon = visionResult.taxon;
       newObservation.owners_identification_from_vision = true;
+      newObservation.score = visionResult.score;
     }
     setObservations( [newObservation] );
     logger.info(
@@ -78,7 +83,8 @@ const usePrepareStateForObsEdit = (
     return savePhotosToCameraGallery( localFilePaths );
   }, [savePhotosToCameraGallery, setObservations] );
 
-  const prepareStateForObsEdit = useCallback( async localTaxon => {
+  const prepareStateForObsEdit = useCallback( async visionResult => {
+    if ( !checkmarkTapped ) { return null; }
     if ( addEvidence ) {
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( evidenceToAdd, {
@@ -95,10 +101,11 @@ const usePrepareStateForObsEdit = (
       );
       return savePhotosToCameraGallery( evidenceToAdd );
     }
-    return createObsWithCameraPhotos( cameraPreviewUris, localTaxon );
+    return createObsWithCameraPhotos( cameraPreviewUris, visionResult );
   }, [
     addEvidence,
     cameraPreviewUris,
+    checkmarkTapped,
     createObsWithCameraPhotos,
     currentObservation,
     currentObservationIndex,
@@ -110,7 +117,7 @@ const usePrepareStateForObsEdit = (
   ] );
 
   return {
-    prepareStateForObsEdit: localTaxon => prepareStateForObsEdit( localTaxon )
+    prepareStateForObsEdit: visionResult => prepareStateForObsEdit( visionResult )
   };
 };
 
