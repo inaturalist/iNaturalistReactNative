@@ -16,6 +16,7 @@ const PhotoSharing = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { item } = params;
+  const sharedText = item.extraData?.userInput;
   const resetStore = useStore( state => state.resetStore );
   const setObservations = useStore( state => state.setObservations );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
@@ -24,6 +25,7 @@ const PhotoSharing = ( ): Node => {
   const createObservationAndNavToObsEdit = useCallback( async photoUris => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
+      newObservation.description = sharedText;
       setObservations( [newObservation] );
       navigation.navigate( "ObsEdit" );
     } catch ( e ) {
@@ -34,7 +36,8 @@ const PhotoSharing = ( ): Node => {
     }
   }, [
     navigation,
-    setObservations
+    setObservations,
+    sharedText
   ] );
 
   useEffect( ( ) => {
@@ -77,11 +80,13 @@ const PhotoSharing = ( ): Node => {
       createObservationAndNavToObsEdit( photoUris );
     } else {
       // Go to GroupPhotos screen
+      const firstObservationDefaults = { description: sharedText };
       setPhotoImporterState( {
         galleryUris: photoUris.map( x => x.image.uri ),
         groupedPhotos: photoUris.map( photo => ( {
           photos: [photo]
-        } ) )
+        } ) ),
+        firstObservationDefaults
       } );
       navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
     }
@@ -91,7 +96,8 @@ const PhotoSharing = ( ): Node => {
     navigation,
     resetStore,
     setObservations,
-    setPhotoImporterState
+    setPhotoImporterState,
+    sharedText
   ] );
 
   // When the user leaves this screen, we record the fact that navigation was handled...
