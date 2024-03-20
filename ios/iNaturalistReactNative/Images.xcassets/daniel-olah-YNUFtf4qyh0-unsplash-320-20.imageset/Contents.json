@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-320-20.jpg",
+      "idiom" : "iphone",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-640-20.jpg",
+      "idiom" : "iphone",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "daniel-olah-YNUFtf4qyh0-unsplash-1024-20.jpg",
+      "idiom" : "iphone",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
