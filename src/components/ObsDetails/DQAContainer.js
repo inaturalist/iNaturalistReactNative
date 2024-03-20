@@ -10,6 +10,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import { compact, groupBy } from "lodash";
 import {
   useEffect, useState
 } from "react";
@@ -77,6 +78,11 @@ const DQAContainer = ( ): React.Node => {
       }
     }
   );
+
+  const combinedQualityMetrics = {
+    ...groupBy( qualityMetrics, "metric" ),
+    ...groupBy( observation?.votes, "vote_scope" )
+  };
 
   useEffect( ( ) => {
     mutate( {
@@ -195,12 +201,13 @@ const DQAContainer = ( ): React.Node => {
   };
 
   const ifMajorityAgree = metric => {
-    if ( qualityMetrics ) {
-      const agreeCount = qualityMetrics.filter(
-        element => ( element.agree && element.metric === metric )
+    const votesOfMetric = combinedQualityMetrics[metric];
+    if ( votesOfMetric && votesOfMetric.length > 0 ) {
+      const agreeCount = votesOfMetric.filter(
+        element => element.agree
       ).length;
-      const disagreeCount = qualityMetrics.filter(
-        element => ( !element.agree && element.metric === metric )
+      const disagreeCount = votesOfMetric.filter(
+        element => !element.agree
       ).length;
 
       return agreeCount >= disagreeCount;
@@ -258,9 +265,9 @@ const DQAContainer = ( ): React.Node => {
   return (
     <>
       <DataQualityAssessment
-        qualityMetrics={qualityMetrics}
         loadingAgree={loadingAgree}
         loadingDisagree={loadingDisagree}
+        qualityMetrics={combinedQualityMetrics}
         loadingMetric={loadingMetric}
         qualityGrade={observation?.quality_grade}
         setMetricVote={setMetricVote}
