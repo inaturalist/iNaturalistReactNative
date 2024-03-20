@@ -22,7 +22,7 @@ type Props = {
 
 const getUserVote = ( currentUser, metric, votes ) => {
   if ( votes && votes.length > 0 ) {
-    const match = votes.find( element => ( element.user_id === currentUser.id ) );
+    const match = votes.find( element => ( element.user_id === currentUser?.id ) );
     if ( match ) {
       if ( metric === "needs_id" ) {
         return match.vote_flag === true;
