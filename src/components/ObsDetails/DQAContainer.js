@@ -64,10 +64,7 @@ const DQAContainer = ( ): React.Node => {
   // destructured mutate to pass into useEffect to prevent infinite
   // rerender and disabling eslint useEffect dependency rule
   const { mutate } = useAuthenticatedMutation(
-    ( qualityMetricParams, optsWithAuth ) => fetchQualityMetrics(
-      qualityMetricParams,
-      optsWithAuth
-    ),
+    ( p, o ) => fetchQualityMetrics( p, o ),
     {
       onSuccess: response => {
         setNotLoading();
@@ -159,10 +156,7 @@ const DQAContainer = ( ): React.Node => {
   };
 
   const createRemoveQualityMetricMutation = useAuthenticatedMutation(
-    ( qualityMetricParams, optsWithAuth ) => deleteQualityMetric(
-      qualityMetricParams,
-      optsWithAuth
-    ),
+    ( p, o ) => deleteQualityMetric( p, o ),
     {
       onSuccess: () => {
         // fetch updated quality metrics with updated votes
