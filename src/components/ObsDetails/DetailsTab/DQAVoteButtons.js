@@ -12,7 +12,7 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   metric: string,
-  qualityMetrics: Object,
+  votes: [Object],
   loadingAgree: boolean,
   loadingDisagree: boolean,
   loadingMetric: ?string,
@@ -20,10 +20,11 @@ type Props = {
   removeVote: Function
 }
 
-const getUserVote = ( metric, qualityMetrics ) => {
-  if ( qualityMetrics ) {
-    const match = qualityMetrics.find( element => (
-      element.metric === metric && element.user_id ) );
+const getUserVote = ( metric, votes ) => {
+  if ( votes && votes.length > 0 ) {
+    // TODO: is this really what we want here? Returning the first vote that has a user_id key?
+    // Or is this supposed to be the first one that matches the current user?
+    const match = votes.find( element => ( element.user_id ) );
     if ( match ) {
       return match.agree === true;
     }
@@ -31,11 +32,13 @@ const getUserVote = ( metric, qualityMetrics ) => {
   return null;
 };
 
-const renderVoteCount = ( status, metric, qualityMetrics ) => {
-  if ( !qualityMetrics ) return null;
+const renderVoteCount = ( status, metric, votes ) => {
+  if ( !votes ) return null;
 
-  const count = qualityMetrics
-    ?.filter( qualityMetric => qualityMetric.agree === status && qualityMetric.metric === metric )
+  const count = votes
+    ?.filter( qualityMetric => {
+      return qualityMetric.agree === status;
+    } )
     ?.length;
   if ( !count || count === 0 ) return null;
 
@@ -43,11 +46,17 @@ const renderVoteCount = ( status, metric, qualityMetrics ) => {
 };
 
 const DQAVoteButtons = ( {
-  metric, qualityMetrics, loadingAgree, loadingDisagree, loadingMetric, setVote, removeVote
+  metric,
+  votes,
+  loadingAgree,
+  loadingDisagree,
+  loadingMetric,
+  setVote,
+  removeVote
 }: Props ): React.Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const userAgrees = getUserVote( metric, qualityMetrics );
+  const userAgrees = getUserVote( metric, votes );
   const activityIndicatorOffset = "mx-[7px]";
 
   const renderAgree = () => {
@@ -109,11 +118,11 @@ const DQAVoteButtons = ( {
     <View className="flex-row items-center justify-between w-[97px] space-x-[11px]">
       <View className="flex-row items-center w-1/2">
         {renderAgree()}
-        {renderVoteCount( true, metric, qualityMetrics )}
+        {renderVoteCount( true, metric, votes )}
       </View>
       <View className="flex-row items-center w-1/2">
         {renderDisagree()}
-        {renderVoteCount( false, metric, qualityMetrics )}
+        {renderVoteCount( false, metric, votes )}
       </View>
     </View>
   );

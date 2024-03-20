@@ -171,7 +171,7 @@ describe( "DQA Vote Buttons", ( ) => {
   test( "renders correct DQA user vote", async ( ) => {
     renderComponent( <DQAVoteButtons
       metric="wild"
-      qualityMetrics={mockQualityMetrics}
+      votes={mockQualityMetrics}
       setVote={jest.fn()}
       loadingAgree={jest.fn()}
       loadingDisagree={jest.fn()}
@@ -188,7 +188,7 @@ describe( "DQA Vote Buttons", ( ) => {
   test( "renders correct DQA user vote number", async ( ) => {
     renderComponent( <DQAVoteButtons
       metric="wild"
-      qualityMetrics={mockQualityMetrics}
+      votes={mockQualityMetrics}
       setVote={jest.fn()}
       loadingAgree={jest.fn()}
       loadingDisagree={jest.fn()}
