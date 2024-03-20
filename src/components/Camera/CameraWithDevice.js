@@ -72,7 +72,7 @@ const CameraWithDevice = ( {
     ? "flex-row"
     : "flex-col";
 
-  const navToObsEdit = useCallback( async ( ) => {
+  const navToSuggestions = useCallback( async ( ) => {
     await prepareStateForObsEdit( taxonResult );
     if ( taxonResult ) {
       setTaxonResult( null );
@@ -105,10 +105,10 @@ const CameraWithDevice = ( {
     ) {
       setCheckmarkTapped( false );
       setAddPhotoPermissionGateWasClosed( false );
-      navToObsEdit( );
+      navToSuggestions( );
     }
   }, [
-    navToObsEdit,
+    navToSuggestions,
     checkmarkTapped,
     addPhotoPermissionGateWasClosed,
     addPhotoPermissionResult

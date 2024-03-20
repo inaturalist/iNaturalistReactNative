@@ -293,7 +293,8 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
     getAlbums: jest.fn( ( ) => ( {
       // Expecting album titles as keys and photo counts as values
       // "My Amazing album": 12
-    } ) )
+    } ) ),
+    save: jest.fn( )
   }
 } ) );
 
