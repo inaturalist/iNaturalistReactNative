@@ -90,8 +90,8 @@ const DQAContainer = ( ): React.Node => {
     ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
-        // TODO: refetch observation to get updated votes
         setNotLoading();
+        refetchRemoteObservation();
       },
       onError: () => {
         setHideErrorSheet( false );
@@ -103,8 +103,8 @@ const DQAContainer = ( ): React.Node => {
     ( faveParams, optsWithAuth ) => unfaveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
-        // TODO: refetch observation to get updated votes
         setNotLoading();
+        refetchRemoteObservation();
       },
       onError: () => {
         setHideErrorSheet( false );
