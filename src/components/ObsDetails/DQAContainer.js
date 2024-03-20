@@ -14,19 +14,36 @@ import {
   useEffect, useState
 } from "react";
 import * as React from "react";
-import { useIsConnected } from "sharedHooks";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import Observation from "realmModels/Observation";
+import {
+  useAuthenticatedMutation,
+  useIsConnected,
+  useLocalObservation,
+  useRemoteObservation
+} from "sharedHooks";
 
 const DQAContainer = ( ): React.Node => {
   const isOnline = useIsConnected( );
   const { params } = useRoute( );
-  const { observationUUID, observation, qualityGrade } = params;
-  const [qualityMetrics, setQualityMetrics] = useState( null );
+  const { observationUUID } = params;
+  const [qualityMetrics, setQualityMetrics] = useState( undefined );
   const [loadingAgree, setLoadingAgree] = useState( false );
   const [loadingDisagree, setLoadingDisagree] = useState( false );
   const [loadingMetric, setLoadingMetric] = useState( "none" );
   const [hideErrorSheet, setHideErrorSheet] = useState( true );
   const [hideOfflineSheet, setHideOfflineSheet] = useState( true );
+
+  const localObservation = useLocalObservation( observationUUID );
+  const fetchRemoteObservationEnabled
+    = !!isOnline && localObservation?.wasSynced();
+  const {
+    remoteObservation,
+    refetchRemoteObservation,
+    isRefetching,
+    fetchRemoteObservationError
+  } = useRemoteObservation( observationUUID, fetchRemoteObservationEnabled );
+  const observation
+    = localObservation || Observation.mapApiToRealm( remoteObservation );
 
   const fetchMetricsParams = {
     id: observationUUID,
