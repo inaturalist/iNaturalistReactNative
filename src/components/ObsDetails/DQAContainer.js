@@ -264,7 +264,7 @@ const DQAContainer = ( ): React.Node => {
         loadingAgree={loadingAgree}
         loadingDisagree={loadingDisagree}
         loadingMetric={loadingMetric}
-        qualityGrade={qualityGrade}
+        qualityGrade={observation?.quality_grade}
         setMetricVote={setMetricVote}
         removeMetricVote={removeMetricVote}
         ifMajorityAgree={ifMajorityAgree}
