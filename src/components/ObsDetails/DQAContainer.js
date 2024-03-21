@@ -40,14 +40,10 @@ const DQAContainer = ( ): React.Node => {
   const {
     remoteObservation,
     refetchRemoteObservation,
-    isRefetching,
-    fetchRemoteObservationError
+    isRefetching
   } = useRemoteObservation( observationUUID, fetchRemoteObservationEnabled );
   const observation
     = localObservation || Observation.mapApiToRealm( remoteObservation );
-
-  // TODO: show some UI on remote observation fetch error
-  console.log( "fetchRemoteObservationError", fetchRemoteObservationError );
 
   const fetchMetricsParams = {
     id: observationUUID,
