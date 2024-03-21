@@ -1,5 +1,6 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import { faveObservation, unfaveObservation } from "api/observations";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
@@ -19,11 +20,13 @@ import Observation from "realmModels/Observation";
 import {
   useAuthenticatedMutation,
   useIsConnected,
-  useLocalObservation,
-  useRemoteObservation
+  useLocalObservation
 } from "sharedHooks";
+import useRemoteObservation,
+{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation.ts";
 
 const DQAContainer = ( ): React.Node => {
+  const queryClient = useQueryClient( );
   const isOnline = useIsConnected( );
   const { params } = useRoute( );
   const { observationUUID } = params;
@@ -99,7 +102,10 @@ const DQAContainer = ( ): React.Node => {
     {
       onSuccess: () => {
         setNotLoading();
-        refetchRemoteObservation();
+        queryClient.invalidateQueries( [fetchRemoteObservationKey, observationUUID] );
+        if ( refetchRemoteObservation ) {
+          refetchRemoteObservation( );
+        }
       },
       onError: () => {
         setHideErrorSheet( false );
@@ -112,7 +118,10 @@ const DQAContainer = ( ): React.Node => {
     {
       onSuccess: () => {
         setNotLoading();
-        refetchRemoteObservation();
+        queryClient.invalidateQueries( [fetchRemoteObservationKey, observationUUID] );
+        if ( refetchRemoteObservation ) {
+          refetchRemoteObservation( );
+        }
       },
       onError: () => {
         setHideErrorSheet( false );
