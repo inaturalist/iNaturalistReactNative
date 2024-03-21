@@ -253,15 +253,13 @@ const DQAContainer = ( ): React.Node => {
         return obsDataToCheck[metric] !== null;
       }
       if ( metric === "location" ) {
-        const removedNull = obsDataToCheck[metric].filter(
-          value => value !== null
-        );
+        const removedNull = obsDataToCheck[metric]
+          .filter( value => value !== null );
         return removedNull.length !== 0;
       }
       if ( metric === "evidence" ) {
-        const removedEmpty = obsDataToCheck[metric].filter(
-          value => Object.keys( value ).length !== 0
-        );
+        const removedEmpty = obsDataToCheck[metric]
+          .filter( value => Object.keys( value ).length !== 0 );
         return removedEmpty.length !== 0;
       }
       if ( metric === "id_supported" ) {
