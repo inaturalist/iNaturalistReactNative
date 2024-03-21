@@ -27,7 +27,7 @@ import {
 import useObservationsUpdates,
 { fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
 import useRemoteObservation,
-{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation.ts";
+{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
 import ObsDetails from "./ObsDetails";

@@ -21,7 +21,7 @@ import {
   useLocalObservation
 } from "sharedHooks";
 import useRemoteObservation,
-{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation.ts";
+{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
 
 const DQAContainer = ( ): React.Node => {
   const queryClient = useQueryClient( );

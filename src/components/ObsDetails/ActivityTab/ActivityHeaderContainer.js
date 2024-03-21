@@ -7,7 +7,7 @@ import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import { fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation.ts";
+import { fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
 
 import ActivityHeader from "./ActivityHeader";
 
