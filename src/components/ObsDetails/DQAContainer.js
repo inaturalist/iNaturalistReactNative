@@ -237,18 +237,18 @@ const DQAContainer = ( ): React.Node => {
   };
 
   const checkTest = metric => {
-    const obsDataToCheck = {
-      date: observation.observed_on,
-      location: [observation.latitude, observation.longitude],
-      evidence: compact( [
-        observation.observationPhotos || observation.observation_photos,
-        observation.observationSounds || observation.sounds
-      ] ),
-      taxonId: observation.taxon?.id,
-      rankLevel: observation.taxon?.rank_level,
-      identifications: observation.identifications
-    };
-    if ( obsDataToCheck ) {
+    if ( observation ) {
+      const obsDataToCheck = {
+        date: observation.observed_on,
+        location: [observation.latitude, observation.longitude],
+        evidence: compact( [
+          observation.observationPhotos || observation.observation_photos,
+          observation.observationSounds || observation.sounds
+        ] ),
+        taxonId: observation.taxon?.id,
+        rankLevel: observation.taxon?.rank_level,
+        identifications: observation.identifications
+      };
       if ( metric === "date" ) {
         return obsDataToCheck[metric] !== null;
       }
