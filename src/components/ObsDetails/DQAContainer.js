@@ -12,9 +12,7 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { compact, groupBy } from "lodash";
-import {
-  useEffect, useState
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 import Observation from "realmModels/Observation";
 import {
@@ -57,7 +55,7 @@ const DQAContainer = ( ): React.Node => {
     ttl: -1
   };
 
-  const setNotLoading = ( ) => {
+  const setNotLoading = useCallback( () => {
     setLoadingMetric( "none" );
     if ( loadingAgree ) {
       setLoadingAgree( false );
@@ -65,7 +63,7 @@ const DQAContainer = ( ): React.Node => {
     if ( loadingDisagree ) {
       setLoadingDisagree( false );
     }
-  };
+  }, [loadingAgree, loadingDisagree] );
 
   // destructured mutate to pass into useEffect to prevent infinite
   // rerender and disabling eslint useEffect dependency rule
@@ -97,15 +95,27 @@ const DQAContainer = ( ): React.Node => {
     } );
   }, [mutate, params] );
 
+  /**
+   * After a success mutation of the needs_id vote we start the refetching of the remote
+   * observation to update the metric status of the observation. So we need to wait until
+   * the refetching is done to set the loading state to false.
+   */
+  useEffect( () => {
+    if ( !isRefetching ) {
+      setNotLoading();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRefetching] );
+
   const faveMutation = useAuthenticatedMutation(
     ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
-        setNotLoading();
-        queryClient.invalidateQueries( [fetchRemoteObservationKey, observationUUID] );
-        if ( refetchRemoteObservation ) {
-          refetchRemoteObservation( );
-        }
+        queryClient.invalidateQueries( [
+          fetchRemoteObservationKey,
+          observationUUID
+        ] );
+        refetchRemoteObservation();
       },
       onError: () => {
         setHideErrorSheet( false );
@@ -117,11 +127,11 @@ const DQAContainer = ( ): React.Node => {
     ( faveParams, optsWithAuth ) => unfaveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
-        setNotLoading();
-        queryClient.invalidateQueries( [fetchRemoteObservationKey, observationUUID] );
-        if ( refetchRemoteObservation ) {
-          refetchRemoteObservation( );
-        }
+        queryClient.invalidateQueries( [
+          fetchRemoteObservationKey,
+          observationUUID
+        ] );
+        refetchRemoteObservation();
       },
       onError: () => {
         setHideErrorSheet( false );
@@ -277,8 +287,8 @@ const DQAContainer = ( ): React.Node => {
     <>
       <DataQualityAssessment
         qualityMetrics={combinedQualityMetrics}
-        loadingAgree={loadingAgree || isRefetching}
-        loadingDisagree={loadingDisagree || isRefetching}
+        loadingAgree={loadingAgree}
+        loadingDisagree={loadingDisagree}
         loadingMetric={loadingMetric}
         qualityGrade={observation?.quality_grade}
         setMetricVote={setMetricVote}
