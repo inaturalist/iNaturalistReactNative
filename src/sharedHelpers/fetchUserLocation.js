@@ -26,7 +26,6 @@ type UserLocation = {
 
 }
 const fetchUserLocation = async ( ): Promise<?UserLocation> => {
-  // const permissions = await checkLocationPermissions( );
   const permissionResult = permissionResultFromMultiple(
     await checkMultiple( LOCATION_PERMISSIONS )
   );

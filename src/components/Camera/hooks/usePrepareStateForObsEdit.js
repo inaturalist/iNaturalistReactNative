@@ -2,7 +2,8 @@
 
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
-  useCallback
+  useCallback,
+  useState
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -26,6 +27,7 @@ const usePrepareStateForObsEdit = (
   const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
+  const [readyToNavigate, setReadyToNavigate] = useState( false );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
@@ -33,7 +35,10 @@ const usePrepareStateForObsEdit = (
   // we want it accessible in the camera's folder, as if the user has taken those photos
   // via their own camera app).
   const savePhotosToCameraGallery = useCallback( async uris => {
-    if ( permissionGranted !== "granted" ) { return; }
+    if ( permissionGranted !== "granted" ) {
+      setReadyToNavigate( true );
+      return;
+    }
     const savedUris = await Promise.all( uris.map( async uri => {
       // Find original camera URI of each scaled-down photo
       const cameraUri = originalCameraUrisMap[uri];
@@ -49,6 +54,7 @@ const usePrepareStateForObsEdit = (
     // Save these camera roll URIs, so later on observation editor can update
     // the EXIF metadata of these photos, once we retrieve a location.
     setCameraRollUris( savedUris );
+    setReadyToNavigate( true );
   }, [originalCameraUrisMap, setCameraRollUris, permissionGranted] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
@@ -67,7 +73,6 @@ const usePrepareStateForObsEdit = (
       } );
 
     if ( visionResult ) {
-      console.log( visionResult, "local vision result" );
       // make sure taxon id is stored as a number, not a string, from ARCamera
       visionResult.taxon.id = Number( visionResult.taxon.id );
       newObservation.taxon = visionResult.taxon;
@@ -117,7 +122,8 @@ const usePrepareStateForObsEdit = (
   ] );
 
   return {
-    prepareStateForObsEdit: visionResult => prepareStateForObsEdit( visionResult )
+    prepareStateForObsEdit: visionResult => prepareStateForObsEdit( visionResult ),
+    readyToNavigate
   };
 };
 
