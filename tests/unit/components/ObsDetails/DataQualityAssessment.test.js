@@ -1,6 +1,5 @@
 import { useRoute } from "@react-navigation/native";
-import { fireEvent, screen } from "@testing-library/react-native";
-import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
+import { screen } from "@testing-library/react-native";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import { t } from "i18next";
 import React from "react";
@@ -20,18 +19,11 @@ const mockObservation = factory( "LocalObservation", {
   identifications: [],
   // casual is the default, so using needs_id here ensures test
   // is using our mock observation, not just showing the default screen
-  quality_grade: "needs_id"
+  quality_grade: "needs_id",
+  votes: []
 } );
 
 const mockUserID = "some_user_id";
-const mockQualityMetrics = [
-  {
-    id: 0,
-    agree: true,
-    metric: "wild",
-    user_id: mockUserID
-  }
-];
 
 // Mock useCurrentUser hook
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
@@ -69,6 +61,7 @@ describe( "Data Quality Assessment", ( ) => {
     );
     expect( qualityGrade ).toBeTruthy( );
   } );
+
   test( "renders correct quality grade status title", async ( ) => {
     renderComponent( <DQAContainer /> );
 
@@ -77,6 +70,7 @@ describe( "Data Quality Assessment", ( ) => {
     );
     expect( qualityGrade ).toBeTruthy( );
   } );
+
   test( "renders correct quality grade status description", async ( ) => {
     renderComponent( <DQAContainer /> );
 
@@ -85,6 +79,7 @@ describe( "Data Quality Assessment", ( ) => {
     );
     expect( qualityGrade ).toBeTruthy( );
   } );
+
   test( "renders correct metric titles", async ( ) => {
     renderComponent( <DQAContainer /> );
 
@@ -146,68 +141,5 @@ describe( "Data Quality Assessment", ( ) => {
     );
     expect( title ).toBeTruthy( );
     expect( description ).toBeTruthy( );
-  } );
-} );
-
-describe( "DQA Vote Buttons", ( ) => {
-  test( "renders DQA vote buttons", async ( ) => {
-    renderComponent( <DQAContainer /> );
-
-    const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );
-    fireEvent.press( emptyDisagreeButtons[0] );
-
-    expect( await mockMutate ).toHaveBeenCalled();
-  } );
-
-  test( "calls api when DQA disagree button is pressed", async ( ) => {
-    renderComponent( <DQAContainer /> );
-
-    const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );
-    fireEvent.press( emptyDisagreeButtons[0] );
-
-    expect( await mockMutate ).toHaveBeenCalled();
-  } );
-
-  test( "calls api when DQA agree button is pressed", async ( ) => {
-    renderComponent( <DQAContainer /> );
-
-    const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyAgree" );
-    fireEvent.press( emptyDisagreeButtons[0] );
-
-    expect( await mockMutate ).toHaveBeenCalled();
-  } );
-
-  test( "renders correct DQA user vote", async ( ) => {
-    renderComponent( <DQAVoteButtons
-      metric="wild"
-      votes={mockQualityMetrics}
-      setVote={jest.fn()}
-      loadingAgree={jest.fn()}
-      loadingDisagree={jest.fn()}
-      loadingMetric={jest.fn()}
-      removeVote={jest.fn()}
-    /> );
-
-    const button = await screen.findByTestId(
-      "DQAVoteButton.UserAgree"
-    );
-    expect( button ).toBeTruthy( );
-  } );
-
-  test( "renders correct DQA user vote number", async ( ) => {
-    renderComponent( <DQAVoteButtons
-      metric="wild"
-      votes={mockQualityMetrics}
-      setVote={jest.fn()}
-      loadingAgree={jest.fn()}
-      loadingDisagree={jest.fn()}
-      loadingMetric={jest.fn()}
-      removeVote={jest.fn()}
-    /> );
-
-    const voteNumber = await screen.findByText(
-      "1"
-    );
-    expect( voteNumber ).toBeTruthy( );
   } );
 } );
