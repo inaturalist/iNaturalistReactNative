@@ -29,8 +29,6 @@ const usePrepareStoreAndNavigate = (
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
 
-  console.log( currentObservation, "current observation" );
-
   const hasVisionSuggestion = currentObservation?.owners_identification_from_vision === true
     && currentObservation?.taxon !== null;
 
@@ -57,7 +55,7 @@ const usePrepareStoreAndNavigate = (
       // the EXIF metadata of these photos, once we retrieve a location.
       setCameraRollUris( savedUris );
     }
-    navigation.navigate( "Suggestions", { lastScreen: "CameraWithDevice", hasVisionSuggestion } );
+    navigation.push( "Suggestions", { lastScreen: "CameraWithDevice", hasVisionSuggestion } );
   }, [
     hasVisionSuggestion,
     navigation,
@@ -101,7 +99,7 @@ const usePrepareStoreAndNavigate = (
     if ( !checkmarkTapped ) { return null; }
     // handle case where user backs out from ObsEdit -> Suggestions -> Camera
     // and already has a taxon selected
-    if ( addEvidence || currentObservation?.taxon ) {
+    if ( addEvidence ) {
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( evidenceToAdd, {
           position: numOfObsPhotos,
