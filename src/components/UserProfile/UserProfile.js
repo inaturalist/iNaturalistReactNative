@@ -24,7 +24,7 @@ import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-import FollowButton from "./FollowButton";
+import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ): Node => {
@@ -43,16 +43,21 @@ const UserProfile = ( ): Node => {
   const user = remoteUser || null;
 
   const {
-    data,
+    data: relationships,
     refetch
   } = useAuthenticatedQuery(
     ["fetchRelationships"],
     optsWithAuth => fetchRelationships( {
       q: user?.login,
-      fields: "following,friend_user",
+      fields: "following,friend_user,id",
       ttl: -1
     }, optsWithAuth )
   );
+  let relationshipResults = null;
+  if ( relationships?.results ) {
+    relationshipResults = relationships?.results
+      .find( relationship => relationship.friendUser.id === userId );
+  }
 
   useEffect( ( ) => {
     const headerRight = ( ) => currentUser?.login === user?.login && (
@@ -104,10 +109,9 @@ const UserProfile = ( ): Node => {
       <View className="mx-3">
         <View className="mt-8 mb-4">
           {currentUser?.login !== user?.login && (
-            <FollowButton
+            <FollowButtonContainer
               refetchRelationship={refetch}
-              data={data}
-              user={user}
+              relationship={relationshipResults}
               userId={userId}
               setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
@@ -141,7 +145,7 @@ const UserProfile = ( ): Node => {
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {showUnfollowSheet && (
         <UnfollowSheet
-          userId={userId}
+          relationship={relationshipResults}
           setShowUnfollowSheet={setShowUnfollowSheet}
           refetchRelationship={refetch}
         />

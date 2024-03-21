@@ -7,12 +7,16 @@ import { Alert } from "react-native";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 type Props = {
-    userId: number,
+    relationship: Object,
     refetchRelationship: Function,
     setShowUnfollowSheet: Function,
 }
 
-const UnfollowSheet = ( { userId, setShowUnfollowSheet, refetchRelationship }: Props ): Node => {
+const UnfollowSheet = ( {
+  relationship,
+  setShowUnfollowSheet,
+  refetchRelationship
+}: Props ): Node => {
   const { t } = useTranslation( );
 
   const updateRelationshipsMutation = useAuthenticatedMutation(
@@ -20,7 +24,7 @@ const UnfollowSheet = ( { userId, setShowUnfollowSheet, refetchRelationship }: P
   );
 
   const unfollowUser = ( ) => updateRelationshipsMutation.mutate( {
-    id: userId,
+    id: relationship.id,
     relationship: {
       following: false
     }
@@ -43,7 +47,7 @@ const UnfollowSheet = ( { userId, setShowUnfollowSheet, refetchRelationship }: P
       buttonText={t( "UNFOLLOW" )}
       handleSecondButtonPress={( ) => setShowUnfollowSheet( false )}
       confirm={( ) => {
-        unfollowUser();
+        if ( relationship ) unfollowUser();
       }}
     />
   );
