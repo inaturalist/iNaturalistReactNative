@@ -1,15 +1,16 @@
 import { screen } from "@testing-library/react-native";
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import React from "react";
+import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockUserID = "some_user_id";
+const mockUser = factory( "RemoteUser" );
 const mockQualityMetrics = [
   {
     id: 0,
     agree: true,
     metric: "wild",
-    user_id: mockUserID
+    user_id: mockUser.id
   }
 ];
 
@@ -17,7 +18,7 @@ const mockQualityMetrics = [
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: jest.fn( ( ) => ( {
-    id: mockUserID
+    id: mockUser.id
   } ) )
 } ) );
 
