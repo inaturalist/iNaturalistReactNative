@@ -69,7 +69,7 @@ exports[`Button focus in dark mode should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Semibold",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -177,7 +177,7 @@ exports[`Button focus in dark mode when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Semibold",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -303,7 +303,7 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Semibold",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -429,7 +429,7 @@ exports[`Button neutral in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
-          "fontFamily": "Whitney-Semibold",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -540,7 +540,7 @@ exports[`Button primary in dark mode should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Semibold",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -651,7 +651,7 @@ exports[`Button primary in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
-          "fontFamily": "Whitney-Semibold",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -762,7 +762,7 @@ exports[`Button warning in dark mode should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Semibold",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -870,7 +870,7 @@ exports[`Button warning in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
-          "fontFamily": "Whitney-Semibold",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
