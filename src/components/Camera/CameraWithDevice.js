@@ -19,7 +19,7 @@ import useDeviceOrientation, {
 } from "sharedHooks/useDeviceOrientation";
 
 import ARCamera from "./ARCamera/ARCamera";
-import usePrepareStateForObsEdit from "./hooks/usePrepareStateForObsEdit";
+import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
@@ -57,9 +57,8 @@ const CameraWithDevice = ( {
   const [addPhotoPermissionGateWasClosed, setAddPhotoPermissionGateWasClosed] = useState( false );
 
   const {
-    prepareStateForObsEdit,
-    readyToNavigate
-  } = usePrepareStateForObsEdit( addPhotoPermissionResult, addEvidence, checkmarkTapped );
+    prepareStateForObsEdit
+  } = usePrepareStoreAndNavigate( addPhotoPermissionResult, addEvidence, checkmarkTapped );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -78,13 +77,6 @@ const CameraWithDevice = ( {
     await prepareStateForObsEdit( visionCameraResult );
   }, [visionCameraResult, prepareStateForObsEdit] );
 
-  useEffect( ( ) => {
-    if ( readyToNavigate ) {
-      setVisionCameraResult( null );
-      navigation.navigate( "Suggestions", { lastScreen: "CameraWithDevice" } );
-    }
-  }, [readyToNavigate, navigation] );
-
   const handleCheckmarkPress = visionResult => {
     setVisionCameraResult( visionResult?.taxon
       ? visionResult
@@ -92,11 +84,11 @@ const CameraWithDevice = ( {
     setCheckmarkTapped( true );
   };
 
-  const onPermissionGranted = ( ) => {
+  const onPhotoPermissionGranted = ( ) => {
     setAddPhotoPermissionResult( "granted" );
   };
 
-  const onPermissionDenied = ( ) => {
+  const onPhotoPermissionDenied = ( ) => {
     setAddPhotoPermissionResult( "denied" );
   };
 
@@ -157,8 +149,8 @@ const CameraWithDevice = ( {
           icon="gallery"
           image={require( "images/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
           onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
-          onPermissionGranted={onPermissionGranted}
-          onPermissionDenied={onPermissionDenied}
+          onPermissionGranted={onPhotoPermissionGranted}
+          onPermissionDenied={onPhotoPermissionDenied}
           withoutNavigation
           permissionNeeded={checkmarkTapped}
         />

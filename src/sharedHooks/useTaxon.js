@@ -19,7 +19,7 @@ const ONE_WEEK_MS = (
 const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
   const realm = useRealm( );
   // taxon id is returned as a string, not a number, from CV model
-  const taxonId = Number( taxon.id );
+  const taxonId = Number( taxon?.id );
 
   const localTaxon = taxonId && realm.objectForPrimaryKey( "Taxon", taxonId );
 

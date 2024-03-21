@@ -51,6 +51,7 @@ const TaxonResult = ( {
   testID,
   white = false
 }: Props ): Node => {
+  console.log( confidence, taxonProp, "taxon result" );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const theme = useTheme( );
@@ -62,9 +63,9 @@ const TaxonResult = ( {
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
-  const taxonImage = { uri: usableTaxon.default_photo?.url };
+  const taxonImage = { uri: usableTaxon?.default_photo?.url };
 
-  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: usableTaxon.id } );
+  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: usableTaxon?.id } );
 
   return (
     <View
@@ -86,7 +87,7 @@ const TaxonResult = ( {
         accessible
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
-        accessibilityValue={{ text: usableTaxon.name }}
+        accessibilityValue={{ text: usableTaxon?.name }}
         accessibilityState={{ disabled: false }}
       >
         <View className="w-[62px] h-[62px] justify-center relative">

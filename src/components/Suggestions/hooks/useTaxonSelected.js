@@ -32,6 +32,7 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
         vision
       } );
     } else {
+      console.log( selectedTaxon, "selected taxon in useTaxonSelected" );
       updateObservationKeys( {
         owners_identification_from_vision: vision,
         taxon: selectedTaxon
