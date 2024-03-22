@@ -51,7 +51,6 @@ const TaxonResult = ( {
   testID,
   white = false
 }: Props ): Node => {
-  console.log( confidence, taxonProp, "taxon result" );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const theme = useTheme( );

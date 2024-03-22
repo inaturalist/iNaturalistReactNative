@@ -99,7 +99,7 @@ const usePrepareStoreAndNavigate = (
     if ( !checkmarkTapped ) { return null; }
     // handle case where user backs out from ObsEdit -> Suggestions -> Camera
     // and already has a taxon selected
-    if ( addEvidence ) {
+    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
       const obsPhotos = await ObservationPhoto
         .createObsPhotosWithPosition( evidenceToAdd, {
           position: numOfObsPhotos,
