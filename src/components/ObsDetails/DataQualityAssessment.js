@@ -266,7 +266,7 @@ const DataQualityAssessment = ( {
         />
       </View>
 
-      <View className="mt-[30px] mx-[15px] space-y-[11px]">
+      <View className="my-[30px] mx-[15px] space-y-[11px]">
         <Heading4>{t( "ABOUT-THE-DQA" )}</Heading4>
         <List2>{t( "About-the-DQA-description" )}</List2>
       </View>
