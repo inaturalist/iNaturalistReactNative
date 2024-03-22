@@ -130,7 +130,7 @@ describe( "Toolbar", () => {
         ...uploadState,
         uploads: [{}, {}, {}, {}, {}, {}, {}],
         uploadsComplete: true,
-        numFinishedUploads: 7
+        numToUpload: 7
       }}
     /> );
 

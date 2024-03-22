@@ -216,7 +216,7 @@ describe( "MyObservations", ( ) => {
         );
         expect( secondUploadIcon ).toBeVisible( );
         await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /Upload 1 observation/ );
+          const toolbarText = screen.getByText( /1 observation uploaded/ );
           expect( toolbarText ).toBeVisible( );
         } );
       } );

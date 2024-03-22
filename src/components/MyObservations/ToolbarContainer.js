@@ -122,12 +122,15 @@ const ToolbarContainer = ( {
       return t( "Uploading-x-of-y-observations", translationParams );
     }
 
-    if ( numUnuploadedObs && numUnuploadedObs !== 0 ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObs } );
+    if ( uploadsComplete ) {
+      // Note that numToUpload is kind of the number of obs being uploaded in
+      // the current upload session, so it might be 1 if a single obs is
+      // being uploaded even though 5 obs need upload
+      return t( "X-observations-uploaded", { count: numToUpload } );
     }
 
-    if ( uploadsComplete ) {
-      return t( "X-observations-uploaded", { count: numFinishedUploads } );
+    if ( numUnuploadedObs && numUnuploadedObs !== 0 ) {
+      return t( "Upload-x-observations", { count: numUnuploadedObs } );
     }
 
     return "";
