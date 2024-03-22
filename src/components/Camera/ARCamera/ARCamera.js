@@ -148,8 +148,9 @@ const ARCamera = ( {
                 taxon={result?.taxon}
                 handleCheckmarkPress={handlePress}
                 testID={`ARCamera.taxa.${result?.taxon?.id}`}
-                clearBackground
                 confidence={convertOfflineScoreToConfidence( result?.score )}
+                asListItem={false}
+                clearBackground
                 white
               />
             )

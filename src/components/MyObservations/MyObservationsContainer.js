@@ -165,12 +165,25 @@ const MyObservationsContainer = ( ): Node => {
   } );
 
   const {
+    error,
     uploads,
     uploadsComplete,
     uploadProgress,
     uploadInProgress,
     totalProgressIncrements
   } = state;
+
+  useEffect( () => {
+    let timer;
+    if ( uploadsComplete && !error ) {
+      timer = setTimeout( () => {
+        dispatch( { type: "RESET_STATE" } );
+      }, 5000 );
+    }
+    return () => {
+      clearTimeout( timer );
+    };
+  }, [uploadsComplete, error] );
 
   const currentUploadProgress = Object.values( uploadProgress ).reduce(
     ( count, current ) => count + Number( current ),
@@ -290,11 +303,11 @@ const MyObservationsContainer = ( ): Node => {
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
-        message = uploadError.json.errors.map( error => {
-          if ( error.message?.errors ) {
-            return error.message.errors.flat( ).join( ", " );
+        message = uploadError.json.errors.map( e => {
+          if ( e.message?.errors ) {
+            return e.message.errors.flat( ).join( ", " );
           }
-          return error.message;
+          return e.message;
         } ).join( ", " );
       } else if ( uploadError.message?.match( /Network request failed/ ) ) {
         message = t( "Connection-problem-Please-try-again-later" );

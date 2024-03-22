@@ -17,6 +17,15 @@ const fetchRelationships = async ( params: Object = {}, opts: Object = {} ): Pro
   }
 };
 
+const createRelationships = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+  try {
+    const response = await inatjs.relationships.create( { ...PARAMS, ...params }, opts );
+    return response;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 const updateRelationships = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
     const response = await inatjs.relationships.update( { ...PARAMS, ...params }, opts );
@@ -36,6 +45,7 @@ const deleteRelationships = async ( params: Object = {}, opts: Object = {} ): Pr
 };
 
 export {
+  createRelationships,
   deleteRelationships,
   fetchRelationships,
   updateRelationships

@@ -3,7 +3,11 @@ import { fetchUserMe } from "api/users";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { useAuthenticatedQuery, useCurrentUser, useIsConnected } from "sharedHooks";
+import {
+  useAuthenticatedQuery,
+  useCurrentUser,
+  useIsConnected
+} from "sharedHooks";
 
 const { useRealm } = RealmContext;
 

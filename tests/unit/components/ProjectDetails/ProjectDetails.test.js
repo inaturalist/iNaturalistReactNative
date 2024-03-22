@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react-native";
+import ProjectDetails from "components/ProjectDetails/ProjectDetails";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import React from "react";
 import factory from "tests/factory";
@@ -49,5 +50,17 @@ describe( "ProjectDetails", ( ) => {
     expect(
       screen.getByTestId( "ProjectDetails.projectIcon" ).props.source
     ).toStrictEqual( { uri: mockProject.icon } );
+  } );
+
+  it( "renders when project has no description", ( ) => {
+    renderComponent(
+      <ProjectDetails
+        project={{
+          ...mockProject,
+          description: null
+        }}
+      />
+    );
+    expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
   } );
 } );

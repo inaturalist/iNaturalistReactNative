@@ -1,34 +1,24 @@
 // adapted from native Android iNaturalist app
 // https://github.com/inaturalist/iNaturalistAndroid/blob/main/iNaturalist/src/main/java/org/inaturalist/android/UTFGrid.java
 
-const EXPANSION_PIXELS = 8;
+const EXPANSION_PIXELS = 16;
 
 const TILE_SIZE = 256;
 const EMPTY_KEY = "";
 
 const decodeId = id => {
   let decodedId = id;
-  if ( id >= 93 || id >= 35 ) {
-    decodedId -= 1;
-  } else {
-    decodedId -= 32;
-  }
+  if ( id >= 93 ) decodedId -= 1;
+  if ( id >= 35 ) decodedId -= 1;
+  decodedId -= 32;
   return decodedId;
 };
 
-const getKeyForPixel = ( x, y, json ) => {
+const getKeyForPixel = ( row, col, json ) => {
   let id = 0;
 
-  if (
-    x >= 0
-      && y >= 0
-      && x < TILE_SIZE
-      && y < TILE_SIZE
-  ) {
-    const factor = TILE_SIZE / json.grid.length;
-    const row = Math.floor( y / factor );
-    const col = Math.floor( x / factor );
-
+  if ( ( row >= 0 ) && ( col >= 0 )
+    && ( row < json.grid.length ) && ( col < json.grid.length ) ) {
     id = json.grid[row].charCodeAt( col );
     id = decodeId( id );
 
@@ -43,32 +33,37 @@ const getKeyForPixel = ( x, y, json ) => {
 };
 
 const getKeyForPixelExpansive = ( x, y, json ) => {
-  let key = getKeyForPixel( x, y, json );
+  const factor = TILE_SIZE / json.grid.length;
+
+  // Convert x/y to row/column, while making sure it's within the bounds of the grid
+  const initialRow = Math.floor(
+    Math.min( Math.max( y / factor, 0 ), json.grid.length - 1 )
+  );
+  const initialCol = Math.floor(
+    Math.min( Math.max( x / factor, 0 ), json.grid.length - 1 )
+  );
+
+  let key = getKeyForPixel( initialRow, initialCol, json );
   if ( key !== EMPTY_KEY ) return key;
 
   // Search nearby pixels
-  const factor = TILE_SIZE / json.grid.length;
-  // Search up to EXPANSION_PIXELS pixels away from all directions
-  const expansionFactor = EXPANSION_PIXELS * factor;
 
+  // Search up to EXPANSION_PIXELS pixels away from all directions -
   // Slowly expand the search grid around the current pixel
-  for ( let expansion = factor; expansion <= expansionFactor; expansion += factor ) {
-    key = getKeyForPixel( x - expansion, y - expansion, json );
-    if ( key !== EMPTY_KEY ) return key;
-    key = getKeyForPixel( x, y - expansion, json );
-    if ( key !== EMPTY_KEY ) return key;
-    key = getKeyForPixel( x + expansion, y - expansion, json );
-    if ( key !== EMPTY_KEY ) return key;
-    key = getKeyForPixel( x + expansion, y, json );
-    if ( key !== EMPTY_KEY ) return key;
-    key = getKeyForPixel( x + expansion, y + expansion, json );
-    if ( key !== EMPTY_KEY ) return key;
-    key = getKeyForPixel( x, y + expansion, json );
-    if ( key !== EMPTY_KEY ) return key;
-    key = getKeyForPixel( x - expansion, y + expansion, json );
-    if ( key !== EMPTY_KEY ) return key;
-    key = getKeyForPixel( x - expansion, y, json );
-    if ( key !== EMPTY_KEY ) return key;
+  for ( let radius = 1; radius <= EXPANSION_PIXELS; radius += 1 ) {
+    for ( let row = initialRow - radius; row <= initialRow + radius; row += 1 ) {
+      for ( let col = initialCol - radius; col <= initialCol + radius; col += 1 ) {
+        if ( row !== initialRow - radius && row !== initialRow + radius
+          && col !== initialCol - radius && col !== initialCol + radius ) {
+          // Skip the iteration for points that are not on the perimeter of the current square
+        } else {
+          key = getKeyForPixel( row, col, json );
+          if ( key !== EMPTY_KEY ) {
+            return key;
+          }
+        }
+      }
+    }
   }
 
   return EMPTY_KEY;

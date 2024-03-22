@@ -26,7 +26,6 @@ class Observation extends Realm.Object {
     comments: Comment.COMMENT_FIELDS,
     created_at: true,
     description: true,
-    faves: Vote.VOTE_FIELDS,
     geojson: true,
     geoprivacy: true,
     id: true,
@@ -51,6 +50,7 @@ class Observation extends Realm.Object {
     },
     updated_at: true,
     viewer_trusted_by_observer: true,
+    votes: Vote.VOTE_FIELDS,
     private_geojson: true,
     private_location: true,
     private_place_guess: true,
@@ -374,7 +374,6 @@ class Observation extends Realm.Object {
       // timestamp of when observation was created on the server; not editable
       created_at: { type: "string", mapTo: "createdAt", optional: true },
       description: "string?",
-      faves: "Vote[]",
       geoprivacy: "string?",
       id: "int?",
       identifications: "Identification[]",
@@ -406,6 +405,7 @@ class Observation extends Realm.Object {
         mapTo: "viewerTrustedByObserver",
         optional: true
       },
+      votes: "Vote[]",
       private_place_guess: { type: "string", mapTo: "privatePlaceGuess", optional: true },
       private_location: { type: "string", mapTo: "privateLocation", optional: true },
       privateLatitude: "double?",
@@ -434,6 +434,11 @@ class Observation extends Realm.Object {
 
   unviewed() {
     return !this.viewed();
+  }
+
+  // Faves are the subset of votes for which vote_scope is null
+  faves() {
+    return this.votes.filter( vote => vote?.vote_scope === null );
   }
 }
 

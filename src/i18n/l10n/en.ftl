@@ -20,8 +20,6 @@ ADD-COMMENT = ADD COMMENT
 
 Add-Date-Time = Add Date/Time
 
-Add-evidence-of-an-organism = Add evidence of an organism. This helps others identify what you saw.
-
 Add-Location = Add Location
 
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
@@ -306,6 +304,8 @@ Delete-comment = Delete comment
 
 DELETE-OBSERVATION = DELETE OBSERVATION?
 
+Delete-all-observations = Delete all observations
+
 Delete-observation = Delete observation
 
 Delete-observations = Delete observations
@@ -339,6 +339,8 @@ Display-Name = Display Name
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
 DONATE = DONATE
+
+Donate-to-iNaturalist = Donate to iNaturalist
 
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 
@@ -435,6 +437,12 @@ Flag-Item-Other-Description = Some other reason you can explain below.
 
 Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 
+FOLLOW = FOLLOW
+
+UNFOLLOW = UNFOLLOW
+
+UNFOLLOW-USER = UNFOLLOW USER?
+
 Following = Following
 
 # Forgot password link
@@ -476,6 +484,8 @@ IDENTIFICATION = IDENTIFICATION
 
 IDENTIFICATIONS = IDENTIFICATIONS
 
+Identify-an-organism = Identify an organism
+
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 
 # Shows the number of photos a user selected from the camera roll for upload
@@ -491,6 +501,8 @@ iNaturalist-Applications = iNaturalist Applications
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 
 INATURALIST-FORUM = INATURALIST FORUM
+
+iNaturalist-Help = iNaturalist Help
 
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 
@@ -933,6 +945,8 @@ Share-location = Share Location
 
 Share-location = Share Location
 
+Shop-iNaturalist-Merch = Shop iNaturalist Merch
+
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 
 Sign-out = Sign out
@@ -988,6 +1002,8 @@ TAXONOMY-header = TAXONOMY
 Taxonomy-Settings = Taxonomy Settings
 
 TEACHERS = TEACHERS
+
+Teachers-Guide = Teachers' Guide
 
 TEAM = TEAM
 
@@ -1177,10 +1193,11 @@ Yes-delete-observation = Yes, delete observation
 
 Yes-delete-photo = Yes, delete photo
 
-You-can = You can:
-Take-a-photo-with-your-camera = Take a photo with your camera
-Upload-a-photo-from-your-gallery = Upload a photo from your gallery
-Record-a-sound = Record a sound
+Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real-time
+Take-photos-with-the-camera = Take photos of a single organism with the camera
+Upload-photos-from-your-gallery = Upload photos of multiple organisms from your gallery
+Record-sounds = Record sounds with your microphone
+Create-an-observation-evidence = Create an observation with no evidence
 
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
 
@@ -1823,4 +1840,4 @@ Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
 
-Connection-problem-Please-try-again-later = Connection problem. Please try again later.
+Connection-problem-please-try-again-later = Connection problem. Please try again later.
