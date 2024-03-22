@@ -149,6 +149,8 @@ const ExploreContainerWithContext = ( ): Node => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
 
+  const hideBackButton = params?.hideBackButton;
+
   const currentUser = useCurrentUser();
 
   const { state, dispatch, makeSnapshot } = useExplore();
@@ -240,6 +242,7 @@ const ExploreContainerWithContext = ( ): Node => {
       closeFiltersModal={closeFiltersModal}
       count={count}
       exploreView={exploreView}
+      hideBackButton={hideBackButton}
       isOnline={isOnline}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}

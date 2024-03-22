@@ -38,12 +38,15 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
     {
       icon: "compass-rose-outline",
       testID: EXPLORE_SCREEN_ID,
-      accessibilityLabel: t( "Explore" ),
+      accessibilityLabel: t( "Navigate-to-explore-screen" ),
       accessibilityHint: t( "Navigates-to-explore" ),
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "ObservationsStackNavigator", {
-          screen: "Explore"
+          screen: "Explore",
+          params: {
+            hideBackButton: true
+          }
         } );
         setActiveTab( EXPLORE_SCREEN_ID );
       },

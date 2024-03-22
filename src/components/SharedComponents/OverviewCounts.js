@@ -82,7 +82,7 @@ const OverviewCounts = ( {
     />
     <CountPressable
       count={counts.species_count}
-      label={t( "SPECIES-WITHOUT-NUMBER", { count: counts.species_count } )}
+      label={t( "See-species-observed-by-this-user-in-Explore" )}
       icon="leaf"
       onPress={onSpeciesPressed}
     />

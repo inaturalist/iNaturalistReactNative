@@ -1841,3 +1841,17 @@ Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 OK = OK
 
 Connection-problem-please-try-again-later = Connection problem. Please try again later.
+
+# Accessibility label for Explore button on bottom tab navigator
+Navigate-to-explore-screen = Navigate to explore screen
+
+# Accessibility label for Explore button from MyObservations toolbar
+See-all-your-observations-in-explore = See all your observations in explore
+
+Observations-View = ObservationsView
+Species-View = Species View
+Observers-View = Observers View
+Identifiers-View = Identifiers View
+
+# Accessibility label for Species button on UserProfile screen
+See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
