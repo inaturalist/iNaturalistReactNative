@@ -29,15 +29,12 @@ const usePrepareStoreAndNavigate = (
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
 
-  const hasVisionSuggestion = currentObservation?.owners_identification_from_vision === true
-    && currentObservation?.taxon !== null;
-
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
   // Save URIs to camera gallery (if a photo was taken using the app,
   // we want it accessible in the camera's folder, as if the user has taken those photos
   // via their own camera app).
-  const savePhotosToCameraGallery = useCallback( async uris => {
+  const savePhotosToCameraGallery = useCallback( async ( uris, visionResult ) => {
     if ( permissionGranted === "granted" ) {
       const savedUris = await Promise.all( uris.map( async uri => {
       // Find original camera URI of each scaled-down photo
@@ -55,9 +52,11 @@ const usePrepareStoreAndNavigate = (
       // the EXIF metadata of these photos, once we retrieve a location.
       setCameraRollUris( savedUris );
     }
-    navigation.push( "Suggestions", { lastScreen: "CameraWithDevice", hasVisionSuggestion } );
+    navigation.push( "Suggestions", {
+      lastScreen: "CameraWithDevice",
+      hasVisionSuggestion: visionResult
+    } );
   }, [
-    hasVisionSuggestion,
     navigation,
     originalCameraUrisMap,
     permissionGranted,
@@ -92,7 +91,7 @@ const usePrepareStoreAndNavigate = (
       localFilePaths
     );
 
-    return savePhotosToCameraGallery( localFilePaths );
+    return savePhotosToCameraGallery( localFilePaths, visionResult );
   }, [savePhotosToCameraGallery, setObservations] );
 
   const prepareStateForObsEdit = useCallback( async visionResult => {
@@ -113,7 +112,7 @@ const usePrepareStoreAndNavigate = (
         "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
         evidenceToAdd
       );
-      return savePhotosToCameraGallery( evidenceToAdd );
+      return savePhotosToCameraGallery( evidenceToAdd, visionResult );
     }
     return createObsWithCameraPhotos( cameraPreviewUris, visionResult );
   }, [

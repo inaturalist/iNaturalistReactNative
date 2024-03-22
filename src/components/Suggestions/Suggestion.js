@@ -19,7 +19,7 @@ const Suggestion = ( { suggestion, onTaxonChosen }: Props ): Node => (
   <TaxonResult
     taxon={suggestion.taxon}
     handleCheckmarkPress={onTaxonChosen}
-    testID={`Suggestion.taxa.${suggestion?.taxon?.id}`}
+    testID={`SuggestionsList.taxa.${suggestion?.taxon?.id}`}
     confidence={suggestion?.score
       ? convertOfflineScoreToConfidence( suggestion?.score )
       : convertOnlineScoreToConfidence( suggestion.combined_score )}

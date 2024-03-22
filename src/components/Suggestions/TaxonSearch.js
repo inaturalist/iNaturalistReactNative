@@ -18,7 +18,7 @@ import { getShadowStyle } from "styles/global";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import CommentBox from "./CommentBox";
-import useTaxonSelected from "./hooks/useTaxonSelected";
+import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 
 const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
@@ -35,7 +35,7 @@ const TaxonSearch = ( ): Node => {
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const taxonList = useTaxonSearch( taxonQuery );
 
-  useTaxonSelected( selectedTaxon, { vision: false } );
+  useNavigateWithTaxonSelected( selectedTaxon, { vision: false } );
 
   const renderFooter = useCallback( ( ) => <View className="pb-10" />, [] );
 

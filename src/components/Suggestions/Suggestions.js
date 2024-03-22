@@ -78,7 +78,7 @@ const Suggestions = ( {
 
   const observers = useObservers( taxonIds );
 
-  const loading = loadingSuggestions && photoUris.length > 0;
+  const loading = loadingSuggestions && photoUris?.length > 0;
 
   const renderItem = useCallback( ( { item: suggestion } ) => (
     <Suggestion

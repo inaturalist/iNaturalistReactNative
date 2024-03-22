@@ -10,9 +10,9 @@ import React, {
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import useStore from "stores/useStore";
 
+import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
-import useTaxonSelected from "./hooks/useTaxonSelected";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
@@ -49,7 +49,7 @@ const SuggestionsContainer = ( ): Node => {
     tryOfflineSuggestions
   } );
 
-  useTaxonSelected( selectedTaxon, { vision: true } );
+  useNavigateWithTaxonSelected( selectedTaxon, { vision: true } );
 
   const onPressPhoto = useCallback(
     uri => {
