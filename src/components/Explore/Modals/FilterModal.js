@@ -613,7 +613,7 @@ const FilterModal = ( {
       >
         <View className="flex-row items-center">
           <INatIconButton
-            icon="chevron-left"
+            icon="close"
             onPress={
               !differsFromSnapshot
                 ? () => {

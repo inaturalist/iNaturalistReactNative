@@ -20,7 +20,8 @@ import { getShadowStyle } from "styles/global";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
-import FilterModal from "./Modals/FilterModal";
+import ExploreFiltersModal from "./Modals/ExploreFiltersModal";
+// import FilterModal from "./Modals/FilterModal";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
@@ -222,14 +223,19 @@ const Explore = ( {
           </View>
         </View>
       </ViewWrapper>
-      {showFiltersModal && (
+      <ExploreFiltersModal
+        showModal={showFiltersModal}
+        closeModal={closeFiltersModal}
+        updateTaxon={updateTaxon}
+      />
+      {/* {showFiltersModal && (
         <ViewWrapper wrapperClassName="absolute w-full h-full overflow-hidden">
           <FilterModal
             closeModal={closeFiltersModal}
             updateTaxon={updateTaxon}
           />
         </ViewWrapper>
-      )}
+      )} */}
       {renderSheet()}
     </>
   );
