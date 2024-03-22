@@ -61,6 +61,15 @@ const DQAContainer = ( ): React.Node => {
     }
   }, [loadingAgree, loadingDisagree] );
 
+  const setLoading = ( metric, vote ) => {
+    setLoadingMetric( metric );
+    if ( vote ) {
+      setLoadingAgree( true );
+    } else {
+      setLoadingDisagree( true );
+    }
+  };
+
   // destructured mutate to pass into useEffect to prevent infinite
   // rerender and disabling eslint useEffect dependency rule
   const { mutate } = useAuthenticatedMutation(
@@ -148,26 +157,8 @@ const DQAContainer = ( ): React.Node => {
     }
   );
 
-  const setMetricVote = ( metric, vote ) => {
-    setLoadingMetric( metric );
-    if ( vote ) {
-      setLoadingAgree( true );
-    } else {
-      setLoadingDisagree( true );
-    }
-
-    // Special case for needs_id metric which is a fave/unfave kind of action
-    if ( metric === "needs_id" ) {
-      const faveParams = {
-        id: observationUUID,
-        scope: metric,
-        vote: vote === false
-          ? "no"
-          : "yes"
-      };
-      faveMutation.mutate( faveParams );
-      return;
-    }
+  const setMetricVote = ( { metric, vote } ) => {
+    setLoading( metric, vote );
 
     const qualityMetricParams = {
       id: observationUUID,
@@ -176,6 +167,21 @@ const DQAContainer = ( ): React.Node => {
       ttyl: -1
     };
     createQualityMetricMutation.mutate( qualityMetricParams );
+  };
+
+  // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
+  // as it's interaction with the API
+  const setNeedsIDVote = ( { vote } ) => {
+    setLoading( "needs_id", vote );
+
+    const faveParams = {
+      id: observationUUID,
+      scope: "needs_id",
+      vote: vote === false
+        ? "no"
+        : "yes"
+    };
+    faveMutation.mutate( faveParams );
   };
 
   const createRemoveQualityMetricMutation = useAuthenticatedMutation(
@@ -191,23 +197,8 @@ const DQAContainer = ( ): React.Node => {
     }
   );
 
-  const removeMetricVote = ( metric, vote ) => {
-    setLoadingMetric( metric );
-    if ( vote ) {
-      setLoadingAgree( true );
-    } else {
-      setLoadingDisagree( true );
-    }
-
-    // Special case for needs_id metric which is a fave/unfave kind of action
-    if ( metric === "needs_id" ) {
-      const unfaveParams = {
-        id: observationUUID,
-        scope: metric
-      };
-      unfaveMutation.mutate( unfaveParams );
-      return;
-    }
+  const removeMetricVote = ( { metric, vote } ) => {
+    setLoading( metric, vote );
 
     const qualityMetricParams = {
       id: observationUUID,
@@ -215,6 +206,18 @@ const DQAContainer = ( ): React.Node => {
       ttyl: -1
     };
     createRemoveQualityMetricMutation.mutate( qualityMetricParams );
+  };
+
+  // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
+  // as it's interaction with the API
+  const removeNeedsIDVote = ( { vote } ) => {
+    setLoading( "needs_id", vote );
+
+    const unfaveParams = {
+      id: observationUUID,
+      scope: "needs_id"
+    };
+    unfaveMutation.mutate( unfaveParams );
   };
 
   const ifMajorityAgree = metric => {
@@ -287,6 +290,8 @@ const DQAContainer = ( ): React.Node => {
         qualityGrade={observation?.quality_grade}
         setMetricVote={setMetricVote}
         removeMetricVote={removeMetricVote}
+        setNeedsIDVote={setNeedsIDVote}
+        removeNeedsIDVote={removeNeedsIDVote}
         ifMajorityAgree={ifMajorityAgree}
         checkTest={checkTest}
       />

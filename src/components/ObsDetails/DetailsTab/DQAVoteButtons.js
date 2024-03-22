@@ -75,7 +75,7 @@ const DQAVoteButtons = ( {
           icon="arrow-up-bold-circle"
           size={33}
           color={theme.colors.secondary}
-          onPress={() => removeVote( metric, true )}
+          onPress={() => removeVote( { metric, vote: true } )}
           accessibilityLabel={t( "Arrow-up-selected" )}
         />
       );
@@ -85,7 +85,7 @@ const DQAVoteButtons = ( {
         testID="DQAVoteButton.EmptyAgree"
         icon="arrow-up-bold-circle-outline"
         size={33}
-        onPress={() => setVote( metric, true )}
+        onPress={() => setVote( { metric, vote: true } )}
         accessibilityLabel={t( "Arrow-up-unselected" )}
       />
     );
@@ -103,7 +103,7 @@ const DQAVoteButtons = ( {
           icon="arrow-down-bold-circle"
           size={33}
           color={theme.colors.error}
-          onPress={() => removeVote( metric, false )}
+          onPress={() => removeVote( { metric, vote: false } )}
           accessibilityLabel={t( "Arrow-down-selected" )}
         />
       );
@@ -113,7 +113,7 @@ const DQAVoteButtons = ( {
         testID="DQAVoteButton.EmptyDisagree"
         icon="arrow-down-bold-circle-outline"
         size={33}
-        onPress={() => setVote( metric, false )}
+        onPress={() => setVote( { metric, vote: false } )}
         accessibilityLabel={t( "Arrow-down-unselected" )}
       />
     );

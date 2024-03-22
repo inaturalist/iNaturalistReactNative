@@ -47,7 +47,9 @@ type Props = {
   ifMajorityAgree: Function,
   checkTest: Function,
   setMetricVote: Function,
-  removeMetricVote: Function
+  removeMetricVote: Function,
+  setNeedsIDVote: Function,
+  removeNeedsIDVote: Function
 }
 
 const DataQualityAssessment = ( {
@@ -59,7 +61,9 @@ const DataQualityAssessment = ( {
   ifMajorityAgree,
   checkTest,
   setMetricVote,
-  removeMetricVote
+  removeMetricVote,
+  setNeedsIDVote,
+  removeNeedsIDVote
 }: Props ): Node => {
   const isResearchGrade = qualityGrade === "research";
   const theme = useTheme( );
@@ -261,11 +265,11 @@ const DataQualityAssessment = ( {
         <DQAVoteButtons
           metric="needs_id"
           votes={qualityMetrics?.needs_id}
-          setVote={setMetricVote}
+          setVote={setNeedsIDVote}
           loadingAgree={loadingAgree}
           loadingDisagree={loadingDisagree}
           loadingMetric={loadingMetric}
-          removeVote={removeMetricVote}
+          removeVote={removeNeedsIDVote}
         />
       </View>
 
