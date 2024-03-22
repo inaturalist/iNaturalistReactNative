@@ -35,6 +35,16 @@ export default {
     resolveEmbeddedConstraints: true
   },
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 48 ) {
+      const oldObservations = oldRealm.objects( "Observation" );
+      const newObservations = newRealm.objects( "Observation" );
+      oldObservations.keys( ).forEach( objectIndex => {
+        const oldObservation = oldObservations[objectIndex];
+        const newObservation = newObservations[objectIndex];
+        newObservation.votes = oldObservation.faves;
+        delete newObservation.faves;
+      } );
+    }
     if ( oldRealm.schemaVersion < 34 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
