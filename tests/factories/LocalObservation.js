@@ -9,7 +9,8 @@ export default define( "LocalObservation", faker => ( {
   observationPhotos: [],
   observationSounds: [],
   viewed: jest.fn( ( ) => true ),
-  unviewed: jest.fn( ( ) => false )
+  unviewed: jest.fn( ( ) => false ),
+  faves: jest.fn( ( ) => [] )
 } ), {
   uploaded: faker => ( {
     _synced_at: faker.date.past( ),

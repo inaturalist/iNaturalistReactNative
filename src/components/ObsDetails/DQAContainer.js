@@ -1,5 +1,7 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
+import { faveObservation, unfaveObservation } from "api/observations";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import {
@@ -9,23 +11,40 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import {
-  useEffect, useState
-} from "react";
+import { compact, groupBy } from "lodash";
+import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
-import { useIsConnected } from "sharedHooks";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import Observation from "realmModels/Observation";
+import {
+  useAuthenticatedMutation,
+  useIsConnected,
+  useLocalObservation
+} from "sharedHooks";
+import useRemoteObservation, {
+  fetchRemoteObservationKey
+} from "sharedHooks/useRemoteObservation";
 
 const DQAContainer = ( ): React.Node => {
+  const queryClient = useQueryClient( );
   const isOnline = useIsConnected( );
   const { params } = useRoute( );
-  const { observationUUID, observation, qualityGrade } = params;
-  const [qualityMetrics, setQualityMetrics] = useState( null );
+  const { observationUUID } = params;
+  const [qualityMetrics, setQualityMetrics] = useState( undefined );
   const [loadingAgree, setLoadingAgree] = useState( false );
   const [loadingDisagree, setLoadingDisagree] = useState( false );
   const [loadingMetric, setLoadingMetric] = useState( "none" );
   const [hideErrorSheet, setHideErrorSheet] = useState( true );
   const [hideOfflineSheet, setHideOfflineSheet] = useState( true );
+
+  const localObservation = useLocalObservation( observationUUID );
+  const fetchRemoteObservationEnabled = !localObservation || localObservation?.wasSynced();
+  const {
+    remoteObservation,
+    refetchRemoteObservation,
+    isRefetching
+  } = useRemoteObservation( observationUUID, fetchRemoteObservationEnabled );
+  const observation
+    = localObservation || Observation.mapApiToRealm( remoteObservation );
 
   const fetchMetricsParams = {
     id: observationUUID,
@@ -33,22 +52,32 @@ const DQAContainer = ( ): React.Node => {
     ttl: -1
   };
 
+  const setNotLoading = useCallback( () => {
+    setLoadingMetric( "none" );
+    if ( loadingAgree ) {
+      setLoadingAgree( false );
+    }
+    if ( loadingDisagree ) {
+      setLoadingDisagree( false );
+    }
+  }, [loadingAgree, loadingDisagree] );
+
+  const setLoading = ( metric, vote ) => {
+    setLoadingMetric( metric );
+    if ( vote ) {
+      setLoadingAgree( true );
+    } else {
+      setLoadingDisagree( true );
+    }
+  };
+
   // destructured mutate to pass into useEffect to prevent infinite
   // rerender and disabling eslint useEffect dependency rule
   const { mutate } = useAuthenticatedMutation(
-    ( qualityMetricParams, optsWithAuth ) => fetchQualityMetrics(
-      qualityMetricParams,
-      optsWithAuth
-    ),
+    ( p, o ) => fetchQualityMetrics( p, o ),
     {
       onSuccess: response => {
-        setLoadingMetric( "none" );
-        if ( loadingAgree ) {
-          setLoadingAgree( false );
-        }
-        if ( loadingDisagree ) {
-          setLoadingDisagree( false );
-        }
+        setNotLoading();
         setQualityMetrics( response );
       },
       onError: () => {
@@ -59,6 +88,11 @@ const DQAContainer = ( ): React.Node => {
     }
   );
 
+  const combinedQualityMetrics = {
+    ...groupBy( qualityMetrics, "metric" ),
+    ...groupBy( observation?.votes, "vote_scope" )
+  };
+
   useEffect( ( ) => {
     mutate( {
       id: params.observationUUID,
@@ -66,6 +100,50 @@ const DQAContainer = ( ): React.Node => {
       ttl: -1
     } );
   }, [mutate, params] );
+
+  /**
+   * After a success mutation of the needs_id vote we start the refetching of the remote
+   * observation to update the metric status of the observation. So we need to wait until
+   * the refetching is done to set the loading state to false.
+   */
+  useEffect( () => {
+    if ( !isRefetching ) {
+      setNotLoading();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRefetching] );
+
+  const faveMutation = useAuthenticatedMutation(
+    ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries( [
+          fetchRemoteObservationKey,
+          observationUUID
+        ] );
+        refetchRemoteObservation();
+      },
+      onError: () => {
+        setHideErrorSheet( false );
+      }
+    }
+  );
+
+  const unfaveMutation = useAuthenticatedMutation(
+    ( faveParams, optsWithAuth ) => unfaveObservation( faveParams, optsWithAuth ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries( [
+          fetchRemoteObservationKey,
+          observationUUID
+        ] );
+        refetchRemoteObservation();
+      },
+      onError: () => {
+        setHideErrorSheet( false );
+      }
+    }
+  );
 
   const createQualityMetricMutation = useAuthenticatedMutation(
     ( qualityMetricParams, optsWithAuth ) => setQualityMetric( qualityMetricParams, optsWithAuth ),
@@ -80,27 +158,35 @@ const DQAContainer = ( ): React.Node => {
     }
   );
 
-  const setMetricVote = ( metric, vote ) => {
+  const setMetricVote = ( { metric, vote } ) => {
+    setLoading( metric, vote );
+
     const qualityMetricParams = {
       id: observationUUID,
       metric,
       agree: vote,
       ttyl: -1
     };
-    setLoadingMetric( metric );
-    if ( vote ) {
-      setLoadingAgree( true );
-    } else {
-      setLoadingDisagree( true );
-    }
     createQualityMetricMutation.mutate( qualityMetricParams );
   };
 
+  // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
+  // as it's interaction with the API
+  const setNeedsIDVote = ( { vote } ) => {
+    setLoading( "needs_id", vote );
+
+    const faveParams = {
+      id: observationUUID,
+      scope: "needs_id",
+      vote: vote === false
+        ? "no"
+        : "yes"
+    };
+    faveMutation.mutate( faveParams );
+  };
+
   const createRemoveQualityMetricMutation = useAuthenticatedMutation(
-    ( qualityMetricParams, optsWithAuth ) => deleteQualityMetric(
-      qualityMetricParams,
-      optsWithAuth
-    ),
+    ( p, o ) => deleteQualityMetric( p, o ),
     {
       onSuccess: () => {
         // fetch updated quality metrics with updated votes
@@ -112,28 +198,37 @@ const DQAContainer = ( ): React.Node => {
     }
   );
 
-  const removeMetricVote = ( metric, vote ) => {
+  const removeMetricVote = ( { metric, vote } ) => {
+    setLoading( metric, vote );
+
     const qualityMetricParams = {
       id: observationUUID,
       metric,
       ttyl: -1
     };
-    setLoadingMetric( metric );
-    if ( vote ) {
-      setLoadingAgree( true );
-    } else {
-      setLoadingDisagree( true );
-    }
     createRemoveQualityMetricMutation.mutate( qualityMetricParams );
   };
 
+  // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
+  // as it's interaction with the API
+  const removeNeedsIDVote = ( { vote } ) => {
+    setLoading( "needs_id", vote );
+
+    const unfaveParams = {
+      id: observationUUID,
+      scope: "needs_id"
+    };
+    unfaveMutation.mutate( unfaveParams );
+  };
+
   const ifMajorityAgree = metric => {
-    if ( qualityMetrics ) {
-      const agreeCount = qualityMetrics.filter(
-        element => ( element.agree && element.metric === metric )
+    const votesOfMetric = combinedQualityMetrics[metric];
+    if ( votesOfMetric && votesOfMetric.length > 0 ) {
+      const agreeCount = votesOfMetric.filter(
+        element => element.agree
       ).length;
-      const disagreeCount = qualityMetrics.filter(
-        element => ( !element.agree && element.metric === metric )
+      const disagreeCount = votesOfMetric.filter(
+        element => !element.agree
       ).length;
 
       return agreeCount >= disagreeCount;
@@ -143,52 +238,61 @@ const DQAContainer = ( ): React.Node => {
 
   const checkTest = metric => {
     if ( observation ) {
+      const obsDataToCheck = {
+        date: observation.observed_on,
+        location: [observation.latitude, observation.longitude],
+        evidence: compact( [
+          observation.observationPhotos || observation.observation_photos,
+          observation.observationSounds || observation.sounds
+        ] ),
+        taxonId: observation.taxon?.id,
+        rankLevel: observation.taxon?.rank_level,
+        identifications: observation.identifications
+      };
       if ( metric === "date" ) {
-        return observation[metric] !== null;
+        return obsDataToCheck[metric] !== null;
       }
       if ( metric === "location" ) {
-        const removedNull = observation[metric]
-          .filter( value => ( value !== null ) );
+        const removedNull = obsDataToCheck[metric]
+          .filter( value => value !== null );
         return removedNull.length !== 0;
       }
       if ( metric === "evidence" ) {
-        const removedEmpty = observation[metric]
-          .filter( value => ( Object.keys( value ).length !== 0 ) );
+        const removedEmpty = obsDataToCheck[metric]
+          .filter( value => Object.keys( value ).length !== 0 );
         return removedEmpty.length !== 0;
       }
-      if ( observation.taxon ) {
-        if ( metric === "id_supported" ) {
-          const taxonId = observation.taxon.id;
-          const supportedIDs = observation.identifications.filter(
-            identification => ( identification.taxon.id === taxonId )
-          ).length;
-          return supportedIDs >= 2;
-        }
-        if ( metric === "rank" && observation.taxon.rank_level <= 10 ) {
-          return true;
-        }
+      if ( metric === "id_supported" ) {
+        const { taxonId } = obsDataToCheck;
+        const supportedIDs = obsDataToCheck.identifications.filter(
+          identification => identification.taxon.id === taxonId
+        ).length;
+        return supportedIDs >= 2;
+      }
+      if ( metric === "rank" && obsDataToCheck.rankLevel <= 10 ) {
+        return true;
       }
     }
     return false;
   };
 
   const resetButtonsOnError = () => {
-    setLoadingAgree( false );
-    setLoadingDisagree( false );
-    setLoadingMetric( "none" );
+    setNotLoading();
     setHideErrorSheet( true );
   };
 
   return (
     <>
       <DataQualityAssessment
-        qualityMetrics={qualityMetrics}
+        qualityMetrics={combinedQualityMetrics}
         loadingAgree={loadingAgree}
         loadingDisagree={loadingDisagree}
         loadingMetric={loadingMetric}
-        qualityGrade={qualityGrade}
+        qualityGrade={observation?.quality_grade}
         setMetricVote={setMetricVote}
         removeMetricVote={removeMetricVote}
+        setNeedsIDVote={setNeedsIDVote}
+        removeNeedsIDVote={removeNeedsIDVote}
         ifMajorityAgree={ifMajorityAgree}
         checkTest={checkTest}
       />
