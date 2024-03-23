@@ -220,10 +220,12 @@ describe( "Explore navigation", ( ) => {
       }, "write mock observation, navigation/Explore test from MyObs" );
 
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+      inatjs.observations.search.mockResolvedValue( makeResponse( mockObservations ) );
       inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
         count: 1,
         taxon: mockTaxon
       }] ) );
+      inatjs.taxa.fetch.mockResolvedValue( makeResponse( [mockTaxon] ) );
     } );
 
     afterEach( ( ) => {
@@ -246,10 +248,6 @@ describe( "Explore navigation", ( ) => {
     } );
 
     describe( "from Explore -> TaxonDetails -> Explore -> TaxonDetails", ( ) => {
-      beforeEach( ( ) => {
-        inatjs.taxa.fetch.mockResolvedValue( makeResponse( [mockTaxon] ) );
-      } );
-
       it( "should navigate from TaxonDetails to Explore and back to TaxonDetails", async ( ) => {
         renderApp( );
         await navigateToRootExplore( );
@@ -272,6 +270,44 @@ describe( "Explore navigation", ( ) => {
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         await actor.press( backButton );
         expect( taxonDetailsExploreButton ).toBeVisible( );
+      } );
+    } );
+
+    describe( "from Explore -> UserProfile -> Explore -> UserProfile", ( ) => {
+      beforeEach( ( ) => {
+        inatjs.users.fetch.mockResolvedValue( makeResponse( [mockUser] ) );
+        inatjs.relationships.search.mockResolvedValue( makeResponse( {
+          results: []
+        } ) );
+      } );
+
+      it( "should navigate from UserProfile to Explore and back to UserProfile", async ( ) => {
+        renderApp( );
+        await navigateToRootExplore( );
+        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
+        expect( speciesViewIcon ).toBeVisible( );
+        await actor.press( speciesViewIcon );
+        const observationsRadioButton = await screen.findByText( "Observations" );
+        await actor.press( observationsRadioButton );
+        const confirmButton = await screen.findByText( /EXPLORE OBSERVATIONS/ );
+        await actor.press( confirmButton );
+        const firstObservation = await screen.findByTestId( `MyObservationsPressable.${obs.uuid}` );
+        await actor.press( firstObservation );
+        const userProfileButton = await screen.findByLabelText( `User @${obs.user.login}` );
+        await actor.press( userProfileButton );
+        const observationsButton = await screen.findByLabelText( /See observations by this user in Explore/ );
+        await actor.press( observationsButton );
+        expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
+          user_id: mockUser.id,
+          verifiable: true
+        } ), {
+          api_token: TEST_JWT
+        } );
+        const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
+        expect( observationsViewIcon ).toBeVisible( );
+        const backButton = screen.queryByTestId( "Explore.BackButton" );
+        await actor.press( backButton );
+        expect( observationsButton ).toBeVisible( );
       } );
     } );
   } );
