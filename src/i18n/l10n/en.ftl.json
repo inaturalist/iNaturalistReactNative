@@ -1351,15 +1351,23 @@
     "val": "Navigate to explore screen"
   },
   "See-all-your-observations-in-explore": {
-    "comment": "Accessibility label for Explore button from MyObservations toolbar",
+    "comment": "Accessibility label for Explore button on MyObservations toolbar",
     "val": "See all your observations in explore"
   },
-  "Observations-View": "ObservationsView",
+  "Observations-View": "Observations View",
   "Species-View": "Species View",
   "Observers-View": "Observers View",
   "Identifiers-View": "Identifiers View",
   "See-species-observed-by-this-user-in-Explore": {
     "comment": "Accessibility label for Species button on UserProfile screen",
     "val": "See species observed by this user in Explore"
+  },
+  "See-observations-by-this-user-in-Explore": {
+    "comment": "Accessibility label for Observations button on UserProfile screen",
+    "val": "See observations by this user in Explore"
+  },
+  "See-observations-of-this-taxon-in-explore": {
+    "comment": "Accessibility label for Explore button on TaxonDetails screen",
+    "val": "See observations of this taxon in explore"
   }
 }

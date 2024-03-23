@@ -1845,13 +1845,19 @@ Connection-problem-please-try-again-later = Connection problem. Please try again
 # Accessibility label for Explore button on bottom tab navigator
 Navigate-to-explore-screen = Navigate to explore screen
 
-# Accessibility label for Explore button from MyObservations toolbar
+# Accessibility label for Explore button on MyObservations toolbar
 See-all-your-observations-in-explore = See all your observations in explore
 
-Observations-View = ObservationsView
+Observations-View = Observations View
 Species-View = Species View
 Observers-View = Observers View
 Identifiers-View = Identifiers View
 
 # Accessibility label for Species button on UserProfile screen
 See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
+
+# Accessibility label for Observations button on UserProfile screen
+See-observations-by-this-user-in-Explore = See observations by this user in Explore
+
+# Accessibility label for Explore button on TaxonDetails screen
+See-observations-of-this-taxon-in-explore = See observations of this taxon in explore

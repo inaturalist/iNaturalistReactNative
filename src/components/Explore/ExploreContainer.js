@@ -149,7 +149,8 @@ const ExploreContainerWithContext = ( ): Node => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
 
-  const hideBackButton = params?.hideBackButton;
+  const hideBackButton = params?.hideBackButton || false;
+  console.log( hideBackButton, "still hiding back button" );
 
   const currentUser = useCurrentUser();
 

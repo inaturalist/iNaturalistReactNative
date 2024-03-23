@@ -219,7 +219,7 @@ const TaxonDetails = ( ): Node => {
                   params: { taxon, worldwide: true }
                 }
               } )}
-              accessibilityLabel={t( "Explore" )}
+              accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
               accessibilityHint={t( "Navigates-to-explore" )}
               size={30}
               color={theme.colors.onPrimary}

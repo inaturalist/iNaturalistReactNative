@@ -31,6 +31,8 @@ const BackButton = ( {
   const navigation = useNavigation();
   const tintColor = color || colors.black;
 
+  console.log( navigation?.canGoBack( ), "can go back" );
+
   if ( navigation?.canGoBack( ) ) {
     return (
       <HeaderBackButton
