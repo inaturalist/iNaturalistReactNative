@@ -1345,5 +1345,5 @@
     "comment": "Generic confirmation, e.g. button on a warning alert",
     "val": "OK"
   },
-  "Connection-problem-please-try-again-later": "Connection problem. Please try again later."
+  "Connection-problem-Please-try-again-later": "Connection problem. Please try again later."
 }

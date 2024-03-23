@@ -112,7 +112,7 @@ const ToolbarContainer = ( {
     if ( uploadInProgress ) {
       const translationParams = {
         total: numToUpload,
-        currentUploadCount: numFinishedUploads + 1
+        currentUploadCount: Math.min( numFinishedUploads + 1, numToUpload )
       };
       // iPhone 4 pixel width
       if ( screenWidth <= 640 ) {
@@ -123,12 +123,17 @@ const ToolbarContainer = ( {
     }
 
     if ( uploadsComplete ) {
+      // Note that numToUpload is kind of the number of obs being uploaded in
+      // the current upload session, so it might be 1 if a single obs is
+      // being uploaded even though 5 obs need upload
       return t( "X-observations-uploaded", { count: numToUpload } );
     }
 
-    return numUnuploadedObs !== 0
-      ? t( "Upload-x-observations", { count: numUnuploadedObs } )
-      : "";
+    if ( numUnuploadedObs && numUnuploadedObs !== 0 ) {
+      return t( "Upload-x-observations", { count: numUnuploadedObs } );
+    }
+
+    return "";
   }, [
     currentDeleteCount,
     deletionsComplete,
