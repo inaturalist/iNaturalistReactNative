@@ -9,7 +9,7 @@ import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
-import { signIn, signOut } from "tests/helpers/user";
+import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -87,6 +87,14 @@ describe( "Explore navigation", ( ) => {
         expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
         const exploreButton = await screen.findByLabelText( /See all your observations in explore/ );
         await actor.press( exploreButton );
+        expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
+          user_id: mockUser.id,
+          verifiable: true
+        } ), {
+          api_token: TEST_JWT
+        } );
+        const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
+        expect( defaultGlobalLocation ).toBeVisible( );
         const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
         expect( observationsViewIcon ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );
@@ -109,6 +117,14 @@ describe( "Explore navigation", ( ) => {
         await actor.press( taxonPressable );
         const exploreButton = await screen.findByLabelText( /See observations of this taxon in explore/ );
         await actor.press( exploreButton );
+        expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
+          taxon_id: mockTaxon.id,
+          verifiable: true
+        } ), {
+          api_token: TEST_JWT
+        } );
+        const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
+        expect( defaultGlobalLocation ).toBeVisible( );
         const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
         expect( observationsViewIcon ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );
@@ -135,7 +151,14 @@ describe( "Explore navigation", ( ) => {
         expect( inatjs.users.fetch ).toHaveBeenCalled( );
         const observationsButton = await screen.findByLabelText( /See observations by this user in Explore/ );
         await actor.press( observationsButton );
-        expect( inatjs.observations.search ).toHaveBeenCalled( );
+        expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
+          user_id: mockUser.id,
+          verifiable: true
+        } ), {
+          api_token: TEST_JWT
+        } );
+        const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
+        expect( defaultGlobalLocation ).toBeVisible( );
         const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
         expect( observationsViewIcon ).toBeVisible( );
         const backButton = await screen.findByTestId( "Explore.BackButton" );
@@ -167,7 +190,12 @@ describe( "Explore navigation", ( ) => {
         expect( inatjs.users.fetch ).toHaveBeenCalled( );
         const speciesButton = await screen.findByLabelText( /See species observed by this user in Explore/ );
         await actor.press( speciesButton );
-        expect( inatjs.observations.speciesCounts ).toHaveBeenCalled( );
+        expect( inatjs.observations.speciesCounts ).toHaveBeenCalledWith( expect.objectContaining( {
+          user_id: mockUser.id,
+          verifiable: true
+        } ) );
+        const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
+        expect( defaultGlobalLocation ).toBeVisible( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
         expect( speciesViewIcon ).toBeVisible( );
         const backButton = await screen.findByTestId( "Explore.BackButton" );
@@ -178,15 +206,17 @@ describe( "Explore navigation", ( ) => {
     } );
 
     describe( "from bottom tab navigator", ( ) => {
-      it( "should not have a back button", async ( ) => {
-        renderApp( );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
-        const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
-        await actor.press( exploreButton );
-        const observationViewLocationPicker = await screen.findByText( "Worldwide" );
-        expect( observationViewLocationPicker ).toBeVisible( );
-        const backButton = screen.queryByTestId( "Explore.BackButton" );
-        expect( backButton ).toBeFalsy( );
+      describe( "without location permissions", ( ) => {
+        it( "should not have a back button", async ( ) => {
+          renderApp( );
+          expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+          const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
+          await actor.press( exploreButton );
+          const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
+          expect( defaultGlobalLocation ).toBeVisible( );
+          const backButton = screen.queryByTestId( "Explore.BackButton" );
+          expect( backButton ).toBeFalsy( );
+        } );
       } );
     } );
   } );
