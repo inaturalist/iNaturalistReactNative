@@ -42,11 +42,8 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-explore" ),
       size: 40,
       onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
-          screen: "Explore",
-          params: {
-            hideBackButton: true
-          }
+        navigation.navigate( "RootExplore", {
+          viewSpecies: true
         } );
         setActiveTab( EXPLORE_SCREEN_ID );
       },
