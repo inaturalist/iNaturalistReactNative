@@ -355,6 +355,17 @@ class Observation extends Realm.Object {
     return updatedObs;
   };
 
+  static appendObsSounds = ( obsSounds, currentObservation ) => {
+    const updatedObs = currentObservation;
+
+    // need empty case for when a user creates an observation with no sounds,
+    // then tries to add sounds to observation later
+    const currentObservationSounds = updatedObs?.observationSounds || [];
+
+    updatedObs.observationSounds = [...currentObservationSounds, ...obsSounds];
+    return updatedObs;
+  };
+
   static schema = {
     name: "Observation",
     primaryKey: "uuid",
