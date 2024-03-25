@@ -19,14 +19,14 @@ const ExploreContainerWithContext = ( ): Node => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
 
-  const hideBackButton = false;
-
   const currentUser = useCurrentUser();
 
   const { state, dispatch, makeSnapshot } = useExplore();
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
   const [exploreView, setExploreView] = useState( "observations" );
+
+  const worldwidePlaceText = t( "Worldwide" );
 
   useEffect( ( ) => {
     if ( params?.viewSpecies ) {
@@ -36,7 +36,7 @@ const ExploreContainerWithContext = ( ): Node => {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         placeId: null,
-        placeName: t( "Worldwide" )
+        placeName: worldwidePlaceText
       } );
     }
     if ( params?.taxon ) {
@@ -68,7 +68,7 @@ const ExploreContainerWithContext = ( ): Node => {
         projectId: params.project.id
       } );
     }
-  }, [params, dispatch, t] );
+  }, [params, dispatch, worldwidePlaceText] );
 
   const changeExploreView = newView => {
     setExploreView( newView );
@@ -112,7 +112,7 @@ const ExploreContainerWithContext = ( ): Node => {
       closeFiltersModal={closeFiltersModal}
       count={count}
       exploreView={exploreView}
-      hideBackButton={hideBackButton}
+      hideBackButton={false}
       isOnline={isOnline}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}

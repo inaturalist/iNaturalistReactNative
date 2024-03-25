@@ -4,6 +4,7 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
+import ReactNativePermissions from "react-native-permissions";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -37,6 +38,12 @@ const mockObservations = [
 ];
 
 const obs = mockObservations[0];
+
+const mockFetchUserLocation = jest.fn( () => ( { latitude: 37, longitude: 34 } ) );
+jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
+  __esModule: true,
+  default: () => mockFetchUserLocation()
+} ) );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -232,39 +239,6 @@ describe( "Explore navigation", ( ) => {
       signOut( { realm: global.mockRealms[__filename] } );
     } );
 
-    describe( "without location permissions", ( ) => {
-      it( "should default to species view and not have a back button", async ( ) => {
-        renderApp( );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
-        const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
-        await actor.press( exploreButton );
-        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        expect( speciesViewIcon ).toBeVisible( );
-        const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
-        expect( defaultGlobalLocation ).toBeVisible( );
-        const backButton = screen.queryByTestId( "Explore.BackButton" );
-        expect( backButton ).toBeFalsy( );
-      } );
-    } );
-
-    describe( "with location permissions", ( ) => {
-      it( "should default to nearby location in Observations view", async ( ) => {
-        renderApp( );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
-        const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
-        await actor.press( exploreButton );
-        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        expect( speciesViewIcon ).toBeVisible( );
-        await actor.press( speciesViewIcon );
-        const observationsRadioButton = await screen.findByText( "Observations" );
-        await actor.press( observationsRadioButton );
-        const confirmButton = await screen.findByText( /EXPLORE OBSERVATIONS/ );
-        await actor.press( confirmButton );
-        const nearbyText = await screen.findByText( /Nearby/ );
-        expect( nearbyText ).toBeVisible( );
-      } );
-    } );
-
     describe( "from Explore -> TaxonDetails -> Explore -> TaxonDetails", ( ) => {
       it( "should navigate from TaxonDetails to Explore and back to TaxonDetails", async ( ) => {
         renderApp( );
@@ -326,6 +300,51 @@ describe( "Explore navigation", ( ) => {
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         await actor.press( backButton );
         expect( observationsButton ).toBeVisible( );
+      } );
+    } );
+
+    describe( "with location permissions", ( ) => {
+      it( "should default to nearby location", async ( ) => {
+        const mockedPermissions = {
+          "ios.permission.LOCATION": "granted"
+        };
+
+        jest.spyOn( ReactNativePermissions, "checkMultiple" )
+          .mockResolvedValueOnce( mockedPermissions );
+        renderApp( );
+        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+        const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
+        await actor.press( exploreButton );
+        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
+        expect( speciesViewIcon ).toBeVisible( );
+        const nearbyText = await screen.findByText( /Nearby/ );
+        expect( nearbyText ).toBeVisible( );
+      } );
+    } );
+
+    describe( "without location permissions", ( ) => {
+      it( "should default to global species view and not have a back button", async ( ) => {
+        const mockedPermissions = {
+          "ios.permission.LOCATION": "denied"
+        };
+
+        jest.spyOn( ReactNativePermissions, "checkMultiple" )
+          .mockResolvedValueOnce( mockedPermissions );
+
+        renderApp( );
+        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+        const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
+        await actor.press( exploreButton );
+        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
+        expect( speciesViewIcon ).toBeVisible( );
+        const locationPermission = await screen.findByText( /Please allow Location Access/ );
+        expect( locationPermission ).toBeVisible( );
+        const closeButton = await screen.findByLabelText( /Close permission request screen/ );
+        await actor.press( closeButton );
+        const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
+        expect( defaultGlobalLocation ).toBeVisible( );
+        const backButton = screen.queryByTestId( "Explore.BackButton" );
+        expect( backButton ).toBeFalsy( );
       } );
     } );
   } );
