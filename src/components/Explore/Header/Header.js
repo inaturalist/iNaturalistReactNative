@@ -42,7 +42,7 @@ const Header = ( {
   const theme = useTheme( );
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
-  const placeName = state.place_guess || t( "Worldwide" );
+  const placeName = state.place_guess;
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,

@@ -247,6 +247,24 @@ describe( "Explore navigation", ( ) => {
       } );
     } );
 
+    describe( "with location permissions", ( ) => {
+      it( "should default to nearby location in Observations view", async ( ) => {
+        renderApp( );
+        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
+        const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
+        await actor.press( exploreButton );
+        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
+        expect( speciesViewIcon ).toBeVisible( );
+        await actor.press( speciesViewIcon );
+        const observationsRadioButton = await screen.findByText( "Observations" );
+        await actor.press( observationsRadioButton );
+        const confirmButton = await screen.findByText( /EXPLORE OBSERVATIONS/ );
+        await actor.press( confirmButton );
+        const nearbyText = await screen.findByText( /Nearby/ );
+        expect( nearbyText ).toBeVisible( );
+      } );
+    } );
+
     describe( "from Explore -> TaxonDetails -> Explore -> TaxonDetails", ( ) => {
       it( "should navigate from TaxonDetails to Explore and back to TaxonDetails", async ( ) => {
         renderApp( );
