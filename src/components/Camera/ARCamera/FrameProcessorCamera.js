@@ -89,7 +89,7 @@ const FrameProcessorCamera = ( {
     if ( !Array.isArray( predictions ) ) {
       predictions = Object.keys( predictions ).map( key => predictions[key] );
     }
-    const handledResult = { ...result, predictions };
+    const handledResult = { predictions, timestamp: result.timestamp };
     // TODO: using current time here now, for some reason result.timestamp is not working
     setLastTimestamp( Date.now() );
     framesProcessingTime.push( timeTaken );
