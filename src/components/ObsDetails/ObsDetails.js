@@ -133,7 +133,7 @@ const ObsDetails = ( {
               />
             </HideView>
             <HideView noInitialRender show={!showActivityTab}>
-              <DetailsTab observation={observation} uuid={uuid} />
+              <DetailsTab observation={observation} />
             </HideView>
             {addingActivityItem && (
               <View className="flex-row items-center justify-center p-10">
@@ -202,7 +202,7 @@ const ObsDetails = ( {
             />
           </HideView>
           <HideView noInitialRender show={!showActivityTab}>
-            <DetailsTab observation={observation} uuid={uuid} />
+            <DetailsTab observation={observation} />
           </HideView>
           {addingActivityItem && (
             <View className="flex-row items-center justify-center p-10">

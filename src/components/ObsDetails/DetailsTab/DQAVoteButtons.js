@@ -8,11 +8,11 @@ import {
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
   metric: string,
-  qualityMetrics: Object,
+  votes: [Object],
   loadingAgree: boolean,
   loadingDisagree: boolean,
   loadingMetric: ?string,
@@ -20,22 +20,29 @@ type Props = {
   removeVote: Function
 }
 
-const getUserVote = ( metric, qualityMetrics ) => {
-  if ( qualityMetrics ) {
-    const match = qualityMetrics.find( element => (
-      element.metric === metric && element.user_id ) );
+const getUserVote = ( currentUser, metric, votes ) => {
+  if ( votes && votes.length > 0 ) {
+    const match = votes.find( element => ( element.user_id === currentUser?.id ) );
     if ( match ) {
+      if ( metric === "needs_id" ) {
+        return match.vote_flag === true;
+      }
       return match.agree === true;
     }
   }
   return null;
 };
 
-const renderVoteCount = ( status, metric, qualityMetrics ) => {
-  if ( !qualityMetrics ) return null;
+const renderVoteCount = ( status, metric, votes ) => {
+  if ( !votes ) return null;
 
-  const count = qualityMetrics
-    ?.filter( qualityMetric => qualityMetric.agree === status && qualityMetric.metric === metric )
+  const count = votes
+    ?.filter( qualityMetric => {
+      if ( metric === "needs_id" ) {
+        return qualityMetric.vote_flag === status;
+      }
+      return qualityMetric.agree === status;
+    } )
     ?.length;
   if ( !count || count === 0 ) return null;
 
@@ -43,11 +50,18 @@ const renderVoteCount = ( status, metric, qualityMetrics ) => {
 };
 
 const DQAVoteButtons = ( {
-  metric, qualityMetrics, loadingAgree, loadingDisagree, loadingMetric, setVote, removeVote
+  metric,
+  votes,
+  loadingAgree,
+  loadingDisagree,
+  loadingMetric,
+  setVote,
+  removeVote
 }: Props ): React.Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const userAgrees = getUserVote( metric, qualityMetrics );
+  const currentUser = useCurrentUser( );
+  const userAgrees = getUserVote( currentUser, metric, votes );
   const activityIndicatorOffset = "mx-[7px]";
 
   const renderAgree = () => {
@@ -61,7 +75,7 @@ const DQAVoteButtons = ( {
           icon="arrow-up-bold-circle"
           size={33}
           color={theme.colors.secondary}
-          onPress={() => removeVote( metric, true )}
+          onPress={() => removeVote( { metric, vote: true } )}
           accessibilityLabel={t( "Arrow-up-selected" )}
         />
       );
@@ -71,7 +85,7 @@ const DQAVoteButtons = ( {
         testID="DQAVoteButton.EmptyAgree"
         icon="arrow-up-bold-circle-outline"
         size={33}
-        onPress={() => setVote( metric, true )}
+        onPress={() => setVote( { metric, vote: true } )}
         accessibilityLabel={t( "Arrow-up-unselected" )}
       />
     );
@@ -89,7 +103,7 @@ const DQAVoteButtons = ( {
           icon="arrow-down-bold-circle"
           size={33}
           color={theme.colors.error}
-          onPress={() => removeVote( metric, false )}
+          onPress={() => removeVote( { metric, vote: false } )}
           accessibilityLabel={t( "Arrow-down-selected" )}
         />
       );
@@ -99,7 +113,7 @@ const DQAVoteButtons = ( {
         testID="DQAVoteButton.EmptyDisagree"
         icon="arrow-down-bold-circle-outline"
         size={33}
-        onPress={() => setVote( metric, false )}
+        onPress={() => setVote( { metric, vote: false } )}
         accessibilityLabel={t( "Arrow-down-unselected" )}
       />
     );
@@ -109,11 +123,11 @@ const DQAVoteButtons = ( {
     <View className="flex-row items-center justify-between w-[97px] space-x-[11px]">
       <View className="flex-row items-center w-1/2">
         {renderAgree()}
-        {renderVoteCount( true, metric, qualityMetrics )}
+        {renderVoteCount( true, metric, votes )}
       </View>
       <View className="flex-row items-center w-1/2">
         {renderDisagree()}
-        {renderVoteCount( false, metric, qualityMetrics )}
+        {renderVoteCount( false, metric, votes )}
       </View>
     </View>
   );

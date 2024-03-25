@@ -8,6 +8,7 @@ import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -58,6 +59,7 @@ const EvidenceSection = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
   const obsPhotos = currentObservation?.observationPhotos;
+  const obsSounds = currentObservation?.observationSounds;
   const navigation = useNavigation( );
 
   const navToLocationPicker = ( ) => {
@@ -96,7 +98,9 @@ const EvidenceSection = ( {
   return (
     <View className="mx-6">
       <AddEvidenceSheet
-        disableAddingMoreEvidence={obsPhotos?.length >= MAX_PHOTOS_ALLOWED}
+        disableAddingMoreEvidence={
+        obsPhotos?.length >= MAX_PHOTOS_ALLOWED ||
+          obsSounds?.length >= MAX_SOUNDS_ALLOWED}
         hidden={!showAddEvidenceSheet}
         onClose={( ) => setShowAddEvidenceSheet( false )}
       />
