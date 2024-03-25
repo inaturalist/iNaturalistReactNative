@@ -7,6 +7,7 @@ import { useIconicTaxa } from "sharedHooks";
 
 const usePredictions = ( ): Object => {
   const [result, setResult] = useState( null );
+  const [resultTimestamp, setResultTimestamp] = useState( undefined );
   const [modelLoaded, setModelLoaded] = useState( false );
   const [confidenceThreshold, setConfidenceThreshold] = useState( 0.5 );
   const [fps, setFPS] = useState( 1 );
@@ -18,6 +19,7 @@ const usePredictions = ( ): Object => {
     if ( cvResult && !modelLoaded ) {
       setModelLoaded( true );
     }
+    setResultTimestamp( cvResult.timestamp );
     let prediction = null;
     const { predictions: branch } = cvResult;
     branch.sort( ( a, b ) => a.rank_level - b.rank_level );
@@ -34,7 +36,8 @@ const usePredictions = ( ): Object => {
           name: finestPrediction.name,
           iconic_taxon_name: iconicTaxon?.name
         },
-        score: finestPrediction.score
+        score: finestPrediction.score,
+        timestamp: cvResult.timestamp
       };
     }
     setResult( prediction );
@@ -48,6 +51,7 @@ const usePredictions = ( ): Object => {
     numStoredResults,
     cropRatio,
     result,
+    resultTimestamp,
     setConfidenceThreshold,
     setFPS,
     setNumStoredResults,

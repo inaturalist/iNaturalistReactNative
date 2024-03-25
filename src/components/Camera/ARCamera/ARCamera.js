@@ -13,7 +13,7 @@ import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores";
-import { useTranslation } from "sharedHooks";
+import { useDebugMode, useTranslation } from "sharedHooks";
 
 import {
   handleCameraError,
@@ -52,6 +52,7 @@ const ARCamera = ( {
   isLandscapeMode
 }: Props ): Node => {
   const hasFlash = device?.hasFlash;
+  const { isDebug } = useDebugMode( );
   const {
     animatedProps,
     changeZoom,
@@ -160,6 +161,11 @@ const ARCamera = ( {
                   : t( "Loading-iNaturalists-AR-Camera" )}
               </Body1>
             )}
+          {isDebug && result && (
+            <Body1 className="text-white self-center mt-[22px]">
+              {`Age of result: ${Date.now() - result.timestamp}ms`}
+            </Body1>
+          )}
         </View>
       </LinearGradient>
       {!modelLoaded && (
