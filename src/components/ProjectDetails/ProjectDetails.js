@@ -43,6 +43,8 @@ const ProjectDetails = ( {
     return null;
   }
 
+  const userTextStyle = { lineHeight: 26 };
+
   return (
     <ScrollViewWrapper testID="project-details">
       <View className="h-[24px]" />
@@ -72,8 +74,8 @@ const ProjectDetails = ( {
           onSpeciesPressed={onSpeciesPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
-        <UserText text={project.description} htmlStyle={{ lineHeight: 26 }} />
+        {project?.description
+          && <UserText text={project.description} htmlStyle={userTextStyle} />}
         {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>

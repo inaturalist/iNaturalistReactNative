@@ -18,6 +18,7 @@ import ConfidenceInterval from "./ConfidenceInterval";
 
 type Props = {
   activeColor?: string,
+  asListItem?: boolean,
   clearBackground?: boolean,
   confidence?: number,
   confidencePosition?: string,
@@ -26,6 +27,7 @@ type Props = {
   fromLocal?: boolean,
   handleCheckmarkPress: Function,
   handlePress: Function,
+  showInfoButton?: boolean,
   showCheckmark?: boolean,
   taxon: Object,
   testID: string,
@@ -34,6 +36,7 @@ type Props = {
 
 const TaxonResult = ( {
   activeColor,
+  asListItem = true,
   clearBackground,
   confidence,
   confidencePosition = "photo",
@@ -42,6 +45,7 @@ const TaxonResult = ( {
   fromLocal = true,
   handleCheckmarkPress,
   handlePress,
+  showInfoButton = true,
   showCheckmark = true,
   taxon: taxonProp,
   testID,
@@ -66,9 +70,10 @@ const TaxonResult = ( {
     <View
       className={
         classnames(
-          "flex-row items-center justify-between px-4 py-3",
+          "flex-row items-center justify-between",
           {
-            "border-b-[1px] border-lightGray": !clearBackground,
+            "px-4 py-3": asListItem,
+            "border-b-[1px] border-lightGray": asListItem,
             "border-t-[1px]": first
           }
         )
@@ -126,14 +131,16 @@ const TaxonResult = ( {
         </View>
       </Pressable>
       <View className="flex-row items-center">
-        <INatIconButton
-          icon="info-circle-outline"
-          size={22}
-          onPress={navToTaxonDetails}
-          color={clearBackground && theme.colors.onSecondary}
-          accessibilityLabel={t( "Information" )}
-          accessibilityHint={t( "Navigate-to-taxon-details" )}
-        />
+        { showInfoButton && (
+          <INatIconButton
+            icon="info-circle-outline"
+            size={22}
+            onPress={navToTaxonDetails}
+            color={clearBackground && theme.colors.onSecondary}
+            accessibilityLabel={t( "Information" )}
+            accessibilityHint={t( "Navigate-to-taxon-details" )}
+          />
+        )}
         { showCheckmark
           && (
             <INatIconButton

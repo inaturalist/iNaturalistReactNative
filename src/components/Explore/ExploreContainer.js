@@ -127,7 +127,6 @@ const mapParamsToAPI = ( params, currentUser ) => {
   }
 
   delete filteredParams.taxon;
-  delete filteredParams.taxon_name;
   delete filteredParams.place_guess;
   delete filteredParams.user;
   delete filteredParams.project;

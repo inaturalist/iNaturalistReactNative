@@ -29,6 +29,7 @@ import {
   useInfiniteObservationsScroll,
   useIsConnected,
   useLocalObservations,
+  useNumUnuploadedObservations,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation
@@ -144,6 +145,7 @@ const MyObservationsContainer = ( ): Node => {
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
   const { deletionsCompletedAt } = useDeleteObservations( );
+  const numUnuploadedObservations = useNumUnuploadedObservations( );
 
   const isOnline = useIsConnected( );
 
@@ -163,12 +165,25 @@ const MyObservationsContainer = ( ): Node => {
   } );
 
   const {
+    error,
     uploads,
     uploadsComplete,
     uploadProgress,
     uploadInProgress,
     totalProgressIncrements
   } = state;
+
+  useEffect( () => {
+    let timer;
+    if ( uploadsComplete && !error ) {
+      timer = setTimeout( () => {
+        dispatch( { type: "RESET_STATE" } );
+      }, 5000 );
+    }
+    return () => {
+      clearTimeout( timer );
+    };
+  }, [uploadsComplete, error] );
 
   const currentUploadProgress = Object.values( uploadProgress ).reduce(
     ( count, current ) => count + Number( current ),
@@ -239,7 +254,10 @@ const MyObservationsContainer = ( ): Node => {
         const isOne = state.totalProgressIncrements === 1;
         if (
           state.singleUpload
-          && ( state.uploadProgress[uuid] >= state.totalProgressIncrements || isOne )
+          && (
+            state.uploadProgress[uuid] >= state.totalProgressIncrements
+            || isOne
+          )
         ) {
           if ( isOne ) {
             dispatch( {
@@ -285,25 +303,27 @@ const MyObservationsContainer = ( ): Node => {
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
-        message = uploadError.json.errors.map( error => {
-          if ( error.message?.errors ) {
-            return error.message.errors.flat( ).join( ", " );
+        message = uploadError.json.errors.map( e => {
+          if ( e.message?.errors ) {
+            return e.message.errors.flat( ).join( ", " );
           }
-          return error.message;
+          return e.message;
         } ).join( ", " );
-      } else if ( uploadError.message.match( /Network request failed/ ) ) {
-        message = "Connection problem. Please try again later.";
+      } else if ( uploadError.message?.match( /Network request failed/ ) ) {
+        message = t( "Connection-problem-Please-try-again-later" );
         logger.error(
-          "[MyObservationsContainer.js] upload failed due to network problem: ",
-          uploadError
+          `[MyObservationsContainer.js] upload failed due to network problem: ${uploadError}`
         );
       } else {
-        logger.error( "[MyObservationsContainer.js] upload failed: ", uploadError );
+        logger.error( `[MyObservationsContainer.js] upload failed: ${uploadError}` );
         throw uploadError;
       }
       dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
     }
-  }, [realm] );
+  }, [
+    realm,
+    t
+  ] );
 
   const uploadSingleObservation = useCallback( async ( observation, options ) => {
     if ( !currentUser ) {
@@ -323,22 +343,33 @@ const MyObservationsContainer = ( ): Node => {
       toggleLoginSheet( );
       return;
     }
-    if ( uploadsComplete || uploadInProgress ) {
+    if ( numUnuploadedObservations === 0 || uploadInProgress ) {
       return;
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
 
-    await Promise.all( uploads.map( async obsToUpload => {
-      await uploadObservationAndCatchError( obsToUpload );
-      dispatch( { type: "START_NEXT_UPLOAD" } );
-    } ) );
-    dispatch( { type: "UPLOADS_COMPLETE" } );
-  }, [currentUser,
-    uploadsComplete,
-    uploadInProgress,
-    uploads,
+    try {
+      await Promise.all( uploads.map( async obsToUpload => {
+        await uploadObservationAndCatchError( obsToUpload );
+        dispatch( { type: "START_NEXT_UPLOAD" } );
+      } ) );
+      dispatch( { type: "UPLOADS_COMPLETE" } );
+    } catch ( uploadMultipleObservationsError ) {
+      logger.error( "Failed to uploadMultipleObservations: ", uploadMultipleObservationsError );
+      dispatch( {
+        type: "SET_UPLOAD_ERROR",
+        error: t( "Something-went-wrong" )
+      } );
+    }
+  }, [
+    currentUser,
+    numUnuploadedObservations,
+    t,
     toggleLoginSheet,
-    uploadObservationAndCatchError] );
+    uploadInProgress,
+    uploadObservationAndCatchError,
+    uploads
+  ] );
 
   const stopUploads = useCallback( ( ) => {
     dispatch( { type: "STOP_UPLOADS" } );
@@ -362,13 +393,22 @@ const MyObservationsContainer = ( ): Node => {
       const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
       if ( msSinceDeletionsCompleted < 5_000 ) {
         const naptime = 10_000 - msSinceDeletionsCompleted;
-        logger.debug(
-          `[MyObservationsContainer.js] finished deleting recently, waiting ${naptime} ms`
+        logger.info(
+          "[MyObservationsContainer.js] downloadRemoteObservationsFromServer finished deleting "
+          + `recently deleted, waiting ${naptime} ms`
         );
         await sleep( naptime );
       }
     }
+    logger.info(
+      "[MyObservationsContainer.js] downloadRemoteObservationsFromServer, fetching observations"
+    );
     const { results } = await searchObservations( searchParams, { api_token: apiToken } );
+    logger.info(
+      "[MyObservationsContainer.js] downloadRemoteObservationsFromServer, fetched",
+      results.length,
+      "results, upserting..."
+    );
     Observation.upsertRemoteObservations( results, realm );
   }, [
     currentUser,

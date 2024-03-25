@@ -14,9 +14,9 @@ describe( "FaveButton", () => {
     ).not.toThrow( );
   } );
 
-  it( "should survive no currentUser for an observation w/ existing faves", ( ) => {
+  it( "should survive no currentUser for an observation w/ existing votes", ( ) => {
     const observation = factory( "RemoteObservation", {
-      faves: [factory( "RemoteVote" )]
+      votes: [factory( "RemoteVote" )]
     } );
     expect(
       ( ) => renderComponent(

@@ -17,6 +17,8 @@ import {
   TextInput as UntyledTextInput,
   View as UnstyledView
 } from "react-native";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import UnstyledFastImage from "react-native-fast-image";
 import UnstyledLinearGradient from "react-native-linear-gradient";
 
 // $FlowIgnore
@@ -68,8 +70,12 @@ const fontMonoClass: string = ( Platform.OS === "ios"
 // $FlowIgnore
 const LinearGradient = styled( UnstyledLinearGradient );
 
+// $FlowIgnore
+const FastImage = styled( UnstyledFastImage );
+
 export {
   BottomSheetTextInput,
+  FastImage,
   fontMonoClass,
   Image,
   ImageBackground,

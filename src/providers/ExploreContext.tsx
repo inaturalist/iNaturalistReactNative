@@ -41,7 +41,7 @@ export enum SORT_BY {
 // TODO: this should be imported from a central point, e.g. Taxon realm model
 // TODO: this is probably against conventioins to make it in lower case but I (Johannes) don't want to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
-  none = "none",
+  none = null,
   kingdom = "kingdom",
   phylum = "phylum",
   subphylum = "subphylum",
@@ -143,7 +143,6 @@ type State = {
   // TODO: technically this is not any Object but a "Taxon" and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | undefined,
-  taxon_name: string | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
@@ -156,8 +155,8 @@ type State = {
   researchGrade: boolean,
   needsID: boolean,
   casual: boolean,
-  hrank: TAXONOMIC_RANK | undefined,
-  lrank: TAXONOMIC_RANK | undefined,
+  hrank: TAXONOMIC_RANK | undefined | null,
+  lrank: TAXONOMIC_RANK | undefined | null,
   dateObserved: DATE_OBSERVED,
   observed_on: string | null | undefined,
   d1: string | null | undefined,
@@ -178,7 +177,6 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
   | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_TAXON_NAME, taxonName: string}
   | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string}
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
@@ -213,8 +211,8 @@ const calculatedFilters = {
   researchGrade: true,
   needsID: true,
   casual: false,
-  hrank: undefined,
-  lrank: undefined,
+  hrank: null,
+  lrank: null,
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,
@@ -243,7 +241,6 @@ const initialState = {
   ...defaultFilters,
   taxon: undefined,
   taxon_id: undefined,
-  taxon_name: undefined,
   place_id: undefined,
   place_guess: "",
   verifiable: true,
@@ -269,13 +266,7 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         taxon: action.taxon,
-        taxon_id: action.taxonId,
-        taxon_name: action.taxonName
-      };
-    case EXPLORE_ACTION.SET_TAXON_NAME:
-      return {
-        ...state,
-        taxon_name: action.taxonName
+        taxon_id: action.taxonId
       };
     case EXPLORE_ACTION.SET_PLACE:
       const placeState = {

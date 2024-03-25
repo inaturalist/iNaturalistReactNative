@@ -91,8 +91,8 @@ const FullPageWebView = ( ) => {
               return false;
             }
 
-            // Note: this will cause infinite re-renders if the page has
-            // iframes
+            if ( params.skipSetSourceInShouldStartLoadWithRequest ) return true;
+            // Note: this will cause infinite re-renders if the page has iframes
             setSource( { ...source, uri: request.url } );
             return true;
           }}
