@@ -83,6 +83,7 @@ const Explore = ( {
       exploreViewIcon={exploreViewIcon[exploreView]}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
+      onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );
 
