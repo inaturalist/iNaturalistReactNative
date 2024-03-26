@@ -40,7 +40,7 @@ const TaxonMapPreview = ( {
   );
 
   const tileMapParams = {
-    taxon: taxon.id
+    taxon_id: taxon.id
   };
 
   const getMapRegion = bounds => {
@@ -49,8 +49,8 @@ const TaxonMapPreview = ( {
     } = bounds;
     const lat = ( Number( nelat ) + Number( swlat ) ) / 2;
     const lng = ( Number( nelng ) + Number( swlng ) ) / 2;
-    const latDelta = Number( nelat ) - lat;
-    const lngDelta = Number( nelat ) - lng;
+    const latDelta = ( Number( nelat ) - lat ) * 2;
+    const lngDelta = ( Number( nelng ) - lng ) * 2;
 
     return {
       latitude: lat,
