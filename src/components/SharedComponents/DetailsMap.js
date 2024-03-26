@@ -114,7 +114,7 @@ const DetailsMap = ( {
 
   return (
     <SafeAreaView className="flex-1">
-      <View className="bg-white w-fit flex-row items-end">
+      <View className="bg-white w-fit flex-row items-center py-4">
         <HeaderBackButton
           tintColor={theme.colors.primary}
           onPress={( ) => closeModal()}
