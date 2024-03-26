@@ -163,7 +163,7 @@ const ARCamera = ( {
               </Body1>
             )}
           {isDebug && result && (
-            <Body1 className="text-white self-center mt-[22px]">
+            <Body1 className="text-deeppink self-center mt-[22px]">
               {`Age of result: ${Date.now() - result.timestamp}ms`}
             </Body1>
           )}
