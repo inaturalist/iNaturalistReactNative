@@ -99,8 +99,9 @@ const EvidenceSection = ( {
     <View className="mx-6">
       <AddEvidenceSheet
         disableAddingMoreEvidence={
-        obsPhotos?.length >= MAX_PHOTOS_ALLOWED ||
-          obsSounds?.length >= MAX_SOUNDS_ALLOWED}
+          obsPhotos?.length >= MAX_PHOTOS_ALLOWED
+          || obsSounds?.length >= MAX_SOUNDS_ALLOWED
+        }
         hidden={!showAddEvidenceSheet}
         onClose={( ) => setShowAddEvidenceSheet( false )}
       />
