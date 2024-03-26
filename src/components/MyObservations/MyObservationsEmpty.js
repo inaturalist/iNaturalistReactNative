@@ -54,8 +54,8 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
             className="mb-2"
             text={t( "EXPLORE-OBSERVATIONS" )}
             level="focus"
-            onPress={( ) => navigation.navigate( "Explore" )}
-            accessibilityLabel={t( "Explore" )}
+            onPress={( ) => navigation.navigate( "RootExplore" )}
+            accessibilityLabel={t( "See-observations-in-explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
           />
         </View>

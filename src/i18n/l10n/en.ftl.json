@@ -1369,5 +1369,9 @@
   "See-observations-of-this-taxon-in-explore": {
     "comment": "Accessibility label for Explore button on TaxonDetails screen",
     "val": "See observations of this taxon in explore"
+  },
+  "See-observations-in-explore": {
+    "comment": "Accessibility label for Explore button in MyObservationsEmpty for logged out user",
+    "val": "See observations in explore"
   }
 }

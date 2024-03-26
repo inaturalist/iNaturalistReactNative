@@ -64,13 +64,21 @@ const RootExploreContainerWithContext = ( ): Node => {
   const onPermissionGranted = async ( ) => {
     if ( state.place_guess ) { return; }
     const location = await fetchUserLocation( );
-    dispatch( {
-      type: EXPLORE_ACTION.SET_PLACE,
-      placeName: t( "Nearby" ),
-      lat: location?.latitude,
-      lng: location?.longitude,
-      radius: 50
-    } );
+    console.log( location, "location in onPermissionGranted" );
+    if ( !location || !location.latitude ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeName: t( "Worldwide" )
+      } );
+    } else {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeName: t( "Nearby" ),
+        lat: location?.latitude,
+        lng: location?.longitude,
+        radius: 50
+      } );
+    }
   };
 
   const onPermissionDenied = ( ) => {

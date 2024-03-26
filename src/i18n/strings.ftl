@@ -1861,3 +1861,6 @@ See-observations-by-this-user-in-Explore = See observations by this user in Expl
 
 # Accessibility label for Explore button on TaxonDetails screen
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
+
+# Accessibility label for Explore button in MyObservationsEmpty for logged out user
+See-observations-in-explore = See observations in explore

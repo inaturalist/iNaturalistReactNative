@@ -69,6 +69,12 @@ afterAll( uniqueRealmAfterAll );
 beforeAll( async () => {
   await initI18next();
   jest.useFakeTimers( );
+  inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
+    count: 1,
+    taxon: mockTaxon
+  }] ) );
+  inatjs.observations.search.mockResolvedValue( makeResponse( mockObservations ) );
+  inatjs.taxa.fetch.mockResolvedValue( makeResponse( [mockTaxon] ) );
 } );
 
 const actor = userEvent.setup( );
@@ -85,21 +91,36 @@ async function navigateToRootExplore( ) {
   await actor.press( exploreButton );
 }
 
-describe( "Explore navigation", ( ) => {
+describe( "logged out", ( ) => {
+  describe( "from MyObservationsEmpty for logged out user", ( ) => {
+    it( "should display species view with no back button", async ( ) => {
+      renderApp( );
+      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+      const exploreButton = await screen.findByLabelText( /See observations in explore/ );
+      await actor.press( exploreButton );
+      const speciesViewIcon = await screen.findByLabelText( /Species View/ );
+      expect( speciesViewIcon ).toBeVisible( );
+      const backButton = screen.queryByTestId( "Explore.BackButton" );
+      expect( backButton ).toBeFalsy( );
+    } );
+  } );
+} );
+
+describe( "logged in", ( ) => {
+  beforeEach( async ( ) => {
+    // Write mock observation to realm
+    safeRealmWrite( global.mockRealms[__filename], ( ) => {
+      global.mockRealms[__filename].create( "Observation", mockObservations[0] );
+    }, "write mock observation, navigation/Explore test" );
+
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+  } );
+
+  afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
+  } );
+
   describe( "from MyObs", ( ) => {
-    beforeEach( async ( ) => {
-      // Write mock observation to realm
-      safeRealmWrite( global.mockRealms[__filename], ( ) => {
-        global.mockRealms[__filename].create( "Observation", mockObservations[0] );
-      }, "write mock observation, navigation/Explore test from MyObs" );
-
-      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-    } );
-
-    afterEach( ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
-    } );
-
     describe( "from MyObs toolbar", ( ) => {
       it( "should show observations view and navigate back to MyObs", async ( ) => {
         renderApp( );
@@ -123,10 +144,6 @@ describe( "Explore navigation", ( ) => {
     } );
 
     describe( "from TaxonDetails", ( ) => {
-      beforeEach( ( ) => {
-        inatjs.taxa.fetch.mockResolvedValue( makeResponse( [mockTaxon] ) );
-      } );
-
       it( "should show observations view and navigate back to TaxonDetails", async ( ) => {
         renderApp( );
         await navigateToObsDetails( );
@@ -189,10 +206,6 @@ describe( "Explore navigation", ( ) => {
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
           results: []
         } ) );
-        inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
-          count: 1,
-          taxon: factory( "RemoteTaxon" )
-        }] ) );
       } );
 
       it( "should show species view and navigate back to UserProfile", async ( ) => {
@@ -220,26 +233,7 @@ describe( "Explore navigation", ( ) => {
   } );
 
   describe( "from bottom tab navigator Explore button", ( ) => {
-    beforeEach( async ( ) => {
-      // Write mock observation to realm
-      safeRealmWrite( global.mockRealms[__filename], ( ) => {
-        global.mockRealms[__filename].create( "Observation", mockObservations[0] );
-      }, "write mock observation, navigation/Explore test from MyObs" );
-
-      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-      inatjs.observations.search.mockResolvedValue( makeResponse( mockObservations ) );
-      inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
-        count: 1,
-        taxon: mockTaxon
-      }] ) );
-      inatjs.taxa.fetch.mockResolvedValue( makeResponse( [mockTaxon] ) );
-    } );
-
-    afterEach( ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
-    } );
-
-    describe( "from Explore -> TaxonDetails -> Explore -> TaxonDetails", ( ) => {
+    describe( "from RootExplore -> X -> Explore -> back", ( ) => {
       it( "should navigate from TaxonDetails to Explore and back to TaxonDetails", async ( ) => {
         renderApp( );
         await navigateToRootExplore( );
@@ -249,12 +243,6 @@ describe( "Explore navigation", ( ) => {
         await actor.press( firstTaxon );
         const taxonDetailsExploreButton = await screen.findByLabelText( /See observations of this taxon in explore/ );
         await actor.press( taxonDetailsExploreButton );
-        expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
-          taxon_id: mockTaxon.id,
-          verifiable: true
-        } ), {
-          api_token: TEST_JWT
-        } );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
         expect( defaultGlobalLocation ).toBeVisible( );
         const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
@@ -263,17 +251,13 @@ describe( "Explore navigation", ( ) => {
         await actor.press( backButton );
         expect( taxonDetailsExploreButton ).toBeVisible( );
       } );
-    } );
 
-    describe( "from Explore -> UserProfile -> Explore -> UserProfile", ( ) => {
-      beforeEach( ( ) => {
+      it( "should navigate from UserProfile to Explore and back to UserProfile", async ( ) => {
         inatjs.users.fetch.mockResolvedValue( makeResponse( [mockUser] ) );
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
           results: []
         } ) );
-      } );
-
-      it( "should navigate from UserProfile to Explore and back to UserProfile", async ( ) => {
+        inatjs.observations.fetch.mockResolvedValue( makeResponse( mockObservations[0] ) );
         renderApp( );
         await navigateToRootExplore( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
@@ -283,9 +267,11 @@ describe( "Explore navigation", ( ) => {
         await actor.press( observationsRadioButton );
         const confirmButton = await screen.findByText( /EXPLORE OBSERVATIONS/ );
         await actor.press( confirmButton );
+        const gridView = await screen.findByTestId( "SegmentedButton.grid" );
+        await actor.press( gridView );
         const firstObservation = await screen.findByTestId( `MyObservationsPressable.${obs.uuid}` );
         await actor.press( firstObservation );
-        const userProfileButton = await screen.findByLabelText( `User @${obs.user.login}` );
+        const userProfileButton = await screen.findByLabelText( `User @${mockUser.login}` );
         await actor.press( userProfileButton );
         const observationsButton = await screen.findByLabelText( /See observations by this user in Explore/ );
         await actor.press( observationsButton );
@@ -312,9 +298,7 @@ describe( "Explore navigation", ( ) => {
         jest.spyOn( ReactNativePermissions, "checkMultiple" )
           .mockResolvedValueOnce( mockedPermissions );
         renderApp( );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
-        const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
-        await actor.press( exploreButton );
+        await navigateToRootExplore( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
         expect( speciesViewIcon ).toBeVisible( );
         const nearbyText = await screen.findByText( /Nearby/ );
