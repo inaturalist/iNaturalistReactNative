@@ -1,13 +1,19 @@
 // @flow
 import classnames from "classnames";
-import { List2 } from "components/SharedComponents";
+import {
+  Body1,
+  INatIcon,
+  List2
+} from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useMemo } from "react";
 import { Platform } from "react-native";
 import { RadioButton, useTheme } from "react-native-paper";
 
 type Props = {
   value: string,
+  icon: string,
   checked: boolean,
   onPress: Function,
   label: string,
@@ -16,7 +22,7 @@ type Props = {
 }
 
 const RadioButtonRow = ( {
-  value, checked, onPress, label, description, style
+  value, icon, checked, onPress, label, description, style
 }: Props ): Node => {
   const theme = useTheme( );
 
@@ -32,6 +38,18 @@ const RadioButtonRow = ( {
     textAlignVertical: "center"
   };
 
+  const iconLabel = useMemo( () => (
+    <View className="flex-row">
+      <Body1 className="mr-2">{label}</Body1>
+      <INatIcon name={icon} size={19} color={theme.colors.secondary} />
+    </View>
+  ), [label, icon, theme.colors.secondary] );
+
+  const labelComponent = useMemo( () => {
+    if ( icon ) return iconLabel;
+    return label;
+  }, [icon, iconLabel, label] );
+
   return (
     <RadioButton.Group>
       <RadioButton.Item
@@ -41,7 +59,7 @@ const RadioButtonRow = ( {
           : "unchecked"}
         onPress={onPress}
         mode="android"
-        label={label}
+        label={labelComponent}
         position="leading"
         labelStyle={labelStyle}
         className={classnames( "p-0" )}
