@@ -2,18 +2,19 @@
 import CameraView from "components/Camera/CameraView";
 import type { Node } from "react";
 import React, {
-  useEffect
+  useEffect,
+  useState
 } from "react";
 import { Platform } from "react-native";
-import * as REA from "react-native-reanimated";
 import {
-  // react-native-vision-camera v3
-  // runAtTargetFps,
   useFrameProcessor
 } from "react-native-vision-camera";
-// react-native-vision-camera v3
-// import { Worklets } from "react-native-worklets-core";
+import { Worklets } from "react-native-worklets-core";
 import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
+import {
+  orientationPatchFrameProcessor,
+  usePatchedRunAsync
+} from "sharedHelpers/visionCameraPatches";
 import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
@@ -36,16 +37,19 @@ type Props = {
   takingPhoto: boolean
 };
 
+const DEFAULT_FPS = 1;
 const DEFAULT_CONFIDENCE_THRESHOLD = 0.5;
 const DEFAULT_NUM_STORED_RESULTS = 4;
 const DEFAULT_CROP_RATIO = 1.0;
+
+let framesProcessingTime = [];
 
 const FrameProcessorCamera = ( {
   animatedProps,
   cameraRef,
   confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
   device,
-  fps,
+  fps = DEFAULT_FPS,
   numStoredResults = DEFAULT_NUM_STORED_RESULTS,
   cropRatio = DEFAULT_CROP_RATIO,
   onCameraError,
@@ -59,6 +63,7 @@ const FrameProcessorCamera = ( {
   takingPhoto
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
+  const [lastTimestamp, setLastTimestamp] = useState( Date.now() );
 
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
@@ -75,14 +80,33 @@ const FrameProcessorCamera = ( {
     };
   }, [onLog] );
 
-  // react-native-vision-camera v3
-  // const handleResults = Worklets.createRunInJsFn( predictions => {
-  //   onTaxaDetected( predictions );
-  // } );
-  // const handleError = Worklets.createRunInJsFn( error => {
-  //   onClassifierError( error );
-  // } );
+  const handleResults = Worklets.createRunInJsFn( ( result, timeTaken ) => {
+    // I don't know if it is a temporary thing but as of vision-camera@3.9.1
+    // and react-native-woklets-core@0.4.0 the Array in the worklet does not have all
+    // the methods of a normal array, so we need to convert it to a normal array here
+    // getPredictionsForImage is fine
+    let { predictions } = result;
+    if ( !Array.isArray( predictions ) ) {
+      predictions = Object.keys( predictions ).map( key => predictions[key] );
+    }
+    const handledResult = { predictions, timestamp: result.timestamp };
+    // TODO: using current time here now, for some reason result.timestamp is not working
+    setLastTimestamp( Date.now() );
+    framesProcessingTime.push( timeTaken );
+    if ( framesProcessingTime.length === 10 ) {
+      const avgTime = framesProcessingTime.reduce( ( a, b ) => a + b, 0 ) / 10;
+      onLog( { log: `Average frame processing time over 10 frames: ${avgTime}ms` } );
+      framesProcessingTime = [];
+    }
+    onTaxaDetected( handledResult );
+  } );
 
+  const handleError = Worklets.createRunInJsFn( error => {
+    onClassifierError( error );
+  } );
+
+  const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
+  const patchedRunAsync = usePatchedRunAsync( );
   const frameProcessor = useFrameProcessor(
     frame => {
       "worklet";
@@ -90,56 +114,54 @@ const FrameProcessorCamera = ( {
       if ( takingPhoto ) {
         return;
       }
-
-      // react-native-vision-camera v2
-      // Reminder: this is a worklet, running on the UI thread.
-      try {
-        const result = InatVision.inatVision( frame, {
-          version: modelVersion,
-          modelPath,
-          taxonomyPath,
-          // Johannes: when I copied over the native code from the legacy
-          // react-native-camera on Android this value had to be a string. On
-          // iOS I changed the API to also accept a string (was number).
-          // Maybe, the intention would look clearer if we refactor to use a
-          // number here.
-          confidenceThreshold: confidenceThreshold.toString( ),
-          numStoredResults,
-          cropRatio
-        } );
-        REA.runOnJS( onTaxaDetected )( result );
-      } catch ( classifierError ) {
-        console.log( `Error: ${classifierError.message}` );
-        REA.runOnJS( onClassifierError )( classifierError );
+      const timestamp = Date.now();
+      const timeSinceLastFrame = timestamp - lastTimestamp;
+      if ( timeSinceLastFrame < ( 1000 / fps ) ) {
+        return;
       }
 
-      // react-native-vision-camera v3
-      // runAtTargetFps( 1, () => {
-      //   "worklet";
-      //   // Reminder: this is a worklet, running on the UI thread.
-      //   try {
-      //     const results = InatVision.inatVision( frame, {
-      //       version,
-      //       modelPath,
-      //       taxonomyPath,
-      //       confidenceThreshold,
-      //       patchedOrientationAndroid: deviceOrientation
-      //     } );
-      //     handleResults( results );
-      //   } catch ( classifierError ) {
-      //     console.log( `Error: ${classifierError.message}` );
-      //     handleError( classifierError );
-      //   }
-      // } );
+      patchedRunAsync( frame, () => {
+        "worklet";
+
+        // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
+        // react-native-worklets-core documentation for what is supported in those worklets.
+        const timeBefore = Date.now();
+        try {
+          const result = InatVision.inatVision( frame, {
+            version: modelVersion,
+            modelPath,
+            taxonomyPath,
+            confidenceThreshold,
+            numStoredResults,
+            cropRatio,
+            patchedOrientationAndroid
+          } );
+          const timeAfter = Date.now();
+          const timeTaken = timeAfter - timeBefore;
+          handleResults( result, timeTaken );
+        } catch ( classifierError ) {
+          console.log( `Error: ${classifierError.message}` );
+          handleError( classifierError );
+        }
+      } );
     },
-    [modelVersion, confidenceThreshold, takingPhoto, deviceOrientation, numStoredResults, cropRatio]
+    [
+      patchedRunAsync,
+      modelVersion,
+      confidenceThreshold,
+      takingPhoto,
+      patchedOrientationAndroid,
+      numStoredResults,
+      cropRatio,
+      lastTimestamp,
+      fps
+    ]
   );
 
   return (
     <CameraView
       cameraRef={cameraRef}
       device={device}
-      fps={fps}
       onClassifierError={onClassifierError}
       onDeviceNotSupported={onDeviceNotSupported}
       onCaptureError={onCaptureError}

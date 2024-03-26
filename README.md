@@ -9,7 +9,7 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 
 ### Requirements
 
-* Xcode 13 or above
+* Xcode 15 or above
 * [Android and iOS environment setup](https://reactnative.dev/docs/environment-setup) described in the RN docs
 
 ### Install packages and pods

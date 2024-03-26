@@ -17,8 +17,7 @@ import factory, { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
-  mockUseCameraDevice,
-  mockUseCameraDevices
+  mockUseCameraDevice
 } from "./vision-camera/vision-camera";
 
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
@@ -56,17 +55,14 @@ jest.mock(
   () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
 );
 
-require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
+require( "react-native-reanimated" ).setUpTests();
 
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
   sortDevices: mockSortDevices,
-  // react-native-vision-camera v2
-  useCameraDevices: mockUseCameraDevices,
-  // react-native-vision-camera v3
   useCameraDevice: mockUseCameraDevice,
   VisionCameraProxy: {
-    getFrameProcessorPlugin: jest.fn( )
+    initFrameProcessorPlugin: jest.fn( )
   }
 } ) );
 
