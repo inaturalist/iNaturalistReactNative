@@ -35,12 +35,11 @@ const getShadow = shadowColor => getShadowStyle( {
   elevation: 6
 } );
 
-// TODO: observers and identifiers icons need replacement
 const exploreViewIcon = {
   observations: "binoculars",
   species: "leaf",
-  observers: "person",
-  identifiers: "person"
+  observers: "observers",
+  identifiers: "identifiers"
 };
 
 type Props = {
