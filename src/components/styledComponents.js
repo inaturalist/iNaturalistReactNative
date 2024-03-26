@@ -33,8 +33,8 @@ const ScrollView = styled( UnstyledScrollView );
 const Text = styled(
   UnstyledText,
   Platform.OS === "ios"
-    ? "font-Whitney-Semibold"
-    : "font-Whitney-Semibold-Pro"
+    ? "font-Whitney-Book"
+    : "font-Whitney-Book-Pro"
 );
 // $FlowIgnore
 const MediumText = styled(
