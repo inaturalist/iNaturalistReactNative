@@ -1,10 +1,9 @@
-import { faker } from "@faker-js/faker";
 import { render, screen } from "@testing-library/react-native";
 import ObsMedia from "components/ObsDetails/ObsMedia";
-import initI18next from "i18n/initI18next";
 import _ from "lodash";
 import React from "react";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
@@ -48,10 +47,6 @@ const expectedImageSource = [
 ];
 
 describe( "ObsMedia", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   // it.todo( "should not have accessibility errors" );
   // it( "should not have accessibility errors", async () => {
   //   const ObsMedia = <ObsMedia photos={mockPhotos} />;

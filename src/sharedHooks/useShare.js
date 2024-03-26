@@ -2,12 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect } from "react";
-import { Platform } from "react-native";
 import ShareMenu from "react-native-share-menu";
-import Observation from "realmModels/Observation";
-import useStore from "stores/useStore";
-
-import { log } from "../../react-native-logs.config";
 
 type SharedItem = {
   mimeType: string,
@@ -15,76 +10,38 @@ type SharedItem = {
   extraData: any,
 };
 
-const logger = log.extend( "useShare" );
-
 const useShare = ( ): void => {
   const navigation = useNavigation( );
-  const resetStore = useStore( state => state.resetStore );
-  const setObservations = useStore( state => state.setObservations );
 
   const handleShare = useCallback( async ( item: ?SharedItem ) => {
     if ( !item ) {
-      logger.info( "no item" );
+      // user hasn't shared any items
       return;
     }
 
     const { mimeType, data } = item;
 
-    if ( ( !data )
-      || (
-        ( Platform.OS === "android" )
-        && ( ( !mimeType ) || ( !mimeType.startsWith( "image/" ) ) )
-      )
-    ) {
-      logger.info( "no data or not an image" );
+    if ( !mimeType && !data ) {
+      // user hasn't shared any images
       return;
     }
 
-    // Move to ObsEdit screen (new observation, with shared photos).
-    logger.info( "calling resetStore" );
-    resetStore( );
+    // show user a loading animation screen (like PhotoGallery)
+    // while observations are created
+    navigation.navigate( "PhotoSharing", { item } );
+  }, [navigation] );
 
-    // Create a new observation with multiple shared photos (one or more)
-
-    let photoUris:any[];
-
-    if ( Array.isArray( data ) ) {
-      photoUris = data;
-    } else {
-      photoUris = [data];
-    }
-
-    logger.info( "photoUris: ", photoUris );
-
-    if ( Platform.OS === "android" ) {
-      photoUris = photoUris.map( x => ( { image: { uri: x } } ) );
-    } else {
-      photoUris = photoUris
-        .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
-        .map( x => ( { image: { uri: x.data } } ) );
-    }
-    logger.info( "creating observations in useShare with photoUris: ", photoUris );
-    const newObservations = await Promise.all( [{ photos: photoUris }].map(
-      ( { photos } ) => Observation.createObservationWithPhotos( photos )
-    ) );
-    setObservations( newObservations );
-
-    navigation.navigate( "ObsEdit" );
-  }, [setObservations, navigation, resetStore] );
-
-  useEffect( () => {
+  useEffect( ( ) => {
     ShareMenu.getInitialShare( handleShare );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
+  }, [handleShare] );
 
-  useEffect( () => {
+  useEffect( ( ) => {
     const listener = ShareMenu.addNewShareListener( handleShare );
 
-    return () => {
-      listener?.remove();
+    return ( ) => {
+      listener?.remove( );
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
+  }, [handleShare] );
 };
 
 export default useShare;

@@ -63,7 +63,19 @@ const ARCamera = ( {
   const {
     rotatableAnimatedStyle
   } = useRotation( );
-  const { result, modelLoaded, handleTaxaDetected } = usePredictions( );
+  const {
+    confidenceThreshold,
+    fps,
+    handleTaxaDetected,
+    modelLoaded,
+    numStoredResults,
+    result,
+    cropRatio,
+    setConfidenceThreshold,
+    setFPS,
+    setNumStoredResults,
+    setCropRatio
+  } = usePredictions( );
   const {
     takePhoto,
     takePhotoOptions,
@@ -96,7 +108,11 @@ const ARCamera = ( {
         <View className="w-full h-full absolute z-0">
           <FrameProcessorCamera
             cameraRef={camera}
+            confidenceThreshold={confidenceThreshold}
             device={device}
+            fps={fps}
+            numStoredResults={numStoredResults}
+            cropRatio={cropRatio}
             onTaxaDetected={handleTaxaDetected}
             onClassifierError={handleClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
@@ -132,8 +148,9 @@ const ARCamera = ( {
                 taxon={result?.taxon}
                 handleCheckmarkPress={handlePress}
                 testID={`ARCamera.taxa.${result?.taxon?.id}`}
-                clearBackground
                 confidence={convertOfflineScoreToConfidence( result?.score )}
+                asListItem={false}
+                clearBackground
                 white
               />
             )
@@ -169,6 +186,14 @@ const ARCamera = ( {
         zoomTextValue={zoomTextValue}
         showZoomButton={showZoomButton}
         changeZoom={changeZoom}
+        confidenceThreshold={confidenceThreshold}
+        setConfidenceThreshold={setConfidenceThreshold}
+        fps={fps}
+        setFPS={setFPS}
+        numStoredResults={numStoredResults}
+        setNumStoredResults={setNumStoredResults}
+        cropRatio={cropRatio}
+        setCropRatio={setCropRatio}
       />
     </>
   );

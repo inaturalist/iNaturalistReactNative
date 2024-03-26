@@ -10,35 +10,43 @@ import colors from "styles/tailwindColors";
 type Props = {
   iconicTaxonName: string,
   imageClassName?: string,
-  style?: Object,
+  isBackground?: boolean,
+  size?: number,
   white?: boolean
 }
 
 const IconicTaxonIcon = ( {
   iconicTaxonName = "unknown",
   imageClassName,
-  style = {},
+  isBackground = false,
+  size = 30,
   white = false
-}: Props ): Node => (
-  <View
-    className={classnames(
-      imageClassName,
-      "justify-center items-center",
-      {
-        "bg-darkGray": white,
-        "border border-lightGray": !white
-      }
-    )}
-    testID="IconicTaxonName.iconicTaxonIcon"
-  >
-    <INatIcon
-      name={iconicTaxonName && `iconic-${iconicTaxonName?.toLowerCase( )}`}
-      size={style?.width > 80
-        ? 30
-        : 22}
-      color={white && colors.white}
-    />
-  </View>
-);
+}: Props ): Node => {
+  let color = null;
+  if ( white ) {
+    color = isBackground
+      ? colors.mediumGrayGhost
+      : colors.white;
+  }
+  return (
+    <View
+      className={classnames(
+        imageClassName,
+        "shrink justify-center items-center",
+        {
+          "bg-darkGray": white,
+          "border border-lightGray": !white
+        }
+      )}
+      testID="IconicTaxonName.iconicTaxonIcon"
+    >
+      <INatIcon
+        name={iconicTaxonName && `iconic-${iconicTaxonName?.toLowerCase( )}`}
+        size={size}
+        color={color}
+      />
+    </View>
+  );
+};
 
 export default IconicTaxonIcon;

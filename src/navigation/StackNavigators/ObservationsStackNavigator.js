@@ -7,11 +7,12 @@ import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocat
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
-import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
+import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
+import ProjectsContainer from "components/Projects/ProjectsContainer";
 import { Heading4 } from "components/SharedComponents";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
@@ -130,16 +131,24 @@ const ObservationsStackNavigator = ( ): Node => (
           headerTitleAlign: "center"
         }}
       />
+      <Stack.Screen
+        name="Projects"
+        component={ProjectsContainer}
+        options={{
+          ...removeBottomBorder,
+          ...blankHeaderTitle
+        }}
+      />
+      <Stack.Screen
+        name="ProjectDetails"
+        component={ProjectDetailsContainer}
+        options={{
+          ...blankHeaderTitle,
+          ...removeBottomBorder,
+          ...showHeader
+        }}
+      />
     </Stack.Group>
-    <Stack.Screen
-      name="Identify"
-      component={Identify}
-      options={{
-        ...removeBottomBorder,
-        ...showHeader,
-        headerTitle: t( "Identify" )
-      }}
-    />
   </Stack.Navigator>
 );
 

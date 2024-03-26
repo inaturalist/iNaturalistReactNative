@@ -2,18 +2,21 @@
 
 import classnames from "classnames";
 import {
-  BottomSheet,
-  Button,
   INatIconButton,
+  RadioButtonSheet,
   ViewWrapper
 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
 import {
+  useDebugMode,
+  useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import useStoredLayout from "sharedHooks/useStoredLayout";
+import { getShadowStyle } from "styles/global";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
@@ -22,6 +25,15 @@ import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
+
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 6
+} );
 
 // TODO: observers and identifiers icons need replacement
 const exploreViewIcon = {
@@ -37,9 +49,9 @@ type Props = {
   count: Object,
   exploreView: string,
   isOnline: boolean,
+  loadingStatus: boolean,
   openFiltersModal: Function,
   queryParams: Object,
-  region: Object,
   showFiltersModal: boolean,
   updateCount: Function,
   updateTaxon: Function
@@ -51,9 +63,9 @@ const Explore = ( {
   count,
   exploreView,
   isOnline,
+  loadingStatus,
   openFiltersModal,
   queryParams,
-  region,
   showFiltersModal,
   updateCount,
   updateTaxon
@@ -62,36 +74,106 @@ const Explore = ( {
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
-
-  const exploreViewText = {
-    observations: t( "OBSERVATIONS" ),
-    species: t( "SPECIES" ),
-    observers: t( "OBSERVERS" ),
-    identifiers: t( "IDENTIFIERS" )
-  };
+  const { isDebug } = useDebugMode( );
 
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
-      updateTaxon={updateTaxon}
+      loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
+      onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );
+
+  const renderSheet = () => {
+    if ( !showExploreBottomSheet ) {
+      return null;
+    }
+    const values = {
+      species: {
+        label: t( "Species" ),
+        text: t( "Organisms-that-are-identified-to-species" ),
+        buttonText: t( "EXPLORE-SPECIES" ),
+        value: "species"
+      },
+      observations: {
+        label: t( "Observations" ),
+        text: t( "Individual-encounters-with-organisms" ),
+        buttonText: t( "EXPLORE-OBSERVATIONS" ),
+        value: "observations"
+      },
+      observers: {
+        label: t( "Observers" ),
+        text: t( "iNaturalist-users-who-have-observed" ),
+        buttonText: t( "EXPLORE-OBSERVERS" ),
+        value: "observers"
+      },
+      identifiers: {
+        label: t( "Identifiers" ),
+        text: t( "iNaturalist-users-who-have-left-an-identification" ),
+        buttonText: t( "EXPLORE-IDENTIFIERS" ),
+        value: "identifiers"
+      }
+    };
+
+    return (
+      <RadioButtonSheet
+        handleClose={() => setShowExploreBottomSheet( false )}
+        headerText={t( "EXPLORE" )}
+        hidden={!showExploreBottomSheet}
+        confirm={newView => {
+          changeExploreView( newView );
+          setShowExploreBottomSheet( false );
+        }}
+        radioValues={values}
+        selectedValue={exploreView}
+      />
+    );
+  };
 
   const grayCircleClass = "bg-darkGray rounded-full h-[55px] w-[55px]";
 
   return (
     <>
-      {!showFiltersModal
-        ? (
-          <ViewWrapper testID="Explore">
-            {renderHeader()}
-            {exploreView === "observations" && (
-              <ObservationsViewBar
-                layout={layout}
-                updateObservationsView={writeLayoutToStorage}
+      <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
+        <View className="flex-1 overflow-hidden">
+          {renderHeader()}
+          {exploreView === "observations" && (
+            <ObservationsViewBar
+              layout={layout}
+              updateObservationsView={writeLayoutToStorage}
+            />
+          )}
+          <View className="flex-1">
+            {isDebug && (
+              <INatIconButton
+                icon="triangle-exclamation"
+                className={classnames(
+                  "absolute",
+                  "bg-white",
+                  "bottom-[100px]",
+                  "h-[55px]",
+                  "right-5",
+                  "rounded-full",
+                  "w-[55px]",
+                  "z-10"
+                )}
+                color="white"
+                size={27}
+                style={[
+                  getShadow( theme.colors.primary ),
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  { backgroundColor: "deeppink" }
+                ]}
+                accessibilityLabel="Diagnostics"
+                onPress={() => {
+                  Alert.alert(
+                    "Explore Info",
+                    `queryParams: ${JSON.stringify( queryParams )}`
+                  );
+                }}
               />
             )}
             <INatIconButton
@@ -104,12 +186,14 @@ const Explore = ( {
               )}
               accessibilityLabel={t( "Explore-View" )}
               onPress={() => setShowExploreBottomSheet( true )}
+              style={getShadow( theme.colors.primary )}
             />
             {exploreView === "observations" && (
               <ObservationsView
-                queryParams={queryParams}
+                count={count}
                 layout={layout}
-                region={region}
+                queryParams={queryParams}
+                updateCount={updateCount}
               />
             )}
             {exploreView === "species" && (
@@ -136,33 +220,18 @@ const Explore = ( {
                 updateCount={updateCount}
               />
             )}
-          </ViewWrapper>
-        )
-        : (
-          <ViewWrapper>
-            <FilterModal
-              closeModal={closeFiltersModal}
-              updateTaxon={updateTaxon}
-            />
-          </ViewWrapper>
-        )}
-      <BottomSheet
-        handleClose={( ) => setShowExploreBottomSheet( false )}
-        headerText={t( "EXPLORE" )}
-        hidden={!showExploreBottomSheet}
-      >
-        {Object.keys( exploreViewText ).map( view => (
-          <Button
-            className="mx-5 my-3"
-            key={exploreViewText[view]}
-            onPress={() => {
-              changeExploreView( view );
-              setShowExploreBottomSheet( false );
-            }}
-            text={exploreViewText[view]}
+          </View>
+        </View>
+      </ViewWrapper>
+      {showFiltersModal && (
+        <ViewWrapper wrapperClassName="absolute w-full h-full overflow-hidden">
+          <FilterModal
+            closeModal={closeFiltersModal}
+            updateTaxon={updateTaxon}
           />
-        ) )}
-      </BottomSheet>
+        </ViewWrapper>
+      )}
+      {renderSheet()}
     </>
   );
 };

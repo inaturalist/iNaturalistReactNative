@@ -103,6 +103,7 @@ module.exports = {
       inatGreenDisabledDark: "#3A5600",
       lightGray: "#E8E8E8",
       mediumGray: "#BFBFBF",
+      mediumGrayGhost: "#BFBFBF33",
       warningRed: "#9B1010",
       warningRedDisabled: "#b06365",
       warningYellow: "#E6A939",
@@ -112,7 +113,11 @@ module.exports = {
       // Mostly for debugging
       red: "#FF0000",
       green: "#00FF00",
-      blue: "#0000FF"
+      blue: "#0000FF",
+      deepPink: "#FF1493",
+      deeppink: "#FF1493",
+      DeepPink: "#FF1493",
+      orange: "#FFA500"
     },
     screens: {
       sm: "240px",

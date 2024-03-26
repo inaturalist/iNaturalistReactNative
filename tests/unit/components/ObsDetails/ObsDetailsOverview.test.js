@@ -1,9 +1,8 @@
-import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import ObsDetailsOverview from "components/ObsDetails/ObsDetailsOverview";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
+import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockTaxon = factory( "RemoteTaxon", {
@@ -13,10 +12,6 @@ const mockTaxon = factory( "RemoteTaxon", {
 } );
 
 describe( "ObsDetailsOverview", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "displays unknown text if no taxon", async ( ) => {
     renderComponent(
       <ObsDetailsOverview

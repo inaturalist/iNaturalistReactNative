@@ -23,7 +23,7 @@ const queryClient = new QueryClient( {
   }
 } );
 
-function renderComponent( component, update = null ) {
+function renderComponent( component, update = null, renderOptions = {} ) {
   const renderMethod = update || render;
   return renderMethod(
     <QueryClientProvider client={queryClient}>
@@ -36,7 +36,8 @@ function renderComponent( component, update = null ) {
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </INatPaperProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
+    renderOptions
   );
 }
 
@@ -82,9 +83,47 @@ async function renderAppWithObservations(
   await screen.findByTestId( `MyObservations.obsListItem.${observations[0].uuid}` );
 }
 
+/**
+ * Render a hook within a component
+ *
+ * Port of equivalent in react-testing-library
+ * (https://github.com/testing-library/react-testing-library/blob/edb6344d578a8c224daf0cd6e2984f36cc6e8d86/src/pure.js#L264C1-L290C2),
+ * but using our renderComponent
+ */
+function renderHook( renderCallback, options = {} ) {
+  const { initialProps, ...renderOptions } = options;
+  const result = React.createRef( );
+
+  const TestComponent = ( { renderCallbackProps } ) => {
+    // eslint-disable-next-line testing-library/render-result-naming-convention
+    const pendingResult = renderCallback( renderCallbackProps );
+
+    React.useEffect( ( ) => {
+      result.current = pendingResult;
+    } );
+
+    return null;
+  };
+
+  const { rerender: baseRerender, unmount } = renderComponent(
+    <TestComponent renderCallbackProps={initialProps} />,
+    null,
+    renderOptions
+  );
+
+  function rerender( rerenderCallbackProps ) {
+    return baseRerender(
+      <TestComponent renderCallbackProps={rerenderCallbackProps} />
+    );
+  }
+
+  return { result, rerender, unmount };
+}
+
 export {
   renderApp,
   renderAppWithComponent,
   renderAppWithObservations,
-  renderComponent
+  renderComponent,
+  renderHook
 };

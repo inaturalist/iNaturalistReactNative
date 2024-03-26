@@ -31,8 +31,7 @@ import Attribution from "./Attribution";
 import DetailsMapContainer from "./DetailsMapContainer";
 
 type Props = {
-  observation: Object,
-  uuid:string
+  observation: Object
 }
 
 const ViewInBrowserButton = ( { id } ) => {
@@ -109,7 +108,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
 
   const tileMapParams = observation?.taxon?.id
     ? {
-      taxon_id: observation.taxon.id
+      taxon_id: observation.taxon.id,
+      verifiable: true
     }
     : null;
 
@@ -202,7 +202,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
         />
       </View>
       <Divider />
-
       <View className={`${sectionClass} flex-col`}>
         <Heading4 className={headingClass}>{t( "DATA-QUALITY" )}</Heading4>
         <View className="space-y-[15px]">
@@ -217,21 +216,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Button
             testID="DetailsTab.DQA"
             text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
-            onPress={() => navigation.navigate( "DataQualityAssessment", {
-              qualityGrade,
-              observationUUID,
-              observation: {
-                date: observation.observed_on,
-                location: [observation.latitude, observation.longitude],
-                evidence: [observation.observationPhotos || observation.observation_photos,
-                  observation.observationSounds || observation.sounds],
-                taxon: {
-                  id: observation.taxon.id,
-                  rank_level: observation.taxon.rank_level
-                },
-                identifications: observation.identifications
-              }
-            } )}
+            onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
           />
         </View>
       </View>
@@ -239,6 +224,12 @@ const DetailsTab = ( { observation }: Props ): Node => {
 
       <View className={sectionClass}>
         <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
+        <Heading4 className={headingClass}>
+          {
+          // eslint-disable-next-line i18next/no-literal-string
+          }
+          TODO: this section does nothing
+        </Heading4>
         <Button text={t( "VIEW-PROJECTS" )} />
       </View>
 

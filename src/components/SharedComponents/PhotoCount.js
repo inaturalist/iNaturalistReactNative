@@ -16,7 +16,9 @@ type Props = {
 };
 
 const PhotoCount = ( {
-  count, size, shadow
+  count,
+  size,
+  shadow
 }: Props ): Node => {
   const theme = useTheme( );
 

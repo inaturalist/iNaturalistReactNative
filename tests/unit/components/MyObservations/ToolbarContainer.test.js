@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import * as useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
-import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
@@ -26,18 +25,16 @@ const deletionState = {
 };
 
 const uploadState = {
-  uploadInProgress: false,
   uploads: [{}],
+  numUnuploadedObs: 1,
+  numToUpload: 1,
+  numFinishedUploads: 0,
+  uploadInProgress: false,
   uploadsComplete: false,
-  error: null,
-  currentUploadCount: 1
+  error: null
 };
 
 describe( "Toolbar", () => {
-  beforeAll( async () => {
-    await initI18next();
-  } );
-
   it( "displays a pending upload", async () => {
     renderComponent( <ToolbarContainer
       numUnuploadedObs={1}
@@ -51,10 +48,10 @@ describe( "Toolbar", () => {
   it( "displays an upload in progress", async () => {
     renderComponent( <ToolbarContainer
       numUnuploadedObs={1}
-      totalUploadCount={1}
       uploadState={{
         ...uploadState,
-        uploadInProgress: true
+        uploadInProgress: true,
+        numToUpload: 1
       }}
     /> );
 
@@ -66,17 +63,18 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays a completed upload", async () => {
+    const numFinishedUploads = 1;
     renderComponent( <ToolbarContainer
       progress={1}
-      totalUploadCount={1}
       uploadState={{
         ...uploadState,
-        uploadsComplete: true
+        uploadsComplete: true,
+        numFinishedUploads
       }}
     /> );
 
     const statusText = screen.getByText( i18next.t( "X-observations-uploaded", {
-      count: 1
+      count: numFinishedUploads
     } ) );
     expect( statusText ).toBeVisible( );
   } );
@@ -88,6 +86,7 @@ describe( "Toolbar", () => {
         ...uploadState,
         error
       }}
+      numUnuploadedObs={1}
     /> );
     expect( screen.getByText( error ) ).toBeVisible( );
   } );
@@ -107,13 +106,13 @@ describe( "Toolbar", () => {
 
   it( "displays multiple uploads in progress", async () => {
     renderComponent( <ToolbarContainer
-      numUnuploadedObs={3}
-      totalUploadCount={5}
+      numUnuploadedObs={5}
       uploadState={{
         ...uploadState,
         uploadInProgress: true,
-        uploads: [{}, {}, {}, {}, {}],
-        currentUploadCount: 2
+        uploads: [{}, {}, {}, {}],
+        numToUpload: 5,
+        numFinishedUploads: 1
       }}
     /> );
 
@@ -127,11 +126,11 @@ describe( "Toolbar", () => {
   it( "displays multiple completed uploads", async () => {
     renderComponent( <ToolbarContainer
       progress={1}
-      totalUploadCount={7}
       uploadState={{
         ...uploadState,
         uploads: [{}, {}, {}, {}, {}, {}, {}],
-        uploadsComplete: true
+        uploadsComplete: true,
+        numToUpload: 7
       }}
     /> );
 

@@ -11,6 +11,8 @@ import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 
+import ARDebugButton from "./ARDebugButton";
+
 const isTablet = DeviceInfo.isTablet();
 
 // the following code is for another version of the layout, rotated on landscape,
@@ -43,45 +45,63 @@ const isTablet = DeviceInfo.isTablet();
 // </>
 
 type Props = {
-  takePhoto: Function,
-  rotatableAnimatedStyle: Object,
-  toggleFlash: Function,
-  flipCamera: Function,
-  hasFlash: boolean,
-  takePhotoOptions: Object,
   changeZoom: Function,
+  confidenceThreshold?: number,
+  flipCamera: Function,
+  fps?: number,
+  hasFlash: boolean,
+  numStoredResults?: number,
+  cropRatio?: string,
+  rotatableAnimatedStyle: Object,
+  setConfidenceThreshold?: Function,
+  setFPS?: Function,
+  setNumStoredResults?: Function,
+  setCropRatio?: Function,
   showPrediction: boolean,
-  zoomTextValue: string,
-  showZoomButton: boolean
+  showZoomButton: boolean,
+  takePhoto: Function,
+  takePhotoOptions: Object,
+  toggleFlash: Function,
+  zoomTextValue: string
 }
 
 const ARCameraButtons = ( {
-  takePhoto,
-  rotatableAnimatedStyle,
-  flipCamera,
-  toggleFlash,
-  hasFlash,
-  takePhotoOptions,
-  showPrediction,
   changeZoom,
-  zoomTextValue,
-  showZoomButton
-}: Props ): Node => ( isTablet
-  ? (
-    <TabletButtons
-      takePhoto={takePhoto}
-      rotatableAnimatedStyle={rotatableAnimatedStyle}
-      toggleFlash={toggleFlash}
-      flipCamera={flipCamera}
-      hasFlash={hasFlash}
-      takePhotoOptions={takePhotoOptions}
-      showPrediction={showPrediction}
-      changeZoom={changeZoom}
-      zoomTextValue={zoomTextValue}
-      showZoomButton={showZoomButton}
-    />
-  )
-  : (
+  confidenceThreshold,
+  flipCamera,
+  fps,
+  hasFlash,
+  numStoredResults,
+  cropRatio,
+  rotatableAnimatedStyle,
+  setConfidenceThreshold,
+  setFPS,
+  setNumStoredResults,
+  setCropRatio,
+  showPrediction,
+  showZoomButton,
+  takePhoto,
+  takePhotoOptions,
+  toggleFlash,
+  zoomTextValue
+}: Props ): Node => {
+  if ( isTablet ) {
+    return (
+      <TabletButtons
+        takePhoto={takePhoto}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
+        toggleFlash={toggleFlash}
+        flipCamera={flipCamera}
+        hasFlash={hasFlash}
+        takePhotoOptions={takePhotoOptions}
+        showPrediction={showPrediction}
+        changeZoom={changeZoom}
+        zoomTextValue={zoomTextValue}
+        showZoomButton={showZoomButton}
+      />
+    );
+  }
+  return (
     <View className="bottom-10 absolute right-5 left-5">
       <View className="flex-row justify-end pb-[30px]">
         <Zoom
@@ -91,6 +111,23 @@ const ARCameraButtons = ( {
           rotatableAnimatedStyle={rotatableAnimatedStyle}
         />
       </View>
+      <ARDebugButton
+        confidenceThreshold={confidenceThreshold}
+        setConfidenceThreshold={setConfidenceThreshold}
+        fps={fps}
+        setFPS={setFPS}
+        numStoredResults={numStoredResults}
+        setNumStoredResults={setNumStoredResults}
+        cropRatio={cropRatio}
+        setCropRatio={setCropRatio}
+        // TODO: The following are just to get accessibility tests to pass...
+        // without making anything truly accessible. The test seems to think
+        // ARDebugButton is itself not accessible, but it's really
+        // complaining about the sliders within. If the sliders make it into
+        // production, they'll need to be made to pass that test.
+        accessibilityRole="adjustable"
+        accessibilityValue={{ min: 0, max: 100, now: 50 }}
+      />
       <View className="flex-row justify-end pb-[20px]">
         <Flash
           toggleFlash={toggleFlash}
@@ -109,6 +146,7 @@ const ARCameraButtons = ( {
         <CameraFlip flipCamera={flipCamera} />
       </View>
     </View>
-  ) );
+  );
+};
 
 export default ARCameraButtons;

@@ -3,31 +3,71 @@
   "data": [
     {
       "path": "assets/fonts/INatIcon.ttf",
-      "sha1": "bb88abe4cdee0812e5158400b1769607f685d310"
+      "sha1": "9f7e321421207b57e03952ef1b9386e8b618f98f"
     },
     {
-      "path": "assets/fonts/Whitney Book Regular.otf",
-      "sha1": "9b6e4749dcfa702e3fd6cc27d5c2bef1fdb966f9"
+      "path": "assets/fonts/Whitney-Book-Italic.otf",
+      "sha1": "15854f60175a0e82b794c259431ec45ea4b40103"
     },
     {
-      "path": "assets/fonts/Whitney Semibold Italic.otf",
-      "sha1": "829391a59c4305fe4733009da64fec983091cde1"
+      "path": "assets/fonts/Whitney-Book-Pro.otf",
+      "sha1": "639b8a8bf3e1cc3de30d0f49e666aca3999ca65a"
     },
     {
-      "path": "assets/fonts/Whitney Semibold Regular.otf",
-      "sha1": "fc560886d72adf37cccbad5bf8c58d7e0e546027"
+      "path": "assets/fonts/Whitney-Book.otf",
+      "sha1": "639b8a8bf3e1cc3de30d0f49e666aca3999ca65a"
     },
     {
       "path": "assets/fonts/Whitney-BookItalic-Pro.otf",
       "sha1": "15854f60175a0e82b794c259431ec45ea4b40103"
     },
     {
+      "path": "assets/fonts/Whitney-Light-Italic.otf",
+      "sha1": "fb622c4ae9975d3bee45176a2b7a6a73649bedf1"
+    },
+    {
       "path": "assets/fonts/Whitney-Light-Pro.otf",
       "sha1": "d15560faea2b18aef9867a1d2b9e2efb54b17b5b"
     },
     {
+      "path": "assets/fonts/Whitney-Light.otf",
+      "sha1": "d15560faea2b18aef9867a1d2b9e2efb54b17b5b"
+    },
+    {
+      "path": "assets/fonts/Whitney-LightItalic-Pro.otf",
+      "sha1": "fb622c4ae9975d3bee45176a2b7a6a73649bedf1"
+    },
+    {
+      "path": "assets/fonts/Whitney-Medium-Italic.otf",
+      "sha1": "cfd53e87d774dd1f2abaa92054ce7f810804c986"
+    },
+    {
       "path": "assets/fonts/Whitney-Medium-Pro.otf",
       "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
+    },
+    {
+      "path": "assets/fonts/Whitney-Medium.otf",
+      "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
+    },
+    {
+      "path": "assets/fonts/Whitney-MediumItalic-Pro.otf",
+      "sha1": "cfd53e87d774dd1f2abaa92054ce7f810804c986"
+    },
+    {
+      "path": "assets/fonts/Whitney-Semibold-Italic.otf",
+      "sha1": "829391a59c4305fe4733009da64fec983091cde1"
+    },
+    {
+      "path": "assets/fonts/Whitney-Semibold-Pro.otf",
+      "sha1": "7a107095a453c8cd8046d9ccded5d88e6809e89f"
+    },
+    {
+      "path": "assets/fonts/Whitney-Semibold.otf",
+      "sha1": "7a107095a453c8cd8046d9ccded5d88e6809e89f"
+    },
+    {
+      "path": "assets/fonts/Whitney-SemiboldItalic-Pro.otf",
+      "sha1": "53e8a56ceb630b63316db41017125c52fbf0e845"
     },
     {
       "path": "assets/fonts/inaturalisticons.ttf",

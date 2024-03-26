@@ -2,7 +2,11 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { DisplayTaxonName, INatIconButton } from "components/SharedComponents";
+import {
+  ActivityIndicator,
+  DisplayTaxonName,
+  INatIconButton
+} from "components/SharedComponents";
 import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -13,33 +17,39 @@ import { useTaxon, useTranslation } from "sharedHooks";
 import ConfidenceInterval from "./ConfidenceInterval";
 
 type Props = {
-  taxon: Object,
-  handlePress: Function,
-  showCheckmark?: boolean,
-  handleCheckmarkPress: Function,
-  testID: string,
+  activeColor?: string,
+  asListItem?: boolean,
   clearBackground?: boolean,
   confidence?: number,
-  white?: boolean,
-  activeColor?: string,
   confidencePosition?: string,
+  fetchRemote?: boolean,
   first?: boolean,
-  fetchRemote?: boolean
+  fromLocal?: boolean,
+  handleCheckmarkPress: Function,
+  handlePress: Function,
+  showInfoButton?: boolean,
+  showCheckmark?: boolean,
+  taxon: Object,
+  testID: string,
+  white?: boolean
 };
 
 const TaxonResult = ( {
+  activeColor,
+  asListItem = true,
   clearBackground,
   confidence,
-  handlePress,
-  showCheckmark = true,
-  handleCheckmarkPress,
-  taxon: taxonResult,
-  testID,
-  white = false,
-  activeColor,
   confidencePosition = "photo",
+  fetchRemote = true,
   first = false,
-  fetchRemote = true
+  fromLocal = true,
+  handleCheckmarkPress,
+  handlePress,
+  showInfoButton = true,
+  showCheckmark = true,
+  taxon: taxonProp,
+  testID,
+  white = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -48,19 +58,22 @@ const TaxonResult = ( {
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AR camera &
   // a short list of taxa from offline Suggestions
-  const taxon = useTaxon( taxonResult, fetchRemote );
-  const taxonImage = { uri: taxon?.default_photo?.url };
+  const { taxon: localTaxon, isLoading } = useTaxon( taxonProp, fetchRemote );
+  const usableTaxon = fromLocal
+    ? localTaxon
+    : taxonProp;
+  const taxonImage = { uri: usableTaxon.default_photo?.url };
 
-  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: taxon.id } );
+  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: usableTaxon.id } );
 
   return (
     <View
       className={
         classnames(
-          "flex-row items-center justify-between px-4 py-3",
+          "flex-row items-center justify-between",
           {
-            "border-b-[1px] border-lightGray": !clearBackground,
-            "mx-4": clearBackground,
+            "px-4 py-3": asListItem,
+            "border-b-[1px] border-lightGray": asListItem,
             "border-t-[1px]": first
           }
         )
@@ -68,33 +81,43 @@ const TaxonResult = ( {
       testID={testID}
     >
       <Pressable
-        className="flex-row items-center w-16 grow"
+        className="flex-row items-center shrink"
         onPress={handlePress || navToTaxonDetails}
         accessible
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
-        accessibilityValue={{ text: taxon.name }}
+        accessibilityValue={{ text: usableTaxon.name }}
         accessibilityState={{ disabled: false }}
       >
-        <ObsImagePreview
-          source={taxonImage}
-          testID={`${testID}.photo`}
-          iconicTaxonName={taxon?.iconic_taxon_name}
-          className="rounded-xl"
-          isSmall
-          white={white}
-        />
-        {( confidence && confidencePosition === "photo" ) && (
-          <View className="absolute -bottom-5 w-[62px]">
-            <ConfidenceInterval
-              confidence={confidence}
-              activeColor={activeColor}
-            />
-          </View>
-        )}
+        <View className="w-[62px] h-[62px] justify-center relative">
+          {
+            isLoading
+              ? (
+                <ActivityIndicator size={44} />
+              )
+              : (
+                <ObsImagePreview
+                  source={taxonImage}
+                  testID={`${testID}.photo`}
+                  iconicTaxonName={usableTaxon?.iconic_taxon_name}
+                  className="rounded-xl"
+                  isSmall
+                  white={white}
+                />
+              )
+          }
+          {( confidence && confidencePosition === "photo" ) && (
+            <View className="absolute -bottom-4 w-full items-center">
+              <ConfidenceInterval
+                confidence={confidence}
+                activeColor={activeColor}
+              />
+            </View>
+          )}
+        </View>
         <View className="shrink ml-3">
           <DisplayTaxonName
-            taxon={taxon}
+            taxon={usableTaxon}
             color={clearBackground && "text-white"}
           />
           {( confidence && confidencePosition === "text" ) && (
@@ -108,14 +131,16 @@ const TaxonResult = ( {
         </View>
       </Pressable>
       <View className="flex-row items-center">
-        <INatIconButton
-          icon="info-circle-outline"
-          size={22}
-          onPress={navToTaxonDetails}
-          color={clearBackground && theme.colors.onSecondary}
-          accessibilityLabel={t( "Information" )}
-          accessibilityHint={t( "Navigate-to-taxon-details" )}
-        />
+        { showInfoButton && (
+          <INatIconButton
+            icon="info-circle-outline"
+            size={22}
+            onPress={navToTaxonDetails}
+            color={clearBackground && theme.colors.onSecondary}
+            accessibilityLabel={t( "Information" )}
+            accessibilityHint={t( "Navigate-to-taxon-details" )}
+          />
+        )}
         { showCheckmark
           && (
             <INatIconButton
@@ -131,7 +156,7 @@ const TaxonResult = ( {
                   ? theme.colors.onSecondary
                   : theme.colors.secondary
               }
-              onPress={() => handleCheckmarkPress( taxon )}
+              onPress={() => handleCheckmarkPress( usableTaxon )}
               accessibilityLabel={t( "Checkmark" )}
               accessibilityHint={t( "Add-this-ID" )}
               testID={`${testID}.checkmark`}

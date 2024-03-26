@@ -113,15 +113,15 @@ const DetailsMap = ( {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="bg-white w-fit flex-row items-center">
+    <SafeAreaView className="flex-1">
+      <View className="bg-white w-fit flex-row items-end">
         <HeaderBackButton
           tintColor={theme.colors.primary}
           onPress={( ) => closeModal()}
           style={HEADER_BACK_BUTTON_STYLE}
         />
 
-        {headerTitle || <Heading2 className="bg-red m-0">{t( "Map-Area" )}</Heading2>}
+        {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
 
       </View>
       <View className="flex-1 h-full">

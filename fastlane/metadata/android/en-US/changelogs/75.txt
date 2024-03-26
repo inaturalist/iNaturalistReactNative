@@ -1,0 +1,13 @@
+UPDATED
+* Checkmarks show whether you have observed the taxon at any time
+* ARCamera shows loading when getting taxon, shows iconic taxon if cannot load
+  photo
+* We now post log events to our own servers
+
+FIXED
+* Obs taxon should update when new ID added
+* Explore infinite scroll working again
+* Explore should not load worldwide results before nearby
+* Location permission prompt shows after gallery permission requested
+* Access DQA when obs has no taxon
+* Fixed overflowing taxon names

@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
 import { ObservationLocation } from "components/SharedComponents";
-import initI18next from "i18n/initI18next";
 import React from "react";
 import factory from "tests/factory";
 
@@ -47,10 +46,6 @@ const testData = [
 ];
 
 describe( "ObservationLocation", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
-  } );
-
   it( "should be accessible", () => {
     const mockObservation = factory( "RemoteObservation" );
     expect(

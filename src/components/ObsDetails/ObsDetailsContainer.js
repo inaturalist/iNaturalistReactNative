@@ -4,20 +4,21 @@ import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import {
-  fetchRemoteObservation,
   markObservationUpdatesViewed
 } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useReducer
+  useCallback,
+  useEffect,
+  useReducer,
+  useState
 } from "react";
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
-  useAuthenticatedQuery,
   useCurrentUser,
   useIsConnected,
   useLocalObservation,
@@ -25,6 +26,8 @@ import {
 } from "sharedHooks";
 import useObservationsUpdates,
 { fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
+import useRemoteObservation,
+{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
 import ObsDetails from "./ObsDetails";
@@ -121,6 +124,7 @@ const ObsDetailsContainer = ( ): Node => {
   const isOnline = useIsConnected( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
+  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 
   const {
     activityItems,
@@ -136,28 +140,40 @@ const ObsDetailsContainer = ( ): Node => {
 
   const localObservation = useLocalObservation( uuid );
 
-  const {
-    data: remoteObservation,
-    refetch: refetchRemoteObservation,
-    isRefetching
-  } = useAuthenticatedQuery(
-    ["fetchRemoteObservation", uuid],
-    optsWithAuth => fetchRemoteObservation(
-      uuid,
-      {
-        fields: Observation.FIELDS
-      },
-      optsWithAuth
-    ),
-    {
-      keepPreviousData: false,
-      enabled: !!isOnline && localObservation?.wasSynced( )
-    }
+  const fetchRemoteObservationEnabled = (
+    !remoteObsWasDeleted
+    && ( !localObservation || localObservation?.wasSynced( ) )
   );
+
+  const {
+    remoteObservation,
+    refetchRemoteObservation,
+    isRefetching,
+    fetchRemoteObservationError
+  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
+
+  // If we tried to get a remote observation but it no longer exists, the user
+  // can't do anything so we need to send them back and remove the local
+  // copy of this observation
+  useEffect( ( ) => {
+    setRemoteObsWasDeleted( fetchRemoteObservationError?.status === 404 );
+  }, [fetchRemoteObservationError?.status] );
+  const confirmRemoteObsWasDeleted = useCallback( ( ) => {
+    if ( localObservation ) {
+      safeRealmWrite( realm, ( ) => {
+        localObservation._deleted_at = new Date( );
+      }, "adding _deleted_at date in ObsDetailsContainer" );
+    }
+    if ( navigation.canGoBack( ) ) navigation.goBack( );
+  }, [
+    localObservation,
+    navigation,
+    realm
+  ] );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
 
-  // In theory the only sitiation in which an observation would not have a
+  // In theory the only situation in which an observation would not have a
   // user is when a user is not signed but has made a new observation in the
   // app. Also in theory that user should not be able to get to ObsDetail for
   // those observations, just ObsEdit. But.... let's be safe.
@@ -166,29 +182,11 @@ const ObsDetailsContainer = ( ): Node => {
     || ( !observation?.user && !observation?.id )
   );
 
-  // Update local copy of a user's own observation
-  useEffect( ( ) => {
-    if (
-      remoteObservation
-      && currentUser
-      && remoteObservation?.user?.id === currentUser.id
-    ) {
-      Observation.upsertRemoteObservations(
-        [remoteObservation],
-        realm
-      );
-    }
-  }, [
-    currentUser,
-    realm,
-    remoteObservation
-  ] );
-
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      queryClient.invalidateQueries( "fetchRemoteObservation" );
+      queryClient.invalidateQueries( fetchRemoteObservationKey );
     }, [queryClient] )
   );
 
@@ -227,7 +225,7 @@ const ObsDetailsContainer = ( ): Node => {
     }
   ];
 
-  const markViewedLocally = async () => {
+  const markViewedLocally = async ( ) => {
     if ( !localObservation ) { return; }
     safeRealmWrite( realm, ( ) => {
       // Flags if all comments and identifications have been viewed
@@ -243,11 +241,9 @@ const ObsDetailsContainer = ( ): Node => {
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
     {
-      onSuccess: () => {
+      onSuccess: ( ) => {
         markViewedLocally( );
-        queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
         queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
-        refetchRemoteObservation( );
         refetchObservationUpdates( );
         setObservationMarkedAsViewedAt( new Date( ) );
       }
@@ -264,6 +260,7 @@ const ObsDetailsContainer = ( ): Node => {
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
       onSuccess: data => {
+        refetchRemoteObservation( );
         if ( belongsToCurrentUser ) {
           safeRealmWrite( realm, ( ) => {
             const localComments = localObservation?.comments;
@@ -273,8 +270,6 @@ const ObsDetailsContainer = ( ): Node => {
           }, "setting local comment in ObsDetailsContainer" );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
-        } else {
-          refetchRemoteObservation( );
         }
       },
       onError: e => {
@@ -304,6 +299,7 @@ const ObsDetailsContainer = ( ): Node => {
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
+        refetchRemoteObservation( );
         if ( belongsToCurrentUser ) {
           safeRealmWrite( realm, ( ) => {
             const localIdentifications = localObservation?.identifications;
@@ -320,8 +316,6 @@ const ObsDetailsContainer = ( ): Node => {
           }, "setting local identification in ObsDetailsContainer" );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
           dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
-        } else {
-          refetchRemoteObservation( );
         }
       },
       onError: e => {
@@ -388,7 +382,7 @@ const ObsDetailsContainer = ( ): Node => {
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
   const refetchObservation = ( ) => {
-    queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+    queryClient.invalidateQueries( [fetchRemoteObservationKey] );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };
@@ -419,10 +413,12 @@ const ObsDetailsContainer = ( ): Node => {
       addingActivityItem={addingActivityItem}
       agreeIdSheetDiscardChanges={agreeIdSheetDiscardChanges}
       belongsToCurrentUser={belongsToCurrentUser}
+      confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
       currentTabId={currentTabId}
       currentUser={currentUser}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
       isOnline={isOnline}
+      isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
       observation={observation}
       onAgree={onAgree}
@@ -430,6 +426,7 @@ const ObsDetailsContainer = ( ): Node => {
       onIDAgreePressed={onIDAgreePressed}
       openCommentBox={openCommentBox}
       refetchRemoteObservation={refetchObservation}
+      remoteObsWasDeleted={remoteObsWasDeleted}
       showActivityTab={showActivityTab}
       showAgreeWithIdSheet={showAgreeWithIdSheet}
       showCommentBox={showCommentBox}

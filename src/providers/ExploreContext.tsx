@@ -1,4 +1,5 @@
 import * as React from "react";
+import { LatLng } from "react-native-maps";
 
 export enum EXPLORE_ACTION {
   DISCARD = "DISCARD",
@@ -19,6 +20,7 @@ export enum EXPLORE_ACTION {
   SET_DATE_OBSERVED_RANGE = "SET_DATE_OBSERVED_RANGE",
   SET_DATE_OBSERVED_ALL = "SET_DATE_OBSERVED_ALL",
   SET_DATE_UPLOADED_EXACT = "SET_DATE_UPLOADED_EXACT",
+  SET_DATE_UPLOADED_RANGE = "SET_DATE_UPLOADED_RANGE",
   SET_DATE_UPLOADED_ALL = "SET_DATE_UPLOADED_ALL",
   SET_MEDIA = "SET_MEDIA",
   SET_ESTABLISHMENT_MEAN = "SET_ESTABLISHMENT_MEAN",
@@ -39,41 +41,42 @@ export enum SORT_BY {
 // TODO: this should be imported from a central point, e.g. Taxon realm model
 // TODO: this is probably against conventioins to make it in lower case but I (Johannes) don't want to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
-    kingdom = "kingdom",
-    phylum = "phylum",
-    subphylum = "subphylum",
-    superclass = "superclass",
-    class = "class",
-    subclass = "subclass",
-    infraclass = "infraclass",
-    subterclass = "subterclass",
-    superorder = "superorder",
-    order = "order",
-    suborder = "suborder",
-    infraorder = "infraorder",
-    parvorder = "parvorder",
-    zoosection = "zoosection",
-    zoosubsection = "zoosubsection",
-    superfamily = "superfamily",
-    epifamily = "epifamily",
-    family = "family",
-    subfamily = "subfamily",
-    supertribe = "supertribe",
-    tribe = "tribe",
-    subtribe = "subtribe",
-    genus = "genus",
-    genushybrid = "genushybrid",
-    subgenus = "subgenus",
-    section = "section",
-    subsection = "subsection",
-    complex = "complex",
-    species = "species",
-    hybrid = "hybrid",
-    subspecies = "subspecies",
-    variety = "variety",
-    form = "form",
-    infrahybrid = "infrahybrid",
-  }
+  none = null,
+  kingdom = "kingdom",
+  phylum = "phylum",
+  subphylum = "subphylum",
+  superclass = "superclass",
+  class = "class",
+  subclass = "subclass",
+  infraclass = "infraclass",
+  subterclass = "subterclass",
+  superorder = "superorder",
+  order = "order",
+  suborder = "suborder",
+  infraorder = "infraorder",
+  parvorder = "parvorder",
+  zoosection = "zoosection",
+  zoosubsection = "zoosubsection",
+  superfamily = "superfamily",
+  epifamily = "epifamily",
+  family = "family",
+  subfamily = "subfamily",
+  supertribe = "supertribe",
+  tribe = "tribe",
+  subtribe = "subtribe",
+  genus = "genus",
+  genushybrid = "genushybrid",
+  subgenus = "subgenus",
+  section = "section",
+  subsection = "subsection",
+  complex = "complex",
+  species = "species",
+  hybrid = "hybrid",
+  subspecies = "subspecies",
+  variety = "variety",
+  form = "form",
+  infrahybrid = "infrahybrid",
+}
 
 export enum DATE_OBSERVED {
   ALL = "ALL",
@@ -85,6 +88,7 @@ export enum DATE_OBSERVED {
 export enum DATE_UPLOADED {
   ALL = "ALL",
   EXACT_DATE = "EXACT_DATE",
+  DATE_RANGE = "DATE_RANGE"
 }
 
 export enum MEDIA {
@@ -124,6 +128,14 @@ export enum PHOTO_LICENSE {
   CCBYNCND = "CCBYNCND",
 }
 
+interface MapBoundaries {
+  swlat: LatLng["latitude"],
+  swlng: LatLng["longitude"],
+  nelat: LatLng["latitude"],
+  nelng: LatLng["longitude"],
+  place_guess: string
+}
+
 type CountProviderProps = {children: React.ReactNode}
 type State = {
   verifiable: boolean,
@@ -131,7 +143,6 @@ type State = {
   // TODO: technically this is not any Object but a "Taxon" and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | undefined,
-  taxon_name: string | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
@@ -144,8 +155,8 @@ type State = {
   researchGrade: boolean,
   needsID: boolean,
   casual: boolean,
-  hrank: TAXONOMIC_RANK | undefined,
-  lrank: TAXONOMIC_RANK | undefined,
+  hrank: TAXONOMIC_RANK | undefined | null,
+  lrank: TAXONOMIC_RANK | undefined | null,
   dateObserved: DATE_OBSERVED,
   observed_on: string | null | undefined,
   d1: string | null | undefined,
@@ -153,18 +164,19 @@ type State = {
   months: number[] | null | undefined,
   dateUploaded: DATE_UPLOADED,
   created_on: string | null | undefined,
+  created_d1: string | null | undefined,
+  created_d2: string | null | undefined,
   media: MEDIA,
   establishmentMean: ESTABLISHMENT_MEAN,
   wildStatus: WILD_STATUS,
   reviewedFilter: REVIEWED,
   photoLicense: PHOTO_LICENSE,
-  mapBoundaries: Object
+  mapBoundaries: MapBoundaries
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
   | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_TAXON_NAME, taxonName: string}
   | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string}
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
@@ -179,12 +191,13 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS, months: number[]}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL}
   | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT, createdOn: string}
+  | {type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE, createdD1: string, createdD2: string}
   | {type: EXPLORE_ACTION.SET_MEDIA, media: MEDIA}
   | {type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN, establishmentMean: ESTABLISHMENT_MEAN}
   | {type: EXPLORE_ACTION.SET_WILD_STATUS, wildStatus: WILD_STATUS}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
-  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: Object}
+  | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
 type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
@@ -198,8 +211,8 @@ const calculatedFilters = {
   researchGrade: true,
   needsID: true,
   casual: false,
-  hrank: undefined,
-  lrank: undefined,
+  hrank: null,
+  lrank: null,
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,
@@ -220,13 +233,14 @@ const defaultFilters = {
   d2: undefined,
   months: undefined,
   created_on: undefined,
+  created_d1: undefined,
+  created_d2: undefined,
 };
 
 const initialState = {
   ...defaultFilters,
   taxon: undefined,
   taxon_id: undefined,
-  taxon_name: undefined,
   place_id: undefined,
   place_guess: "",
   verifiable: true,
@@ -252,20 +266,19 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         taxon: action.taxon,
-        taxon_id: action.taxonId,
-        taxon_name: action.taxonName
-      };
-    case EXPLORE_ACTION.SET_TAXON_NAME:
-      return {
-        ...state,
-        taxon_name: action.taxonName
+        taxon_id: action.taxonId
       };
     case EXPLORE_ACTION.SET_PLACE:
-      return {
+      const placeState = {
         ...state,
         place_id: action.placeId,
         place_guess: action.placeName
       };
+      delete placeState.swlat;
+      delete placeState.swlng;
+      delete placeState.nelat;
+      delete placeState.nelng;
+      return placeState;
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,
@@ -357,7 +370,9 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         dateUploaded: DATE_UPLOADED.ALL,
-        created_on: null
+        created_on: null,
+        created_d1: null,
+        created_d2: null
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT:
       if ( !isValidDateFormat( action.createdOn ) ) {
@@ -366,7 +381,23 @@ function exploreReducer( state: State, action: Action ) {
       return {
         ...state,
         dateUploaded: DATE_UPLOADED.EXACT_DATE,
-        created_on: action.createdOn
+        created_on: action.createdOn,
+        created_d1: null,
+        created_d2: null
+      };
+    case EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE:
+      if ( !isValidDateFormat( action.createdD1 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      if ( !isValidDateFormat( action.createdD2 ) ) {
+        throw new Error( "Invalid date format given" );
+      }
+      return {
+        ...state,
+        dateUploaded: DATE_UPLOADED.DATE_RANGE,
+        created_on: null,
+        created_d1: action.createdD1,
+        created_d2: action.createdD2
       };
     case EXPLORE_ACTION.SET_MEDIA:
       return {
@@ -381,6 +412,7 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.SET_WILD_STATUS:
       return {
         ...state,
+        casual: action.wildStatus === WILD_STATUS.CAPTIVE ? true : state.casual,
         wildStatus: action.wildStatus
       };
     case EXPLORE_ACTION.SET_PHOTO_LICENSE:
@@ -394,10 +426,12 @@ function exploreReducer( state: State, action: Action ) {
         reviewedFilter: action.reviewedFilter
       };
     case EXPLORE_ACTION.SET_MAP_BOUNDARIES:
-      return {
+      const boundState = {
         ...state,
         ...action.mapBoundaries
       };
+      delete boundState.place_id;
+      return boundState;
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );
     }

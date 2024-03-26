@@ -1,7 +1,6 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
-import { searchObservations } from "api/observations";
 import {
   ESTABLISHMENT_MEAN,
   EXPLORE_ACTION,
@@ -14,12 +13,11 @@ import {
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
-import { useAuthenticatedQuery, useCurrentUser, useIsConnected } from "sharedHooks";
+import React, { useEffect, useState } from "react";
+import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
-
-const DELTA = 0.2;
+import useHeaderCount from "./hooks/useHeaderCount";
 
 const mapParamsToAPI = ( params, currentUser ) => {
   const RESEARCH = "research";
@@ -33,7 +31,7 @@ const mapParamsToAPI = ( params, currentUser ) => {
   const DESC = "desc";
   const ASC = "asc";
 
-  // Remove any params that is falsy
+  // Remove all params that are falsy
   const filteredParams = Object.entries( params ).reduce(
     ( newParams, [key, value] ) => {
       if ( value ) {
@@ -129,7 +127,6 @@ const mapParamsToAPI = ( params, currentUser ) => {
   }
 
   delete filteredParams.taxon;
-  delete filteredParams.taxon_name;
   delete filteredParams.place_guess;
   delete filteredParams.user;
   delete filteredParams.project;
@@ -154,21 +151,8 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const currentUser = useCurrentUser();
 
-  const [count, setCount] = useState( {
-    observations: null,
-    species: null,
-    observers: null,
-    identifiers: null
-  } );
-
   const { state, dispatch, makeSnapshot } = useExplore();
 
-  const [region, setRegion] = useState( {
-    latitude: 0.0,
-    longitude: 0.0,
-    latitudeDelta: DELTA,
-    longitudeDelta: DELTA
-  } );
   const [showFiltersModal, setShowFiltersModal] = useState( false );
   const [exploreView, setExploreView] = useState( "observations" );
 
@@ -192,13 +176,6 @@ const ExploreContainerWithContext = ( ): Node => {
       } );
     }
     if ( params?.place ) {
-      const { coordinates } = params.place.point_geojson;
-      setRegion( {
-        latitude: coordinates[1],
-        longitude: coordinates[0],
-        latitudeDelta: DELTA,
-        longitudeDelta: DELTA
-      } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         placeId: params.place?.id,
@@ -234,13 +211,6 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   };
 
-  const updateCount = useCallback( newCount => {
-    setCount( {
-      ...count,
-      ...newCount
-    } );
-  }, [count] );
-
   const filteredParams = mapParamsToAPI(
     state,
     currentUser
@@ -253,26 +223,9 @@ const ExploreContainerWithContext = ( ): Node => {
   if ( exploreView === "observers" ) {
     queryParams.order_by = "observation_count";
   }
-  delete queryParams.taxon_name;
 
-  const paramsTotalResults = {
-    ...filteredParams,
-    per_page: 0
-  };
-
-  // 011224 amanda - we might eventually want to fetch this from useInfiniteObservationsScroll
-  // instead of making a separate query, but per_page = 0 should make this extra query a low
-  // performance cost
-  const { data } = useAuthenticatedQuery(
-    ["searchObservations", paramsTotalResults],
-    optsWithAuth => searchObservations( paramsTotalResults, optsWithAuth )
-  );
-
-  useEffect( ( ) => {
-    if ( data?.total_results && count.observations !== data?.total_results ) {
-      updateCount( { observations: data?.total_results } );
-    }
-  }, [data?.total_results, updateCount, count] );
+  // need this hook to be top-level enough that HeaderCount rerenders
+  const { count, loadingStatus, updateCount } = useHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -288,9 +241,9 @@ const ExploreContainerWithContext = ( ): Node => {
       count={count}
       exploreView={exploreView}
       isOnline={isOnline}
+      loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
       queryParams={queryParams}
-      region={region}
       showFiltersModal={showFiltersModal}
       updateCount={updateCount}
       updateTaxon={updateTaxon}

@@ -1,4 +1,5 @@
 // @flow
+import classnames from "classnames";
 import {
   DateDisplay, DisplayTaxonName, ObservationLocation, ObsStatus
 } from "components/SharedComponents";
@@ -6,6 +7,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
+import { useCurrentUser } from "sharedHooks";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
@@ -24,6 +26,7 @@ const ObsListItem = ( {
     || observation?.observation_photos?.[0]?.photo
     || null;
   const needsSync = typeof observation.needsSync !== "undefined" && observation.needsSync( );
+  const currentUser = useCurrentUser( );
 
   return (
     <View
@@ -41,7 +44,7 @@ const ObsListItem = ( {
       <View className="pr-[25px] flex-1 ml-[10px]">
         <DisplayTaxonName
           taxon={observation?.taxon}
-          scientificNameFirst={observation?.user?.prefers_scientific_name_first}
+          scientificNameFirst={currentUser?.prefers_scientific_name_first}
         />
         <ObservationLocation observation={observation} classNameMargin="mt-1" />
         <DateDisplay
@@ -51,7 +54,12 @@ const ObsListItem = ( {
           classNameMargin="mt-1"
         />
       </View>
-      <View className="items-center ml-auto justify-center">
+      <View
+        className={classnames(
+          "flex-0 justify-start flex-row",
+          { "justify-center": uploadState }
+        )}
+      >
         {explore
           ? (
             <ObsStatus

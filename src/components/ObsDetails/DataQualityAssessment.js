@@ -1,6 +1,5 @@
 // @flow
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
-import PlaceholderText from "components/PlaceholderText";
 import {
   Body3,
   Divider,
@@ -48,7 +47,9 @@ type Props = {
   ifMajorityAgree: Function,
   checkTest: Function,
   setMetricVote: Function,
-  removeMetricVote: Function
+  removeMetricVote: Function,
+  setNeedsIDVote: Function,
+  removeNeedsIDVote: Function
 }
 
 const DataQualityAssessment = ( {
@@ -60,7 +61,9 @@ const DataQualityAssessment = ( {
   ifMajorityAgree,
   checkTest,
   setMetricVote,
-  removeMetricVote
+  removeMetricVote,
+  setNeedsIDVote,
+  removeNeedsIDVote
 }: Props ): Node => {
   const isResearchGrade = qualityGrade === "research";
   const theme = useTheme( );
@@ -109,31 +112,28 @@ const DataQualityAssessment = ( {
       <View className="mx-[26px] my-[19px] space-y-[9px]">
         <QualityGradeStatus
           qualityGrade={qualityGrade}
-          color={( qualityGrade === "research" )
-            ? theme.colors.secondary
-            : theme.colors.primary}
+          color={
+            qualityGrade === "research"
+              ? theme.colors.secondary
+              : theme.colors.primary
+          }
         />
         <View className="flex-row space-x-[7px]">
-          {isResearchGrade
-          && (
+          {isResearchGrade && (
             <INatIcon
               name="checkmark-circle"
               size={19}
               color={theme.colors.secondary}
             />
           )}
-          <List1 className="text-black">
-            {titleOption( qualityGrade )}
-          </List1>
+          <List1 className="text-black">{titleOption( qualityGrade )}</List1>
         </View>
-        <List2 className="text-black">
-          {titleDescription( qualityGrade )}
-        </List2>
+        <List2 className="text-black">{titleDescription( qualityGrade )}</List2>
       </View>
       <Divider />
       <View className="mx-[15px]">
         <View className={sectionClass}>
-          {renderIndicator( "date" ) }
+          {renderIndicator( "date" )}
           <Body3>{t( "Data-quality-assessment-date-specified" )}</Body3>
         </View>
         <Divider />
@@ -152,13 +152,19 @@ const DataQualityAssessment = ( {
 
         <View className={sectionClass}>
           {renderIndicator( "id_supported" )}
-          <Body3>{t( "Data-quality-assessment-id-supported-by-two-or-more" )}</Body3>
+          <Body3>
+            {t( "Data-quality-assessment-id-supported-by-two-or-more" )}
+          </Body3>
         </View>
         <Divider />
 
         <View className={sectionClass}>
           {renderIndicator( "rank" )}
-          <Body3>{t( "Data-quality-assessment-community-taxon-species-level-or-lower" )}</Body3>
+          <Body3>
+            {t(
+              "Data-quality-assessment-community-taxon-species-level-or-lower"
+            )}
+          </Body3>
         </View>
         <Divider />
 
@@ -169,7 +175,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="date"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.date}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -186,7 +192,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="location"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.location}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -203,7 +209,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="wild"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.wild}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -220,7 +226,7 @@ const DataQualityAssessment = ( {
           </View>
           <DQAVoteButtons
             metric="evidence"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.evidence}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -233,11 +239,13 @@ const DataQualityAssessment = ( {
         <View className={voteClass}>
           <View className={listTextClass}>
             {renderMetricIndicator( "recent" )}
-            <Body3>{t( "Data-quality-assessment-recent-evidence-of-organism" )}</Body3>
+            <Body3>
+              {t( "Data-quality-assessment-recent-evidence-of-organism" )}
+            </Body3>
           </View>
           <DQAVoteButtons
             metric="recent"
-            qualityMetrics={qualityMetrics}
+            votes={qualityMetrics?.recent}
             setVote={setMetricVote}
             loadingAgree={loadingAgree}
             loadingDisagree={loadingDisagree}
@@ -248,29 +256,27 @@ const DataQualityAssessment = ( {
         <Divider />
       </View>
 
-      <View className="flex-row bg-lightGray px-[15px] py-[7px] mt-[20px]">
-        <PlaceholderText text="TODO" />
-        <Body3 className="shrink">
+      <View className="flex-row items-center mt-5 py-2 pl-4 pr-[30px] bg-lightGray">
+        <Body3 className="flex-1 mr-1">
           {t(
             "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence"
           )}
         </Body3>
         <DQAVoteButtons
           metric="needs_id"
-          qualityMetrics={qualityMetrics}
-          setVote={setMetricVote}
+          votes={qualityMetrics?.needs_id}
+          setVote={setNeedsIDVote}
           loadingAgree={loadingAgree}
           loadingDisagree={loadingDisagree}
           loadingMetric={loadingMetric}
-          removeVote={removeMetricVote}
+          removeVote={removeNeedsIDVote}
         />
       </View>
 
-      <View className="mt-[30px] mx-[15px] space-y-[11px]">
+      <View className="my-[30px] mx-[15px] space-y-[11px]">
         <Heading4>{t( "ABOUT-THE-DQA" )}</Heading4>
         <List2>{t( "About-the-DQA-description" )}</List2>
       </View>
-
     </ScrollViewWrapper>
   );
 };

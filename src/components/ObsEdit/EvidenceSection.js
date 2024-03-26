@@ -8,6 +8,7 @@ import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -31,6 +32,11 @@ type Props = {
   photos: Array<Object>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
+  sounds?: Array<{
+    id?: number,
+    file_url: string,
+    uuid: string
+  }>,
   updateObservationKeys: Function,
 }
 
@@ -47,11 +53,13 @@ const EvidenceSection = ( {
   photos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
+  sounds,
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
   const obsPhotos = currentObservation?.observationPhotos;
+  const obsSounds = currentObservation?.observationSounds;
   const navigation = useNavigation( );
 
   const navToLocationPicker = ( ) => {
@@ -90,7 +98,10 @@ const EvidenceSection = ( {
   return (
     <View className="mx-6">
       <AddEvidenceSheet
-        disableAddingMoreEvidence={obsPhotos?.length >= MAX_PHOTOS_ALLOWED}
+        disableAddingMoreEvidence={
+          obsPhotos?.length >= MAX_PHOTOS_ALLOWED
+          || obsSounds?.length >= MAX_SOUNDS_ALLOWED
+        }
         hidden={!showAddEvidenceSheet}
         onClose={( ) => setShowAddEvidenceSheet( false )}
       />
@@ -106,9 +117,10 @@ const EvidenceSection = ( {
         </View>
       </View>
       <EvidenceList
-        photos={photos}
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
+        photos={photos}
+        sounds={sounds}
       />
       <Pressable
         accessibilityRole="button"

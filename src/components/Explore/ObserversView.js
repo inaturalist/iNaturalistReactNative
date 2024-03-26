@@ -16,13 +16,14 @@ type Props = {
   updateCount: Function
 };
 
+const LIST_STYLE = { paddingTop: 44 };
+
 const ObserversView = ( {
   count,
   isOnline,
   queryParams,
   updateCount
 }: Props ): Node => {
-  console.log( queryParams, "query params" );
   const {
     data,
     isFetchingNextPage,
@@ -51,13 +52,14 @@ const ObserversView = ( {
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   useEffect( ( ) => {
-    if ( totalResults && count.observers !== totalResults ) {
+    if ( count.observers !== totalResults ) {
       updateCount( { observers: totalResults } );
     }
   }, [totalResults, updateCount, count] );
 
   return (
     <ExploreFlashList
+      contentContainerStyle={LIST_STYLE}
       data={data}
       estimatedItemSize={98}
       fetchNextPage={fetchNextPage}

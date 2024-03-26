@@ -3,7 +3,6 @@ import {
   screen,
   userEvent
 } from "@testing-library/react-native";
-import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -46,6 +45,15 @@ beforeAll( ( ) => {
 
 const mockUser = factory( "LocalUser" );
 
+jest.mock( "components/Suggestions/hooks/useOnlineSuggestions", ( ) => jest.fn( () => ( {
+  dataUpdatedAt: new Date( ),
+  error: null,
+  loadingOnlineSuggestions: false,
+  onlineSuggestions: {
+    results: []
+  }
+} ) ) );
+
 describe( "MediaViewer navigation", ( ) => {
   const actor = userEvent.setup( );
 
@@ -62,7 +70,6 @@ describe( "MediaViewer navigation", ( ) => {
   }
 
   beforeAll( async () => {
-    await initI18next();
     jest.useFakeTimers( );
   } );
 
@@ -282,6 +289,80 @@ describe( "MediaViewer navigation", ( ) => {
         )
       ).toBeVisible( );
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
+    } );
+  } );
+
+  describe( "from Suggestions", ( ) => {
+    const observation = factory( "RemoteObservation", {
+      observation_photos: [
+        factory( "RemoteObservationPhoto" ),
+        factory( "RemoteObservationPhoto" )
+      ]
+    } );
+    const observations = [observation];
+    useStore.setState( { observations } );
+
+    async function navigateToSuggestions( ) {
+      await renderAppWithObservations( observations, __filename );
+      const observationRow = await screen.findByTestId(
+        `MyObservations.obsListItem.${observation.uuid}`
+      );
+      await actor.press( observationRow );
+      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
+      const suggestButton = await screen.findByTestId(
+        "ObsDetail.cvSuggestionsButton"
+      );
+      await act( async () => actor.press( suggestButton ) );
+      const firstPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+      );
+      expect( firstPhoto ).toBeVisible();
+      const secondPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[1].photo.url}`
+      );
+      expect( secondPhoto ).toBeVisible();
+    }
+
+    it( "should show the selected photo when tapped", async () => {
+      await navigateToSuggestions( );
+      const firstPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+      );
+      expect( firstPhoto ).toBeVisible();
+      await act( async () => actor.press( firstPhoto ) );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+        )
+      ).toBeVisible();
+    } );
+
+    it( "should not show the currently not selected photo when tapped", async () => {
+      await navigateToSuggestions( );
+      const secondPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[1].photo.url}`
+      );
+      expect( secondPhoto ).toBeVisible();
+      await act( async () => actor.press( secondPhoto ) );
+      expect(
+        screen.queryByTestId(
+          `CustomImageZoom.${observation.observation_photos[1].photo.url}`
+        )
+      ).toBeFalsy();
+    } );
+
+    it( "should not show delete button", async () => {
+      await navigateToSuggestions();
+      const firstPhoto = await screen.findByTestId(
+        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+      );
+      await act( async () => actor.press( firstPhoto ) );
+      expect(
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+        )
+      ).toBeVisible();
+      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy();
     } );
   } );
 } );

@@ -11,6 +11,7 @@ import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-
 import mockRNLocalize from "react-native-localize/mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
+import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
 
 import factory, { makeResponse } from "./factory";
 import {
@@ -20,8 +21,25 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
+// Mock the react-native-logs config because it has a dependency on AuthenticationService
+// instead use console.logs for tests
+jest.mock( "../react-native-logs.config", () => {
+  const log = {
+    extend: jest.fn( () => ( {
+      debug: msg => console.debug( msg ),
+      info: msg => console.info( msg ),
+      warn: msg => console.warn( msg ),
+      error: msg => console.error( msg )
+    } ) )
+  };
+  return {
+    log,
+    logFilePath: "inaturalist-rn-log.txt"
+  };
+} );
+
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
-  getPredictionsForImage: jest.fn( () => Promise.resolve( [] ) )
+  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) )
 } ) );
 
 jest.mock( "react-native-worklets-core", () => ( {
@@ -358,3 +376,13 @@ jest.mock( "react-native-jwt-io", ( ) => ( {
 
 inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
+
+jest.mock( "react-native-audio-recorder-player", ( ) => MockAudioRecorderPlayer );
+
+jest.mock( "react-native-fast-image", ( ) => {
+  const actualNav = jest.requireActual( "react-native-fast-image" );
+  return {
+    ...actualNav,
+    preload: jest.fn( )
+  };
+} );

@@ -1,5 +1,4 @@
 {
-  "OBSERVATIONS": "Beobachtungen",
   "Observations": "Beobachtungen",
   "date-observed": "Beobachtet am: { $date }",
   "date-uploaded": "Hinzugefügt: { $date }",

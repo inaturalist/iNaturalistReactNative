@@ -8,7 +8,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import UserListItem from "components/SharedComponents/UserListItem";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -57,18 +57,13 @@ const ExploreUserSearch = ( ): Node => {
 
   const renderItem = useCallback(
     ( { item } ) => (
-      <Pressable
-        onPress={() => onUserSelected( item )}
-        accessibilityRole="button"
-        accessibilityLabel={t( "Change-user" )}
-        accessibilityState={{ disabled: false }}
-      >
-        <UserListItem
-          item={{ user: item }}
-          count={item.observations_count}
-          countText="X-Observations"
-        />
-      </Pressable>
+      <UserListItem
+        item={{ user: item }}
+        count={item.observations_count}
+        countText="X-Observations"
+        accessibilityLabel={t( "Select-user" )}
+        onPress={( ) => onUserSelected( item )}
+      />
     ),
     [onUserSelected, t]
   );

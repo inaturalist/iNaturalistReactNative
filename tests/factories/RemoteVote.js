@@ -9,5 +9,6 @@ export default define( "RemoteVote", faker => ( {
   vote_flag: true,
   // Default to unscoped vote, e.g. obs fave
   vote_scope: null,
-  user: userFactory( "RemoteUser" )
+  user: userFactory( "RemoteUser" ),
+  user_id: faker.number.int( )
 } ) );

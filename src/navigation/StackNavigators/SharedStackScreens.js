@@ -4,6 +4,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
+import PhotoSharing from "components/PhotoSharing";
 import { Heading4 } from "components/SharedComponents";
 import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import TaxonSearch from "components/Suggestions/TaxonSearch";
@@ -62,6 +63,11 @@ const SharedStackScreens = ( ): Node => (
     <Stack.Screen
       name="TaxonDetails"
       component={TaxonDetails}
+      options={hideHeader}
+    />
+    <Stack.Screen
+      name="PhotoSharing"
+      component={PhotoSharing}
       options={hideHeader}
     />
   </Stack.Group>

@@ -72,7 +72,7 @@ exports[`Tabs should render correctly 1`] = `
           style={
             [
               {
-                "fontFamily": "Whitney-Medium",
+                "fontFamily": "Whitney-Semibold",
               },
               [
                 [
@@ -185,7 +185,7 @@ exports[`Tabs should render correctly 1`] = `
           style={
             [
               {
-                "fontFamily": "Whitney-Medium",
+                "fontFamily": "Whitney-Semibold",
               },
               [
                 [

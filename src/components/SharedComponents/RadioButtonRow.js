@@ -1,4 +1,5 @@
 // @flow
+import classnames from "classnames";
 import { List2 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
@@ -10,11 +11,12 @@ type Props = {
   checked: boolean,
   onPress: Function,
   label: string,
-  description: ?string
+  description: ?string,
+  style: ?Object
 }
 
 const RadioButtonRow = ( {
-  value, checked, onPress, label, description
+  value, checked, onPress, label, description, style
 }: Props ): Node => {
   const theme = useTheme( );
 
@@ -42,8 +44,9 @@ const RadioButtonRow = ( {
         label={label}
         position="leading"
         labelStyle={labelStyle}
-        className="p-0"
+        className={classnames( "p-0" )}
         accessibilityLabel={label}
+        style={style}
       />
       {description && (
         <List2 className="ml-[37px] mr-[33px] py-1">{description}</List2>
