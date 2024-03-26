@@ -26,7 +26,10 @@ const NumberBadge = ( { number, light }: Props ): Node => {
   const textColor = light ? "text-darkGray" : "text-white";
   return (
     <View
-      className={classNames("w-5 h-5 justify-center items-center rounded-full", backgroundColor)}
+      className={classNames(
+        "w-[24px] h-[24px] justify-center items-center rounded-full",
+        backgroundColor
+      )}
       style={getShadow( theme.colors.primary )}
     >
       <Body3 className={textColor}>{number}</Body3>

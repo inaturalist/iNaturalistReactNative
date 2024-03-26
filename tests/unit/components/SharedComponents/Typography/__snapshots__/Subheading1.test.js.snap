@@ -13,9 +13,6 @@ exports[`Subheading1 renders correctly 1`] = `
           "lineHeight": 25,
         },
         {
-          "fontWeight": "300",
-        },
-        {
           "color": "#454545",
         },
       ],

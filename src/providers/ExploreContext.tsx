@@ -41,7 +41,7 @@ export enum SORT_BY {
 // TODO: this should be imported from a central point, e.g. Taxon realm model
 // TODO: this is probably against conventioins to make it in lower case but I (Johannes) don't want to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
-  none = "none",
+  none = null,
   kingdom = "kingdom",
   phylum = "phylum",
   subphylum = "subphylum",
@@ -155,8 +155,8 @@ type State = {
   researchGrade: boolean,
   needsID: boolean,
   casual: boolean,
-  hrank: TAXONOMIC_RANK | undefined,
-  lrank: TAXONOMIC_RANK | undefined,
+  hrank: TAXONOMIC_RANK | undefined | null,
+  lrank: TAXONOMIC_RANK | undefined | null,
   dateObserved: DATE_OBSERVED,
   observed_on: string | null | undefined,
   d1: string | null | undefined,
@@ -211,8 +211,8 @@ const calculatedFilters = {
   researchGrade: true,
   needsID: true,
   casual: false,
-  hrank: undefined,
-  lrank: undefined,
+  hrank: null,
+  lrank: null,
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,

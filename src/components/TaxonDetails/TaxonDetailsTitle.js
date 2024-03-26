@@ -3,8 +3,8 @@
 import {
   DisplayTaxonName,
   Heading1,
-  Heading3,
-  Heading4
+  Heading4,
+  Subheading1
 } from "components/SharedComponents";
 import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import {
@@ -47,7 +47,7 @@ const TaxonDetailsTitle = ( {
         taxon={taxon}
         color={optionalClasses}
         topTextComponent={Heading1}
-        bottomTextComponent={Heading3}
+        bottomTextComponent={Subheading1}
       />
     </View>
   );

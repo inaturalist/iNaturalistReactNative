@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
-import * as useIsConnected from "sharedHooks/useIsConnected";
+import * as useIsConnected from "sharedHooks/useIsConnected.ts";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";

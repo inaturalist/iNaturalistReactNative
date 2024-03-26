@@ -437,6 +437,12 @@ Flag-Item-Other-Description = Some other reason you can explain below.
 
 Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 
+FOLLOW = FOLLOW
+
+UNFOLLOW = UNFOLLOW
+
+UNFOLLOW-USER = UNFOLLOW USER?
+
 Following = Following
 
 # Forgot password link
@@ -1834,4 +1840,4 @@ Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
 
-Connection-problem-please-try-again-later = Connection problem. Please try again later.
+Connection-problem-Please-try-again-later = Connection problem. Please try again later.
