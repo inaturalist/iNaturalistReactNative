@@ -26,7 +26,8 @@ type Props = {
   exploreViewIcon: string,
   hideBackButton: boolean,
   loadingStatus: boolean,
-  openFiltersModal: Function,
+  onPressCount?: Function,
+  openFiltersModal: Function
 }
 
 const Header = ( {
@@ -35,6 +36,7 @@ const Header = ( {
   exploreViewIcon,
   hideBackButton,
   loadingStatus,
+  onPressCount,
   openFiltersModal
 }: Props ): Node => {
   const navigation = useNavigation( );
@@ -121,6 +123,7 @@ const Header = ( {
           exploreView={exploreView}
           exploreViewIcon={exploreViewIcon}
           loadingStatus={loadingStatus}
+          onPress={onPressCount}
         />
       </Surface>
     </View>

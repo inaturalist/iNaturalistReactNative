@@ -5,8 +5,9 @@ import BottomSheet, {
   BottomSheetView,
   useBottomSheetDynamicSnapPoints
 } from "@gorhom/bottom-sheet";
+import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -15,6 +16,7 @@ import React, {
   useRef
 } from "react";
 import { Dimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
@@ -47,6 +49,7 @@ const StandardBottomSheet = ( {
 
   const { t } = useTranslation( );
   const sheetRef = useRef( null );
+  const insets = useSafeAreaInsets( );
 
   const initialSnapPoints = useMemo( () => ["CONTENT_HEIGHT"], [] );
 
@@ -116,10 +119,17 @@ const StandardBottomSheet = ( {
       backdropComponent={renderBackdrop}
       onChange={onChange || handleBackdropPress}
     >
-      <SafeAreaView>
-        <BottomSheetView onLayout={handleContentLayout}>
+      <BottomSheetView onLayout={handleContentLayout}>
+        <View
+          className={classnames(
+            "pt-7",
+            insets.bottom > 0
+              ? "pb-7"
+              : null
+          )}
+        >
           <View className="items-center">
-            <Heading4 className="pt-7">{headerText}</Heading4>
+            <Heading4>{headerText}</Heading4>
           </View>
           {children}
           {!hideCloseButton && (
@@ -132,8 +142,8 @@ const StandardBottomSheet = ( {
               accessibilityLabel={t( "Close" )}
             />
           )}
-        </BottomSheetView>
-      </SafeAreaView>
+        </View>
+      </BottomSheetView>
     </BottomSheetComponent>
   );
 };
