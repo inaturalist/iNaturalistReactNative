@@ -127,7 +127,6 @@ const mapParamsToAPI = ( params, currentUser ) => {
   }
 
   delete filteredParams.taxon;
-  delete filteredParams.taxon_name;
   delete filteredParams.place_guess;
   delete filteredParams.user;
   delete filteredParams.project;
@@ -224,7 +223,6 @@ const ExploreContainerWithContext = ( ): Node => {
   if ( exploreView === "observers" ) {
     queryParams.order_by = "observation_count";
   }
-  delete queryParams.taxon_name;
 
   // need this hook to be top-level enough that HeaderCount rerenders
   const { count, loadingStatus, updateCount } = useHeaderCount( );

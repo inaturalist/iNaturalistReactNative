@@ -81,8 +81,8 @@ const Explore = ( {
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
       loadingStatus={loadingStatus}
-      updateTaxon={updateTaxon}
       openFiltersModal={openFiltersModal}
+      onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );
 
@@ -141,87 +141,89 @@ const Explore = ( {
   return (
     <>
       <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
-        {renderHeader()}
-        {exploreView === "observations" && (
-          <ObservationsViewBar
-            layout={layout}
-            updateObservationsView={writeLayoutToStorage}
-          />
-        )}
-        <View className="flex-1">
-          { isDebug && (
-            <INatIconButton
-              icon="triangle-exclamation"
-              className={classnames(
-                "absolute",
-                "bg-white",
-                "bottom-[100px]",
-                "h-[55px]",
-                "right-5",
-                "rounded-full",
-                "w-[55px]",
-                "z-10"
-              )}
-              color="white"
-              size={27}
-              style={[
-                getShadow( theme.colors.primary ),
-                // eslint-disable-next-line react-native/no-inline-styles
-                { backgroundColor: "deeppink" }
-              ]}
-              accessibilityLabel="Diagnostics"
-              onPress={( ) => {
-                Alert.alert(
-                  "Explore Info",
-                  `queryParams: ${JSON.stringify( queryParams )}`
-                );
-              }}
-            />
-          ) }
-          <INatIconButton
-            icon={exploreViewIcon[exploreView]}
-            color={theme.colors.onPrimary}
-            size={27}
-            className={classnames(
-              grayCircleClass,
-              "absolute bottom-5 z-10 right-5"
-            )}
-            accessibilityLabel={t( "Explore-View" )}
-            onPress={() => setShowExploreBottomSheet( true )}
-            style={getShadow( theme.colors.primary )}
-          />
+        <View className="flex-1 overflow-hidden">
+          {renderHeader()}
           {exploreView === "observations" && (
-            <ObservationsView
-              count={count}
+            <ObservationsViewBar
               layout={layout}
-              queryParams={queryParams}
-              updateCount={updateCount}
+              updateObservationsView={writeLayoutToStorage}
             />
           )}
-          {exploreView === "species" && (
-            <SpeciesView
-              count={count}
-              isOnline={isOnline}
-              queryParams={queryParams}
-              updateCount={updateCount}
+          <View className="flex-1">
+            {isDebug && (
+              <INatIconButton
+                icon="triangle-exclamation"
+                className={classnames(
+                  "absolute",
+                  "bg-white",
+                  "bottom-[100px]",
+                  "h-[55px]",
+                  "right-5",
+                  "rounded-full",
+                  "w-[55px]",
+                  "z-10"
+                )}
+                color="white"
+                size={27}
+                style={[
+                  getShadow( theme.colors.primary ),
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  { backgroundColor: "deeppink" }
+                ]}
+                accessibilityLabel="Diagnostics"
+                onPress={() => {
+                  Alert.alert(
+                    "Explore Info",
+                    `queryParams: ${JSON.stringify( queryParams )}`
+                  );
+                }}
+              />
+            )}
+            <INatIconButton
+              icon={exploreViewIcon[exploreView]}
+              color={theme.colors.onPrimary}
+              size={27}
+              className={classnames(
+                grayCircleClass,
+                "absolute bottom-5 z-10 right-5"
+              )}
+              accessibilityLabel={t( "Explore-View" )}
+              onPress={() => setShowExploreBottomSheet( true )}
+              style={getShadow( theme.colors.primary )}
             />
-          )}
-          {exploreView === "observers" && (
-            <ObserversView
-              count={count}
-              isOnline={isOnline}
-              queryParams={queryParams}
-              updateCount={updateCount}
-            />
-          )}
-          {exploreView === "identifiers" && (
-            <IdentifiersView
-              count={count}
-              isOnline={isOnline}
-              queryParams={queryParams}
-              updateCount={updateCount}
-            />
-          )}
+            {exploreView === "observations" && (
+              <ObservationsView
+                count={count}
+                layout={layout}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+            {exploreView === "species" && (
+              <SpeciesView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+            {exploreView === "observers" && (
+              <ObserversView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+            {exploreView === "identifiers" && (
+              <IdentifiersView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+          </View>
         </View>
       </ViewWrapper>
       {showFiltersModal && (

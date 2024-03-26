@@ -14,25 +14,31 @@
 		1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */; };
 		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
 		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
+		1EF13134839B4163B7221B1C /* Whitney-Light-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 280EEAE853724445825C0BD1 /* Whitney-Light-Italic.otf */; };
 		20A80CB2AD058BDA23462D38 /* libPods-iNaturalistReactNative-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAA404A663814006B0F659A /* libPods-iNaturalistReactNative-ShareExtension.a */; };
-		280FAE242B484613ABA3200C /* Whitney Medium Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CBAAB44CD6EE4BF88D9A69C6 /* Whitney Medium Italic.otf */; };
+		24C2A4FB10654A9FA5F6BA36 /* Whitney-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C13A1C5596344F5F8830E524 /* Whitney-Light.otf */; };
 		374CB22F29943E63005885ED /* Whitney-BookItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */; };
 		42832120F7C944B980FD13BC /* Whitney-MediumItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */; };
-		471B954902E34667891BDE07 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 506652931A1A41B6B00D5D8D /* INatIcon.ttf */; };
+		4698CEACBD4F4A859CAB0694 /* Whitney-SemiboldItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0DD877E5F25945BCB6707357 /* Whitney-SemiboldItalic-Pro.otf */; };
 		4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */; };
 		5A8D64AB921678B40E0229C8 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		70A78BDA30F54E5089C0E524 /* Whitney-Book-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 657E03B58B8E44588A5933FA /* Whitney-Book-Italic.otf */; };
+		73B478002C534272ABECB43A /* Whitney-Medium-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = DC9FE0074F1340B0A5F2EA35 /* Whitney-Medium-Italic.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		85620196EA8747A08658CF40 /* Whitney-LightItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5EA1E325EE494FF8BE364F00 /* Whitney-LightItalic-Pro.otf */; };
 		8B65ED3129F575C10054CCEF /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B65ED2F29F575C10054CCEF /* MainInterface.storyboard */; };
 		8B65ED3529F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B65ED2B29F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8B65ED3B29F575FE0054CCEF /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B65ED3A29F575FE0054CCEF /* ShareViewController.swift */; };
+		9136560F8A3E4C53B7BD08AE /* Whitney-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B5F7CCA093BF4208980F1C36 /* Whitney-Medium.otf */; };
 		A019DB3A4661689827F5BB56 /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 486ED9661FEC89EDDBE3DA02 /* libPods-iNaturalistReactNative.a */; };
 		A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */; };
+		A64FC9A5388A49568EC932B6 /* Whitney-Semibold-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 63C92696AD524E14B655C56A /* Whitney-Semibold-Italic.otf */; };
 		B197D1A2DFD9440C9581D513 /* Whitney-Book-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 62CACBCC44D64A7EB95AACF1 /* Whitney-Book-Pro.otf */; };
 		B4518F59A698433CA0271ED5 /* Whitney-Semibold-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */; };
 		BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */; };
-		DB7705D32B96D3BE00009B55 /* Whitney Book Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DB7705D22B96D2E700009B55 /* Whitney Book Regular.otf */; };
-		DB7705D52B96D42300009B55 /* Whitney Semibold Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DB7705D42B96D42200009B55 /* Whitney Semibold Regular.otf */; };
-		DB7705D72B96D46000009B55 /* Whitney Semibold Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = DB7705D62B96D46000009B55 /* Whitney Semibold Italic.otf */; };
+		CD4D097140634EE091BB5818 /* Whitney-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EB5F71FA6C34855B03FE3FB /* Whitney-Book.otf */; };
+		CD871292AF3144DC9F9240BA /* Whitney-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A5C60A9F7DF42F49CED09FC /* Whitney-Semibold.otf */; };
+		D2853A71785A4FF6AB137F4C /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC5CF9E037E74ADF9CF9710B /* INatIcon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +76,8 @@
 		00E356EE1AD99517003FC87E /* iNaturalistReactNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNaturalistReactNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iNaturalistReactNativeTests.m; sourceTree = "<group>"; };
-		097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-MediumItalic-Pro.otf"; path = "../assets/fonts/Whitney-MediumItalic-Pro.otf"; sourceTree = "<group>"; };
+		097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-MediumItalic-Pro.otf"; path = "../assets/fonts/Whitney-MediumItalic-Pro.otf"; sourceTree = "<group>"; };
+		0DD877E5F25945BCB6707357 /* Whitney-SemiboldItalic-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-SemiboldItalic-Pro.otf"; path = "../assets/fonts/Whitney-SemiboldItalic-Pro.otf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNaturalistReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iNaturalistReactNative/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = iNaturalistReactNative/AppDelegate.mm; sourceTree = "<group>"; };
@@ -82,10 +89,14 @@
 		197A169C2A7C2567001A03DC /* taxonomy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = taxonomy.json; sourceTree = "<group>"; };
 		19916F1F2B4F1871000A2D91 /* iNaturalistReactNativeRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = iNaturalistReactNativeRelease.entitlements; path = iNaturalistReactNative/iNaturalistReactNativeRelease.entitlements; sourceTree = "<group>"; };
 		19A5877328F8E3310016D128 /* iNaturalistReactNative-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iNaturalistReactNative-Bridging-Header.h"; sourceTree = "<group>"; };
+		280EEAE853724445825C0BD1 /* Whitney-Light-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Light-Italic.otf"; path = "../assets/fonts/Whitney-Light-Italic.otf"; sourceTree = "<group>"; };
 		374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Whitney-BookItalic-Pro.otf"; path = "../assets/fonts/Whitney-BookItalic-Pro.otf"; sourceTree = "<group>"; };
 		486ED9661FEC89EDDBE3DA02 /* libPods-iNaturalistReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		506652931A1A41B6B00D5D8D /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
-		62CACBCC44D64A7EB95AACF1 /* Whitney-Book-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Book-Pro.otf"; path = "../assets/fonts/Whitney-Book-Pro.otf"; sourceTree = "<group>"; };
+		4A5C60A9F7DF42F49CED09FC /* Whitney-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Semibold.otf"; path = "../assets/fonts/Whitney-Semibold.otf"; sourceTree = "<group>"; };
+		5EA1E325EE494FF8BE364F00 /* Whitney-LightItalic-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-LightItalic-Pro.otf"; path = "../assets/fonts/Whitney-LightItalic-Pro.otf"; sourceTree = "<group>"; };
+		62CACBCC44D64A7EB95AACF1 /* Whitney-Book-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Book-Pro.otf"; path = "../assets/fonts/Whitney-Book-Pro.otf"; sourceTree = "<group>"; };
+		63C92696AD524E14B655C56A /* Whitney-Semibold-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Semibold-Italic.otf"; path = "../assets/fonts/Whitney-Semibold-Italic.otf"; sourceTree = "<group>"; };
+		657E03B58B8E44588A5933FA /* Whitney-Book-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Book-Italic.otf"; path = "../assets/fonts/Whitney-Book-Italic.otf"; sourceTree = "<group>"; };
 		6836402D214AF8075A93F130 /* Pods-iNaturalistReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iNaturalistReactNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B65ED2B29F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "iNaturalistReactNative-ShareExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,15 +106,16 @@
 		8B65ED3A29F575FE0054CCEF /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareViewController.swift; path = "../../node_modules/react-native-share-menu/ios/ShareViewController.swift"; sourceTree = "<group>"; };
 		8B65ED3C29F576D00054CCEF /* iNaturalistReactNative-ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iNaturalistReactNative-ShareExtension.entitlements"; sourceTree = "<group>"; };
 		8B8BAD0429F54EB300CE5C9F /* iNaturalistReactNative.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = iNaturalistReactNative.entitlements; path = iNaturalistReactNative/iNaturalistReactNative.entitlements; sourceTree = "<group>"; };
-		B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Semibold-Pro.otf"; path = "../assets/fonts/Whitney-Semibold-Pro.otf"; sourceTree = "<group>"; };
+		8EB5F71FA6C34855B03FE3FB /* Whitney-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Book.otf"; path = "../assets/fonts/Whitney-Book.otf"; sourceTree = "<group>"; };
+		B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Semibold-Pro.otf"; path = "../assets/fonts/Whitney-Semibold-Pro.otf"; sourceTree = "<group>"; };
+		B5F7CCA093BF4208980F1C36 /* Whitney-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Medium.otf"; path = "../assets/fonts/Whitney-Medium.otf"; sourceTree = "<group>"; };
 		BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Light-Pro.otf"; path = "../assets/fonts/Whitney-Light-Pro.otf"; sourceTree = "<group>"; };
 		BBAA404A663814006B0F659A /* libPods-iNaturalistReactNative-ShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative-ShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CBAAB44CD6EE4BF88D9A69C6 /* Whitney Medium Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney Medium Italic.otf"; path = "../assets/fonts/Whitney Medium Italic.otf"; sourceTree = "<group>"; };
+		C13A1C5596344F5F8830E524 /* Whitney-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Light.otf"; path = "../assets/fonts/Whitney-Light.otf"; sourceTree = "<group>"; };
+		CC5CF9E037E74ADF9CF9710B /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		CEBBC55F32B65362EB71A4C6 /* Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Medium-Pro.otf"; path = "../assets/fonts/Whitney-Medium-Pro.otf"; sourceTree = "<group>"; };
-		DB7705D22B96D2E700009B55 /* Whitney Book Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Whitney Book Regular.otf"; path = "../assets/fonts/Whitney Book Regular.otf"; sourceTree = "<group>"; };
-		DB7705D42B96D42200009B55 /* Whitney Semibold Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Whitney Semibold Regular.otf"; path = "../assets/fonts/Whitney Semibold Regular.otf"; sourceTree = "<group>"; };
-		DB7705D62B96D46000009B55 /* Whitney Semibold Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Whitney Semibold Italic.otf"; path = "../assets/fonts/Whitney Semibold Italic.otf"; sourceTree = "<group>"; };
+		DC9FE0074F1340B0A5F2EA35 /* Whitney-Medium-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Medium-Italic.otf"; path = "../assets/fonts/Whitney-Medium-Italic.otf"; sourceTree = "<group>"; };
 		E67BC54FF5D9263C1DCFB23D /* Pods-iNaturalistReactNative-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = inaturalisticons.ttf; path = ../assets/fonts/inaturalisticons.ttf; sourceTree = "<group>"; };
@@ -167,7 +179,6 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				19A5877328F8E3310016D128 /* iNaturalistReactNative-Bridging-Header.h */,
 			);
@@ -205,6 +216,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FAE1A68108700A75B9A /* iNaturalistReactNative */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* iNaturalistReactNativeTests */,
@@ -245,17 +257,22 @@
 			isa = PBXGroup;
 			children = (
 				BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */,
-				DB7705D42B96D42200009B55 /* Whitney Semibold Regular.otf */,
 				D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */,
-				DB7705D22B96D2E700009B55 /* Whitney Book Regular.otf */,
-				DB7705D62B96D46000009B55 /* Whitney Semibold Italic.otf */,
 				374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */,
 				EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */,
 				62CACBCC44D64A7EB95AACF1 /* Whitney-Book-Pro.otf */,
 				097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */,
 				B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */,
-				CBAAB44CD6EE4BF88D9A69C6 /* Whitney Medium Italic.otf */,
-				506652931A1A41B6B00D5D8D /* INatIcon.ttf */,
+				657E03B58B8E44588A5933FA /* Whitney-Book-Italic.otf */,
+				8EB5F71FA6C34855B03FE3FB /* Whitney-Book.otf */,
+				280EEAE853724445825C0BD1 /* Whitney-Light-Italic.otf */,
+				C13A1C5596344F5F8830E524 /* Whitney-Light.otf */,
+				5EA1E325EE494FF8BE364F00 /* Whitney-LightItalic-Pro.otf */,
+				DC9FE0074F1340B0A5F2EA35 /* Whitney-Medium-Italic.otf */,
+				B5F7CCA093BF4208980F1C36 /* Whitney-Medium.otf */,
+				63C92696AD524E14B655C56A /* Whitney-Semibold-Italic.otf */,
+				4A5C60A9F7DF42F49CED09FC /* Whitney-Semibold.otf */,
+				0DD877E5F25945BCB6707357 /* Whitney-SemiboldItalic-Pro.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -382,18 +399,24 @@
 				197A169E2A7C2567001A03DC /* taxonomy.json in Resources */,
 				374CB22F29943E63005885ED /* Whitney-BookItalic-Pro.otf in Resources */,
 				1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */,
-				DB7705D32B96D3BE00009B55 /* Whitney Book Regular.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				DB7705D52B96D42300009B55 /* Whitney Semibold Regular.otf in Resources */,
 				A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */,
 				BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */,
 				4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */,
-				DB7705D72B96D46000009B55 /* Whitney Semibold Italic.otf in Resources */,
+				D2853A71785A4FF6AB137F4C /* INatIcon.ttf in Resources */,
 				B197D1A2DFD9440C9581D513 /* Whitney-Book-Pro.otf in Resources */,
 				42832120F7C944B980FD13BC /* Whitney-MediumItalic-Pro.otf in Resources */,
 				B4518F59A698433CA0271ED5 /* Whitney-Semibold-Pro.otf in Resources */,
-				280FAE242B484613ABA3200C /* Whitney Medium Italic.otf in Resources */,
-				471B954902E34667891BDE07 /* INatIcon.ttf in Resources */,
+				70A78BDA30F54E5089C0E524 /* Whitney-Book-Italic.otf in Resources */,
+				CD4D097140634EE091BB5818 /* Whitney-Book.otf in Resources */,
+				1EF13134839B4163B7221B1C /* Whitney-Light-Italic.otf in Resources */,
+				24C2A4FB10654A9FA5F6BA36 /* Whitney-Light.otf in Resources */,
+				85620196EA8747A08658CF40 /* Whitney-LightItalic-Pro.otf in Resources */,
+				73B478002C534272ABECB43A /* Whitney-Medium-Italic.otf in Resources */,
+				9136560F8A3E4C53B7BD08AE /* Whitney-Medium.otf in Resources */,
+				A64FC9A5388A49568EC932B6 /* Whitney-Semibold-Italic.otf in Resources */,
+				CD871292AF3144DC9F9240BA /* Whitney-Semibold.otf in Resources */,
+				4698CEACBD4F4A859CAB0694 /* Whitney-SemiboldItalic-Pro.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,7 +678,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNative.entitlements;
-				CURRENT_PROJECT_VERSION = 75;
+				CURRENT_PROJECT_VERSION = 80;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -776,7 +799,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNativeRelease.entitlements;
-				CURRENT_PROJECT_VERSION = 75;
+				CURRENT_PROJECT_VERSION = 80;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				HEADER_SEARCH_PATHS = (
@@ -1052,7 +1075,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "iNaturalistReactNative-ShareExtension/iNaturalistReactNative-ShareExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 75;
+				CURRENT_PROJECT_VERSION = 80;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -1097,7 +1120,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 75;
+				CURRENT_PROJECT_VERSION = 80;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";

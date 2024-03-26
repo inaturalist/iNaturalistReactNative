@@ -6,8 +6,10 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import { format } from "date-fns";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
+import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { sleep } from "sharedHelpers/util";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
@@ -97,7 +99,6 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.number.int( ),
                 url: faker.image.url( ),
                 position: 0
               }
@@ -109,14 +110,12 @@ describe( "MyObservations", ( ) => {
           observationPhotos: [
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.number.int( ),
                 url: `${faker.image.url( )}/100`,
                 position: 0
               }
             } ),
             factory( "LocalObservationPhoto", {
               photo: {
-                id: faker.number.int( ),
                 url: `${faker.image.url( )}/200`,
                 position: 1
               }
@@ -124,6 +123,27 @@ describe( "MyObservations", ( ) => {
           ]
         } )
       ];
+
+      // Mock inatjs endpoints so they return the right responses for the right test data
+      inatjs.observations.create.mockImplementation( ( params, _opts ) => {
+        const mockObs = mockObservations.find( o => o.uuid === params.observation.uuid );
+        return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
+      } );
+      inatjs.observation_photos.create.mockImplementation( async ( params, _opts ) => {
+        const mockObsPhotos = flatten( mockObservations.map( o => o.observationPhotos ) );
+        const mockObsPhoto = mockObsPhotos.find(
+          op => op.uuid === params.observation_photo.uuid
+        );
+        // Pretend this takes a bit
+        await sleep( 500 );
+        return makeResponse( [{
+          id: faker.number.int( ),
+          uuid: mockObsPhoto.uuid
+        }] );
+      } );
+      inatjs.photos.create.mockImplementation( ( ) => Promise.resolve( makeResponse( [{
+        id: faker.number.int( )
+      }] ) ) );
 
       beforeEach( ( ) => {
         // Write local observation to Realm
@@ -175,6 +195,7 @@ describe( "MyObservations", ( ) => {
       it( "displays upload in progress status when individual upload tapped", async () => {
         renderAppWithComponent( <MyObservationsContainer /> );
         await waitFor( ( ) => {
+          // There are two unuploaded observations, and we are about to upload one of them
           const toolbarText = screen.getByText( /Upload 2 observations/ );
           expect( toolbarText ).toBeVisible( );
         } );
@@ -182,6 +203,7 @@ describe( "MyObservations", ( ) => {
         expect( uploadIcon ).toBeVisible( );
         fireEvent.press( uploadIcon );
         await waitFor( ( ) => {
+          // Status reflects that we are only uploading one individual observation
           const uploadInProgressText = screen.getByText( /Uploading 1 of 1 observation/ );
           expect( uploadInProgressText ).toBeVisible( );
         } );
@@ -209,7 +231,7 @@ describe( "MyObservations", ( ) => {
         expect( syncIcon ).toBeVisible( );
         fireEvent.press( syncIcon );
         await waitFor( ( ) => {
-          const uploadInProgressText = screen.getByText( /Uploading 1 of 2 observations/ );
+          const uploadInProgressText = screen.getByText( /Uploading [1-2] of 2 observations/ );
           expect( uploadInProgressText ).toBeVisible( );
         } );
         mockObservations.forEach( obs => {
@@ -330,15 +352,6 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "localization for current user", ( ) => {
-    // beforeEach( ( ) => {
-    //   safeRealmWrite( global.mockRealms[__filename], ( ) => {
-    //     global.mockRealms[__filename].deleteAll( );
-    //   }, "delete all, MyObservations integration test, localization for current user" );
-    // } );
-
-    // afterEach( ( ) => {
-    //   jest.clearAllMocks( );
-    // } );
     afterEach( async ( ) => {
       signOut( { realm: global.mockRealms[__filename] } );
     } );

@@ -15,6 +15,7 @@ const GroupPhotosContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
   const groupedPhotos = useStore( state => state.groupedPhotos );
+  const firstObservationDefaults = useStore( state => state.firstObservationDefaults ) || {};
 
   const [selectedObservations, setSelectedObservations] = useState( [] );
   const [isCreatingObservations, setIsCreatingObservations] = useState( false );
@@ -133,7 +134,15 @@ const GroupPhotosContainer = ( ): Node => {
     const newObservations = await Promise.all( groupedPhotos.map(
       ( { photos } ) => Observation.createObservationWithPhotos( photos )
     ) );
-    setObservations( newObservations );
+    console.log( "[DEBUG GroupPhotosContainer.js] newObservations: ", newObservations );
+    // If there are default attributes for new observations, assign them
+    setObservations( newObservations.map( ( newObs, idx ) => ( {
+      ...( idx === 0
+        ? firstObservationDefaults
+        : {}
+      ),
+      ...newObs
+    } ) ) );
     setIsCreatingObservations( false );
     navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
   };

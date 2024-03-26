@@ -42,6 +42,7 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+
   useIconicTaxa( { reload: true } );
   useReactQueryRefetch( );
   useFreshInstall( currentUser );

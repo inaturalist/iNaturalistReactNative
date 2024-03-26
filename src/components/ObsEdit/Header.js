@@ -154,14 +154,25 @@ const Header = ( {
           setDeleteSheetVisible( true );
           setKebabMenuVisible( false );
         }}
-        title={
-          observations.length > 1
-            ? t( "Delete-observations" )
-            : t( "Delete-observation" )
-        }
+        title={t( "Delete-observation" )}
       />
+      { observations.length > 1 && (
+        <Menu.Item
+          testID="Header.delete-all-observation"
+          onPress={( ) => {
+            setDiscardObservationSheetVisible( true );
+            setKebabMenuVisible( false );
+          }}
+          title={t( "Delete-all-observations" )}
+        />
+      ) }
     </KebabMenu>
-  ), [kebabMenuVisible, observations, t, setDeleteSheetVisible] );
+  ), [
+    kebabMenuVisible,
+    observations,
+    setDeleteSheetVisible,
+    t
+  ] );
 
   return (
     <View className="flex-row justify-between items-center">
@@ -176,6 +187,7 @@ const Header = ( {
           navToObsList={navToObsList}
           observations={observations}
           currentObservation={currentObservation}
+          updateObservations={updateObservations}
         />
       )}
       {discardObservationSheetVisible && (

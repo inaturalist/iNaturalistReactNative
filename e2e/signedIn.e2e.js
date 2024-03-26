@@ -50,7 +50,7 @@ describe( "Signed in user", () => {
     const addObsButton = element( by.id( "add-obs-button" ) );
     await waitFor( addObsButton ).toBeVisible().withTimeout( 10000 );
     await addObsButton.tap();
-    await expect( element( by.id( "evidence-text" ) ) ).toBeVisible();
+    await expect( element( by.id( "identify-text" ) ) ).toBeVisible();
     // Observe without evidence
     const obsWithoutEvidenceButton = element(
       by.id( "observe-without-evidence-button" )

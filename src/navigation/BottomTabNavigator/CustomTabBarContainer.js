@@ -13,11 +13,10 @@ const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
 const NOTIFICATIONS_SCREEN_ID = "Notifications";
 
 type Props = {
-  navigation: Object,
-  isOnline: boolean
+  navigation: Object
 };
 
-const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
+const CustomTabBarContainer = ( { navigation }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
@@ -29,8 +28,6 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
       testID: DRAWER_ID,
       accessibilityLabel: t( "Open-drawer" ),
       accessibilityHint: t( "Opens-the-side-drawer-menu" ),
-      width: 44,
-      height: 44,
       size: 32,
       onPress: ( ) => {
         navigation.openDrawer( );
@@ -43,8 +40,6 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
       testID: EXPLORE_SCREEN_ID,
       accessibilityLabel: t( "Explore" ),
       accessibilityHint: t( "Navigates-to-explore" ),
-      width: 44,
-      height: 44,
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "ObservationsStackNavigator", {
@@ -56,16 +51,10 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
     },
     {
       icon: "person",
-      userIconUri: isOnline
-        ? User.uri( currentUser )
-        : null,
-      testID: User.uri( currentUser ) && isOnline
-        ? "NavButton.avatar"
-        : "NavButton.personIcon",
+      userIconUri: User.uri( currentUser ),
+      testID: "NavButton.personIcon",
       accessibilityLabel: t( "Observations" ),
       accessibilityHint: t( "Navigates-to-observations" ),
-      width: 44,
-      height: 44,
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "ObservationsStackNavigator", {
@@ -80,8 +69,6 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
       testID: NOTIFICATIONS_SCREEN_ID,
       accessibilityLabel: t( "Notifications" ),
       accessibilityHint: t( "Navigates-to-notifications" ),
-      width: 44,
-      height: 44,
       size: 32,
       onPress: ( ) => {
         navigation.reset( {
@@ -94,7 +81,6 @@ const CustomTabBarContainer = ( { navigation, isOnline }: Props ): Node => {
     }
   ] ), [
     activeTab,
-    isOnline,
     currentUser,
     isDrawerOpen,
     navigation,
