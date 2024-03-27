@@ -38,7 +38,7 @@ jobs:
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
     runs-on: macos-14
     # Kill the task if not finished after 60 minutes
-    timeout-minutes: 60
+    timeout-minutes: 120
 
     steps:
     - name: Check out Git repository
