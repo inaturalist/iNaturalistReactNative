@@ -43,6 +43,8 @@ jest.mock( "vision-camera-plugin-inatvision", () => ( {
 } ) );
 
 jest.mock( "react-native-worklets-core", () => ( {
+  useSharedValue: jest.fn(),
+  useWorklet: jest.fn(),
   Worklets: {
     createRunInJsFn: jest.fn()
   }
