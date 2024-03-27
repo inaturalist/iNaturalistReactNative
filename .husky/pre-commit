@@ -1,15 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Run lint and flow
-npm run lint
-
-# Generate translations from strings.ftl
-npm run translate
-# ...and add them to the commit; this assumes src/i18n/l10n/ *only* contains
-#    files you want to add
-git status --porcelain --untracked-files src/i18n/l10n/ | cut -c 4- | xargs git add
-
 # If ggshield is installed, run it
 if command -v ggshield &> /dev/null; then
   ggshield secret scan pre-commit
@@ -24,3 +15,12 @@ else
   echo "If you are iNat staff, you should install ggshield: https://docs.gitguardian.com/ggshield-docs/getting-started"
   echo
 fi
+
+# Run lint and flow
+npm run lint
+
+# Generate translations from strings.ftl
+npm run translate
+# ...and add them to the commit; this assumes src/i18n/l10n/ *only* contains
+#    files you want to add
+git status --porcelain --untracked-files src/i18n/l10n/ | cut -c 4- | xargs git add

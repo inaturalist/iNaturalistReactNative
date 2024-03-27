@@ -88,3 +88,6 @@ artifacts/
 
 # Reassure performance testing #
 .reassure
+
+# GitGuardian cache file
+.cache_ggshield
