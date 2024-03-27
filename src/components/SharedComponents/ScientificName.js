@@ -7,21 +7,29 @@ import Taxon from "realmModels/Taxon";
 import INatTextMedium from "./Typography/INatTextMedium";
 
 type Props = {
-    scientificNamePieces: Object,
-    rankPiece: string,
-    rankLevel: number,
-    rank: string,
-    fontComponent: Object,
-    isHorizontal: boolean,
-    textClass: Function,
-    keyBase: string,
-    taxonId: string,
-    isTitle?: boolean
+  fontComponent: Object,
+  isHorizontal: boolean,
+  isTitle?: boolean,
+  keyBase: string,
+  rank: string,
+  rankLevel: number,
+  rankPiece: string,
+  scientificNamePieces: Object,
+  taxonId: string,
+  textClassName?: string
 };
 
 const ScientificName = ( {
-  scientificNamePieces, rankPiece, rankLevel, fontComponent,
-  isHorizontal, rank, textClass, keyBase, taxonId, isTitle
+  fontComponent,
+  isHorizontal,
+  isTitle,
+  keyBase,
+  rank,
+  rankLevel,
+  rankPiece,
+  scientificNamePieces,
+  taxonId,
+  textClassName
 }: Props ): Node => {
   const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
     const isItalics = piece !== rankPiece && (
@@ -33,30 +41,24 @@ const ScientificName = ( {
     const text = piece + spaceChar;
     const FontComponent = fontComponent || INatTextMedium;
 
-    if ( isItalics ) {
-      return (
-        <FontComponent
-          // eslint-disable-next-line react/no-array-index-key
-          key={`DisplayTaxonName-${keyBase}-${taxonId}-${rankLevel}-${piece}-${index}`}
-          className={classNames( "italic font-normal", textClass( ), {
-            "font-light": !isTitle
-          } )}
-        >
-          {text}
-        </FontComponent>
-      );
-    }
     return (
       <FontComponent
-        // eslint-disable-next-line react/no-array-index-key
-        key={`DisplayTaxonName-${keyBase}-${taxonId}-${index}`}
+        key={`DisplayTaxonName-${keyBase}-${taxonId}-${rankLevel}-${piece}`}
+        className={classNames(
+          "font-normal",
+          textClassName,
+          {
+            "font-light": !isTitle,
+            italic: isItalics
+          }
+        )}
       >
         {text}
       </FontComponent>
     );
   } );
 
-  if ( rank && rankLevel > 10 ) {
+  if ( rank && rankLevel > Taxon.SPECIES_LEVEL ) {
     scientificNameArray.unshift( `${rank} ` );
   }
 

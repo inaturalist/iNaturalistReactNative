@@ -44,7 +44,7 @@ const SpeciesSeenCheckmark = ( {
     ),
     {
       keepPreviousData: false,
-      enabled: !!currentUser
+      enabled: !!taxonId && !!currentUser?.id
     }
   );
 

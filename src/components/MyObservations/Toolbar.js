@@ -62,7 +62,7 @@ const Toolbar = ( {
           <INatIconButton
             icon="compass-rose-outline"
             onPress={navToExplore}
-            accessibilityLabel={t( "Explore" )}
+            accessibilityLabel={t( "See-all-your-observations-in-explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             accessibilityRole="button"
             size={30}

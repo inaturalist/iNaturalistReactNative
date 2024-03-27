@@ -8,7 +8,7 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import CustomTabBar from "./CustomTabBar";
 
 const DRAWER_ID = "OPEN_DRAWER";
-const EXPLORE_SCREEN_ID = "Explore";
+const EXPLORE_SCREEN_ID = "RootExplore";
 const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
 const NOTIFICATIONS_SCREEN_ID = "Notifications";
 
@@ -38,13 +38,11 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
     {
       icon: "compass-rose-outline",
       testID: EXPLORE_SCREEN_ID,
-      accessibilityLabel: t( "Explore" ),
+      accessibilityLabel: t( "Navigate-to-explore-screen" ),
       accessibilityHint: t( "Navigates-to-explore" ),
       size: 40,
       onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
-          screen: "Explore"
-        } );
+        navigation.navigate( "RootExplore" );
         setActiveTab( EXPLORE_SCREEN_ID );
       },
       active: EXPLORE_SCREEN_ID === activeTab
@@ -73,7 +71,14 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       onPress: ( ) => {
         navigation.reset( {
           index: 0,
-          routes: [{ name: "Notifications" }]
+          routes: [
+            {
+              name: "ObservationsStackNavigator",
+              params: {
+                screen: "Notifications"
+              }
+            }
+          ]
         } );
         setActiveTab( NOTIFICATIONS_SCREEN_ID );
       },

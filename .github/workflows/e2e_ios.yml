@@ -51,6 +51,11 @@ jobs:
       with:
         node-version: 18
 
+    - name: Setup Ruby version according to .ruby-version with cached gems
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true        
+
     - name: Cache node modules
       uses: actions/cache@v3
       id: cache
@@ -98,8 +103,13 @@ jobs:
       run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
 
     # Install prerequisites for detox and build app, and test
-    - run: brew tap wix/brew
-    - run: brew install applesimutils
+    - name: Install macOS dependencies
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: |
+        brew tap wix/brew
+        brew install applesimutils
 
     - name: Build test app
       run: npm run e2e:build:ios

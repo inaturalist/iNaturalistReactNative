@@ -6,7 +6,7 @@ import {
 import ScientificName from "components/SharedComponents/ScientificName";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -54,7 +54,7 @@ const DisplayTaxonName = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const textClass = useCallback( ( ) => {
+  const textClassName = useMemo( ( ) => {
     const textColorClass = color || "text-darkGray";
     if ( withdrawn ) {
       return "text-darkGray opacity-50 line-through";
@@ -115,7 +115,7 @@ const DisplayTaxonName = ( {
         } )}
       >
         <TopTextComponent
-          className={textClass( )}
+          className={textClassName}
           numberOfLines={setNumberOfLines( )}
           ellipsizeMode="tail"
         >
@@ -129,7 +129,7 @@ const DisplayTaxonName = ( {
                   rank={rank}
                   fontComponent={TopTextComponent}
                   isHorizontal={isHorizontal}
-                  textClass={textClass}
+                  textClassName={textClassName}
                   taxonId={taxon.id}
                   keyBase={keyBase}
                   isTitle
@@ -143,7 +143,7 @@ const DisplayTaxonName = ( {
 
         {
           commonName && (
-            <BottomTextComponent className={textClass( )}>
+            <BottomTextComponent className={textClassName}>
               {scientificNameFirst
                 ? commonName
                 : (
@@ -154,7 +154,7 @@ const DisplayTaxonName = ( {
                     rank={rank}
                     fontComponent={BottomTextComponent}
                     isHorizontal={isHorizontal}
-                    textClass={textClass}
+                    textClassName={textClassName}
                     taxonId={taxon.id}
                     keyBase={keyBase}
                   />
@@ -172,13 +172,13 @@ const DisplayTaxonName = ( {
     scientificNameFirst,
     small,
     taxon,
-    textClass,
+    textClassName,
     TopTextComponentProp
   ] );
 
   if ( !taxon ) {
     return (
-      <Body1 className={textClass( )} numberOfLines={1}>
+      <Body1 className={textClassName} numberOfLines={1}>
         {t( "unknown" )}
       </Body1>
     );

@@ -54,7 +54,7 @@ const UserProfile = ( ): Node => {
     }, optsWithAuth )
   );
   let relationshipResults = null;
-  if ( relationships?.results ) {
+  if ( relationships?.results && relationships.results.length > 0 ) {
     relationshipResults = relationships?.results
       .find( relationship => relationship.friendUser.id === userId );
   }

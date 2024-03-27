@@ -1345,5 +1345,33 @@
     "comment": "Generic confirmation, e.g. button on a warning alert",
     "val": "OK"
   },
-  "Connection-problem-Please-try-again-later": "Connection problem. Please try again later."
+  "Connection-problem-please-try-again-later": "Connection problem. Please try again later.",
+  "Navigate-to-explore-screen": {
+    "comment": "Accessibility label for Explore button on bottom tab navigator",
+    "val": "Navigate to explore screen"
+  },
+  "See-all-your-observations-in-explore": {
+    "comment": "Accessibility label for Explore button on MyObservations toolbar",
+    "val": "See all your observations in explore"
+  },
+  "Observations-View": "Observations View",
+  "Species-View": "Species View",
+  "Observers-View": "Observers View",
+  "Identifiers-View": "Identifiers View",
+  "See-species-observed-by-this-user-in-Explore": {
+    "comment": "Accessibility label for Species button on UserProfile screen",
+    "val": "See species observed by this user in Explore"
+  },
+  "See-observations-by-this-user-in-Explore": {
+    "comment": "Accessibility label for Observations button on UserProfile screen",
+    "val": "See observations by this user in Explore"
+  },
+  "See-observations-of-this-taxon-in-explore": {
+    "comment": "Accessibility label for Explore button on TaxonDetails screen",
+    "val": "See observations of this taxon in explore"
+  },
+  "See-observations-in-explore": {
+    "comment": "Accessibility label for Explore button in MyObservationsEmpty for logged out user",
+    "val": "See observations in explore"
+  }
 }
