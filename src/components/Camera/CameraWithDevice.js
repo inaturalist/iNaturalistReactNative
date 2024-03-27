@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import PermissionGateContainer, { WRITE_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
@@ -18,7 +19,7 @@ import useDeviceOrientation, {
 } from "sharedHooks/useDeviceOrientation";
 
 import ARCamera from "./ARCamera/ARCamera";
-import usePrepareStateForObsEdit from "./hooks/usePrepareStateForObsEdit";
+import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
@@ -48,7 +49,7 @@ const CameraWithDevice = ( {
   const { deviceOrientation } = useDeviceOrientation( );
   const [addPhotoPermissionResult, setAddPhotoPermissionResult] = useState( null );
   const [checkmarkTapped, setCheckmarkTapped] = useState( false );
-  const [taxonResult, setTaxonResult] = useState( null );
+  const [visionCameraResult, setVisionCameraResult] = useState( null );
   // We track this because we only want to navigate away when the permission
   // gate is completely closed, because there's a good chance another will
   // try to open when the user lands on the next screen, e.g. the location
@@ -57,7 +58,7 @@ const CameraWithDevice = ( {
 
   const {
     prepareStateForObsEdit
-  } = usePrepareStateForObsEdit( addPhotoPermissionResult, addEvidence );
+  } = usePrepareStoreAndNavigate( addPhotoPermissionResult, addEvidence, checkmarkTapped );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -72,26 +73,22 @@ const CameraWithDevice = ( {
     ? "flex-row"
     : "flex-col";
 
-  const navToObsEdit = useCallback( async ( ) => {
-    await prepareStateForObsEdit( taxonResult );
-    if ( taxonResult ) {
-      setTaxonResult( null );
-    }
-    navigation.navigate( "ObsEdit" );
-  }, [taxonResult, prepareStateForObsEdit, navigation] );
+  const storeCurrentObservation = useCallback( async ( ) => {
+    await prepareStateForObsEdit( visionCameraResult );
+  }, [visionCameraResult, prepareStateForObsEdit] );
 
-  const handleCheckmarkPress = localTaxon => {
-    setTaxonResult( localTaxon?.id
-      ? localTaxon
+  const handleCheckmarkPress = visionResult => {
+    setVisionCameraResult( visionResult?.taxon
+      ? visionResult
       : null );
     setCheckmarkTapped( true );
   };
 
-  const onPermissionGranted = ( ) => {
+  const onPhotoPermissionGranted = ( ) => {
     setAddPhotoPermissionResult( "granted" );
   };
 
-  const onPermissionDenied = ( ) => {
+  const onPhotoPermissionDenied = ( ) => {
     setAddPhotoPermissionResult( "denied" );
   };
 
@@ -105,10 +102,10 @@ const CameraWithDevice = ( {
     ) {
       setCheckmarkTapped( false );
       setAddPhotoPermissionGateWasClosed( false );
-      navToObsEdit( );
+      storeCurrentObservation( );
     }
   }, [
-    navToObsEdit,
+    storeCurrentObservation,
     checkmarkTapped,
     addPhotoPermissionGateWasClosed,
     addPhotoPermissionResult
@@ -136,19 +133,28 @@ const CameraWithDevice = ( {
 
   return (
     <View className={`flex-1 bg-black ${flexDirection}`}>
-      <PermissionGateContainer
-        permissions={WRITE_MEDIA_PERMISSIONS}
-        titleDenied={t( "Save-photos-to-your-gallery" )}
-        body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery" )}
-        buttonText={t( "SAVE-PHOTOS" )}
-        icon="gallery"
-        image={require( "images/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
-        onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
-        onPermissionGranted={onPermissionGranted}
-        onPermissionDenied={onPermissionDenied}
-        withoutNavigation
+      {/* a weird quirk of react-native-modal is you can show subsequent modals
+        when a modal is nested in another modal. location permission is shown first
+        because the save photo modal pops up a second system alert on iOS asking
+        how much access to give */}
+      <LocationPermissionGate
         permissionNeeded={checkmarkTapped}
-      />
+        withoutNavigation
+      >
+        <PermissionGateContainer
+          permissions={WRITE_MEDIA_PERMISSIONS}
+          titleDenied={t( "Save-photos-to-your-gallery" )}
+          body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery" )}
+          buttonText={t( "SAVE-PHOTOS" )}
+          icon="gallery"
+          image={require( "images/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
+          onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
+          onPermissionGranted={onPhotoPermissionGranted}
+          onPermissionDenied={onPhotoPermissionDenied}
+          withoutNavigation
+          permissionNeeded={checkmarkTapped}
+        />
+      </LocationPermissionGate>
       {cameraType === "Standard"
         ? (
           <StandardCamera

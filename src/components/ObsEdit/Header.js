@@ -1,6 +1,6 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -18,57 +18,42 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 
 type Props = {
   observations: Array<Object>,
-  updateObservations: Function,
   currentObservation: Object
 }
 
 const Header = ( {
   observations,
-  updateObservations,
   currentObservation
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
+  const updateObservations = useStore( state => state.updateObservations );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const { params } = useRoute( );
   const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
 
   const savedLocally = currentObservation?._created_at;
-  const unsynced = !currentObservation?._synced_at;
 
-  const navToObsDetails = useCallback( ( ) => {
+  const navToObsList = useCallback( ( ) => {
     navigation.navigate( "TabNavigator", {
       screen: "ObservationsStackNavigator",
       params: {
-        screen: "ObsDetails",
-        params: {
-          uuid: currentObservation?.uuid
-        }
+        screen: "ObsList"
       }
     } );
-  }, [navigation, currentObservation] );
-
-  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
-    screen: "ObservationsStackNavigator",
-    params: {
-      screen: "ObsList"
-    }
-  } ), [navigation] );
+  }, [navigation] );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    updateObservations( [] );
-    navToObsDetails( );
-  }, [updateObservations, navToObsDetails] );
+    navigation.goBack( );
+  }, [navigation] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
-    updateObservations( [] );
     navToObsList( );
-  }, [updateObservations, navToObsList] );
+  }, [navToObsList] );
 
   const renderHeaderTitle = useCallback( ( ) => {
     let headingText = "";
@@ -91,25 +76,15 @@ const Header = ( {
   }, [observations, t, savedLocally] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( params?.lastScreen === "GroupPhotos"
-      || ( unsynced && savedLocally )
-      || ( unsynced && !unsavedChanges )
-    ) {
-      navigation.goBack( );
-    } else if ( !savedLocally ) {
-      setDiscardObservationSheetVisible( true );
-    } else if ( unsavedChanges ) {
+    if ( unsavedChanges && savedLocally ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navToObsDetails( );
+      navigation.goBack( );
     }
   }, [
-    unsynced,
     savedLocally,
     navigation,
-    unsavedChanges,
-    params,
-    navToObsDetails
+    unsavedChanges
   ] );
 
   const renderBackButton = useCallback( ( ) => {

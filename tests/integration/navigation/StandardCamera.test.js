@@ -1,3 +1,4 @@
+import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
   userEvent,
@@ -53,5 +54,26 @@ describe( "StandardCamera navigation", ( ) => {
       await actor.press( closeButton );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
     } );
+  } );
+
+  it( "should advance to Suggestions when photo taken and checkmark tapped", async ( ) => {
+    const mockGetCurrentPosition = jest.fn( ( success, _error, _options ) => success( {
+      coords: {
+        latitude: 56,
+        longitude: 9
+      }
+    } ) );
+    Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
+    renderApp( );
+    expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+    const addObsButton = await screen.findByLabelText( "Add observations" );
+    await actor.press( addObsButton );
+    const cameraButton = await screen.findByLabelText( "Camera" );
+    await actor.press( cameraButton );
+    const takePhotoButton = await screen.findByLabelText( /Take photo/ );
+    await actor.press( takePhotoButton );
+    const checkmarkButton = await screen.findByLabelText( "Checkmark" );
+    await actor.press( checkmarkButton );
+    expect( await screen.findByText( /ADD AN ID/ ) ).toBeVisible( );
   } );
 } );

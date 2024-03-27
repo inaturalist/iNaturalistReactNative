@@ -15,7 +15,7 @@ const AddCommentPrompt = ( ): Node => {
   const updateComment = useStore( state => state.updateComment );
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
 
-  const synced = currentObservation.wasSynced !== undefined
+  const synced = currentObservation?.wasSynced !== undefined
   && currentObservation.wasSynced( );
 
   const { t } = useTranslation( );
