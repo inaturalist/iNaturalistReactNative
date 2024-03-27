@@ -199,6 +199,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
   | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
+  | {type: EXPLORE_ACTION.USE_STORED_STATE, storedState: State}
 type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
@@ -436,6 +437,10 @@ function exploreReducer( state: State, action: Action ) {
       };
       delete boundState.place_id;
       return boundState;
+    case EXPLORE_ACTION.USE_STORED_STATE:
+      return {
+        ...action.storedState
+      };
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );
     }

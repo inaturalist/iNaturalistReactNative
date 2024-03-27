@@ -54,12 +54,12 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   return updatedObservations;
 };
 
-// Note: this store is currently only for the observation flow (camera, gallery, obs edit,
-// suggestions, taxon search, obs details, etc.)
-// If we end up wanting to replace reducers move local state into global state from other screens
-// (like MyObservations or Explore), we should use the slices pattern documented here:
-// https://docs.pmnd.rs/zustand/guides/slices-pattern
-const useStore = create( set => ( {
+export const createExploreSlice = set => ( {
+  rootExploreParams: {},
+  setRootExploreParams: params => set( ( ) => ( { rootExploreParams: params } ) )
+} );
+
+export const createObservationFlowSlice = set => ( {
   cameraPreviewUris: [],
   cameraRollUris: [],
   comment: "",
@@ -164,6 +164,16 @@ const useStore = create( set => ( {
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
     unsavedChanges: true
   } ) )
+} );
+
+// Note: this store is currently only for the observation flow (camera, gallery, obs edit,
+// suggestions, taxon search, obs details, etc.)
+// If we end up wanting to replace reducers move local state into global state from other screens
+// (like MyObservations or Explore), we should use the slices pattern documented here:
+// https://docs.pmnd.rs/zustand/guides/slices-pattern
+const useStore = create( ( ...a ) => ( {
+  ...createExploreSlice( ...a ),
+  ...createObservationFlowSlice( ...a )
 } ) );
 
 export default useStore;

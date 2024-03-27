@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import {
   EXPLORE_ACTION,
@@ -7,18 +8,22 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import Explore from "./Explore";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useHeaderCount from "./hooks/useHeaderCount";
 
 const RootExploreContainerWithContext = ( ): Node => {
+  const navigation = useNavigation( );
   const { t } = useTranslation( );
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
+  const rootExploreParams = useStore( state => state.rootExploreParams );
+  const setRootExploreParams = useStore( state => state.setRootExploreParams );
 
   const { state, dispatch, makeSnapshot } = useExplore( );
 
@@ -64,7 +69,6 @@ const RootExploreContainerWithContext = ( ): Node => {
   const onPermissionGranted = async ( ) => {
     if ( state.place_guess ) { return; }
     const location = await fetchUserLocation( );
-    console.log( location, "location in onPermissionGranted" );
     if ( !location || !location.latitude ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
@@ -96,6 +100,22 @@ const RootExploreContainerWithContext = ( ): Node => {
       placeName: t( "Worldwide" )
     } );
   };
+
+  useEffect( ( ) => {
+    navigation.addListener( "focus", ( ) => {
+      const storedState = Object.keys( rootExploreParams ).length > 0 || false;
+
+      if ( storedState ) {
+        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: rootExploreParams } );
+      }
+    } );
+
+    navigation.addListener( "blur", ( ) => {
+      setRootExploreParams( state );
+    } );
+  }, [navigation, setRootExploreParams, state, dispatch, rootExploreParams] );
+
+  console.log( state, "state in root" );
 
   return (
     <>
