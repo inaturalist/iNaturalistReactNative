@@ -110,7 +110,7 @@ const DetailsMap = ( {
   return (
     <SafeAreaView className="flex-1">
       <View
-        className="bg-white w-fit flex-row items-start p-[25px]"
+        className="bg-white w-fit flex-row py-[22px] items-start"
       >
         <HeaderBackButton
           tintColor={theme.colors.primary}

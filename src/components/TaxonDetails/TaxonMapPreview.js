@@ -77,10 +77,10 @@ const TaxonMapPreview = ( {
           tileMapParams={obsParams}
           withObsTiles
           mapViewClassName="-mx-3"
-          // Disalbe interaction
-          zoomEanbled={false}
+          // Disable interaction
+          zoomEnabled={false}
           zoomTapEnabled={false}
-          scrollEanbled={false}
+          scrollEnabled={false}
         />
         <Modal
           animationIn="fadeIn"
