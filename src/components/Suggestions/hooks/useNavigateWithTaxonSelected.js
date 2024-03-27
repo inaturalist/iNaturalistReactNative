@@ -6,7 +6,10 @@ import useStore from "stores/useStore";
 
 // TODO rename this, should be something to indicate that it handles
 // navigation
-const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
+const useNavigateWithTaxonSelected = (
+  selectedTaxon: ?Object,
+  options: Object
+) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
@@ -17,6 +20,11 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
 
   useEffect( ( ) => {
     if ( !selectedTaxon ) { return; }
+
+    updateObservationKeys( {
+      owners_identification_from_vision: vision,
+      taxon: selectedTaxon
+    } );
 
     // checking for previous screen here rather than a synced/unsynced observation
     // because a user can arrive on Suggestions/TaxonSearch
@@ -32,15 +40,7 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
         vision
       } );
     } else {
-      updateObservationKeys( {
-        owners_identification_from_vision: vision,
-        taxon: selectedTaxon
-      } );
-      if ( vision ) {
-        navigation.goBack( );
-      } else {
-        navigation.navigate( "ObsEdit" );
-      }
+      navigation.navigate( "ObsEdit" );
     }
   }, [
     comment,
@@ -53,4 +53,4 @@ const useTaxonSelected = ( selectedTaxon: ?Object, options: Object ) => {
   ] );
 };
 
-export default useTaxonSelected;
+export default useNavigateWithTaxonSelected;

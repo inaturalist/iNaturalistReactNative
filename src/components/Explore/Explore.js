@@ -47,6 +47,7 @@ type Props = {
   closeFiltersModal: Function,
   count: Object,
   exploreView: string,
+  hideBackButton: boolean,
   isOnline: boolean,
   loadingStatus: boolean,
   openFiltersModal: Function,
@@ -61,6 +62,7 @@ const Explore = ( {
   closeFiltersModal,
   count,
   exploreView,
+  hideBackButton,
   isOnline,
   loadingStatus,
   openFiltersModal,
@@ -75,11 +77,19 @@ const Explore = ( {
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
 
+  const exploreViewAccessibilityLabel = {
+    observations: t( "Observations-View" ),
+    species: t( "Species-View" ),
+    observers: t( "Observers-View" ),
+    identifiers: t( "Identifiers-View" )
+  };
+
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
+      hideBackButton={hideBackButton}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
       onPressCount={( ) => setShowExploreBottomSheet( true )}
@@ -187,7 +197,7 @@ const Explore = ( {
                 grayCircleClass,
                 "absolute bottom-5 z-10 right-5"
               )}
-              accessibilityLabel={t( "Explore-View" )}
+              accessibilityLabel={exploreViewAccessibilityLabel[exploreView]}
               onPress={() => setShowExploreBottomSheet( true )}
               style={getShadow( theme.colors.primary )}
             />

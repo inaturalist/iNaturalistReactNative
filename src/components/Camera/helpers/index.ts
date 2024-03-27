@@ -36,7 +36,7 @@ const handleCameraError = (error: Error) => {
 };
 
 const handleLog = (event: Event) => {
-  logger.info(`${JSON.stringify(event)}`);
+  logger.info(event.log);
 };
 
 export {

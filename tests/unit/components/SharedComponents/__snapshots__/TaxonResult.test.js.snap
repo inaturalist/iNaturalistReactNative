@@ -386,6 +386,17 @@ exports[`TaxonResult should render correctly 1`] = `
                     {
                       "color": "#454545",
                     },
+                    [
+                      {
+                        "fontWeight": "400",
+                      },
+                      {
+                        "color": "#454545",
+                      },
+                      {
+                        "fontWeight": "300",
+                      },
+                    ],
                   ],
                 ],
               ]
