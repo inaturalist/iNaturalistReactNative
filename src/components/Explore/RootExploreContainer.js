@@ -115,8 +115,6 @@ const RootExploreContainerWithContext = ( ): Node => {
     } );
   }, [navigation, setRootExploreParams, state, dispatch, rootExploreParams] );
 
-  console.log( state, "state in root" );
-
   return (
     <>
       <Explore
