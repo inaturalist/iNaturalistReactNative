@@ -77,6 +77,7 @@ describe( "Suggestions", ( ) => {
     renderComponent( <Suggestions
       suggestions={[]}
       loadingSuggestions
+      photoUris={["uri"]}
     /> );
     const loading = screen.getByTestId( "SuggestionsList.loading" );
     expect( loading ).toBeVisible( );

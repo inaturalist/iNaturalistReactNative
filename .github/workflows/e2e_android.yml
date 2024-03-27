@@ -1,10 +1,6 @@
 name: e2e-Android
 on:
   workflow_dispatch:
-  pull_request:
-  push:
-    branches:
-      - main
 
 jobs:
   # This might be refactored to use concurrency from GitHub Actions directly?

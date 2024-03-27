@@ -71,8 +71,9 @@ function mapToLocalSchema( taxon ) {
 async function fetchTaxon( id: any, params: Object = {}, opts: Object = {} ): Promise<any> {
   try {
     const fetchParams = { ...PARAMS, ...params };
-    const { results } = await inatjs.taxa.fetch( id, fetchParams, opts );
-    if ( results.length === 0 ) return null;
+    const response = await inatjs.taxa.fetch( id, fetchParams, opts );
+    const results = response?.results;
+    if ( !results || results.length === 0 ) return null;
 
     return mapToLocalSchema( results[0] );
   } catch ( e ) {
