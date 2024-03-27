@@ -7,7 +7,8 @@ import { FileUpload } from "inaturalistjs";
 import { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import {
-  useAuthenticatedQuery
+  useAuthenticatedQuery,
+  useIsConnected
 } from "sharedHooks";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
@@ -81,6 +82,8 @@ const useOnlineSuggestions = (
 ): OnlineSuggestionsResponse => {
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
+  const isOnline = useIsConnected( );
+
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
   // uploading images
@@ -122,6 +125,12 @@ const useOnlineSuggestions = (
       clearTimeout( timer );
     };
   }, [onlineSuggestions, selectedPhotoUri, queryClient] );
+
+  useEffect( () => {
+    if ( isOnline === false ) {
+      setTimedOut( true );
+    }
+  }, [isOnline] );
 
   return timedOut
     ? {
