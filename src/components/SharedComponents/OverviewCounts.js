@@ -16,14 +16,15 @@ type Props = {
 
 type CountProps = {
   count: number,
-  label: string,
-  icon: string
+  icon: string,
+  label: string
 }
 
 type CountPressableProps = {
+  accessibilityLabel: string,
   count: number,
-  label: string,
   icon: string,
+  label: string,
   onPress?: Function
 }
 
@@ -48,12 +49,16 @@ const Count = ( {
 );
 
 const CountPressable = ( {
-  count, label, icon, onPress
+  accessibilityLabel,
+  count,
+  icon,
+  label,
+  onPress
 }: CountPressableProps ) => (
   <Pressable
     onPress={onPress}
     accessibilityRole="button"
-    accessibilityLabel={label}
+    accessibilityLabel={accessibilityLabel || label}
     className="w-1/4 items-center"
   >
     <View className="bg-inatGreen w-[32px] h-[32px] rounded-lg items-center justify-center">
@@ -75,12 +80,14 @@ const OverviewCounts = ( {
 }: Props ): React.Node => (
   <View className="flex-row mt-6">
     <CountPressable
+      accessibilityLabel={t( "See-observations-by-this-user-in-Explore" )}
       count={counts.observations_count}
       label={t( "OBSERVATIONS-WITHOUT-NUMBER", { count: counts.observations_count } )}
       icon="binoculars"
       onPress={onObservationPressed}
     />
     <CountPressable
+      accessibilityLabel={t( "See-species-observed-by-this-user-in-Explore" )}
       count={counts.species_count}
       label={t( "SPECIES-WITHOUT-NUMBER", { count: counts.species_count } )}
       icon="leaf"

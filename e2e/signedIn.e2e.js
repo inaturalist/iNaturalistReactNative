@@ -30,7 +30,7 @@ describe( "Signed in user", () => {
       await expect( uploadNowButton ).toBeVisible();
       await uploadNowButton.tap();
     } else {
-      // Press Upload now button
+      // Press Save button
       const saveButton = element( by.id( "ObsEdit.saveButton" ) );
       await expect( saveButton ).toBeVisible();
       await saveButton.tap();

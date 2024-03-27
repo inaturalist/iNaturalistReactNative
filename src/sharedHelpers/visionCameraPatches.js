@@ -6,22 +6,18 @@ import { Platform } from "react-native";
 import { isTablet } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import {
+  useSharedValue as useWorkletSharedValue,
+  useWorklet,
+  Worklets
+} from "react-native-worklets-core";
+import {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
   PORTRAIT,
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation";
 
-import { dependencies } from "../../package.json";
-
-export const visionCameraMajorVersion = dependencies["react-native-vision-camera"].match( /inaturalist/ )
-  // Our custom fork is forked from v2
-  ? 2
-  : Number(
-    dependencies["react-native-vision-camera"].replace( /[^\d.]/, "" ).split( "." )[0]
-  );
-
-// Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v3.9.0
 // This patch is used to set the pixelFormat prop which should not be needed because the default
 // value would be fine for both platforms.
 // However, on Android for the "native" pixelFormat I could not find any method or properties to
@@ -31,19 +27,24 @@ export const pixelFormatPatch = () => ( Platform.OS === "ios"
   ? "native"
   : "yuv" );
 
-// Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v3.9.0
 // This patch is used to determine the orientation prop for the Camera component.
 // On Android, the orientation prop is not used, so we return null.
 // On iOS, the orientation prop is undocumented, but it does get used in a sense that the
 // photo metadata shows the correct Orientation only if this prop is set.
-export const orientationPatch = deviceOrientation => {
-  if ( visionCameraMajorVersion < 3 ) return deviceOrientation;
-  return Platform.OS === "android"
-    ? null
-    : deviceOrientation;
-};
+export const orientationPatch = deviceOrientation => ( Platform.OS === "android"
+  ? null
+  : deviceOrientation );
 
-// Needed for react-native-vision-camera v2 and v3.3.1
+// Needed for react-native-vision-camera v3.9.0 in combination
+// with our vision-camera-plugin-inatvision
+// This patch is used to determine the orientation prop for the FrameProcessor.
+// This is only needed for Android, so on iOS we return null.
+export const orientationPatchFrameProcessor = deviceOrientation => ( Platform.OS === "android"
+  ? deviceOrientation
+  : null );
+
+// Needed for react-native-vision-camera v3.9.0
 // As of this version the photo from takePhoto is not oriented coming from the native side.
 // E.g. if you take a photo in landscape-right and save it to camera roll directly from the
 // vision camera, it will be tilted in the native photo app. So, on iOS, depending on the
@@ -86,7 +87,7 @@ export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
   return photoRotation;
 };
 
-// Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v3.9.0
 // This patch is used to rotate the photo taken with the vision camera.
 // Because the photos coming from the vision camera are not oriented correctly, we
 // rotate them with image-resizer as a first step, replacing the original photo.
@@ -111,7 +112,7 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
   await RNFS.moveFile( tempUri, photo.path );
 };
 
-// Needed for react-native-vision-camera v3.3.1
+// Needed for react-native-vision-camera v3.9.0
 // This patch is here to remember to replace the rotation used when resizing the original
 // photo to a smaller local copy we keep in the app cache. Previously we had a flow where
 // we would resize the original photo to a smaller version including rotation. Now, we
@@ -134,9 +135,6 @@ export const iPadStylePatch = deviceOrientation => {
   if ( !isTablet() ) {
     return {};
   }
-  if ( visionCameraMajorVersion < 3 ) {
-    return {};
-  }
   if ( deviceOrientation === LANDSCAPE_RIGHT ) {
     return {
       transform: [{ rotate: "90deg" }]
@@ -151,4 +149,49 @@ export const iPadStylePatch = deviceOrientation => {
     };
   }
   return {};
+};
+
+// This patch is currently required because we are using react-native-vision-camera v3.9.1
+// together wit react-native-reanimated. The problem is that the runAsync function
+// from react-native-vision-camera does not work in release mode with this reanimated.
+// Uses this workaround: https://gist.github.com/nonam4/7a6409cd1273e8ed7466ba3a48dd1ecc
+// Posted on this currently open issue: https://github.com/mrousavy/react-native-vision-camera/issues/2589
+export const usePatchedRunAsync = ( ) => {
+  /**
+   * Print worklets logs/errors on js thread
+   */
+  const logOnJs = Worklets.createRunInJsFn( ( log, error ) => {
+    console.log( "logOnJs - ", log, " - error?:", error?.message ?? "no error" );
+  } );
+  const isAsyncContextBusy = useWorkletSharedValue( false );
+  const customRunOnAsyncContext = useWorklet(
+    "CustomVisionCamera.async",
+    ( frame, func ) => {
+      "worklet";
+
+      try {
+        func( frame );
+      } catch ( e ) {
+        logOnJs( "customRunOnAsyncContext error", e );
+      } finally {
+        frame.decrementRefCount();
+        isAsyncContextBusy.value = false;
+      }
+    },
+    []
+  );
+
+  function customRunAsync( frame, func ) {
+    "worklet";
+
+    if ( isAsyncContextBusy.value ) {
+      return;
+    }
+    isAsyncContextBusy.value = true;
+    const internal = frame;
+    internal.incrementRefCount();
+    customRunOnAsyncContext( internal, func );
+  }
+
+  return customRunAsync;
 };

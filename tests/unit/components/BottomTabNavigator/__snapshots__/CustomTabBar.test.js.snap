@@ -149,7 +149,7 @@ exports[`CustomTabBar should render correctly 1`] = `
       </View>
       <View
         accessibilityHint="Navigates to explore."
-        accessibilityLabel="Explore"
+        accessibilityLabel="Navigate to explore screen"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -193,7 +193,7 @@ exports[`CustomTabBar should render correctly 1`] = `
             undefined,
           ]
         }
-        testID="Explore"
+        testID="RootExplore"
       >
         <View
           style={

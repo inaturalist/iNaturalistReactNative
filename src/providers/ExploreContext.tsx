@@ -1,5 +1,6 @@
 import * as React from "react";
 import { LatLng } from "react-native-maps";
+import useStore from "stores/useStore";
 
 export enum EXPLORE_ACTION {
   DISCARD = "DISCARD",
@@ -177,7 +178,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
   | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string}
+  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string, lat: number, lng: number, radius: number}
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
@@ -272,7 +273,10 @@ function exploreReducer( state: State, action: Action ) {
       const placeState = {
         ...state,
         place_id: action.placeId,
-        place_guess: action.placeName
+        place_guess: action.placeName,
+        lat: action.lat,
+        lng: action.lng,
+        radius: action.radius
       };
       delete placeState.swlat;
       delete placeState.swlng;
