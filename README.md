@@ -27,6 +27,9 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 ### Set up pre-commit hooks
 
 1. We're using [Husky](https://typicode.github.io/husky/#/) to automatically run `eslint` before each commit. Run `npm run postinstall` to install Husky locally.
+1. (Staff only) Set up GitGuardian to prevent yourself from committing secrets
+    1. [Install `ggshield`](https://docs.gitguardian.com/ggshield-docs/getting-started)
+    1. Get a GitGuardian API token from another staff developer and put it in the `GITGUARDIAN_API_KEY` env variable.
 
 ### Run build
 
