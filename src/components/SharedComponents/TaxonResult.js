@@ -121,7 +121,7 @@ const TaxonResult = ( {
             color={clearBackground && "text-white"}
           />
           {( confidence && confidencePosition === "text" ) && (
-            <View className="absolute -bottom-3 w-[62px]">
+            <View className="mt-1 w-[62px]">
               <ConfidenceInterval
                 confidence={confidence}
                 activeColor={activeColor}

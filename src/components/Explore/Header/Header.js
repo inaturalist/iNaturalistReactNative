@@ -57,7 +57,7 @@ const Header = ( {
     <View className="z-10">
       <Surface style={surfaceStyle} elevation={5}>
         <View className="bg-white px-6 py-4 flex-row justify-between items-center">
-          <View className="flex-row">
+          <View className="flex-1 flex-row">
             {!hideBackButton
               ? (
                 <BackButton
