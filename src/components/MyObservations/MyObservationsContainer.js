@@ -7,7 +7,6 @@ import {
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { format } from "date-fns";
-import { navigationRef } from "navigation/navigationUtils";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -136,7 +135,6 @@ const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
   const navigation = useNavigation( );
-  const { params } = useRoute( );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
@@ -205,18 +203,6 @@ const MyObservationsContainer = ( ): Node => {
       ? "list"
       : "grid" );
   };
-
-  useEffect( () => {
-    if ( navigationRef && navigationRef.isReady() ) {
-      if ( params && params.navToObsDetails ) {
-        // We wrap this in a setTimeout, since otherwise this routing doesn't work immediately
-        // when loading this screen
-        setTimeout( () => {
-          navigation.navigate( "ObsDetails", { uuid: params.uuid } );
-        }, 100 );
-      }
-    }
-  }, [navigation, params] );
 
   useEffect( ( ) => {
     // show progress in toolbar for observations uploaded on ObsEdit
