@@ -36,14 +36,15 @@ const SpeciesSeenCheckmark = ( {
     ["searchObservations", taxonId],
     optsWithAuth => searchObservations(
       {
-        user_id: currentUser.id,
+        user_id: currentUser?.id,
         per_page: 0,
         taxon_id: taxonId
       },
       optsWithAuth
     ),
     {
-      keepPreviousData: false
+      keepPreviousData: false,
+      enabled: !!currentUser
     }
   );
 

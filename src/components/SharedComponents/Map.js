@@ -86,6 +86,7 @@ type Props = {
   permissionRequested?: boolean,
   positionalAccuracy?: number,
   region?: Object,
+  scrollEnabled?: boolean,
   showCurrentLocationButton?: boolean,
   showLocationIndicator?: boolean,
   showsCompass?: boolean,
@@ -98,6 +99,8 @@ type Props = {
   tileMapParams?: Object,
   withObsTiles?: boolean,
   withPressableObsTiles?: boolean,
+  zoomEnabled?: boolean,
+  zoomTapEnabled?: boolean
 }
 
 const getShadow = shadowColor => getShadowStyle( {
@@ -135,6 +138,7 @@ const Map = ( {
   permissionRequested: permissionRequestedProp,
   positionalAccuracy,
   region,
+  scrollEnabled = true,
   showCurrentLocationButton,
   showLocationIndicator,
   showsCompass,
@@ -146,7 +150,9 @@ const Map = ( {
   testID,
   tileMapParams,
   withObsTiles,
-  withPressableObsTiles
+  withPressableObsTiles,
+  zoomEnabled = true,
+  zoomTapEnabled = true
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
@@ -449,6 +455,9 @@ const Map = ( {
         minZoomLevel={minZoomLevel}
         rotateEnabled={false}
         pitchEnabled={false}
+        scrollEnabled={scrollEnabled}
+        zoomEnabled={zoomEnabled}
+        zoomTapEnabled={zoomTapEnabled}
       >
         <ObsUrlTile />
         {( showLocationIndicator && ( !obscured ) ) && (

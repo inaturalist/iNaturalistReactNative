@@ -120,7 +120,7 @@ const TaxonDetails = ( ): Node => {
     }
 
     return (
-      <View className="mx-3">
+      <View className="mx-3 mb-3">
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} />

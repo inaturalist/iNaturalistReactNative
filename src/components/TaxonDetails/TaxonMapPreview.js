@@ -16,52 +16,55 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 import TaxonDetailsMapContainer from "./TaxonDetailsMapContainer";
 
-  type Props = {
-    taxon: Object
-  }
+type Props = {
+  taxon: Object
+}
+
+function getMapRegion( bounds: { nelat: number, nelng: number, swlat: number, swlng: number } ) {
+  const {
+    nelat, nelng, swlat, swlng
+  } = bounds;
+  // Deltas shouldn't be negative
+  const latDelta = Math.abs( Number( nelat ) - Number( swlat ) );
+  const lngDelta = Math.abs( Number( nelng ) - Number( swlng ) );
+  const lat = nelat - ( latDelta / 2 );
+  const lng = nelng - ( lngDelta / 2 );
+
+  return {
+    latitude: lat,
+    longitude: lng,
+    // Pad the detlas so the user sees the full range, make sure we don't
+    // specify impossible deltas like 190 degrees of latitude
+    latitudeDelta: Math.min( latDelta + 5, 175 ),
+    longitudeDelta: Math.min( lngDelta + 5, 355 )
+  };
+}
 
 const TaxonMapPreview = ( {
   taxon
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [showMapModal, setShowMapModal] = useState( false );
+  const obsParams = {
+    taxon_id: taxon.id,
+    verifiable: true
+  };
 
   // TODO: add a loading indicator for map preview
   const {
-    data: taxonList
+    data: obsSearchResponse
   } = useAuthenticatedQuery(
     ["fetchTaxonBoundingBox"],
     optsWithAuth => searchObservations( {
-      taxon_id: taxon.id,
+      ...obsParams,
       return_bounds: true,
-      verifiable: true,
+      per_page: 0,
       ttl: -1
     }, optsWithAuth )
   );
 
-  const tileMapParams = {
-    taxon_id: taxon.id
-  };
-
-  const getMapRegion = bounds => {
-    const {
-      nelat, nelng, swlat, swlng
-    } = bounds;
-    const lat = ( Number( nelat ) + Number( swlat ) ) / 2;
-    const lng = ( Number( nelng ) + Number( swlng ) ) / 2;
-    const latDelta = ( Number( nelat ) - lat ) * 2;
-    const lngDelta = ( Number( nelng ) - lng ) * 2;
-
-    return {
-      latitude: lat,
-      longitude: lng,
-      latitudeDelta: latDelta,
-      longitudeDelta: lngDelta
-    };
-  };
-
-  if ( taxonList?.total_bounds ) {
-    const region = getMapRegion( taxonList?.total_bounds );
+  if ( obsSearchResponse?.total_bounds ) {
+    const region = getMapRegion( obsSearchResponse?.total_bounds );
 
     return (
       <View className="relative h-[390px]">
@@ -70,8 +73,13 @@ const TaxonMapPreview = ( {
           region={region}
           mapHeight={230}
           openMapScreen={() => setShowMapModal( true )}
-          tileMapParams={tileMapParams}
-          withObsTiles={tileMapParams !== null}
+          tileMapParams={obsParams}
+          withObsTiles
+          mapViewClassName="-mx-3"
+          // Disalbe interaction
+          zoomEanbled={false}
+          zoomTapEnabled={false}
+          scrollEanbled={false}
         />
         <Modal
           animationIn="fadeIn"
@@ -88,7 +96,7 @@ const TaxonMapPreview = ( {
               latitude={region.latitude}
               longitude={region.longitude}
               closeModal={( ) => setShowMapModal( false )}
-              tileMapParams={tileMapParams}
+              tileMapParams={obsParams}
             />
           )}
         />
