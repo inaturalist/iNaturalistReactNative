@@ -2,6 +2,7 @@
 
 import { searchObservations } from "api/observations";
 import {
+  DetailsMap,
   Heading4,
   Map,
   Modal
@@ -14,7 +15,7 @@ import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
-import TaxonDetailsMapContainer from "./TaxonDetailsMapContainer";
+import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 type Props = {
   taxon: Object
@@ -90,13 +91,14 @@ const TaxonMapPreview = ( {
           // eslint-disable-next-line react-native/no-inline-styles
           style={{ margin: 0 }}
           modal={(
-            <TaxonDetailsMapContainer
+            <DetailsMap
               region={region}
-              taxon={taxon}
               latitude={region.latitude}
               longitude={region.longitude}
               closeModal={( ) => setShowMapModal( false )}
               tileMapParams={obsParams}
+              showLocationIndicator={false}
+              headerTitle={<TaxonDetailsTitle taxon={taxon} />}
             />
           )}
         />

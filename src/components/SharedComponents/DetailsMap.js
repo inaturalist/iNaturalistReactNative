@@ -23,11 +23,6 @@ import { useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import { getShadowForColor } from "styles/global";
 
-const HEADER_BACK_BUTTON_STYLE = {
-  marginBottom: 15,
-  marginLeft: 15
-};
-
 type Props = {
   latitude: number,
   longitude: number,
@@ -114,15 +109,14 @@ const DetailsMap = ( {
 
   return (
     <SafeAreaView className="flex-1">
-      <View className="bg-white w-fit flex-row items-center py-4">
+      <View
+        className="bg-white w-fit flex-row items-start p-[25px]"
+      >
         <HeaderBackButton
           tintColor={theme.colors.primary}
           onPress={( ) => closeModal()}
-          style={HEADER_BACK_BUTTON_STYLE}
         />
-
         {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
-
       </View>
       <View className="flex-1 h-full">
         <Map

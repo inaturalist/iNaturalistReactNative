@@ -14,6 +14,7 @@ export { default as Checkbox } from "./Checkbox";
 export { default as ConfidenceInterval } from "./ConfidenceInterval";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as DateTimePicker } from "./DateTimePicker";
+export { default as DetailsMap } from "./DetailsMap";
 export { default as DisplayTaxon } from "./DisplayTaxon";
 export { default as DisplayTaxonName } from "./DisplayTaxonName";
 export { default as Divider } from "./Divider/Divider";
