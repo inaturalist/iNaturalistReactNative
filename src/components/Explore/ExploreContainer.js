@@ -7,15 +7,15 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
-import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
+import React, { useState } from "react";
+import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 import Explore from "./Explore";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useHeaderCount from "./hooks/useHeaderCount";
+import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
-  const { t } = useTranslation( );
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
 
@@ -24,51 +24,11 @@ const ExploreContainerWithContext = ( ): Node => {
   const { state, dispatch, makeSnapshot } = useExplore();
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
-  const [exploreView, setExploreView] = useState( "observations" );
+  const [exploreView, setExploreView] = useState( params?.viewSpecies
+    ? "species"
+    : "observations" );
 
-  const worldwidePlaceText = t( "Worldwide" );
-
-  useEffect( ( ) => {
-    if ( params?.viewSpecies ) {
-      setExploreView( "species" );
-    }
-    if ( params?.worldwide ) {
-      dispatch( {
-        type: EXPLORE_ACTION.SET_PLACE,
-        placeId: null,
-        placeName: worldwidePlaceText
-      } );
-    }
-    if ( params?.taxon ) {
-      dispatch( {
-        type: EXPLORE_ACTION.CHANGE_TAXON,
-        taxon: params.taxon,
-        taxonId: params.taxon?.id,
-        taxonName: params.taxon?.preferred_common_name || params.taxon?.name
-      } );
-    }
-    if ( params?.place ) {
-      dispatch( {
-        type: EXPLORE_ACTION.SET_PLACE,
-        placeId: params.place?.id,
-        placeName: params.place?.display_name
-      } );
-    }
-    if ( params?.user && params?.user.id ) {
-      dispatch( {
-        type: EXPLORE_ACTION.SET_USER,
-        user: params.user,
-        userId: params.user.id
-      } );
-    }
-    if ( params?.project && params?.project.id ) {
-      dispatch( {
-        type: EXPLORE_ACTION.SET_PROJECT,
-        project: params.project,
-        projectId: params.project.id
-      } );
-    }
-  }, [params, dispatch, worldwidePlaceText] );
+  useParams( );
 
   const changeExploreView = newView => {
     setExploreView( newView );
