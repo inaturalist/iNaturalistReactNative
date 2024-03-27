@@ -9,3 +9,9 @@ npm run translate
 # ...and add them to the commit; this assumes src/i18n/l10n/ *only* contains
 #    files you want to add
 git status --porcelain --untracked-files src/i18n/l10n/ | cut -c 4- | xargs git add
+
+# TODO check to see if ggshielf is installed
+# TODO check to see if GITGUARDIAN_API_KEY is in env
+# TODO only do these things if the git user is in the iNaturalist Github org
+# Ensure we're not committing secrets w/ GitGuardian
+ggshield secret scan pre-commit
