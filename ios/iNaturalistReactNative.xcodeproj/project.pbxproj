@@ -260,7 +260,6 @@
 				D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */,
 				374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */,
 				EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */,
-				CC5CF9E037E74ADF9CF9710B /* INatIcon.ttf */,
 				62CACBCC44D64A7EB95AACF1 /* Whitney-Book-Pro.otf */,
 				097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */,
 				B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */,

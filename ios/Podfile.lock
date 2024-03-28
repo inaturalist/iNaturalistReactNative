@@ -407,9 +407,9 @@ PODS:
     - React-perflogger (= 0.71.16)
   - ReactNativeExceptionHandler (2.10.10):
     - React-Core
-  - RealmJS (12.6.0):
+  - RealmJS (12.6.2):
     - React
-  - RNAudioRecorderPlayer (3.6.0):
+  - RNAudioRecorderPlayer (3.6.7):
     - React-Core
   - RNCAsyncStorage (1.19.5):
     - React-Core
@@ -417,7 +417,7 @@ PODS:
     - React-Core
   - RNCPicker (2.5.0):
     - React-Core
-  - RNDateTimePicker (7.6.0):
+  - RNDateTimePicker (7.6.2):
     - React-Core
   - RNDeviceInfo (10.12.0):
     - React-Core
@@ -425,7 +425,7 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNFlashList (1.6.3):
+  - RNFlashList (1.6.4):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
@@ -761,15 +761,15 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: b5abe02558421897cd9f73d4f4b6adb4bc297083
   ReactCommon: a1a263d94f02a0dc8442f341d5a11b3d7a9cd44d
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
-  RealmJS: a62dc7a1f94b888fe9e8712cd650167ad97dc636
-  RNAudioRecorderPlayer: 4690a7cd9e4fd8e58d9671936a7bc3b686e59051
+  RealmJS: 385df5ee940d96f1de26b1dab153e325633d3052
+  RNAudioRecorderPlayer: 9b34adc281800e5b19258f1b91d889b1ef3abdd6
   RNCAsyncStorage: f2974eca860c16a3e56eea5771fda8d12e2d2057
   RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
   RNCPicker: 32ca102146bc7d34a8b93a998d9938d9f9ec7898
-  RNDateTimePicker: ccd988deb223cbb2e669e157ec576c2c6217128c
+  RNDateTimePicker: fc2e4f2795877d45e84d85659bebe627eba5c931
   RNDeviceInfo: db5c64a060e66e5db3102d041ebe3ef307a85120
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
-  RNFlashList: 4b4b6b093afc0df60ae08f9cbf6ccd4c836c667a
+  RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 6e4dc6b7ab3a385386d4e36228bd065e5a611394
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81

@@ -1,6 +1,21 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# If ggshield is installed, run it
+if command -v ggshield &> /dev/null; then
+  ggshield secret scan pre-commit
+# Otherwise require that inaturalist.org git users install it
+elif git config --list | grep -q "user.email.*inaturalist.org"; then
+  echo
+  echo "Git users w/ inaturalist.org emails must install ggshield: https://docs.gitguardian.com/ggshield-docs/getting-started"
+  echo
+  exit 1
+else
+  echo
+  echo "If you are iNat staff, you should install ggshield: https://docs.gitguardian.com/ggshield-docs/getting-started"
+  echo
+fi
+
 # Run lint and flow
 npm run lint
 

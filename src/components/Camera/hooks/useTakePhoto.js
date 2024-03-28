@@ -13,6 +13,7 @@ import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useStore from "stores/useStore";
 
 const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): Object => {
+  const currentObservation = useStore( state => state.currentObservation );
   const { deviceOrientation } = useDeviceOrientation( );
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
@@ -46,7 +47,7 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
     } );
     const uri = newPhoto.localFilePath;
 
-    if ( addEvidence ) {
+    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
       setCameraState( {
         cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
         evidenceToAdd: [...evidenceToAdd, uri],

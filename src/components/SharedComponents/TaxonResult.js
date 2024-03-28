@@ -62,9 +62,9 @@ const TaxonResult = ( {
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
-  const taxonImage = { uri: usableTaxon.default_photo?.url };
+  const taxonImage = { uri: usableTaxon?.default_photo?.url };
 
-  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: usableTaxon.id } );
+  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: usableTaxon?.id } );
 
   return (
     <View
@@ -86,7 +86,7 @@ const TaxonResult = ( {
         accessible
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-taxon-details" )}
-        accessibilityValue={{ text: usableTaxon.name }}
+        accessibilityValue={{ text: usableTaxon?.name }}
         accessibilityState={{ disabled: false }}
       >
         <View className="w-[62px] h-[62px] justify-center relative">
@@ -121,7 +121,7 @@ const TaxonResult = ( {
             color={clearBackground && "text-white"}
           />
           {( confidence && confidencePosition === "text" ) && (
-            <View className="absolute -bottom-3 w-[62px]">
+            <View className="mt-1 w-[62px]">
               <ConfidenceInterval
                 confidence={confidence}
                 activeColor={activeColor}
@@ -129,6 +129,7 @@ const TaxonResult = ( {
             </View>
           )}
         </View>
+
       </Pressable>
       <View className="flex-row items-center">
         { showInfoButton && (

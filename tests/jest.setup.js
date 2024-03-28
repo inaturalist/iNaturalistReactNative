@@ -38,10 +38,13 @@ jest.mock( "../react-native-logs.config", () => {
 } );
 
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
-  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) )
+  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) ),
+  removeLogListener: jest.fn( )
 } ) );
 
 jest.mock( "react-native-worklets-core", () => ( {
+  useSharedValue: jest.fn(),
+  useWorklet: jest.fn(),
   Worklets: {
     createRunInJsFn: jest.fn()
   }
@@ -63,7 +66,8 @@ jest.mock( "react-native-vision-camera", ( ) => ( {
   useCameraDevice: mockUseCameraDevice,
   VisionCameraProxy: {
     initFrameProcessorPlugin: jest.fn( )
-  }
+  },
+  useFrameProcessor: jest.fn( )
 } ) );
 
 jest.mock( "react-native-localize", () => mockRNLocalize );
@@ -289,7 +293,8 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
     getAlbums: jest.fn( ( ) => ( {
       // Expecting album titles as keys and photo counts as values
       // "My Amazing album": 12
-    } ) )
+    } ) ),
+    save: jest.fn( )
   }
 } ) );
 
