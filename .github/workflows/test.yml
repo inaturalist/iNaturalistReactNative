@@ -44,6 +44,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: slackapi/slack-github-action@v1.25.0
+        with:
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "text": "GitHub Action result:",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                  }
+                },
+                {
+                  "type":"section",
+                  "text":{
+                      "type":"mrkdwn",
+                      "text":"*Pull Request:* ${{ github.event.pull_request.title }}"
+                  }
+                },
+                {
+                  "type":"section",
+                  "text":{
+                      "type":"mrkdwn",
+                      "text":"*Contributor :* ${{ github.event.pull_request.user.login }} *Request State:* ${{ github.event.pull_request.state }}"
+                  }
+                },
+                {
+                  "type":"section",
+                  "text":{
+                      "type":"mrkdwn",
+                      "text":"<${{ github.event.pull_request.html_url }}|View Pull Request>"
+                  }
+                }
+              ]
+            }      
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
