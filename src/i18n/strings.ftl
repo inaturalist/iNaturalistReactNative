@@ -1,3 +1,22 @@
+### Source strings for iNaturalistReactNative
+###
+### Notes
+### * GroupComments (comments beginning w/ ##) are not allowed because all
+###   strings in this file will be alphabetized and it's impossible to
+###   determine where group comments should fit in.
+### * Keys should match their content closesly but not exceed 100 chars
+### * Try to annotate all strings with comments to provide context for
+###   translators, especially for fragments and any situation where the
+###   meaning is open to interpretation without context
+### * Use different strings for synonyms, e.g. stop-noun and stop-verb, as
+###   these might have different translations in different languages
+### * Accessibility hints are used by screen readers to describe what happens
+###   when the user interacts with an element
+###   (https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint).
+###   The iOS Guidelines defines it as "A string that briefly describes the
+###   result of performing an action on the accessibility element." We write
+###   them in third person singular ending with a period.
+
 # Header above user biography / user description on user profile
 ABOUT = ABOUT
 
@@ -1324,8 +1343,6 @@ X-Species = {$count ->
    *[other] {$count} Species
 }
 
-## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
-## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
 Agrees-with-identification = Agrees with this identification.
 Navigates-to-bulk-importer = Navigates to bulk importer.
 Navigates-to-camera = Navigates to camera.
@@ -1357,7 +1374,6 @@ Close-add-observation-modal = Close add observation modal.
 Navigate-to-photo-importer = Navigate to photo importer.
 Show-observation-options = Show observation options.
 
-## The following are actually more like "accessibility hints" than labels we should probably refactor
 # Accessible label for the camera button
 Camera-button-value-back = The back camera is being used.
 Camera-button-value-front = The front camera is being used.
@@ -1379,7 +1395,6 @@ Observation-has-no-photos-and-no-sounds = This observation has no photos and no 
 Photo-taken-at = Photo taken at { $date }
 Take-photo = Take photo
 
-## Accessibility labels for no internet state in ObsDetails
 Location-map-unavailable-without-internet = Location map unavailable without internet
 Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
 Taxon-photo-unavailable-without-internet = Taxon photo unavailable without internet
@@ -1387,7 +1402,6 @@ User-photo-unavailable-without-internet = User photo unavailable without interne
 Search = Search
 Select-photo = Select photo
 
-## Accessibility labels for icons
 Add-this-ID = Add this identification
 Navigate-to-notifications-screen = Navigate to notifications screen
 Navigate-to-observation-list = Navigate to observation list
@@ -1683,7 +1697,6 @@ iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo = iNaturalis
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 Import-Photos-From = Import Photos From
 
-## Accessibility labels for ObsEdit
 Select-a-date-and-time-for-observation = Select a date and time for observation
 Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status

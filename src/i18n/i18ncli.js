@@ -3,6 +3,10 @@
 const fluent = require( "fluent_conv" );
 const yargs = require( "yargs" );
 const fs = require( "fs" );
+const {
+  parse: parseFtl
+  // serialize: serializeFtl
+} = require( "@fluent/syntax" );
 
 const { readFile, writeFile } = fs.promises;
 const path = require( "path" );
@@ -93,6 +97,44 @@ const writeLoadTranslations = async ( ) => {
   out.write( "};\n" );
 };
 
+async function validate( ) {
+  const stringsPath = path.join( __dirname, "strings.ftl" );
+  const ftlTxt = await readFile( stringsPath );
+  const ftl = parseFtl( ftlTxt.toString( ) );
+  const errors = [];
+  // Chalk does not expose a CommonJS module, so we have to do this
+  const { default: chalk } = await import( "chalk" );
+  ftl.body.forEach( item => {
+    if ( item.type === "GroupComment" ) {
+      errors.push(
+        `Group comments are not allowed: ${chalk.gray( `## ${item.content.slice( 0, 100 )}` )}`
+      );
+    }
+    if ( item.type === "Junk" ) {
+      let error = `Invalid Fluent syntax: ${chalk.gray( item.content.slice( 0, 100 ).trim( ) )}`;
+      if ( item.annotations ) {
+        error += item.annotations.map( anno => `\n\t${anno.message}` );
+      }
+      errors.push( error );
+    }
+  } );
+  if ( errors.length > 0 ) {
+    console.error( `${errors.length} errors found:` );
+    errors.forEach( error => {
+      console.error( chalk.red( "[Error]" ), error );
+    } );
+    process.exit( 1 );
+  }
+  console.log( chalk.green( "[Valid]" ), `${stringsPath} is valid` );
+}
+
+function normalize( ) {
+  // TODO move ResourceComments to the top
+  // TODO extract messages and sort by id.name
+  // TODO overwrite
+  console.log( "[DEBUG i18ncli.js] Everything is fine" );
+}
+
 // eslint-disable-next-line no-unused-expressions
 yargs
   .usage( "Usage: $0 <cmd> [args]" )
@@ -117,9 +159,29 @@ yargs
     "build",
     "Prepare existing localizations for use in the app",
     ( ) => {},
-    argv => {
+    async argv => {
+      await validate( );
+      normalize( );
       jsonifyLocalizations( argv );
       writeLoadTranslations( );
+    }
+  )
+  .command(
+    "validate",
+    "Validate source strings",
+    // What does this do again?
+    ( ) => { },
+    _argv => {
+      validate( );
+    }
+  )
+  .command(
+    "normalize",
+    "Normalize source strings",
+    // What does this do again?
+    ( ) => { },
+    _argv => {
+      normalize( );
     }
   )
   // TODO make commands that look for untranslated strings and translated
