@@ -5,7 +5,7 @@ import {
   EXPLORE_ACTION,
   useExplore
 } from "providers/ExploreContext.tsx";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -18,20 +18,11 @@ const useParams = ( ): Object => {
 
   const worldwidePlaceText = t( "Worldwide" );
 
-  useEffect( ( ) => {
-    if ( params?.resetStoredParams ) {
-      setStoredParams( {} );
-    } else {
-      const storedState = Object.keys( storedParams ).length > 0 || false;
-
-      if ( storedState ) {
-        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: storedParams } );
-      }
-    }
-
+  const updateContextWithParams = useCallback( ( storedState = { } ) => {
     if ( params?.worldwide ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
+        storedState,
         placeId: null,
         placeName: worldwidePlaceText
       } );
@@ -39,6 +30,7 @@ const useParams = ( ): Object => {
     if ( params?.taxon ) {
       dispatch( {
         type: EXPLORE_ACTION.CHANGE_TAXON,
+        storedState,
         taxon: params.taxon,
         taxonId: params.taxon?.id,
         taxonName: params.taxon?.preferred_common_name || params.taxon?.name
@@ -47,6 +39,7 @@ const useParams = ( ): Object => {
     if ( params?.place ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
+        storedState,
         placeId: params.place?.id,
         placeName: params.place?.display_name
       } );
@@ -54,6 +47,7 @@ const useParams = ( ): Object => {
     if ( params?.user && params?.user.id ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_USER,
+        storedState,
         user: params.user,
         userId: params.user.id
       } );
@@ -61,11 +55,33 @@ const useParams = ( ): Object => {
     if ( params?.project && params?.project.id ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_PROJECT,
+        storedState,
         project: params.project,
         projectId: params.project.id
       } );
     }
-  }, [params, dispatch, worldwidePlaceText, storedParams, setStoredParams] );
+  }, [params, dispatch, worldwidePlaceText] );
+
+  useEffect( ( ) => {
+    if ( params?.resetStoredParams ) {
+      setStoredParams( { } );
+      updateContextWithParams( );
+    } else {
+      const storedState = Object.keys( storedParams ).length > 0 || false;
+
+      if ( !storedState ) {
+        updateContextWithParams( );
+      } else {
+        updateContextWithParams( storedParams );
+      }
+    }
+  }, [
+    dispatch,
+    params,
+    setStoredParams,
+    storedParams,
+    updateContextWithParams
+  ] );
 
   return null;
 };

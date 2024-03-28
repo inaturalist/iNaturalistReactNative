@@ -176,10 +176,10 @@ type State = {
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
-  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
-  | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string, lat: number, lng: number, radius: number}
-  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
+  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number, storedState: State}
+  | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string, storedState: State}
+  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string, lat: number, lng: number, radius: number, storedState: State}
+  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number, storedState: State}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
   | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
@@ -267,12 +267,14 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.CHANGE_TAXON:
       return {
         ...state,
+        ...action.storedState,
         taxon: action.taxon,
         taxon_id: action.taxonId
       };
     case EXPLORE_ACTION.SET_PLACE:
       const placeState = {
         ...state,
+        ...action.storedState,
         place_id: action.placeId,
         place_guess: action.placeName,
         lat: action.lat,
@@ -287,14 +289,16 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,
+        ...action.storedState,
         user: action.user,
         user_id: action.userId
       };
     case EXPLORE_ACTION.SET_PROJECT:
       return {
         ...state,
-          project: action.project,
-          project_id: action.projectId
+        ...action.storedState,
+        project: action.project,
+        project_id: action.projectId
       };
     case EXPLORE_ACTION.CHANGE_SORT_BY:
       return {
