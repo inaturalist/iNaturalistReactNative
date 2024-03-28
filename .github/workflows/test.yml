@@ -35,7 +35,7 @@ jobs:
       run: npm install --legacy-peer-deps
 
     - run: npm run lint
-    # - run: npm test
+    - run: npm test
 
   notify:
     name: Notify Slack
@@ -43,7 +43,8 @@ jobs:
     if: ${{ success() || failure() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: slackapi/slack-github-action@v1.25.0
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
