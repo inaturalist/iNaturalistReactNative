@@ -116,13 +116,6 @@ describe( "Signed in user", () => {
     await waitFor( username ).toBeVisible().withTimeout( 10000 );
     await expect( username ).toBeVisible();
 
-    // Weird but functional workaround for the fact that the "Save Password"
-    // prompt in iOS blocks things on the bottom of the screen.
-    // https://github.com/wix/Detox/issues/3761#issuecomment-1521110131
-    await device.sendToHome();
-    await device.launchApp( {
-      newInstance: false
-    } );
     /*
     / 2. Create two observations
     */
