@@ -4,8 +4,9 @@ const fluent = require( "fluent_conv" );
 const yargs = require( "yargs" );
 const fs = require( "fs" );
 const {
-  parse: parseFtl
-  // serialize: serializeFtl
+  parse: parseFtl,
+  serialize: serializeFtl,
+  Resource
 } = require( "@fluent/syntax" );
 
 const { readFile, writeFile } = fs.promises;
@@ -74,9 +75,9 @@ const jsonifyLocalizations = async ( options = {} ) => {
       failed.push( locale );
     }
   } ) );
-  console.log( `Converted: ${converted.sort( ).join( ", " )}` );
+  console.log( `✅ Converted: ${converted.sort( ).join( ", " )}` );
   if ( failed.length > 0 ) {
-    console.log( `Failed:    ${failed.sort( ).join( ", " )}` );
+    console.error( `❌ Failed:    ${failed.sort( ).join( ", " )}` );
   }
 };
 
@@ -104,6 +105,7 @@ async function validate( ) {
   const errors = [];
   // Chalk does not expose a CommonJS module, so we have to do this
   const { default: chalk } = await import( "chalk" );
+  const keys = {};
   ftl.body.forEach( item => {
     if ( item.type === "GroupComment" ) {
       errors.push(
@@ -117,22 +119,50 @@ async function validate( ) {
       }
       errors.push( error );
     }
+    if ( item.type === "Message" ) {
+      if ( keys[item.id.name] ) {
+        errors.push( `Duplicate key: ${item.id.name}` );
+      } else {
+        keys[item.id.name] = true;
+      }
+    }
   } );
   if ( errors.length > 0 ) {
-    console.error( `${errors.length} errors found:` );
+    console.error( `❌ ${errors.length} errors found in ${stringsPath}:` );
     errors.forEach( error => {
       console.error( chalk.red( "[Error]" ), error );
     } );
     process.exit( 1 );
   }
-  console.log( chalk.green( "[Valid]" ), `${stringsPath} is valid` );
+  console.log( `✅ ${stringsPath} validated` );
 }
 
-function normalize( ) {
-  // TODO move ResourceComments to the top
-  // TODO extract messages and sort by id.name
-  // TODO overwrite
-  console.log( "[DEBUG i18ncli.js] Everything is fine" );
+async function normalize( ) {
+  const stringsPath = path.join( __dirname, "strings.ftl" );
+  const ftlTxt = await readFile( stringsPath );
+  const ftl = parseFtl( ftlTxt.toString( ) );
+  const resourceComments = [];
+  const messages = [];
+  // Extract the elements that matter
+  ftl.body.forEach( item => {
+    if ( item.type === "ResourceComment" ) resourceComments.push( item );
+    if ( item.type === "Message" ) messages.push( item );
+  } );
+  // Alphabetize the messages
+  const sortedMessages = messages.sort( ( msg1, msg2 ) => {
+    if ( msg1.id.name.toLowerCase( ) < msg2.id.name.toLowerCase( ) ) return -1;
+    if ( msg1.id.name.toLowerCase( ) > msg2.id.name.toLowerCase( ) ) return 1;
+    return 0;
+  } );
+  // Make a new Resource to serialize, ensuring all ResourceComments are at
+  // the top
+  const newResource = new Resource( [
+    ...resourceComments,
+    ...sortedMessages
+  ] );
+  const newFtlTxt = serializeFtl( newResource );
+  await writeFile( stringsPath, newFtlTxt );
+  console.log( `✅ ${stringsPath} normalized` );
 }
 
 // eslint-disable-next-line no-unused-expressions
@@ -161,7 +191,7 @@ yargs
     ( ) => {},
     async argv => {
       await validate( );
-      normalize( );
+      await normalize( );
       jsonifyLocalizations( argv );
       writeLoadTranslations( );
     }
@@ -169,7 +199,6 @@ yargs
   .command(
     "validate",
     "Validate source strings",
-    // What does this do again?
     ( ) => { },
     _argv => {
       validate( );
@@ -178,7 +207,6 @@ yargs
   .command(
     "normalize",
     "Normalize source strings",
-    // What does this do again?
     ( ) => { },
     _argv => {
       normalize( );

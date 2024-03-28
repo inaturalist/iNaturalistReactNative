@@ -32,7 +32,7 @@ const PermissionGate = ( {
   requestPermission,
   grantStatus,
   icon,
-  title = t( "Grant-Permission" ),
+  title = t( "Grant-Permission-titla" ),
   titleDenied = t( "Please-Grant-Permission" ),
   body,
   blockedPrompt = t( "Youve-denied-permission-prompt" ),
