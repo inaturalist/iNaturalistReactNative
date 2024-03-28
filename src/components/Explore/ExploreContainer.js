@@ -20,7 +20,6 @@ const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
-  const storedParams = useStore( state => state.storedParams );
   const setStoredParams = useStore( state => state.setStoredParams );
 
   const currentUser = useCurrentUser();
@@ -74,7 +73,7 @@ const ExploreContainerWithContext = ( ): Node => {
     navigation.addListener( "blur", ( ) => {
       setStoredParams( state );
     } );
-  }, [navigation, setStoredParams, state, dispatch, storedParams] );
+  }, [navigation, setStoredParams, state] );
 
   return (
     <Explore

@@ -12,9 +12,8 @@ import useStore from "stores/useStore";
 const useParams = ( ): Object => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
-  const { dispatch } = useExplore();
+  const { dispatch } = useExplore( );
   const storedParams = useStore( state => state.storedParams );
-  const setStoredParams = useStore( state => state.setStoredParams );
 
   const worldwidePlaceText = t( "Worldwide" );
 
@@ -64,7 +63,6 @@ const useParams = ( ): Object => {
 
   useEffect( ( ) => {
     if ( params?.resetStoredParams ) {
-      setStoredParams( { } );
       updateContextWithParams( );
     } else {
       const storedState = Object.keys( storedParams ).length > 0 || false;
@@ -78,7 +76,6 @@ const useParams = ( ): Object => {
   }, [
     dispatch,
     params,
-    setStoredParams,
     storedParams,
     updateContextWithParams
   ] );
