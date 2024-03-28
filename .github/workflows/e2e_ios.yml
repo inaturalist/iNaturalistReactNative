@@ -9,18 +9,13 @@ on:
   #   branches:
   #     - 'main'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
-  setup:
-    runs-on: macos-14
-    steps:
-      - uses: fkirc/skip-duplicate-actions@master
-        with:
-          github_token: ${{ github.token }}
-          cancel_others: true
-
   checksecret:
     name: check for oauth client
-    needs: setup
     runs-on: macos-14
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}

@@ -2,19 +2,13 @@ name: e2e-Android
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+    
 jobs:
-  # This might be refactored to use concurrency from GitHub Actions directly?
-  deduplicate:
-    runs-on: macos-latest
-    steps:
-      - uses: fkirc/skip-duplicate-actions@master
-        with:
-          github_token: ${{ github.token }}
-          cancel_others: true
-
   checksecret:
     name: check for oauth client
-    needs: deduplicate
     runs-on: macos-latest
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
