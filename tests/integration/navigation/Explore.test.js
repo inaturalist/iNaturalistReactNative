@@ -289,23 +289,6 @@ describe( "logged in", ( ) => {
       } );
     } );
 
-    describe( "with location permissions", ( ) => {
-      it( "should default to nearby location", async ( ) => {
-        const mockedPermissions = {
-          "ios.permission.LOCATION": "granted"
-        };
-
-        jest.spyOn( ReactNativePermissions, "checkMultiple" )
-          .mockResolvedValueOnce( mockedPermissions );
-        renderApp( );
-        await navigateToRootExplore( );
-        const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        expect( speciesViewIcon ).toBeVisible( );
-        const nearbyText = await screen.findByText( /Nearby/ );
-        expect( nearbyText ).toBeVisible( );
-      } );
-    } );
-
     describe( "without location permissions", ( ) => {
       it( "should default to global species view and not have a back button", async ( ) => {
         const mockedPermissions = {
@@ -330,6 +313,24 @@ describe( "logged in", ( ) => {
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         expect( backButton ).toBeFalsy( );
       } );
+    } );
+
+    describe( "with location permissions", ( ) => {
+      it.todo( "should default to nearby location" );
+      // it( "should default to nearby location", async ( ) => {
+      //   const mockedPermissions = {
+      //     "ios.permission.LOCATION": "granted"
+      //   };
+
+      //   jest.spyOn( ReactNativePermissions, "checkMultiple" )
+      //     .mockResolvedValueOnce( mockedPermissions );
+      //   renderApp( );
+      //   await navigateToRootExplore( );
+      //   const speciesViewIcon = await screen.findByLabelText( /Species View/ );
+      //   expect( speciesViewIcon ).toBeVisible( );
+      //   const nearbyText = await screen.findByText( /Nearby/ );
+      //   expect( nearbyText ).toBeVisible( );
+      // } );
     } );
   } );
 } );

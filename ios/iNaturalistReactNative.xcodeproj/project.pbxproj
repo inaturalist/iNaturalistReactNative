@@ -206,6 +206,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		376267522BB609590059CCF1 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				CC5CF9E037E74ADF9CF9710B /* INatIcon.ttf */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +233,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				3610B9F08DA0E49FEE702ABA /* Pods */,
 				E7A0E0AA690545D78AA7CC73 /* Resources */,
+				376267522BB609590059CCF1 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -678,6 +687,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNative.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CURRENT_PROJECT_VERSION = 80;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				ENABLE_BITCODE = NO;
@@ -799,6 +810,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNativeRelease.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CURRENT_PROJECT_VERSION = 80;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
