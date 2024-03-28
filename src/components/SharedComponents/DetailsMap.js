@@ -1,10 +1,12 @@
 // @flow
 
+import Clipboard from "@react-native-clipboard/clipboard";
 import { HeaderBackButton } from "@react-navigation/elements";
 import classnames from "classnames";
+import CoordinatesCopiedNotification
+  from "components/ObsDetails/DetailsTab/CoordinatesCopiedNotification";
 import {
-  Body2,
-  Body4,
+  Heading2,
   INatIconButton,
   Map,
   Modal
@@ -15,32 +17,24 @@ import {
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
+import openMap from "react-native-open-maps";
 import { useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import { getShadowForColor } from "styles/global";
-
-import CoordinatesCopiedNotification from "./CoordinatesCopiedNotification";
-
-const HEADER_BACK_BUTTON_STYLE = {
-  marginBottom: 15,
-  marginLeft: 15
-};
 
 type Props = {
   latitude: number,
   longitude: number,
   obscured?: boolean,
-  positionalAccuracy: number,
+  positionalAccuracy?: number,
   mapViewRef: any,
-  showNotificationModal: boolean,
-  displayLocation: string,
-  displayCoordinates: string,
-  closeNotificationsModal: Function,
-  copyCoordinates: Function,
-  shareMap: Function,
+  region?: Object,
   closeModal: Function,
-  tileMapParams: Object
+  tileMapParams: Object,
+  headerTitle?: Object,
+  showLocationIndicator: boolean,
+  coordinateString?: string
 }
 
 const FloatingActionButton = ( {
@@ -82,58 +76,56 @@ const FloatingActionButton = ( {
 
 const DetailsMap = ( {
   closeModal,
-  closeNotificationsModal,
-  copyCoordinates,
-  displayCoordinates,
-  displayLocation,
   latitude,
   longitude,
   mapViewRef,
   obscured,
   positionalAccuracy,
-  shareMap,
-  showNotificationModal,
-  tileMapParams
+  tileMapParams,
+  headerTitle,
+  showLocationIndicator,
+  region,
+  coordinateString
 }: Props ): Node => {
   const theme = useTheme( );
+  const [showNotificationModal, setShowNotificationModal] = useState( false );
+
+  const closeShowNotificationModal = () => {
+    setShowNotificationModal( false );
+  };
+  const copyCoordinates = () => {
+    if ( coordinateString ) {
+      Clipboard.setString( coordinateString );
+      setShowNotificationModal( true );
+      // notification disappears after 2 secs
+      setTimeout( closeShowNotificationModal, 2000 );
+    }
+  };
+
+  const shareMap = () => {
+    // takes in a provider prop but opens in browser instead of in app(google maps on iOS)
+    openMap( { query: `${latitude}, ${longitude}` } );
+  };
+
   return (
     <SafeAreaView className="flex-1">
-      <View className="bg-white w-fit flex-row items-end">
+      <View
+        className="bg-white w-fit flex-row py-[22px] items-start"
+      >
         <HeaderBackButton
           tintColor={theme.colors.primary}
           onPress={( ) => closeModal()}
-          style={HEADER_BACK_BUTTON_STYLE}
         />
-        <View className="pt-5 pr-5 pb-5 flex-1">
-          <Body2
-            className="text-darkGray"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {displayLocation}
-          </Body2>
-
-          <Body2
-            className="text-darkGray"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {displayCoordinates}
-          </Body2>
-          {obscured && (
-            <Body4 className="italic">
-              {t( "Obscured-observation-location-map-description" )}
-            </Body4>
-          ) }
-        </View>
+        {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
       </View>
       <View className="flex-1 h-full">
         <Map
-          showLocationIndicator
+          showLocationIndicator={showLocationIndicator}
           showCurrentLocationButton
           showSwitchMapTypeButton
           obsLatitude={latitude}
           obsLongitude={longitude}
+          region={region}
           mapHeight="100%"
           obscured={obscured}
           positionalAccuracy={positionalAccuracy}
@@ -141,7 +133,7 @@ const DetailsMap = ( {
           withObsTiles={tileMapParams !== null}
           tileMapParams={tileMapParams}
         >
-          { !obscured && (
+          { ( !obscured && showLocationIndicator ) && (
             <>
               <FloatingActionButton
                 icon="copy"
@@ -169,7 +161,7 @@ const DetailsMap = ( {
         animationIn="fadeIn"
         animationOut="fadeOut"
         showModal={showNotificationModal}
-        closeModal={( ) => closeNotificationsModal( false )}
+        closeModal={( ) => closeShowNotificationModal( )}
         modal={(
           <CoordinatesCopiedNotification />
         )}

@@ -7,6 +7,7 @@ import {
   Body4,
   Button,
   DateDisplay,
+  DetailsMap,
   Divider,
   Heading4,
   ObservationLocation,
@@ -28,11 +29,13 @@ import {
 } from "sharedHooks";
 
 import Attribution from "./Attribution";
-import DetailsMapContainer from "./DetailsMapContainer";
+import DetailsMapHeader from "./DetailsMapHeader";
 
 type Props = {
   observation: Object
 }
+
+const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 
 const ViewInBrowserButton = ( { id } ) => {
   const url = `https://inaturalist.org/observations/${id}`;
@@ -175,13 +178,15 @@ const DetailsTab = ( { observation }: Props ): Node => {
           positionalAccuracy={positionalAccuracy}
           tileMapParams={tileMapParams}
           withObsTiles={tileMapParams !== null}
+          scrollEnabled={false}
+          zoomEnabled={false}
+          zoomTapEnabled={false}
         />
       ) }
 
       <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
         <ObservationLocation observation={observation} obscured={isObscured} details />
-        {isObscured
-        && (
+        {isObscured && (
           <Body4 className="italic ml-[20px]">
             {t( "Obscured-observation-location-map-description" )}
           </Body4>
@@ -222,18 +227,13 @@ const DetailsTab = ( { observation }: Props ): Node => {
       </View>
       <Divider />
 
-      <View className={sectionClass}>
-        <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
-        <Heading4 className={headingClass}>
-          {
-          // eslint-disable-next-line i18next/no-literal-string
-          }
-          TODO: this section does nothing
-        </Heading4>
-        <Button text={t( "VIEW-PROJECTS" )} />
-      </View>
-
-      <Divider />
+      {/*
+        <View className={sectionClass}>
+          <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
+          <Button text={t( "VIEW-PROJECTS" )} />
+        </View>
+        <Divider />
+      */}
 
       <View className={`${sectionClass} space-y-[11px]`}>
         <Heading4 className={headingClass}>{t( "OTHER-DATA" )}</Heading4>
@@ -249,16 +249,23 @@ const DetailsTab = ( { observation }: Props ): Node => {
         showModal={showMapModal}
         closeModal={( ) => setShowMapModal( false )}
         disableSwipeDirection
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{ margin: 0 }}
+        style={DETAILS_MAP_MODAL_STYLE}
         modal={(
-          <DetailsMapContainer
-            observation={observation}
+          <DetailsMap
             latitude={latitude}
             longitude={longitude}
             obscured={isObscured}
+            coordinateString={coordinateString}
             closeModal={( ) => setShowMapModal( false )}
+            positionalAccuracy={observation.positional_accuracy}
             tileMapParams={tileMapParams}
+            showLocationIndicator
+            headerTitle={(
+              <DetailsMapHeader
+                observation={observation}
+                obscured={isObscured}
+              />
+            )}
           />
         )}
       />
