@@ -42,12 +42,12 @@ jobs:
 
     steps:
     - name: Check out Git repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
 
     - name: Install Node.js, NPM and Yarn
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 18
 
@@ -57,7 +57,7 @@ jobs:
         bundler-cache: true        
 
     - name: Cache node modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: cache
       with:
         path: node_modules
@@ -72,7 +72,7 @@ jobs:
       run: npm install
 
     - name: Cache Pods
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: podcache
       with:
         path: ios/Pods
@@ -126,7 +126,7 @@ jobs:
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: detox-artifacts
