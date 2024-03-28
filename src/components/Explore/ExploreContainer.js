@@ -1,14 +1,15 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCurrentUser, useIsConnected } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import Explore from "./Explore";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
@@ -16,8 +17,11 @@ import useHeaderCount from "./hooks/useHeaderCount";
 import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
+  const navigation = useNavigation( );
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
+  const storedParams = useStore( state => state.storedParams );
+  const setStoredParams = useStore( state => state.setStoredParams );
 
   const currentUser = useCurrentUser();
 
@@ -65,6 +69,12 @@ const ExploreContainerWithContext = ( ): Node => {
     setShowFiltersModal( true );
     makeSnapshot( );
   };
+
+  useEffect( ( ) => {
+    navigation.addListener( "blur", ( ) => {
+      setStoredParams( state );
+    } );
+  }, [navigation, setStoredParams, state, dispatch, storedParams] );
 
   return (
     <Explore

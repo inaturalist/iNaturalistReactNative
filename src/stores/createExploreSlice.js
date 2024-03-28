@@ -1,6 +1,6 @@
 const createExploreSlice = set => ( {
-  rootExploreParams: {},
-  setRootExploreParams: params => set( ( ) => ( { rootExploreParams: params } ) )
+  storedParams: {},
+  setStoredParams: params => set( ( ) => ( { storedParams: params } ) )
 } );
 
 export default createExploreSlice;

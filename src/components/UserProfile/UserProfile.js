@@ -73,12 +73,21 @@ const UserProfile = ( ): Node => {
   }, [navigation, user, currentUser] );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", { user, worldwide: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      user,
+      worldwide: true,
+      resetStoredParams: true
+    } ),
     [navigation, user]
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", { user, worldwide: true, viewSpecies: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      user,
+      worldwide: true,
+      viewSpecies: true,
+      resetStoredParams: true
+    } ),
     [navigation, user]
   );
 

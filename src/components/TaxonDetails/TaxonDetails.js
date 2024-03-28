@@ -216,7 +216,11 @@ const TaxonDetails = ( ): Node => {
                 screen: "ObservationsStackNavigator",
                 params: {
                   screen: "Explore",
-                  params: { taxon, worldwide: true }
+                  params: {
+                    taxon,
+                    worldwide: true,
+                    resetStoredParams: true
+                  }
                 }
               } )}
               accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}

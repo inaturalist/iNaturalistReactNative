@@ -22,8 +22,8 @@ const RootExploreContainerWithContext = ( ): Node => {
   const { t } = useTranslation( );
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
-  const rootExploreParams = useStore( state => state.rootExploreParams );
-  const setRootExploreParams = useStore( state => state.setRootExploreParams );
+  const storedParams = useStore( state => state.storedParams );
+  const setStoredParams = useStore( state => state.setStoredParams );
 
   const { state, dispatch, makeSnapshot } = useExplore( );
 
@@ -103,17 +103,17 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
-      const storedState = Object.keys( rootExploreParams ).length > 0 || false;
+      const storedState = Object.keys( storedParams ).length > 0 || false;
 
       if ( storedState ) {
-        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: rootExploreParams } );
+        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: storedParams } );
       }
     } );
 
     navigation.addListener( "blur", ( ) => {
-      setRootExploreParams( state );
+      setStoredParams( state );
     } );
-  }, [navigation, setRootExploreParams, state, dispatch, rootExploreParams] );
+  }, [navigation, setStoredParams, state, dispatch, storedParams] );
 
   return (
     <>

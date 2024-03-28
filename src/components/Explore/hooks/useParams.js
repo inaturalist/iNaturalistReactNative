@@ -7,15 +7,28 @@ import {
 } from "providers/ExploreContext.tsx";
 import { useEffect } from "react";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 const useParams = ( ): Object => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
   const { dispatch } = useExplore();
+  const storedParams = useStore( state => state.storedParams );
+  const setStoredParams = useStore( state => state.setStoredParams );
 
   const worldwidePlaceText = t( "Worldwide" );
 
   useEffect( ( ) => {
+    if ( params?.resetStoredParams ) {
+      setStoredParams( {} );
+    } else {
+      const storedState = Object.keys( storedParams ).length > 0 || false;
+
+      if ( storedState ) {
+        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: storedParams } );
+      }
+    }
+
     if ( params?.worldwide ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
@@ -52,7 +65,7 @@ const useParams = ( ): Object => {
         projectId: params.project.id
       } );
     }
-  }, [params, dispatch, worldwidePlaceText] );
+  }, [params, dispatch, worldwidePlaceText, storedParams, setStoredParams] );
 
   return null;
 };
