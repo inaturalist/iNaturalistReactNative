@@ -9,6 +9,7 @@ module.exports = {
   },
   extends: [
     "airbnb",
+    // "@react-native",
     "plugin:i18next/recommended",
     "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:react-native-a11y/ios"

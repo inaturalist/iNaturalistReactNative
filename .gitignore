@@ -56,7 +56,7 @@ yarn-error.log
 *.realm*
 
 # Jest Coverage
-/coverage/
+/coverage
 
 # Secrets file
 .env*
