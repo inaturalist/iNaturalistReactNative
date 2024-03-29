@@ -202,6 +202,7 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
             style={viewStyles.clearSearch}
             resizeMode="contain"
             source={require( "images/clear.png" )}
+            accessibilityIgnoresInvertColors
           />
         </Pressable>
       </View>

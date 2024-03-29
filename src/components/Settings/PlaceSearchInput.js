@@ -73,6 +73,7 @@ const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
             style={viewStyles.clearSearch}
             resizeMode="contain"
             source={require( "images/clear.png" )}
+            accessibilityIgnoresInvertColors
           />
         </Pressable>
       </View>

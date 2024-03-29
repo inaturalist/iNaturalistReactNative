@@ -50,6 +50,7 @@ const Search = (): React.Node => {
             source={imageUrl}
             style={imageStyles.squareImage}
             testID={`Search.${item.id}.photo`}
+            accessibilityIgnoresInvertColors
           />
           <Text>{`${item.preferred_common_name} (${item.rank} ${item.name})`}</Text>
         </Pressable>
@@ -67,6 +68,7 @@ const Search = (): React.Node => {
           source={{ uri: item.icon }}
           style={imageStyles.circularImage}
           testID={`Search.${item.login}.photo`}
+          accessibilityIgnoresInvertColors
         />
         <Text>{`${item.login} (${item.name})`}</Text>
       </Pressable>
