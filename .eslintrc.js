@@ -9,6 +9,7 @@ module.exports = {
   },
   extends: [
     "airbnb",
+    // This was added to the RN0.72 template, but it does not work with our current setup
     // "@react-native",
     "plugin:i18next/recommended",
     "plugin:@tanstack/eslint-plugin-query/recommended",
