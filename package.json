@@ -11,7 +11,7 @@
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start -- --reset-cache",
     "test": "jest",
     "lint": "npm run lint:eslint && npm run lint:flow",
-    "lint:eslint": "eslint . --fix --quiet",
+    "lint:eslint": "eslint . --fix",
     "lint:flow": "flow check",
     "postinstall": "husky install && patch-package && react-native setup-ios-permissions",
     "translate": "node src/i18n/i18ncli.js build",
