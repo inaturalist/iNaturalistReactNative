@@ -12,6 +12,11 @@ exports[`CustomTabBar should render correctly 1`] = `
 >
   <View
     className="flex-1"
+    style={
+      {
+        "flex": 1,
+      }
+    }
   >
     <View
       accessibilityRole="tablist"
