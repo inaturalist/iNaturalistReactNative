@@ -9,6 +9,7 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { Alert } from "react-native";
+// eslint-disable-next-line import/no-unresolved
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
