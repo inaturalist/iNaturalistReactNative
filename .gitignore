@@ -72,6 +72,8 @@ fastlane/Appfile
 # Apple signing and auth files that fastlane might download
 *.cer
 *.mobileprovision
+*.certSigningRequest
+*.p12
 
 # Detox e2e test artifacts
 artifacts/
