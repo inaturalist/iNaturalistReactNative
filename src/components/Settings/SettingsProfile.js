@@ -39,6 +39,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
         <Image
           style={viewStyles.profileImage}
           source={profileSource}
+          accessibilityIgnoresInvertColors
         />
         <View style={viewStyles.column}>
           <Button

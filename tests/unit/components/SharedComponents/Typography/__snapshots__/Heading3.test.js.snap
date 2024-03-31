@@ -5,7 +5,7 @@ exports[`Heading3 renders correctly 1`] = `
   style={
     [
       {
-        "fontFamily": "Whitney-Medium",
+        "fontFamily": "Whitney-Book",
       },
       [
         [

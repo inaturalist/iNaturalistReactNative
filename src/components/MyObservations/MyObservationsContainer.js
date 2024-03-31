@@ -28,6 +28,7 @@ import {
   useInfiniteObservationsScroll,
   useIsConnected,
   useLocalObservations,
+  useNumUnuploadedObservations,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation
@@ -62,7 +63,9 @@ const startUploadState = uploads => ( {
   numFinishedUploads: 0,
   uploadProgress: { },
   totalProgressIncrements: uploads.reduce(
-    ( count, current ) => count + ( current?.observationPhotos?.length || 0 ),
+    ( count, current ) => count
+      + ( current?.observationPhotos?.length || 0 )
+      + ( current?.observationSounds?.length || 0 ),
     uploads.length
   )
 } );
@@ -140,6 +143,7 @@ const MyObservationsContainer = ( ): Node => {
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
   const { deletionsCompletedAt } = useDeleteObservations( );
+  const numUnuploadedObservations = useNumUnuploadedObservations( );
 
   const isOnline = useIsConnected( );
 
@@ -159,6 +163,7 @@ const MyObservationsContainer = ( ): Node => {
   } );
 
   const {
+    error,
     uploads,
     uploadsComplete,
     uploadProgress,
@@ -166,12 +171,30 @@ const MyObservationsContainer = ( ): Node => {
     totalProgressIncrements
   } = state;
 
-  const currentUploadProgress = Object.values( uploadProgress )
-    .reduce( ( count, current ) => count + Number( current ), 0 );
+  useEffect( () => {
+    let timer;
+    if ( uploadsComplete && !error ) {
+      timer = setTimeout( () => {
+        dispatch( { type: "RESET_STATE" } );
+      }, 5000 );
+    }
+    return () => {
+      clearTimeout( timer );
+    };
+  }, [uploadsComplete, error] );
 
-  const toolbarProgress = totalProgressIncrements > 0
-    ? currentUploadProgress / totalProgressIncrements
-    : 0;
+  const currentUploadProgress = Object.values( uploadProgress ).reduce(
+    ( count, current ) => count + Number( current ),
+    0
+  );
+
+  let toolbarProgress = 0;
+  if ( uploadInProgress && totalProgressIncrements > 0 ) {
+    toolbarProgress = 0.1 / totalProgressIncrements;
+  }
+  if ( totalProgressIncrements > 0 && currentUploadProgress > 0 ) {
+    toolbarProgress = currentUploadProgress / totalProgressIncrements;
+  }
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
@@ -210,8 +233,24 @@ const MyObservationsContainer = ( ): Node => {
 
         currentProgress[uuid] = ( state.uploadProgress[uuid] || 0 ) + increment;
 
-        if ( state.singleUpload
-          && state.uploadProgress[uuid] >= state.totalProgressIncrements ) {
+        // This is really hacky, but our obs upload logic is distributed so much that I can not
+        // figure out a better way to do this. This is true for an observation without media
+        // for which this useEffect is only triggered once, and therefore the UPLOADS_COMPLETE
+        // action is never dispatched.
+        const isOne = state.totalProgressIncrements === 1;
+        if (
+          state.singleUpload
+          && (
+            state.uploadProgress[uuid] >= state.totalProgressIncrements
+            || isOne
+          )
+        ) {
+          if ( isOne ) {
+            dispatch( {
+              type: "UPDATE_PROGRESS",
+              uploadProgress: currentProgress
+            } );
+          }
           dispatch( {
             type: "UPLOADS_COMPLETE"
           } );
@@ -250,50 +289,72 @@ const MyObservationsContainer = ( ): Node => {
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
-        message = uploadError.json.errors.map( error => {
-          if ( error.message?.errors ) {
-            return error.message.errors.flat( ).join( ", " );
+        message = uploadError.json.errors.map( e => {
+          if ( e.message?.errors ) {
+            return e.message.errors.flat( ).join( ", " );
           }
-          return error.message;
+          return e.message;
         } ).join( ", " );
+      } else if ( uploadError.message?.match( /Network request failed/ ) ) {
+        message = t( "Connection-problem-Please-try-again-later" );
+        logger.error(
+          `[MyObservationsContainer.js] upload failed due to network problem: ${uploadError}`
+        );
       } else {
-        logger.error( "[MyObservationsContainer.js] upload failed: ", uploadError );
+        logger.error( `[MyObservationsContainer.js] upload failed: ${uploadError}` );
         throw uploadError;
       }
       dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
     }
-  }, [realm] );
+  }, [
+    realm,
+    t
+  ] );
 
   const uploadSingleObservation = useCallback( async ( observation, options ) => {
-    toggleLoginSheet( );
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      return;
+    }
     showInternetErrorAlert( );
     if ( !options || options?.singleUpload !== false ) {
       dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
     }
     await uploadObservationAndCatchError( observation );
     dispatch( { type: "UPLOADS_COMPLETE" } );
-  }, [
-    showInternetErrorAlert,
-    toggleLoginSheet,
-    uploadObservationAndCatchError
-  ] );
+  }, [currentUser, showInternetErrorAlert, toggleLoginSheet, uploadObservationAndCatchError] );
 
   const uploadMultipleObservations = useCallback( async ( ) => {
-    if ( uploadsComplete || uploadInProgress ) {
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      return;
+    }
+    if ( numUnuploadedObservations === 0 || uploadInProgress ) {
       return;
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
 
-    await Promise.all( uploads.map( async obsToUpload => {
-      await uploadObservationAndCatchError( obsToUpload );
-      dispatch( { type: "START_NEXT_UPLOAD" } );
-    } ) );
-    dispatch( { type: "UPLOADS_COMPLETE" } );
+    try {
+      await Promise.all( uploads.map( async obsToUpload => {
+        await uploadObservationAndCatchError( obsToUpload );
+        dispatch( { type: "START_NEXT_UPLOAD" } );
+      } ) );
+      dispatch( { type: "UPLOADS_COMPLETE" } );
+    } catch ( uploadMultipleObservationsError ) {
+      logger.error( "Failed to uploadMultipleObservations: ", uploadMultipleObservationsError );
+      dispatch( {
+        type: "SET_UPLOAD_ERROR",
+        error: t( "Something-went-wrong" )
+      } );
+    }
   }, [
-    uploadsComplete,
+    currentUser,
+    numUnuploadedObservations,
+    t,
+    toggleLoginSheet,
+    uploadInProgress,
     uploadObservationAndCatchError,
-    uploads,
-    uploadInProgress
+    uploads
   ] );
 
   const stopUploads = useCallback( ( ) => {
@@ -318,13 +379,22 @@ const MyObservationsContainer = ( ): Node => {
       const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
       if ( msSinceDeletionsCompleted < 5_000 ) {
         const naptime = 10_000 - msSinceDeletionsCompleted;
-        logger.debug(
-          `[MyObservationsContainer.js] finished deleting recently, waiting ${naptime} ms`
+        logger.info(
+          "[MyObservationsContainer.js] downloadRemoteObservationsFromServer finished deleting "
+          + `recently deleted, waiting ${naptime} ms`
         );
         await sleep( naptime );
       }
     }
+    logger.info(
+      "[MyObservationsContainer.js] downloadRemoteObservationsFromServer, fetching observations"
+    );
     const { results } = await searchObservations( searchParams, { api_token: apiToken } );
+    logger.info(
+      "[MyObservationsContainer.js] downloadRemoteObservationsFromServer, fetched",
+      results.length,
+      "results, upserting..."
+    );
     Observation.upsertRemoteObservations( results, realm );
   }, [
     currentUser,

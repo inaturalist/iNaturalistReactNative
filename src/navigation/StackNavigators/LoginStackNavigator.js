@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FullPageWebView from "components/FullPageWebView/FullPageWebView";
 import ForgotPassword from "components/LoginSignUp/ForgotPassword";
 import LicensePhotos from "components/LoginSignUp/LicensePhotos";
 import Login from "components/LoginSignUp/Login";
@@ -55,6 +56,11 @@ const LoginStackNavigator = ( ): Node => (
       name="SignUpConfirmation"
       component={SignUpConfirmation}
       options={LOGIN_SCREEN_OPTIONS}
+    />
+    <Stack.Screen
+      name="FullPageWebView"
+      component={FullPageWebView}
+      options={{ headerTitle: "" }}
     />
   </Stack.Navigator>
 );

@@ -69,7 +69,7 @@ exports[`Button focus should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -177,7 +177,7 @@ exports[`Button focus when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -303,7 +303,7 @@ exports[`Button neutral should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -429,7 +429,7 @@ exports[`Button neutral when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -540,7 +540,7 @@ exports[`Button primary should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -651,7 +651,7 @@ exports[`Button primary when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -762,7 +762,7 @@ exports[`Button warning should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontFamily": "Whitney-Book",
         },
         [
           [
@@ -870,7 +870,7 @@ exports[`Button warning when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontFamily": "Whitney-Book",
         },
         [
           [

@@ -9,6 +9,7 @@ import Photo from "realmModels/Photo";
 import {
   useAuthenticatedQuery
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
@@ -73,12 +74,13 @@ type OnlineSuggestionsResponse = {
 }
 
 const useOnlineSuggestions = (
-  selectedPhotoUri: string,
-  options?: {
-    latitude?: number,
-    longitude?: number
-  }
+  selectedPhotoUri: string
 ): OnlineSuggestionsResponse => {
+  const currentObservation = useStore( state => state.currentObservation );
+  const options = {
+    latitude: currentObservation?.latitude,
+    longitude: currentObservation?.longitude
+  };
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
   // TODO if this is a remote observation with an `id` param, use

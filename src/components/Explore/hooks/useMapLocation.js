@@ -20,6 +20,7 @@ const DELTA = 0.2;
 const useMapLocation = ( ): Object => {
   const { params } = useRoute( );
   const place = params?.place;
+  const worldwide = params?.worldwide;
   const realm = useRealm( );
   const { dispatch, state } = useExplore( );
   const [mapBoundaries, setMapBoundaries] = useState( null );
@@ -31,7 +32,8 @@ const useMapLocation = ( ): Object => {
     latitudeDelta: DELTA,
     longitudeDelta: DELTA
   } );
-  const [startAtNearby, setStartAtNearby] = useState( !state.swlat );
+  const hasPlace = state.swlat || state.place_id || state.lat;
+  const [startAtNearby, setStartAtNearby] = useState( !hasPlace && !worldwide );
   const { t } = useTranslation( );
 
   const onPanDrag = ( ) => setShowMapBoundaryButton( true );

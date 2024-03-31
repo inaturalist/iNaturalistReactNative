@@ -7,6 +7,7 @@ import {
   Body4,
   Button,
   DateDisplay,
+  DetailsMap,
   Divider,
   Heading4,
   ObservationLocation,
@@ -18,7 +19,6 @@ import Modal from "components/SharedComponents/Modal";
 import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { compact } from "lodash";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { Alert, Linking } from "react-native";
@@ -29,12 +29,13 @@ import {
 } from "sharedHooks";
 
 import Attribution from "./Attribution";
-import DetailsMapContainer from "./DetailsMapContainer";
+import DetailsMapHeader from "./DetailsMapHeader";
 
 type Props = {
-  observation: Object,
-  uuid:string
+  observation: Object
 }
+
+const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 
 const ViewInBrowserButton = ( { id } ) => {
   const url = `https://inaturalist.org/observations/${id}`;
@@ -177,13 +178,15 @@ const DetailsTab = ( { observation }: Props ): Node => {
           positionalAccuracy={positionalAccuracy}
           tileMapParams={tileMapParams}
           withObsTiles={tileMapParams !== null}
+          scrollEnabled={false}
+          zoomEnabled={false}
+          zoomTapEnabled={false}
         />
       ) }
 
       <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
         <ObservationLocation observation={observation} obscured={isObscured} details />
-        {isObscured
-        && (
+        {isObscured && (
           <Body4 className="italic ml-[20px]">
             {t( "Obscured-observation-location-map-description" )}
           </Body4>
@@ -204,7 +207,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
         />
       </View>
       <Divider />
-
       <View className={`${sectionClass} flex-col`}>
         <Heading4 className={headingClass}>{t( "DATA-QUALITY" )}</Heading4>
         <View className="space-y-[15px]">
@@ -219,43 +221,19 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Button
             testID="DetailsTab.DQA"
             text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
-            // TODO refactor this so the DQA just receives an obs UUID and
-            // loads it independently. There's no need to pass this much
-            // stuff in params.
-            onPress={() => navigation.navigate( "DataQualityAssessment", {
-              qualityGrade,
-              observationUUID,
-              observation: {
-                date: observation.observed_on,
-                location: [observation.latitude, observation.longitude],
-                evidence: compact( [
-                  observation.observationPhotos || observation.observation_photos,
-                  observation.observationSounds || observation.sounds
-                ] ),
-                taxon: {
-                  id: observation.taxon.id,
-                  rank_level: observation.taxon.rank_level
-                },
-                identifications: observation.identifications
-              }
-            } )}
+            onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
           />
         </View>
       </View>
       <Divider />
 
-      <View className={sectionClass}>
-        <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
-        <Heading4 className={headingClass}>
-          {
-          // eslint-disable-next-line i18next/no-literal-string
-          }
-          TODO: this section does nothing
-        </Heading4>
-        <Button text={t( "VIEW-PROJECTS" )} />
-      </View>
-
-      <Divider />
+      {/*
+        <View className={sectionClass}>
+          <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
+          <Button text={t( "VIEW-PROJECTS" )} />
+        </View>
+        <Divider />
+      */}
 
       <View className={`${sectionClass} space-y-[11px]`}>
         <Heading4 className={headingClass}>{t( "OTHER-DATA" )}</Heading4>
@@ -271,16 +249,23 @@ const DetailsTab = ( { observation }: Props ): Node => {
         showModal={showMapModal}
         closeModal={( ) => setShowMapModal( false )}
         disableSwipeDirection
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{ margin: 0 }}
+        style={DETAILS_MAP_MODAL_STYLE}
         modal={(
-          <DetailsMapContainer
-            observation={observation}
+          <DetailsMap
             latitude={latitude}
             longitude={longitude}
             obscured={isObscured}
+            coordinateString={coordinateString}
             closeModal={( ) => setShowMapModal( false )}
+            positionalAccuracy={observation.positional_accuracy}
             tileMapParams={tileMapParams}
+            showLocationIndicator
+            headerTitle={(
+              <DetailsMapHeader
+                observation={observation}
+                obscured={isObscured}
+              />
+            )}
           />
         )}
       />

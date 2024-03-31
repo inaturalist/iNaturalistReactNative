@@ -2,19 +2,19 @@
 
 import BottomSheet, {
   BottomSheetModal,
-  BottomSheetView,
-  useBottomSheetDynamicSnapPoints
+  BottomSheetView
 } from "@gorhom/bottom-sheet";
+import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useRef
 } from "react";
 import { Dimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
@@ -47,15 +47,7 @@ const StandardBottomSheet = ( {
 
   const { t } = useTranslation( );
   const sheetRef = useRef( null );
-
-  const initialSnapPoints = useMemo( () => ["CONTENT_HEIGHT"], [] );
-
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout
-  } = useBottomSheetDynamicSnapPoints( initialSnapPoints );
+  const insets = useSafeAreaInsets( );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
@@ -106,20 +98,25 @@ const StandardBottomSheet = ( {
 
   return (
     <BottomSheetComponent
-      ref={sheetRef}
-      index={0}
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
-      style={[viewStyles.shadow, marginOnWide]}
-      handleComponent={noHandle}
       backdropComponent={renderBackdrop}
+      enableDynamicSizing
+      handleComponent={noHandle}
+      index={0}
       onChange={onChange || handleBackdropPress}
+      ref={sheetRef}
+      style={[viewStyles.shadow, marginOnWide]}
     >
-      <SafeAreaView>
-        <BottomSheetView onLayout={handleContentLayout}>
+      <BottomSheetView>
+        <View
+          className={classnames(
+            "pt-7",
+            insets.bottom > 0
+              ? "pb-7"
+              : null
+          )}
+        >
           <View className="items-center">
-            <Heading4 className="pt-7">{headerText}</Heading4>
+            <Heading4>{headerText}</Heading4>
           </View>
           {children}
           {!hideCloseButton && (
@@ -132,8 +129,8 @@ const StandardBottomSheet = ( {
               accessibilityLabel={t( "Close" )}
             />
           )}
-        </BottomSheetView>
-      </SafeAreaView>
+        </View>
+      </BottomSheetView>
     </BottomSheetComponent>
   );
 };

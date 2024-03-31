@@ -7,7 +7,7 @@ import INatTextLight from "./INatTextLight";
 
 const Subheading1 = ( props: any ): Node => (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  <INatTextLight className="text-xl font-light text-darkGray" {...props} />
+  <INatTextLight className="text-xl text-darkGray" {...props} />
 );
 
 export default Subheading1;

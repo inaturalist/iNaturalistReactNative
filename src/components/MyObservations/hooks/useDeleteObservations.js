@@ -67,7 +67,8 @@ const useDeleteObservations = ( ): Object => {
     currentDeleteCount,
     deletions,
     deletionsInProgress,
-    deletionsComplete
+    deletionsComplete,
+    error
   } = state;
 
   const observationToDelete = deletions[currentDeleteCount - 1];
@@ -121,11 +122,11 @@ const useDeleteObservations = ( ): Object => {
       let { message } = deleteError;
       if ( deleteError?.json?.errors ) {
         // TODO localize comma join
-        message = deleteError.json.errors.map( error => {
-          if ( error.message?.errors ) {
-            return error.message.errors.flat( ).join( ", " );
+        message = deleteError.json.errors.map( e => {
+          if ( e.message?.errors ) {
+            return e.message.errors.flat( ).join( ", " );
           }
-          return error.message;
+          return e.message;
         } ).join( ", " );
       } else {
         throw deleteError;
@@ -170,6 +171,18 @@ const useDeleteObservations = ( ): Object => {
     },
     [navigation]
   );
+
+  useEffect( () => {
+    let timer;
+    if ( deletionsComplete && !error ) {
+      timer = setTimeout( () => {
+        dispatch( { type: "RESET_STATE" } );
+      }, 5000 );
+    }
+    return () => {
+      clearTimeout( timer );
+    };
+  }, [deletionsComplete, error] );
 
   return state;
 };

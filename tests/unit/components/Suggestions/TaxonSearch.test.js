@@ -33,7 +33,7 @@ jest.mock( "sharedHooks/useTaxonSearch", () => ( {
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => mockTaxaList[0]
+  default: () => ( { taxon: mockTaxaList[0] } )
 } ) );
 
 // react-native-paper's TextInput does a bunch of async stuff that's hard to
@@ -69,7 +69,7 @@ describe( "TaxonSearch", ( ) => {
   } );
 
   it( "show taxon search results", async ( ) => {
-    inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
+    inatjs.taxa.search.mockResolvedValue( makeResponse( mockTaxaList ) );
     renderComponent( <TaxonSearch /> );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];

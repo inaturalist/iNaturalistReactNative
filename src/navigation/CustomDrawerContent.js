@@ -74,7 +74,10 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         label: t( "PROJECTS" ),
         navigation: "TabNavigator",
         params: {
-          screen: "Projects"
+          screen: "ObservationsStackNavigator",
+          params: {
+            screen: "Projects"
+          }
         },
         icon: "briefcase"
       },

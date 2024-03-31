@@ -3,6 +3,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExploreContainer from "components/Explore/ExploreContainer";
+import RootExploreContainer from "components/Explore/RootExploreContainer";
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
@@ -11,6 +12,8 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
+import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
+import ProjectsContainer from "components/Projects/ProjectsContainer";
 import { Heading4 } from "components/SharedComponents";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
@@ -89,6 +92,11 @@ const ObservationsStackNavigator = ( ): Node => (
     {SharedStackScreens( )}
     <Stack.Group>
       <Stack.Screen
+        name="RootExplore"
+        component={RootExploreContainer}
+        options={hideHeader}
+      />
+      <Stack.Screen
         name="Explore"
         component={ExploreContainer}
         options={hideHeader}
@@ -127,6 +135,23 @@ const ObservationsStackNavigator = ( ): Node => (
           ...removeBottomBorder,
           headerTitle: projectSearchTitle,
           headerTitleAlign: "center"
+        }}
+      />
+      <Stack.Screen
+        name="Projects"
+        component={ProjectsContainer}
+        options={{
+          ...removeBottomBorder,
+          ...blankHeaderTitle
+        }}
+      />
+      <Stack.Screen
+        name="ProjectDetails"
+        component={ProjectDetailsContainer}
+        options={{
+          ...blankHeaderTitle,
+          ...removeBottomBorder,
+          ...showHeader
         }}
       />
     </Stack.Group>

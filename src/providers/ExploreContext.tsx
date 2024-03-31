@@ -1,5 +1,6 @@
 import * as React from "react";
 import { LatLng } from "react-native-maps";
+import useStore from "stores/useStore";
 
 export enum EXPLORE_ACTION {
   DISCARD = "DISCARD",
@@ -41,7 +42,7 @@ export enum SORT_BY {
 // TODO: this should be imported from a central point, e.g. Taxon realm model
 // TODO: this is probably against conventioins to make it in lower case but I (Johannes) don't want to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
-  none = "none",
+  none = null,
   kingdom = "kingdom",
   phylum = "phylum",
   subphylum = "subphylum",
@@ -143,7 +144,6 @@ type State = {
   // TODO: technically this is not any Object but a "Taxon" and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | undefined,
-  taxon_name: string | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
@@ -156,8 +156,8 @@ type State = {
   researchGrade: boolean,
   needsID: boolean,
   casual: boolean,
-  hrank: TAXONOMIC_RANK | undefined,
-  lrank: TAXONOMIC_RANK | undefined,
+  hrank: TAXONOMIC_RANK | undefined | null,
+  lrank: TAXONOMIC_RANK | undefined | null,
   dateObserved: DATE_OBSERVED,
   observed_on: string | null | undefined,
   d1: string | null | undefined,
@@ -176,11 +176,10 @@ type State = {
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
-  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number}
-  | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_TAXON_NAME, taxonName: string}
-  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string}
-  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number}
+  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number, storedState: State}
+  | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string, storedState: State}
+  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string, lat: number, lng: number, radius: number, storedState: State}
+  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number, storedState: State}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
   | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
@@ -200,6 +199,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_REVIEWED, reviewedFilter: REVIEWED}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
   | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
+  | {type: EXPLORE_ACTION.USE_STORED_STATE, storedState: State}
 type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
@@ -213,8 +213,8 @@ const calculatedFilters = {
   researchGrade: true,
   needsID: true,
   casual: false,
-  hrank: undefined,
-  lrank: undefined,
+  hrank: null,
+  lrank: null,
   dateObserved: DATE_OBSERVED.ALL,
   dateUploaded: DATE_UPLOADED.ALL,
   media: MEDIA.ALL,
@@ -243,7 +243,6 @@ const initialState = {
   ...defaultFilters,
   taxon: undefined,
   taxon_id: undefined,
-  taxon_name: undefined,
   place_id: undefined,
   place_guess: "",
   verifiable: true,
@@ -268,20 +267,19 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.CHANGE_TAXON:
       return {
         ...state,
+        ...action.storedState,
         taxon: action.taxon,
-        taxon_id: action.taxonId,
-        taxon_name: action.taxonName
-      };
-    case EXPLORE_ACTION.SET_TAXON_NAME:
-      return {
-        ...state,
-        taxon_name: action.taxonName
+        taxon_id: action.taxonId
       };
     case EXPLORE_ACTION.SET_PLACE:
       const placeState = {
         ...state,
+        ...action.storedState,
         place_id: action.placeId,
-        place_guess: action.placeName
+        place_guess: action.placeName,
+        lat: action.lat,
+        lng: action.lng,
+        radius: action.radius
       };
       delete placeState.swlat;
       delete placeState.swlng;
@@ -291,14 +289,16 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,
+        ...action.storedState,
         user: action.user,
         user_id: action.userId
       };
     case EXPLORE_ACTION.SET_PROJECT:
       return {
         ...state,
-          project: action.project,
-          project_id: action.projectId
+        ...action.storedState,
+        project: action.project,
+        project_id: action.projectId
       };
     case EXPLORE_ACTION.CHANGE_SORT_BY:
       return {
@@ -421,6 +421,7 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.SET_WILD_STATUS:
       return {
         ...state,
+        casual: action.wildStatus === WILD_STATUS.CAPTIVE ? true : state.casual,
         wildStatus: action.wildStatus
       };
     case EXPLORE_ACTION.SET_PHOTO_LICENSE:
@@ -440,6 +441,10 @@ function exploreReducer( state: State, action: Action ) {
       };
       delete boundState.place_id;
       return boundState;
+    case EXPLORE_ACTION.USE_STORED_STATE:
+      return {
+        ...action.storedState
+      };
     default: {
       throw new Error( `Unhandled action type: ${(action as Action).type}` );
     }

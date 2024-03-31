@@ -4,7 +4,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import {
-  fetchRemoteObservation,
   markObservationUpdatesViewed
 } from "api/observations";
 import { RealmContext } from "providers/contexts";
@@ -12,7 +11,6 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useReducer,
   useState
 } from "react";
@@ -21,7 +19,6 @@ import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
-  useAuthenticatedQuery,
   useCurrentUser,
   useIsConnected,
   useLocalObservation,
@@ -29,6 +26,8 @@ import {
 } from "sharedHooks";
 import useObservationsUpdates,
 { fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
+import useRemoteObservation,
+{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
 import ObsDetails from "./ObsDetails";
@@ -141,34 +140,17 @@ const ObsDetailsContainer = ( ): Node => {
 
   const localObservation = useLocalObservation( uuid );
 
-  const fetchRemoteObservationQueryKey = useMemo(
-    ( ) => ( ["fetchRemoteObservation", uuid] ),
-    [uuid]
-  );
   const fetchRemoteObservationEnabled = (
     !remoteObsWasDeleted
-    && !!isOnline
-    && localObservation?.wasSynced( )
+    && ( !localObservation || localObservation?.wasSynced( ) )
   );
+
   const {
-    data: remoteObservation,
-    refetch: refetchRemoteObservation,
+    remoteObservation,
+    refetchRemoteObservation,
     isRefetching,
-    error: fetchRemoteObservationError
-  } = useAuthenticatedQuery(
-    fetchRemoteObservationQueryKey,
-    optsWithAuth => fetchRemoteObservation(
-      uuid,
-      {
-        fields: Observation.FIELDS
-      },
-      optsWithAuth
-    ),
-    {
-      keepPreviousData: false,
-      enabled: fetchRemoteObservationEnabled
-    }
-  );
+    fetchRemoteObservationError
+  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
   // If we tried to get a remote observation but it no longer exists, the user
   // can't do anything so we need to send them back and remove the local
@@ -191,7 +173,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
 
-  // In theory the only sitiation in which an observation would not have a
+  // In theory the only situation in which an observation would not have a
   // user is when a user is not signed but has made a new observation in the
   // app. Also in theory that user should not be able to get to ObsDetail for
   // those observations, just ObsEdit. But.... let's be safe.
@@ -200,29 +182,11 @@ const ObsDetailsContainer = ( ): Node => {
     || ( !observation?.user && !observation?.id )
   );
 
-  // Update local copy of a user's own observation
-  useEffect( ( ) => {
-    if (
-      remoteObservation
-      && currentUser
-      && remoteObservation?.user?.id === currentUser.id
-    ) {
-      Observation.upsertRemoteObservations(
-        [remoteObservation],
-        realm
-      );
-    }
-  }, [
-    currentUser,
-    realm,
-    remoteObservation
-  ] );
-
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      queryClient.invalidateQueries( "fetchRemoteObservation" );
+      queryClient.invalidateQueries( fetchRemoteObservationKey );
     }, [queryClient] )
   );
 
@@ -281,7 +245,11 @@ const ObsDetailsContainer = ( ): Node => {
         markViewedLocally( );
         queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
         refetchObservationUpdates( );
-        setObservationMarkedAsViewedAt( new Date( ) );
+
+        // make sure we dont ask api the number of notifications
+        // until its ready to return an accurate result
+        setTimeout( () => { setObservationMarkedAsViewedAt( new Date( ) ); }, 2000 );
+        setTimeout( () => { setObservationMarkedAsViewedAt( new Date( ) ); }, 5000 );
       }
     }
   );
@@ -418,7 +386,7 @@ const ObsDetailsContainer = ( ): Node => {
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
   const refetchObservation = ( ) => {
-    queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+    queryClient.invalidateQueries( [fetchRemoteObservationKey] );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };

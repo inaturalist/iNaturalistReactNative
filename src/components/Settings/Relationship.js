@@ -28,6 +28,7 @@ const Relationship = ( {
       <Image
         style={viewStyles.relationshipImage}
         source={{ uri: relationship.friendUser.icon_url }}
+        accessibilityIgnoresInvertColors
       />
       <View style={viewStyles.column}>
         <Text>{relationship.friendUser.login}</Text>

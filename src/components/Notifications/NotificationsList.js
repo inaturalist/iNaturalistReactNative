@@ -11,6 +11,7 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   data: Object,
+  isError?: boolean,
   isLoading?: boolean,
   isOnline: boolean,
   onEndReached: Function
@@ -18,9 +19,10 @@ type Props = {
 
 const NotificationsList = ( {
   data,
+  isError,
+  isLoading,
   isOnline,
-  onEndReached,
-  isLoading
+  onEndReached
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -40,18 +42,21 @@ const NotificationsList = ( {
 
   const renderEmptyComponent = useCallback( ( ) => {
     if ( isLoading ) return null;
-    return isOnline
-      ? (
-        <Body2 className="mt-[150px] text-center mx-12">
-          {t( "No-Notifications-Found" )}
-        </Body2>
-      )
-      : (
-        <Body2 className="mt-[150px] text-center mx-12">
-          {t( "Offline-No-Notifications" )}
-        </Body2>
-      );
-  }, [isLoading, isOnline, t] );
+
+    let msg = t( "No-Notifications-Found" );
+    if ( !isOnline ) {
+      msg = t( "Offline-No-Notifications" );
+    } else if ( isError ) {
+      msg = t( "Something-went-wrong" );
+    }
+
+    return <Body2 className="mt-[150px] text-center mx-12">{msg}</Body2>;
+  }, [
+    isError,
+    isLoading,
+    isOnline,
+    t
+  ] );
 
   return (
     <ViewWrapper className="h-full">

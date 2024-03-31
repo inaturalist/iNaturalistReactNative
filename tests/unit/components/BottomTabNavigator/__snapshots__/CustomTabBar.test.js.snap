@@ -12,6 +12,11 @@ exports[`CustomTabBar should render correctly 1`] = `
 >
   <View
     className="flex-1"
+    style={
+      {
+        "flex": 1,
+      }
+    }
   >
     <View
       accessibilityRole="tablist"
@@ -111,6 +116,15 @@ exports[`CustomTabBar should render correctly 1`] = `
                 {
                   "position": "relative",
                 },
+                {
+                  "position": "relative",
+                },
+                {
+                  "left": 0.2,
+                },
+                {
+                  "top": 0.1,
+                },
               ],
             ]
           }
@@ -140,7 +154,7 @@ exports[`CustomTabBar should render correctly 1`] = `
       </View>
       <View
         accessibilityHint="Navigates to explore."
-        accessibilityLabel="Explore"
+        accessibilityLabel="Navigate to explore screen"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -184,7 +198,7 @@ exports[`CustomTabBar should render correctly 1`] = `
             undefined,
           ]
         }
-        testID="Explore"
+        testID="RootExplore"
       >
         <View
           style={
@@ -192,6 +206,15 @@ exports[`CustomTabBar should render correctly 1`] = `
               [
                 {
                   "position": "relative",
+                },
+                {
+                  "position": "relative",
+                },
+                {
+                  "left": 0.2,
+                },
+                {
+                  "top": 0.1,
                 },
               ],
             ]
@@ -381,7 +404,7 @@ exports[`CustomTabBar should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </BVLinearGradient>
@@ -441,6 +464,15 @@ exports[`CustomTabBar should render correctly 1`] = `
                 {
                   "position": "relative",
                 },
+                {
+                  "position": "relative",
+                },
+                {
+                  "left": 0.2,
+                },
+                {
+                  "top": 0.1,
+                },
               ],
             ]
           }
@@ -464,7 +496,7 @@ exports[`CustomTabBar should render correctly 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </View>
@@ -523,6 +555,15 @@ exports[`CustomTabBar should render correctly 1`] = `
                 {
                   "position": "relative",
                 },
+                {
+                  "position": "relative",
+                },
+                {
+                  "left": 0.2,
+                },
+                {
+                  "top": 0.1,
+                },
               ],
             ]
           }
@@ -546,7 +587,7 @@ exports[`CustomTabBar should render correctly 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </View>

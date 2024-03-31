@@ -17,15 +17,34 @@ import factory, { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
-  mockUseCameraDevice,
-  mockUseCameraDevices
+  mockUseCameraDevice
 } from "./vision-camera/vision-camera";
 
+// Mock the react-native-logs config because it has a dependency on AuthenticationService
+// instead use console.logs for tests
+jest.mock( "../react-native-logs.config", () => {
+  const log = {
+    extend: jest.fn( () => ( {
+      debug: msg => console.debug( msg ),
+      info: msg => console.info( msg ),
+      warn: msg => console.warn( msg ),
+      error: msg => console.error( msg )
+    } ) )
+  };
+  return {
+    log,
+    logFilePath: "inaturalist-rn-log.txt"
+  };
+} );
+
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
-  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) )
+  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) ),
+  removeLogListener: jest.fn( )
 } ) );
 
 jest.mock( "react-native-worklets-core", () => ( {
+  useSharedValue: jest.fn(),
+  useWorklet: jest.fn(),
   Worklets: {
     createRunInJsFn: jest.fn()
   }
@@ -39,18 +58,16 @@ jest.mock(
   () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
 );
 
-require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
+require( "react-native-reanimated" ).setUpTests();
 
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
   sortDevices: mockSortDevices,
-  // react-native-vision-camera v2
-  useCameraDevices: mockUseCameraDevices,
-  // react-native-vision-camera v3
   useCameraDevice: mockUseCameraDevice,
   VisionCameraProxy: {
-    getFrameProcessorPlugin: jest.fn( )
-  }
+    initFrameProcessorPlugin: jest.fn( )
+  },
+  useFrameProcessor: jest.fn( )
 } ) );
 
 jest.mock( "react-native-localize", () => mockRNLocalize );
@@ -276,7 +293,8 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
     getAlbums: jest.fn( ( ) => ( {
       // Expecting album titles as keys and photo counts as values
       // "My Amazing album": 12
-    } ) )
+    } ) ),
+    save: jest.fn( )
   }
 } ) );
 
@@ -361,3 +379,11 @@ inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
 jest.mock( "react-native-audio-recorder-player", ( ) => MockAudioRecorderPlayer );
+
+jest.mock( "react-native-fast-image", ( ) => {
+  const actualNav = jest.requireActual( "react-native-fast-image" );
+  return {
+    ...actualNav,
+    preload: jest.fn( )
+  };
+} );

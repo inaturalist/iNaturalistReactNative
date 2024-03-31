@@ -21,6 +21,7 @@ const MutedUser = ( { user, unmuteUser }: Props ): Node => (
     <Image
       style={viewStyles.relationshipImage}
       source={{ uri: user.icon }}
+      accessibilityIgnoresInvertColors
     />
     <View style={viewStyles.column}>
       <Text>{user.login}</Text>

@@ -1,5 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { getAPIToken, USER_AGENT } from "components/LoginSignUp/AuthenticationService";
+import { getUserAgent } from "api/userAgent";
+import { getAPIToken } from "components/LoginSignUp/AuthenticationService";
 import { ActivityIndicator, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
@@ -90,14 +91,14 @@ const FullPageWebView = ( ) => {
               return false;
             }
 
-            // Note: this will cause infinite re-renders if the page has
-            // iframes
+            if ( params.skipSetSourceInShouldStartLoadWithRequest ) return true;
+            // Note: this will cause infinite re-renders if the page has iframes
             setSource( { ...source, uri: request.url } );
             return true;
           }}
           renderLoading={LoadingView}
           startInLoadingState
-          userAgent={USER_AGENT}
+          userAgent={getUserAgent()}
         />
       )}
     </ViewWrapper>

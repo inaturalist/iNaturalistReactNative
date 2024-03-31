@@ -2,6 +2,7 @@
 
 import { useIsFocused } from "@react-navigation/native";
 import { ViewWrapper } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -19,7 +20,6 @@ const ObsEdit = ( ): Node => {
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
-  const updateObservations = useStore( state => state.updateObservations );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
@@ -34,11 +34,10 @@ const ObsEdit = ( ): Node => {
           <Header
             currentObservation={currentObservation}
             observations={observations}
-            updateObservations={updateObservations}
           />
           <KeyboardAwareScrollView className="bg-white mb-[80px]">
             {currentObservation && (
-              <>
+              <View className="pb-5">
                 {observations.length > 1 && (
                   <MultipleObservationsArrows
                     currentObservationIndex={currentObservationIndex}
@@ -65,7 +64,7 @@ const ObsEdit = ( ): Node => {
                   currentObservation={currentObservation}
                   updateObservationKeys={updateObservationKeys}
                 />
-              </>
+              </View>
             )}
           </KeyboardAwareScrollView>
         </ViewWrapper>

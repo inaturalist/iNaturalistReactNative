@@ -9,7 +9,7 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 
 ### Requirements
 
-* Xcode 13 or above
+* Xcode 15 or above
 * [Android and iOS environment setup](https://reactnative.dev/docs/environment-setup) described in the RN docs
 
 ### Install packages and pods
@@ -27,6 +27,9 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 ### Set up pre-commit hooks
 
 1. We're using [Husky](https://typicode.github.io/husky/#/) to automatically run `eslint` before each commit. Run `npm run postinstall` to install Husky locally.
+1. (Staff only) Set up GitGuardian to prevent yourself from committing secrets
+    1. [Install `ggshield`](https://docs.gitguardian.com/ggshield-docs/getting-started)
+    1. Get a GitGuardian API token from another staff developer and put it in the `GITGUARDIAN_API_KEY` env variable.
 
 ### Run build
 
@@ -196,17 +199,19 @@ fastlane prod
     1. Install a "Release" build on an iOS device
         1. Online
             1. Sign in
-            1. Make an observation by taking a new photo
-            1. Make an observation by importing an existing
-            1. Make an observation without a photo
-            1. Upload
+            1. Make an observation by taking a new photo in the ARCamera; tap "Upload Now" to upload immediately; wait for upload to complete before moving on
+            1. Make an observation by taking a new photo in the StandardCamera; save without upload
+            1. Make an observation by importing an existing; save without upload
+            1. Make an observation without a photo; save without upload
+            1. Upload from the toolbar on MyObs
         1. Offline
             1. Go into airplane mode
-            1. Make an observation by taking a new photo
+            1. Make an observation by taking a new photo in the ARCamera
+            1. Make an observation by taking a new photo in the StandardCamera
             1. Make an observation by importing an existing
             1. Make an observation without a photo
             1. Turn off airplane mode
-            1. Upload
+            1. Upload from the toolbar on MyObs
     1. Install a "release" build on an Android device and repeat iOS steps
 1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
 1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.

@@ -36,29 +36,31 @@ exports[`IdentificationsCount renders default reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 14,
-            "lineHeight": 18,
-          },
-          {
-            "fontWeight": "400",
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "marginLeft": 6,
+              "fontSize": 14,
+              "lineHeight": 18,
             },
+            {
+              "fontWeight": "400",
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "marginLeft": 6,
+              },
+            ],
           ],
         ],
       ]
@@ -105,29 +107,31 @@ exports[`IdentificationsCount renders filled reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 14,
-            "lineHeight": 18,
-          },
-          {
-            "fontWeight": "400",
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "marginLeft": 6,
+              "fontSize": 14,
+              "lineHeight": 18,
             },
+            {
+              "fontWeight": "400",
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "marginLeft": 6,
+              },
+            ],
           ],
         ],
       ]
@@ -174,32 +178,34 @@ exports[`IdentificationsCount renders white reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 14,
-            "lineHeight": 18,
-          },
-          {
-            "fontWeight": "400",
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "marginLeft": 6,
+              "fontSize": 14,
+              "lineHeight": 18,
             },
             {
-              "color": "#ffffff",
+              "fontWeight": "400",
             },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "marginLeft": 6,
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
           ],
         ],
       ]

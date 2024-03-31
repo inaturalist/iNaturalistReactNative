@@ -36,6 +36,7 @@ import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
+import TaxonMapPreview from "./TaxonMapPreview";
 import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
 
@@ -119,10 +120,11 @@ const TaxonDetails = ( ): Node => {
     }
 
     return (
-      <View className="mx-3">
+      <View className="mx-3 mb-3">
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} />
+        <TaxonMapPreview taxon={taxon} />
       </View>
     );
   };
@@ -216,10 +218,14 @@ const TaxonDetails = ( ): Node => {
                 screen: "ObservationsStackNavigator",
                 params: {
                   screen: "Explore",
-                  params: { taxon, worldwide: true }
+                  params: {
+                    taxon,
+                    worldwide: true,
+                    resetStoredParams: true
+                  }
                 }
               } )}
-              accessibilityLabel={t( "Explore" )}
+              accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
               accessibilityHint={t( "Navigates-to-explore" )}
               size={30}
               color={theme.colors.onPrimary}
@@ -228,6 +234,8 @@ const TaxonDetails = ( ): Node => {
               // here is to ensure the visible icon is flush with the edge of
               // the container
               className="ml-5 bg-inatGreen rounded-full"
+              mode="contained"
+              preventTransparency
             />
           </View>
         </View>

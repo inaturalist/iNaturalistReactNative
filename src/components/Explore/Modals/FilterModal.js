@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
+import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
   Body1,
   Body2,
@@ -53,18 +54,6 @@ const getShadow = shadowColor => getShadowStyle( {
   shadowRadius: 2,
   elevation: 6
 } );
-
-const NumberBadge = ( { number } ): Node => {
-  const theme = useTheme();
-  return (
-    <View
-      className="ml-3 w-5 h-5 justify-center items-center rounded-full bg-inatGreen"
-      style={getShadow( theme.colors.primary )}
-    >
-      <Body3 className="text-white">{number}</Body3>
-    </View>
-  );
-};
 
 type Props = {
   closeModal: Function,
@@ -639,7 +628,11 @@ const FilterModal = ( {
             accessibilityLabel={t( "Back" )}
           />
           <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
-          {numberOfFilters !== 0 && <NumberBadge number={numberOfFilters} />}
+          {numberOfFilters !== 0 && (
+            <View className="ml-3">
+              <NumberBadge number={numberOfFilters} />
+            </View>
+          )}
         </View>
         {filtersNotDefault
           ? (
@@ -655,11 +648,11 @@ const FilterModal = ( {
           )}
       </View>
 
-      <ScrollView className="p-4">
+      <ScrollView className="py-4">
         {/* Taxon Section */}
         <View className="mb-7">
-          <Heading4 className="mb-5">{t( "TAXON" )}</Heading4>
-          <View className="mb-5">
+          <Heading4 className="px-4 mb-5">{t( "TAXON" )}</Heading4>
+          <View className="px-4 mb-5">
             {taxon
               ? (
                 <Pressable
@@ -685,6 +678,7 @@ const FilterModal = ( {
               )}
           </View>
           <IconicTaxonChooser
+            before
             taxon={taxon}
             onTaxonChosen={( taxonName: string ) => {
               const selectedTaxon = realm
@@ -699,301 +693,305 @@ const FilterModal = ( {
           />
         </View>
 
-        {/* Location Section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
-          <View className="mb-5">
-            {placeGuess
-              ? (
-                <View>
-                  <View className="flex-row items-center mb-5">
-                    <INatIcon name="location" size={15} />
-                    <Body3 className="ml-4">{placeGuess}</Body3>
+        {/*
+          The iconic taxon chooser above should fill all width so we add padding here
+        */}
+        <View className="px-4">
+          {/* Location Section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
+            <View className="mb-5">
+              {placeGuess
+                ? (
+                  <View>
+                    <View className="flex-row items-center mb-5">
+                      <INatIcon name="location" size={15} />
+                      <Body3 className="ml-4">{placeGuess}</Body3>
+                    </View>
+                    <Button
+                      text={t( "EDIT-LOCATION" )}
+                      onPress={() => {
+                        navigation.navigate( "ExploreLocationSearch" );
+                      }}
+                      accessibilityLabel={t( "Edit" )}
+                    />
                   </View>
+                )
+                : (
                   <Button
-                    text={t( "EDIT-LOCATION" )}
+                    text={t( "SEARCH-FOR-A-LOCATION" )}
                     onPress={() => {
                       navigation.navigate( "ExploreLocationSearch" );
                     }}
-                    accessibilityLabel={t( "Edit" )}
+                    accessibilityLabel={t( "Search" )}
                   />
-                </View>
-              )
-              : (
-                <Button
-                  text={t( "SEARCH-FOR-A-LOCATION" )}
-                  onPress={() => {
-                    navigation.navigate( "ExploreLocationSearch" );
+                )}
+            </View>
+          </View>
+
+          {/* Sort-By Section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "SORT-BY" )}</Heading4>
+            <View className="mb-5">
+              <Button
+                text={sortByButtonText()}
+                className="shrink"
+                dropdown
+                onPress={() => {
+                  setOpenSheet( SORT_BY_M );
+                }}
+                accessibilityLabel={t( "Sort-by" )}
+              />
+              {openSheet === SORT_BY_M && (
+                <RadioButtonSheet
+                  headerText={t( "SORT-BY" )}
+                  confirm={newSortBy => {
+                    dispatch( {
+                      type: EXPLORE_ACTION.CHANGE_SORT_BY,
+                      sortBy: newSortBy
+                    } );
+                    setOpenSheet( NONE );
                   }}
-                  accessibilityLabel={t( "Search" )}
+                  handleClose={() => setOpenSheet( NONE )}
+                  radioValues={sortByValues}
+                  selectedValue={sortBy}
                 />
               )}
+            </View>
           </View>
-        </View>
 
-        {/* Sort-By Section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "SORT-BY" )}</Heading4>
-          <View className="mb-5">
+          {/* Quality Grade Section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
+            <View className="mb-5">
+              <Checkbox
+                text={t( "Research-Grade" )}
+                isChecked={researchGrade}
+                onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE } )}
+              />
+              <View className="mb-4" />
+              <Checkbox
+                text={t( "Needs-ID" )}
+                isChecked={needsID}
+                onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_NEEDS_ID } )}
+              />
+              <View className="mb-4" />
+              <Checkbox
+                text={t( "Casual" )}
+                isChecked={casual}
+                onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_CASUAL } )}
+              />
+            </View>
+          </View>
+
+          {/* User Section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "USER" )}</Heading4>
+            <View className="mb-5">
+              {user
+                ? (
+                  <Pressable
+                    className="flex-row justify-between items-center"
+                    accessibilityRole="button"
+                    accessibilityLabel={t( "Change-user" )}
+                    onPress={() => {
+                      navigation.navigate( "ExploreUserSearch" );
+                    }}
+                  >
+                    <UserListItem
+                      item={{ user }}
+                      count={user.observations_count}
+                      countText="X-Observations"
+                    />
+                    <INatIcon name="edit" size={22} />
+                  </Pressable>
+                )
+                : (
+                  <Button
+                    text={t( "FILTER-BY-A-USER" )}
+                    onPress={() => {
+                      navigation.navigate( "ExploreUserSearch" );
+                    }}
+                    accessibilityLabel={t( "Filter" )}
+                  />
+                )}
+            </View>
+          </View>
+
+          {/* Project Section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "PROJECT" )}</Heading4>
+            <View className="mb-5">
+              {project
+                ? (
+                  <Pressable
+                    className="flex-row justify-between items-center"
+                    accessibilityRole="button"
+                    accessibilityLabel={t( "Change-project" )}
+                    onPress={() => {
+                      navigation.navigate( "ExploreProjectSearch" );
+                    }}
+                  >
+                    <ProjectListItem item={project} />
+                    <INatIcon name="edit" size={22} />
+                  </Pressable>
+                )
+                : (
+                  <Button
+                    text={t( "FILTER-BY-A-PROJECT" )}
+                    onPress={() => {
+                      navigation.navigate( "ExploreProjectSearch" );
+                    }}
+                    accessibilityLabel={t( "Filter" )}
+                  />
+                )}
+            </View>
+          </View>
+
+          {/* Taxonomic Ranks section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
+            <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
             <Button
-              text={sortByButtonText()}
-              className="shrink"
+              text={hrank
+                ? taxonomicRankValues[hrank]?.label
+                : t( "ALL" )}
+              className="shrink mb-7"
               dropdown
               onPress={() => {
-                setOpenSheet( SORT_BY_M );
+                setOpenSheet( HRANK );
               }}
-              accessibilityLabel={t( "Sort-by" )}
+              accessibilityLabel={t( "Highest" )}
             />
-            {openSheet === SORT_BY_M && (
-              <RadioButtonSheet
-                headerText={t( "SORT-BY" )}
-                confirm={newSortBy => {
+            {openSheet === HRANK && (
+              <PickerSheet
+                headerText={t( "HIGHEST-RANK" )}
+                confirm={newRank => {
                   dispatch( {
-                    type: EXPLORE_ACTION.CHANGE_SORT_BY,
-                    sortBy: newSortBy
+                    type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
+                    hrank: newRank
                   } );
                   setOpenSheet( NONE );
                 }}
                 handleClose={() => setOpenSheet( NONE )}
-                radioValues={sortByValues}
-                selectedValue={sortBy}
+                pickerValues={taxonomicRankValues}
+                selectedValue={hrank}
+              />
+            )}
+            <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
+            <Button
+              text={lrank
+                ? taxonomicRankValues[lrank]?.label
+                : t( "ALL" )}
+              className="shrink mb-7"
+              dropdown
+              onPress={() => {
+                setOpenSheet( LRANK );
+              }}
+              accessibilityLabel={t( "Lowest" )}
+            />
+            {openSheet === LRANK && (
+              <PickerSheet
+                headerText={t( "LOWEST-RANK" )}
+                confirm={newRank => {
+                  dispatch( {
+                    type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
+                    lrank: newRank
+                  } );
+                  setOpenSheet( NONE );
+                }}
+                handleClose={() => setOpenSheet( NONE )}
+                pickerValues={taxonomicRankValues}
+                selectedValue={lrank}
               />
             )}
           </View>
-        </View>
 
-        {/* Quality Grade Section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
-          <View className="mb-5">
-            <Checkbox
-              text={t( "Research-Grade" )}
-              isChecked={researchGrade}
-              onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE } )}
-            />
-            <View className="mb-4" />
-            <Checkbox
-              text={t( "Needs-ID" )}
-              isChecked={needsID}
-              onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_NEEDS_ID } )}
-            />
-            <View className="mb-4" />
-            <Checkbox
-              text={t( "Casual" )}
-              isChecked={casual}
-              onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_CASUAL } )}
-            />
-          </View>
-        </View>
-
-        {/* User Section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "USER" )}</Heading4>
-          <View className="mb-5">
-            {user
-              ? (
-                <Pressable
-                  className="flex-row justify-between items-center"
-                  accessibilityRole="button"
-                  accessibilityLabel={t( "Change-user" )}
-                  onPress={() => {
-                    navigation.navigate( "ExploreUserSearch" );
-                  }}
-                >
-                  <UserListItem
-                    item={{ user }}
-                    count={user.observations_count}
-                    countText="X-Observations"
-                  />
-                  <INatIcon name="edit" size={22} />
-                </Pressable>
-              )
-              : (
-                <Button
-                  text={t( "FILTER-BY-A-USER" )}
-                  onPress={() => {
-                    navigation.navigate( "ExploreUserSearch" );
-                  }}
-                  accessibilityLabel={t( "Filter" )}
-                />
-              )}
-          </View>
-        </View>
-
-        {/* Project Section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "PROJECT" )}</Heading4>
-          <View className="mb-5">
-            {project
-              ? (
-                <Pressable
-                  className="flex-row justify-between items-center"
-                  accessibilityRole="button"
-                  accessibilityLabel={t( "Change-project" )}
-                  onPress={() => {
-                    navigation.navigate( "ExploreProjectSearch" );
-                  }}
-                >
-                  <ProjectListItem item={project} />
-                  <INatIcon name="edit" size={22} />
-                </Pressable>
-              )
-              : (
-                <Button
-                  text={t( "FILTER-BY-A-PROJECT" )}
-                  onPress={() => {
-                    navigation.navigate( "ExploreProjectSearch" );
-                  }}
-                  accessibilityLabel={t( "Filter" )}
-                />
-              )}
-          </View>
-        </View>
-
-        {/* Taxonomic Ranks section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
-          <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
-          <Button
-            text={hrank
-              ? taxonomicRankValues[hrank]?.label
-              : t( "ALL" )}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              setOpenSheet( HRANK );
-            }}
-            accessibilityLabel={t( "Highest" )}
-          />
-          {openSheet === HRANK && (
-            <PickerSheet
-              headerText={t( "HIGHEST-RANK" )}
-              confirm={newRank => {
-                dispatch( {
-                  type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
-                  hrank: newRank
-                } );
-                setOpenSheet( NONE );
+          {/* Date observed section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "DATE-OBSERVED" )}</Heading4>
+            <Button
+              text={dateObservedValues[dateObserved]?.label.toUpperCase()}
+              className="shrink mb-7"
+              dropdown
+              onPress={() => {
+                setOpenSheet( DATE_OBSERVED_M );
               }}
-              handleClose={() => setOpenSheet( NONE )}
-              pickerValues={taxonomicRankValues}
-              selectedValue={hrank}
+              accessibilityLabel={t( "Date-observed" )}
             />
-          )}
-          <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
-          <Button
-            text={lrank
-              ? taxonomicRankValues[lrank]?.label
-              : t( "ALL" )}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              setOpenSheet( LRANK );
-            }}
-            accessibilityLabel={t( "Lowest" )}
-          />
-          {openSheet === LRANK && (
-            <PickerSheet
-              headerText={t( "LOWEST-RANK" )}
-              confirm={newRank => {
-                dispatch( {
-                  type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
-                  lrank: newRank
-                } );
-                setOpenSheet( NONE );
-              }}
-              handleClose={() => setOpenSheet( NONE )}
-              pickerValues={taxonomicRankValues}
-              selectedValue={lrank}
-            />
-          )}
-        </View>
-
-        {/* Date observed section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "DATE-OBSERVED" )}</Heading4>
-          <Button
-            text={dateObservedValues[dateObserved]?.label.toUpperCase()}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              setOpenSheet( DATE_OBSERVED_M );
-            }}
-            accessibilityLabel={t( "Date-observed" )}
-          />
-          {dateObserved === DATE_OBSERVED.EXACT_DATE && (
-            <View className="items-center">
-              <Body1 className="mb-5">{observedOn}</Body1>
-              <Button
-                level="primary"
-                text={t( "CHANGE-DATE" )}
-                className="w-full mb-7"
-                onPress={() => {
-                  setOpenSheet( OBSERVED_EXACT );
-                }}
-                accessibilityLabel={t( "Change-date" )}
-              />
-              <DateTimePicker
-                isDateTimePickerVisible={openSheet === OBSERVED_EXACT}
-                toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateObservedExact( date )}
-              />
-            </View>
-          )}
-          {dateObserved === DATE_OBSERVED.DATE_RANGE && (
-            <View className="items-center">
-              <Body1
-                className={classNames(
-                  "mb-5",
-                  observedEndBeforeStart && "color-warningRed"
+            {dateObserved === DATE_OBSERVED.EXACT_DATE && (
+              <View className="items-center">
+                <Body1 className="mb-5">{observedOn}</Body1>
+                <Button
+                  level="primary"
+                  text={t( "CHANGE-DATE" )}
+                  className="w-full mb-7"
+                  onPress={() => {
+                    setOpenSheet( OBSERVED_EXACT );
+                  }}
+                  accessibilityLabel={t( "Change-date" )}
+                />
+                <DateTimePicker
+                  isDateTimePickerVisible={openSheet === OBSERVED_EXACT}
+                  toggleDateTimePicker={() => setOpenSheet( NONE )}
+                  onDatePicked={date => updateObservedExact( date )}
+                />
+              </View>
+            )}
+            {dateObserved === DATE_OBSERVED.DATE_RANGE && (
+              <View className="items-center">
+                <Body1
+                  className={classNames(
+                    "mb-5",
+                    observedEndBeforeStart && "color-warningRed"
+                  )}
+                >
+                  {d1}
+                </Body1>
+                <Button
+                  level="primary"
+                  text={t( "CHANGE-START-DATE" )}
+                  className="w-full mb-7"
+                  onPress={() => {
+                    setOpenSheet( OBSERVED_START );
+                  }}
+                  accessibilityLabel={t( "Change-start-date" )}
+                />
+                <Body1 className="mb-5">{d2}</Body1>
+                <Button
+                  level="primary"
+                  text={t( "CHANGE-END-DATE" )}
+                  className="w-full mb-7"
+                  onPress={() => {
+                    setOpenSheet( OBSERVED_END );
+                  }}
+                  accessibilityLabel={t( "Change-end-date" )}
+                />
+                {observedEndBeforeStart && (
+                  <View className="flex-row mb-5">
+                    <INatIcon
+                      name="triangle-exclamation"
+                      size={19}
+                      color={theme.colors.error}
+                    />
+                    <List2 className="ml-3">
+                      {t( "Start-must-be-before-end" )}
+                    </List2>
+                  </View>
                 )}
-              >
-                {d1}
-              </Body1>
-              <Button
-                level="primary"
-                text={t( "CHANGE-START-DATE" )}
-                className="w-full mb-7"
-                onPress={() => {
-                  setOpenSheet( OBSERVED_START );
-                }}
-                accessibilityLabel={t( "Change-start-date" )}
-              />
-              <Body1 className="mb-5">{d2}</Body1>
-              <Button
-                level="primary"
-                text={t( "CHANGE-END-DATE" )}
-                className="w-full mb-7"
-                onPress={() => {
-                  setOpenSheet( OBSERVED_END );
-                }}
-                accessibilityLabel={t( "Change-end-date" )}
-              />
-              {observedEndBeforeStart && (
-                <View className="flex-row mb-5">
-                  <INatIcon
-                    name="triangle-exclamation"
-                    size={19}
-                    color={theme.colors.error}
-                  />
-                  <List2 className="ml-3">
-                    {t( "Start-must-be-before-end" )}
-                  </List2>
-                </View>
-              )}
-              <DateTimePicker
-                isDateTimePickerVisible={openSheet === OBSERVED_START}
-                toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateObservedStart( date )}
-              />
-              <DateTimePicker
-                isDateTimePickerVisible={openSheet === OBSERVED_END}
-                toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateObservedEnd( date )}
-              />
-            </View>
-          )}
-          {dateObserved === DATE_OBSERVED.MONTHS
+                <DateTimePicker
+                  isDateTimePickerVisible={openSheet === OBSERVED_START}
+                  toggleDateTimePicker={() => setOpenSheet( NONE )}
+                  onDatePicked={date => updateObservedStart( date )}
+                />
+                <DateTimePicker
+                  isDateTimePickerVisible={openSheet === OBSERVED_END}
+                  toggleDateTimePicker={() => setOpenSheet( NONE )}
+                  onDatePicked={date => updateObservedEnd( date )}
+                />
+              </View>
+            )}
+            {dateObserved === DATE_OBSERVED.MONTHS
             && Object.keys( monthValues ).map( monthKey => (
               <View key={monthKey} className="flex-row items-center mb-5">
                 <Checkbox
@@ -1003,222 +1001,223 @@ const FilterModal = ( {
                 />
               </View>
             ) )}
-          {openSheet === DATE_OBSERVED_M && (
-            <RadioButtonSheet
-              headerText={t( "DATE-OBSERVED" )}
-              confirm={newDateObserved => {
-                updateDateObserved( { newDateObserved } );
-                setOpenSheet( NONE );
-              }}
-              handleClose={() => setOpenSheet( NONE )}
-              radioValues={dateObservedValues}
-              selectedValue={dateObserved}
-            />
-          )}
-        </View>
-
-        {/* Date uploaded section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "DATE-UPLOADED" )}</Heading4>
-          <Button
-            text={dateUploadedValues[dateUploaded]?.label.toUpperCase()}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              setOpenSheet( DATE_UPLOADED_M );
-            }}
-            accessibilityLabel={t( "Date-uploaded" )}
-          />
-          {dateUploaded === DATE_UPLOADED.EXACT_DATE && (
-            <View className="items-center">
-              <Body1 className="mb-5">{createdOn}</Body1>
-              <Button
-                level="primary"
-                text={t( "CHANGE-DATE" )}
-                className="w-full mb-7"
-                onPress={() => {
-                  setOpenSheet( UPLOADED_EXACT );
+            {openSheet === DATE_OBSERVED_M && (
+              <RadioButtonSheet
+                headerText={t( "DATE-OBSERVED" )}
+                confirm={newDateObserved => {
+                  updateDateObserved( { newDateObserved } );
+                  setOpenSheet( NONE );
                 }}
-                accessibilityLabel={t( "Change-date" )}
+                handleClose={() => setOpenSheet( NONE )}
+                radioValues={dateObservedValues}
+                selectedValue={dateObserved}
               />
-              <DateTimePicker
-                isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
-                toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateDateUploaded( {
-                  newDateUploaded: DATE_UPLOADED.EXACT_DATE,
-                  newD1: date.toISOString().split( "T" )[0]
-                } )}
-              />
-            </View>
-          )}
-          {dateUploaded === DATE_UPLOADED.DATE_RANGE && (
-            <View className="items-center">
-              <Body1
-                className={classNames(
-                  "mb-5",
-                  uploadedEndBeforeStart && "color-warningRed"
-                )}
-              >
-                {createdD1}
-              </Body1>
-              <Button
-                level="primary"
-                text={t( "CHANGE-START-DATE" )}
-                className="w-full mb-7"
-                onPress={() => {
-                  setOpenSheet( UPLOADED_START );
-                }}
-                accessibilityLabel={t( "Change-start-date" )}
-              />
-              <Body1 className="mb-5">{createdD2}</Body1>
-              <Button
-                level="primary"
-                text={t( "CHANGE-END-DATE" )}
-                className="w-full mb-7"
-                onPress={() => {
-                  setOpenSheet( UPLOADED_END );
-                }}
-                accessibilityLabel={t( "Change-end-date" )}
-              />
-              {uploadedEndBeforeStart && (
-                <View className="flex-row mb-5">
-                  <INatIcon
-                    name="triangle-exclamation"
-                    size={19}
-                    color={theme.colors.error}
-                  />
-                  <List2 className="ml-3">
-                    {t( "Start-must-be-before-end" )}
-                  </List2>
-                </View>
-              )}
-              <DateTimePicker
-                isDateTimePickerVisible={openSheet === UPLOADED_START}
-                toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateUploadedStart( date )}
-              />
-              <DateTimePicker
-                isDateTimePickerVisible={openSheet === UPLOADED_END}
-                toggleDateTimePicker={() => setOpenSheet( NONE )}
-                onDatePicked={date => updateUploadedEnd( date )}
-              />
-            </View>
-          )}
-          {openSheet === DATE_UPLOADED_M && (
-            <RadioButtonSheet
-              headerText={t( "DATE-UPLOADED" )}
-              confirm={newDateUploaded => {
-                updateDateUploaded( { newDateUploaded } );
-                setOpenSheet( NONE );
-              }}
-              handleClose={() => setOpenSheet( NONE )}
-              radioValues={dateUploadedValues}
-              selectedValue={dateUploaded}
-            />
-          )}
-        </View>
+            )}
+          </View>
 
-        {/* Media section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "MEDIA" )}</Heading4>
-          {Object.keys( mediaValues ).map( mediaKey => (
-            <RadioButtonRow
-              key={mediaKey}
-              value={mediaValues[mediaKey]}
-              checked={mediaValues[mediaKey].value === media}
-              onPress={() => dispatch( {
-                type: EXPLORE_ACTION.SET_MEDIA,
-                media: mediaValues[mediaKey].value
-              } )}
-              label={mediaValues[mediaKey].label}
-            />
-          ) )}
-        </View>
-
-        {/* Establishment Means section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
-          {Object.keys( establishmentValues ).map( establishmentKey => (
-            <RadioButtonRow
-              key={establishmentKey}
-              value={establishmentValues[establishmentKey]}
-              checked={
-                establishmentValues[establishmentKey].value
-                === establishmentMean
-              }
-              onPress={() => dispatch( {
-                type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
-                establishmentMean:
-                    establishmentValues[establishmentKey].value
-              } )}
-              label={establishmentValues[establishmentKey].label}
-            />
-          ) )}
-        </View>
-
-        {/* Wild Status section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "WILD-STATUS" )}</Heading4>
-          {Object.keys( wildValues ).map( wildKey => (
-            <RadioButtonRow
-              key={wildKey}
-              value={wildValues[wildKey]}
-              checked={wildValues[wildKey].value === wildStatus}
-              onPress={() => dispatch( {
-                type: EXPLORE_ACTION.SET_WILD_STATUS,
-                wildStatus: wildValues[wildKey].value
-              } )}
-              label={wildValues[wildKey].label}
-            />
-          ) )}
-        </View>
-
-        {/* Reviewed section */}
-        { currentUser && (
+          {/* Date uploaded section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
-            {Object.keys( reviewedValues ).map( reviewedKey => (
+            <Heading4 className="mb-5">{t( "DATE-UPLOADED" )}</Heading4>
+            <Button
+              text={dateUploadedValues[dateUploaded]?.label.toUpperCase()}
+              className="shrink mb-7"
+              dropdown
+              onPress={() => {
+                setOpenSheet( DATE_UPLOADED_M );
+              }}
+              accessibilityLabel={t( "Date-uploaded" )}
+            />
+            {dateUploaded === DATE_UPLOADED.EXACT_DATE && (
+              <View className="items-center">
+                <Body1 className="mb-5">{createdOn}</Body1>
+                <Button
+                  level="primary"
+                  text={t( "CHANGE-DATE" )}
+                  className="w-full mb-7"
+                  onPress={() => {
+                    setOpenSheet( UPLOADED_EXACT );
+                  }}
+                  accessibilityLabel={t( "Change-date" )}
+                />
+                <DateTimePicker
+                  isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
+                  toggleDateTimePicker={() => setOpenSheet( NONE )}
+                  onDatePicked={date => updateDateUploaded( {
+                    newDateUploaded: DATE_UPLOADED.EXACT_DATE,
+                    newD1: date.toISOString().split( "T" )[0]
+                  } )}
+                />
+              </View>
+            )}
+            {dateUploaded === DATE_UPLOADED.DATE_RANGE && (
+              <View className="items-center">
+                <Body1
+                  className={classNames(
+                    "mb-5",
+                    uploadedEndBeforeStart && "color-warningRed"
+                  )}
+                >
+                  {createdD1}
+                </Body1>
+                <Button
+                  level="primary"
+                  text={t( "CHANGE-START-DATE" )}
+                  className="w-full mb-7"
+                  onPress={() => {
+                    setOpenSheet( UPLOADED_START );
+                  }}
+                  accessibilityLabel={t( "Change-start-date" )}
+                />
+                <Body1 className="mb-5">{createdD2}</Body1>
+                <Button
+                  level="primary"
+                  text={t( "CHANGE-END-DATE" )}
+                  className="w-full mb-7"
+                  onPress={() => {
+                    setOpenSheet( UPLOADED_END );
+                  }}
+                  accessibilityLabel={t( "Change-end-date" )}
+                />
+                {uploadedEndBeforeStart && (
+                  <View className="flex-row mb-5">
+                    <INatIcon
+                      name="triangle-exclamation"
+                      size={19}
+                      color={theme.colors.error}
+                    />
+                    <List2 className="ml-3">
+                      {t( "Start-must-be-before-end" )}
+                    </List2>
+                  </View>
+                )}
+                <DateTimePicker
+                  isDateTimePickerVisible={openSheet === UPLOADED_START}
+                  toggleDateTimePicker={() => setOpenSheet( NONE )}
+                  onDatePicked={date => updateUploadedStart( date )}
+                />
+                <DateTimePicker
+                  isDateTimePickerVisible={openSheet === UPLOADED_END}
+                  toggleDateTimePicker={() => setOpenSheet( NONE )}
+                  onDatePicked={date => updateUploadedEnd( date )}
+                />
+              </View>
+            )}
+            {openSheet === DATE_UPLOADED_M && (
+              <RadioButtonSheet
+                headerText={t( "DATE-UPLOADED" )}
+                confirm={newDateUploaded => {
+                  updateDateUploaded( { newDateUploaded } );
+                  setOpenSheet( NONE );
+                }}
+                handleClose={() => setOpenSheet( NONE )}
+                radioValues={dateUploadedValues}
+                selectedValue={dateUploaded}
+              />
+            )}
+          </View>
+
+          {/* Media section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "MEDIA" )}</Heading4>
+            {Object.keys( mediaValues ).map( mediaKey => (
               <RadioButtonRow
-                key={reviewedKey}
-                value={reviewedValues[reviewedKey]}
-                checked={reviewedValues[reviewedKey].value === reviewedFilter}
+                key={mediaKey}
+                value={mediaValues[mediaKey]}
+                checked={mediaValues[mediaKey].value === media}
                 onPress={() => dispatch( {
-                  type: EXPLORE_ACTION.SET_REVIEWED,
-                  reviewedFilter: reviewedValues[reviewedKey].value
+                  type: EXPLORE_ACTION.SET_MEDIA,
+                  media: mediaValues[mediaKey].value
                 } )}
-                label={reviewedValues[reviewedKey].label}
+                label={mediaValues[mediaKey].label}
               />
             ) )}
           </View>
-        )}
 
-        {/* Photo licensing section */}
-        <View className="mb-7">
-          <Heading4 className="mb-5">{t( "PHOTO-LICENSING" )}</Heading4>
-          <Button
-            text={photoLicenseValues[photoLicense]?.label.toUpperCase()}
-            className="shrink mb-7"
-            dropdown
-            onPress={() => {
-              setOpenSheet( PHOTO_LICENSING );
-            }}
-            accessibilityLabel={t( "Photo-licensing" )}
-          />
-          {openSheet === PHOTO_LICENSING && (
-            <RadioButtonSheet
-              headerText={t( "PHOTO-LICENSING" )}
-              confirm={newLicense => {
-                dispatch( {
-                  type: EXPLORE_ACTION.SET_PHOTO_LICENSE,
-                  photoLicense: newLicense
-                } );
-                setOpenSheet( NONE );
-              }}
-              handleClose={() => setOpenSheet( NONE )}
-              radioValues={photoLicenseValues}
-              selectedValue={photoLicense}
-            />
+          {/* Establishment Means section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
+            {Object.keys( establishmentValues ).map( establishmentKey => (
+              <RadioButtonRow
+                key={establishmentKey}
+                value={establishmentValues[establishmentKey]}
+                checked={
+                  establishmentValues[establishmentKey].value
+                === establishmentMean
+                }
+                onPress={() => dispatch( {
+                  type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
+                  establishmentMean:
+                    establishmentValues[establishmentKey].value
+                } )}
+                label={establishmentValues[establishmentKey].label}
+              />
+            ) )}
+          </View>
+
+          {/* Wild Status section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "WILD-STATUS" )}</Heading4>
+            {Object.keys( wildValues ).map( wildKey => (
+              <RadioButtonRow
+                key={wildKey}
+                value={wildValues[wildKey]}
+                checked={wildValues[wildKey].value === wildStatus}
+                onPress={() => dispatch( {
+                  type: EXPLORE_ACTION.SET_WILD_STATUS,
+                  wildStatus: wildValues[wildKey].value
+                } )}
+                label={wildValues[wildKey].label}
+              />
+            ) )}
+          </View>
+
+          {/* Reviewed section */}
+          {currentUser && (
+            <View className="mb-7">
+              <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
+              {Object.keys( reviewedValues ).map( reviewedKey => (
+                <RadioButtonRow
+                  key={reviewedKey}
+                  value={reviewedValues[reviewedKey]}
+                  checked={reviewedValues[reviewedKey].value === reviewedFilter}
+                  onPress={() => dispatch( {
+                    type: EXPLORE_ACTION.SET_REVIEWED,
+                    reviewedFilter: reviewedValues[reviewedKey].value
+                  } )}
+                  label={reviewedValues[reviewedKey].label}
+                />
+              ) )}
+            </View>
           )}
+
+          {/* Photo licensing section */}
+          <View className="mb-7">
+            <Heading4 className="mb-5">{t( "PHOTO-LICENSING" )}</Heading4>
+            <Button
+              text={photoLicenseValues[photoLicense]?.label.toUpperCase()}
+              className="shrink mb-7"
+              dropdown
+              onPress={() => {
+                setOpenSheet( PHOTO_LICENSING );
+              }}
+              accessibilityLabel={t( "Photo-licensing" )}
+            />
+            {openSheet === PHOTO_LICENSING && (
+              <RadioButtonSheet
+                headerText={t( "PHOTO-LICENSING" )}
+                confirm={newLicense => {
+                  dispatch( {
+                    type: EXPLORE_ACTION.SET_PHOTO_LICENSE,
+                    photoLicense: newLicense
+                  } );
+                  setOpenSheet( NONE );
+                }}
+                handleClose={() => setOpenSheet( NONE )}
+                radioValues={photoLicenseValues}
+                selectedValue={photoLicense}
+              />
+            )}
+          </View>
         </View>
       </ScrollView>
       {/* This view is to offset the absolute StickyToolbar below */}

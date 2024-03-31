@@ -23,6 +23,7 @@ exports[`Checkbox renders reliably 1`] = `
   }
   accessible={true}
   collapsable={false}
+  disableBuiltInState={true}
   fillColor="rgba(98, 91, 113, 1)"
   focusable={true}
   iconComponent={
@@ -139,7 +140,7 @@ exports[`Checkbox renders reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Book",
         },
         [
           {
@@ -192,6 +193,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
   }
   accessible={true}
   collapsable={false}
+  disableBuiltInState={true}
   fillColor="rgba(98, 91, 113, 1)"
   focusable={true}
   iconComponent={
@@ -308,7 +310,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontFamily": "Whitney-Book",
         },
         [
           {

@@ -1,8 +1,6 @@
 // @flow
 
-import {
-  useFocusEffect, useNavigation, useRoute
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -21,16 +19,15 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 
 type Props = {
   observations: Array<Object>,
-  updateObservations: Function,
   currentObservation: Object
 }
 
 const Header = ( {
   observations,
-  updateObservations,
   currentObservation
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
+  const updateObservations = useStore( state => state.updateObservations );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -38,28 +35,27 @@ const Header = ( {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
-
-  const savedLocally = currentObservation?._created_at;
   const unsynced = !currentObservation?._synced_at;
+  const savedLocally = currentObservation?._created_at;
 
-  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
-    screen: "ObservationsStackNavigator",
-    params: {
-      screen: "ObsList"
-    }
-  } ), [navigation] );
+  const navToObsList = useCallback( ( ) => {
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
+  }, [navigation] );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    updateObservations( [] );
     navigateToObsDetails( navigation, currentObservation?.uuid );
-  }, [currentObservation?.uuid, navigation, updateObservations] );
+  }, [currentObservation?.uuid, navigation] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
-    updateObservations( [] );
     navToObsList( );
-  }, [updateObservations, navToObsList] );
+  }, [navToObsList] );
 
   const renderHeaderTitle = useCallback( ( ) => {
     let headingText = "";
@@ -140,14 +136,25 @@ const Header = ( {
           setDeleteSheetVisible( true );
           setKebabMenuVisible( false );
         }}
-        title={
-          observations.length > 1
-            ? t( "Delete-observations" )
-            : t( "Delete-observation" )
-        }
+        title={t( "Delete-observation" )}
       />
+      { observations.length > 1 && (
+        <Menu.Item
+          testID="Header.delete-all-observation"
+          onPress={( ) => {
+            setDiscardObservationSheetVisible( true );
+            setKebabMenuVisible( false );
+          }}
+          title={t( "Delete-all-observations" )}
+        />
+      ) }
     </KebabMenu>
-  ), [kebabMenuVisible, observations, t, setDeleteSheetVisible] );
+  ), [
+    kebabMenuVisible,
+    observations,
+    setDeleteSheetVisible,
+    t
+  ] );
 
   return (
     <View className="flex-row justify-between items-center">
@@ -162,6 +169,7 @@ const Header = ( {
           navToObsList={navToObsList}
           observations={observations}
           currentObservation={currentObservation}
+          updateObservations={updateObservations}
         />
       )}
       {discardObservationSheetVisible && (

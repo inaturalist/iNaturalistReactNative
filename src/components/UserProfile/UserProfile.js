@@ -1,11 +1,11 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { updateRelationships } from "api/relationships";
+import { fetchRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
+import LoginSheet from "components/MyObservations/LoginSheet";
 import {
   Body2,
-  Button,
   Heading1,
   Heading4,
   INatIconButton,
@@ -18,17 +18,22 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import User from "realmModels/User";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
-import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
+import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
+
+import FollowButtonContainer from "./FollowButtonContainer";
+import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ): Node => {
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
   const { userId } = params;
+  const [showLoginSheet, setShowLoginSheet] = useState( false );
+  const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
 
   const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", userId],
@@ -37,9 +42,22 @@ const UserProfile = ( ): Node => {
 
   const user = remoteUser || null;
 
-  const updateRelationshipsMutation = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )
+  const {
+    data: relationships,
+    refetch
+  } = useAuthenticatedQuery(
+    ["fetchRelationships"],
+    optsWithAuth => fetchRelationships( {
+      q: user?.login,
+      fields: "following,friend_user,id",
+      ttl: -1
+    }, optsWithAuth )
   );
+  let relationshipResults = null;
+  if ( relationships?.results && relationships.results.length > 0 ) {
+    relationshipResults = relationships?.results
+      .find( relationship => relationship.friendUser.id === userId );
+  }
 
   useEffect( ( ) => {
     const headerRight = ( ) => currentUser?.login === user?.login && (
@@ -55,23 +73,27 @@ const UserProfile = ( ): Node => {
   }, [navigation, user, currentUser] );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", { user, worldwide: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      user,
+      worldwide: true,
+      resetStoredParams: true
+    } ),
     [navigation, user]
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", { user, worldwide: true, viewSpecies: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      user,
+      worldwide: true,
+      viewSpecies: true,
+      resetStoredParams: true
+    } ),
     [navigation, user]
   );
 
   if ( !user ) {
     return null;
   }
-
-  const followUser = ( ) => updateRelationshipsMutation.mutate( {
-    id: userId,
-    relationship: { following: true }
-  } );
 
   return (
     <ScrollViewWrapper testID="UserProfile">
@@ -94,50 +116,24 @@ const UserProfile = ( ): Node => {
         onSpeciesPressed={onSpeciesPressed}
       />
       <View className="mx-3">
-        {currentUser?.login !== user?.login && (
-          <View className="flex-row justify-evenly mt-8 mb-4">
-            <Button
-              level="primary"
-              className="grow"
-              text={t( "FOLLOW" )}
-              onPress={followUser}
-              testID="UserProfile.followButton"
+        <View className="mt-8 mb-4">
+          {currentUser?.login !== user?.login && (
+            <FollowButtonContainer
+              refetchRelationship={refetch}
+              relationship={relationshipResults}
+              userId={userId}
+              setShowLoginSheet={setShowLoginSheet}
+              currentUser={currentUser}
+              setShowUnfollowSheet={setShowUnfollowSheet}
             />
-            <Button
-              className="grow ml-3"
-              level="primary"
-              text={t( "MESSAGE" )}
-              onPress={( ) => navigation.navigate( "Messages" )}
-              testID="UserProfile.messagesButton"
-            />
-          </View>
-        )}
+          )}
+        </View>
         { user?.description && (
           <>
             <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
             <UserText text={user?.description} />
           </>
         ) }
-        <Heading4 className="mb-2 mt-5">{t( "PROJECTS" )}</Heading4>
-        <Button
-          className="mb-6"
-          text={t( "VIEW-PROJECTS" )}
-          onPress={( ) => navigation.navigate( "Projects" )}
-        />
-        <Heading4 className="mb-2">{t( "PEOPLE" )}</Heading4>
-        <Button
-          className="mb-6"
-          text={t( "VIEW-FOLLOWERS" )}
-        />
-        <Button
-          className="mb-6"
-          text={t( "VIEW-FOLLOWING" )}
-        />
-        <Heading4 className="mb-2">{t( "JOURNAL-POSTS" )}</Heading4>
-        <Button
-          className="mb-6"
-          text={t( "VIEW-JOURNAL-POSTS" )}
-        />
         <Body2 className="mb-5">
           {t( "Joined-date", { date: formatUserProfileDate( user.created_at, t ) } )}
         </Body2>
@@ -155,6 +151,14 @@ const UserProfile = ( ): Node => {
           </Body2>
         )}
       </View>
+      {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
+      {showUnfollowSheet && (
+        <UnfollowSheet
+          relationship={relationshipResults}
+          setShowUnfollowSheet={setShowUnfollowSheet}
+          refetchRelationship={refetch}
+        />
+      )}
     </ScrollViewWrapper>
   );
 };
