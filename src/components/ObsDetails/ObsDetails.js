@@ -91,13 +91,13 @@ const ObsDetails = ( {
   const { uuid } = params;
   const { t } = useTranslation( );
 
-  const dynamicInsets = useMemo(() => ({
-    backgroundColor: '#ffffff',
+  const dynamicInsets = useMemo( () => ( {
+    backgroundColor: "#ffffff",
     paddingTop: insets.top,
     paddingBottom: insets.bottom,
     paddingLeft: insets.left,
-    paddingRight: insets.right,
-  }), [insets]);
+    paddingRight: insets.right
+  } ), [insets] );
 
   const textInputStyle = Platform.OS === "android" && {
     height: 125
