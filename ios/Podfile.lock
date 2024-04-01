@@ -512,7 +512,7 @@ PODS:
     - React-Core
   - RNPermissions (3.10.0):
     - React-Core
-  - RNReanimated (3.7.1):
+  - RNReanimated (3.8.1):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - ReactCommon/turbomodule/core
@@ -874,7 +874,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: b83cf821f60b7ec59827f0ed9e5b8c46b1de2c99
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: 0332875c444efe864dd97071dc848529bd7cc692
-  RNReanimated: d1e4ed9a92d89eec531690500d40c2384a3b1986
+  RNReanimated: fc36806836aca984b797f01432abe31689663421
   RNScreens: e5ee7223f7c8fa261f0c4594a0541c56ea99bbfc
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNStoreReview: 31dbfd0dac2eea9675f0b84f1dd3261c2110c337
