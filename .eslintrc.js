@@ -51,7 +51,9 @@ module.exports = {
     "import/extensions": [2, {
       js: "never",
       jsx: "never",
-      json: "always"
+      json: "always",
+      ts: "never",
+      tsx: "never"
     }],
     indent: ["error", 2, { SwitchCase: 1 }],
     "max-len": [
@@ -135,6 +137,7 @@ module.exports = {
       "babel-module": { allowExistingDirectories: true },
       node: {
         extensions: [".js", ".jsx", ".ts", ".tsx"]
+        // moduleDirectory: [".", "node_modules"]
       }
     }
   }
