@@ -85,7 +85,7 @@ const ProjectDetails = ( {
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {project?.description
           && <UserText text={project.description} htmlStyle={userTextStyle} />}
-        {project.project_type === "collection" && (
+        {/* {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
             <Button
@@ -93,7 +93,7 @@ const ProjectDetails = ( {
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
             />
           </>
-        )}
+        )} */}
         <Heading4 className="mb-3 mt-5">{t( "MAP" )}</Heading4>
         <Button
           level="neutral"
