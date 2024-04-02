@@ -17,7 +17,7 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
-# Header above user biography / user description on user profile
+# Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
 ABOUT-INATURALIST = ABOUT INATURALIST
@@ -26,12 +26,10 @@ ABOUT-THE-DQA = ABOUT THE DQA
 About-the-DQA-description = The Quality Grade summarizes the accuracy, precision, completeness, relevance, and appropriateness of an iNaturalist observation as biodiversity data. Some attributes are automatically determined, while others are subject to a vote by iNat users. iNaturalist shares licensed "Research Grade" observations with a number of data partners for use in science and conservation.
 ABOUT-TRADITIONAL-PROJECTS = ABOUT TRADITIONAL PROJECTS
 ABOUT-UMBRELLA-PROJECTS = ABOUT UMBRELLA PROJECTS
-Accept-community-identifications = Accept community identifications
 # Label for a taxon when a user prefers to see or hear the common name first
 accessible-comname-sciname = { $commonName } ({ $scientificName })
 # Label for a taxon when a user prefers to see or hear the scientific name first
 accessible-sciname-comname = { $scientificName } ({ $commonName })
-Account = Account
 ACTIVITY = ACTIVITY
 ADD-AN-ID = ADD AN ID
 ADD-COMMENT = ADD COMMENT
@@ -46,8 +44,6 @@ Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
 Add-this-ID = Add this identification
-# Date relationship created, shown on settings relationships screen
-Added-on-date = Added on { $date }
 Affiliation = Affiliation: { $site }
 Agree = Agree
 AGREE = AGREE
@@ -67,7 +63,6 @@ An-Internet-connection-is-required = An Internet connection is required to load 
 Any = Any
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
-app-authorized-on-date = { $appName } (authorized on: { $date })
 APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 April = April
@@ -87,11 +82,8 @@ attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
 attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
-Automatically-update-my-content-for-taxon-changes = Automatically update my content for taxon changes
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
-# Header for inserting user description in settings profile tab
-Bio = Bio
 BLOG = BLOG
 # Accessibility label for bulk import / photo import button
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
@@ -146,10 +138,8 @@ COMMENT = COMMENT
 Comment-options = Comment options
 Common-Name-Scientific-Name = Common Name (Scientific Name)
 Community-Guidelines = Community Guidelines
-Community-Moderation-Settings = Community Moderation Settings
 CONFIRM = CONFIRM
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
-Connected-Accounts = Connected Accounts
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
 Coordinates-copied-to-keyboard = Coordinates copied to keyboard
@@ -225,7 +215,6 @@ Date_observed_header_short = Observed
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
 December = December
-Default-Search-Place = Default Search Place
 DELETE = DELETE
 Delete-all-observations = Delete all observations
 Delete-comment = Delete comment
@@ -265,9 +254,6 @@ DISCARD-X-OBSERVATIONS =
        *[other] DISCARD { $count } OBSERVATIONS
     }
 DISMISS = DISMISS
-Display = Display
-Display-Name = Display Name
-Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 Donate-to-iNaturalist = Donate to iNaturalist
@@ -283,10 +269,7 @@ EDIT-LOCATION = EDIT LOCATION
 Edit-location = Edit location
 Edit-Observation = Edit Observation
 EMAIL = EMAIL
-# Appears above the email text field
-Email = email
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
-Email-Notifications = Email Notifications
 Enable-flash = Enable flash
 Endemic = Endemic
 # TODO this and many other uses of placeables are not currently translatable
@@ -313,7 +296,6 @@ EXPLORE-IDENTIFIERS = EXPLORE IDENTIFIERS
 EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 EXPLORE-OBSERVERS = EXPLORE OBSERVERS
 EXPLORE-SPECIES = EXPLORE SPECIES
-External-Applications = External Applications
 Failed-to-delete-sound = Failed to delete sound
 # Error message with log in fails
 Failed-to-log-in = Failed to log in
@@ -339,7 +321,6 @@ Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 Flagged = Flagged
 Flash = flash
 FOLLOW = FOLLOW
-Following = Following
 # Forgot password link
 Forgot-Password = Forgot Password
 GEOPRIVACY = GEOPRIVACY
@@ -388,8 +369,6 @@ IMPORT-X-OBSERVATIONS =
 # Identification category
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
-iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
-iNaturalist-Applications = iNaturalist Applications
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -405,7 +384,6 @@ iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing 
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
 INATURALIST-NETWORK = INATURALIST NETWORK
-iNaturalist-Network-Affiliation = iNaturalist Network Affiliation
 INATURALIST-SETTINGS = INATURALIST SETTINGS
 # Label for the role a user plays on iNaturalist, e.g. "INATURALIST STAFF"
 # or "INATURALIST CURATOR". Since the name "INATURALIST" should not be
@@ -441,7 +419,6 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
     }
 July = July
 June = June
-Language-Locale = Language/Locale
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: { $date }
 # Latitude, longitude on a single line on a single line
@@ -455,7 +432,6 @@ LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 LICENSES = LICENSES
-Licensing = Licensing
 List-view = List view
 Loading-iNaturalists-AR-Camera = Loading iNaturalist's AR Camera
 LOCATION = LOCATION
@@ -499,7 +475,6 @@ MONTHS = MONTHS
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
-Names = Names
 Native = Native
 Native-to-place = Native to { $place }
 Navigates-to-add-identification = Navigates to add identification.
@@ -628,14 +603,10 @@ Please-try-again-when-you-are-connected-to-the-internet = Please try again when 
 # Help text for beginning a sound recording
 Press-record-to-start = Press record to start
 Previous-observation = Previous observation
-Prioritize-common-names-used-in-this-place = Prioritize common names used in this place.
-Privacy = Privacy
 Privacy-Policy = Privacy Policy
 Private = Private
-Profile-Picture = Profile Picture
 PROJECT = PROJECT
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
-Project-Settings = Project Settings
 PROJECTS = PROJECTS
 Projects = Projects
 QUALITY-GRADE = QUALITY GRADE
@@ -699,7 +670,6 @@ Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play t
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
 Remove-favorite = Remove favorite
 Remove-Photos = Remove Photos
-Remove-Relationship = Remove Relationship
 # Quality grade option
 Research-Grade = Research Grade
 # Reset password button
@@ -721,7 +691,6 @@ REVIEW-INATURALIST = REVIEW INATURALIST
 # reviewed the observations or not
 REVIEWED = REVIEWED
 Reviewed-observations-only = Reviewed observations only
-Revoke = Revoke
 # Label for the satellite map type
 Satellite--map-type = Satellite
 # Label for a button that persists something
@@ -836,7 +805,6 @@ TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
 TAXONOMIC-RANKS = TAXONOMIC RANKS
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
-Taxonomy-Settings = Taxonomy Settings
 TEACHERS = TEACHERS
 Teachers-Guide = Teachers' Guide
 TEAM = TEAM
@@ -844,27 +812,21 @@ Terms-of-Use = Terms of Use
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
-The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.
 The-iNaturalist-team-has-collaborated = The iNaturalist team has collaborated with...
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
 There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
-This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist = This is how all taxon names will be displayed to you across iNaturalist
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
-This-sets-your-language-and-date-formatting-preferences-across-iNaturalist = This sets your language and date formatting preferences across iNaturalist based on your locale.
-This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This will be your default place for all searches in Explore and Identify.
 To-access-all-other-settings = To access all other account settings, click here:
 To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 Toggle-map-type = Toggle map type
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = Traditional Project
-Trust-with-hidden-coordinates = Trust with hidden coordinates
 Umbrella-Project = Umbrella Project
-Unblock = Unblock
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
 # Text to show when a taxon or identification is unknown or missing
@@ -874,7 +836,6 @@ Unknown--user = Unknown
 # Generic error message
 Unknown-error = Unknown error
 Unknown-organism = Unknown organism
-Unmute = Unmute
 Unreviewed-observations-only = Unreviewed observations only
 Upload-Complete = Upload Complete
 Upload-in-progress = Upload in progress
@@ -907,7 +868,6 @@ Use-your-devices-microphone-to-record = Use your device’s microphone to record
 USER = USER
 User = User { $userHandle }
 USERNAME = USERNAME
-Username = Username
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
@@ -935,8 +895,6 @@ Welcome-to-iNaturalist = Welcome to iNaturalist!
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
-Which-traditional-projects-can-add-your-observations = Which traditional projects can add your observations?
-Who-can-add-observation-fields-to-my-observations = Who can add observation fields to my observations?
 WIKIPEDIA = WIKIPEDIA
 Wild = Wild
 WILD-STATUS = WILD STATUS

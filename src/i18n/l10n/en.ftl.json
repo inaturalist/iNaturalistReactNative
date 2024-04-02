@@ -1,6 +1,6 @@
 {
   "ABOUT": {
-    "comment": "Header above user biography / user description on user profile",
+    "comment": "Header for a general description, e.g. of a user, or of iNaturalist itself",
     "val": "ABOUT"
   },
   "ABOUT-COLLECTION-PROJECTS": "ABOUT COLLECTION PROJECTS",
@@ -12,7 +12,6 @@
   "About-the-DQA-description": "The Quality Grade summarizes the accuracy, precision, completeness, relevance, and appropriateness of an iNaturalist observation as biodiversity data. Some attributes are automatically determined, while others are subject to a vote by iNat users. iNaturalist shares licensed \"Research Grade\" observations with a number of data partners for use in science and conservation.",
   "ABOUT-TRADITIONAL-PROJECTS": "ABOUT TRADITIONAL PROJECTS",
   "ABOUT-UMBRELLA-PROJECTS": "ABOUT UMBRELLA PROJECTS",
-  "Accept-community-identifications": "Accept community identifications",
   "accessible-comname-sciname": {
     "comment": "Label for a taxon when a user prefers to see or hear the common name first",
     "val": "{ $commonName } ({ $scientificName })"
@@ -21,7 +20,6 @@
     "comment": "Label for a taxon when a user prefers to see or hear the scientific name first",
     "val": "{ $scientificName } ({ $commonName })"
   },
-  "Account": "Account",
   "ACTIVITY": "ACTIVITY",
   "ADD-AN-ID": "ADD AN ID",
   "ADD-COMMENT": "ADD COMMENT",
@@ -37,10 +35,6 @@
   "ADD-OPTIONAL-COMMENT": "ADD OPTIONAL COMMENT",
   "Add-optional-notes": "Add optional notes",
   "Add-this-ID": "Add this identification",
-  "Added-on-date": {
-    "comment": "Date relationship created, shown on settings relationships screen",
-    "val": "Added on { $date }"
-  },
   "Affiliation": "Affiliation: { $site }",
   "Agree": "Agree",
   "AGREE": "AGREE",
@@ -64,7 +58,6 @@
     "comment": " Geoprivacy sheet descriptions",
     "val": "Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research."
   },
-  "app-authorized-on-date": "{ $appName } (authorized on: { $date })",
   "APPLY-FILTERS": "APPLY FILTERS",
   "Apply-filters": "Apply filters",
   "April": "April",
@@ -86,14 +79,9 @@
   "attribution-cc-by-nd": "some rights reserved (CC BY-ND)",
   "attribution-cc-by-sa": "some rights reserved (CC BY-SA)",
   "August": "August",
-  "Automatically-update-my-content-for-taxon-changes": "Automatically update my content for taxon changes",
   "BACK-TO-LOGIN": {
     "comment": "Returns user to login screen",
     "val": "BACK TO LOGIN"
-  },
-  "Bio": {
-    "comment": "Header for inserting user description in settings profile tab",
-    "val": "Bio"
   },
   "BLOG": "BLOG",
   "Bulk-importer": {
@@ -159,10 +147,8 @@
   },
   "Common-Name-Scientific-Name": "Common Name (Scientific Name)",
   "Community-Guidelines": "Community Guidelines",
-  "Community-Moderation-Settings": "Community Moderation Settings",
   "CONFIRM": "CONFIRM",
   "Connect-with-other-naturalists": "Connect with other naturalists and engage in conversations.",
-  "Connected-Accounts": "Connected Accounts",
   "Connection-problem-Please-try-again-later": "Connection problem. Please try again later.",
   "CONTACT-SUPPORT": "CONTACT SUPPORT",
   "Coordinates-copied-to-keyboard": "Coordinates copied to keyboard",
@@ -259,7 +245,6 @@
     "val": "M/d/yy h:mm a"
   },
   "December": "December",
-  "Default-Search-Place": "Default Search Place",
   "DELETE": "DELETE",
   "Delete-all-observations": "Delete all observations",
   "Delete-comment": "Delete comment",
@@ -301,9 +286,6 @@
   },
   "DISCARD-X-OBSERVATIONS": "{ $count ->\n  [one] DISCARD OBSERVATION\n *[other] DISCARD { $count } OBSERVATIONS\n}",
   "DISMISS": "DISMISS",
-  "Display": "Display",
-  "Display-Name": "Display Name",
-  "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
   "DONATE": "DONATE",
   "DONATE-TO-INATURALIST": "DONATE TO INATURALIST",
   "Donate-to-iNaturalist": "Donate to iNaturalist",
@@ -323,12 +305,7 @@
   },
   "Edit-Observation": "Edit Observation",
   "EMAIL": "EMAIL",
-  "Email": {
-    "comment": "Appears above the email text field",
-    "val": "email"
-  },
   "EMAIL-DEBUG-LOGS": "EMAIL DEBUG LOGS",
-  "Email-Notifications": "Email Notifications",
   "Enable-flash": "Enable flash",
   "Endemic": "Endemic",
   "Endemic-to-place": {
@@ -359,7 +336,6 @@
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "EXPLORE-OBSERVERS": "EXPLORE OBSERVERS",
   "EXPLORE-SPECIES": "EXPLORE SPECIES",
-  "External-Applications": "External Applications",
   "Failed-to-delete-sound": "Failed to delete sound",
   "Failed-to-log-in": {
     "comment": "Error message with log in fails",
@@ -391,7 +367,6 @@
   },
   "Flash": "flash",
   "FOLLOW": "FOLLOW",
-  "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
     "val": "Forgot Password"
@@ -452,8 +427,6 @@
     "val": "Improving"
   },
   "INATURALIST-ACCOUNT-SETTINGS": "INATURALIST ACCOUNT SETTINGS",
-  "iNaturalist-Activity-Notifications": "iNaturalist Activity Notifications",
-  "iNaturalist-Applications": "iNaturalist Applications",
   "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery": "iNaturalist can save photos you take in the app to your device’s gallery.",
   "INATURALIST-COMMUNITY": "INATURALIST COMMUNITY",
   "INATURALIST-FORUM": "INATURALIST FORUM",
@@ -469,7 +442,6 @@
   "iNaturalist-mission-is-to-connect": "iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.",
   "INATURALIST-MISSION-VISION": "INATURALIST'S MISSION & VISION",
   "INATURALIST-NETWORK": "INATURALIST NETWORK",
-  "iNaturalist-Network-Affiliation": "iNaturalist Network Affiliation",
   "INATURALIST-SETTINGS": "INATURALIST SETTINGS",
   "INATURALIST-STAFF": {
     "comment": "Label for the role a user plays on iNaturalist, e.g. \"INATURALIST STAFF\"\nor \"INATURALIST CURATOR\". Since the name \"INATURALIST\" should not be\ntranslated or locally it is inserted as a variable here, but it will always\nbe \"INATURALIST\"",
@@ -506,7 +478,6 @@
   "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}",
   "July": "July",
   "June": "June",
-  "Language-Locale": "Language/Locale",
   "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
     "val": "Last Active: { $date }"
@@ -528,7 +499,6 @@
   "LEAVE-PROJECT": "LEAVE PROJECT",
   "LEAVE-US-A-REVIEW": "LEAVE US A REVIEW!",
   "LICENSES": "LICENSES",
-  "Licensing": "Licensing",
   "List-view": "List view",
   "Loading-iNaturalists-AR-Camera": "Loading iNaturalist's AR Camera",
   "LOCATION": "LOCATION",
@@ -578,7 +548,6 @@
   "More-info": "More info",
   "MOST-FAVED": "MOST FAVED",
   "Most-faved": "Most faved",
-  "Names": "Names",
   "Native": "Native",
   "Native-to-place": "Native to { $place }",
   "Navigates-to-add-identification": "Navigates to add identification.",
@@ -745,14 +714,10 @@
     "val": "Press record to start"
   },
   "Previous-observation": "Previous observation",
-  "Prioritize-common-names-used-in-this-place": "Prioritize common names used in this place.",
-  "Privacy": "Privacy",
   "Privacy-Policy": "Privacy Policy",
   "Private": "Private",
-  "Profile-Picture": "Profile Picture",
   "PROJECT": "PROJECT",
   "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
-  "Project-Settings": "Project Settings",
   "PROJECTS": "PROJECTS",
   "Projects": "Projects",
   "QUALITY-GRADE": "QUALITY GRADE",
@@ -830,7 +795,6 @@
   "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA",
   "Remove-favorite": "Remove favorite",
   "Remove-Photos": "Remove Photos",
-  "Remove-Relationship": "Remove Relationship",
   "Research-Grade": {
     "comment": "Quality grade option",
     "val": "Research Grade"
@@ -863,7 +827,6 @@
     "val": "REVIEWED"
   },
   "Reviewed-observations-only": "Reviewed observations only",
-  "Revoke": "Revoke",
   "Satellite--map-type": {
     "comment": "Label for the satellite map type",
     "val": "Satellite"
@@ -1010,7 +973,6 @@
     "comment": "Header for a block of text describing a taxon's taxonomy",
     "val": "TAXONOMY"
   },
-  "Taxonomy-Settings": "Taxonomy Settings",
   "TEACHERS": "TEACHERS",
   "Teachers-Guide": "Teachers' Guide",
   "TEAM": "TEAM",
@@ -1018,7 +980,6 @@
   "Text-Box-to-Describe-Reason-for-Flag": "Text box to describe reason for flag.",
   "The-exact-location-will-be-hidden": "The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).",
   "The-iNaturalist-Network": "The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.",
-  "The-iNaturalist-Network-is-a-collection-of-localized-websites": "The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.",
   "The-iNaturalist-team-has-collaborated": "The iNaturalist team has collaborated with...",
   "The-location-will-not-be-visible": "The location will not be visible to others, which means it may be difficult to identify.",
   "There-is-no-way": "There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.",
@@ -1026,21 +987,16 @@
     "comment": " Wild status sheet descriptions",
     "val": "This is a wild organism and wasn't placed in this location by humans."
   },
-  "This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist": "This is how all taxon names will be displayed to you across iNaturalist",
   "This-is-how-taxon-names-will-be-displayed": "This is how all taxon names will be displayed to you across iNaturalist:",
   "This-observer-has-opted-out-of-the-Community-Taxon": "This observer has opted out of the Community Taxon",
   "This-organism-was-placed-by-humans": "This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.",
-  "This-sets-your-language-and-date-formatting-preferences-across-iNaturalist": "This sets your language and date formatting preferences across iNaturalist based on your locale.",
-  "This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify": "This will be your default place for all searches in Explore and Identify.",
   "To-access-all-other-settings": "To access all other account settings, click here:",
   "To-learn-more-about-what-information": "To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.",
   "To-sync-your-observations-to-iNaturalist": "To sync your observations to iNaturalist, please log in.",
   "Toggle-map-type": "Toggle map type",
   "TOP-ID-SUGGESTION": "TOP ID SUGGESTION",
   "Traditional-Project": "Traditional Project",
-  "Trust-with-hidden-coordinates": "Trust with hidden coordinates",
   "Umbrella-Project": "Umbrella Project",
-  "Unblock": "Unblock",
   "UNFOLLOW": "UNFOLLOW",
   "UNFOLLOW-USER": "UNFOLLOW USER?",
   "Unknown--taxon": {
@@ -1056,7 +1012,6 @@
     "val": "Unknown error"
   },
   "Unknown-organism": "Unknown organism",
-  "Unmute": "Unmute",
   "Unreviewed-observations-only": "Unreviewed observations only",
   "Upload-Complete": "Upload Complete",
   "Upload-in-progress": "Upload in progress",
@@ -1091,7 +1046,6 @@
   "USER": "USER",
   "User": "User { $userHandle }",
   "USERNAME": "USERNAME",
-  "Username": "Username",
   "USERNAME-OR-EMAIL": {
     "comment": "Appears above the text fields",
     "val": "USERNAME OR EMAIL"
@@ -1125,8 +1079,6 @@
   },
   "WHAT-IS-INATURALIST": "WHAT IS INATURALIST?",
   "Whats-more-by-recording": "What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!",
-  "Which-traditional-projects-can-add-your-observations": "Which traditional projects can add your observations?",
-  "Who-can-add-observation-fields-to-my-observations": "Who can add observation fields to my observations?",
   "WIKIPEDIA": "WIKIPEDIA",
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",
