@@ -8,7 +8,6 @@ import {
   Body2,
   Heading1,
   Heading4,
-  INatIconButton,
   OverviewCounts,
   ScrollViewWrapper,
   Subheading1,
@@ -18,11 +17,10 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import User from "realmModels/User";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
-import colors from "styles/tailwindColors";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
@@ -59,18 +57,18 @@ const UserProfile = ( ): Node => {
       .find( relationship => relationship.friendUser.id === userId );
   }
 
-  useEffect( ( ) => {
-    const headerRight = ( ) => currentUser?.login === user?.login && (
-      <INatIconButton
-        icon="pencil"
-        color={colors.darkGray}
-        size={22}
-        accessibilityLabel={t( "Edit" )}
-      />
-    );
+  // useEffect( ( ) => {
+  //   const headerRight = ( ) => currentUser?.login === user?.login && (
+  //     <INatIconButton
+  //       icon="pencil"
+  //       color={colors.darkGray}
+  //       size={22}
+  //       accessibilityLabel={t( "Edit" )}
+  //     />
+  //   );
 
-    navigation.setOptions( { headerRight } );
-  }, [navigation, user, currentUser] );
+  //   navigation.setOptions( { headerRight } );
+  // }, [navigation, user, currentUser] );
 
   const onObservationPressed = useCallback(
     ( ) => navigation.navigate( "Explore", {
