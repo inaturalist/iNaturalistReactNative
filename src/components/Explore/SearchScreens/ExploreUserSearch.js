@@ -59,7 +59,6 @@ const ExploreUserSearch = ( ): Node => {
     ( { item } ) => (
       <UserListItem
         item={{ user: item }}
-        count={item.observations_count}
         countText="X-Observations"
         accessibilityLabel={t( "Select-user" )}
         onPress={( ) => onUserSelected( item )}

@@ -61,7 +61,7 @@ const WithdrawIDSheet = ( {
         className="mx-2 grow"
         testID="ObsDetail.WithdrawId.withdraw"
         accessibilityRole="button"
-        accessibilityHint={t( "Withdraws-id-and-closes" )}
+        accessibilityHint={t( "Withdraws-identification" )}
         level="primary"
       />
 

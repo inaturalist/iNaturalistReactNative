@@ -38,6 +38,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
         elevation: 20
       } )}
       accessibilityRole="tablist"
+      testID="CustomTabBar"
     >
       {tabList}
     </View>

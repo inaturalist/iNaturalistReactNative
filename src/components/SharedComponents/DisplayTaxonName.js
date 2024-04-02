@@ -131,7 +131,7 @@ const DisplayTaxonName = ( {
                   isHorizontal={isHorizontal}
                   textClassName={textClassName}
                   taxonId={taxon.id}
-                  keyBase={keyBase}
+                  keyBase={`${keyBase}-top`}
                   isTitle
                 />
               )
@@ -156,7 +156,7 @@ const DisplayTaxonName = ( {
                     isHorizontal={isHorizontal}
                     textClassName={textClassName}
                     taxonId={taxon.id}
-                    keyBase={keyBase}
+                    keyBase={`${keyBase}-bot`}
                   />
                 )}
             </BottomTextComponent>
@@ -179,7 +179,7 @@ const DisplayTaxonName = ( {
   if ( !taxon ) {
     return (
       <Body1 className={textClassName} numberOfLines={1}>
-        {t( "unknown" )}
+        {t( "Unknown--taxon" )}
       </Body1>
     );
   }

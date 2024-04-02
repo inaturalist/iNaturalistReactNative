@@ -516,7 +516,7 @@ const Map = ( {
             currentLocationButtonClassName
           )}
           style={getShadow( theme.colors.primary )}
-          accessibilityLabel={t( "User-location" )}
+          accessibilityLabel={t( "Zoom-to-current-location" )}
           onPress={( ) => {
             setZoomToUserLocationRequested( true );
             setShowsUserLocation( true );
@@ -533,7 +533,13 @@ const Map = ( {
               switchMapTypeButtonClassName
             )}
             style={getShadow( theme.colors.primary )}
-            accessibilityLabel={t( "User-location" )}
+            accessibilityLabel={t( "Toggle-map-type" )}
+            accessibilityRole="button"
+            accessibilityState={
+              currentMapType === "standard"
+                ? t( "Standard--map-type" )
+                : t( "Satellite--map-type" )
+            }
             onPress={( ) => {
               changeMapType( currentMapType === "standard"
                 ? "satellite"

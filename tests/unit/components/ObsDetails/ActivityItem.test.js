@@ -1,28 +1,28 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
+import i18next from "i18next";
 import React from "react";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
+const mockTaxon = factory( "LocalTaxon" );
 const mockIdentification = factory( "LocalIdentification", {
   uuid: "123456789",
   user: factory( "LocalUser" ),
-  taxon: factory( "LocalTaxon", {
-    name: "Miner's Lettuce",
-    rank_level: 10,
-    is_active: true
-  } )
+  taxon: mockTaxon
 } );
 
 describe( "ActivityItem", () => {
-  it( "renders", async ( ) => {
+  it( "renders name of identification taxon", async ( ) => {
     renderComponent(
       <ActivityItem
         item={mockIdentification}
         key={mockIdentification.uuid}
       />
     );
-    const navToTaxonDetailsLabel = screen.getByLabelText( /Navigate to taxon details/ );
+    const accessibleName = accessibleTaxonName( mockTaxon, null, i18next.t );
+    const navToTaxonDetailsLabel = screen.getByLabelText( accessibleName );
     expect( navToTaxonDetailsLabel ).toBeTruthy( );
   } );
 
