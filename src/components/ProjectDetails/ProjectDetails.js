@@ -94,7 +94,7 @@ const ProjectDetails = ( {
             />
           </>
         )} */}
-        <Heading4 className="mb-3 mt-5">{t( "MAP" )}</Heading4>
+        <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
         <Button
           level="neutral"
           text={t( "VIEW-IN-EXPLORE" )}
