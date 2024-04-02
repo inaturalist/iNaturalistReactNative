@@ -134,7 +134,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           } )}
           onPress={navToPhotoGallery}
           accessibilityLabel={t( "Photo-importer" )}
-          accessibilityHint={t( "Navigate-to-photo-importer" )}
+          accessibilityHint={t( "Navigates-to-photo-importer" )}
         />
       </View>
       <View className="flex-row justify-center items-center">
@@ -149,7 +149,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           } )}
           onPress={navToObsEdit}
           accessibilityLabel={t( "Observation-with-no-evidence" )}
-          accessibilityHint={t( "Navigate-to-observation-edit-screen" )}
+          accessibilityHint={t( "Navigates-to-observation-edit-screen" )}
         />
         <INatIconButton
           testID="close-camera-options-button"

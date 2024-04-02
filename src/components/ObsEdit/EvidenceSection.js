@@ -123,10 +123,10 @@ const EvidenceSection = ( {
         sounds={sounds}
       />
       <Pressable
-        accessibilityRole="button"
+        accessibilityRole="link"
         className="flex-row flex-nowrap pb-3"
         onPress={navToLocationPicker}
-        accessibilityLabel={t( "Navigate-to-location-picker-screen" )}
+        accessibilityLabel={t( "Edit-location" )}
       >
         <View className="w-[30px] items-center mr-1">
           {isFetchingLocation && (

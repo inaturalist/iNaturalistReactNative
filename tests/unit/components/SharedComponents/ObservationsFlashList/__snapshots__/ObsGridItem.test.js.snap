@@ -361,7 +361,7 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
         ]
       }
     >
-      unknown
+      Unknown
     </Text>
   </View>
 </View>
@@ -758,7 +758,7 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
         ]
       }
     >
-      unknown
+      Unknown
     </Text>
   </View>
 </View>

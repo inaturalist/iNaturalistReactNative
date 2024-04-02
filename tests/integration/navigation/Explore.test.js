@@ -1,6 +1,7 @@
 import {
   screen,
-  userEvent
+  userEvent,
+  within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -87,7 +88,8 @@ async function navigateToObsDetails( ) {
 
 async function navigateToRootExplore( ) {
   expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
-  const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
+  const tabBar = await screen.findByTestId( "CustomTabBar" );
+  const exploreButton = await within( tabBar ).findByLabelText( "Explore" );
   await actor.press( exploreButton );
 }
 
@@ -316,9 +318,7 @@ describe( "logged in", ( ) => {
           .mockResolvedValueOnce( mockedPermissions );
 
         renderApp( );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeVisible( );
-        const exploreButton = await screen.findByLabelText( /Navigate to explore screen/ );
-        await actor.press( exploreButton );
+        await navigateToRootExplore( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
         expect( speciesViewIcon ).toBeVisible( );
         const locationPermission = await screen.findByText( /Please allow Location Access/ );

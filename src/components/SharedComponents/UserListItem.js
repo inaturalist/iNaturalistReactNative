@@ -12,7 +12,6 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   item: Object,
-  count: number,
   countText: string,
   onPress?: Function,
   accessibilityLabel?: string
@@ -20,7 +19,6 @@ type Props = {
 
 const UserListItem = ( {
   item,
-  count,
   countText,
   onPress: onPressProp,
   accessibilityLabel: accessibilityLabelProp
@@ -40,7 +38,11 @@ const UserListItem = ( {
 
   return (
     <Pressable
-      accessibilityRole="button"
+      accessibilityRole={
+        onPressProp
+          ? "button"
+          : "link"
+      }
       className="flex-row items-center mx-3 my-2"
       testID={`UserProfile.${user?.id}`}
       onPress={onPress}
@@ -59,7 +61,7 @@ const UserListItem = ( {
       <View className="ml-3">
         {user?.login && <Body1 className="mt-3">{user?.login}</Body1>}
         <List2 className="mt-1">
-          {t( countText, { count } )}
+          {countText}
         </List2>
       </View>
     </Pressable>

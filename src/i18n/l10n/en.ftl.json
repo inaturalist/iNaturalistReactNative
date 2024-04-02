@@ -13,14 +13,19 @@
   "ABOUT-TRADITIONAL-PROJECTS": "ABOUT TRADITIONAL PROJECTS",
   "ABOUT-UMBRELLA-PROJECTS": "ABOUT UMBRELLA PROJECTS",
   "Accept-community-identifications": "Accept community identifications",
-  "Account": "Account",
-  "Add-a-comment": {
-    "comment": "Hint text inside the 'Add a comment' Text Input",
-    "val": "Add a comment..."
+  "accessible-comname-sciname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the common name first",
+    "val": "{ $commonName } ({ $scientificName })"
   },
+  "accessible-sciname-comname": {
+    "comment": "Label for a taxon when a user prefers to see or hear the scientific name first",
+    "val": "{ $scientificName } ({ $commonName })"
+  },
+  "Account": "Account",
+  "ACTIVITY": "ACTIVITY",
   "ADD-AN-ID": "ADD AN ID",
-  "Add-an-ID": "Add an ID",
   "ADD-COMMENT": "ADD COMMENT",
+  "Add-comment": "Add comment",
   "Add-Date-Time": "Add Date/Time",
   "ADD-EVIDENCE": "ADD EVIDENCE",
   "Add-favorite": "Add favorite",
@@ -32,21 +37,16 @@
   "ADD-OPTIONAL-COMMENT": "ADD OPTIONAL COMMENT",
   "Add-optional-notes": "Add optional notes",
   "Add-this-ID": "Add this identification",
-  "Add-to-projects": "Add to projects",
   "Added-on-date": {
     "comment": "Date relationship created, shown on settings relationships screen",
     "val": "Added on { $date }"
   },
   "Affiliation": "Affiliation: { $site }",
-  "Affiliation-colon": {
-    "comment": "Shows user network affiliation on user profile",
-    "val": "Affiliation:"
-  },
   "Agree": "Agree",
+  "AGREE": "AGREE",
   "Agree-to-all-of-the-above": "Agree to all of the above",
   "AGREE-WITH-ID": "AGREE WITH ID?",
   "Agree-with-ID-description": "Would you like to agree with the ID and suggest the following identification?",
-  "Agrees-with-identification": "Agrees with this identification.",
   "ALL": "ALL",
   "All": "All",
   "All-observations": "All observations",
@@ -58,7 +58,6 @@
   "ALL-SUGGESTIONS": "ALL SUGGESTIONS",
   "Almost-done": "Almost done!",
   "Already-have-an-account": "Already have an account? Log in",
-  "Amphibians": "Amphibians",
   "An-Internet-connection-is-required": "An Internet connection is required to load more observations.",
   "Any": "Any",
   "Anyone-using-iNaturalist-can-see": {
@@ -66,15 +65,11 @@
     "val": "Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research."
   },
   "app-authorized-on-date": "{ $appName } (authorized on: { $date })",
-  "Applications": "Applications",
   "APPLY-FILTERS": "APPLY FILTERS",
   "Apply-filters": "Apply filters",
   "April": "April",
   "AR-Camera": "AR Camera",
-  "Arachnids": "Arachnids",
   "Are-you-a-teacher": "Are you a teacher wanting to use iNaturalist with your students?",
-  "Are-you-sure": "Are you sure?",
-  "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
   "Are-you-sure-you-want-to-sign-out": "Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.",
   "Arrow-down-selected": "Arrow down selected",
   "Arrow-down-unselected": "Arrow down unselected",
@@ -96,13 +91,10 @@
     "comment": "Returns user to login screen",
     "val": "BACK TO LOGIN"
   },
-  "Below-are-all-the-species-observed-within-50km": "Below are all the species observed within 50 km of your location within the taxon:",
   "Bio": {
     "comment": "Header for inserting user description in settings profile tab",
     "val": "Bio"
   },
-  "Birds": "Birds",
-  "Blocked-Users": "Blocked Users",
   "BLOG": "BLOG",
   "Bulk-importer": {
     "comment": "Accessibility label for bulk import / photo import button\nThese are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel\niOS Guidelines \"A string that succinctly identifies the accessibility element.\" Starts with capital letter, no ending punctuation.",
@@ -114,33 +106,11 @@
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "By-exiting-your-recorded-sound-will-not-be-saved": "By exiting, your recorded sound will not be saved.",
   "Camera": "Camera",
-  "Camera-button-value-back": {
-    "comment": "Accessible label for the camera button",
-    "val": "The back camera is being used."
-  },
-  "Camera-button-value-front": "The front camera is being used.",
   "Camera-flip": "Camera-flip",
-  "Camera-Roll": "Camera Roll",
   "CANCEL": "CANCEL",
   "Cancel": "Cancel",
-  "Cancel-comment": "Cancel comment",
   "Captive-Cultivated": "Captive/Cultivated",
-  "Category-improving": {
-    "comment": "Identification category",
-    "val": "Improving"
-  },
-  "Category-leading": {
-    "comment": "Identification category",
-    "val": "Leading"
-  },
-  "Category-maverick": {
-    "comment": "Identification category",
-    "val": "Maverick"
-  },
-  "Category-supporting": {
-    "comment": "Identification category",
-    "val": "Supporting"
-  },
+  "Casual": "Casual",
   "CC-BY": "CC BY",
   "CC-BY-NC": "CC BY-NC",
   "CC-BY-NC-ND": "CC BY-NC-ND",
@@ -157,7 +127,10 @@
   "Change-start-date": "Change start date",
   "Change-taxon": "Change taxon",
   "Change-user": "Change user",
-  "Check-this-box-if-you-want-to-apply-a-Creative-Commons": "Check this box if you want to apply a Creative Commons Attribution-NonCommercial license to uploaded content. This means anyone can copy and reuse your photos and/or observations without asking for permission as long as they give you credit and don't use the works commercially. You can choose a different license or remove the license later, but this is the best license for sharing with researchers.",
+  "Change-zoom": {
+    "comment": "Label for a button that cycles through zoom levels for the camera",
+    "val": "Change zoom"
+  },
   "CHECK-YOUR-EMAIL": {
     "comment": "After pressing the reset password button",
     "val": "CHECK YOUR EMAIL!"
@@ -168,7 +141,6 @@
     "val": "CHOOSE PHOTOS"
   },
   "Clear": "Clear",
-  "Clear-comment": "Clear comment",
   "Close": "Close",
   "Close-add-observation-modal": "Close add observation modal.",
   "Close-permission-request-screen": {
@@ -176,6 +148,7 @@
     "val": "Close permission request screen"
   },
   "Close-search": "Close search",
+  "Closes-withdraw-id-sheet": "Closes \"Withdraw ID\" sheet",
   "COLLABORATORS": "COLLABORATORS",
   "Collection-Project": "Collection Project",
   "Combine-Photos": "Combine Photos",
@@ -190,9 +163,8 @@
   "CONFIRM": "CONFIRM",
   "Connect-with-other-naturalists": "Connect with other naturalists and engage in conversations.",
   "Connected-Accounts": "Connected Accounts",
-  "Connection-problem-please-try-again-later": "Connection problem. Please try again later.",
+  "Connection-problem-Please-try-again-later": "Connection problem. Please try again later.",
   "CONTACT-SUPPORT": "CONTACT SUPPORT",
-  "Content-Display": "Content & Display",
   "Coordinates-copied-to-keyboard": "Coordinates copied to keyboard",
   "Copy-coordinates": "Copy Coordinates",
   "Copy-map-coordinates": "Copy map coordinates",
@@ -201,11 +173,9 @@
     "val": "Copyright"
   },
   "Couldnt-create-comment": "Couldn't create comment",
-  "Couldnt-create-identification": "Couldn't create identification",
   "Couldnt-create-identification-error": "Couldn't create identification { $error }",
   "Couldnt-create-identification-unknown-error": "Couldn't create identification, Unknown Error.",
   "CREATE-AN-ACCOUNT": "CREATE AN ACCOUNT",
-  "Create-an-iNaturalist-account-to-save-your-observations": "Create an iNaturalist account to save your observations and contribute them to science.",
   "Create-an-observation-evidence": "Create an observation with no evidence",
   "CREATE-YOUR-FIRST-OBSERVATION": "CREATE YOUR FIRST OBSERVATION",
   "DATA-QUALITY": "DATA QUALITY",
@@ -223,7 +193,6 @@
     "comment": "description for different quality grades in the DQA",
     "val": "It can now be used for research and featured on other websites."
   },
-  "Data-quality-assessment-description-research-not-licensed": "However, it is not licensed for re-use and will not be shared with data repositories that respect license choices.",
   "Data-quality-assessment-evidence-of-organism": "Evidence of organism",
   "Data-quality-assessment-has-photos-or-sounds": "Has Photos or Sounds",
   "Data-quality-assessment-id-supported-by-two-or-more": "Has ID supported by two or more",
@@ -241,9 +210,6 @@
   "Data-quality-needs-id-description": "This observation needs more identifications to reach research grade",
   "Data-quality-research-description": "This observation has enough identifications to be considered resarch grade",
   "DATE": "DATE",
-  "Date": "Date",
-  "Date-added-newest-to-oldest": "Date added - newest to oldest",
-  "Date-added-oldest-to-newest": "Date added - oldest to newest",
   "Date-days": {
     "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
     "val": "{ $count }d"
@@ -269,6 +235,7 @@
   "DATE-OBSERVED-NEWEST": "DATE OBSERVED - NEWEST TO OLDEST",
   "DATE-OBSERVED-OLDEST": "DATE OBSERVED - OLDEST TO NEWEST",
   "Date-Range": "Date Range",
+  "DATE-RANGE": "DATE RANGE",
   "Date-short-format": {
     "comment": "Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)",
     "val": "MM/dd/yy"
@@ -294,20 +261,16 @@
   "December": "December",
   "Default-Search-Place": "Default Search Place",
   "DELETE": "DELETE",
-  "Delete": "Delete",
-  "DELETE-ALL": "DELETE ALL",
   "Delete-all-observations": "Delete all observations",
-  "DELETE-COMMENT": "DELETE COMMENT",
   "Delete-comment": "Delete comment",
   "DELETE-COMMENT-QUESTION": "DELETE COMMENT?",
   "DELETE-OBSERVATION": "DELETE OBSERVATION?",
   "Delete-observation": "Delete observation",
-  "Delete-observations": "Delete observations",
   "Delete-photo": {
     "comment": "Button label or accessibility label for an element that deletes a photo",
     "val": "Delete photo"
   },
-  "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION?\n *[other] { $count } OBSERVATIONS?\n}",
+  "Delete-sound": "Delete sound",
   "Deleting-x-of-y": {
     "comment": "Shows the progress of deletions for X of Y",
     "val": "Deleting { $currentDeleteCount } of { $total }"
@@ -316,12 +279,14 @@
     "comment": "Shows the number of observations a user is currently deleting out of total on my observations page",
     "val": "Deleting { $currentDeleteCount } of { $total ->\n  [one] 1 observation\n *[other] { $total } observations\n}"
   },
-  "Description-Tags": "Description/Tags",
+  "DETAILS": {
+    "comment": "Tab label or section title for content that describes further details, e.g.\nthe details of an observation",
+    "val": "DETAILS"
+  },
   "Disable-flash": "Disable flash",
   "DISCARD": "DISCARD",
   "DISCARD-ALL": "DISCARD ALL",
   "DISCARD-CHANGES": "DISCARD CHANGES",
-  "Discard-Comment": "Discard Comment",
   "DISCARD-FILTER-CHANGES": "DISCARD FILTER CHANGES",
   "DISCARD-MEDIA": "DISCARD MEDIA?",
   "DISCARD-OBSERVATION": "DISCARD OBSERVATION",
@@ -352,6 +317,10 @@
   "EDIT-COMMENT": "EDIT COMMENT",
   "Edit-comment": "Edit comment",
   "EDIT-LOCATION": "EDIT LOCATION",
+  "Edit-location": {
+    "comment": "Label for interactive element that takes you to a location choosing screen",
+    "val": "Edit location"
+  },
   "Edit-Observation": "Edit Observation",
   "EMAIL": "EMAIL",
   "Email": {
@@ -367,8 +336,6 @@
     "val": "Endemic to { $place }"
   },
   "Error-Could-Not-Fetch-Taxon": "Error: Could Not Fetch Taxon",
-  "Error-Couldnt-Complete-Upload": "Error: Couldn't Complete Upload",
-  "Error-Couldnt-Upload-Photo": "Error: Couldn't Upload Photo",
   "ERROR-LOADING-DQA": "ERROR LOADING IN DQA",
   "Error-title": {
     "comment": "Title of dialog or section describing an error",
@@ -381,32 +348,22 @@
     "comment": "Header for a section describing how a taxon arrived in a given place",
     "val": "ESTABLISHMENT MEANS"
   },
-  "Every-observation-needs": {
-    "comment": "Missing evidence sheet",
-    "val": "Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you're concerned about location privacy."
-  },
   "Every-time-a-collection-project": "Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.",
   "EVIDENCE": "EVIDENCE",
   "Exact-Date": "Exact Date",
+  "EXACT-DATE": "EXACT DATE",
   "Explore": "Explore",
+  "EXPLORE": "EXPLORE",
   "Explore-Filters": "Explore Filters",
   "EXPLORE-IDENTIFIERS": "EXPLORE IDENTIFIERS",
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "EXPLORE-OBSERVERS": "EXPLORE OBSERVERS",
   "EXPLORE-SPECIES": "EXPLORE SPECIES",
-  "Explore-View": "Explore View",
   "External-Applications": "External Applications",
+  "Failed-to-delete-sound": "Failed to delete sound",
   "Failed-to-log-in": {
     "comment": "Error message with log in fails",
     "val": "Failed to log in"
-  },
-  "Fave-button-label-fave": {
-    "comment": "Accessible label for the favorite button, when the observation is not favorited",
-    "val": "Favorite this observation."
-  },
-  "Fave-button-label-unfave": {
-    "comment": "Accessible label for the favorite button, when the observation is favorited",
-    "val": "Unfavorite this observation."
   },
   "FEATURED": {
     "comment": "Header for featured projects",
@@ -423,47 +380,39 @@
   "Filter-by-uploaded-between-dates": "Filter by observations uploaded between two specific dates",
   "Filter-by-uploaded-on-date": "Filter by observations uploaded on a specific date",
   "Filters": "Filters",
-  "Finish": "Finish",
-  "Fish": "Fish",
   "Flag-An-Item": "Flag An Item",
   "Flag-Item-Description": "Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.",
   "Flag-Item-Other": "Flagged as Other Description Box",
   "Flag-Item-Other-Description": "Some other reason you can explain below.",
   "Flag-Item-Other-Input-Hint": "Specify the reason you're flagging this item",
+  "Flagged": {
+    "comment": "Status when an item has been flagged",
+    "val": "Flagged"
+  },
   "Flash": "flash",
-  "Flash-button-value-flash": "The flash is turned on.",
-  "Flash-button-value-flash-off": "The flash is turned off.",
   "FOLLOW": "FOLLOW",
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
     "val": "Forgot Password"
   },
-  "Fungi": "Fungi",
+  "GEOPRIVACY": "GEOPRIVACY",
   "Geoprivacy-status": "Geoprivacy: { $status }",
   "Get-more-accurate-suggestions-create-useful-data": {
     "comment": "Title of screen asking for permission to access location",
     "val": "Get more accurate suggestions & create useful data for science using your location"
   },
-  "Go-to-the-Settings-app-to-grant-permissions": {
-    "comment": "Instruction for an Android user to go to the Settings app to grant\npermissions after they have asked never to be asked for that permission\nagain",
-    "val": "Go to the Settings app to grant iNaturalist the appropriate permissions."
+  "Go-back": {
+    "comment": "Label for button that returns to the previous screen",
+    "val": "Go back"
   },
   "GRANT-PERMISSION": {
     "comment": "Text for a button that asks the user to grant permission",
     "val": "GRANT PERMISSION"
   },
-  "Grant-Permission": {
-    "comment": "Verb phrase label for a button to grant the app a permission, e.g.\npermission to use the camera",
-    "val": "Grant Permission"
-  },
   "Grant-Permission-title": {
     "comment": "Title of a screen asking for permission",
     "val": "Grant Permission"
-  },
-  "GRAPHS": {
-    "comment": "Header for a section showing charts",
-    "val": "MY OBSERVATIONS"
   },
   "Grid-view": "Grid view",
   "Group-Photos": "Group Photos",
@@ -471,10 +420,7 @@
     "comment": "Onboarding for users learning to group photos in the camera roll",
     "val": "Group photos into observations– make sure there is only one species per observation"
   },
-  "Has-Photos": "Has Photos",
-  "Has-Sounds": "Has Sounds",
   "HELP": "HELP",
-  "High": "High",
   "Highest": "Highest",
   "HIGHEST-RANK": "HIGHEST RANK",
   "I-agree-to-the-Terms-of-Use": "I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).",
@@ -490,11 +436,9 @@
     "comment": "Accessibility label for a button that shows options for an identification",
     "val": "Identification options"
   },
-  "IDENTIFICATIONS": "IDENTIFICATIONS",
   "IDENTIFICATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] IDENTIFICATION\n *[other] IDENTIFICATIONS\n}",
   "Identifiers": "Identifiers",
   "Identifiers-View": "Identifiers View",
-  "IDENTIFY": "IDENTIFY",
   "Identify-an-organism": "Identify an organism",
   "If-an-account-with-that-email-exists": "If an account with that email exists, we've sent password reset instructions to your email.",
   "If-you-want-to-collate-compare-promote": "If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.",
@@ -503,9 +447,9 @@
     "comment": "Shows the number of observations a user is about to import",
     "val": "IMPORT { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
   },
-  "Import-X-photos": {
-    "comment": "Shows the number of photos a user selected from the camera roll for upload",
-    "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
+  "improving--identification": {
+    "comment": "Identification category",
+    "val": "Improving"
   },
   "INATURALIST-ACCOUNT-SETTINGS": "INATURALIST ACCOUNT SETTINGS",
   "iNaturalist-Activity-Notifications": "iNaturalist Activity Notifications",
@@ -522,13 +466,15 @@
   "iNaturalist-is-a-community-of-naturalists": "iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.",
   "iNaturalist-is-supported-by": "iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.",
   "iNaturalist-is-supported-by-community": "iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who assist in the curation of taxonomy and moderation, to the volunteer translators at who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful for all the people of our community who make iNaturalist the platform it is.",
-  "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo": "iNaturalist isn't able to provide a top ID suggestion for this photo.",
   "iNaturalist-mission-is-to-connect": "iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.",
   "INATURALIST-MISSION-VISION": "INATURALIST'S MISSION & VISION",
   "INATURALIST-NETWORK": "INATURALIST NETWORK",
   "iNaturalist-Network-Affiliation": "iNaturalist Network Affiliation",
-  "INATURALIST-ROLE": "INATURALIST { $role }",
   "INATURALIST-SETTINGS": "INATURALIST SETTINGS",
+  "INATURALIST-STAFF": {
+    "comment": "Label for the role a user plays on iNaturalist, e.g. \"INATURALIST STAFF\"\nor \"INATURALIST CURATOR\". Since the name \"INATURALIST\" should not be\ntranslated or locally it is inserted as a variable here, but it will always\nbe \"INATURALIST\"",
+    "val": "${ inaturalist } STAFF"
+  },
   "INATURALIST-STORE": "INATURALIST STORE",
   "INATURALIST-TEAM": "INATURALIST TEAM",
   "iNaturalist-users-who-have-left-an-identification": "iNaturalist users who have left an identification on another user's observation",
@@ -536,12 +482,8 @@
   "iNaturalist-uses-your-location-to-give-you": "iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location. You’re always in control of the location privacy of every observation you create.",
   "iNaturalists-apps-are-designed-and-developed": "iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Angie Ta, & Ken-ichi Ueda.",
   "iNaturalists-vision-is-a-world": "iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.",
-  "INCLUDE-TAXA-NOT-EXPECTED-NEARBY": "INCLUDE TAXA NOT EXPECTED NEARBY",
-  "Indicates-location-is-loading": "Indicates location is loading.",
   "Individual-encounters-with-organisms": "Individual encounters with organisms at a particular time and location, usually with evidence",
   "INFO-TRANSFER": "INFO TRANSFER",
-  "Information": "Information",
-  "Insects": "Insects",
   "Internet-Connection-Required": {
     "comment": "Title for dialog telling the user that an Internet connection is required",
     "val": "Internet Connection Required"
@@ -549,10 +491,6 @@
   "Intl-number": "{ $val }",
   "Introduced": "Introduced",
   "Introduced-to-place": "Introduced to { $place }",
-  "Invalid-login": {
-    "comment": "Appears when the user enters invalid username/password",
-    "val": "The username or password is incorrect"
-  },
   "January": "January",
   "JOIN": "JOIN",
   "JOIN-PROJECT": "JOIN PROJECT",
@@ -565,7 +503,6 @@
     "comment": "Shows date user joined iNaturalist on user profile",
     "val": "Joined: { $date }"
   },
-  "JOURNAL-POSTS": "JOURNAL POSTS",
   "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}",
   "July": "July",
   "June": "June",
@@ -582,14 +519,14 @@
     "comment": "Latitude, longitude, and accuracy on a single line on a single line",
     "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
   },
+  "leading--identification": {
+    "comment": "Identification category",
+    "val": "Leading"
+  },
   "Learn-More": "Learn More",
   "LEAVE": "LEAVE",
   "LEAVE-PROJECT": "LEAVE PROJECT",
   "LEAVE-US-A-REVIEW": "LEAVE US A REVIEW!",
-  "Lets-reset-your-password": {
-    "comment": "Appears in the reset password screen",
-    "val": "Let's reset your password"
-  },
   "LICENSES": "LICENSES",
   "Licensing": "Licensing",
   "List-view": "List view",
@@ -597,15 +534,17 @@
   "LOCATION": "LOCATION",
   "Location": "Location",
   "Location-accuracy-is-too-imprecise": "Location accuracy is too imprecise to help identifiers. Please zoom in.",
-  "Location-map-unavailable-without-internet": "Location map unavailable without internet",
   "LOCATION-TOO-IMPRECISE": "LOCATION TOO IMPRECISE",
   "LOG-IN": "LOG IN",
+  "Log-in": {
+    "comment": "Second person imperative label to go to log in screen",
+    "val": "Log in"
+  },
   "Log-in-to-contribute-and-sync": "Log in to contribute & sync",
   "Log-in-to-contribute-your-observations": "Log in to contribute your observations to science!",
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
   "Log-in-to-iNaturalist": "Log in to iNaturalist",
   "LOG-OUT": "LOG OUT",
-  "Log-out": "Log out",
   "Logged-in-as": "Logged in as: { $username }",
   "Login-sub-title": {
     "comment": "Appears in the login screen",
@@ -615,100 +554,64 @@
     "comment": "Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed",
     "val": "Looks like you're not using Apple Mail"
   },
-  "Low": "Low",
   "Lowest": "Lowest",
   "LOWEST-RANK": "LOWEST RANK",
-  "Mammals": "Mammals",
+  "MAP": "MAP",
   "Map-Area": "Map Area",
-  "Map-layers": "Map layers",
   "March": "March",
+  "maverick--identification": {
+    "comment": "Identification category",
+    "val": "Maverick"
+  },
   "May": "May",
-  "Media": "Media",
+  "MEDIA": "MEDIA",
   "MEMBERS-WITHOUT-NUMBER": "{ $count ->\n  [one] MEMBER\n *[other] MEMBERS\n}",
   "Menu": {
     "comment": "Accessibility label for a button that opens a menu of options",
     "val": "Menu"
   },
-  "Messages": "Messages",
   "Missing-Date": "Missing Date",
   "MISSING-EVIDENCE": "MISSING EVIDENCE",
-  "Missing-Location": "Missing Location",
-  "Mollusks": "Mollusks",
-  "Month-April": "April",
-  "Month-August": "August",
-  "Month-December": "December",
-  "Month-February": "February",
-  "Month-January": {
-    "comment": "The following Month- strings are the months of the year (in month order, not alphabetical order)",
-    "val": "January"
-  },
-  "Month-July": "July",
-  "Month-June": "June",
-  "Month-March": "March",
-  "Month-May": "May",
-  "Month-November": "November",
-  "Month-October": "October",
-  "Month-September": "September",
   "Monthly-Donor": "Monthly Donor",
   "Months": "Months",
+  "MONTHS": "MONTHS",
+  "More-info": "More info",
   "MOST-FAVED": "MOST FAVED",
   "Most-faved": "Most faved",
-  "Muted-Users": "Muted Users",
-  "MY-OBSERVATIONS": {
-    "comment": "Header for a section showing the viewer's observations",
-    "val": "MY OBSERVATIONS"
-  },
   "Names": "Names",
   "Native": "Native",
   "Native-to-place": "Native to { $place }",
-  "Navigate-back": "Navigate back",
-  "Navigate-to-edit-observation": "Navigate to edit observation screen",
-  "Navigate-to-explore-screen": {
-    "comment": "Accessibility label for Explore button on bottom tab navigator",
-    "val": "Navigate to explore screen"
-  },
-  "Navigate-to-identification-suggestions-screen": "Navigate to identification suggestions screen",
-  "Navigate-to-location-picker-screen": "Navigate to location picker screen",
-  "Navigate-to-login-screen": "Navigate to login screen",
-  "Navigate-to-notifications-screen": "Navigate to notifications screen",
-  "Navigate-to-observation-details": "Navigates to observation details screen.",
-  "Navigate-to-observation-edit-screen": "Navigate to observation edit screen.",
-  "Navigate-to-observation-list": "Navigate to observation list",
-  "Navigate-to-photo-importer": "Navigate to photo importer.",
-  "Navigate-to-previous-screen": "Navigate to previous screen",
-  "Navigate-to-project-details": "Navigate to project details",
-  "Navigate-to-taxon-details": "Navigate to taxon details",
   "Navigates-to-add-identification": "Navigates to add identification.",
   "Navigates-to-AR-camera": "Navigates to AR camera.",
   "Navigates-to-bulk-importer": "Navigates to bulk importer.",
   "Navigates-to-camera": "Navigates to camera.",
-  "Navigates-to-drawer-item": "Navigates to drawer item.",
   "Navigates-to-explore": "Navigates to explore.",
-  "Navigates-to-messages": "Navigates to messages.",
+  "Navigates-to-notifications": "Navigates to notifications",
+  "Navigates-to-observation-details": "Navigates to observation details screen.",
+  "Navigates-to-observation-edit-screen": "Navigate to observation edit screen.",
   "Navigates-to-observations": "Navigates to observations.",
+  "Navigates-to-photo-importer": "Navigate to photo importer.",
+  "Navigates-to-previous-screen": "Navigate to previous screen",
+  "Navigates-to-project-details": "Navigate to project details",
   "Navigates-to-sound-recorder": "Navigates to sound recorder.",
   "Navigates-to-suggest-identification": "Navigates to suggest identification.",
+  "Navigates-to-suggestions": "Navigates to suggestions",
+  "Navigates-to-taxon-details": "Navigates to taxon details",
   "Navigates-to-user-profile": "Navigates to user profile.",
   "NEARBY": {
     "comment": "Header for nearby projects",
     "val": "NEARBY"
   },
+  "Nearby": "Nearby",
   "NEARBY-SUGGESTIONS": "NEARBY SUGGESTIONS",
   "Needs-ID": "Needs ID",
   "New-Observation": "New Observation",
   "Newest-to-oldest": "Newest to oldest",
-  "Next": "Next",
   "Next-observation": "Next observation",
-  "No": "No",
-  "No-account-found": {
-    "comment": "When the user tries to reset password but enters a non-existent email",
-    "val": "No account found with that email"
-  },
   "No-Location": "No Location",
   "No-Media": "No Media",
   "No-model-found": "No model found",
   "No-Notifications-Found": "You have no notifications! Get started by creating your own observations.",
-  "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "No-projects-match-that-search": "No projects match that search",
   "No-results-found": {
     "comment": "Used for explore screen when search params lead to a search with no data",
@@ -718,7 +621,6 @@
     "comment": "license code",
     "val": "no rights reserved (CC0)"
   },
-  "No-Status": "No Status",
   "NONE": "NONE",
   "none": "none",
   "NOTES": {
@@ -745,11 +647,11 @@
   "Observation": "Observation",
   "Observation-Attribution": "Observation: © { $userName } · { $restrictions }",
   "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
-  "Observation-menu": {
-    "comment": "Accessibility label for a button that shows a menu of options on the\nobservation detail view",
-    "val": "Observation menu"
-  },
   "Observation-Name": "Observation { $scientificName }",
+  "Observation-options": {
+    "comment": "Label for a menu that shows various actions you can take for an observation",
+    "val": "Observation options"
+  },
   "Observation-photos-unavailable-without-internet": "Observation photos unavailable without internet",
   "OBSERVATION-WAS-DELETED": "OBSERVATION WAS DELETED",
   "Observation-with-no-evidence": "Observation with no evidence",
@@ -787,7 +689,6 @@
   },
   "Oldest-to-newest": "Oldest to newest",
   "One-last-step": "One last step!",
-  "ONLY-SHOW-TAXA-EXPECTED-NEARBY": "ONLY-SHOW-TAXA-EXPECTED-NEARBY",
   "Open": "Open",
   "Open-drawer": "Open drawer",
   "OPEN-EMAIL": "OPEN EMAIL",
@@ -796,7 +697,6 @@
     "comment": "Text for a button that opens the operating system Settings app",
     "val": "OPEN SETTINGS"
   },
-  "Open-side-menu": "Open side menu",
   "Opens-add-comment-modal": "Opens add comment modal.",
   "Opens-add-observation-modal": "Opens add observation modal.",
   "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
@@ -806,26 +706,17 @@
   },
   "Organism-is-wild": "Organism is wild",
   "Organisms-that-are-identified-to-species": "Organisms that are identified to species rank or below",
+  "Other": {
+    "comment": "Generic option in a list for unanticipated cases, e.g. a choice to manually\nenter an explanation for why you are flagging something instead of choosing\none of the existing options",
+    "val": "Other"
+  },
   "OTHER-DATA": "OTHER DATA",
   "PASSWORD": "PASSWORD",
-  "Paused": "Paused",
-  "PEOPLE": "PEOPLE",
   "PERSONAL-INFO": "PERSONAL INFO",
   "Photo-importer": "Photo importer",
-  "Photo-is-loading": {
-    "comment": "Accessibility label when a photo is loading",
-    "val": "Photo is loading"
-  },
   "PHOTO-LICENSING": "PHOTO LICENSING",
-  "Photo-Licensing": "Photo Licensing",
-  "Photo-taken-at": "Photo taken at { $date }",
   "Photos": "Photos",
   "Photos-you-take-will-appear-here": "Photos you take will appear here",
-  "Plants": "Plants",
-  "Playing-Sound": {
-    "comment": "Help text for playing back a sound recording",
-    "val": "Playing Sound"
-  },
   "Please-allow-Camera-Access": {
     "comment": "Title of screen asking for permission to access the camera when access was denied",
     "val": "Please allow Camera Access"
@@ -849,17 +740,15 @@
   },
   "PLEASE-LOG-IN": "PLEASE LOG IN",
   "Please-try-again-when-you-are-connected-to-the-internet": "Please try again when you are connected to the Internet.",
-  "Press-Record-to-Start": {
+  "Press-record-to-start": {
     "comment": "Help text for beginning a sound recording",
-    "val": "Press Record to Start"
+    "val": "Press record to start"
   },
-  "Press-record-to-start": "Press record to start",
   "Previous-observation": "Previous observation",
   "Prioritize-common-names-used-in-this-place": "Prioritize common names used in this place.",
   "Privacy": "Privacy",
   "Privacy-Policy": "Privacy Policy",
   "Private": "Private",
-  "Profile": "Profile",
   "Profile-Picture": "Profile Picture",
   "PROJECT": "PROJECT",
   "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
@@ -867,7 +756,6 @@
   "PROJECTS": "PROJECTS",
   "Projects": "Projects",
   "QUALITY-GRADE": "QUALITY GRADE",
-  "Quality-Grade": "Quality Grade",
   "Quality-Grade-casual": {
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
     "val": "Quality Grade Casual"
@@ -878,7 +766,6 @@
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID",
     "val": "Quality Grade Needs ID"
   },
-  "Quality-Grade-No-Grade": "No Quality Grade",
   "Quality-Grade-research": {
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade",
     "val": "Quality Grade Research Grade"
@@ -887,86 +774,44 @@
     "comment": "Quality grade options",
     "val": "Research Grade"
   },
-  "Rank": "Rank",
   "Ranks-CLASS": "CLASS",
-  "Ranks-class": "class",
   "Ranks-COMPLEX": "COMPLEX",
-  "Ranks-complex": "complex",
   "Ranks-EPIFAMILY": "EPIFAMILY",
-  "Ranks-epifamily": "epifamily",
   "Ranks-FAMILY": "FAMILY",
-  "Ranks-family": "family",
   "Ranks-FORM": "FORM",
-  "Ranks-form": "form",
   "Ranks-GENUS": "GENUS",
-  "Ranks-genus": "genus",
   "Ranks-GENUSHYBRID": "GENUSHYBRID",
-  "Ranks-genushybrid": "genushybrid",
   "Ranks-HYBRID": "HYBRID",
-  "Ranks-hybrid": "hybrid",
   "Ranks-INFRACLASS": "INFRACLASS",
-  "Ranks-infraclass": "infraclass",
   "Ranks-INFRAHYBRID": "INFRAHYBRID",
-  "Ranks-infrahybrid": "infrahybrid",
   "Ranks-INFRAORDER": "INFRAORDER",
-  "Ranks-infraorder": "infraorder",
   "Ranks-KINGDOM": "KINGDOM",
-  "Ranks-kingdom": "kingdom",
   "Ranks-ORDER": "ORDER",
-  "Ranks-order": "order",
   "Ranks-PARVORDER": "PARVORDER",
-  "Ranks-parvorder": "parvorder",
   "Ranks-PHYLUM": "PHYLUM",
-  "Ranks-phylum": "phylum",
   "Ranks-SECTION": "SECTION",
-  "Ranks-section": "section",
   "Ranks-SPECIES": "SPECIES",
-  "Ranks-species": "species",
-  "Ranks-STATEOFMATTER": {
-    "comment": "The following Ranks- strings are taxonomic ranks (in taxonomic order, not alphabetical order)",
-    "val": "STATE OF MATTER"
-  },
-  "Ranks-stateofmatter": "state of matter",
+  "Ranks-STATEOFMATTER": "STATE OF MATTER",
   "Ranks-SUBCLASS": "SUBCLASS",
-  "Ranks-subclass": "subclass",
   "Ranks-SUBFAMILY": "SUBFAMILY",
-  "Ranks-subfamily": "subfamily",
   "Ranks-SUBGENUS": "SUBGENUS",
-  "Ranks-subgenus": "subgenus",
   "Ranks-SUBKINGDOM": "SUBKINGDOM",
-  "Ranks-subkingdom": "subkingdom",
   "Ranks-SUBORDER": "SUBORDER",
-  "Ranks-suborder": "suborder",
   "Ranks-SUBPHYLUM": "SUBPHYLUM",
-  "Ranks-subphylum": "subphylum",
   "Ranks-SUBSECTION": "SUBSECTION",
-  "Ranks-subsection": "subsection",
   "Ranks-SUBSPECIES": "SUBSPECIES",
-  "Ranks-subspecies": "subspecies",
   "Ranks-SUBTERCLASS": "SUBTERCLASS",
-  "Ranks-subterclass": "subterclass",
   "Ranks-SUBTRIBE": "SUBTRIBE",
-  "Ranks-subtribe": "subtribe",
   "Ranks-SUPERCLASS": "SUPERCLASS",
-  "Ranks-superclass": "superclass",
   "Ranks-SUPERFAMILY": "SUPERFAMILY",
-  "Ranks-superfamily": "superfamily",
   "Ranks-SUPERORDER": "SUPERORDER",
-  "Ranks-superorder": "superorder",
   "Ranks-SUPERTRIBE": "SUPERTRIBE",
-  "Ranks-supertribe": "supertribe",
   "Ranks-TRIBE": "TRIBE",
-  "Ranks-tribe": "tribe",
   "Ranks-VARIETY": "VARIETY",
-  "Ranks-variety": "variety",
   "Ranks-ZOOSECTION": "ZOOSECTION",
-  "Ranks-zoosection": "zoosection",
   "Ranks-ZOOSUBSECTION": "ZOOSUBSECTION",
-  "Ranks-zoosubsection": "zoosubsection",
   "Read-more-on-Wikipedia": "Read more on Wikipedia",
-  "Recently-observed": "Recently observed",
   "RECORD-NEW-SOUND": "RECORD NEW SOUND",
-  "Record-new-sound": "Record new sound",
   "Record-organism-sounds-with-the-microphone": {
     "comment": "Title of screen asking for permission to access the microphone",
     "val": "Record organism sounds with the microphone"
@@ -980,20 +825,16 @@
     "comment": "Imperative verb for recording a sound",
     "val": "Record"
   },
-  "Recording-Sound": "Recording Sound",
   "Recording-sound": "Recording sound",
   "Recording-stopped-Tap-play-the-current-recording": "Recording stopped. Tap play the current recording.",
   "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA",
-  "Relationships": "Relationships",
   "Remove-favorite": "Remove favorite",
   "Remove-Photos": "Remove Photos",
   "Remove-Relationship": "Remove Relationship",
-  "Reptiles": "Reptiles",
   "Research-Grade": {
     "comment": "Quality grade option",
     "val": "Research Grade"
   },
-  "Reset": "Reset",
   "RESET-PASSWORD": {
     "comment": "Reset password button",
     "val": "RESET PASSWORD"
@@ -1007,20 +848,34 @@
     "comment": "Header of a popup confirming that the user wants to reset a sound\nrecording",
     "val": "RESET SOUND?"
   },
-  "RESTORE-ID": "RESTORE ID",
-  "Restore-ID": {
-    "comment": "Option to restore withdrawn id from current user",
-    "val": "Restore ID"
+  "Reset-verb": {
+    "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
+    "val": "Reset"
+  },
+  "Restore": {
+    "comment": "Label for button that restores a withdrawn identification",
+    "val": "Restore"
   },
   "Return-to-Login": "Return to Login",
-  "Return-to-login": "Return to login",
-  "Returns-map-to-users-current-location": "Returns map to user's current location.",
   "REVIEW-INATURALIST": "REVIEW INATURALIST",
-  "Reviewed": "Reviewed",
+  "REVIEWED": {
+    "comment": "Title for section of observation filters for controls over whether you have\nreviewed the observations or not",
+    "val": "REVIEWED"
+  },
   "Reviewed-observations-only": "Reviewed observations only",
-  "Reviewed-only": "Reviewed only",
   "Revoke": "Revoke",
-  "Save": "Save",
+  "Satellite--map-type": {
+    "comment": "Label for the satellite map type",
+    "val": "Satellite"
+  },
+  "SAVE": {
+    "comment": "Label for a button that persists something",
+    "val": "SAVE"
+  },
+  "Save": {
+    "comment": "Label for a button that persists something",
+    "val": "Save"
+  },
   "SAVE-ALL": "SAVE ALL",
   "SAVE-CHANGES": "SAVE CHANGES",
   "SAVE-LOCATION": "SAVE LOCATION",
@@ -1033,12 +888,9 @@
   "SEARCH": "SEARCH",
   "Search": "Search",
   "SEARCH-FOR-A-LOCATION": "SEARCH FOR A LOCATION",
-  "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "SEARCH-FOR-A-TAXON": "SEARCH FOR A TAXON",
   "Search-for-a-taxon": "Search for a taxon",
-  "Search-for-a-user": "Search for a user",
-  "Search-for-description-tags-text": "Search for description/tags text",
   "SEARCH-LOCATION": "SEARCH LOCATION",
   "SEARCH-PROJECTS": "SEARCH PROJECTS",
   "SEARCH-TAXA": "SEARCH TAXA",
@@ -1063,12 +915,15 @@
     "comment": "Accessibility label for Species button on UserProfile screen",
     "val": "See species observed by this user in Explore"
   },
-  "Select": "Select",
   "Select-a-date-and-time-for-observation": "Select a date and time for observation",
   "Select-captive-or-cultivated-status": "Select captive or cultivated status",
   "Select-geoprivacy-status": "Select geoprivacy status",
   "Select-photo": "Select photo",
   "Select-the-identification-you-want-to-add": "Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.",
+  "Select-user": {
+    "comment": "Label for an element that let's you select a user",
+    "val": "Select user"
+  },
   "Selects-iconic-taxon-X-for-identification": "Selects iconic taxon { $iconicTaxon } for identification.",
   "Separate-Photos": "Separate Photos",
   "September": "September",
@@ -1083,19 +938,13 @@
   "Show-observation-options": "Show observation options.",
   "Shows-iNaturalist-bird-logo": "Shows iNaturalist bird logo.",
   "Sign-out": "Sign out",
-  "Sign-Up": "Sign Up",
   "Some-data-privacy-laws": "Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.",
-  "some-rights-reserved": {
-    "comment": "license code",
-    "val": "some rights reserved"
-  },
   "Something-went-wrong": {
     "comment": "Generic error message",
     "val": "Something went wrong."
   },
   "Sorry-this-observation-was-deleted": "Sorry, this observation was deleted",
   "SORT-BY": "SORT BY",
-  "Sort-By": "Sort By",
   "Sort-by": "Sort by",
   "sound-playback-separator": {
     "comment": "Character separating current position and total duration when playing a\nsound, e.g. 00:12 / 03:00 uses \"/\" as the separator. This can be anything,\nbut it should be very short.",
@@ -1115,20 +964,17 @@
   "Spam": "Spam",
   "Spam-Examples": "Commercial solicitation, links to nowhere, etc.",
   "Species": "Species",
-  "SPECIES-NEARBY": "SPECIES NEARBY",
-  "Species-Nearby-requires-internet-to-work": "Species Nearby requires internet to work. Please check your internet connection.",
   "Species-View": "Species View",
   "SPECIES-WITHOUT-NUMBER": "{ $count ->\n  [one] SPECIES\n *[other] SPECIES\n}",
+  "Standard--map-type": {
+    "comment": "Label for the standard map type",
+    "val": "Standard"
+  },
   "Start-must-be-before-end": "The start date must be before the end date.",
   "Start-upload": "Start upload",
   "Starts-recording-sound": {
     "comment": "Accessibility hint for button that starts recording a sound",
     "val": "Starts recording sound"
-  },
-  "Status": "Status",
-  "STATUS-header": {
-    "comment": "Header for a block of text describing a taxon's conservation status",
-    "val": "STATUS"
   },
   "Stay-on-this-screen": "Stay on this screen while your location loads.",
   "Still-need-help": "Still need help? You can file a support request here.",
@@ -1145,23 +991,20 @@
     "val": "Stops recording sound"
   },
   "SUGGEST-ID": "SUGGEST ID",
+  "supporting--identification": {
+    "comment": "Identification category",
+    "val": "Supporting"
+  },
   "Switches-to-tab": "Switches to { $tab } tab.",
   "Sync-observations": "Sync observations",
   "Syncing": "Syncing...",
   "Take-photo": "Take photo",
   "Take-photos-with-the-camera": "Take photos of a single organism with the camera",
-  "Tap-to-search-for-taxa": "Tap to search for taxa",
   "TAXON": "TAXON",
-  "Taxon": "Taxon",
   "TAXON-NAMES-DISPLAY": {
     "comment": "Settings screen",
     "val": "TAXON NAMES DISPLAY"
   },
-  "Taxon-photo-and-name": {
-    "comment": "Default accessibility label for DisplayTaxon component",
-    "val": "Taxon photo and name"
-  },
-  "Taxon-photo-unavailable-without-internet": "Taxon photo unavailable without internet",
   "TAXONOMIC-RANKS": "TAXONOMIC RANKS",
   "TAXONOMY-header": {
     "comment": "Header for a block of text describing a taxon's taxonomy",
@@ -1189,42 +1032,38 @@
   "This-organism-was-placed-by-humans": "This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.",
   "This-sets-your-language-and-date-formatting-preferences-across-iNaturalist": "This sets your language and date formatting preferences across iNaturalist based on your locale.",
   "This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify": "This will be your default place for all searches in Explore and Identify.",
-  "Threatened": "Threatened",
   "To-access-all-other-settings": "To access all other account settings, click here:",
   "To-learn-more-about-what-information": "To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.",
   "To-sync-your-observations-to-iNaturalist": "To sync your observations to iNaturalist, please log in.",
-  "Toggles-map-layer": "Toggles map layer.",
+  "Toggle-map-type": "Toggle map type",
   "TOP-ID-SUGGESTION": "TOP ID SUGGESTION",
-  "TOP-IDENTIFIERS": {
-    "comment": "Header for a section showing top identifiers, e.g. of a taxon",
-    "val": "TOP IDENTIFIERS"
-  },
-  "TOP-OBSERVERS": {
-    "comment": "Header for a section showing top observers, e.g. of a taxon",
-    "val": "TOP OBSERVERS"
-  },
   "Traditional-Project": "Traditional Project",
   "Trust-with-hidden-coordinates": "Trust with hidden coordinates",
-  "Trusted": "Trusted",
-  "Try-searching-for-a-location-name": "Try searching for a location name to see the map",
   "Umbrella-Project": "Umbrella Project",
   "Unblock": "Unblock",
   "UNFOLLOW": "UNFOLLOW",
   "UNFOLLOW-USER": "UNFOLLOW USER?",
+  "Unknown--taxon": {
+    "comment": "Text to show when a taxon or identification is unknown or missing",
+    "val": "Unknown"
+  },
+  "Unknown--user": {
+    "comment": "Text to show when a user (or their name) is unknown or missing",
+    "val": "Unknown"
+  },
+  "Unknown-error": {
+    "comment": "Generic error message",
+    "val": "Unknown error"
+  },
   "Unknown-organism": "Unknown organism",
   "Unmute": "Unmute",
   "Unreviewed-observations-only": "Unreviewed observations only",
-  "Unreviewed-only": "Unreviewed only",
   "Upload-Complete": "Upload Complete",
   "Upload-in-progress": "Upload in progress",
   "UPLOAD-NOW": "UPLOAD NOW",
   "Upload-photos-from-your-gallery": "Upload photos of multiple organisms from your gallery",
   "Upload-photos-from-your-gallery-and-create-observations": "Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!",
   "Upload-Progress": "Upload { $uploadProgress } percent complete",
-  "UPLOAD-X-OBSERVATIONS": {
-    "comment": "Shows the number of observations a user can upload to iNat from my observations page",
-    "val": "UPLOAD { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
-  },
   "Upload-x-observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "Upload { $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}"
@@ -1233,7 +1072,6 @@
     "comment": "Describes whether a user made this observation from web, iOS, or Android",
     "val": "Uploaded via: { $application }"
   },
-  "Uploading": "Uploading",
   "Uploading-x-of-y": {
     "comment": "Shows the progress of uploads for X of Y",
     "val": "Uploading { $currentUploadCount } of { $total }"
@@ -1252,8 +1090,6 @@
   "Use-your-devices-microphone-to-record": "Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!",
   "USER": "USER",
   "User": "User { $userHandle }",
-  "User-location": "User location",
-  "User-photo-unavailable-without-internet": "User photo unavailable without internet",
   "USERNAME": "USERNAME",
   "Username": "Username",
   "USERNAME-OR-EMAIL": {
@@ -1263,25 +1099,23 @@
   "Using-iNaturalist-requires-the-storage": "Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.",
   "VIEW-CHILDREN-TAXA": "VIEW CHILDREN TAXA",
   "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
-  "VIEW-FOLLOWERS": "VIEW FOLLOWERS",
-  "VIEW-FOLLOWING": "VIEW FOLLOWING",
   "View-in-browser": "View in Browser",
   "VIEW-IN-EXPLORE": "VIEW IN EXPLORE",
   "VIEW-INATURALIST-HELP": "VIEW INATURALIST HELP",
-  "VIEW-JOURNAL-POSTS": "VIEW JOURNAL POSTS",
   "View-photo": {
     "comment": "Button or accessibility label for an element that lets the user view a\nphoto",
     "val": "View photo"
   },
+  "View-photo-licensing-info": "View photo licensing info",
   "VIEW-PROJECT-REQUIREMENTS": "VIEW PROJECT REQUIREMENTS",
   "VIEW-PROJECTS": "VIEW PROJECTS",
+  "View-suggestions": "View suggestions",
   "VIEW-TEACHERS-GUIDE": "VIEW TEACHERS' GUIDE",
   "Viewing-Offline-Suggestions": {
     "comment": "Title for a notice informing the user that they are viewing offline\nidentification suggestions",
     "val": "Viewing Offline Suggestions"
   },
   "Viewing-Offline-Suggestions-results-may-differ": "Results may differ from the online suggestions and images and common names may not display.",
-  "Visually-search-iNaturalist-data": "Visually search iNaturalist's wealth of data. Search by a taxon in a location",
   "We-sent-a-confirmation-email": "We sent a confirmation email to the email you signed up with.",
   "We-store-personal-information": "We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.",
   "Welcome-to-iNaturalist": "Welcome to iNaturalist!",
@@ -1291,18 +1125,21 @@
   },
   "WHAT-IS-INATURALIST": "WHAT IS INATURALIST?",
   "Whats-more-by-recording": "What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!",
-  "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",
   "Which-traditional-projects-can-add-your-observations": "Which traditional projects can add your observations?",
   "Who-can-add-observation-fields-to-my-observations": "Who can add observation fields to my observations?",
   "WIKIPEDIA": "WIKIPEDIA",
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",
+  "Withdraw": {
+    "comment": "Label for a button that withdraws an identification",
+    "val": "Withdraw"
+  },
   "WITHDRAW-ID": {
     "comment": "Button to Withdraw identification made by user",
     "val": "WITHDRAW ID"
   },
-  "Withdraw-ID": "Withdraw ID",
   "WITHDRAW-ID-QUESTION": "WITHDRAW ID?",
+  "Withdraws-identification": "Withdraws identification",
   "Worldwide": "Worldwide",
   "Would-you-like-to-discard-your-current-recording-and-start-over": "Would you like to discard your current recording and start over?",
   "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
@@ -1335,27 +1172,20 @@
     "val": "{ $count ->\n  [one] 1 SOUND\n *[other] { $count } SOUNDS\n}"
   },
   "X-Species": "{ $count ->\n  [one] { $count } Species\n *[other] { $count } Species\n}",
-  "Yes": "Yes",
-  "Yes-delete-observation": "Yes, delete observation",
-  "Yes-delete-photo": "Yes, delete photo",
   "Yes-license-my-photos": "Yes, license my photos, sounds, and observations so scientists can use my data (recommended)",
   "You-can-add-up-to-20-media": "You can add up to 20 photos and 20 sounds per observation.",
   "You-can-also-check-out-merchandise": "You can also check out merchandise for iNaturalist and Seek at our store below!",
   "You-can-also-explore-existing-observations": "You can also explore existing observations on iNaturalist to discover what's around you.",
   "You-can-click-join-on-the-project-page": "You can click “join” on the project page.",
   "You-can-find-answers-on-our-help-page": "You can find answers on our help page.",
+  "You-can-only-add-20-photos-per-observation": "You can only add 20 photos per observation",
   "You-can-search-observations-of-any-plant-or-animal": {
     "comment": "Onboarding text on MyObservations: Onboarding text on MyObservations: 51-100 observations",
     "val": "You can search observations of any plant or animal anywhere in the world with Explore!"
   },
   "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
   "You-changed-filters-will-be-discarded": "You changed filters, but they were not applied to your explore search results.",
-  "You-denied-iNaturalist-permission-to-do-that": {
-    "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
-    "val": "You denied iNaturalist permission to do that"
-  },
   "You-have-opted-out-of-the-Community-Taxon": "You have opted out of the Community Taxon",
-  "You-have-unsaved-changes": "You have unsaved changes. Would you like to save this observation?",
   "You-havent-joined-any-projects-yet": "You haven’t joined any projects yet!",
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-need-an-Internet-connection-to-do-that": {
@@ -1366,7 +1196,6 @@
     "comment": "Error message when you try to do something that requires log in",
     "val": "You need to log in to do that."
   },
-  "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
   "Your-donation-to-iNaturalist": "Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!",
   "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue.",
   "Your-identification-will-be-posted-with-the-following-comment": "Your identification will be posted with the following comment:",
@@ -1379,5 +1208,6 @@
   "Youve-previously-denied-gallery-permissions": "You’ve previously denied gallery permissions, so please enable them in settings.",
   "Youve-previously-denied-location-permissions": "You’ve previously denied location permissions, so please enable them in settings.",
   "Youve-previously-denied-microphone-permissions": "You’ve previously denied microphone permissions, so please enable them in settings.",
-  "Zoom-in-as-much-as-possible-to-improve": "Zoom in as much as possible to improve location accuracy and get better identifications."
+  "Zoom-in-as-much-as-possible-to-improve": "Zoom in as much as possible to improve location accuracy and get better identifications.",
+  "Zoom-to-current-location": "Zoom to current location"
 }

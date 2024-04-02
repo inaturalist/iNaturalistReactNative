@@ -46,7 +46,7 @@ const BackButton = ( {
           customStyles
         ]}
         testID={testID}
-        accessibilityLabel={t( "Navigate-back" )}
+        accessibilityLabel={t( "Go-back" )}
       />
     );
   }

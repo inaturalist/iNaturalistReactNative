@@ -38,7 +38,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
     {
       icon: "compass-rose-outline",
       testID: EXPLORE_SCREEN_ID,
-      accessibilityLabel: t( "Navigate-to-explore-screen" ),
+      accessibilityLabel: t( "Explore" ),
       accessibilityHint: t( "Navigates-to-explore" ),
       size: 40,
       onPress: ( ) => {

@@ -21,7 +21,7 @@ const GreenCheckmark = ( {
     <INatIconButton
       onPress={handleCheckmarkPress}
       accessibilityLabel={t( "Checkmark" )}
-      accessibilityHint={t( "Navigate-to-suggestions" )}
+      accessibilityHint={t( "Navigates-to-suggestions" )}
       disabled={false}
       icon="checkmark-circle"
       color={colors.inatGreen}

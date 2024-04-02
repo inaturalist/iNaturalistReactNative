@@ -36,8 +36,8 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
       onPress={navigateToObservation}
       accessibilityRole="link"
       accessibilityHint={unsynced
-        ? t( "Navigate-to-observation-edit-screen" )
-        : t( "Navigate-to-observation-details" )}
+        ? t( "Navigates-to-observation-edit-screen" )
+        : t( "Navigates-to-observation-details" )}
       accessibilityLabel={t( "Observation-Name", {
         // TODO: use the name that the user prefers (common or scientific)
         scientificName: observation.species_guess

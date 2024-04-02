@@ -84,9 +84,23 @@ const ActivityHeader = ( {
       );
     }
     if ( category ) {
+      let categoryText;
+      switch ( category ) {
+        case "improving":
+          categoryText = t( "improving--identification" );
+          break;
+        case "maverick":
+          categoryText = t( "maverick--identification" );
+          break;
+        case "leading":
+          categoryText = t( "leading--identification" );
+          break;
+        default:
+          categoryText = t( "supporting--identification" );
+      }
       return (
         <Body4>
-          { t( `Category-${category}` )}
+          { categoryText }
         </Body4>
       );
     }
