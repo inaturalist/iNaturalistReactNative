@@ -74,7 +74,11 @@ const ToolbarContainer = ( {
   ] );
 
   const navToExplore = useCallback(
-    ( ) => navigation.navigate( "Explore", { user: currentUser, worldwide: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      user: currentUser,
+      worldwide: true,
+      resetStoredParams: true
+    } ),
     [navigation, currentUser]
   );
 

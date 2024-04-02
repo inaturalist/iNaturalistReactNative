@@ -71,6 +71,7 @@ const usePrepareStoreAndNavigate = (
     if ( location?.latitude ) {
       newObservation.latitude = location?.latitude;
       newObservation.longitude = location?.longitude;
+      newObservation.positional_accuracy = location?.positional_accuracy;
     }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( localFilePaths, {

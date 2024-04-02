@@ -55,6 +55,7 @@ const UserSearchInput = ( { onUserChanged } ): React.Node => {
             style={viewStyles.clearSearch}
             resizeMode="contain"
             source={require( "images/clear.png" )}
+            accessibilityIgnoresInvertColors
           />
         </Pressable>
       </View>
@@ -73,6 +74,7 @@ const UserSearchInput = ( { onUserChanged } ): React.Node => {
             style={viewStyles.userPic}
             resizeMode="contain"
             source={{ uri: result.icon }}
+            accessibilityIgnoresInvertColors
           />
           <Text style={textStyles.resultPlaceName}>{result.login}</Text>
           <Text style={textStyles.resultPlaceType}>{result.name}</Text>

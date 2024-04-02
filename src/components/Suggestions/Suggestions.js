@@ -62,7 +62,7 @@ const Suggestions = ( {
   const hideVisionResultFromAllSuggestions = list => {
     if ( !hasVisionSuggestion ) { return list; }
     return list.filter(
-      result => result.taxon.id !== currentObservation.taxon.id
+      result => result?.taxon?.id !== currentObservation?.taxon?.id
     ).map( r => r );
   };
 

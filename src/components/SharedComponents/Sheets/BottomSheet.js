@@ -2,8 +2,7 @@
 
 import BottomSheet, {
   BottomSheetModal,
-  BottomSheetView,
-  useBottomSheetDynamicSnapPoints
+  BottomSheetView
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
@@ -12,7 +11,6 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useRef
 } from "react";
 import { Dimensions } from "react-native";
@@ -50,15 +48,6 @@ const StandardBottomSheet = ( {
   const { t } = useTranslation( );
   const sheetRef = useRef( null );
   const insets = useSafeAreaInsets( );
-
-  const initialSnapPoints = useMemo( () => ["CONTENT_HEIGHT"], [] );
-
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout
-  } = useBottomSheetDynamicSnapPoints( initialSnapPoints );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
@@ -109,17 +98,15 @@ const StandardBottomSheet = ( {
 
   return (
     <BottomSheetComponent
-      ref={sheetRef}
-      index={0}
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
-      style={[viewStyles.shadow, marginOnWide]}
-      handleComponent={noHandle}
       backdropComponent={renderBackdrop}
+      enableDynamicSizing
+      handleComponent={noHandle}
+      index={0}
       onChange={onChange || handleBackdropPress}
+      ref={sheetRef}
+      style={[viewStyles.shadow, marginOnWide]}
     >
-      <BottomSheetView onLayout={handleContentLayout}>
+      <BottomSheetView>
         <View
           className={classnames(
             "pt-7",

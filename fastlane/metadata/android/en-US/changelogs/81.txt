@@ -1,0 +1,17 @@
+Test build: has known bugs
+
+NEW
+- Explore has back button
+- Added Suggestions after Camera
+- Map on TaxonDetails
+
+UPDATED
+- Added still needs id vote to DQA
+- Add sounds to existing observations
+- Explore buttons should set Explore search correctly
+- Added Explore icons for identifiers/observers
+- Explore remains the same when you navigate to different tab and back
+
+FIXED
+- Navigation to notifications from drawer menu
+- Notifications indicator disappears after viewing observations

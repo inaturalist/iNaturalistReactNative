@@ -32,7 +32,8 @@ const useMapLocation = ( ): Object => {
     latitudeDelta: DELTA,
     longitudeDelta: DELTA
   } );
-  const [startAtNearby, setStartAtNearby] = useState( !state.swlat && !worldwide );
+  const hasPlace = state.swlat || state.place_id || state.lat;
+  const [startAtNearby, setStartAtNearby] = useState( !hasPlace && !worldwide );
   const { t } = useTranslation( );
 
   const onPanDrag = ( ) => setShowMapBoundaryButton( true );

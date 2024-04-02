@@ -30,12 +30,21 @@ const ProjectDetails = ( {
   const navigation = useNavigation( );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", { project, worldwide: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      project,
+      worldwide: true,
+      resetStoredParams: true
+    } ),
     [navigation, project]
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", { project, worldwide: true, viewSpecies: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      project,
+      worldwide: true,
+      viewSpecies: true,
+      resetStoredParams: true
+    } ),
     [navigation, project]
   );
 
