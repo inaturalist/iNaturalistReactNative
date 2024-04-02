@@ -1,0 +1,17 @@
+diff --git a/node_modules/react-native-draggable-flatlist/src/context/animatedValueContext.tsx b/node_modules/react-native-draggable-flatlist/src/context/animatedValueContext.tsx
+index 6ff1ed5..5f7d9bc 100644
+--- a/node_modules/react-native-draggable-flatlist/src/context/animatedValueContext.tsx
++++ b/node_modules/react-native-draggable-flatlist/src/context/animatedValueContext.tsx
+@@ -133,9 +133,11 @@ function useSetupAnimatedValues<T>() {
+     );
+   }, []);
+ 
++  const dragItemOverflow = props.dragItemOverflow;
++
+   const hoverAnim = useDerivedValue(() => {
+     if (activeIndexAnim.value < 0) return 0;
+-    return props.dragItemOverflow
++    return dragItemOverflow
+       ? touchPositionDiff.value
+       : touchPositionDiffConstrained.value;
+   }, []);
