@@ -429,12 +429,12 @@ lane :beta do
 
   build_number = get_build_number( xcodeproj: XCODEPROJ )
 
-  UI.message "Play Store: promoting build #{build_number} to beta track"
-  upload_to_play_store(
-    version_code: build_number,
-    track: "internal",
-    track_promote_to: "beta"
-  )
+  # UI.message "Play Store: promoting build #{build_number} to beta track"
+  # upload_to_play_store(
+  #   version_code: build_number,
+  #   track: "internal",
+  #   track_promote_to: "beta"
+  # )
 
   UI.message "TestFlight: adding build #{build_number} to Open Beta group"
   add_build_to_testflight_beta_group(
@@ -445,14 +445,14 @@ end
 
 lane :prod do
   desc "Push builds for the latest tag to production"
-  build_number = get_build_number( xcodeproj: XCODEPROJ )
-  # In theory this will move the release associated with the build_number in
-  # the beta track to the production track and 100% rollout... but I haven't
-  # been able to test that yet
-  upload_to_play_store(
-    version_code: build_number,
-    track: "beta",
-    track_promote_to: "production"
-  )
+  # build_number = get_build_number( xcodeproj: XCODEPROJ )
+  # # In theory this will move the release associated with the build_number in
+  # # the beta track to the production track and 100% rollout... but I haven't
+  # # been able to test that yet
+  # upload_to_play_store(
+  #   version_code: build_number,
+  #   track: "beta",
+  #   track_promote_to: "production"
+  # )
   UI.abort_with_message! "This doesn't upload iOS builds yet"
 end
