@@ -58,7 +58,7 @@ const DeleteObservationSheet = ( {
   return (
     <WarningSheet
       handleClose={handleClose}
-      headerText={t( "DELETE-OBSERVATION" )}
+      headerText={t( "DELETE-OBSERVATION--question" )}
       handleSecondButtonPress={handleClose}
       secondButtonText={t( "CANCEL" )}
       confirm={addObservationToDeletionQueue}

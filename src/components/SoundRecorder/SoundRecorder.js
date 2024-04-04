@@ -304,7 +304,7 @@ const SoundRecorder = (): Node => {
       </BottomSheet>
       <WarningSheet
         hidden={!exitWarningShown}
-        headerText={t( "DISCARD-SOUND-header" )}
+        headerText={t( "DISCARD-SOUND--question" )}
         text={t( "By-exiting-your-recorded-sound-will-not-be-saved" )}
         confirm={onBack}
         handleClose={( ) => setExitWarningShown( false )}

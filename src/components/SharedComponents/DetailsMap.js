@@ -138,7 +138,7 @@ const DetailsMap = ( {
               <FloatingActionButton
                 icon="copy"
                 onPress={( ) => copyCoordinates( )}
-                accessibilityLabel={t( "Copy-map-coordinates" )}
+                accessibilityLabel={t( "Copy-coordinates" )}
                 buttonClassName="top-0 left-0"
                 theme={theme}
               />

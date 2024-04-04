@@ -6,7 +6,6 @@ import React, { useMemo } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
 
 type Props = {
   isChecked: boolean,
@@ -20,7 +19,6 @@ const Checkbox = ( {
   text
 }: Props ): Node => {
   const theme = useTheme( );
-  const { t } = useTranslation( );
 
   const renderCheckboxText = useMemo( ( ) => {
     if ( !text ) { return null; }
@@ -58,7 +56,6 @@ const Checkbox = ( {
       iconStyle={iconStyle}
       innerIconStyle={innerIconStyle}
       accessibilityRole="radio"
-      accessibilityLabel={t( "Checkmark" )}
       accessibilityState={{
         checked: isChecked
       }}

@@ -159,7 +159,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           className="h-[69px] w-[69px] bg-inatGreen rounded-full"
           onPress={( ) => closeModal( )}
           accessibilityLabel={t( "Close" )}
-          accessibilityHint={t( "Close-add-observation-modal" )}
+          accessibilityHint={t( "Closes-new-observation-options" )}
         />
         <INatIconButton
           testID="record-sound-button"

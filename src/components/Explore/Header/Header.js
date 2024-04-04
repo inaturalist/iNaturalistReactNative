@@ -68,6 +68,7 @@ const Header = ( {
               {taxon
                 ? (
                   <TaxonResult
+                    accessibilityLabel={t( "Change-taxon-filter" )}
                     asListItem={false}
                     taxon={taxon}
                     showInfoButton={false}
