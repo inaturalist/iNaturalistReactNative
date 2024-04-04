@@ -126,6 +126,7 @@ Change-taxon = Change taxon
 Change-user = Change user
 # Label for a button that cycles through zoom levels for the camera
 Change-zoom = Change zoom
+Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons
 # After pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 Checkmark = Checkmark
@@ -302,6 +303,7 @@ Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. C
 ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
+Every-observation-needs = Every observation needs
 Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
 EVIDENCE = EVIDENCE
 Exact-Date = Exact Date
