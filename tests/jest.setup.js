@@ -371,6 +371,8 @@ jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
   )
 } ) );
 
+jest.mock( "jsrsasign" );
+
 inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
