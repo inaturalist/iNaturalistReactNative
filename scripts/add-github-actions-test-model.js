@@ -1,6 +1,6 @@
 const fs = require( "fs" ).promises;
 const path = require( "path" );
-const download = require( "download" );
+const download = require( "@xhmikosr/downloader" );
 require( "dotenv" ).config();
 
 const modelURL

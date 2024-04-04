@@ -1,6 +1,6 @@
 const fs = require( "fs" ).promises;
 const path = require( "path" );
-const download = require( "download" );
+const download = require( "@xhmikosr/downloader" );
 
 const modelURL
   = "https://github.com/inaturalist/SeekReactNative/releases/download/v2.9.1-138/small_model.zip";
