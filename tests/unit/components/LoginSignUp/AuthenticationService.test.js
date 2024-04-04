@@ -7,11 +7,12 @@ import {
   registerUser,
   signOut
 } from "components/LoginSignUp/AuthenticationService";
+import faker from "tests/helpers/faker";
 import nock from "nock";
 
 const USERNAME = "some_user";
 const PASSWORD = "123456";
-const ACCESS_TOKEN = "some_token";
+const ACCESS_TOKEN = faker.string.sample( );
 const ACCESS_TOKEN_AUTHORIZATION_HEADER = `Bearer ${ACCESS_TOKEN}`;
 const JWT = "jwt_token";
 const USERID = 113113;
