@@ -245,11 +245,9 @@ const ObsDetailsContainer = ( ): Node => {
         markViewedLocally( );
         queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
         refetchObservationUpdates( );
-
-        // make sure we dont ask api the number of notifications
-        // until its ready to return an accurate result
-        setTimeout( () => { setObservationMarkedAsViewedAt( new Date( ) ); }, 2000 );
-        setTimeout( () => { setObservationMarkedAsViewedAt( new Date( ) ); }, 5000 );
+        // Set this value so NotificationsIconContainer knows to update the
+        // notifications count
+        setObservationMarkedAsViewedAt( new Date( ) );
       }
     }
   );
