@@ -7,8 +7,8 @@ import {
   registerUser,
   signOut
 } from "components/LoginSignUp/AuthenticationService";
-import faker from "tests/helpers/faker";
 import nock from "nock";
+import faker from "tests/helpers/faker";
 
 const USERNAME = "some_user";
 const PASSWORD = "123456";
