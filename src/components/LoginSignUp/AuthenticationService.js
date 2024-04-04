@@ -4,10 +4,10 @@ import { fetchUserMe } from "api/users";
 import { create } from "apisauce";
 import axios from "axios";
 import i18next from "i18next";
+import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
-import jwt from "react-native-jwt-io";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
@@ -113,6 +113,22 @@ const signOut = async (
 };
 
 /**
+ * Encodes a JWT. Lifted from react-native-jwt-io
+ * https://github.com/maxweb4u/react-native-jwt-io/blob/7f926da46ff536dbb531dd8ae7177ab4ff28c43f/src/jwt.js#L21
+ */
+const encodeJWT = ( payload, key, algorithm ) => {
+  algorithm = typeof algorithm !== "undefined"
+    ? algorithm
+    : "HS256";
+  return rs.jws.JWS.sign(
+    algorithm,
+    JSON.stringify( { alg: algorithm, typ: "JWT" } ),
+    JSON.stringify( payload ),
+    key
+  );
+};
+
+/**
  * Returns the access token to be used in case of an anonymous JWT (e.g. used
  * when getting taxon suggestions)
  * @returns encoded anonymous JWT
@@ -123,7 +139,7 @@ const getAnonymousJWT = (): string => {
     exp: Date.now() / 1000 + 300
   };
 
-  return jwt.encode( claims, Config.JWT_ANONYMOUS_API_SECRET, "HS512" );
+  return encodeJWT( claims, Config.JWT_ANONYMOUS_API_SECRET, "HS512" );
 };
 
 /**

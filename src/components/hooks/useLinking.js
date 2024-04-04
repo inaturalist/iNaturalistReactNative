@@ -9,11 +9,10 @@ import { Linking } from "react-native";
 
 const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
 const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
-const observationsUrl = "https://www.inaturalist.org/observations";
 
 const useLinking = ( currentUser: ?Object ) => {
   const navigation = useNavigation( );
-  const [appLinkUrl, setAppLinkUrl] = useState( null );
+  const [observationId, setObservationId] = useState( null );
 
   const navigateConfirmedUser = useCallback( ( ) => {
     if ( currentUser ) { return; }
@@ -24,8 +23,7 @@ const useLinking = ( currentUser: ?Object ) => {
   }, [navigation, currentUser] );
 
   const navigateToObservations = useCallback( async ( ) => {
-    const id = appLinkUrl?.split( "/" )[4];
-    const searchParams = { id };
+    const searchParams = { id: observationId };
     const { results } = await searchObservations( searchParams );
     const uuid = results?.[0]?.uuid;
 
@@ -34,7 +32,21 @@ const useLinking = ( currentUser: ?Object ) => {
         uuid
       } );
     }
-  }, [navigation, appLinkUrl] );
+  }, [navigation, observationId] );
+
+  const checkAllowedHosts = useCallback( url => {
+    if ( typeof url !== "string" ) { return; }
+    const { host, pathname } = new URL( url );
+
+    const allowedHosts = [
+      "www.inaturalist.org"
+    ];
+    if ( allowedHosts?.includes( host )
+      && pathname.includes( "/observations" ) ) {
+      const id = pathname.split( "/" )[2];
+      setObservationId( id );
+    }
+  }, [] );
 
   useEffect( ( ) => {
     Linking.addEventListener( "url", async ( { url } ) => {
@@ -44,11 +56,9 @@ const useLinking = ( currentUser: ?Object ) => {
       ) {
         navigateConfirmedUser( );
       }
-      if ( url?.includes( observationsUrl ) ) {
-        setAppLinkUrl( url );
-      }
+      checkAllowedHosts( url );
     } );
-  }, [navigateConfirmedUser, navigateToObservations] );
+  }, [navigateConfirmedUser, navigateToObservations, checkAllowedHosts] );
 
   useEffect( ( ) => {
     const fetchInitialUrl = async ( ) => {
@@ -59,18 +69,16 @@ const useLinking = ( currentUser: ?Object ) => {
       ) {
         navigateConfirmedUser( );
       }
-      if ( url?.includes( observationsUrl ) ) {
-        setAppLinkUrl( url );
-      }
+      checkAllowedHosts( url );
     };
     fetchInitialUrl( );
-  }, [navigateConfirmedUser, navigateToObservations] );
+  }, [navigateConfirmedUser, navigateToObservations, checkAllowedHosts] );
 
   useEffect( ( ) => {
-    if ( appLinkUrl ) {
+    if ( observationId ) {
       navigateToObservations( );
     }
-  }, [appLinkUrl, navigateToObservations] );
+  }, [observationId, navigateToObservations] );
 };
 
 export default useLinking;

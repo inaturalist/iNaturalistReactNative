@@ -371,9 +371,7 @@ jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
   )
 } ) );
 
-jest.mock( "react-native-jwt-io", ( ) => ( {
-  encode: jest.fn( ( ) => "an-encoded-jwt" )
-} ) );
+jest.mock( "jsrsasign" );
 
 inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
