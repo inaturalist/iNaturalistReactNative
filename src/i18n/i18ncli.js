@@ -12,7 +12,7 @@ const {
 const { readFile, writeFile } = fs.promises;
 const path = require( "path" );
 const util = require( "util" );
-const glob = util.promisify( require( "glob" ) );
+const { glob } = require( "glob" );
 const {
   difference,
   flatten,

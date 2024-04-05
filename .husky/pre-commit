@@ -1,6 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 # If ggshield is installed, run it
 if command -v ggshield &> /dev/null; then
   ggshield secret scan pre-commit
