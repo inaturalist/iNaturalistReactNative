@@ -1,4 +1,5 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer";
@@ -53,18 +54,6 @@ const PhotoGallery = ( ): Node => {
     } );
   }, [navigation] );
 
-  const navToObsDetails = useCallback( uuid => navigation.navigate( "TabNavigator", {
-    screen: "ObservationsStackNavigator",
-    params: {
-      // Need to return to ObsDetails but with a navigation stack that goes back to ObsList
-      screen: "ObsList",
-      params: {
-        navToObsDetails: true,
-        uuid
-      }
-    }
-  } ), [navigation] );
-
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
     lastScreen: "PhotoGallery"
   } ), [navigation] );
@@ -107,7 +96,7 @@ const PhotoGallery = ( ): Node => {
 
         // Determine if we need to go back to ObsList or ObsDetails screen
       } else if ( params && params.previousScreen && params.previousScreen.name === "ObsDetails" ) {
-        navToObsDetails( params.previousScreen.params.uuid );
+        navigateToObsDetails( navigation, params.previousScreen.params.uuid );
       } else {
         navToObsList();
       }
@@ -177,7 +166,7 @@ const PhotoGallery = ( ): Node => {
     navToObsEdit, navToObsList, photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
     evidenceToAdd, galleryUris, navigation, setGroupedPhotos, fromGroupPhotos, skipGroupPhotos,
     groupedPhotos, currentObservation, updateObservations, observations, currentObservationIndex,
-    navToObsDetails, params
+    params
   ] );
 
   const onPermissionGranted = () => {
