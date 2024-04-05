@@ -1,5 +1,4 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+npm run lint
 
 # If ggshield is installed, run it
 if command -v ggshield &> /dev/null; then
