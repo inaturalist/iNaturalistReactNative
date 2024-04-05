@@ -9,10 +9,10 @@ import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
-import mockRNLocalize from "react-native-localize/mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
+import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
 
 import factory, { makeResponse } from "./factory";
 import {
