@@ -332,9 +332,9 @@ PODS:
   - react-native-cameraroll (7.5.2):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - react-native-config (1.5.0):
-    - react-native-config/App (= 1.5.0)
-  - react-native-config/App (1.5.0):
+  - react-native-config (1.5.1):
+    - react-native-config/App (= 1.5.1)
+  - react-native-config/App (1.5.1):
     - React-Core
   - react-native-exif-reader (0.2.3):
     - React-Core
@@ -510,7 +510,7 @@ PODS:
   - RNGestureHandler (2.16.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNLocalize (2.2.6):
+  - RNLocalize (3.1.0):
     - React-Core
   - RNPermissions (4.1.5):
     - React-Core
@@ -537,7 +537,7 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.1)
-  - VisionCamera (3.9.1):
+  - VisionCamera (3.9.2):
     - React
     - React-callinvoker
     - React-Core
@@ -828,7 +828,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 8e291ed0ab371314de269001d6b9b25db6aabf42
   React-logger: d4010de0b0564e63637ad08373bc73b5d919974b
   react-native-cameraroll: a4f3516ab7280885c52eaedc14fda08ec4fe03de
-  react-native-config: 5330c8258265c1e5fdb8c009d2cabd6badd96727
+  react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-exif-reader: b2ad2175125a5d7dbd399ac6bd3bc4ba8753f85a
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation: 60c320eee7c711007e4708798f474473997fcb4c
@@ -874,7 +874,7 @@ SPEC CHECKSUMS:
   RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: b83cf821f60b7ec59827f0ed9e5b8c46b1de2c99
-  RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
+  RNLocalize: e8694475db034bf601e17bd3dfa8986565e769eb
   RNPermissions: b3d6efca086546e29a2920cd649a0ab04ca77794
   RNReanimated: fc36806836aca984b797f01432abe31689663421
   RNScreens: e5ee7223f7c8fa261f0c4594a0541c56ea99bbfc
@@ -885,7 +885,7 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  VisionCamera: 609b194489f336792caa5eda305a3fdd4ba5d44c
+  VisionCamera: 6c8ca7d04fc62fafccd8f8ad584e96f5303671f5
   VisionCameraPluginInatVision: edd58cf80291675d1a1523a3d8d3b2c2f1bff26a
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
 
