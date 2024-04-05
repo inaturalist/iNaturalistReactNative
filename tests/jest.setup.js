@@ -2,6 +2,7 @@ import "react-native-gesture-handler/jestSetup";
 import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
+import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
@@ -383,5 +384,33 @@ jest.mock( "react-native-fast-image", ( ) => {
   return {
     ...actualNav,
     preload: jest.fn( )
+  };
+} );
+
+jest.mock( "@react-native-clipboard/clipboard", () => mockClipboard );
+
+jest.mock( "react-native-webview", () => {
+  const MockWebView = jest.requireActual( "react-native" ).View;
+
+  return {
+    __esModule: true,
+    WebView: MockWebView,
+    default: MockWebView
+  };
+} );
+
+jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
+  const turboModuleRegistry = jest
+    .requireActual( "react-native/Libraries/TurboModule/TurboModuleRegistry" );
+  return {
+    ...turboModuleRegistry,
+    getEnforcing: name => {
+      // List of TurboModules libraries to mock.
+      const modulesToMock = ["ReactNativeKCKeepAwake"];
+      if ( modulesToMock.includes( name ) ) {
+        return null;
+      }
+      return turboModuleRegistry.getEnforcing( name );
+    }
   };
 } );

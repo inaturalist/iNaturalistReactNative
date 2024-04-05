@@ -346,13 +346,13 @@ PODS:
     - React-Core
   - react-native-image-resizer (3.0.7):
     - React-Core
-  - react-native-keep-awake (1.1.0):
+  - react-native-keep-awake (1.2.3):
     - React-Core
   - react-native-mail (6.1.1):
     - React-Core
-  - react-native-maps (1.11.3):
+  - react-native-maps (1.13.0):
     - React-Core
-  - react-native-netinfo (9.4.1):
+  - react-native-netinfo (11.3.1):
     - React-Core
   - react-native-orientation-locker (1.5.0):
     - React-Core
@@ -365,7 +365,8 @@ PODS:
   - react-native-slider (4.5.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - react-native-webview (11.23.1):
+  - react-native-webview (13.8.4):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - react-native-worklets-core (0.4.0):
     - React
@@ -489,7 +490,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.23.1):
     - React-Core
-  - RNCClipboard (1.11.2):
+  - RNCClipboard (1.13.2):
     - React-Core
   - RNCPicker (2.7.2):
     - React-Core
@@ -510,9 +511,9 @@ PODS:
     - React-Core
   - RNLocalize (2.2.6):
     - React-Core
-  - RNPermissions (3.10.0):
+  - RNPermissions (4.1.5):
     - React-Core
-  - RNReanimated (3.7.1):
+  - RNReanimated (3.8.1):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - ReactCommon/turbomodule/core
@@ -523,7 +524,7 @@ PODS:
     - React
   - RNStoreReview (0.4.3):
     - React-Core
-  - RNSVG (13.14.0):
+  - RNSVG (15.1.0):
     - React-Core
   - RNVectorIcons (10.0.3):
     - RCT-Folly (= 2021.07.22.00)
@@ -832,16 +833,16 @@ SPEC CHECKSUMS:
   react-native-geolocation: 60c320eee7c711007e4708798f474473997fcb4c
   react-native-image-picker: ddbbe4d226d9c82a82360f5de66bf71a657a42e6
   react-native-image-resizer: 681f7607418b97c084ba2d0999b153b103040d8a
-  react-native-keep-awake: acbee258db16483744910f0da3ace39eb9ab47fd
+  react-native-keep-awake: 5cfb49d1b2ee4321b2ffbc651e2d6d64d6f66772
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
-  react-native-maps: 79610ffcd0ec2ca8e0cefb48aa8ae7c62a75d7cc
-  react-native-netinfo: fefd4e98d75cbdd6e85fc530f7111a8afdf2b0c5
+  react-native-maps: fa054512735831f232e822ee6bdb0afcdd88de4a
+  react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-orientation-locker: 851f6510d8046ea2f14aa169b1e01fcd309a94ba
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
   react-native-slider: 62cadd5a3788ce12f86afd9fa94d50e5168159d0
-  react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
+  react-native-webview: 007d5c5a74de7243be6331221727639ed01ef760
   react-native-worklets-core: 2efe80a3ee87fe5e6fefa814e0e20c2708d3ad25
   React-NativeModulesApple: 694679e4193a49c09f0a76ee27ec09b2c466d59c
   React-perflogger: 63606aeab27683112e1bd4ef25bd099ec1cb03f8
@@ -864,7 +865,7 @@ SPEC CHECKSUMS:
   RealmJS: 385df5ee940d96f1de26b1dab153e325633d3052
   RNAudioRecorderPlayer: 9b34adc281800e5b19258f1b91d889b1ef3abdd6
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
-  RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
+  RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNCPicker: 82ccad5b08259dc09310082118cbb6c136d7da67
   RNDateTimePicker: fc2e4f2795877d45e84d85659bebe627eba5c931
   RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
@@ -873,12 +874,12 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: b83cf821f60b7ec59827f0ed9e5b8c46b1de2c99
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
-  RNPermissions: 0332875c444efe864dd97071dc848529bd7cc692
-  RNReanimated: d1e4ed9a92d89eec531690500d40c2384a3b1986
+  RNPermissions: b3d6efca086546e29a2920cd649a0ab04ca77794
+  RNReanimated: fc36806836aca984b797f01432abe31689663421
   RNScreens: e5ee7223f7c8fa261f0c4594a0541c56ea99bbfc
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNStoreReview: 31dbfd0dac2eea9675f0b84f1dd3261c2110c337
-  RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
+  RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
   RNVectorIcons: 2b974a961e7ad079fafdd8af68b12210d5b4b28e
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
@@ -887,6 +888,6 @@ SPEC CHECKSUMS:
   VisionCameraPluginInatVision: edd58cf80291675d1a1523a3d8d3b2c2f1bff26a
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
 
-PODFILE CHECKSUM: a024ff996419ec0ea875a3a794f0a6f65c13c043
+PODFILE CHECKSUM: c472707b711549a30b2a017824e3717db85ccf19
 
 COCOAPODS: 1.14.3

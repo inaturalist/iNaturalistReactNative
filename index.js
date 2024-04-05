@@ -20,7 +20,6 @@ import { Alert, AppRegistry } from "react-native";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { enableLatestRenderer } from "react-native-maps";
 import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { reactQueryRetry } from "sharedHelpers/logging";
@@ -29,8 +28,6 @@ import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
 import { navigationRef } from "./src/navigation/navigationUtils";
-
-enableLatestRenderer( );
 
 const logger = log.extend( "index.js" );
 
