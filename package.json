@@ -53,7 +53,7 @@
     "@realm/react": "^0.6.2",
     "@sayem314/react-native-keep-awake": "^1.2.3",
     "@shopify/flash-list": "^1.6.4",
-    "@tanstack/react-query": "^5.28.14",
+    "@tanstack/react-query": "^5.29.0",
     "apisauce": "^3.0.1",
     "axios": "^1.6.8",
     "classnames": "^2.5.1",
@@ -78,7 +78,7 @@
     "react-native-audio-recorder-player": "^3.6.7",
     "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-circular-progress-indicator": "^4.4.2",
-    "react-native-config": "1.5.0",
+    "react-native-config": "^1.5.1",
     "react-native-device-info": "^10.13.1",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-email-link": "^1.16.0",
@@ -93,7 +93,7 @@
     "react-native-image-picker": "github:inaturalist/react-native-image-picker",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
-    "react-native-localize": "^2.2.6",
+    "react-native-localize": "^3.1.0",
     "react-native-logs": "^5.1.0",
     "react-native-mail": "github:chirag04/react-native-mail",
     "react-native-maps": "^1.13.0",
@@ -117,7 +117,7 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-uuid": "^2.0.2",
     "react-native-vector-icons": "^10.0.3",
-    "react-native-vision-camera": "3.9.1",
+    "react-native-vision-camera": "^3.9.2",
     "react-native-webview": "^13.8.4",
     "react-native-worklets-core": "0.4.0",
     "realm": "^12.6.2",
@@ -136,7 +136,7 @@
     "@fluent/syntax": "^0.19.0",
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.12",
-    "@tanstack/eslint-plugin-query": "^4.38.0",
+    "@tanstack/eslint-plugin-query": "^5.28.11",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.4.5",
     "@tsconfig/react-native": "^3.0.0",
@@ -185,12 +185,10 @@
     "node": ">=18"
   },
   "jest": {
-    "automock": false,
     "moduleNameMapper": {
       "\\.svg": "<rootDir>/tests/mocks/svgMock.js"
     },
     "preset": "react-native",
-    "resetMocks": false,
     "setupFiles": [
       "./node_modules/react-native-gesture-handler/jestSetup.js",
       "<rootDir>/tests/jest.setup.js"
