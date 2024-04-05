@@ -86,7 +86,7 @@ const Announcements = ( {
     ( params, optsWithAuth ) => dismissAnnouncement( params, optsWithAuth ),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries( ["searchAnnouncements"] );
+        queryClient.invalidateQueries( { queryKey: ["searchAnnouncements"] } );
         if ( refetchAnnouncements ) {
           refetchAnnouncements();
         }

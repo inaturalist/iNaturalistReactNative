@@ -37,7 +37,7 @@ const SettingsApplications = ( ): Node => {
     ( params, optsWithAuth ) => revokeAuthorizedApplications( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        queryClient.invalidateQueries( ["fetchAuthorizedApplications"] );
+        queryClient.invalidateQueries( { queryKey: ["fetchAuthorizedApplications"] } );
         refetch( );
       }
     }

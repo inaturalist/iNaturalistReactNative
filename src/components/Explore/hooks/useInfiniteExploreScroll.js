@@ -1,6 +1,6 @@
 // @flow
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { flatten, last } from "lodash";
@@ -25,7 +25,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey,
-    keepPreviousData: false,
+    placeholderData: keepPreviousData,
     queryFn: async ( { pageParam } ) => {
       const apiToken = await getJWT( );
       const options = {
@@ -46,6 +46,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
       const response = await searchObservations( params, options );
       return response;
     },
+    initialPageParam: 0,
     getNextPageParam: lastPage => last( lastPage.results )?.id
   } );
 

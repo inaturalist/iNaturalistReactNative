@@ -20,7 +20,7 @@
 //   const queryClient = useQueryClient( );
 
 //   // this seems necessary for clearing the cache between searches
-//   queryClient.invalidateQueries( ["fetchSearchResults"] );
+//   queryClient.invalidateQueries( { queryKey: ["fetchSearchResults"] } );
 
 //   const {
 //     data: placeResults

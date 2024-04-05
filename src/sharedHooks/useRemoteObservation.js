@@ -1,4 +1,7 @@
 // @flow
+import {
+  keepPreviousData
+} from "@tanstack/react-query";
 import { fetchRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useMemo } from "react";
@@ -34,7 +37,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
       optsWithAuth
     ),
     {
-      keepPreviousData: false,
+      placeholderData: keepPreviousData,
       enabled: !!isConnected && !!enabled
     }
   );

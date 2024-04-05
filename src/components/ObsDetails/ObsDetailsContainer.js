@@ -186,7 +186,7 @@ const ObsDetailsContainer = ( ): Node => {
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      queryClient.invalidateQueries( fetchRemoteObservationKey );
+      queryClient.invalidateQueries( { queryKey: fetchRemoteObservationKey } );
     }, [queryClient] )
   );
 
@@ -243,7 +243,7 @@ const ObsDetailsContainer = ( ): Node => {
     {
       onSuccess: ( ) => {
         markViewedLocally( );
-        queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
+        queryClient.invalidateQueries( { queryKey: [fetchObservationUpdatesKey] } );
         refetchObservationUpdates( );
         // Set this value so NotificationsIconContainer knows to update the
         // notifications count
@@ -384,7 +384,7 @@ const ObsDetailsContainer = ( ): Node => {
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
   const refetchObservation = ( ) => {
-    queryClient.invalidateQueries( [fetchRemoteObservationKey] );
+    queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey] } );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };
