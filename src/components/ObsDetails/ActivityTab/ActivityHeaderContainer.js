@@ -51,7 +51,7 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: ( ) => {
         setLoading( false );
-        queryClient.invalidateQueries( [fetchRemoteObservationKey, item.uuid] );
+        queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey, item.uuid] } );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
@@ -72,7 +72,7 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: () => {
         setLoading( false );
-        queryClient.invalidateQueries( [fetchRemoteObservationKey, item.uuid] );
+        queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey, item.uuid] } );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
@@ -99,7 +99,7 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: () => {
         setLoading( false );
-        queryClient.invalidateQueries( [fetchRemoteObservationKey, item.uuid] );
+        queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey, item.uuid] } );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }

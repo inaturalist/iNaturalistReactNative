@@ -303,7 +303,7 @@ Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. C
 ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS-header = ESTABLISHMENT MEANS
-Every-observation-needs = Every observation needs
+Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
 Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
 EVIDENCE = EVIDENCE
 Exact-Date = Exact Date

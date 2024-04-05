@@ -1,6 +1,6 @@
 // @flow
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { flatten, last, noop } from "lodash";
@@ -35,7 +35,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey,
-    keepPreviousData: false,
+    placeholderData: keepPreviousData,
     queryFn: async ( { pageParam } ) => {
       const apiToken = await getJWT( );
       const options = {
@@ -56,6 +56,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
       const { results } = await searchObservations( params, options );
       return results.map( observation => Observation.mapApiToRealm( observation ) ) || [];
     },
+    initialPageParam: 0,
     getNextPageParam: lastPage => last( lastPage )?.id,
     // allow a user to see the Explore screen Observations
     // content while logged out

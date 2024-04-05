@@ -117,10 +117,12 @@ const DQAContainer = ( ): React.Node => {
     ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries( [
-          fetchRemoteObservationKey,
-          observationUUID
-        ] );
+        queryClient.invalidateQueries( {
+          queryKey: [
+            fetchRemoteObservationKey,
+            observationUUID
+          ]
+        } );
         refetchRemoteObservation();
       },
       onError: () => {
@@ -133,10 +135,12 @@ const DQAContainer = ( ): React.Node => {
     ( faveParams, optsWithAuth ) => unfaveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries( [
-          fetchRemoteObservationKey,
-          observationUUID
-        ] );
+        queryClient.invalidateQueries( {
+          queryKey: [
+            fetchRemoteObservationKey,
+            observationUUID
+          ]
+        } );
         refetchRemoteObservation();
       },
       onError: () => {
