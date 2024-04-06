@@ -69,16 +69,8 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
       onPress: ( ) => {
-        navigation.reset( {
-          index: 0,
-          routes: [
-            {
-              name: "ObservationsStackNavigator",
-              params: {
-                screen: "Notifications"
-              }
-            }
-          ]
+        navigation.navigate( "ObservationsStackNavigator", {
+          screen: "Notifications"
         } );
         setActiveTab( NOTIFICATIONS_SCREEN_ID );
       },
