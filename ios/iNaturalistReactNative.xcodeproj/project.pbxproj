@@ -29,6 +29,9 @@
 		8B65ED3129F575C10054CCEF /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B65ED2F29F575C10054CCEF /* MainInterface.storyboard */; };
 		8B65ED3529F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B65ED2B29F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8B65ED3B29F575FE0054CCEF /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B65ED3A29F575FE0054CCEF /* ShareViewController.swift */; };
+		8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
+		8F1AC6782BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
+		8F1AC6792BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */; };
 		9136560F8A3E4C53B7BD08AE /* Whitney-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B5F7CCA093BF4208980F1C36 /* Whitney-Medium.otf */; };
 		A019DB3A4661689827F5BB56 /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 486ED9661FEC89EDDBE3DA02 /* libPods-iNaturalistReactNative.a */; };
 		A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */; };
@@ -107,6 +110,7 @@
 		8B65ED3C29F576D00054CCEF /* iNaturalistReactNative-ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iNaturalistReactNative-ShareExtension.entitlements"; sourceTree = "<group>"; };
 		8B8BAD0429F54EB300CE5C9F /* iNaturalistReactNative.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = iNaturalistReactNative.entitlements; path = iNaturalistReactNative/iNaturalistReactNative.entitlements; sourceTree = "<group>"; };
 		8EB5F71FA6C34855B03FE3FB /* Whitney-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Book.otf"; path = "../assets/fonts/Whitney-Book.otf"; sourceTree = "<group>"; };
+		8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B397CFD4AEFF474A89A3D27B /* Whitney-Semibold-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Semibold-Pro.otf"; path = "../assets/fonts/Whitney-Semibold-Pro.otf"; sourceTree = "<group>"; };
 		B5F7CCA093BF4208980F1C36 /* Whitney-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Medium.otf"; path = "../assets/fonts/Whitney-Medium.otf"; sourceTree = "<group>"; };
 		BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Light-Pro.otf"; path = "../assets/fonts/Whitney-Light-Pro.otf"; sourceTree = "<group>"; };
@@ -224,6 +228,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				8F1AC6762BC1B610002F994B /* PrivacyInfo.xcprivacy */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FAE1A68108700A75B9A /* iNaturalistReactNative */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -397,6 +402,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F1AC6782BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +417,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */,
 				BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */,
+				8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 				4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */,
 				D2853A71785A4FF6AB137F4C /* INatIcon.ttf in Resources */,
 				B197D1A2DFD9440C9581D513 /* Whitney-Book-Pro.otf in Resources */,
@@ -433,6 +440,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F1AC6792BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 				8B65ED3129F575C10054CCEF /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
