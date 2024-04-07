@@ -1,155 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UserIcon displays active user image correctly 1`] = `
-<View
+<FasterImageView
+  accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
+  source={
+    {
+      "uri": "some_uri",
+    }
+  }
   style={
     [
-      {
-        "overflow": "hidden",
-      },
       [
-        [
-          {
-            "borderBottomLeftRadius": 9999,
-            "borderBottomRightRadius": 9999,
-            "borderTopLeftRadius": 9999,
-            "borderTopRightRadius": 9999,
-          },
-          {
-            "width": 40,
-          },
-          {
-            "height": 40,
-          },
-          {
-            "borderColor": "#74AC00",
-            "borderWidth": 3,
-          },
-        ],
+        {
+          "borderBottomLeftRadius": 9999,
+          "borderBottomRightRadius": 9999,
+          "borderTopLeftRadius": 9999,
+          "borderTopRightRadius": 9999,
+        },
+        {
+          "width": 40,
+        },
+        {
+          "height": 40,
+        },
+        {
+          "borderColor": "#74AC00",
+          "borderWidth": 3,
+        },
       ],
     ]
   }
->
-  <FastImageView
-    accessibilityIgnoresInvertColors={true}
-    accessibilityRole="image"
-    defaultSource={null}
-    resizeMode="cover"
-    source={
-      {
-        "uri": "some_uri",
-      }
-    }
-    style={
-      {
-        "bottom": 0,
-        "left": 0,
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-      }
-    }
-    testID="UserIcon.photo"
-  />
-</View>
+  testID="UserIcon.photo"
+/>
 `;
 
 exports[`UserIcon displays small user image correctly 1`] = `
-<View
+<FasterImageView
+  accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
+  source={
+    {
+      "uri": "some_uri",
+    }
+  }
   style={
     [
-      {
-        "overflow": "hidden",
-      },
       [
-        [
-          {
-            "borderBottomLeftRadius": 9999,
-            "borderBottomRightRadius": 9999,
-            "borderTopLeftRadius": 9999,
-            "borderTopRightRadius": 9999,
-          },
-          {
-            "width": 22,
-          },
-          {
-            "height": 22,
-          },
-        ],
+        {
+          "borderBottomLeftRadius": 9999,
+          "borderBottomRightRadius": 9999,
+          "borderTopLeftRadius": 9999,
+          "borderTopRightRadius": 9999,
+        },
+        {
+          "width": 22,
+        },
+        {
+          "height": 22,
+        },
       ],
     ]
   }
->
-  <FastImageView
-    accessibilityIgnoresInvertColors={true}
-    accessibilityRole="image"
-    defaultSource={null}
-    resizeMode="cover"
-    source={
-      {
-        "uri": "some_uri",
-      }
-    }
-    style={
-      {
-        "bottom": 0,
-        "left": 0,
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-      }
-    }
-    testID="UserIcon.photo"
-  />
-</View>
+  testID="UserIcon.photo"
+/>
 `;
 
 exports[`UserIcon displays user image correctly 1`] = `
-<View
+<FasterImageView
+  accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
+  source={
+    {
+      "uri": "some_uri",
+    }
+  }
   style={
     [
-      {
-        "overflow": "hidden",
-      },
       [
-        [
-          {
-            "borderBottomLeftRadius": 9999,
-            "borderBottomRightRadius": 9999,
-            "borderTopLeftRadius": 9999,
-            "borderTopRightRadius": 9999,
-          },
-          {
-            "width": 40,
-          },
-          {
-            "height": 40,
-          },
-        ],
+        {
+          "borderBottomLeftRadius": 9999,
+          "borderBottomRightRadius": 9999,
+          "borderTopLeftRadius": 9999,
+          "borderTopRightRadius": 9999,
+        },
+        {
+          "width": 40,
+        },
+        {
+          "height": 40,
+        },
       ],
     ]
   }
->
-  <FastImageView
-    accessibilityIgnoresInvertColors={true}
-    accessibilityRole="image"
-    defaultSource={null}
-    resizeMode="cover"
-    source={
-      {
-        "uri": "some_uri",
-      }
-    }
-    style={
-      {
-        "bottom": 0,
-        "left": 0,
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-      }
-    }
-    testID="UserIcon.photo"
-  />
-</View>
+  testID="UserIcon.photo"
+/>
 `;

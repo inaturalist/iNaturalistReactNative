@@ -1,7 +1,7 @@
 // @flow
 
 import classNames from "classnames";
-import { FastImage as Image } from "components/styledComponents";
+import { FasterImageView as Image } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import colors from "styles/tailwindColors";

@@ -1,5 +1,6 @@
 // @flow
 
+import { FasterImageView as UnstyledFasterImageView } from "@candlefinance/faster-image";
 import {
   BottomSheetTextInput as StyledBottomSheetTextInput
 } from "@gorhom/bottom-sheet";
@@ -17,8 +18,6 @@ import {
   TextInput as UntyledTextInput,
   View as UnstyledView
 } from "react-native";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import UnstyledFastImage from "react-native-fast-image";
 import UnstyledLinearGradient from "react-native-linear-gradient";
 
 // $FlowIgnore
@@ -75,11 +74,11 @@ const fontMonoClass: string = ( Platform.OS === "ios"
 const LinearGradient = styled( UnstyledLinearGradient );
 
 // $FlowIgnore
-const FastImage = styled( UnstyledFastImage );
+const FasterImageView = styled( UnstyledFasterImageView );
 
 export {
   BottomSheetTextInput,
-  FastImage,
+  FasterImageView,
   fontMonoClass,
   Image,
   ImageBackground,
