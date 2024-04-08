@@ -62,9 +62,8 @@ describe( "UserProfile", () => {
     ).toBeTruthy( );
     const userIcon = screen.getByTestId( "UserIcon.photo" );
     expect( userIcon ).toBeTruthy( );
-    // TODO: This fails on RN 73
-    // expect( userIcon.props.source ).toStrictEqual( {
-    //   uri: mockUser.icon_url
-    // } );
+    expect( userIcon.props.source ).toStrictEqual( {
+      uri: mockUser.icon_url
+    } );
   } );
 } );
