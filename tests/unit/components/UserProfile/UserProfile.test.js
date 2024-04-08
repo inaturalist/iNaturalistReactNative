@@ -62,8 +62,6 @@ describe( "UserProfile", () => {
     ).toBeTruthy( );
     const userIcon = screen.getByTestId( "UserIcon.photo" );
     expect( userIcon ).toBeTruthy( );
-    expect( userIcon.props.source ).toStrictEqual( {
-      uri: mockUser.icon_url
-    } );
+    expect( userIcon.props.source ).toHaveProperty( "url", mockUser.icon_url );
   } );
 } );

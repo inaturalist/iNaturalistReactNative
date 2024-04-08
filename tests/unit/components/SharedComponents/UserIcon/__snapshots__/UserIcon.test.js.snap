@@ -6,27 +6,23 @@ exports[`UserIcon displays active user image correctly 1`] = `
   accessibilityRole="image"
   source={
     {
-      "uri": "some_uri",
+      "borderRadius": 20,
+      "resizeMode": "cover",
+      "url": "some_uri",
     }
   }
   style={
     [
       [
         {
-          "borderBottomLeftRadius": 9999,
-          "borderBottomRightRadius": 9999,
-          "borderTopLeftRadius": 9999,
-          "borderTopRightRadius": 9999,
-        },
-        {
-          "width": 40,
+          "borderColor": "#74AC00",
+          "borderRadius": 20,
+          "borderWidth": 3,
         },
         {
           "height": 40,
-        },
-        {
-          "borderColor": "#74AC00",
-          "borderWidth": 3,
+          "overflow": "hidden",
+          "width": 40,
         },
       ],
     ]
@@ -41,23 +37,19 @@ exports[`UserIcon displays small user image correctly 1`] = `
   accessibilityRole="image"
   source={
     {
-      "uri": "some_uri",
+      "borderRadius": 11,
+      "resizeMode": "cover",
+      "url": "some_uri",
     }
   }
   style={
     [
       [
-        {
-          "borderBottomLeftRadius": 9999,
-          "borderBottomRightRadius": 9999,
-          "borderTopLeftRadius": 9999,
-          "borderTopRightRadius": 9999,
-        },
-        {
-          "width": 22,
-        },
+        undefined,
         {
           "height": 22,
+          "overflow": "hidden",
+          "width": 22,
         },
       ],
     ]
@@ -72,23 +64,19 @@ exports[`UserIcon displays user image correctly 1`] = `
   accessibilityRole="image"
   source={
     {
-      "uri": "some_uri",
+      "borderRadius": 20,
+      "resizeMode": "cover",
+      "url": "some_uri",
     }
   }
   style={
     [
       [
-        {
-          "borderBottomLeftRadius": 9999,
-          "borderBottomRightRadius": 9999,
-          "borderTopLeftRadius": 9999,
-          "borderTopRightRadius": 9999,
-        },
-        {
-          "width": 40,
-        },
+        undefined,
         {
           "height": 40,
+          "overflow": "hidden",
+          "width": 40,
         },
       ],
     ]
