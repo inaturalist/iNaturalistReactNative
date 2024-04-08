@@ -424,12 +424,7 @@ const Map = ( {
         }}
         onUserLocationChange={async locationChangeEvent => {
           const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
-          if (
-            coordinate?.latitude
-            && coordinate.latitude.toFixed( 4 ) !== userLocation?.latitude.toFixed( 4 )
-          ) {
-            setUserLocation( coordinate );
-          }
+          setUserLocation( coordinate );
         }}
         showsUserLocation={showsUserLocation}
         showsMyLocationButton={false}
