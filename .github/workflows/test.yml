@@ -32,7 +32,7 @@ jobs:
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install --legacy-peer-deps
+      run: npm install
 
     - run: npm run lint
     - run: npm test
