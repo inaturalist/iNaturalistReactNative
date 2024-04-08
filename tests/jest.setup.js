@@ -379,14 +379,6 @@ inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
 jest.mock( "react-native-audio-recorder-player", ( ) => MockAudioRecorderPlayer );
 
-jest.mock( "react-native-fast-image", ( ) => {
-  const actualNav = jest.requireActual( "react-native-fast-image" );
-  return {
-    ...actualNav,
-    preload: jest.fn( )
-  };
-} );
-
 jest.mock( "@react-native-clipboard/clipboard", () => mockClipboard );
 
 jest.mock( "react-native-webview", () => {
