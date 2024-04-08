@@ -94,10 +94,9 @@ describe( "Announcements", () => {
 
       const webview = await screen.findByTestId( "announcements-webview" );
       expect( webview ).toBeTruthy();
-      // TODO: after upgrading to RN 0.73 this does not work anymore
-      // expect( webview.props.source ).toStrictEqual( {
-      //   html: mockAnnouncement.body
-      // } );
+      expect( webview.props.source ).toStrictEqual( {
+        html: mockAnnouncement.body
+      } );
     } );
 
     test( "should not show dismiss button", async () => {
@@ -145,10 +144,9 @@ describe( "Announcements", () => {
       // Test for oldest announcement
       const webview = await screen.findByTestId( "announcements-webview" );
       expect( webview ).toBeTruthy();
-      // TODO: after upgrading to RN 0.73 this does not work anymore
-      // expect( webview.props.source ).toStrictEqual( {
-      //   html: mockAnnouncement.body
-      // } );
+      expect( webview.props.source ).toStrictEqual( {
+        html: mockAnnouncement.body
+      } );
     } );
   } );
 } );
