@@ -896,7 +896,9 @@ PODS:
   - React-Mapbuffer (0.73.6):
     - glog
     - React-debug
-  - react-native-cameraroll (5.9.0):
+  - react-native-cameraroll (7.5.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - react-native-config (1.5.1):
     - react-native-config/App (= 1.5.1)
@@ -935,7 +937,8 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - react-native-webview (13.8.4):
-    - RCT-Folly (= 2021.07.22.00)
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - react-native-worklets-core (0.4.0):
     - React
@@ -1137,7 +1140,8 @@ PODS:
   - RNPermissions (4.1.5):
     - React-Core
   - RNReanimated (3.8.1):
-    - RCT-Folly (= 2021.07.22.00)
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
   - RNScreens (3.30.1):
@@ -1477,8 +1481,8 @@ SPEC CHECKSUMS:
   React-jsinspector: 85583ef014ce53d731a98c66a0e24496f7a83066
   React-logger: 3eb80a977f0d9669468ef641a5e1fabbc50a09ec
   React-Mapbuffer: 84ea43c6c6232049135b1550b8c60b2faac19fab
-  react-native-cameraroll: fad943a324a4d893c249cabe6d0608c807e0e58f
-  react-native-config: 5330c8258265c1e5fdb8c009d2cabd6badd96727
+  react-native-cameraroll: af8eec1e585d053ff485d98ec837f9a8a11b5745
+  react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-exif-reader: b2ad2175125a5d7dbd399ac6bd3bc4ba8753f85a
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation: ed9e1d132f576b9a4a503af46f9704413ea0dec1
@@ -1492,8 +1496,8 @@ SPEC CHECKSUMS:
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
-  react-native-slider: 62cadd5a3788ce12f86afd9fa94d50e5168159d0
-  react-native-webview: 007d5c5a74de7243be6331221727639ed01ef760
+  react-native-slider: 09e5a8b7e766d3b5ae24ec15c5c4ec2679ca0f8c
+  react-native-webview: 9395e82c917d81407deb9b1fe53158dd6c8880ff
   react-native-worklets-core: 2efe80a3ee87fe5e6fefa814e0e20c2708d3ad25
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
   React-NativeModulesApple: cd26e56d56350e123da0c1e3e4c76cb58a05e1ee
@@ -1525,20 +1529,20 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
   RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: b83cf821f60b7ec59827f0ed9e5b8c46b1de2c99
+  RNGestureHandler: bc2cdb2dc42facdf34992ae364b8a728e19a3686
   RNLocalize: e8694475db034bf601e17bd3dfa8986565e769eb
   RNPermissions: b3d6efca086546e29a2920cd649a0ab04ca77794
-  RNReanimated: fc36806836aca984b797f01432abe31689663421
-  RNScreens: e5ee7223f7c8fa261f0c4594a0541c56ea99bbfc
+  RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
+  RNScreens: b6b64d956af3715adbfe84808694ae82d3fec74f
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNStoreReview: 31dbfd0dac2eea9675f0b84f1dd3261c2110c337
-  RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
+  RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
   RNVectorIcons: 73ab573085f65a572d3b6233e68996d4707fd505
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: 6c8ca7d04fc62fafccd8f8ad584e96f5303671f5
   VisionCameraPluginInatVision: edd58cf80291675d1a1523a3d8d3b2c2f1bff26a
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
 
-PODFILE CHECKSUM: c472707b711549a30b2a017824e3717db85ccf19
+PODFILE CHECKSUM: eebd76aa39f99b44754431ed68ce0cfbfc5ec2f7
 
 COCOAPODS: 1.14.3
