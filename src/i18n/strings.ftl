@@ -413,7 +413,7 @@ INATURALIST-SETTINGS = INATURALIST SETTINGS
 # or "INATURALIST CURATOR". Since the name "INATURALIST" should not be
 # translated or locally it is inserted as a variable here, but it will always
 # be "INATURALIST"
-INATURALIST-STAFF = ${ inaturalist } STAFF
+INATURALIST-STAFF = { $inaturalist } STAFF
 INATURALIST-STORE = INATURALIST STORE
 INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation

@@ -475,7 +475,7 @@
   "INATURALIST-SETTINGS": "INATURALIST SETTINGS",
   "INATURALIST-STAFF": {
     "comment": "Label for the role a user plays on iNaturalist, e.g. \"INATURALIST STAFF\"\nor \"INATURALIST CURATOR\". Since the name \"INATURALIST\" should not be\ntranslated or locally it is inserted as a variable here, but it will always\nbe \"INATURALIST\"",
-    "val": "${ inaturalist } STAFF"
+    "val": "{ $inaturalist } STAFF"
   },
   "INATURALIST-STORE": "INATURALIST STORE",
   "INATURALIST-TEAM": "INATURALIST TEAM",
