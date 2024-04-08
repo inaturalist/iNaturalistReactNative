@@ -50,7 +50,6 @@ const mockOutdatedTaxon = factory( "LocalTaxon", {
 describe( "with local taxon", ( ) => {
   beforeEach( ( ) => {
     jest.restoreAllMocks( );
-    // jest.clearAllMocks( );
     // Write mock taxon to realm
     safeRealmWrite( global.mockRealms[mockRealmIdentifier], ( ) => {
       global.mockRealms[mockRealmIdentifier].create( "Taxon", mockTaxon, "modified" );
