@@ -5,6 +5,7 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import type { Node } from "react";
 import React, {
   useCallback,
+  useEffect,
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -23,6 +24,7 @@ const SuggestionsContainer = ( ): Node => {
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [isLoading, setIsLoading] = useState( true );
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
@@ -76,19 +78,27 @@ const SuggestionsContainer = ( ): Node => {
     ? onlineSuggestions.results
     : offlineSuggestions;
 
+  const hasSuggestions = suggestions.length > 0;
+
+  useEffect( ( ) => {
+    if ( hasSuggestions || loadingOfflineSuggestions === false ) {
+      setIsLoading( false );
+    }
+  }, [loadingOfflineSuggestions, hasSuggestions] );
+
   return (
     <>
       <Suggestions
         commonAncestor={onlineSuggestions?.common_ancestor}
+        debugData={debugData}
         hasVisionSuggestion={params?.hasVisionSuggestion}
-        loadingSuggestions={loadingOnlineSuggestions || loadingOfflineSuggestions}
-        suggestions={suggestions}
+        loading={isLoading}
+        onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
         selectedPhotoUri={selectedPhotoUri}
-        onPressPhoto={onPressPhoto}
+        suggestions={suggestions}
         usingOfflineSuggestions={usingOfflineSuggestions}
-        debugData={debugData}
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}

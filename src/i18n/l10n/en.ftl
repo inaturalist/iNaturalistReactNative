@@ -153,6 +153,7 @@ Connect-with-other-naturalists = Connect with other naturalists and engage in co
 Connected-Accounts = Connected Accounts
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
+CONTINUE = CONTINUE
 Coordinates-copied-to-keyboard = Coordinates copied to keyboard
 Copy-coordinates = Copy Coordinates
 Copy-map-coordinates = Copy map coordinates
@@ -1050,6 +1051,7 @@ You-can-only-add-20-photos-per-observation = You can only add 20 photos per obse
 # Onboarding text on MyObservations: Onboarding text on MyObservations: 51-100 observations
 You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
+You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
