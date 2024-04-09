@@ -1,6 +1,6 @@
 // @flow
 
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { flatten } from "lodash";
 
 const useInfiniteScroll = (
@@ -22,7 +22,6 @@ const useInfiniteScroll = (
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey: [queryKey, baseParams],
-    placeholderData: keepPreviousData,
     queryFn: async ( { pageParam = 0 } ) => {
       const params = {
         ...baseParams
