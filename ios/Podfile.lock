@@ -940,7 +940,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-worklets-core (0.4.0):
+  - react-native-worklets-core (0.5.0):
     - React
     - React-callinvoker
     - React-Core
@@ -1452,12 +1452,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
-  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FasterImage: 60d0750ddbcefff0070c4c17309c2d1d6cc650f0
   FBLazyVector: f64d1e2ea739b4d8f7e4740cde18089cd97fe864
   FBReactNativeSpec: 9f2b8b243131565335437dba74923a8d3015e780
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 9cecf9953a681df7556b8cc9c74905de8f3293c0
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
@@ -1498,7 +1498,7 @@ SPEC CHECKSUMS:
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
   react-native-slider: 09e5a8b7e766d3b5ae24ec15c5c4ec2679ca0f8c
   react-native-webview: 9395e82c917d81407deb9b1fe53158dd6c8880ff
-  react-native-worklets-core: 2efe80a3ee87fe5e6fefa814e0e20c2708d3ad25
+  react-native-worklets-core: ba5a1d4f91be4edd8cf09537a9b8fa46a7f70436
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
   React-NativeModulesApple: cd26e56d56350e123da0c1e3e4c76cb58a05e1ee
   React-perflogger: 5f49905de275bac07ac7ea7f575a70611fa988f2
@@ -1545,4 +1545,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: eebd76aa39f99b44754431ed68ce0cfbfc5ec2f7
 
-COCOAPODS: 1.14.2
+COCOAPODS: 1.14.3
