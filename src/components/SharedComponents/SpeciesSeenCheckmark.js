@@ -1,9 +1,6 @@
 // @flow
 
 import {
-  keepPreviousData
-} from "@tanstack/react-query";
-import {
   searchObservations
 } from "api/observations";
 import { INatIcon } from "components/SharedComponents";
@@ -46,7 +43,6 @@ const SpeciesSeenCheckmark = ( {
       optsWithAuth
     ),
     {
-      placeholderData: keepPreviousData,
       enabled: !!taxonId && !!currentUser?.id
     }
   );

@@ -1,6 +1,6 @@
 // @flow
 
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchObservationUpdates } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { flatten } from "lodash";
@@ -20,7 +20,6 @@ const useInfiniteNotificationsScroll = ( ): Object => {
 
   const infQueryResult = useInfiniteQuery( {
     queryKey: ["useInfiniteNotificationsScroll"],
-    placeholderData: keepPreviousData,
     queryFn: async ( { pageParam } ) => {
       const apiToken = await getJWT( );
       const options = {

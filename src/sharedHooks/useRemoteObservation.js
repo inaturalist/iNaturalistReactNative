@@ -1,12 +1,9 @@
 // @flow
-import {
-  keepPreviousData
-} from "@tanstack/react-query";
 import { fetchRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
-import { useAuthenticatedQuery, useCurrentUser, useIsConnected } from "sharedHooks";
+import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -20,7 +17,6 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
 
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
-  const isConnected = useIsConnected( );
 
   const {
     data: remoteObservation,
@@ -37,27 +33,29 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
       optsWithAuth
     ),
     {
-      placeholderData: keepPreviousData,
-      enabled: !!isConnected && !!enabled
+      enabled
     }
   );
 
+  const needsLocalUpdate = remoteObservation
+    && currentUser
+    && remoteObservation?.user?.id === currentUser.id;
+
+  const updateLocalObservation = useCallback( ( ) => {
+    Observation.upsertRemoteObservations(
+      [remoteObservation],
+      realm
+    );
+  }, [remoteObservation, realm] );
+
   // Update local copy of a user's own observation
   useEffect( ( ) => {
-    if (
-      remoteObservation
-      && currentUser
-      && remoteObservation?.user?.id === currentUser.id
-    ) {
-      Observation.upsertRemoteObservations(
-        [remoteObservation],
-        realm
-      );
+    if ( needsLocalUpdate ) {
+      updateLocalObservation( );
     }
   }, [
-    currentUser,
-    realm,
-    remoteObservation
+    needsLocalUpdate,
+    updateLocalObservation
   ] );
 
   return {
