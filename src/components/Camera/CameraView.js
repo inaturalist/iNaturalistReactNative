@@ -178,7 +178,6 @@ const CameraView = ( {
             // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
             // it does nothing on Android so we set it to null there
             orientation={orientationPatch( deviceOrientation )}
-            enableHighQualityPhotos
             // Props for ARCamera only
             frameProcessor={frameProcessor}
             pixelFormat={pixelFormatPatch()}

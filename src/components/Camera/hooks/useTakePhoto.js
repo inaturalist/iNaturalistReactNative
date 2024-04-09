@@ -18,7 +18,6 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
     enableShutterSound: true,
-    enableAutoStabilization: true,
     qualityPrioritization: "quality",
     ...( hasFlash && { flash: "off" } )
   };
