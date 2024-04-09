@@ -24,13 +24,13 @@ const getShadow = shadowColor => getShadowStyle( {
 
 type Props = {
   takePhoto: Function,
-  disallowAddingPhotos?: boolean,
+  disabled: boolean,
   showPrediction?: boolean
 }
 
 const TakePhoto = ( {
   takePhoto,
-  disallowAddingPhotos,
+  disabled,
   showPrediction
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -46,13 +46,16 @@ const TakePhoto = ( {
         "h-[74px]",
         "w-[74px]",
         "justify-center",
-        "items-center"
+        "items-center",
+        {
+          "opacity-50": disabled
+        }
       )}
       onPress={takePhoto}
       accessibilityLabel={t( "Take-photo" )}
       accessibilityRole="button"
-      accessibilityState={{ disabled: disallowAddingPhotos }}
-      disabled={disallowAddingPhotos}
+      accessibilityState={{ disabled }}
+      disabled={disabled}
     >
       {showPrediction
         ? (
