@@ -26,7 +26,7 @@ import useRemoteObservation,
 { fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
-import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
+// import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
 import ObsDetails from "./ObsDetails";
 
 const { useRealm } = RealmContext;
@@ -147,7 +147,8 @@ const ObsDetailsContainer = ( ): Node => {
     fetchRemoteObservationError
   } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
-  useMarkViewedMutation( localObservation, remoteObservation );
+  // TODO: this is commented out because it can lead to infinite loops in some scenarios
+  // useMarkViewedMutation( localObservation, remoteObservation );
 
   // If we tried to get a remote observation but it no longer exists, the user
   // can't do anything so we need to send them back and remove the local
