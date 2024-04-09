@@ -45,7 +45,8 @@ const showLongHeader: Object = {
 
 export const hideHeaderLeft: Object = {
   ...showHeader,
-  headerLeft: null
+  headerLeft: null,
+  headerBackVisible: false
 };
 
 const showCustomHeader: Object = {

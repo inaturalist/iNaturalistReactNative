@@ -20,6 +20,7 @@ import { t } from "i18next";
 import {
   blankHeaderTitle,
   hideHeader,
+  hideHeaderLeft,
   removeBottomBorder,
   showHeader,
   showLongHeader
@@ -56,7 +57,7 @@ const ObservationsStackNavigator = ( ): Node => (
         name="Notifications"
         component={NotificationsContainer}
         options={{
-          ...showHeader,
+          ...hideHeaderLeft,
           headerTitle: notificationsTitle,
           headerTitleAlign: "center"
         }}
