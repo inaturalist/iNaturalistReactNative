@@ -66,10 +66,9 @@ const ProjectsContainer = ( ): Node => {
     }
   }, [searchInput] );
 
-
   useEffect( ( ) => {
     if ( !currentUser ) {
-      setCurrentTabId(FEATURED_TAB_ID)
+      setCurrentTabId( FEATURED_TAB_ID );
     }
   }, [currentUser] );
 
@@ -101,12 +100,11 @@ const ProjectsContainer = ( ): Node => {
     tabs.shift( );
   }
 
-  const onPermissionGateClose = ()=>{
-    if(!permissionsGranted){
-      setCurrentTabId(FEATURED_TAB_ID)
+  const onPermissionGateClose = () => {
+    if ( !permissionsGranted ) {
+      setCurrentTabId( FEATURED_TAB_ID );
     }
-  }
-
+  };
 
   return (
     <>
@@ -120,7 +118,7 @@ const ProjectsContainer = ( ): Node => {
         memberId={memberId}
       />
       <LocationPermissionGate
-        onModalHide={()=>onPermissionGateClose()}
+        onModalHide={() => onPermissionGateClose()}
         permissionNeeded={currentTabId === NEARBY_TAB_ID}
         withoutNavigation
         onPermissionGranted={( ) => setPermissionsGranted( true )}
