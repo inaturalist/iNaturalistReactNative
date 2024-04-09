@@ -12,7 +12,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Alert, Linking } from "react-native";
-import { openComposer, getEmailClients } from "react-native-email-link";
+import { openComposer } from "react-native-email-link";
 
 const Help = ( ): Node => {
   const navigation = useNavigation( );
