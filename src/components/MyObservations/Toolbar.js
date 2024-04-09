@@ -88,7 +88,7 @@ const Toolbar = ( {
             rotating={rotating}
             onPress={handleSyncButtonPress}
             color={syncIconColor}
-            disabled={false}
+            disabled={rotating}
             accessibilityLabel={t( "Sync-observations" )}
             size={30}
             testID="SyncButton"
@@ -96,7 +96,7 @@ const Toolbar = ( {
           {statusText && (
             <View className="flex ml-1 shrink">
               <View className="flex-row items-center shrink">
-                <Body2 onPress={handleSyncButtonPress}>
+                <Body2>
                   {statusText}
                 </Body2>
                 {showsCheckmark && (
