@@ -1,0 +1,8 @@
+UPDATED
+- Hide unused buttons
+- Better accessibility labels
+
+FIXED
+- Webview pages
+- Bug in Evidence List
+- Updates count timeout

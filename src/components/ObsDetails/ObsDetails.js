@@ -14,9 +14,12 @@ import {
   View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
-import { Platform, StatusBar } from "react-native";
+import React, { useMemo } from "react";
+import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import {
+  useSafeAreaInsets
+} from "react-native-safe-area-context";
 import {
   useTranslation
 } from "sharedHooks";
@@ -83,9 +86,18 @@ const ObsDetails = ( {
   tabs,
   taxonForAgreement
 }: Props ): Node => {
+  const insets = useSafeAreaInsets();
   const { params } = useRoute( );
   const { uuid } = params;
   const { t } = useTranslation( );
+
+  const dynamicInsets = useMemo( () => ( {
+    backgroundColor: "#ffffff",
+    paddingTop: insets.top,
+    paddingBottom: insets.bottom,
+    paddingLeft: insets.left,
+    paddingRight: insets.right
+  } ), [insets] );
 
   const textInputStyle = Platform.OS === "android" && {
     height: 125
@@ -222,8 +234,10 @@ const ObsDetails = ( {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+    <SafeAreaView
+      className="flex-1 bg-black"
+      style={[dynamicInsets]}
+    >
       {!isTablet
         ? renderPhone()
         : renderTablet()}

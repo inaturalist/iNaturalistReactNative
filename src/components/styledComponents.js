@@ -1,5 +1,6 @@
 // @flow
 
+import { FasterImageView as UnstyledFasterImageView } from "@candlefinance/faster-image";
 import {
   BottomSheetTextInput as StyledBottomSheetTextInput
 } from "@gorhom/bottom-sheet";
@@ -17,16 +18,18 @@ import {
   TextInput as UntyledTextInput,
   View as UnstyledView
 } from "react-native";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import UnstyledFastImage from "react-native-fast-image";
 import UnstyledLinearGradient from "react-native-linear-gradient";
 
 // $FlowIgnore
 const View = styled( UnstyledView );
 // $FlowIgnore
 const KeyboardAvoidingView = styled( UnstyledKeyboardAvoidingView );
+// Since upgrading to React Native 0.73 UnstyledSafeAreaView is undefined in the jest tests
+// Why I don't know. This is just to fix the failing tests.
 // $FlowIgnore
-const SafeAreaView = styled( UnstyledSafeAreaView );
+const SafeAreaView = styled( UnstyledSafeAreaView === undefined
+  ? UnstyledView
+  : UnstyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( UnstyledScrollView );
 // $FlowIgnore
@@ -71,11 +74,11 @@ const fontMonoClass: string = ( Platform.OS === "ios"
 const LinearGradient = styled( UnstyledLinearGradient );
 
 // $FlowIgnore
-const FastImage = styled( UnstyledFastImage );
+const FasterImageView = styled( UnstyledFasterImageView );
 
 export {
   BottomSheetTextInput,
-  FastImage,
+  FasterImageView,
   fontMonoClass,
   Image,
   ImageBackground,

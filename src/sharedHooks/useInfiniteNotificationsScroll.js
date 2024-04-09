@@ -20,7 +20,6 @@ const useInfiniteNotificationsScroll = ( ): Object => {
 
   const infQueryResult = useInfiniteQuery( {
     queryKey: ["useInfiniteNotificationsScroll"],
-    keepPreviousData: false,
     queryFn: async ( { pageParam } ) => {
       const apiToken = await getJWT( );
       const options = {
@@ -39,6 +38,7 @@ const useInfiniteNotificationsScroll = ( ): Object => {
 
       return response;
     },
+    initialPageParam: 0,
     getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
       ? allPages.length + 1
       : undefined ),

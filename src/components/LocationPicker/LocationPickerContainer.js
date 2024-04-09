@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { metersToLatitudeDelta } from "components/SharedComponents/Map";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -46,8 +47,8 @@ const reducer = ( state, action ) => {
         ...state,
         positional_accuracy: estimatedAccuracy( state.region.longitudeDelta )
       };
-    case "INITIALIZE_MAP":
-      return {
+    case "INITIALIZE_MAP": {
+      const newMap = {
         ...state,
         accuracy: action.currentObservation?.positional_accuracy,
         locationName: action.currentObservation?.place_guess,
@@ -67,6 +68,17 @@ const reducer = ( state, action ) => {
           longitudeDelta: DELTA
         }
       };
+
+      if ( newMap.region.latitude !== 0.0 ) {
+        newMap.region.latitudeDelta = metersToLatitudeDelta(
+          newMap.accuracy,
+          newMap.region.latitude
+        );
+        newMap.region.longitudeDelta = newMap.region.latitudeDelta;
+      }
+
+      return newMap;
+    }
     case "RESET_LOCATION_PICKER":
       return {
         ...action.initialState

@@ -5,6 +5,8 @@ import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel";
 import React from "react";
 import useStore from "stores/useStore";
 
+jest.mock( "components/MediaViewer/MediaViewerModal", ( ) => jest.fn( ( ) => null ) );
+
 const initialStoreState = useStore.getState( );
 
 // For snapshots we want test data not to be random
@@ -27,6 +29,8 @@ describe( "PhotoCarousel", ( ) => {
       <PhotoCarousel photoUris={mockPhotoUris} />
     );
 
+    await screen.findByTestId( `PhotoCarousel.displayPhoto.${mockPhotoUris[0]}` );
+
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
@@ -35,6 +39,8 @@ describe( "PhotoCarousel", ( ) => {
     render(
       <PhotoCarousel photoUris={mockPhotoUris} isLargeScreen />
     );
+
+    await screen.findByTestId( `PhotoCarousel.displayPhoto.${mockPhotoUris[0]}` );
 
     // Snapshot test
     expect( screen ).toMatchSnapshot();

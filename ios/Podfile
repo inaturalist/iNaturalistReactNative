@@ -13,8 +13,6 @@ end
 node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
 
-require_relative '../node_modules/react-native-permissions/scripts/setup'
-
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
@@ -61,14 +59,8 @@ end
 target "iNaturalistReactNative" do
   config = use_native_modules!
 
-  # Flags change depending on the env values.
-  flags = get_default_flags
-
   use_react_native!(
     path: config[:reactNativePath],
-    # Hermes is now enabled by default. Disable by setting this flag to false.
-    hermes_enabled: flags[:hermes_enabled],
-    fabric_enabled: flags[:fabric_enabled],
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -110,7 +102,6 @@ target "iNaturalistReactNative" do
       config[:reactNativePath],
       mac_catalyst_enabled: false
     )
-    __apply_Xcode_12_5_M1_post_install_workaround( installer )
     # Add these lines for Xcode 14 builds
     installer.generated_projects.each do | project |
       project.targets.each do | target |

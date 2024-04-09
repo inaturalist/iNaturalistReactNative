@@ -38,6 +38,6 @@ describe( "UserIcon", () => {
     // TODO: replace with getByRole
     const profilePicture = screen.getByTestId( "UserIcon.photo" );
     expect( profilePicture ).toBeTruthy();
-    expect( profilePicture.props.source ).toEqual( mockUri );
+    expect( profilePicture.props.source ).toHaveProperty( "url", mockUri.uri );
   } );
 } );
