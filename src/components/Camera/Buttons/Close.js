@@ -14,7 +14,7 @@ const Close = ( ): Node => {
     <TransparentCircleButton
       onPress={( ) => navigation.goBack( )}
       accessibilityLabel={t( "Close" )}
-      accessibilityHint={t( "Navigate-to-previous-screen" )}
+      accessibilityHint={t( "Navigates-to-previous-screen" )}
       icon="close"
     />
   );

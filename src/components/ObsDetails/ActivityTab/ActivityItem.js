@@ -2,11 +2,11 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  Divider, INatIcon, UserText
+  Divider, INatIconButton, UserText
 } from "components/SharedComponents";
 import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
 import {
-  Pressable, View
+  View
 } from "components/styledComponents";
 import { t } from "i18next";
 import _ from "lodash";
@@ -64,17 +64,17 @@ const ActivityItem = ( {
             <DisplayTaxon
               taxon={taxon}
               handlePress={navToTaxonDetails}
-              accessibilityLabel={t( "Navigate-to-taxon-details" )}
+              accessibilityHint={t( "Navigates-to-taxon-details" )}
               withdrawn={idWithdrawn}
             />
             { showAgreeButton && (
-              <Pressable
+              <INatIconButton
                 testID={`ActivityItem.AgreeIdButton.${item.taxon.id}`}
-                accessibilityRole="button"
                 onPress={( ) => onIDAgreePressed( item.taxon )}
-              >
-                <INatIcon name="id-agree" size={33} />
-              </Pressable>
+                icon="id-agree"
+                size={33}
+                accessibilityLabel={t( "Agree" )}
+              />
             )}
           </View>
         )}

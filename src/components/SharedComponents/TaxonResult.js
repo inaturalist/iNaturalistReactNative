@@ -12,7 +12,8 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import { useTaxon, useTranslation } from "sharedHooks";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 
 import ConfidenceInterval from "./ConfidenceInterval";
 
@@ -54,6 +55,7 @@ const TaxonResult = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const theme = useTheme( );
+  const currentUser = useCurrentUser( );
   // thinking about future performance, it might make more sense to batch
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AR camera &
@@ -63,6 +65,7 @@ const TaxonResult = ( {
     ? localTaxon
     : taxonProp;
   const taxonImage = { uri: usableTaxon?.default_photo?.url };
+  const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
 
   const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: usableTaxon?.id } );
 
@@ -85,9 +88,8 @@ const TaxonResult = ( {
         onPress={handlePress || navToTaxonDetails}
         accessible
         accessibilityRole="link"
-        accessibilityLabel={t( "Navigate-to-taxon-details" )}
-        accessibilityValue={{ text: usableTaxon?.name }}
-        accessibilityState={{ disabled: false }}
+        accessibilityLabel={accessibleName}
+        accessibilityHint={t( "Navigates-to-taxon-details" )}
       >
         <View className="w-[62px] h-[62px] justify-center relative">
           {
@@ -138,8 +140,8 @@ const TaxonResult = ( {
             size={22}
             onPress={navToTaxonDetails}
             color={clearBackground && theme.colors.onSecondary}
-            accessibilityLabel={t( "Information" )}
-            accessibilityHint={t( "Navigate-to-taxon-details" )}
+            accessibilityLabel={t( "More-info" )}
+            accessibilityHint={t( "Navigates-to-taxon-details" )}
           />
         )}
         { showCheckmark

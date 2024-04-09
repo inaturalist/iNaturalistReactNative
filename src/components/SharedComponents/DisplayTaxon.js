@@ -6,23 +6,31 @@ import { Image, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
 type Props = {
+  accessibilityHint?: string,
+  accessibilityLabel?: string,
   handlePress: Function,
   taxon: Object,
   testID?: string,
-  accessibilityLabel?: string,
   withdrawn?: boolean
 }
 
 const DisplayTaxon = ( {
-  handlePress, taxon, testID, accessibilityLabel, withdrawn
+  accessibilityHint,
+  accessibilityLabel,
+  handlePress,
+  taxon,
+  testID,
+  withdrawn
 }: Props ): Node => {
   const realm = useRealm( );
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
 
   const imageClassName = "w-[62px] h-[62px] rounded-lg";
 
@@ -34,6 +42,7 @@ const DisplayTaxon = ( {
     .filtered( "name CONTAINS[c] $0", iconicTaxonName );
 
   const taxonPhoto = taxon?.default_photo?.url || iconicTaxon?.[0]?.default_photo?.url;
+  const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
   return (
     <Pressable
@@ -41,7 +50,8 @@ const DisplayTaxon = ( {
       className="flex-row items-center shrink"
       onPress={handlePress}
       testID={testID}
-      accessibilityLabel={accessibilityLabel || t( "Taxon-photo-and-name" )}
+      accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel || accessibleName}
     >
       <View className="justify-between flex-row items-center w-full">
         <View className="flex-row items-center">

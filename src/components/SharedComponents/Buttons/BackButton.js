@@ -38,7 +38,7 @@ const BackButton = ( {
   if ( navigation?.canGoBack( ) ) {
     return (
       <HeaderBackButton
-        accessibilityLabel={t( "Navigate-back" )}
+        accessibilityLabel={t( "Go-back" )}
         labelVisible={false}
         onPress={onPress || navigation.goBack}
         // move backbutton to same start as in react-navigation

@@ -98,7 +98,7 @@ const SettingsApplications = ( ): Node => {
       {authorizedApps?.filter( app => !app.application.official ).map( app => (
         <View key={app.application.id} style={[viewStyles.row, viewStyles.applicationRow]}>
           <Text style={textStyles.applicationName}>
-            {t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}
+            {t( "app-authorized-on-date", { appName: app.application.name, date: app.created_at } )}
           </Text>
           <Pressable
             accessibilityRole="button"

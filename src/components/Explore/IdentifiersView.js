@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import User from "realmModels/User";
-import { useInfiniteScroll } from "sharedHooks";
+import { useInfiniteScroll, useTranslation } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
 
@@ -41,12 +41,12 @@ const IdentifiersView = ( {
       }
     }
   );
+  const { t } = useTranslation( );
 
   const renderItem = ( { item } ) => (
     <UserListItem
       item={item}
-      count={item.count}
-      countText="X-Identifications"
+      countText={t( "X-Identifications", { count: item.count } )}
     />
   );
 

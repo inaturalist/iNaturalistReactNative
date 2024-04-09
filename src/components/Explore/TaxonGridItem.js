@@ -8,7 +8,8 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
-import { useTranslation } from "sharedHooks";
+import { accessibleTaxonName } from "sharedHelpers/taxon";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
   taxon: Object,
@@ -25,13 +26,16 @@ const TaxonGridItem = ( {
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
+
+  const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
   return (
     <Pressable
       accessibilityRole="button"
       testID={`TaxonGridItem.Pressable.${taxon.id}`}
       onPress={( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
-      accessibilityLabel={t( "Navigate-to-taxon-details" )}
+      accessibilityLabel={accessibleName}
     >
       <ObsImagePreview
         source={{

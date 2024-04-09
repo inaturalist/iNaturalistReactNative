@@ -44,6 +44,7 @@ export enum SORT_BY {
 export enum TAXONOMIC_RANK {
   none = null,
   kingdom = "kingdom",
+  subkingdom = "subkingdom",
   phylum = "phylum",
   subphylum = "subphylum",
   superclass = "superclass",

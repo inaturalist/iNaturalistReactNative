@@ -172,6 +172,10 @@ const FilterModal = ( {
       label: t( "Ranks-KINGDOM" ),
       value: TAXONOMIC_RANK.kingdom
     },
+    [TAXONOMIC_RANK.subkingdom]: {
+      label: t( "Ranks-SUBKINGDOM" ),
+      value: TAXONOMIC_RANK.subkingdom
+    },
     [TAXONOMIC_RANK.phylum]: {
       label: t( "Ranks-PHYLUM" ),
       value: TAXONOMIC_RANK.phylum
@@ -309,20 +313,24 @@ const FilterModal = ( {
   const dateObservedValues = {
     [DATE_OBSERVED.ALL]: {
       label: t( "All" ),
+      labelCaps: t( "ALL" ),
       value: DATE_OBSERVED.ALL
     },
     [DATE_OBSERVED.EXACT_DATE]: {
       label: t( "Exact-Date" ),
+      labelCaps: t( "EXACT-DATE" ),
       text: t( "Filter-by-observed-on-date" ),
       value: DATE_OBSERVED.EXACT_DATE
     },
     [DATE_OBSERVED.DATE_RANGE]: {
       label: t( "Date-Range" ),
+      labelCaps: t( "DATE-RANGE" ),
       text: t( "Filter-by-observed-between-dates" ),
       value: DATE_OBSERVED.DATE_RANGE
     },
     [DATE_OBSERVED.MONTHS]: {
       label: t( "Months" ),
+      labelCaps: t( "MONTHS" ),
       text: t( "Filter-by-observed-during-months" ),
       value: DATE_OBSERVED.MONTHS
     }
@@ -331,15 +339,18 @@ const FilterModal = ( {
   const dateUploadedValues = {
     [DATE_UPLOADED.ALL]: {
       label: t( "All" ),
+      labelCaps: t( "ALL" ),
       value: DATE_UPLOADED.ALL
     },
     [DATE_UPLOADED.EXACT_DATE]: {
       label: t( "Exact-Date" ),
+      labelCaps: t( "EXACT-DATE" ),
       text: t( "Filter-by-uploaded-on-date" ),
       value: DATE_UPLOADED.EXACT_DATE
     },
     [DATE_UPLOADED.DATE_RANGE]: {
       label: t( "Date-Range" ),
+      labelCaps: t( "DATE-RANGE" ),
       text: t( "Filter-by-uploaded-between-dates" ),
       value: DATE_UPLOADED.DATE_RANGE
     }
@@ -466,7 +477,7 @@ const FilterModal = ( {
 
   const photoLicenseValues = {
     [PHOTO_LICENSE.ALL]: {
-      label: t( "All" ),
+      label: t( "ALL" ),
       value: PHOTO_LICENSE.ALL
     },
     [PHOTO_LICENSE.CC0]: {
@@ -625,7 +636,7 @@ const FilterModal = ( {
                 }
             }
             size={22}
-            accessibilityLabel={t( "Back" )}
+            accessibilityLabel={t( "Go-back" )}
           />
           <Heading1 className="ml-3">{t( "Explore-Filters" )}</Heading1>
           {numberOfFilters !== 0 && (
@@ -640,11 +651,11 @@ const FilterModal = ( {
               accessibilityRole="button"
               onPress={() => dispatch( { type: EXPLORE_ACTION.RESET } )}
             >
-              {t( "Reset" )}
+              {t( "Reset-verb" )}
             </Body3>
           )
           : (
-            <Body3 className="opacity-50">{t( "Reset" )}</Body3>
+            <Body3 className="opacity-50">{t( "Reset-verb" )}</Body3>
           )}
       </View>
 
@@ -911,7 +922,7 @@ const FilterModal = ( {
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "DATE-OBSERVED" )}</Heading4>
             <Button
-              text={dateObservedValues[dateObserved]?.label.toUpperCase()}
+              text={dateObservedValues[dateObserved]?.labelCaps}
               className="shrink mb-7"
               dropdown
               onPress={() => {
@@ -1019,7 +1030,7 @@ const FilterModal = ( {
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "DATE-UPLOADED" )}</Heading4>
             <Button
-              text={dateUploadedValues[dateUploaded]?.label.toUpperCase()}
+              text={dateUploadedValues[dateUploaded]?.labelCaps}
               className="shrink mb-7"
               dropdown
               onPress={() => {
@@ -1194,13 +1205,13 @@ const FilterModal = ( {
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "PHOTO-LICENSING" )}</Heading4>
             <Button
-              text={photoLicenseValues[photoLicense]?.label.toUpperCase()}
+              text={photoLicenseValues[photoLicense]?.label}
               className="shrink mb-7"
               dropdown
               onPress={() => {
                 setOpenSheet( PHOTO_LICENSING );
               }}
-              accessibilityLabel={t( "Photo-licensing" )}
+              accessibilityLabel={t( "View-photo-licensing-info" )}
             />
             {openSheet === PHOTO_LICENSING && (
               <RadioButtonSheet

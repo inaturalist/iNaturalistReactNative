@@ -209,7 +209,7 @@ const StandardCamera = ( {
         handleCheckmarkPress={handleCheckmarkPress}
       />
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
-        {t( "You-can-only-upload-20-media" )}
+        {t( "You-can-only-add-20-photos-per-observation" )}
       </Snackbar>
       <DiscardChangesSheet
         setShowDiscardSheet={setShowDiscardSheet}

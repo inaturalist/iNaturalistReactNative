@@ -128,7 +128,20 @@ export const generateTaxonPieces = taxon => {
   }
 
   taxonData.scientificNamePieces = scientificName;
-  scientificName = scientificName?.join( " " );
+  taxonData.scientificName = scientificName?.join( " " );
 
   return taxonData;
 };
+
+export function accessibleTaxonName( taxon, user, t ) {
+  const { commonName, scientificName } = generateTaxonPieces( taxon );
+  if ( typeof ( user?.prefers_scientific_name_first ) === "boolean" ) {
+    if ( user.prefers_scientific_name_first ) {
+      return t( "accessible-sciname-comname", { scientificName, commonName } );
+    }
+    if ( !user.prefers_common_names ) {
+      return scientificName;
+    }
+  }
+  return t( "accessible-comname-sciname", { scientificName, commonName } );
+}

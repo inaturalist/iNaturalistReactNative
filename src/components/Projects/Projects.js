@@ -63,7 +63,7 @@ const Projects = ( {
       testID={`Project.${project.id}`}
       accessible
       accessibilityRole="button"
-      accessibilityLabel={t( "Navigate-to-project-details" )}
+      accessibilityLabel={t( "Navigates-to-project-details" )}
     >
       <ProjectListItem item={project} />
     </Pressable>

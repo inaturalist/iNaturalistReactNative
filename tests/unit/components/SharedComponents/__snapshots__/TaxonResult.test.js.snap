@@ -36,13 +36,14 @@ exports[`TaxonResult should render correctly 1`] = `
   }
 >
   <View
-    accessibilityLabel="Navigate to taxon details"
+    accessibilityHint="Navigates to taxon details"
+    accessibilityLabel="Birds (Aves)"
     accessibilityRole="link"
     accessibilityState={
       {
         "busy": undefined,
         "checked": undefined,
-        "disabled": false,
+        "disabled": undefined,
         "expanded": undefined,
         "selected": undefined,
       }
@@ -52,7 +53,7 @@ exports[`TaxonResult should render correctly 1`] = `
         "max": undefined,
         "min": undefined,
         "now": undefined,
-        "text": "Aves",
+        "text": undefined,
       }
     }
     accessible={true}
@@ -423,8 +424,8 @@ exports[`TaxonResult should render correctly 1`] = `
     }
   >
     <View
-      accessibilityHint="Navigate to taxon details"
-      accessibilityLabel="Information"
+      accessibilityHint="Navigates to taxon details"
+      accessibilityLabel="More info"
       accessibilityRole="button"
       accessibilityState={
         {

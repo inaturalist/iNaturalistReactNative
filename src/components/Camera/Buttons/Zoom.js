@@ -55,7 +55,7 @@ const CameraZoom = ( {
         className={classnames( circleOptionsClasses )}
         onPress={changeZoom}
         accessibilityRole="button"
-        accessibilityLabel={t( "Camera-button-zoom" )}
+        accessibilityLabel={t( "Change-zoom" )}
         accessibilityState={{ disabled: false }}
         size={20}
       >

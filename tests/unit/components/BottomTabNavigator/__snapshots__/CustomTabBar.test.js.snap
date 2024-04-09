@@ -60,6 +60,7 @@ exports[`CustomTabBar should render correctly 1`] = `
           ],
         ]
       }
+      testID="CustomTabBar"
     >
       <View
         accessibilityHint="Opens the side drawer menu."
@@ -154,7 +155,7 @@ exports[`CustomTabBar should render correctly 1`] = `
       </View>
       <View
         accessibilityHint="Navigates to explore."
-        accessibilityLabel="Navigate to explore screen"
+        accessibilityLabel="Explore"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -501,7 +502,7 @@ exports[`CustomTabBar should render correctly 1`] = `
         </View>
       </View>
       <View
-        accessibilityHint="Navigates-to-notifications"
+        accessibilityHint="Navigates to notifications"
         accessibilityLabel="Notifications"
         accessibilityRole="button"
         accessibilityState={

@@ -44,6 +44,7 @@ const ObsListItem = ( {
       <View className="pr-[25px] flex-1 ml-[10px]">
         <DisplayTaxonName
           taxon={observation?.taxon}
+          keyBase={observation?.uuid}
           scientificNameFirst={currentUser?.prefers_scientific_name_first}
         />
         <ObservationLocation observation={observation} classNameMargin="mt-1" />

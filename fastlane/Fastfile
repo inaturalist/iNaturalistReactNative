@@ -310,7 +310,8 @@ end
 lane :build do
   desc "Build release files for all platforms"
   Fastlane::LaneManager.cruise_lane "ios", "build"
-  Fastlane::LaneManager.cruise_lane "android", "build"
+  # commenting out temporarily to avoid building in Android
+  # Fastlane::LaneManager.cruise_lane "android", "build"
 end
 
 lane :clean do
@@ -347,49 +348,51 @@ lane :release do
 
   build
 
-  apk_path = File.expand_path( get_apk_path( build_number ) )
-  if File.exist?( apk_path )
-    UI.success "Found APK at #{apk_path}"
-  else
-    UI.abort_with_message! "Failed to find APK at #{apk_path}"
-  end
+  # commenting out temporarily to avoid building in Android
+  # apk_path = File.expand_path( get_apk_path( build_number ) )
+  # if File.exist?( apk_path )
+  #   UI.success "Found APK at #{apk_path}"
+  # else
+  #   UI.abort_with_message! "Failed to find APK at #{apk_path}"
+  # end
 
-  github_release = get_github_release(
-    url: "inaturalist/iNaturalistReactNative",
-    version: last_tag,
-    api_token: ENV["GITHUB_TOKEN"]
-  )
+#   github_release = get_github_release(
+#     url: "inaturalist/iNaturalistReactNative",
+#     version: last_tag,
+#     api_token: ENV["GITHUB_TOKEN"]
+#   )
 
-  if github_release
-    UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
-  else
-    set_github_release(
-      repository_name: "inaturalist/iNaturalistReactNative",
-      api_token: ENV["GITHUB_TOKEN"],
-      name: last_tag,
-      tag_name: last_tag,
-      description: begin
-        File.read( changelog_path )
-      rescue StandardError
-        nil
-      end,
-      # This is really just a fallback in case last_tag isn't really a tag
-      commitish: "main",
-      upload_assets: [apk_path]
-    )
-  end
-  system "git checkout #{original_branch}", exception: true
+#   if github_release
+#     UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
+#   else
+#     set_github_release(
+#       repository_name: "inaturalist/iNaturalistReactNative",
+#       api_token: ENV["GITHUB_TOKEN"],
+#       name: last_tag,
+#       tag_name: last_tag,
+#       description: begin
+#         File.read( changelog_path )
+#       rescue StandardError
+#         nil
+#       end,
+#       # This is really just a fallback in case last_tag isn't really a tag
+#       commitish: "main",
+#       upload_assets: [apk_path]
+#     )
+#   end
+   system "git checkout #{original_branch}", exception: true
 end
 
 lane :internal do
   desc "Push builds for the latest tag for internal testing"
+  # commenting out temporarily to avoid building in Android
   # Ensure build files exist for the latest tag
-  aab_path = get_aab_path
-  unless File.exist?( aab_path )
-    UI.abort_with_message! <<~MSG
-      AAB does not exist at #{aab_path}. You may need to run the release lane before doing this.
-    MSG
-  end
+  # aab_path = get_aab_path
+  # unless File.exist?( aab_path )
+  #   UI.abort_with_message! <<~MSG
+  #     AAB does not exist at #{aab_path}. You may need to run the release lane before doing this.
+  #   MSG
+  # end
   last_tag = last_git_tag
   if last_tag.nil? || last_tag.empty?
     UI.abort_with_message! "No tags have been added yet. Try starting with `fastlane tag`"
@@ -401,11 +404,12 @@ lane :internal do
       created when you ran `fastlane tag`.
     MSG
   end
-  upload_to_play_store(
-    aab: aab_path,
-    track: "internal",
-    version_name: last_tag
-  )
+  # commenting out temporarily to avoid building in Android
+  # upload_to_play_store(
+  #   aab: aab_path,
+  #   track: "internal",
+  #   version_name: last_tag
+  # )
 
   upload_to_testflight(
     ipa: get_ipa_path,
@@ -425,12 +429,12 @@ lane :beta do
 
   build_number = get_build_number( xcodeproj: XCODEPROJ )
 
-  UI.message "Play Store: promoting build #{build_number} to beta track"
-  upload_to_play_store(
-    version_code: build_number,
-    track: "internal",
-    track_promote_to: "beta"
-  )
+  # UI.message "Play Store: promoting build #{build_number} to beta track"
+  # upload_to_play_store(
+  #   version_code: build_number,
+  #   track: "internal",
+  #   track_promote_to: "beta"
+  # )
 
   UI.message "TestFlight: adding build #{build_number} to Open Beta group"
   add_build_to_testflight_beta_group(
@@ -441,14 +445,14 @@ end
 
 lane :prod do
   desc "Push builds for the latest tag to production"
-  build_number = get_build_number( xcodeproj: XCODEPROJ )
-  # In theory this will move the release associated with the build_number in
-  # the beta track to the production track and 100% rollout... but I haven't
-  # been able to test that yet
-  upload_to_play_store(
-    version_code: build_number,
-    track: "beta",
-    track_promote_to: "production"
-  )
+  # build_number = get_build_number( xcodeproj: XCODEPROJ )
+  # # In theory this will move the release associated with the build_number in
+  # # the beta track to the production track and 100% rollout... but I haven't
+  # # been able to test that yet
+  # upload_to_play_store(
+  #   version_code: build_number,
+  #   track: "beta",
+  #   track_promote_to: "production"
+  # )
   UI.abort_with_message! "This doesn't upload iOS builds yet"
 end
