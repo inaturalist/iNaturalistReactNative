@@ -10,28 +10,28 @@ import DeviceInfo from "react-native-device-info";
 const isTablet = DeviceInfo.isTablet();
 
 type Props = {
-  takePhoto: Function,
+  disabled: boolean,
+  handleCheckmarkPress: Function,
   handleClose: Function,
-  disallowAddingPhotos: boolean,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
-  handleCheckmarkPress: Function
+  takePhoto: Function
 }
 
 const CameraNavButtons = ( {
-  takePhoto,
+  disabled,
+  handleCheckmarkPress,
   handleClose,
-  disallowAddingPhotos,
   photosTaken,
   rotatableAnimatedStyle,
-  handleCheckmarkPress
+  takePhoto
 }: Props ): Node => {
   const takePhotoButton = useMemo( ( ) => (
     <TakePhoto
-      disallowAddingPhotos={disallowAddingPhotos}
+      disabled={disabled}
       takePhoto={takePhoto}
     />
-  ), [disallowAddingPhotos, takePhoto] );
+  ), [disabled, takePhoto] );
 
   if ( isTablet ) return null;
 
@@ -39,9 +39,9 @@ const CameraNavButtons = ( {
     <View testID="CameraNavButtons">
       <MediaNavButtons
         captureButton={takePhotoButton}
-        onConfirm={handleCheckmarkPress}
-        onClose={handleClose}
         mediaCaptured={photosTaken}
+        onClose={handleClose}
+        onConfirm={handleCheckmarkPress}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
       />
     </View>

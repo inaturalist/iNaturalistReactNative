@@ -47,16 +47,17 @@ const isTablet = DeviceInfo.isTablet();
 type Props = {
   changeZoom: Function,
   confidenceThreshold?: number,
+  cropRatio?: string,
   flipCamera: Function,
   fps?: number,
   hasFlash: boolean,
+  modelLoaded: boolean,
   numStoredResults?: number,
-  cropRatio?: string,
   rotatableAnimatedStyle: Object,
   setConfidenceThreshold?: Function,
+  setCropRatio?: Function,
   setFPS?: Function,
   setNumStoredResults?: Function,
-  setCropRatio?: Function,
   showPrediction: boolean,
   showZoomButton: boolean,
   takePhoto: Function,
@@ -68,16 +69,17 @@ type Props = {
 const ARCameraButtons = ( {
   changeZoom,
   confidenceThreshold,
+  cropRatio,
   flipCamera,
   fps,
   hasFlash,
+  modelLoaded,
   numStoredResults,
-  cropRatio,
   rotatableAnimatedStyle,
   setConfidenceThreshold,
+  setCropRatio,
   setFPS,
   setNumStoredResults,
-  setCropRatio,
   showPrediction,
   showZoomButton,
   takePhoto,
@@ -88,16 +90,17 @@ const ARCameraButtons = ( {
   if ( isTablet ) {
     return (
       <TabletButtons
-        takePhoto={takePhoto}
-        rotatableAnimatedStyle={rotatableAnimatedStyle}
-        toggleFlash={toggleFlash}
+        changeZoom={changeZoom}
+        disabled={modelLoaded}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
-        takePhotoOptions={takePhotoOptions}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
         showPrediction={showPrediction}
-        changeZoom={changeZoom}
-        zoomTextValue={zoomTextValue}
         showZoomButton={showZoomButton}
+        takePhoto={takePhoto}
+        takePhotoOptions={takePhotoOptions}
+        toggleFlash={toggleFlash}
+        zoomTextValue={zoomTextValue}
       />
     );
   }
@@ -139,7 +142,7 @@ const ARCameraButtons = ( {
       <View className="flex-row justify-between items-center">
         <Close />
         <TakePhoto
-          disallowAddingPhotos={false}
+          disabled={!modelLoaded}
           takePhoto={takePhoto}
           showPrediction={showPrediction}
         />

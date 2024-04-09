@@ -15,7 +15,7 @@ const isTablet = DeviceInfo.isTablet();
 type Props = {
   takePhoto: Function,
   handleClose: Function,
-  disallowAddingPhotos: boolean,
+  disabled: boolean,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
   handleCheckmarkPress: Function,
@@ -31,7 +31,7 @@ type Props = {
 const CameraOptionsButtons = ( {
   takePhoto,
   handleClose,
-  disallowAddingPhotos,
+  disabled,
   photosTaken,
   rotatableAnimatedStyle,
   handleCheckmarkPress,
@@ -72,7 +72,7 @@ const CameraOptionsButtons = ( {
     <TabletButtons
       takePhoto={takePhoto}
       handleClose={handleClose}
-      disallowAddingPhotos={disallowAddingPhotos}
+      disabled={disabled}
       photosTaken={photosTaken}
       rotatableAnimatedStyle={rotatableAnimatedStyle}
       handleCheckmarkPress={handleCheckmarkPress}
