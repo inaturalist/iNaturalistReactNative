@@ -16,9 +16,12 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
-import { useTranslation } from "sharedHooks";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import useUserMe from "sharedHooks/useUserMe";
+import {
+  useAuthenticatedMutation,
+  useCurrentUser,
+  useTranslation,
+  useUserMe
+} from "sharedHooks";
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
@@ -26,10 +29,11 @@ const FINISHED_WEB_SETTINGS = "finished-web-settings";
 const Settings = ( ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation();
+  const currentUser = useCurrentUser( );
+  const { remoteUser, isLoading, refetchUserMe } = useUserMe();
+
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
-
-  const { remoteUser, isLoading, refetchUserMe } = useUserMe();
 
   const queryClient = useQueryClient();
 
@@ -163,7 +167,7 @@ const Settings = ( ) => {
       <StatusBar barStyle="dark-content" />
       <View className="p-5">
         {renderLoggedOut( )}
-        {renderLoggedIn( )}
+        {currentUser && renderLoggedIn( )}
       </View>
       {( isSaving || isLoading ) && (
         <View className="absolute z-10 bg-lightGray/70
