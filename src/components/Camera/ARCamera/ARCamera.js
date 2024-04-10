@@ -146,6 +146,7 @@ const ARCamera = ( {
           {showPrediction && result
             ? (
               <TaxonResult
+                accessibilityLabel={t( "View-suggestions" )}
                 taxon={result?.taxon}
                 handleCheckmarkPress={handlePress}
                 testID={`ARCamera.taxa.${result?.taxon?.id}`}

@@ -2,7 +2,6 @@
 
 exports[`Checkbox renders reliably 1`] = `
 <View
-  accessibilityLabel="Checkmark"
   accessibilityRole="radio"
   accessibilityState={
     {
@@ -172,7 +171,6 @@ exports[`Checkbox renders reliably 1`] = `
 
 exports[`Checkbox renders reliably being checked 1`] = `
 <View
-  accessibilityLabel="Checkmark"
   accessibilityRole="radio"
   accessibilityState={
     {

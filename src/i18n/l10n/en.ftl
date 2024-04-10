@@ -17,7 +17,7 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
-# Header above user biography / user description on user profile
+# Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
 ABOUT-INATURALIST = ABOUT INATURALIST
@@ -26,17 +26,19 @@ ABOUT-THE-DQA = ABOUT THE DQA
 About-the-DQA-description = The Quality Grade summarizes the accuracy, precision, completeness, relevance, and appropriateness of an iNaturalist observation as biodiversity data. Some attributes are automatically determined, while others are subject to a vote by iNat users. iNaturalist shares licensed "Research Grade" observations with a number of data partners for use in science and conservation.
 ABOUT-TRADITIONAL-PROJECTS = ABOUT TRADITIONAL PROJECTS
 ABOUT-UMBRELLA-PROJECTS = ABOUT UMBRELLA PROJECTS
-Accept-community-identifications = Accept community identifications
 # Label for a taxon when a user prefers to see or hear the common name first
 accessible-comname-sciname = { $commonName } ({ $scientificName })
 # Label for a taxon when a user prefers to see or hear the scientific name first
 accessible-sciname-comname = { $scientificName } ({ $commonName })
-Account = Account
 ACTIVITY = ACTIVITY
+# Label for a button that adds a vote of agreement
+Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID
 ADD-COMMENT = ADD COMMENT
 Add-comment = Add comment
 Add-Date-Time = Add Date/Time
+# Label for a button that adds a vote of disagreement
+Add-disagreement = Add disagreement
 ADD-EVIDENCE = ADD EVIDENCE
 Add-favorite = Add favorite
 Add-Location = Add Location
@@ -45,12 +47,17 @@ Add-Location = Add Location
 Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
-Add-this-ID = Add this identification
-# Date relationship created, shown on settings relationships screen
-Added-on-date = Added on { $date }
+# Hint for a button that adds a vote of agreement
+Adds-your-vote-of-agreement = Adds your vote of agreement
+# Hint for a button that adds a vote of disagreement
+Adds-your-vote-of-disagreement = Adds your vote of disagreement
 Affiliation = Affiliation: { $site }
+# Label for button that adds an identification of the same taxon as another identification
 Agree = Agree
+# Label for button that adds an identification of the same taxon as another identification
 AGREE = AGREE
+# Checkbox label that checks all of the consent agreements a user must make
+# before signing up
 Agree-to-all-of-the-above = Agree to all of the above
 AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
@@ -58,26 +65,27 @@ ALL = ALL
 All = All
 All-observations = All observations
 All-organisms = All organisms
-# license code
+# As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
+# As in automated identification suggestions
 ALL-SUGGESTIONS = ALL SUGGESTIONS
 Almost-done = Almost done!
 Already-have-an-account = Already have an account? Log in
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
+# Generic option in a menu of choices that indicates that any of the choices
+# would be acceptable
 Any = Any
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
-app-authorized-on-date = { $appName } (authorized on: { $date })
 APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
+# Month of April
 April = April
+# Short for Augmented Reality Camera. This is what we call the camera that
+# overlays identification suggestions in real time
 AR-Camera = AR Camera
 Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
-Arrow-down-selected = Arrow down selected
-Arrow-down-unselected = Arrow down unselected
-Arrow-up-selected = Arrow up selected
-Arrow-up-unselected = Arrow up unselected
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
 attribution-cc-by = some rights reserved (CC BY)
@@ -86,12 +94,10 @@ attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
 attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
 attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
+# Month of August
 August = August
-Automatically-update-my-content-for-taxon-changes = Automatically update my content for taxon changes
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
-# Header for inserting user description in settings profile tab
-Bio = Bio
 BLOG = BLOG
 # Accessibility label for bulk import / photo import button
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
@@ -103,67 +109,92 @@ By-exiting-your-observations-not-saved = By exiting, your observations will not 
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 By-exiting-your-recorded-sound-will-not-be-saved = By exiting, your recorded sound will not be saved.
 Camera = Camera
-Camera-flip = Camera-flip
 CANCEL = CANCEL
 Cancel = Cancel
 Captive-Cultivated = Captive/Cultivated
+# "Casual" Data quality grade
 Casual = Casual
+# Short label for the Creative Commons Attribution license
 CC-BY = CC BY
+# Short label for the Creative Commons Attribution-NonCommercial license
 CC-BY-NC = CC BY-NC
+# Short label for the Creative Commons Attribution-NonCommercial-NoDerivatives license
 CC-BY-NC-ND = CC BY-NC-ND
+# Short label for the Creative Commons Attribution-NonCommercial-ShareAlike license
 CC-BY-NC-SA = CC BY-NC-SA
+# Short label for the Creative Commons Attribution-NoDerivatives license
 CC-BY-ND = CC BY-ND
+# Short label for the Creative Commons Attribution-ShareAlike license
 CC-BY-SA = CC BY-SA
+# Short label for the Creative Commons Zero declaration
 CC0 = CC0
+# Label for a button that changes a selected date
 CHANGE-DATE = CHANGE DATE
+# Label for a button that changes a selected date
 Change-date = Change date
+# Label for a button that changes a selected end date
 CHANGE-END-DATE = CHANGE END DATE
+# Label for a button that changes a selected end date
 Change-end-date = Change end date
 Change-project = Change project
+# Label for a button that changes a selected start date
 CHANGE-START-DATE = CHANGE START DATE
+# Label for a button that changes a selected start date
 Change-start-date = Change start date
 Change-taxon = Change taxon
+# Button that changes the taxon filter on Explore
+Change-taxon-filter = Change taxon filter
 Change-user = Change user
 # Label for a button that cycles through zoom levels for the camera
 Change-zoom = Change zoom
 Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons
-# After pressing the reset password button
+# Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
-Checkmark = Checkmark
 # Text for a button prompting the user to grant access to the gallery
 CHOOSE-PHOTOS = CHOOSE PHOTOS
+# Label for button that chooses a taxon
+Choose-taxon = Choose taxon
+# Label for a button that clears content, like the text entered in a text
+# field
 Clear = Clear
+# Label for a button that closes a window or popup
 Close = Close
-Close-add-observation-modal = Close add observation modal.
 # Accessibility label for a button that closes the permission request screen
 Close-permission-request-screen = Close permission request screen
+# Label for a button that closes a search interface
 Close-search = Close search
+Closes-new-observation-options = Closes new observation options.
 Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
+# Heading for a section that describes people and organizations that
+# collaborate with iNaturalist
 COLLABORATORS = COLLABORATORS
 Collection-Project = Collection Project
+# Button that combines multiple photos into a single observation
 Combine-Photos = Combine Photos
+# Title for a form that let's you enter a comment
 COMMENT = COMMENT
-# Accessibility label for a button that shows options for a comment
+# Label for a button that shows options for a comment
 Comment-options = Comment options
+# Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
 Community-Guidelines = Community Guidelines
-Community-Moderation-Settings = Community Moderation Settings
+# Button that confirms a choice the user has made
 CONFIRM = CONFIRM
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
-Connected-Accounts = Connected Accounts
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
 CONTINUE = CONTINUE
-Coordinates-copied-to-keyboard = Coordinates copied to keyboard
+# Notification when coordinates have been copied
+Coordinates-copied-to-clipboard = Coordinates copied to clipboard
+# Button that copies coordinates to the clipboard
 Copy-coordinates = Copy Coordinates
-Copy-map-coordinates = Copy map coordinates
 # Right to control copies of a creative work; this string may be used as a
 # heading to describe general information about rights, attribution, and
 # licensing
 Copyright = Copyright
 Couldnt-create-comment = Couldn't create comment
 Couldnt-create-identification-error = Couldn't create identification { $error }
-Couldnt-create-identification-unknown-error = Couldn't create identification, Unknown Error.
+Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
 CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
 Create-an-observation-evidence = Create an observation with no evidence
 CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
@@ -171,12 +202,13 @@ DATA-QUALITY = DATA QUALITY
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
 Data-quality-assessment-community-taxon-species-level-or-lower = Community taxon at species level or lower
+# Data Quality Assessment section label: whether or not the observation date is accurate
 Data-quality-assessment-date-is-accurate = Date is accurate
-# checklist test for Data Quality Assessment of Observation Details
+# Data Quality Assessment section label: whether or not the observation date was specified
 Data-quality-assessment-date-specified = Date specified
 Data-quality-assessment-description-casual = This observation has not met the conditions for Research Grade status.
 Data-quality-assessment-description-needs-id = This observation has not yet met the conditions for Research Grade status:
-# description for different quality grades in the DQA
+# Data Quality Assessment explanation when quality is Research Grade
 Data-quality-assessment-description-research = It can now be used for research and featured on other websites.
 Data-quality-assessment-evidence-of-organism = Evidence of organism
 Data-quality-assessment-has-photos-or-sounds = Has Photos or Sounds
@@ -187,7 +219,7 @@ Data-quality-assessment-organism-is-wild = Organism is wild
 Data-quality-assessment-recent-evidence-of-organism = Recent evidence of an organism
 Data-quality-assessment-title-casual = This observation is Casual Grade
 Data-quality-assessment-title-needs-id = This observation Needs ID
-# declares the current data quality status of the observation
+# declares the current data quality status of the observation when quality is Research Grade
 Data-quality-assessment-title-research = This observation is Research Grade!
 Data-quality-casual-description = This observation needs more information verified to be considered verifiable
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
@@ -207,9 +239,12 @@ Date-hours = { $count }h
 Date-minutes = { $count }m
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
+Date-observed-header-short = Observed
 DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
+# Label for controls over a range of dates
 Date-Range = Date Range
+# Label for controls over a range of dates
 DATE-RANGE = DATE RANGE
 # Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)
 Date-short-format = MM/dd/yy
@@ -222,18 +257,17 @@ DATE-UPLOADED-NEWEST = DATE UPLOADED - NEWEST TO OLDEST
 DATE-UPLOADED-OLDEST = DATE UPLOADED - OLDEST TO NEWEST
 # Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
 Date-weeks = { $count }w
-Date_observed_header_short = Observed
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
+# Month of December
 December = December
-Default-Search-Place = Default Search Place
 DELETE = DELETE
 Delete-all-observations = Delete all observations
 Delete-comment = Delete comment
-DELETE-COMMENT-QUESTION = DELETE COMMENT?
-DELETE-OBSERVATION = DELETE OBSERVATION?
+DELETE-COMMENT--question = DELETE COMMENT?
 Delete-observation = Delete observation
+DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Delete photo
 Delete-sound = Delete sound
@@ -248,28 +282,29 @@ Deleting-x-of-y-observations =
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETAILS
+# Button that disables the camera's flash
 Disable-flash = Disable flash
+# Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
+# Button that discards all items, e.g. imported photos
 DISCARD-ALL = DISCARD ALL
+# Button that discards changes
 DISCARD-CHANGES = DISCARD CHANGES
 DISCARD-FILTER-CHANGES = DISCARD FILTER CHANGES
-DISCARD-MEDIA = DISCARD MEDIA?
+DISCARD-MEDIA--question = DISCARD MEDIA?
 DISCARD-OBSERVATION = DISCARD OBSERVATION
-DISCARD-PHOTOS = DISCARD PHOTOS?
+DISCARD-PHOTOS--question = DISCARD PHOTOS?
 # Label for a button that discards a sound recording
 DISCARD-RECORDING = DISCARD RECORDING
 # Header of a popup confirming that the user wants to discard a sound
 # recording
-DISCARD-SOUND-header = DISCARD SOUND?
+DISCARD-SOUND--question = DISCARD SOUND?
 DISCARD-X-OBSERVATIONS =
     { $count ->
         [one] DISCARD OBSERVATION
        *[other] DISCARD { $count } OBSERVATIONS
     }
 DISMISS = DISMISS
-Display = Display
-Display-Name = Display Name
-Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 Donate-to-iNaturalist = Donate to iNaturalist
@@ -277,6 +312,7 @@ Donate-to-iNaturalist = Donate to iNaturalist
 DONE = DONE
 Dont-have-an-account = Don't have an account? Sign up
 During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AR camera.
+# Button for editing something
 Edit = Edit
 EDIT-COMMENT = EDIT COMMENT
 Edit-comment = Edit comment
@@ -284,12 +320,13 @@ EDIT-LOCATION = EDIT LOCATION
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Edit location
 Edit-Observation = Edit Observation
+# Label for button that edits an observation's taxon
+Edits-this-observations-taxon = Edits this observation's taxon
 EMAIL = EMAIL
-# Appears above the email text field
-Email = email
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
-Email-Notifications = Email Notifications
+# Button that enables the camera's flash
 Enable-flash = Enable flash
+# Indicates a species only occurs in a specific place
 Endemic = Endemic
 # TODO this and many other uses of placeables are not currently translatable
 # without knowing the vowel/consonant state of the first letter of the
@@ -316,12 +353,12 @@ EXPLORE-IDENTIFIERS = EXPLORE IDENTIFIERS
 EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 EXPLORE-OBSERVERS = EXPLORE OBSERVERS
 EXPLORE-SPECIES = EXPLORE SPECIES
-External-Applications = External Applications
 Failed-to-delete-sound = Failed to delete sound
 # Error message with log in fails
 Failed-to-log-in = Failed to log in
 # Header for featured projects
 FEATURED = FEATURED
+# Month of February
 February = February
 Fetching-location = Fetching location...
 Filter = Filter
@@ -341,8 +378,9 @@ Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 # Status when an item has been flagged
 Flagged = Flagged
 Flash = flash
+# Label for a button that toggles between the front and back cameras
+Flip-camera = Flip camera
 FOLLOW = FOLLOW
-Following = Following
 # Forgot password link
 Forgot-Password = Forgot Password
 GEOPRIVACY = GEOPRIVACY
@@ -391,8 +429,6 @@ IMPORT-X-OBSERVATIONS =
 # Identification category
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
-iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
-iNaturalist-Applications = iNaturalist Applications
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -408,7 +444,6 @@ iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing 
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
 INATURALIST-MISSION-VISION = INATURALIST'S MISSION & VISION
 INATURALIST-NETWORK = INATURALIST NETWORK
-iNaturalist-Network-Affiliation = iNaturalist Network Affiliation
 INATURALIST-SETTINGS = INATURALIST SETTINGS
 # Label for the role a user plays on iNaturalist, e.g. "INATURALIST STAFF"
 # or "INATURALIST CURATOR". Since the name "INATURALIST" should not be
@@ -429,6 +464,7 @@ Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
+# Month of January
 January = January
 JOIN = JOIN
 JOIN-PROJECT = JOIN PROJECT
@@ -442,9 +478,10 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
         [one] JOURNAL POST
        *[other] JOURNAL POSTS
     }
+# Month of July
 July = July
+# Month of June
 June = June
-Language-Locale = Language/Locale
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: { $date }
 # Latitude, longitude on a single line on a single line
@@ -458,7 +495,6 @@ LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 LICENSES = LICENSES
-Licensing = Licensing
 List-view = List view
 Loading-iNaturalists-AR-Camera = Loading iNaturalist's AR Camera
 LOCATION = LOCATION
@@ -482,9 +518,11 @@ Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 MAP = MAP
 Map-Area = Map Area
+# Month of March
 March = March
 # Identification category
 maverick--identification = Maverick
+# Month of May
 May = May
 MEDIA = MEDIA
 MEMBERS-WITHOUT-NUMBER =
@@ -502,36 +540,37 @@ MONTHS = MONTHS
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
-Names = Names
 Native = Native
 Native-to-place = Native to { $place }
-Navigates-to-add-identification = Navigates to add identification.
-Navigates-to-AR-camera = Navigates to AR camera.
-Navigates-to-bulk-importer = Navigates to bulk importer.
-Navigates-to-camera = Navigates to camera.
-Navigates-to-explore = Navigates to explore.
+Navigates-to-AR-camera = Navigates to AR camera
+Navigates-to-bulk-importer = Navigates to bulk importer
+Navigates-to-camera = Navigates to camera
+Navigates-to-explore = Navigates to explore
 Navigates-to-notifications = Navigates to notifications
-Navigates-to-observation-details = Navigates to observation details screen.
-Navigates-to-observation-edit-screen = Navigate to observation edit screen.
-Navigates-to-observations = Navigates to observations.
-Navigates-to-photo-importer = Navigate to photo importer.
-Navigates-to-previous-screen = Navigate to previous screen
-Navigates-to-project-details = Navigate to project details
-Navigates-to-sound-recorder = Navigates to sound recorder.
-Navigates-to-suggest-identification = Navigates to suggest identification.
-Navigates-to-suggestions = Navigates to suggestions
+Navigates-to-observation-details = Navigates to observation details screen
+Navigates-to-observation-edit-screen = Navigate to observation edit screen
+Navigates-to-photo-importer = Navigates to photo importer
+Navigates-to-previous-screen = Navigates to previous screen
+Navigates-to-project-details = Navigates to project details
+Navigates-to-sound-recorder = Navigates to sound recorder
+Navigates-to-suggest-identification = Navigates to suggest identification
 Navigates-to-taxon-details = Navigates to taxon details
-Navigates-to-user-profile = Navigates to user profile.
+Navigates-to-user-profile = Navigates to user profile
+# Label for button that takes you to your observations
+Navigates-to-your-observations = Navigates to your observations
 # Header for nearby projects
 NEARBY = NEARBY
 Nearby = Nearby
 NEARBY-SUGGESTIONS = NEARBY SUGGESTIONS
 Needs-ID = Needs ID
+# Heading when creating a new observation
 New-Observation = New Observation
+# Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 No-Location = No Location
 No-Media = No Media
+# As in a machine learning model that powers automated suggestions
 No-model-found = No model found
 No-Notifications-Found = You have no notifications! Get started by creating your own observations.
 No-projects-match-that-search = No projects match that search
@@ -549,6 +588,7 @@ Notifications = Notifications
 notifications-user-added-comment-to-observation-by-you = <0>{ $userName }</0> added a comment to an observation by you
 # notification when someone adds an identification to your observation
 notifications-user-added-identification-to-observation-by-you = <0>{ $userName }</0> added an identification to an observation by you
+# Month of November
 November = November
 Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
 Obscured = Obscured
@@ -566,6 +606,8 @@ Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
 Observations-View = Observations View
+# Might be used when the number is represented using an image or other
+# element, not text
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] OBSERVATION
@@ -573,6 +615,7 @@ OBSERVATIONS-WITHOUT-NUMBER =
     }
 # Onboarding text on MyObservations: Onboarding text on MyObservations: 11-50 observations
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
+# Button that starts a new observation
 Observe = Observe
 # Title of screen asking for permission to access the gallery
 Observe-and-identify-organisms-from-your-gallery = Observe and identify organisms from your gallery
@@ -581,7 +624,9 @@ Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and ident
 # Text for a button prompting the user to grant access to the camera
 OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 Observers = Observers
+# Section in Explore that shows people who added observations given a set of search filters
 Observers-View = Observers View
+# Month of October
 October = October
 Offensive-Inappropriate = Offensive/Inappropriate
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
@@ -589,8 +634,10 @@ Offline-DQA-description = The DQA may not be accurate. Check your internet conne
 Offline-No-Notifications = Cannot fetch notifications at this time.
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
+# Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
 One-last-step = One last step!
+# Adjective, as in geoprivacy
 Open = Open
 Open-drawer = Open drawer
 OPEN-EMAIL = OPEN EMAIL
@@ -631,15 +678,14 @@ Please-try-again-when-you-are-connected-to-the-internet = Please try again when 
 # Help text for beginning a sound recording
 Press-record-to-start = Press record to start
 Previous-observation = Previous observation
-Prioritize-common-names-used-in-this-place = Prioritize common names used in this place.
-Privacy = Privacy
 Privacy-Policy = Privacy Policy
 Private = Private
-Profile-Picture = Profile Picture
+# As in an iNat project, a collection of observations or observation search filters
 PROJECT = PROJECT
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
-Project-Settings = Project Settings
+# As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJECTS
+# As in iNat projects, collections of observations or observation search filters
 Projects = Projects
 QUALITY-GRADE = QUALITY GRADE
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
@@ -689,6 +735,7 @@ Ranks-VARIETY = VARIETY
 Ranks-ZOOSECTION = ZOOSECTION
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Read-more-on-Wikipedia = Read more on Wikipedia
+# Heading for the sound recorder
 RECORD-NEW-SOUND = RECORD NEW SOUND
 # Title of screen asking for permission to access the microphone
 Record-organism-sounds-with-the-microphone = Record organism sounds with the microphone
@@ -697,12 +744,20 @@ RECORD-SOUND = RECORD SOUND
 Record-sounds = Record sounds with your microphone
 # Imperative verb for recording a sound
 Record-verb = Record
+# Status while recording a sound
 Recording-sound = Recording sound
 Recording-stopped-Tap-play-the-current-recording = Recording stopped. Tap play the current recording.
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
+# Label for a button that removes a vote of agreement
+Remove-agreement = Remove agreement
+# Label for a button that removes a vote of disagreement
+Remove-disagreement = Remove disagreement
 Remove-favorite = Remove favorite
 Remove-Photos = Remove Photos
-Remove-Relationship = Remove Relationship
+# Hint for a button that removes a vote of agreement
+Removes-your-vote-of-agreement = Removes your vote of agreement
+# Hint for a button that removes a vote of disagreement
+Removes-your-vote-of-disagreement = Removes your vote of disagreement
 # Quality grade option
 Research-Grade = Research Grade
 Reset = Reset
@@ -725,7 +780,6 @@ REVIEW-INATURALIST = REVIEW INATURALIST
 # reviewed the observations or not
 REVIEWED = REVIEWED
 Reviewed-observations-only = Reviewed observations only
-Revoke = Revoke
 # Label for the satellite map type
 Satellite--map-type = Satellite
 # Label for a button that persists something
@@ -741,7 +795,9 @@ Saved-Observation = Saved observation, in queue to upload
 Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
+# Title for a search interface
 SEARCH = SEARCH
+# Title for a search interface
 Search = Search
 SEARCH-FOR-A-LOCATION = SEARCH FOR A LOCATION
 Search-for-a-project = Search for a project
@@ -770,6 +826,7 @@ Select-the-identification-you-want-to-add = Select the identification you want t
 Select-user = Select user
 Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
 Separate-Photos = Separate Photos
+# Month of September
 September = September
 SETTINGS = SETTINGS
 Settings = Settings
@@ -780,6 +837,8 @@ Share-map = Share map
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 Shop-iNaturalist-Merch = Shop iNaturalist Merch
 Show-observation-options = Show observation options.
+# Label for button that shows identification suggestions
+Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 Sign-out = Sign out
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
@@ -840,7 +899,6 @@ TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
 TAXONOMIC-RANKS = TAXONOMIC RANKS
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
-Taxonomy-Settings = Taxonomy Settings
 TEACHERS = TEACHERS
 Teachers-Guide = Teachers' Guide
 TEAM = TEAM
@@ -848,27 +906,21 @@ Terms-of-Use = Terms of Use
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
-The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.
 The-iNaturalist-team-has-collaborated = The iNaturalist team has collaborated with...
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
 There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
-This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist = This is how all taxon names will be displayed to you across iNaturalist
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
-This-sets-your-language-and-date-formatting-preferences-across-iNaturalist = This sets your language and date formatting preferences across iNaturalist based on your locale.
-This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This will be your default place for all searches in Explore and Identify.
 To-access-all-other-settings = To access all other account settings, click here:
 To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 Toggle-map-type = Toggle map type
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = Traditional Project
-Trust-with-hidden-coordinates = Trust with hidden coordinates
 Umbrella-Project = Umbrella Project
-Unblock = Unblock
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
 # Text to show when a taxon or identification is unknown or missing
@@ -878,7 +930,6 @@ Unknown--user = Unknown
 # Generic error message
 Unknown-error = Unknown error
 Unknown-organism = Unknown organism
-Unmute = Unmute
 Unreviewed-observations-only = Unreviewed observations only
 Upload-Complete = Upload Complete
 Upload-in-progress = Upload in progress
@@ -911,7 +962,6 @@ Use-your-devices-microphone-to-record = Use your device’s microphone to record
 USER = USER
 User = User { $userHandle }
 USERNAME = USERNAME
-Username = Username
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
@@ -926,6 +976,8 @@ View-photo = View photo
 View-photo-licensing-info = View photo licensing info
 VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
 VIEW-PROJECTS = VIEW PROJECTS
+# Label for a button that shows identification suggestions for an observation
+# or photo
 View-suggestions = View suggestions
 VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
 # Title for a notice informing the user that they are viewing offline
@@ -939,8 +991,6 @@ Welcome-to-iNaturalist = Welcome to iNaturalist!
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
-Which-traditional-projects-can-add-your-observations = Which traditional projects can add your observations?
-Who-can-add-observation-fields-to-my-observations = Who can add observation fields to my observations?
 WIKIPEDIA = WIKIPEDIA
 Wild = Wild
 WILD-STATUS = WILD STATUS

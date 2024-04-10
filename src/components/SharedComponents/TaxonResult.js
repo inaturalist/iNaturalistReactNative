@@ -18,6 +18,7 @@ import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 import ConfidenceInterval from "./ConfidenceInterval";
 
 type Props = {
+  accessibilityLabel: string,
   activeColor?: string,
   asListItem?: boolean,
   clearBackground?: boolean,
@@ -36,6 +37,7 @@ type Props = {
 };
 
 const TaxonResult = ( {
+  accessibilityLabel,
   activeColor,
   asListItem = true,
   clearBackground,
@@ -160,8 +162,7 @@ const TaxonResult = ( {
                   : theme.colors.secondary
               }
               onPress={() => handleCheckmarkPress( usableTaxon )}
-              accessibilityLabel={t( "Checkmark" )}
-              accessibilityHint={t( "Add-this-ID" )}
+              accessibilityLabel={accessibilityLabel}
               testID={`${testID}.checkmark`}
             />
           )}

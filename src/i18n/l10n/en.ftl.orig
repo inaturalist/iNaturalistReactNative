@@ -147,8 +147,12 @@ Change-taxon-filter = Change taxon filter
 Change-user = Change user
 # Label for a button that cycles through zoom levels for the camera
 Change-zoom = Change zoom
-Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons
+<<<<<<< HEAD
 # Notification that appears after pressing the reset password button
+=======
+Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons
+# After pressing the reset password button
+>>>>>>> main
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 # Text for a button prompting the user to grant access to the gallery
 CHOOSE-PHOTOS = CHOOSE PHOTOS
@@ -183,10 +187,14 @@ CONFIRM = CONFIRM
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
-CONTINUE = CONTINUE
+<<<<<<< HEAD
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coordinates copied to clipboard
 # Button that copies coordinates to the clipboard
+=======
+CONTINUE = CONTINUE
+Coordinates-copied-to-keyboard = Coordinates copied to keyboard
+>>>>>>> main
 Copy-coordinates = Copy Coordinates
 # Right to control copies of a creative work; this string may be used as a
 # heading to describe general information about rights, attribution, and

@@ -13,7 +13,7 @@ import React, {
 } from "react";
 import { FlatList } from "react-native";
 import { useTheme } from "react-native-paper";
-import useTaxonSearch from "sharedHooks/useTaxonSearch";
+import { useTaxonSearch, useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 
 import AddCommentPrompt from "./AddCommentPrompt";
@@ -34,6 +34,7 @@ const TaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const taxonList = useTaxonSearch( taxonQuery );
+  const { t } = useTranslation( );
 
   useNavigateWithTaxonSelected( selectedTaxon, { vision: false } );
 
@@ -41,13 +42,14 @@ const TaxonSearch = ( ): Node => {
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
+      accessibilityLabel={t( "Choose-taxon" )}
       taxon={taxon}
       handleCheckmarkPress={() => setSelectedTaxon( taxon )}
       testID={`Search.taxa.${taxon.id}`}
       first={index === 0}
       fetchRemote={false}
     />
-  ), [setSelectedTaxon] );
+  ), [setSelectedTaxon, t] );
 
   return (
     <ViewWrapper>

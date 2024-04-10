@@ -1,0 +1,3 @@
+{
+  "Native-to-place": "Originaire { VOWORCON($place) ->\n  [vow] d'{ $place }\n *[con] de { $place }\n}"
+}

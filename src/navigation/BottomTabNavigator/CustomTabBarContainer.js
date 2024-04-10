@@ -52,7 +52,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       userIconUri: User.uri( currentUser ),
       testID: "NavButton.personIcon",
       accessibilityLabel: t( "Observations" ),
-      accessibilityHint: t( "Navigates-to-observations" ),
+      accessibilityHint: t( "Navigates-to-your-observations" ),
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "ObservationsStackNavigator", {

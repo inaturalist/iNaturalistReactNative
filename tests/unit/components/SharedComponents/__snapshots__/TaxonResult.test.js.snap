@@ -514,8 +514,7 @@ exports[`TaxonResult should render correctly 1`] = `
       </View>
     </View>
     <View
-      accessibilityHint="Add this identification"
-      accessibilityLabel="Checkmark"
+      accessibilityLabel="this is the taxon"
       accessibilityRole="button"
       accessibilityState={
         {

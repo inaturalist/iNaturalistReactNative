@@ -198,7 +198,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
         <Heading4 className={headingClass}>{t( "DATE" )}</Heading4>
         <DateDisplay
           classNameMargin="mb-[12px]"
-          label={t( "Date_observed_header_short" )}
+          label={t( "Date-observed-header-short" )}
           dateString={checkCamelAndSnakeCase( observation, "timeObservedAt" )}
         />
         <DateDisplay

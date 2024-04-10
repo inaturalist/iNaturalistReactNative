@@ -51,7 +51,7 @@ const FloatingButtons = ( {
         className="w-1/2 mx-6"
         testID="ObsDetail.cvSuggestionsButton"
         accessibilityRole="link"
-        accessibilityHint={t( "Navigates-to-suggest-identification" )}
+        accessibilityHint={t( "Shows-identification-suggestions" )}
       />
     </View>
   );

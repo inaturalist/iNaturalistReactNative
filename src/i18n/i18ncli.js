@@ -209,7 +209,7 @@ async function untranslatable( ) {
     console.log( "✅ No keys missing in strings.ftl" );
   } else {
     console.error(
-      `❌ ${untranslatableKeys.length} keys found missing in strings.ftl: ${untranslatableKeys}`
+      `❌ ${untranslatableKeys.length} keys in use missing from strings.ftl: ${untranslatableKeys}`
     );
     process.exit( 1 );
   }
