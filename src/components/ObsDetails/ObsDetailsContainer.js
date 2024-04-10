@@ -3,9 +3,6 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
-import {
-  markObservationUpdatesViewed
-} from "api/observations";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -22,14 +19,14 @@ import {
   useCurrentUser,
   useIsConnected,
   useLocalObservation,
+  useObservationsUpdates,
   useTranslation
 } from "sharedHooks";
-import useObservationsUpdates,
-{ fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
 import useRemoteObservation,
 { fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
+import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
 import ObsDetails from "./ObsDetails";
 
 const { useRealm } = RealmContext;
@@ -107,9 +104,6 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const setObservationMarkedAsViewedAt = useStore(
-    state => state.setObservationMarkedAsViewedAt
-  );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
@@ -140,9 +134,10 @@ const ObsDetailsContainer = ( ): Node => {
 
   const localObservation = useLocalObservation( uuid );
 
-  const fetchRemoteObservationEnabled = (
+  const fetchRemoteObservationEnabled = !!(
     !remoteObsWasDeleted
     && ( !localObservation || localObservation?.wasSynced( ) )
+    && isOnline
   );
 
   const {
@@ -151,6 +146,8 @@ const ObsDetailsContainer = ( ): Node => {
     isRefetching,
     fetchRemoteObservationError
   } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
+
+  useMarkViewedMutation( localObservation, remoteObservation );
 
   // If we tried to get a remote observation but it no longer exists, the user
   // can't do anything so we need to send them back and remove the local
@@ -186,7 +183,7 @@ const ObsDetailsContainer = ( ): Node => {
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      queryClient.invalidateQueries( fetchRemoteObservationKey );
+      queryClient.invalidateQueries( { queryKey: fetchRemoteObservationKey } );
     }, [queryClient] )
   );
 
@@ -225,31 +222,8 @@ const ObsDetailsContainer = ( ): Node => {
     }
   ];
 
-  const markViewedLocally = async ( ) => {
-    if ( !localObservation ) { return; }
-    safeRealmWrite( realm, ( ) => {
-      // Flags if all comments and identifications have been viewed
-      localObservation.comments_viewed = true;
-      localObservation.identifications_viewed = true;
-    }, "marking viewed locally in ObsDetailsContainer" );
-  };
-
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
     !!currentUser && !!observation
-  );
-
-  const markViewedMutation = useAuthenticatedMutation(
-    ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
-    {
-      onSuccess: ( ) => {
-        markViewedLocally( );
-        queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
-        refetchObservationUpdates( );
-        // Set this value so NotificationsIconContainer knows to update the
-        // notifications count
-        setObservationMarkedAsViewedAt( new Date( ) );
-      }
-    }
   );
 
   const showErrorAlert = error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
@@ -359,23 +333,6 @@ const ObsDetailsContainer = ( ): Node => {
     onIDAdded();
   }, [onIDAdded, suggestedTaxonId] );
 
-  useEffect( ( ) => {
-    if (
-      remoteObservation
-      && currentUser
-      && localObservation?.unviewed( )
-      && !markViewedMutation.isLoading
-    ) {
-      markViewedMutation.mutate( { id: uuid } );
-    }
-  }, [
-    currentUser,
-    localObservation,
-    markViewedMutation,
-    remoteObservation,
-    uuid
-  ] );
-
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
     navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
@@ -384,7 +341,7 @@ const ObsDetailsContainer = ( ): Node => {
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
   const refetchObservation = ( ) => {
-    queryClient.invalidateQueries( [fetchRemoteObservationKey] );
+    queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey] } );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };

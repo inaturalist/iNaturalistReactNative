@@ -62,6 +62,18 @@ function obscurationCellForLatLng( lat, lng ) {
   };
 }
 
+// Adapted from iNat Android LocationChooserActivity.java computeOffset function
+const EARTH_RADIUS = 6371000; // Earth radius in meters
+export function metersToLatitudeDelta( meters: number, latitude: number ): number {
+  // Calculate latitude delta in radians
+  const latitudeDeltaRadians
+    = meters / ( EARTH_RADIUS * Math.cos( ( latitude * Math.PI ) / 180 ) );
+
+  // Convert latitude delta to degrees
+  const latitudeDelta = ( latitudeDeltaRadians * 180 ) / Math.PI;
+  return latitudeDelta;
+}
+
 type Props = {
   children?: any,
   className?: string,
@@ -193,18 +205,6 @@ const Map = ( {
   const [zoomToNearbyRequested, setZoomToNearbyRequested] = useState(
     startAtNearby
   );
-
-  // Adapted from iNat Android LocationChooserActivity.java computeOffset function
-  const EARTH_RADIUS = 6371000; // Earth radius in meters
-  function metersToLatitudeDelta( meters, latitude ) {
-    // Calculate latitude delta in radians
-    const latitudeDeltaRadians
-      = meters / ( EARTH_RADIUS * Math.cos( ( latitude * Math.PI ) / 180 ) );
-
-    // Convert latitude delta to degrees
-    const latitudeDelta = ( latitudeDeltaRadians * 180 ) / Math.PI;
-    return latitudeDelta;
-  }
 
   // Prop kind of functions as a signal. Would make more sense if it was
   // declarative and not reactive, but hey, it's React
@@ -424,12 +424,7 @@ const Map = ( {
         }}
         onUserLocationChange={async locationChangeEvent => {
           const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
-          if (
-            coordinate?.latitude
-            && coordinate.latitude.toFixed( 4 ) !== userLocation?.latitude.toFixed( 4 )
-          ) {
-            setUserLocation( coordinate );
-          }
+          setUserLocation( coordinate );
         }}
         showsUserLocation={showsUserLocation}
         showsMyLocationButton={false}

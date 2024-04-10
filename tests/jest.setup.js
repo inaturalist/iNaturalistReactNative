@@ -2,16 +2,17 @@ import "react-native-gesture-handler/jestSetup";
 import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
+import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
-import mockRNLocalize from "react-native-localize/mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
+import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
 
 import factory, { makeResponse } from "./factory";
 import {
@@ -371,19 +372,37 @@ jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
   )
 } ) );
 
-jest.mock( "react-native-jwt-io", ( ) => ( {
-  encode: jest.fn( ( ) => "an-encoded-jwt" )
-} ) );
+jest.mock( "jsrsasign" );
 
 inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
 jest.mock( "react-native-audio-recorder-player", ( ) => MockAudioRecorderPlayer );
 
-jest.mock( "react-native-fast-image", ( ) => {
-  const actualNav = jest.requireActual( "react-native-fast-image" );
+jest.mock( "@react-native-clipboard/clipboard", () => mockClipboard );
+
+jest.mock( "react-native-webview", () => {
+  const MockWebView = jest.requireActual( "react-native" ).View;
+
   return {
-    ...actualNav,
-    preload: jest.fn( )
+    __esModule: true,
+    WebView: MockWebView,
+    default: MockWebView
+  };
+} );
+
+jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
+  const turboModuleRegistry = jest
+    .requireActual( "react-native/Libraries/TurboModule/TurboModuleRegistry" );
+  return {
+    ...turboModuleRegistry,
+    getEnforcing: name => {
+      // List of TurboModules libraries to mock.
+      const modulesToMock = ["ReactNativeKCKeepAwake"];
+      if ( modulesToMock.includes( name ) ) {
+        return null;
+      }
+      return turboModuleRegistry.getEnforcing( name );
+    }
   };
 } );

@@ -1,6 +1,7 @@
 // @flow
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -29,11 +30,12 @@ const Header = ( {
   const updateObservations = useStore( state => state.updateObservations );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const { params } = useRoute( );
   const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
-
+  const unsynced = !currentObservation?._synced_at;
   const savedLocally = currentObservation?._created_at;
 
   const navToObsList = useCallback( ( ) => {
@@ -47,8 +49,8 @@ const Header = ( {
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    navigation.goBack( );
-  }, [navigation] );
+    navigateToObsDetails( navigation, currentObservation?.uuid );
+  }, [currentObservation?.uuid, navigation] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
@@ -76,15 +78,20 @@ const Header = ( {
   }, [observations, t, savedLocally] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( unsavedChanges && savedLocally ) {
+    if ( params?.lastScreen === "GroupPhotos"
+      || ( unsynced && savedLocally )
+      || ( unsynced && !unsavedChanges )
+    ) {
+      navigation.goBack( );
+    } else if ( !savedLocally ) {
+      setDiscardObservationSheetVisible( true );
+    } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navigation.goBack( );
+      navigateToObsDetails( navigation, currentObservation?.uuid );
     }
   }, [
-    savedLocally,
-    navigation,
-    unsavedChanges
+    params?.lastScreen, unsynced, savedLocally, unsavedChanges, navigation, currentObservation?.uuid
   ] );
 
   const renderBackButton = useCallback( ( ) => {

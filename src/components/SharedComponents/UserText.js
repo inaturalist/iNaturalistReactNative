@@ -73,7 +73,7 @@ const LINKIFY_OPTIONS = {
 };
 
 function hyperlinkMentions( text ) {
-  return text.replace( /(\B)@([A-z][\\\w\\\-_]*)/g, "$1<a href='https://www.inaturalist.org/people/$2'>@$2</a>" );
+  return text.replace( /(\B)@([a-z][\\\w\\\-_]*)/g, "$1<a href='https://www.inaturalist.org/people/$2'>@$2</a>" );
 }
 
 type Props = {

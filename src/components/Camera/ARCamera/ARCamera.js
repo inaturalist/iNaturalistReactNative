@@ -183,24 +183,25 @@ const ARCamera = ( {
       )}
       <FadeInOutView takingPhoto={takingPhoto} />
       <ARCameraButtons
-        takePhoto={handlePress}
-        rotatableAnimatedStyle={rotatableAnimatedStyle}
-        toggleFlash={toggleFlash}
-        flipCamera={flipCamera}
-        hasFlash={hasFlash}
-        takePhotoOptions={takePhotoOptions}
-        showPrediction={showPrediction}
-        zoomTextValue={zoomTextValue}
-        showZoomButton={showZoomButton}
         changeZoom={changeZoom}
         confidenceThreshold={confidenceThreshold}
-        setConfidenceThreshold={setConfidenceThreshold}
-        fps={fps}
-        setFPS={setFPS}
-        numStoredResults={numStoredResults}
-        setNumStoredResults={setNumStoredResults}
         cropRatio={cropRatio}
+        flipCamera={flipCamera}
+        fps={fps}
+        hasFlash={hasFlash}
+        modelLoaded={modelLoaded}
+        numStoredResults={numStoredResults}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
+        setConfidenceThreshold={setConfidenceThreshold}
         setCropRatio={setCropRatio}
+        setFPS={setFPS}
+        setNumStoredResults={setNumStoredResults}
+        showPrediction={showPrediction}
+        showZoomButton={showZoomButton}
+        takePhoto={handlePress}
+        takePhotoOptions={takePhotoOptions}
+        toggleFlash={toggleFlash}
+        zoomTextValue={zoomTextValue}
       />
     </>
   );

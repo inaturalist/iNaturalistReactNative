@@ -82,20 +82,7 @@ describe( "ARCamera navigation", ( ) => {
       Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
     } );
 
-    it( "should advance to Suggestions when photo taken", async ( ) => {
-      renderApp( );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButton = await screen.findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
-      const cameraButton = await screen.findByLabelText( /AR Camera/ );
-      await actor.press( cameraButton );
-      expect( await screen.findByText( /Loading iNaturalist's AR Camera/ ) ).toBeVisible( );
-      const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-      await actor.press( takePhotoButton );
-      expect( await screen.findByText( /ADD AN ID/ ) ).toBeVisible( );
-    } );
-
-    it( "should display top suggestion from ARCamera", async ( ) => {
+    it( "should advance to suggestions and display top suggestion from ARCamera", async ( ) => {
       jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
         handleTaxaDetected: jest.fn( ),
         modelLoaded: true,

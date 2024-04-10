@@ -60,8 +60,8 @@ describe( "UserProfile", () => {
         new RegExp( t( "OBSERVATIONS-WITHOUT-NUMBER", { count: mockUser.observations_count } ) )
       )
     ).toBeTruthy( );
-    expect( screen.getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
-      uri: mockUser.icon_url
-    } );
+    const userIcon = screen.getByTestId( "UserIcon.photo" );
+    expect( userIcon ).toBeTruthy( );
+    expect( userIcon.props.source ).toHaveProperty( "url", mockUser.icon_url );
   } );
 } );

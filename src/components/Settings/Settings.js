@@ -35,7 +35,7 @@ const Settings = ( ) => {
     {
       onSuccess: () => {
         console.log( "[DEBUG Settings.js] updated user, refetching userMe" );
-        queryClient.invalidateQueries( ["fetchUserMe"] );
+        queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
         refetchUserMe();
       },
       onError: () => {

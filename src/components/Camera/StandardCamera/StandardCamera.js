@@ -7,6 +7,7 @@ import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto";
 import useZoom from "components/Camera/hooks/useZoom";
+import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { View } from "components/styledComponents";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import type { Node } from "react";
@@ -80,20 +81,17 @@ const StandardCamera = ( {
       const previousScreen = params && params.previousScreen
         ? params.previousScreen
         : null;
-      const screenParams = previousScreen && previousScreen.name === "ObsDetails"
-        ? {
-          navToObsDetails: true,
-          uuid: previousScreen.params.uuid
-        }
-        : {};
 
-      navigation.navigate( "TabNavigator", {
-        screen: "ObservationsStackNavigator",
-        params: {
-          screen: "ObsList",
-          params: screenParams
-        }
-      } );
+      if ( previousScreen && previousScreen.name === "ObsDetails" ) {
+        navigateToObsDetails( navigation, previousScreen.params.uuid );
+      } else {
+        navigation.navigate( "TabNavigator", {
+          screen: "ObservationsStackNavigator",
+          params: {
+            screen: "ObsList"
+          }
+        } );
+      }
     }
   };
   const {
@@ -186,7 +184,7 @@ const StandardCamera = ( {
         <FadeInOutView takingPhoto={takingPhoto} />
         <CameraOptionsButtons
           changeZoom={changeZoom}
-          disallowAddingPhotos={disallowAddingPhotos}
+          disabled={disallowAddingPhotos}
           flipCamera={flipCamera}
           handleCheckmarkPress={handleCheckmarkPress}
           handleClose={handleBackButtonPress}
@@ -201,12 +199,12 @@ const StandardCamera = ( {
         />
       </View>
       <CameraNavButtons
-        takePhoto={handleTakePhoto}
+        disabled={disallowAddingPhotos}
+        handleCheckmarkPress={handleCheckmarkPress}
         handleClose={handleBackButtonPress}
-        disallowAddingPhotos={disallowAddingPhotos}
         photosTaken={photosTaken}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
-        handleCheckmarkPress={handleCheckmarkPress}
+        takePhoto={handleTakePhoto}
       />
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-add-20-photos-per-observation" )}

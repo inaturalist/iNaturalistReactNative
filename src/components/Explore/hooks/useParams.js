@@ -6,6 +6,7 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import { useCallback, useEffect } from "react";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -16,15 +17,36 @@ const useParams = ( ): Object => {
   const storedParams = useStore( state => state.storedParams );
 
   const worldwidePlaceText = t( "Worldwide" );
+  const nearbyPlaceText = t( "Nearby" );
 
-  const updateContextWithParams = useCallback( ( storedState = { } ) => {
-    if ( params?.worldwide ) {
+  const updateContextWithParams = useCallback( async ( storedState = { } ) => {
+    const setWorldwide = ( ) => {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
         placeId: null,
         placeName: worldwidePlaceText
       } );
+    };
+
+    if ( params?.worldwide ) {
+      setWorldwide( );
+    }
+    if ( params?.nearby ) {
+      const location = await fetchUserLocation( );
+      if ( !location || !location.latitude ) {
+        // TODO: maybe there's a better user flow here if user location
+        // can't be found, but currently using worldwide as a fallback
+        setWorldwide( );
+      } else {
+        dispatch( {
+          type: EXPLORE_ACTION.SET_PLACE,
+          placeName: nearbyPlaceText,
+          lat: location?.latitude,
+          lng: location?.longitude,
+          radius: 50
+        } );
+      }
     }
     if ( params?.taxon ) {
       dispatch( {
@@ -59,7 +81,7 @@ const useParams = ( ): Object => {
         projectId: params.project.id
       } );
     }
-  }, [params, dispatch, worldwidePlaceText] );
+  }, [params, dispatch, worldwidePlaceText, nearbyPlaceText] );
 
   useEffect( ( ) => {
     if ( params?.resetStoredParams ) {

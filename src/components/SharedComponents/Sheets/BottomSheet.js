@@ -1,8 +1,7 @@
 // @flow
 
 import BottomSheet, {
-  BottomSheetModal,
-  BottomSheetView
+  BottomSheetModal, BottomSheetScrollView
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
@@ -106,7 +105,7 @@ const StandardBottomSheet = ( {
       ref={sheetRef}
       style={[viewStyles.shadow, marginOnWide]}
     >
-      <BottomSheetView>
+      <BottomSheetScrollView>
         <View
           className={classnames(
             "pt-7",
@@ -130,7 +129,7 @@ const StandardBottomSheet = ( {
             />
           )}
         </View>
-      </BottomSheetView>
+      </BottomSheetScrollView>
     </BottomSheetComponent>
   );
 };

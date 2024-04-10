@@ -22,7 +22,6 @@ const useInfiniteScroll = (
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey: [queryKey, baseParams],
-    keepPreviousData: false,
     queryFn: async ( { pageParam = 0 } ) => {
       const params = {
         ...baseParams
@@ -32,6 +31,7 @@ const useInfiniteScroll = (
 
       return apiCall( params );
     },
+    initialPageParam: 0,
     getNextPageParam: lastPage => ( lastPage
       ? lastPage.page + 1
       : 1 )

@@ -12,7 +12,7 @@ const {
 const { readFile, writeFile } = fs.promises;
 const path = require( "path" );
 const util = require( "util" );
-const glob = util.promisify( require( "glob" ) );
+const { glob } = require( "glob" );
 const {
   difference,
   flatten,
@@ -182,7 +182,7 @@ async function getKeysInUse( ) {
   const paths = await glob( path.join( __dirname, "..", "**", "*.{js,ts,jsx,tsx}" ) );
   const allKeys = await Promise.all( paths.map( async srcPath => {
     const src = await readFile( srcPath );
-    const tMatches = [...src.toString( ).matchAll( /[^A-z]t\(\s*["']([\w-_\s]+?)["']/g )];
+    const tMatches = [...src.toString( ).matchAll( /[^a-z]t\(\s*["']([\w-_\s]+?)["']/g )];
     const i18nkeyMatches = [...src.toString( ).matchAll( /i18nKey=["']([\w-_\s]+?)["']/g )];
     return [...tMatches, ...i18nkeyMatches].map( match => match[1] );
   } ) );
