@@ -123,7 +123,7 @@
     "realm": "^12.6.2",
     "reassure": "^0.11.0",
     "sanitize-html": "^2.13.0",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#version-4",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
