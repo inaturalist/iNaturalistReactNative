@@ -1159,12 +1159,12 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - SocketRocket (0.6.1)
-  - VisionCamera (3.9.2):
+  - VisionCamera (4.0.0-beta.13):
     - React
     - React-callinvoker
     - React-Core
     - react-native-worklets-core
-  - VisionCameraPluginInatVision (3.0.0):
+  - VisionCameraPluginInatVision (4.0.0):
     - React-Core
   - Yoga (1.14.0)
 
@@ -1539,8 +1539,8 @@ SPEC CHECKSUMS:
   RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
   RNVectorIcons: 73ab573085f65a572d3b6233e68996d4707fd505
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  VisionCamera: 6c8ca7d04fc62fafccd8f8ad584e96f5303671f5
-  VisionCameraPluginInatVision: edd58cf80291675d1a1523a3d8d3b2c2f1bff26a
+  VisionCamera: 67ac75adc7324a2cf46e73986ea87dddd86d2f71
+  VisionCameraPluginInatVision: 2b1209bd07b8ec8eaa896049508e51931c9e6399
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
 
 PODFILE CHECKSUM: eebd76aa39f99b44754431ed68ce0cfbfc5ec2f7

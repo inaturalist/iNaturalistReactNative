@@ -117,13 +117,13 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-uuid": "^2.0.2",
     "react-native-vector-icons": "^10.0.3",
-    "react-native-vision-camera": "^3.9.2",
+    "react-native-vision-camera": "4.0.0-beta.13",
     "react-native-webview": "^13.8.4",
     "react-native-worklets-core": "0.5.0",
     "realm": "^12.6.2",
     "reassure": "^0.11.0",
     "sanitize-html": "^2.13.0",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#version-3",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
