@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
+import { useMMKVBoolean } from "react-native-mmkv";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
@@ -31,6 +32,7 @@ const Settings = ( ) => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser( );
   const { remoteUser, isLoading, refetchUserMe } = useUserMe();
+  const [isAdvancedUser, setIsAdvancedUser] = useMMKVBoolean( "isAdvancedUser" );
 
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
@@ -98,16 +100,16 @@ const Settings = ( ) => {
       <View className="mt-5">
         <RadioButtonRow
           smallLabel
-          checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( 1 )}
+          checked={!isAdvancedUser}
+          onPress={() => setIsAdvancedUser( false )}
           label={t( "iNaturalist-AI-Camera" )}
         />
       </View>
       <View className="mt-2">
         <RadioButtonRow
           smallLabel
-          checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( 2 )}
+          checked={isAdvancedUser}
+          onPress={() => setIsAdvancedUser( true )}
           label={t( "All-observation-option" )}
         />
       </View>
