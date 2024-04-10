@@ -1,6 +1,6 @@
 // @flow
 
-import { DisplayTaxonName, ObsStatus } from "components/SharedComponents";
+import { Body2, DisplayTaxonName, ObsStatus } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -81,6 +81,7 @@ const ObsGridItem = ( {
           layout="vertical"
           color="text-white"
           ellipsizeCommonName
+          bottomTextComponent={Body2}
         />
       </View>
     </ObsImagePreview>
