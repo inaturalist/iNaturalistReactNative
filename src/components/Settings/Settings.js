@@ -90,44 +90,55 @@ const Settings = ( ) => {
   const renderLoggedOut = ( ) => (
     <>
       <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
-      <Body2 className="mt-2">{t( "When-tapping-the-green-observation-button" )}</Body2>
-      <RadioButtonRow
-        className="mt-4"
-        checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
-        onPress={() => changeTaxonNameDisplay( 1 )}
-        label={t( "iNaturalist-AI-Camera" )}
-      />
-      <RadioButtonRow
-        className="mt-2"
-        checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
-        onPress={() => changeTaxonNameDisplay( 2 )}
-        label={t( "All-observation-option" )}
-      />
+      <Body2 className="mt-3">{t( "When-tapping-the-green-observation-button" )}</Body2>
+      <View className="mt-5">
+        <RadioButtonRow
+          smallLabel
+          checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
+          onPress={() => changeTaxonNameDisplay( 1 )}
+          label={t( "iNaturalist-AI-Camera" )}
+        />
+      </View>
+      <View className="mt-2">
+        <RadioButtonRow
+          smallLabel
+          checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
+          onPress={() => changeTaxonNameDisplay( 2 )}
+          label={t( "All-observation-option" )}
+        />
+      </View>
     </>
   );
 
   const renderLoggedIn = ( ) => (
     <>
       <Heading4 className="mt-7">{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
-      <Body2 className="mt-2">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
-      <RadioButtonRow
-        className="mt-4"
-        checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
-        onPress={() => changeTaxonNameDisplay( 1 )}
-        label={t( "Common-Name-Scientific-Name" )}
-      />
-      <RadioButtonRow
-        className="mt-2"
-        checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
-        onPress={() => changeTaxonNameDisplay( 2 )}
-        label={t( "Scientific-Name-Common-Name" )}
-      />
-      <RadioButtonRow
-        className="mt-2"
-        checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}
-        onPress={() => changeTaxonNameDisplay( 3 )}
-        label={t( "Scientific-Name" )}
-      />
+      <Body2 className="mt-3">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
+      <View className="mt-5">
+        <RadioButtonRow
+          smallLabel
+          checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
+          onPress={() => changeTaxonNameDisplay( 1 )}
+          label={t( "Common-Name-Scientific-Name" )}
+        />
+      </View>
+      <View className="mt-2">
+        <RadioButtonRow
+          smallLabel
+          checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
+          onPress={() => changeTaxonNameDisplay( 2 )}
+          label={t( "Scientific-Name-Common-Name" )}
+        />
+      </View>
+      <View className="mt-2">
+        <RadioButtonRow
+          smallLabel
+          checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}
+          onPress={() => changeTaxonNameDisplay( 3 )}
+          label={t( "Scientific-Name" )}
+        />
+      </View>
+
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
       <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
       <Button
