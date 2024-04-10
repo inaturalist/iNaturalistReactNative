@@ -8,6 +8,7 @@ import {
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
 import type { Node } from "react";
@@ -36,6 +37,7 @@ const ExploreLocationSearch = ( ): Node => {
   const { t } = useTranslation( );
 
   const [locationName, setLocationName] = useState( "" );
+  const [permissionNeeded, setPermissionNeeded] = useState( false );
 
   const resetPlace = useCallback( ( ) => navigation.navigate( "Explore", {
     worldwide: true
@@ -112,7 +114,7 @@ const ExploreLocationSearch = ( ): Node => {
         <View className="flex-row px-3 mt-5 justify-evenly">
           <Button
             className="w-1/2"
-            onPress={( ) => navigation.navigate( "Explore", { nearby: true } )}
+            onPress={( ) => setPermissionNeeded( true )}
             text={t( "NEARBY" )}
           />
           <View className="px-2" />
@@ -128,6 +130,20 @@ const ExploreLocationSearch = ( ): Node => {
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
+      />
+      <LocationPermissionGate
+        permissionNeeded={permissionNeeded}
+        withoutNavigation
+        onPermissionGranted={( ) => {
+          setPermissionNeeded( false );
+          navigation.navigate( "Explore", { nearby: true } );
+        }}
+        onPermissionDenied={( ) => {
+          setPermissionNeeded( false );
+        }}
+        onPermissionBlocked={( ) => {
+          setPermissionNeeded( false );
+        }}
       />
     </ViewWrapper>
   );

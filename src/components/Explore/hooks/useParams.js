@@ -35,6 +35,8 @@ const useParams = ( ): Object => {
     if ( params?.nearby ) {
       const location = await fetchUserLocation( );
       if ( !location || !location.latitude ) {
+        // TODO: maybe there's a better user flow here if user location
+        // can't be found, but currently using worldwide as a fallback
         setWorldwide( );
       } else {
         dispatch( {
