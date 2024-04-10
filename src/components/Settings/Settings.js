@@ -106,47 +106,53 @@ const Settings = ( ) => {
     </>
   );
 
+  const renderLoggedIn = ( ) => (
+    <>
+      <Heading4 className="mt-7">{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
+      <Body2 className="mt-2">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
+      <RadioButtonRow
+        className="mt-4"
+        checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
+        onPress={() => changeTaxonNameDisplay( 1 )}
+        label={t( "Common-Name-Scientific-Name" )}
+      />
+      <RadioButtonRow
+        className="mt-2"
+        checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
+        onPress={() => changeTaxonNameDisplay( 2 )}
+        label={t( "Scientific-Name-Common-Name" )}
+      />
+      <RadioButtonRow
+        className="mt-2"
+        checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}
+        onPress={() => changeTaxonNameDisplay( 3 )}
+        label={t( "Scientific-Name" )}
+      />
+      <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
+      <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
+      <Button
+        className="mt-4"
+        text={t( "INATURALIST-SETTINGS" )}
+        onPress={() => {
+          navigation.navigate( "FullPageWebView", {
+            title: t( "Settings" ),
+            loggedIn: true,
+            initialUrl: SETTINGS_URL,
+            openLinksInBrowser: true,
+            blurEvent: FINISHED_WEB_SETTINGS
+          } );
+        }}
+        accessibilityLabel={t( "Edit" )}
+      />
+    </>
+  );
+
   return (
     <ViewWrapper>
       <StatusBar barStyle="dark-content" />
       <View className="p-5">
-        <Heading4>{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
-        <Body2 className="mt-2">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
-        <RadioButtonRow
-          className="mt-4"
-          checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( 1 )}
-          label={t( "Common-Name-Scientific-Name" )}
-        />
-        <RadioButtonRow
-          className="mt-2"
-          checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( 2 )}
-          label={t( "Scientific-Name-Common-Name" )}
-        />
-        <RadioButtonRow
-          className="mt-2"
-          checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}
-          onPress={() => changeTaxonNameDisplay( 3 )}
-          label={t( "Scientific-Name" )}
-        />
-        <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
-        <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
-        <Button
-          className="mt-4"
-          text={t( "INATURALIST-SETTINGS" )}
-          onPress={() => {
-            navigation.navigate( "FullPageWebView", {
-              title: t( "Settings" ),
-              loggedIn: true,
-              initialUrl: SETTINGS_URL,
-              openLinksInBrowser: true,
-              blurEvent: FINISHED_WEB_SETTINGS
-            } );
-          }}
-          accessibilityLabel={t( "Edit" )}
-        />
         {renderLoggedOut( )}
+        {renderLoggedIn( )}
       </View>
       {( isSaving || isLoading ) && (
         <View className="absolute z-10 bg-lightGray/70
