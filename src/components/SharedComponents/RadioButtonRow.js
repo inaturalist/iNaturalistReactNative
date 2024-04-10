@@ -1,6 +1,7 @@
 // @flow
 import {
   Body1,
+  Body2,
   INatIcon,
   List2
 } from "components/SharedComponents";
@@ -16,6 +17,7 @@ type Props = {
   label: string,
   onPress: Function,
   value: string,
+  smallLabel: ?boolean
 }
 
 const RadioButtonRow = ( {
@@ -24,13 +26,18 @@ const RadioButtonRow = ( {
   label,
   onPress,
   icon,
-  value
+  value,
+  smallLabel = false
 }: Props ): Node => {
   const theme = useTheme( );
 
   const status = checked
     ? "checked"
     : "unchecked";
+
+  const Label = smallLabel
+    ? Body2
+    : Body1;
 
   return (
     <Pressable accessibilityRole="button" onPress={onPress}>
@@ -42,7 +49,7 @@ const RadioButtonRow = ( {
           accessibilityLabel={label}
         />
         <View className="flex-row">
-          <Body1 className="mr-2">{label}</Body1>
+          <Label className="mr-2">{label}</Label>
           {icon && <INatIcon name={icon} size={19} color={theme.colors.secondary} />}
         </View>
       </View>
