@@ -838,6 +838,7 @@
     "comment": "Quality grade option",
     "val": "Research Grade"
   },
+  "Reset": "Reset",
   "RESET-PASSWORD": {
     "comment": "Reset password button",
     "val": "RESET PASSWORD"
@@ -1144,6 +1145,7 @@
   "WITHDRAW-ID-QUESTION": "WITHDRAW ID?",
   "Withdraws-identification": "Withdraws identification",
   "Worldwide": "Worldwide",
+  "WORLDWIDE": "WORLDWIDE",
   "Would-you-like-to-discard-your-current-recording-and-start-over": "Would you like to discard your current recording and start over?",
   "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
   "X-Identifications": "{ $count ->\n  [one] { $count } Identification\n *[other] { $count } Identifications\n}",
