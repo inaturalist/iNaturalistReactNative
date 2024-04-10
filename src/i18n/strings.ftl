@@ -1126,3 +1126,7 @@ Youve-previously-denied-location-permissions = You’ve previously denied locati
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
 Zoom-to-current-location = Zoom to current location
+When-tapping-the-green-observation-button = When tapping the green observation button, open:
+OBSERVATION-BUTTON = OBSERVATION BUTTON
+iNaturalist-AI-Camera = iNaturalist AI Camera
+All-observation-option = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)

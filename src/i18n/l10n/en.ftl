@@ -63,6 +63,7 @@ AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
 ALL = ALL
 All = All
+All-observation-option = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)
 All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
@@ -596,6 +597,7 @@ Obscured = Obscured
 Obscured-observation-location-map-description = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
 Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
+OBSERVATION-BUTTON = OBSERVATION BUTTON
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Observation-Name = Observation { $scientificName }
 # Label for a menu that shows various actions you can take for an observation
