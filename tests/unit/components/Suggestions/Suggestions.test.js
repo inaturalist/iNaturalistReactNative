@@ -76,7 +76,7 @@ describe( "Suggestions", ( ) => {
   it( "should display a loading wheel if suggestions are loading", ( ) => {
     renderComponent( <Suggestions
       suggestions={[]}
-      loadingSuggestions
+      loading
       photoUris={["uri"]}
     /> );
     const loading = screen.getByTestId( "SuggestionsList.loading" );

@@ -17,7 +17,7 @@ const useOfflineSuggestions = (
   loadingOfflineSuggestions: boolean
 } => {
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
-  const [loadingOfflineSuggestions, setLoadingOfflineSuggestions] = useState( false );
+  const [loadingOfflineSuggestions, setLoadingOfflineSuggestions] = useState( true );
   const [error, setError] = useState( null );
 
   const { tryOfflineSuggestions } = options;
