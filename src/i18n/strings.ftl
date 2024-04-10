@@ -151,6 +151,8 @@ Change-zoom = Change zoom
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 # Text for a button prompting the user to grant access to the gallery
 CHOOSE-PHOTOS = CHOOSE PHOTOS
+# Label for button that chooses a taxon
+Choose-taxon = Choose taxon
 # Label for a button that clears content, like the text entered in a text
 # field
 Clear = Clear

@@ -72,7 +72,7 @@ describe( "StandardCamera navigation", ( ) => {
     await actor.press( cameraButton );
     const takePhotoButton = await screen.findByLabelText( /Take photo/ );
     await actor.press( takePhotoButton );
-    const checkmarkButton = await screen.findByLabelText( "Checkmark" );
+    const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
     expect( await screen.findByText( /ADD AN ID/ ) ).toBeVisible( );
   } );

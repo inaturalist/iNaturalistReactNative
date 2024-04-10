@@ -207,6 +207,10 @@
     "comment": "Text for a button prompting the user to grant access to the gallery",
     "val": "CHOOSE PHOTOS"
   },
+  "Choose-taxon": {
+    "comment": "Label for button that chooses a taxon",
+    "val": "Choose taxon"
+  },
   "Clear": {
     "comment": "Label for a button that clears content, like the text entered in a text\nfield",
     "val": "Clear"

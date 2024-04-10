@@ -172,6 +172,6 @@ describe( "ActivityHeaderKebabMenu", () => {
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
     fireEvent.press( await screen.findByTestId( "KebabMenu.Button" ) );
     fireEvent.press( await screen.findByText( t( "Delete-comment" ) ) );
-    expect( await screen.findByText( t( "DELETE-COMMENT-QUESTION" ) ) ).toBeTruthy( );
+    expect( await screen.findByText( t( "DELETE-COMMENT--question" ) ) ).toBeTruthy( );
   } );
 } );

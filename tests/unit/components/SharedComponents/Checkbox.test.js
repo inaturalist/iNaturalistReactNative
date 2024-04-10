@@ -7,6 +7,7 @@ import { renderComponent } from "tests/helpers/render";
 const rerenderCheckmarkComponent = checked => {
   renderComponent(
     <Checkbox
+      accessibilityLabel="Checkmark"
       text="Checkmark text"
       isChecked={checked}
     />
@@ -33,13 +34,19 @@ describe( "Checkbox", () => {
   } );
 
   it( "has no accessibility errors", () => {
-    const checkbox = <Checkbox text="Checkmark text" isChecked />;
+    const checkbox = <Checkbox accessibilityLabel="Checkmark" text="Checkmark text" isChecked />;
 
     expect( checkbox ).toBeAccessible();
   } );
 
   it( "renders an empty checkbox when isChecked is false", () => {
-    renderComponent( <Checkbox text="Checkmark text" isChecked={false} /> );
+    renderComponent(
+      <Checkbox
+        accessibilityLabel="Checkmark"
+        text="Checkmark text"
+        isChecked={false}
+      />
+    );
 
     const checkmark = screen.getByLabelText( /Checkmark/ );
 
@@ -52,7 +59,7 @@ describe( "Checkbox", () => {
   } );
 
   it( "renders a green filled checkbox when isChecked is true", () => {
-    renderComponent( <Checkbox text="Checkmark text" isChecked /> );
+    renderComponent( <Checkbox accessibilityLabel="Checkmark" text="Checkmark text" isChecked /> );
 
     const checkmark = screen.getByLabelText( /Checkmark/ );
     expect( checkmark ).toHaveProp( "innerIconStyle", {
@@ -66,6 +73,7 @@ describe( "Checkbox", () => {
     let checked = false;
     renderComponent(
       <Checkbox
+        accessibilityLabel="Checkmark"
         text="Checkmark text"
         isChecked={checked}
         // eslint-disable-next-line no-return-assign
@@ -84,10 +92,10 @@ describe( "Checkbox", () => {
     let checked = true;
     renderComponent(
       <Checkbox
+        accessibilityLabel="Checkmark"
         text="Checkmark text"
         isChecked={checked}
-        // eslint-disable-next-line no-return-assign
-        onPress={( ) => ( checked = !checked )}
+        onPress={( ) => { checked = !checked; }}
       />
     );
     const checkmark = screen.getByLabelText( /Checkmark/ );
@@ -103,8 +111,7 @@ describe( "Checkbox", () => {
       <Checkbox
         text="Checkmark text"
         isChecked={checked}
-        // eslint-disable-next-line no-return-assign
-        onPress={( ) => ( checked = !checked )}
+        onPress={( ) => { checked = !checked; }}
       />
     );
 

@@ -82,10 +82,11 @@ const Suggestions = ( {
 
   const renderItem = useCallback( ( { item: suggestion } ) => (
     <Suggestion
+      accessibilityLabel={t( "Choose-taxon" )}
       suggestion={suggestion}
       onTaxonChosen={onTaxonChosen}
     />
-  ), [onTaxonChosen] );
+  ), [onTaxonChosen, t] );
 
   const renderEmptyList = useCallback( ( ) => {
     if ( loading ) {
@@ -156,6 +157,7 @@ const Suggestions = ( {
           <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
           <View className="bg-inatGreen/[.13]">
             <Suggestion
+              accessibilityLabel={t( "Choose-taxon" )}
               suggestion={topSuggestion}
               onTaxonChosen={onTaxonChosen}
             />

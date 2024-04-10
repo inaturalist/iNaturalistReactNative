@@ -8,12 +8,14 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useTheme } from "react-native-paper";
 
 type Props = {
+  accessibilityLabel: string,
   isChecked: boolean,
   onPress: Function,
   text: string
 }
 
 const Checkbox = ( {
+  accessibilityLabel,
   isChecked = false,
   onPress,
   text
@@ -55,6 +57,7 @@ const Checkbox = ( {
       textComponent={renderCheckboxText}
       iconStyle={iconStyle}
       innerIconStyle={innerIconStyle}
+      accessibilityLabel={accessibilityLabel}
       accessibilityRole="radio"
       accessibilityState={{
         checked: isChecked
