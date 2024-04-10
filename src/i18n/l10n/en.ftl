@@ -185,7 +185,7 @@ Connection-problem-Please-try-again-later = Connection problem. Please try again
 CONTACT-SUPPORT = CONTACT SUPPORT
 CONTINUE = CONTINUE
 # Notification when coordinates have been copied
-Coordinates-copied-to-keyboard = Coordinates copied to keyboard
+Coordinates-copied-to-clipboard = Coordinates copied to clipboard
 # Button that copies coordinates to the clipboard
 Copy-coordinates = Copy Coordinates
 # Right to control copies of a creative work; this string may be used as a

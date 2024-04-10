@@ -260,9 +260,14 @@
   "Connection-problem-Please-try-again-later": "Connection problem. Please try again later.",
   "CONTACT-SUPPORT": "CONTACT SUPPORT",
   "CONTINUE": "CONTINUE",
-  "Coordinates-copied-to-keyboard": "Coordinates copied to keyboard",
-  "Copy-coordinates": "Copy Coordinates",
-  "Copy-map-coordinates": "Copy map coordinates",
+  "Coordinates-copied-to-clipboard": {
+    "comment": "Notification when coordinates have been copied",
+    "val": "Coordinates copied to clipboard"
+  },
+  "Copy-coordinates": {
+    "comment": "Button that copies coordinates to the clipboard",
+    "val": "Copy Coordinates"
+  },
   "Copyright": {
     "comment": "Right to control copies of a creative work; this string may be used as a\nheading to describe general information about rights, attribution, and\nlicensing",
     "val": "Copyright"
