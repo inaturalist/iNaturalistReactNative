@@ -103,7 +103,7 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the APK for
       Projects are really great, probably iNat's best feature.
     ```
     Try to match case and strike a balance between specificity and reusability when choosing a key. Please add context comments to help translators understand how the text is used, avoid variables whenever possible, and try to keep `strings.ftl` alphabetized by key.
-1. Run `node src/i18n/i18ncli.js build` to build the JSON files i18next needs to access text in the app
+1. Run `npm run translate` to validate strings and build the JSON files i18next needs to access text in the app
 1. In a commponent, use the `useTranslation` hook to reference your new string, e.g.
     ```jsx
     import { useTranslation } from "sharedHooks";
@@ -116,7 +116,26 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the APK for
         </View>
       );
     };
-    ````
+    ```
+    When components need to be included around interpolated variables, use the `<Trans />` component:
+
+    Fluent:
+    ```Fluent
+    Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
+    ```
+
+    Usage:
+    ```jsx
+    <Trans
+      i18nKey="Welcome-user"
+      parent={View}
+      values={{ userHandle: User.userHandle( currentUser ) }}
+      components={[
+        <Subheading1 className="mt-5" />,
+        <Heading1 />
+      ]}
+    />
+    ```
 
 ### Translating text
 
@@ -128,7 +147,7 @@ crowdin upload --token YOUR_ACCESS_TOKEN --project-id YOUR_PROJECT_ID
 
 # Download new translations and build for use in the app
 crowdin download --token YOUR_ACCESS_TOKEN --project-id YOUR_PROJECT_ID
-node src/i18n/i18ncli.js build
+npm run translate
 git add src/i18n/l10n/*
 git commit -a -m "Updated translations"
 ```
