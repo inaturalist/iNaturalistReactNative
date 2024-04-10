@@ -3,7 +3,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
 import {
   ActivityIndicator,
-  Body2, Button, Heading4, RadioButtonRow,
+  Body2,
+  Button,
+  Heading4,
+  RadioButtonRow,
   ViewWrapper
 } from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
@@ -84,6 +87,25 @@ const Settings = ( ) => {
     updateUserMutation.mutate( payload );
   };
 
+  const renderLoggedOut = ( ) => (
+    <>
+      <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
+      <Body2 className="mt-2">{t( "When-tapping-the-green-observation-button" )}</Body2>
+      <RadioButtonRow
+        className="mt-4"
+        checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
+        onPress={() => changeTaxonNameDisplay( 1 )}
+        label={t( "iNaturalist-AI-Camera" )}
+      />
+      <RadioButtonRow
+        className="mt-2"
+        checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
+        onPress={() => changeTaxonNameDisplay( 2 )}
+        label={t( "All-observation-option" )}
+      />
+    </>
+  );
+
   return (
     <ViewWrapper>
       <StatusBar barStyle="dark-content" />
@@ -124,6 +146,7 @@ const Settings = ( ) => {
           }}
           accessibilityLabel={t( "Edit" )}
         />
+        {renderLoggedOut( )}
       </View>
       {( isSaving || isLoading ) && (
         <View className="absolute z-10 bg-lightGray/70
