@@ -16,10 +16,10 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
-import { useMMKVBoolean } from "react-native-mmkv";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
+  useStorage,
   useTranslation,
   useUserMe
 } from "sharedHooks";
@@ -32,7 +32,7 @@ const Settings = ( ) => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser( );
   const { remoteUser, isLoading, refetchUserMe } = useUserMe();
-  const [isAdvancedUser, setIsAdvancedUser] = useMMKVBoolean( "isAdvancedUser" );
+  const { isAdvancedUser, setIsAdvancedUser } = useStorage();
 
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
