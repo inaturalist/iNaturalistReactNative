@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
   Body3,
+  Button,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
@@ -12,11 +13,12 @@ import inatPlaceTypes from "dictionaries/places";
 import type { Node } from "react";
 import React, {
   useCallback,
+  useEffect,
   useState
 } from "react";
 import { FlatList } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useAuthenticatedQuery } from "sharedHooks";
+import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 
 const getShadow = shadowColor => getShadowStyle( {
@@ -31,8 +33,13 @@ const getShadow = shadowColor => getShadowStyle( {
 const ExploreLocationSearch = ( ): Node => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const { t } = useTranslation( );
 
   const [locationName, setLocationName] = useState( "" );
+
+  const resetPlace = useCallback( ( ) => navigation.navigate( "Explore", {
+    worldwide: true
+  } ), [navigation] );
 
   const { data: placeResults } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
@@ -75,19 +82,46 @@ const ExploreLocationSearch = ( ): Node => {
     [onPlaceSelected]
   );
 
+  useEffect( ( ) => {
+    const resetButton = ( ) => (
+      <Body3 onPress={resetPlace}>
+        {t( "Reset" )}
+      </Body3>
+    );
+
+    navigation.setOptions( {
+      headerRight: resetButton
+    } );
+  }, [navigation, t, resetPlace] );
+
   const data = placeResults || [];
 
   return (
-    <ViewWrapper testID="explore-location-search" className="flex-1">
+    <ViewWrapper testID="explore-location-search">
       <View
-        className="bg-white px-6 pt-2 pb-8"
+        className="bg-white pt-2 pb-5"
         style={getShadow( theme.colors.primary )}
       >
-        <SearchBar
-          handleTextChange={locationText => setLocationName( locationText )}
-          value={locationName}
-          testID="LocationPicker.locationSearch"
-        />
+        <View className="px-6">
+          <SearchBar
+            handleTextChange={locationText => setLocationName( locationText )}
+            value={locationName}
+            testID="LocationPicker.locationSearch"
+          />
+        </View>
+        <View className="flex-row px-3 mt-5 justify-evenly">
+          <Button
+            className="w-1/2"
+            onPress={( ) => navigation.navigate( "Explore", { nearby: true } )}
+            text={t( "NEARBY" )}
+          />
+          <View className="px-2" />
+          <Button
+            className="w-1/2"
+            onPress={resetPlace}
+            text={t( "WORLDWIDE" )}
+          />
+        </View>
       </View>
       <FlatList
         keyboardShouldPersistTaps="always"

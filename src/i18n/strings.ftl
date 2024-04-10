@@ -705,6 +705,7 @@ Remove-Photos = Remove Photos
 Remove-Relationship = Remove Relationship
 # Quality grade option
 Research-Grade = Research Grade
+Reset = Reset
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -950,6 +951,7 @@ WITHDRAW-ID = WITHDRAW ID
 WITHDRAW-ID-QUESTION = WITHDRAW ID?
 Withdraws-identification = Withdraws identification
 Worldwide = Worldwide
+WORLDWIDE = WORLDWIDE
 Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
 x-comments =
     { $count ->
