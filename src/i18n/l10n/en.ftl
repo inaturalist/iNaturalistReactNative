@@ -497,6 +497,7 @@ LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 LICENSES = LICENSES
 List-view = List view
 Loading-iNaturalists-AR-Camera = Loading iNaturalist's AR Camera
+Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION
 Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
@@ -631,7 +632,6 @@ October = October
 Offensive-Inappropriate = Offensive/Inappropriate
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
-Offline-No-Notifications = Cannot fetch notifications at this time.
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
 # Sort order, refers to newest or oldest date
@@ -1094,6 +1094,7 @@ X-Species =
        *[other] { $count } Species
     }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.
