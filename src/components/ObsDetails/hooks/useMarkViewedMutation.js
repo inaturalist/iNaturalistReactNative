@@ -63,7 +63,7 @@ const useMarkViewedMutation = (
   );
 
   useEffect( ( ) => {
-    if ( !remoteObservation && isMarkingViewed ) { return; }
+    if ( !remoteObservation || isMarkingViewed ) { return; }
     if ( localObservation?.unviewed( ) === true ) {
       setIsMarkingViewed( true );
       markViewedMutation.mutate( { id: uuid } );
