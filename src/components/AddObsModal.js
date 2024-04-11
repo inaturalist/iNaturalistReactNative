@@ -29,7 +29,6 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   // TODO: update these version numbers based on what the new model can handle
   // in CoreML and TFLite
   const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
-    || ( Platform.OS === "android" && Platform.Version > 23 );
 
   const navigation = useNavigation( );
 
@@ -47,6 +46,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     } );
     closeModal( );
   };
+    || ( Platform.OS === "android" && Platform.Version > 21 );
 
   const navToPhotoGallery = async ( ) => {
     navAndCloseModal( "PhotoGallery" );
