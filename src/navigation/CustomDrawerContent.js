@@ -72,13 +72,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       // },
       projects: {
         label: t( "PROJECTS" ),
-        navigation: "TabNavigator",
-        params: {
-          screen: "TabStackNavigator",
-          params: {
-            screen: "Projects"
-          }
-        },
+        navigation: "Projects",
         icon: "briefcase"
       },
       // blog: {
@@ -163,12 +157,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         if ( !currentUser ) {
           navigation.navigate( "Login" );
         } else {
-          navigation.navigate( "TabNavigator", {
-            screen: "TabStackNavigator",
-            params: {
-              screen: "ObsList"
-            }
-          } );
+          navigation.navigate( "ObsList" );
         }
       }}
     >

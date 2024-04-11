@@ -19,7 +19,7 @@ const BottomTabs = ( ) => {
   const renderTabBar = props => <CustomTabBarContainer {...props} />;
 
   // DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
-  // the NoBottomTabStackNavigator or TabStackNavigator
+  // NoBottomTabStackNavigator, TabStackNavigator, or LoginStackNavigator
 
   return (
     <Mortal>

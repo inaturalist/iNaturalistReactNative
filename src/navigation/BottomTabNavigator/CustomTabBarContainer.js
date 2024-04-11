@@ -55,9 +55,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-your-observations" ),
       size: 40,
       onPress: ( ) => {
-        navigation.navigate( "TabStackNavigator", {
-          screen: "ObsList"
-        } );
+        navigation.navigate( "ObsList" );
         setActiveTab( OBS_LIST_SCREEN_ID );
       },
       active: OBS_LIST_SCREEN_ID === activeTab
@@ -69,9 +67,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
       onPress: ( ) => {
-        navigation.navigate( "TabStackNavigator", {
-          screen: "Notifications"
-        } );
+        navigation.navigate( "Notifications" );
         setActiveTab( NOTIFICATIONS_SCREEN_ID );
       },
       active: NOTIFICATIONS_SCREEN_ID === activeTab

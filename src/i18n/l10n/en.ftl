@@ -594,7 +594,6 @@ Obervations-must-be-manually-added = Observations must be manually added to a tr
 Obscured = Obscured
 # Displayed when user views an obscured location on the ObsDetail map screen
 Obscured-observation-location-map-description = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
-Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Observation-Name = Observation { $scientificName }

@@ -16,7 +16,7 @@ const useLinking = ( currentUser: ?Object ) => {
 
   const navigateConfirmedUser = useCallback( ( ) => {
     if ( currentUser ) { return; }
-    navigation.navigate( "Login", {
+    navigation.navigate( "LoginStackNavigator", {
       screen: "Login",
       params: { emailConfirmed: true }
     } );

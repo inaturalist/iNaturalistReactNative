@@ -47,6 +47,24 @@ const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
 const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
 const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
 
+const DQA_OPTIONS = {
+  ...showLongHeader,
+  headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
+  unmountOnBlur: true
+};
+
+const USER_PROFILE_OPTIONS = {
+  ...showHeader,
+  ...blankHeaderTitle,
+  ...removeBottomBorder
+};
+
+const NOTIFICATIONS_OPTIONS = {
+  ...hideHeaderLeft,
+  headerTitle: notificationsTitle,
+  headerTitleAlign: "center"
+};
+
 const Stack = createNativeStackNavigator( );
 
 const TabStackNavigator = ( ): Node => (
@@ -56,105 +74,46 @@ const TabStackNavigator = ( ): Node => (
       headerTintColor: "black"
     }}
   >
-    <Stack.Group>
+    {/* Screens with no header */}
+    <Stack.Group
+      screenOptions={{ ...hideHeader }}
+    >
       <Stack.Screen
         name="ObsList"
         component={MyObservationsContainer}
-        options={{
-          ...hideHeader
-        }}
-      />
-      <Stack.Screen
-        name="Notifications"
-        component={NotificationsContainer}
-        options={{
-          ...hideHeaderLeft,
-          headerTitle: notificationsTitle,
-          headerTitleAlign: "center"
-        }}
       />
       <Stack.Screen
         name="ObsDetails"
         component={ObsDetailsContainer}
         options={{
-          headerTitle: t( "Observation" ),
-          headerShown: false,
           unmountOnBlur: true
         }}
       />
-      <Stack.Screen
-        name="UserProfile"
-        component={UserProfile}
-        options={{
-          ...showHeader,
-          ...blankHeaderTitle,
-          ...removeBottomBorder
-        }}
-      />
-      <Stack.Screen
-        name="DataQualityAssessment"
-        component={DQAContainer}
-        options={{
-          ...showLongHeader,
-          headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
-          unmountOnBlur: true
-        }}
-      />
-    </Stack.Group>
-    {SharedStackScreens( )}
-    {/* Explore Stack Group */}
-    <Stack.Group
-      screenOptions={{
-        ...hideHeader
-      }}
-    >
       <Stack.Screen
         name="RootExplore"
         component={RootExploreContainer}
-        options={hideHeader}
       />
       <Stack.Screen
         name="Explore"
         component={ExploreContainer}
-        options={hideHeader}
       />
     </Stack.Group>
-    {/* Explore Search Stack Group */}
-    <Stack.Group
-      screenOptions={{
-        ...removeBottomBorder,
-        headerTitleAlign: "center"
-      }}
-    >
-      <Stack.Screen
-        name="ExploreTaxonSearch"
-        component={ExploreTaxonSearch}
-        options={{
-          headerTitle: taxonSearchTitle
-        }}
-      />
-      <Stack.Screen
-        name="ExploreLocationSearch"
-        component={ExploreLocationSearch}
-        options={{
-          headerTitle: locationSearchTitle
-        }}
-      />
-      <Stack.Screen
-        name="ExploreUserSearch"
-        component={ExploreUserSearch}
-        options={{
-          headerTitle: userSearchTitle
-        }}
-      />
-      <Stack.Screen
-        name="ExploreProjectSearch"
-        component={ExploreProjectSearch}
-        options={{
-          headerTitle: projectSearchTitle
-        }}
-      />
-    </Stack.Group>
+    <Stack.Screen
+      name="Notifications"
+      component={NotificationsContainer}
+      options={NOTIFICATIONS_OPTIONS}
+    />
+    <Stack.Screen
+      name="UserProfile"
+      component={UserProfile}
+      options={USER_PROFILE_OPTIONS}
+    />
+    <Stack.Screen
+      name="DataQualityAssessment"
+      component={DQAContainer}
+      options={DQA_OPTIONS}
+    />
+    {SharedStackScreens( )}
     {/* Project Stack Group */}
     <Stack.Group
       screenOptions={{
@@ -200,13 +159,41 @@ const TabStackNavigator = ( ): Node => (
         component={Log}
       />
     </Stack.Group>
-    {/* Drawer Menu Item Stack Group */}
+    {/* Header with no bottom border */}
     <Stack.Group
       screenOptions={{
         headerTitleAlign: "center",
         ...removeBottomBorder
       }}
     >
+      <Stack.Screen
+        name="ExploreTaxonSearch"
+        component={ExploreTaxonSearch}
+        options={{
+          headerTitle: taxonSearchTitle
+        }}
+      />
+      <Stack.Screen
+        name="ExploreLocationSearch"
+        component={ExploreLocationSearch}
+        options={{
+          headerTitle: locationSearchTitle
+        }}
+      />
+      <Stack.Screen
+        name="ExploreUserSearch"
+        component={ExploreUserSearch}
+        options={{
+          headerTitle: userSearchTitle
+        }}
+      />
+      <Stack.Screen
+        name="ExploreProjectSearch"
+        component={ExploreProjectSearch}
+        options={{
+          headerTitle: projectSearchTitle
+        }}
+      />
       <Stack.Screen
         name="Settings"
         component={Settings}

@@ -4,6 +4,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   hideDrawerHeaderLeft, hideHeader
 } from "navigation/navigationOptions";
+import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
 import NoBottomTabStackNavigator from "navigation/StackNavigators/NoBottomTabStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
@@ -31,7 +32,7 @@ const drawerRenderer = ( { state, navigation, descriptors } ) => (
 );
 
 // DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
-// the NoBottomTabStackNavigator or TabStackNavigator
+// NoBottomTabStackNavigator, TabStackNavigator, or LoginStackNavigator
 
 const RootDrawerNavigator = ( ): Node => (
   <Drawer.Navigator
@@ -46,6 +47,10 @@ const RootDrawerNavigator = ( ): Node => (
     <Drawer.Screen
       name="NoBottomTabStackNavigator"
       component={NoBottomTabStackNavigator}
+    />
+    <Drawer.Screen
+      name="LoginStackNavigator"
+      component={LoginStackNavigator}
     />
   </Drawer.Navigator>
 );
