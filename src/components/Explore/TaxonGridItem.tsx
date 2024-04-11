@@ -1,7 +1,5 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
-import { DisplayTaxonName } from "components/SharedComponents";
+import { DisplayTaxonName, Body4 } from "components/SharedComponents";
 import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
 import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import { Pressable, View } from "components/styledComponents";
@@ -11,18 +9,16 @@ import Photo from "realmModels/Photo";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
-type Props = {
+interface Props {
+  count: number,
+  style?: Object,
   taxon: Object,
-  width?: string,
-  height?: string,
-  style?: Object
-};
+}
 
 const TaxonGridItem = ( {
-  taxon,
-  width = "w-full",
-  height,
-  style
+  count,
+  style,
+  taxon
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -43,8 +39,7 @@ const TaxonGridItem = ( {
             taxon?.default_photo
           )
         }}
-        width={width}
-        height={height}
+        width="w-full"
         style={style}
         isMultiplePhotosTop
         obsPhotosCount={taxon?.default_photo
@@ -60,6 +55,15 @@ const TaxonGridItem = ( {
         )}
 
         <View className="absolute bottom-0 flex p-2 w-full">
+          {count && (
+            <Body4
+              className="text-white py-1"
+              onPress={( ) => navigation.navigate( "Explore", { taxon } )}
+              accessibilityRole="link"
+            >
+              {t( "X-Observations", { count } )}
+            </Body4>
+          )}
           <DisplayTaxonName
             keyBase={taxon?.id}
             taxon={taxon}
