@@ -23,8 +23,6 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
-  // TODO: update these version numbers based on what the new model can handle
-  // in CoreML and TFLite
   const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
     || ( Platform.OS === "android" && Platform.Version > 21 );
 
