@@ -3,6 +3,7 @@ import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarCon
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import * as useIsConnected from "sharedHooks/useIsConnected.ts";
+import * as useStorage from "sharedHooks/useStorage.ts";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
@@ -62,5 +63,26 @@ describe( "CustomTabBar", () => {
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
     await expect( personIcon ).toBeVisible( );
+  } );
+} );
+
+describe( "CustomTabBar for advanced users", () => {
+  beforeEach( ( ) => {
+    jest.useFakeTimers();
+    jest.spyOn( useStorage, "default" ).mockImplementation( () => ( {
+      isAdvancedUser: true
+    } ) );
+  } );
+
+  it( "should render correctly", async () => {
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+
+    await expect( screen ).toMatchSnapshot();
+  } );
+
+  it( "should not have accessibility errors", async () => {
+    const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
+
+    await expect( tabBar ).toBeAccessible();
   } );
 } );
