@@ -102,7 +102,7 @@ const ProjectsContainer = ( ): Node => {
 
   const onPermissionGateClose = () => {
     if ( !permissionsGranted ) {
-      setCurrentTabId( FEATURED_TAB_ID );
+      setCurrentTabId( tabs[0].id );
     }
   };
 

@@ -72,7 +72,18 @@ const Projects = ( {
   const renderEmptyList = ( ) => {
     if ( isLoading ) {
       <ActivityIndicator size={50} />;
-    } else {
+    } 
+    
+    if ( searchInput.length === 0 ) {
+      if ( currentTabId === "JOINED" && memberId ) {
+        return (
+          <View className="items-center">
+            <Body1>{t( "You-havent-joined-any-projects-yet" )}</Body1>
+            <Body1 className="mt-5">{t( "You-can-click-join-on-the-project-page" )}</Body1>
+          </View>
+        );
+      }
+    }else {
       return (
         <>
           <Body1 className="self-center">{t( "No-projects-match-that-search" )}</Body1>
@@ -85,17 +96,6 @@ const Projects = ( {
           </View>
         </>
       );
-    }
-
-    if ( searchInput.length === 0 ) {
-      if ( currentTabId === "JOINED" && !memberId ) {
-        return (
-          <View className="items-center">
-            <Body1>{t( "You-havent-joined-any-projects-yet" )}</Body1>
-            <Body1 className="mt-5">{t( "You-can-click-join-on-the-project-page" )}</Body1>
-          </View>
-        );
-      }
     }
 
     return null;
