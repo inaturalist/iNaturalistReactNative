@@ -430,6 +430,7 @@ IMPORT-X-OBSERVATIONS =
 # Identification category
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
+iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -994,6 +995,7 @@ Welcome-to-iNaturalist = Welcome to iNaturalist!
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
+When-tapping-the-green-observation-button = When tapping the green observation button, open:
 WIKIPEDIA = WIKIPEDIA
 Wild = Wild
 WILD-STATUS = WILD STATUS
