@@ -2,7 +2,7 @@ import {
   fireEvent,
   screen
 } from "@testing-library/react-native";
-import TaxonGridItem from "components/Explore/TaxonGridItem";
+import TaxonGridItem from "components/Explore/TaxonGridItem.tsx";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -35,6 +35,7 @@ describe( "TaxonGridItem", ( ) => {
     const taxonGridItem = (
       <TaxonGridItem
         taxon={mockTaxon}
+        count={400}
       />
     );
     expect( taxonGridItem ).toBeAccessible();
