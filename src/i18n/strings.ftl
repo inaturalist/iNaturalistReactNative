@@ -648,6 +648,7 @@ Open-menu = Open menu.
 OPEN-SETTINGS = OPEN SETTINGS
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
+Opens-ar-camera = Opens AR camera.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
