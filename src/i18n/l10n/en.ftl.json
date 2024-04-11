@@ -875,6 +875,7 @@
   },
   "Opens-add-comment-modal": "Opens add comment modal.",
   "Opens-add-observation-modal": "Opens add observation modal.",
+  "Opens-ar-camera": "Opens AR camera.",
   "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
   "Organism-is-captive": {
     "comment": "Picker prompt on observation edit",

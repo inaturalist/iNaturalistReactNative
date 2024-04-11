@@ -6,16 +6,19 @@ import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
 import LinearGradient from "react-native-linear-gradient";
+import { useStorage } from "sharedHooks";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 const AddObsButton = (): React.Node => {
+  const { isAdvancedUser } = useStorage( );
   const [showModal, setModal] = React.useState( false );
 
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
   const addObsModal = <AddObsModal closeModal={closeModal} />;
+  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AR" } ); };
 
   return (
     <>
@@ -27,11 +30,15 @@ const AddObsButton = (): React.Node => {
       <Pressable
         className="w-[69px] h-[69px] rounded-full overflow-hidden"
         style={dropShadow}
-        onPress={openModal}
+        onPress={isAdvancedUser
+          ? openModal
+          : navToARCamera}
         testID="add-obs-button"
         disabled={false}
         accessibilityLabel={t( "Add-observations" )}
-        accessibilityHint={t( "Opens-add-observation-modal" )}
+        accessibilityHint={isAdvancedUser
+          ? t( "Opens-add-observation-modal" )
+          : t( "Opens-ar-camera" )}
         accessibilityRole="button"
         accessibilityState={{
           disabled: false
@@ -43,7 +50,15 @@ const AddObsButton = (): React.Node => {
           useAngle
         >
           <View className="grow aspect-square flex items-center justify-center">
-            <INatIcon name="plus" size={31} color={colors.white} />
+            <INatIcon
+              name={isAdvancedUser
+                ? "plus"
+                : "arcamera"}
+              size={isAdvancedUser
+                ? 31
+                : 37}
+              color={colors.white}
+            />
           </View>
         </LinearGradient>
       </Pressable>
