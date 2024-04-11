@@ -23,8 +23,8 @@ const taxonSearchTitle = ( ) => <Heading4>{t( "SEARCH" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
 
-// These screens need to be accessed by screens within the NoBottomTabStackNavigator
-// as well as screens within the TabStackNavigator
+// These screens need to be within the NoBottomTabStackNavigator
+// as well as the TabStackNavigator to retain navigation history
 
 const SharedStackScreens = ( ): Node => (
   <Stack.Group
@@ -35,50 +35,57 @@ const SharedStackScreens = ( ): Node => (
       }
     }}
   >
-    <Stack.Screen
-      name="ObsEdit"
-      component={ObsEdit}
-      options={hideHeader}
-    />
-    <Stack.Screen
-      name="Suggestions"
-      component={SuggestionsContainer}
-      options={{
+    {/* Screens with hidden header */}
+    <Stack.Group
+      screenOptions={{
+        ...hideHeader
+      }}
+    >
+      <Stack.Screen
+        name="ObsEdit"
+        component={ObsEdit}
+      />
+      <Stack.Screen
+        name="LocationPicker"
+        component={LocationPickerContainer}
+      />
+      <Stack.Screen
+        name="TaxonDetails"
+        component={TaxonDetails}
+      />
+      <Stack.Screen
+        name="PhotoSharing"
+        component={PhotoSharing}
+      />
+    </Stack.Group>
+    {/* Screens with centered header */}
+    <Stack.Group
+      screenOptions={{
         ...removeBottomBorder,
-        headerTitle: suggestionsTitle,
         headerTitleAlign: "center",
         headerBackTitleVisible: false
       }}
-    />
-    <Stack.Screen
-      name="TaxonSearch"
-      component={TaxonSearch}
-      options={{
-        ...removeBottomBorder,
-        headerTitle: taxonSearchTitle,
-        headerTitleAlign: "center"
-      }}
-    />
-    <Stack.Screen
-      name="LocationPicker"
-      component={LocationPickerContainer}
-      options={hideHeader}
-    />
-    <Stack.Screen
-      name="TaxonDetails"
-      component={TaxonDetails}
-      options={hideHeader}
-    />
-    <Stack.Screen
-      name="PhotoSharing"
-      component={PhotoSharing}
-      options={hideHeader}
-    />
-    <Stack.Screen
-      name="FullPageWebView"
-      component={FullPageWebView}
-      options={{ headerTitle: "" }}
-    />
+    >
+      <Stack.Screen
+        name="Suggestions"
+        component={SuggestionsContainer}
+        options={{
+          headerTitle: suggestionsTitle
+        }}
+      />
+      <Stack.Screen
+        name="TaxonSearch"
+        component={TaxonSearch}
+        options={{
+          headerTitle: taxonSearchTitle
+        }}
+      />
+      <Stack.Screen
+        name="FullPageWebView"
+        component={FullPageWebView}
+        options={{ headerTitle: "" }}
+      />
+    </Stack.Group>
   </Stack.Group>
 );
 

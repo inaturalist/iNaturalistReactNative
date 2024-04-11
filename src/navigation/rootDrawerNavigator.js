@@ -30,6 +30,9 @@ const drawerRenderer = ( { state, navigation, descriptors } ) => (
   />
 );
 
+// DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
+// the NoBottomTabStackNavigator or TabStackNavigator
+
 const RootDrawerNavigator = ( ): Node => (
   <Drawer.Navigator
     screenOptions={drawerOptions}

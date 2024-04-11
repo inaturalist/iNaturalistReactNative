@@ -203,7 +203,8 @@ const TabStackNavigator = ( ): Node => (
     {/* Drawer Menu Item Stack Group */}
     <Stack.Group
       screenOptions={{
-        headerTitleAlign: "center"
+        headerTitleAlign: "center",
+        ...removeBottomBorder
       }}
     >
       <Stack.Screen

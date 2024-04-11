@@ -18,6 +18,9 @@ const OBS_LIST_SCREEN_ID = "TabStackNavigator";
 const BottomTabs = ( ) => {
   const renderTabBar = props => <CustomTabBarContainer {...props} />;
 
+  // DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
+  // the NoBottomTabStackNavigator or TabStackNavigator
+
   return (
     <Mortal>
       <Tab.Navigator
