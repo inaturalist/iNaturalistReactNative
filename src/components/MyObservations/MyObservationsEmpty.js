@@ -20,13 +20,29 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   const navigation = useNavigation( );
   const [showModal, setShowModal] = useState( false );
 
+  const navAndCloseModal = async ( screen, params ) => {
+    // TODO: implement this stub
+    console.log( "screen", screen );
+    console.log( "params", params );
+    // navigation.navigate( "CameraNavigator", {
+    //   screen,
+    //   params: { ...params, previousScreen: null }
+    // } );
+    setShowModal( false );
+  };
+
   if ( !isFetchingNextPage ) {
     return (
       <>
         <Modal
           showModal={showModal}
           closeModal={( ) => setShowModal( false )}
-          modal={<AddObsModal closeModal={( ) => setShowModal( false )} />}
+          modal={(
+            <AddObsModal
+              closeModal={( ) => setShowModal( false )}
+              navAndCloseModal={navAndCloseModal}
+            />
+          )}
         />
         <View className="mx-5">
           <Body1 className="mb-3 mt-5">

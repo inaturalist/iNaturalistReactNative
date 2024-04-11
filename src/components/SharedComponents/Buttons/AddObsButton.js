@@ -1,12 +1,16 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal";
 import { INatIcon, Modal } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
 import LinearGradient from "react-native-linear-gradient";
+import Observation from "realmModels/Observation";
 import { useStorage } from "sharedHooks";
+import useStore from "stores/useStore";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -17,8 +21,26 @@ const AddObsButton = (): React.Node => {
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
-  const addObsModal = <AddObsModal closeModal={closeModal} />;
+  const setObservations = useStore( state => state.setObservations );
+  const resetStore = useStore( state => state.resetStore );
+  const navigation = useNavigation( );
+  const navAndCloseModal = async ( screen, params ) => {
+    const currentRoute = getCurrentRoute();
+    resetStore( );
+    if ( screen === "ObsEdit" ) {
+      const newObservation = await Observation.new( );
+      setObservations( [newObservation] );
+    }
+    // access nested screen
+    navigation.navigate( "CameraNavigator", {
+      screen,
+      params: { ...params, previousScreen: currentRoute }
+    } );
+    closeModal( );
+  };
   const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AR" } ); };
+
+  const addObsModal = <AddObsModal closeModal={closeModal} navAndCloseModal={navAndCloseModal} />;
 
   return (
     <>
