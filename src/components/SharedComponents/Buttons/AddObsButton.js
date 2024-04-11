@@ -8,7 +8,6 @@ import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
 import LinearGradient from "react-native-linear-gradient";
-import Observation from "realmModels/Observation";
 import { useStorage } from "sharedHooks";
 import useStore from "stores/useStore";
 import { dropShadow } from "styles/global";
@@ -21,16 +20,11 @@ const AddObsButton = (): React.Node => {
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
-  const setObservations = useStore( state => state.setObservations );
   const resetStore = useStore( state => state.resetStore );
   const navigation = useNavigation( );
-  const navAndCloseModal = async ( screen, params ) => {
+  const navAndCloseModal = ( screen, params ) => {
     const currentRoute = getCurrentRoute();
     resetStore( );
-    if ( screen === "ObsEdit" ) {
-      const newObservation = await Observation.new( );
-      setObservations( [newObservation] );
-    }
     // access nested screen
     navigation.navigate( "CameraNavigator", {
       screen,

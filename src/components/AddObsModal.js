@@ -8,11 +8,13 @@ import { View } from "components/styledComponents";
 import * as React from "react";
 import { Platform, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
+import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
   closeModal: ( ) => void,
-  navAndCloseModal: ( string, ?{ camera: string } ) => Promise<void>
+  navAndCloseModal: ( string, ?{ camera: string } ) => void
 }
 
 const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
@@ -36,7 +38,12 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
 
   const navToStandardCamera = ( ) => navAndCloseModal( "Camera", { camera: "Standard" } );
 
-  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
+  const setObservations = useStore( state => state.setObservations );
+  const navToObsEdit = async ( ) => {
+    const newObservation = await Observation.new( );
+    setObservations( [newObservation] );
+    navAndCloseModal( "ObsEdit" );
+  };
 
   const bulletedText = [
     { text: t( "Use-iNaturalists-AI-Camera" ), icon: "arcamera" },

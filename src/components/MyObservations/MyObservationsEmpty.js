@@ -20,7 +20,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   const navigation = useNavigation( );
   const [showModal, setShowModal] = useState( false );
 
-  const navAndCloseModal = async ( screen, params ) => {
+  const navAndCloseModal = ( screen, params ) => {
     // TODO: implement this stub
     console.log( "screen", screen );
     console.log( "params", params );
