@@ -5,6 +5,7 @@ import {
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
+import * as useStorage from "sharedHooks/useStorage.ts";
 import { renderApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -36,12 +37,15 @@ afterAll( uniqueRealmAfterAll );
 beforeAll( async () => {
   await initI18next();
   jest.useFakeTimers( );
+  jest.spyOn( useStorage, "default" ).mockImplementation( () => ( {
+    isAdvancedUser: true
+  } ) );
 } );
 
 describe( "StandardCamera navigation", ( ) => {
   const actor = userEvent.setup( );
 
-  describe( "from MyObs", ( ) => {
+  describe( "from MyObs with advanced user layout", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
