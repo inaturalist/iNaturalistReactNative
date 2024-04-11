@@ -66,8 +66,9 @@ describe( "CustomTabBar", () => {
   } );
 } );
 
-describe( "CustomTabBar for advanced users", () => {
+describe( "CustomTabBar with advanced user layout", () => {
   beforeEach( ( ) => {
+    jest.resetAllMocks();
     jest.useFakeTimers();
     jest.spyOn( useStorage, "default" ).mockImplementation( () => ( {
       isAdvancedUser: true

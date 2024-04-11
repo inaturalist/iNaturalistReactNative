@@ -39,7 +39,7 @@ describe( "AddObsButton", ( ) => {
   } );
 } );
 
-describe( "for advanced user", ( ) => {
+describe( "with advanced user layout", ( ) => {
   beforeAll( ( ) => {
     jest.useFakeTimers( );
     jest.spyOn( useStorage, "default" ).mockImplementation( () => ( {
