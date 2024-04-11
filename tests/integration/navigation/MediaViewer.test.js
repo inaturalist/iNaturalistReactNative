@@ -4,6 +4,7 @@ import {
   userEvent
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
+import * as useStorage from "sharedHooks/useStorage.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import {
@@ -141,7 +142,17 @@ describe( "MediaViewer navigation", ( ) => {
     } );
   } );
 
-  describe( "from StandardCamera", ( ) => {
+  describe( "from StandardCamera with advanced user layout", ( ) => {
+    beforeAll( ( ) => {
+      jest.spyOn( useStorage, "default" ).mockImplementation( () => ( {
+        isAdvancedUser: true
+      } ) );
+    } );
+
+    afterAll( ( ) => {
+      useStorage.default.mockRestore( );
+    } );
+
     async function navigateToCamera( ) {
       await renderApp( );
       await findAndPressByText( "Add observations" );
