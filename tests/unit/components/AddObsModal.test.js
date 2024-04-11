@@ -36,7 +36,7 @@ describe( "AddObsModal", ( ) => {
     expect( noEvidenceButton ).toBeTruthy( );
     fireEvent.press( noEvidenceButton );
     await waitFor( ( ) => {
-      expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
+      expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
         screen: "ObsEdit",
         params: { previousScreen: null }
       } );
@@ -50,7 +50,7 @@ describe( "AddObsModal", ( ) => {
     );
     expect( arCameraButton ).toBeTruthy( );
     fireEvent.press( arCameraButton );
-    expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
+    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
       screen: "Camera",
       params: { camera: "AR", previousScreen: null }
     } );

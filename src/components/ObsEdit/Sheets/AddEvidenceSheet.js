@@ -34,7 +34,7 @@ const AddEvidenceSheet = ( {
         if ( position > -1 ) return;
 
         if ( choice === "camera" ) {
-          navigation.navigate( "CameraNavigator", {
+          navigation.navigate( "NoBottomTabStackNavigator", {
             screen: "Camera",
             params: {
               addEvidence: true,
@@ -43,13 +43,13 @@ const AddEvidenceSheet = ( {
           } );
         } else if ( choice === "import" ) {
           // Show photo gallery, but skip group photos phase
-          navigation.navigate( "CameraNavigator", {
+          navigation.navigate( "NoBottomTabStackNavigator", {
             screen: "PhotoGallery",
             params: { skipGroupPhotos: true }
           } );
         } else if ( choice === "sound" ) {
           navigation.navigate(
-            "CameraNavigator",
+            "NoBottomTabStackNavigator",
             { screen: "SoundRecorder", params: { addEvidence: true } }
           );
         }

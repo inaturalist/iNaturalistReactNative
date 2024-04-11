@@ -41,7 +41,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       setObservations( [newObservation] );
     }
     // access nested screen
-    navigation.navigate( "CameraNavigator", {
+    navigation.navigate( "NoBottomTabStackNavigator", {
       screen,
       params: { ...params, previousScreen: currentRoute }
     } );

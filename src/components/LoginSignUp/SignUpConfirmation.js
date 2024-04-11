@@ -42,7 +42,7 @@ const SignUpConfirmation = ( ): Node => {
           />
           <Body1
             className="color-white self-center mt-[30px] underline"
-            onPress={( ) => navigation.navigate( "LoginNavigator", { screen: "Login" } )}
+            onPress={( ) => navigation.navigate( "Login" )}
           >
             {t( "Return-to-Login" )}
           </Body1>

@@ -215,7 +215,7 @@ const TaxonDetails = ( ): Node => {
             <INatIconButton
               icon="compass-rose-outline"
               onPress={( ) => navigation.navigate( "TabNavigator", {
-                screen: "ObservationsStackNavigator",
+                screen: "TabStackNavigator",
                 params: {
                   screen: "Explore",
                   params: {

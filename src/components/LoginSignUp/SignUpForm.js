@@ -68,7 +68,7 @@ const SignUpForm = ( { hideFooter }: Props ): Node => {
       {!hideFooter && (
         <Body1
           className="color-white self-center mt-[30px] underline"
-          onPress={( ) => navigation.navigate( "LoginNavigator", { screen: "Login" } )}
+          onPress={( ) => navigation.navigate( "Login" )}
         >
           {t( "Already-have-an-account" )}
         </Body1>

@@ -2,6 +2,7 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FullPageWebView from "components/FullPageWebView/FullPageWebView";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import PhotoSharing from "components/PhotoSharing";
@@ -21,6 +22,9 @@ const suggestionsTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
 const taxonSearchTitle = ( ) => <Heading4>{t( "SEARCH" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
+
+// These screens need to be accessed by screens within the NoBottomTabStackNavigator
+// as well as screens within the TabStackNavigator
 
 const SharedStackScreens = ( ): Node => (
   <Stack.Group
@@ -69,6 +73,11 @@ const SharedStackScreens = ( ): Node => (
       name="PhotoSharing"
       component={PhotoSharing}
       options={hideHeader}
+    />
+    <Stack.Screen
+      name="FullPageWebView"
+      component={FullPageWebView}
+      options={{ headerTitle: "" }}
     />
   </Stack.Group>
 );

@@ -23,7 +23,7 @@ const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
       buttonText={t( "LOG-IN-TO-INATURALIST" )}
       confirm={( ) => {
         setShowLoginSheet( false );
-        navigation.navigate( "LoginNavigator" );
+        navigation.navigate( "Login" );
       }}
     />
   );

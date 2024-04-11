@@ -3,9 +3,14 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraContainer from "components/Camera/CameraContainer";
+import ForgotPassword from "components/LoginSignUp/ForgotPassword";
+import LicensePhotos from "components/LoginSignUp/LicensePhotos";
+import Login from "components/LoginSignUp/Login";
+import SignUp from "components/LoginSignUp/SignUp";
+import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
-import { Heading4 } from "components/SharedComponents";
+import { CloseButton, Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
@@ -15,6 +20,7 @@ import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
   hideHeader,
+  hideHeaderLeft,
   showCustomHeader,
   showHeader
 } from "navigation/navigationOptions";
@@ -24,6 +30,23 @@ import React from "react";
 import SharedStackScreens from "./SharedStackScreens";
 
 const Stack = createNativeStackNavigator( );
+
+const LoginCloseButton = ( ) => (
+  <CloseButton
+    handleClose={navigation => navigation.getParent( )?.goBack( )}
+    buttonClassName="mr-[-15px]"
+  />
+);
+
+const LOGIN_SCREEN_OPTIONS = {
+  headerTitle: "",
+  headerTransparent: true,
+  headerTintColor: "white",
+  contentStyle: {
+    backgroundColor: "black"
+  },
+  headerRight: LoginCloseButton
+};
 
 const soundRecorderTitle = ( ) => (
   <Heading4 className="text-white">{t( "RECORD-NEW-SOUND" )}</Heading4>
@@ -60,7 +83,7 @@ const SoundRecorderWithPermission = ( ) => (
   </Mortal>
 );
 
-const AddObsStackNavigator = ( ): Node => (
+const NoBottomTabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
@@ -70,6 +93,7 @@ const AddObsStackNavigator = ( ): Node => (
       }
     }}
   >
+    {/* Add Observation Stack Group */}
     <Stack.Group>
       <Stack.Screen
         name="Camera"
@@ -114,7 +138,35 @@ const AddObsStackNavigator = ( ): Node => (
       />
     </Stack.Group>
     {SharedStackScreens( )}
+    {/* Login Stack Group */}
+    <Stack.Group
+      screenOptions={LOGIN_SCREEN_OPTIONS}
+    >
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          ...hideHeaderLeft
+        }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+      />
+      <Stack.Screen
+        name="LicensePhotos"
+        component={LicensePhotos}
+      />
+      <Stack.Screen
+        name="SignUpConfirmation"
+        component={SignUpConfirmation}
+      />
+    </Stack.Group>
   </Stack.Navigator>
 );
 
-export default AddObsStackNavigator;
+export default NoBottomTabStackNavigator;

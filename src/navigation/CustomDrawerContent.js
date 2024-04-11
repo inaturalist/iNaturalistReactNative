@@ -74,7 +74,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         label: t( "PROJECTS" ),
         navigation: "TabNavigator",
         params: {
-          screen: "ObservationsStackNavigator",
+          screen: "TabStackNavigator",
           params: {
             screen: "Projects"
           }
@@ -103,7 +103,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       },
       settings: {
         label: t( "SETTINGS" ),
-        navigation: "settings",
+        navigation: "Settings",
         icon: "gear",
         loggedInOnly: true
       },
@@ -111,7 +111,10 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         label: currentUser
           ? t( "LOG-OUT" )
           : t( "LOG-IN" ),
-        navigation: "LoginNavigator",
+        navigation: "NoBottomTabStackNavigator",
+        params: {
+          screen: "Login"
+        },
         icon: "door-exit",
         style: {
           opacity: 0.5,
@@ -124,7 +127,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     if ( isDebug ) {
       items.debug = {
         label: "DEBUG",
-        navigation: "DeveloperStackNavigator",
+        navigation: "Debug",
         icon: "triangle-exclamation",
         color: "deeppink"
       };
@@ -141,7 +144,6 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       icon={drawerItems[item].icon}
       size={20}
       color={drawerItems[item].color}
-      // backgroundColor={drawerItems[item].backgroundColor}
       accessibilityLabel={drawerItems[item].label}
     />
   ), [drawerItems] );
@@ -159,10 +161,10 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       )}
       onPress={( ) => {
         if ( !currentUser ) {
-          navigation.navigate( "LoginNavigator" );
+          navigation.navigate( "Login" );
         } else {
           navigation.navigate( "TabNavigator", {
-            screen: "ObservationsStackNavigator",
+            screen: "TabStackNavigator",
             params: {
               screen: "ObsList"
             }

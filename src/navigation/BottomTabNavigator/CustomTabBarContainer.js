@@ -9,7 +9,7 @@ import CustomTabBar from "./CustomTabBar";
 
 const DRAWER_ID = "OPEN_DRAWER";
 const EXPLORE_SCREEN_ID = "RootExplore";
-const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
+const OBS_LIST_SCREEN_ID = "TabStackNavigator";
 const NOTIFICATIONS_SCREEN_ID = "Notifications";
 
 type Props = {
@@ -55,7 +55,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-your-observations" ),
       size: 40,
       onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
+        navigation.navigate( "TabStackNavigator", {
           screen: "ObsList"
         } );
         setActiveTab( OBS_LIST_SCREEN_ID );
@@ -69,7 +69,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
       onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
+        navigation.navigate( "TabStackNavigator", {
           screen: "Notifications"
         } );
         setActiveTab( NOTIFICATIONS_SCREEN_ID );
