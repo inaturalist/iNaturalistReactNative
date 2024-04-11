@@ -64,16 +64,19 @@ describe( "for advanced user", ( ) => {
 
   it( "navigates user to obs edit with no evidence", async ( ) => {
     renderComponent( <AddObsButton /> );
+
     const addObsButton = screen.getByLabelText(
       i18next.t( "Add-observations" )
     );
     expect( addObsButton ).toBeTruthy( );
     await actor.press( addObsButton );
+
     const noEvidenceButton = screen.getByLabelText(
       i18next.t( "Observation-with-no-evidence" )
     );
     expect( noEvidenceButton ).toBeTruthy( );
     await actor.press( noEvidenceButton );
+
     expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
       screen: "ObsEdit",
       params: { previousScreen: null }
