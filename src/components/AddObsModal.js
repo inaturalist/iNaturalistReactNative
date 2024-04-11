@@ -38,8 +38,10 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
 
   const navToStandardCamera = ( ) => navAndCloseModal( "Camera", { camera: "Standard" } );
 
+  const resetStore = useStore( state => state.resetStore );
   const setObservations = useStore( state => state.setObservations );
   const navToObsEdit = async ( ) => {
+    resetStore( );
     const newObservation = await Observation.new( );
     setObservations( [newObservation] );
     navAndCloseModal( "ObsEdit" );
