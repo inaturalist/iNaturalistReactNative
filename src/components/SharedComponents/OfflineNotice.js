@@ -1,4 +1,5 @@
 // @flow
+import classnames from "classnames";
 import {
   Body2,
   INatIcon
@@ -9,10 +10,12 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
+  color?: string,
   onPress: Function
 };
 
 const OfflineNotice = ( {
+  color,
   onPress
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -32,8 +35,16 @@ const OfflineNotice = ( {
         aria-hidden
         accessibilityElementsHidden
         importantForAccessibility="no"
+        color={color}
       />
-      <Body2 className="mt-[30px]">{ t( "You-are-offline-Tap-to-try-again" ) }</Body2>
+      <Body2
+        className={classnames(
+          "mt-[30px]",
+          color && `text-${color}`
+        )}
+      >
+        { t( "You-are-offline-Tap-to-try-again" ) }
+      </Body2>
     </Pressable>
   );
 };

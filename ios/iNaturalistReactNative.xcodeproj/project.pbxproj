@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* iNaturalistReactNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */; };
 		03BE06B8FED98F5CD10273BB /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20043186B311EE211FEB259A /* libPods-iNaturalistReactNative.a */; };
+		08387561362A4099A1D58774 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 121B82B7918941189871CFD5 /* INatIcon.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -41,7 +42,6 @@
 		CD4D097140634EE091BB5818 /* Whitney-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EB5F71FA6C34855B03FE3FB /* Whitney-Book.otf */; };
 		CD871292AF3144DC9F9240BA /* Whitney-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A5C60A9F7DF42F49CED09FC /* Whitney-Semibold.otf */; };
 		E23E0899594A7C6DF680FFDB /* libPods-iNaturalistReactNative-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A336AF0ADEAE537AB1B73F98 /* libPods-iNaturalistReactNative-ShareExtension.a */; };
-		08387561362A4099A1D58774 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 121B82B7918941189871CFD5 /* INatIcon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +81,7 @@
 		00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iNaturalistReactNativeTests.m; sourceTree = "<group>"; };
 		097C2902AB1249AA9846CED3 /* Whitney-MediumItalic-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-MediumItalic-Pro.otf"; path = "../assets/fonts/Whitney-MediumItalic-Pro.otf"; sourceTree = "<group>"; };
 		0DD877E5F25945BCB6707357 /* Whitney-SemiboldItalic-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-SemiboldItalic-Pro.otf"; path = "../assets/fonts/Whitney-SemiboldItalic-Pro.otf"; sourceTree = "<group>"; };
+		121B82B7918941189871CFD5 /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNaturalistReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iNaturalistReactNative/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = iNaturalistReactNative/AppDelegate.mm; sourceTree = "<group>"; };
@@ -123,7 +124,6 @@
 		DC9FE0074F1340B0A5F2EA35 /* Whitney-Medium-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Medium-Italic.otf"; path = "../assets/fonts/Whitney-Medium-Italic.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = inaturalisticons.ttf; path = ../assets/fonts/inaturalisticons.ttf; sourceTree = "<group>"; };
-		121B82B7918941189871CFD5 /* INatIcon.ttf */ = {isa = PBXFileReference; name = "INatIcon.ttf"; path = "../assets/fonts/INatIcon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +213,6 @@
 		376267522BB609590059CCF1 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				CC5CF9E037E74ADF9CF9710B /* INatIcon.ttf */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";

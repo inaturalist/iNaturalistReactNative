@@ -601,7 +601,6 @@ Observation-has-no-photos-and-no-sounds = This observation has no photos and no 
 Observation-Name = Observation { $scientificName }
 # Label for a menu that shows various actions you can take for an observation
 Observation-options = Observation options
-Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations

@@ -809,7 +809,6 @@
     "comment": "Label for a menu that shows various actions you can take for an observation",
     "val": "Observation options"
   },
-  "Observation-photos-unavailable-without-internet": "Observation photos unavailable without internet",
   "OBSERVATION-WAS-DELETED": "OBSERVATION WAS DELETED",
   "Observation-with-no-evidence": "Observation with no evidence",
   "Observations": "Observations",
