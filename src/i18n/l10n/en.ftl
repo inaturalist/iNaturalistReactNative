@@ -63,6 +63,7 @@ AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
 ALL = ALL
 All = All
+All-observation-option = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)
 All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
@@ -429,6 +430,7 @@ IMPORT-X-OBSERVATIONS =
 # Identification category
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
+iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -597,6 +599,7 @@ Obscured = Obscured
 Obscured-observation-location-map-description = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
 Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
+OBSERVATION-BUTTON = OBSERVATION BUTTON
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Observation-Name = Observation { $scientificName }
 # Label for a menu that shows various actions you can take for an observation
@@ -645,6 +648,7 @@ Open-menu = Open menu.
 OPEN-SETTINGS = OPEN SETTINGS
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
+Opens-ar-camera = Opens AR camera.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
@@ -990,6 +994,7 @@ Welcome-to-iNaturalist = Welcome to iNaturalist!
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
+When-tapping-the-green-observation-button = When tapping the green observation button, open:
 WIKIPEDIA = WIKIPEDIA
 Wild = Wild
 WILD-STATUS = WILD STATUS

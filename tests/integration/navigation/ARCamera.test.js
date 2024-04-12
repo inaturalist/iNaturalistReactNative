@@ -5,6 +5,7 @@ import {
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/ARCamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
+import useStore from "stores/useStore";
 import { renderApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -51,9 +52,10 @@ afterAll( uniqueRealmAfterAll );
 beforeAll( async () => {
   await initI18next();
   jest.useFakeTimers( );
+  useStore.setState( { isAdvancedUser: true } );
 } );
 
-describe( "ARCamera navigation", ( ) => {
+describe( "ARCamera navigation with advanced user layout", ( ) => {
   const actor = userEvent.setup( );
 
   describe( "from MyObs", ( ) => {

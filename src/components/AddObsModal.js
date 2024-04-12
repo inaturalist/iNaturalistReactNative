@@ -1,12 +1,10 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body3, Heading2, INatIcon, INatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
 import { Platform, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -15,38 +13,18 @@ import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
-  closeModal: ( ) => void
+  closeModal: ( ) => void,
+  navAndCloseModal: ( string, ?{ camera: string } ) => void
 }
 
-const AddObsModal = ( { closeModal }: Props ): React.Node => {
+const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const setObservations = useStore( state => state.setObservations );
-  const resetStore = useStore( state => state.resetStore );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
-  // TODO: update these version numbers based on what the new model can handle
-  // in CoreML and TFLite
   const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
-    || ( Platform.OS === "android" && Platform.Version > 23 );
-
-  const navigation = useNavigation( );
-
-  const navAndCloseModal = async ( screen, params ) => {
-    const currentRoute = getCurrentRoute();
-    resetStore( );
-    if ( screen === "ObsEdit" ) {
-      const newObservation = await Observation.new( );
-      setObservations( [newObservation] );
-    }
-    // access nested screen
-    navigation.navigate( "CameraNavigator", {
-      screen,
-      params: { ...params, previousScreen: currentRoute }
-    } );
-    closeModal( );
-  };
+    || ( Platform.OS === "android" && Platform.Version > 21 );
 
   const navToPhotoGallery = async ( ) => {
     navAndCloseModal( "PhotoGallery" );
@@ -58,7 +36,14 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToStandardCamera = ( ) => navAndCloseModal( "Camera", { camera: "Standard" } );
 
-  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
+  const resetStore = useStore( state => state.resetStore );
+  const setObservations = useStore( state => state.setObservations );
+  const navToObsEdit = async ( ) => {
+    resetStore( );
+    const newObservation = await Observation.new( );
+    setObservations( [newObservation] );
+    navAndCloseModal( "ObsEdit" );
+  };
 
   const bulletedText = [
     { text: t( "Use-iNaturalists-AI-Camera" ), icon: "arcamera" },

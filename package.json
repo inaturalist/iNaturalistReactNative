@@ -98,6 +98,7 @@
     "react-native-logs": "^5.1.0",
     "react-native-mail": "github:chirag04/react-native-mail",
     "react-native-maps": "^1.13.0",
+    "react-native-mmkv": "^2.12.2",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^17.1.0",
     "react-native-network-logger": "^1.15.0",

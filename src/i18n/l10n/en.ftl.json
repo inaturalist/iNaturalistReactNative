@@ -67,6 +67,7 @@
   "Agree-with-ID-description": "Would you like to agree with the ID and suggest the following identification?",
   "ALL": "ALL",
   "All": "All",
+  "All-observation-option": "All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)",
   "All-observations": "All observations",
   "All-organisms": "All organisms",
   "all-rights-reserved": {
@@ -586,6 +587,7 @@
     "val": "Improving"
   },
   "INATURALIST-ACCOUNT-SETTINGS": "INATURALIST ACCOUNT SETTINGS",
+  "iNaturalist-AI-Camera": "iNaturalist AI Camera",
   "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery": "iNaturalist can save photos you take in the app to your device’s gallery.",
   "INATURALIST-COMMUNITY": "INATURALIST COMMUNITY",
   "INATURALIST-FORUM": "INATURALIST FORUM",
@@ -803,6 +805,7 @@
   },
   "Observation": "Observation",
   "Observation-Attribution": "Observation: © { $userName } · { $restrictions }",
+  "OBSERVATION-BUTTON": "OBSERVATION BUTTON",
   "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
   "Observation-Name": "Observation { $scientificName }",
   "Observation-options": {
@@ -872,6 +875,7 @@
   },
   "Opens-add-comment-modal": "Opens add comment modal.",
   "Opens-add-observation-modal": "Opens add observation modal.",
+  "Opens-ar-camera": "Opens AR camera.",
   "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
   "Organism-is-captive": {
     "comment": "Picker prompt on observation edit",
@@ -1331,6 +1335,7 @@
   },
   "WHAT-IS-INATURALIST": "WHAT IS INATURALIST?",
   "Whats-more-by-recording": "What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!",
+  "When-tapping-the-green-observation-button": "When tapping the green observation button, open:",
   "WIKIPEDIA": "WIKIPEDIA",
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",

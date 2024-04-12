@@ -104,8 +104,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       settings: {
         label: t( "SETTINGS" ),
         navigation: "settings",
-        icon: "gear",
-        loggedInOnly: true
+        icon: "gear"
       },
       login: {
         label: currentUser

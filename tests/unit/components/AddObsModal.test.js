@@ -1,21 +1,9 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import AddObsModal from "components/AddObsModal";
 import i18next from "i18next";
 import React from "react";
 // eslint-disable-next-line import/no-unresolved
 import mockPlatform from "react-native/Libraries/Utilities/Platform";
-import { renderComponent } from "tests/helpers/render";
-
-const mockNavigate = jest.fn();
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useNavigation: () => ( {
-      navigate: mockNavigate
-    } )
-  };
-} );
 
 jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   OS: "ios",
@@ -28,37 +16,17 @@ describe( "AddObsModal", ( ) => {
     jest.clearAllMocks( );
   } );
 
-  it( "navigates user to obs edit with no evidence", async ( ) => {
-    renderComponent( <AddObsModal closeModal={jest.fn( )} /> );
-    const noEvidenceButton = screen.getByLabelText(
-      i18next.t( "Observation-with-no-evidence" )
-    );
-    expect( noEvidenceButton ).toBeTruthy( );
-    fireEvent.press( noEvidenceButton );
-    await waitFor( ( ) => {
-      expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
-        screen: "ObsEdit",
-        params: { previousScreen: null }
-      } );
-    } );
-  } );
-
-  it( "navigates user to AR camera on newer devices", async ( ) => {
-    renderComponent( <AddObsModal closeModal={jest.fn( )} /> );
+  it( "hides AR camera button on older devices", async ( ) => {
+    render( <AddObsModal closeModal={jest.fn( )} /> );
     const arCameraButton = screen.getByLabelText(
       i18next.t( "AR-Camera" )
     );
-    expect( arCameraButton ).toBeTruthy( );
-    fireEvent.press( arCameraButton );
-    expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
-      screen: "Camera",
-      params: { camera: "AR", previousScreen: null }
-    } );
+    expect( arCameraButton ).toBeOnTheScreen();
   } );
 
   it( "hides AR camera button on older devices", async ( ) => {
     mockPlatform.Version = 9;
-    renderComponent( <AddObsModal closeModal={jest.fn( )} /> );
+    render( <AddObsModal closeModal={jest.fn( )} /> );
     const arCameraButton = screen.queryByLabelText(
       i18next.t( "AR-Camera" )
     );

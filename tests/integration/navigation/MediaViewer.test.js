@@ -141,12 +141,20 @@ describe( "MediaViewer navigation", ( ) => {
     } );
   } );
 
-  describe( "from StandardCamera", ( ) => {
+  describe( "from StandardCamera with advanced user layout", ( ) => {
     async function navigateToCamera( ) {
       await renderApp( );
       await findAndPressByText( "Add observations" );
       await findAndPressByLabelText( "Camera" );
     }
+
+    beforeAll( ( ) => {
+      useStore.setState( { isAdvancedUser: true } );
+    } );
+
+    afterAll( ( ) => {
+      useStore.setState( initialStoreState );
+    } );
 
     it( "should show a photo when tapped", async ( ) => {
       navigateToCamera( );
