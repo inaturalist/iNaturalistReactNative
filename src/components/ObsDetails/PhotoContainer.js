@@ -1,11 +1,10 @@
 // @flow
 
 import classnames from "classnames";
-import { ActivityIndicator } from "components/SharedComponents";
+import { ActivityIndicator, OfflineNotice } from "components/SharedComponents";
 import { Image, Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
@@ -79,17 +78,6 @@ const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
       )}
     />
   );
-  const offlineNotice = loadSuccess === false && (
-    <IconMaterial
-      name="wifi-off"
-      color="white"
-      size={100}
-      accessibilityRole="image"
-      accessibilityLabel={t(
-        "Observation-photos-unavailable-without-internet"
-      )}
-    />
-  );
 
   return (
     <Pressable
@@ -101,7 +89,12 @@ const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
     >
       {loadingIndicator}
       {image}
-      {offlineNotice}
+      {loadSuccess === false && (
+        <OfflineNotice
+          onPress={( ) => setLoadSuccess( null )}
+          color="white"
+        />
+      )}
     </Pressable>
   );
 };

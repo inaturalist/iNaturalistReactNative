@@ -8,6 +8,7 @@
     "ios": "react-native run-ios",
     "ios:release": "npx react-native run-ios --device --mode Release",
     "start": "react-native start",
+    "clean": "./scripts/clean.sh",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start -- --reset-cache",
     "test": "jest",
     "lint": "npm run lint:eslint && npm run lint:flow",

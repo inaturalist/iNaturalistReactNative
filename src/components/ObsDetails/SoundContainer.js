@@ -1,5 +1,9 @@
+import {
+  refresh as refreshNetInfo,
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useFocusEffect } from "@react-navigation/native";
-import { Body1, INatIconButton } from "components/SharedComponents";
+import { Body1, INatIconButton, OfflineNotice } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
   useCallback,
@@ -14,6 +18,7 @@ import { useTranslation } from "sharedHooks";
 const logger = log.extend( "SoundContainer" );
 
 const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
+  const { isInternetReachable } = useNetInfo( );
   const playerRef = useRef( new AudioRecorderPlayer( ) );
   const player = playerRef.current;
   const { t } = useTranslation( );
@@ -138,6 +143,15 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
   }, [stopSound] ) );
 
   const playBackPercent = ( playBackState.currentPosition / ( playBackState.duration || 1 ) ) * 100;
+
+  if ( isInternetReachable === false ) {
+    return (
+      <OfflineNotice
+        onPress={( ) => refreshNetInfo( )}
+        color="white"
+      />
+    );
+  }
   return (
     <View className={`${sizeClass} items-center justify-center`}>
       <INatIconButton
