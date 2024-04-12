@@ -10,6 +10,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
   isFetchingNextPage: ?boolean
@@ -20,13 +21,30 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   const navigation = useNavigation( );
   const [showModal, setShowModal] = useState( false );
 
+  const resetStore = useStore( state => state.resetStore );
+  const navAndCloseModal = ( screen, params ) => {
+    if ( screen !== "ObsEdit" ) {
+      resetStore( );
+    }
+    navigation.navigate( "CameraNavigator", {
+      screen,
+      params
+    } );
+    setShowModal( false );
+  };
+
   if ( !isFetchingNextPage ) {
     return (
       <>
         <Modal
           showModal={showModal}
           closeModal={( ) => setShowModal( false )}
-          modal={<AddObsModal closeModal={( ) => setShowModal( false )} />}
+          modal={(
+            <AddObsModal
+              closeModal={( ) => setShowModal( false )}
+              navAndCloseModal={navAndCloseModal}
+            />
+          )}
         />
         <View className="mx-5">
           <Body1 className="mb-3 mt-5">
