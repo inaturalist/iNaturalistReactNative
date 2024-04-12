@@ -21,13 +21,14 @@ const AddObsButton = (): React.Node => {
   const resetStore = useStore( state => state.resetStore );
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const navigation = useNavigation( );
+
   const navAndCloseModal = ( screen, params ) => {
     const currentRoute = getCurrentRoute();
     if ( screen !== "ObsEdit" ) {
       resetStore( );
     }
     // access nested screen
-    navigation.navigate( "CameraNavigator", {
+    navigation.navigate( "NoBottomTabStackNavigator", {
       screen,
       params: { ...params, previousScreen: currentRoute }
     } );

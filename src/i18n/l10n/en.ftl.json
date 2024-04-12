@@ -803,7 +803,6 @@
     "comment": "Displayed when user views an obscured location on the ObsDetail map screen",
     "val": "This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon."
   },
-  "Observation": "Observation",
   "Observation-Attribution": "Observation: © { $userName } · { $restrictions }",
   "OBSERVATION-BUTTON": "OBSERVATION BUTTON",
   "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",

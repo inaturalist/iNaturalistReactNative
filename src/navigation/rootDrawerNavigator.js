@@ -2,11 +2,10 @@
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
-  hideDrawerHeaderLeft, hideHeader,
-  showHeader
+  hideDrawerHeaderLeft, hideHeader
 } from "navigation/navigationOptions";
-import AddObsStackNavigator from "navigation/StackNavigators/AddObsStackNavigator";
 import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
+import NoBottomTabStackNavigator from "navigation/StackNavigators/NoBottomTabStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
 
@@ -14,7 +13,8 @@ import BottomTabNavigator from "./BottomTabNavigator";
 import CustomDrawerContent from "./CustomDrawerContent";
 
 const drawerOptions = {
-  ...showHeader,
+  ...hideHeader,
+  ...hideDrawerHeaderLeft,
   drawerType: "front",
   drawerStyle: {
     backgroundColor: "transparent"
@@ -32,6 +32,9 @@ const drawerRenderer = ( { state, navigation, descriptors } ) => (
   />
 );
 
+// DEVELOPERS: do you need to add any screens here? All the rest of our screens live in
+// NoBottomTabStackNavigator, TabStackNavigator, or LoginStackNavigator
+
 const RootDrawerNavigator = ( ): Node => (
   <Drawer.Navigator
     screenOptions={drawerOptions}
@@ -41,25 +44,14 @@ const RootDrawerNavigator = ( ): Node => (
     <Drawer.Screen
       name="TabNavigator"
       component={BottomTabNavigator}
-      options={{
-        ...hideHeader,
-        ...hideDrawerHeaderLeft
-      }}
     />
     <Drawer.Screen
-      name="LoginNavigator"
+      name="NoBottomTabStackNavigator"
+      component={NoBottomTabStackNavigator}
+    />
+    <Drawer.Screen
+      name="LoginStackNavigator"
       component={LoginStackNavigator}
-      options={{
-        headerShown: false
-      }}
-    />
-    <Drawer.Screen
-      name="CameraNavigator"
-      component={AddObsStackNavigator}
-      options={{
-        ...hideHeader,
-        ...hideDrawerHeaderLeft
-      }}
     />
   </Drawer.Navigator>
 );

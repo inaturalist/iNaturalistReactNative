@@ -26,7 +26,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
     if ( screen !== "ObsEdit" ) {
       resetStore( );
     }
-    navigation.navigate( "CameraNavigator", {
+    navigation.navigate( "NoBottomTabStackNavigator", {
       screen,
       params
     } );

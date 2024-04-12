@@ -12,7 +12,7 @@ export default function navigateToObsDetails( navigation, uuid ) {
           state: {
             routes: [
               {
-                name: "ObservationsStackNavigator",
+                name: "TabStackNavigator",
                 state: {
                   index: 0,
                   routes: [

@@ -26,18 +26,9 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
   const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
     || ( Platform.OS === "android" && Platform.Version > 21 );
 
-  const navToPhotoGallery = async ( ) => {
-    navAndCloseModal( "PhotoGallery" );
-  };
-
-  const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
-
-  const navToARCamera = ( ) => navAndCloseModal( "Camera", { camera: "AR" } );
-
-  const navToStandardCamera = ( ) => navAndCloseModal( "Camera", { camera: "Standard" } );
-
   const resetStore = useStore( state => state.resetStore );
   const setObservations = useStore( state => state.setObservations );
+
   const navToObsEdit = async ( ) => {
     resetStore( );
     const newObservation = await Observation.new( );
@@ -92,7 +83,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
             "mr-[37px] bottom-[1px]": showARCamera,
             "mr-[9px]": !showARCamera
           } )}
-          onPress={navToStandardCamera}
+          onPress={( ) => navAndCloseModal( "Camera", { camera: "Standard" } )}
           accessibilityLabel={t( "Camera" )}
           accessibilityHint={t( "Navigates-to-camera" )}
         />
@@ -103,7 +94,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
             icon="arcamera"
             color={theme.colors.onSecondary}
             className={classnames( greenCircleClass, "absolute bottom-[26px]" )}
-            onPress={navToARCamera}
+            onPress={( ) => navAndCloseModal( "Camera", { camera: "AR" } )}
             accessibilityLabel={t( "AR-Camera" )}
             accessibilityHint={t( "Navigates-to-AR-camera" )}
           />
@@ -117,7 +108,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
             "ml-[37px] bottom-[1px]": showARCamera,
             "ml-[9px]": !showARCamera
           } )}
-          onPress={navToPhotoGallery}
+          onPress={( ) => navAndCloseModal( "PhotoGallery" )}
           accessibilityLabel={t( "Photo-importer" )}
           accessibilityHint={t( "Navigates-to-photo-importer" )}
         />
@@ -155,7 +146,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
             "ml-[26px]": showARCamera,
             "ml-[20px] bottom-[33px]": !showARCamera
           } )}
-          onPress={navToSoundRecorder}
+          onPress={( ) => navAndCloseModal( "SoundRecorder" )}
           accessibilityLabel={t( "Sound-recorder" )}
           accessibilityHint={t( "Navigates-to-sound-recorder" )}
         />

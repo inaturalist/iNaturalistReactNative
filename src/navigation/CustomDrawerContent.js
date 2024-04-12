@@ -72,13 +72,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       // },
       projects: {
         label: t( "PROJECTS" ),
-        navigation: "TabNavigator",
-        params: {
-          screen: "ObservationsStackNavigator",
-          params: {
-            screen: "Projects"
-          }
-        },
+        navigation: "Projects",
         icon: "briefcase"
       },
       // blog: {
@@ -103,14 +97,14 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       },
       settings: {
         label: t( "SETTINGS" ),
-        navigation: "settings",
+        navigation: "Settings",
         icon: "gear"
       },
       login: {
         label: currentUser
           ? t( "LOG-OUT" )
           : t( "LOG-IN" ),
-        navigation: "LoginNavigator",
+        navigation: "LoginStackNavigator",
         icon: "door-exit",
         style: {
           opacity: 0.5,
@@ -123,7 +117,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     if ( isDebug ) {
       items.debug = {
         label: "DEBUG",
-        navigation: "DeveloperStackNavigator",
+        navigation: "Debug",
         icon: "triangle-exclamation",
         color: "deeppink"
       };
@@ -140,7 +134,6 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       icon={drawerItems[item].icon}
       size={20}
       color={drawerItems[item].color}
-      // backgroundColor={drawerItems[item].backgroundColor}
       accessibilityLabel={drawerItems[item].label}
     />
   ), [drawerItems] );
@@ -158,14 +151,9 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       )}
       onPress={( ) => {
         if ( !currentUser ) {
-          navigation.navigate( "LoginNavigator" );
+          navigation.navigate( "LoginStackNavigator" );
         } else {
-          navigation.navigate( "TabNavigator", {
-            screen: "ObservationsStackNavigator",
-            params: {
-              screen: "ObsList"
-            }
-          } );
+          navigation.navigate( "ObsList" );
         }
       }}
     >

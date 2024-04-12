@@ -88,7 +88,7 @@ const PhotoSharing = ( ): Node => {
         } ) ),
         firstObservationDefaults
       } );
-      navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+      navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
     }
   }, [
     createObservationAndNavToObsEdit,
