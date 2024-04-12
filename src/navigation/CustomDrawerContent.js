@@ -105,10 +105,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         label: currentUser
           ? t( "LOG-OUT" )
           : t( "LOG-IN" ),
-        navigation: "NoBottomTabStackNavigator",
-        params: {
-          screen: "Login"
-        },
+        navigation: "LoginStackNavigator",
         icon: "door-exit",
         style: {
           opacity: 0.5,
@@ -155,7 +152,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       )}
       onPress={( ) => {
         if ( !currentUser ) {
-          navigation.navigate( "Login" );
+          navigation.navigate( "LoginStackNavigator" );
         } else {
           navigation.navigate( "ObsList" );
         }
