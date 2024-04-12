@@ -44,7 +44,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   }
   if ( !currentUser ) {
     return (
-      <View className="mx-5">
+      <View className="mx-5 items-center">
         <GradientButton
           onPress={navToARCamera}
           accessibilityHint={t( "Opens-add-observation-modal" )}
