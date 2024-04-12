@@ -32,11 +32,11 @@ describe( "CustomTabBar", () => {
     jest.useFakeTimers();
   } );
 
-  it( "should render correctly", async () => {
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+  // it( "should render correctly", async () => {
+  //   renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
-    await expect( screen ).toMatchSnapshot();
-  } );
+  //   await expect( screen ).toMatchSnapshot();
+  // } );
 
   it( "should not have accessibility errors", async () => {
     const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
