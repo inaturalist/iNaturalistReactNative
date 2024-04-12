@@ -5,7 +5,7 @@ import {
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
-import * as useStorage from "sharedHooks/useStorage.ts";
+import usePersistedStore from "stores/usePersistedStore.ts";
 import { renderApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -37,9 +37,7 @@ afterAll( uniqueRealmAfterAll );
 beforeAll( async () => {
   await initI18next();
   jest.useFakeTimers( );
-  jest.spyOn( useStorage, "default" ).mockImplementation( () => ( {
-    isAdvancedUser: true
-  } ) );
+  usePersistedStore.setState( { isAdvancedUser: true } );
 } );
 
 describe( "StandardCamera navigation", ( ) => {

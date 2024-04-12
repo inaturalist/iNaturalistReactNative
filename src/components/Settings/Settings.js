@@ -19,10 +19,10 @@ import { EventRegister } from "react-native-event-listeners";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
-  useStorage,
   useTranslation,
   useUserMe
 } from "sharedHooks";
+import usePersistedStore from "stores/usePersistedStore.ts";
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
@@ -32,7 +32,8 @@ const Settings = ( ) => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser( );
   const { remoteUser, isLoading, refetchUserMe } = useUserMe();
-  const { isAdvancedUser, setIsAdvancedUser } = useStorage();
+  const isAdvancedUser = usePersistedStore( state => state.isAdvancedUser );
+  const setIsAdvancedUser = usePersistedStore( state => state.setIsAdvancedUser );
 
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );

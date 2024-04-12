@@ -8,13 +8,13 @@ import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
 import LinearGradient from "react-native-linear-gradient";
-import { useStorage } from "sharedHooks";
+import usePersistedStore from "stores/usePersistedStore.ts";
 import useStore from "stores/useStore";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 const AddObsButton = (): React.Node => {
-  const { isAdvancedUser } = useStorage( );
+  const isAdvancedUser = usePersistedStore( state => state.isAdvancedUser );
   const [showModal, setModal] = React.useState( false );
 
   const openModal = React.useCallback( () => setModal( true ), [] );

@@ -2,7 +2,7 @@ import { screen, userEvent } from "@testing-library/react-native";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import i18next from "i18next";
 import React from "react";
-import * as useStorage from "sharedHooks/useStorage.ts";
+import usePersistedStore from "stores/usePersistedStore.ts";
 import { renderComponent } from "tests/helpers/render";
 
 const actor = userEvent.setup();
@@ -18,11 +18,13 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
-describe( "AddObsButton", ( ) => {
-  beforeAll( ( ) => {
-    jest.useFakeTimers( );
-  } );
+const initialPersistedStoreState = usePersistedStore.getState( );
 
+beforeAll( ( ) => {
+  jest.useFakeTimers( );
+} );
+
+describe( "AddObsButton", ( ) => {
   it( "navigates user to AR camera", async ( ) => {
     renderComponent( <AddObsButton /> );
 
@@ -41,10 +43,11 @@ describe( "AddObsButton", ( ) => {
 
 describe( "with advanced user layout", ( ) => {
   beforeAll( ( ) => {
-    jest.useFakeTimers( );
-    jest.spyOn( useStorage, "default" ).mockImplementation( () => ( {
-      isAdvancedUser: true
-    } ) );
+    usePersistedStore.setState( { isAdvancedUser: true } );
+  } );
+
+  afterAll( ( ) => {
+    usePersistedStore.setState( initialPersistedStoreState );
   } );
 
   it( "opens AddObsModal", async ( ) => {

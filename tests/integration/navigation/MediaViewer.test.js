@@ -4,7 +4,7 @@ import {
   userEvent
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
-import * as useStorage from "sharedHooks/useStorage.ts";
+import usePersistedStore from "stores/usePersistedStore.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import {
@@ -40,6 +40,7 @@ afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
 const initialStoreState = useStore.getState( );
+const initialPersistedStoreState = usePersistedStore.getState( );
 beforeAll( ( ) => {
   useStore.setState( initialStoreState, true );
 } );
@@ -143,21 +144,19 @@ describe( "MediaViewer navigation", ( ) => {
   } );
 
   describe( "from StandardCamera with advanced user layout", ( ) => {
-    beforeAll( ( ) => {
-      jest.spyOn( useStorage, "default" ).mockImplementation( () => ( {
-        isAdvancedUser: true
-      } ) );
-    } );
-
-    afterAll( ( ) => {
-      useStorage.default.mockRestore( );
-    } );
-
     async function navigateToCamera( ) {
       await renderApp( );
       await findAndPressByText( "Add observations" );
       await findAndPressByLabelText( "Camera" );
     }
+
+    beforeAll( ( ) => {
+      usePersistedStore.setState( { isAdvancedUser: true } );
+    } );
+
+    afterAll( ( ) => {
+      usePersistedStore.setState( initialPersistedStoreState );
+    } );
 
     it( "should show a photo when tapped", async ( ) => {
       navigateToCamera( );
