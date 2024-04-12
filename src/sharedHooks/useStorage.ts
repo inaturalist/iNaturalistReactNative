@@ -4,7 +4,7 @@ const useStorage = ( ): {
   isAdvancedUser: boolean,
   setIsAdvancedUser: ( value: boolean ) => void
 } => {
-  const [isAdvancedUser = false, setIsAdvancedUser] = useMMKVBoolean( "isAdvancedUser" );
+  const [isAdvancedUser, setIsAdvancedUser] = useMMKVBoolean( "isAdvancedUser" );
   return { isAdvancedUser, setIsAdvancedUser };
 };
 
