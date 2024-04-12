@@ -34,7 +34,7 @@ describe( "AddObsButton", ( ) => {
     expect( addObsButton ).toBeTruthy( );
     await actor.press( addObsButton );
 
-    expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
+    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
       screen: "Camera",
       params: { camera: "AR", previousScreen: null }
     } );
@@ -80,7 +80,7 @@ describe( "with advanced user layout", ( ) => {
     expect( noEvidenceButton ).toBeTruthy( );
     await actor.press( noEvidenceButton );
 
-    expect( mockNavigate ).toHaveBeenCalledWith( "CameraNavigator", {
+    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
       screen: "ObsEdit",
       params: { previousScreen: null }
     } );

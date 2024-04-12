@@ -83,7 +83,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
             "mr-[37px] bottom-[1px]": showARCamera,
             "mr-[9px]": !showARCamera
           } )}
-          onPress={navAndCloseModal( "Camera", { camera: "Standard" } )}
+          onPress={( ) => navAndCloseModal( "Camera", { camera: "Standard" } )}
           accessibilityLabel={t( "Camera" )}
           accessibilityHint={t( "Navigates-to-camera" )}
         />
