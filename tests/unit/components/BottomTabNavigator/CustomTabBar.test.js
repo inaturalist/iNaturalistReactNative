@@ -30,6 +30,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
 describe( "CustomTabBar", () => {
   beforeEach( ( ) => {
     jest.useFakeTimers();
+    useStore.setState( { isAdvancedUser: false } );
   } );
 
   it( "should render correctly", async () => {
