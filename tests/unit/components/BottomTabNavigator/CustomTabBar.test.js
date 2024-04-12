@@ -3,12 +3,12 @@ import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarCon
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import * as useIsConnected from "sharedHooks/useIsConnected.ts";
-import usePersistedStore from "stores/usePersistedStore.ts";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
-const initialPersistedStoreState = usePersistedStore.getState( );
+const initialPersistedStoreState = useStore.getState( );
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
@@ -70,11 +70,11 @@ describe( "CustomTabBar", () => {
 
 describe( "CustomTabBar with advanced user layout", () => {
   beforeAll( ( ) => {
-    usePersistedStore.setState( { isAdvancedUser: true } );
+    useStore.setState( { isAdvancedUser: true } );
   } );
 
   afterAll( ( ) => {
-    usePersistedStore.setState( initialPersistedStoreState );
+    useStore.setState( initialPersistedStoreState );
   } );
 
   beforeEach( ( ) => {

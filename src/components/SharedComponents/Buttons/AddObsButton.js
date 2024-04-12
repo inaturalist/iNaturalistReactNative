@@ -8,19 +8,18 @@ import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
 import LinearGradient from "react-native-linear-gradient";
-import usePersistedStore from "stores/usePersistedStore.ts";
 import useStore from "stores/useStore";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 const AddObsButton = (): React.Node => {
-  const isAdvancedUser = usePersistedStore( state => state.isAdvancedUser );
   const [showModal, setModal] = React.useState( false );
 
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
   const resetStore = useStore( state => state.resetStore );
+  const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const navigation = useNavigation( );
   const navAndCloseModal = ( screen, params ) => {
     const currentRoute = getCurrentRoute();

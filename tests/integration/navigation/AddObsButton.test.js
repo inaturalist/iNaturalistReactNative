@@ -2,7 +2,7 @@ import { screen, userEvent } from "@testing-library/react-native";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import i18next from "i18next";
 import React from "react";
-import usePersistedStore from "stores/usePersistedStore.ts";
+import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 
 const actor = userEvent.setup();
@@ -18,7 +18,7 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
-const initialPersistedStoreState = usePersistedStore.getState( );
+const initialPersistedStoreState = useStore.getState( );
 
 beforeAll( ( ) => {
   jest.useFakeTimers( );
@@ -43,11 +43,11 @@ describe( "AddObsButton", ( ) => {
 
 describe( "with advanced user layout", ( ) => {
   beforeAll( ( ) => {
-    usePersistedStore.setState( { isAdvancedUser: true } );
+    useStore.setState( { isAdvancedUser: true } );
   } );
 
   afterAll( ( ) => {
-    usePersistedStore.setState( initialPersistedStoreState );
+    useStore.setState( initialPersistedStoreState );
   } );
 
   it( "opens AddObsModal", async ( ) => {

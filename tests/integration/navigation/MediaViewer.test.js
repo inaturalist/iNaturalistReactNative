@@ -4,7 +4,6 @@ import {
   userEvent
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
-import usePersistedStore from "stores/usePersistedStore.ts";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import {
@@ -40,7 +39,6 @@ afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
 const initialStoreState = useStore.getState( );
-const initialPersistedStoreState = usePersistedStore.getState( );
 beforeAll( ( ) => {
   useStore.setState( initialStoreState, true );
 } );
@@ -151,11 +149,11 @@ describe( "MediaViewer navigation", ( ) => {
     }
 
     beforeAll( ( ) => {
-      usePersistedStore.setState( { isAdvancedUser: true } );
+      useStore.setState( { isAdvancedUser: true } );
     } );
 
     afterAll( ( ) => {
-      usePersistedStore.setState( initialPersistedStoreState );
+      useStore.setState( initialStoreState );
     } );
 
     it( "should show a photo when tapped", async ( ) => {
