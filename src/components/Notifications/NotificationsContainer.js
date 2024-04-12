@@ -34,6 +34,7 @@ const NotificationsContainer = (): Node => {
       isOnline={isOnline}
       isLoading={isInitialLoading || isFetching}
       isError={isError}
+      reload={refetch}
     />
   );
 };

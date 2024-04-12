@@ -18,7 +18,8 @@ const drawerOptions = {
   drawerType: "front",
   drawerStyle: {
     backgroundColor: "transparent"
-  }
+  },
+  swipeEnabled: false
 };
 
 const Drawer = createDrawerNavigator( );

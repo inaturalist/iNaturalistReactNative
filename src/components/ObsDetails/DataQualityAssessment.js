@@ -7,7 +7,9 @@ import {
   INatIcon,
   List1,
   List2,
-  ScrollViewWrapper
+  OfflineNotice,
+  ScrollViewWrapper,
+  ViewWrapper
 } from "components/SharedComponents";
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus";
 import { View } from "components/styledComponents";
@@ -39,31 +41,35 @@ const titleDescription = option => {
   }
 };
 type Props = {
-  qualityMetrics: Object,
+  checkTest: Function,
+  ifMajorityAgree: Function,
+  isOnline?: boolean,
   loadingAgree: boolean,
   loadingDisagree: boolean,
   loadingMetric: string,
   qualityGrade: string,
-  ifMajorityAgree: Function,
-  checkTest: Function,
-  setMetricVote: Function,
+  qualityMetrics: Object,
+  recheckIsOnline: Function,
   removeMetricVote: Function,
+  removeNeedsIDVote: Function,
+  setMetricVote: Function,
   setNeedsIDVote: Function,
-  removeNeedsIDVote: Function
 }
 
 const DataQualityAssessment = ( {
-  qualityMetrics,
+  checkTest,
+  ifMajorityAgree,
+  isOnline,
   loadingAgree,
   loadingDisagree,
   loadingMetric,
   qualityGrade,
-  ifMajorityAgree,
-  checkTest,
-  setMetricVote,
+  qualityMetrics,
+  recheckIsOnline,
   removeMetricVote,
-  setNeedsIDVote,
-  removeNeedsIDVote
+  removeNeedsIDVote,
+  setMetricVote,
+  setNeedsIDVote
 }: Props ): Node => {
   const isResearchGrade = qualityGrade === "research";
   const theme = useTheme( );
@@ -106,6 +112,14 @@ const DataQualityAssessment = ( {
       />
     );
   };
+
+  if ( isOnline === false ) {
+    return (
+      <ViewWrapper>
+        <OfflineNotice onPress={( ) => recheckIsOnline( )} />
+      </ViewWrapper>
+    );
+  }
 
   return (
     <ScrollViewWrapper testID="DataQualityAssessment">

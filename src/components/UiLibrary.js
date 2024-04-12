@@ -480,8 +480,6 @@ const UiLibrary = (): Node => {
         <View className="flex flex-row justify-between">
           <View>
             <Body2 className="text-center">Research</Body2>
-            {/* TODO: refactor to not have color prop because we only need black and white */}
-            {/* TODO: better to access the color from theme here */}
             <QualityGradeStatus qualityGrade="research" />
           </View>
           <View>
@@ -595,7 +593,6 @@ const UiLibrary = (): Node => {
             <CommentsCount count={10} white />
           </View>
         </View>
-
         <Heading2 className="my-2">IdentificationsCount</Heading2>
         <View className="flex flex-row justify-evenly">
           <View>
@@ -645,15 +642,15 @@ const UiLibrary = (): Node => {
         <Heading2 className="my-2">Confidence Interval</Heading2>
         <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
         <Heading2 className="my-2">Taxon Result</Heading2>
-        <TaxonResult taxon={aves} accessibilityLabel="Bird" />
+        <TaxonResult taxon={aves} accessibilityLabel="ui library" />
         <Heading3>Taxon w/ photo</Heading3>
-        <TaxonResult taxon={taxonWithPhoto} accessibilityLabel="TaxonWithPhoto" />
+        <TaxonResult taxon={taxonWithPhoto} accessibilityLabel="ui library" />
         <Heading3>Iconic taxon</Heading3>
         <TaxonResult
           taxon={aves}
           fetchRemote={false}
           fromLocal={false}
-          accessibilityLabel="LocalBird"
+          accessibilityLabel="ui library"
         />
         <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
         <IconicTaxonChooser
@@ -665,7 +662,6 @@ const UiLibrary = (): Node => {
           before={<Button text={t( "ADD-AN-ID" )} className="rounded-full" />}
           onTaxonChosen={taxon => console.log( "taxon selected:", taxon )}
         />
-
         <Heading1 className="my-2">DisplayTaxonName</Heading1>
         <Heading2 className="my-2">Color</Heading2>
         <DisplayTaxonName color="text-blue" taxon={species || taxonWithPhoto} />
@@ -694,7 +690,6 @@ const UiLibrary = (): Node => {
             icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
           }}
         />
-
         <Heading1 className="my-2">RadioButtonRow</Heading1>
         <RadioButtonRow
           value="radio1"
