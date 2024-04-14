@@ -13,6 +13,7 @@ import Modal from "components/SharedComponents/Modal";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { Pressable } from "react-native";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -50,9 +51,12 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
           onPress={navToARCamera}
           iconSize={76}
         />
-        <Heading2 className="mt-5 mb-3 text-center">
-          {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}
-        </Heading2>
+        <Pressable accessibilityRole="button" onPress={navToARCamera}>
+          <Heading2 className="mt-5 mb-3 text-center">
+            {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}
+          </Heading2>
+        </Pressable>
+
       </View>
     );
   }
