@@ -63,6 +63,7 @@ const MyObservations = ( {
             toolbarProgress={toolbarProgress}
             uploadMultipleObservations={uploadMultipleObservations}
             uploadState={uploadState}
+            logInButtonNeutral={observations.length === 0}
           />
         )}
         renderScrollable={onSroll => (
