@@ -50,7 +50,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
           onPress={navToARCamera}
           iconSize={76}
         />
-        <Heading2 className="mt-5 mb-3">
+        <Heading2 className="mt-5 mb-3 text-center">
           {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}
         </Heading2>
       </View>
