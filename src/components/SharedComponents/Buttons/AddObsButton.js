@@ -42,6 +42,7 @@ const AddObsButton = (): React.Node => {
         modal={addObsModal}
       />
       <GradientButton
+        sizeClassName="w-[69px] h-[69px]"
         onPress={isAdvancedUser
           ? openModal
           : navToARCamera}

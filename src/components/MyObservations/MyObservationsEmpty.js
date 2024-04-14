@@ -46,10 +46,9 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
     return (
       <View className="mx-5 items-center">
         <GradientButton
+          sizeClassName="w-[141px] h-[141px]"
           onPress={navToARCamera}
-          accessibilityHint={t( "Opens-add-observation-modal" )}
-          iconName="plus"
-          iconSize={31}
+          iconSize={76}
         />
         <Heading2 className="mt-5 mb-3">
           {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}

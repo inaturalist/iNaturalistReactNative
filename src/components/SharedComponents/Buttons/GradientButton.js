@@ -9,18 +9,20 @@ import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 const GradientButton = ( {
+  sizeClassName,
   onPress,
   accessibilityHint,
   iconName,
   iconSize
 }: {
+  sizeClassName: string,
   onPress: Function,
-  accessibilityHint: string,
-  iconName: string,
-  iconSize: number
+  accessibilityHint?: string,
+  iconName?: string,
+  iconSize?: number
 } ): React.Node => (
   <Pressable
-    className="w-[69px] h-[69px] rounded-full overflow-hidden"
+    className={`${sizeClassName} rounded-full overflow-hidden`}
     testID="add-obs-button"
     style={dropShadow}
     onPress={onPress}
