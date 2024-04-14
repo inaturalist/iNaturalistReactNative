@@ -52,7 +52,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
           iconSize={76}
         />
         <Pressable accessibilityRole="button" onPress={navToARCamera}>
-          <Heading2 className="mt-5 mb-3 text-center">
+          <Heading2 className="mt-6 text-center">
             {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}
           </Heading2>
         </Pressable>
