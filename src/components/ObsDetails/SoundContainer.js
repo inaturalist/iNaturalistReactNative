@@ -69,7 +69,8 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
     };
   }, [
     player,
-    sound.file_url
+    sound.file_url,
+    formatCurrentPosition
   ] );
 
   const stopSound = useCallback( async ( ) => {
