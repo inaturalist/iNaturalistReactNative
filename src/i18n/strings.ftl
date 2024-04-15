@@ -61,6 +61,9 @@ AGREE = AGREE
 Agree-to-all-of-the-above = Agree to all of the above
 AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
+# Short for Augmented Reality Camera. This is what we call the camera that
+# overlays identification suggestions in real time
+AI-Camera = AI Camera
 ALL = ALL
 All = All
 All-observation-option = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)
@@ -82,9 +85,6 @@ APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
 April = April
-# Short for Augmented Reality Camera. This is what we call the camera that
-# overlays identification suggestions in real time
-AI-Camera = AI Camera
 Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
 # Onboarding text on MyObservations: 0-10 observations
