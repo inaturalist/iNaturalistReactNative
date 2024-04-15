@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import About from "components/About";
 import Developer from "components/Developer/Developer";
 import Log from "components/Developer/Log";
+import NetworkLogging from "components/Developer/NetworkLogging";
+import UiLibrary from "components/Developer/UiLibrary";
 import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
@@ -14,7 +16,6 @@ import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSea
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Help from "components/Help/Help";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import NetworkLogging from "components/NetworkLogging";
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
@@ -22,7 +23,6 @@ import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsCon
 import ProjectsContainer from "components/Projects/ProjectsContainer";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
-import UiLibrary from "components/UiLibrary";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import {
