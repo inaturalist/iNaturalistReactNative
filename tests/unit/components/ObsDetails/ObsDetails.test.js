@@ -9,6 +9,7 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected.ts";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
@@ -153,6 +154,11 @@ const renderObsDetails = ( ) => renderComponent(
 describe( "ObsDetails", () => {
   beforeAll( async () => {
     jest.useFakeTimers( );
+  } );
+
+  beforeEach( ( ) => {
+    // Reset store value of currentTabId to ACTIVITY_TAB_ID
+    useStore.setState( { currentTabId: "ACTIVITY" } );
   } );
 
   it.todo( "should not have accessibility errors" );
