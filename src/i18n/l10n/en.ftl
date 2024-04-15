@@ -61,7 +61,7 @@ AGREE = AGREE
 Agree-to-all-of-the-above = Agree to all of the above
 AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
-# Short for Augmented Reality Camera. This is what we call the camera that
+# This is what we call the camera that
 # overlays identification suggestions in real time
 AI-Camera = AI Camera
 ALL = ALL
