@@ -131,15 +131,14 @@ const ObservationLocation = ( {
     withCoordinates
   ] );
 
-  const locationIcon = () =>{
+  const locationIcon = () => {
     if ( geoprivacy === "obscured" ) {
       return "obscured";
     } if ( geoprivacy === "private" ) {
       return "private";
     }
     return "location";
-  }
-
+  };
 
   if ( !observation ) {
     return null;
