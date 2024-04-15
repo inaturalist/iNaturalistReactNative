@@ -108,6 +108,7 @@ const Settings = ( ) => {
       </View>
       <View className="mt-2">
         <RadioButtonRow
+          testID="all-observation-option"
           smallLabel
           checked={isAdvancedUser}
           onPress={() => setIsAdvancedUser( true )}
