@@ -38,8 +38,8 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
     formattedDuration: "00:00"
   } );
 
-  const formatCurrentPosition = useCallback( ( currentPosition: number ) => player.mmss(
-    Math.floor( currentPosition / 1000 )
+  const mmss = useCallback( ( value: number ) => player.mmss(
+    Math.floor( value / 1000 )
   ), [player] );
 
   const playSound = useCallback( position => {
@@ -52,8 +52,8 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
         setPlayBackState( {
           currentPosition: playBackEvent.currentPosition,
           duration: playBackEvent.duration,
-          formattedCurrentPosition: formatCurrentPosition( playBackEvent.currentPosition ),
-          formattedDuration: player.mmss( Math.floor( playBackEvent.duration / 1000 ) )
+          formattedCurrentPosition: mmss( playBackEvent.currentPosition ),
+          formattedDuration: mmss( playBackEvent.duration )
         } );
         // Update UI when playback is complete
         if ( playBackEvent.currentPosition >= playBackEvent.duration ) {
@@ -70,7 +70,7 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
   }, [
     player,
     sound.file_url,
-    formatCurrentPosition
+    mmss
   ] );
 
   const stopSound = useCallback( async ( ) => {
