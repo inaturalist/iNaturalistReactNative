@@ -11,7 +11,7 @@ import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 
-import ARDebugButton from "./ARDebugButton";
+import AIDebugButton from "./AIDebugButton";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -66,7 +66,7 @@ type Props = {
   zoomTextValue: string
 }
 
-const ARCameraButtons = ( {
+const AICameraButtons = ( {
   changeZoom,
   confidenceThreshold,
   cropRatio,
@@ -114,7 +114,7 @@ const ARCameraButtons = ( {
           rotatableAnimatedStyle={rotatableAnimatedStyle}
         />
       </View>
-      <ARDebugButton
+      <AIDebugButton
         confidenceThreshold={confidenceThreshold}
         setConfidenceThreshold={setConfidenceThreshold}
         fps={fps}
@@ -125,7 +125,7 @@ const ARCameraButtons = ( {
         setCropRatio={setCropRatio}
         // TODO: The following are just to get accessibility tests to pass...
         // without making anything truly accessible. The test seems to think
-        // ARDebugButton is itself not accessible, but it's really
+        // AIDebugButton is itself not accessible, but it's really
         // complaining about the sliders within. If the sliders make it into
         // production, they'll need to be made to pass that test.
         accessibilityRole="adjustable"
@@ -152,4 +152,4 @@ const ARCameraButtons = ( {
   );
 };
 
-export default ARCameraButtons;
+export default AICameraButtons;

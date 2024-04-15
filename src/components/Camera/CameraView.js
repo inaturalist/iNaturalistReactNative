@@ -37,7 +37,7 @@ type Props = {
 };
 
 // A container for the Camera component
-// that has logic that applies to both use cases in StandardCamera and ARCamera
+// that has logic that applies to both use cases in StandardCamera and AICamera
 const CameraView = ( {
   cameraRef,
   device,
@@ -167,7 +167,7 @@ const CameraView = ( {
       <VeryBadIpadRotator>
         <GestureDetector gesture={Gesture.Exclusive( singleTap, pinchGesture )}>
           <ReanimatedCamera
-            // Shared props between StandardCamera and ARCamera
+            // Shared props between StandardCamera and AICamera
             ref={cameraRef}
             device={device}
             isActive={isFocused}
@@ -179,7 +179,7 @@ const CameraView = ( {
             // it does nothing on Android so we set it to null there
             orientation={orientationPatch( deviceOrientation )}
             photoQualityBalance="quality"
-            // Props for ARCamera only
+            // Props for AICamera only
             frameProcessor={frameProcessor}
             pixelFormat={pixelFormatPatch()}
             animatedProps={animatedProps}

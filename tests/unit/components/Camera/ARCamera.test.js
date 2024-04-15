@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
-import ARCamera from "components/Camera/ARCamera/ARCamera";
-import * as usePredictions from "components/Camera/ARCamera/hooks/usePredictions";
+import AICamera from "components/Camera/AICamera/AICamera";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import i18next from "i18next";
 import React from "react";
 import * as useTaxon from "sharedHooks/useTaxon";
@@ -44,7 +44,7 @@ const mockModelLoaded = {
   result: null
 };
 
-jest.mock( "components/Camera/ARCamera/hooks/usePredictions", () => ( {
+jest.mock( "components/Camera/AICamera/hooks/usePredictions", () => ( {
   __esModule: true,
   default: () => mockModelLoaded
 } ) );
@@ -65,9 +65,9 @@ describe( "AI Camera", ( ) => {
         taxon: mockTaxonPrediction
       }
     } ) );
-    render( <ARCamera /> );
+    render( <AICamera /> );
 
-    const taxonResult = screen.getByTestId( `ARCamera.taxa.${mockTaxonPrediction.id}` );
+    const taxonResult = screen.getByTestId( `AICamera.taxa.${mockTaxonPrediction.id}` );
 
     expect( taxonResult ).toBeVisible( );
   } );
@@ -80,7 +80,7 @@ describe( "AI Camera", ( ) => {
         taxon: mockTaxonNoPrediction
       }
     } ) );
-    render( <ARCamera /> );
+    render( <AICamera /> );
 
     const scanText = screen.getByText( i18next.t( "Scan-the-area-around-you-for-organisms" ) );
 
@@ -92,7 +92,7 @@ describe( "AI Camera", ( ) => {
       ...mockModelLoaded,
       modelLoaded: false
     } ) );
-    render( <ARCamera /> );
+    render( <AICamera /> );
 
     const loadingText = screen.getByText( i18next.t( "Loading-iNaturalists-AI-Camera" ) );
 
@@ -107,7 +107,7 @@ describe( "AI Camera", ( ) => {
         taxon: mockLocalTaxon
       }
     } ) );
-    render( <ARCamera /> );
+    render( <AICamera /> );
 
     const taxonPhoto = screen.getByTestId( "ObsList.photo" );
 
@@ -134,7 +134,7 @@ describe( "AI Camera", ( ) => {
         taxon: mockLocalTaxon
       }
     } ) );
-    render( <ARCamera /> );
+    render( <AICamera /> );
 
     const taxonIcon = screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" );
 

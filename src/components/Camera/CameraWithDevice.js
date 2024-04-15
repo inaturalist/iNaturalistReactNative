@@ -18,7 +18,7 @@ import useDeviceOrientation, {
   LANDSCAPE_RIGHT
 } from "sharedHooks/useDeviceOrientation";
 
-import ARCamera from "./ARCamera/ARCamera";
+import AICamera from "./AICamera/AICamera";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 import StandardCamera from "./StandardCamera/StandardCamera";
 
@@ -167,7 +167,7 @@ const CameraWithDevice = ( {
           />
         )
         : (
-          <ARCamera
+          <AICamera
             camera={camera}
             device={device}
             flipCamera={flipCamera}

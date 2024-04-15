@@ -67,7 +67,7 @@ const DisplayTaxonName = ( {
       ? taxon.toJSON( )
       : taxon;
 
-    // this is mostly for the ARCamera, but might be helpful to display elsewhere
+    // this is mostly for the AICamera, but might be helpful to display elsewhere
     if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
       taxonPojo.rank = rankNames[taxonPojo?.rank_level];
     }
