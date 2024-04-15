@@ -66,11 +66,6 @@ const reducer = ( state, action ) => {
           action.observationShown?.comments || []
         )
       };
-    case "CHANGE_TAB":
-      return {
-        ...state,
-        currentTabId: action.currentTabId
-      };
     case "ADD_ACTIVITY_ITEM":
       return {
         ...state,
@@ -104,6 +99,8 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
+  const currentTabId = useStore( state => state.currentTabId );
+  const setCurrentTabId = useStore( state => state.setCurrentTabId );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
@@ -123,7 +120,6 @@ const ObsDetailsContainer = ( ): Node => {
   const {
     activityItems,
     addingActivityItem,
-    currentTabId,
     observationShown,
     showAgreeWithIdSheet,
     showCommentBox,
@@ -211,13 +207,13 @@ const ObsDetailsContainer = ( ): Node => {
     {
       id: ACTIVITY_TAB_ID,
       testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => dispatch( { type: "CHANGE_TAB", currentTabId: ACTIVITY_TAB_ID } ),
+      onPress: ( ) => setCurrentTabId( ACTIVITY_TAB_ID ),
       text: t( "ACTIVITY" )
     },
     {
       id: DETAILS_TAB_ID,
       testID: "ObsDetails.DetailsTab",
-      onPress: () => dispatch( { type: "CHANGE_TAB", currentTabId: DETAILS_TAB_ID } ),
+      onPress: () => setCurrentTabId( DETAILS_TAB_ID ),
       text: t( "DETAILS" )
     }
   ];
