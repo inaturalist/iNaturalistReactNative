@@ -112,7 +112,8 @@ type Props = {
   withObsTiles?: boolean,
   withPressableObsTiles?: boolean,
   zoomEnabled?: boolean,
-  zoomTapEnabled?: boolean
+  zoomTapEnabled?: boolean,
+  onZoomChange?: Function,
 }
 
 const getShadow = shadowColor => getShadowStyle( {
@@ -164,7 +165,8 @@ const Map = ( {
   withObsTiles,
   withPressableObsTiles,
   zoomEnabled = true,
-  zoomTapEnabled = true
+  zoomTapEnabled = true,
+  onZoomChange
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
@@ -398,6 +400,12 @@ const Map = ( {
     withPressableObsTiles,
     withObsTiles
   ] );
+
+  useEffect( ( ) => {
+    if ( typeof ( onZoomChange ) === "function" ) {
+      onZoomChange( currentZoom );
+    }
+  }, [currentZoom, onZoomChange] );
 
   return (
     <View

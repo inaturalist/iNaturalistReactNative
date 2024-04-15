@@ -1,15 +1,17 @@
 // @flow
 
+import classnames from "classnames";
 import {
+  Body1,
   Button,
   Map
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import { useDebugMode, useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 
 import useMapLocation from "./hooks/useMapLocation";
@@ -34,6 +36,8 @@ const MapView = ( {
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
+  const { isDebug } = useDebugMode( );
+  const [zoom, setZoom] = useState( -1 );
 
   const {
     onPanDrag,
@@ -66,6 +70,22 @@ const MapView = ( {
           </View>
         )}
       </View>
+      { isDebug && (
+        <View
+          className={classnames(
+            "absolute",
+            "left-5",
+            "bottom-[140px]",
+            "bg-deeppink",
+            "p-1",
+            "z-10"
+          )}
+        >
+          <Body1 className="text-white">
+            {`Zoom: ${zoom}`}
+          </Body1>
+        </View>
+      ) }
       <Map
         currentLocationButtonClassName="left-5 bottom-20"
         observations={observations}
@@ -84,6 +104,7 @@ const MapView = ( {
           }
         }}
         onZoomToNearby={onZoomToNearby}
+        onZoomChange={newZoom => setZoom( newZoom )}
         region={region}
         showCurrentLocationButton
         showExplore
