@@ -96,6 +96,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         icon: "help-circle"
       },
       settings: {
+        testID: "settings",
         label: t( "SETTINGS" ),
         navigation: "Settings",
         icon: "gear"
@@ -194,6 +195,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     return (
       <DrawerItem
         key={drawerItems[item].label}
+        testID={drawerItems[item].testID}
         label={drawerItems[item].label}
         onPress={( ) => {
           navigation.navigate( drawerItems[item].navigation, drawerItems[item].params );
