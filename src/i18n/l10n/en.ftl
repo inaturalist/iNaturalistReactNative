@@ -61,6 +61,9 @@ AGREE = AGREE
 Agree-to-all-of-the-above = Agree to all of the above
 AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
+# Short for Augmented Reality Camera. This is what we call the camera that
+# overlays identification suggestions in real time
+AI-Camera = AI Camera
 ALL = ALL
 All = All
 All-observation-option = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)
@@ -82,9 +85,6 @@ APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
 April = April
-# Short for Augmented Reality Camera. This is what we call the camera that
-# overlays identification suggestions in real time
-AR-Camera = AR Camera
 Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
 # Onboarding text on MyObservations: 0-10 observations
@@ -312,7 +312,7 @@ Donate-to-iNaturalist = Donate to iNaturalist
 # Label for a button the user taps when a task is complete
 DONE = DONE
 Dont-have-an-account = Don't have an account? Sign up
-During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AR camera.
+During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AI camera.
 # Button for editing something
 Edit = Edit
 EDIT-COMMENT = EDIT COMMENT
@@ -499,7 +499,7 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 LICENSES = LICENSES
 List-view = List view
-Loading-iNaturalists-AR-Camera = Loading iNaturalist's AR Camera
+Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION
 Location = Location
@@ -546,7 +546,7 @@ MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 Native = Native
 Native-to-place = Native to { $place }
-Navigates-to-AR-camera = Navigates to AR camera
+Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
@@ -648,7 +648,7 @@ Open-menu = Open menu.
 OPEN-SETTINGS = OPEN SETTINGS
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
-Opens-ar-camera = Opens AR camera.
+Opens-AI-camera = Opens AI camera.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive

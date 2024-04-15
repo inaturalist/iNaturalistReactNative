@@ -38,7 +38,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
     } );
     setShowModal( false );
   };
-  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AR" } ); };
+  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
   if ( isFetchingNextPage ) {
     return null;

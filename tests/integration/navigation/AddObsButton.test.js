@@ -25,7 +25,7 @@ beforeAll( ( ) => {
 } );
 
 describe( "AddObsButton", ( ) => {
-  it( "navigates user to AR camera", async ( ) => {
+  it( "navigates user to AI camera", async ( ) => {
     renderComponent( <AddObsButton /> );
 
     const addObsButton = screen.getByLabelText(
@@ -36,7 +36,7 @@ describe( "AddObsButton", ( ) => {
 
     expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
       screen: "Camera",
-      params: { camera: "AR", previousScreen: null }
+      params: { camera: "AI", previousScreen: null }
     } );
   } );
 } );

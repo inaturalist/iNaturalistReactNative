@@ -57,7 +57,7 @@ jest.mock( "components/Camera/hooks/useZoom", () => ( {
   )
 } ) );
 
-describe( "AR Camera", ( ) => {
+describe( "AI Camera", ( ) => {
   it( "shows a taxon prediction when result & rank_level < 40", async () => {
     jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
@@ -94,7 +94,7 @@ describe( "AR Camera", ( ) => {
     } ) );
     render( <ARCamera /> );
 
-    const loadingText = screen.getByText( i18next.t( "Loading-iNaturalists-AR-Camera" ) );
+    const loadingText = screen.getByText( i18next.t( "Loading-iNaturalists-AI-Camera" ) );
 
     expect( loadingText ).toBeVisible( );
   } );

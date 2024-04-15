@@ -94,9 +94,9 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
             icon="arcamera"
             color={theme.colors.onSecondary}
             className={classnames( greenCircleClass, "absolute bottom-[26px]" )}
-            onPress={( ) => navAndCloseModal( "Camera", { camera: "AR" } )}
-            accessibilityLabel={t( "AR-Camera" )}
-            accessibilityHint={t( "Navigates-to-AR-camera" )}
+            onPress={( ) => navAndCloseModal( "Camera", { camera: "AI" } )}
+            accessibilityLabel={t( "AI-Camera" )}
+            accessibilityHint={t( "Navigates-to-AI-camera" )}
           />
         )}
         <INatIconButton

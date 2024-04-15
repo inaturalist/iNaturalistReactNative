@@ -160,7 +160,7 @@ const ARCamera = ( {
               <Body1 className="text-white self-center mt-[22px]">
                 {modelLoaded
                   ? t( "Scan-the-area-around-you-for-organisms" )
-                  : t( "Loading-iNaturalists-AR-Camera" )}
+                  : t( "Loading-iNaturalists-AI-Camera" )}
               </Body1>
             )}
           {isDebug && result && (

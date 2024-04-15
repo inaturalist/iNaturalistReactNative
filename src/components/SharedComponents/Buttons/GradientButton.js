@@ -28,7 +28,7 @@ const GradientButton = ( {
     onPress={onPress}
     disabled={false}
     accessibilityLabel={t( "Add-observations" )}
-    accessibilityHint={accessibilityHint || t( "Opens-ar-camera" )}
+    accessibilityHint={accessibilityHint || t( "Opens-AI-camera" )}
     accessibilityRole="button"
     accessibilityState={{
       disabled: false

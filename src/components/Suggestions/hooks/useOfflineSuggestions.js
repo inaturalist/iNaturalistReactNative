@@ -35,10 +35,10 @@ const useOfflineSuggestions = (
         logger.error( "Error predicting image offline", predictImageError );
         throw predictImageError;
       }
-      // using the same rank level for displaying predictions in AR Camera
+      // using the same rank level for displaying predictions in AI Camera
       // this is all temporary, since we ultimately want predictions
       // returned similarly to how we return them on web; this is returning a
-      // single branch like on the AR Camera 2023-12-08
+      // single branch like on the AI Camera 2023-12-08
       const formattedPredictions = rawPredictions?.reverse( )
         .filter( prediction => prediction.rank_level <= 40 )
         .map( prediction => ( {

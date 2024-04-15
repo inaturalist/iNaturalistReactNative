@@ -16,19 +16,19 @@ describe( "AddObsModal", ( ) => {
     jest.clearAllMocks( );
   } );
 
-  it( "hides AR camera button on older devices", async ( ) => {
+  it( "hides AI camera button on older devices", async ( ) => {
     render( <AddObsModal closeModal={jest.fn( )} /> );
     const arCameraButton = screen.getByLabelText(
-      i18next.t( "AR-Camera" )
+      i18next.t( "AI-Camera" )
     );
     expect( arCameraButton ).toBeOnTheScreen();
   } );
 
-  it( "hides AR camera button on older devices", async ( ) => {
+  it( "hides AI camera button on older devices", async ( ) => {
     mockPlatform.Version = 9;
     render( <AddObsModal closeModal={jest.fn( )} /> );
     const arCameraButton = screen.queryByLabelText(
-      i18next.t( "AR-Camera" )
+      i18next.t( "AI-Camera" )
     );
     expect( arCameraButton ).toBeFalsy( );
   } );

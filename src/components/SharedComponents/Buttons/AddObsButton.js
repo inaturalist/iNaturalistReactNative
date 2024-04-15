@@ -31,7 +31,7 @@ const AddObsButton = (): React.Node => {
     } );
     closeModal( );
   };
-  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AR" } ); };
+  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
 
   const addObsModal = <AddObsModal closeModal={closeModal} navAndCloseModal={navAndCloseModal} />;
 

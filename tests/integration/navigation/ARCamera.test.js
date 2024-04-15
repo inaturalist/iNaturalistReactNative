@@ -64,9 +64,9 @@ describe( "ARCamera navigation with advanced user layout", ( ) => {
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
       const addObsButtons = await screen.findAllByLabelText( "Add observations" );
       await actor.press( addObsButtons[1] );
-      const cameraButton = await screen.findByLabelText( /AR Camera/ );
+      const cameraButton = await screen.findByLabelText( /AI Camera/ );
       await actor.press( cameraButton );
-      expect( await screen.findByText( /Loading iNaturalist's AR Camera/ ) ).toBeVisible( );
+      expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeVisible( );
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
@@ -97,7 +97,7 @@ describe( "ARCamera navigation with advanced user layout", ( ) => {
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
       const addObsButtons = await screen.findAllByLabelText( "Add observations" );
       await actor.press( addObsButtons[1] );
-      const cameraButton = await screen.findByLabelText( /AR Camera/ );
+      const cameraButton = await screen.findByLabelText( /AI Camera/ );
       await actor.press( cameraButton );
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
       const takePhotoButton = await screen.findByLabelText( /Take photo/ );
