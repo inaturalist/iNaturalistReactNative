@@ -24,6 +24,7 @@ import {
 } from "sharedHooks";
 import useRemoteObservation,
 { fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
+import { ACTIVITY_TAB_ID, DETAILS_TAB_ID } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
@@ -37,9 +38,6 @@ const { useRealm } = RealmContext;
 LogBox.ignoreLogs( [
   "Non-serializable values were found in the navigation state"
 ] );
-
-const ACTIVITY_TAB_ID = "ACTIVITY";
-const DETAILS_TAB_ID = "DETAILS";
 
 const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
   ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) )
