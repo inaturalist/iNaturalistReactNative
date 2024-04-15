@@ -45,6 +45,10 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   }
   if ( !currentUser ) {
     return (
+      // It seems to be a known issue that the EmptyListComponent of FlashList,
+      // which is the parent here, is not possible to be used with a flex of 1, or flex grow.
+      // The following workaround is to use a margin of 30% to roughly center the content.
+      // https://github.com/Shopify/flash-list/discussions/517
       <View className="mx-[67px] my-[30%] items-center">
         <GradientButton
           sizeClassName="w-[141px] h-[141px]"
