@@ -62,8 +62,8 @@ describe( "ARCamera navigation with advanced user layout", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButton = await screen.findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
+      const addObsButtons = await screen.findAllByLabelText( "Add observations" );
+      await actor.press( addObsButtons[1] );
       const cameraButton = await screen.findByLabelText( /AR Camera/ );
       await actor.press( cameraButton );
       expect( await screen.findByText( /Loading iNaturalist's AR Camera/ ) ).toBeVisible( );
@@ -95,8 +95,8 @@ describe( "ARCamera navigation with advanced user layout", ( ) => {
 
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButton = await screen.findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
+      const addObsButtons = await screen.findAllByLabelText( "Add observations" );
+      await actor.press( addObsButtons[1] );
       const cameraButton = await screen.findByLabelText( /AR Camera/ );
       await actor.press( cameraButton );
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );

@@ -40,15 +40,15 @@ beforeAll( async () => {
   useStore.setState( { isAdvancedUser: true } );
 } );
 
-describe( "StandardCamera navigation", ( ) => {
+describe( "StandardCamera navigation with advanced user layout", ( ) => {
   const actor = userEvent.setup( );
 
-  describe( "from MyObs with advanced user layout", ( ) => {
+  describe( "from MyObs", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButton = await screen.findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
+      const addObsButtons = await screen.findAllByLabelText( "Add observations" );
+      await actor.press( addObsButtons[1] );
       const cameraButton = await screen.findByLabelText( "Camera" );
       await actor.press( cameraButton );
       const cameraNavButtons = await screen.findByTestId( "CameraNavButtons" );
@@ -68,8 +68,8 @@ describe( "StandardCamera navigation", ( ) => {
     Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
     renderApp( );
     expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-    const addObsButton = await screen.findByLabelText( "Add observations" );
-    await actor.press( addObsButton );
+    const addObsButtons = await screen.findAllByLabelText( "Add observations" );
+    await actor.press( addObsButtons[1] );
     const cameraButton = await screen.findByLabelText( "Camera" );
     await actor.press( cameraButton );
     const takePhotoButton = await screen.findByLabelText( /Take photo/ );

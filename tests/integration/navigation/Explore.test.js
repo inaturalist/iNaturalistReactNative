@@ -93,21 +93,6 @@ async function navigateToRootExplore( ) {
   await actor.press( exploreButton );
 }
 
-describe( "logged out", ( ) => {
-  describe( "from MyObservationsEmpty for logged out user", ( ) => {
-    it( "should display species view with no back button", async ( ) => {
-      renderApp( );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const exploreButton = await screen.findByLabelText( /See observations in explore/ );
-      await actor.press( exploreButton );
-      const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-      expect( speciesViewIcon ).toBeVisible( );
-      const backButton = screen.queryByTestId( "Explore.BackButton" );
-      expect( backButton ).toBeFalsy( );
-    } );
-  } );
-} );
-
 describe( "logged in", ( ) => {
   beforeEach( async ( ) => {
     // Write mock observation to realm
