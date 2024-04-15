@@ -2,6 +2,7 @@ import {
   refresh as refreshNetInfo,
   useNetInfo
 } from "@react-native-community/netinfo";
+import Slider from "@react-native-community/slider";
 import { useFocusEffect } from "@react-navigation/native";
 import { Body1, INatIconButton, OfflineNotice } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -12,10 +13,31 @@ import React, {
   useState
 } from "react";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
+import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import { useTranslation } from "sharedHooks";
 
 const logger = log.extend( "SoundContainer" );
+
+const SoundSlider = ( { playBackState, onSlidingComplete } ) => {
+  const theme = useTheme( );
+  const sliderStyle = {
+    width: "100%"
+  };
+  return (
+    <Slider
+      style={sliderStyle}
+      minimumValue={0}
+      maximumValue={playBackState.duration}
+      minimumTrackTintColor="#FFFFFF"
+      maximumTrackTintColor="#FFFFFF"
+      thumbTintColor={theme.colors.inatGreen}
+      tapToSeek
+      value={playBackState.currentPosition}
+      onSlidingComplete={onSlidingComplete}
+    />
+  );
+};
 
 const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
   const { isInternetReachable } = useNetInfo( );
@@ -27,6 +49,8 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
 
   // Track whether the user swiped away since last playing
   const [swipedAway, setSwipedAway] = useState( false );
+
+  console.log( "sound", sound );
 
   // Current progress and total duration of playback
   const [playBackState, setPlayBackState] = useState( {
@@ -145,8 +169,6 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
     await stopSound( );
   }, [stopSound] ) );
 
-  const playBackPercent = ( playBackState.currentPosition / ( playBackState.duration || 1 ) ) * 100;
-
   if ( isInternetReachable === false ) {
     return (
       <OfflineNotice
@@ -183,11 +205,17 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
           {playBackState.formattedDuration}
         </Body1>
       </View>
-      <View className="relative w-3/4 h-10 justify-center">
-        <View className="w-full h-1 bg-white" />
-        <View
-          className="absolute w-[18px] h-[18px] rounded-full bg-inatGreen"
-          style={{ left: `${playBackPercent}%` }}
+      <View className="relative w-3/4 h-4 justify-center">
+        <SoundSlider
+          playBackState={playBackState}
+          onSlidingComplete={value => {
+            setPlayBackState( {
+              ...playBackState,
+              currentPosition: value,
+              formattedCurrentPosition: mmss( value )
+            } );
+            player.seekToPlayer( value );
+          }}
         />
       </View>
     </View>
