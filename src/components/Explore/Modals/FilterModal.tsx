@@ -55,7 +55,7 @@ const getShadow = shadowColor => getShadowStyle( {
   elevation: 6
 } );
 
-type Props = {
+interface Props {
   closeModal: Function,
   updateTaxon: Function,
 };
@@ -72,10 +72,11 @@ const FilterModal = ( {
   const {
     state,
     dispatch,
-    filtersNotDefault,
-    numberOfFilters,
     differsFromSnapshot,
-    discardChanges
+    discardChanges,
+    isNotInitialState,
+    numberOfFilters,
+    setExploreLocation
   } = useExplore();
   const {
     taxon,
@@ -645,11 +646,14 @@ const FilterModal = ( {
             </View>
           )}
         </View>
-        {filtersNotDefault
+        {isNotInitialState
           ? (
             <Body3
               accessibilityRole="button"
-              onPress={() => dispatch( { type: EXPLORE_ACTION.RESET } )}
+              onPress={async ( ) => {
+                const exploreLocation = await setExploreLocation( );
+                dispatch( { type: EXPLORE_ACTION.RESET, exploreLocation } )
+              }}
             >
               {t( "Reset-verb" )}
             </Body3>

@@ -44,7 +44,7 @@ const Header = ( {
   const theme = useTheme( );
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
-  const placeName = state.place_guess;
+  const placeGuess = state.place_guess;
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
@@ -92,7 +92,7 @@ const Header = ( {
                 className="flex-row items-center pt-3"
               >
                 <INatIcon name="location" size={15} />
-                <Body3 className="ml-3">{placeName}</Body3>
+                <Body3 className="ml-3">{placeGuess}</Body3>
               </Pressable>
             </View>
           </View>
