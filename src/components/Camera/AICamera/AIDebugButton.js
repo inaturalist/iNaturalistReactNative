@@ -49,7 +49,7 @@ const SliderControl = ( {
   </P>
 );
 
-const ARDebugButton = ( {
+const AIDebugButton = ( {
   confidenceThreshold,
   setConfidenceThreshold,
   fps,
@@ -129,4 +129,4 @@ const ARDebugButton = ( {
   );
 };
 
-export default ARDebugButton;
+export default AIDebugButton;

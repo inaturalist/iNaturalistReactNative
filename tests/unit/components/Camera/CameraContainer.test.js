@@ -47,7 +47,7 @@ jest.mock( "components/Camera/StandardCamera/PhotoPreview", () => ( {
   default: () => mockView
 } ) );
 
-jest.mock( "components/Camera/ARCamera/FrameProcessorCamera", () => ( {
+jest.mock( "components/Camera/AICamera/FrameProcessorCamera", () => ( {
   __esModule: true,
   default: () => mockView
 } ) );

@@ -3,7 +3,7 @@ import {
   screen,
   userEvent
 } from "@testing-library/react-native";
-import * as usePredictions from "components/Camera/ARCamera/hooks/usePredictions";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
 import useStore from "stores/useStore";
 import { renderApp } from "tests/helpers/render";
@@ -55,7 +55,7 @@ beforeAll( async () => {
   useStore.setState( { isAdvancedUser: true } );
 } );
 
-describe( "ARCamera navigation with advanced user layout", ( ) => {
+describe( "AICamera navigation with advanced user layout", ( ) => {
   const actor = userEvent.setup( );
 
   describe( "from MyObs", ( ) => {
@@ -84,7 +84,7 @@ describe( "ARCamera navigation with advanced user layout", ( ) => {
       Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
     } );
 
-    it( "should advance to suggestions and display top suggestion from ARCamera", async ( ) => {
+    it( "should advance to suggestions and display top suggestion from AICamera", async ( ) => {
       jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
         handleTaxaDetected: jest.fn( ),
         modelLoaded: true,
