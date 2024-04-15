@@ -45,7 +45,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   }
   if ( !currentUser ) {
     return (
-      <View className="mx-[67px] items-center">
+      <View className="mx-[67px] my-[30%] items-center">
         <GradientButton
           sizeClassName="w-[141px] h-[141px]"
           onPress={navToARCamera}
