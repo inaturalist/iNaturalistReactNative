@@ -1,7 +1,11 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { DownloaderHelper } = require( "node-downloader-helper" );
 const fs = require( "fs" ).promises;
 const path = require( "path" );
-const download = require( "@xhmikosr/downloader" );
+// eslint-disable-next-line import/no-extraneous-dependencies
+const Decompress = require( "decompress" );
 
+const filename = "small_model.zip";
 const modelURL
   = "https://github.com/inaturalist/SeekReactNative/releases/download/v2.9.1-138/small_model.zip";
 
@@ -22,10 +26,20 @@ const iosDestinationPath = path.join( __dirname, "..", "ios" );
 
 ( async () => {
   console.log( `Downloading example model from '${modelURL}'...` );
-  await download( modelURL, modelPath, {
-    extract: true
-  } );
+  await fs.mkdir( modelPath, { recursive: true } );
+  const dl = new DownloaderHelper( modelURL, modelPath );
+  dl.on( "end", () => console.log( "Download Completed" ) );
+  dl.on( "error", err => console.log( "Download Failed", err ) );
+  await dl.start().catch( err => console.error( err ) );
   console.log( "Downloaded!" );
+
+  console.log( "Unzipping!" );
+  const zipPath = path.join( modelPath, filename );
+  await Decompress( zipPath, modelPath )
+    .then( () => {
+      console.log( "Done Unzipping!" );
+    } )
+    .catch( error => console.log( error ) );
 
   console.log( "Copying model files to assets folder..." );
   await fs.mkdir( androidDestinationPath, { recursive: true } );
