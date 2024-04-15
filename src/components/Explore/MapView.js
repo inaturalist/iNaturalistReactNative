@@ -118,6 +118,7 @@ const MapView = ( {
         onPermissionDenied={onPermissionDenied}
         onPermissionGranted={onPermissionGranted}
         permissionRequested={permissionRequested}
+        currentLocationZoomLevel={15}
       />
     </View>
   );
