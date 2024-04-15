@@ -115,7 +115,7 @@ const StandardBottomSheet = ( {
           )}
         >
           <View className="items-center">
-            <Heading4>{headerText}</Heading4>
+            <Heading4 testID="bottom-sheet-header">{headerText}</Heading4>
           </View>
           {children}
           {!hideCloseButton && (

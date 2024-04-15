@@ -154,6 +154,10 @@ describe( "Signed in user", () => {
     // Add a comment
     await commentModalInput.tap();
     await commentModalInput.typeText( "This is a comment" );
+    // Tap on the title of the modal to dismiss the keyboard
+    const bottomSheetHeader = element( by.id( "bottom-sheet-header" ) );
+    await bottomSheetHeader.tap();
+    // Tap the submit button
     const commentModalSubmitButton = element( by.id( "ObsEdit.confirm" ) );
     await commentModalSubmitButton.tap();
     // Check that the comment is visible
