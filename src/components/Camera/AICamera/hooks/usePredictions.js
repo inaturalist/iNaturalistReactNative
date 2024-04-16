@@ -52,6 +52,7 @@ const usePredictions = ( ): Object => {
     cropRatio,
     result,
     resultTimestamp,
+    setResult,
     setConfidenceThreshold,
     setFPS,
     setNumStoredResults,
