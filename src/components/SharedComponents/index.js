@@ -66,7 +66,7 @@ export { default as Heading3 } from "./Typography/Heading3";
 export { default as Heading4 } from "./Typography/Heading4";
 export { default as Heading5 } from "./Typography/Heading5";
 export { default as INatText } from "./Typography/INatText";
-export { default as INatTextLight } from "./Typography/INatTextLight";
+export { default as INatTextRegular } from "./Typography/INatTextRegular";
 export { default as INatTextMedium } from "./Typography/INatTextMedium";
 export { default as List1 } from "./Typography/List1";
 export { default as List2 } from "./Typography/List2";

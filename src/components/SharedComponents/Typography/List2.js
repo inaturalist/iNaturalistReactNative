@@ -3,10 +3,10 @@
 import type { Node } from "react";
 import React from "react";
 
-import INatTextLight from "./INatTextLight";
+import INatTextRegular from "./INatTextRegular";
 
 const List2 = ( props: any ): Node => (
-  <INatTextLight
+  <INatTextRegular
     className="text-sm leading-[17px] font-light text-darkGray"
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}

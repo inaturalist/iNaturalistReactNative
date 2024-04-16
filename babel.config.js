@@ -8,6 +8,7 @@ module.exports = {
       alias: {
         api: "./src/api",
         components: "./src/components",
+        constants: "./src/constants",
         dictionaries: "./src/dictionaries",
         i18n: "./src/i18n",
         images: "./src/images",

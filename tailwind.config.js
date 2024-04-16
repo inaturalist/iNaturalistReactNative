@@ -64,22 +64,16 @@ module.exports = {
         22: "5.5rem"
       },
       fontFamily: {
-        "Whitney-Medium": ["Whitney-Medium"],
-        "Whitney-Medium-Pro": ["Whitney-Medium-Pro"], // Android naming convention
-        "Whitney-Light": ["Whitney-Light"],
-        "Whitney-Light-Pro": ["Whitney-Light-Pro"], // Android naming convention
-        "Whitney-BookItalic": ["Whitney-BookItalic"],
-        "Whitney-BookItalic-Pro": ["Whitney-BookItalic-Pro"], // Android naming convention
-        "Whitney-Semibold": ["Whitney-Semibold"],
-        "Whitney-Semibold-Pro": ["Whitney-Semibold-Pro"], // Android naming convention
-        "Whitney-Semibold-Italic": ["Whitney-Semibold-Italic"],
-        "Whitney-Semibold-Italic-Pro": ["Whitney-Semibold-Italic-Pro"], // Android naming convention
-        "Whitney-Book": ["Whitney-Book"],
-        "Whitney-Book-Pro": ["Whitney-Book-Pro"], // Android naming convention
+        "Lato-Bold": ["Lato-Bold"],
+        "Lato-BoldItalic": ["Lato-BoldItalic"],
+        "Lato-Italic": ["Lato-Italic"],
+        "Lato-Light": ["Lato-Light"],
+        "Lato-LightItalic": ["Lato-LightItalic"],
+        "Lato-Medium": ["Lato-Medium"],
+        "Lato-MediumItalic": ["Lato-MediumItalic"],
+        "Lato-Regular": ["Lato-Regular"],
         // selected from list of fonts already available in RN
         // https://infinitbility.com/react-native-font-family-list/
-        "Papyrus-Condensed": ["Papyrus-Condensed"],
-        Roboto: ["Roboto"],
         monospace: ["monospace"],
         Menlo: ["Menlo"]
       },

@@ -4,6 +4,7 @@ import { FasterImageView as UnstyledFasterImageView } from "@candlefinance/faste
 import {
   BottomSheetTextInput as StyledBottomSheetTextInput
 } from "@gorhom/bottom-sheet";
+import { fontBold, fontMedium, fontRegular } from "constants/fontFamilies.ts";
 import { styled } from "nativewind";
 import {
   Image as UnstyledImage,
@@ -35,23 +36,17 @@ const ScrollView = styled( UnstyledScrollView );
 // $FlowIgnore
 const Text = styled(
   UnstyledText,
-  Platform.OS === "ios"
-    ? "font-Whitney-Book"
-    : "font-Whitney-Book-Pro"
+  fontBold
 );
 // $FlowIgnore
 const MediumText = styled(
   UnstyledText,
-  Platform.OS === "ios"
-    ? "font-Whitney-Medium"
-    : "font-Whitney-Medium-Pro"
+  fontMedium
 );
 // $FlowIgnore
-const LightText = styled(
+const RegularText = styled(
   UnstyledText,
-  Platform.OS === "ios"
-    ? "font-Whitney-Book"
-    : "font-Whitney-Book-Pro"
+  fontRegular
 );
 // $FlowIgnore
 const TextInput = styled( UntyledTextInput );
@@ -83,11 +78,11 @@ export {
   Image,
   ImageBackground,
   KeyboardAvoidingView,
-  LightText,
   LinearGradient,
   MediumText,
   Modal,
   Pressable,
+  RegularText,
   SafeAreaView,
   ScrollView,
   Text,
