@@ -80,7 +80,7 @@ const usePrepareStoreAndNavigate = (
       } );
 
     if ( visionResult ) {
-      // make sure taxon id is stored as a number, not a string, from ARCamera
+      // make sure taxon id is stored as a number, not a string, from AICamera
       visionResult.taxon.id = Number( visionResult.taxon.id );
       newObservation.taxon = visionResult.taxon;
       newObservation.owners_identification_from_vision = true;

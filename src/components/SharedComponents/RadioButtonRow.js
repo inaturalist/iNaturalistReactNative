@@ -1,6 +1,7 @@
 // @flow
 import {
   Body1,
+  Body2,
   INatIcon,
   List2
 } from "components/SharedComponents";
@@ -10,21 +11,25 @@ import React from "react";
 import { RadioButton, useTheme } from "react-native-paper";
 
 type Props = {
+  testID: string,
   checked: boolean,
   description: ?string,
   icon: string,
   label: string,
   onPress: Function,
   value: string,
+  smallLabel: ?boolean
 }
 
 const RadioButtonRow = ( {
+  testID,
   description,
   checked,
   label,
   onPress,
   icon,
-  value
+  value,
+  smallLabel = false
 }: Props ): Node => {
   const theme = useTheme( );
 
@@ -32,8 +37,12 @@ const RadioButtonRow = ( {
     ? "checked"
     : "unchecked";
 
+  const Label = smallLabel
+    ? Body2
+    : Body1;
+
   return (
-    <Pressable accessibilityRole="button" onPress={onPress}>
+    <Pressable testID={testID} accessibilityRole="button" onPress={onPress}>
       <View className="flex-row items-center">
         <RadioButton.Android
           onPress={onPress}
@@ -42,7 +51,7 @@ const RadioButtonRow = ( {
           accessibilityLabel={label}
         />
         <View className="flex-row">
-          <Body1 className="mr-2">{label}</Body1>
+          <Label className="mr-2">{label}</Label>
           {icon && <INatIcon name={icon} size={19} color={theme.colors.secondary} />}
         </View>
       </View>

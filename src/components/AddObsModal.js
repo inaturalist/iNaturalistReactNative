@@ -1,12 +1,10 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body3, Heading2, INatIcon, INatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
 import { Platform, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -15,50 +13,28 @@ import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
-  closeModal: ( ) => void
+  closeModal: ( ) => void,
+  navAndCloseModal: ( string, ?{ camera: string } ) => void
 }
 
-const AddObsModal = ( { closeModal }: Props ): React.Node => {
+const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const setObservations = useStore( state => state.setObservations );
-  const resetStore = useStore( state => state.resetStore );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 
-  // TODO: update these version numbers based on what the new model can handle
-  // in CoreML and TFLite
   const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
-    || ( Platform.OS === "android" && Platform.Version > 23 );
+    || ( Platform.OS === "android" && Platform.Version > 21 );
 
-  const navigation = useNavigation( );
+  const resetStore = useStore( state => state.resetStore );
+  const setObservations = useStore( state => state.setObservations );
 
-  const navAndCloseModal = async ( screen, params ) => {
-    const currentRoute = getCurrentRoute();
+  const navToObsEdit = async ( ) => {
     resetStore( );
-    if ( screen === "ObsEdit" ) {
-      const newObservation = await Observation.new( );
-      setObservations( [newObservation] );
-    }
-    // access nested screen
-    navigation.navigate( "CameraNavigator", {
-      screen,
-      params: { ...params, previousScreen: currentRoute }
-    } );
-    closeModal( );
+    const newObservation = await Observation.new( );
+    setObservations( [newObservation] );
+    navAndCloseModal( "ObsEdit" );
   };
-
-  const navToPhotoGallery = async ( ) => {
-    navAndCloseModal( "PhotoGallery" );
-  };
-
-  const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
-
-  const navToARCamera = ( ) => navAndCloseModal( "Camera", { camera: "AR" } );
-
-  const navToStandardCamera = ( ) => navAndCloseModal( "Camera", { camera: "Standard" } );
-
-  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
   const bulletedText = [
     { text: t( "Use-iNaturalists-AI-Camera" ), icon: "arcamera" },
@@ -107,7 +83,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             "mr-[37px] bottom-[1px]": showARCamera,
             "mr-[9px]": !showARCamera
           } )}
-          onPress={navToStandardCamera}
+          onPress={( ) => navAndCloseModal( "Camera", { camera: "Standard" } )}
           accessibilityLabel={t( "Camera" )}
           accessibilityHint={t( "Navigates-to-camera" )}
         />
@@ -118,9 +94,9 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             icon="arcamera"
             color={theme.colors.onSecondary}
             className={classnames( greenCircleClass, "absolute bottom-[26px]" )}
-            onPress={navToARCamera}
-            accessibilityLabel={t( "AR-Camera" )}
-            accessibilityHint={t( "Navigates-to-AR-camera" )}
+            onPress={( ) => navAndCloseModal( "Camera", { camera: "AI" } )}
+            accessibilityLabel={t( "AI-Camera" )}
+            accessibilityHint={t( "Navigates-to-AI-camera" )}
           />
         )}
         <INatIconButton
@@ -132,7 +108,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             "ml-[37px] bottom-[1px]": showARCamera,
             "ml-[9px]": !showARCamera
           } )}
-          onPress={navToPhotoGallery}
+          onPress={( ) => navAndCloseModal( "PhotoGallery" )}
           accessibilityLabel={t( "Photo-importer" )}
           accessibilityHint={t( "Navigates-to-photo-importer" )}
         />
@@ -170,7 +146,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             "ml-[26px]": showARCamera,
             "ml-[20px] bottom-[33px]": !showARCamera
           } )}
-          onPress={navToSoundRecorder}
+          onPress={( ) => navAndCloseModal( "SoundRecorder" )}
           accessibilityLabel={t( "Sound-recorder" )}
           accessibilityHint={t( "Navigates-to-sound-recorder" )}
         />

@@ -94,7 +94,7 @@
     "comment": "Month of April",
     "val": "April"
   },
-  "AR-Camera": {
+  "AI-Camera": {
     "comment": "Short for Augmented Reality Camera. This is what we call the camera that\noverlays identification suggestions in real time",
     "val": "AR Camera"
   },
@@ -674,7 +674,7 @@
   "LEAVE-US-A-REVIEW": "LEAVE US A REVIEW!",
   "LICENSES": "LICENSES",
   "List-view": "List view",
-  "Loading-iNaturalists-AR-Camera": "Loading iNaturalist's AR Camera",
+  "Loading-iNaturalists-AI-Camera": "Loading iNaturalist's AR Camera",
   "LOCATION": "LOCATION",
   "Location": "Location",
   "Location-accuracy-is-too-imprecise": "Location accuracy is too imprecise to help identifiers. Please zoom in.",
@@ -730,7 +730,7 @@
   "Most-faved": "Most faved",
   "Native": "Native",
   "Native-to-place": "Native to { $place }",
-  "Navigates-to-AR-camera": "Navigates to AR camera",
+  "Navigates-to-AI-camera": "Navigates to AR camera",
   "Navigates-to-bulk-importer": "Navigates to bulk importer",
   "Navigates-to-camera": "Navigates to camera",
   "Navigates-to-explore": "Navigates to explore",

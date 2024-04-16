@@ -86,7 +86,7 @@ const StandardCamera = ( {
         navigateToObsDetails( navigation, previousScreen.params.uuid );
       } else {
         navigation.navigate( "TabNavigator", {
-          screen: "ObservationsStackNavigator",
+          screen: "TabStackNavigator",
           params: {
             screen: "ObsList"
           }

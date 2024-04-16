@@ -40,7 +40,7 @@ const Header = ( {
 
   const navToObsList = useCallback( ( ) => {
     navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator",
+      screen: "TabStackNavigator",
       params: {
         screen: "ObsList"
       }

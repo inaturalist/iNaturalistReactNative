@@ -22,7 +22,7 @@ import {
   handleDeviceNotSupported,
   handleLog
 } from "../helpers";
-import ARCameraButtons from "./ARCameraButtons";
+import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 import usePredictions from "./hooks/usePredictions";
 
@@ -44,7 +44,7 @@ type Props = {
   isLandscapeMode: boolean
 };
 
-const ARCamera = ( {
+const AICamera = ( {
   camera,
   device,
   flipCamera,
@@ -149,7 +149,7 @@ const ARCamera = ( {
                 accessibilityLabel={t( "View-suggestions" )}
                 taxon={result?.taxon}
                 handleCheckmarkPress={handlePress}
-                testID={`ARCamera.taxa.${result?.taxon?.id}`}
+                testID={`AICamera.taxa.${result?.taxon?.id}`}
                 confidence={convertOfflineScoreToConfidence( result?.score )}
                 asListItem={false}
                 clearBackground
@@ -160,7 +160,7 @@ const ARCamera = ( {
               <Body1 className="text-white self-center mt-[22px]">
                 {modelLoaded
                   ? t( "Scan-the-area-around-you-for-organisms" )
-                  : t( "Loading-iNaturalists-AR-Camera" )}
+                  : t( "Loading-iNaturalists-AI-Camera" )}
               </Body1>
             )}
           {isDebug && result && (
@@ -182,7 +182,7 @@ const ARCamera = ( {
         </View>
       )}
       <FadeInOutView takingPhoto={takingPhoto} />
-      <ARCameraButtons
+      <AICameraButtons
         changeZoom={changeZoom}
         confidenceThreshold={confidenceThreshold}
         cropRatio={cropRatio}
@@ -207,4 +207,4 @@ const ARCamera = ( {
   );
 };
 
-export default ARCamera;
+export default AICamera;

@@ -61,8 +61,12 @@ AGREE = AGREE
 Agree-to-all-of-the-above = Agree to all of the above
 AGREE-WITH-ID = AGREE WITH ID?
 Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
+# This is what we call the camera that
+# overlays identification suggestions in real time
+AI-Camera = AI Camera
 ALL = ALL
 All = All
+All-observation-option = All observation options (including iNaturalist AI Camera, Standard Camera, Uploading from Gallery, and Sound Recorder)
 All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
@@ -81,9 +85,6 @@ APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
 April = April
-# Short for Augmented Reality Camera. This is what we call the camera that
-# overlays identification suggestions in real time
-AR-Camera = AR Camera
 Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
 # Onboarding text on MyObservations: 0-10 observations
@@ -311,7 +312,7 @@ Donate-to-iNaturalist = Donate to iNaturalist
 # Label for a button the user taps when a task is complete
 DONE = DONE
 Dont-have-an-account = Don't have an account? Sign up
-During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AR camera.
+During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AI camera.
 # Button for editing something
 Edit = Edit
 EDIT-COMMENT = EDIT COMMENT
@@ -417,6 +418,7 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
 Identifiers = Identifiers
 Identifiers-View = Identifiers View
 Identify-an-organism = Identify an organism
+Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with the iNaturalist AI Camera
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 Import-Photos-From = Import Photos From
@@ -429,6 +431,7 @@ IMPORT-X-OBSERVATIONS =
 # Identification category
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
+iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNaturalist can save photos you take in the app to your device’s gallery.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -496,7 +499,8 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 LICENSES = LICENSES
 List-view = List view
-Loading-iNaturalists-AR-Camera = Loading iNaturalist's AR Camera
+Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
+Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION
 Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
@@ -542,7 +546,7 @@ MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 Native = Native
 Native-to-place = Native to { $place }
-Navigates-to-AR-camera = Navigates to AR camera
+Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
@@ -594,13 +598,12 @@ Obervations-must-be-manually-added = Observations must be manually added to a tr
 Obscured = Obscured
 # Displayed when user views an obscured location on the ObsDetail map screen
 Obscured-observation-location-map-description = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
-Observation = Observation
 Observation-Attribution = Observation: © { $userName } · { $restrictions }
+OBSERVATION-BUTTON = OBSERVATION BUTTON
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Observation-Name = Observation { $scientificName }
 # Label for a menu that shows various actions you can take for an observation
 Observation-options = Observation options
-Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
@@ -631,7 +634,6 @@ October = October
 Offensive-Inappropriate = Offensive/Inappropriate
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
-Offline-No-Notifications = Cannot fetch notifications at this time.
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
 # Sort order, refers to newest or oldest date
@@ -646,6 +648,7 @@ Open-menu = Open menu.
 OPEN-SETTINGS = OPEN SETTINGS
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
+Opens-AI-camera = Opens AI camera.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
@@ -991,6 +994,7 @@ Welcome-to-iNaturalist = Welcome to iNaturalist!
 Welcome-user = <0>Welcome back,</0><1>{ $userHandle }</1>
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
+When-tapping-the-green-observation-button = When tapping the green observation button, open:
 WIKIPEDIA = WIKIPEDIA
 Wild = Wild
 WILD-STATUS = WILD STATUS
@@ -1094,6 +1098,7 @@ X-Species =
        *[other] { $count } Species
     }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what's around you.

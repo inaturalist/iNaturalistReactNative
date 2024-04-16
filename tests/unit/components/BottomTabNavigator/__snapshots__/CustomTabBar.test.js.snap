@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CustomTabBar should render correctly 1`] = `
+exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
 <View
   collapsable={false}
   pointerEvents="box-none"
@@ -375,7 +375,7 @@ exports[`CustomTabBar should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </BVLinearGradient>
@@ -467,7 +467,7 @@ exports[`CustomTabBar should render correctly 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </View>

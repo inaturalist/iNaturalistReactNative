@@ -3,8 +3,9 @@ import {
   screen,
   userEvent
 } from "@testing-library/react-native";
-import * as usePredictions from "components/Camera/ARCamera/hooks/usePredictions";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
+import useStore from "stores/useStore";
 import { renderApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -51,20 +52,21 @@ afterAll( uniqueRealmAfterAll );
 beforeAll( async () => {
   await initI18next();
   jest.useFakeTimers( );
+  useStore.setState( { isAdvancedUser: true } );
 } );
 
-describe( "ARCamera navigation", ( ) => {
+describe( "AICamera navigation with advanced user layout", ( ) => {
   const actor = userEvent.setup( );
 
   describe( "from MyObs", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButton = await screen.findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
-      const cameraButton = await screen.findByLabelText( /AR Camera/ );
+      const addObsButtons = await screen.findAllByLabelText( "Add observations" );
+      await actor.press( addObsButtons[1] );
+      const cameraButton = await screen.findByLabelText( /AI Camera/ );
       await actor.press( cameraButton );
-      expect( await screen.findByText( /Loading iNaturalist's AR Camera/ ) ).toBeVisible( );
+      expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeVisible( );
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
@@ -82,7 +84,7 @@ describe( "ARCamera navigation", ( ) => {
       Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
     } );
 
-    it( "should advance to suggestions and display top suggestion from ARCamera", async ( ) => {
+    it( "should advance to suggestions and display top suggestion from AICamera", async ( ) => {
       jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
         handleTaxaDetected: jest.fn( ),
         modelLoaded: true,
@@ -93,9 +95,9 @@ describe( "ARCamera navigation", ( ) => {
 
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButton = await screen.findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
-      const cameraButton = await screen.findByLabelText( /AR Camera/ );
+      const addObsButtons = await screen.findAllByLabelText( "Add observations" );
+      await actor.press( addObsButtons[1] );
+      const cameraButton = await screen.findByLabelText( /AI Camera/ );
       await actor.press( cameraButton );
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
       const takePhotoButton = await screen.findByLabelText( /Take photo/ );

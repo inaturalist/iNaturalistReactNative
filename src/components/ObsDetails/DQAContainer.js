@@ -1,4 +1,8 @@
 // @flow
+import {
+  refresh as refreshNetInfo,
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { faveObservation, unfaveObservation } from "api/observations";
@@ -17,7 +21,6 @@ import * as React from "react";
 import Observation from "realmModels/Observation";
 import {
   useAuthenticatedMutation,
-  useIsConnected,
   useLocalObservation
 } from "sharedHooks";
 import useRemoteObservation, {
@@ -26,7 +29,7 @@ import useRemoteObservation, {
 
 const DQAContainer = ( ): React.Node => {
   const queryClient = useQueryClient( );
-  const isOnline = useIsConnected( );
+  const { isInternetReachable: isOnline } = useNetInfo( );
   const { params } = useRoute( );
   const { observationUUID } = params;
   const [qualityMetrics, setQualityMetrics] = useState( undefined );
@@ -299,6 +302,8 @@ const DQAContainer = ( ): React.Node => {
         removeNeedsIDVote={removeNeedsIDVote}
         ifMajorityAgree={ifMajorityAgree}
         checkTest={checkTest}
+        isOnline={isOnline}
+        recheckIsOnline={refreshNetInfo}
       />
       <BottomSheet
         headerText={t( "ERROR-VOTING-IN-DQA" )}

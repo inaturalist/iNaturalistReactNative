@@ -29,6 +29,33 @@ const soundRecorderTitle = ( ) => (
   <Heading4 className="text-white">{t( "RECORD-NEW-SOUND" )}</Heading4>
 );
 
+const CAMERA_SCREEN_OPTIONS = {
+  ...hideHeader,
+  orientation: "all",
+  unmountOnBlur: true,
+  contentStyle: {
+    backgroundColor: "black"
+  }
+};
+
+const GROUP_PHOTOS_OPTIONS = {
+  ...showHeader,
+  ...showCustomHeader,
+  lazy: true,
+  title: t( "Group-Photos" ),
+  headerShadowVisible: false
+};
+
+const SOUND_RECORDER_OPTIONS = {
+  headerTitle: soundRecorderTitle,
+  unmountOnBlur: true,
+  headerTintColor: "white",
+  headerTitleAlign: "center",
+  headerStyle: {
+    backgroundColor: "black"
+  }
+};
+
 const CameraContainerWithPermission = ( ) => (
   <PermissionGateContainer
     permissions={CAMERA_PERMISSIONS}
@@ -60,7 +87,7 @@ const SoundRecorderWithPermission = ( ) => (
   </Mortal>
 );
 
-const AddObsStackNavigator = ( ): Node => (
+const NoBottomTabStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
@@ -70,18 +97,12 @@ const AddObsStackNavigator = ( ): Node => (
       }
     }}
   >
+    {/* Add Observation Stack Group */}
     <Stack.Group>
       <Stack.Screen
         name="Camera"
         component={CameraContainerWithPermission}
-        options={{
-          ...hideHeader,
-          orientation: "all",
-          unmountOnBlur: true,
-          contentStyle: {
-            backgroundColor: "black"
-          }
-        }}
+        options={CAMERA_SCREEN_OPTIONS}
       />
       <Stack.Screen
         name="PhotoGallery"
@@ -91,30 +112,16 @@ const AddObsStackNavigator = ( ): Node => (
       <Stack.Screen
         name="GroupPhotos"
         component={GroupPhotosContainer}
-        options={{
-          ...showHeader,
-          ...showCustomHeader,
-          lazy: true,
-          title: t( "Group-Photos" ),
-          headerShadowVisible: false
-        }}
+        options={GROUP_PHOTOS_OPTIONS}
       />
       <Stack.Screen
         name="SoundRecorder"
         component={SoundRecorderWithPermission}
-        options={{
-          headerTitle: soundRecorderTitle,
-          unmountOnBlur: true,
-          headerTintColor: "white",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "black"
-          }
-        }}
+        options={SOUND_RECORDER_OPTIONS}
       />
     </Stack.Group>
     {SharedStackScreens( )}
   </Stack.Navigator>
 );
 
-export default AddObsStackNavigator;
+export default NoBottomTabStackNavigator;
