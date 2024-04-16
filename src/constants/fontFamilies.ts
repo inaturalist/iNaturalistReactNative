@@ -1,7 +1,12 @@
-export const fontRegular = "LatoRegular";
+export const fontRegular = "Lato-Regular";
 
-export const fontMedium = "LatoMedium";
+export const fontMedium = "Lato-Medium";
 
-export const fontBold = "LatoBold";
+export const fontBold = "Lato-Bold";
 
+export const tailwindFontRegular = `font-${fontRegular}`;
+
+export const tailwindFontMedium = `font-${fontMedium}`;
+
+export const tailwindFontBold = `font-${fontBold}`;
 

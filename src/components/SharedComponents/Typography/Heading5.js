@@ -3,10 +3,10 @@
 import type { Node } from "react";
 import React from "react";
 
-import INatText from "./INatText";
+import INatTextBold from "./INatTextBold";
 
 const Heading5 = ( props: any ): Node => (
-  <INatText
+  <INatTextBold
     className="text-2xs font-semibold tracking-[1px] text-darkGray"
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}

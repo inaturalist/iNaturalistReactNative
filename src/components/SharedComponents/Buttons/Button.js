@@ -3,6 +3,7 @@
 import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import { tailwindFontBold } from "constants/fontFamilies.ts";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
 
@@ -39,7 +40,7 @@ const setStyles = ( {
     "px-[10px]",
     "py-[13px]",
     "rounded-lg",
-    "font-Whitney-Bold"
+    tailwindFontBold
   ];
   const textClasses = [
     "text-center",

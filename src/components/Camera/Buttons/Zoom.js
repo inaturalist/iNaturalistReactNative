@@ -4,7 +4,7 @@ import classnames from "classnames";
 import {
   CIRCLE_BUTTON_DIM
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
-import INatText from "components/SharedComponents/Typography/INatText";
+import INatTextBold from "components/SharedComponents/Typography/INatTextBold";
 import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -59,9 +59,9 @@ const CameraZoom = ( {
         accessibilityState={{ disabled: false }}
         size={20}
       >
-        <INatText className="text-s font-semibold text-white">
+        <INatTextBold className="text-s font-semibold text-white">
           {zoomButtonText}
-        </INatText>
+        </INatTextBold>
       </Pressable>
     </Animated.View>
   );

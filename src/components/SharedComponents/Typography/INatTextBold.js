@@ -11,7 +11,7 @@ type Props = {
   className?: string
 }
 
-const INatText = ( {
+const INatTextBold = ( {
   children, testID, style, className, ...props
 }: Props ): Node => (
   <Text
@@ -25,4 +25,4 @@ const INatText = ( {
   </Text>
 );
 
-export default INatText;
+export default INatTextBold;
