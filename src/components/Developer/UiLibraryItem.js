@@ -7,6 +7,9 @@ import Buttons from "./UiLibrary/Buttons";
 import FloatingActionBarDemo from "./UiLibrary/FloatingActionBarDemo";
 import Icons from "./UiLibrary/Icons";
 import Misc from "./UiLibrary/Misc";
+import ObsGridItemDemo from "./UiLibrary/ObsGridItemDemo";
+import ObsListItemDemo from "./UiLibrary/ObsListItemDemo";
+import TaxonResultDemo from "./UiLibrary/TaxonResultDemo";
 import Typography from "./UiLibrary/Typography";
 
 const LIBRARY = {
@@ -14,8 +17,11 @@ const LIBRARY = {
   Buttons,
   FloatingActionBarDemo,
   Icons,
-  Typography,
-  Misc
+  Misc,
+  ObsGridItemDemo,
+  ObsListItemDemo,
+  TaxonResultDemo,
+  Typography
 };
 
 const UiLibraryItem = ( ) => {

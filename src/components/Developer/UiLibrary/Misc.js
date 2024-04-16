@@ -26,13 +26,10 @@ import {
   SearchBar,
   StickyToolbar,
   Tabs,
-  TaxonResult,
   UploadStatus,
   UserIcon,
   ViewWrapper
 } from "components/SharedComponents";
-import ObsGridItem from "components/SharedComponents/ObservationsFlashList/ObsGridItem";
-import ObsListItem from "components/SharedComponents/ObservationsFlashList/ObsListItem";
 import { ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -345,17 +342,6 @@ const Misc = (): Node => {
         <SearchBar value="search is a really great thing that we should all love" />
         <Heading2 className="my-2">Confidence Interval</Heading2>
         <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
-        <Heading2 className="my-2">Taxon Result</Heading2>
-        <TaxonResult taxon={aves} accessibilityLabel="ui library" />
-        <Heading3>Taxon w/ photo</Heading3>
-        <TaxonResult taxon={taxonWithPhoto} accessibilityLabel="ui library" />
-        <Heading3>Iconic taxon</Heading3>
-        <TaxonResult
-          taxon={aves}
-          fetchRemote={false}
-          fromLocal={false}
-          accessibilityLabel="ui library"
-        />
         <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
         <IconicTaxonChooser
           taxon={{
@@ -401,66 +387,6 @@ const Misc = (): Node => {
           onPress={() => console.log( "radio1" )}
           label="Radio 1"
           description="This is a description"
-        />
-
-        <Heading1 className="my-2">ObsGridItem</Heading1>
-        <Heading2 className="my-2">Synced</Heading2>
-        <ObsGridItem
-          observation={{ uuid: "the-uuid", _synced_at: new Date( ) }}
-          uploadState={false}
-        />
-        <Heading2 className="my-2">Upload needed</Heading2>
-        <ObsGridItem observation={{ uuid: "the-uuid" }} />
-        <Heading2 className="my-2">Upload in progress</Heading2>
-        <ObsGridItem
-          observation={{ uuid: "the-uuid" }}
-          uploadState={{ uploadProgress: { "the-uuid": 0.4 } }}
-        />
-        <Heading2 className="my-2">Upload complete, w/ animation</Heading2>
-        <ObsGridItem
-          observation={{
-            uuid: "the-uuid"
-          }}
-          uploadState={{ uploadProgress: { "the-uuid": 1 } }}
-        />
-        <Heading2 className="my-2">Upload complete, before animation</Heading2>
-        <ObsGridItem
-          observation={{ uuid: "the-uuid" }}
-          uploadState={{ uploadProgress: { "the-uuid": 10 } }}
-        />
-        <Heading2 className="my-2">Upload complete, overlay of animated elements</Heading2>
-        <ObsGridItem
-          observation={{ uuid: "the-uuid" }}
-          uploadState={{ uploadProgress: { "the-uuid": 11 } }}
-        />
-
-        <Heading1 className="my-2">ObsListItem</Heading1>
-        <Heading2 className="my-2">Synced</Heading2>
-        <ObsListItem
-          observation={{ uuid: "the-uuid", _synced_at: new Date( ) }}
-          uploadState={false}
-        />
-        <Heading2 className="my-2">Upload needed</Heading2>
-        <ObsListItem observation={{ uuid: "the-uuid" }} />
-        <Heading2 className="my-2">Upload in progress</Heading2>
-        <ObsListItem
-          observation={{ uuid: "the-uuid" }}
-          uploadState={{ uploadProgress: { "the-uuid": 0.4 } }}
-        />
-        <Heading2 className="my-2">Upload complete, w/ animation</Heading2>
-        <ObsListItem
-          observation={{ uuid: "the-uuid" }}
-          uploadState={{ uploadProgress: { "the-uuid": 1 } }}
-        />
-        <Heading2 className="my-2">Upload complete, before animation</Heading2>
-        <ObsListItem
-          observation={{ uuid: "the-uuid" }}
-          uploadState={{ uploadProgress: { "the-uuid": 10 } }}
-        />
-        <Heading2 className="my-2">Upload complete, overlay of animated elements</Heading2>
-        <ObsListItem
-          observation={{ uuid: "the-uuid" }}
-          uploadState={{ uploadProgress: { "the-uuid": 11 } }}
         />
 
         <Heading1 className="my-2">More Stuff!</Heading1>

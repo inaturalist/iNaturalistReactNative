@@ -6,38 +6,24 @@ import {
 import {
   Pressable
 } from "components/styledComponents";
+import { sortBy } from "lodash";
 import type { Node } from "react";
 import React from "react";
 import {
   FlatList
 } from "react-native";
 
-const ITEMS = [
-  {
-    title: "Activity Indicator",
-    component: "ActivityIndicatorDemo"
-  },
-  {
-    title: "Buttons",
-    component: "Buttons"
-  },
-  {
-    title: "Floating Action Bar",
-    component: "FloatingActionBarDemo"
-  },
-  {
-    title: "Icons",
-    component: "Icons"
-  },
-  {
-    title: "Typography",
-    component: "Typography"
-  },
-  {
-    title: "Everything Else",
-    component: "Misc"
-  }
-];
+const ITEMS = sortBy( [
+  { title: "Activity Indicator", component: "ActivityIndicatorDemo" },
+  { title: "Buttons", component: "Buttons" },
+  { title: "Floating Action Bar", component: "FloatingActionBarDemo" },
+  { title: "Icons", component: "Icons" },
+  { title: "Typography", component: "Typography" },
+  { title: "ObsListItem", component: "ObsListItemDemo" },
+  { title: "TaxonResult", component: "TaxonResultDemo" },
+  { title: "ObsGridItem", component: "ObsGridItemDemo" }
+], item => item.title );
+ITEMS.push( { title: "Everything Else", component: "Misc" } );
 
 const UiLibrary = (): Node => {
   const navigation = useNavigation( );
