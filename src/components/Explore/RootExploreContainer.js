@@ -9,7 +9,6 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -25,7 +24,9 @@ const RootExploreContainerWithContext = ( ): Node => {
   const storedParams = useStore( state => state.storedParams );
   const setStoredParams = useStore( state => state.setStoredParams );
 
-  const { state, dispatch, makeSnapshot } = useExplore( );
+  const {
+    state, dispatch, makeSnapshot, setExploreLocation
+  } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
   const [exploreView, setExploreView] = useState( "species" );
@@ -68,28 +69,18 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   const onPermissionGranted = async ( ) => {
     if ( state.place_guess ) { return; }
-    const location = await fetchUserLocation( );
-    if ( !location || !location.latitude ) {
-      dispatch( {
-        type: EXPLORE_ACTION.SET_PLACE,
-        placeName: t( "Worldwide" )
-      } );
-    } else {
-      dispatch( {
-        type: EXPLORE_ACTION.SET_PLACE,
-        placeName: t( "Nearby" ),
-        lat: location?.latitude,
-        lng: location?.longitude,
-        radius: 50
-      } );
-    }
+    const exploreLocation = await setExploreLocation( );
+    dispatch( {
+      type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+      exploreLocation
+    } );
   };
 
   const onPermissionDenied = ( ) => {
     if ( state.place_guess ) { return; }
     dispatch( {
       type: EXPLORE_ACTION.SET_PLACE,
-      placeName: t( "Worldwide" )
+      placeGuess: t( "Worldwide" )
     } );
   };
 
@@ -97,7 +88,7 @@ const RootExploreContainerWithContext = ( ): Node => {
     if ( state.place_guess ) { return; }
     dispatch( {
       type: EXPLORE_ACTION.SET_PLACE,
-      placeName: t( "Worldwide" )
+      placeGuess: t( "Worldwide" )
     } );
   };
 

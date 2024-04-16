@@ -112,7 +112,7 @@ const useMapLocation = ( ): Object => {
 
   useEffect( ( ) => {
     // region gets set when a user is navigating from ExploreLocationSearch
-    if ( place ) {
+    if ( state.place_id ) {
       logger.info( "setting map region based on location search" );
       const { coordinates } = place.point_geojson;
       setRegion( {
@@ -121,8 +121,18 @@ const useMapLocation = ( ): Object => {
         latitudeDelta: DELTA,
         longitudeDelta: DELTA
       } );
+    } else if ( region?.latitude !== state?.lat ) {
+    // map gets reset when the place changes from a selection with a place_id
+    // back to nearby/worldwide, like when resetting the ExploreFilters
+      logger.info( "setting map region based on filters being reset" );
+      setRegion( {
+        latitude: state?.lat,
+        longitude: state?.lng,
+        latitudeDelta: DELTA,
+        longitudeDelta: DELTA
+      } );
     }
-  }, [place] );
+  }, [place, state, region.latitude] );
 
   return {
     onPanDrag,

@@ -6,18 +6,16 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import { useCallback, useEffect } from "react";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const useParams = ( ): Object => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
-  const { dispatch } = useExplore( );
+  const { dispatch, setExploreLocation } = useExplore( );
   const storedParams = useStore( state => state.storedParams );
 
   const worldwidePlaceText = t( "Worldwide" );
-  const nearbyPlaceText = t( "Nearby" );
 
   const updateContextWithParams = useCallback( async ( storedState = { } ) => {
     const setWorldwide = ( ) => {
@@ -25,7 +23,7 @@ const useParams = ( ): Object => {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
         placeId: null,
-        placeName: worldwidePlaceText
+        placeGuess: worldwidePlaceText
       } );
     };
 
@@ -33,20 +31,11 @@ const useParams = ( ): Object => {
       setWorldwide( );
     }
     if ( params?.nearby ) {
-      const location = await fetchUserLocation( );
-      if ( !location || !location.latitude ) {
-        // TODO: maybe there's a better user flow here if user location
-        // can't be found, but currently using worldwide as a fallback
-        setWorldwide( );
-      } else {
-        dispatch( {
-          type: EXPLORE_ACTION.SET_PLACE,
-          placeName: nearbyPlaceText,
-          lat: location?.latitude,
-          lng: location?.longitude,
-          radius: 50
-        } );
-      }
+      const exploreLocation = await setExploreLocation( );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+        exploreLocation
+      } );
     }
     if ( params?.taxon ) {
       dispatch( {
@@ -62,7 +51,7 @@ const useParams = ( ): Object => {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
         placeId: params.place?.id,
-        placeName: params.place?.display_name
+        placeGuess: params.place?.display_name
       } );
     }
     if ( params?.user && params?.user.id ) {
@@ -81,7 +70,7 @@ const useParams = ( ): Object => {
         projectId: params.project.id
       } );
     }
-  }, [params, dispatch, worldwidePlaceText, nearbyPlaceText] );
+  }, [params, dispatch, worldwidePlaceText, setExploreLocation] );
 
   useEffect( ( ) => {
     if ( params?.resetStoredParams ) {
