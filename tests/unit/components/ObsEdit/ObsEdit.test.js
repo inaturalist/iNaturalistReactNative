@@ -20,6 +20,14 @@ jest.mock( "components/ObsEdit/BottomButtons" );
 jest.mock( "components/SharedComponents/IconicTaxonChooser" );
 jest.mock( "components/ObsEdit/Sheets/AddEvidenceSheet" );
 
+const mockMutate = jest.fn();
+jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
+  __esModule: true,
+  default: () => ( {
+    mutate: mockMutate
+  } )
+} ) );
+
 const observationPhotos = [
   factory( "RemoteObservationPhoto", {
     position: 0
@@ -41,8 +49,7 @@ beforeAll( async ( ) => {
 
 describe( "ObsEdit", () => {
   it( "should not have accessibility errors", async ( ) => {
-    renderComponent( <ObsEdit /> );
-    const obsEdit = await screen.findByTestId( "obs-edit" );
+    const obsEdit = <ObsEdit />;
     expect( obsEdit ).toBeAccessible();
   } );
 

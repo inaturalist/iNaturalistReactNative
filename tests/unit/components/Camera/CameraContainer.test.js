@@ -64,11 +64,7 @@ describe( "CameraContainer", ( ) => {
   } );
 
   it( "should not have accessibility errors", () => {
-    const Camera = (
-      <INatPaperProvider>
-        <CameraContainer />
-      </INatPaperProvider>
-    );
+    const Camera = <CameraContainer />;
 
     expect( Camera ).toBeAccessible();
   } );
