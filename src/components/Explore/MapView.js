@@ -49,8 +49,6 @@ const MapView = ( {
     updateMapBoundaries
   } = useMapLocation( );
 
-  console.log( tileMapParams, "query params" );
-
   return (
     <View className="flex-1 overflow-hidden h-full">
       <View className="z-10">
