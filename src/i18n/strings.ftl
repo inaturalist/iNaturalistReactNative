@@ -823,6 +823,7 @@ See-species-observed-by-this-user-in-Explore = See species observed by this user
 Select-a-date-and-time-for-observation = Select a date and time for observation
 Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
+Select-or-drag-media = Select or drag media
 Select-photo = Select photo
 Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
 # Label for an element that let's you select a user
@@ -1131,5 +1132,3 @@ Youve-previously-denied-location-permissions = You’ve previously denied locati
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
 Zoom-to-current-location = Zoom to current location
-
-Select-or-drag-media = Select or drag media
