@@ -7,6 +7,7 @@ import Developer from "components/Developer/Developer";
 import Log from "components/Developer/Log";
 import NetworkLogging from "components/Developer/NetworkLogging";
 import UiLibrary from "components/Developer/UiLibrary";
+import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
@@ -153,6 +154,11 @@ const TabStackNavigator = ( ): Node => (
         name="UILibrary"
         label="UI Library"
         component={UiLibrary}
+      />
+      <Stack.Screen
+        name="UiLibraryItem"
+        label="UI Library Item"
+        component={UiLibraryItem}
       />
       <Stack.Screen
         name="log"
