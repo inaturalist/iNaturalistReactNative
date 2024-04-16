@@ -3,63 +3,50 @@ import ObsEdit from "components/ObsEdit/ObsEdit";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
-import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );
 
-const mockLocationName = "San Francisco, CA";
-
-const mockCurrentUser = factory( "LocalUser" );
-
-const mockObservations = [
-  factory( "RemoteObservation", {
-    latitude: 37.99,
-    longitude: -142.88,
-    user: mockCurrentUser,
-    place_guess: mockLocationName
+jest.mock( "sharedHooks/useCurrentObservationLocation", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    hasLocation: true,
+    isFetchingLocation: false,
+    permissionResult: "granted"
   } )
-];
+} ) );
+
+jest.mock( "components/ObsEdit/BottomButtons" );
+jest.mock( "components/SharedComponents/IconicTaxonChooser" );
+jest.mock( "components/ObsEdit/Sheets/AddEvidenceSheet" );
 
 const observationPhotos = [
   factory( "RemoteObservationPhoto", {
-    photo: {
-      url: faker.image.url( )
-    },
     position: 0
-  } ),
-  factory( "RemoteObservationPhoto", {
-    photo: {
-      url: `${faker.image.url( )}/100`
-    },
-    position: 1
   } )
 ];
 
-const mockObservation = factory( "RemoteObservation", {
-  speciesGuess: "Obsedit test",
-  observationPhotos
+const mockObservation = factory( "LocalObservation", {
+  observationPhotos,
+  time_observed_at: null
 } );
 
-const renderObsEdit = ( ) => renderComponent( <ObsEdit /> );
+beforeAll( async ( ) => {
+  useStore.setState( initialStoreState, true );
+  useStore.setState( {
+    currentObservation: mockObservation,
+    observations: [mockObservation]
+  } );
+} );
 
 describe( "ObsEdit", () => {
-  beforeAll( async ( ) => {
-    useStore.setState( initialStoreState, true );
-  } );
-
-  it( "should not have accessibility errors", async () => {
-    renderObsEdit( mockObservations );
-
+  it( "should not have accessibility errors", async ( ) => {
+    renderComponent( <ObsEdit /> );
     const obsEdit = await screen.findByTestId( "obs-edit" );
     expect( obsEdit ).toBeAccessible();
   } );
 
   it( "displays the number of photos in global state obsPhotos", async ( ) => {
-    useStore.setState( {
-      currentObservation: mockObservation,
-      observations: [mockObservation]
-    } );
     renderComponent( <ObsEdit /> );
 
     const evidenceList = screen.getByTestId( "EvidenceList.DraggableFlatList" );
