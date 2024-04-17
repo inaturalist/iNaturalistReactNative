@@ -11,7 +11,7 @@ import { Text } from "react-native";
 const Body3 = ( props: any ): Node => (
   <Text
     className={classnames(
-      "text-sm font-normal text-darkGray",
+      "text-xs trailing-tight text-darkGray",
       tailwindFontMedium
     )}
     // eslint-disable-next-line react/jsx-props-no-spreading

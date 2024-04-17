@@ -9,6 +9,7 @@ import {
   Heading4,
   ScrollViewWrapper,
   Tabs,
+  UnderlinedLink,
   ViewWrapper
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
@@ -101,24 +102,24 @@ const About = (): Node => {
             </Body2>
             <Body2 className="mb-5">{t( "Whats-more-by-recording" )}</Body2>
             <Body2 className="mb-8">{t( "iNaturalist-is-supported-by" )}</Body2>
-            <Body2
-              className="mb-5 underline font-bold"
+            <UnderlinedLink
+              className="mb-5"
               onPress={() => onTermsPressed()}
             >
               {t( "Terms-of-Use" )}
-            </Body2>
-            <Body2
-              className="mb-5 underline font-bold"
+            </UnderlinedLink>
+            <UnderlinedLink
+              className="mb-5"
               onPress={() => onPrivacyPressed()}
             >
               {t( "Privacy-Policy" )}
-            </Body2>
-            <Body2
-              className="mb-8 underline font-bold"
+            </UnderlinedLink>
+            <UnderlinedLink
+              className="mb-8"
               onPress={() => onCommunityPressed()}
             >
               {t( "Community-Guidelines" )}
-            </Body2>
+            </UnderlinedLink>
             <View className="items-center justify-center">
               <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
             </View>

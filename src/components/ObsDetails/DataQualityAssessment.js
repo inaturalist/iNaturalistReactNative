@@ -1,11 +1,11 @@
 // @flow
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import {
+  Body1,
   Body3,
   Divider,
   Heading4,
   INatIcon,
-  List1,
   List2,
   OfflineNotice,
   ScrollViewWrapper,
@@ -140,7 +140,7 @@ const DataQualityAssessment = ( {
               color={theme.colors.secondary}
             />
           )}
-          <List1 className="text-black">{titleOption( qualityGrade )}</List1>
+          <Body1 className="text-black">{titleOption( qualityGrade )}</Body1>
         </View>
         <List2 className="text-black">{titleDescription( qualityGrade )}</List2>
       </View>

@@ -5,11 +5,8 @@ exports[`Heading4 renders correctly 1`] = `
   style={
     [
       {
-        "fontSize": 16,
+        "fontSize": 15,
         "lineHeight": 18,
-      },
-      {
-        "lineHeight": 19,
       },
       {
         "letterSpacing": 2,

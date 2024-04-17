@@ -5,11 +5,8 @@ exports[`Body4 renders correctly 1`] = `
   style={
     [
       {
-        "fontSize": 12,
-        "lineHeight": 14,
-      },
-      {
-        "fontWeight": "300",
+        "fontSize": 11,
+        "lineHeight": 13.2,
       },
       {
         "color": "#454545",
