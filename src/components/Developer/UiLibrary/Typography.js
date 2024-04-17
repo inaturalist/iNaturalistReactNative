@@ -44,7 +44,6 @@ const Typography = ( ) => {
         <Heading4 className="my-2">Source</Heading4>
         <Body2 className={fontMonoClass}>{userText}</Body2>
         <Heading4 className="mt-2">Result</Heading4>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <UnderlinedLink className="my-2">UnderlinedLink</UnderlinedLink>
         <UserText text={userText} />
       </View>
