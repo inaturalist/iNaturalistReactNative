@@ -28,10 +28,20 @@ exports[`PhotoCount renders correctly 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 13,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 14,
+          "lineHeight": 18,
+        },
+        {
+          "fontWeight": "400",
+        },
+        {
+>>>>>>> main
           "color": "#454545",
         },
         {

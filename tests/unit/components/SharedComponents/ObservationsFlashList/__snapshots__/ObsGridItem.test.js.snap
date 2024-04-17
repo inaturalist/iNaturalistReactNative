@@ -337,8 +337,16 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
       style={
         [
           {
+<<<<<<< HEAD
             "fontSize": 17,
             "lineHeight": 20.4,
+=======
+            "fontSize": 18,
+            "lineHeight": 22,
+          },
+          {
+            "fontWeight": "500",
+>>>>>>> main
           },
           {
             "color": "#454545",
@@ -676,8 +684,16 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
       style={
         [
           {
+<<<<<<< HEAD
             "fontSize": 17,
             "lineHeight": 20.4,
+=======
+            "fontSize": 18,
+            "lineHeight": 22,
+          },
+          {
+            "fontWeight": "500",
+>>>>>>> main
           },
           {
             "color": "#454545",

@@ -6,10 +6,17 @@ exports[`Heading5 renders correctly 1`] = `
     [
       {
         "fontSize": 8,
+<<<<<<< HEAD
         "lineHeight": 9.6,
       },
       {
         "letterSpacing": 0.65,
+=======
+        "lineHeight": 10,
+      },
+      {
+        "letterSpacing": 1,
+>>>>>>> main
       },
       {
         "color": "#454545",

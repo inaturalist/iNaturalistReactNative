@@ -42,10 +42,20 @@ exports[`IdentificationsCount renders default reliably 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 13,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 14,
+          "lineHeight": 18,
+        },
+        {
+          "fontWeight": "400",
+        },
+        {
+>>>>>>> main
           "color": "#454545",
         },
         {
@@ -106,10 +116,20 @@ exports[`IdentificationsCount renders filled reliably 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 13,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 14,
+          "lineHeight": 18,
+        },
+        {
+          "fontWeight": "400",
+        },
+        {
+>>>>>>> main
           "color": "#454545",
         },
         {
@@ -170,10 +190,20 @@ exports[`IdentificationsCount renders white reliably 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 13,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 14,
+          "lineHeight": 18,
+        },
+        {
+          "fontWeight": "400",
+        },
+        {
+>>>>>>> main
           "color": "#454545",
         },
         {

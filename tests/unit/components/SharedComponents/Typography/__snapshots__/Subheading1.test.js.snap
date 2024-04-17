@@ -5,8 +5,13 @@ exports[`Subheading1 renders correctly 1`] = `
   style={
     [
       {
+<<<<<<< HEAD
         "fontSize": 20,
         "lineHeight": 24,
+=======
+        "fontSize": 21,
+        "lineHeight": 25,
+>>>>>>> main
       },
       {
         "color": "#454545",

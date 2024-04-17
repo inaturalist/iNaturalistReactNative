@@ -315,8 +315,16 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
+<<<<<<< HEAD
                 "fontSize": 17,
                 "lineHeight": 20.4,
+=======
+                "fontSize": 18,
+                "lineHeight": 22,
+              },
+              {
+                "fontWeight": "500",
+>>>>>>> main
               },
               {
                 "color": "#454545",
@@ -338,10 +346,20 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
+<<<<<<< HEAD
                 "fontSize": 13,
                 "lineHeight": 18,
               },
               {
+=======
+                "fontSize": 14,
+                "lineHeight": 18,
+              },
+              {
+                "fontWeight": "400",
+              },
+              {
+>>>>>>> main
                 "color": "#454545",
               },
               {
@@ -360,10 +378,20 @@ exports[`TaxonResult should render correctly 1`] = `
             style={
               [
                 {
+<<<<<<< HEAD
                   "fontSize": 13,
                   "lineHeight": 18,
                 },
                 {
+=======
+                  "fontSize": 14,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontWeight": "400",
+                },
+                {
+>>>>>>> main
                   "color": "#454545",
                 },
                 {

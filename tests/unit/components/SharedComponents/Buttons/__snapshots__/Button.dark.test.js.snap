@@ -72,10 +72,20 @@ exports[`Button focus in dark mode should render correctly 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+>>>>>>> main
           "letterSpacing": 2,
         },
         {
@@ -173,10 +183,20 @@ exports[`Button focus in dark mode when disabled should render correctly 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+>>>>>>> main
           "letterSpacing": 2,
         },
         {
@@ -292,10 +312,20 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+>>>>>>> main
           "letterSpacing": 2,
         },
         {
@@ -411,10 +441,20 @@ exports[`Button neutral in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+>>>>>>> main
           "letterSpacing": 2,
         },
         {
@@ -515,10 +555,20 @@ exports[`Button primary in dark mode should render correctly 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+>>>>>>> main
           "letterSpacing": 2,
         },
         {
@@ -619,10 +669,20 @@ exports[`Button primary in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+>>>>>>> main
           "letterSpacing": 2,
         },
         {
@@ -723,10 +783,20 @@ exports[`Button warning in dark mode should render correctly 1`] = `
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+>>>>>>> main
           "letterSpacing": 2,
         },
         {
@@ -824,10 +894,20 @@ exports[`Button warning in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
+<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
+=======
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+>>>>>>> main
           "letterSpacing": 2,
         },
         {

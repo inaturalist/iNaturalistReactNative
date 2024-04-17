@@ -5,8 +5,16 @@ exports[`Heading3 renders correctly 1`] = `
   style={
     [
       {
+<<<<<<< HEAD
         "fontSize": 18,
         "lineHeight": 21.6,
+=======
+        "fontSize": 19,
+        "lineHeight": 23,
+      },
+      {
+        "fontWeight": "600",
+>>>>>>> main
       },
       {
         "color": "#454545",
