@@ -218,14 +218,14 @@ fastlane prod
     1. Install a "Release" build on an iOS device
         1. Online
             1. Sign in
-            1. Make an observation by taking a new photo in the ARCamera; tap "Upload Now" to upload immediately; wait for upload to complete before moving on
+            1. Make an observation by taking a new photo in the AI Camera; tap "Upload Now" to upload immediately; wait for upload to complete before moving on
             1. Make an observation by taking a new photo in the StandardCamera; save without upload
             1. Make an observation by importing an existing; save without upload
             1. Make an observation without a photo; save without upload
             1. Upload from the toolbar on MyObs
         1. Offline
             1. Go into airplane mode
-            1. Make an observation by taking a new photo in the ARCamera
+            1. Make an observation by taking a new photo in the AICamera
             1. Make an observation by taking a new photo in the StandardCamera
             1. Make an observation by importing an existing
             1. Make an observation without a photo

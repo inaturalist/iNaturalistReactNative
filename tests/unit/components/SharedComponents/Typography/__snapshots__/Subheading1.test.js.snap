@@ -5,17 +5,15 @@ exports[`Subheading1 renders correctly 1`] = `
   style={
     [
       {
-        "fontFamily": "Whitney-Book",
+        "fontSize": 21,
+        "lineHeight": 25,
       },
-      [
-        {
-          "fontSize": 21,
-          "lineHeight": 25,
-        },
-        {
-          "color": "#454545",
-        },
-      ],
+      {
+        "color": "#454545",
+      },
+      {
+        "fontFamily": "Lato-Regular",
+      },
     ]
   }
 >

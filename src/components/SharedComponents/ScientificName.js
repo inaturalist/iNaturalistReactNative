@@ -1,10 +1,9 @@
 // @flow
 import classNames from "classnames";
+import { Body3 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import Taxon from "realmModels/Taxon";
-
-import INatTextMedium from "./Typography/INatTextMedium";
 
 type Props = {
   fontComponent: Object,
@@ -39,7 +38,7 @@ const ScientificName = ( {
       ? " "
       : "";
     const text = piece + spaceChar;
-    const FontComponent = fontComponent || INatTextMedium;
+    const FontComponent = fontComponent || Body3;
 
     return (
       <FontComponent

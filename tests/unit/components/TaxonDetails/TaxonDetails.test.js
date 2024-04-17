@@ -39,7 +39,8 @@ jest.mock( "@react-navigation/native", ( ) => {
       params: {
         id: mockTaxon.id
       }
-    } )
+    } ),
+    useNavigation: jest.fn( )
   };
 } );
 
@@ -82,13 +83,7 @@ describe( "TaxonDetails", ( ) => {
   } );
 
   test( "should not have accessibility errors", ( ) => {
-    const taxonDetails = (
-      <INatPaperProvider>
-        <NavigationContainer>
-          <TaxonDetails />
-        </NavigationContainer>
-      </INatPaperProvider>
-    );
+    const taxonDetails = <TaxonDetails />;
     expect( taxonDetails ).toBeAccessible( );
   } );
 

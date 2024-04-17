@@ -29,9 +29,19 @@ import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
-const calculateZoom = ( width, delta ) => Math.round(
-  Math.log2( 360 * ( width / 256 / delta ) ) + 1
-);
+function calculateZoom( width, delta ) {
+  return Math.round(
+    Math.log2( 360 * ( width / 256 / delta ) ) + 1
+  );
+}
+
+// Kind of the inverse of calculateZoom. Probably not actually accurate for
+// longitude, but works for our purposes
+function zoomToDeltas( zoom, screenWidth, screenHeight ) {
+  const longitudeDelta = screenWidth / 256 / ( 2 ** zoom / 360 );
+  const latitudeDelta = screenHeight / 256 / ( 2 ** zoom / 360 );
+  return [latitudeDelta, longitudeDelta];
+}
 
 const POINT_TILES_ENDPOINT = "https://tiles.inaturalist.org/v1/points";
 const API_ENDPOINT = "https://api.inaturalist.org/v2";
@@ -78,6 +88,7 @@ type Props = {
   children?: any,
   className?: string,
   currentLocationButtonClassName?: string,
+  currentLocationZoomLevel?: number,
   mapHeight?: number|string, // allows for height to be defined as px or percentage
   mapType?: string,
   mapViewClassName?: string,
@@ -93,6 +104,7 @@ type Props = {
   onPermissionGranted?: Function,
   onRegionChange?: Function,
   onRegionChangeComplete?: Function,
+  onZoomChange?: Function,
   onZoomToNearby?: Function,
   openMapScreen?: Function,
   permissionRequested?: boolean,
@@ -130,6 +142,7 @@ const Map = ( {
   children,
   className = "flex-1",
   currentLocationButtonClassName,
+  currentLocationZoomLevel, // target zoom level when user hits current location btn
   mapHeight,
   mapType,
   mapViewClassName,
@@ -145,6 +158,7 @@ const Map = ( {
   onPermissionGranted: onPermissionGrantedProp,
   onRegionChange,
   onRegionChangeComplete,
+  onZoomChange,
   onZoomToNearby,
   openMapScreen,
   permissionRequested: permissionRequestedProp,
@@ -166,7 +180,7 @@ const Map = ( {
   zoomEnabled = true,
   zoomTapEnabled = true
 }: Props ): Node => {
-  const { screenWidth } = useDeviceOrientation( );
+  const { screenWidth, screenHeight } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
     region
       ? calculateZoom( screenWidth, region.longitudeDelta )
@@ -232,17 +246,38 @@ const Map = ( {
 
   useEffect( ( ) => {
     if ( userLocation && zoomToUserLocationRequested && mapViewRef?.current ) {
-      mapViewRef.current.animateToRegion( {
+      // Zoom level based on location accuracy.
+      let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
+      let longitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      // If this map redefines the level we want to zoom into when the user
+      // wants to see their current location, choose which ever is more
+      // zoomed out, the configured zoom level or the zoom level based on the
+      // coordinate accuracy
+      if ( currentLocationZoomLevel ) {
+        const [configuredLatitudeDelta, configuredLongitudeDelta] = zoomToDeltas(
+          currentLocationZoomLevel,
+          screenWidth,
+          screenHeight
+        );
+        latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
+        longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
+      }
+      mapViewRef.current?.animateToRegion( {
         latitude: userLocation.latitude,
         longitude: userLocation.longitude,
-        // Zoom level based on location accuracy.
-        latitudeDelta: metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude ),
-        // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
-        longitudeDelta: metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude )
+        latitudeDelta,
+        longitudeDelta
       } );
       setZoomToUserLocationRequested( false );
     }
-  }, [userLocation, zoomToUserLocationRequested] );
+  }, [
+    currentLocationZoomLevel,
+    screenHeight,
+    screenWidth,
+    userLocation,
+    zoomToUserLocationRequested
+  ] );
 
   // Zoom to nearby region if requested. Note that if you want to do something
   // after the map zooms, you need to use onRegionChangeComplete
@@ -399,6 +434,12 @@ const Map = ( {
     withObsTiles
   ] );
 
+  useEffect( ( ) => {
+    if ( typeof ( onZoomChange ) === "function" ) {
+      onZoomChange( currentZoom );
+    }
+  }, [currentZoom, onZoomChange] );
+
   return (
     <View
       style={[
@@ -464,7 +505,7 @@ const Map = ( {
               }}
               radius={positionalAccuracy}
               strokeWidth={2}
-              strokeColor="#74AC00"
+              strokeColor={theme.colors.inatGreen}
               fillColor="rgba( 116, 172, 0, 0.2 )"
             />
             <Marker

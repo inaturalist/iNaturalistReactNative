@@ -5,9 +5,16 @@ import { LinearGradient, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useTheme } from "react-native-paper";
-import { dropShadow } from "styles/global";
+import { getShadowForColor } from "styles/global";
 
 import ObsImage from "./ObsImage";
+
+const ICON_DROP_SHADOW = getShadowForColor( "#000000", {
+  offsetWidth: 0,
+  offsetHeight: 1,
+  shadowOpacity: 0.25,
+  shadowRadius: 2
+} );
 
 type SOURCE = {
   uri: string,
@@ -55,7 +62,7 @@ const ObsImagePreview = ( {
     ? "rounded-lg"
     : "rounded-2xl";
 
-  const imageClassName = classNames(
+  const imageClassNames = [
     "max-h-[210px]",
     "overflow-hidden",
     "relative",
@@ -63,29 +70,47 @@ const ObsImagePreview = ( {
     height,
     className,
     width
-  );
+  ];
 
   const renderPhotoCount = useCallback( ( ) => {
-    if ( obsPhotosCount !== 1 ) {
+    if ( obsPhotosCount <= 1 ) return null;
+
+    if ( isSmall ) {
       return (
         <View
-          className={classNames( "absolute right-0 p-1", {
-            "bottom-0": !isMultiplePhotosTop,
-            "top-0": isMultiplePhotosTop,
-            "p-2": !isSmall
-          } )}
+          className={classNames(
+            "absolute",
+            "right-1",
+            isMultiplePhotosTop
+              ? "top-1"
+              : "bottom-1"
+          )}
         >
-          { !hasSound && !( isSmall && obsPhotosCount === 0 )
-            && <PhotoCount count={obsPhotosCount} /> }
+          <INatIcon name="photos-outline" color={theme.colors.onSecondary} size={16} />
         </View>
       );
     }
-    return null;
+
+    return (
+      <View
+        className={classNames(
+          "absolute",
+          "right-0",
+          "p-2",
+          isMultiplePhotosTop
+            ? "top-0"
+            : "bottom-0"
+        )}
+      >
+        { obsPhotosCount !== 0
+          && <PhotoCount count={obsPhotosCount} /> }
+      </View>
+    );
   }, [
-    hasSound,
     isMultiplePhotosTop,
     isSmall,
-    obsPhotosCount
+    obsPhotosCount,
+    theme
   ] );
 
   const renderSelectable = useCallback( ( ) => {
@@ -102,7 +127,7 @@ const ObsImagePreview = ( {
               "w-[24px] h-[24px] border-2 border-white": !selected
             }
           )}
-          style={dropShadow}
+          style={ICON_DROP_SHADOW}
         >
           {selected && (
             <INatIcon name="checkmark" color={theme.colors.primary} size={12} />
@@ -128,45 +153,72 @@ const ObsImagePreview = ( {
   }, [isSmall] );
 
   const renderSoundIcon = useCallback( ( ) => {
-    if ( hasSound ) {
+    if ( !hasSound ) return null;
+
+    if ( isSmall ) {
       return (
         <View
-          className={classNames( "absolute left-0 top-0 p-1", {
-            "p-2": !isSmall
-          } )}
-          style={dropShadow}
+          className="absolute left-1 bottom-1"
+          style={ICON_DROP_SHADOW}
         >
-          <INatIcon name="sound" color={theme.colors.onSecondary} size={18} />
+          <INatIcon name="sound" color={theme.colors.onSecondary} size={16} />
         </View>
       );
     }
-    return null;
+
+    return (
+      <View
+        className={classNames( "absolute left-0 top-0 p-1", {
+          "p-2": !isSmall
+        } )}
+        style={ICON_DROP_SHADOW}
+      >
+        <INatIcon name="sound" color={theme.colors.onSecondary} size={18} />
+      </View>
+    );
   }, [hasSound, isSmall, theme] );
+
+  let content;
+
+  if ( isSmall && ( obsPhotosCount === 0 && !source?.uri ) ) {
+    imageClassNames.push( "border-2", "justify-center", "items-center" );
+  }
+
+  if ( isSmall && obsPhotosCount === 0 && hasSound ) {
+    imageClassNames.push( "border-2", "justify-center", "items-center" );
+    content = <INatIcon name="sound" color={theme.colors.primary} size={24} />;
+  } else {
+    content = (
+      <>
+        <ObsImage
+          uri={source}
+          opaque={opaque}
+          imageClassName={classNames( imageClassNames )}
+          iconicTaxonName={iconicTaxonName}
+          white={white}
+          isBackground
+          iconicTaxonIconSize={
+            isSmall
+              ? 22
+              : 100
+          }
+        />
+        {renderGradient( )}
+        {renderSelectable( )}
+        {renderPhotoCount( )}
+        {renderSoundIcon( )}
+        {children}
+      </>
+    );
+  }
 
   return (
     <View
-      className={imageClassName}
+      className={classNames( imageClassNames )}
       style={style}
       testID={testID}
     >
-      <ObsImage
-        uri={source}
-        opaque={opaque}
-        imageClassName={imageClassName}
-        iconicTaxonName={iconicTaxonName}
-        white={white}
-        isBackground
-        iconicTaxonIconSize={
-          isSmall
-            ? 22
-            : 100
-        }
-      />
-      {renderGradient( )}
-      {renderSelectable( )}
-      {renderPhotoCount( )}
-      {renderSoundIcon( )}
-      {children}
+      {content}
     </View>
   );
 };

@@ -14,7 +14,6 @@ import {
   Pressable as StyledPressable,
   SafeAreaView as UnstyledSafeAreaView,
   ScrollView as UnstyledScrollView,
-  Text as UnstyledText,
   TextInput as UntyledTextInput,
   View as UnstyledView
 } from "react-native";
@@ -32,27 +31,6 @@ const SafeAreaView = styled( UnstyledSafeAreaView === undefined
   : UnstyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( UnstyledScrollView );
-// $FlowIgnore
-const Text = styled(
-  UnstyledText,
-  Platform.OS === "ios"
-    ? "font-Whitney-Book"
-    : "font-Whitney-Book-Pro"
-);
-// $FlowIgnore
-const MediumText = styled(
-  UnstyledText,
-  Platform.OS === "ios"
-    ? "font-Whitney-Medium"
-    : "font-Whitney-Medium-Pro"
-);
-// $FlowIgnore
-const LightText = styled(
-  UnstyledText,
-  Platform.OS === "ios"
-    ? "font-Whitney-Book"
-    : "font-Whitney-Book-Pro"
-);
 // $FlowIgnore
 const TextInput = styled( UntyledTextInput );
 // $FlowIgnore
@@ -83,14 +61,11 @@ export {
   Image,
   ImageBackground,
   KeyboardAvoidingView,
-  LightText,
   LinearGradient,
-  MediumText,
   Modal,
   Pressable,
   SafeAreaView,
   ScrollView,
-  Text,
   TextInput,
   View
 };

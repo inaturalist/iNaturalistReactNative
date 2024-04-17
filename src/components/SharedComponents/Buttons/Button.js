@@ -1,5 +1,6 @@
 // @flow
 
+import { tailwindFontBold } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
@@ -39,7 +40,7 @@ const setStyles = ( {
     "px-[10px]",
     "py-[13px]",
     "rounded-lg",
-    "font-Whitney-Bold"
+    tailwindFontBold
   ];
   const textClasses = [
     "text-center",

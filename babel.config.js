@@ -6,6 +6,8 @@ module.exports = {
     "nativewind/babel",
     ["module-resolver", {
       alias: {
+        // constants is a reserved word, so jest won't run if we name the alias constants
+        appConstants: "./src/appConstants",
         api: "./src/api",
         components: "./src/components",
         dictionaries: "./src/dictionaries",

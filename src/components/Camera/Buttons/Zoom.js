@@ -1,10 +1,10 @@
 // @flow
 
 import classnames from "classnames";
+import { Body3Bold } from "components/SharedComponents";
 import {
   CIRCLE_BUTTON_DIM
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
-import INatText from "components/SharedComponents/Typography/INatText";
 import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -59,9 +59,9 @@ const CameraZoom = ( {
         accessibilityState={{ disabled: false }}
         size={20}
       >
-        <INatText className="text-s font-semibold text-white">
+        <Body3Bold className="text-s text-white">
           {zoomButtonText}
-        </INatText>
+        </Body3Bold>
       </Pressable>
     </Animated.View>
   );

@@ -1,13 +1,19 @@
 // @flow
 
+import {
+  tailwindFontRegular
+} from "appConstants/fontFamilies.ts";
+import classnames from "classnames";
 import type { Node } from "react";
 import React from "react";
-
-import INatTextLight from "./INatTextLight";
+import { Text } from "react-native";
 
 const List2 = ( props: any ): Node => (
-  <INatTextLight
-    className="text-sm leading-[17px] font-light text-darkGray"
+  <Text
+    className={classnames(
+      "text-sm leading-[17px] font-light text-darkGray",
+      tailwindFontRegular
+    )}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />

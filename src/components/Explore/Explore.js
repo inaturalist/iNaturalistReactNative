@@ -1,6 +1,7 @@
 // @flow
 
 import classnames from "classnames";
+import FilterModal from "components/Explore/Modals/FilterModal.tsx";
 import {
   INatIconButton,
   RadioButtonSheet,
@@ -20,7 +21,6 @@ import { getShadowStyle } from "styles/global";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
-import FilterModal from "./Modals/FilterModal";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";

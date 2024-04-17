@@ -1,12 +1,15 @@
 import * as React from "react";
 import { LatLng } from "react-native-maps";
 import useStore from "stores/useStore";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import { t } from "i18next";
 
 export enum EXPLORE_ACTION {
   DISCARD = "DISCARD",
   RESET = "RESET",
   CHANGE_TAXON = "CHANGE_TAXON",
   SET_TAXON_NAME = "SET_TAXON_NAME",
+  SET_EXPLORE_LOCATION = "SET_EXPLORE_LOCATION",
   SET_PLACE = "SET_PLACE",
   SET_USER = "SET_USER",
   SET_PROJECT = "SET_PROJECT",
@@ -179,6 +182,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number, storedState: State}
   | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string, storedState: State}
+  | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: Object}
   | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string, lat: number, lng: number, radius: number, storedState: State}
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number, storedState: State}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
@@ -247,7 +251,7 @@ const initialState = {
   place_id: undefined,
   place_guess: "",
   verifiable: true,
-  return_bounds: true,
+  return_bounds: true
 };
 
 // Checks if the date is in the format XXXX-XX-XX
@@ -256,12 +260,27 @@ function isValidDateFormat(date: string): boolean {
   return regex.test(date);
 }
 
+async function setExploreLocation( ) {
+  const location = await fetchUserLocation( );
+  if ( !location || !location.latitude ) {
+    return {
+      place_guess: t( "Worldwide" )
+    }
+  }
+  return {
+    place_guess: t( "Nearby" ),
+    lat: location?.latitude,
+    lng: location?.longitude,
+    radius: 50
+  }
+}
+
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
     case EXPLORE_ACTION.RESET:
       return {
-        ...state,
-        ...defaultFilters
+        ...initialState,
+        ...action.exploreLocation
       };
     case EXPLORE_ACTION.DISCARD:
       return action.snapshot;
@@ -272,12 +291,17 @@ function exploreReducer( state: State, action: Action ) {
         taxon: action.taxon,
         taxon_id: action.taxonId
       };
+    case EXPLORE_ACTION.SET_EXPLORE_LOCATION:
+      return {
+        ...state,
+        ...action.exploreLocation
+      };
     case EXPLORE_ACTION.SET_PLACE:
       const placeState = {
         ...state,
         ...action.storedState,
         place_id: action.placeId,
-        place_guess: action.placeName,
+        place_guess: action.placeGuess,
         lat: action.lat,
         lng: action.lng,
         radius: action.radius
@@ -475,8 +499,8 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
     dispatch( { type: EXPLORE_ACTION.DISCARD, snapshot } );
   }
 
-  const filtersNotDefault: boolean = Object.keys( defaultFilters ).some(
-    key => defaultFilters[key] !== state[key]
+  const isNotInitialState: boolean = Object.keys( initialState ).some(
+    key => initialState[key] !== state[key]
   );
 
   let numberOfFilters: number = Object.keys( calculatedFilters ).reduce(
@@ -493,7 +517,7 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
     numberOfFilters -= 1;
   }
 
-  const value = { state, dispatch, filtersNotDefault, numberOfFilters, makeSnapshot, differsFromSnapshot, discardChanges };
+  const value = { state, dispatch, setExploreLocation, isNotInitialState, numberOfFilters, makeSnapshot, differsFromSnapshot, discardChanges };
   return (
     <ExploreContext.Provider value={value}>{children}</ExploreContext.Provider>
   );

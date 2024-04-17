@@ -1,9 +1,9 @@
 // @flow
+import { fontRegular } from "appConstants/fontFamilies.ts";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
@@ -67,9 +67,7 @@ const SearchBar = ( {
       bodyLarge:
         {
           ...theme.fonts.bodyLarge,
-          fontFamily: `Whitney-Light${Platform.OS === "ios"
-            ? ""
-            : "-Pro"}`
+          fontFamily: fontRegular
         }
     }
   };

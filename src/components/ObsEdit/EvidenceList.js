@@ -61,6 +61,7 @@ const EvidenceList = ( {
         <Pressable
           onLongPress={drag}
           accessibilityRole="button"
+          accessibilityLabel={t( "Select-or-drag-media" )}
           onPress={( ) => {
             setSelectedMediaUri( uri );
           }}
@@ -78,7 +79,7 @@ const EvidenceList = ( {
         </Pressable>
       </ScaleDecorator>
     );
-  }, [setSelectedMediaUri] );
+  }, [setSelectedMediaUri, t] );
 
   const renderFooter = useCallback( ( ) => (
     <View className="flex-1 flex-row">

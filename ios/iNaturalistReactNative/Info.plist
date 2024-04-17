@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.29.2</string>
+	<string>0.30.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>83</string>
+	<string>84</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -69,24 +69,14 @@
 	<array>
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>MaterialIcons.ttf</string>
-		<string>Whitney-Light-Pro.otf</string>
-		<string>Whitney-Medium-Pro.otf</string>
-		<string>Whitney-BookItalic-Pro.otf</string>
 		<string>inaturalisticons.ttf</string>
-		<string>Whitney-Book-Pro.otf</string>
-		<string>Whitney-MediumItalic-Pro.otf</string>
-		<string>Whitney-Semibold-Pro.otf</string>
-		<string>Whitney-Book-Italic.otf</string>
-		<string>Whitney-Book.otf</string>
-		<string>Whitney-Light-Italic.otf</string>
-		<string>Whitney-Light.otf</string>
-		<string>Whitney-LightItalic-Pro.otf</string>
-		<string>Whitney-Medium-Italic.otf</string>
-		<string>Whitney-Medium.otf</string>
-		<string>Whitney-Semibold-Italic.otf</string>
-		<string>Whitney-Semibold.otf</string>
-		<string>Whitney-SemiboldItalic-Pro.otf</string>
 		<string>INatIcon.ttf</string>
+		<string>Lato-Bold.ttf</string>
+		<string>Lato-BoldItalic.ttf</string>
+		<string>Lato-Italic.ttf</string>
+		<string>Lato-Medium.ttf</string>
+		<string>Lato-MediumItalic.ttf</string>
+		<string>Lato-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

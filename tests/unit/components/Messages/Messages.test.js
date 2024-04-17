@@ -54,11 +54,7 @@ jest.mock( "@tanstack/react-query", ( ) => ( {
 
 describe( "Messages", ( ) => {
   it( "should not have accessibility errors", () => {
-    const messages = (
-      <INatPaperProvider>
-        <Messages />
-      </INatPaperProvider>
-    );
+    const messages = <Messages />;
     expect( messages ).toBeAccessible();
   } );
 

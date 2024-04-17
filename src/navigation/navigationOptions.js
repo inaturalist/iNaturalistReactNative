@@ -1,9 +1,10 @@
 // @flow
 import { HeaderBackground } from "@react-navigation/elements";
+import { fontMedium } from "appConstants/fontFamilies.ts";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import type { Node } from "react";
 import React from "react";
-import { Platform, View } from "react-native";
+import { View } from "react-native";
 import colors from "styles/tailwindColors";
 
 import ContextHeader from "./ContextHeader";
@@ -23,9 +24,7 @@ const showHeader: Object = {
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
   headerTitleStyle: {
     fontSize: 24,
-    fontFamily: Platform.OS === "ios"
-      ? "Whitney-Medium"
-      : "Whitney-Medium-Pro"
+    fontFamily: fontMedium
   }
 };
 
@@ -37,9 +36,7 @@ const showLongHeader: Object = {
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
   headerTitleStyle: {
     fontSize: 16,
-    fontFamily: Platform.OS === "ios"
-      ? "Whitney-Medium"
-      : "Whitney-Medium-Pro"
+    fontFamily: fontMedium
   }
 };
 
