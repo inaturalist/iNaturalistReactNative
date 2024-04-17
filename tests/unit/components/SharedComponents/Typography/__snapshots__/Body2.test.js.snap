@@ -5,20 +5,10 @@ exports[`Body2 renders correctly 1`] = `
   style={
     [
       {
-<<<<<<< HEAD
         "fontSize": 15,
         "lineHeight": 18,
       },
       {
-=======
-        "fontSize": 16,
-        "lineHeight": 18,
-      },
-      {
-        "fontWeight": "300",
-      },
-      {
->>>>>>> main
         "color": "#454545",
       },
       {

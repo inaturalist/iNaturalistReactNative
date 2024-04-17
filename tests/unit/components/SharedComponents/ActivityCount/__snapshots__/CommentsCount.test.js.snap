@@ -42,20 +42,10 @@ exports[`CommentsCount renders default reliably 1`] = `
     style={
       [
         {
-<<<<<<< HEAD
           "fontSize": 13,
           "lineHeight": 18,
         },
         {
-=======
-          "fontSize": 14,
-          "lineHeight": 18,
-        },
-        {
-          "fontWeight": "400",
-        },
-        {
->>>>>>> main
           "color": "#454545",
         },
         {
@@ -116,20 +106,10 @@ exports[`CommentsCount renders filled reliably 1`] = `
     style={
       [
         {
-<<<<<<< HEAD
           "fontSize": 13,
           "lineHeight": 18,
         },
         {
-=======
-          "fontSize": 14,
-          "lineHeight": 18,
-        },
-        {
-          "fontWeight": "400",
-        },
-        {
->>>>>>> main
           "color": "#454545",
         },
         {
@@ -190,20 +170,10 @@ exports[`CommentsCount renders white reliably 1`] = `
     style={
       [
         {
-<<<<<<< HEAD
           "fontSize": 13,
           "lineHeight": 18,
         },
         {
-=======
-          "fontSize": 14,
-          "lineHeight": 18,
-        },
-        {
-          "fontWeight": "400",
-        },
-        {
->>>>>>> main
           "color": "#454545",
         },
         {

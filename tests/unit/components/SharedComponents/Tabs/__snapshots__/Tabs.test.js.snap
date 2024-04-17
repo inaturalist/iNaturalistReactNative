@@ -72,20 +72,10 @@ exports[`Tabs should render correctly 1`] = `
           style={
             [
               {
-<<<<<<< HEAD
                 "fontSize": 15,
                 "lineHeight": 18,
               },
               {
-=======
-                "fontSize": 16,
-                "lineHeight": 18,
-              },
-              {
-                "lineHeight": 19,
-              },
-              {
->>>>>>> main
                 "letterSpacing": 2,
               },
               {
@@ -185,20 +175,10 @@ exports[`Tabs should render correctly 1`] = `
           style={
             [
               {
-<<<<<<< HEAD
                 "fontSize": 15,
                 "lineHeight": 18,
               },
               {
-=======
-                "fontSize": 16,
-                "lineHeight": 18,
-              },
-              {
-                "lineHeight": 19,
-              },
-              {
->>>>>>> main
                 "letterSpacing": 2,
               },
               {

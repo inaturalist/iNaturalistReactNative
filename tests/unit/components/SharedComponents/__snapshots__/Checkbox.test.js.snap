@@ -139,20 +139,10 @@ exports[`Checkbox renders reliably 1`] = `
     style={
       [
         {
-<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
-=======
-          "fontSize": 16,
-          "lineHeight": 18,
-        },
-        {
-          "fontWeight": "300",
-        },
-        {
->>>>>>> main
           "color": "#454545",
         },
         {
@@ -313,20 +303,10 @@ exports[`Checkbox renders reliably being checked 1`] = `
     style={
       [
         {
-<<<<<<< HEAD
           "fontSize": 15,
           "lineHeight": 18,
         },
         {
-=======
-          "fontSize": 16,
-          "lineHeight": 18,
-        },
-        {
-          "fontWeight": "300",
-        },
-        {
->>>>>>> main
           "color": "#454545",
         },
         {
