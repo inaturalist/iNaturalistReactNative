@@ -551,57 +551,6 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
             "position": "absolute",
           },
           {
-            "right": 0,
-          },
-          {
-            "paddingBottom": 4,
-            "paddingLeft": 4,
-            "paddingRight": 4,
-            "paddingTop": 4,
-          },
-          {
-            "top": 0,
-          },
-          {
-            "paddingBottom": 8,
-            "paddingLeft": 8,
-            "paddingRight": 8,
-            "paddingTop": 8,
-          },
-        ],
-      ]
-    }
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "rgba(244, 239, 244, 1)",
-            "fontSize": 24,
-          },
-          undefined,
-          {
-            "fontFamily": "INatIcon",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
-  <View
-    style={
-      [
-        [
-          {
-            "position": "absolute",
-          },
-          {
             "bottom": 0,
           },
           {

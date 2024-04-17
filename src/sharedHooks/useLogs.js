@@ -4,9 +4,7 @@
 import { t } from "i18next";
 import {
   useCallback,
-  useEffect,
-  useMemo,
-  useState
+  useMemo
 } from "react";
 import { Alert, Platform, Share } from "react-native";
 import {
@@ -19,6 +17,18 @@ import Mailer from "react-native-mail";
 
 import { logFilePath } from "../../react-native-logs.config";
 
+async function getLogContents() {
+  try {
+    const contents = await RNFS.readFile( logFilePath );
+    return contents.split( "\n" ).join( "\n" );
+  } catch ( readFileError ) {
+    if ( readFileError.message.match( /no such file/ ) ) {
+      return "";
+    }
+    throw readFileError;
+  }
+}
+
 const useLogs = ( ) => {
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
@@ -27,32 +37,6 @@ const useLogs = ( ) => {
     subject: `iNat RN ${device} Logs (version ${appVersion} - ${buildVersion})`,
     recipients: ["help+mobile@inaturalist.org"]
   } ), [device, appVersion, buildVersion] );
-  const [logContents, setLogContents] = useState( "" );
-  const [logFileMtime, setLogFileMtime] = useState( null );
-
-  useEffect( ( ) => {
-    async function getLogfileStat( ) {
-      const { mtime } = await RNFS.stat( logFilePath );
-      setLogFileMtime( mtime );
-    }
-    getLogfileStat( );
-  }, [] );
-
-  useEffect( () => {
-    async function fetchLogContents() {
-      try {
-        const contents = await RNFS.readFile( logFilePath );
-        setLogContents( contents.split( "\n" ).join( "\n" ) );
-      } catch ( readFileError ) {
-        if ( readFileError.message.match( /no such file/ ) ) {
-          setLogContents( "" );
-        } else {
-          throw readFileError;
-        }
-      }
-    }
-    fetchLogContents();
-  }, [logFileMtime] );
 
   const shareLogFile = useCallback( ( ) => Share.share(
     {
@@ -103,7 +87,7 @@ const useLogs = ( ) => {
   return {
     shareLogFile,
     emailLogFile,
-    logContents
+    getLogContents
   };
 };
 

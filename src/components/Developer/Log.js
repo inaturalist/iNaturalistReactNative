@@ -13,7 +13,8 @@ import {
 import type { Node } from "react";
 import React, {
   useCallback,
-  useEffect
+  useEffect,
+  useState
 } from "react";
 import { Platform } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -22,7 +23,8 @@ import useLogs from "sharedHooks/useLogs";
 /* eslint-disable i18next/no-literal-string */
 const Log = (): Node => {
   const navigation = useNavigation( );
-  const { emailLogFile, shareLogFile, logContents } = useLogs( );
+  const { emailLogFile, shareLogFile, getLogContents } = useLogs( );
+  const [logContents, setLogContents] = useState( "" );
   const headerRight = useCallback( ( ) => (
     <>
       { Platform.OS === "ios" && (
@@ -46,10 +48,15 @@ const Log = (): Node => {
       />
     </>
   ), [emailLogFile, shareLogFile] );
+
   useEffect(
     ( ) => navigation.setOptions( { headerRight } ),
     [headerRight, navigation]
   );
+
+  useEffect( ( ) => {
+    getLogContents( ).then( stuff => setLogContents( stuff ) );
+  } );
 
   const lines = logContents.split( "\n" );
   const content = lines.slice( lines.length - 1000, lines.length ).join( "\n" );
