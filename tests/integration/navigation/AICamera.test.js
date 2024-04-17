@@ -90,7 +90,8 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
         modelLoaded: true,
         result: {
           taxon: mockLocalTaxon
-        }
+        },
+        setResult: jest.fn( )
       } ) );
 
       renderApp( );

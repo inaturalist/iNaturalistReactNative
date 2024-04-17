@@ -40,7 +40,8 @@ jest.mock( "../react-native-logs.config", () => {
 
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
   getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) ),
-  removeLogListener: jest.fn( )
+  removeLogListener: jest.fn( ),
+  resetStoredResults: jest.fn( )
 } ) );
 
 jest.mock( "react-native-worklets-core", () => ( {
