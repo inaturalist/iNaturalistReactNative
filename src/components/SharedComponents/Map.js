@@ -338,10 +338,7 @@ const Map = ( {
   ] );
 
   const params = useMemo( ( ) => {
-    const newTileParams: any = {
-      color: "%2374ac00",
-      ...tileMapParams
-    };
+    const newTileParams: any = { ...tileMapParams };
     delete newTileParams.order;
     delete newTileParams.order_by;
     delete newTileParams.per_page;
@@ -365,10 +362,11 @@ const Map = ( {
 
   const queryString = Object.keys( params ).map( key => `${key}=${params[key]}` ).join( "&" );
 
-  const url = currentZoom > 13
-    ? `${API_ENDPOINT}/points/{z}/{x}/{y}.png`
-    : `${API_ENDPOINT}/grid/{z}/{x}/{y}.png`;
-  const urlTemplate = `${url}?${queryString}`;
+  const showPointTiles = currentZoom > 13;
+  // We want green points and (default) orange grid
+  const tileUrlTemplate = showPointTiles
+    ? `${API_ENDPOINT}/points/{z}/{x}/{y}.png?${queryString}&color=%2374ac00`
+    : `${API_ENDPOINT}/grid/{z}/{x}/{y}.png?${queryString}`;
 
   const onMapPressForObsLyr = useCallback( async latLng => {
     const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
@@ -419,19 +417,25 @@ const Map = ( {
   // Not clear why but nesting <UrlTile> directly under <MapView> seems to
   // cause it not to update in Android when you change the URL
   const ObsUrlTile = useCallback( ( ) => {
-    if ( !urlTemplate ) return <View />;
+    if ( !tileUrlTemplate ) return <View />;
     if ( !withPressableObsTiles && !withObsTiles ) return <View />;
     return (
       <UrlTile
         testID="Map.UrlTile"
         tileSize={512}
-        urlTemplate={urlTemplate}
+        urlTemplate={tileUrlTemplate}
+        opacity={
+          showPointTiles
+            ? 1
+            : 0.7
+        }
       />
     );
   }, [
-    urlTemplate,
-    withPressableObsTiles,
-    withObsTiles
+    showPointTiles,
+    tileUrlTemplate,
+    withObsTiles,
+    withPressableObsTiles
   ] );
 
   useEffect( ( ) => {
@@ -578,7 +582,7 @@ const Map = ( {
             }
             onPress={( ) => {
               changeMapType( currentMapType === "standard"
-                ? "satellite"
+                ? "hybrid"
                 : "standard" );
             }}
           />
