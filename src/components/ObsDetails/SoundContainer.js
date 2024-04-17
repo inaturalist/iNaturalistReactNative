@@ -50,8 +50,6 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
   // Track whether the user swiped away since last playing
   const [swipedAway, setSwipedAway] = useState( false );
 
-  console.log( "sound", sound );
-
   // Current progress and total duration of playback
   const [playBackState, setPlayBackState] = useState( {
     // Current position of playback in milliseconds
