@@ -64,12 +64,12 @@ module.exports = {
         22: "5.5rem"
       },
       fontFamily: {
-        "Lato-Bold": ["Lato\\ Bold"], // working
+        "Lato-Bold": ["Lato-Bold"],
         "Lato-BoldItalic": ["Lato-BoldItalic"], // working
         "Lato-Italic": ["Lato-Italic"], // working
-        "Lato-Medium": ["Lato\\ Medium"],
+        "Lato-Medium": ["Lato-Medium"],
         "Lato-MediumItalic": ["Lato-MediumItalic"], // working
-        "Lato-Regular": ["Lato\\ Regular"],
+        "Lato-Regular": ["Lato-Regular"],
         // selected from list of fonts already available in RN
         // https://infinitbility.com/react-native-font-family-list/
         monospace: ["monospace"],

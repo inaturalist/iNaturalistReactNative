@@ -4,9 +4,8 @@ export const fontMedium = "Lato-Medium";
 
 export const fontBold = "Lato-Bold";
 
-export const tailwindFontRegular = `font-${fontRegular}`;
+export const tailwindFontRegular = "font-Lato-Regular";
 
-export const tailwindFontMedium = `font-${fontMedium}`;
+export const tailwindFontMedium = "font-Lato-Medium";
 
-export const tailwindFontBold = `font-${fontBold}`;
-
+export const tailwindFontBold = "font-Lato-Bold";

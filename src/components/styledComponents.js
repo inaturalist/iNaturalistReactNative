@@ -4,11 +4,6 @@ import { FasterImageView as UnstyledFasterImageView } from "@candlefinance/faste
 import {
   BottomSheetTextInput as StyledBottomSheetTextInput
 } from "@gorhom/bottom-sheet";
-import {
-  tailwindFontBold,
-  tailwindFontMedium,
-  tailwindFontRegular
-} from "constants/fontFamilies.ts";
 import { styled } from "nativewind";
 import {
   Image as UnstyledImage,
@@ -19,7 +14,6 @@ import {
   Pressable as StyledPressable,
   SafeAreaView as UnstyledSafeAreaView,
   ScrollView as UnstyledScrollView,
-  Text as UnstyledText,
   TextInput as UntyledTextInput,
   View as UnstyledView
 } from "react-native";
@@ -37,21 +31,6 @@ const SafeAreaView = styled( UnstyledSafeAreaView === undefined
   : UnstyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( UnstyledScrollView );
-// $FlowIgnore
-const Text = styled(
-  UnstyledText,
-  tailwindFontBold
-);
-// $FlowIgnore
-const MediumText = styled(
-  UnstyledText,
-  tailwindFontMedium
-);
-// $FlowIgnore
-const RegularText = styled(
-  UnstyledText,
-  tailwindFontRegular
-);
 // $FlowIgnore
 const TextInput = styled( UntyledTextInput );
 // $FlowIgnore
@@ -83,13 +62,10 @@ export {
   ImageBackground,
   KeyboardAvoidingView,
   LinearGradient,
-  MediumText,
   Modal,
   Pressable,
-  RegularText,
   SafeAreaView,
   ScrollView,
-  Text,
   TextInput,
   View
 };

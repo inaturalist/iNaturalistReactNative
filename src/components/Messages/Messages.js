@@ -1,9 +1,7 @@
 // @flow
 
 import searchMessages from "api/messages";
-import { Tabs } from "components/SharedComponents";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
-import { Text } from "components/styledComponents";
+import { Body3, Tabs, ViewWrapper } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -57,9 +55,9 @@ const Messages = (): Node => {
           </>
         )
         : (
-          <Text className="self-center">
+          <Body3 className="self-center">
             {t( "You-must-be-logged-in-to-view-messages" )}
-          </Text>
+          </Body3>
         )}
     </ViewWrapper>
   );

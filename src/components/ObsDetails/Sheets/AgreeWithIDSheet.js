@@ -7,10 +7,11 @@ import {
   List2,
   TextInputSheet
 } from "components/SharedComponents";
-import { Text, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { Text } from "react-native";
 
 type Props = {
   onAgree:Function,

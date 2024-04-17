@@ -6,7 +6,6 @@ import {
 } from "components/SharedComponents";
 import {
   fontMonoClass,
-  Text,
   TextInput,
   View
 } from "components/styledComponents";
@@ -15,7 +14,7 @@ import React, {
   useCallback,
   useEffect
 } from "react";
-import { Platform } from "react-native";
+import { Platform, Text } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useLogs from "sharedHooks/useLogs";
 
