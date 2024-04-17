@@ -277,6 +277,7 @@ const SoundRecorder = (): Node => {
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
         sounds={sounds}
+        autoPlaySound
       />
       <BottomSheet
         headerText="RECORDING SOUNDS"

@@ -20,6 +20,7 @@ import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
 
 type Props = {
+  autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
   // Optional component to use as the header
   header?: Function,
@@ -42,6 +43,7 @@ type Props = {
 }
 
 const MediaViewer = ( {
+  autoPlaySound,
   editable,
   header,
   onClose = ( ) => { },
@@ -117,6 +119,7 @@ const MediaViewer = ( {
           )
       }
       <MainMediaDisplay
+        autoPlaySound={autoPlaySound}
         editable={editable}
         photos={photos}
         sounds={sounds}

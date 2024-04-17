@@ -39,7 +39,12 @@ const SoundSlider = ( { playBackState, onSlidingComplete } ) => {
   );
 };
 
-const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
+const SoundContainer = ( {
+  autoPlay,
+  isVisible,
+  sizeClass,
+  sound
+} ) => {
   const { isInternetReachable } = useNetInfo( );
   const playerRef = useRef( new AudioRecorderPlayer( ) );
   const player = playerRef.current;
@@ -166,6 +171,13 @@ const SoundContainer = ( { sizeClass, isVisible, sound } ) => {
   useFocusEffect( useCallback( ( ) => async ( ) => {
     await stopSound( );
   }, [stopSound] ) );
+
+  // if autoPlay was selected and this is visible, start playback automatically
+  useEffect( ( ) => {
+    if ( isVisible && autoPlay ) {
+      playSound( );
+    }
+  }, [autoPlay, isVisible, playSound] );
 
   if ( isInternetReachable === false ) {
     return (

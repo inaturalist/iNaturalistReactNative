@@ -6,6 +6,7 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
+  autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
   // Optional component to use as the header
   header?: Function,
@@ -29,6 +30,7 @@ type Props = {
 }
 
 const MediaViewerModal = ( {
+  autoPlaySound,
   editable,
   header,
   onClose = ( ) => { },
@@ -46,6 +48,7 @@ const MediaViewerModal = ( {
     disableSwipeDirection
     modal={(
       <MediaViewer
+        autoPlaySound={autoPlaySound}
         editable={editable}
         header={header}
         onClose={onClose}
