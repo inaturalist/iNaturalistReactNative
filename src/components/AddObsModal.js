@@ -65,7 +65,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
                     : theme.colors.primary
                 }
               />
-              <Body3 className="ml-5">{text}</Body3>
+              <Body3 className="ml-5 mr-1.5">{text}</Body3>
             </View>
           ) )}
         </View>
