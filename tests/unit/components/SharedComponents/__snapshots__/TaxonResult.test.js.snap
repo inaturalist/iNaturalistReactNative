@@ -129,6 +129,18 @@ exports[`TaxonResult should render correctly 1`] = `
               {
                 "width": 62,
               },
+              {
+                "borderBottomWidth": 2,
+                "borderLeftWidth": 2,
+                "borderRightWidth": 2,
+                "borderTopWidth": 2,
+              },
+              {
+                "justifyContent": "center",
+              },
+              {
+                "alignItems": "center",
+              },
               [
                 {
                   "borderBottomLeftRadius": 12,
@@ -208,6 +220,18 @@ exports[`TaxonResult should render correctly 1`] = `
                       "width": 62,
                     },
                     {
+                      "borderBottomWidth": 2,
+                      "borderLeftWidth": 2,
+                      "borderRightWidth": 2,
+                      "borderTopWidth": 2,
+                    },
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "alignItems": "center",
+                    },
+                    {
                       "flexShrink": 1,
                     },
                     {
@@ -257,29 +281,6 @@ exports[`TaxonResult should render correctly 1`] = `
             </View>
           </View>
         </View>
-        <View
-          style={
-            [
-              [
-                {
-                  "position": "absolute",
-                },
-                {
-                  "right": 0,
-                },
-                {
-                  "paddingBottom": 4,
-                  "paddingLeft": 4,
-                  "paddingRight": 4,
-                  "paddingTop": 4,
-                },
-                {
-                  "bottom": 0,
-                },
-              ],
-            ]
-          }
-        />
       </View>
     </View>
     <View

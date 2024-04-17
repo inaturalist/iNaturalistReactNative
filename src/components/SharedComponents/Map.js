@@ -505,7 +505,7 @@ const Map = ( {
               }}
               radius={positionalAccuracy}
               strokeWidth={2}
-              strokeColor="#74AC00"
+              strokeColor={theme.colors.inatGreen}
               fillColor="rgba( 116, 172, 0, 0.2 )"
             />
             <Marker

@@ -823,6 +823,7 @@ See-species-observed-by-this-user-in-Explore = See species observed by this user
 Select-a-date-and-time-for-observation = Select a date and time for observation
 Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
+Select-or-drag-media = Select or drag media
 Select-photo = Select photo
 Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
 # Label for an element that let's you select a user

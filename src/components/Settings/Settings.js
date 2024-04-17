@@ -7,7 +7,7 @@ import {
   Button,
   Heading4,
   RadioButtonRow,
-  ViewWrapper
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
 import {
@@ -167,7 +167,7 @@ const Settings = ( ) => {
   );
 
   return (
-    <ViewWrapper>
+    <ScrollViewWrapper>
       <StatusBar barStyle="dark-content" />
       <View className="p-5">
         {renderLoggedOut( )}
@@ -180,7 +180,7 @@ const Settings = ( ) => {
           <ActivityIndicator size={50} />
         </View>
       )}
-    </ViewWrapper>
+    </ScrollViewWrapper>
   );
 };
 

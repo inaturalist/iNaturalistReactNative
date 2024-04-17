@@ -33,6 +33,10 @@ const ObsGridItem = ( {
 }: Props ): Node => {
   const photoCount = observation?.observationPhotos?.length
     || observation?.observation_photos?.length;
+  const hasSound = !!(
+    observation?.observationSounds?.length
+    || observation?.observation_sounds?.length
+  );
   const currentUser = useCurrentUser( );
   return (
     <ObsImagePreview
@@ -45,7 +49,7 @@ const ObsGridItem = ( {
       height={height}
       style={style}
       obsPhotosCount={photoCount ?? 0}
-      hasSound={!!observation?.observationSounds?.length}
+      hasSound={hasSound}
       isMultiplePhotosTop
       testID={`MyObservations.gridItem.${observation.uuid}`}
       iconicTaxonName={observation.taxon?.iconic_taxon_name}

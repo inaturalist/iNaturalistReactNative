@@ -356,31 +356,31 @@ lane :release do
   #   UI.abort_with_message! "Failed to find APK at #{apk_path}"
   # end
 
-#   github_release = get_github_release(
-#     url: "inaturalist/iNaturalistReactNative",
-#     version: last_tag,
-#     api_token: ENV["GITHUB_TOKEN"]
-#   )
-
-#   if github_release
-#     UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
-#   else
-#     set_github_release(
-#       repository_name: "inaturalist/iNaturalistReactNative",
-#       api_token: ENV["GITHUB_TOKEN"],
-#       name: last_tag,
-#       tag_name: last_tag,
-#       description: begin
-#         File.read( changelog_path )
-#       rescue StandardError
-#         nil
-#       end,
-#       # This is really just a fallback in case last_tag isn't really a tag
-#       commitish: "main",
-#       upload_assets: [apk_path]
-#     )
-#   end
-   system "git checkout #{original_branch}", exception: true
+  github_release = get_github_release(
+    url: "inaturalist/iNaturalistReactNative",
+    version: last_tag,
+    api_token: ENV["GITHUB_TOKEN"]
+  )
+  if github_release
+    UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
+  else
+    set_github_release(
+      repository_name: "inaturalist/iNaturalistReactNative",
+      api_token: ENV["GITHUB_TOKEN"],
+      name: last_tag,
+      tag_name: last_tag,
+      description: begin
+        File.read( changelog_path )
+      rescue StandardError
+        nil
+      end,
+      # This is really just a fallback in case last_tag isn't really a tag
+      commitish: "main"
+      # commenting out temporarily to avoid building in Android
+      # upload_assets: [apk_path]
+    )
+  end
+  system "git checkout #{original_branch}", exception: true
 end
 
 lane :internal do

@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
@@ -71,6 +72,7 @@ const AICamera = ( {
     modelLoaded,
     numStoredResults,
     result,
+    setResult,
     cropRatio,
     setConfidenceThreshold,
     setFPS,
@@ -85,16 +87,24 @@ const AICamera = ( {
   } = useTakePhoto( camera, null, device );
   const { t } = useTranslation();
   const theme = useTheme();
+  const navigation = useNavigation();
 
   // only show predictions when rank is order or lower, like we do on Seek
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
 
-  // Johannes (June 2023): I did read through the native code of the legacy inatcamera
-  // that is triggered when using ref.current.takePictureAsync()
-  // and to me it seems everything should be handled by vision-camera itself.
-  // With the orientation stuff patched by the current fork.
-  // However, there is also some Exif and device orientation related code
-  // that I have not checked. Anyway, those parts we would hoist into JS side if not done yet.
+  React.useEffect( () => {
+    const unsubscribeFocus = navigation.addListener( "focus", () => {
+      setResult( null );
+    } );
+    const unsubscribeBlur = navigation.addListener( "blur", () => {
+      setResult( null );
+    } );
+
+    return () => {
+      unsubscribeFocus();
+      unsubscribeBlur();
+    };
+  }, [navigation, setResult] );
 
   const handlePress = async ( ) => {
     await takePhoto( );
