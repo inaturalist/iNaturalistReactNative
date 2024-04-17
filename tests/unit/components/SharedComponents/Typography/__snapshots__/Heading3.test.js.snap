@@ -5,22 +5,18 @@ exports[`Heading3 renders correctly 1`] = `
   style={
     [
       {
-        "fontFamily": "Whitney-Book",
+        "fontSize": 19,
+        "lineHeight": 23,
       },
-      [
-        [
-          {
-            "fontSize": 19,
-            "lineHeight": 23,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "color": "#454545",
-          },
-        ],
-      ],
+      {
+        "fontWeight": "600",
+      },
+      {
+        "color": "#454545",
+      },
+      {
+        "fontFamily": "Lato-Bold",
+      },
     ]
   }
 >

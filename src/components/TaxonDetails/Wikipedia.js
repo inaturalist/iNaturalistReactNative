@@ -1,5 +1,6 @@
 // @flow
 
+import { fontRegular } from "appConstants/fontFamilies.ts";
 import {
   Body2,
   Heading4
@@ -7,7 +8,6 @@ import {
 import * as React from "react";
 import {
   Linking,
-  Platform,
   useWindowDimensions
 } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
@@ -29,13 +29,11 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
   };
 
   const baseStyle = {
-    fontFamily: `Whitney-Light${Platform.OS === "ios"
-      ? ""
-      : "-Pro"}`,
+    fontFamily: fontRegular,
     fontSize: 16,
     lineHeight: 22
   };
-  const fonts = ["Whitney-Light", "Whitney-Light-Pro", ...defaultSystemFonts];
+  const fonts = [fontRegular, ...defaultSystemFonts];
 
   let wikipediaUrl = taxon.wikipedia_url;
 

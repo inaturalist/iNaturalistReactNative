@@ -4,6 +4,7 @@ import {
   DrawerContentScrollView,
   DrawerItem
 } from "@react-navigation/drawer";
+import { fontRegular } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import {
   Body1,
@@ -14,7 +15,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
-import { Dimensions, Platform } from "react-native";
+import { Dimensions } from "react-native";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -47,9 +48,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     fontSize: 16,
     lineHeight: 19.2,
     letterSpacing: 2,
-    fontFamily: `Whitney-Light${Platform.OS === "ios"
-      ? ""
-      : "-Pro"}`,
+    fontFamily: fontRegular,
     color: theme.colors.primary,
     fontWeight: "700",
     textAlign: "left",

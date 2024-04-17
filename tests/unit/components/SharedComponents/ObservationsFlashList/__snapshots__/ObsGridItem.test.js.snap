@@ -337,26 +337,22 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
       style={
         [
           {
-            "fontFamily": "Whitney-Medium",
+            "fontSize": 18,
+            "lineHeight": 22,
+          },
+          {
+            "fontWeight": "500",
+          },
+          {
+            "color": "#454545",
+          },
+          {
+            "fontFamily": "Lato-Medium",
           },
           [
-            [
-              {
-                "fontSize": 18,
-                "lineHeight": 22,
-              },
-              {
-                "fontWeight": "500",
-              },
-              {
-                "color": "#454545",
-              },
-              [
-                {
-                  "color": "#ffffff",
-                },
-              ],
-            ],
+            {
+              "color": "#ffffff",
+            },
           ],
         ]
       }
@@ -683,26 +679,22 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
       style={
         [
           {
-            "fontFamily": "Whitney-Medium",
+            "fontSize": 18,
+            "lineHeight": 22,
+          },
+          {
+            "fontWeight": "500",
+          },
+          {
+            "color": "#454545",
+          },
+          {
+            "fontFamily": "Lato-Medium",
           },
           [
-            [
-              {
-                "fontSize": 18,
-                "lineHeight": 22,
-              },
-              {
-                "fontWeight": "500",
-              },
-              {
-                "color": "#454545",
-              },
-              [
-                {
-                  "color": "#ffffff",
-                },
-              ],
-            ],
+            {
+              "color": "#ffffff",
+            },
           ],
         ]
       }

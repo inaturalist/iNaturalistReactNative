@@ -1,6 +1,7 @@
 // @flow
 import classnames from "classnames";
-import { Text, View } from "components/styledComponents";
+import { Subheading1 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
@@ -43,7 +44,7 @@ const PhotoPreview = ( {
     : SMALL_PHOTO_DIM + SMALL_PHOTO_GUTTER * 2;
 
   let noPhotosNotice = (
-    <Text
+    <Subheading1
       className={classnames(
         "text-white",
         "text-center",
@@ -52,11 +53,11 @@ const PhotoPreview = ( {
       )}
     >
       {t( "Photos-you-take-will-appear-here" )}
-    </Text>
+    </Subheading1>
   );
   if ( isTablet && isLandscapeMode ) {
     noPhotosNotice = (
-      <Text
+      <Subheading1
         className={classnames(
           "text-white",
           "text-center",
@@ -69,7 +70,7 @@ const PhotoPreview = ( {
         )}
       >
         {t( "Photos-you-take-will-appear-here" )}
-      </Text>
+      </Subheading1>
     );
   }
 

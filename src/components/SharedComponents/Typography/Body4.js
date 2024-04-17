@@ -1,13 +1,22 @@
 // @flow
 
+import {
+  tailwindFontRegular
+} from "appConstants/fontFamilies.ts";
+import classnames from "classnames";
 import type { Node } from "react";
 import React from "react";
-
-import INatTextLight from "./INatTextLight";
+import { Text } from "react-native";
 
 const Body4 = ( props: any ): Node => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <INatTextLight className="text-xs font-light text-darkGray" {...props} />
+  <Text
+    className={classnames(
+      "text-xs font-light text-darkGray",
+      tailwindFontRegular
+    )}
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    {...props}
+  />
 );
 
 export default Body4;

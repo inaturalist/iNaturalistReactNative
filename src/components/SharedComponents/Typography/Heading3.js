@@ -1,13 +1,22 @@
 // @flow
 
+import {
+  tailwindFontBold
+} from "appConstants/fontFamilies.ts";
+import classnames from "classnames";
 import type { Node } from "react";
 import React from "react";
-
-import INatText from "./INatText";
+import { Text } from "react-native";
 
 const Heading3 = ( props: any ): Node => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <INatText className="text-lg font-semibold text-darkGray" {...props} />
+  <Text
+    className={classnames(
+      "text-lg font-semibold text-darkGray",
+      tailwindFontBold
+    )}
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    {...props}
+  />
 );
 
 export default Heading3;
