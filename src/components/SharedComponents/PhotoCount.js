@@ -4,7 +4,6 @@ import { Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import Svg, { Path } from "react-native-svg";
 import { dropShadow } from "styles/global";
@@ -31,10 +30,6 @@ const PhotoCount = ( {
     photoCount = 99;
   }
 
-  const TextComponent = Platform.OS === "ios"
-    ? Body3
-    : Body3;
-
   const textStyle = {
     position: "absolute",
     zIndex: 10,
@@ -51,9 +46,9 @@ const PhotoCount = ( {
       style={[{ height: size, width: size }, shadow && dropShadow]}
       testID="photo-count"
     >
-      <TextComponent style={textStyle}>
+      <Body3 style={textStyle}>
         {photoCount}
-      </TextComponent>
+      </Body3>
       <Svg
         height={size}
         width={size}
