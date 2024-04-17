@@ -268,13 +268,11 @@ const MyObservationsContainer = ( ): Node => {
   }, [state.uploadProgress, state.singleUpload, state.totalProgressIncrements, uploadInProgress] );
 
   const showInternetErrorAlert = useCallback( ( ) => {
-    if ( !isOnline ) {
-      Alert.alert(
-        t( "Internet-Connection-Required" ),
-        t( "Please-try-again-when-you-are-connected-to-the-internet" )
-      );
-    }
-  }, [isOnline, t] );
+    Alert.alert(
+      t( "Internet-Connection-Required" ),
+      t( "Please-try-again-when-you-are-connected-to-the-internet" )
+    );
+  }, [t] );
 
   const toggleLoginSheet = useCallback( ( ) => {
     if ( !currentUser ) {
@@ -316,13 +314,22 @@ const MyObservationsContainer = ( ): Node => {
       toggleLoginSheet( );
       return;
     }
-    showInternetErrorAlert( );
+    if ( !isOnline ) {
+      showInternetErrorAlert( );
+      return;
+    }
     if ( !options || options?.singleUpload !== false ) {
       dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
     }
     await uploadObservationAndCatchError( observation );
     dispatch( { type: "UPLOADS_COMPLETE" } );
-  }, [currentUser, showInternetErrorAlert, toggleLoginSheet, uploadObservationAndCatchError] );
+  }, [
+    currentUser,
+    isOnline,
+    showInternetErrorAlert,
+    toggleLoginSheet,
+    uploadObservationAndCatchError
+  ] );
 
   const uploadMultipleObservations = useCallback( async ( ) => {
     if ( !currentUser ) {
@@ -330,6 +337,10 @@ const MyObservationsContainer = ( ): Node => {
       return;
     }
     if ( numUnuploadedObservations === 0 || uploadInProgress ) {
+      return;
+    }
+    if ( !isOnline ) {
+      showInternetErrorAlert( );
       return;
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
@@ -349,7 +360,9 @@ const MyObservationsContainer = ( ): Node => {
     }
   }, [
     currentUser,
+    isOnline,
     numUnuploadedObservations,
+    showInternetErrorAlert,
     t,
     toggleLoginSheet,
     uploadInProgress,
@@ -449,11 +462,19 @@ const MyObservationsContainer = ( ): Node => {
       logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_STATE" );
       dispatch( { type: "RESET_STATE" } );
     }
-    dispatch( { type: "START_SYNC" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling toggleLoginSheet" );
-    toggleLoginSheet( );
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      dispatch( { type: "RESET_STATE" } );
+      return;
+    }
     logger.info( "[MyObservationsContainer.js] syncObservations: calling showInternetErrorAlert" );
-    showInternetErrorAlert( );
+    if ( !isOnline ) {
+      showInternetErrorAlert( );
+      dispatch( { type: "RESET_STATE" } );
+      return;
+    }
+    dispatch( { type: "START_SYNC" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling activateKeepAwake" );
     activateKeepAwake( );
     logger.info(
@@ -470,13 +491,16 @@ const MyObservationsContainer = ( ): Node => {
     deactivateKeepAwake( );
     dispatch( { type: "RESET_STATE" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: done" );
-  }, [uploadInProgress,
-    uploadsComplete,
-    syncRemoteDeletedObservations,
+  }, [
+    currentUser,
     downloadRemoteObservationsFromServer,
-    toggleLoginSheet,
+    isOnline,
     showInternetErrorAlert,
-    updateSyncTime
+    syncRemoteDeletedObservations,
+    toggleLoginSheet,
+    updateSyncTime,
+    uploadInProgress,
+    uploadsComplete
   ] );
 
   useEffect( ( ) => {
