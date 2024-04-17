@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import { Body3Bold } from "components/SharedComponents";
+import { Body3 } from "components/SharedComponents";
 import {
   CIRCLE_BUTTON_DIM
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
@@ -59,9 +59,9 @@ const CameraZoom = ( {
         accessibilityState={{ disabled: false }}
         size={20}
       >
-        <Body3Bold className="text-s text-white">
+        <Body3 className="text-s text-white">
           {zoomButtonText}
-        </Body3Bold>
+        </Body3>
       </Pressable>
     </Animated.View>
   );

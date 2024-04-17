@@ -4,59 +4,80 @@ module.exports = {
   content: ["index.js", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      letterSpacing: {
+        tight: "-.25px",
+        wide: ".65px",
+        widest: "2px"
+      },
       fontSize: {
+        // Typography: Heading1
         "3xl": [
-          "26px",
+          "25px",
           {
-            lineHeight: "31px"
+            lineHeight: "30px"
           }
         ],
+        // Typography: Heading2
         "2xl": [
-          "22px",
-          {
-            lineHeight: "26px"
-          }
-        ],
-        xl: [
           "21px",
           {
-            lineHeight: "25px"
+            lineHeight: "25.2px"
           }
         ],
-        lg: [
-          "19px",
+        // Typography: Subheading1
+        xl: [
+          "20px",
           {
-            lineHeight: "23px"
+            lineHeight: "24px"
           }
         ],
-        base: [
+        // Typography: Heading3
+        lg: [
           "18px",
           {
-            lineHeight: "22px"
+            lineHeight: "21.6px"
           }
         ],
+        // Typography: Body1/List1
+        base: [
+          "17px",
+          {
+            lineHeight: "20.4px"
+          }
+        ],
+        // Typography: Heading4/Body2
         md: [
-          "16px",
+          "15px",
           {
             lineHeight: "18px"
           }
         ],
+        // Typography: List2
         sm: [
           "14px",
           {
+            lineHeight: "16.8px"
+          }
+        ],
+        // Typography: Body3
+        xs: [
+          "13px",
+          {
             lineHeight: "18px"
           }
         ],
-        xs: [
-          "12px",
+        // Typography: Body4
+        "2xs": [
+          "11px",
           {
-            lineHeight: "14px"
+            lineHeight: "13.2px"
           }
         ],
-        "2xs": [
+        // Typography: Heading5
+        "3xs": [
           "8px",
           {
-            lineHeight: "10px"
+            lineHeight: "9.6px"
           }
         ]
       },

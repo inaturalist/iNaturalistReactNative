@@ -8,7 +8,7 @@ import {
   Heading3,
   Heading4,
   Heading5,
-  List1,
+  Link,
   List2,
   ScrollViewWrapper,
   Subheading1,
@@ -39,7 +39,7 @@ const Typography = ( ) => {
         <Body2 className="my-2">Body2</Body2>
         <Body3 className="my-2">Body3</Body3>
         <Body4 className="my-2">Body4</Body4>
-        <List1 className="my-2">List1</List1>
+        <Link className="my-2" href="fake-url">Link</Link>
         <List2 className="my-2">List2</List2>
 
         <Heading3 className="my-2">UserText</Heading3>

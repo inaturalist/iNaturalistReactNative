@@ -11,7 +11,7 @@ import { Text } from "react-native";
 const List2 = ( props: any ): Node => (
   <Text
     className={classnames(
-      "text-sm leading-[17px] font-light text-darkGray",
+      "text-sm trailing-tight text-darkGray",
       tailwindFontRegular
     )}
     // eslint-disable-next-line react/jsx-props-no-spreading

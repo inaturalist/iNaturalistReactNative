@@ -1,6 +1,6 @@
 // @flow
 
-import { Body3, Body3Bold, INatIcon } from "components/SharedComponents";
+import { Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -33,7 +33,7 @@ const PhotoCount = ( {
 
   const TextComponent = Platform.OS === "ios"
     ? Body3
-    : Body3Bold;
+    : Body3;
 
   const textStyle = {
     position: "absolute",

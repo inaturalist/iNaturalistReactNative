@@ -11,7 +11,7 @@ import { Text } from "react-native";
 const Heading1 = ( props: any ): Node => (
   <Text
     className={classnames(
-      "text-3xl text-darkGray",
+      "text-3xl tracking-tight",
       tailwindFontBold
     )}
     // eslint-disable-next-line react/jsx-props-no-spreading
