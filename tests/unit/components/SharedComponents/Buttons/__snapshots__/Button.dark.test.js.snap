@@ -72,11 +72,8 @@ exports[`Button focus in dark mode should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
         },
         {
           "letterSpacing": 2,
@@ -176,11 +173,8 @@ exports[`Button focus in dark mode when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
         },
         {
           "letterSpacing": 2,
@@ -298,11 +292,8 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
         },
         {
           "letterSpacing": 2,
@@ -420,11 +411,8 @@ exports[`Button neutral in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
         },
         {
           "letterSpacing": 2,
@@ -527,11 +515,8 @@ exports[`Button primary in dark mode should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
         },
         {
           "letterSpacing": 2,
@@ -634,11 +619,8 @@ exports[`Button primary in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
         },
         {
           "letterSpacing": 2,
@@ -741,11 +723,8 @@ exports[`Button warning in dark mode should render correctly 1`] = `
     style={
       [
         {
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
         },
         {
           "letterSpacing": 2,
@@ -845,11 +824,8 @@ exports[`Button warning in dark mode when disabled should render correctly 1`] =
     style={
       [
         {
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
         },
         {
           "letterSpacing": 2,

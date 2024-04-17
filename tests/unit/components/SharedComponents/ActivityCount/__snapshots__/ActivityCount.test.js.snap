@@ -42,11 +42,8 @@ exports[`ActivityCount renders reliably 1`] = `
     style={
       [
         {
-          "fontSize": 14,
+          "fontSize": 13,
           "lineHeight": 18,
-        },
-        {
-          "fontWeight": "400",
         },
         {
           "color": "#454545",

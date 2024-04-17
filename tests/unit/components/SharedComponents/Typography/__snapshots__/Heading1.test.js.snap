@@ -5,11 +5,11 @@ exports[`Heading1 renders correctly 1`] = `
   style={
     [
       {
-        "fontSize": 26,
-        "lineHeight": 31,
+        "fontSize": 25,
+        "lineHeight": 30,
       },
       {
-        "color": "#454545",
+        "letterSpacing": -0.25,
       },
       {
         "fontFamily": "Lato-Bold",
