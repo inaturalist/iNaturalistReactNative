@@ -17,6 +17,7 @@ import AttributionButton from "./AttributionButton";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
+  autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
   horizontalScroll: any,
   onDeletePhoto?: Function,
@@ -38,6 +39,7 @@ type Props = {
 }
 
 const MainMediaDisplay = ( {
+  autoPlaySound,
   editable,
   horizontalScroll,
   onDeletePhoto = ( ) => { },
@@ -105,6 +107,7 @@ const MainMediaDisplay = ( {
       }}
     >
       <SoundContainer
+        autoPlay={autoPlaySound}
         sizeClass="h-72 w-screen"
         sound={sound}
         isVisible={items.indexOf( sound ) === selectedMediaIndex}
@@ -123,6 +126,7 @@ const MainMediaDisplay = ( {
       }
     </View>
   ), [
+    autoPlaySound,
     displayHeight,
     editable,
     items,
