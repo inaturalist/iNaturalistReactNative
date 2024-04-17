@@ -5,9 +5,9 @@ import {
   Body3, BottomSheet, Button
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { fontRegular } from "constants/fontFamilies.ts";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
-import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -35,9 +35,7 @@ const TextInputSheet = ( {
 
   const inputStyle = useMemo( ( ) => ( {
     height: 223,
-    fontFamily: `Whitney-Light${Platform.OS === "ios"
-      ? ""
-      : "-Pro"}`,
+    fontFamily: fontRegular,
     fontSize: 14,
     lineHeight: 17,
     color: theme.colors.primary,

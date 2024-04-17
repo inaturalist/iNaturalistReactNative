@@ -1,8 +1,9 @@
+import { fontRegular } from "constants/fontFamilies.ts";
 import linkifyHtml from "linkify-html";
 import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
-import { Platform, useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
 import WebView from "react-native-webview";
 import sanitizeHtml from "sanitize-html";
@@ -112,14 +113,12 @@ const UserText = ( {
 
   html = linkifyHtml( html, LINKIFY_OPTIONS );
   const baseStyle = {
-    fontFamily: `Whitney-Light${Platform.OS === "ios"
-      ? ""
-      : "-Pro"}`,
+    fontFamily: fontRegular,
     fontSize: 16,
     lineHeight: 22,
     ...htmlStyle
   };
-  const fonts = ["Whitney-Light", "Whitney-Light-Pro", ...defaultSystemFonts];
+  const fonts = [fontRegular, ...defaultSystemFonts];
 
   return (
     <HTML
