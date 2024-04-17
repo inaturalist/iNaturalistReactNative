@@ -1,4 +1,5 @@
 // @flow
+import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
 import type { Node } from "react";
 import React, {
@@ -65,6 +66,8 @@ const FrameProcessorCamera = ( {
   const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( Date.now() );
 
+  const navigation = useNavigation();
+
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
     // iOS part exposes no logging, so calling it would crash
@@ -79,6 +82,20 @@ const FrameProcessorCamera = ( {
       InatVision.removeLogListener();
     };
   }, [onLog] );
+
+  useEffect( () => {
+    const unsubscribeFocus = navigation.addListener( "focus", () => {
+      InatVision.resetStoredResults();
+    } );
+    const unsubscribeBlur = navigation.addListener( "blur", () => {
+      InatVision.resetStoredResults();
+    } );
+
+    return () => {
+      unsubscribeFocus();
+      unsubscribeBlur();
+    };
+  }, [navigation] );
 
   const handleResults = Worklets.createRunInJsFn( ( result, timeTaken ) => {
     // I don't know if it is a temporary thing but as of vision-camera@3.9.1
