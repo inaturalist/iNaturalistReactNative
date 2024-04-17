@@ -2,7 +2,9 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { Body2, Button, TextSheet } from "components/SharedComponents";
+import {
+  Body2, Button, TextSheet, UnderlinedLink
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -166,13 +168,13 @@ const LicensePhotosForm = ( ): Node => {
         <View className="mt-2 flex-1">
           <Body2 className="flex-wrap color-white">{text}</Body2>
           {links && links.map( link => (
-            <Body2
-              className="color-white underline font-bold mt-[9px]"
+            <UnderlinedLink
+              className="color-white mt-[9px]"
               key={link.label}
               onPress={link.onPress}
             >
               {link.label}
-            </Body2>
+            </UnderlinedLink>
           ) )}
         </View>
       </View>

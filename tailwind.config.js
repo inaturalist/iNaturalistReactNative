@@ -45,7 +45,7 @@ module.exports = {
             lineHeight: "20.4px"
           }
         ],
-        // Typography: Heading4/Body2
+        // Typography: Heading4/Body2/UnderlinedLink
         md: [
           "15px",
           {

@@ -8,7 +8,7 @@ import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
 
-const Link = ( props: any ): Node => (
+const UnderlinedLink = ( props: any ): Node => (
   <Text
     className={classnames(
       "text-md text-darkGray underline",
@@ -19,4 +19,4 @@ const Link = ( props: any ): Node => (
   />
 );
 
-export default Link;
+export default UnderlinedLink;
