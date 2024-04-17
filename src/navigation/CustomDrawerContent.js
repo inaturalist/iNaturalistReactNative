@@ -4,6 +4,7 @@ import {
   DrawerContentScrollView,
   DrawerItem
 } from "@react-navigation/drawer";
+import { fontRegular } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import {
   Body1,
@@ -12,7 +13,6 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { fontRegular } from "constants/fontFamilies.ts";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions } from "react-native";

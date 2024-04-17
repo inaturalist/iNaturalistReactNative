@@ -1,9 +1,9 @@
 // @flow
 
-import classnames from "classnames";
 import {
   tailwindFontRegular
-} from "constants/fontFamilies.ts";
+} from "appConstants/fontFamilies.ts";
+import classnames from "classnames";
 import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";

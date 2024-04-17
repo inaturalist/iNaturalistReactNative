@@ -1,7 +1,7 @@
 // @flow
+import { fontRegular } from "appConstants/fontFamilies.ts";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { fontRegular } from "constants/fontFamilies.ts";
 import type { Node } from "react";
 import React from "react";
 import { TextInput, useTheme } from "react-native-paper";

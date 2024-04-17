@@ -59,6 +59,9 @@ exports[`Button focus should render correctly 1`] = `
           "borderTopRightRadius": 8,
         },
         {
+          "fontFamily": "Lato-Bold",
+        },
+        {
           "backgroundColor": "#74AC00",
         },
       ],
@@ -69,35 +72,28 @@ exports[`Button focus should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+          "letterSpacing": 2,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Bold",
         },
         [
-          [
-            {
-              "fontSize": 16,
-              "lineHeight": 18,
-            },
-            {
-              "lineHeight": 19,
-            },
-            {
-              "fontWeight": "600",
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "#ffffff",
-              },
-            ],
-          ],
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "#ffffff",
+          },
         ],
       ]
     }
@@ -167,6 +163,9 @@ exports[`Button focus when disabled should render correctly 1`] = `
           "borderTopRightRadius": 8,
         },
         {
+          "fontFamily": "Lato-Bold",
+        },
+        {
           "backgroundColor": "#B9D580",
         },
       ],
@@ -177,35 +176,28 @@ exports[`Button focus when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+          "letterSpacing": 2,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Bold",
         },
         [
-          [
-            {
-              "fontSize": 16,
-              "lineHeight": 18,
-            },
-            {
-              "lineHeight": 19,
-            },
-            {
-              "fontWeight": "600",
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-            ],
-          ],
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "rgba(255, 255, 255, 0.5)",
+          },
         ],
       ]
     }
@@ -275,6 +267,9 @@ exports[`Button neutral should render correctly 1`] = `
           "borderTopRightRadius": 8,
         },
         {
+          "fontFamily": "Lato-Bold",
+        },
+        {
           "borderBottomWidth": 1,
           "borderLeftWidth": 1,
           "borderRightWidth": 1,
@@ -303,38 +298,31 @@ exports[`Button neutral should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+          "letterSpacing": 2,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Bold",
         },
         [
-          [
-            {
-              "fontSize": 16,
-              "lineHeight": 18,
-            },
-            {
-              "lineHeight": 19,
-            },
-            {
-              "fontWeight": "600",
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "#ffffff",
-              },
-              {
-                "color": "#454545",
-              },
-            ],
-          ],
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "#ffffff",
+          },
+          {
+            "color": "#454545",
+          },
         ],
       ]
     }
@@ -404,6 +392,9 @@ exports[`Button neutral when disabled should render correctly 1`] = `
           "borderTopRightRadius": 8,
         },
         {
+          "fontFamily": "Lato-Bold",
+        },
+        {
           "borderBottomWidth": 1,
           "borderLeftWidth": 1,
           "borderRightWidth": 1,
@@ -429,38 +420,31 @@ exports[`Button neutral when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+          "letterSpacing": 2,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Bold",
         },
         [
-          [
-            {
-              "fontSize": 16,
-              "lineHeight": 18,
-            },
-            {
-              "lineHeight": 19,
-            },
-            {
-              "fontWeight": "600",
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-              {
-                "color": "#828181",
-              },
-            ],
-          ],
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "rgba(255, 255, 255, 0.5)",
+          },
+          {
+            "color": "#828181",
+          },
         ],
       ]
     }
@@ -530,6 +514,9 @@ exports[`Button primary should render correctly 1`] = `
           "borderTopRightRadius": 8,
         },
         {
+          "fontFamily": "Lato-Bold",
+        },
+        {
           "backgroundColor": "#454545",
         },
       ],
@@ -540,38 +527,31 @@ exports[`Button primary should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+          "letterSpacing": 2,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Bold",
         },
         [
-          [
-            {
-              "fontSize": 16,
-              "lineHeight": 18,
-            },
-            {
-              "lineHeight": 19,
-            },
-            {
-              "fontWeight": "600",
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "#ffffff",
-              },
-              {
-                "color": "#ffffff",
-              },
-            ],
-          ],
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "#ffffff",
+          },
+          {
+            "color": "#ffffff",
+          },
         ],
       ]
     }
@@ -641,6 +621,9 @@ exports[`Button primary when disabled should render correctly 1`] = `
           "borderTopRightRadius": 8,
         },
         {
+          "fontFamily": "Lato-Bold",
+        },
+        {
           "backgroundColor": "#828181",
         },
       ],
@@ -651,38 +634,31 @@ exports[`Button primary when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+          "letterSpacing": 2,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Bold",
         },
         [
-          [
-            {
-              "fontSize": 16,
-              "lineHeight": 18,
-            },
-            {
-              "lineHeight": 19,
-            },
-            {
-              "fontWeight": "600",
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-            ],
-          ],
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "rgba(255, 255, 255, 0.5)",
+          },
+          {
+            "color": "rgba(255, 255, 255, 0.5)",
+          },
         ],
       ]
     }
@@ -752,6 +728,9 @@ exports[`Button warning should render correctly 1`] = `
           "borderTopRightRadius": 8,
         },
         {
+          "fontFamily": "Lato-Bold",
+        },
+        {
           "backgroundColor": "#9B1010",
         },
       ],
@@ -762,35 +741,28 @@ exports[`Button warning should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+          "letterSpacing": 2,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Bold",
         },
         [
-          [
-            {
-              "fontSize": 16,
-              "lineHeight": 18,
-            },
-            {
-              "lineHeight": 19,
-            },
-            {
-              "fontWeight": "600",
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "#ffffff",
-              },
-            ],
-          ],
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "#ffffff",
+          },
         ],
       ]
     }
@@ -860,6 +832,9 @@ exports[`Button warning when disabled should render correctly 1`] = `
           "borderTopRightRadius": 8,
         },
         {
+          "fontFamily": "Lato-Bold",
+        },
+        {
           "backgroundColor": "#b06365",
         },
       ],
@@ -870,35 +845,28 @@ exports[`Button warning when disabled should render correctly 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Book",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "lineHeight": 19,
+        },
+        {
+          "letterSpacing": 2,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Bold",
         },
         [
-          [
-            {
-              "fontSize": 16,
-              "lineHeight": 18,
-            },
-            {
-              "lineHeight": 19,
-            },
-            {
-              "fontWeight": "600",
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-            ],
-          ],
+          {
+            "textAlign": "center",
+          },
+          {
+            "color": "rgba(255, 255, 255, 0.5)",
+          },
         ],
       ]
     }

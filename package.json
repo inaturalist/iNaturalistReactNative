@@ -125,6 +125,7 @@
     "realm": "^12.6.2",
     "reassure": "^0.11.0",
     "sanitize-html": "^2.13.0",
+    "ts-jest": "^29.1.2",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision",
     "zustand": "^4.5.2"
   },
@@ -143,6 +144,7 @@
     "@tanstack/eslint-plugin-query": "^5.28.11",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.4.5",
+    "@types/jest": "^29.5.12",
     "@types/react": "^18.2.74",
     "@types/react-test-renderer": "^18.0.7",
     "babel-jest": "^29.6.3",

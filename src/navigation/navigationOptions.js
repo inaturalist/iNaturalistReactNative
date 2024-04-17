@@ -1,7 +1,7 @@
 // @flow
 import { HeaderBackground } from "@react-navigation/elements";
+import { fontMedium } from "appConstants/fontFamilies.ts";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
-import { fontMedium } from "constants/fontFamilies.ts";
 import type { Node } from "react";
 import React from "react";
 import { View } from "react-native";

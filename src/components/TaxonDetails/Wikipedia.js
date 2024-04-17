@@ -1,10 +1,10 @@
 // @flow
 
+import { fontRegular } from "appConstants/fontFamilies.ts";
 import {
   Body2,
   Heading4
 } from "components/SharedComponents";
-import { fontRegular } from "constants/fontFamilies.ts";
 import * as React from "react";
 import {
   Linking,

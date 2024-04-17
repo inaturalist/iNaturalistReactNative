@@ -1,4 +1,4 @@
-import { fontRegular } from "constants/fontFamilies.ts";
+import { fontRegular } from "appConstants/fontFamilies.ts";
 import linkifyHtml from "linkify-html";
 import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";

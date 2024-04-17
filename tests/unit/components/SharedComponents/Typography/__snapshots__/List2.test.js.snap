@@ -5,23 +5,21 @@ exports[`List2 renders correctly 1`] = `
   style={
     [
       {
-        "fontFamily": "Whitney-Book",
+        "fontSize": 14,
+        "lineHeight": 18,
       },
-      [
-        {
-          "fontSize": 14,
-          "lineHeight": 18,
-        },
-        {
-          "lineHeight": 17,
-        },
-        {
-          "fontWeight": "300",
-        },
-        {
-          "color": "#454545",
-        },
-      ],
+      {
+        "lineHeight": 17,
+      },
+      {
+        "fontWeight": "300",
+      },
+      {
+        "color": "#454545",
+      },
+      {
+        "fontFamily": "Lato-Regular",
+      },
     ]
   }
 >

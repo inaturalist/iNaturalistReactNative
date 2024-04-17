@@ -1,11 +1,11 @@
 // @flow
 
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import { fontRegular } from "appConstants/fontFamilies.ts";
 import {
   Body3, BottomSheet, Button
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { fontRegular } from "constants/fontFamilies.ts";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import { useTheme } from "react-native-paper";
