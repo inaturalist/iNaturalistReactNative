@@ -82,14 +82,12 @@ const About = (): Node => {
       <ScrollViewWrapper>
         {activeTab === aboutID && (
           <View className="px-4 py-8">
-            <View className="mb-8 items-center justify-center">
-              <Image
-                className="w-[250px] h-[45px]"
-                resizeMode="contain"
-                source={require( "images/inaturalist-dark.png" )}
-                accessibilityIgnoresInvertColors
-              />
-            </View>
+            <Image
+              className="w-[65%] max-h-12 xl:max-h-24 2xl:max-h-32 object-center self-center mb-8"
+              resizeMode="contain"
+              source={require( "images/inaturalist-dark.png" )}
+              accessibilityIgnoresInvertColors
+            />
             <Heading4 className="mb-3">
               {t( "INATURALIST-MISSION-VISION" )}
             </Heading4>
