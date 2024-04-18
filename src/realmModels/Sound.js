@@ -66,7 +66,7 @@ class Sound extends Realm.Object {
     }
     return {
       ...sound,
-      uuid: soundUUID,
+      // uuid: soundUUID,
       file_url
     };
   }

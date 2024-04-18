@@ -10,10 +10,7 @@ class ObservationSound extends Realm.Object {
   static OBSERVATION_SOUNDS_FIELDS = {
     id: true,
     uuid: true,
-    sound: {
-      id: true,
-      file_url: true
-    }
+    sound: Sound.SOUND_FIELDS
   };
 
   needsSync( ) {
@@ -49,7 +46,11 @@ class ObservationSound extends Realm.Object {
       : "m4a";
 
     return {
-      "sound[uuid]": observationSound.uuid,
+      // Sound UUIDs don't really do anything at present. When
+      // https://github.com/inaturalist/iNaturalistReactNative/issues/1068 is
+      // completed we can use them to prevent the creation of duplicate sound
+      // records
+      // "sound[uuid]": observationSound.sound.uuid,
       file: new FileUpload( {
         uri: observationSound.sound.file_url,
         name: `${observationSound.uuid}.${fileExt}`,
