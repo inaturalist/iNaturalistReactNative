@@ -172,13 +172,13 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   ] );
 
   const hasSounds = obs.observationSounds.length > 0;
-  const unsyncedSounds = hasSounds
+  const unsyncedObservationSounds = hasSounds
     ? obs.observationSounds.filter( item => !item.wasSynced( ) )
     : [];
   await Promise.all( [
-    unsyncedSounds.length > 0
+    unsyncedObservationSounds.length > 0
       ? await uploadEvidence(
-        unsyncedSounds,
+        unsyncedObservationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForUpload,
         null,
@@ -233,9 +233,9 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
         realm
       )
       : null,
-    unsyncedSounds.length > 0
+    unsyncedObservationSounds.length > 0
       ? await uploadEvidence(
-        unsyncedSounds,
+        unsyncedObservationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForAttachingToObs,
         obsUUID,

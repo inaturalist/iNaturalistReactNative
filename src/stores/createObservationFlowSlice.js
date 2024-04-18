@@ -26,7 +26,7 @@ const removeObsSoundFromObservation = ( currentObservation, uri ) => {
   if ( obsSounds.length > 0 ) {
     _.remove(
       obsSounds,
-      obsPhoto => obsPhoto.file_url === uri
+      obsSound => obsSound.sound.file_url === uri
     );
     updatedObservation.observationSounds = obsSounds;
     return [updatedObservation];

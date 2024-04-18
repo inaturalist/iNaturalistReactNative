@@ -10,6 +10,7 @@ import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
+import Sound from "./Sound";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
@@ -118,7 +119,9 @@ class Observation extends Realm.Object {
 
   static async createObsWithSoundPath( soundPath ) {
     const observation = await Observation.new( );
-    const sound = await ObservationSound.new( { file_url: soundPath } );
+    const sound = await ObservationSound.new( {
+      sound: await Sound.new( { file_url: soundPath } )
+    } );
     observation.observationSounds = [sound];
     return observation;
   }
@@ -166,6 +169,20 @@ class Observation extends Realm.Object {
       return mappedObsPhoto;
     } );
 
+    const observationSounds = (
+      obs.observation_sounds || obs.observationSounds || []
+    ).map( obsSound => {
+      const mappedObsSound = ObservationSound.mapApiToRealm( obsSound, realm );
+      const existingObsSound = existingObs?.observationSounds?.find(
+        os => os.uuid === obsSound.uuid
+      );
+      if ( !existingObsSound ) {
+        mappedObsSound._created_at = new Date( );
+        mappedObsSound.sound._created_at = new Date( );
+      }
+      return mappedObsSound;
+    } );
+
     const identifications = obs.identifications
       ? obs.identifications.map( id => Identification.mapApiToRealm( id, realm ) )
       : [];
@@ -183,11 +200,7 @@ class Observation extends Realm.Object {
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
       observationPhotos,
-      observationSounds: obs.observation_sounds?.map( observationSound => ( {
-        id: observationSound.id,
-        uuid: observationSound.uuid,
-        file_url: observationSound.sound.file_url
-      } ) ),
+      observationSounds,
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
       taxon
     };
