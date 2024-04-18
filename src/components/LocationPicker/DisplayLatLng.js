@@ -6,16 +6,17 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
+
+const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 type Props = {
   region: Object,
-  accuracy: number,
-  getShadow: Function
+  accuracy: number
 };
 
-const DisplayLatLng = ( { region, accuracy, getShadow }: Props ): Node => {
-  const theme = useTheme( );
+const DisplayLatLng = ( { region, accuracy }: Props ): Node => {
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
 
   const displayLocation = ( ) => {
@@ -35,7 +36,7 @@ const DisplayLatLng = ( { region, accuracy, getShadow }: Props ): Node => {
   return (
     <View
       className="bg-white h-[27px] rounded-lg absolute top-[85px] right-[26px] left-[26px]"
-      style={getShadow( theme.colors.primary )}
+      style={DROP_SHADOW}
     >
       <Body4 className="pt-[7px] pl-[14px]">
         {displayLocation( )}

@@ -10,18 +10,14 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Platform } from "react-native";
-import { useTheme } from "react-native-paper";
 import { useDebugMode, useTranslation } from "sharedHooks";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import useMapLocation from "./hooks/useMapLocation";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
   elevation: 6
 } );
 
@@ -34,7 +30,6 @@ const MapView = ( {
   observations,
   queryParams: tileMapParams
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
   const [zoom, setZoom] = useState( -1 );
@@ -59,7 +54,7 @@ const MapView = ( {
         {showMapBoundaryButton && (
           <View
             className="mx-auto"
-            style={getShadow( theme.colors.primary )}
+            style={DROP_SHADOW}
           >
             <Button
               text={t( "REDO-SEARCH-IN-MAP-AREA" )}

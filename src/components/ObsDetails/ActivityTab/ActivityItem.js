@@ -12,7 +12,6 @@ import { t } from "i18next";
 import _ from "lodash";
 import type { Node } from "react";
 import React from "react";
-import { textStyles } from "styles/obsDetails/obsDetails";
 
 import ActivityHeaderContainer from "./ActivityHeaderContainer";
 
@@ -80,7 +79,7 @@ const ActivityItem = ( {
         )}
         { !_.isEmpty( item?.body ) && (
           <View className="flex-row">
-            <UserText baseStyle={textStyles.activityItemBody} text={item.body} />
+            <UserText text={item.body} />
           </View>
         )}
       </View>

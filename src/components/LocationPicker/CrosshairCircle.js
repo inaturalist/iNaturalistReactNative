@@ -10,11 +10,10 @@ import { useTheme } from "react-native-paper";
 import WarningText from "./WarningText";
 
 type Props = {
-  accuracyTest: string,
-  getShadow: Function
+  accuracyTest: string
 };
 
-const CrosshairCircle = ( { accuracyTest, getShadow }: Props ): Node => {
+const CrosshairCircle = ( { accuracyTest }: Props ): Node => {
   const theme = useTheme( );
 
   return (
@@ -53,7 +52,7 @@ const CrosshairCircle = ( { accuracyTest, getShadow }: Props ): Node => {
         )}
       </View>
       <View className="absolute m-auto left-0 right-0 top-[300px]">
-        <WarningText accuracyTest={accuracyTest} getShadow={getShadow} />
+        <WarningText accuracyTest={accuracyTest} />
       </View>
     </View>
   );

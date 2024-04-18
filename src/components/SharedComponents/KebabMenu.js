@@ -5,7 +5,6 @@ import type { Node } from "react";
 import React from "react";
 import { Menu } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
-import viewStyles from "styles/sharedComponents/kebabMenu";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -31,6 +30,10 @@ const KebabMenu = ( {
   const openMenu = ( ) => setVisible( true );
   const closeMenu = ( ) => setVisible( false );
 
+  const menuContentStyle = {
+    backgroundColor: colors.white
+  };
+
   const anchorButton = (
     <INatIconButton
       onPress={openMenu}
@@ -51,7 +54,7 @@ const KebabMenu = ( {
     <Menu
       visible={visible}
       onDismiss={closeMenu}
-      contentStyle={viewStyles.menuContentStyle}
+      contentStyle={menuContentStyle}
       anchor={anchorButton}
     >
       {children}

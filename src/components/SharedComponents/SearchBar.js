@@ -6,16 +6,10 @@ import type { Node } from "react";
 import React from "react";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
-} );
+const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 type Props = {
   autoFocus?: boolean,
@@ -53,7 +47,7 @@ const SearchBar = ( {
 
   const style = {
     ...( hasShadow
-      ? getShadow( theme.colors.primary )
+      ? DROP_SHADOW
       : {} ),
     fontSize: 16,
     lineHeight: 18,

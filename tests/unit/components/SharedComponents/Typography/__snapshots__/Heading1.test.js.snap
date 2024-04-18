@@ -12,6 +12,9 @@ exports[`Heading1 renders correctly 1`] = `
         "letterSpacing": -0.25,
       },
       {
+        "color": "#454545",
+      },
+      {
         "fontFamily": "Lato-Bold",
       },
     ]

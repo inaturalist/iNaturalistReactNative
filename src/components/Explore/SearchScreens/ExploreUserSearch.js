@@ -14,21 +14,15 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { useTheme } from "react-native-paper";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+  offsetHeight: 4
 } );
 
 const ExploreUserSearch = ( ): Node => {
-  const theme = useTheme();
   const [userQuery, setUserQuery] = useState( "" );
   const navigation = useNavigation( );
   const { t } = useTranslation();
@@ -77,7 +71,7 @@ const ExploreUserSearch = ( ): Node => {
     <ViewWrapper className="flex-1">
       <View
         className="bg-white px-6 pt-2 pb-8"
-        style={getShadow( theme.colors.primary )}
+        style={DROP_SHADOW}
       >
         <SearchBar
           handleTextChange={setUserQuery}

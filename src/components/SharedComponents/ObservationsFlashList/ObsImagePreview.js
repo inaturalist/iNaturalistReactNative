@@ -10,10 +10,7 @@ import { getShadowForColor } from "styles/global";
 import ObsImage from "./ObsImage";
 
 const ICON_DROP_SHADOW = getShadowForColor( "#000000", {
-  offsetWidth: 0,
-  offsetHeight: 1,
-  shadowOpacity: 0.25,
-  shadowRadius: 2
+  offsetHeight: 1
 } );
 
 type SOURCE = {
