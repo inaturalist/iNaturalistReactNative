@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  parser: "@babel/eslint-parser",
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     requireConfigFile: false,
     babelOptions: {
@@ -129,7 +129,7 @@ module.exports = {
   env: {
     jest: true
   },
-  ignorePatterns: ["/coverage/*", "/vendor/*"],
+  ignorePatterns: ["/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
     "import/resolver": {
       "babel-module": { allowExistingDirectories: true },
