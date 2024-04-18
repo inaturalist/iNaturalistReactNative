@@ -9,16 +9,10 @@ import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
-} );
+const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 type Props = {
   taxonId: number
@@ -55,7 +49,7 @@ const SpeciesSeenCheckmark = ( {
   return (
     <View
       className="rounded-full"
-      style={getShadow( theme.colors.primary )}
+      style={DROP_SHADOW}
       testID="SpeciesSeenCheckmark"
     >
       <View className="w-[18px] h-[18px] top-[1px] bg-white absolute rounded-full" />

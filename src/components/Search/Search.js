@@ -44,6 +44,7 @@ const Search = (): React.Node => {
         <Pressable
           className="py-1.5"
           accessibilityRole="button"
+          accessibilityLabel="Navigates-to-taxon-details"
           onPress={navToTaxonDetails}
           testID={`Search.taxa.${item.id}`}
         >
@@ -60,6 +61,7 @@ const Search = (): React.Node => {
     return (
       <Pressable
         accessibilityRole="button"
+        accessibilityLabel="Navigates-to-user-profile"
         onPress={navToUserProfile}
         className="py-1.5"
         testID={`Search.user.${item.login}`}
@@ -86,16 +88,14 @@ const Search = (): React.Node => {
           onPress={setTaxaSearch}
           testID="Search.taxa"
           accessibilityRole="button"
-        >
-          <Body3 text="search taxa" />
-        </Pressable>
+          accessibilityLabel="Set-taxon-search"
+        />
         <Pressable
           onPress={setUserSearch}
+          accessibilityLabel="Set-user-search"
           testID="Search.users"
           accessibilityRole="button"
-        >
-          <Body3 text="search users" />
-        </Pressable>
+        />
       </View>
       <InputField
         handleTextChange={setQ}

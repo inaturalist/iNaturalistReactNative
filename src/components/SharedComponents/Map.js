@@ -26,8 +26,10 @@ import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 import { useDeviceOrientation } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
+
+const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 function calculateZoom( width, delta ) {
   return Math.round(
@@ -126,15 +128,6 @@ type Props = {
   zoomEnabled?: boolean,
   zoomTapEnabled?: boolean
 }
-
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
-} );
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
@@ -555,7 +548,7 @@ const Map = ( {
             "absolute bottom-5 right-5 bg-white rounded-full",
             currentLocationButtonClassName
           )}
-          style={getShadow( theme.colors.primary )}
+          style={DROP_SHADOW}
           accessibilityLabel={t( "Zoom-to-current-location" )}
           onPress={( ) => {
             setZoomToUserLocationRequested( true );
@@ -572,7 +565,7 @@ const Map = ( {
               "absolute bottom-5 left-5 bg-white rounded-full",
               switchMapTypeButtonClassName
             )}
-            style={getShadow( theme.colors.primary )}
+            style={DROP_SHADOW}
             accessibilityLabel={t( "Toggle-map-type" )}
             accessibilityRole="button"
             accessibilityState={

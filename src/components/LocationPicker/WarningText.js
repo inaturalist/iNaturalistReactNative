@@ -7,16 +7,17 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
+
+const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 type Props = {
-  accuracyTest: string,
-  getShadow: Function
+  accuracyTest: string
 };
 
-const WarningText = ( { accuracyTest, getShadow }: Props ): Node => {
-  const theme = useTheme( );
+const WarningText = ( { accuracyTest }: Props ): Node => {
   const { t } = useTranslation( );
 
   if ( accuracyTest === "pass" ) {
@@ -40,7 +41,7 @@ const WarningText = ( { accuracyTest, getShadow }: Props ): Node => {
         "bg-white": accuracyTest === "acceptable",
         "bg-warningRed": accuracyTest === "fail"
       } )}
-      style={getShadow( theme.colors.primary )}
+      style={DROP_SHADOW}
     >
       <Body3
         className={classnames(
