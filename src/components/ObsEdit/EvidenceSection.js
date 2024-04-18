@@ -29,12 +29,14 @@ type Props = {
   onLocationPermissionDenied: Function,
   onLocationPermissionGranted: Function,
   passesEvidenceTest: Function,
-  photos: Array<Object>,
+  observationPhotos: Array<Object>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
-  sounds?: Array<{
+  observationSounds?: Array<{
     id?: number,
-    file_url: string,
+    sound: {
+      file_url: string,
+    },
     uuid: string
   }>,
   updateObservationKeys: Function,
@@ -50,10 +52,10 @@ const EvidenceSection = ( {
   onLocationPermissionDenied,
   onLocationPermissionGranted,
   passesEvidenceTest,
-  photos,
+  observationPhotos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
-  sounds,
+  observationSounds,
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -119,8 +121,8 @@ const EvidenceSection = ( {
       <EvidenceList
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
-        photos={photos}
-        sounds={sounds}
+        observationPhotos={observationPhotos}
+        observationSounds={observationSounds}
       />
       <Pressable
         accessibilityRole="link"

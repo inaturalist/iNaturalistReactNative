@@ -9,6 +9,7 @@ import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
+import Sound from "./Sound";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
@@ -24,17 +25,27 @@ export default {
     ObservationPhoto,
     ObservationSound,
     Photo,
+    Sound,
     Taxon,
     User,
     Vote
   ],
-  schemaVersion: 48,
+  schemaVersion: 49,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {
     resolveEmbeddedConstraints: true
   },
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 49 ) {
+      const oldObsSounds = oldRealm.objects( "ObservationSound" );
+      const newObsSounds = newRealm.objects( "ObservationSound" );
+      oldObsSounds.keys( ).forEach( objectIndex => {
+        const oldObsSound = oldObsSounds[objectIndex];
+        const newObsSound = newObsSounds[objectIndex];
+        newObsSound.sound = { file_url: oldObsSound.file_url };
+      } );
+    }
     if ( oldRealm.schemaVersion < 48 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
