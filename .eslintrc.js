@@ -1,7 +1,6 @@
 module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
-  // parser: "@babel/eslint-parser",
   parserOptions: {
     requireConfigFile: false,
     babelOptions: {
