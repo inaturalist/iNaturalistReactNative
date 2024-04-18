@@ -12,8 +12,6 @@ import {
   ScrollViewWrapper
 } from "components/SharedComponents";
 import {
-  Image,
-  LinearGradient,
   Pressable,
   View
 } from "components/styledComponents";
@@ -28,8 +26,8 @@ import {
   Share,
   StatusBar
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { Menu, useTheme } from "react-native-paper";
-import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 
@@ -37,6 +35,7 @@ import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 import TaxonMapPreview from "./TaxonMapPreview";
+import TaxonMedia from "./TaxonMedia";
 import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
 
@@ -45,6 +44,8 @@ const logger = log.extend( "TaxonDetails" );
 const { useRealm } = RealmContext;
 
 const TAXON_URL = "https://www.inaturalist.org/taxa";
+
+const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
   const theme = useTheme( );
@@ -148,18 +149,12 @@ const TaxonDetails = ( ): Node => {
             accessibilityLabel={t( "View-photo" )}
             accessibilityRole="link"
           >
-            <Image
-              testID="TaxonDetails.photo"
-              className="w-full h-full"
-              source={{
-                uri: Photo.displayMediumPhoto( photos.at( 0 )?.url )
-              }}
-              accessibilityIgnoresInvertColors
-            />
-            <LinearGradient
+            <TaxonMedia loading={isLoading} photos={photos} tablet={isTablet} />
+            {/* cant figure out how to have the gradient show with carousel - angie20240418 */}
+            {/* <LinearGradient
               colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
               className="absolute w-full h-full"
-            />
+            />  */}
           </Pressable>
           <View className="absolute left-5 top-5">
             <BackButton
