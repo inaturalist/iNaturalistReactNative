@@ -19,5 +19,8 @@ echo "system iOS pods cache"
 echo "Android build folder"
 rm -rf android/build
 
+echo "Android gradle folder"
+rm -rf android/.gradle
+
 echo "Android clean project"
-(cd android && ./gradlew clean)
+(cd android && ./gradlew --stop && ./gradlew clean)
