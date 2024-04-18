@@ -13,17 +13,17 @@ import Animated from "react-native-reanimated";
 const isTablet = DeviceInfo.isTablet();
 
 type Props = {
-  takePhoto: ( ) => void,
-  handleClose: ( ) => void,
+  takePhoto: any,
+  handleClose: any,
   disabled: boolean,
   photosTaken: boolean,
-  rotatableAnimatedStyle: object,
-  handleCheckmarkPress: ( ) => void,
-  toggleFlash: ( ) => void,
-  flipCamera: ( ) => void,
-  changeZoom: ( ) => void,
+  rotatableAnimatedStyle: any,
+  handleCheckmarkPress: any,
+  toggleFlash: any,
+  flipCamera: any,
+  changeZoom: any,
   hasFlash: boolean,
-  takePhotoOptions: object,
+  takePhotoOptions: any,
   zoomTextValue: string,
   showZoomButton: boolean
 }

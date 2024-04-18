@@ -20,8 +20,8 @@ type Props = {
   autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
   horizontalScroll: any,
-  onDeletePhoto?: ( ) => void,
-  onDeleteSound?: ( ) => void,
+  onDeletePhoto?: any,
+  onDeleteSound?: any,
   photos: Array<{
     id?: number,
     url: string,
@@ -35,7 +35,7 @@ type Props = {
     uuid: string
   }>,
   selectedMediaIndex: number,
-  setSelectedMediaIndex: ( ) => void
+  setSelectedMediaIndex: any
 }
 
 const MainMediaDisplay = ( {

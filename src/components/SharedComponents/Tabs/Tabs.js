@@ -12,7 +12,7 @@ type Tab = {
   id: string,
   text: string,
   testID?: string,
-  onPress: ( ) => void
+  onPress: any
 }
 
 type Props = {

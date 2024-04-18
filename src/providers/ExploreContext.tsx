@@ -150,18 +150,18 @@ type State = {
   return_bounds: boolean,
   // TODO: technically this is not any Object but a "Taxon"
   // and should be typed as such (e.g., in realm model)
-  taxon: object | undefined,
+  taxon: any | undefined,
   taxon_id: number | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
   // TODO: technically this is not any Object but a "User"
   // and should be typed as such (e.g., in realm model)
-  user: object | undefined,
+  user: any | undefined,
   project_id: number | undefined,
   // TODO: technically this is not any Object but a "Project"
   // and should be typed as such (e.g., in realm model)
-  project: object | undefined,
+  project: any | undefined,
   sortBy: SORT_BY,
   researchGrade: boolean,
   needsID: boolean,
@@ -186,15 +186,15 @@ type State = {
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
-  | {type: EXPLORE_ACTION.SET_USER, user: object, userId: number, storedState: State}
+  | {type: EXPLORE_ACTION.SET_USER, user: any, userId: number, storedState: State}
   | {
     type: EXPLORE_ACTION.CHANGE_TAXON,
-    taxon: object,
+    taxon: any,
     taxonId: number,
     taxonName: string,
     storedState: State
   }
-  | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: object}
+  | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: any}
   | {
     type: EXPLORE_ACTION.SET_PLACE,
     placeId: number,
@@ -204,7 +204,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
     radius: number,
     storedState: State
   }
-  | {type: EXPLORE_ACTION.SET_PROJECT, project: object, projectId: number, storedState: State}
+  | {type: EXPLORE_ACTION.SET_PROJECT, project: any, projectId: number, storedState: State}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
   | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}

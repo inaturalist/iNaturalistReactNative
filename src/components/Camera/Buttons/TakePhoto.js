@@ -23,7 +23,7 @@ const getShadow = shadowColor => getShadowStyle( {
 } );
 
 type Props = {
-  takePhoto: ( ) => void,
+  takePhoto: any,
   disabled: boolean,
   showPrediction?: boolean
 }

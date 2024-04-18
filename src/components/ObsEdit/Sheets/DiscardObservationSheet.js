@@ -12,10 +12,10 @@ import Observation from "realmModels/Observation";
 const { useRealm } = RealmContext;
 
 type Props = {
-  handleClose: ( ) => void,
-  discardObservation: ( ) => void,
-  navToObsList: ( ) => void,
-  observations: Array<object>
+  handleClose: any,
+  discardObservation: any,
+  navToObsList: any,
+  observations: Array<any>
 }
 
 const DiscardObservationSheet = ( {

@@ -5,8 +5,8 @@ import inatjs from "inaturalistjs";
 import handleError from "./error";
 
 const setQualityMetric = async (
-  params: object = {},
-  opts: object = {}
+  params: any = {},
+  opts: any = {}
 ): Promise<any> => {
   try {
     const response = await inatjs.observations.setQualityMetric( params, opts );
@@ -17,8 +17,8 @@ const setQualityMetric = async (
 };
 
 const deleteQualityMetric = async (
-  params: object = {},
-  opts: object = {}
+  params: any = {},
+  opts: any = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.observations.deleteQualityMetric( params, opts );
@@ -29,8 +29,8 @@ const deleteQualityMetric = async (
 };
 
 const fetchQualityMetrics = async (
-  params: object = {},
-  opts: object = {}
+  params: any = {},
+  opts: any = {}
 ): Promise<any> => {
   try {
     const response = await inatjs.observations.qualityMetrics( params, opts );

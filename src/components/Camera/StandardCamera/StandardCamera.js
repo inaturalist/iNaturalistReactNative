@@ -44,8 +44,8 @@ type Props = {
   addEvidence: ?boolean,
   camera: any,
   device: any,
-  flipCamera: ( ) => void,
-  handleCheckmarkPress: ( ) => void,
+  flipCamera: any,
+  handleCheckmarkPress: any,
   isLandscapeMode: boolean
 };
 

@@ -16,12 +16,12 @@ type Props = {
   disabled?: boolean,
   height?: number,
   icon: string,
-  onPress: ( ) => void,
+  onPress: any,
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
   preventTransparency?: boolean,
   size?: number,
-  style?: object,
+  style?: any,
   testID?: string,
   width?: number,
   backgroundColor?: string,

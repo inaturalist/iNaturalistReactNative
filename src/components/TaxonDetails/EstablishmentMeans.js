@@ -16,7 +16,7 @@ import { useTranslation } from "sharedHooks";
 const baseUrl = "https://www.inaturalist.org";
 
 type Props = {
-  taxon: object
+  taxon: any
 }
 
 const EstablishmentMeans = ( { taxon }: Props ): React.Node => {

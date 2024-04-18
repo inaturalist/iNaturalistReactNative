@@ -11,8 +11,8 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
   count: number,
-  style?: object,
-  taxon: object,
+  style?: any,
+  taxon: any,
 }
 
 const TaxonGridItem = ( {

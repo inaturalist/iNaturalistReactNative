@@ -13,8 +13,8 @@ import GeoprivacySheet from "./Sheets/GeoprivacySheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
 
 type Props = {
-  currentObservation: object,
-  updateObservationKeys: ( ) => void
+  currentObservation: any,
+  updateObservationKeys: any
 }
 
 const OtherDataSection = ( {

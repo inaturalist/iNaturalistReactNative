@@ -8,7 +8,7 @@ const PARAMS = {
   fields: "all"
 };
 
-const fetchRelationships = async ( params: object = {}, opts: object = {} ): Promise<any> => {
+const fetchRelationships = async ( params: any = {}, opts: any = {} ): Promise<any> => {
   try {
     const response = await inatjs.relationships.search( { ...PARAMS, ...params }, opts );
     return response;
@@ -17,7 +17,7 @@ const fetchRelationships = async ( params: object = {}, opts: object = {} ): Pro
   }
 };
 
-const createRelationships = async ( params: object = {}, opts: object = {} ): Promise<any> => {
+const createRelationships = async ( params: any = {}, opts: any = {} ): Promise<any> => {
   try {
     const response = await inatjs.relationships.create( { ...PARAMS, ...params }, opts );
     return response;
@@ -26,7 +26,7 @@ const createRelationships = async ( params: object = {}, opts: object = {} ): Pr
   }
 };
 
-const updateRelationships = async ( params: object = {}, opts: object = {} ): Promise<any> => {
+const updateRelationships = async ( params: any = {}, opts: any = {} ): Promise<any> => {
   try {
     const response = await inatjs.relationships.update( { ...PARAMS, ...params }, opts );
     return response;
@@ -35,7 +35,7 @@ const updateRelationships = async ( params: object = {}, opts: object = {} ): Pr
   }
 };
 
-const deleteRelationships = async ( params: object = {}, opts: object = {} ): Promise<any> => {
+const deleteRelationships = async ( params: any = {}, opts: any = {} ): Promise<any> => {
   try {
     const response = await inatjs.relationships.delete( params, opts );
     return response;

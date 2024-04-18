@@ -63,9 +63,9 @@ const getUsername = async (): Promise<string> => RNSInfo.getItem( "username", {}
  */
 const signOut = async (
   options: {
-    realm?: object,
+    realm?: any,
     clearRealm?: boolean,
-    queryClient?: object
+    queryClient?: any
   } = {
     clearRealm: false,
     queryClient: null
@@ -149,6 +149,7 @@ const getAnonymousJWT = (): string => {
  *  logged-in, use anonymous JWT
  * @returns {Promise<string|*>}
  */
+// eslint-disable-next-line @typescript-eslint/no-inferrable-types
 const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> => {
   let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
   let jwtGeneratedAt = await RNSInfo.getItem( "jwtGeneratedAt", {} );
@@ -228,8 +229,10 @@ const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> =>
  * @returns {Promise<string|*>} access token, null if not logged in
  */
 const getAPIToken = async (
-  useJWT: boolean = false,
-  allowAnonymousJWT: boolean = false
+  // $FlowIgnore
+  useJWT = false,
+  // $FlowIgnore
+  allowAnonymousJWT = false
 ): Promise<?string> => {
   const loggedIn = await isLoggedIn();
   if ( !loggedIn ) {
@@ -250,7 +253,7 @@ const showErrorAlert = ( errorText: string ) => {
   );
 };
 
-function errorDescriptionFromResponse( response: object ): string {
+function errorDescriptionFromResponse( response: any ): string {
   let errorDescription = response?.data?.error_description;
   if ( !errorDescription && response.problem === "NETWORK_ERROR" ) {
     errorDescription = i18next.t( "You-need-an-Internet-connection-to-do-that" );
@@ -346,7 +349,7 @@ const verifyCredentials = async (
 const authenticateUser = async (
   username: string,
   password: string,
-  realm: object
+  realm: any
 ): Promise<boolean> => {
   const userDetails = await verifyCredentials( username, password );
 
@@ -402,7 +405,7 @@ const authenticateUser = async (
  *
  * @returns null if successful, otherwise an error string
  */
-const registerUser = async ( user: object ): any => {
+const registerUser = async ( user: any ): any => {
   const locales = RNLocalize.getLocales();
   const formData = {
     user: {

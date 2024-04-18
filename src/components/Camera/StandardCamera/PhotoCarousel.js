@@ -25,7 +25,7 @@ import useStore from "stores/useStore";
 const { useRealm } = RealmContext;
 
 type Props = {
-  emptyComponent?: ( ) => void,
+  emptyComponent?: any,
   takingPhoto?: boolean,
   isLandscapeMode?:boolean,
   isLargeScreen?: boolean,

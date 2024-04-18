@@ -18,7 +18,7 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 type Props = {
-  taxon: object
+  taxon: any
 }
 
 function getMapRegion( bounds: { nelat: number, nelng: number, swlat: number, swlng: number } ) {

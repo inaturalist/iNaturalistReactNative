@@ -5,7 +5,7 @@ const logger = log.extend( "INatApiError" );
 
 class INatApiError extends Error {
   // Object literal of the JSON body returned by the server
-  json: object;
+  json: any;
 
   // HTTP status code of the server response
   status: number;
@@ -21,7 +21,7 @@ Object.defineProperty( INatApiError.prototype, "name", {
   value: "INatApiError"
 } );
 
-async function handleError( e: object, options: object = {} ): object {
+async function handleError( e: any, options: any = {} ): any {
   if ( !e.response ) { throw e; }
   const errorJson = await e.response.json( );
   // Handle some of the insanity of our errors

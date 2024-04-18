@@ -23,16 +23,16 @@ Reanimated.addWhitelistedNativeProps( {
 } );
 
 type Props = {
-  cameraRef: object,
-  device: object,
-  onClassifierError?: ( ) => void,
-  onDeviceNotSupported?: ( ) => void,
-  onCaptureError?: ( ) => void,
-  onCameraError?: ( ) => void,
-  frameProcessor?: ( ) => void,
+  cameraRef: any,
+  device: any,
+  onClassifierError?: any,
+  onDeviceNotSupported?: any,
+  onCaptureError?: any,
+  onCameraError?: any,
+  frameProcessor?: any,
   animatedProps: any,
-  onZoomStart?: ( ) => void,
-  onZoomChange?: ( ) => void,
+  onZoomStart?: any,
+  onZoomChange?: any,
   resizeMode?: string
 };
 

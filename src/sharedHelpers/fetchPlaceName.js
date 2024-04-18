@@ -4,7 +4,7 @@ import NetInfo from "@react-native-community/netinfo";
 import Geocoder from "react-native-geocoder-reborn";
 
 // lifted from SeekReactNative repo
-const setPlaceName = ( results: Array<object> ): string => {
+const setPlaceName = ( results: Array<any> ): string => {
   let placeName = "";
 
   const {

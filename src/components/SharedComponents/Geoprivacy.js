@@ -6,7 +6,7 @@ import * as React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  observation: object,
+  observation: any,
 };
 
 const Geoprivacy = ( { observation }: Props ): React.Node => {

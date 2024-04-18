@@ -21,20 +21,20 @@ import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
   animatedProps: any,
-  cameraRef: object,
+  cameraRef: any,
   confidenceThreshold?: number,
-  device: object,
+  device: any,
   fps?: number,
   numStoredResults?: number,
   cropRatio?: number,
-  onCameraError: ( ) => void,
-  onCaptureError: ( ) => void,
-  onClassifierError: ( ) => void,
-  onDeviceNotSupported: ( ) => void,
-  onLog: ( ) => void,
-  onTaxaDetected: ( ) => void,
-  onZoomChange?: ( ) => void,
-  onZoomStart?: ( ) => void,
+  onCameraError: any,
+  onCaptureError: any,
+  onClassifierError: any,
+  onDeviceNotSupported: any,
+  onLog: any,
+  onTaxaDetected: any,
+  onZoomChange?: any,
+  onZoomStart?: any,
   takingPhoto: boolean
 };
 

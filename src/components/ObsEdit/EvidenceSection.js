@@ -20,24 +20,24 @@ import EvidenceList from "./EvidenceList";
 import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 type Props = {
-  currentObservation: object,
-  handleDragAndDrop: ( ) => void,
+  currentObservation: any,
+  handleDragAndDrop: any,
   isFetchingLocation: boolean,
   locationPermissionNeeded: boolean,
   locationTextClassNames: any,
-  onLocationPermissionBlocked: ( ) => void,
-  onLocationPermissionDenied: ( ) => void,
-  onLocationPermissionGranted: ( ) => void,
-  passesEvidenceTest: ( ) => void,
-  photos: Array<object>,
-  setShowAddEvidenceSheet: ( ) => void,
+  onLocationPermissionBlocked: any,
+  onLocationPermissionDenied: any,
+  onLocationPermissionGranted: any,
+  passesEvidenceTest: any,
+  photos: Array<any>,
+  setShowAddEvidenceSheet: any,
   showAddEvidenceSheet: boolean,
   sounds?: Array<{
     id?: number,
     file_url: string,
     uuid: string
   }>,
-  updateObservationKeys: ( ) => void,
+  updateObservationKeys: any,
 }
 
 const EvidenceSection = ( {

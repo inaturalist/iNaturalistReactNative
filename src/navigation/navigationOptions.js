@@ -9,14 +9,14 @@ import colors from "styles/tailwindColors";
 
 import ContextHeader from "./ContextHeader";
 
-const baseHeaderOptions: object = {
+const baseHeaderOptions: any = {
   headerShown: true,
   headerBackTitleVisible: false,
   headerShadowVisible: false,
   headerLeft: () => <BackButton inCustomHeader />
 };
 
-const showHeader: object = {
+const showHeader: any = {
   ...baseHeaderOptions,
   headerTintColor: colors.black,
   // Note: left header is not supported on iOS
@@ -28,7 +28,7 @@ const showHeader: object = {
   }
 };
 
-const showLongHeader: object = {
+const showLongHeader: any = {
   ...baseHeaderOptions,
   headerTintColor: colors.black,
   // Note: left header is not supported on iOS
@@ -40,13 +40,13 @@ const showLongHeader: object = {
   }
 };
 
-export const hideHeaderLeft: object = {
+export const hideHeaderLeft: any = {
   ...showHeader,
   headerLeft: null,
   headerBackVisible: false
 };
 
-const showCustomHeader: object = {
+const showCustomHeader: any = {
   ...baseHeaderOptions,
   header: ContextHeader,
   headerShadowVisible: true,

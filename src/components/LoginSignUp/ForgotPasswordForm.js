@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
 type Props = {
-  reset: ( ) => void
+  reset: any
 }
 
 const ForgotPasswordForm = ( { reset }: Props ): Node => {

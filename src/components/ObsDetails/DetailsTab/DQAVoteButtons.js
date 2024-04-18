@@ -12,12 +12,12 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
   metric: string,
-  votes: [object],
+  votes: [any],
   loadingAgree: boolean,
   loadingDisagree: boolean,
   loadingMetric: ?string,
-  setVote: ( ) => void,
-  removeVote: ( ) => void
+  setVote: any,
+  removeVote: any
 }
 
 const getUserVote = ( currentUser, metric, votes ) => {

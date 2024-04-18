@@ -11,11 +11,11 @@ import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
-  observation: object,
+  observation: any,
   width?: string,
   height?: string,
-  style?: object,
-  uploadSingleObservation?: ( ) => void,
+  style?: any,
+  uploadSingleObservation?: any,
   uploadState: {
     uploadProgress: number
   },

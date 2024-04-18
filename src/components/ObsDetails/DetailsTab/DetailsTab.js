@@ -32,7 +32,7 @@ import Attribution from "./Attribution";
 import DetailsMapHeader from "./DetailsMapHeader";
 
 type Props = {
-  observation: object
+  observation: any
 }
 
 const DETAILS_MAP_MODAL_STYLE = { margin: 0 };

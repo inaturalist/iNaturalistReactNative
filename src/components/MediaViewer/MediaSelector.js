@@ -19,7 +19,7 @@ type Props = {
     attribution?: string,
     licenseCode?: string
   }>,
-  scrollToIndex: ( ) => void,
+  scrollToIndex: any,
   selectedMediaIndex?: number,
   sounds?: Array<{
     id?: number,

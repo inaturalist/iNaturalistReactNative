@@ -14,9 +14,9 @@ import React, { useState } from "react";
 import { Text } from "react-native";
 
 type Props = {
-  onAgree: ( ) => void,
-  handleClose: ( ) => void,
-  taxon: object
+  onAgree: any,
+  handleClose: any,
+  taxon: any
 }
 
 const showTaxon = taxon => {

@@ -5,7 +5,7 @@ import {
 } from "react";
 import { useIconicTaxa } from "sharedHooks";
 
-const usePredictions = ( ): object => {
+const usePredictions = ( ): any => {
   const [result, setResult] = useState( null );
   const [resultTimestamp, setResultTimestamp] = useState( undefined );
   const [modelLoaded, setModelLoaded] = useState( false );

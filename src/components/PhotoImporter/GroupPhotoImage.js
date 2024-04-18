@@ -6,10 +6,10 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  item: object,
-  selectedObservations: Array<object>,
-  selectObservationPhotos: ( ) => void,
-  style?: object
+  item: any,
+  selectedObservations: Array<any>,
+  selectObservationPhotos: any,
+  style?: any
 }
 
 const GroupPhotoImage = ( {

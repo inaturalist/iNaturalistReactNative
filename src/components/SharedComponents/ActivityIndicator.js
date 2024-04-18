@@ -8,9 +8,9 @@ type Props = {
   color?: string,
   hidesWhenStopped?: boolean,
   size?: number,
-  style?: object,
+  style?: any,
   testID?: string,
-  theme?: object,
+  theme?: any,
 }
 
 const ActivityIndicator = ( {

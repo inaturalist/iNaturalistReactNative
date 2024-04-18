@@ -15,7 +15,7 @@ const BASE_PARAMS = {
   page: 1
 };
 
-const useInfiniteNotificationsScroll = ( ): object => {
+const useInfiniteNotificationsScroll = ( ): any => {
   const currentUser = useCurrentUser( );
 
   const infQueryResult = useInfiniteQuery( {

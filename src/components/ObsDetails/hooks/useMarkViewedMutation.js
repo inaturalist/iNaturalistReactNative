@@ -21,8 +21,8 @@ import useStore from "stores/useStore";
 const { useRealm } = RealmContext;
 
 const useMarkViewedMutation = (
-  localObservation: object,
-  remoteObservation: object
+  localObservation: any,
+  remoteObservation: any
 ) => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );

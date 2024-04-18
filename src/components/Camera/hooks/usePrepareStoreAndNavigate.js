@@ -17,7 +17,7 @@ const usePrepareStoreAndNavigate = (
   permissionGranted: ?string,
   addEvidence: ?boolean,
   checkmarkTapped: boolean
-): object => {
+): any => {
   const navigation = useNavigation( );
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );

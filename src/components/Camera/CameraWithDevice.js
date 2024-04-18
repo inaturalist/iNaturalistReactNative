@@ -28,8 +28,8 @@ type Props = {
   addEvidence: ?boolean,
   cameraType: string,
   cameraPosition: string,
-  device: object,
-  setCameraPosition: ( ) => void,
+  device: any,
+  setCameraPosition: any,
 }
 
 const CameraWithDevice = ( {

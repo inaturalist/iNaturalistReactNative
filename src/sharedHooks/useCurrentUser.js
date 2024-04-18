@@ -6,7 +6,7 @@ import User from "realmModels/User";
 
 const { useRealm } = RealmContext;
 
-const useCurrentUser = ( ): ?object => {
+const useCurrentUser = ( ): ?any => {
   const realm = useRealm( );
   const currentUser = User.currentUser( realm );
   const currentUserIsValid = currentUser?.isValid( );

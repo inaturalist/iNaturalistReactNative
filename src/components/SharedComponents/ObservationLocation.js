@@ -12,7 +12,7 @@ type Props = {
   classNameMargin?: string,
   details?: boolean, // Same as withCoordinates && withGeoprivacy
   obscured?: boolean,
-  observation: object,
+  observation: any,
   withCoordinates?: boolean,
   withGeoprivacy?: boolean,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // @flow
 
 import { StyleSheet } from "react-native";
@@ -8,7 +9,8 @@ import type {
 } from "react-native/Libraries/StyleSheet/StyleSheet";
 import colors from "styles/tailwindColors";
 
-const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
+// eslint-disable-next-line no-undef
+const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   bottomModal: {
     padding: 0,
     backgroundColor: colors.white,
@@ -25,13 +27,13 @@ const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
-const textStyles: { []: TextStyleProp } = StyleSheet.create( {
+const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   activityItemBody: {
     color: colors.darkGray
   }
 } );
 
-const imageStyles: { []: ImageStyleProp } = StyleSheet.create( {
+const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   smallIcon: {
     width: 15,
     height: 15,

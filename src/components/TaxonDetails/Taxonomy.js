@@ -16,7 +16,7 @@ import { accessibleTaxonName, generateTaxonPieces } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
-  taxon?: object
+  taxon?: any
 }
 
 const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {

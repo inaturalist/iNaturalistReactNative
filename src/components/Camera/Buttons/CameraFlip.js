@@ -6,7 +6,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  flipCamera: ( ) => void,
+  flipCamera: any,
   cameraFlipClasses?: string
 }
 

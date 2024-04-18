@@ -13,7 +13,7 @@ const OBS_LIST_SCREEN_ID = "TabStackNavigator";
 const NOTIFICATIONS_SCREEN_ID = "Notifications";
 
 type Props = {
-  navigation: object
+  navigation: any
 };
 
 const CustomTabBarContainer = ( { navigation }: Props ): Node => {

@@ -18,15 +18,15 @@ import { useNumUnuploadedObservations, useTranslation } from "sharedHooks";
 import Onboarding from "./Onboarding";
 
 type Props = {
-  toggleLayout: ( ) => void;
+  toggleLayout: any;
   layout: string,
-  currentUser: ?object,
+  currentUser: ?any,
   hideToolbar: boolean,
-  setHeightAboveToolbar: ( ) => void,
-  uploadState: object,
-  uploadMultipleObservations: ( ) => void,
-  stopUploads: ( ) => void,
-  syncObservations: ( ) => void,
+  setHeightAboveToolbar: any,
+  uploadState: any,
+  uploadMultipleObservations: any,
+  stopUploads: any,
+  syncObservations: any,
   toolbarProgress: number,
   logInButtonNeutral: boolean
 }

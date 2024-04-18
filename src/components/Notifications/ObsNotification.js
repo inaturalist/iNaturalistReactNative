@@ -16,7 +16,7 @@ import { useTranslation } from "sharedHooks";
 const { useRealm } = RealmContext;
 
     type Props = {
-      item: object
+      item: any
     };
 
 const ObsNotification = ( { item }: Props ): Node => {

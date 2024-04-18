@@ -8,9 +8,9 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  handleClose: ( ) => void,
+  handleClose: any,
   selectedValue: any,
-  updateCaptiveStatus: ( ) => void
+  updateCaptiveStatus: any
 }
 
 const WildStatusSheet = ( {

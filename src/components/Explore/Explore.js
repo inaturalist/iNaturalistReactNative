@@ -43,18 +43,18 @@ const exploreViewIcon = {
 };
 
 type Props = {
-  changeExploreView: ( ) => void,
-  closeFiltersModal: ( ) => void,
-  count: object,
+  changeExploreView: any,
+  closeFiltersModal: any,
+  count: any,
   exploreView: string,
   hideBackButton: boolean,
   isOnline: boolean,
   loadingStatus: boolean,
-  openFiltersModal: ( ) => void,
-  queryParams: object,
+  openFiltersModal: any,
+  queryParams: any,
   showFiltersModal: boolean,
-  updateCount: ( ) => void,
-  updateTaxon: ( ) => void
+  updateCount: any,
+  updateTaxon: any
 }
 
 const Explore = ( {

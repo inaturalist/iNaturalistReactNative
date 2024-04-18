@@ -16,7 +16,7 @@ type Props = {
   description: ?string,
   icon: string,
   label: string,
-  onPress: ( ) => void,
+  onPress: any,
   value: string,
   smallLabel: ?boolean
 }

@@ -26,9 +26,9 @@ import EvidenceSection from "./EvidenceSection";
 
 type Props = {
   passesEvidenceTest: boolean,
-  setPassesEvidenceTest: ( ) => void,
-  currentObservation: object,
-  updateObservationKeys: ( ) => void
+  setPassesEvidenceTest: any,
+  currentObservation: any,
+  updateObservationKeys: any
 }
 
 const EvidenceSectionContainer = ( {

@@ -40,8 +40,8 @@ const isTablet = DeviceInfo.isTablet();
 type Props = {
   camera: any,
   device: any,
-  flipCamera: ( ) => void,
-  handleCheckmarkPress: ( ) => void,
+  flipCamera: any,
+  handleCheckmarkPress: any,
   isLandscapeMode: boolean
 };
 

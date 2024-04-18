@@ -7,7 +7,7 @@ import { Keyboard, StatusBar } from "react-native";
 type Props = {
   children: React.Node,
   testID?: string,
-  style?: object
+  style?: any
 };
 
 const CONTENT_CONTAINER_STYLE = {

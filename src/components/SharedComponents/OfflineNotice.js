@@ -11,7 +11,7 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   color?: string,
-  onPress: ( ) => void
+  onPress: any
 };
 
 const OfflineNotice = ( {

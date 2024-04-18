@@ -8,9 +8,9 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  keysToUpdate: object,
+  keysToUpdate: any,
   goBackOnSave: boolean,
-  updateObservationKeys: ( ) => void
+  updateObservationKeys: any
 };
 
 const Footer = ( { keysToUpdate, goBackOnSave, updateObservationKeys }: Props ): Node => {

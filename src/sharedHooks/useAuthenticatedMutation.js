@@ -7,8 +7,8 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 // Should work like React Query's useMutation except it calls the queryFunction
 // with an object that includes the JWT
 const useAuthenticatedMutation = (
-  mutationFunction: ( ) => void,
-  mutationOptions: object = {}
+  mutationFunction: any,
+  mutationOptions: any = {}
 ): any => useMutation( {
   mutationFn: async params => {
     // Note, getJWTToken() takes care of fetching a new token if the existing

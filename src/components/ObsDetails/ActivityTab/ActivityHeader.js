@@ -18,14 +18,14 @@ import colors from "styles/tailwindColors";
 type Props = {
   classNameMargin?: string,
   currentUser: boolean,
-  deleteComment: ( ) => void,
+  deleteComment: any,
   flagged: boolean,
   idWithdrawn?: boolean,
   isOnline?: boolean,
-  item: object,
+  item: any,
   loading: boolean,
-  updateCommentBody: ( ) => void,
-  updateIdentification: ( ) => void
+  updateCommentBody: any,
+  updateIdentification: any
 }
 
 const ActivityHeader = ( {

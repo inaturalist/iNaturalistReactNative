@@ -10,9 +10,9 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   color?: string,
-  onPress?: ( ) => void,
+  onPress?: any,
   inCustomHeader?: boolean,
-  customStyles?: object,
+  customStyles?: any,
   testID?: string
 }
 

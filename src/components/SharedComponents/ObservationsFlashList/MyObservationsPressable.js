@@ -8,7 +8,7 @@ import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
-  observation: object,
+  observation: any,
   testID?: string,
   children: any
 }

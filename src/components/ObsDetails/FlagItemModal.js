@@ -24,8 +24,8 @@ type Props = {
   id: number,
   itemType: string,
   showFlagItemModal: boolean,
-  closeFlagItemModal: ( ) => void,
-  onItemFlagged: ( ) => void
+  closeFlagItemModal: any,
+  onItemFlagged: any
 }
 
 const FlagItemModal = ( {

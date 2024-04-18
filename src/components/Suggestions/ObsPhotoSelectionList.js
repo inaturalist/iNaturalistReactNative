@@ -12,7 +12,7 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  onPressPhoto: ( ) => void
+  onPressPhoto: any
 };
 
 const ObsPhotoSelectionList = ( {

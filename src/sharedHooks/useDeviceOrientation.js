@@ -27,7 +27,7 @@ export function orientationLockerToIosOrientation( orientation: string ): string
   }
 }
 
-const useDeviceOrientation = ( ): object => {
+const useDeviceOrientation = ( ): any => {
   const { width, height } = Dimensions.get( "screen" );
   const [screenWidth, setScreenWidth] = useState( width );
   const [screenHeight, setScreenHeight] = useState( height );

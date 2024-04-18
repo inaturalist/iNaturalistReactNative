@@ -9,8 +9,8 @@ import React from "react";
 
 type Props = {
     following: boolean,
-    follow: ( ) => void,
-    unfollow: ( ) => void,
+    follow: any,
+    unfollow: any,
     loading: boolean
   };
 

@@ -18,12 +18,12 @@ import { useTranslation } from "sharedHooks";
 const { useRealm } = RealmContext;
 
 type Props = {
-  currentObservation: object,
+  currentObservation: any,
   resetScreen: boolean,
-  setResetScreen: ( ) => void,
+  setResetScreen: any,
   passesIdentificationTest: boolean,
-  setPassesIdentificationTest: ( ) => void,
-  updateObservationKeys: ( ) => void
+  setPassesIdentificationTest: any,
+  updateObservationKeys: any
 }
 
 const IdentificationSection = ( {

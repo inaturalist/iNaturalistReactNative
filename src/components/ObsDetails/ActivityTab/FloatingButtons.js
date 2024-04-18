@@ -12,9 +12,9 @@ import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  navToSuggestions: ( ) => void,
-  showCommentBox: ( ) => void,
-  openCommentBox: ( ) => void
+  navToSuggestions: any,
+  showCommentBox: any,
+  openCommentBox: any
 }
 
 const FloatingButtons = ( {

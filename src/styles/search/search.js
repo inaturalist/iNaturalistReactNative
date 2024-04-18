@@ -1,14 +1,14 @@
+/* eslint-disable no-undef */
 // @flow
 
 import { StyleSheet } from "react-native";
 import type {
   ImageStyleProp,
-  TextStyleProp,
   ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
 import colors from "styles/tailwindColors";
 
-const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
+const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
@@ -24,13 +24,9 @@ const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
-const textStyles: { []: TextStyleProp } = StyleSheet.create( {
-  text: { }
-} );
-
 const imageWidth = 40;
 
-const imageStyles: { []: ImageStyleProp } = StyleSheet.create( {
+const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   circularImage: {
     width: imageWidth,
     height: imageWidth,
@@ -46,6 +42,5 @@ const imageStyles: { []: ImageStyleProp } = StyleSheet.create( {
 
 export {
   imageStyles,
-  textStyles,
   viewStyles
 };

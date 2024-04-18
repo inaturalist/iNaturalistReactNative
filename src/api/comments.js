@@ -10,8 +10,8 @@ const PARAMS = {
 };
 
 const createComment = async (
-  params: object = {},
-  opts: object = {}
+  params: any = {},
+  opts: any = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.comments.create( { ...PARAMS, ...params }, opts );
@@ -22,8 +22,8 @@ const createComment = async (
 };
 
 const updateComment = async (
-  params: object = {},
-  opts: object = {}
+  params: any = {},
+  opts: any = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.comments.update( { ...PARAMS, ...params }, opts );
@@ -35,7 +35,7 @@ const updateComment = async (
 
 const deleteComments = async (
   id: number,
-  opts: object = {}
+  opts: any = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.comments.delete( { id }, opts );

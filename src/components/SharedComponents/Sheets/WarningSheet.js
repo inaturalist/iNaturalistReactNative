@@ -8,13 +8,13 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  handleClose: ( ) => void,
+  handleClose: any,
   headerText: string,
   text?: string,
   buttonText: string,
-  confirm: ( ) => void,
+  confirm: any,
   secondButtonText?: string,
-  handleSecondButtonPress?: ( ) => void,
+  handleSecondButtonPress?: any,
   buttonType?: string,
   hidden?: boolean,
   insideModal?: boolean

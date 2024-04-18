@@ -45,24 +45,24 @@ const isTablet = DeviceInfo.isTablet();
 // </>
 
 type Props = {
-  changeZoom: ( ) => void,
+  changeZoom: any,
   confidenceThreshold?: number,
   cropRatio?: string,
-  flipCamera: ( ) => void,
+  flipCamera: any,
   fps?: number,
   hasFlash: boolean,
   modelLoaded: boolean,
   numStoredResults?: number,
-  rotatableAnimatedStyle: object,
-  setConfidenceThreshold?: ( ) => void,
-  setCropRatio?: ( ) => void,
-  setFPS?: ( ) => void,
-  setNumStoredResults?: ( ) => void,
+  rotatableAnimatedStyle: any,
+  setConfidenceThreshold?: any,
+  setCropRatio?: any,
+  setFPS?: any,
+  setNumStoredResults?: any,
   showPrediction: boolean,
   showZoomButton: boolean,
-  takePhoto: ( ) => void,
-  takePhotoOptions: object,
-  toggleFlash: ( ) => void,
+  takePhoto: any,
+  takePhotoOptions: any,
+  toggleFlash: any,
   zoomTextValue: string
 }
 

@@ -10,7 +10,7 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   layout: string,
-  updateObservationsView: ( ) => void
+  updateObservationsView: any
 };
 
 const getShadow = shadowColor => getShadowStyle( {

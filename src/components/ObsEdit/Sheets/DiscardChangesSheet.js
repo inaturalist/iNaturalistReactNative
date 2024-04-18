@@ -8,8 +8,8 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  handleClose: ( ) => void,
-  discardChanges: ( ) => void
+  handleClose: any,
+  discardChanges: any
 }
 
 const DiscardChangesSheet = ( {

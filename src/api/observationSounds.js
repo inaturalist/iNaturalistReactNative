@@ -5,8 +5,8 @@ import inatjs from "inaturalistjs";
 import handleError from "./error";
 
 const deleteRemoteObservationSound = async (
-  params: object = {},
-  opts: object = {}
+  params: any = {},
+  opts: any = {}
 ) : Promise<?any> => {
   try {
     return await inatjs.observation_sounds.delete( params, opts );

@@ -12,7 +12,7 @@ import useTranslation from "sharedHooks/useTranslation";
 type Props = {
 disableAddingMoreEvidence: boolean,
     hidden?: boolean,
-onClose: ( ) => void
+onClose: any
 }
 
 const AddEvidenceSheet = ( {

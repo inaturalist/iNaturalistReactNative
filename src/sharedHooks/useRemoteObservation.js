@@ -9,7 +9,7 @@ const { useRealm } = RealmContext;
 
 export const fetchRemoteObservationKey = "fetchRemoteObservation";
 
-const useRemoteObservation = ( uuid: string, enabled: boolean ): object => {
+const useRemoteObservation = ( uuid: string, enabled: boolean ): any => {
   const fetchRemoteObservationQueryKey = useMemo(
     ( ) => ( [fetchRemoteObservationKey, uuid] ),
     [uuid]

@@ -14,7 +14,7 @@ type Props = {
   headerText: string,
   inputMode?: string,
   keyboardType?: string,
-  onChangeText: ( ) => void,
+  onChangeText: any,
   secureTextEntry?: boolean,
   testID: string,
   textContentType?: string

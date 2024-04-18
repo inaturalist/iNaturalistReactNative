@@ -1,6 +1,6 @@
 // @flow
 
-const checkCamelAndSnakeCase = ( object: object, camelCaseKey: string ): ?string => {
+const checkCamelAndSnakeCase = ( object: any, camelCaseKey: string ): ?string => {
   if ( !object ) { return ""; }
   const snakeCaseKey = camelCaseKey.replace( /[A-Z]/g, letter => `_${letter.toLowerCase()}` );
 

@@ -14,8 +14,8 @@ const { useRealm } = RealmContext;
 type Props = {
   accessibilityHint?: string,
   accessibilityLabel?: string,
-  handlePress: ( ) => void,
-  taxon: object,
+  handlePress: any,
+  taxon: any,
   testID?: string,
   withdrawn?: boolean
 }

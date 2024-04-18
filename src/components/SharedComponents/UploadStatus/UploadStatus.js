@@ -19,7 +19,7 @@ type Props = {
   color?: string,
   completeColor?: string,
   progress: number,
-  uploadObservation: ( ) => void,
+  uploadObservation: any,
   layout: string,
   children: any,
   uuid: string

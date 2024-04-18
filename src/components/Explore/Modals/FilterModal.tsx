@@ -56,8 +56,8 @@ const getShadow = shadowColor => getShadowStyle( {
 } );
 
 interface Props {
-  closeModal: ( ) => void,
-  updateTaxon: ( ) => void,
+  closeModal: any,
+  updateTaxon: any,
 }
 
 const FilterModal = ( {

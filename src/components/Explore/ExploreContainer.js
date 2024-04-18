@@ -37,7 +37,7 @@ const ExploreContainerWithContext = ( ): Node => {
     setExploreView( newView );
   };
 
-  const updateTaxon = ( taxon: object ) => {
+  const updateTaxon = ( taxon: any ) => {
     dispatch( {
       type: EXPLORE_ACTION.CHANGE_TAXON,
       taxon,

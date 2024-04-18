@@ -13,8 +13,8 @@ import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
-  closeModal: ( ) => void,
-  navAndCloseModal: ( ) => void
+  closeModal: any,
+  navAndCloseModal: any
 }
 
 const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {

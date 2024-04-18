@@ -9,7 +9,7 @@ import { useCallback, useEffect } from "react";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-const useParams = ( ): object => {
+const useParams = ( ): any => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
   const { dispatch, setExploreLocation } = useExplore( );

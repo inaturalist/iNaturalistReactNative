@@ -25,10 +25,10 @@ import { viewStyles } from "styles/projects/projects";
 
 type Props = {
   searchInput: string,
-  setSearchInput: ( ) => void,
-  tabs: Array<object>,
+  setSearchInput: any,
+  tabs: Array<any>,
   currentTabId: string,
-  projects: Array<object>,
+  projects: Array<any>,
   isLoading: boolean,
   memberId: ?number
 }

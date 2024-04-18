@@ -10,10 +10,10 @@ import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 type Props = {
   // Height of the container
   height: number,
-  source: object,
+  source: any,
   // Function to tell the parent whether zooming is enabled, useful to disable
   // scrolling
-  setZooming?: ( ) => void
+  setZooming?: any
 }
 
 const CustomImageZoom = ( {

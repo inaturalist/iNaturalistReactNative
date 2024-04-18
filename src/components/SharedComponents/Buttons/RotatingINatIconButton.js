@@ -26,10 +26,10 @@ type Props = {
   height?: number,
   icon: string,
   mode?: "contained",
-  onPress: ( ) => void,
+  onPress: any,
   rotating: ?boolean,
   size?: number,
-  style?: object,
+  style?: any,
   testID?: string,
   width?: number,
 }

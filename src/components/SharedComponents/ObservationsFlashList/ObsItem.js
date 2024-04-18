@@ -7,11 +7,11 @@ import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
 
 type Props = {
-  observation: object,
+  observation: any,
   gridItemWidth: number,
   layout: "list" | "grid",
-  uploadSingleObservation?: ( ) => void,
-  uploadState: object,
+  uploadSingleObservation?: any,
+  uploadState: any,
   explore: boolean
 };
 

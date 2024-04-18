@@ -6,12 +6,12 @@ import RNModal from "react-native-modal";
 
 type Props = {
   showModal: boolean,
-  closeModal: ( ) => void,
+  closeModal: any,
   modal: any,
   backdropOpacity?: number,
   fullScreen?: boolean,
-  onModalHide?: ( ) => void,
-  style?: object,
+  onModalHide?: any,
+  style?: any,
   animationIn?: string,
   animationOut?: string,
   disableSwipeDirection?: boolean

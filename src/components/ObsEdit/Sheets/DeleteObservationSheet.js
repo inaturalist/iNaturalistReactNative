@@ -12,11 +12,11 @@ import { useTranslation } from "sharedHooks";
 const { useRealm } = RealmContext;
 
 type Props = {
-  currentObservation: object,
-  handleClose: ( ) => void,
-  navToObsList: ( ) => void,
-  observations: Array<object>,
-  updateObservations: ( ) => void
+  currentObservation: any,
+  handleClose: any,
+  navToObsList: any,
+  observations: Array<any>,
+  updateObservations: any
 }
 
 const DeleteObservationSheet = ( {

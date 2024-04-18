@@ -16,7 +16,7 @@ const GradientButton = ( {
   iconSize
 }: {
   sizeClassName: string,
-  onPress: ( ) => void,
+  onPress: any,
   accessibilityHint?: string,
   iconName?: string,
   iconSize?: number

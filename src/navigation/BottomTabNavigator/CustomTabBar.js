@@ -11,7 +11,7 @@ import colors from "styles/tailwindColors";
 import NavButton from "./NavButton";
 
 type Props = {
-  tabs: Array<object>,
+  tabs: Array<any>,
 };
 
 /* eslint-disable react/jsx-props-no-spreading */

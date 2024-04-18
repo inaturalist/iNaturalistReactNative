@@ -68,10 +68,10 @@ const flattenUploadParams = async (
 
 type OnlineSuggestionsResponse = {
   dataUpdatedAt: Date,
-  onlineSuggestions: object,
+  onlineSuggestions: any,
   loadingOnlineSuggestions: boolean,
   timedOut: boolean,
-  error: object
+  error: any
 }
 
 const useOnlineSuggestions = (

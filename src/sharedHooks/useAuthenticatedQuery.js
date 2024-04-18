@@ -8,8 +8,8 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 // with an object that includes the JWT
 const useAuthenticatedQuery = (
   queryKey: Array<any>,
-  queryFunction: ( ) => void,
-  queryOptions: object = {}
+  queryFunction: any,
+  queryOptions: any = {}
 ): any => useQuery( {
   queryKey: [...queryKey, queryOptions.allowAnonymousJWT],
   queryFn: async ( ) => {

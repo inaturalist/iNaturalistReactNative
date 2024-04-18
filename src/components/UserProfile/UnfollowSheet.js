@@ -7,9 +7,9 @@ import { Alert } from "react-native";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 type Props = {
-    relationship: object,
-    refetchRelationship: ( ) => void,
-    setShowUnfollowSheet: ( ) => void,
+    relationship: any,
+    refetchRelationship: any,
+    setShowUnfollowSheet: any,
 }
 
 const UnfollowSheet = ( {

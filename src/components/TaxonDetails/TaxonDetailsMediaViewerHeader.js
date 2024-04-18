@@ -10,8 +10,8 @@ import React from "react";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 type Props = {
-  onClose: ( ) => void,
-  taxon: object
+  onClose: any,
+  taxon: any
 }
 
 const BACK_BUTTON_STYLE = {

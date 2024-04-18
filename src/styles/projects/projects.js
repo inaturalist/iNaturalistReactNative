@@ -1,4 +1,5 @@
 // @flow strict-local
+/* eslint-disable no-undef */
 
 import { Dimensions, StyleSheet } from "react-native";
 import type {
@@ -9,7 +10,7 @@ import type {
 
 const { width } = Dimensions.get( "screen" );
 
-const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
+const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
@@ -23,14 +24,14 @@ const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
-const textStyles: { []: TextStyleProp } = StyleSheet.create( {
+const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   projectName: {
     maxWidth: width - 100,
     flexWrap: "wrap-reverse"
   }
 } );
 
-const imageStyles: { []: ImageStyleProp } = StyleSheet.create( {
+const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   projectIcon: {
     width: 50,
     height: 50,

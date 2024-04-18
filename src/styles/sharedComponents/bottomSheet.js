@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // @flow
 
 import { StyleSheet } from "react-native";
@@ -6,7 +7,7 @@ import colors from "styles/tailwindColors";
 
 const borderRadius = 24;
 
-const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
+const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   shadow: {
     shadowColor: colors.black,
     borderTopStartRadius: borderRadius,

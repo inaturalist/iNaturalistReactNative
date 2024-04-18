@@ -18,14 +18,14 @@ import { useDeviceOrientation } from "sharedHooks";
 import GroupPhotoImage from "./GroupPhotoImage";
 
 type Props = {
-  combinePhotos: ( ) => void,
-  groupedPhotos: Array<object>,
+  combinePhotos: any,
+  groupedPhotos: Array<any>,
   isCreatingObservations?: boolean,
-  navToObsEdit: ( ) => void,
-  removePhotos: ( ) => void,
-  selectedObservations: Array<object>,
-  selectObservationPhotos: ( ) => void,
-  separatePhotos: ( ) => void,
+  navToObsEdit: any,
+  removePhotos: any,
+  selectedObservations: Array<any>,
+  selectObservationPhotos: any,
+  separatePhotos: any,
   totalPhotos: number
 }
 

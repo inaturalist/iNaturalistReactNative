@@ -17,7 +17,7 @@ const MAX_ZOOM_FACTOR = 20;
 // Used for calculating the final zoom by pinch gesture
 const SCALE_FULL_ZOOM = 3;
 
-const useZoom = ( device: object ): object => {
+const useZoom = ( device: any ): any => {
   const initialZoom = !device.isMultiCam
     ? device.minZoom
     : device.neutralZoom;

@@ -21,7 +21,7 @@ type Props = {
   isLargeScreen?: boolean,
   isTablet?: boolean,
   takingPhoto: boolean,
-  cameraPreviewUris: ( ) => void,
+  cameraPreviewUris: any,
 }
 
 const STYLE = {

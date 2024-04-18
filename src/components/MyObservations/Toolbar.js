@@ -16,9 +16,9 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   error: ?string,
-  handleSyncButtonPress: ( ) => void,
+  handleSyncButtonPress: any,
   layout: string,
-  navToExplore: ( ) => void,
+  navToExplore: any,
   needsSync: boolean,
   progress: number,
   rotating: boolean,
@@ -26,9 +26,9 @@ type Props = {
   showsCheckmark: boolean,
   showsExploreIcon: boolean,
   statusText: ?string,
-  stopUploads: ( ) => void,
+  stopUploads: any,
   syncIconColor: string,
-  toggleLayout: ( ) => void
+  toggleLayout: any
 }
 
 const Toolbar = ( {

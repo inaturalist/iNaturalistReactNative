@@ -10,7 +10,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  item: object
+  item: any
 };
 
 const ProjectListItem = ( { item }: Props ): Node => {

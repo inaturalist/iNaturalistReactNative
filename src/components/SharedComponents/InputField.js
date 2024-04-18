@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  handleTextChange: ( ) => void,
+  handleTextChange: any,
   placeholder: string,
   text: string,
   type: string,

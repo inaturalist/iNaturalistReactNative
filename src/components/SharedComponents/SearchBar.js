@@ -19,9 +19,9 @@ const getShadow = shadowColor => getShadowStyle( {
 
 type Props = {
   autoFocus?: boolean,
-  clearSearch?: ( ) => void,
+  clearSearch?: any,
   containerClass?: string,
-  handleTextChange: ( ) => void,
+  handleTextChange: any,
   hasShadow?: boolean,
   input?: any,
   placeholder?: string,

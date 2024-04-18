@@ -5,9 +5,9 @@ import { flatten } from "lodash";
 
 const useInfiniteScroll = (
   queryKey: string,
-  apiCall: ( ) => void,
-  newInputParams: object
-): object => {
+  apiCall: any,
+  newInputParams: any
+): any => {
   const baseParams = {
     ...newInputParams,
     per_page: 10,

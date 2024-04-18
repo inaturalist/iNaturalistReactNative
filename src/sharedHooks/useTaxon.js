@@ -16,7 +16,11 @@ const ONE_WEEK_MS = (
   * 7 // day / wk
 );
 
-const useTaxon = ( taxon: object, fetchRemote: boolean = true ): object => {
+// eslint-disable-next-line @typescript-eslint/no-inferrable-types
+const useTaxon = ( taxon: any, fetchRemote: boolean = true ): {
+  taxon: any,
+  isLoading: boolean
+} => {
   const realm = useRealm( );
   // taxon id is returned as a string, not a number, from CV model
   const taxonId = Number( taxon?.id );

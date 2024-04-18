@@ -16,7 +16,7 @@ type Props = {
   exploreView: string,
   exploreViewIcon: string,
   loadingStatus: boolean,
-  onPress: ( ) => void,
+  onPress: any,
 }
 
 const HeaderCount = ( {

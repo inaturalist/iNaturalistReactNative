@@ -10,11 +10,11 @@ import FollowButton from "./FollowButton";
 
 type Props = {
     userId: number,
-    relationship: object,
-    refetchRelationship: ( ) => void,
-    setShowLoginSheet: ( ) => void,
-    setShowUnfollowSheet: ( ) => void,
-    currentUser: object
+    relationship: any,
+    refetchRelationship: any,
+    setShowLoginSheet: any,
+    setShowUnfollowSheet: any,
+    currentUser: any
   };
 
 const FollowButtonContainer = ( {

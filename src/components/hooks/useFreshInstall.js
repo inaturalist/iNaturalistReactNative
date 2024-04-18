@@ -8,7 +8,7 @@ import { log } from "../../../react-native-logs.config";
 
 const logger = log.extend( "useFreshInstall" );
 
-const useFreshInstall = ( currentUser: ?object ) => {
+const useFreshInstall = ( currentUser: ?any ) => {
   useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
       // check to see if this is a fresh install of the app

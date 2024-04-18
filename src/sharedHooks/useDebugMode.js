@@ -3,7 +3,7 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useCallback, useState } from "react";
 
-const useDebugMode = ( ): { isDebug: boolean, toggleDebug: ( ) => void } => {
+const useDebugMode = ( ): { isDebug: boolean, toggleDebug: any } => {
   const {
     getItem: fetchDebug,
     setItem: saveDebug

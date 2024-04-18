@@ -6,7 +6,7 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { flatten, last } from "lodash";
 import Observation from "realmModels/Observation";
 
-const useInfiniteExploreScroll = ( { params: newInputParams }: object ): object => {
+const useInfiniteExploreScroll = ( { params: newInputParams }: any ): any => {
   const baseParams = {
     ...newInputParams,
     fields: Observation.EXPLORE_LIST_FIELDS,

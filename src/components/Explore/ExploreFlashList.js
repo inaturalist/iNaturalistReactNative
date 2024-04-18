@@ -8,18 +8,18 @@ import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  contentContainerStyle?: object,
-  data: Array<object>,
+  contentContainerStyle?: any,
+  data: Array<any>,
   estimatedItemSize: number,
   fetchNextPage: boolean,
   hideLoadingWheel: boolean,
   isFetchingNextPage: boolean,
   isOnline: boolean,
-  keyExtractor: ( ) => void,
+  keyExtractor: any,
   layout?: string,
   numColumns?: number,
-  renderItem: ( ) => void,
-  renderItemSeparator?: ( ) => void,
+  renderItem: any,
+  renderItemSeparator?: any,
   status: string,
   testID: string
 };

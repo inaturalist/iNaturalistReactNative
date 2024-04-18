@@ -16,7 +16,7 @@ const PARAMS = {
   fields: MESSAGE_FIELDS
 };
 
-const searchMessages = async ( params: object = {}, opts: object = {} ): Promise<any> => {
+const searchMessages = async ( params: any = {}, opts: any = {} ): Promise<any> => {
   try {
     const { results } = await inatjs.messages.search( { ...PARAMS, ...params }, opts );
     return results;

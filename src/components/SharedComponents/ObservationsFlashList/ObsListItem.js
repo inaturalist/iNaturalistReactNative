@@ -13,9 +13,9 @@ import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
-  observation: object,
-  uploadSingleObservation?: ( ) => void,
-  uploadState: object,
+  observation: any,
+  uploadSingleObservation?: any,
+  uploadState: any,
   explore: boolean
 };
 

@@ -6,11 +6,11 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  observation: object,
+  observation: any,
   layout?: "horizontal" | "vertical",
   white?: boolean,
   classNameMargin?: string,
-  uploadSingleObservation: ( ) => void,
+  uploadSingleObservation: any,
   showUploadStatus: boolean,
   progress: number
 };

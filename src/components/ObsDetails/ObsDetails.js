@@ -35,30 +35,30 @@ import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 const isTablet = DeviceInfo.isTablet();
 
 type Props = {
-  activityItems: Array<object>,
-  addingActivityItem: ( ) => void,
-  agreeIdSheetDiscardChanges: ( ) => void,
+  activityItems: Array<any>,
+  addingActivityItem: any,
+  agreeIdSheetDiscardChanges: any,
   belongsToCurrentUser: boolean,
-  confirmRemoteObsWasDeleted?: ( ) => void,
+  confirmRemoteObsWasDeleted?: any,
   currentTabId: string,
-  currentUser: object,
-  hideCommentBox: ( ) => void,
+  currentUser: any,
+  hideCommentBox: any,
   isOnline: boolean,
   isRefetching: boolean,
-  navToSuggestions: ( ) => void,
-  observation: object,
-  onAgree: ( ) => void,
-  onCommentAdded: ( ) => void,
-  onIDAgreePressed: ( ) => void,
-  openCommentBox: ( ) => void,
-  openCommentBox: ( ) => void,
-  refetchRemoteObservation: ( ) => void,
+  navToSuggestions: any,
+  observation: any,
+  onAgree: any,
+  onCommentAdded: any,
+  onIDAgreePressed: any,
+  openCommentBox: any,
+  openCommentBox: any,
+  refetchRemoteObservation: any,
   remoteObsWasDeleted?: boolean,
   showActivityTab: boolean,
   showAgreeWithIdSheet: boolean,
-  showCommentBox: ( ) => void,
-  tabs: Array<object>,
-  taxonForAgreement: ?object
+  showCommentBox: any,
+  tabs: Array<any>,
+  taxonForAgreement: ?any
 }
 
 const ObsDetails = ( {

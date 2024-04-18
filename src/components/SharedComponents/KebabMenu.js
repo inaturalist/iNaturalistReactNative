@@ -13,7 +13,7 @@ type Props = {
   accessibilityLabel?: string,
   children: any,
   large?: boolean,
-  setVisible: ( ) => void,
+  setVisible: any,
   visible: boolean,
   white?: boolean,
 }

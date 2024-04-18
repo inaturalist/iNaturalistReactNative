@@ -22,7 +22,7 @@ type Props = {
   belongsToCurrentUser?: boolean,
   isOnline: boolean,
   isRefetching: boolean,
-  observation: object,
+  observation: any,
 }
 
 const ObsDetailsOverview = ( {

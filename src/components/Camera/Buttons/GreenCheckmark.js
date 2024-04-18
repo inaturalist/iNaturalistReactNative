@@ -9,7 +9,7 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  handleCheckmarkPress: ( ) => void
+  handleCheckmarkPress: any
 }
 
 const GreenCheckmark = ( {

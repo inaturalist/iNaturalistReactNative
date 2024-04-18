@@ -24,8 +24,8 @@ const circleOptionsClasses = [
 ].join( " " );
 
 type Props = {
-  rotatableAnimatedStyle: object,
-  changeZoom: ( ) => void,
+  rotatableAnimatedStyle: any,
+  changeZoom: any,
   zoomClassName?: string,
   zoomTextValue: string,
   showZoomButton: boolean,

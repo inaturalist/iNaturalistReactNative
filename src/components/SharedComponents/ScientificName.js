@@ -6,14 +6,14 @@ import React from "react";
 import Taxon from "realmModels/Taxon";
 
 type Props = {
-  fontComponent: object,
+  fontComponent: any,
   isHorizontal: boolean,
   isTitle?: boolean,
   keyBase: string,
   rank: string,
   rankLevel: number,
   rankPiece: string,
-  scientificNamePieces: object,
+  scientificNamePieces: any,
   taxonId: string,
   textClassName?: string
 };

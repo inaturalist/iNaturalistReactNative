@@ -14,7 +14,7 @@ import HTML, { defaultSystemFonts } from "react-native-render-html";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  taxon: object
+  taxon: any
 }
 
 const Wikipedia = ( { taxon }: Props ): React.Node => {

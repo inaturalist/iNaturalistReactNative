@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 import ObsMediaDisplay from "./ObsMediaDisplay";
 
 type Props = {
-  observation: object,
+  observation: any,
   tablet?: boolean
 }
 

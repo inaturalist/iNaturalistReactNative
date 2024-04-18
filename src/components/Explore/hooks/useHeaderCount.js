@@ -4,7 +4,7 @@ import {
   useCallback, useMemo, useState
 } from "react";
 
-const useHeaderCount = ( ): object => {
+const useHeaderCount = ( ): any => {
   const [count, setCount] = useState( {
     observations: null,
     species: null,

@@ -20,9 +20,9 @@ type Props = {
   currentUserId?: number,
   isFirstDisplay: boolean,
   isOnline: boolean,
-  item: object,
-  onIDAgreePressed: ( ) => void,
-  refetchRemoteObservation: ( ) => void,
+  item: any,
+  onIDAgreePressed: any,
+  refetchRemoteObservation: any,
   userAgreedId?: string
 }
 

@@ -9,8 +9,8 @@ const PARAMS = {
 };
 
 const fetchAuthorizedApplications = async (
-  params: object = {},
-  opts: object = {}
+  params: any = {},
+  opts: any = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.authorized_applications.search(
@@ -24,8 +24,8 @@ const fetchAuthorizedApplications = async (
 };
 
 const revokeAuthorizedApplications = async (
-  params: object = {},
-  opts: object = {}
+  params: any = {},
+  opts: any = {}
 ): Promise<any> => {
   try {
     return await inatjs.authorized_applications.delete(

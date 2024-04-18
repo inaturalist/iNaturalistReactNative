@@ -41,19 +41,19 @@ const titleDescription = option => {
   }
 };
 type Props = {
-  checkTest: ( ) => void,
-  ifMajorityAgree: ( ) => void,
+  checkTest: any,
+  ifMajorityAgree: any,
   isOnline?: boolean,
   loadingAgree: boolean,
   loadingDisagree: boolean,
   loadingMetric: string,
   qualityGrade: string,
-  qualityMetrics: object,
-  recheckIsOnline: ( ) => void,
-  removeMetricVote: ( ) => void,
-  removeNeedsIDVote: ( ) => void,
-  setMetricVote: ( ) => void,
-  setNeedsIDVote: ( ) => void,
+  qualityMetrics: any,
+  recheckIsOnline: any,
+  removeMetricVote: any,
+  removeNeedsIDVote: any,
+  setMetricVote: any,
+  setNeedsIDVote: any,
 }
 
 const DataQualityAssessment = ( {
