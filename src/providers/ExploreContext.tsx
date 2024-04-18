@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 import { t } from "i18next";
-import * as React from "react";
+import React, {
+  useCallback, useContext, useMemo, useReducer, useState
+} from "react";
 import { LatLng } from "react-native-maps";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
@@ -501,10 +503,10 @@ function exploreReducer( state: State, action: Action ) {
 }
 
 const ExploreProvider = ( { children }: CountProviderProps ) => {
-  const [state, dispatch] = React.useReducer( exploreReducer, initialState );
+  const [state, dispatch] = useReducer( exploreReducer, initialState );
 
   // To store a snapshot of the state, e.g when the user opens the filters modal
-  const [snapshot, setSnapshot] = React.useState<State | undefined>( undefined );
+  const [snapshot, setSnapshot] = useState<State | undefined>( undefined );
   const makeSnapshot = useCallback( ( ) => setSnapshot( state ), [state] );
 
   // Check if the current state is different from the snapshot
@@ -566,7 +568,7 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
 };
 
 function useExplore() {
-  const context = React.useContext( ExploreContext );
+  const context = useContext( ExploreContext );
   if ( context === undefined ) {
     throw new Error( "useExplore must be used within a ExploreProvider" );
   }
