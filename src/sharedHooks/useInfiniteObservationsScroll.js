@@ -11,7 +11,7 @@ import { useCurrentUser, useIsConnected } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Object ): Object => {
+const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: object ): object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const isConnected = useIsConnected( );

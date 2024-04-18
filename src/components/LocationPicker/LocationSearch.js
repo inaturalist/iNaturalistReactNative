@@ -15,9 +15,9 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 type Props = {
   locationName: ?string,
-  updateLocationName: Function,
-  getShadow: Function,
-  selectPlaceResult: Function,
+  updateLocationName: ( ) => void,
+  getShadow: ( ) => void,
+  selectPlaceResult: ( ) => void,
   hidePlaceResults: boolean
 };
 

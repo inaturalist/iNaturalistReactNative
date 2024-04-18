@@ -26,8 +26,8 @@ type Props = {
   exploreViewIcon: string,
   hideBackButton: boolean,
   loadingStatus: boolean,
-  onPressCount?: Function,
-  openFiltersModal: Function
+  onPressCount?: ( ) => void,
+  openFiltersModal: ( ) => void
 }
 
 const Header = ( {

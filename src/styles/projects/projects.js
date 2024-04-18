@@ -9,7 +9,7 @@ import type {
 
 const { width } = Dimensions.get( "screen" );
 
-const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
@@ -23,14 +23,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
-const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
+const textStyles: { []: TextStyleProp } = StyleSheet.create( {
   projectName: {
     maxWidth: width - 100,
     flexWrap: "wrap-reverse"
   }
 } );
 
-const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
+const imageStyles: { []: ImageStyleProp } = StyleSheet.create( {
   projectIcon: {
     width: 50,
     height: 50,

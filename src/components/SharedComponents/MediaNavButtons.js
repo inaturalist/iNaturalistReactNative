@@ -38,13 +38,13 @@ const CLOSE_CLASSES = [
 ];
 
 type Props = {
-  captureButton: Function,
+  captureButton: ( ) => void,
   closeHidden?: boolean,
   confirmHidden?: boolean,
   mediaCaptured?: boolean,
-  onClose: Function,
-  onConfirm: Function,
-  rotatableAnimatedStyle?: Object,
+  onClose: ( ) => void,
+  onConfirm: ( ) => void,
+  rotatableAnimatedStyle?: object,
 }
 
 const MediaNavButtons = ( {

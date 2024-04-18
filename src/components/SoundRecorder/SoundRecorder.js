@@ -65,7 +65,7 @@ const SoundRecorder = (): Node => {
     setStatus
   ]: [
     "notStarted" | "recording" | "stopped",
-    Function
+    ( ) => void
   ] = useState( NOT_STARTED );
 
   audioRecorderPlayer.setSubscriptionDuration( 0.09 ); // optional. Default is 0.1

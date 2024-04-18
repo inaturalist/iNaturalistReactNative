@@ -6,7 +6,7 @@ import colors from "styles/tailwindColors";
 
 const borderRadius = 24;
 
-const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
   shadow: {
     shadowColor: colors.black,
     borderTopStartRadius: borderRadius,

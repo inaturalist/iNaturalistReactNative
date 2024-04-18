@@ -6,7 +6,7 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 import { getShadowStyle } from "styles/global";
 
-const getShadow = (shadowColor: string) => getShadowStyle( {
+const getShadow = ( shadowColor: string ) => getShadowStyle( {
   shadowColor,
   offsetWidth: 0,
   offsetHeight: 4,
@@ -22,8 +22,12 @@ interface Props {
 
 const NumberBadge = ( { number, light }: Props ): Node => {
   const theme = useTheme();
-  const backgroundColor = light ? "bg-white" : "bg-inatGreen";
-  const textColor = light ? "text-darkGray" : "text-white";
+  const backgroundColor = light
+    ? "bg-white"
+    : "bg-inatGreen";
+  const textColor = light
+    ? "text-darkGray"
+    : "text-white";
   return (
     <View
       className={classNames(

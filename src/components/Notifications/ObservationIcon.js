@@ -7,7 +7,7 @@ import * as React from "react";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  uri: Object
+  uri: object
 }
 
 const ObservationIcon = ( {

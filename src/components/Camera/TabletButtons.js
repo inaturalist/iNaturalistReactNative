@@ -37,19 +37,19 @@ const cameraOptionsClasses = [
 ].join( " " );
 
 type Props = {
-  changeZoom: Function,
+  changeZoom: ( ) => void,
   disabled: boolean,
-  flipCamera: Function,
-  handleCheckmarkPress?: Function,
-  handleClose?: Function,
+  flipCamera: ( ) => void,
+  handleCheckmarkPress?: ( ) => void,
+  handleClose?: ( ) => void,
   hasFlash: boolean,
   photosTaken?: boolean,
-  rotatableAnimatedStyle: Object,
+  rotatableAnimatedStyle: object,
   showPrediction?: boolean,
   showZoomButton: boolean,
-  takePhoto: Function,
-  takePhotoOptions: Object,
-  toggleFlash: Function,
+  takePhoto: ( ) => void,
+  takePhotoOptions: object,
+  toggleFlash: ( ) => void,
   zoomTextValue: string
 }
 

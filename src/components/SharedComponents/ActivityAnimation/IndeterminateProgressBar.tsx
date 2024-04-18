@@ -1,4 +1,3 @@
-import { View } from "components/styledComponents";
 import React, { useEffect, useMemo } from "react";
 import { Dimensions } from "react-native";
 import Animated, {

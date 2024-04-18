@@ -14,10 +14,10 @@ import {
 import MapView from "./MapView";
 
 type Props = {
-  count: Object,
+  count: object,
   layout: string,
-  queryParams: Object,
-  updateCount: Function
+  queryParams: object,
+  updateCount: ( ) => void
 }
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };

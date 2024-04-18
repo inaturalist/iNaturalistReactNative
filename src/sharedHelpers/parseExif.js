@@ -34,7 +34,7 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
 };
 
 // Parses EXIF date time into a date object
-export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
+export const parseExif = async ( photoUri: ?string ): Promise<object> => {
   try {
     return readExif( photoUri );
   } catch ( e ) {
@@ -49,7 +49,7 @@ interface ExifToWrite {
   positional_accuracy?: number;
 }
 
-export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): Promise<Object> => {
+export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): Promise<object> => {
   logger.debug( "writeExifToFile, photoUri: ", photoUri );
   try {
     return writeExif( photoUri, exif );
@@ -68,7 +68,7 @@ export const formatExifDateAsString = ( datetime: string ): string => {
 
 // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
 // in case the first photo is missing EXIF
-export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Promise<Object> => {
+export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Promise<object> => {
   const unifiedExif = {};
 
   const allExifPhotos = await Promise.all(

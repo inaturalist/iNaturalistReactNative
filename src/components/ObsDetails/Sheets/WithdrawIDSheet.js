@@ -11,9 +11,9 @@ import React from "react";
 import { Text } from "react-native";
 
 type Props = {
-  handleClose: Function,
-  updateIdentification: Function,
-  taxon: Object
+  handleClose: ( ) => void,
+  updateIdentification: ( ) => void,
+  taxon: object
 }
 
 const showTaxon = taxon => {

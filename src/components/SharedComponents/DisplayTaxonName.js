@@ -28,15 +28,15 @@ const rankNames = {
 };
 
 type Props = {
-  bottomTextComponent?: Function,
+  bottomTextComponent?: ( ) => void,
   color?: string,
   ellipsizeCommonName?: boolean,
   keyBase?: string,
   layout?: "horizontal" | "vertical",
   scientificNameFirst?: boolean,
   small?: boolean,
-  taxon: Object,
-  topTextComponent?: Function,
+  taxon: object,
+  topTextComponent?: ( ) => void,
   withdrawn?: boolean
 };
 

@@ -11,7 +11,7 @@ import WarningText from "./WarningText";
 
 type Props = {
   accuracyTest: string,
-  getShadow: Function
+  getShadow: ( ) => void
 };
 
 const CrosshairCircle = ( { accuracyTest, getShadow }: Props ): Node => {

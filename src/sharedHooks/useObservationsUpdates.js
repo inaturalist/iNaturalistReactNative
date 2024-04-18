@@ -10,7 +10,7 @@ const { useRealm } = RealmContext;
 
 export const fetchObservationUpdatesKey = "fetchObservationUpdates";
 
-const useObservationsUpdates = ( enabled: boolean ): Object => {
+const useObservationsUpdates = ( enabled: boolean ): object => {
   const realm = useRealm();
   const isConnected = useIsConnected( );
 

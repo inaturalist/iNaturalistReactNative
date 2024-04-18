@@ -7,8 +7,8 @@ import useStore from "stores/useStore";
 // TODO rename this, should be something to indicate that it handles
 // navigation
 const useNavigateWithTaxonSelected = (
-  selectedTaxon: ?Object,
-  options: Object
+  selectedTaxon: ?object,
+  options: object
 ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );

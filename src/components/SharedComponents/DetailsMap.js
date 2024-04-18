@@ -29,10 +29,10 @@ type Props = {
   obscured?: boolean,
   positionalAccuracy?: number,
   mapViewRef: any,
-  region?: Object,
-  closeModal: Function,
-  tileMapParams: Object,
-  headerTitle?: Object,
+  region?: object,
+  closeModal: ( ) => void,
+  tileMapParams: object,
+  headerTitle?: object,
   showLocationIndicator: boolean,
   coordinateString?: string
 }

@@ -8,7 +8,7 @@ import type {
 } from "react-native/Libraries/StyleSheet/StyleSheet";
 import colors from "styles/tailwindColors";
 
-const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
   bottomModal: {
     padding: 0,
     backgroundColor: colors.white,
@@ -25,13 +25,13 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
-const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
+const textStyles: { []: TextStyleProp } = StyleSheet.create( {
   activityItemBody: {
     color: colors.darkGray
   }
 } );
 
-const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
+const imageStyles: { []: ImageStyleProp } = StyleSheet.create( {
   smallIcon: {
     width: 15,
     height: 15,

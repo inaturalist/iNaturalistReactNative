@@ -9,8 +9,8 @@ const PARAMS = {
 };
 
 const createFlag = async (
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.flags.create( { ...PARAMS, ...params }, opts );

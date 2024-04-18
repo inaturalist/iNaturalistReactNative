@@ -9,7 +9,7 @@ import React from "react";
 
 type Props = {
   accessibilityLabel: string,
-  handlePress: Function,
+  handlePress: ( ) => void,
   iconName: string,
   text: string
 }

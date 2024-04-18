@@ -11,9 +11,9 @@ const logger = log.extend( "useOfflineSuggestions" );
 
 const useOfflineSuggestions = (
   selectedPhotoUri: string,
-  options: Object
+  options: object
 ): {
-  offlineSuggestions: Array<Object>,
+  offlineSuggestions: Array<object>,
   loadingOfflineSuggestions: boolean
 } => {
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );

@@ -21,10 +21,10 @@ export const LOCATION_FETCH_INTERVAL = 1000;
 // information about the current observation's location
 const useCurrentObservationLocation = (
   mountedRef: any,
-  currentObservation: Object,
-  updateObservationKeys: Function,
-  options: Object = { }
-): Object => {
+  currentObservation: object,
+  updateObservationKeys: ( ) => void,
+  options: object = { }
+): object => {
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
   const hasLocation = latitude || longitude;

@@ -16,8 +16,8 @@ import ObsMedia from "./ObsMedia";
 
 type Props = {
   loading: boolean,
-  photos: Array<Object>,
-  sounds: Array<Object>,
+  photos: Array<object>,
+  sounds: Array<object>,
   tablet: boolean
 }
 

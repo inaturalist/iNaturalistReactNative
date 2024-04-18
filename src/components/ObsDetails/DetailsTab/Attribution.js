@@ -6,7 +6,7 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  observation: Object
+  observation: object
 }
 
 const renderRestrictions = ( licenseCode: string ) => {

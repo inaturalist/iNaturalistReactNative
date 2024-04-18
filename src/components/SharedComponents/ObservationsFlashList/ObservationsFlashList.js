@@ -17,22 +17,22 @@ import ObsItem from "./ObsItem";
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
-  contentContainerStyle?: Object,
-  data: Array<Object>,
+  contentContainerStyle?: object,
+  data: Array<object>,
   dataCanBeFetched?: boolean,
   explore: boolean,
-  handleScroll?: Function,
+  handleScroll?: ( ) => void,
   hideLoadingWheel: boolean,
   isFetchingNextPage?: boolean,
   isOnline: boolean,
   layout: "list" | "grid",
-  onEndReached: Function,
-  renderHeader?: Function,
+  onEndReached: ( ) => void,
+  renderHeader?: ( ) => void,
   showObservationsEmptyScreen?: boolean,
   status?: string,
   testID: string,
-  uploadSingleObservation?: Function,
-  uploadState: Object
+  uploadSingleObservation?: ( ) => void,
+  uploadState: object
 };
 
 const GUTTER = 15;

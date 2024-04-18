@@ -7,7 +7,7 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-item: Object
+item: object
 };
 
 const NotificationsListItem = ( { item }: Props ): Node => {

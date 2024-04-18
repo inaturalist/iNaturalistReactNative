@@ -11,9 +11,9 @@ import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  item: Object,
+  item: object,
   countText: string,
-  onPress?: Function,
+  onPress?: ( ) => void,
   accessibilityLabel?: string
 };
 

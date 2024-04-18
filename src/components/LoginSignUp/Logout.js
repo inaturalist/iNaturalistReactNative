@@ -23,7 +23,7 @@ const logger = log.extend( "Logout" );
 const { useRealm } = RealmContext;
 
 type Props = {
-  onLogOut?: Function
+  onLogOut?: ( ) => void
 }
 
 const Logout = ( { onLogOut }: Props ) : Node => {

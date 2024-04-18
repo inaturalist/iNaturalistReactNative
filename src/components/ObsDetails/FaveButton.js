@@ -17,9 +17,9 @@ import {
 import colors from "styles/tailwindColors";
 
 type Props = {
-  observation: Object,
-  currentUser?: Object,
-  afterToggleFave: ( wasFaved: boolean ) => void,
+  observation: object,
+  currentUser?: object,
+  afterToggleFave: ( ) => void,
   top?: boolean
 }
 

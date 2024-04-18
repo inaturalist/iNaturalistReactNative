@@ -23,7 +23,7 @@ const isTablet = DeviceInfo.isTablet( );
 
 type Props = {
   belongsToCurrentUser?: boolean,
-  observation: Object,
+  observation: object,
   rightIconBlack?: boolean
 }
 

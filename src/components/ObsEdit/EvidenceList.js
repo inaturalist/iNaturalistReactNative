@@ -23,9 +23,9 @@ const { useRealm } = RealmContext;
 const logger = log.extend( "EvidenceList" );
 
 type Props = {
-  handleAddEvidence?: Function,
-  handleDragAndDrop: Function,
-  photos?: Array<Object>,
+  handleAddEvidence?: ( ) => void,
+  handleDragAndDrop: ( ) => void,
+  photos?: Array<object>,
   sounds?: Array<{
     id?: number,
     file_url: string,
@@ -45,7 +45,7 @@ const EvidenceList = ( {
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
   const { t } = useTranslation( );
-  const [selectedMediaUri, setSelectedMediaUri]: [string | null, Function] = useState( null );
+  const [selectedMediaUri, setSelectedMediaUri]: [string | null, ( ) => void] = useState( null );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
   const photoUris = photos.map( obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath );
   const innerPhotos = photos.map( obsPhoto => obsPhoto.photo );

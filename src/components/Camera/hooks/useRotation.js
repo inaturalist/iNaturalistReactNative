@@ -11,7 +11,7 @@ import useDeviceOrientation, {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation";
 
-const useRotation = ( ): Object => {
+const useRotation = ( ): object => {
   const { deviceOrientation } = useDeviceOrientation( );
 
   const rotation = useSharedValue( 0 );

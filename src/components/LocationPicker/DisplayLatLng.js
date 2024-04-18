@@ -9,9 +9,9 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  region: Object,
+  region: object,
   accuracy: number,
-  getShadow: Function
+  getShadow: ( ) => void
 };
 
 const DisplayLatLng = ( { region, accuracy, getShadow }: Props ): Node => {

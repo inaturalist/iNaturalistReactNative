@@ -35,8 +35,10 @@ const renderNodes = reactNodes => {
   } );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const useMock = [k => k, { changeLanguage: () => new Promise( () => {} ) }];
 useMock.t = k => k;
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 useMock.i18n = { changeLanguage: () => new Promise( () => {} ) };
 
 module.exports = {

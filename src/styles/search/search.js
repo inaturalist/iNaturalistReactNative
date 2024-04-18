@@ -8,7 +8,7 @@ import type {
 } from "react-native/Libraries/StyleSheet/StyleSheet";
 import colors from "styles/tailwindColors";
 
-const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+const viewStyles: { []: ViewStyleProp } = StyleSheet.create( {
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
@@ -24,13 +24,13 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
-const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
+const textStyles: { []: TextStyleProp } = StyleSheet.create( {
   text: { }
 } );
 
 const imageWidth = 40;
 
-const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
+const imageStyles: { []: ImageStyleProp } = StyleSheet.create( {
   circularImage: {
     width: imageWidth,
     height: imageWidth,

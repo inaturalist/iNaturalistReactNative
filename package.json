@@ -144,10 +144,13 @@
     "@react-native/typescript-config": "0.73.1",
     "@tanstack/eslint-plugin-query": "^5.28.11",
     "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react": "^15.0.2",
     "@testing-library/react-native": "^12.4.5",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.2.74",
     "@types/react-test-renderer": "^18.0.7",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
     "babel-jest": "^29.6.3",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
@@ -186,7 +189,7 @@
     "react-test-renderer": "18.2.0",
     "tailwindcss": "^3.3.2",
     "ts-node": "^10.9.2",
-    "typescript": "5.0.4",
+    "typescript": "^5.0.4",
     "yargs": "^17.7.2"
   },
   "engines": {

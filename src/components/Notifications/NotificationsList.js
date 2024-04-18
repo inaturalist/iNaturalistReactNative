@@ -10,12 +10,12 @@ import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  data: Object,
+  data: object,
   isError?: boolean,
   isLoading?: boolean,
   isOnline: boolean,
-  onEndReached: Function,
-  reload: Function
+  onEndReached: ( ) => void,
+  reload: ( ) => void
 };
 
 const NotificationsList = ( {

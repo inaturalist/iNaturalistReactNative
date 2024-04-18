@@ -12,7 +12,7 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   before: any,
-  onTaxonChosen: Function,
+  onTaxonChosen: ( ) => void,
   taxon: {
     id: number,
     name: string

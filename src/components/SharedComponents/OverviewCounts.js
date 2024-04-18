@@ -9,9 +9,9 @@ import * as React from "react";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  counts: Object,
-  onObservationPressed: Function,
-  onSpeciesPressed: Function
+  counts: object,
+  onObservationPressed: ( ) => void,
+  onSpeciesPressed: ( ) => void
 }
 
 type CountProps = {
@@ -25,7 +25,7 @@ type CountPressableProps = {
   count: number,
   icon: string,
   label: string,
-  onPress?: Function
+  onPress?: ( ) => void
 }
 
 const Count = ( {

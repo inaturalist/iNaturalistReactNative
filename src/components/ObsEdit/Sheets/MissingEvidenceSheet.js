@@ -8,7 +8,7 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  setShowMissingEvidenceSheet: Function
+  setShowMissingEvidenceSheet: ( ) => void
 }
 
 const MissingEvidenceSheet = ( { setShowMissingEvidenceSheet }: Props ): Node => {

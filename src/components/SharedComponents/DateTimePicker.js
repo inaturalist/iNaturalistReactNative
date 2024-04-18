@@ -5,8 +5,8 @@ import { Appearance } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 type Props = {
-  toggleDateTimePicker: Function,
-  onDatePicked: Function,
+  toggleDateTimePicker: ( ) => void,
+  onDatePicked: ( ) => void,
   isDateTimePickerVisible: boolean,
   datetime?: boolean
 };

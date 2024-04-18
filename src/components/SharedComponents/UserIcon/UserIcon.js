@@ -6,7 +6,7 @@ import React from "react";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  uri: Object,
+  uri: object,
   small?: boolean,
   active?: boolean,
   large?: boolean,

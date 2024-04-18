@@ -22,7 +22,7 @@ const { useRealm } = RealmContext;
 
 type Props = {
   hideFooter: boolean,
-  setLoggedIn: Function
+  setLoggedIn: ( ) => void
 }
 
 const LoginForm = ( {

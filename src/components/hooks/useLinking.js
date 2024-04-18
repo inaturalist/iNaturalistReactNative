@@ -10,7 +10,7 @@ import { Linking } from "react-native";
 const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
 const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
 
-const useLinking = ( currentUser: ?Object ) => {
+const useLinking = ( currentUser: ?object ) => {
   const navigation = useNavigation( );
   const [observationId, setObservationId] = useState( null );
 

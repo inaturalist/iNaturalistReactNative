@@ -8,7 +8,7 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  handleClose?: Function,
+  handleClose?: ( ) => void,
   black?: boolean,
   buttonClassName?: string,
   size?: number,

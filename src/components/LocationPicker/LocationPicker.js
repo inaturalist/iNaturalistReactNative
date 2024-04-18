@@ -35,20 +35,20 @@ const getShadow = shadowColor => getShadowStyle( {
 type Props = {
   accuracy: number,
   accuracyTest: string,
-  goBackOnSave: Function,
+  goBackOnSave: ( ) => void,
   hidePlaceResults: boolean,
-  keysToUpdate: Object,
+  keysToUpdate: object,
   loading: boolean,
   locationName: ?string,
   mapType: string,
   mapViewRef: any,
-  region: Object,
-  selectPlaceResult: Function,
-  setMapReady: Function,
+  region: object,
+  selectPlaceResult: ( ) => void,
+  setMapReady: ( ) => void,
   showCrosshairs: boolean,
-  updateLocationName: Function,
-  updateRegion: Function,
-  updateObservationKeys: Function
+  updateLocationName: ( ) => void,
+  updateRegion: ( ) => void,
+  updateObservationKeys: ( ) => void
 };
 
 const LocationPicker = ( {

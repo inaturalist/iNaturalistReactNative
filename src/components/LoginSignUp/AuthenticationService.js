@@ -63,9 +63,9 @@ const getUsername = async (): Promise<string> => RNSInfo.getItem( "username", {}
  */
 const signOut = async (
   options: {
-    realm?: Object,
+    realm?: object,
     clearRealm?: boolean,
-    queryClient?: Object
+    queryClient?: object
   } = {
     clearRealm: false,
     queryClient: null
@@ -250,7 +250,7 @@ const showErrorAlert = ( errorText: string ) => {
   );
 };
 
-function errorDescriptionFromResponse( response: Object ): string {
+function errorDescriptionFromResponse( response: object ): string {
   let errorDescription = response?.data?.error_description;
   if ( !errorDescription && response.problem === "NETWORK_ERROR" ) {
     errorDescription = i18next.t( "You-need-an-Internet-connection-to-do-that" );
@@ -346,7 +346,7 @@ const verifyCredentials = async (
 const authenticateUser = async (
   username: string,
   password: string,
-  realm: Object
+  realm: object
 ): Promise<boolean> => {
   const userDetails = await verifyCredentials( username, password );
 
@@ -402,7 +402,7 @@ const authenticateUser = async (
  *
  * @returns null if successful, otherwise an error string
  */
-const registerUser = async ( user: Object ): any => {
+const registerUser = async ( user: object ): any => {
   const locales = RNLocalize.getLocales();
   const formData = {
     user: {

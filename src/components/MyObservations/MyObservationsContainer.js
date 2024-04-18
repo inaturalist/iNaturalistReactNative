@@ -70,7 +70,7 @@ const startUploadState = uploads => ( {
   )
 } );
 
-const uploadReducer = ( state: Object, action: Function ): Object => {
+const uploadReducer = ( state: object, action: ( ) => void ): object => {
   switch ( action.type ) {
     case "PAUSE_UPLOADS":
       return {

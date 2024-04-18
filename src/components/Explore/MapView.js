@@ -26,8 +26,8 @@ const getShadow = shadowColor => getShadowStyle( {
 } );
 
 type Props = {
-  observations: Array<Object>,
-  queryParams: Object
+  observations: Array<object>,
+  queryParams: object
 }
 
 const MapView = ( {

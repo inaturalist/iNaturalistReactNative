@@ -13,7 +13,7 @@ import useTranslation from "sharedHooks/useTranslation";
 const BACK_BUTTON_STYLE = { position: "absolute", start: 0 };
 
 type Props = {
-  onClose: Function,
+  onClose: ( ) => void,
   photoCount: number,
   soundCount?: number
 };

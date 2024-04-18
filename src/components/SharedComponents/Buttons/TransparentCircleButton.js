@@ -18,7 +18,7 @@ const circleOptionsClasses = [
 ].join( " " );
 
 type Props = {
-  onPress: Function,
+  onPress: ( ) => void,
   optionalClasses?: string,
   accessibilityHint?: string,
   accessibilityLabel: string,

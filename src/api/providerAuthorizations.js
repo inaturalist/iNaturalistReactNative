@@ -9,8 +9,8 @@ const PARAMS = {
 };
 
 const fetchProviderAuthorizations = async (
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.provider_authorizations.search(

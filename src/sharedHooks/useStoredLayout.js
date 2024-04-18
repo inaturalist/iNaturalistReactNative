@@ -2,7 +2,7 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useState } from "react";
 
-const useStoredLayout = ( storageKey: string ): Object => {
+const useStoredLayout = ( storageKey: string ): object => {
   const {
     getItem: getStoredLayout,
     setItem: setStoredLayout

@@ -16,7 +16,7 @@ const ONE_WEEK_MS = (
   * 7 // day / wk
 );
 
-const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
+const useTaxon = ( taxon: object, fetchRemote: boolean = true ): object => {
   const realm = useRealm( );
   // taxon id is returned as a string, not a number, from CV model
   const taxonId = Number( taxon?.id );

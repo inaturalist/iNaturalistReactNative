@@ -17,7 +17,7 @@ const PARAMS = {
   placement: "mobile"
 };
 
-const searchAnnouncements = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const searchAnnouncements = async ( params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     const { results } = await inatjs.announcements.search(
       { ...PARAMS, ...params },
@@ -29,7 +29,7 @@ const searchAnnouncements = async ( params: Object = {}, opts: Object = {} ): Pr
   }
 };
 
-const dismissAnnouncement = async ( params: Object = {}, opts: Object = {} ): Promise<?number> => {
+const dismissAnnouncement = async ( params: object = {}, opts: object = {} ): Promise<?number> => {
   try {
     return await inatjs.announcements.dismiss( params, opts );
   } catch ( e ) {

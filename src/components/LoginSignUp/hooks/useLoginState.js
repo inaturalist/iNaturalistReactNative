@@ -3,7 +3,7 @@
 import { isLoggedIn } from "components/LoginSignUp/AuthenticationService";
 import { useEffect, useState } from "react";
 
-const useLoginState = ( ): Object => {
+const useLoginState = ( ): object => {
   const [loggedIn, setLoggedIn] = useState( false );
 
   useEffect( ( ) => {

@@ -6,7 +6,7 @@ import {
   useUserMe
 } from "sharedHooks";
 
-const useChangeLocale = ( currentUser: ?Object ) => {
+const useChangeLocale = ( currentUser: ?object ) => {
   const { i18n } = useTranslation( );
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard

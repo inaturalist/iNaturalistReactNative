@@ -7,8 +7,8 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  getShadow: Function,
-  theme: Object
+  getShadow: ( ) => void,
+  theme: object
 };
 
 const LoadingIndicator = ( { getShadow, theme }: Props ): Node => (

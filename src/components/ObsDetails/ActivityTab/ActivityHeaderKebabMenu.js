@@ -12,10 +12,10 @@ type Props = {
   current: boolean,
   currentUser: boolean,
   itemType: "Identification" | "Comment",
-  setShowDeleteCommentSheet: Function,
-  setShowEditCommentSheet: Function,
-  setShowWithdrawIDSheet: Function,
-  updateIdentification: Function,
+  setShowDeleteCommentSheet: ( ) => void,
+  setShowEditCommentSheet: ( ) => void,
+  setShowWithdrawIDSheet: ( ) => void,
+  updateIdentification: ( ) => void,
 }
 
 const ActivityItemKebabMenu = ( {

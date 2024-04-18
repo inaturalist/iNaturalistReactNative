@@ -12,12 +12,12 @@ import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  handleClose: Function,
-  confirm: Function,
+  handleClose: ( ) => void,
+  confirm: ( ) => void,
   initialInput?: ?string,
   placeholder: string,
   headerText: string,
-  textInputStyle?: Object
+  textInputStyle?: object
 }
 
 const TextInputSheet = ( {

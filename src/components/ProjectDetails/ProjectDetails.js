@@ -17,9 +17,9 @@ import { useTranslation } from "sharedHooks";
 import AboutProjectType from "./AboutProjectType";
 
 type Props = {
-  project: Object,
-  joinProject: Function,
-  leaveProject: Function,
+  project: object,
+  joinProject: ( ) => void,
+  leaveProject: ( ) => void,
   loadingProjectMembership: boolean
 }
 

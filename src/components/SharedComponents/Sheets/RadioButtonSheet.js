@@ -11,10 +11,10 @@ import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  handleClose: Function,
-  confirm: Function,
+  handleClose: ( ) => void,
+  confirm: ( ) => void,
   headerText: string,
-  radioValues: Object,
+  radioValues: object,
   selectedValue?: any
 }
 

@@ -21,7 +21,7 @@ export const INITIAL_DELETION_STATE = {
   error: null
 };
 
-const deletionReducer = ( state: Object, action: Function ): Object => {
+const deletionReducer = ( state: object, action: ( ) => void ): object => {
   switch ( action.type ) {
     case "SET_DELETE_ERROR":
       return {
@@ -54,7 +54,7 @@ const deletionReducer = ( state: Object, action: Function ): Object => {
   }
 };
 
-const useDeleteObservations = ( ): Object => {
+const useDeleteObservations = ( ): object => {
   const realm = useRealm( );
   const [state, dispatch] = useReducer( deletionReducer, INITIAL_DELETION_STATE );
   const navigation = useNavigation( );

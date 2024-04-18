@@ -8,8 +8,8 @@ import { createObservedOnStringForUpload, displayDateTimeObsEdit } from "sharedH
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  currentObservation: Object,
-  updateObservationKeys: Function
+  currentObservation: object,
+  updateObservationKeys: ( ) => void
 }
 
 const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Node => {

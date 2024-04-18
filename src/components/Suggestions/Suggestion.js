@@ -12,8 +12,8 @@ import {
 
 type Props = {
   accessibilityLabel: string,
-  onTaxonChosen: Function,
-  suggestion: Object,
+  onTaxonChosen: ( ) => void,
+  suggestion: object,
 };
 
 const Suggestion = ( {

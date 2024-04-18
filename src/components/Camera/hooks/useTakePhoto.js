@@ -12,7 +12,7 @@ import {
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useStore from "stores/useStore";
 
-const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): Object => {
+const useTakePhoto = ( camera: object, addEvidence: ?boolean, device: object ): object => {
   const currentObservation = useStore( state => state.currentObservation );
   const { deviceOrientation } = useDeviceOrientation( );
   const hasFlash = device?.hasFlash;

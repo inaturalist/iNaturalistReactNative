@@ -8,10 +8,10 @@ import { useCurrentUser } from "sharedHooks";
 import ActivityItem from "./ActivityItem";
 
 type Props = {
-  observation:Object,
-  refetchRemoteObservation: Function,
-  activityItems: Array<Object>,
-  onIDAgreePressed: Function,
+  observation: object,
+  refetchRemoteObservation: ( ) => void,
+  activityItems: Array<object>,
+  onIDAgreePressed: ( ) => void,
   isOnline: boolean
 }
 

@@ -23,10 +23,10 @@ type Props = {
   autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
   // Optional component to use as the header
-  header?: Function,
-  onClose?: Function,
-  onDeletePhoto?: Function,
-  onDeleteSound?: Function,
+  header?: ( ) => void,
+  onClose?: ( ) => void,
+  onDeletePhoto?: ( ) => void,
+  onDeleteSound?: ( ) => void,
   photos?: Array<{
     id?: number,
     url: string,
@@ -67,7 +67,7 @@ const MediaViewer = ( {
   const [
     mediaToDelete,
     setMediaToDelete
-  ]: [null | { type: string, uri: string }, Function] = useState( null );
+  ]: [null | { type: string, uri: string }, ( ) => void] = useState( null );
 
   const horizontalScroll = useRef( null );
 

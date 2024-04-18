@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { Animated } from "react-native";
 
 type Props = {
-  tappedCoordinates: Object,
+  tappedCoordinates: object,
   singleTapToFocusAnimation: any
 }
 

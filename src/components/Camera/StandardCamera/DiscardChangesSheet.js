@@ -8,9 +8,9 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  setShowDiscardSheet: Function,
+  setShowDiscardSheet: ( ) => void,
   hidden?: boolean,
-  onDiscard: Function
+  onDiscard: ( ) => void
 }
 
 const DiscardChangesSheet = ( {

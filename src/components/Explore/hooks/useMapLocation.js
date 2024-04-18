@@ -17,7 +17,7 @@ const { useRealm } = RealmContext;
 
 const DELTA = 0.2;
 
-const useMapLocation = ( ): Object => {
+const useMapLocation = ( ): object => {
   const { params } = useRoute( );
   const place = params?.place;
   const worldwide = params?.worldwide;

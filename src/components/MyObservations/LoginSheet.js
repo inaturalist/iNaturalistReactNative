@@ -7,7 +7,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  setShowLoginSheet: Function,
+  setShowLoginSheet: ( ) => void,
 }
 
 const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {

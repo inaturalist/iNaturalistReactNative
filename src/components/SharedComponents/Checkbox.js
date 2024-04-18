@@ -10,7 +10,7 @@ import { useTheme } from "react-native-paper";
 type Props = {
   accessibilityLabel: string,
   isChecked: boolean,
-  onPress: Function,
+  onPress: ( ) => void,
   text: string
 }
 

@@ -4,7 +4,7 @@ import { RealmContext } from "providers/contexts";
 
 const { useRealm } = RealmContext;
 
-const useLocalObservation = ( uuid: string ): Object => {
+const useLocalObservation = ( uuid: string ): object => {
   const realm = useRealm( );
 
   return uuid

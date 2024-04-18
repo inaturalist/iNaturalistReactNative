@@ -9,7 +9,7 @@ import {
 
 const { useRealm } = RealmContext;
 
-const useLocalObservations = ( ): Object => {
+const useLocalObservations = ( ): object => {
   const isFocused = useIsFocused( );
   // Use refs to maintain state without triggering re-renders of hook consumers
   // when they have lost focus, which prevents other

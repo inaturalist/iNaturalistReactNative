@@ -15,7 +15,7 @@ import realmConfig from "realmModels/index";
 // }
 // checkOnRealmPath( "before creating realm context" );
 
-const RealmContext: Object = createRealmContext( realmConfig );
+const RealmContext: object = createRealmContext( realmConfig );
 
 export {
   // eslint-disable-next-line

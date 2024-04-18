@@ -15,8 +15,8 @@ type Props = {
   classNameMargin?: string,
   idWithdrawn?: boolean,
   isOnline?: boolean,
-  item: Object,
-  refetchRemoteObservation?: Function
+  item: object,
+  refetchRemoteObservation?: ( ) => void
 }
 
 const ActivityHeaderContainer = ( {

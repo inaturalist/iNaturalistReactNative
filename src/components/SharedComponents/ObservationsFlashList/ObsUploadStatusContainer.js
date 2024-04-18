@@ -6,12 +6,12 @@ import React from "react";
 import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
-  observation: Object,
+  observation: object,
   layout?: "horizontal" | "vertical",
   white?: boolean,
   classNameMargin?: string,
-  uploadSingleObservation?: Function,
-  uploadState: Object
+  uploadSingleObservation?: ( ) => void,
+  uploadState: object
 };
 
 const ObsUploadStatusContainer = ( {

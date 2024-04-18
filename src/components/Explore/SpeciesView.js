@@ -15,10 +15,10 @@ import ExploreFlashList from "./ExploreFlashList";
 const GUTTER = 15;
 
 type Props = {
-  count: Object,
+  count: object,
   isOnline: boolean,
-  queryParams: Object,
-  updateCount: Function
+  queryParams: object,
+  updateCount: ( ) => void
 }
 
 const SpeciesView = ( {

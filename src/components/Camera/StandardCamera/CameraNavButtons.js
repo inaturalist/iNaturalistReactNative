@@ -11,11 +11,11 @@ const isTablet = DeviceInfo.isTablet();
 
 type Props = {
   disabled: boolean,
-  handleCheckmarkPress: Function,
-  handleClose: Function,
+  handleCheckmarkPress: ( ) => void,
+  handleClose: ( ) => void,
   photosTaken: boolean,
-  rotatableAnimatedStyle: Object,
-  takePhoto: Function
+  rotatableAnimatedStyle: object,
+  takePhoto: ( ) => void
 }
 
 const CameraNavButtons = ( {

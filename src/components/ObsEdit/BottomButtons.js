@@ -26,10 +26,10 @@ const { useRealm } = RealmContext;
 type Props = {
   passesEvidenceTest: boolean,
   passesIdentificationTest: boolean,
-  observations: Array<Object>,
-  currentObservation: Object,
+  observations: Array<object>,
+  currentObservation: object,
   currentObservationIndex: number,
-  setCurrentObservationIndex: Function
+  setCurrentObservationIndex: ( ) => void
 }
 
 const logger = log.extend( "ObsEditBottomButtons" );
@@ -85,7 +85,7 @@ const BottomButtons = ( {
     writeExifToCameraRollPhotos
   ] );
 
-  const setNextScreen = useCallback( async ( { type }: Object ) => {
+  const setNextScreen = useCallback( async ( { type }: object ) => {
     logger.info( "saving observation ", currentObservation.uuid );
     const savedObservation = await saveObservation( currentObservation );
     logger.info( "saved observation ", savedObservation.uuid );

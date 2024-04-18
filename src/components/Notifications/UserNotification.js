@@ -8,7 +8,7 @@ import React from "react";
 import User from "realmModels/User";
 
   type Props = {
-    item: Object
+    item: object
   };
 
 const UserNotificationListItem = ( { item }: Props ): Node => {

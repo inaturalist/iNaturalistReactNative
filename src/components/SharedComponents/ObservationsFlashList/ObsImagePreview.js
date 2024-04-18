@@ -33,7 +33,7 @@ type Props = {
   selectable?: boolean,
   selected?: boolean,
   source: SOURCE,
-  style?: Object,
+  style?: object,
   testID?: string,
   white?: boolean,
   width?: string

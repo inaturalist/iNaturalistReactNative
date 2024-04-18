@@ -11,7 +11,7 @@ import {
 
 const { useRealm } = RealmContext;
 
-const useUserMe = ( options: ?Object ): Object => {
+const useUserMe = ( options: ?object ): object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const updateRealm = options?.updateRealm;

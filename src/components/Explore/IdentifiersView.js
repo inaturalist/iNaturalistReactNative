@@ -10,10 +10,10 @@ import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
-  count: Object,
+  count: object,
   isOnline: boolean,
-  queryParams: Object,
-  updateCount: Function
+  queryParams: object,
+  updateCount: ( ) => void
 };
 
 const LIST_STYLE = { paddingTop: 44 };

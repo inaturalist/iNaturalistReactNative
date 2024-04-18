@@ -10,9 +10,9 @@ import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  navigation: Object,
-  route: Object,
-  options: Object,
+  navigation: object,
+  route: object,
+  options: object,
   back: boolean,
   alignStart?: boolean,
 };

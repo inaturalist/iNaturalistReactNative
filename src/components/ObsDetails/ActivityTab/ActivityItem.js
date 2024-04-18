@@ -17,12 +17,12 @@ import { textStyles } from "styles/obsDetails/obsDetails";
 import ActivityHeaderContainer from "./ActivityHeaderContainer";
 
 type Props = {
-  currentUserId?: Number,
+  currentUserId?: number,
   isFirstDisplay: boolean,
   isOnline: boolean,
-  item: Object,
-  onIDAgreePressed: Function,
-  refetchRemoteObservation: Function,
+  item: object,
+  onIDAgreePressed: ( ) => void,
+  refetchRemoteObservation: ( ) => void,
   userAgreedId?: string
 }
 

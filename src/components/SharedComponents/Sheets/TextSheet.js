@@ -11,7 +11,7 @@ import useTranslation from "sharedHooks/useTranslation";
 type Props = {
   headerText: string,
   texts: [string],
-  setShowSheet: Function
+  setShowSheet: ( ) => void
 }
 
 const TextSheet = ( {

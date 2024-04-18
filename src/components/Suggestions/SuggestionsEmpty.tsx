@@ -2,20 +2,20 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  View
-} from "components/styledComponents";
-import {
   ActivityIndicator,
   Body1,
   Button
 } from "components/SharedComponents";
+import {
+  View
+} from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
   loading: boolean
-};
+}
 
 const SuggestionsEmpty = ( {
   loading
@@ -25,7 +25,7 @@ const SuggestionsEmpty = ( {
   const { params } = useRoute( );
   const { lastScreen } = params;
 
-  const textClass = "mt-10 px-10 text-center"
+  const textClass = "mt-10 px-10 text-center";
 
   const renderEmpty = ( ) => {
     if ( loading ) {
@@ -42,20 +42,20 @@ const SuggestionsEmpty = ( {
         </Body1>
         {lastScreen === "CameraWithDevice" && (
           <>
-          <Body1 className={textClass}>
-            {t( "You-can-upload-this-observation-to-our-community" )}
-          </Body1>
-          <Button
-            className="mx-5 mt-10"
-            text={t( "CONTINUE" )}
-            onPress={( ) => navigation.navigate( "ObsEdit" )}
-            level="focus"
-          />
+            <Body1 className={textClass}>
+              {t( "You-can-upload-this-observation-to-our-community" )}
+            </Body1>
+            <Button
+              className="mx-5 mt-10"
+              text={t( "CONTINUE" )}
+              onPress={( ) => navigation.navigate( "ObsEdit" )}
+              level="focus"
+            />
           </>
         )}
       </>
     );
-  }
+  };
 
   return renderEmpty( );
 };

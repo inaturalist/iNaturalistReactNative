@@ -18,12 +18,12 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 type Props = {
   layout: string,
   numUnuploadedObs: number,
-  stopUploads: Function,
-  syncObservations: Function,
-  toggleLayout: Function,
+  stopUploads: ( ) => void,
+  syncObservations: ( ) => void,
+  toggleLayout: ( ) => void,
   toolbarProgress: number,
-  uploadMultipleObservations: Function,
-  uploadState: Object
+  uploadMultipleObservations: ( ) => void,
+  uploadState: object
 }
 
 const ToolbarContainer = ( {

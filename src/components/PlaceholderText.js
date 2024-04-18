@@ -7,7 +7,7 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   text: string,
-  style?: Array<Object>
+  style?: Array<object>
 }
 
 const PlaceholderText = ( { text, style }: Props ): Node => (

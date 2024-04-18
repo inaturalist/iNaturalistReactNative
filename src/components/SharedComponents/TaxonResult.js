@@ -27,11 +27,11 @@ type Props = {
   fetchRemote?: boolean,
   first?: boolean,
   fromLocal?: boolean,
-  handleCheckmarkPress: Function,
-  handlePress: Function,
+  handleCheckmarkPress: ( ) => void,
+  handlePress: ( ) => void,
   showInfoButton?: boolean,
   showCheckmark?: boolean,
-  taxon: Object,
+  taxon: object,
   testID: string,
   white?: boolean
 };

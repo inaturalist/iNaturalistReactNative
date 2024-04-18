@@ -9,10 +9,10 @@ type Props = {
   autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
   // Optional component to use as the header
-  header?: Function,
-  onClose?: Function,
-  onDeletePhoto?: Function,
-  onDeleteSound?: Function,
+  header?: ( ) => void,
+  onClose?: ( ) => void,
+  onDeletePhoto?: ( ) => void,
+  onDeleteSound?: ( ) => void,
   photos?: Array<{
     id?: number,
     url: string,

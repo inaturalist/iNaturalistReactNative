@@ -8,9 +8,9 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   currentObservationIndex: number,
-  setCurrentObservationIndex: Function,
-  observations: Array<Object>,
-  setResetScreen: Function
+  setCurrentObservationIndex: ( ) => void,
+  observations: Array<object>,
+  setResetScreen: ( ) => void
 }
 
 const MultipleObservationsArrows = ( {

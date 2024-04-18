@@ -30,11 +30,11 @@ type Props = {
   debugData: any,
   hasVisionSuggestion: boolean,
   loading: boolean,
-  onPressPhoto: Function,
-  onTaxonChosen: Function,
+  onPressPhoto: ( ) => void,
+  onTaxonChosen: ( ) => void,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  suggestions: Array<Object>,
+  suggestions: Array<object>,
   usingOfflineSuggestions: boolean,
 };
 

@@ -20,8 +20,8 @@ import { viewStyles } from "styles/sharedComponents/bottomSheet";
 type Props = {
   children: Node,
   hidden?: boolean,
-  onChange?: Function,
-  handleClose?: Function,
+  onChange?: ( ) => void,
+  handleClose?: ( ) => void,
   hideCloseButton?: boolean,
   headerText?: string,
   snapPoints?: any,

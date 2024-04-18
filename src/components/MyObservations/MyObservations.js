@@ -12,22 +12,22 @@ import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 
 type Props = {
-  currentUser: Object,
+  currentUser: object,
   isFetchingNextPage: boolean,
   isOnline: boolean,
   layout: "list" | "grid",
-  observations: Array<Object>,
-  onEndReached: Function,
-  setShowLoginSheet: Function,
+  observations: Array<object>,
+  onEndReached: ( ) => void,
+  setShowLoginSheet: ( ) => void,
   showLoginSheet: boolean,
   status: string,
-  stopUploads: Function,
-  syncObservations: Function,
-  toggleLayout: Function,
+  stopUploads: ( ) => void,
+  syncObservations: ( ) => void,
+  toggleLayout: ( ) => void,
   toolbarProgress: number,
-  uploadMultipleObservations: Function,
-  uploadSingleObservation: Function,
-  uploadState: Object
+  uploadMultipleObservations: ( ) => void,
+  uploadSingleObservation: ( ) => void,
+  uploadState: object
 };
 
 const MyObservations = ( {

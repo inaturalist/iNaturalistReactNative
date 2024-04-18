@@ -78,8 +78,8 @@ function hyperlinkMentions( text ) {
 }
 
 type Props = {
-  text:String,
-  htmlStyle?:Object,
+  text: string,
+  htmlStyle?: object,
 }
 
 const UserText = ( {

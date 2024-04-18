@@ -18,8 +18,8 @@ import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
 import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 
 type Props = {
-  observations: Array<Object>,
-  currentObservation: Object
+  observations: Array<object>,
+  currentObservation: object
 }
 
 const Header = ( {

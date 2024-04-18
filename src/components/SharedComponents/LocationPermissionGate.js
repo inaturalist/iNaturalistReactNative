@@ -10,10 +10,10 @@ import React from "react";
 type Props = {
   children?: Node,
   permissionNeeded?: boolean,
-  onModalHide?: Function,
-  onPermissionGranted?: Function,
-  onPermissionDenied?: Function,
-  onPermissionBlocked?: Function,
+  onModalHide?: ( ) => void,
+  onPermissionGranted?: ( ) => void,
+  onPermissionDenied?: ( ) => void,
+  onPermissionBlocked?: ( ) => void,
   withoutNavigation?: boolean
 };
 

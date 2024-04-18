@@ -10,7 +10,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  observation: Object,
+  observation: object,
   obscured?: boolean
 }
 

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import useStore from "stores/useStore";
 
-const useBackPress = ( onBack: Function ): Object => {
+const useBackPress = ( onBack: ( ) => void ): object => {
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
 

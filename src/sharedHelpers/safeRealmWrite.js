@@ -9,8 +9,8 @@ const logger = log.extend( "safeRealmWrite" );
 
 const safeRealmWrite = (
   realm: any,
-  action: Function,
-  description: string = "No description given"
+  action: ( ) => void,
+  description = "No description given"
 ): any => {
   if ( realm.isInTransaction ) {
     logger.info( "realm is in transaction:", realm.isInTransaction );

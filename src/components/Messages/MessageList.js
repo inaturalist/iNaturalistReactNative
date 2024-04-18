@@ -7,7 +7,7 @@ import { textStyles } from "styles/messages/messages";
 
 type Props = {
   loading: boolean,
-  messageList: Array<Object>,
+  messageList: Array<object>,
   testID: string
 }
 

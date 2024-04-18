@@ -14,10 +14,10 @@ import { useTranslation } from "sharedHooks";
 const isTablet = DeviceInfo.isTablet();
 
 type Props = {
-  rotatableAnimatedStyle: Object,
-  toggleFlash: Function,
+  rotatableAnimatedStyle: object,
+  toggleFlash: ( ) => void,
   hasFlash: boolean,
-  takePhotoOptions: Object,
+  takePhotoOptions: object,
   flashClassName?: string
 }
 

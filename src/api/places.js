@@ -8,7 +8,7 @@ const PARAMS = {
   fields: "display_name"
 };
 
-const fetchPlace = async ( id: number, params: Object = {}, opts: Object = {} ): Promise<any> => {
+const fetchPlace = async ( id: number, params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     const { results } = await inatjs.places.fetch( id, { ...PARAMS, ...params, ...opts } );
     return results[0];

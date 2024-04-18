@@ -7,7 +7,7 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  setShowImpreciseLocationSheet: Function
+  setShowImpreciseLocationSheet: ( ) => void
 }
 
 const ImpreciseLocationSheet = ( { setShowImpreciseLocationSheet }: Props ): Node => {

@@ -8,9 +8,9 @@ import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  photo: Object,
-  onPress: Function,
-  style?: Object
+  photo: object,
+  onPress: ( ) => void,
+  style?: object
 }
 
 const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {

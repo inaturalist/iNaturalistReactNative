@@ -30,8 +30,8 @@ const DETAIL_PARAMS = {
 
 const fetchProjects = async (
   id: number,
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.projects.fetch( id, { ...DETAIL_PARAMS, ...params }, opts );
@@ -42,8 +42,8 @@ const fetchProjects = async (
 };
 
 const fetchProjectMembers = async (
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const response = await inatjs.projects.members( params, opts );
@@ -54,8 +54,8 @@ const fetchProjectMembers = async (
 };
 
 const fetchProjectPosts = async (
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const response = await inatjs.projects.posts( params, opts );
@@ -65,7 +65,7 @@ const fetchProjectPosts = async (
   }
 };
 
-const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const searchProjects = async ( params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     const { results } = await inatjs.projects.search( { ...PARAMS, ...params }, opts );
     return results;
@@ -74,7 +74,7 @@ const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise
   }
 };
 
-const joinProject = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const joinProject = async ( params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     return await inatjs.projects.join( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
@@ -82,7 +82,7 @@ const joinProject = async ( params: Object = {}, opts: Object = {} ): Promise<an
   }
 };
 
-const leaveProject = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const leaveProject = async ( params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     return await inatjs.projects.leave( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
@@ -90,7 +90,7 @@ const leaveProject = async ( params: Object = {}, opts: Object = {} ): Promise<a
   }
 };
 
-const fetchMembership = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const fetchMembership = async ( params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     const response = await inatjs.projects.membership( { ...PARAMS, ...params }, opts );
     return response.total_results;

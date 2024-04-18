@@ -21,11 +21,11 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 type Props = {
-  id:number,
-  itemType:string,
+  id: number,
+  itemType: string,
   showFlagItemModal: boolean,
-  closeFlagItemModal: Function,
-  onItemFlagged: Function
+  closeFlagItemModal: ( ) => void,
+  onItemFlagged: ( ) => void
 }
 
 const FlagItemModal = ( {

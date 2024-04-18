@@ -12,7 +12,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   accuracyTest: string,
-  getShadow: Function
+  getShadow: ( ) => void
 };
 
 const WarningText = ( { accuracyTest, getShadow }: Props ): Node => {

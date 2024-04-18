@@ -56,11 +56,11 @@ type Props = {
   buttonText?: string,
   children?: Node,
   icon?: string,
-  image?: Object,
-  onModalHide?: Function,
-  onPermissionBlocked?: Function,
-  onPermissionDenied?: Function,
-  onPermissionGranted?: Function,
+  image?: object,
+  onModalHide?: ( ) => void,
+  onPermissionBlocked?: ( ) => void,
+  onPermissionDenied?: ( ) => void,
+  onPermissionGranted?: ( ) => void,
   permissionNeeded?: boolean,
   permissions: Array<string>,
   testID?: string,
@@ -69,7 +69,7 @@ type Props = {
   withoutNavigation?: boolean
 };
 
-export function permissionResultFromMultiple( multiResults: Object ): string {
+export function permissionResultFromMultiple( multiResults: object ): string {
   if ( typeof ( multiResults ) !== "object" ) {
     throw new Error(
       "permissionResultFromMultiple received something other than an object. "

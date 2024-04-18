@@ -10,8 +10,8 @@ const PARAMS = {
 };
 
 const createIdentification = async (
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.identifications.create( { ...PARAMS, ...params }, opts );
@@ -22,8 +22,8 @@ const createIdentification = async (
 };
 
 const updateIdentification = async (
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const { results } = await inatjs.identifications.update( { ...PARAMS, ...params }, opts );

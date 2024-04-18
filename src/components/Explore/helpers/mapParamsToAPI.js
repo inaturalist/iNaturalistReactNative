@@ -9,7 +9,7 @@ import {
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
 
-const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
+const mapParamsToAPI = ( params: object, currentUser: object ): object => {
   const RESEARCH = "research";
   const NEEDS_ID = "needs_id";
   const CASUAL = "casual";

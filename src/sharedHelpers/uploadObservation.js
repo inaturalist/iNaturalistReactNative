@@ -25,11 +25,11 @@ const markRecordUploaded = (
   recordUUID: string | null,
   type: string,
   response: {
-    results: Array<{id: Number}>
+    results: Array<{id: number}>
   },
-  realm: Object,
+  realm: object,
   options?: {
-    record: Object
+    record: object
   }
 ) => {
   const { id } = response.results[0];
@@ -67,14 +67,14 @@ const markRecordUploaded = (
 };
 
 const uploadEvidence = async (
-  evidence: Array<Object>,
+  evidence: Array<object>,
   type: string,
-  apiSchemaMapper: Function,
+  apiSchemaMapper: ( ) => void,
   observationId: ?number,
-  apiEndpoint: Function,
-  options: Object,
+  apiEndpoint: ( ) => void,
+  options: object,
   observationUUID?: string,
-  realm: Object
+  realm: object
 ): Promise<any> => {
   const uploadToServer = async currentEvidence => {
     const params = apiSchemaMapper( observationId, currentEvidence );
@@ -123,7 +123,7 @@ const uploadEvidence = async (
   return responses[0];
 };
 
-const uploadObservation = async ( obs: Object, realm: Object ): Object => {
+const uploadObservation = async ( obs: object, realm: object ): object => {
   const apiToken = await getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {

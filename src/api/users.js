@@ -41,7 +41,7 @@ const REMOTE_USER_PARAMS = {
   fields: REMOTE_USER_FIELDS
 };
 
-const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const fetchUserMe = async ( params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     const response = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
     return response?.results[0];
@@ -50,7 +50,7 @@ const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<an
   }
 };
 
-const fetchMemberProjects = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const fetchMemberProjects = async ( params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     const { results } = await inatjs.users.projects( {
       ...MEMBER_PROJECT_PARAMS,
@@ -65,8 +65,8 @@ const fetchMemberProjects = async ( params: Object = {}, opts: Object = {} ): Pr
 
 const fetchRemoteUser = async (
   id: number,
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   if ( !id ) return null;
   try {
@@ -83,8 +83,8 @@ const fetchRemoteUser = async (
 
 const fetchRemoteUsers = async (
   ids: Array<number>,
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const responses = await Promise.all( ids.map(
@@ -102,8 +102,8 @@ const fetchRemoteUsers = async (
 
 const blockUser = async (
   id: number,
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const response = await inatjs.users.block( { id }, {
@@ -118,8 +118,8 @@ const blockUser = async (
 
 const muteUser = async (
   id: number,
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const response = await inatjs.users.mute( { id }, {
@@ -134,8 +134,8 @@ const muteUser = async (
 
 const unblockUser = async (
   id: number,
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const response = await inatjs.users.unblock( { id }, {
@@ -150,8 +150,8 @@ const unblockUser = async (
 
 const unmuteUser = async (
   id: number,
-  params: Object = {},
-  opts: Object = {}
+  params: object = {},
+  opts: object = {}
 ): Promise<any> => {
   try {
     const response = await inatjs.users.unmute( { id }, {
@@ -164,7 +164,7 @@ const unmuteUser = async (
   }
 };
 
-const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const updateUsers = async ( params: object = {}, opts: object = {} ): Promise<any> => {
   try {
     return await inatjs.users.update( params, opts );
   } catch ( e ) {

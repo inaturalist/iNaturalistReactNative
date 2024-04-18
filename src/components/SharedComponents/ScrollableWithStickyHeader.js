@@ -43,8 +43,8 @@ import { useDeviceOrientation } from "sharedHooks";
 const { diffClamp } = Animated;
 
 type Props = {
-  renderHeader: Function,
-  renderScrollable: Function
+  renderHeader: ( ) => void,
+  renderScrollable: ( ) => void
 };
 
 const ScrollableWithStickyHeader = ( {
