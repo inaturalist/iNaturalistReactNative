@@ -6,8 +6,7 @@ import ShareMenu from "react-native-share-menu";
 
 type SharedItem = {
   mimeType: string,
-  data: any | any[],
-  extraData: any,
+  data: string | Array<string>
 };
 
 const useShare = ( ): void => {

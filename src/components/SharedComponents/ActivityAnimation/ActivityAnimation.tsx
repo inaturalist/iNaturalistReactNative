@@ -1,12 +1,14 @@
 import { View } from "components/styledComponents";
+import React from "react";
 import { useTheme } from "react-native-paper";
 
 import { Confetti } from "./Confetti";
 import IndeterminateProgressBar from "./IndeterminateProgressBar";
 
-const count: number = 30;
-const duration: number = 7000;
-export default function ActivityAnimation() {
+const count = 30;
+const duration = 7000;
+
+const ActivityAnimation = ( ) => {
   const theme = useTheme();
   return (
     <View className="flex-1">
@@ -18,4 +20,6 @@ export default function ActivityAnimation() {
       <Confetti key="confetti" count={count} duration={duration} />
     </View>
   );
-}
+};
+
+export default ActivityAnimation;

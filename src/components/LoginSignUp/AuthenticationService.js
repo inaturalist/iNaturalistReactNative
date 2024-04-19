@@ -34,7 +34,7 @@ const axiosInstance = axios.create( {
  * Creates base API client for all requests
  * @param additionalHeaders any additional headers that will be passed to the API
  */
-const createAPI = ( additionalHeaders: any ) => create( {
+const createAPI = additionalHeaders => create( {
   axiosInstance,
   headers: { "User-Agent": getUserAgent(), ...additionalHeaders }
 } );
@@ -149,7 +149,8 @@ const getAnonymousJWT = (): string => {
  *  logged-in, use anonymous JWT
  * @returns {Promise<string|*>}
  */
-const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> => {
+// $FlowIgnore
+const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
   let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
   let jwtGeneratedAt = await RNSInfo.getItem( "jwtGeneratedAt", {} );
   if ( jwtGeneratedAt ) {
@@ -228,8 +229,10 @@ const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> =>
  * @returns {Promise<string|*>} access token, null if not logged in
  */
 const getAPIToken = async (
-  useJWT: boolean = false,
-  allowAnonymousJWT: boolean = false
+  // $FlowIgnore
+  useJWT = false,
+  // $FlowIgnore
+  allowAnonymousJWT = false
 ): Promise<?string> => {
   const loggedIn = await isLoggedIn();
   if ( !loggedIn ) {
@@ -402,7 +405,7 @@ const authenticateUser = async (
  *
  * @returns null if successful, otherwise an error string
  */
-const registerUser = async ( user: Object ): any => {
+const registerUser = async ( user: Object ): ?Object => {
   const locales = RNLocalize.getLocales();
   const formData = {
     user: {
@@ -441,7 +444,7 @@ const isCurrentUser = async ( username: string ): Promise<boolean> => {
  */
 const resetPassword = async (
   email: string
-): any => {
+): ?Object => {
   const formData = {
     user: {
       email

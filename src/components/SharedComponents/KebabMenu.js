@@ -10,7 +10,8 @@ import colors from "styles/tailwindColors";
 type Props = {
   accessibilityHint?: string,
   accessibilityLabel?: string,
-  children: any,
+  // $FlowIgnore
+  children: unknown,
   large?: boolean,
   setVisible: Function,
   visible: boolean,

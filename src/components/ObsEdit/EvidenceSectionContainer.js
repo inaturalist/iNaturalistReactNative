@@ -74,7 +74,7 @@ const EvidenceSectionContainer = ( {
     return function cleanup( ) {
       mountedRef.current = false;
     };
-  }, [] );
+  }, [mountedRef] );
 
   useEffect( ( ) => {
     if ( difference( obsPhotoUris, photoEvidenceUris ).length > 0 ) {
@@ -179,7 +179,9 @@ const EvidenceSectionContainer = ( {
     setPassesEvidenceTest
   ] );
 
-  const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
+  const locationTextClassNames = ( !latitude || !longitude )
+    ? ["color-warningRed"]
+    : [];
 
   const handleDragAndDrop = ( { data } ) => {
     // Turn from Realm object to simple JS objects (so we can update the position)

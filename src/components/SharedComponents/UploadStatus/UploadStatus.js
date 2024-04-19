@@ -21,7 +21,8 @@ type Props = {
   progress: number,
   uploadObservation: Function,
   layout: string,
-  children: any,
+  // $FlowIgnore
+  children: unknown,
   uuid: string
 }
 const AnimatedView = Reanimated.createAnimatedComponent( View );

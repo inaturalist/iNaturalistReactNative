@@ -17,8 +17,12 @@ interface Props {
 }
 
 const NumberBadge = ( { number, light }: Props ): Node => {
-  const backgroundColor = light ? "bg-white" : "bg-inatGreen";
-  const textColor = light ? "text-darkGray" : "text-white";
+  const backgroundColor = light
+    ? "bg-white"
+    : "bg-inatGreen";
+  const textColor = light
+    ? "text-darkGray"
+    : "text-white";
   return (
     <View
       className={classNames(

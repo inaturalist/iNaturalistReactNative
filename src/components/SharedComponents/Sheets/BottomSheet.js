@@ -26,7 +26,7 @@ type Props = {
   handleClose?: Function,
   hideCloseButton?: boolean,
   headerText?: string,
-  snapPoints?: any,
+  snapPoints?: Array<string>,
   insideModal?: boolean
 }
 

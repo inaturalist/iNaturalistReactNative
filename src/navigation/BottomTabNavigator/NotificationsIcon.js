@@ -11,7 +11,7 @@ type Props = {
     unread: boolean,
     icon: string,
     testID: string,
-    onPress: any,
+    onPress: Function,
     active:boolean,
     accessibilityLabel: string,
     accessibilityRole?: string,

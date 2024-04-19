@@ -68,7 +68,7 @@ function mapToLocalSchema( taxon ) {
   return taxon;
 }
 
-async function fetchTaxon( id: any, params: Object = {}, opts: Object = {} ): Promise<any> {
+async function fetchTaxon( id: number, params: Object = {}, opts: Object = {} ): Promise<?Object> {
   try {
     const fetchParams = { ...PARAMS, ...params };
     const response = await inatjs.taxa.fetch( id, fetchParams, opts );
@@ -81,7 +81,7 @@ async function fetchTaxon( id: any, params: Object = {}, opts: Object = {} ): Pr
   }
 }
 
-async function searchTaxa( params: Object = {}, opts: Object = {} ): Promise<any> {
+async function searchTaxa( params: Object = {}, opts: Object = {} ): Promise<?Object> {
   try {
     const { results } = await inatjs.taxa.search( { ...PARAMS, ...params }, opts );
     return results;

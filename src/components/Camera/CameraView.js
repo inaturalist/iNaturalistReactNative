@@ -30,7 +30,7 @@ type Props = {
   onCaptureError?: Function,
   onCameraError?: Function,
   frameProcessor?: Function,
-  animatedProps: any,
+  animatedProps: unknown,
   onZoomStart?: Function,
   onZoomChange?: Function,
   resizeMode?: string

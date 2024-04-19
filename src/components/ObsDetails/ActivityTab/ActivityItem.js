@@ -16,7 +16,7 @@ import React from "react";
 import ActivityHeaderContainer from "./ActivityHeaderContainer";
 
 type Props = {
-  currentUserId?: Number,
+  currentUserId?: number,
   isFirstDisplay: boolean,
   isOnline: boolean,
   item: Object,

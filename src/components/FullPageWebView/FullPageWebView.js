@@ -32,7 +32,7 @@ const FullPageWebView = ( ) => {
       } );
       return unsubscribe;
     }
-    return ( ) => { };
+    return ( ) => undefined;
   }, [navigation, params.blurEvent] );
 
   useFocusEffect(

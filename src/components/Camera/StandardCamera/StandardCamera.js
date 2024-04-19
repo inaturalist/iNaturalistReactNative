@@ -42,8 +42,8 @@ export const MAX_PHOTOS_ALLOWED = 20;
 
 type Props = {
   addEvidence: ?boolean,
-  camera: any,
-  device: any,
+  camera: Object,
+  device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
   isLandscapeMode: boolean

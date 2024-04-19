@@ -16,7 +16,10 @@ import { useTranslation } from "react-i18next";
 import User from "realmModels/User";
 
 type Props = {
-  user: any,
+  user: {
+    id: number,
+    icon_url?: string
+  },
   isOnline: boolean
 };
 

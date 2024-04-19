@@ -78,7 +78,7 @@ function hyperlinkMentions( text ) {
 }
 
 type Props = {
-  text:String,
+  text:string,
   htmlStyle?:Object,
 }
 

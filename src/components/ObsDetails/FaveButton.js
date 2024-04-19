@@ -26,7 +26,7 @@ type Props = {
 const FaveButton = ( {
   observation,
   currentUser,
-  afterToggleFave = ( ) => { },
+  afterToggleFave = ( ) => undefined,
   top = false
 }: Props ): Node => {
   const { t } = useTranslation( );

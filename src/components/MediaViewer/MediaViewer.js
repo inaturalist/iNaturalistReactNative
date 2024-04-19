@@ -44,7 +44,7 @@ const MediaViewer = ( {
   autoPlaySound,
   editable,
   header,
-  onClose = ( ) => { },
+  onClose = ( ) => undefined,
   onDeletePhoto,
   onDeleteSound,
   photos = [],

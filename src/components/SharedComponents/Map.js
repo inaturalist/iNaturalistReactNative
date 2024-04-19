@@ -87,7 +87,8 @@ export function metersToLatitudeDelta( meters: number, latitude: number ): numbe
 }
 
 type Props = {
-  children?: any,
+  // $FlowIgnore
+  children?: unknown,
   className?: string,
   currentLocationButtonClassName?: string,
   currentLocationZoomLevel?: number,
@@ -144,8 +145,8 @@ const Map = ( {
   obscured,
   obsLatitude,
   obsLongitude,
-  onMapReady = ( ) => { },
-  onPanDrag = ( ) => { },
+  onMapReady = ( ) => undefined,
+  onPanDrag = ( ) => undefined,
   onPermissionBlocked: onPermissionBlockedProp,
   onPermissionDenied: onPermissionDeniedProp,
   onPermissionGranted: onPermissionGrantedProp,
@@ -331,9 +332,12 @@ const Map = ( {
   ] );
 
   const params = useMemo( ( ) => {
-    const newTileParams: any = { ...tileMapParams };
+    const newTileParams = { ...tileMapParams };
+    // $FlowIgnore
     delete newTileParams.order;
+    // $FlowIgnore
     delete newTileParams.order_by;
+    // $FlowIgnore
     delete newTileParams.per_page;
     return newTileParams;
   }, [tileMapParams] );
