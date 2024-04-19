@@ -107,7 +107,7 @@ const AICamera = ( {
   }, [navigation, setResult] );
 
   const handlePress = async ( ) => {
-    await takePhoto( );
+    await takePhoto( true );
     handleCheckmarkPress( showPrediction
       ? result
       : null );

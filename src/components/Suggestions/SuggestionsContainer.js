@@ -21,7 +21,7 @@ const SuggestionsContainer = ( ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
-  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[photoUris.length - 1] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [isLoading, setIsLoading] = useState( true );

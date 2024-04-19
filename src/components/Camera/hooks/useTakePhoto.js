@@ -28,7 +28,7 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
 
-  const takePhoto = async ( ) => {
+  const takePhoto = async ( replaceExisting = false ) => {
     setTakingPhoto( true );
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
 
@@ -45,7 +45,8 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
     } );
     const uri = newPhoto.localFilePath;
 
-    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
+    if ( ( addEvidence || currentObservation?.observationPhotos?.length > 0 )
+      && !replaceExisting ) {
       setCameraState( {
         cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
         evidenceToAdd: [...evidenceToAdd, uri],
@@ -54,7 +55,9 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
       } );
     } else {
       setCameraState( {
-        cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
+        cameraPreviewUris: replaceExisting
+          ? [uri]
+          : cameraPreviewUris.concat( [uri] ),
         // Remember original (unresized) camera URI
         originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
       } );
