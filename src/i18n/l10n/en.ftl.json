@@ -93,6 +93,7 @@
     "comment": " Geoprivacy sheet descriptions",
     "val": "Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research."
   },
+  "APP-LANGUAGE": "APP LANGUAGE",
   "APPLY-FILTERS": "APPLY FILTERS",
   "Apply-filters": "Apply filters",
   "April": {
@@ -165,6 +166,7 @@
     "comment": "Short label for the Creative Commons Zero declaration",
     "val": "CC0"
   },
+  "CHANGE-APP-LANGUAGE": "CHANGE APP LANGUAGE",
   "CHANGE-DATE": {
     "comment": "Label for a button that changes a selected date",
     "val": "CHANGE DATE"

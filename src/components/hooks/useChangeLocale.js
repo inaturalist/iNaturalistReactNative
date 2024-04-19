@@ -1,5 +1,6 @@
 // @flow
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect } from "react";
 import {
   useTranslation,
@@ -19,6 +20,8 @@ const useChangeLocale = ( currentUser: ?Object ) => {
   // When we get the updated current user, update the record in the database
   useEffect( ( ) => {
     if ( !remoteUser ) { return; }
+    AsyncStorage.setItem( "currentLocale", remoteUser.locale );
+
     // If the current user's locale has changed, change the language
     if ( remoteUser?.locale !== i18n.language ) {
       changeLanguageToLocale( remoteUser.locale );
