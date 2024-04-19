@@ -9,7 +9,7 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 const useAuthenticatedMutation = (
   mutationFunction: Function,
   mutationOptions: Object = {}
-): any => useMutation( {
+): Object => useMutation( {
   mutationFn: async params => {
     // Note, getJWTToken() takes care of fetching a new token if the existing
     // one is expired. We *could* store the token in state with useState if

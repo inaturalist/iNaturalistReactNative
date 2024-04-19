@@ -25,7 +25,7 @@ const markRecordUploaded = (
   recordUUID: string | null,
   type: string,
   response: {
-    results: Array<{id: Number}>
+    results: Array<{id: number}>
   },
   realm: Object,
   options?: {
@@ -75,7 +75,8 @@ const uploadEvidence = async (
   options: Object,
   observationUUID?: string,
   realm: Object
-): Promise<any> => {
+  // $FlowIgnore
+): Promise<unknown> => {
   const uploadToServer = async currentEvidence => {
     const params = apiSchemaMapper( observationId, currentEvidence );
     const evidenceUUID = currentEvidence.uuid;

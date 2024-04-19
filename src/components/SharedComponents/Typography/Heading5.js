@@ -8,7 +8,7 @@ import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
 
-const Heading5 = ( props: any ): Node => (
+const Heading5 = ( props: Object ): Node => (
   <Text
     className={classnames(
       "text-3xs tracking-wide text-darkGray",

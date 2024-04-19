@@ -55,7 +55,7 @@ const { useRealm } = RealmContext;
 interface Props {
   closeModal: Function,
   updateTaxon: Function,
-};
+}
 
 const FilterModal = ( {
   closeModal,
@@ -649,7 +649,7 @@ const FilterModal = ( {
               accessibilityRole="button"
               onPress={async ( ) => {
                 const exploreLocation = await setExploreLocation( );
-                dispatch( { type: EXPLORE_ACTION.RESET, exploreLocation } )
+                dispatch( { type: EXPLORE_ACTION.RESET, exploreLocation } );
               }}
             >
               {t( "Reset-verb" )}

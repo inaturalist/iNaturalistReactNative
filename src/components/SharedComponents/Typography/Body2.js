@@ -8,7 +8,7 @@ import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
 
-const Body2 = ( props: any ): Node => (
+const Body2 = ( props: Object ): Node => (
   <Text
     className={classnames(
       "text-md trailing-tight text-darkGray",

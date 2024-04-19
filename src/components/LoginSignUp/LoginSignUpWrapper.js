@@ -12,8 +12,10 @@ import {
 } from "react-native";
 
 type Props = {
-  backgroundSource: any,
-  children: any,
+  // $FlowIgnore
+  backgroundSource: unknown,
+  // $FlowIgnore
+  children: unknown,
   keyboardVerticalOffset?: number,
   scrollEnabled?: boolean
 }
@@ -38,7 +40,7 @@ const LoginSignupWrapper = ( {
   // Make the StatusBar translucent in Android but reset it when we leave
   // because this alters the layout.
   useEffect( ( ) => {
-    if ( Platform.OS !== "android" ) return ( ) => { };
+    if ( Platform.OS !== "android" ) return ( ) => undefined;
     // Hide on first render
     StatusBar.setTranslucent( true );
     // StatusBar.setTranslucent( true );
@@ -50,7 +52,7 @@ const LoginSignupWrapper = ( {
   }, [navigation] );
 
   useEffect( ( ) => {
-    if ( Platform.OS !== "android" ) return ( ) => { };
+    if ( Platform.OS !== "android" ) return ( ) => undefined;
     const unsubscribe = navigation.addListener( "blur", ( ) => {
       StatusBar.setTranslucent( false );
     } );

@@ -17,14 +17,14 @@ import colors from "styles/tailwindColors";
 const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 type Props = {
-  locationName: ?string,
+  locationName: string,
   updateLocationName: Function,
   selectPlaceResult: Function,
   hidePlaceResults: boolean
 };
 
 const LocationSearch = ( {
-  locationName, updateLocationName, selectPlaceResult, hidePlaceResults
+  locationName = "", updateLocationName, selectPlaceResult, hidePlaceResults
 }: Props ): Node => {
   const queryClient = useQueryClient( );
   const locationInput = useRef( );

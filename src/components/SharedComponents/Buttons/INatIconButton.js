@@ -11,7 +11,8 @@ import { useTheme } from "react-native-paper";
 type Props = {
   accessibilityHint?: string,
   accessibilityLabel: string,
-  children?: any,
+  // $FlowIgnore
+  children?: unknown,
   color?: string,
   disabled?: boolean,
   height?: number,

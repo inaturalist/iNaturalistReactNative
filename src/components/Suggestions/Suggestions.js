@@ -27,7 +27,7 @@ import SuggestionsEmpty from "./SuggestionsEmpty";
 
 type Props = {
   commonAncestor: ?string,
-  debugData: any,
+  debugData: Object,
   hasVisionSuggestion: boolean,
   loading: boolean,
   onPressPhoto: Function,

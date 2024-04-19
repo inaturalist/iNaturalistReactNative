@@ -17,7 +17,8 @@ type Props = {
   containerClass?: string,
   handleTextChange: Function,
   hasShadow?: boolean,
-  input?: any,
+  // $FlowIgnore
+  input?: unknown,
   placeholder?: string,
   testID?: string,
   value: string,

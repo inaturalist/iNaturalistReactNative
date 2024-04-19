@@ -28,7 +28,8 @@ type Props = {
   longitude: number,
   obscured?: boolean,
   positionalAccuracy?: number,
-  mapViewRef: any,
+  // $FlowIgnore
+  mapViewRef: unknown,
   region?: Object,
   closeModal: Function,
   tileMapParams: Object,

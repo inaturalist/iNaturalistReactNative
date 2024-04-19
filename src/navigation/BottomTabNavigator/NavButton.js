@@ -7,8 +7,8 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   testID: string,
-  icon: any,
-  onPress: any,
+  icon: string,
+  onPress: Function,
   userIconUri?: string,
   accessibilityLabel: string,
   accessibilityRole?: string,

@@ -38,8 +38,8 @@ const isTablet = DeviceInfo.isTablet();
 // };
 
 type Props = {
-  camera: any,
-  device: any,
+  camera: Object,
+  device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
   isLandscapeMode: boolean

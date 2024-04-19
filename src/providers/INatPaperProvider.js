@@ -2,7 +2,7 @@
 
 import { INatIcon } from "components/SharedComponents";
 import type { Node } from "react";
-import * as React from "react";
+import React from "react";
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider
@@ -33,7 +33,8 @@ const theme = {
 const renderCustomIcon = props => <INatIcon {...props} />;
 
 type Props = {
-  children: any
+  // $FlowIgnore
+  children: unknown
 }
 
 const INatPaperProvider = ( { children }: Props ): Node => (

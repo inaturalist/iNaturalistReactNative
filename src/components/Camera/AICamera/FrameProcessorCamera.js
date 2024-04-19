@@ -20,7 +20,8 @@ import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
-  animatedProps: any,
+  // $FlowIgnore
+  animatedProps: unknown,
   cameraRef: Object,
   confidenceThreshold?: number,
   device: Object,

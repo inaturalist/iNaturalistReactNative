@@ -8,10 +8,10 @@ const logger = log.extend( "safeRealmWrite" );
 // realmjs: https://stackoverflow.com/questions/39366182/the-realm-is-already-in-a-write-transaction
 
 const safeRealmWrite = (
-  realm: any,
+  realm: Object,
   action: Function,
-  description: string = "No description given"
-): any => {
+  description: string
+): Object => {
   if ( realm.isInTransaction ) {
     logger.info( "realm is in transaction:", realm.isInTransaction );
     realm.cancelTransaction( );

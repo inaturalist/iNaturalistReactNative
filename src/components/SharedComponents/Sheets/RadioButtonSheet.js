@@ -15,7 +15,7 @@ type Props = {
   confirm: Function,
   headerText: string,
   radioValues: Object,
-  selectedValue?: any
+  selectedValue?: string
 }
 
 const RadioButtonSheet = ( {

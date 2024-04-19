@@ -24,7 +24,7 @@ type Props = {
   handleDragAndDrop: Function,
   isFetchingLocation: boolean,
   locationPermissionNeeded: boolean,
-  locationTextClassNames: any,
+  locationTextClassNames: Array<string>,
   onLocationPermissionBlocked: Function,
   onLocationPermissionDenied: Function,
   onLocationPermissionGranted: Function,

@@ -132,8 +132,6 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.4",
-    "@babel/eslint-parser": "^7.24.1",
     "@babel/preset-react": "^7.24.1",
     "@babel/preset-typescript": "^7.24.1",
     "@babel/runtime": "^7.24.4",
@@ -145,6 +143,7 @@
     "@react-native/typescript-config": "0.73.1",
     "@tanstack/eslint-plugin-query": "^5.28.11",
     "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react": "^15.0.2",
     "@testing-library/react-native": "^12.4.5",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.2.74",
@@ -164,9 +163,6 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-module-resolver": "^1.5.0",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-native": "^4.1.0",
     "eslint-plugin-react-native-a11y": "^3.3.0",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "eslint-plugin-testing-library": "^6.2.0",

@@ -7,7 +7,8 @@ import RNModal from "react-native-modal";
 type Props = {
   showModal: boolean,
   closeModal: Function,
-  modal: any,
+  // $FlowIgnore
+  modal: unknown,
   backdropOpacity?: number,
   fullScreen?: boolean,
   onModalHide?: Function,

@@ -7,7 +7,8 @@ import { Animated } from "react-native";
 
 type Props = {
   tappedCoordinates: Object,
-  singleTapToFocusAnimation: any
+  // $FlowIgnore
+  singleTapToFocusAnimation: unknown
 }
 
 const FocusSquare = ( { tappedCoordinates, singleTapToFocusAnimation }: Props ): Node => {
