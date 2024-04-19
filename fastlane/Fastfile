@@ -256,8 +256,9 @@ platform :android do
   end
 
   lane :clean do
+    sh "rm -rf ../android/.gradle", step_name: "Deleting Android .gradle folder"
     sh "rm -rf ../android/build", step_name: "Deleting Android build folder"
-    sh "(cd ../android && ./gradlew clean)", step_name: "Cleaning Android build environment"
+    sh "(cd ../android && ./gradlew --stop && ./gradlew clean)", step_name: "Cleaning Android build environment"
     Dir.glob( File.join( File.dirname( get_aab_path ), "*.aab" ) ).each do | aab_path |
       UI.message "Deleting #{aab_path}"
       File.delete aab_path
