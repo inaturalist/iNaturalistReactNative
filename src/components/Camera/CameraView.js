@@ -57,10 +57,14 @@ const CameraView = ( {
 
   // check if camera page is active
   const isFocused = useIsFocused( );
+
+  // Select a format that provides the highest resolution for photos and videos
   const format = useCameraFormat( device, [
     { photoResolution: "max" },
     { videoResolution: "max" }
   ] );
+  // Set the exposure to the middle of the min and max exposure
+  const exposure = ( device.maxExposure + device.minExposure ) / 2;
 
   const { deviceOrientation } = useDeviceOrientation();
 
@@ -175,6 +179,7 @@ const CameraView = ( {
             ref={cameraRef}
             device={device}
             format={format}
+            exposure={exposure}
             isActive={isFocused}
             style={StyleSheet.absoluteFill}
             photo
