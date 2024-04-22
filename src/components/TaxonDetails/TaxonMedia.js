@@ -41,9 +41,13 @@ const TaxonMedia = ( {
 
   const CarouselSlide = useCallback(
     ( { item } ) => (
-      <Pressable accessibilityRole="button" onPress={() => { setMediaViewerVisible( true ); }}>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => { setMediaViewerVisible( true ); }}
+        accessibilityState={{ disabled: false }}
+      >
         <Image
-          testID="TaxonDetails.photo"
+          testID={`TaxonDetails.photo.${item.id}`}
           className="w-full h-full"
           source={{
             uri: Photo.displayMediumPhoto( item.url )

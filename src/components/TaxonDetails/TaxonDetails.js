@@ -145,9 +145,10 @@ const TaxonDetails = ( ): Node => {
       <View className="flex-1 h-full bg-black">
         <View className="w-full h-[420px] shrink-1">
           <Pressable
-            onPress={() => setMediaViewerVisible( true )}
+            onPress={() => {}}
             accessibilityLabel={t( "View-photo" )}
             accessibilityRole="link"
+            accessibilityState={{ disabled: false }}
           >
             <TaxonMedia loading={isLoading} photos={photos} tablet={isTablet} />
             {/* cant figure out how to have the gradient show with carousel - angie20240418 */}
