@@ -8,7 +8,7 @@ import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
-import { Camera } from "react-native-vision-camera";
+import { Camera, useCameraFormat } from "react-native-vision-camera";
 import {
   orientationPatch,
   pixelFormatPatch
@@ -57,6 +57,10 @@ const CameraView = ( {
 
   // check if camera page is active
   const isFocused = useIsFocused( );
+  const format = useCameraFormat( device, [
+    { photoResolution: "max" },
+    { videoResolution: "max" }
+  ] );
 
   const { deviceOrientation } = useDeviceOrientation();
 
@@ -170,6 +174,7 @@ const CameraView = ( {
             // Shared props between StandardCamera and AICamera
             ref={cameraRef}
             device={device}
+            format={format}
             isActive={isFocused}
             style={StyleSheet.absoluteFill}
             photo
