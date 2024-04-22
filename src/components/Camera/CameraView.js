@@ -3,7 +3,7 @@ import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useRef, useState } from "react";
-import { Animated, StyleSheet } from "react-native";
+import { Animated, Platform, StyleSheet } from "react-native";
 import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
@@ -59,10 +59,13 @@ const CameraView = ( {
   const isFocused = useIsFocused( );
 
   // Select a format that provides the highest resolution for photos and videos
-  const format = useCameraFormat( device, [
+  const iosFormat = useCameraFormat( device, [
     { photoResolution: "max" },
     { videoResolution: "max" }
   ] );
+  const format = Platform.OS === "ios"
+    ? iosFormat
+    : undefined;
   // Set the exposure to the middle of the min and max exposure
   const exposure = ( device.maxExposure + device.minExposure ) / 2;
 
