@@ -12,8 +12,8 @@ import LoginSignUpWrapper from "./LoginSignUpWrapper";
 import Logout from "./Logout";
 
 const TARGET_NON_KEYBOARD_HEIGHT = 420;
-const HIDE_HEADER_HEIGHT = 540;
-const HIDE_FOOTER_HEIGHT = 580;
+const HIDE_HEADER_HEIGHT = 560;
+const HIDE_FOOTER_HEIGHT = 500;
 
 const Login = ( ): Node => {
   const { loggedIn, setLoggedIn } = useLoginState( );

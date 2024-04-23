@@ -21,7 +21,7 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 const { useRealm } = RealmContext;
 
 type Props = {
-  hideFooter: boolean,
+  hideFooter?: boolean,
   setLoggedIn: Function
 }
 
