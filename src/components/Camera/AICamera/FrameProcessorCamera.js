@@ -1,6 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import CameraView from "components/Camera/CameraView";
+import CameraView from "components/Camera/CameraView.tsx";
 import type { Node } from "react";
 import React, {
   useEffect,

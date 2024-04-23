@@ -1,12 +1,10 @@
-// @flow
-
 import {
   useCallback,
   useMemo,
   useState
 } from "react";
 import {
-  Gesture
+  Gesture, GestureResponderEvent
 } from "react-native-gesture-handler";
 import {
   Extrapolate,
@@ -15,6 +13,7 @@ import {
   useSharedValue,
   withSpring
 } from "react-native-reanimated";
+import type { CameraProps } from "react-native-vision-camera";
 
 // This is taken from react-native-vision library itself: https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/Constants.ts#L19 https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/CameraPage.tsx#L34
 // The maximum zoom factor you should be able to zoom in
@@ -80,7 +79,7 @@ const useZoom = ( device: Object ): Object => {
     zoom
   ] );
 
-  const animatedProps = useAnimatedProps(
+  const animatedProps = useAnimatedProps < CameraProps >(
     () => ( { zoom: zoom.value } ),
     [zoom]
   );
@@ -88,9 +87,9 @@ const useZoom = ( device: Object ): Object => {
   const pinchToZoom = useMemo( ( ) => Gesture.Pinch( )
     .runOnJS( true )
     .onStart( _ => {
-      onZoomStart?.();
-    } ).onChange( e => {
-      onZoomChange?.( e.scale );
+      onZoomStart( );
+    } ).onChange( ( e: GestureResponderEvent ) => {
+      onZoomChange( e.scale );
     } ), [
     onZoomChange,
     onZoomStart

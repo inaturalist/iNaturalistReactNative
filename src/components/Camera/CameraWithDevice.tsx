@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import PermissionGateContainer, { WRITE_MEDIA_PERMISSIONS }
@@ -12,6 +10,7 @@ import React, {
 import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
+import { Camera } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
@@ -24,8 +23,8 @@ import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
 
-type Props = {
-  addEvidence: ?boolean,
+interface Props {
+  addEvidence: boolean,
   cameraType: string,
   cameraPosition: string,
   device: Object,
@@ -45,7 +44,7 @@ const CameraWithDevice = ( {
   }
   const navigation = useNavigation();
   const { t } = useTranslation( );
-  const camera = useRef( null );
+  const camera = useRef<Camera>( null );
   const { deviceOrientation } = useDeviceOrientation( );
   const [addPhotoPermissionResult, setAddPhotoPermissionResult] = useState( null );
   const [checkmarkTapped, setCheckmarkTapped] = useState( false );

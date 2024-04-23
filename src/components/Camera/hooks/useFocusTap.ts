@@ -3,13 +3,13 @@ import {
   useCallback, useMemo, useRef, useState
 } from "react";
 import { Animated } from "react-native";
-import { Gesture } from "react-native-gesture-handler";
+import { Gesture, GestureResponderEvent } from "react-native-gesture-handler";
 
 const useFocusTap = ( cameraRef: Object, supportsFocus: boolean ): Node => {
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const focusTapAnimation = useRef( new Animated.Value( 0 ) ).current;
 
-  const onFocus = useCallback( async ( { x, y } ) => {
+  const onFocus = useCallback( async ( { x, y }: GestureResponderEvent ) => {
     // Show the focus square at the tapped coordinates even if we do not actually set the focus
     focusTapAnimation.setValue( 1 );
     setTappedCoordinates( { x, y } );

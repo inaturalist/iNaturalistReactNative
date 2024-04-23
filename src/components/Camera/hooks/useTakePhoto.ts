@@ -1,8 +1,7 @@
-// @flow
-
 import {
   useState
 } from "react";
+import type { PhotoFile } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import {
   rotatePhotoPatch,
@@ -12,7 +11,7 @@ import {
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useStore from "stores/useStore";
 
-const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): Object => {
+const useTakePhoto = ( camera: Object, addEvidence: boolean, device: Object ): Object => {
   const currentObservation = useStore( state => state.currentObservation );
   const { deviceOrientation } = useDeviceOrientation( );
   const hasFlash = device?.hasFlash;
@@ -30,7 +29,7 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
 
   const takePhoto = async ( ) => {
     setTakingPhoto( true );
-    const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
+    const cameraPhoto: PhotoFile = await camera.current.takePhoto( takePhotoOptions );
 
     // Rotate the original photo depending on device orientation
     const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
