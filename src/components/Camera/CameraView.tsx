@@ -9,6 +9,7 @@ import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
+import type { CameraProps, CameraRuntimeError } from "react-native-vision-camera";
 import { Camera, useCameraFormat } from "react-native-vision-camera";
 import { orientationPatch } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -20,33 +21,33 @@ Reanimated.addWhitelistedNativeProps( {
   zoom: true
 } );
 
-type Props = {
+interface Props {
+  animatedProps: CameraProps,
   cameraRef: Object,
   device: Object,
+  frameProcessor?: Function,
+  onCameraError?: Function,
+  onCaptureError?: Function,
   onClassifierError?: Function,
   onDeviceNotSupported?: Function,
-  onCaptureError?: Function,
-  onCameraError?: Function,
-  frameProcessor?: Function,
-  animatedProps: unknown,
-  onZoomStart?: Function,
   onZoomChange?: Function,
+  onZoomStart?: Function,
   resizeMode?: string
-};
+}
 
 // A container for the Camera component
 // that has logic that applies to both use cases in StandardCamera and AICamera
 const CameraView = ( {
+  animatedProps,
   cameraRef,
   device,
+  frameProcessor,
+  onCameraError,
+  onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
-  onCaptureError,
-  onCameraError,
-  frameProcessor,
-  animatedProps,
-  onZoomStart,
   onZoomChange,
+  onZoomStart,
   resizeMode
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
@@ -101,8 +102,7 @@ const CameraView = ( {
     .onStart( e => singleTapToFocus( e ) );
 
   const onError = useCallback(
-    error => {
-      // error is a CameraRuntimeError =
+    ( error: CameraRuntimeError ) => {
       // { code: string, message: string, cause?: {} }
       console.log( "error", error );
       // If there is no error code, log the error
@@ -187,7 +187,7 @@ const CameraView = ( {
             format={format}
             frameProcessor={frameProcessor}
             isActive={isActive}
-            onError={e => onError( e )}
+            onError={onError}
             // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
             // it does nothing on Android so we set it to null there
             orientation={orientationPatch( deviceOrientation )}

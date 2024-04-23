@@ -2,11 +2,11 @@
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import CameraView from "components/Camera/CameraView";
+import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
-import useTakePhoto from "components/Camera/hooks/useTakePhoto";
-import useZoom from "components/Camera/hooks/useZoom";
+import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
+import useZoom from "components/Camera/hooks/useZoom.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { View } from "components/styledComponents";
 import { getCurrentRoute } from "navigation/navigationUtils";
