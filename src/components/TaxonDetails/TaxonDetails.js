@@ -12,7 +12,6 @@ import {
   ScrollViewWrapper
 } from "components/SharedComponents";
 import {
-  Pressable,
   View
 } from "components/styledComponents";
 import { compact } from "lodash";
@@ -144,19 +143,12 @@ const TaxonDetails = ( ): Node => {
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View className="flex-1 h-full bg-black">
         <View className="w-full h-[420px] shrink-1">
-          <Pressable
-            onPress={() => {}}
-            accessibilityLabel={t( "View-photo" )}
-            accessibilityRole="link"
-            accessibilityState={{ disabled: false }}
-          >
-            <TaxonMedia loading={isLoading} photos={photos} tablet={isTablet} />
-            {/* cant figure out how to have the gradient show with carousel - angie20240418 */}
-            {/* <LinearGradient
-              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-              className="absolute w-full h-full"
-            />  */}
-          </Pressable>
+          <TaxonMedia loading={isLoading} photos={photos} tablet={isTablet} />
+          {/* cant figure out how to have the gradient show with carousel - angie20240418 */}
+          {/* <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+            className="absolute w-full h-full"
+          />  */}
           <View className="absolute left-5 top-5">
             <BackButton
               color={theme.colors.onPrimary}

@@ -33,7 +33,7 @@ const TaxonMedia = ( {
   tablet
 }: Props ): Node => {
   const { width } = Dimensions.get( "window" );
-  const [index, setIndex] = useState<number>( 0 );
+  const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const paginationColor = colors.white;
 
