@@ -150,12 +150,12 @@ export const usePatchedRunAsync = ( ) => {
   /**
    * Print worklets logs/errors on js thread
    */
-  const logOnJs = Worklets.createRunInJsFn( ( log, error ) => {
+  const logOnJs = Worklets.createRunOnJS( ( log, error ) => {
     console.log( "logOnJs - ", log, " - error?:", error?.message ?? "no error" );
   } );
   const isAsyncContextBusy = useWorkletSharedValue( false );
   const customRunOnAsyncContext = useWorklet(
-    "CustomVisionCamera.async",
+    "default",
     ( frame, func ) => {
       "worklet";
 
