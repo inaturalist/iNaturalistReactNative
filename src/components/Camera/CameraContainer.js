@@ -16,11 +16,14 @@ const CameraContainer = ( ): Node => {
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
   const [cameraPosition, setCameraPosition] = useState( "back" );
-  const device = useCameraDevice( cameraPosition );
-
-  if ( !device ) {
-    return null;
-  }
+  // https://react-native-vision-camera.com/docs/guides/devices#selecting-multi-cams
+  const device = useCameraDevice( cameraPosition, {
+    physicalDevices: [
+      "ultra-wide-angle-camera",
+      "wide-angle-camera",
+      "telephoto-camera"
+    ]
+  } );
 
   return (
     <CameraWithDevice

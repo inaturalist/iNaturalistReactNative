@@ -1,3 +1,4 @@
+import { useAppState } from "@react-native-community/hooks";
 import { useIsFocused } from "@react-navigation/native";
 import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import { View } from "components/styledComponents";
@@ -54,6 +55,8 @@ const CameraView = ( {
 
   // check if camera page is active
   const isFocused = useIsFocused( );
+  const appState = useAppState( );
+  const isActive = isFocused && appState === "active";
 
   // Select a format that provides the highest resolution for photos and videos
   const iosFormat = useCameraFormat( device, [
@@ -177,22 +180,23 @@ const CameraView = ( {
           <ReanimatedCamera
             // Shared props between StandardCamera and AICamera
             ref={cameraRef}
+            animatedProps={animatedProps}
             device={device}
-            format={format}
-            exposure={exposure}
-            isActive={isFocused}
-            style={StyleSheet.absoluteFill}
-            photo
             enableZoomGesture={false}
+            exposure={exposure}
+            format={format}
+            frameProcessor={frameProcessor}
+            isActive={isActive}
             onError={e => onError( e )}
             // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
             // it does nothing on Android so we set it to null there
             orientation={orientationPatch( deviceOrientation )}
+            photo
             photoQualityBalance="quality"
-            frameProcessor={frameProcessor}
             pixelFormat="yuv"
-            animatedProps={animatedProps}
             resizeMode={resizeMode || "cover"}
+            style={StyleSheet.absoluteFill}
+
           />
         </GestureDetector>
         <FocusSquare
