@@ -1,4 +1,9 @@
-import type {Config} from 'jest';
+import type { Config } from "jest";
+
+const ignorePatterns = "node_modules/(?!(jest-)?@react-native|react-native|"
+    + "react-clone-referenced-element|@react-native-community|expo(nent)?|"
+    + "@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|"
+    + "unimodules|sentry-expo|native-base||(?!react-native-redash))|jest-runner";
 
 const config: Config = {
   moduleNameMapper: {
@@ -16,10 +21,8 @@ const config: Config = {
     "<rootDir>/tests/realm.setup.js",
     "<rootDir>/tests/initI18next.setup.js"
   ],
-  transformIgnorePatterns: [
-    "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base||(?!react-native-redash))|jest-runner"
-  ],
-  verbose: true,
+  transformIgnorePatterns: [ignorePatterns],
+  verbose: true
   // uncomment reporters below to see which tests are running the slowest in jest
   // reporters: [
   //   ["jest-slow-test-reporter", {"numTests": 8, "warnOnSlowerThan": 300, "color": true}]

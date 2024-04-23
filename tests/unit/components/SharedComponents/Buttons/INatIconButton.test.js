@@ -21,7 +21,7 @@ describe( "INatIconButton", () => {
     // Even though the error is caught, it still gets printed to the console
     // so we mock that out to avoid the wall of red text.
     jest.spyOn( console, "error" );
-    console.error.mockImplementation( () => {} );
+    console.error.mockImplementation( () => undefined );
 
     expect( () => render(
       <INatIconButton
@@ -40,7 +40,7 @@ describe( "INatIconButton", () => {
     // Even though the error is caught, it still gets printed to the console
     // so we mock that out to avoid the wall of red text.
     jest.spyOn( console, "error" );
-    console.error.mockImplementation( () => {} );
+    console.error.mockImplementation( () => undefined );
 
     expect( () => render(
       <INatIconButton
@@ -70,7 +70,7 @@ it( "throws an error when no accessibility label is passed into props", ( ) => {
   // Even though the error is caught, it still gets printed to the console
   // so we mock that out to avoid the wall of red text.
   jest.spyOn( console, "error" );
-  console.error.mockImplementation( () => {} );
+  console.error.mockImplementation( () => undefined );
 
   expect( () => render(
     <INatIconButton

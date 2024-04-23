@@ -7,7 +7,7 @@ import handleError from "./error";
 const setQualityMetric = async (
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   try {
     const response = await inatjs.observations.setQualityMetric( params, opts );
     return response.results;
@@ -19,7 +19,7 @@ const setQualityMetric = async (
 const deleteQualityMetric = async (
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   try {
     const { results } = await inatjs.observations.deleteQualityMetric( params, opts );
     return results;
@@ -31,7 +31,7 @@ const deleteQualityMetric = async (
 const fetchQualityMetrics = async (
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   try {
     const response = await inatjs.observations.qualityMetrics( params, opts );
     return response.results;

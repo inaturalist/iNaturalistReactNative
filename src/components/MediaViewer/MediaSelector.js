@@ -22,9 +22,7 @@ type Props = {
   scrollToIndex: Function,
   selectedMediaIndex?: number,
   sounds?: Array<{
-    id?: number,
-    file_url: string,
-    uuid: string
+    file_url: string
   }>,
 }
 

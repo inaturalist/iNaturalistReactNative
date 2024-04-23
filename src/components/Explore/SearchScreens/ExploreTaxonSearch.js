@@ -12,22 +12,16 @@ import React, {
   useCallback, useLayoutEffect, useRef, useState
 } from "react";
 import { FlatList } from "react-native";
-import { useTheme } from "react-native-paper";
 import { useIconicTaxa } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+  offsetHeight: 4
 } );
 
 const ExploreTaxonSearch = ( ): Node => {
-  const theme = useTheme();
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
   // Ref for the input field
@@ -63,7 +57,7 @@ const ExploreTaxonSearch = ( ): Node => {
     <ViewWrapper className="flex-1">
       <View
         className="bg-white px-6 pt-2 pb-8"
-        style={getShadow( theme.colors.primary )}
+        style={DROP_SHADOW}
       >
         <SearchBar
           handleTextChange={setTaxonQuery}

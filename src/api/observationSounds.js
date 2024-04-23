@@ -7,7 +7,7 @@ import handleError from "./error";
 const deleteRemoteObservationSound = async (
   params: Object = {},
   opts: Object = {}
-) : Promise<?any> => {
+) : Promise<?Object> => {
   try {
     return await inatjs.observation_sounds.delete( params, opts );
   } catch ( e ) {

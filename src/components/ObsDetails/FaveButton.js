@@ -19,14 +19,14 @@ import colors from "styles/tailwindColors";
 type Props = {
   observation: Object,
   currentUser?: Object,
-  afterToggleFave: ( wasFaved: boolean ) => void,
+  afterToggleFave: Function,
   top?: boolean
 }
 
 const FaveButton = ( {
   observation,
   currentUser,
-  afterToggleFave = ( ) => { },
+  afterToggleFave = ( ) => undefined,
   top = false
 }: Props ): Node => {
   const { t } = useTranslation( );

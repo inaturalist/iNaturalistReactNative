@@ -10,9 +10,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
-import { getShadowStyle } from "styles/global";
 
 import CrosshairCircle from "./CrosshairCircle";
 import DisplayLatLng from "./DisplayLatLng";
@@ -23,15 +21,6 @@ import LocationSearch from "./LocationSearch";
 export const DESIRED_LOCATION_ACCURACY = 100;
 export const REQUIRED_LOCATION_ACCURACY = 500000;
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
-} );
-
 type Props = {
   accuracy: number,
   accuracyTest: string,
@@ -39,9 +28,10 @@ type Props = {
   hidePlaceResults: boolean,
   keysToUpdate: Object,
   loading: boolean,
-  locationName: ?string,
+  locationName: string,
   mapType: string,
-  mapViewRef: any,
+  // $FlowIgnore
+  mapViewRef: unknown,
   region: Object,
   selectPlaceResult: Function,
   setMapReady: Function,
@@ -63,13 +53,12 @@ const LocationPicker = ( {
   mapType,
   region,
   selectPlaceResult,
-  setMapReady = ( ) => { },
+  setMapReady = ( ) => undefined,
   showCrosshairs,
   updateLocationName,
   updateRegion,
   updateObservationKeys
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
 
   return (
@@ -85,7 +74,6 @@ const LocationPicker = ( {
           <LocationSearch
             locationName={locationName}
             updateLocationName={updateLocationName}
-            getShadow={getShadow}
             selectPlaceResult={selectPlaceResult}
             hidePlaceResults={hidePlaceResults}
           />
@@ -94,7 +82,6 @@ const LocationPicker = ( {
           <DisplayLatLng
             region={region}
             accuracy={accuracy}
-            getShadow={getShadow}
           />
         </View>
         <View
@@ -112,12 +99,11 @@ const LocationPicker = ( {
           {showCrosshairs && (
             <CrosshairCircle
               accuracyTest={accuracyTest}
-              getShadow={getShadow}
             />
           )}
         </View>
         <View className="top-1/2 left-1/2 absolute z-10">
-          {loading && <LoadingIndicator getShadow={getShadow} theme={theme} />}
+          {loading && <LoadingIndicator />}
         </View>
         <Map
           className="h-full"

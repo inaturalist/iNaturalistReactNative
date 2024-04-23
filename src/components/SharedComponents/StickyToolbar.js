@@ -2,16 +2,11 @@
 import classNames from "classnames";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { useTheme } from "react-native-paper";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: -2,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+  offsetHeight: -2
 } );
 
 type Props = {
@@ -24,20 +19,16 @@ type Props = {
 const StickyToolbar = ( {
   containerClass,
   children
-}: Props ): React.Node => {
-  const theme = useTheme( );
-
-  return (
-    <View
-      className={classNames(
-        "absolute z-50 bg-white bottom-0 p-[15px] w-full",
-        containerClass
-      )}
-      style={getShadow( theme.colors.primary )}
-    >
-      {children}
-    </View>
-  );
-};
+}: Props ): React.Node => (
+  <View
+    className={classNames(
+      "absolute z-50 bg-white bottom-0 p-[15px] w-full",
+      containerClass
+    )}
+    style={DROP_SHADOW}
+  >
+    {children}
+  </View>
+);
 
 export default StickyToolbar;

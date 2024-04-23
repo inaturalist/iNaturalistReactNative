@@ -28,7 +28,7 @@ const estimatedAccuracy = longitudeDelta => longitudeDelta * 1000 * (
 const initialState = {
   accuracy: 0,
   accuracyTest: "pass",
-  locationName: null,
+  locationName: "",
   mapType: "standard",
   region: {
     latitude: 0.0,
@@ -185,7 +185,7 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
     const placeName = await fetchPlaceName( newRegion.latitude, newRegion.longitude );
     dispatch( {
       type: "UPDATE_REGION",
-      locationName: placeName || null,
+      locationName: placeName || "",
       region: newRegion,
       accuracy: newAccuracy
     } );

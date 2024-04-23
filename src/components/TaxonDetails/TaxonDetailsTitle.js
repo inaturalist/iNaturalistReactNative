@@ -15,7 +15,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  optionalClasses?: any,
+  optionalClasses?: string,
   taxon?: {
     rank: string,
     rank_level: number,

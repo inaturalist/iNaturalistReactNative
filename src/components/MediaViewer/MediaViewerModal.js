@@ -21,9 +21,7 @@ type Props = {
     licenseCode?: string
   }>,
   sounds?: Array<{
-    id?: number,
-    file_url: string,
-    uuid: string
+    file_url: string
   }>,
   showModal: boolean,
   uri?: string | null
@@ -33,7 +31,7 @@ const MediaViewerModal = ( {
   autoPlaySound,
   editable,
   header,
-  onClose = ( ) => { },
+  onClose = ( ) => undefined,
   onDeletePhoto,
   onDeleteSound,
   photos = [],

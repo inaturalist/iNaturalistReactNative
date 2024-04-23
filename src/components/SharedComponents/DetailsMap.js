@@ -28,7 +28,8 @@ type Props = {
   longitude: number,
   obscured?: boolean,
   positionalAccuracy?: number,
-  mapViewRef: any,
+  // $FlowIgnore
+  mapViewRef: unknown,
   region?: Object,
   closeModal: Function,
   tileMapParams: Object,
@@ -115,6 +116,7 @@ const DetailsMap = ( {
         <HeaderBackButton
           tintColor={theme.colors.primary}
           onPress={( ) => closeModal()}
+          labelVisible={false}
         />
         {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
       </View>

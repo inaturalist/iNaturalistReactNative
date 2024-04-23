@@ -38,7 +38,11 @@ const resizeImage = async (
 };
 
 type FlattenUploadArgs = {
-  image: any,
+  image: {
+    uri: string,
+    name: string,
+    type: string
+  },
   lat?: number,
   lng?: number
 }

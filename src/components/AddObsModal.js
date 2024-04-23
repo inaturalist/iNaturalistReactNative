@@ -14,7 +14,7 @@ import useStore from "stores/useStore";
 
 type Props = {
   closeModal: ( ) => void,
-  navAndCloseModal: ( string, ?{ camera: string } ) => void
+  navAndCloseModal: Function
 }
 
 const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {

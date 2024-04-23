@@ -2,6 +2,15 @@ import { StyleSheet } from "react-native";
 
 import colors from "./tailwindColors";
 
+const DEFAULT_SHADOW = {
+  elevation: 5,
+  offsetHeight: 2,
+  offsetWidth: 0,
+  shadowColor: colors.black,
+  shadowOpacity: 0.25,
+  shadowRadius: 2
+};
+
 // https://reactnative.dev/docs/shadow-props
 export const getShadowStyle = ( {
   shadowColor,
@@ -29,23 +38,12 @@ export const getShadowStyle = ( {
   elevation
 } );
 
-export const dropShadow = getShadowStyle( {
-  shadowColor: colors.black,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  shadowRadius: 2,
-  shadowOpacity: 0.25,
-  elevation: 5
-} );
+export const dropShadow = getShadowStyle( DEFAULT_SHADOW );
 
 export function getShadowForColor( shadowColor, options = {} ) {
   return getShadowStyle( {
+    ...DEFAULT_SHADOW,
     shadowColor,
-    offsetWidth: 0,
-    offsetHeight: 2,
-    shadowOpacity: 0.25,
-    shadowRadius: 2,
-    elevation: 5,
     ...options
   } );
 }

@@ -9,7 +9,7 @@ import React from "react";
 import { Text } from "react-native";
 
 // This is the same as List1 Typography in Figma
-const Body1 = ( props: any ): Node => (
+const Body1 = ( props: Object ): Node => (
   <Text
     className={classnames(
       "text-base trailing-tight text-darkGray",

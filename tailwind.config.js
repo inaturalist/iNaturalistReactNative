@@ -1,7 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 
+const setLineHeight = lineHeight => ( { lineHeight } );
+
 module.exports = {
-  content: ["index.js", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       letterSpacing: {
@@ -11,75 +13,25 @@ module.exports = {
       },
       fontSize: {
         // Typography: Heading1
-        "3xl": [
-          "25px",
-          {
-            lineHeight: "30px"
-          }
-        ],
+        "3xl": ["25px", setLineHeight( "30px" )],
         // Typography: Heading2
-        "2xl": [
-          "21px",
-          {
-            lineHeight: "25.2px"
-          }
-        ],
+        "2xl": ["21px", setLineHeight( "25.2px" )],
         // Typography: Subheading1
-        xl: [
-          "20px",
-          {
-            lineHeight: "24px"
-          }
-        ],
+        xl: ["20px", setLineHeight( "24px" )],
         // Typography: Heading3
-        lg: [
-          "18px",
-          {
-            lineHeight: "21.6px"
-          }
-        ],
+        lg: ["18px", setLineHeight( "21.6px" )],
         // Typography: Body1/List1
-        base: [
-          "17px",
-          {
-            lineHeight: "20.4px"
-          }
-        ],
+        base: ["17px", setLineHeight( "20.4px" )],
         // Typography: Heading4/Body2/UnderlinedLink
-        md: [
-          "15px",
-          {
-            lineHeight: "18px"
-          }
-        ],
+        md: ["15px", setLineHeight( "18px" )],
         // Typography: List2
-        sm: [
-          "14px",
-          {
-            lineHeight: "16.8px"
-          }
-        ],
+        sm: ["14px", setLineHeight( "16.8px" )],
         // Typography: Body3
-        xs: [
-          "13px",
-          {
-            lineHeight: "18px"
-          }
-        ],
+        xs: ["13px", setLineHeight( "18px" )],
         // Typography: Body4
-        "2xs": [
-          "11px",
-          {
-            lineHeight: "13.2px"
-          }
-        ],
+        "2xs": ["11px", setLineHeight( "13.2px" )],
         // Typography: Heading5
-        "3xs": [
-          "8px",
-          {
-            lineHeight: "9.6px"
-          }
-        ]
+        "3xs": ["8px", setLineHeight( "9.6px" )]
       },
       height: {
         22: "5.5rem"
@@ -139,6 +91,5 @@ module.exports = {
       xl: "744px",
       "2xl": "1366px"
     }
-  },
-  plugins: []
+  }
 };

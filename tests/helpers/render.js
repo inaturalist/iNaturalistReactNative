@@ -52,7 +52,7 @@ function renderApp( update = null ) {
 async function renderAppWithObservations(
   observations: Array,
   realmIdentifier: string
-): any {
+) {
   if ( observations.length > 0 ) {
     await Promise.all( observations.map( async observation => {
       // If it looks like it was supposed to be unsynced, save it like a new

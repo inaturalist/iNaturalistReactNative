@@ -20,7 +20,8 @@ type Props = {
   accessibilityHint?: string,
   accessibilityLabel: string,
   backgroundColor?: string,
-  children?: any,
+  // $FlowIgnore
+  children?: unknown,
   color?: string,
   disabled?: boolean,
   height?: number,

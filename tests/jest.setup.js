@@ -18,7 +18,8 @@ import factory, { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
-  mockUseCameraDevice
+  mockUseCameraDevice,
+  mockUseCameraFormat
 } from "./vision-camera/vision-camera";
 
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
@@ -66,6 +67,7 @@ jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
   sortDevices: mockSortDevices,
   useCameraDevice: mockUseCameraDevice,
+  useCameraFormat: mockUseCameraFormat,
   VisionCameraProxy: {
     initFrameProcessorPlugin: jest.fn( )
   },

@@ -53,7 +53,7 @@ const PhotoSharing = ( ): Node => {
     resetStore( );
 
     // Create a new observation with multiple shared photos (one or more)
-    let photoUris:any[];
+    let photoUris;
 
     // data is returned as a string for a single photo on Android
     // and an object with an array of data strings on iOS, i.e.

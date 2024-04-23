@@ -11,7 +11,8 @@ import { useIconicTaxa, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  before: any,
+  // $FlowIgnore
+  before: unknown,
   onTaxonChosen: Function,
   taxon: {
     id: number,

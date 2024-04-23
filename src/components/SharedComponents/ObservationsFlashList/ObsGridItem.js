@@ -17,7 +17,7 @@ type Props = {
   style?: Object,
   uploadSingleObservation?: Function,
   uploadState: {
-    uploadProgress: Number
+    uploadProgress: number
   },
   explore: boolean
 };

@@ -25,7 +25,7 @@ const markRecordUploaded = (
   recordUUID: string | null,
   type: string,
   response: {
-    results: Array<{id: Number}>
+    results: Array<{id: number}>
   },
   realm: Object,
   options?: {
@@ -75,7 +75,8 @@ const uploadEvidence = async (
   options: Object,
   observationUUID?: string,
   realm: Object
-): Promise<any> => {
+  // $FlowIgnore
+): Promise<unknown> => {
   const uploadToServer = async currentEvidence => {
     const params = apiSchemaMapper( observationId, currentEvidence );
     const evidenceUUID = currentEvidence.uuid;
@@ -172,13 +173,13 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   ] );
 
   const hasSounds = obs.observationSounds.length > 0;
-  const unsyncedSounds = hasSounds
+  const unsyncedObservationSounds = hasSounds
     ? obs.observationSounds.filter( item => !item.wasSynced( ) )
     : [];
   await Promise.all( [
-    unsyncedSounds.length > 0
+    unsyncedObservationSounds.length > 0
       ? await uploadEvidence(
-        unsyncedSounds,
+        unsyncedObservationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForUpload,
         null,
@@ -233,9 +234,9 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
         realm
       )
       : null,
-    unsyncedSounds.length > 0
+    unsyncedObservationSounds.length > 0
       ? await uploadEvidence(
-        unsyncedSounds,
+        unsyncedObservationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForAttachingToObs,
         obsUUID,

@@ -5,10 +5,16 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import NavButton from "./NavButton";
+
+const DROP_SHADOW = getShadowForColor( colors.black, {
+  offsetHeight: -3,
+  shadowOpacity: 0.2,
+  elevation: 20
+} );
 
 type Props = {
   tabs: Array<Object>,
@@ -29,14 +35,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
         "flex-row bg-white justify-evenly items-center p-1 m-0",
         { "pb-5": insets.bottom > 0 }
       )}
-      style={getShadowStyle( {
-        shadowColor: colors.black,
-        offsetWidth: 0,
-        offsetHeight: -3,
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 20
-      } )}
+      style={DROP_SHADOW}
       accessibilityRole="tablist"
       testID="CustomTabBar"
     >

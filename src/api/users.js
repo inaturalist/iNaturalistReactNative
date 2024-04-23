@@ -41,7 +41,7 @@ const REMOTE_USER_PARAMS = {
   fields: REMOTE_USER_FIELDS
 };
 
-const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
     const response = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
     return response?.results[0];
@@ -50,7 +50,7 @@ const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<an
   }
 };
 
-const fetchMemberProjects = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const fetchMemberProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
     const { results } = await inatjs.users.projects( {
       ...MEMBER_PROJECT_PARAMS,
@@ -67,7 +67,7 @@ const fetchRemoteUser = async (
   id: number,
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   if ( !id ) return null;
   try {
     const { results } = await inatjs.users.fetch( id, {
@@ -85,7 +85,7 @@ const fetchRemoteUsers = async (
   ids: Array<number>,
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   try {
     const responses = await Promise.all( ids.map(
       userId => inatjs.users.fetch( userId, {
@@ -104,7 +104,7 @@ const blockUser = async (
   id: number,
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   try {
     const response = await inatjs.users.block( { id }, {
       ...params,
@@ -120,7 +120,7 @@ const muteUser = async (
   id: number,
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   try {
     const response = await inatjs.users.mute( { id }, {
       ...params,
@@ -136,7 +136,7 @@ const unblockUser = async (
   id: number,
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   try {
     const response = await inatjs.users.unblock( { id }, {
       ...params,
@@ -152,7 +152,7 @@ const unmuteUser = async (
   id: number,
   params: Object = {},
   opts: Object = {}
-): Promise<any> => {
+): Promise<?Object> => {
   try {
     const response = await inatjs.users.unmute( { id }, {
       ...params,
@@ -164,7 +164,7 @@ const unmuteUser = async (
   }
 };
 
-const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
     return await inatjs.users.update( params, opts );
   } catch ( e ) {

@@ -19,7 +19,8 @@ import CustomImageZoom from "./CustomImageZoom";
 type Props = {
   autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
-  horizontalScroll: any,
+  // $FlowIgnore
+  horizontalScroll: unknown,
   onDeletePhoto?: Function,
   onDeleteSound?: Function,
   photos: Array<{
@@ -30,9 +31,7 @@ type Props = {
     licenseCode?: string
   }>,
   sounds?: Array<{
-    id?: number,
-    file_url: string,
-    uuid: string
+    file_url: string
   }>,
   selectedMediaIndex: number,
   setSelectedMediaIndex: Function
@@ -42,8 +41,8 @@ const MainMediaDisplay = ( {
   autoPlaySound,
   editable,
   horizontalScroll,
-  onDeletePhoto = ( ) => { },
-  onDeleteSound = ( ) => { },
+  onDeletePhoto = ( ) => undefined,
+  onDeleteSound = ( ) => undefined,
   photos,
   sounds = [],
   selectedMediaIndex,

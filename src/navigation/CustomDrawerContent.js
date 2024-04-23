@@ -32,9 +32,9 @@ const drawerScrollViewStyle = {
 };
 
 type Props = {
-  state: any,
-  navigation: any,
-  descriptors: any
+  state: Object,
+  navigation: Object,
+  descriptors: Object
 }
 
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
@@ -63,7 +63,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
   } ), [] );
 
   const drawerItems = useMemo( ( ) => {
-    const items: any = {
+    const items = {
       // search: {
       //   label: t( "SEARCH" ),
       //   navigation: "search",
@@ -115,6 +115,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       }
     };
     if ( isDebug ) {
+      // $FlowIgnore
       items.debug = {
         label: "DEBUG",
         navigation: "Debug",
@@ -133,6 +134,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     <INatIconButton
       icon={drawerItems[item].icon}
       size={20}
+      // $FlowIgnore
       color={drawerItems[item].color}
       accessibilityLabel={drawerItems[item].label}
     />
@@ -188,6 +190,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
   ), [currentUser, navigation, t] );
 
   const renderDrawerItem = useCallback( item => {
+    // $FlowIgnore
     if ( drawerItems[item].loggedInOnly && !currentUser ) {
       return null;
     }
@@ -197,6 +200,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         testID={drawerItems[item].testID}
         label={drawerItems[item].label}
         onPress={( ) => {
+          // $FlowIgnore
           navigation.navigate( drawerItems[item].navigation, drawerItems[item].params );
         }}
         labelStyle={labelStyle}

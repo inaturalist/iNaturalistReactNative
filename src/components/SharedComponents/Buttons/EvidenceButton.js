@@ -5,9 +5,9 @@ import { useTheme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  icon: any,
+  icon: string,
   disabled?: boolean,
-  handlePress: any,
+  handlePress: Function,
   accessibilityLabel: string,
   accessibilityHint?: string
 }
