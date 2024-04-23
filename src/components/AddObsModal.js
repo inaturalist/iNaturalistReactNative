@@ -50,7 +50,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
     <>
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="flex-row justify-center">
-        <View className="bg-white rounded-xl p-6 mb-12 mx-7 max-w-sm">
+        <View className="bg-white rounded-xl p-[25px] mb-12 mx-7 max-w-sm">
           <Heading2 testID="identify-text">
             {t( "Identify-an-organism" )}
           </Heading2>
@@ -65,7 +65,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
                     : theme.colors.primary
                 }
               />
-              <Body3 className="ml-5 mr-1.5">{text}</Body3>
+              <Body3 className="ml-[20px] shrink">{text}</Body3>
             </View>
           ) )}
         </View>
