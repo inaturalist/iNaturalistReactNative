@@ -9,10 +9,7 @@ import {
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import { Camera, useCameraFormat } from "react-native-vision-camera";
-import {
-  orientationPatch,
-  pixelFormatPatch
-} from "sharedHelpers/visionCameraPatches";
+import { orientationPatch } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
 import FocusSquare from "./FocusSquare";
@@ -192,9 +189,8 @@ const CameraView = ( {
             // it does nothing on Android so we set it to null there
             orientation={orientationPatch( deviceOrientation )}
             photoQualityBalance="quality"
-            // Props for AICamera only
             frameProcessor={frameProcessor}
-            pixelFormat={pixelFormatPatch()}
+            pixelFormat="yuv"
             animatedProps={animatedProps}
             resizeMode={resizeMode || "cover"}
           />
