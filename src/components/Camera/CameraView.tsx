@@ -1,3 +1,4 @@
+import { useAppState } from "@react-native-community/hooks";
 import { useIsFocused } from "@react-navigation/native";
 import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import { View } from "components/styledComponents";
@@ -8,6 +9,7 @@ import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
+import type { CameraProps, CameraRuntimeError } from "react-native-vision-camera";
 import { Camera, useCameraFormat } from "react-native-vision-camera";
 import { orientationPatch } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -19,33 +21,33 @@ Reanimated.addWhitelistedNativeProps( {
   zoom: true
 } );
 
-type Props = {
+interface Props {
+  animatedProps: CameraProps,
   cameraRef: Object,
   device: Object,
+  frameProcessor?: Function,
+  onCameraError?: Function,
+  onCaptureError?: Function,
   onClassifierError?: Function,
   onDeviceNotSupported?: Function,
-  onCaptureError?: Function,
-  onCameraError?: Function,
-  frameProcessor?: Function,
-  animatedProps: unknown,
-  onZoomStart?: Function,
   onZoomChange?: Function,
+  onZoomStart?: Function,
   resizeMode?: string
-};
+}
 
 // A container for the Camera component
 // that has logic that applies to both use cases in StandardCamera and AICamera
 const CameraView = ( {
+  animatedProps,
   cameraRef,
   device,
+  frameProcessor,
+  onCameraError,
+  onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
-  onCaptureError,
-  onCameraError,
-  frameProcessor,
-  animatedProps,
-  onZoomStart,
   onZoomChange,
+  onZoomStart,
   resizeMode
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
@@ -54,6 +56,8 @@ const CameraView = ( {
 
   // check if camera page is active
   const isFocused = useIsFocused( );
+  const appState = useAppState( );
+  const isActive = isFocused && appState === "active";
 
   // Select a format that provides the highest resolution for photos and videos
   const iosFormat = useCameraFormat( device, [
@@ -98,8 +102,7 @@ const CameraView = ( {
     .onStart( e => singleTapToFocus( e ) );
 
   const onError = useCallback(
-    error => {
-      // error is a CameraRuntimeError =
+    ( error: CameraRuntimeError ) => {
       // { code: string, message: string, cause?: {} }
       console.log( "error", error );
       // If there is no error code, log the error
@@ -177,22 +180,23 @@ const CameraView = ( {
           <ReanimatedCamera
             // Shared props between StandardCamera and AICamera
             ref={cameraRef}
+            animatedProps={animatedProps}
             device={device}
-            format={format}
-            exposure={exposure}
-            isActive={isFocused}
-            style={StyleSheet.absoluteFill}
-            photo
             enableZoomGesture={false}
-            onError={e => onError( e )}
+            exposure={exposure}
+            format={format}
+            frameProcessor={frameProcessor}
+            isActive={isActive}
+            onError={onError}
             // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
             // it does nothing on Android so we set it to null there
             orientation={orientationPatch( deviceOrientation )}
+            photo
             photoQualityBalance="quality"
-            frameProcessor={frameProcessor}
             pixelFormat="yuv"
-            animatedProps={animatedProps}
             resizeMode={resizeMode || "cover"}
+            style={StyleSheet.absoluteFill}
+
           />
         </GestureDetector>
         <FocusSquare

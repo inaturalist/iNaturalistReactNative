@@ -1,5 +1,3 @@
-// @flow
-
 import { useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import React, {
@@ -15,12 +13,15 @@ const CameraContainer = ( ): Node => {
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
-  const [cameraPosition, setCameraPosition] = useState( "back" );
-  const device = useCameraDevice( cameraPosition );
-
-  if ( !device ) {
-    return null;
-  }
+  const [cameraPosition, setCameraPosition] = useState<"front" | "back">( "back" );
+  // https://react-native-vision-camera.com/docs/guides/devices#selecting-multi-cams
+  const device = useCameraDevice( cameraPosition, {
+    physicalDevices: [
+      "ultra-wide-angle-camera",
+      "wide-angle-camera",
+      "telephoto-camera"
+    ]
+  } );
 
   return (
     <CameraWithDevice
