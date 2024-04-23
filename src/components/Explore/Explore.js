@@ -1,6 +1,7 @@
 // @flow
 
 import classnames from "classnames";
+import FilterModal from "components/Explore/Modals/FilterModal.tsx";
 import {
   INatIconButton,
   RadioButtonSheet,
@@ -16,22 +17,18 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
-import FilterModal from "./Modals/FilterModal";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
   elevation: 6
 } );
 
@@ -176,7 +173,7 @@ const Explore = ( {
                 color="white"
                 size={27}
                 style={[
-                  getShadow( theme.colors.primary ),
+                  DROP_SHADOW,
                   // eslint-disable-next-line react-native/no-inline-styles
                   { backgroundColor: "deeppink" }
                 ]}
@@ -199,7 +196,7 @@ const Explore = ( {
               )}
               accessibilityLabel={exploreViewAccessibilityLabel[exploreView]}
               onPress={() => setShowExploreBottomSheet( true )}
-              style={getShadow( theme.colors.primary )}
+              style={DROP_SHADOW}
             />
             {exploreView === "observations" && (
               <ObservationsView

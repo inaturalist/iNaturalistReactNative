@@ -37,20 +37,20 @@ const cameraOptionsClasses = [
 ].join( " " );
 
 type Props = {
-  takePhoto: Function,
+  changeZoom: Function,
+  disabled: boolean,
+  flipCamera: Function,
+  handleCheckmarkPress?: Function,
   handleClose?: Function,
-  disallowAddingPhotos?: boolean,
+  hasFlash: boolean,
   photosTaken?: boolean,
   rotatableAnimatedStyle: Object,
-  handleCheckmarkPress?: Function,
-  toggleFlash: Function,
-  flipCamera: Function,
-  changeZoom: Function,
-  hasFlash: boolean,
-  takePhotoOptions: Object,
   showPrediction?: boolean,
-  zoomTextValue: string,
-  showZoomButton: boolean
+  showZoomButton: boolean,
+  takePhoto: Function,
+  takePhotoOptions: Object,
+  toggleFlash: Function,
+  zoomTextValue: string
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -67,20 +67,20 @@ const CameraButtonPlaceholder = ( ) => (
 );
 
 const TabletButtons = ( {
-  takePhoto,
+  changeZoom,
+  disabled,
+  flipCamera,
+  handleCheckmarkPress,
   handleClose,
-  disallowAddingPhotos,
+  hasFlash,
   photosTaken,
   rotatableAnimatedStyle,
-  handleCheckmarkPress,
-  toggleFlash,
-  flipCamera,
-  hasFlash,
-  takePhotoOptions,
   showPrediction,
-  changeZoom,
-  zoomTextValue,
-  showZoomButton
+  showZoomButton,
+  takePhoto,
+  takePhotoOptions,
+  toggleFlash,
+  zoomTextValue
 }: Props ): Node => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -114,7 +114,7 @@ const TabletButtons = ( {
       />
       <View className="mt-[40px] mb-[40px]">
         <TakePhoto
-          disallowAddingPhotos={disallowAddingPhotos}
+          disabled={disabled}
           takePhoto={takePhoto}
           showPrediction={showPrediction}
         />

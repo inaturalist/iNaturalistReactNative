@@ -67,7 +67,7 @@ const DisplayTaxonName = ( {
       ? taxon.toJSON( )
       : taxon;
 
-    // this is mostly for the ARCamera, but might be helpful to display elsewhere
+    // this is mostly for the AICamera, but might be helpful to display elsewhere
     if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
       taxonPojo.rank = rankNames[taxonPojo?.rank_level];
     }
@@ -86,15 +86,15 @@ const DisplayTaxonName = ( {
 
     let TopTextComponent = TopTextComponentProp;
     if ( !TopTextComponent ) {
-      TopTextComponent = !small
-        ? Body1
-        : Body3;
+      TopTextComponent = small
+        ? Body3
+        : Body1;
     }
     let BottomTextComponent = BottomTextComponentProp;
     if ( !BottomTextComponent ) {
-      BottomTextComponent = !small
-        ? Body3
-        : Body4;
+      BottomTextComponent = small
+        ? Body4
+        : Body3;
     }
 
     const setNumberOfLines = ( ) => {

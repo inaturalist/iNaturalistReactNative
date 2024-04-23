@@ -39,7 +39,13 @@ const ObsMediaDisplayContainer = ( {
     ).map( op => op.photo )
   ), [observation] );
   const sounds = useMemo(
-    ( ) => jsonifyPotentialRealmObjects( observation?.observationSounds ),
+    ( ) => jsonifyPotentialRealmObjects(
+      (
+        observation?.observationSounds
+        || observation?.observation_sounds
+        || []
+      ).map( os => os.sound )
+    ),
     [observation]
   );
 

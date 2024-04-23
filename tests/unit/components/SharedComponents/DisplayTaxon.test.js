@@ -23,17 +23,22 @@ const taxonWithIconicTaxonPhoto = factory( "LocalTaxon", {
 
 describe( "DisplayTaxon", () => {
   it( "should be accessible", () => {
-    expect( <DisplayTaxon taxon={mockTaxon} handlePress={( ) => { }} /> ).toBeAccessible( );
+    expect( <DisplayTaxon taxon={mockTaxon} handlePress={( ) => undefined} /> ).toBeAccessible( );
   } );
 
   it( "displays an iconic taxon icon when no photo is available", () => {
-    renderComponent( <DisplayTaxon taxon={mockTaxon} handlePress={( ) => { }} /> );
+    renderComponent( <DisplayTaxon taxon={mockTaxon} handlePress={( ) => undefined} /> );
 
     expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) );
   } );
 
   it( "displays an iconic taxon photo when no taxon photo is available", () => {
-    renderComponent( <DisplayTaxon taxon={taxonWithIconicTaxonPhoto} handlePress={( ) => { }} /> );
+    renderComponent(
+      <DisplayTaxon
+        taxon={taxonWithIconicTaxonPhoto}
+        handlePress={( ) => undefined}
+      />
+    );
 
     expect(
       screen.getByTestId( "DisplayTaxon.image" ).props.source
@@ -44,7 +49,7 @@ describe( "DisplayTaxon", () => {
     renderComponent(
       <DisplayTaxon
         taxon={taxonWithIconicTaxonPhoto}
-        handlePress={( ) => { }}
+        handlePress={( ) => undefined}
         withdrawn
       />
     );

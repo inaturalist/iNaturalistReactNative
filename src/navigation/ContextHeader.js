@@ -6,7 +6,7 @@ import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { SafeAreaView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { getShadowStyle } from "styles/global";
+import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -15,16 +15,6 @@ type Props = {
   options: Object,
   back: boolean,
   alignStart?: boolean,
-};
-
-const SHADOW_STYLE = {
-  shadowColor: colors.black,
-  backgroundColor: colors.white,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
 };
 
 const ContextHeader = ( {
@@ -68,7 +58,7 @@ const ContextHeader = ( {
       className="bg-white"
       style={{
         ...options.headerStyle,
-        ...( options.headerShadowVisible && getShadowStyle( SHADOW_STYLE ) )
+        ...( options.headerShadowVisible && dropShadow )
       }}
     >
       <View

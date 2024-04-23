@@ -51,7 +51,7 @@ const useInfiniteNotificationsScroll = ( ): Object => {
     // Disable fetchNextPage if signed out
     fetchNextPage: currentUser
       ? infQueryResult.fetchNextPage
-      : ( ) => { },
+      : ( ) => undefined,
     notifications: flatten( infQueryResult?.data?.pages )
   };
 };

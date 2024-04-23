@@ -12,18 +12,29 @@ import useStore from "stores/useStore";
 const useParams = ( ): Object => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
-  const { dispatch } = useExplore( );
+  const { dispatch, setExploreLocation } = useExplore( );
   const storedParams = useStore( state => state.storedParams );
 
   const worldwidePlaceText = t( "Worldwide" );
 
-  const updateContextWithParams = useCallback( ( storedState = { } ) => {
-    if ( params?.worldwide ) {
+  const updateContextWithParams = useCallback( async ( storedState = { } ) => {
+    const setWorldwide = ( ) => {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
         placeId: null,
-        placeName: worldwidePlaceText
+        placeGuess: worldwidePlaceText
+      } );
+    };
+
+    if ( params?.worldwide ) {
+      setWorldwide( );
+    }
+    if ( params?.nearby ) {
+      const exploreLocation = await setExploreLocation( );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+        exploreLocation
       } );
     }
     if ( params?.taxon ) {
@@ -40,7 +51,7 @@ const useParams = ( ): Object => {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
         placeId: params.place?.id,
-        placeName: params.place?.display_name
+        placeGuess: params.place?.display_name
       } );
     }
     if ( params?.user && params?.user.id ) {
@@ -59,7 +70,7 @@ const useParams = ( ): Object => {
         projectId: params.project.id
       } );
     }
-  }, [params, dispatch, worldwidePlaceText] );
+  }, [params, dispatch, worldwidePlaceText, setExploreLocation] );
 
   useEffect( ( ) => {
     if ( params?.resetStoredParams ) {

@@ -18,6 +18,7 @@ import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
 import ConfidenceInterval from "./ConfidenceInterval";
 
 type Props = {
+  accessibilityLabel: string,
   activeColor?: string,
   asListItem?: boolean,
   clearBackground?: boolean,
@@ -36,6 +37,7 @@ type Props = {
 };
 
 const TaxonResult = ( {
+  accessibilityLabel,
   activeColor,
   asListItem = true,
   clearBackground,
@@ -58,7 +60,7 @@ const TaxonResult = ( {
   const currentUser = useCurrentUser( );
   // thinking about future performance, it might make more sense to batch
   // network requests for useTaxon instead of making individual API calls.
-  // right now, this fetches a single taxon at a time on AR camera &
+  // right now, this fetches a single taxon at a time on AI camera &
   // a short list of taxa from offline Suggestions
   const { taxon: localTaxon, isLoading } = useTaxon( taxonProp, fetchRemote );
   const usableTaxon = fromLocal
@@ -160,8 +162,7 @@ const TaxonResult = ( {
                   : theme.colors.secondary
               }
               onPress={() => handleCheckmarkPress( usableTaxon )}
-              accessibilityLabel={t( "Checkmark" )}
-              accessibilityHint={t( "Add-this-ID" )}
+              accessibilityLabel={accessibilityLabel}
               testID={`${testID}.checkmark`}
             />
           )}

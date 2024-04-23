@@ -15,7 +15,7 @@ type Props = {
   confirm: Function,
   headerText: string,
   pickerValues: Object,
-  selectedValue: any,
+  selectedValue: boolean,
 };
 
 const PickerSheet = ( {

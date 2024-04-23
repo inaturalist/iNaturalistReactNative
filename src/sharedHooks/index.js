@@ -19,6 +19,7 @@ export { default as useRemoteObservation } from "./useRemoteObservation";
 export { default as useShare } from "./useShare";
 export { default as useStoredLayout } from "./useStoredLayout";
 export { default as useTaxon } from "./useTaxon";
+export { default as useTaxonSearch } from "./useTaxonSearch";
 export { default as useTranslation } from "./useTranslation";
 export { default as useUserLocation } from "./useUserLocation";
 export { default as useUserMe } from "./useUserMe";

@@ -28,7 +28,8 @@ type Props = {
   longitude: number,
   obscured?: boolean,
   positionalAccuracy?: number,
-  mapViewRef: any,
+  // $FlowIgnore
+  mapViewRef: unknown,
   region?: Object,
   closeModal: Function,
   tileMapParams: Object,
@@ -115,6 +116,7 @@ const DetailsMap = ( {
         <HeaderBackButton
           tintColor={theme.colors.primary}
           onPress={( ) => closeModal()}
+          labelVisible={false}
         />
         {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
       </View>
@@ -138,7 +140,7 @@ const DetailsMap = ( {
               <FloatingActionButton
                 icon="copy"
                 onPress={( ) => copyCoordinates( )}
-                accessibilityLabel={t( "Copy-map-coordinates" )}
+                accessibilityLabel={t( "Copy-coordinates" )}
                 buttonClassName="top-0 left-0"
                 theme={theme}
               />

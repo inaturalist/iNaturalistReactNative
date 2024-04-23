@@ -75,7 +75,7 @@ describe( "uploadObservation", ( ) => {
     expect( inatjs.sounds.create ).toHaveBeenCalledTimes( 1 );
   } );
 
-  it( "should call inatjs.observation_sounds.create for an obs w/ photos", async ( ) => {
+  it( "should call inatjs.observation_sounds.create for an obs w/ sounds", async ( ) => {
     inatjs.observations.create.mockResolvedValue(
       makeResponse( [factory( "RemoteObservation" )] )
     );

@@ -3,12 +3,12 @@ import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useRef, useState } from "react";
-import { Animated, StyleSheet } from "react-native";
+import { Animated, Platform, StyleSheet } from "react-native";
 import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
-import { Camera } from "react-native-vision-camera";
+import { Camera, useCameraFormat } from "react-native-vision-camera";
 import {
   orientationPatch,
   pixelFormatPatch
@@ -30,14 +30,14 @@ type Props = {
   onCaptureError?: Function,
   onCameraError?: Function,
   frameProcessor?: Function,
-  animatedProps: any,
+  animatedProps: unknown,
   onZoomStart?: Function,
   onZoomChange?: Function,
   resizeMode?: string
 };
 
 // A container for the Camera component
-// that has logic that applies to both use cases in StandardCamera and ARCamera
+// that has logic that applies to both use cases in StandardCamera and AICamera
 const CameraView = ( {
   cameraRef,
   device,
@@ -57,6 +57,17 @@ const CameraView = ( {
 
   // check if camera page is active
   const isFocused = useIsFocused( );
+
+  // Select a format that provides the highest resolution for photos and videos
+  const iosFormat = useCameraFormat( device, [
+    { photoResolution: "max" },
+    { videoResolution: "max" }
+  ] );
+  const format = Platform.OS === "ios"
+    ? iosFormat
+    : undefined;
+  // Set the exposure to the middle of the min and max exposure
+  const exposure = ( device.maxExposure + device.minExposure ) / 2;
 
   const { deviceOrientation } = useDeviceOrientation();
 
@@ -167,9 +178,11 @@ const CameraView = ( {
       <VeryBadIpadRotator>
         <GestureDetector gesture={Gesture.Exclusive( singleTap, pinchGesture )}>
           <ReanimatedCamera
-            // Shared props between StandardCamera and ARCamera
+            // Shared props between StandardCamera and AICamera
             ref={cameraRef}
             device={device}
+            format={format}
+            exposure={exposure}
             isActive={isFocused}
             style={StyleSheet.absoluteFill}
             photo
@@ -178,8 +191,8 @@ const CameraView = ( {
             // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
             // it does nothing on Android so we set it to null there
             orientation={orientationPatch( deviceOrientation )}
-            enableHighQualityPhotos
-            // Props for ARCamera only
+            photoQualityBalance="quality"
+            // Props for AICamera only
             frameProcessor={frameProcessor}
             pixelFormat={pixelFormatPatch()}
             animatedProps={animatedProps}

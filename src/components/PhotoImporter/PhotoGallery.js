@@ -47,7 +47,7 @@ const PhotoGallery = ( ): Node => {
 
   const navToObsList = useCallback( ( ) => {
     navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator",
+      screen: "TabStackNavigator",
       params: {
         screen: "ObsList"
       }
@@ -88,7 +88,7 @@ const PhotoGallery = ( ): Node => {
 
       if ( fromGroupPhotos ) {
         // This screen was called from the plus button of the group photos screen - get back to it
-        navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+        navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
         navigation.setParams( { fromGroupPhotos: false } );
       } else if ( skipGroupPhotos ) {
         // This only happens when being called from ObsEdit
@@ -113,7 +113,7 @@ const PhotoGallery = ( ): Node => {
         photos: [photo]
       } ) )] );
       navigation.setParams( { fromGroupPhotos: false } );
-      navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+      navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
       setPhotoGalleryShown( false );
       return;
     }
@@ -159,7 +159,7 @@ const PhotoGallery = ( ): Node => {
         } ) )
       } );
       navigation.setParams( { fromGroupPhotos: false } );
-      navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+      navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
       setPhotoGalleryShown( false );
     }
   }, [

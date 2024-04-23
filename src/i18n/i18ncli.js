@@ -209,7 +209,7 @@ async function untranslatable( ) {
     console.log( "✅ No keys missing in strings.ftl" );
   } else {
     console.error(
-      `❌ ${untranslatableKeys.length} keys found missing in strings.ftl: ${untranslatableKeys}`
+      `❌ ${untranslatableKeys.length} keys in use missing from strings.ftl: ${untranslatableKeys}`
     );
     process.exit( 1 );
   }
@@ -232,12 +232,14 @@ yargs
   .command(
     "write-translation-loader",
     "Write loadTranslations.js",
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
     ( ) => writeLoadTranslations( )
   )
   .command(
     "build",
     "Prepare existing localizations for use in the app",
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
     async argv => {
       await validate( );
@@ -251,7 +253,7 @@ yargs
   .command(
     "validate",
     "Validate source strings",
-    ( ) => { },
+    ( ) => undefined,
     _argv => {
       validate( );
     }
@@ -259,7 +261,7 @@ yargs
   .command(
     "normalize",
     "Normalize source strings",
-    ( ) => { },
+    ( ) => undefined,
     _argv => {
       normalize( );
     }
@@ -267,7 +269,7 @@ yargs
   .command(
     "unused",
     "List unused translation keys",
-    ( ) => { },
+    ( ) => undefined,
     _argv => {
       unused( );
     }
@@ -275,7 +277,7 @@ yargs
   .command(
     "untranslatable",
     "List translation keys in source code but not in strings.ftl",
-    ( ) => { },
+    ( ) => undefined,
     _argv => {
       untranslatable( );
     }

@@ -9,7 +9,7 @@ import CustomTabBar from "./CustomTabBar";
 
 const DRAWER_ID = "OPEN_DRAWER";
 const EXPLORE_SCREEN_ID = "RootExplore";
-const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
+const OBS_LIST_SCREEN_ID = "TabStackNavigator";
 const NOTIFICATIONS_SCREEN_ID = "Notifications";
 
 type Props = {
@@ -52,12 +52,10 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       userIconUri: User.uri( currentUser ),
       testID: "NavButton.personIcon",
       accessibilityLabel: t( "Observations" ),
-      accessibilityHint: t( "Navigates-to-observations" ),
+      accessibilityHint: t( "Navigates-to-your-observations" ),
       size: 40,
       onPress: ( ) => {
-        navigation.navigate( "ObservationsStackNavigator", {
-          screen: "ObsList"
-        } );
+        navigation.navigate( "ObsList" );
         setActiveTab( OBS_LIST_SCREEN_ID );
       },
       active: OBS_LIST_SCREEN_ID === activeTab
@@ -69,17 +67,7 @@ const CustomTabBarContainer = ( { navigation }: Props ): Node => {
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
       onPress: ( ) => {
-        navigation.reset( {
-          index: 0,
-          routes: [
-            {
-              name: "ObservationsStackNavigator",
-              params: {
-                screen: "Notifications"
-              }
-            }
-          ]
-        } );
+        navigation.navigate( "Notifications" );
         setActiveTab( NOTIFICATIONS_SCREEN_ID );
       },
       active: NOTIFICATIONS_SCREEN_ID === activeTab

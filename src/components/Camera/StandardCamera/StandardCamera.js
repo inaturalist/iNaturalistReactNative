@@ -42,8 +42,8 @@ export const MAX_PHOTOS_ALLOWED = 20;
 
 type Props = {
   addEvidence: ?boolean,
-  camera: any,
-  device: any,
+  camera: Object,
+  device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
   isLandscapeMode: boolean
@@ -86,7 +86,7 @@ const StandardCamera = ( {
         navigateToObsDetails( navigation, previousScreen.params.uuid );
       } else {
         navigation.navigate( "TabNavigator", {
-          screen: "ObservationsStackNavigator",
+          screen: "TabStackNavigator",
           params: {
             screen: "ObsList"
           }
@@ -184,7 +184,7 @@ const StandardCamera = ( {
         <FadeInOutView takingPhoto={takingPhoto} />
         <CameraOptionsButtons
           changeZoom={changeZoom}
-          disallowAddingPhotos={disallowAddingPhotos}
+          disabled={disallowAddingPhotos}
           flipCamera={flipCamera}
           handleCheckmarkPress={handleCheckmarkPress}
           handleClose={handleBackButtonPress}
@@ -199,12 +199,12 @@ const StandardCamera = ( {
         />
       </View>
       <CameraNavButtons
-        takePhoto={handleTakePhoto}
+        disabled={disallowAddingPhotos}
+        handleCheckmarkPress={handleCheckmarkPress}
         handleClose={handleBackButtonPress}
-        disallowAddingPhotos={disallowAddingPhotos}
         photosTaken={photosTaken}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
-        handleCheckmarkPress={handleCheckmarkPress}
+        takePhoto={handleTakePhoto}
       />
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-add-20-photos-per-observation" )}

@@ -7,7 +7,7 @@ import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  props: any
+  props: Object
 }
 
 const BottomSheetStandardBackdrop = ( { props }: Props ): Node => (

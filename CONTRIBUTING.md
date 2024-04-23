@@ -12,7 +12,7 @@ We welcome volunteer contributions! This app is still early in its development a
 1. Fork the repository.
 2. Clone the forked repository to your local machine.
 3. Follow [the README](README.md) to setup your local repository.
-4. Create a new branch for the issue you're working on.
+4. Create a new branch for the issue you're working on; the branch name should start with the issue number and by concise but descriptive, e.g. `123-login-with-locale-crash`.
 5. Make changes to the codebase.
 6. Push your changes to your forked repository.
 
@@ -23,7 +23,7 @@ We welcome volunteer contributions! This app is still early in its development a
 4. Create a pull request to the main repository with your changes.
 
 ## Guidelines
-- Please make sure your pull request includes a clear and descriptive title and the description includes a reference to the issue number, e.g. "Closes #123" or "Partially addresses #123" in case of an open issue, and a possibly detailed description of the changes you've made.
+- Give your pull request a **clear and descriptive title** (e.g. "Remove predictions state on blur and focus in ARCamera") and a comment that includes a reference to the issue number (e.g. "Closes #123" or "Partially addresses #123" in case of an open issue) and maybe a detailed description of the changes you've made.
 - If you're adding new features or functionality differing from the description in the issue, please provide a clear explanation of how this work differs from what the issue describes.
 - Feel free to ask any questions or raise any concerns you have.
 - Please make sure your code includes unit tests, and our linting rules were applied (should happen automatically).

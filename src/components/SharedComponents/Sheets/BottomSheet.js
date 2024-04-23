@@ -15,7 +15,9 @@ import React, {
 import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
-import { viewStyles } from "styles/sharedComponents/bottomSheet";
+import colors from "styles/tailwindColors";
+
+const borderRadius = 24;
 
 type Props = {
   children: Node,
@@ -24,7 +26,7 @@ type Props = {
   handleClose?: Function,
   hideCloseButton?: boolean,
   headerText?: string,
-  snapPoints?: any,
+  snapPoints?: Array<string>,
   insideModal?: boolean
 }
 
@@ -43,6 +45,19 @@ const StandardBottomSheet = ( {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
   }
+
+  const shadow = {
+    shadowColor: colors.black,
+    borderTopStartRadius: borderRadius,
+    borderTopEndRadius: borderRadius,
+    shadowOffset: {
+      width: 0,
+      height: 12
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 16.0,
+    elevation: 24
+  };
 
   const { t } = useTranslation( );
   const sheetRef = useRef( null );
@@ -103,7 +118,7 @@ const StandardBottomSheet = ( {
       index={0}
       onChange={onChange || handleBackdropPress}
       ref={sheetRef}
-      style={[viewStyles.shadow, marginOnWide]}
+      style={[shadow, marginOnWide]}
     >
       <BottomSheetScrollView>
         <View
@@ -115,7 +130,7 @@ const StandardBottomSheet = ( {
           )}
         >
           <View className="items-center">
-            <Heading4>{headerText}</Heading4>
+            <Heading4 testID="bottom-sheet-header">{headerText}</Heading4>
           </View>
           {children}
           {!hideCloseButton && (

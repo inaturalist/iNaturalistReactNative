@@ -10,7 +10,8 @@ import useStore from "stores/useStore";
 type Props = {
   observation: Object,
   testID?: string,
-  children: any
+  // $FlowIgnore
+  children: unknown
 }
 
 const MyObservationsPressable = ( { observation, testID, children }: Props ): Node => {
@@ -24,7 +25,7 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
     const { uuid } = observation;
     if ( unsynced ) {
       setObservations( [observation] );
-      navigation.navigate( "CameraNavigator", {
+      navigation.navigate( "NoBottomTabStackNavigator", {
         screen: "ObsEdit"
       } );
     } else {

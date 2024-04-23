@@ -129,6 +129,18 @@ exports[`TaxonResult should render correctly 1`] = `
               {
                 "width": 62,
               },
+              {
+                "borderBottomWidth": 2,
+                "borderLeftWidth": 2,
+                "borderRightWidth": 2,
+                "borderTopWidth": 2,
+              },
+              {
+                "justifyContent": "center",
+              },
+              {
+                "alignItems": "center",
+              },
               [
                 {
                   "borderBottomLeftRadius": 12,
@@ -208,6 +220,18 @@ exports[`TaxonResult should render correctly 1`] = `
                       "width": 62,
                     },
                     {
+                      "borderBottomWidth": 2,
+                      "borderLeftWidth": 2,
+                      "borderRightWidth": 2,
+                      "borderTopWidth": 2,
+                    },
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "alignItems": "center",
+                    },
+                    {
                       "flexShrink": 1,
                     },
                     {
@@ -257,29 +281,6 @@ exports[`TaxonResult should render correctly 1`] = `
             </View>
           </View>
         </View>
-        <View
-          style={
-            [
-              [
-                {
-                  "position": "absolute",
-                },
-                {
-                  "right": 0,
-                },
-                {
-                  "paddingBottom": 4,
-                  "paddingLeft": 4,
-                  "paddingRight": 4,
-                  "paddingTop": 4,
-                },
-                {
-                  "bottom": 0,
-                },
-              ],
-            ]
-          }
-        />
       </View>
     </View>
     <View
@@ -314,26 +315,19 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "fontFamily": "Whitney-Medium",
+                "fontSize": 17,
+                "lineHeight": 20.4,
+              },
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Medium",
               },
               [
-                [
-                  {
-                    "fontSize": 18,
-                    "lineHeight": 22,
-                  },
-                  {
-                    "fontWeight": "500",
-                  },
-                  {
-                    "color": "#454545",
-                  },
-                  [
-                    {
-                      "color": "#454545",
-                    },
-                  ],
-                ],
+                {
+                  "color": "#454545",
+                },
               ],
             ]
           }
@@ -344,26 +338,19 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "fontFamily": "Whitney-Medium",
+                "fontSize": 13,
+                "lineHeight": 18,
+              },
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Medium",
               },
               [
-                [
-                  {
-                    "fontSize": 14,
-                    "lineHeight": 18,
-                  },
-                  {
-                    "fontWeight": "400",
-                  },
-                  {
-                    "color": "#454545",
-                  },
-                  [
-                    {
-                      "color": "#454545",
-                    },
-                  ],
-                ],
+                {
+                  "color": "#454545",
+                },
               ],
             ]
           }
@@ -373,32 +360,25 @@ exports[`TaxonResult should render correctly 1`] = `
             style={
               [
                 {
-                  "fontFamily": "Whitney-Medium",
+                  "fontSize": 13,
+                  "lineHeight": 18,
+                },
+                {
+                  "color": "#454545",
+                },
+                {
+                  "fontFamily": "Lato-Medium",
                 },
                 [
-                  [
-                    {
-                      "fontSize": 14,
-                      "lineHeight": 18,
-                    },
-                    {
-                      "fontWeight": "400",
-                    },
-                    {
-                      "color": "#454545",
-                    },
-                    [
-                      {
-                        "fontWeight": "400",
-                      },
-                      {
-                        "color": "#454545",
-                      },
-                      {
-                        "fontWeight": "300",
-                      },
-                    ],
-                  ],
+                  {
+                    "fontWeight": "400",
+                  },
+                  {
+                    "color": "#454545",
+                  },
+                  {
+                    "fontWeight": "300",
+                  },
                 ],
               ]
             }
@@ -514,8 +494,7 @@ exports[`TaxonResult should render correctly 1`] = `
       </View>
     </View>
     <View
-      accessibilityHint="Add this identification"
-      accessibilityLabel="Checkmark"
+      accessibilityLabel="this is the taxon"
       accessibilityRole="button"
       accessibilityState={
         {

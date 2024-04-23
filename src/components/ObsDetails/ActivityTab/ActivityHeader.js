@@ -163,7 +163,7 @@ const ActivityHeader = ( {
         {( currentUser && showDeleteCommentSheet ) && (
           <WarningSheet
             handleClose={( ) => setShowDeleteCommentSheet( false )}
-            headerText={t( "DELETE-COMMENT-QUESTION" )}
+            headerText={t( "DELETE-COMMENT--question" )}
             confirm={deleteComment}
             buttonText={t( "DELETE" )}
             handleSecondButtonPress={( ) => setShowDeleteCommentSheet( false )}

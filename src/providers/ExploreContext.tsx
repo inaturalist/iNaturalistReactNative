@@ -1,12 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
+import { t } from "i18next";
 import * as React from "react";
 import { LatLng } from "react-native-maps";
-import useStore from "stores/useStore";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 export enum EXPLORE_ACTION {
   DISCARD = "DISCARD",
   RESET = "RESET",
   CHANGE_TAXON = "CHANGE_TAXON",
   SET_TAXON_NAME = "SET_TAXON_NAME",
+  SET_EXPLORE_LOCATION = "SET_EXPLORE_LOCATION",
   SET_PLACE = "SET_PLACE",
   SET_USER = "SET_USER",
   SET_PROJECT = "SET_PROJECT",
@@ -40,7 +44,9 @@ export enum SORT_BY {
 }
 
 // TODO: this should be imported from a central point, e.g. Taxon realm model
-// TODO: this is probably against conventioins to make it in lower case but I (Johannes) don't want to have to add another object somewhere else to map them to the values the API accepts
+// TODO: this is probably against conventioins to
+// make it in lower case but I (Johannes) don't want
+// to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
   none = null,
   kingdom = "kingdom",
@@ -142,16 +148,19 @@ type CountProviderProps = {children: React.ReactNode}
 type State = {
   verifiable: boolean,
   return_bounds: boolean,
-  // TODO: technically this is not any Object but a "Taxon" and should be typed as such (e.g., in realm model)
+  // TODO: technically this is not any Object but a "Taxon"
+  // and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
-  // TODO: technically this is not any Object but a "User" and should be typed as such (e.g., in realm model)
+  // TODO: technically this is not any Object but a "User"
+  // and should be typed as such (e.g., in realm model)
   user: Object | undefined,
   project_id: number | undefined,
-  // TODO: technically this is not any Object but a "Project" and should be typed as such (e.g., in realm model)
+  // TODO: technically this is not any Object but a "Project"
+  // and should be typed as such (e.g., in realm model)
   project: Object | undefined,
   sortBy: SORT_BY,
   researchGrade: boolean,
@@ -178,8 +187,23 @@ type State = {
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number, storedState: State}
-  | {type: EXPLORE_ACTION.CHANGE_TAXON, taxon: Object, taxonId: number, taxonName: string, storedState: State}
-  | {type: EXPLORE_ACTION.SET_PLACE, placeId: number, placeName: string, lat: number, lng: number, radius: number, storedState: State}
+  | {
+    type: EXPLORE_ACTION.CHANGE_TAXON,
+    taxon: Object,
+    taxonId: number,
+    taxonName: string,
+    storedState: State
+  }
+  | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: Object}
+  | {
+    type: EXPLORE_ACTION.SET_PLACE,
+    placeId: number,
+    placeName: string,
+    lat: number,
+    lng: number,
+    radius: number,
+    storedState: State
+  }
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number, storedState: State}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
@@ -201,11 +225,11 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE, photoLicense: PHOTO_LICENSE}
   | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries: MapBoundaries}
   | {type: EXPLORE_ACTION.USE_STORED_STATE, storedState: State}
-type Dispatch = (action: Action) => void
+type Dispatch = ( action: Action ) => void
 
 const ExploreContext = React.createContext<
   {state: State; dispatch: Dispatch} | undefined
->(undefined)
+>( undefined );
 
 // Every key in this object represents a numbered filter in the UI
 const calculatedFilters = {
@@ -237,7 +261,7 @@ const defaultFilters = {
   months: undefined,
   created_on: undefined,
   created_d1: undefined,
-  created_d2: undefined,
+  created_d2: undefined
 };
 
 const initialState = {
@@ -247,21 +271,36 @@ const initialState = {
   place_id: undefined,
   place_guess: "",
   verifiable: true,
-  return_bounds: true,
+  return_bounds: true
 };
 
 // Checks if the date is in the format XXXX-XX-XX
-function isValidDateFormat(date: string): boolean {
+function isValidDateFormat( date: string ): boolean {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
-  return regex.test(date);
+  return regex.test( date );
+}
+
+async function setExploreLocation( ) {
+  const location = await fetchUserLocation( );
+  if ( !location || !location.latitude ) {
+    return {
+      place_guess: t( "Worldwide" )
+    };
+  }
+  return {
+    place_guess: t( "Nearby" ),
+    lat: location?.latitude,
+    lng: location?.longitude,
+    radius: 50
+  };
 }
 
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
     case EXPLORE_ACTION.RESET:
       return {
-        ...state,
-        ...defaultFilters
+        ...initialState,
+        ...action.exploreLocation
       };
     case EXPLORE_ACTION.DISCARD:
       return action.snapshot;
@@ -272,12 +311,18 @@ function exploreReducer( state: State, action: Action ) {
         taxon: action.taxon,
         taxon_id: action.taxonId
       };
+    case EXPLORE_ACTION.SET_EXPLORE_LOCATION:
+      return {
+        ...state,
+        ...action.exploreLocation
+      };
     case EXPLORE_ACTION.SET_PLACE:
+      // eslint-disable-next-line no-case-declarations
       const placeState = {
         ...state,
         ...action.storedState,
         place_id: action.placeId,
-        place_guess: action.placeName,
+        place_guess: action.placeGuess,
         lat: action.lat,
         lng: action.lng,
         radius: action.radius
@@ -422,7 +467,9 @@ function exploreReducer( state: State, action: Action ) {
     case EXPLORE_ACTION.SET_WILD_STATUS:
       return {
         ...state,
-        casual: action.wildStatus === WILD_STATUS.CAPTIVE ? true : state.casual,
+        casual: action.wildStatus === WILD_STATUS.CAPTIVE
+          ? true
+          : state.casual,
         wildStatus: action.wildStatus
       };
     case EXPLORE_ACTION.SET_PHOTO_LICENSE:
@@ -436,6 +483,7 @@ function exploreReducer( state: State, action: Action ) {
         reviewedFilter: action.reviewedFilter
       };
     case EXPLORE_ACTION.SET_MAP_BOUNDARIES:
+      // eslint-disable-next-line no-case-declarations
       const boundState = {
         ...state,
         ...action.mapBoundaries
@@ -447,7 +495,7 @@ function exploreReducer( state: State, action: Action ) {
         ...action.storedState
       };
     default: {
-      throw new Error( `Unhandled action type: ${(action as Action).type}` );
+      throw new Error( `Unhandled action type: ${( action as Action ).type}` );
     }
   }
 }
@@ -458,14 +506,14 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
   // To store a snapshot of the state, e.g when the user opens the filters modal
   const [snapshot, setSnapshot] = React.useState<State | undefined>( undefined );
   const makeSnapshot = () => setSnapshot( state );
-  
+
   // Check if the current state is different from the snapshot
   const checkSnapshot = () => {
     if ( !snapshot ) {
       return false;
     }
     return Object.keys( snapshot ).some( key => snapshot[key] !== state[key] );
-  }
+  };
   const differsFromSnapshot: boolean = checkSnapshot();
 
   const discardChanges = () => {
@@ -473,10 +521,10 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
       return;
     }
     dispatch( { type: EXPLORE_ACTION.DISCARD, snapshot } );
-  }
+  };
 
-  const filtersNotDefault: boolean = Object.keys( defaultFilters ).some(
-    key => defaultFilters[key] !== state[key]
+  const isNotInitialState: boolean = Object.keys( initialState ).some(
+    key => initialState[key] !== state[key]
   );
 
   let numberOfFilters: number = Object.keys( calculatedFilters ).reduce(
@@ -489,11 +537,21 @@ const ExploreProvider = ( { children }: CountProviderProps ) => {
     0
   );
   // If both low and high rank filters are set, we only count one filter
-  if (state.lrank && state.hrank) {
+  if ( state.lrank && state.hrank ) {
     numberOfFilters -= 1;
   }
 
-  const value = { state, dispatch, filtersNotDefault, numberOfFilters, makeSnapshot, differsFromSnapshot, discardChanges };
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  const value = {
+    state,
+    dispatch,
+    setExploreLocation,
+    isNotInitialState,
+    numberOfFilters,
+    makeSnapshot,
+    differsFromSnapshot,
+    discardChanges
+  };
   return (
     <ExploreContext.Provider value={value}>{children}</ExploreContext.Provider>
   );

@@ -76,7 +76,8 @@ const DQAVoteButtons = ( {
           size={33}
           color={theme.colors.secondary}
           onPress={() => removeVote( { metric, vote: true } )}
-          accessibilityLabel={t( "Arrow-up-selected" )}
+          accessibilityLabel={t( "Add-agreement" )}
+          accessibilityHint={t( "Adds-your-vote-of-agreement" )}
         />
       );
     }
@@ -86,7 +87,8 @@ const DQAVoteButtons = ( {
         icon="arrow-up-bold-circle-outline"
         size={33}
         onPress={() => setVote( { metric, vote: true } )}
-        accessibilityLabel={t( "Arrow-up-unselected" )}
+        accessibilityLabel={t( "Remove-agreement" )}
+        accessibilityHint={t( "Removes-your-vote-of-agreement" )}
       />
     );
   };
@@ -104,7 +106,8 @@ const DQAVoteButtons = ( {
           size={33}
           color={theme.colors.error}
           onPress={() => removeVote( { metric, vote: false } )}
-          accessibilityLabel={t( "Arrow-down-selected" )}
+          accessibilityLabel={t( "Remove-disagreement" )}
+          accessibilityHint={t( "Removes-your-vote-of-disagreement" )}
         />
       );
     }
@@ -114,7 +117,8 @@ const DQAVoteButtons = ( {
         icon="arrow-down-bold-circle-outline"
         size={33}
         onPress={() => setVote( { metric, vote: false } )}
-        accessibilityLabel={t( "Arrow-down-unselected" )}
+        accessibilityLabel={t( "Add-disagreement" )}
+        accessibilityHint={t( "Adds-your-vote-of-disagreement" )}
       />
     );
   };

@@ -11,12 +11,18 @@ import {
 } from "sharedHelpers/convertScores";
 
 type Props = {
+  accessibilityLabel: string,
   onTaxonChosen: Function,
   suggestion: Object,
 };
 
-const Suggestion = ( { suggestion, onTaxonChosen }: Props ): Node => (
+const Suggestion = ( {
+  accessibilityLabel,
+  suggestion,
+  onTaxonChosen
+}: Props ): Node => (
   <TaxonResult
+    accessibilityLabel={accessibilityLabel}
     taxon={suggestion.taxon}
     handleCheckmarkPress={onTaxonChosen}
     testID={`SuggestionsList.taxa.${suggestion?.taxon?.id}`}

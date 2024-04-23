@@ -24,7 +24,7 @@ jest.mock( "@react-navigation/native", () => {
     ...actualNav,
     useNavigation: () => ( {
       navigate: mockedNavigate,
-      addListener: () => {}
+      addListener: () => jest.fn()
     } ),
     useRoute: () => ( {} ),
     useFocusEffect: () => ( {} )
@@ -47,7 +47,7 @@ jest.mock( "components/Camera/StandardCamera/PhotoPreview", () => ( {
   default: () => mockView
 } ) );
 
-jest.mock( "components/Camera/ARCamera/FrameProcessorCamera", () => ( {
+jest.mock( "components/Camera/AICamera/FrameProcessorCamera", () => ( {
   __esModule: true,
   default: () => mockView
 } ) );
@@ -64,11 +64,7 @@ describe( "CameraContainer", ( ) => {
   } );
 
   it( "should not have accessibility errors", () => {
-    const Camera = (
-      <INatPaperProvider>
-        <CameraContainer />
-      </INatPaperProvider>
-    );
+    const Camera = <CameraContainer />;
 
     expect( Camera ).toBeAccessible();
   } );

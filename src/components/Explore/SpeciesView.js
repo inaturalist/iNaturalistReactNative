@@ -1,6 +1,7 @@
 // @flow
 
 import { fetchSpeciesCounts } from "api/observations";
+import TaxonGridItem from "components/Explore/TaxonGridItem.tsx";
 import type { Node } from "react";
 import React, { useEffect, useMemo } from "react";
 import Taxon from "realmModels/Taxon";
@@ -10,7 +11,6 @@ import {
 } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
-import TaxonGridItem from "./TaxonGridItem";
 
 const GUTTER = 15;
 
@@ -72,12 +72,13 @@ const SpeciesView = ( {
 
   const renderItem = ( { item } ) => (
     <TaxonGridItem
-      taxon={item?.taxon}
+      count={item?.count}
       style={{
         height: gridItemWidth,
         width: gridItemWidth,
         margin: GUTTER / 2
       }}
+      taxon={item?.taxon}
     />
   );
   useEffect( ( ) => {

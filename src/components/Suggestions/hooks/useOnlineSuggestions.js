@@ -7,7 +7,8 @@ import { FileUpload } from "inaturalistjs";
 import { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
 import {
-  useAuthenticatedQuery
+  useAuthenticatedQuery,
+  useIsConnected
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -37,7 +38,11 @@ const resizeImage = async (
 };
 
 type FlattenUploadArgs = {
-  image: any,
+  image: {
+    uri: string,
+    name: string,
+    type: string
+  },
   lat?: number,
   lng?: number
 }
@@ -83,6 +88,8 @@ const useOnlineSuggestions = (
   };
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
+  const isOnline = useIsConnected( );
+
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
   // uploading images
@@ -124,6 +131,12 @@ const useOnlineSuggestions = (
       clearTimeout( timer );
     };
   }, [onlineSuggestions, selectedPhotoUri, queryClient] );
+
+  useEffect( () => {
+    if ( isOnline === false ) {
+      setTimedOut( true );
+    }
+  }, [isOnline] );
 
   return timedOut
     ? {

@@ -124,14 +124,14 @@ const IdentificationSection = ( {
             <DisplayTaxon
               taxon={identification}
               handlePress={navToSuggestions}
-              accessibilityLabel={t( "Navigates-to-add-identification" )}
+              accessibilityLabel={t( "Edits-this-observations-taxon" )}
             />
             <INatIconButton
               icon="edit"
               size={20}
               onPress={navToSuggestions}
               accessibilityLabel={t( "Edit" )}
-              accessibilityHint={t( "Navigates-to-add-identification" )}
+              accessibilityHint={t( "Edits-this-observations-taxon" )}
             />
           </View>
         )}

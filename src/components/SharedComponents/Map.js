@@ -26,12 +26,24 @@ import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 import { useDeviceOrientation } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
-const calculateZoom = ( width, delta ) => Math.round(
-  Math.log2( 360 * ( width / 256 / delta ) ) + 1
-);
+const DROP_SHADOW = getShadowForColor( colors.darkGray );
+
+function calculateZoom( width, delta ) {
+  return Math.round(
+    Math.log2( 360 * ( width / 256 / delta ) ) + 1
+  );
+}
+
+// Kind of the inverse of calculateZoom. Probably not actually accurate for
+// longitude, but works for our purposes
+function zoomToDeltas( zoom, screenWidth, screenHeight ) {
+  const longitudeDelta = screenWidth / 256 / ( 2 ** zoom / 360 );
+  const latitudeDelta = screenHeight / 256 / ( 2 ** zoom / 360 );
+  return [latitudeDelta, longitudeDelta];
+}
 
 const POINT_TILES_ENDPOINT = "https://tiles.inaturalist.org/v1/points";
 const API_ENDPOINT = "https://api.inaturalist.org/v2";
@@ -75,9 +87,11 @@ export function metersToLatitudeDelta( meters: number, latitude: number ): numbe
 }
 
 type Props = {
-  children?: any,
+  // $FlowIgnore
+  children?: unknown,
   className?: string,
   currentLocationButtonClassName?: string,
+  currentLocationZoomLevel?: number,
   mapHeight?: number|string, // allows for height to be defined as px or percentage
   mapType?: string,
   mapViewClassName?: string,
@@ -93,6 +107,7 @@ type Props = {
   onPermissionGranted?: Function,
   onRegionChange?: Function,
   onRegionChangeComplete?: Function,
+  onZoomChange?: Function,
   onZoomToNearby?: Function,
   openMapScreen?: Function,
   permissionRequested?: boolean,
@@ -115,21 +130,13 @@ type Props = {
   zoomTapEnabled?: boolean
 }
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
-} );
-
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
   children,
   className = "flex-1",
   currentLocationButtonClassName,
+  currentLocationZoomLevel, // target zoom level when user hits current location btn
   mapHeight,
   mapType,
   mapViewClassName,
@@ -138,13 +145,14 @@ const Map = ( {
   obscured,
   obsLatitude,
   obsLongitude,
-  onMapReady = ( ) => { },
-  onPanDrag = ( ) => { },
+  onMapReady = ( ) => undefined,
+  onPanDrag = ( ) => undefined,
   onPermissionBlocked: onPermissionBlockedProp,
   onPermissionDenied: onPermissionDeniedProp,
   onPermissionGranted: onPermissionGrantedProp,
   onRegionChange,
   onRegionChangeComplete,
+  onZoomChange,
   onZoomToNearby,
   openMapScreen,
   permissionRequested: permissionRequestedProp,
@@ -166,7 +174,7 @@ const Map = ( {
   zoomEnabled = true,
   zoomTapEnabled = true
 }: Props ): Node => {
-  const { screenWidth } = useDeviceOrientation( );
+  const { screenWidth, screenHeight } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
     region
       ? calculateZoom( screenWidth, region.longitudeDelta )
@@ -232,17 +240,38 @@ const Map = ( {
 
   useEffect( ( ) => {
     if ( userLocation && zoomToUserLocationRequested && mapViewRef?.current ) {
-      mapViewRef.current.animateToRegion( {
+      // Zoom level based on location accuracy.
+      let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
+      let longitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      // If this map redefines the level we want to zoom into when the user
+      // wants to see their current location, choose which ever is more
+      // zoomed out, the configured zoom level or the zoom level based on the
+      // coordinate accuracy
+      if ( currentLocationZoomLevel ) {
+        const [configuredLatitudeDelta, configuredLongitudeDelta] = zoomToDeltas(
+          currentLocationZoomLevel,
+          screenWidth,
+          screenHeight
+        );
+        latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
+        longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
+      }
+      mapViewRef.current?.animateToRegion( {
         latitude: userLocation.latitude,
         longitude: userLocation.longitude,
-        // Zoom level based on location accuracy.
-        latitudeDelta: metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude ),
-        // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
-        longitudeDelta: metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude )
+        latitudeDelta,
+        longitudeDelta
       } );
       setZoomToUserLocationRequested( false );
     }
-  }, [userLocation, zoomToUserLocationRequested] );
+  }, [
+    currentLocationZoomLevel,
+    screenHeight,
+    screenWidth,
+    userLocation,
+    zoomToUserLocationRequested
+  ] );
 
   // Zoom to nearby region if requested. Note that if you want to do something
   // after the map zooms, you need to use onRegionChangeComplete
@@ -303,12 +332,12 @@ const Map = ( {
   ] );
 
   const params = useMemo( ( ) => {
-    const newTileParams: any = {
-      color: "%2374ac00",
-      ...tileMapParams
-    };
+    const newTileParams = { ...tileMapParams };
+    // $FlowIgnore
     delete newTileParams.order;
+    // $FlowIgnore
     delete newTileParams.order_by;
+    // $FlowIgnore
     delete newTileParams.per_page;
     return newTileParams;
   }, [tileMapParams] );
@@ -330,10 +359,11 @@ const Map = ( {
 
   const queryString = Object.keys( params ).map( key => `${key}=${params[key]}` ).join( "&" );
 
-  const url = currentZoom > 13
-    ? `${API_ENDPOINT}/points/{z}/{x}/{y}.png`
-    : `${API_ENDPOINT}/grid/{z}/{x}/{y}.png`;
-  const urlTemplate = `${url}?${queryString}`;
+  const showPointTiles = currentZoom > 13;
+  // We want green points and (default) orange grid
+  const tileUrlTemplate = showPointTiles
+    ? `${API_ENDPOINT}/points/{z}/{x}/{y}.png?${queryString}&color=%2374ac00`
+    : `${API_ENDPOINT}/grid/{z}/{x}/{y}.png?${queryString}`;
 
   const onMapPressForObsLyr = useCallback( async latLng => {
     const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
@@ -384,20 +414,32 @@ const Map = ( {
   // Not clear why but nesting <UrlTile> directly under <MapView> seems to
   // cause it not to update in Android when you change the URL
   const ObsUrlTile = useCallback( ( ) => {
-    if ( !urlTemplate ) return <View />;
+    if ( !tileUrlTemplate ) return <View />;
     if ( !withPressableObsTiles && !withObsTiles ) return <View />;
     return (
       <UrlTile
         testID="Map.UrlTile"
         tileSize={512}
-        urlTemplate={urlTemplate}
+        urlTemplate={tileUrlTemplate}
+        opacity={
+          showPointTiles
+            ? 1
+            : 0.7
+        }
       />
     );
   }, [
-    urlTemplate,
-    withPressableObsTiles,
-    withObsTiles
+    showPointTiles,
+    tileUrlTemplate,
+    withObsTiles,
+    withPressableObsTiles
   ] );
+
+  useEffect( ( ) => {
+    if ( typeof ( onZoomChange ) === "function" ) {
+      onZoomChange( currentZoom );
+    }
+  }, [currentZoom, onZoomChange] );
 
   return (
     <View
@@ -464,7 +506,7 @@ const Map = ( {
               }}
               radius={positionalAccuracy}
               strokeWidth={2}
-              strokeColor="#74AC00"
+              strokeColor={theme.colors.inatGreen}
               fillColor="rgba( 116, 172, 0, 0.2 )"
             />
             <Marker
@@ -510,7 +552,7 @@ const Map = ( {
             "absolute bottom-5 right-5 bg-white rounded-full",
             currentLocationButtonClassName
           )}
-          style={getShadow( theme.colors.primary )}
+          style={DROP_SHADOW}
           accessibilityLabel={t( "Zoom-to-current-location" )}
           onPress={( ) => {
             setZoomToUserLocationRequested( true );
@@ -527,7 +569,7 @@ const Map = ( {
               "absolute bottom-5 left-5 bg-white rounded-full",
               switchMapTypeButtonClassName
             )}
-            style={getShadow( theme.colors.primary )}
+            style={DROP_SHADOW}
             accessibilityLabel={t( "Toggle-map-type" )}
             accessibilityRole="button"
             accessibilityState={
@@ -537,7 +579,7 @@ const Map = ( {
             }
             onPress={( ) => {
               changeMapType( currentMapType === "standard"
-                ? "satellite"
+                ? "hybrid"
                 : "standard" );
             }}
           />

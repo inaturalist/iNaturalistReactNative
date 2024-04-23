@@ -117,7 +117,22 @@ describe( "Signed in user", () => {
     await expect( username ).toBeVisible();
 
     /*
-    / 2. Create two observations
+    / 2. Switch UI to power user mode
+    */
+    const drawerButton = element( by.id( "OPEN_DRAWER" ) );
+    await waitFor( drawerButton ).toBeVisible().withTimeout( 10000 );
+    await drawerButton.tap();
+    // Tap the settings drawer menu item
+    const settingsDrawerMenuItem = element( by.id( "settings" ) );
+    await waitFor( settingsDrawerMenuItem ).toBeVisible().withTimeout( 10000 );
+    await settingsDrawerMenuItem.tap();
+    // Tap the settings radio button for power user mode
+    const powerUserRadioButton = element( by.id( "all-observation-option" ) );
+    await waitFor( powerUserRadioButton ).toBeVisible().withTimeout( 10000 );
+    await powerUserRadioButton.tap();
+
+    /*
+    / 3. Create two observations
     */
     const uuid = await createAndUploadObservation( { upload: true } );
     // Create a second b/c later we want to test that the deleted status text
@@ -126,7 +141,7 @@ describe( "Signed in user", () => {
     await createAndUploadObservation( );
 
     /*
-    / 3. Update the observation by adding a comment
+    / 4. Update the observation by adding a comment
     */
     const obsListItem = element( by.id( `MyObservations.obsListItem.${uuid}` ) );
     await obsListItem.tap();
@@ -139,17 +154,21 @@ describe( "Signed in user", () => {
     // Add a comment
     await commentModalInput.tap();
     await commentModalInput.typeText( "This is a comment" );
+    // Tap on the title of the modal to dismiss the keyboard
+    const bottomSheetHeader = element( by.id( "bottom-sheet-header" ) );
+    await bottomSheetHeader.tap();
+    // Tap the submit button
     const commentModalSubmitButton = element( by.id( "ObsEdit.confirm" ) );
     await commentModalSubmitButton.tap();
     // Check that the comment is visible
     await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "bottom" );
     const comment = element( by.text( "This is a comment" ) );
     await waitFor( comment ).toBeVisible().withTimeout( 10000 );
-    await element( by.label( "Navigate back" ) ).tap( );
+    await element( by.label( "Go back" ) ).tap( );
     await waitFor( username ).toBeVisible( ).withTimeout( 10000 );
 
     /*
-    / 4. Delete the observations
+    / 5. Delete the observations
     */
     await deleteObservationByUUID( uuid, username, { uploaded: true } );
     // TODO test to make sure the exact observation we created was deleted.
