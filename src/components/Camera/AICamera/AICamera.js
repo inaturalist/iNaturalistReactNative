@@ -58,8 +58,7 @@ const AICamera = ( {
   const {
     animatedProps,
     changeZoom,
-    onZoomChange,
-    onZoomStart,
+    pinchToZoom,
     showZoomButton,
     zoomTextValue
   } = useZoom( device );
@@ -134,8 +133,7 @@ const AICamera = ( {
             onCameraError={handleCameraError}
             onLog={handleLog}
             animatedProps={animatedProps}
-            onZoomStart={onZoomStart}
-            onZoomChange={onZoomChange}
+            pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
           />
         </View>

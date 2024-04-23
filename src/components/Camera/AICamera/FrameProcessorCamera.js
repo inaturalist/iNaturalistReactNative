@@ -34,8 +34,7 @@ type Props = {
   onDeviceNotSupported: Function,
   onLog: Function,
   onTaxaDetected: Function,
-  onZoomChange?: Function,
-  onZoomStart?: Function,
+  pinchToZoom?: Function,
   takingPhoto: boolean
 };
 
@@ -50,18 +49,17 @@ const FrameProcessorCamera = ( {
   animatedProps,
   cameraRef,
   confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
+  cropRatio = DEFAULT_CROP_RATIO,
   device,
   fps = DEFAULT_FPS,
   numStoredResults = DEFAULT_NUM_STORED_RESULTS,
-  cropRatio = DEFAULT_CROP_RATIO,
   onCameraError,
   onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
   onLog,
   onTaxaDetected,
-  onZoomChange,
-  onZoomStart,
+  pinchToZoom,
   takingPhoto
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
@@ -178,16 +176,15 @@ const FrameProcessorCamera = ( {
 
   return (
     <CameraView
+      animatedProps={animatedProps}
       cameraRef={cameraRef}
       device={device}
+      frameProcessor={frameProcessor}
+      onCameraError={onCameraError}
+      onCaptureError={onCaptureError}
       onClassifierError={onClassifierError}
       onDeviceNotSupported={onDeviceNotSupported}
-      onCaptureError={onCaptureError}
-      onCameraError={onCameraError}
-      frameProcessor={frameProcessor}
-      animatedProps={animatedProps}
-      onZoomStart={onZoomStart}
-      onZoomChange={onZoomChange}
+      pinchToZoom={pinchToZoom}
     />
   );
 };

@@ -1,8 +1,13 @@
 // @flow
 
 import {
+  useCallback,
+  useMemo,
   useState
 } from "react";
+import {
+  Gesture
+} from "react-native-gesture-handler";
 import {
   Extrapolate,
   interpolate,
@@ -42,15 +47,18 @@ const useZoom = ( device: Object ): Object => {
     }
   };
 
-  const onZoomStart = () => {
+  const onZoomStart = useCallback( ( ) => {
     startZoom.value = zoom.value;
-  };
+  }, [
+    startZoom,
+    zoom.value
+  ] );
 
   const resetZoom = () => {
     zoom.value = initialZoom;
   };
 
-  const onZoomChange = scale => {
+  const onZoomChange = useCallback( scale => {
     // Calculate new zoom value (since scale factor is relative to initial pinch)
     const newScale = interpolate(
       scale,
@@ -65,21 +73,38 @@ const useZoom = ( device: Object ): Object => {
       Extrapolate.CLAMP
     );
     zoom.value = newZoom;
-  };
+  }, [
+    maxZoom,
+    minZoom,
+    startZoom.value,
+    zoom
+  ] );
 
   const animatedProps = useAnimatedProps(
     () => ( { zoom: zoom.value } ),
     [zoom]
   );
 
+  const pinchToZoom = useMemo( ( ) => Gesture.Pinch( )
+    .runOnJS( true )
+    .onStart( _ => {
+      onZoomStart?.();
+    } ).onChange( e => {
+      onZoomChange?.( e.scale );
+    } ), [
+    onZoomChange,
+    onZoomStart
+  ] );
+
   return {
     animatedProps,
     changeZoom,
     onZoomChange,
     onZoomStart,
+    pinchToZoom,
+    resetZoom,
     showZoomButton: device.isMultiCam,
-    zoomTextValue,
-    resetZoom
+    zoomTextValue
   };
 };
 
