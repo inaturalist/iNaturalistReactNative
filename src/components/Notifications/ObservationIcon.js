@@ -1,4 +1,5 @@
 // @flow
+import classnames from "classnames";
 import {
   INatIcon
 } from "components/SharedComponents";
@@ -16,7 +17,17 @@ const ObservationIcon = ( {
   const theme = useTheme();
   if ( !uri ) {
     return (
-      <View className="p-[19px] bg-white border rounded-lg border-[2px]">
+      <View
+        className={classnames(
+          "w-[62px]",
+          "h-[62px]",
+          "bg-white",
+          "rounded-lg",
+          "border-[2px]",
+          "justify-center",
+          "items-center"
+        )}
+      >
         <INatIcon
           name="noevidence"
           size={24}
