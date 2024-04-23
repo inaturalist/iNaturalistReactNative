@@ -31,7 +31,7 @@ const MultipleObservationsArrows = ( {
   };
 
   return (
-    <View className="flex-row items-center justify-between pt-5">
+    <View className="flex-row items-center justify-between py-5 mx-3">
       <View className="w-16">
         {currentObservationIndex !== 0 && (
           <INatIconButton
@@ -48,7 +48,7 @@ const MultipleObservationsArrows = ( {
           totalObservationCount: observations.length
         } )}
       </Heading2>
-      <View className="w-16">
+      <View className="w-16 flex items-end">
         {( currentObservationIndex !== observations.length - 1 )
           && (
             <INatIconButton
