@@ -51,9 +51,8 @@ const CameraView = ( {
   resizeMode
 }: Props ): Node => {
   const {
-    focusTapAnimation,
-    tapToFocus,
-    tappedCoordinates
+    animatedStyle,
+    tapToFocus
   } = useFocusTap( cameraRef, device.supportsFocus );
 
   // check if camera page is active
@@ -161,8 +160,7 @@ const CameraView = ( {
 
         />
         <FocusSquare
-          focusTapAnimation={focusTapAnimation}
-          tappedCoordinates={tappedCoordinates}
+          animatedStyle={animatedStyle}
         />
       </VeryBadIpadRotator>
     </GestureDetector>
