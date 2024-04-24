@@ -122,18 +122,19 @@ const DetailsMap = ( {
       </View>
       <View className="flex-1 h-full">
         <Map
-          showLocationIndicator={showLocationIndicator}
-          showCurrentLocationButton
-          showSwitchMapTypeButton
+          mapHeight="100%"
+          mapViewRef={mapViewRef}
           obsLatitude={latitude}
           obsLongitude={longitude}
-          region={region}
-          mapHeight="100%"
           obscured={obscured}
+          permissionRequested={false}
           positionalAccuracy={positionalAccuracy}
-          mapViewRef={mapViewRef}
-          withObsTiles={tileMapParams !== null}
+          region={region}
+          showCurrentLocationButton
+          showLocationIndicator={showLocationIndicator}
+          showSwitchMapTypeButton
           tileMapParams={tileMapParams}
+          withObsTiles={tileMapParams !== null}
         >
           { ( !obscured && showLocationIndicator ) && (
             <>

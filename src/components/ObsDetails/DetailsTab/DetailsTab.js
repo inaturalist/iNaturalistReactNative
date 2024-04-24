@@ -1,41 +1,29 @@
 // @flow
 
-import Clipboard from "@react-native-clipboard/clipboard";
 import { useNavigation } from "@react-navigation/native";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   Body4,
   Button,
   DateDisplay,
-  DetailsMap,
   Divider,
   Heading4,
-  ObservationLocation,
   QualityGradeStatus
 } from "components/SharedComponents";
-import KebabMenu from "components/SharedComponents/KebabMenu";
-import Map from "components/SharedComponents/Map";
-import Modal from "components/SharedComponents/Modal";
 import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { Alert, Linking } from "react-native";
-import createOpenLink from "react-native-open-maps";
-import { Menu, useTheme } from "react-native-paper";
-import {
-  useCurrentUser
-} from "sharedHooks";
+import { useTheme } from "react-native-paper";
 
 import Attribution from "./Attribution";
-import DetailsMapHeader from "./DetailsMapHeader";
+import LocationSection from "./LocationSection";
 
 type Props = {
   observation: Object
 }
-
-const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 
 const ViewInBrowserButton = ( { id } ) => {
   const url = `https://inaturalist.org/observations/${id}`;
@@ -86,35 +74,11 @@ const headingClass = "mt-[20px] mb-[11px] text-black";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsTab = ( { observation }: Props ): Node => {
-  const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const theme = useTheme( );
   const application = observation?.application?.name;
-  const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation?.uuid;
-  const geoprivacy = observation?.geoprivacy;
-  const positionalAccuracy = observation?.positional_accuracy;
-  const [showMapModal, setShowMapModal] = useState( false );
-
-  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
-  const isPrivate = geoprivacy === "private" && !belongsToCurrentUser;
-  const isObscured = observation?.obscured && !belongsToCurrentUser;
-  const showShareOptions = !isPrivate && !isObscured;
-
-  const latitude = observation?.privateLatitude || observation?.latitude;
-  const longitude = observation?.privateLongitude || observation?.longitude;
-  const coordinateString = t( "Lat-Lon", {
-    latitude,
-    longitude
-  } );
-
-  const tileMapParams = observation?.taxon?.id
-    ? {
-      taxon_id: observation?.taxon.id,
-      verifiable: true
-    }
-    : null;
 
   const displayQualityGradeOption = option => {
     const isResearchGrade = ( qualityGrade === "research" && option === "research" );
@@ -148,54 +112,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Divider />
         </>
       )}
-      <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
-        <Heading4 className={headingClass}>{t( "LOCATION" )}</Heading4>
-        {showShareOptions && (
-          <KebabMenu
-            visible={locationKebabMenuVisible}
-            setVisible={setLocationKebabMenuVisible}
-          >
-            <Menu.Item
-              title={t( "Share-location" )}
-              onPress={() => createOpenLink(
-                { query: `${latitude},${longitude}` }
-              )}
-            />
-            <Menu.Item
-              title={t( "Copy-coordinates" )}
-              onPress={() => Clipboard.setString( coordinateString )}
-            />
-          </KebabMenu>
-        )}
-
-      </View>
-      { ( latitude ) && (
-        <Map
-          obsLatitude={latitude}
-          obsLongitude={longitude}
-          mapHeight={230}
-          obscured={isObscured}
-          openMapScreen={() => setShowMapModal( true )}
-          showLocationIndicator
-          positionalAccuracy={positionalAccuracy}
-          tileMapParams={tileMapParams}
-          withObsTiles={tileMapParams !== null}
-          scrollEnabled={false}
-          zoomEnabled={false}
-          zoomTapEnabled={false}
-        />
-      ) }
-
-      <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
-        <ObservationLocation observation={observation} obscured={isObscured} details />
-        {isObscured && (
-          <Body4 className="italic ml-[20px]">
-            {t( "Obscured-observation-location-map-description" )}
-          </Body4>
-        ) }
-      </View>
+      <LocationSection observation={observation} />
       <Divider />
-
       <View className={sectionClass}>
         <Heading4 className={headingClass}>{t( "DATE" )}</Heading4>
         <DateDisplay
@@ -228,7 +146,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
         </View>
       </View>
       <Divider />
-
       {/*
         <View className={sectionClass}>
           <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
@@ -236,7 +153,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
         </View>
         <Divider />
       */}
-
       <View className={`${sectionClass} space-y-[11px]`}>
         <Heading4 className={headingClass}>{t( "OTHER-DATA" )}</Heading4>
         <Attribution observation={observation} />
@@ -245,32 +161,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
         )}
         <ViewInBrowserButton id={observation.id} />
       </View>
-      <Modal
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        showModal={showMapModal}
-        closeModal={( ) => setShowMapModal( false )}
-        disableSwipeDirection
-        style={DETAILS_MAP_MODAL_STYLE}
-        modal={(
-          <DetailsMap
-            latitude={latitude}
-            longitude={longitude}
-            obscured={isObscured}
-            coordinateString={coordinateString}
-            closeModal={( ) => setShowMapModal( false )}
-            positionalAccuracy={observation.positional_accuracy}
-            tileMapParams={tileMapParams}
-            showLocationIndicator
-            headerTitle={(
-              <DetailsMapHeader
-                observation={observation}
-                obscured={isObscured}
-              />
-            )}
-          />
-        )}
-      />
     </>
   );
 };
