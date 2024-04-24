@@ -1,10 +1,12 @@
 import { useAppState } from "@react-native-community/hooks";
 import { useIsFocused } from "@react-navigation/native";
+import useFocusTap from "components/Camera/hooks/useFocusTap.ts";
 import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useRef, useState } from "react";
-import { Animated, Platform, StyleSheet } from "react-native";
+import React, {
+  useCallback
+} from "react";
+import { Platform, StyleSheet } from "react-native";
 import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
@@ -30,8 +32,7 @@ interface Props {
   onCaptureError?: Function,
   onClassifierError?: Function,
   onDeviceNotSupported?: Function,
-  onZoomChange?: Function,
-  onZoomStart?: Function,
+  pinchToZoom?: Function,
   resizeMode?: string
 }
 
@@ -46,13 +47,13 @@ const CameraView = ( {
   onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
-  onZoomChange,
-  onZoomStart,
+  pinchToZoom,
   resizeMode
 }: Props ): Node => {
-  const [focusAvailable, setFocusAvailable] = useState( true );
-  const [tappedCoordinates, setTappedCoordinates] = useState( null );
-  const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
+  const {
+    animatedStyle,
+    tapToFocus
+  } = useFocusTap( cameraRef, device.supportsFocus );
 
   // check if camera page is active
   const isFocused = useIsFocused( );
@@ -72,35 +73,6 @@ const CameraView = ( {
 
   const { deviceOrientation } = useDeviceOrientation();
 
-  const singleTapToFocus = async ( { x, y } ) => {
-    // Show the focus square at the tapped coordinates even if we do not actually set the focus
-    singleTapToFocusAnimation.setValue( 1 );
-    setTappedCoordinates( { x, y } );
-    // If the device doesn't support focus, we don't want the camera to focus
-    if ( !device.supportsFocus && focusAvailable ) {
-      return;
-    }
-    try {
-      await cameraRef.current.focus( { x, y } );
-    } catch ( e ) {
-      // Android often catches the following error from the Camera X library
-      // but it doesn't seem to affect functionality, so we're ignoring this error
-      // and throwing other errors
-      const startFocusError = e?.message?.includes(
-        "Cancelled by another startFocusAndMetering"
-      );
-      if ( !startFocusError ) {
-        throw e;
-      }
-    }
-  };
-
-  const singleTap = Gesture.Tap()
-    .runOnJS( true )
-    .maxDuration( 250 )
-    .numberOfTaps( 1 )
-    .onStart( e => singleTapToFocus( e ) );
-
   const onError = useCallback(
     ( error: CameraRuntimeError ) => {
       // { code: string, message: string, cause?: {} }
@@ -113,12 +85,7 @@ const CameraView = ( {
         return;
       }
 
-      // If the error code is "device/focus-not-supported" disable focus
-      if ( error.code === "device/focus-not-supported" ) {
-        setFocusAvailable( false );
-        return;
-      }
-      // If it is any other "device/" error, return the error code
+      // If it is a "device/" error, return the error code
       if ( error.code.includes( "device/" ) ) {
         console.log( "error :>> ", error );
         onDeviceNotSupported( error.code );
@@ -158,14 +125,6 @@ const CameraView = ( {
     ]
   );
 
-  const pinchGesture = Gesture.Pinch()
-    .runOnJS( true )
-    .onStart( _ => {
-      onZoomStart?.();
-    } ).onChange( e => {
-      onZoomChange?.( e.scale );
-    } );
-
   // react-native-vision-camera v3.9.0:
   // iPad camera preview is wrong in anything else than portrait, hence the
   // VeryBadIpadRotator, which will rotate its contents us a style transform
@@ -174,37 +133,37 @@ const CameraView = ( {
   // Note that overflow-hidden handles what seems to be a bug in android in
   // which the Camera overflows its view
   return (
-    <View className="overflow-hidden flex-1">
+    <GestureDetector
+      gesture={Gesture.Simultaneous( tapToFocus, pinchToZoom )}
+      className="overflow-hidden"
+    >
       <VeryBadIpadRotator>
-        <GestureDetector gesture={Gesture.Exclusive( singleTap, pinchGesture )}>
-          <ReanimatedCamera
-            // Shared props between StandardCamera and AICamera
-            ref={cameraRef}
-            animatedProps={animatedProps}
-            device={device}
-            enableZoomGesture={false}
-            exposure={exposure}
-            format={format}
-            frameProcessor={frameProcessor}
-            isActive={isActive}
-            onError={onError}
-            // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
-            // it does nothing on Android so we set it to null there
-            orientation={orientationPatch( deviceOrientation )}
-            photo
-            photoQualityBalance="quality"
-            pixelFormat="yuv"
-            resizeMode={resizeMode || "cover"}
-            style={StyleSheet.absoluteFill}
+        <ReanimatedCamera
+          // Shared props between StandardCamera and AICamera
+          ref={cameraRef}
+          animatedProps={animatedProps}
+          device={device}
+          enableZoomGesture={false}
+          exposure={exposure}
+          format={format}
+          frameProcessor={frameProcessor}
+          isActive={isActive}
+          onError={onError}
+          // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
+          // it does nothing on Android so we set it to null there
+          orientation={orientationPatch( deviceOrientation )}
+          photo
+          photoQualityBalance="quality"
+          pixelFormat="yuv"
+          resizeMode={resizeMode || "cover"}
+          style={StyleSheet.absoluteFill}
 
-          />
-        </GestureDetector>
+        />
         <FocusSquare
-          singleTapToFocusAnimation={singleTapToFocusAnimation}
-          tappedCoordinates={tappedCoordinates}
+          animatedStyle={animatedStyle}
         />
       </VeryBadIpadRotator>
-    </View>
+    </GestureDetector>
   );
 };
 
