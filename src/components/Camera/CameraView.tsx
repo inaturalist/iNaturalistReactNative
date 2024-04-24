@@ -2,7 +2,6 @@ import { useAppState } from "@react-native-community/hooks";
 import { useIsFocused } from "@react-navigation/native";
 import useFocusTap from "components/Camera/hooks/useFocusTap.ts";
 import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
-import type { Node } from "react";
 import React, {
   useCallback
 } from "react";
@@ -38,7 +37,7 @@ interface Props {
 
 // A container for the Camera component
 // that has logic that applies to both use cases in StandardCamera and AICamera
-const CameraView = ( {
+const CameraView: React.FC<Props> = ( {
   animatedProps,
   cameraRef,
   device,
@@ -49,7 +48,7 @@ const CameraView = ( {
   onDeviceNotSupported,
   pinchToZoom,
   resizeMode
-}: Props ): Node => {
+}: Props ) => {
   const {
     animatedStyle,
     tapToFocus
