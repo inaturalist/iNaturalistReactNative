@@ -75,7 +75,7 @@ const DataQualityAssessment = ( {
   const theme = useTheme( );
   const sectionClass = "flex-row my-[14px] space-x-[11px]";
   const voteClass = "flex-row mr-[15px] my-[7px] justify-between items-center";
-  const listTextClass = "flex-row space-x-[11px]";
+  const listTextClass = "flex-row shrink space-x-[11px]";
 
   const renderMetricIndicator = metric => {
     const ifAgree = ifMajorityAgree( metric );

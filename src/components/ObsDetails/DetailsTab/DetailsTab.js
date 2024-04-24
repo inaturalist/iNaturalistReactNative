@@ -78,7 +78,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const theme = useTheme( );
   const application = observation?.application?.name;
   const qualityGrade = observation?.quality_grade;
-  const observationUUID = observation.uuid;
+  const observationUUID = observation?.uuid;
 
   const displayQualityGradeOption = option => {
     const isResearchGrade = ( qualityGrade === "research" && option === "research" );
@@ -92,12 +92,14 @@ const DetailsTab = ( { observation }: Props ): Node => {
       ? theme.colors.secondary
       : theme.colors.primary;
     return (
-      <View className="flex-col space-y-[8px]">
+      <View className="flex-1 flex-col space-y-[8px] items-center">
         <QualityGradeStatus qualityGrade={option} opacity={opacity} color={color} />
         <Body4 className={labelClassName}>{ qualityGradeOption( option ) }</Body4>
       </View>
     );
   };
+
+  if ( !observation ) return null;
 
   return (
     <>
