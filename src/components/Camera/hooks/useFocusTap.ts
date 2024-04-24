@@ -7,8 +7,13 @@ import { Gesture, GestureResponderEvent } from "react-native-gesture-handler";
 
 const HALF_SIZE_FOCUS_BOX = 33;
 
-  const [tappedCoordinates, setTappedCoordinates] = useState( null );
+interface Coordinates {
+  x: number;
+  y: number;
+}
+
 const useFocusTap = ( cameraRef: React.RefObject<Camera>, supportsFocus: boolean ) => {
+  const [tappedCoordinates, setTappedCoordinates] = useState<Coordinates | null>( null );
   const focusOpacity = useRef( new Animated.Value( 0 ) ).current;
 
   const animatedStyle = useMemo( ( ) => {
