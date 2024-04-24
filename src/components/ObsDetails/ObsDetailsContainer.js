@@ -366,7 +366,7 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
   };
 
-  return (
+  return observationShown && (
     <ObsDetails
       activityItems={activityItems}
       addingActivityItem={addingActivityItem}
@@ -379,7 +379,9 @@ const ObsDetailsContainer = ( ): Node => {
       isOnline={isOnline}
       isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
-      observation={observation}
+      // saving observation in state (i.e. using observationShown)
+      // limits the number of rerenders to entire obs details tree
+      observation={observationShown}
       onAgree={onAgree}
       onCommentAdded={onCommentAdded}
       onIDAgreePressed={onIDAgreePressed}

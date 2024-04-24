@@ -46,6 +46,8 @@ const LocationSection = ( { observation }: Props ): Node => {
     longitude
   } );
 
+  const openMapScreen = useCallback( ( ) => setShowMapModal( true ), [] );
+
   const taxonId = observation?.taxon?.id;
 
   const tileMapParams = useMemo( ( ) => ( taxonId
@@ -62,7 +64,7 @@ const LocationSection = ( { observation }: Props ): Node => {
         obsLatitude={latitude}
         obsLongitude={longitude}
         obscured={isObscured}
-        openMapScreen={() => setShowMapModal( true )}
+        openMapScreen={openMapScreen}
         permissionRequested={false}
         positionalAccuracy={positionalAccuracy}
         scrollEnabled={false}
@@ -78,9 +80,37 @@ const LocationSection = ( { observation }: Props ): Node => {
       longitude,
       positionalAccuracy,
       tileMapParams,
-      isObscured
+      isObscured,
+      openMapScreen
     ]
   );
+
+  const showModalMap = useMemo( ( ) => (
+    <DetailsMap
+      latitude={latitude}
+      longitude={longitude}
+      obscured={isObscured}
+      coordinateString={coordinateString}
+      closeModal={( ) => setShowMapModal( false )}
+      positionalAccuracy={positionalAccuracy}
+      tileMapParams={tileMapParams}
+      showLocationIndicator
+      headerTitle={(
+        <DetailsMapHeader
+          observation={observation}
+          obscured={isObscured}
+        />
+      )}
+    />
+  ), [
+    coordinateString,
+    isObscured,
+    latitude,
+    longitude,
+    observation,
+    positionalAccuracy,
+    tileMapParams
+  ] );
 
   return (
     <>
@@ -120,24 +150,7 @@ const LocationSection = ( { observation }: Props ): Node => {
         closeModal={( ) => setShowMapModal( false )}
         disableSwipeDirection
         style={DETAILS_MAP_MODAL_STYLE}
-        modal={(
-          <DetailsMap
-            latitude={latitude}
-            longitude={longitude}
-            obscured={isObscured}
-            coordinateString={coordinateString}
-            closeModal={( ) => setShowMapModal( false )}
-            positionalAccuracy={positionalAccuracy}
-            tileMapParams={tileMapParams}
-            showLocationIndicator
-            headerTitle={(
-              <DetailsMapHeader
-                observation={observation}
-                obscured={isObscured}
-              />
-            )}
-          />
-        )}
+        modal={showModalMap}
       />
     </>
   );
