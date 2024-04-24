@@ -92,7 +92,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const application = observation?.application?.name;
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
   const qualityGrade = observation?.quality_grade;
-  const observationUUID = observation.uuid;
+  const observationUUID = observation?.uuid;
   const geoprivacy = observation?.geoprivacy;
   const positionalAccuracy = observation?.positional_accuracy;
   const [showMapModal, setShowMapModal] = useState( false );
@@ -102,8 +102,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const isObscured = observation?.obscured && !belongsToCurrentUser;
   const showShareOptions = !isPrivate && !isObscured;
 
-  const latitude = observation.privateLatitude || observation.latitude;
-  const longitude = observation.privateLongitude || observation.longitude;
+  const latitude = observation?.privateLatitude || observation?.latitude;
+  const longitude = observation?.privateLongitude || observation?.longitude;
   const coordinateString = t( "Lat-Lon", {
     latitude,
     longitude
@@ -111,7 +111,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
 
   const tileMapParams = observation?.taxon?.id
     ? {
-      taxon_id: observation.taxon.id,
+      taxon_id: observation?.taxon.id,
       verifiable: true
     }
     : null;
@@ -128,12 +128,14 @@ const DetailsTab = ( { observation }: Props ): Node => {
       ? theme.colors.secondary
       : theme.colors.primary;
     return (
-      <View className="flex-col space-y-[8px]">
+      <View className="flex-1 flex-col space-y-[8px] items-center">
         <QualityGradeStatus qualityGrade={option} opacity={opacity} color={color} />
         <Body4 className={labelClassName}>{ qualityGradeOption( option ) }</Body4>
       </View>
     );
   };
+
+  if ( !observation ) return null;
 
   return (
     <>
