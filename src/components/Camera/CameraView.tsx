@@ -10,7 +10,7 @@ import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
-import type { CameraProps, CameraRuntimeError } from "react-native-vision-camera";
+import type { CameraDevice, CameraProps, CameraRuntimeError } from "react-native-vision-camera";
 import { Camera, useCameraFormat } from "react-native-vision-camera";
 import { orientationPatch } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -24,8 +24,8 @@ Reanimated.addWhitelistedNativeProps( {
 
 interface Props {
   animatedProps: CameraProps,
-  cameraRef: Object,
-  device: Object,
+  cameraRef: React.RefObject<Camera>,
+  device: CameraDevice,
   frameProcessor?: Function,
   onCameraError?: Function,
   onCaptureError?: Function,
