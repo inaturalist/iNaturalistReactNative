@@ -1,9 +1,9 @@
-import type { Node } from "react";
 import {
   useCallback, useMemo, useRef, useState
 } from "react";
 import { Animated } from "react-native";
 import { Gesture, GestureResponderEvent } from "react-native-gesture-handler";
+import { Camera } from "react-native-vision-camera";
 
 const HALF_SIZE_FOCUS_BOX = 33;
 
