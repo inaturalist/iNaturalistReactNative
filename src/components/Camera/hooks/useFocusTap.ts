@@ -1,14 +1,23 @@
-import type { Node } from "react";
 import {
   useCallback, useMemo, useRef, useState
 } from "react";
 import { Animated } from "react-native";
-import { Gesture, GestureResponderEvent } from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureStateChangeEvent,
+  TapGestureHandlerEventPayload
+} from "react-native-gesture-handler";
+import { Camera } from "react-native-vision-camera";
 
 const HALF_SIZE_FOCUS_BOX = 33;
 
-const useFocusTap = ( cameraRef: Object, supportsFocus: boolean ): Node => {
-  const [tappedCoordinates, setTappedCoordinates] = useState( null );
+interface Coordinates {
+  x: number;
+  y: number;
+}
+
+const useFocusTap = ( cameraRef: React.RefObject<Camera>, supportsFocus: boolean ) => {
+  const [tappedCoordinates, setTappedCoordinates] = useState<Coordinates | null>( null );
   const focusOpacity = useRef( new Animated.Value( 0 ) ).current;
 
   const animatedStyle = useMemo( ( ) => {
@@ -20,7 +29,8 @@ const useFocusTap = ( cameraRef: Object, supportsFocus: boolean ): Node => {
     } );
   }, [tappedCoordinates, focusOpacity] );
 
-  const onFocus = useCallback( async ( { x, y }: GestureResponderEvent ) => {
+  type TapEvent = GestureStateChangeEvent<TapGestureHandlerEventPayload>;
+  const onFocus = useCallback( async ( { x, y }: TapEvent ) => {
     // If the device doesn't support focus, we don't want the camera to focus
     if ( supportsFocus ) {
       cameraRef?.current?.focus( { x, y } );

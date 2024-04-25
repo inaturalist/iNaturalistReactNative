@@ -147,6 +147,7 @@
     "@testing-library/react": "^15.0.2",
     "@testing-library/react-native": "^12.4.5",
     "@types/jest": "^29.5.12",
+    "@types/lodash": "^4.17.0",
     "@types/react": "^18.2.74",
     "@types/react-test-renderer": "^18.0.7",
     "babel-jest": "^29.6.3",
