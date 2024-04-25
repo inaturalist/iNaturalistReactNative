@@ -38,7 +38,6 @@ import {
   useExplore,
   WILD_STATUS
 } from "providers/ExploreContext.tsx";
-import type { Node } from "react";
 import React, { useState } from "react";
 import { useTheme } from "react-native-paper";
 import { useCurrentUser, useTranslation } from "sharedHooks";
@@ -60,7 +59,7 @@ interface Props {
 const FilterModal = ( {
   closeModal,
   updateTaxon
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const realm = useRealm();
