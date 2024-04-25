@@ -37,7 +37,7 @@ interface Props {
 
 // A container for the Camera component
 // that has logic that applies to both use cases in StandardCamera and AICamera
-const CameraView: React.FC<Props> = ( {
+const CameraView = ( {
   animatedProps,
   cameraRef,
   device,
