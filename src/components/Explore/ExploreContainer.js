@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
@@ -18,7 +18,6 @@ import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
-  const { params } = useRoute( );
   const isOnline = useIsConnected( );
   const setStoredParams = useStore( state => state.setStoredParams );
 
@@ -27,15 +26,8 @@ const ExploreContainerWithContext = ( ): Node => {
   const { state, dispatch, makeSnapshot } = useExplore();
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
-  const [exploreView, setExploreView] = useState( params?.viewSpecies
-    ? "species"
-    : "observations" );
 
   useParams( );
-
-  const changeExploreView = newView => {
-    setExploreView( newView );
-  };
 
   const updateTaxon = ( taxon: Object ) => {
     dispatch( {
@@ -55,9 +47,6 @@ const ExploreContainerWithContext = ( ): Node => {
     ...filteredParams,
     per_page: 20
   };
-  if ( exploreView === "observers" ) {
-    queryParams.order_by = "observation_count";
-  }
 
   // need this hook to be top-level enough that HeaderCount rerenders
   const { count, loadingStatus, updateCount } = useHeaderCount( );
@@ -77,10 +66,8 @@ const ExploreContainerWithContext = ( ): Node => {
 
   return (
     <Explore
-      changeExploreView={changeExploreView}
       closeFiltersModal={closeFiltersModal}
       count={count}
-      exploreView={exploreView}
       hideBackButton={false}
       isOnline={isOnline}
       loadingStatus={loadingStatus}

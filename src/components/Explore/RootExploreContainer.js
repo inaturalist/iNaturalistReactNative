@@ -23,17 +23,17 @@ const RootExploreContainerWithContext = ( ): Node => {
   const currentUser = useCurrentUser( );
   const storedParams = useStore( state => state.storedParams );
   const setStoredParams = useStore( state => state.setStoredParams );
+  const setExploreView = useStore( state => state.setExploreView );
 
   const {
     state, dispatch, makeSnapshot, setExploreLocation
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
-  const [exploreView, setExploreView] = useState( "species" );
 
-  const changeExploreView = newView => {
-    setExploreView( newView );
-  };
+  useEffect( ( ) => {
+    setExploreView( "species" );
+  }, [setExploreView] );
 
   const updateTaxon = ( taxon: Object ) => {
     dispatch( {
@@ -53,9 +53,6 @@ const RootExploreContainerWithContext = ( ): Node => {
     ...filteredParams,
     per_page: 20
   };
-  if ( exploreView === "observers" ) {
-    queryParams.order_by = "observation_count";
-  }
 
   // need this hook to be top-level enough that HeaderCount rerenders
   const { count, loadingStatus, updateCount } = useHeaderCount( );
@@ -109,10 +106,8 @@ const RootExploreContainerWithContext = ( ): Node => {
   return (
     <>
       <Explore
-        changeExploreView={changeExploreView}
         closeFiltersModal={closeFiltersModal}
         count={count}
-        exploreView={exploreView}
         hideBackButton
         isOnline={isOnline}
         loadingStatus={loadingStatus}
