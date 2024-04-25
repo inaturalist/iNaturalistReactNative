@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import displayProjectType from "components/Projects/helpers/displayProjectType";
+import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
 import {
   Button, Heading1, Heading3, Heading4, OverviewCounts,
   ScrollViewWrapper,
