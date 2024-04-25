@@ -286,7 +286,7 @@ const Map = ( {
   }
 
   const onMapPressForObsLyr = useCallback( async latLng => {
-    const uuid = fetchObservationUUID( currentZoom, latLng, params );
+    const uuid = await fetchObservationUUID( currentZoom, latLng, params );
     if ( uuid ) {
       navigation.navigate( "ObsDetails", { uuid } );
     }
