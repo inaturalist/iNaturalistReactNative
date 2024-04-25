@@ -19,6 +19,8 @@ interface MapRegion {
 interface ExploreSlice {
   storedParams: Object,
   setStoredParams: ( _params: Object ) => void,
+  exploreView: string,
+  setExploreView: ( _view: string ) => void,
   mapRegion: MapRegion,
   setMapRegion: ( _region: MapRegion ) => void
 }
@@ -26,6 +28,8 @@ interface ExploreSlice {
 const createExploreSlice: StateCreator<ExploreSlice> = set => ( {
   storedParams: {},
   setStoredParams: params => set( ( ) => ( { storedParams: params } ) ),
+  exploreView: "observations",
+  setExploreView: exploreView => set( ( ) => ( { exploreView } ) ),
   mapRegion: initialMapRegion,
   setMapRegion: region => set( ( ) => ( { mapRegion: region } ) )
 } );
