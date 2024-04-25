@@ -81,9 +81,9 @@ class Photo extends Realm.Object {
   // this is necessary because photos cannot be found reliably via the file:/// name.
   // without this, local photos will not show up when the app updates
   static accessLocalPhoto( url ) {
-    const uuidAndJpgSuffix = url.split( "photoUploads/" )[1];
+    const uuidAndJpgSuffix = url?.split( "photoUploads/" )[1];
     const localPath = `${Photo.photoUploadPath}/${uuidAndJpgSuffix}`;
-    return localPath;
+    return localPath || null;
   }
 
   static displayLargePhoto( url ) {
