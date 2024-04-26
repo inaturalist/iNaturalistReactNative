@@ -1,23 +1,19 @@
-// @flow
-
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import colors from "styles/tailwindColors";
 
-export const CIRCLE_BUTTON_DIM = 40;
-
-const circleOptionsClasses = [
+export const CIRCLE_OPTIONS_CLASSES = [
   "bg-black/50",
-  `h-[${CIRCLE_BUTTON_DIM}px]`,
   "items-center",
   "justify-center",
-  "rounded-full",
-  `w-[${CIRCLE_BUTTON_DIM}px]`
+  "rounded-full"
 ].join( " " );
 
-type Props = {
+export const CIRCLE_SIZE = "h-[40px] w-[40px]";
+
+interface Props {
   onPress: Function,
   optionalClasses?: string,
   accessibilityHint?: string,
@@ -35,7 +31,7 @@ const TransparentCircleButton = ( {
   testID
 }: Props ): Node => (
   <INatIconButton
-    className={classnames( circleOptionsClasses, optionalClasses )}
+    className={classnames( CIRCLE_OPTIONS_CLASSES, optionalClasses, CIRCLE_SIZE )}
     onPress={onPress}
     accessibilityLabel={accessibilityLabel}
     accessibilityHint={accessibilityHint}
