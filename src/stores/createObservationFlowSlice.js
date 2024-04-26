@@ -107,9 +107,13 @@ const createObservationFlowSlice = set => ( {
     savingPhoto: false,
     unsavedChanges: false
   } ),
-  setCameraRollUris: uris => set( {
-    cameraRollUris: uris,
-    savingPhoto: false
+  addCameraRollUri: uri => set( state => {
+    const savedUris = state.cameraRollUris;
+    savedUris.push( uri );
+    return ( {
+      cameraRollUris: savedUris,
+      savingPhoto: false
+    } );
   } ),
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
