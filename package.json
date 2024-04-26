@@ -16,6 +16,7 @@
     "lint": "npm run lint:eslint && npm run lint:flow",
     "lint:eslint": "eslint . --fix",
     "lint:flow": "flow check",
+    "lint:tsc": "tsc --allowJs false --noEmit",
     "postinstall": "husky && patch-package",
     "translate": "node src/i18n/i18ncli.js build",
     "e2e:android": "npm run e2e:build:android && npm run e2e:test:android",
