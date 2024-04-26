@@ -60,9 +60,22 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   return shouldRetry;
 }
 
-function formatBytes( bytes ) {
-  const unit = ["Bytes", "KB", "MB", "GB", "TB"][Math.floor( Math.log2( bytes ) / 10 )];
-  return `${bytes} ${unit}`;
+// https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
+function formatSizeUnits( bytes ) {
+  if ( bytes >= 1073741824 ) {
+    bytes = `${( bytes / 1073741824 ).toFixed( 2 )} GB`;
+  } else if ( bytes >= 1048576 ) {
+    bytes = `${( bytes / 1048576 ).toFixed( 2 )} MB`;
+  } else if ( bytes >= 1024 ) {
+    bytes = `${( bytes / 1024 ).toFixed( 2 )} KB`;
+  } else if ( bytes > 1 ) {
+    bytes += " bytes";
+  } else if ( bytes === 1 ) {
+    bytes += " byte";
+  } else {
+    bytes = "0 bytes";
+  }
+  return bytes;
 }
 
 async function getAppSize( ) {
@@ -92,7 +105,7 @@ async function getAppSize( ) {
   directories.forEach( async ( { path, directoryName } ) => {
     const { size } = await RNFS.stat( path );
 
-    logger.info( directoryName, "is", formatBytes( size ) );
+    logger.info( directoryName, "is", formatSizeUnits( size ) );
   } );
 }
 

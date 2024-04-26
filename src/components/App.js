@@ -8,6 +8,7 @@ import { LogBox } from "react-native";
 import Realm from "realm";
 import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
+import { getAppSize } from "sharedHelpers/logging";
 import {
   useCurrentUser,
   useIconicTaxa,
@@ -20,7 +21,6 @@ import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
 import useReactQueryRefetch from "./hooks/useReactQueryRefetch";
-import { getAppSize } from "sharedHelpers/logging"
 
 const { useRealm } = RealmContext;
 
