@@ -6,7 +6,9 @@ import {
   INatIconButton,
   P
 } from "components/SharedComponents";
-import { CIRCLE_BUTTON_DIM } from "components/SharedComponents/Buttons/TransparentCircleButton";
+import {
+  CIRCLE_SIZE
+} from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
 import { View } from "components/styledComponents";
 import { round } from "lodash";
 import React, { useState } from "react";
@@ -68,11 +70,10 @@ const AIDebugButton = ( {
       <INatIconButton
         className={classnames(
           "bg-deeppink",
-          `h-[${CIRCLE_BUTTON_DIM}px]`,
           "items-center",
           "justify-center",
           "rounded-full",
-          `w-[${CIRCLE_BUTTON_DIM}px]`
+          CIRCLE_SIZE
         )}
         backgroundColor={colors.deeppink}
         onPress={( ) => setModalVisible( true )}
