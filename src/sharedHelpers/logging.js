@@ -1,5 +1,6 @@
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import RNFS from "react-native-fs";
 
 import { log } from "../../react-native-logs.config";
 
@@ -59,5 +60,41 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   return shouldRetry;
 }
 
+function formatBytes( bytes ) {
+  const unit = ["Bytes", "KB", "MB", "GB", "TB"][Math.floor( Math.log2( bytes ) / 10 )];
+  return `${bytes} ${unit}`;
+}
+
+async function getAppSize( ) {
+  const logger = defaultLogger;
+  const directories = [
+    {
+      path: RNFS.MainBundlePath,
+      directoryName: "MainBundle"
+    },
+    {
+      path: RNFS.DocumentDirectoryPath,
+      directoryName: "DocumentDirectory"
+    },
+    {
+      path: RNFS.CachesDirectoryPath,
+      directoryName: "CachesDirectory"
+    },
+    {
+      path: RNFS.TemporaryDirectoryPath,
+      directoryName: "TemporaryDirectory"
+    }, {
+      path: RNFS.LibraryDirectoryPath,
+      directoryName: "LibraryDirectory"
+    }
+  ];
+
+  directories.forEach( async ( { path, directoryName } ) => {
+    const { size } = await RNFS.stat( path );
+
+    logger.info( directoryName, "is", formatBytes( size ) );
+  } );
+}
+
 // eslint-disable-next-line import/prefer-default-export
-export { inspect, reactQueryRetry };
+export { getAppSize, inspect, reactQueryRetry };

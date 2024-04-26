@@ -20,6 +20,7 @@ import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
 import useReactQueryRefetch from "./hooks/useReactQueryRefetch";
+import { getAppSize } from "sharedHelpers/logging"
 
 const { useRealm } = RealmContext;
 
@@ -43,6 +44,8 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+
+  getAppSize( );
 
   useIconicTaxa( { reload: true } );
   useReactQueryRefetch( );
