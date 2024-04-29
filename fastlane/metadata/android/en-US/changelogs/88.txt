@@ -1,0 +1,17 @@
+NEW
+* Photos on taxon details now swipable
+
+UPDATED
+* Camera now uses max available photo resolution
+* Camera now uses a more neutral exposure setting
+* Adding ID for photo-less obs goes directly to TaxonSearch
+* Don't show location permission in ObsDetails
+
+FIXED
+* Many smaller UI fixes
+* Crash on gallery import
+* Taxon result now under top notch
+* Camera focus in macro
+* Allow multiple gestures on same spot in camera
+* Crash in DetailsTab
+* Display saved photos after app updates

@@ -24,34 +24,44 @@ const usePrepareStoreAndNavigate = (
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
   const currentObservation = useStore( state => state.currentObservation );
-  const setCameraRollUris = useStore( state => state.setCameraRollUris );
+  const addCameraRollUri = useStore( state => state.addCameraRollUri );
   const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
+  const saveToiNaturalistNextAlbum = useCallback( async uri => {
+    try {
+      const savedPhotoUri = await CameraRoll.save( uri, {
+        type: "photo",
+        album: "iNaturalist Next"
+      } );
+      logger.info( "savedUris: ", savedPhotoUri );
+      // Save these camera roll URIs, so later on observation editor can update
+      // the EXIF metadata of these photos, once we retrieve a location.
+      addCameraRollUri( savedPhotoUri );
+    } catch {
+      console.log( "couldn't save photo to iNaturalist Next album" );
+    }
+  }, [addCameraRollUri] );
+
   // Save URIs to camera gallery (if a photo was taken using the app,
   // we want it accessible in the camera's folder, as if the user has taken those photos
   // via their own camera app).
   const savePhotosToCameraGallery = useCallback( async ( uris, visionResult ) => {
-    if ( permissionGranted === "granted" ) {
-      const savedUris = await Promise.all( uris.map( async uri => {
-      // Find original camera URI of each scaled-down photo
-        const cameraUri = originalCameraUrisMap[uri];
+    if ( permissionGranted !== "granted" ) { return; }
+    uris.forEach( async uri => {
+    // Find original camera URI of each scaled-down photo
+      const originalCameraUri = originalCameraUrisMap[uri];
 
-        if ( !cameraUri ) {
-          console.error( `Couldn't find original camera URI for: ${uri}` );
-        }
-        logger.info( "savePhotosToCameraGallery, saving cameraUri: ", cameraUri );
-        return CameraRoll.save( cameraUri, { type: "photo", album: "Camera" } );
-      } ) );
+      if ( !originalCameraUri ) {
+        console.error( `Couldn't find original camera URI for: ${uri}` );
+      }
+      logger.info( "saving originalCameraUri: ", originalCameraUri );
+      await saveToiNaturalistNextAlbum( originalCameraUri );
+    } );
 
-      logger.info( "savePhotosToCameraGallery, savedUris: ", savedUris );
-      // Save these camera roll URIs, so later on observation editor can update
-      // the EXIF metadata of these photos, once we retrieve a location.
-      setCameraRollUris( savedUris );
-    }
     navigation.push( "Suggestions", {
       lastScreen: "CameraWithDevice",
       hasVisionSuggestion: visionResult
@@ -60,7 +70,7 @@ const usePrepareStoreAndNavigate = (
     navigation,
     originalCameraUrisMap,
     permissionGranted,
-    setCameraRollUris
+    saveToiNaturalistNextAlbum
   ] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
@@ -88,7 +98,7 @@ const usePrepareStoreAndNavigate = (
     }
     setObservations( [newObservation] );
     logger.info(
-      "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
+      "calling savePhotosToCameraGallery with paths: ",
       localFilePaths
     );
 
@@ -110,7 +120,7 @@ const usePrepareStoreAndNavigate = (
       observations[currentObservationIndex] = updatedCurrentObservation;
       updateObservations( observations );
       logger.info(
-        "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
+        "calling savePhotosToCameraGallery with evidence to add: ",
         evidenceToAdd
       );
       return savePhotosToCameraGallery( evidenceToAdd, visionResult );
