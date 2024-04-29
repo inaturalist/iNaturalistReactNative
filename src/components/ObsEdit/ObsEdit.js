@@ -45,7 +45,9 @@ const ObsEdit = ( ): Node => {
             {currentObservation && (
               <View
                 className="bg-white rounded-t-3xl mt-1"
-                style={(observations.length > 1) ? DROP_SHADOW : undefined}
+                style={( observations.length > 1 )
+                  ? DROP_SHADOW
+                  : undefined}
               >
                 <View className="pb-5">
                   {observations.length > 1 && (
