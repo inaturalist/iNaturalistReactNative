@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import RNFS from "react-native-fs";
 
 // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-function formatSizeUnits( bytes ) {
+export function formatSizeUnits( bytes ) {
   if ( bytes >= 1073741824 ) {
     bytes = `${( bytes / 1073741824 ).toFixed( 2 )} GB`;
   } else if ( bytes >= 1048576 ) {
@@ -20,7 +20,7 @@ function formatSizeUnits( bytes ) {
   return bytes;
 }
 
-const directories = [
+export const directories = [
   {
     path: RNFS.MainBundlePath,
     directoryName: "MainBundle"
@@ -42,49 +42,52 @@ const directories = [
   }
 ];
 
-function formatAppSizeString( name, size ) {
+export function formatAppSizeString( name, size ) {
   return `${name}: ${formatSizeUnits( size )}`;
 }
 
-async function getDirectorySizes( ) {
-  return Promise.all( directories.map( async ( { path, directoryName } ) => {
-    const { size } = await RNFS.stat( path );
-
-    return formatAppSizeString( directoryName, size );
+export async function getDirectoryContentSizes( directory ) {
+  const contents = await RNFS.readDir( directory );
+  const sortedContents = _.orderBy( contents, "size", "desc" );
+  return sortedContents.map( ( { name, size } ) => ( {
+    name,
+    size
   } ) );
 }
 
-async function getFileSizes( directory ) {
-  const contents = await RNFS.readDir( directory );
-  const sortBySize = _.orderBy( contents, "size", "desc" );
-  return Promise.all( sortBySize.map( item => formatAppSizeString( item.name, item.size ) ) );
+export function getTotalDirectorySize( directory ) {
+  let totalSizes = 0;
+
+  directory.forEach( item => {
+    totalSizes += item.size;
+  } );
+
+  return totalSizes;
 }
 
 const useAppSize = ( ) => {
-  const [contentSizes, setContentSizes] = useState( { } );
-  const [directorySizes, setDirectorySizes] = useState( [] );
+  const [fileSizes, setFileSizes] = useState( { } );
 
   useEffect( ( ) => {
     const fetchAppSize = async ( ) => {
-      const sizes = await getDirectorySizes( );
-
-      directories.map( async ( { path, directoryName } ) => {
-        const fileSizes = await getFileSizes( path );
-
-        if ( !contentSizes[directoryName] ) {
-          contentSizes[directoryName] = fileSizes;
-          setContentSizes( contentSizes );
-        }
-      } );
-      setDirectorySizes( sizes );
+      // using some funky code here because react will only update state
+      // once while in a for loop, so we need to create the whole fileSize
+      // object and then setState to have this update the Developer UI
+      // on first render. feel free to rewrite if there's a better way to do this
+      const tempFileSizes = { };
+      const size = await Promise.all( directories.map( async ( { directoryName, path } ) => {
+        const contentSizes = await getDirectoryContentSizes( path );
+        tempFileSizes[directoryName] = contentSizes;
+        return tempFileSizes;
+      } ) );
+      if ( !_.isEmpty( size[0] ) ) {
+        setFileSizes( size[0] );
+      }
     };
     fetchAppSize( );
-  }, [contentSizes] );
+  }, [] );
 
-  return {
-    contentSizes,
-    directorySizes
-  };
+  return fileSizes;
 };
 
 export default useAppSize;

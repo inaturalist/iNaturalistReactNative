@@ -15,7 +15,9 @@ import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import useLogs from "sharedHooks/useLogs";
 
-import useAppSize from "./hooks/useAppSize";
+import useAppSize, {
+  formatAppSizeString, formatSizeUnits, getTotalDirectorySize
+} from "./hooks/useAppSize";
 
 const H1 = ( { children } ) => <Heading1 className="mt-3 mb-2">{children}</Heading1>;
 const H2 = ( { children } ) => <Heading2 className="mt-3 mb-2">{children}</Heading2>;
@@ -28,7 +30,6 @@ const CODE = ( { children, optionalClassName } ) => (
       optionalClassName
     )}
   >
-    {console.log( optionalClassName )}
     {children}
   </Text>
 );
@@ -44,32 +45,44 @@ const taxonomyFileName = Platform.select( {
 
 /* eslint-disable i18next/no-literal-string */
 const Developer = (): Node => {
-  const {
-    contentSizes,
-    directorySizes
-  } = useAppSize( );
+  const fileSizes = useAppSize( );
 
-  const displayFileSizes = useCallback( ( ) => Object.keys( contentSizes ).map( directory => (
-    <>
-      <H2 key={directory}>
-        {directory}
-      </H2>
-      {contentSizes[directory].map( line => (
+  const boldClassname = ( line, isDirectory = false ) => classnames(
+    {
+      "text-red font-bold": line.includes( "MB" ),
+      "text-blue": isDirectory
+    }
+  );
+
+  const displayFileSizes = useCallback( ( ) => Object.keys( fileSizes ).map( directory => {
+    const contents = fileSizes[directory];
+    if ( !directory || !contents ) { return null; }
+    const totalDirectorySize = formatSizeUnits( getTotalDirectorySize( contents ) );
+    return (
+      <>
+        <H2 key={directory}>
+          File Sizes:
+          {" "}
+          {directory}
+        </H2>
         <P>
-          <CODE optionalClassName={
-            classnames(
-              {
-                "text-red font-bold": line.includes( "MB" )
-              }
-            )
-          }
-          >
-            {line}
+          <CODE optionalClassName={boldClassname( totalDirectorySize, true )}>
+            {`Total Directory Size: ${totalDirectorySize}`}
           </CODE>
         </P>
-      ) )}
-    </>
-  ) ), [contentSizes] );
+        {contents.map( ( { name, size } ) => {
+          const line = formatAppSizeString( name, size );
+          return (
+            <P key={name}>
+              <CODE optionalClassName={boldClassname( line )}>
+                {line}
+              </CODE>
+            </P>
+          );
+        } )}
+      </>
+    );
+  } ), [fileSizes] );
 
   const navigation = useNavigation( );
   const { shareLogFile, emailLogFile } = useLogs();
@@ -114,12 +127,6 @@ const Developer = (): Node => {
         <P>
           <CODE>{RNFS.CachesDirectoryPath}</CODE>
         </P>
-        <H2>App Size</H2>
-        {directorySizes.map( line => (
-          <P key={line}>
-            <CODE>{line}</CODE>
-          </P>
-        ) )}
         {displayFileSizes( )}
         <H1>Log file contents</H1>
         <Button
