@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import {
   Button,
   Heading1,
@@ -13,6 +14,8 @@ import { Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import useLogs from "sharedHooks/useLogs";
+
+import useAppSize from "./hooks/useAppSize";
 
 const H1 = ( { children } ) => <Heading1 className="mt-3 mb-2">{children}</Heading1>;
 const H2 = ( { children } ) => <Heading2 className="mt-3 mb-2">{children}</Heading2>;
@@ -30,6 +33,11 @@ const taxonomyFileName = Platform.select( {
 
 /* eslint-disable i18next/no-literal-string */
 const Developer = (): Node => {
+  const {
+    contentSizes,
+    directorySizes
+  } = useAppSize( );
+
   const navigation = useNavigation( );
   const { shareLogFile, emailLogFile } = useLogs();
   return (
@@ -73,6 +81,35 @@ const Developer = (): Node => {
         <P>
           <CODE>{RNFS.CachesDirectoryPath}</CODE>
         </P>
+        <H2>App Size</H2>
+        {directorySizes.map( line => (
+          <P key={line}>
+            <CODE>{line}</CODE>
+          </P>
+        ) )}
+        {Object.keys( contentSizes ).map( directory => (
+          <>
+            {console.log( directory, "directory " )}
+            <H2 key={directory}>
+              {directory}
+            </H2>
+            {contentSizes[directory].map( line => (
+              <P>
+                {console.log( line.includes( "MB" ) )}
+                <CODE className={
+                  classnames(
+                    {
+                      "color-red": line.includes( "MB" )
+                    }
+                  )
+                }
+                >
+                  {line}
+                </CODE>
+              </P>
+            ) )}
+          </>
+        ) )}
         <H1>Log file contents</H1>
         <Button
           level="focus"

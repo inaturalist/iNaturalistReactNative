@@ -8,7 +8,6 @@ import { LogBox } from "react-native";
 import Realm from "realm";
 import { addARCameraFiles } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
-import { getAppSize } from "sharedHelpers/logging";
 import {
   useCurrentUser,
   useIconicTaxa,
@@ -44,8 +43,6 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
-
-  getAppSize( );
 
   useIconicTaxa( { reload: true } );
   useReactQueryRefetch( );

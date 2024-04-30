@@ -1,6 +1,5 @@
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import RNFS from "react-native-fs";
 
 import { log } from "../../react-native-logs.config";
 
@@ -60,54 +59,5 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   return shouldRetry;
 }
 
-// https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-function formatSizeUnits( bytes ) {
-  if ( bytes >= 1073741824 ) {
-    bytes = `${( bytes / 1073741824 ).toFixed( 2 )} GB`;
-  } else if ( bytes >= 1048576 ) {
-    bytes = `${( bytes / 1048576 ).toFixed( 2 )} MB`;
-  } else if ( bytes >= 1024 ) {
-    bytes = `${( bytes / 1024 ).toFixed( 2 )} KB`;
-  } else if ( bytes > 1 ) {
-    bytes += " bytes";
-  } else if ( bytes === 1 ) {
-    bytes += " byte";
-  } else {
-    bytes = "0 bytes";
-  }
-  return bytes;
-}
-
-async function getAppSize( ) {
-  const logger = defaultLogger;
-  const directories = [
-    {
-      path: RNFS.MainBundlePath,
-      directoryName: "MainBundle"
-    },
-    {
-      path: RNFS.DocumentDirectoryPath,
-      directoryName: "DocumentDirectory"
-    },
-    {
-      path: RNFS.CachesDirectoryPath,
-      directoryName: "CachesDirectory"
-    },
-    {
-      path: RNFS.TemporaryDirectoryPath,
-      directoryName: "TemporaryDirectory"
-    }, {
-      path: RNFS.LibraryDirectoryPath,
-      directoryName: "LibraryDirectory"
-    }
-  ];
-
-  directories.forEach( async ( { path, directoryName } ) => {
-    const { size } = await RNFS.stat( path );
-
-    logger.info( directoryName, "is", formatSizeUnits( size ) );
-  } );
-}
-
 // eslint-disable-next-line import/prefer-default-export
-export { getAppSize, inspect, reactQueryRetry };
+export { inspect, reactQueryRetry };
