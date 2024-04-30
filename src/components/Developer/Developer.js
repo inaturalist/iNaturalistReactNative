@@ -9,7 +9,7 @@ import {
 import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
@@ -20,7 +20,18 @@ import useAppSize from "./hooks/useAppSize";
 const H1 = ( { children } ) => <Heading1 className="mt-3 mb-2">{children}</Heading1>;
 const H2 = ( { children } ) => <Heading2 className="mt-3 mb-2">{children}</Heading2>;
 const P = ( { children } ) => <Text selectable className="mb-2">{children}</Text>;
-const CODE = ( { children } ) => <Text selectable className={fontMonoClass}>{children}</Text>;
+const CODE = ( { children, optionalClassName } ) => (
+  <Text
+    selectable
+    className={classnames(
+      fontMonoClass,
+      optionalClassName
+    )}
+  >
+    {console.log( optionalClassName )}
+    {children}
+  </Text>
+);
 
 const modelFileName: string = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,
@@ -37,6 +48,28 @@ const Developer = (): Node => {
     contentSizes,
     directorySizes
   } = useAppSize( );
+
+  const displayFileSizes = useCallback( ( ) => Object.keys( contentSizes ).map( directory => (
+    <>
+      <H2 key={directory}>
+        {directory}
+      </H2>
+      {contentSizes[directory].map( line => (
+        <P>
+          <CODE optionalClassName={
+            classnames(
+              {
+                "text-red font-bold": line.includes( "MB" )
+              }
+            )
+          }
+          >
+            {line}
+          </CODE>
+        </P>
+      ) )}
+    </>
+  ) ), [contentSizes] );
 
   const navigation = useNavigation( );
   const { shareLogFile, emailLogFile } = useLogs();
@@ -87,29 +120,7 @@ const Developer = (): Node => {
             <CODE>{line}</CODE>
           </P>
         ) )}
-        {Object.keys( contentSizes ).map( directory => (
-          <>
-            {console.log( directory, "directory " )}
-            <H2 key={directory}>
-              {directory}
-            </H2>
-            {contentSizes[directory].map( line => (
-              <P>
-                {console.log( line.includes( "MB" ) )}
-                <CODE className={
-                  classnames(
-                    {
-                      "color-red": line.includes( "MB" )
-                    }
-                  )
-                }
-                >
-                  {line}
-                </CODE>
-              </P>
-            ) )}
-          </>
-        ) )}
+        {displayFileSizes( )}
         <H1>Log file contents</H1>
         <Button
           level="focus"

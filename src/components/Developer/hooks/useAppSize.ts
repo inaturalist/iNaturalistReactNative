@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { useEffect, useState } from "react";
 import RNFS from "react-native-fs";
 
@@ -55,7 +56,8 @@ async function getDirectorySizes( ) {
 
 async function getFileSizes( directory ) {
   const contents = await RNFS.readDir( directory );
-  return Promise.all( contents.map( item => formatAppSizeString( item.name, item.size ) ) );
+  const sortBySize = _.orderBy( contents, "size", "desc" );
+  return Promise.all( sortBySize.map( item => formatAppSizeString( item.name, item.size ) ) );
 }
 
 const useAppSize = ( ) => {
