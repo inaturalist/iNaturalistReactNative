@@ -15,6 +15,7 @@ import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
   hideHeader,
+  hideHeaderLeft,
   showCustomHeader,
   showHeader
 } from "navigation/navigationOptions";
@@ -47,13 +48,14 @@ const GROUP_PHOTOS_OPTIONS = {
 };
 
 const SOUND_RECORDER_OPTIONS = {
-  headerTitle: soundRecorderTitle,
-  unmountOnBlur: true,
-  headerTintColor: "white",
-  headerTitleAlign: "center",
+  ...hideHeaderLeft,
   headerStyle: {
     backgroundColor: "black"
-  }
+  },
+  headerTintColor: "white",
+  headerTitle: soundRecorderTitle,
+  headerTitleAlign: "center",
+  unmountOnBlur: true
 };
 
 const CameraContainerWithPermission = ( ) => (
