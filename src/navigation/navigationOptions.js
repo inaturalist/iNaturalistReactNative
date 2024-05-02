@@ -1,6 +1,7 @@
 // @flow
 import { HeaderBackground } from "@react-navigation/elements";
 import { fontMedium } from "appConstants/fontFamilies.ts";
+import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import type { Node } from "react";
 import React from "react";
@@ -46,6 +47,14 @@ export const hideHeaderLeft: Object = {
   headerBackVisible: false
 };
 
+const showSimpleCustomHeader: Object = {
+  ...baseHeaderOptions,
+  header: FullPageWebViewHeader,
+  headerShadowVisible: true,
+  alignStart: true,
+  headerLeft: () => <BackButton inCustomHeader />
+};
+
 const showCustomHeader: Object = {
   ...baseHeaderOptions,
   header: ContextHeader,
@@ -83,5 +92,6 @@ export {
   removeBottomBorder,
   showCustomHeader,
   showHeader,
-  showLongHeader
+  showLongHeader,
+  showSimpleCustomHeader
 };
