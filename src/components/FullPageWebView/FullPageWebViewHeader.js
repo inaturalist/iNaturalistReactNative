@@ -47,7 +47,7 @@ const FullPageWebViewHeader = ( {
           "w-full",
           "bg-white",
           "pt-[3px]",
-          "pb-[20px]"
+          "pb-[17px]"
         )}
       >
         <View
