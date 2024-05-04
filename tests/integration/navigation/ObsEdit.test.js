@@ -105,6 +105,8 @@ describe( "ObsEdit", ( ) => {
         expect( await screen.findByText( /Edit Observation/ ) ).toBeTruthy( );
         expect( await screen.findByText( syncedObservation.taxon.name ) ).toBeTruthy( );
       } );
+
+      it.todo( "should show photos when reached from ObsDetails" );
     } );
   } );
 } );
