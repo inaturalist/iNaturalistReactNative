@@ -81,16 +81,12 @@ const SharedStackScreens = ( ): Node => (
           headerTitle: taxonSearchTitle
         }}
       />
-      <Stack.Screen
-        name="FullPageWebView"
-        component={FullPageWebView}
-        options={{
-          headerTitle: "",
-          ...showSimpleCustomHeader
-        }}
-
-      />
     </Stack.Group>
+    <Stack.Screen
+      name="FullPageWebView"
+      component={FullPageWebView}
+      options={showSimpleCustomHeader}
+    />
   </Stack.Group>
 );
 

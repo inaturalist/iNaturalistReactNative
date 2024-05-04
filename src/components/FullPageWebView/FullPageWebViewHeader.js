@@ -3,9 +3,10 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -15,11 +16,21 @@ type Props = {
   options: Object
 };
 
-const BACK_BUTTON_STYLE = { position: "absolute", start: 21 };
+const HEADER_STYLE = {
+  backgroundColor: "white"
+};
+
+const BACK_BUTTON_STYLE = {
+  position: "relative",
+  start: 11
+};
 
 const FullPageWebViewHeader = ( {
-  navigation, route, options
+  navigation,
+  route,
+  options
 }: Props ): Node => {
+  const insets = useSafeAreaInsets();
   const customTitleComponent = typeof options.headerTitle === "function";
 
   const getTitle = () => {
@@ -35,43 +46,36 @@ const FullPageWebViewHeader = ( {
   };
 
   return (
-    <SafeAreaView
-      className="bg-white"
+    <View
       style={{
+        ...HEADER_STYLE,
         ...options.headerStyle,
-        ...( options.headerShadowVisible && dropShadow )
+        ...( options.headerShadowVisible && dropShadow ),
+        paddingTop: insets.top,
+        paddingLeft: insets.left,
+        paddingRight: insets.right
       }}
     >
       <View
         className={classNames(
           "w-full",
           "bg-white",
-          "pt-[3px]",
-          "pb-[17px]"
+          "flex-row",
+          "h-[78px]",
+          "items-center",
+          "justify-between"
         )}
       >
-        <View
-          className={classNames(
-            "flex",
-            "flex-row",
-            "relative",
-            "w-full",
-            "items-center",
-            "justify-center"
-          )}
-        >
-          <BackButton
-            color={colors.black}
-            onPress={navigation.goBack}
-            inCustomHeader
-            customStyles={BACK_BUTTON_STYLE}
-          />
-          <View>
-            <Heading4>{getTitle()}</Heading4>
-          </View>
-        </View>
+        <BackButton
+          color={colors.black}
+          onPress={navigation.goBack}
+          inCustomHeader
+          customStyles={BACK_BUTTON_STYLE}
+        />
+        <Heading4>{getTitle()}</Heading4>
+        <View aria-hidden className="w-[44px] h-[44px]" />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -48,11 +48,8 @@ export const hideHeaderLeft: Object = {
 };
 
 const showSimpleCustomHeader: Object = {
-  ...baseHeaderOptions,
   header: FullPageWebViewHeader,
-  headerShadowVisible: true,
-  alignStart: true,
-  headerLeft: () => <BackButton inCustomHeader />
+  headerShadowVisible: true
 };
 
 const showCustomHeader: Object = {
