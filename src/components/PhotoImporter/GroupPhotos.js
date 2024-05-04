@@ -91,7 +91,7 @@ const GroupPhotos = ( {
   ), [itemStyle, selectedObservations, selectObservationPhotos] );
 
   const addPhotos = useCallback( () => {
-    navigation.navigate( "CameraNavigator", {
+    navigation.navigate( "NoBottomTabStackNavigator", {
       screen: "PhotoGallery",
       params: { fromGroupPhotos: true }
     } );

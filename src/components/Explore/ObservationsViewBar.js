@@ -4,8 +4,7 @@ import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -13,12 +12,8 @@ type Props = {
   updateObservationsView: Function
 };
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
   elevation: 6
 } );
 
@@ -26,8 +21,6 @@ const ObservationsViewBar = ( {
   layout,
   updateObservationsView
 }: Props ): Node => {
-  const theme = useTheme( );
-
   const buttons = [
     {
       value: "list",
@@ -99,7 +92,7 @@ const ObservationsViewBar = ( {
               ? 48
               : 44}
             style={[
-              getShadow( theme.colors.primary ),
+              DROP_SHADOW,
               outerBorderStyle,
               spacerStyle,
               backgroundColor

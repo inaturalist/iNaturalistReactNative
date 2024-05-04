@@ -7,11 +7,14 @@ import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );
 
-const photos = [factory( "RemoteObservationPhoto" ), factory( "RemoteObservationPhoto" )];
+const observationPhotos = [
+  factory( "RemoteObservationPhoto" ),
+  factory( "RemoteObservationPhoto" )
+];
 
-const renderEvidenceList = evidencePhotos => renderComponent(
+const renderEvidenceList = obsPhotos => renderComponent(
   <EvidenceList
-    photos={evidencePhotos}
+    observationPhotos={obsPhotos}
     savingPhoto
   />
 );
@@ -22,7 +25,7 @@ describe( "EvidenceList", ( ) => {
   } );
 
   it( "should display add evidence button", ( ) => {
-    renderEvidenceList( photos );
+    renderEvidenceList( observationPhotos );
 
     expect( screen.getByTestId( "EvidenceList.add" ) ).toBeVisible( );
   } );
@@ -31,16 +34,16 @@ describe( "EvidenceList", ( ) => {
     useStore.setState( {
       savingPhoto: true
     } );
-    renderEvidenceList( photos );
+    renderEvidenceList( observationPhotos );
 
     expect( screen.getByTestId( "EvidenceList.saving" ) ).toBeVisible( );
   } );
 
   it( "should render all observation photos", ( ) => {
-    renderEvidenceList( photos );
+    renderEvidenceList( observationPhotos );
 
-    expect( screen.getByTestId( `EvidenceList.${photos[0].photo.url}` ) ).toBeVisible( );
-    expect( screen.getByTestId( `EvidenceList.${photos[1].photo.url}` ) ).toBeVisible( );
+    expect( screen.getByTestId( `EvidenceList.${observationPhotos[0].photo.url}` ) ).toBeVisible( );
+    expect( screen.getByTestId( `EvidenceList.${observationPhotos[1].photo.url}` ) ).toBeVisible( );
   } );
 
   it( "should display an empty list when observation has no observation photos", ( ) => {

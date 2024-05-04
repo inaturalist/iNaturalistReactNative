@@ -3,7 +3,6 @@
 import { ActivityIndicator } from "components/SharedComponents";
 import * as React from "react";
 import { FlatList, Text } from "react-native";
-import { textStyles } from "styles/messages/messages";
 
 type Props = {
   loading: boolean,
@@ -26,7 +25,7 @@ const MessageList = ( {
   }
 
   const renderMessages = ( { item } ) => (
-    <Text style={textStyles.projectName}>{item.subject}</Text>
+    <Text>{item.subject}</Text>
   );
 
   return (

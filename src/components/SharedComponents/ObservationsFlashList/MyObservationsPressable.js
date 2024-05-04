@@ -10,7 +10,8 @@ import useStore from "stores/useStore";
 type Props = {
   observation: Object,
   testID?: string,
-  children: any
+  // $FlowIgnore
+  children: unknown
 }
 
 const MyObservationsPressable = ( { observation, testID, children }: Props ): Node => {
@@ -24,7 +25,9 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
     const { uuid } = observation;
     if ( unsynced ) {
       setObservations( [observation] );
-      navigation.navigate( "ObsEdit" );
+      navigation.navigate( "NoBottomTabStackNavigator", {
+        screen: "ObsEdit"
+      } );
     } else {
       navigation.navigate( "ObsDetails", { uuid } );
     }
@@ -36,8 +39,8 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
       onPress={navigateToObservation}
       accessibilityRole="link"
       accessibilityHint={unsynced
-        ? t( "Navigate-to-observation-edit-screen" )
-        : t( "Navigate-to-observation-details" )}
+        ? t( "Navigates-to-observation-edit-screen" )
+        : t( "Navigates-to-observation-details" )}
       accessibilityLabel={t( "Observation-Name", {
         // TODO: use the name that the user prefers (common or scientific)
         scientificName: observation.species_guess

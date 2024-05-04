@@ -78,6 +78,14 @@ class Photo extends Realm.Object {
     };
   }
 
+  // this is necessary because photos cannot be found reliably via the file:/// name.
+  // without this, local photos will not show up when the app updates
+  static accessLocalPhoto( url ) {
+    const uuidAndJpgSuffix = url?.split( "photoUploads/" )[1];
+    const localPath = `${Photo.photoUploadPath}/${uuidAndJpgSuffix}`;
+    return localPath || null;
+  }
+
   static displayLargePhoto( url ) {
     return url?.replace( "square", "large" );
   }
@@ -86,17 +94,20 @@ class Photo extends Realm.Object {
     return url?.replace( "square", "medium" );
   }
 
+  static displayLocalOrRemoteLargePhoto( photo ) {
+    return Photo.displayLargePhoto( photo?.url ) || Photo.accessLocalPhoto( photo?.localFilePath );
+  }
+
   static displayLocalOrRemoteMediumPhoto( photo ) {
-    return Photo.displayMediumPhoto( photo?.url ) || photo?.localFilePath;
+    return Photo.displayMediumPhoto( photo?.url ) || Photo.accessLocalPhoto( photo?.localFilePath );
   }
 
   static displayLocalOrRemoteSquarePhoto( photo ) {
-    return photo?.url || photo?.localFilePath;
+    return photo?.url || Photo.accessLocalPhoto( photo?.localFilePath );
   }
 
-  static deletePhotoFromDeviceStorage( photoPath ) {
-    const fileName = photoPath.split( "photoUploads/" )[1];
-    RNFS.unlink( `${Photo.photoUploadPath}/${fileName}` );
+  static deletePhotoFromDeviceStorage( url ) {
+    RNFS.unlink( Photo.accessLocalPhoto( url ) );
   }
 
   static schema = {

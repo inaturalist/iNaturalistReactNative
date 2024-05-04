@@ -9,8 +9,8 @@ import { useEffect, useState } from "react";
 // However, for the most part, it is preferable to remove the component from the DOM
 
 type Props = {
-  noInitialRender?: bool,
-  show?: bool,
+  noInitialRender?: boolean,
+  show?: boolean,
   children: React.Node
 }
 

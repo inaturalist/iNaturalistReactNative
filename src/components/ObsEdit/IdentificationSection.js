@@ -40,6 +40,7 @@ const IdentificationSection = ( {
   const realm = useRealm( );
 
   const identification = currentObservation?.taxon;
+  const hasPhotos = currentObservation?.observationPhotos?.length > 0;
 
   const hasIdentification = identification && identification.rank_level !== 100;
 
@@ -58,8 +59,13 @@ const IdentificationSection = ( {
   };
 
   const navToSuggestions = useCallback( ( ) => {
-    navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
-  }, [navigation] );
+    if ( hasPhotos ) {
+      navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
+    } else {
+      // Go directly to taxon search in case there are no photos
+      navigation.navigate( "TaxonSearch", { lastScreen: "ObsEdit" } );
+    }
+  }, [hasPhotos, navigation] );
 
   useEffect( ( ) => {
     if ( hasIdentification && !passesIdentificationTest ) {
@@ -99,7 +105,7 @@ const IdentificationSection = ( {
                   : theme.colors.onPrimary}
               />
             )}
-            accessibilityLabel={t( "Navigate-to-identification-suggestions-screen" )}
+            accessibilityLabel={t( "View-suggestions" )}
           />
         )}
         taxon={identification}
@@ -124,14 +130,14 @@ const IdentificationSection = ( {
             <DisplayTaxon
               taxon={identification}
               handlePress={navToSuggestions}
-              accessibilityLabel={t( "Navigates-to-add-identification" )}
+              accessibilityLabel={t( "Edits-this-observations-taxon" )}
             />
             <INatIconButton
               icon="edit"
               size={20}
               onPress={navToSuggestions}
               accessibilityLabel={t( "Edit" )}
-              accessibilityHint={t( "Navigates-to-add-identification" )}
+              accessibilityHint={t( "Edits-this-observations-taxon" )}
             />
           </View>
         )}

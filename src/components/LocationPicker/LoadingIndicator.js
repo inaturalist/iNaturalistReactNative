@@ -5,15 +5,14 @@ import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
-type Props = {
-  getShadow: Function,
-  theme: Object
-};
+const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
-const LoadingIndicator = ( { getShadow, theme }: Props ): Node => (
+const LoadingIndicator = ( ): Node => (
   <View
-    style={getShadow( theme.colors.primary )}
+    style={DROP_SHADOW}
     className={classnames(
       "h-[80px]",
       "w-[80px]",

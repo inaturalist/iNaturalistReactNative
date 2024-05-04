@@ -5,7 +5,7 @@
 // for https://github.com/mrousavy/react-native-vision-camera/issues/1891
 import { View } from "components/styledComponents";
 import React, { useRef, useState } from "react";
-import { iPadStylePatch, visionCameraMajorVersion } from "sharedHelpers/visionCameraPatches";
+import { iPadStylePatch } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
 const VeryBadIpadRotator = ( { children } ) => {
@@ -18,8 +18,7 @@ const VeryBadIpadRotator = ( { children } ) => {
   // courtesy of
   // https://github.com/mrousavy/react-native-vision-camera/issues/1891#issuecomment-1746222690
   if (
-    visionCameraMajorVersion >= 3
-    && innerStyle.transform
+    innerStyle.transform
     && dims.width
     && dims.height
   ) {

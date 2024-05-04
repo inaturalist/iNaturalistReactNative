@@ -1,13 +1,22 @@
 // @flow
 
+import {
+  tailwindFontRegular
+} from "appConstants/fontFamilies.ts";
+import classnames from "classnames";
 import type { Node } from "react";
 import React from "react";
+import { Text } from "react-native";
 
-import INatTextLight from "./INatTextLight";
-
-const Subheading1 = ( props: any ): Node => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <INatTextLight className="text-xl font-light text-darkGray" {...props} />
+const Subheading1 = ( props: Object ): Node => (
+  <Text
+    className={classnames(
+      "text-xl trailing-tight text-darkGray",
+      tailwindFontRegular
+    )}
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    {...props}
+  />
 );
 
 export default Subheading1;

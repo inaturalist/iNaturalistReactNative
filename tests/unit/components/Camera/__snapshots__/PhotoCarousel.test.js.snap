@@ -33,7 +33,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
     onScrollEndDrag={[Function]}
     removeClippedSubviews={false}
     renderItem={[Function]}
-    scrollEventThrottle={50}
+    scrollEventThrottle={0.0001}
     stickyHeaderIndices={[]}
     viewabilityConfigCallbackPairs={[]}
   >
@@ -51,7 +51,8 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          animatedStyle={
+          collapsable={false}
+          jestAnimatedStyle={
             {
               "value": {
                 "transform": [
@@ -62,7 +63,6 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
-          collapsable={false}
           style={
             {
               "transform": [
@@ -220,7 +220,8 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          animatedStyle={
+          collapsable={false}
+          jestAnimatedStyle={
             {
               "value": {
                 "transform": [
@@ -231,7 +232,6 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
-          collapsable={false}
           style={
             {
               "transform": [
@@ -389,7 +389,8 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          animatedStyle={
+          collapsable={false}
+          jestAnimatedStyle={
             {
               "value": {
                 "transform": [
@@ -400,7 +401,6 @@ exports[`PhotoCarousel renders correctly 1`] = `
               },
             }
           }
-          collapsable={false}
           style={
             {
               "transform": [
@@ -547,36 +547,6 @@ exports[`PhotoCarousel renders correctly 1`] = `
       </View>
     </View>
   </RCTScrollView>
-  <Modal
-    animationType="none"
-    deviceHeight={null}
-    deviceWidth={null}
-    hardwareAccelerated={false}
-    hideModalContentWhileAnimating={true}
-    onBackdropPress={[Function]}
-    onModalHide={[Function]}
-    onModalWillHide={[Function]}
-    onModalWillShow={[Function]}
-    onRequestClose={[Function]}
-    onSwipeComplete={[Function]}
-    panResponderThreshold={4}
-    scrollHorizontal={false}
-    scrollOffset={0}
-    scrollOffsetMax={0}
-    scrollTo={null}
-    statusBarTranslucent={false}
-    supportedOrientations={
-      [
-        "portrait",
-        "landscape",
-      ]
-    }
-    swipeDirection={null}
-    swipeThreshold={100}
-    transparent={true}
-    useNativeDriverForBackdrop={true}
-    visible={false}
-  />
 </View>
 `;
 
@@ -613,7 +583,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
     onScrollEndDrag={[Function]}
     removeClippedSubviews={false}
     renderItem={[Function]}
-    scrollEventThrottle={50}
+    scrollEventThrottle={0.0001}
     stickyHeaderIndices={[]}
     viewabilityConfigCallbackPairs={[]}
   >
@@ -631,7 +601,8 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          animatedStyle={
+          collapsable={false}
+          jestAnimatedStyle={
             {
               "value": {
                 "transform": [
@@ -642,7 +613,6 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
-          collapsable={false}
           style={
             {
               "transform": [
@@ -805,7 +775,8 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          animatedStyle={
+          collapsable={false}
+          jestAnimatedStyle={
             {
               "value": {
                 "transform": [
@@ -816,7 +787,6 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
-          collapsable={false}
           style={
             {
               "transform": [
@@ -979,7 +949,8 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          animatedStyle={
+          collapsable={false}
+          jestAnimatedStyle={
             {
               "value": {
                 "transform": [
@@ -990,7 +961,6 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               },
             }
           }
-          collapsable={false}
           style={
             {
               "transform": [
@@ -1142,35 +1112,5 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       </View>
     </View>
   </RCTScrollView>
-  <Modal
-    animationType="none"
-    deviceHeight={null}
-    deviceWidth={null}
-    hardwareAccelerated={false}
-    hideModalContentWhileAnimating={true}
-    onBackdropPress={[Function]}
-    onModalHide={[Function]}
-    onModalWillHide={[Function]}
-    onModalWillShow={[Function]}
-    onRequestClose={[Function]}
-    onSwipeComplete={[Function]}
-    panResponderThreshold={4}
-    scrollHorizontal={false}
-    scrollOffset={0}
-    scrollOffsetMax={0}
-    scrollTo={null}
-    statusBarTranslucent={false}
-    supportedOrientations={
-      [
-        "portrait",
-        "landscape",
-      ]
-    }
-    swipeDirection={null}
-    swipeThreshold={100}
-    transparent={true}
-    useNativeDriverForBackdrop={true}
-    visible={false}
-  />
 </View>
 `;

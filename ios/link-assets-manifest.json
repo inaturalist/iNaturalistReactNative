@@ -3,31 +3,31 @@
   "data": [
     {
       "path": "assets/fonts/INatIcon.ttf",
-      "sha1": "9f7e321421207b57e03952ef1b9386e8b618f98f"
+      "sha1": "efff2cbb4d311b22384cfade07cdd4e7ab8516b0"
     },
     {
-      "path": "assets/fonts/Whitney Book Regular.otf",
-      "sha1": "9b6e4749dcfa702e3fd6cc27d5c2bef1fdb966f9"
+      "path": "assets/fonts/Lato-Bold.ttf",
+      "sha1": "6b2c7b124cbf0aaeba48d57fb0fa19f2c6c69683"
     },
     {
-      "path": "assets/fonts/Whitney Semibold Italic.otf",
-      "sha1": "829391a59c4305fe4733009da64fec983091cde1"
+      "path": "assets/fonts/Lato-BoldItalic.ttf",
+      "sha1": "bf9e7d4a6185b53a256272869e66762c1e5d503b"
     },
     {
-      "path": "assets/fonts/Whitney Semibold Regular.otf",
-      "sha1": "fc560886d72adf37cccbad5bf8c58d7e0e546027"
+      "path": "assets/fonts/Lato-Italic.ttf",
+      "sha1": "63c5d4424bc3466477be05dc122799df7665e571"
     },
     {
-      "path": "assets/fonts/Whitney-BookItalic-Pro.otf",
-      "sha1": "15854f60175a0e82b794c259431ec45ea4b40103"
+      "path": "assets/fonts/Lato-Medium.ttf",
+      "sha1": "c78e94b7cc0b782eef4f9f2be371c3cf9c3f6eaf"
     },
     {
-      "path": "assets/fonts/Whitney-Light-Pro.otf",
-      "sha1": "d15560faea2b18aef9867a1d2b9e2efb54b17b5b"
+      "path": "assets/fonts/Lato-MediumItalic.ttf",
+      "sha1": "df1a7160502d9e90c41b92b7243270a769904786"
     },
     {
-      "path": "assets/fonts/Whitney-Medium-Pro.otf",
-      "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
+      "path": "assets/fonts/Lato-Regular.ttf",
+      "sha1": "f59f9e4f3cbee981a5e6f58a279f9b9613f22599"
     },
     {
       "path": "assets/fonts/inaturalisticons.ttf",

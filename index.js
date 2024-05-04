@@ -20,7 +20,6 @@ import { Alert, AppRegistry } from "react-native";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { enableLatestRenderer } from "react-native-maps";
 import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { reactQueryRetry } from "sharedHelpers/logging";
@@ -30,9 +29,28 @@ import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
 import { navigationRef } from "./src/navigation/navigationUtils";
 
-enableLatestRenderer( );
-
 const logger = log.extend( "index.js" );
+
+// Log all unhandled promise rejections in release builds. Otherwise they will
+// die in silence. Debug builds have a more useful UI w/ desymbolicated stack
+// traces
+/* eslint-disable no-undef */
+if (
+  !__DEV__
+  && typeof (
+    // $FlowIgnore
+    HermesInternal?.enablePromiseRejectionTracker === "function"
+  )
+) {
+  // $FlowIgnore
+  HermesInternal.enablePromiseRejectionTracker( {
+    allRejections: true,
+    onUnhandled: ( id, error ) => {
+      logger.error( "Unhandled promise rejection: ", error );
+    }
+  } );
+}
+/* eslint-enable no-undef */
 
 // I'm not convinced this ever catches anything... ~~~kueda 20240110
 const jsErrorHandler = ( e, isFatal ) => {

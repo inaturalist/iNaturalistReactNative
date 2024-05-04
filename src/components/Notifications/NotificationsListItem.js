@@ -14,18 +14,11 @@ const NotificationsListItem = ( { item }: Props ): Node => {
   const navigation = useNavigation( );
   const viewedStatus = item.viewed;
 
-  const unreadIndicator = () => (
-    <View className="bg-inatGreen h-[10px] w-[10px] rounded-full" />
-  );
-
-  const readIndicator = () => (
-    <View className="border border-lightGray h-[10px] w-[10px] rounded-full" />
-  );
   return (
     <Pressable
       accessibilityRole="button"
       className={classnames(
-        "flex-row items-center justify-between pl-[15px] pr-[20px] py-[11px]",
+        "flex-row items-center justify-between pl-[15px] py-[11px]",
         {
           "bg-inatGreen/10": !viewedStatus,
           "bg-white": viewedStatus
@@ -36,9 +29,16 @@ const NotificationsListItem = ( { item }: Props ): Node => {
 
     >
       <ObsNotification item={item} />
-      {viewedStatus
-        ? readIndicator()
-        : unreadIndicator() }
+      <View className="pr-[20px] pl-2">
+        <View
+          className={classnames(
+            "h-[10px] w-[10px] rounded-full",
+            viewedStatus
+              ? "border border-lightGray"
+              : "bg-inatGreen"
+          )}
+        />
+      </View>
     </Pressable>
   );
 };

@@ -17,7 +17,7 @@ function mapToLocalSchema( observation ) {
   return observation;
 }
 
-const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<Object> => {
   try {
     const response = await inatjs.observations.search( params, opts );
     response.results = response.results.map( mapToLocalSchema );
@@ -76,7 +76,7 @@ const markAsReviewed = async ( params: Object = {}, opts: Object = {} ): Promise
 const markObservationUpdatesViewed = async (
   params: Object = {},
   opts: Object = {}
-): Promise<?any> => {
+): Promise<?Object> => {
   try {
     return await inatjs.observations.viewedUpdates( params, opts );
   } catch ( e ) {
@@ -87,7 +87,7 @@ const markObservationUpdatesViewed = async (
 const createObservation = async (
   params: Object = {},
   opts: Object = {}
-): Promise<?any> => {
+): Promise<?Object> => {
   try {
     return await inatjs.observations.create( params, opts );
   } catch ( e ) {
@@ -98,7 +98,7 @@ const createObservation = async (
 const updateObservation = async (
   params: Object = {},
   opts: Object = {}
-): Promise<?any> => {
+): Promise<?Object> => {
   try {
     return await inatjs.observations.update( params, opts );
   } catch ( e ) {
@@ -114,7 +114,7 @@ const createOrUpdateEvidence = async (
   apiEndpoint: Function,
   params: Object = {},
   opts: Object = {}
-): Promise<?any> => {
+): Promise<?Object> => {
   try {
     return await apiEndpoint( params, opts );
   } catch ( e ) {
@@ -125,7 +125,7 @@ const createOrUpdateEvidence = async (
 const fetchObservationUpdates = async (
   params: Object = {},
   opts: Object = {}
-): Promise<?any> => {
+): Promise<?Object> => {
   try {
     const { results } = await inatjs.observations.updates( params, opts );
     return results;
@@ -136,7 +136,7 @@ const fetchObservationUpdates = async (
 
 const fetchUnviewedObservationUpdatesCount = async (
   opts: Object
-): Promise<Number> => {
+): Promise<number> => {
   try {
     const { total_results: updatesCount } = await inatjs.observations.updates( {
       observations_by: "owner",
@@ -152,7 +152,7 @@ const fetchUnviewedObservationUpdatesCount = async (
 const deleteRemoteObservation = async (
   params: Object = {},
   opts: Object = {}
-) : Promise<?any> => {
+) : Promise<?Object> => {
   try {
     return await inatjs.observations.delete( params, opts );
   } catch ( e ) {
@@ -160,7 +160,7 @@ const deleteRemoteObservation = async (
   }
 };
 
-const fetchObservers = async ( params: Object = {} ) : Promise<?any> => {
+const fetchObservers = async ( params: Object = {} ) : Promise<?Object> => {
   try {
     return await inatjs.observations.observers( params );
   } catch ( e ) {
@@ -168,7 +168,7 @@ const fetchObservers = async ( params: Object = {} ) : Promise<?any> => {
   }
 };
 
-const fetchIdentifiers = async ( params: Object = {} ) : Promise<?any> => {
+const fetchIdentifiers = async ( params: Object = {} ) : Promise<?Object> => {
   try {
     return await inatjs.observations.identifiers( params );
   } catch ( e ) {
@@ -176,7 +176,7 @@ const fetchIdentifiers = async ( params: Object = {} ) : Promise<?any> => {
   }
 };
 
-const fetchSpeciesCounts = async ( params: Object = {} ) : Promise<?any> => {
+const fetchSpeciesCounts = async ( params: Object = {} ) : Promise<?Object> => {
   try {
     return await inatjs.observations.speciesCounts( params );
   } catch ( e ) {
@@ -187,7 +187,7 @@ const fetchSpeciesCounts = async ( params: Object = {} ) : Promise<?any> => {
 const checkForDeletedObservations = async (
   params: Object = {},
   opts: Object = {}
-) : Promise<?any> => {
+) : Promise<?Object> => {
   try {
     return await inatjs.observations.deleted( params, opts );
   } catch ( e ) {

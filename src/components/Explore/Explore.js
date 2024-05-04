@@ -1,6 +1,7 @@
 // @flow
 
 import classnames from "classnames";
+import FilterModal from "components/Explore/Modals/FilterModal.tsx";
 import {
   INatIconButton,
   RadioButtonSheet,
@@ -16,38 +17,33 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import { getShadowStyle } from "styles/global";
+import useStore from "stores/useStore";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import Header from "./Header/Header";
 import IdentifiersView from "./IdentifiersView";
-import FilterModal from "./Modals/FilterModal";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
   elevation: 6
 } );
 
-// TODO: observers and identifiers icons need replacement
 const exploreViewIcon = {
   observations: "binoculars",
   species: "leaf",
-  observers: "person",
-  identifiers: "person"
+  observers: "observers",
+  identifiers: "identifiers"
 };
 
 type Props = {
-  changeExploreView: Function,
   closeFiltersModal: Function,
   count: Object,
-  exploreView: string,
+  hideBackButton: boolean,
   isOnline: boolean,
   loadingStatus: boolean,
   openFiltersModal: Function,
@@ -58,10 +54,9 @@ type Props = {
 }
 
 const Explore = ( {
-  changeExploreView,
   closeFiltersModal,
   count,
-  exploreView,
+  hideBackButton,
   isOnline,
   loadingStatus,
   openFiltersModal,
@@ -75,15 +70,25 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
+  const exploreView = useStore( state => state.exploreView );
+  const setExploreView = useStore( state => state.setExploreView );
+
+  const exploreViewAccessibilityLabel = {
+    observations: t( "Observations-View" ),
+    species: t( "Species-View" ),
+    observers: t( "Observers-View" ),
+    identifiers: t( "Identifiers-View" )
+  };
 
   const renderHeader = ( ) => (
     <Header
       count={count[exploreView]}
       exploreView={exploreView}
       exploreViewIcon={exploreViewIcon[exploreView]}
+      hideBackButton={hideBackButton}
       loadingStatus={loadingStatus}
-      updateTaxon={updateTaxon}
       openFiltersModal={openFiltersModal}
+      onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );
 
@@ -96,24 +101,28 @@ const Explore = ( {
         label: t( "Species" ),
         text: t( "Organisms-that-are-identified-to-species" ),
         buttonText: t( "EXPLORE-SPECIES" ),
+        icon: "species",
         value: "species"
       },
       observations: {
         label: t( "Observations" ),
         text: t( "Individual-encounters-with-organisms" ),
         buttonText: t( "EXPLORE-OBSERVATIONS" ),
+        icon: "observations",
         value: "observations"
       },
       observers: {
         label: t( "Observers" ),
         text: t( "iNaturalist-users-who-have-observed" ),
         buttonText: t( "EXPLORE-OBSERVERS" ),
+        icon: "observers",
         value: "observers"
       },
       identifiers: {
         label: t( "Identifiers" ),
         text: t( "iNaturalist-users-who-have-left-an-identification" ),
         buttonText: t( "EXPLORE-IDENTIFIERS" ),
+        icon: "identifiers",
         value: "identifiers"
       }
     };
@@ -124,7 +133,7 @@ const Explore = ( {
         headerText={t( "EXPLORE" )}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
-          changeExploreView( newView );
+          setExploreView( newView );
           setShowExploreBottomSheet( false );
         }}
         radioValues={values}
@@ -138,87 +147,89 @@ const Explore = ( {
   return (
     <>
       <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
-        {renderHeader()}
-        {exploreView === "observations" && (
-          <ObservationsViewBar
-            layout={layout}
-            updateObservationsView={writeLayoutToStorage}
-          />
-        )}
-        <View className="flex-1">
-          { isDebug && (
-            <INatIconButton
-              icon="triangle-exclamation"
-              className={classnames(
-                "absolute",
-                "bg-white",
-                "bottom-[100px]",
-                "h-[55px]",
-                "right-5",
-                "rounded-full",
-                "w-[55px]",
-                "z-10"
-              )}
-              color="white"
-              size={27}
-              style={[
-                getShadow( theme.colors.primary ),
-                // eslint-disable-next-line react-native/no-inline-styles
-                { backgroundColor: "deeppink" }
-              ]}
-              accessibilityLabel="Diagnostics"
-              onPress={( ) => {
-                Alert.alert(
-                  "Explore Info",
-                  `queryParams: ${JSON.stringify( queryParams )}`
-                );
-              }}
-            />
-          ) }
-          <INatIconButton
-            icon={exploreViewIcon[exploreView]}
-            color={theme.colors.onPrimary}
-            size={27}
-            className={classnames(
-              grayCircleClass,
-              "absolute bottom-5 z-10 right-5"
-            )}
-            accessibilityLabel={t( "Explore-View" )}
-            onPress={() => setShowExploreBottomSheet( true )}
-            style={getShadow( theme.colors.primary )}
-          />
+        <View className="flex-1 overflow-hidden">
+          {renderHeader()}
           {exploreView === "observations" && (
-            <ObservationsView
-              count={count}
+            <ObservationsViewBar
               layout={layout}
-              queryParams={queryParams}
-              updateCount={updateCount}
+              updateObservationsView={writeLayoutToStorage}
             />
           )}
-          {exploreView === "species" && (
-            <SpeciesView
-              count={count}
-              isOnline={isOnline}
-              queryParams={queryParams}
-              updateCount={updateCount}
+          <View className="flex-1">
+            {isDebug && (
+              <INatIconButton
+                icon="triangle-exclamation"
+                className={classnames(
+                  "absolute",
+                  "bg-white",
+                  "bottom-[100px]",
+                  "h-[55px]",
+                  "right-5",
+                  "rounded-full",
+                  "w-[55px]",
+                  "z-10"
+                )}
+                color="white"
+                size={27}
+                style={[
+                  DROP_SHADOW,
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  { backgroundColor: "deeppink" }
+                ]}
+                accessibilityLabel="Diagnostics"
+                onPress={() => {
+                  Alert.alert(
+                    "Explore Info",
+                    `queryParams: ${JSON.stringify( queryParams )}`
+                  );
+                }}
+              />
+            )}
+            <INatIconButton
+              icon={exploreViewIcon[exploreView]}
+              color={theme.colors.onPrimary}
+              size={27}
+              className={classnames(
+                grayCircleClass,
+                "absolute bottom-5 z-10 right-5"
+              )}
+              accessibilityLabel={exploreViewAccessibilityLabel[exploreView]}
+              onPress={() => setShowExploreBottomSheet( true )}
+              style={DROP_SHADOW}
             />
-          )}
-          {exploreView === "observers" && (
-            <ObserversView
-              count={count}
-              isOnline={isOnline}
-              queryParams={queryParams}
-              updateCount={updateCount}
-            />
-          )}
-          {exploreView === "identifiers" && (
-            <IdentifiersView
-              count={count}
-              isOnline={isOnline}
-              queryParams={queryParams}
-              updateCount={updateCount}
-            />
-          )}
+            {exploreView === "observations" && (
+              <ObservationsView
+                count={count}
+                layout={layout}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+            {exploreView === "species" && (
+              <SpeciesView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+            {exploreView === "observers" && (
+              <ObserversView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+            {exploreView === "identifiers" && (
+              <IdentifiersView
+                count={count}
+                isOnline={isOnline}
+                queryParams={queryParams}
+                updateCount={updateCount}
+              />
+            )}
+          </View>
         </View>
       </ViewWrapper>
       {showFiltersModal && (

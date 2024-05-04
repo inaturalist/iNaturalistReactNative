@@ -1,0 +1,19 @@
+Fixed
+Bottom sheet not showing up
+Freezes on ObsDetails
+Disable capture while model loads
+Online suggestions
+
+Added
+Navigate without suggestions
+Gmail support
+radio button description pressable
+Explore: location search buttons, observations count, zoom level, reset taxon/place
+OfflineNotice
+casual home screen + setting
+persist obs tab
+
+Changed
+RN 0.73, vision-camera v4
+notification screen navigation
+Disable swipe to open the drawer

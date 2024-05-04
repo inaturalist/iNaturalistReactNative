@@ -1,24 +1,14 @@
 name: e2e-Android
 on:
   workflow_dispatch:
-  pull_request:
-  push:
-    branches:
-      - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+    
 jobs:
-  # This might be refactored to use concurrency from GitHub Actions directly?
-  deduplicate:
-    runs-on: macos-latest
-    steps:
-      - uses: fkirc/skip-duplicate-actions@master
-        with:
-          github_token: ${{ github.token }}
-          cancel_others: true
-
   checksecret:
     name: check for oauth client
-    needs: deduplicate
     runs-on: macos-latest
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
@@ -40,12 +30,12 @@ jobs:
 
     steps:
     - name: Check out Git repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
 
     - name: Install Node.js, NPM and Yarn
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 18
 
@@ -60,7 +50,7 @@ jobs:
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: cache
       with:
         path: node_modules
@@ -108,7 +98,7 @@ jobs:
     # Macos-latest runner has 3 Java versions pre-installed, if not specified as here, the build step errors with requiring at least Java 11 or higher
     # So, this step is needed for the apk build step, but somehow this is breaking emulator setup, so it is placed here
     - name: Set up JDK 11
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '11'
         distribution: 'zulu'
@@ -142,7 +132,7 @@ jobs:
 
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: detox-artifacts

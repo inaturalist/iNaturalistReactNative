@@ -36,7 +36,7 @@ const Attribution = ( { observation }: Props ): Node => {
   const { user } = observation;
   const userName = user
     ? ( user.name || user.login )
-    : t( "unknown" );
+    : t( "Unknown--user" );
 
   return (
     <Body4>

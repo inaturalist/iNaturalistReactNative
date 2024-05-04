@@ -7,7 +7,6 @@ import {
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { format } from "date-fns";
-import { navigationRef } from "navigation/navigationUtils";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -29,6 +28,7 @@ import {
   useInfiniteObservationsScroll,
   useIsConnected,
   useLocalObservations,
+  useNumUnuploadedObservations,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation
@@ -135,7 +135,6 @@ const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
   const navigation = useNavigation( );
-  const { params } = useRoute( );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
@@ -144,6 +143,7 @@ const MyObservationsContainer = ( ): Node => {
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
   const { deletionsCompletedAt } = useDeleteObservations( );
+  const numUnuploadedObservations = useNumUnuploadedObservations( );
 
   const isOnline = useIsConnected( );
 
@@ -163,12 +163,25 @@ const MyObservationsContainer = ( ): Node => {
   } );
 
   const {
+    error,
     uploads,
     uploadsComplete,
     uploadProgress,
     uploadInProgress,
     totalProgressIncrements
   } = state;
+
+  useEffect( () => {
+    let timer;
+    if ( uploadsComplete && !error ) {
+      timer = setTimeout( () => {
+        dispatch( { type: "RESET_STATE" } );
+      }, 5000 );
+    }
+    return () => {
+      clearTimeout( timer );
+    };
+  }, [uploadsComplete, error] );
 
   const currentUploadProgress = Object.values( uploadProgress ).reduce(
     ( count, current ) => count + Number( current ),
@@ -190,18 +203,6 @@ const MyObservationsContainer = ( ): Node => {
       ? "list"
       : "grid" );
   };
-
-  useEffect( () => {
-    if ( navigationRef && navigationRef.isReady() ) {
-      if ( params && params.navToObsDetails ) {
-        // We wrap this in a setTimeout, since otherwise this routing doesn't work immediately
-        // when loading this screen
-        setTimeout( () => {
-          navigation.navigate( "ObsDetails", { uuid: params.uuid } );
-        }, 100 );
-      }
-    }
-  }, [navigation, params] );
 
   useEffect( ( ) => {
     // show progress in toolbar for observations uploaded on ObsEdit
@@ -239,7 +240,10 @@ const MyObservationsContainer = ( ): Node => {
         const isOne = state.totalProgressIncrements === 1;
         if (
           state.singleUpload
-          && ( state.uploadProgress[uuid] >= state.totalProgressIncrements || isOne )
+          && (
+            state.uploadProgress[uuid] >= state.totalProgressIncrements
+            || isOne
+          )
         ) {
           if ( isOne ) {
             dispatch( {
@@ -264,13 +268,11 @@ const MyObservationsContainer = ( ): Node => {
   }, [state.uploadProgress, state.singleUpload, state.totalProgressIncrements, uploadInProgress] );
 
   const showInternetErrorAlert = useCallback( ( ) => {
-    if ( !isOnline ) {
-      Alert.alert(
-        t( "Internet-Connection-Required" ),
-        t( "Please-try-again-when-you-are-connected-to-the-internet" )
-      );
-    }
-  }, [isOnline, t] );
+    Alert.alert(
+      t( "Internet-Connection-Required" ),
+      t( "Please-try-again-when-you-are-connected-to-the-internet" )
+    );
+  }, [t] );
 
   const toggleLoginSheet = useCallback( ( ) => {
     if ( !currentUser ) {
@@ -285,50 +287,87 @@ const MyObservationsContainer = ( ): Node => {
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
         // TODO localize comma join
-        message = uploadError.json.errors.map( error => {
-          if ( error.message?.errors ) {
-            return error.message.errors.flat( ).join( ", " );
+        message = uploadError.json.errors.map( e => {
+          if ( e.message?.errors ) {
+            return e.message.errors.flat( ).join( ", " );
           }
-          return error.message;
+          return e.message;
         } ).join( ", " );
+      } else if ( uploadError.message?.match( /Network request failed/ ) ) {
+        message = t( "Connection-problem-Please-try-again-later" );
+        logger.error(
+          `[MyObservationsContainer.js] upload failed due to network problem: ${uploadError}`
+        );
       } else {
-        logger.error( "[MyObservationsContainer.js] upload failed: ", uploadError );
+        logger.error( `[MyObservationsContainer.js] upload failed: ${uploadError}` );
         throw uploadError;
       }
       dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
     }
-  }, [realm] );
+  }, [
+    realm,
+    t
+  ] );
 
   const uploadSingleObservation = useCallback( async ( observation, options ) => {
-    toggleLoginSheet( );
-    showInternetErrorAlert( );
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      return;
+    }
+    if ( !isOnline ) {
+      showInternetErrorAlert( );
+      return;
+    }
     if ( !options || options?.singleUpload !== false ) {
       dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
     }
     await uploadObservationAndCatchError( observation );
     dispatch( { type: "UPLOADS_COMPLETE" } );
   }, [
+    currentUser,
+    isOnline,
     showInternetErrorAlert,
     toggleLoginSheet,
     uploadObservationAndCatchError
   ] );
 
   const uploadMultipleObservations = useCallback( async ( ) => {
-    if ( uploadsComplete || uploadInProgress ) {
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      return;
+    }
+    if ( numUnuploadedObservations === 0 || uploadInProgress ) {
+      return;
+    }
+    if ( !isOnline ) {
+      showInternetErrorAlert( );
       return;
     }
     dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
 
-    await Promise.all( uploads.map( async obsToUpload => {
-      await uploadObservationAndCatchError( obsToUpload );
-      dispatch( { type: "START_NEXT_UPLOAD" } );
-    } ) );
-    dispatch( { type: "UPLOADS_COMPLETE" } );
+    try {
+      await Promise.all( uploads.map( async obsToUpload => {
+        await uploadObservationAndCatchError( obsToUpload );
+        dispatch( { type: "START_NEXT_UPLOAD" } );
+      } ) );
+      dispatch( { type: "UPLOADS_COMPLETE" } );
+    } catch ( uploadMultipleObservationsError ) {
+      logger.error( "Failed to uploadMultipleObservations: ", uploadMultipleObservationsError );
+      dispatch( {
+        type: "SET_UPLOAD_ERROR",
+        error: t( "Something-went-wrong" )
+      } );
+    }
   }, [
-    uploadsComplete,
+    currentUser,
+    isOnline,
+    numUnuploadedObservations,
+    showInternetErrorAlert,
+    t,
+    toggleLoginSheet,
+    uploadInProgress,
     uploadObservationAndCatchError,
-    uploads,
-    uploadInProgress
+    uploads
   ] );
 
   const stopUploads = useCallback( ( ) => {
@@ -353,13 +392,22 @@ const MyObservationsContainer = ( ): Node => {
       const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
       if ( msSinceDeletionsCompleted < 5_000 ) {
         const naptime = 10_000 - msSinceDeletionsCompleted;
-        logger.debug(
-          `[MyObservationsContainer.js] finished deleting recently, waiting ${naptime} ms`
+        logger.info(
+          "[MyObservationsContainer.js] downloadRemoteObservationsFromServer finished deleting "
+          + `recently deleted, waiting ${naptime} ms`
         );
         await sleep( naptime );
       }
     }
+    logger.info(
+      "[MyObservationsContainer.js] downloadRemoteObservationsFromServer, fetching observations"
+    );
     const { results } = await searchObservations( searchParams, { api_token: apiToken } );
+    logger.info(
+      "[MyObservationsContainer.js] downloadRemoteObservationsFromServer, fetched",
+      results.length,
+      "results, upserting..."
+    );
     Observation.upsertRemoteObservations( results, realm );
   }, [
     currentUser,
@@ -414,11 +462,19 @@ const MyObservationsContainer = ( ): Node => {
       logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_STATE" );
       dispatch( { type: "RESET_STATE" } );
     }
-    dispatch( { type: "START_SYNC" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling toggleLoginSheet" );
-    toggleLoginSheet( );
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      dispatch( { type: "RESET_STATE" } );
+      return;
+    }
     logger.info( "[MyObservationsContainer.js] syncObservations: calling showInternetErrorAlert" );
-    showInternetErrorAlert( );
+    if ( !isOnline ) {
+      showInternetErrorAlert( );
+      dispatch( { type: "RESET_STATE" } );
+      return;
+    }
+    dispatch( { type: "START_SYNC" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: calling activateKeepAwake" );
     activateKeepAwake( );
     logger.info(
@@ -435,13 +491,16 @@ const MyObservationsContainer = ( ): Node => {
     deactivateKeepAwake( );
     dispatch( { type: "RESET_STATE" } );
     logger.info( "[MyObservationsContainer.js] syncObservations: done" );
-  }, [uploadInProgress,
-    uploadsComplete,
-    syncRemoteDeletedObservations,
+  }, [
+    currentUser,
     downloadRemoteObservationsFromServer,
-    toggleLoginSheet,
+    isOnline,
     showInternetErrorAlert,
-    updateSyncTime
+    syncRemoteDeletedObservations,
+    toggleLoginSheet,
+    updateSyncTime,
+    uploadInProgress,
+    uploadsComplete
   ] );
 
   useEffect( ( ) => {

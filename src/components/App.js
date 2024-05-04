@@ -34,7 +34,8 @@ Realm.setLogLevel( "warn" );
 LogBox.ignoreLogs( ["new NativeEventEmitter"] );
 
 type Props = {
-  children?: any,
+  // $FlowIgnore
+  children?: unknown,
 };
 
 // this children prop is here for the sake of testing with jest
@@ -42,6 +43,7 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+
   useIconicTaxa( { reload: true } );
   useReactQueryRefetch( );
   useFreshInstall( currentUser );

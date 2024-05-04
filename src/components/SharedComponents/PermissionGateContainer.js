@@ -140,7 +140,7 @@ const PermissionGateContainer = ( {
       && result !== null
     ) {
       setModalShown( true );
-      return () => {};
+      return () => undefined;
     }
     if ( !withoutNavigation ) {
       const unsubscribe = navigation.addListener( "focus", async () => {
@@ -149,7 +149,7 @@ const PermissionGateContainer = ( {
       } );
       return unsubscribe;
     }
-    return () => {};
+    return () => undefined;
   }, [
     checkPermission,
     children,

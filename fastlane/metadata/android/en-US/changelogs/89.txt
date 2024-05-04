@@ -1,0 +1,8 @@
+UPDATED
+* Added disk usage info to Debug screen
+* Web view header style
+
+FIXED
+* Should not create multiple Photo Library folders
+* Camera zoom button should look like other buttons
+* Removed drop shadow from obs edit when editing a single observation

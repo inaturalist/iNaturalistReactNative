@@ -25,7 +25,6 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey,
-    keepPreviousData: false,
     queryFn: async ( { pageParam } ) => {
       const apiToken = await getJWT( );
       const options = {
@@ -46,11 +45,15 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
       const response = await searchObservations( params, options );
       return response;
     },
+    initialPageParam: 0,
     getNextPageParam: lastPage => last( lastPage.results )?.id
   } );
 
   const observations = flatten( data?.pages?.map( r => r.results ) ) || [];
-  const totalResults = data?.pages?.[0].total_results || null;
+  let totalResults = data?.pages?.[0].total_results;
+  if ( totalResults !== 0 && !totalResults ) {
+    totalResults = null;
+  }
 
   return {
     isFetchingNextPage,

@@ -4,10 +4,11 @@ import {
   Button,
   DisplayTaxon
 } from "components/SharedComponents";
-import { Text, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
+import { Text } from "react-native";
 
 type Props = {
   handleClose: Function,
@@ -61,7 +62,7 @@ const WithdrawIDSheet = ( {
         className="mx-2 grow"
         testID="ObsDetail.WithdrawId.withdraw"
         accessibilityRole="button"
-        accessibilityHint={t( "Withdraws-id-and-closes" )}
+        accessibilityHint={t( "Withdraws-identification" )}
         level="primary"
       />
 

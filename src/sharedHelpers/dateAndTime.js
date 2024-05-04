@@ -1,6 +1,13 @@
 import {
-  differenceInDays, differenceInHours, differenceInMinutes,
-  format, formatDistanceToNow, formatISO, fromUnixTime, getUnixTime, getYear,
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  format,
+  formatDistanceToNow,
+  formatISO,
+  fromUnixTime,
+  getUnixTime,
+  getYear,
   parseISO
 } from "date-fns";
 
@@ -80,16 +87,12 @@ const formatIdDate = ( date, t ) => {
     }
     return t( "Date-weeks", { count: parseInt( days / 7, 10 ) } );
   }
-  let dateFormatString;
   if ( getYear( now ) !== getYear( d ) ) {
     // Previous year(s)
-    dateFormatString = "Date-short-format";
-  } else {
-    // Current year
-    dateFormatString = "Date-this-year";
+    return format( d, t( "Date-short-format" ) );
   }
-
-  return format( d, t( dateFormatString ) );
+  // Current year
+  return format( d, t( "Date-this-year" ) );
 };
 
 const formatUserProfileDate = ( date, t ) => format( parseISO( date ), t( "date-format-long" ) );

@@ -337,31 +337,24 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
       style={
         [
           {
-            "fontFamily": "Whitney-Medium",
+            "fontSize": 17,
+            "lineHeight": 20.4,
+          },
+          {
+            "color": "#454545",
+          },
+          {
+            "fontFamily": "Lato-Medium",
           },
           [
-            [
-              {
-                "fontSize": 18,
-                "lineHeight": 22,
-              },
-              {
-                "fontWeight": "500",
-              },
-              {
-                "color": "#454545",
-              },
-              [
-                {
-                  "color": "#ffffff",
-                },
-              ],
-            ],
+            {
+              "color": "#ffffff",
+            },
           ],
         ]
       }
     >
-      unknown
+      Unknown
     </Text>
   </View>
 </View>
@@ -506,6 +499,27 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
         </Text>
       </View>
     </View>
+    <Image
+      accessibilityIgnoresInvertColors={true}
+      source={
+        {
+          "uri": "document/directory/path/photoUploads/undefined",
+        }
+      }
+      style={
+        [
+          [
+            {
+              "flexGrow": 1,
+            },
+            {
+              "aspectRatio": 1,
+            },
+          ],
+        ]
+      }
+      testID="ObsList.photo"
+    />
   </View>
   <BVLinearGradient
     colors={
@@ -543,57 +557,6 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
       ]
     }
   />
-  <View
-    style={
-      [
-        [
-          {
-            "position": "absolute",
-          },
-          {
-            "right": 0,
-          },
-          {
-            "paddingBottom": 4,
-            "paddingLeft": 4,
-            "paddingRight": 4,
-            "paddingTop": 4,
-          },
-          {
-            "top": 0,
-          },
-          {
-            "paddingBottom": 8,
-            "paddingLeft": 8,
-            "paddingRight": 8,
-            "paddingTop": 8,
-          },
-        ],
-      ]
-    }
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "rgba(244, 239, 244, 1)",
-            "fontSize": 24,
-          },
-          undefined,
-          {
-            "fontFamily": "INatIcon",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
   <View
     style={
       [
@@ -734,31 +697,24 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
       style={
         [
           {
-            "fontFamily": "Whitney-Medium",
+            "fontSize": 17,
+            "lineHeight": 20.4,
+          },
+          {
+            "color": "#454545",
+          },
+          {
+            "fontFamily": "Lato-Medium",
           },
           [
-            [
-              {
-                "fontSize": 18,
-                "lineHeight": 22,
-              },
-              {
-                "fontWeight": "500",
-              },
-              {
-                "color": "#454545",
-              },
-              [
-                {
-                  "color": "#ffffff",
-                },
-              ],
-            ],
+            {
+              "color": "#ffffff",
+            },
           ],
         ]
       }
     >
-      unknown
+      Unknown
     </Text>
   </View>
 </View>

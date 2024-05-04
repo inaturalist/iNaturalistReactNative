@@ -7,8 +7,8 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   testID: string,
-  icon: any,
-  onPress: any,
+  icon: string,
+  onPress: Function,
   userIconUri?: string,
   accessibilityLabel: string,
   accessibilityRole?: string,
@@ -29,8 +29,8 @@ const NavButton = ( {
   accessibilityLabel,
   accessibilityHint,
   accessibilityRole = "tab",
-  width,
-  height
+  width = 44,
+  height = 44
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {

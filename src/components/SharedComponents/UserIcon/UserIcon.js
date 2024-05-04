@@ -1,8 +1,8 @@
 // @flow
 
-import classNames from "classnames";
-import { Image } from "components/styledComponents";
-import * as React from "react";
+import { FasterImageView } from "components/styledComponents";
+import type { Node } from "react";
+import React from "react";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -15,37 +15,47 @@ type Props = {
 
 const UserIcon = ( {
   uri, small, active, large, medium
-}: Props ): React.Node => {
+}: Props ): Node => {
   const getSize = ( ) => {
     if ( small ) {
-      return "w-[22px] h-[22px]";
+      return 22;
     }
     if ( large ) {
-      return "w-[134px] h-[134px]";
+      return 134;
     }
     if ( medium ) {
-      return "w-[62px] h-[62px]";
+      return 62;
     }
-    return "w-[40px] h-[40px]";
+    return 40;
   };
 
   const size = getSize( );
-  const className = classNames(
-    "rounded-full",
-    size
-  );
+
   // For unknown reasons, the green border doesn't show up on Android using nativewind classNames
   // but it works with style, might warrant further investigation or an issue in nativewind
-  const style = { borderColor: colors.inatGreen, borderWidth: 3 };
+  const style = {
+    width: size,
+    height: size,
+    overflow: "hidden"
+  };
+  const activeStyle = {
+    borderColor: colors.inatGreen,
+    borderWidth: 3,
+    borderRadius: size / 2
+  };
   return (
-    <Image
+    <FasterImageView
       testID="UserIcon.photo"
-      className={className}
-      style={active && style}
-      source={uri}
+      style={[active && activeStyle, style]}
+      source={{
+        url: uri?.uri,
+        borderRadius: size / 2,
+        resizeMode: "cover"
+      }}
       accessibilityRole="image"
       accessibilityIgnoresInvertColors
     />
+
   );
 };
 

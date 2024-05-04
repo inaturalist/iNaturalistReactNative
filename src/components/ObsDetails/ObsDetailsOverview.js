@@ -49,7 +49,7 @@ const ObsDetailsOverview = ( {
     if ( !communityTaxon ) {
       return (
         <View className="justify-center ml-1">
-          <Body1>{t( "Unknown" )}</Body1>
+          <Body1>{t( "Unknown--taxon" )}</Body1>
         </View>
       );
     }
@@ -58,7 +58,7 @@ const ObsDetailsOverview = ( {
         taxon={communityTaxon}
         handlePress={( ) => navigation.navigate( "TaxonDetails", { id: communityTaxon.id } )}
         testID={`ObsDetails.taxon.${communityTaxon.id}`}
-        accessibilityLabel={t( "Navigate-to-taxon-details" )}
+        accessibilityHint={t( "Navigates-to-taxon-details" )}
       />
     );
   };

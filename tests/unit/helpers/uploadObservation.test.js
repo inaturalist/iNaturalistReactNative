@@ -10,6 +10,13 @@ jest.mock( "components/LoginSignUp/AuthenticationService", ( ) => ( {
 // Mock safeRealmWrite b/c this function writes to realm
 jest.mock( "sharedHelpers/safeRealmWrite", ( ) => jest.fn( ) );
 
+// This function also tries to retrieve records from Realm. If your test needs
+// this to fetch a specific record, you'll need to change the mock
+// implementation here
+const realm = {
+  objectForPrimaryKey: jest.fn( ( _modelName, _primaryKey ) => factory( "LocalObservation" ) )
+};
+
 function makeObservationWithPhotos( ) {
   const mockObservationPhoto = factory( "LocalObservationPhoto" );
   // I haven't figured out a way to fake toJSON in a factoria object. This
@@ -54,7 +61,7 @@ describe( "uploadObservation", ( ) => {
     inatjs.observations.create.mockResolvedValue(
       makeResponse( [factory( "RemoteObservation" )] )
     );
-    await uploadObservation( makeObservationWithPhotos( ) );
+    await uploadObservation( makeObservationWithPhotos( ), realm );
     expect( inatjs.observation_photos.create ).toHaveBeenCalledTimes( 1 );
   } );
 
@@ -68,11 +75,11 @@ describe( "uploadObservation", ( ) => {
     expect( inatjs.sounds.create ).toHaveBeenCalledTimes( 1 );
   } );
 
-  it( "should call inatjs.observation_sounds.create for an obs w/ photos", async ( ) => {
+  it( "should call inatjs.observation_sounds.create for an obs w/ sounds", async ( ) => {
     inatjs.observations.create.mockResolvedValue(
       makeResponse( [factory( "RemoteObservation" )] )
     );
-    await uploadObservation( makeObservationWithSounds( ) );
+    await uploadObservation( makeObservationWithSounds( ), realm );
     expect( inatjs.observation_sounds.create ).toHaveBeenCalledTimes( 1 );
   } );
 
@@ -92,7 +99,7 @@ describe( "uploadObservation", ( ) => {
       inatjs.observations.update.mockResolvedValue(
         makeResponse( [factory( "RemoteObservation" )] )
       );
-      await uploadObservation( mockObservation );
+      await uploadObservation( mockObservation, realm );
       expect( inatjs.observation_photos.update ).toHaveBeenCalledTimes( 1 );
     } );
   } );

@@ -2,12 +2,13 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { Body2, Button, TextSheet } from "components/SharedComponents";
+import {
+  Body2, Button, TextSheet, UnderlinedLink
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Alert, Linking } from "react-native";
 import { Checkbox, useTheme } from "react-native-paper";
 
 import {
@@ -15,42 +16,47 @@ import {
 } from "./AuthenticationService";
 import Error from "./Error";
 
-const LicensePhotosForm = ( ): Node => {
-  const NONE = "NONE";
-  const LICENSES = "LICENSES";
-  const PERSONAL_INFO = "PERSONAL_INFO";
-  const INFO_TRANSFER = "INFO_TRANSFER";
+const NONE = "NONE";
+const LICENSES = "LICENSES";
+const PERSONAL_INFO = "PERSONAL_INFO";
+const INFO_TRANSFER = "INFO_TRANSFER";
 
+const LicensePhotosForm = ( ): Node => {
+  const navigation = useNavigation( );
+  const { params } = useRoute( );
+  const { user } = params;
+  const theme = useTheme( );
   const [learnSheet, setLearnSheet] = useState( NONE );
+  const [error, setError] = useState( null );
 
   const onTermsPressed = async () => {
     const url = "https://www.inaturalist.org/pages/terms";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Terms-of-Use" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const onPrivacyPressed = async () => {
     const url = "https://www.inaturalist.org/pages/privacy";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Privacy-Policy" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const onCommunityPressed = async () => {
     const url = "https://www.inaturalist.org/pages/community+guidelines";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Community-Guidelines" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const initialCheckboxState = {
@@ -107,13 +113,7 @@ const LicensePhotosForm = ( ): Node => {
       checked: false
     }
   };
-
-  const { params } = useRoute( );
-  const { user } = params;
-  const navigation = useNavigation( );
-  const theme = useTheme( );
   const [checkboxes, setCheckboxes] = useState( initialCheckboxState );
-  const [error, setError] = useState( null );
 
   const register = async ( ) => {
     user.pi_consent = true;
@@ -168,13 +168,13 @@ const LicensePhotosForm = ( ): Node => {
         <View className="mt-2 flex-1">
           <Body2 className="flex-wrap color-white">{text}</Body2>
           {links && links.map( link => (
-            <Body2
-              className="color-white underline font-bold mt-[9px]"
+            <UnderlinedLink
+              className="color-white mt-[9px]"
               key={link.label}
               onPress={link.onPress}
             >
               {link.label}
-            </Body2>
+            </UnderlinedLink>
           ) )}
         </View>
       </View>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CustomTabBar should render correctly 1`] = `
+exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
 <View
   collapsable={false}
   pointerEvents="box-none"
@@ -12,6 +12,11 @@ exports[`CustomTabBar should render correctly 1`] = `
 >
   <View
     className="flex-1"
+    style={
+      {
+        "flex": 1,
+      }
+    }
   >
     <View
       accessibilityRole="tablist"
@@ -55,6 +60,7 @@ exports[`CustomTabBar should render correctly 1`] = `
           ],
         ]
       }
+      testID="CustomTabBar"
     >
       <View
         accessibilityHint="Opens the side drawer menu."
@@ -148,7 +154,7 @@ exports[`CustomTabBar should render correctly 1`] = `
         </View>
       </View>
       <View
-        accessibilityHint="Navigates to explore."
+        accessibilityHint="Navigates to explore"
         accessibilityLabel="Explore"
         accessibilityRole="button"
         accessibilityState={
@@ -193,7 +199,7 @@ exports[`CustomTabBar should render correctly 1`] = `
             undefined,
           ]
         }
-        testID="Explore"
+        testID="RootExplore"
       >
         <View
           style={
@@ -238,36 +244,6 @@ exports[`CustomTabBar should render correctly 1`] = `
           </Text>
         </View>
       </View>
-      <Modal
-        animationType="none"
-        deviceHeight={null}
-        deviceWidth={null}
-        hardwareAccelerated={false}
-        hideModalContentWhileAnimating={true}
-        onBackdropPress={[Function]}
-        onModalHide={[Function]}
-        onModalWillHide={[Function]}
-        onModalWillShow={[Function]}
-        onRequestClose={[Function]}
-        onSwipeComplete={[Function]}
-        panResponderThreshold={4}
-        scrollHorizontal={false}
-        scrollOffset={0}
-        scrollOffsetMax={0}
-        scrollTo={null}
-        statusBarTranslucent={false}
-        supportedOrientations={
-          [
-            "portrait",
-            "landscape",
-          ]
-        }
-        swipeDirection="down"
-        swipeThreshold={100}
-        transparent={true}
-        useNativeDriverForBackdrop={true}
-        visible={false}
-      />
       <View
         accessibilityHint="Opens add observation modal."
         accessibilityLabel="Add observations"
@@ -399,13 +375,13 @@ exports[`CustomTabBar should render correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </BVLinearGradient>
       </View>
       <View
-        accessibilityHint="Navigates to observations."
+        accessibilityHint="Navigates to your observations"
         accessibilityLabel="Observations"
         accessibilityRole="button"
         accessibilityState={
@@ -491,12 +467,12 @@ exports[`CustomTabBar should render correctly 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </View>
       <View
-        accessibilityHint="Navigates-to-notifications"
+        accessibilityHint="Navigates to notifications"
         accessibilityLabel="Notifications"
         accessibilityRole="button"
         accessibilityState={
@@ -582,7 +558,7 @@ exports[`CustomTabBar should render correctly 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </View>

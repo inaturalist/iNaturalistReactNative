@@ -14,6 +14,14 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   } )
 } ) );
 
+const mockMutate = jest.fn();
+jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    mutate: mockMutate
+  } )
+} ) );
+
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -46,8 +54,7 @@ describe( "UserProfile", () => {
   } );
 
   test( "should not have accessibility errors", async () => {
-    renderComponent( <UserProfile /> );
-    const userProfile = await screen.findByTestId( "UserProfile" );
+    const userProfile = <UserProfile />;
     expect( userProfile ).toBeAccessible();
   } );
 
@@ -60,8 +67,8 @@ describe( "UserProfile", () => {
         new RegExp( t( "OBSERVATIONS-WITHOUT-NUMBER", { count: mockUser.observations_count } ) )
       )
     ).toBeTruthy( );
-    expect( screen.getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
-      uri: mockUser.icon_url
-    } );
+    const userIcon = screen.getByTestId( "UserIcon.photo" );
+    expect( userIcon ).toBeTruthy( );
+    expect( userIcon.props.source ).toHaveProperty( "url", mockUser.icon_url );
   } );
 } );

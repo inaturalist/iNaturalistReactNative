@@ -8,7 +8,8 @@ type Props = {
   icon: string,
   size?: number,
   classNameMargin?: string,
-  children: any
+  // $FlowIgnore
+  children: unknown
 }
 
 const ContentWithIcon = ( {

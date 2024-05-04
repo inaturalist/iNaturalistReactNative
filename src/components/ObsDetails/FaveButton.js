@@ -19,22 +19,23 @@ import colors from "styles/tailwindColors";
 type Props = {
   observation: Object,
   currentUser?: Object,
-  afterToggleFave: ( wasFaved: boolean ) => void,
+  afterToggleFave: Function,
   top?: boolean
 }
 
 const FaveButton = ( {
   observation,
   currentUser,
-  afterToggleFave = ( ) => { },
+  afterToggleFave = ( ) => undefined,
   top = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const uuid = observation?.uuid;
 
   const observationFaved = useMemo( ( ) => {
-    if ( currentUser && observation?.faves?.length > 0 ) {
-      const viewerFaved = observation?.faves.find( fave => fave.user_id === currentUser.id );
+    const faves = ( observation?.faves && observation.faves() ) || [];
+    if ( currentUser && faves.length > 0 ) {
+      const viewerFaved = faves.find( fave => fave.user_id === currentUser.id );
       return !!viewerFaved;
     }
     return null;

@@ -45,11 +45,11 @@ const EvidenceSectionContainer = ( {
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
 
   const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
-  const photos = currentObservation?.observationPhotos?.map( obsPhoto => obsPhoto.photo ) || [];
-  const sounds = currentObservation?.observationSounds || [];
+  const observationPhotos = currentObservation?.observationPhotos || [];
+  const observationSounds = currentObservation?.observationSounds || [];
   const mountedRef = useRef( true );
-  const obsPhotoUris = photos.map(
-    photo => photo.url || photo.localFilePath
+  const obsPhotoUris = observationPhotos.map(
+    observationPhoto => observationPhoto.photo.url || observationPhoto.photo.localFilePath
   );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
@@ -74,7 +74,7 @@ const EvidenceSectionContainer = ( {
     return function cleanup( ) {
       mountedRef.current = false;
     };
-  }, [] );
+  }, [mountedRef] );
 
   useEffect( ( ) => {
     if ( difference( obsPhotoUris, photoEvidenceUris ).length > 0 ) {
@@ -179,7 +179,9 @@ const EvidenceSectionContainer = ( {
     setPassesEvidenceTest
   ] );
 
-  const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
+  const locationTextClassNames = ( !latitude || !longitude )
+    ? ["color-warningRed"]
+    : [];
 
   const handleDragAndDrop = ( { data } ) => {
     // Turn from Realm object to simple JS objects (so we can update the position)
@@ -239,10 +241,10 @@ const EvidenceSectionContainer = ( {
       handleDragAndDrop={handleDragAndDrop}
       passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
-      photos={currentObservation?.observationPhotos || []}
+      observationPhotos={observationPhotos}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
-      sounds={sounds}
+      observationSounds={observationSounds}
       onLocationPermissionGranted={( ) => {
         setShouldRetryCurrentObservationLocation( true );
       }}

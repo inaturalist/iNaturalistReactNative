@@ -7,8 +7,7 @@ import { renderComponent } from "tests/helpers/render";
 describe( "MediaViewer", ( ) => {
   describe( "without media", ( ) => {
     it( "should not have accessibility errors", async () => {
-      renderComponent( <MediaViewer /> );
-      const mediaViewer = await screen.findByTestId( "MediaViewer" );
+      const mediaViewer = <MediaViewer />;
       expect( mediaViewer ).toBeAccessible( );
     } );
 
@@ -24,8 +23,7 @@ describe( "MediaViewer", ( ) => {
       const photos = [factory( "LocalPhoto" )];
 
       it( "should not have accessibility errors", async () => {
-        renderComponent( <MediaViewer photos={photos} /> );
-        const mediaViewer = await screen.findByTestId( "MediaViewer" );
+        const mediaViewer = <MediaViewer photos={photos} />;
         expect( mediaViewer ).toBeAccessible( );
       } );
 

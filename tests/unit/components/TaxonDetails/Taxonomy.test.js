@@ -3,6 +3,21 @@ import Taxonomy from "components/TaxonDetails/Taxonomy";
 import React from "react";
 import factory from "tests/factory";
 
+const mockUser = factory( "LocalUser" );
+
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockUser
+} ) );
+
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useNavigation: jest.fn( )
+  };
+} );
+
 const capitalizeFirstLetter = s => s.charAt( 0 ).toUpperCase( ) + s.slice( 1 );
 
 const ancestors = [
@@ -46,16 +61,6 @@ describe( "Taxonomy", ( ) => {
     const currentTaxonRow = screen.getByTestId( `TaxonomyRow.${currentTaxon.id}` );
 
     expect( currentTaxonRow ).toHaveTextContent( `${commonName}(${rankAndName})` );
-  } );
-
-  test( "renders current taxon", ( ) => {
-    render( <Taxonomy taxon={currentTaxon} /> );
-
-    const name = screen.getByText( currentTaxon.name );
-    const commonName = screen.getByText( currentTaxon.preferred_common_name );
-
-    expect( commonName ).toBeVisible( );
-    expect( name ).toBeVisible( );
   } );
 
   test( "renders all ancestors", ( ) => {

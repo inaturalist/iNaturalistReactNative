@@ -1,25 +1,23 @@
 // @flow
 
+import classnames from "classnames";
 import {
+  Body1,
   Button,
   Map
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { Platform } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
-import { getShadowStyle } from "styles/global";
+import { useDebugMode, useTranslation } from "sharedHooks";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import useMapLocation from "./hooks/useMapLocation";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
   elevation: 6
 } );
 
@@ -32,8 +30,9 @@ const MapView = ( {
   observations,
   queryParams: tileMapParams
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
+  const { isDebug } = useDebugMode( );
+  const [zoom, setZoom] = useState( -1 );
 
   const {
     onPanDrag,
@@ -55,7 +54,7 @@ const MapView = ( {
         {showMapBoundaryButton && (
           <View
             className="mx-auto"
-            style={getShadow( theme.colors.primary )}
+            style={DROP_SHADOW}
           >
             <Button
               text={t( "REDO-SEARCH-IN-MAP-AREA" )}
@@ -66,6 +65,22 @@ const MapView = ( {
           </View>
         )}
       </View>
+      { isDebug && (
+        <View
+          className={classnames(
+            "absolute",
+            "left-5",
+            "bottom-[140px]",
+            "bg-deeppink",
+            "p-1",
+            "z-10"
+          )}
+        >
+          <Body1 className="text-white">
+            {`Zoom: ${zoom}`}
+          </Body1>
+        </View>
+      ) }
       <Map
         currentLocationButtonClassName="left-5 bottom-20"
         observations={observations}
@@ -78,12 +93,13 @@ const MapView = ( {
           if ( Platform.OS === "android" && Math.round( newRegion.latitude ) === 0 ) {
             return;
           }
-          await updateMapBoundaries( boundaries );
+          await updateMapBoundaries( newRegion, boundaries );
           if ( startAtNearby ) {
             onZoomToNearby( boundaries );
           }
         }}
         onZoomToNearby={onZoomToNearby}
+        onZoomChange={newZoom => setZoom( newZoom )}
         region={region}
         showCurrentLocationButton
         showExplore
@@ -97,6 +113,7 @@ const MapView = ( {
         onPermissionDenied={onPermissionDenied}
         onPermissionGranted={onPermissionGranted}
         permissionRequested={permissionRequested}
+        currentLocationZoomLevel={15}
       />
     </View>
   );

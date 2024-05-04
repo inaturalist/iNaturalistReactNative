@@ -14,9 +14,19 @@ node_modules/react-native/Libraries/polyfills/.*
 ; This is an intentionally malflormed package
 .*/node_modules/resolve/test/resolver/malformed_package_json/package\.json$
 
-; Ignore this file
+; Ignore these files
 .*/node_modules/react-native/sdks/hermes/external/flowtest/test/flow/comment_interning/program_comment_directive.js
-
+.*/node_modules/react-native/Libraries/DevToolsSettings/DevToolsSettingsManager.d.ts
+.*/node_modules/react-native/Libraries/Network/RCTNetworking.js.flow
+.*/node_modules/react-native/Libraries/NativeComponent/BaseViewConfig.js.flow
+.*/node_modules/react-native/Libraries/DevToolsSettings/DevToolsSettingsManager.js.flow
+.*/node_modules/metro/node_modules/hermes-estree/dist/generated/predicates.js.flow
+.*/node_modules/metro-babel-transformer/node_modules/hermes-estree/dist/generated/predicates.js.flow
+.*/node_modules/@react-native/dev-middleware/dist/utils/DefaultBrowserLauncher.js.flow
+.*/node_modules/@react-native/community-cli-plugin/dist/commands/start/index.js.flow
+.*/node_modules/@react-native/community-cli-plugin/dist/commands/ram-bundle/index.js.flow
+.*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/index.js.flow
+.*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/buildBundle.js.flow
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*

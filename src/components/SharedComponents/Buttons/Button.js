@@ -1,5 +1,6 @@
 // @flow
 
+import { tailwindFontBold } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
@@ -13,11 +14,11 @@ type ButtonProps = {
   className?: string,
   disabled?: boolean,
   forceDark?: boolean,
-  icon?: any,
+  icon?: string,
   level?: string,
   loading?: boolean,
-  onPress: any,
-  style?: any,
+  onPress: Function,
+  style?: string | Array<string>,
   testID?: string,
   text: string,
   dropdown?: boolean
@@ -39,7 +40,7 @@ const setStyles = ( {
     "px-[10px]",
     "py-[13px]",
     "rounded-lg",
-    "font-Whitney-Bold"
+    tailwindFontBold
   ];
   const textClasses = [
     "text-center",

@@ -2,7 +2,6 @@
 
 exports[`Checkbox renders reliably 1`] = `
 <View
-  accessibilityLabel="Checkmark"
   accessibilityRole="radio"
   accessibilityState={
     {
@@ -23,6 +22,7 @@ exports[`Checkbox renders reliably 1`] = `
   }
   accessible={true}
   collapsable={false}
+  disableBuiltInState={true}
   fillColor="rgba(98, 91, 113, 1)"
   focusable={true}
   iconComponent={
@@ -139,27 +139,22 @@ exports[`Checkbox renders reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontSize": 15,
+          "lineHeight": 18,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "fontSize": 16,
-            "lineHeight": 18,
+            "marginLeft": 12,
           },
           {
-            "fontWeight": "300",
+            "flexShrink": 1,
           },
-          {
-            "color": "#454545",
-          },
-          [
-            {
-              "marginLeft": 12,
-            },
-            {
-              "flexShrink": 1,
-            },
-          ],
         ],
       ]
     }
@@ -171,7 +166,6 @@ exports[`Checkbox renders reliably 1`] = `
 
 exports[`Checkbox renders reliably being checked 1`] = `
 <View
-  accessibilityLabel="Checkmark"
   accessibilityRole="radio"
   accessibilityState={
     {
@@ -192,6 +186,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
   }
   accessible={true}
   collapsable={false}
+  disableBuiltInState={true}
   fillColor="rgba(98, 91, 113, 1)"
   focusable={true}
   iconComponent={
@@ -308,27 +303,22 @@ exports[`Checkbox renders reliably being checked 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Light",
+          "fontSize": 15,
+          "lineHeight": 18,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Regular",
         },
         [
           {
-            "fontSize": 16,
-            "lineHeight": 18,
+            "marginLeft": 12,
           },
           {
-            "fontWeight": "300",
+            "flexShrink": 1,
           },
-          {
-            "color": "#454545",
-          },
-          [
-            {
-              "marginLeft": 12,
-            },
-            {
-              "flexShrink": 1,
-            },
-          ],
         ],
       ]
     }

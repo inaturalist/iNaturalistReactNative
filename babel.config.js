@@ -1,11 +1,13 @@
 module.exports = {
-  presets: ["module:metro-react-native-babel-preset"],
+  presets: ["module:@react-native/babel-preset"],
   plugins: [
     "react-native-worklets-core/plugin",
     "transform-inline-environment-variables",
     "nativewind/babel",
     ["module-resolver", {
       alias: {
+        // constants is a reserved word, so jest won't run if we name the alias constants
+        appConstants: "./src/appConstants",
         api: "./src/api",
         components: "./src/components",
         dictionaries: "./src/dictionaries",
@@ -22,14 +24,11 @@ module.exports = {
         tests: "./tests"
       }
     }],
-    // Reanimated 2 plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
-    // react-native-vision-camera v3
-    // "react-native-reanimated/plugin",
-    // react-native-vision-camera v2
+    // Reanimated plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
     [
       "react-native-reanimated/plugin",
       {
-        globals: ["__inatVision"]
+        processNestedWorklets: true
       }
     ]
   ],

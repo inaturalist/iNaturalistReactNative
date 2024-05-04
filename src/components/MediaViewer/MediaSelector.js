@@ -8,6 +8,7 @@ import React, { useCallback } from "react";
 import {
   FlatList
 } from "react-native";
+import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -22,9 +23,7 @@ type Props = {
   scrollToIndex: Function,
   selectedMediaIndex?: number,
   sounds?: Array<{
-    id?: number,
-    file_url: string,
-    uuid: string
+    file_url: string
   }>,
 }
 
@@ -64,7 +63,7 @@ const PhotoSelector = ( {
         item.type === "photo"
           ? (
             <Image
-              source={{ uri: item.url || item.localFilePath }}
+              source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( item ) }}
               accessibilityIgnoresInvertColors
               className="w-full h-full"
             />

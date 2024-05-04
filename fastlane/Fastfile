@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "fileutils"
+require "spaceship"
 
 appfile_path = File.join( __dir__, "Appfile" )
 unless File.exist?( appfile_path )
@@ -52,6 +53,7 @@ EDITOR = editor_cmd_needs_to_wait ? "#{editor_cmd} -w" : editor_cmd
 XCODEPROJ = "ios/iNaturalistReactNative.xcodeproj"
 PACKAGE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :package_name )
 IOS_BUNDLE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :app_identifier )
+IOS_ITC_TEAM_ID = CredentialsManager::AppfileConfig.try_fetch_value( :itc_team_id )
 
 # https://github.com/fastlane/fastlane/issues/20741#issuecomment-1280687500
 # ENV["ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD"] = "true"
@@ -118,7 +120,7 @@ end
 
 lane :tag do
   desc "Add a new tag with an incremented version"
-  ensure_git_status_clean
+  ensure_git_status_clean( ignore_files: ["fastlane/Fastfile"] )
   last_tag = last_git_tag
   # Increment the iOS build number
   increment_build_number( xcodeproj: XCODEPROJ )
@@ -193,27 +195,27 @@ platform :android do
   lane :build do
     desc "Build release files for Android"
     Dir.children( "../android/app/src/main/assets/camera" ).each do | file |
-      next unless !ENV.has_value?( file ) 
+      next if ENV.value?( file )
 
       UI.abort_with_message! <<~EXTRA_ANDROID_ASSETS_ERROR
         Android assets folder has extraneous file: #{file}, which is not listed
         as an environment variable. Remove any unreferenced files from
         android/app/src/main/assets/camera before running a release build
-        EXTRA_ANDROID_ASSETS_ERROR
+      EXTRA_ANDROID_ASSETS_ERROR
     end
-    ASSETS = File.open( "../android/link-assets-manifest.json" ) {| f | JSON.parse( f.read )["data"] }
-    linked_assets = Array.new
-    ASSETS.each do | asset |
+    assets = File.open( "../android/link-assets-manifest.json" ) {| f | JSON.parse( f.read )["data"] }
+    linked_assets = []
+    assets.each do | asset |
       linked_assets.push( asset["path"].split( "assets/fonts/" )[1] )
     end
     Dir.children( "../assets/fonts" ).each do | file |
-      next unless !linked_assets.include?( file ) and file != ".DS_Store"
+      next unless !linked_assets.include?( file ) && ( file != ".DS_Store" )
 
       UI.abort_with_message! <<~EXTRA_ASSETS_ERROR
         Assets folder has extraneous file: #{file}, which is not listed
         in link-assets-manifest.json. Remove any unreferenced assets before
         running a release build
-        EXTRA_ASSETS_ERROR
+      EXTRA_ASSETS_ERROR
     end
     keystore_properties_path = File.join(
       __dir__,
@@ -254,8 +256,9 @@ platform :android do
   end
 
   lane :clean do
+    sh "rm -rf ../android/.gradle", step_name: "Deleting Android .gradle folder"
     sh "rm -rf ../android/build", step_name: "Deleting Android build folder"
-    sh "(cd ../android && ./gradlew clean)", step_name: "Cleaning Android build environment"
+    sh "(cd ../android && ./gradlew --stop && ./gradlew clean)", step_name: "Cleaning Android build environment"
     Dir.glob( File.join( File.dirname( get_aab_path ), "*.aab" ) ).each do | aab_path |
       UI.message "Deleting #{aab_path}"
       File.delete aab_path
@@ -357,7 +360,6 @@ lane :release do
     version: last_tag,
     api_token: ENV["GITHUB_TOKEN"]
   )
-
   if github_release
     UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
   else
@@ -385,7 +387,7 @@ lane :internal do
   aab_path = get_aab_path
   unless File.exist?( aab_path )
     UI.abort_with_message! <<~MSG
-      AAB does not exist at #{aab_path}. You may need to run the release lane before making a beta
+      AAB does not exist at #{aab_path}. You may need to run the release lane before doing this.
     MSG
   end
   last_tag = last_git_tag
@@ -407,43 +409,46 @@ lane :internal do
 
   upload_to_testflight(
     ipa: get_ipa_path,
-    distribute_external: true,
-    groups: [
-      # I don't think this is necessary since staff should be in the internal
-      # group
-      # "iNat staff",
-      "iNat Friends"
-    ],
     changelog: File.read( changelog_path ),
     # https://github.com/fastlane/fastlane/issues/20756
-    itc_provider: CredentialsManager::AppfileConfig.try_fetch_value( :itc_provider )
+    itc_provider: CredentialsManager::AppfileConfig.try_fetch_value( :itc_provider ),
+    # The following distributes the build to our invite-only external test group
+    distribute_external: true,
+    groups: [
+      "iNat Friends"
+    ]
   )
 end
 
 lane :beta do
-  desc "Push builds for the latest tag for public testing"
-  # Push to play store beta track. In theory some time has elapsed between now
-  # and creating the release and translators have translated the release
-  # notes. In theory, and if we configure things correctly,
-  # upload_to_play_store will grab the appropriate release notes for the
-  # current version code, even if they aren't actually present for the tag
-  # the AAB was built from.
-  upload_to_play_store(
-    aab: aab_path,
-    track: "internal"
-  )
+  desc "Make latest builds available for public testing"
+
+  build_number = get_build_number( xcodeproj: XCODEPROJ )
+
+  # UI.message "Play Store: promoting build #{build_number} to beta track"
   upload_to_play_store(
     version_code: build_number,
     track: "internal",
     track_promote_to: "beta"
   )
+
+  UI.message "TestFlight: adding build #{build_number} to Open Beta group"
+  add_build_to_testflight_beta_group(
+    version_code: build_number,
+    beta_group: "Open Beta"
+  )
 end
 
 lane :prod do
   desc "Push builds for the latest tag to production"
-  build_number = get_build_number( xcodeproj: XCODEPROJ )
-  # In theory this will move the release associated with the build_number in
-  # the beta track to the production track and 100% rollout... but I haven't
-  # been able to test that yet
-  upload_to_play_store( version_code: build_number, track: "beta", track_promote_to: "production" )
+  # build_number = get_build_number( xcodeproj: XCODEPROJ )
+  # # In theory this will move the release associated with the build_number in
+  # # the beta track to the production track and 100% rollout... but I haven't
+  # # been able to test that yet
+  # upload_to_play_store(
+  #   version_code: build_number,
+  #   track: "beta",
+  #   track_promote_to: "production"
+  # )
+  UI.abort_with_message! "This doesn't upload iOS builds yet"
 end

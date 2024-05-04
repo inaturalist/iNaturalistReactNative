@@ -16,6 +16,13 @@ const initialStoreState = useStore.getState( );
 
 const mockTaxon = factory( "RemoteTaxon" );
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: []
+  } )
+} ) );
+
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
   default: () => ( { taxon: mockTaxon } )
@@ -31,11 +38,11 @@ describe( "Suggestions", ( ) => {
   } );
 
   test( "should not have accessibility errors", async ( ) => {
-    renderComponent( <Suggestions
-      suggestions={mockSuggestionsList}
-    /> );
-
-    const suggestions = await screen.findByTestId( "suggestions" );
+    const suggestions = (
+      <Suggestions
+        suggestions={mockSuggestionsList}
+      />
+    );
     expect( suggestions ).toBeAccessible( );
   } );
 
@@ -76,7 +83,8 @@ describe( "Suggestions", ( ) => {
   it( "should display a loading wheel if suggestions are loading", ( ) => {
     renderComponent( <Suggestions
       suggestions={[]}
-      loadingSuggestions
+      loading
+      photoUris={["uri"]}
     /> );
     const loading = screen.getByTestId( "SuggestionsList.loading" );
     expect( loading ).toBeVisible( );

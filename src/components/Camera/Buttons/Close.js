@@ -13,8 +13,8 @@ const Close = ( ): Node => {
   return (
     <TransparentCircleButton
       onPress={( ) => navigation.goBack( )}
-      accessibilityLabel={t( "Close-AR-camera" )}
-      accessibilityHint={t( "Navigate-to-previous-screen" )}
+      accessibilityLabel={t( "Close" )}
+      accessibilityHint={t( "Navigates-to-previous-screen" )}
       icon="close"
     />
   );

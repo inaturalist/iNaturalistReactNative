@@ -27,6 +27,13 @@ const ObsListItem = ( {
     || null;
   const needsSync = typeof observation.needsSync !== "undefined" && observation.needsSync( );
   const currentUser = useCurrentUser( );
+  const obsPhotosCount = observation?.observationPhotos?.length
+    || observation?.observation_photos?.length
+    || 0;
+  const hasSound = !!(
+    observation?.observationSounds?.length
+    || observation?.observation_sounds?.length
+  );
 
   return (
     <View
@@ -35,8 +42,8 @@ const ObsListItem = ( {
     >
       <ObsImagePreview
         source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
-        obsPhotosCount={observation?.observationPhotos?.length ?? 0}
-        hasSound={!!observation?.observationSounds?.length}
+        obsPhotosCount={obsPhotosCount}
+        hasSound={hasSound}
         opaque={needsSync}
         isSmall
         iconicTaxonName={observation.taxon?.iconic_taxon_name}
@@ -44,6 +51,7 @@ const ObsListItem = ( {
       <View className="pr-[25px] flex-1 ml-[10px]">
         <DisplayTaxonName
           taxon={observation?.taxon}
+          keyBase={observation?.uuid}
           scientificNameFirst={currentUser?.prefers_scientific_name_first}
         />
         <ObservationLocation observation={observation} classNameMargin="mt-1" />

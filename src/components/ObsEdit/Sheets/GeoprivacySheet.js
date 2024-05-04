@@ -9,7 +9,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   handleClose: Function,
-  selectedValue?: any,
+  selectedValue?: boolean,
   updateGeoprivacyStatus: Function
 }
 

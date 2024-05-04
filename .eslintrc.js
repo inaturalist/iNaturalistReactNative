@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  parser: "@babel/eslint-parser",
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     requireConfigFile: false,
     babelOptions: {
@@ -9,16 +9,20 @@ module.exports = {
   },
   extends: [
     "airbnb",
+    // This was added to the RN0.72 template, but it does not work with our current setup
+    // "@react-native",
     "plugin:i18next/recommended",
     "plugin:@tanstack/eslint-plugin-query/recommended",
-    "plugin:react-native-a11y/ios"
+    "plugin:react-native-a11y/ios",
+    "plugin:@typescript-eslint/recommended"
   ],
   plugins: [
     "module-resolver",
     "react-hooks",
     "react-native",
     "simple-import-sort",
-    "@tanstack/query"
+    "@tanstack/query",
+    "@typescript-eslint"
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],
@@ -121,13 +125,19 @@ module.exports = {
     "react-native-a11y/has-valid-accessibility-descriptors": 1,
     "react-native-a11y/has-valid-accessibility-ignores-invert-colors": 1,
     "react-native-a11y/has-valid-accessibility-live-region": 1,
-    "react-native-a11y/has-valid-important-for-accessibility": 1
+    "react-native-a11y/has-valid-important-for-accessibility": 1,
+
+    // TODO: we should actually type these at some point ~amanda 041824
+    "@typescript-eslint/ban-types": 0,
+    "@typescript-eslint/no-unused-vars": 0,
+    "@typescript-eslint/no-var-requires": 0
+
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {
     jest: true
   },
-  ignorePatterns: ["/coverage/*", "/vendor/*"],
+  ignorePatterns: ["/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
     "import/resolver": {
       "babel-module": { allowExistingDirectories: true },

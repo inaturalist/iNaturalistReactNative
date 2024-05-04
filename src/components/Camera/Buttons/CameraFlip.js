@@ -20,7 +20,7 @@ const CameraFlip = ( {
     <TransparentCircleButton
       optionalClasses={cameraFlipClasses}
       onPress={flipCamera}
-      accessibilityLabel={t( "Camera-flip" )}
+      accessibilityLabel={t( "Flip-camera" )}
       accessibilityHint={t( "Use-the-devices-other-camera" )}
       icon="rotate"
     />

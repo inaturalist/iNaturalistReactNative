@@ -3,11 +3,22 @@
 const fluent = require( "fluent_conv" );
 const yargs = require( "yargs" );
 const fs = require( "fs" );
+const {
+  parse: parseFtl,
+  serialize: serializeFtl,
+  Resource
+} = require( "@fluent/syntax" );
 
 const { readFile, writeFile } = fs.promises;
 const path = require( "path" );
 const util = require( "util" );
-const glob = util.promisify( require( "glob" ) );
+const { glob } = require( "glob" );
+const {
+  difference,
+  flatten,
+  sortBy,
+  uniq
+} = require( "lodash" );
 
 // Convert a single FTL file to JSON
 const jsonifyPath = async ( inPath, outPath, options = { } ) => {
@@ -15,11 +26,11 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
   try {
     ftlTxt = await readFile( inPath );
   } catch ( readFileErr ) {
-    console.log( `Could not read ${inPath}, skipping...` );
+    console.error( `Could not read ${inPath}, skipping...` );
     if ( options.debug ) {
-      console.log( "Failed to read input file with error:" );
-      console.log( readFileErr );
-      console.log( readFileErr.stack );
+      console.error( "Failed to read input file with error:" );
+      console.error( readFileErr );
+      console.error( readFileErr.stack );
     }
     return false;
   }
@@ -33,9 +44,9 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
   try {
     await writeFile( outPath, `${JSON.stringify( localizations, null, 2 )}\n` );
   } catch ( writeFileErr ) {
-    console.log( `Failed to write ${outPath} with error:` );
-    console.log( writeFileErr );
-    console.log( writeFileErr.stack );
+    console.error( `Failed to write ${outPath} with error:` );
+    console.error( writeFileErr );
+    console.error( writeFileErr.stack );
     process.exit( );
   }
   return true;
@@ -70,9 +81,9 @@ const jsonifyLocalizations = async ( options = {} ) => {
       failed.push( locale );
     }
   } ) );
-  console.log( `Converted: ${converted.sort( ).join( ", " )}` );
+  console.log( `✅ Converted: ${converted.sort( ).join( ", " )}` );
   if ( failed.length > 0 ) {
-    console.log( `Failed:    ${failed.sort( ).join( ", " )}` );
+    console.error( `❌ Failed:    ${failed.sort( ).join( ", " )}` );
   }
 };
 
@@ -93,6 +104,117 @@ const writeLoadTranslations = async ( ) => {
   out.write( "};\n" );
 };
 
+async function validate( ) {
+  const stringsPath = path.join( __dirname, "strings.ftl" );
+  const ftlTxt = await readFile( stringsPath );
+  const ftl = parseFtl( ftlTxt.toString( ) );
+  const errors = [];
+  // Chalk does not expose a CommonJS module, so we have to do this
+  const { default: chalk } = await import( "chalk" );
+  const keys = {};
+  ftl.body.forEach( item => {
+    if ( item.type === "GroupComment" ) {
+      errors.push(
+        `Group comments are not allowed: ${chalk.gray( `## ${item.content.slice( 0, 100 )}` )}`
+      );
+    }
+    if ( item.type === "Junk" ) {
+      let error = `Invalid Fluent syntax: ${chalk.gray( item.content.slice( 0, 100 ).trim( ) )}`;
+      if ( item.annotations ) {
+        error += item.annotations.map( anno => `\n\t${anno.message}` );
+      }
+      errors.push( error );
+    }
+    if ( item.type === "Message" ) {
+      if ( keys[item.id.name] ) {
+        errors.push( `Duplicate key: ${item.id.name}` );
+      } else {
+        keys[item.id.name] = true;
+      }
+    }
+  } );
+  if ( errors.length > 0 ) {
+    console.error( `❌ ${errors.length} errors found in ${stringsPath}:` );
+    errors.forEach( error => {
+      console.error( chalk.red( "[Error]" ), error );
+    } );
+    process.exit( 1 );
+  }
+  console.log( `✅ ${stringsPath} validated` );
+}
+
+async function normalize( ) {
+  const stringsPath = path.join( __dirname, "strings.ftl" );
+  const ftlTxt = await readFile( stringsPath );
+  const ftl = parseFtl( ftlTxt.toString( ) );
+  const resourceComments = [];
+  const messages = [];
+  // Extract the elements that matter
+  ftl.body.forEach( item => {
+    if ( item.type === "ResourceComment" ) resourceComments.push( item );
+    if ( item.type === "Message" ) messages.push( item );
+  } );
+  // Alphabetize the messages
+  const sortedMessages = messages.sort( ( msg1, msg2 ) => {
+    if ( msg1.id.name.toLowerCase( ) < msg2.id.name.toLowerCase( ) ) return -1;
+    if ( msg1.id.name.toLowerCase( ) > msg2.id.name.toLowerCase( ) ) return 1;
+    return 0;
+  } );
+  // Make a new Resource to serialize, ensuring all ResourceComments are at
+  // the top
+  const newResource = new Resource( [
+    ...resourceComments,
+    ...sortedMessages
+  ] );
+  const newFtlTxt = serializeFtl( newResource );
+  await writeFile( stringsPath, newFtlTxt );
+  console.log( `✅ ${stringsPath} normalized` );
+}
+
+async function getKeys( ) {
+  const stringsPath = path.join( __dirname, "strings.ftl" );
+  const ftlTxt = await readFile( stringsPath );
+  const ftl = parseFtl( ftlTxt.toString( ) );
+  return ftl.body.filter( item => item.type === "Message" ).map( msg => msg.id.name );
+}
+
+async function getKeysInUse( ) {
+  const paths = await glob( path.join( __dirname, "..", "**", "*.{js,ts,jsx,tsx}" ) );
+  const allKeys = await Promise.all( paths.map( async srcPath => {
+    const src = await readFile( srcPath );
+    const tMatches = [...src.toString( ).matchAll( /[^a-z]t\(\s*["']([\w-_\s]+?)["']/g )];
+    const i18nkeyMatches = [...src.toString( ).matchAll( /i18nKey=["']([\w-_\s]+?)["']/g )];
+    return [...tMatches, ...i18nkeyMatches].map( match => match[1] );
+  } ) );
+  return sortBy( uniq( flatten( allKeys ) ) );
+}
+
+async function unused( ) {
+  const keys = await getKeys( );
+  const keysInUse = await getKeysInUse( );
+  const unusedKeys = difference( keys, keysInUse );
+  if ( unusedKeys.length === 0 ) {
+    console.log( "✅ No unused keys" );
+  } else {
+    console.error( `❌ ${unusedKeys.length} unused keys found: ${unusedKeys}` );
+    process.exit( 1 );
+  }
+}
+
+async function untranslatable( ) {
+  const keys = await getKeys( );
+  const keysInUse = await getKeysInUse( );
+  const untranslatableKeys = difference( keysInUse, keys );
+  if ( untranslatableKeys.length === 0 ) {
+    console.log( "✅ No keys missing in strings.ftl" );
+  } else {
+    console.error(
+      `❌ ${untranslatableKeys.length} keys in use missing from strings.ftl: ${untranslatableKeys}`
+    );
+    process.exit( 1 );
+  }
+}
+
 // eslint-disable-next-line no-unused-expressions
 yargs
   .usage( "Usage: $0 <cmd> [args]" )
@@ -110,16 +232,54 @@ yargs
   .command(
     "write-translation-loader",
     "Write loadTranslations.js",
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
     ( ) => writeLoadTranslations( )
   )
   .command(
     "build",
     "Prepare existing localizations for use in the app",
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
-    argv => {
+    async argv => {
+      await validate( );
+      await normalize( );
+      await untranslatable( );
+      await unused( );
       jsonifyLocalizations( argv );
       writeLoadTranslations( );
+    }
+  )
+  .command(
+    "validate",
+    "Validate source strings",
+    ( ) => undefined,
+    _argv => {
+      validate( );
+    }
+  )
+  .command(
+    "normalize",
+    "Normalize source strings",
+    ( ) => undefined,
+    _argv => {
+      normalize( );
+    }
+  )
+  .command(
+    "unused",
+    "List unused translation keys",
+    ( ) => undefined,
+    _argv => {
+      unused( );
+    }
+  )
+  .command(
+    "untranslatable",
+    "List translation keys in source code but not in strings.ftl",
+    ( ) => undefined,
+    _argv => {
+      untranslatable( );
     }
   )
   // TODO make commands that look for untranslated strings and translated

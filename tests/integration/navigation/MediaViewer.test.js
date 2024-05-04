@@ -141,12 +141,20 @@ describe( "MediaViewer navigation", ( ) => {
     } );
   } );
 
-  describe( "from StandardCamera", ( ) => {
+  describe( "from StandardCamera with advanced user layout", ( ) => {
     async function navigateToCamera( ) {
       await renderApp( );
       await findAndPressByText( "Add observations" );
       await findAndPressByLabelText( "Camera" );
     }
+
+    beforeAll( ( ) => {
+      useStore.setState( { isAdvancedUser: true } );
+    } );
+
+    afterAll( ( ) => {
+      useStore.setState( initialStoreState );
+    } );
 
     it( "should show a photo when tapped", async ( ) => {
       navigateToCamera( );
@@ -268,7 +276,8 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should show the first photo when tapped", async ( ) => {
       await navigateToTaxonDetail( );
-      const photo = await screen.findByTestId( "TaxonDetails.photo" );
+      const photoId = taxon.taxonPhotos[0].photo.id;
+      const photo = await screen.findByTestId( `TaxonDetails.photo.${photoId}` );
       expect( photo ).toBeVisible( );
       await act( async ( ) => actor.press( photo ) );
       expect(
@@ -280,7 +289,8 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should not show delete button", async ( ) => {
       await navigateToTaxonDetail( );
-      const photo = await screen.findByTestId( "TaxonDetails.photo" );
+      const photoId = taxon.taxonPhotos[0].photo.id;
+      const photo = await screen.findByTestId( `TaxonDetails.photo.${photoId}` );
       expect( photo ).toBeVisible( );
       await act( async ( ) => actor.press( photo ) );
       expect(

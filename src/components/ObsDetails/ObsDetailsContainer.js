@@ -3,16 +3,11 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
-import {
-  fetchRemoteObservation,
-  markObservationUpdatesViewed
-} from "api/observations";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useReducer,
   useState
 } from "react";
@@ -21,16 +16,18 @@ import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
-  useAuthenticatedQuery,
   useCurrentUser,
   useIsConnected,
   useLocalObservation,
+  useObservationsUpdates,
   useTranslation
 } from "sharedHooks";
-import useObservationsUpdates,
-{ fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
+import useRemoteObservation,
+{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
+import { ACTIVITY_TAB_ID, DETAILS_TAB_ID } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
+import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
 import ObsDetails from "./ObsDetails";
 
 const { useRealm } = RealmContext;
@@ -41,9 +38,6 @@ const { useRealm } = RealmContext;
 LogBox.ignoreLogs( [
   "Non-serializable values were found in the navigation state"
 ] );
-
-const ACTIVITY_TAB_ID = "ACTIVITY";
-const DETAILS_TAB_ID = "DETAILS";
 
 const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
   ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) )
@@ -69,11 +63,6 @@ const reducer = ( state, action ) => {
           action.observationShown?.identifications || [],
           action.observationShown?.comments || []
         )
-      };
-    case "CHANGE_TAB":
-      return {
-        ...state,
-        currentTabId: action.currentTabId
       };
     case "ADD_ACTIVITY_ITEM":
       return {
@@ -108,9 +97,8 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const setObservationMarkedAsViewedAt = useStore(
-    state => state.setObservationMarkedAsViewedAt
-  );
+  const currentTabId = useStore( state => state.currentTabId );
+  const setCurrentTabId = useStore( state => state.setCurrentTabId );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
@@ -130,7 +118,6 @@ const ObsDetailsContainer = ( ): Node => {
   const {
     activityItems,
     addingActivityItem,
-    currentTabId,
     observationShown,
     showAgreeWithIdSheet,
     showCommentBox,
@@ -141,34 +128,20 @@ const ObsDetailsContainer = ( ): Node => {
 
   const localObservation = useLocalObservation( uuid );
 
-  const fetchRemoteObservationQueryKey = useMemo(
-    ( ) => ( ["fetchRemoteObservation", uuid] ),
-    [uuid]
-  );
-  const fetchRemoteObservationEnabled = (
+  const fetchRemoteObservationEnabled = !!(
     !remoteObsWasDeleted
-    && !!isOnline
-    && localObservation?.wasSynced( )
+    && ( !localObservation || localObservation?.wasSynced( ) )
+    && isOnline
   );
+
   const {
-    data: remoteObservation,
-    refetch: refetchRemoteObservation,
+    remoteObservation,
+    refetchRemoteObservation,
     isRefetching,
-    error: fetchRemoteObservationError
-  } = useAuthenticatedQuery(
-    fetchRemoteObservationQueryKey,
-    optsWithAuth => fetchRemoteObservation(
-      uuid,
-      {
-        fields: Observation.FIELDS
-      },
-      optsWithAuth
-    ),
-    {
-      keepPreviousData: false,
-      enabled: fetchRemoteObservationEnabled
-    }
-  );
+    fetchRemoteObservationError
+  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
+
+  useMarkViewedMutation( localObservation, remoteObservation );
 
   // If we tried to get a remote observation but it no longer exists, the user
   // can't do anything so we need to send them back and remove the local
@@ -190,8 +163,9 @@ const ObsDetailsContainer = ( ): Node => {
   ] );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
+  const hasPhotos = observation?.observationPhotos?.length > 0;
 
-  // In theory the only sitiation in which an observation would not have a
+  // In theory the only situation in which an observation would not have a
   // user is when a user is not signed but has made a new observation in the
   // app. Also in theory that user should not be able to get to ObsDetail for
   // those observations, just ObsEdit. But.... let's be safe.
@@ -200,29 +174,11 @@ const ObsDetailsContainer = ( ): Node => {
     || ( !observation?.user && !observation?.id )
   );
 
-  // Update local copy of a user's own observation
-  useEffect( ( ) => {
-    if (
-      remoteObservation
-      && currentUser
-      && remoteObservation?.user?.id === currentUser.id
-    ) {
-      Observation.upsertRemoteObservations(
-        [remoteObservation],
-        realm
-      );
-    }
-  }, [
-    currentUser,
-    realm,
-    remoteObservation
-  ] );
-
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      queryClient.invalidateQueries( "fetchRemoteObservation" );
+      queryClient.invalidateQueries( { queryKey: fetchRemoteObservationKey } );
     }, [queryClient] )
   );
 
@@ -250,40 +206,19 @@ const ObsDetailsContainer = ( ): Node => {
     {
       id: ACTIVITY_TAB_ID,
       testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => dispatch( { type: "CHANGE_TAB", currentTabId: ACTIVITY_TAB_ID } ),
+      onPress: ( ) => setCurrentTabId( ACTIVITY_TAB_ID ),
       text: t( "ACTIVITY" )
     },
     {
       id: DETAILS_TAB_ID,
       testID: "ObsDetails.DetailsTab",
-      onPress: () => dispatch( { type: "CHANGE_TAB", currentTabId: DETAILS_TAB_ID } ),
+      onPress: () => setCurrentTabId( DETAILS_TAB_ID ),
       text: t( "DETAILS" )
     }
   ];
 
-  const markViewedLocally = async ( ) => {
-    if ( !localObservation ) { return; }
-    safeRealmWrite( realm, ( ) => {
-      // Flags if all comments and identifications have been viewed
-      localObservation.comments_viewed = true;
-      localObservation.identifications_viewed = true;
-    }, "marking viewed locally in ObsDetailsContainer" );
-  };
-
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
     !!currentUser && !!observation
-  );
-
-  const markViewedMutation = useAuthenticatedMutation(
-    ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
-    {
-      onSuccess: ( ) => {
-        markViewedLocally( );
-        queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
-        refetchObservationUpdates( );
-        setObservationMarkedAsViewedAt( new Date( ) );
-      }
-    }
   );
 
   const showErrorAlert = error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
@@ -393,32 +328,20 @@ const ObsDetailsContainer = ( ): Node => {
     onIDAdded();
   }, [onIDAdded, suggestedTaxonId] );
 
-  useEffect( ( ) => {
-    if (
-      remoteObservation
-      && currentUser
-      && localObservation?.unviewed( )
-      && !markViewedMutation.isLoading
-    ) {
-      markViewedMutation.mutate( { id: uuid } );
-    }
-  }, [
-    currentUser,
-    localObservation,
-    markViewedMutation,
-    remoteObservation,
-    uuid
-  ] );
-
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
-    navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
+    if ( hasPhotos ) {
+      navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
+    } else {
+      // Go directly to taxon search in case there are no photos
+      navigation.navigate( "TaxonSearch", { lastScreen: "ObsDetails" } );
+    }
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
   const refetchObservation = ( ) => {
-    queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+    queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey] } );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };
@@ -443,7 +366,7 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
   };
 
-  return (
+  return observationShown && (
     <ObsDetails
       activityItems={activityItems}
       addingActivityItem={addingActivityItem}
@@ -456,7 +379,9 @@ const ObsDetailsContainer = ( ): Node => {
       isOnline={isOnline}
       isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
-      observation={observation}
+      // saving observation in state (i.e. using observationShown)
+      // limits the number of rerenders to entire obs details tree
+      observation={observationShown}
       onAgree={onAgree}
       onCommentAdded={onCommentAdded}
       onIDAgreePressed={onIDAgreePressed}

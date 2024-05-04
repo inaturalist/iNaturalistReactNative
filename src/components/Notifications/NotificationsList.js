@@ -3,7 +3,7 @@
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
-import { Body2, ViewWrapper } from "components/SharedComponents";
+import { Body2, OfflineNotice, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
@@ -14,7 +14,8 @@ type Props = {
   isError?: boolean,
   isLoading?: boolean,
   isOnline: boolean,
-  onEndReached: Function
+  onEndReached: Function,
+  reload: Function
 };
 
 const NotificationsList = ( {
@@ -22,7 +23,8 @@ const NotificationsList = ( {
   isError,
   isLoading,
   isOnline,
-  onEndReached
+  onEndReached,
+  reload
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -43,10 +45,12 @@ const NotificationsList = ( {
   const renderEmptyComponent = useCallback( ( ) => {
     if ( isLoading ) return null;
 
-    let msg = t( "No-Notifications-Found" );
     if ( !isOnline ) {
-      msg = t( "Offline-No-Notifications" );
-    } else if ( isError ) {
+      return <OfflineNotice onPress={reload} />;
+    }
+
+    let msg = t( "No-Notifications-Found" );
+    if ( isError ) {
       msg = t( "Something-went-wrong" );
     }
 
@@ -55,11 +59,20 @@ const NotificationsList = ( {
     isError,
     isLoading,
     isOnline,
+    reload,
     t
   ] );
 
+  if ( !data || data.length === 0 ) {
+    return (
+      <ViewWrapper>
+        {renderEmptyComponent( )}
+      </ViewWrapper>
+    );
+  }
+
   return (
-    <ViewWrapper className="h-full">
+    <ViewWrapper>
       <FlashList
         data={data}
         keyExtractor={item => item.id}
@@ -69,7 +82,6 @@ const NotificationsList = ( {
         onEndReached={onEndReached}
         refreshing={isLoading}
         ListFooterComponent={renderFooter}
-        ListEmptyComponent={renderEmptyComponent}
       />
     </ViewWrapper>
   );

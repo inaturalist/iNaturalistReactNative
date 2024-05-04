@@ -1,10 +1,12 @@
 // @flow
 import createFlag from "api/flags";
-import { Button, Checkbox } from "components/SharedComponents";
+import {
+  Body1, Body3, Button, Checkbox, Subheading1
+} from "components/SharedComponents";
 import {
   Modal,
   SafeAreaView,
-  Text, View
+  View
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -102,9 +104,9 @@ const FlagItemModal = ( {
       <SafeAreaView className="flex-1">
         <View className="flex-row-reverse justify-between p-6 border-b">
           <IconMaterial name="close" onPress={closeFlagItemModal} size={30} />
-          <Text className="text-xl">
+          <Subheading1 className="text-xl">
             {t( "Flag-An-Item" )}
-          </Text>
+          </Subheading1>
         </View>
         <KeyboardAwareScrollView
           ref={keyboardScrollRef}
@@ -113,9 +115,9 @@ const FlagItemModal = ( {
           extraHeight={200}
           className="p-6"
         >
-          <Text className="text-base">
+          <Body1 className="text-base">
             {t( "Flag-Item-Description" )}
-          </Text>
+          </Body1>
           <View className="flex-row my-2">
             <Checkbox
               isChecked={checkBoxValue === "spam"}
@@ -123,7 +125,7 @@ const FlagItemModal = ( {
               text={t( "Spam" )}
             />
           </View>
-          <Text className="mb-2 text-base" style>{t( "Spam-Examples" )}</Text>
+          <Body1 className="mb-2 text-base" style>{t( "Spam-Examples" )}</Body1>
 
           <View className="flex-row my-2">
             <Checkbox
@@ -132,7 +134,7 @@ const FlagItemModal = ( {
               text={t( "Offensive-Inappropriate" )}
             />
           </View>
-          <Text className="mb-2 text-base">{t( "Offensive-Inappropriate-Examples" )}</Text>
+          <Body1 className="mb-2 text-base">{t( "Offensive-Inappropriate-Examples" )}</Body1>
 
           <View className="flex-row my-2">
             <Checkbox
@@ -141,7 +143,7 @@ const FlagItemModal = ( {
               text={t( "Other" )}
             />
           </View>
-          <Text className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Text>
+          <Body1 className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Body1>
           {( checkBoxValue === "other" )
            && (
              <>
@@ -154,7 +156,7 @@ const FlagItemModal = ( {
                  accessibilityLabel={t( "Flag-Item-Other" )}
                  accessibilityHint={t( "Text-Box-to-Describe-Reason-for-Flag" )}
                />
-               <Text>{`${explanation.length}/255`}</Text>
+               <Body3>{`${explanation.length}/255`}</Body3>
              </>
            )}
           <View className="flex-row justify-center m-4">

@@ -1,12 +1,13 @@
 // @flow
 import { getUserAgent } from "api/userAgent";
+import { fetchUserMe } from "api/users";
 import { create } from "apisauce";
 import axios from "axios";
 import i18next from "i18next";
+import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
-import jwt from "react-native-jwt-io";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
@@ -33,7 +34,7 @@ const axiosInstance = axios.create( {
  * Creates base API client for all requests
  * @param additionalHeaders any additional headers that will be passed to the API
  */
-const createAPI = ( additionalHeaders: any ) => create( {
+const createAPI = additionalHeaders => create( {
   axiosInstance,
   headers: { "User-Agent": getUserAgent(), ...additionalHeaders }
 } );
@@ -112,6 +113,22 @@ const signOut = async (
 };
 
 /**
+ * Encodes a JWT. Lifted from react-native-jwt-io
+ * https://github.com/maxweb4u/react-native-jwt-io/blob/7f926da46ff536dbb531dd8ae7177ab4ff28c43f/src/jwt.js#L21
+ */
+const encodeJWT = ( payload, key, algorithm ) => {
+  algorithm = typeof algorithm !== "undefined"
+    ? algorithm
+    : "HS256";
+  return rs.jws.JWS.sign(
+    algorithm,
+    JSON.stringify( { alg: algorithm, typ: "JWT" } ),
+    JSON.stringify( payload ),
+    key
+  );
+};
+
+/**
  * Returns the access token to be used in case of an anonymous JWT (e.g. used
  * when getting taxon suggestions)
  * @returns encoded anonymous JWT
@@ -122,7 +139,7 @@ const getAnonymousJWT = (): string => {
     exp: Date.now() / 1000 + 300
   };
 
-  return jwt.encode( claims, Config.JWT_ANONYMOUS_API_SECRET, "HS512" );
+  return encodeJWT( claims, Config.JWT_ANONYMOUS_API_SECRET, "HS512" );
 };
 
 /**
@@ -132,7 +149,8 @@ const getAnonymousJWT = (): string => {
  *  logged-in, use anonymous JWT
  * @returns {Promise<string|*>}
  */
-const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> => {
+// $FlowIgnore
+const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
   let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
   let jwtGeneratedAt = await RNSInfo.getItem( "jwtGeneratedAt", {} );
   if ( jwtGeneratedAt ) {
@@ -159,7 +177,13 @@ const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> =>
 
     const accessToken = await RNSInfo.getItem( "accessToken", {} );
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
-    const response = await api.get( "/users/api_token.json" );
+    let response;
+    try {
+      response = await api.get( "/users/api_token.json" );
+    } catch ( getUsersApiTokenError ) {
+      logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
+      throw getUsersApiTokenError;
+    }
 
     // TODO: this means that if the server doesn't respond with a successful
     // token *for any reason* it just deletes the entire local database. That
@@ -205,8 +229,10 @@ const getJWT = async ( allowAnonymousJWT: boolean = false ): Promise<?string> =>
  * @returns {Promise<string|*>} access token, null if not logged in
  */
 const getAPIToken = async (
-  useJWT: boolean = false,
-  allowAnonymousJWT: boolean = false
+  // $FlowIgnore
+  useJWT = false,
+  // $FlowIgnore
+  allowAnonymousJWT = false
 ): Promise<?string> => {
   const loggedIn = await isLoggedIn();
   if ( !loggedIn ) {
@@ -342,9 +368,23 @@ const authenticateUser = async (
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
-  logger.debug( "writing current user to realm: ", currentUser );
+
+  // try to fetch user data (especially for loading user icon) from userMe
+  const apiToken = await getJWT( );
+  const options = {
+    api_token: apiToken
+  };
+  const remoteUser = await fetchUserMe( { }, options );
+  const localUser = remoteUser
+    ? {
+      ...remoteUser,
+      signedIn: true
+    }
+    : currentUser;
+
+  logger.debug( "writing current user to realm: ", localUser );
   safeRealmWrite( realm, ( ) => {
-    realm.create( "User", currentUser, "modified" );
+    realm.create( "User", localUser, "modified" );
   }, "saving current user in AuthenticationService" );
   const currentRealmUser = User.currentUser( realm );
   logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
@@ -365,7 +405,7 @@ const authenticateUser = async (
  *
  * @returns null if successful, otherwise an error string
  */
-const registerUser = async ( user: Object ): any => {
+const registerUser = async ( user: Object ): ?Object => {
   const locales = RNLocalize.getLocales();
   const formData = {
     user: {
@@ -404,7 +444,7 @@ const isCurrentUser = async ( username: string ): Promise<boolean> => {
  */
 const resetPassword = async (
   email: string
-): any => {
+): ?Object => {
   const formData = {
     user: {
       email

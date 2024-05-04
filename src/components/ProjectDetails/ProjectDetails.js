@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import displayProjectType from "components/Projects/helpers/displayProjectType";
+import displayProjectType from "components/Projects/helpers/displayProjectType.ts";
 import {
   Button, Heading1, Heading3, Heading4, OverviewCounts,
   ScrollViewWrapper,
@@ -30,18 +30,29 @@ const ProjectDetails = ( {
   const navigation = useNavigation( );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", { project, worldwide: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      project,
+      worldwide: true,
+      resetStoredParams: true
+    } ),
     [navigation, project]
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", { project, worldwide: true, viewSpecies: true } ),
+    ( ) => navigation.navigate( "Explore", {
+      project,
+      worldwide: true,
+      viewSpecies: true,
+      resetStoredParams: true
+    } ),
     [navigation, project]
   );
 
   if ( !project ) {
     return null;
   }
+
+  const userTextStyle = { lineHeight: 26 };
 
   return (
     <ScrollViewWrapper testID="project-details">
@@ -72,9 +83,9 @@ const ProjectDetails = ( {
           onSpeciesPressed={onSpeciesPressed}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
-        <UserText text={project.description} htmlStyle={{ lineHeight: 26 }} />
-        {project.project_type === "collection" && (
+        {project?.description
+          && <UserText text={project.description} htmlStyle={userTextStyle} />}
+        {/* {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
             <Button
@@ -82,8 +93,8 @@ const ProjectDetails = ( {
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
             />
           </>
-        )}
-        <Heading4 className="mb-3 mt-5">{t( "MAP" )}</Heading4>
+        )} */}
+        <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
         <Button
           level="neutral"
           text={t( "VIEW-IN-EXPLORE" )}

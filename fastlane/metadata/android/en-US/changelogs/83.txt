@@ -1,0 +1,4 @@
+Don't show tab bar when editing an observation
+Location picker bug fixes
+Package upgrades
+Privacy declarations

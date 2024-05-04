@@ -12,8 +12,8 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import Taxon from "realmModels/Taxon";
-import { generateTaxonPieces } from "sharedHelpers/taxon";
-import { useTranslation } from "sharedHooks";
+import { accessibleTaxonName, generateTaxonPieces } from "sharedHelpers/taxon";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
   taxon?: Object
@@ -23,6 +23,7 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
   const [viewChildren, setViewChildren] = useState( false );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
 
   const displayCommonName = ( commonName, options ) => (
     <Body2 className={
@@ -123,18 +124,19 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
       rankLevel,
       rank
     } = generateTaxonPieces( taxon );
+    const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
     return (
       <Pressable
-        accessibilityRole="button"
+        accessibilityRole="link"
         className="flex-row py-2 flex-wrap"
         key={id}
         disabled={isCurrentTaxon}
         onPress={( ) => navigation.navigate( "TaxonDetails", { id } )}
+        accessibilityLabel={accessibleName}
         accessibilityState={{
           disabled: isCurrentTaxon
         }}
-        accessibilityLabel={t( "Navigate-to-taxon-details" )}
         testID={`TaxonomyRow.${id}`}
       >
         {isChild && (
@@ -155,7 +157,7 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
         )}
       </Pressable>
     );
-  }, [navigation, t] );
+  }, [currentUser, navigation, t] );
 
   const displayTaxonomy = useCallback(
     ( ) => (

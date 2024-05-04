@@ -100,7 +100,7 @@ const BottomButtons = ( {
       logger.info( "navigating back to MyObs" );
       // navigate to ObsList and start upload with uuid
       navigation.navigate( "TabNavigator", {
-        screen: "ObservationsStackNavigator",
+        screen: "TabStackNavigator",
         params: {
           screen: "ObsList",
           params

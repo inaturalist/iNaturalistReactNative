@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body1,
@@ -8,13 +9,13 @@ import {
   Heading4,
   ScrollViewWrapper,
   Tabs,
+  UnderlinedLink,
   ViewWrapper
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Alert, Linking } from "react-native";
 import { getBuildNumber, getVersion } from "react-native-device-info";
 import { useDebugMode } from "sharedHooks";
 
@@ -22,6 +23,7 @@ const aboutID = "about";
 const teamID = "team";
 
 const About = (): Node => {
+  const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState( aboutID );
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
@@ -29,32 +31,32 @@ const About = (): Node => {
 
   const onTermsPressed = async () => {
     const url = "https://www.inaturalist.org/pages/terms";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Terms-of-Use" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const onPrivacyPressed = async () => {
     const url = "https://www.inaturalist.org/pages/privacy";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Privacy-Policy" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   const onCommunityPressed = async () => {
     const url = "https://www.inaturalist.org/pages/community+guidelines";
-    const supported = await Linking.canOpenURL( url );
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
+    navigation.navigate( "FullPageWebView", {
+      title: t( "Community-Guidelines" ),
+      initialUrl: url,
+      loggedIn: false,
+      openLinksInBrowser: true
+    } );
   };
 
   return (
@@ -81,14 +83,12 @@ const About = (): Node => {
       <ScrollViewWrapper>
         {activeTab === aboutID && (
           <View className="px-4 py-8">
-            <View className="mb-8 items-center justify-center">
-              <Image
-                className="w-[250px] h-[45px]"
-                resizeMode="contain"
-                source={require( "images/inaturalist-dark.png" )}
-                accessibilityIgnoresInvertColors
-              />
-            </View>
+            <Image
+              className="w-[65%] max-h-12 xl:max-h-24 2xl:max-h-32 object-center self-center mb-8"
+              resizeMode="contain"
+              source={require( "images/inaturalist-dark.png" )}
+              accessibilityIgnoresInvertColors
+            />
             <Heading4 className="mb-3">
               {t( "INATURALIST-MISSION-VISION" )}
             </Heading4>
@@ -102,24 +102,24 @@ const About = (): Node => {
             </Body2>
             <Body2 className="mb-5">{t( "Whats-more-by-recording" )}</Body2>
             <Body2 className="mb-8">{t( "iNaturalist-is-supported-by" )}</Body2>
-            <Body2
-              className="mb-5 underline font-bold"
+            <UnderlinedLink
+              className="mb-5"
               onPress={() => onTermsPressed()}
             >
               {t( "Terms-of-Use" )}
-            </Body2>
-            <Body2
-              className="mb-5 underline font-bold"
+            </UnderlinedLink>
+            <UnderlinedLink
+              className="mb-5"
               onPress={() => onPrivacyPressed()}
             >
               {t( "Privacy-Policy" )}
-            </Body2>
-            <Body2
-              className="mb-8 underline font-bold"
+            </UnderlinedLink>
+            <UnderlinedLink
+              className="mb-8"
               onPress={() => onCommunityPressed()}
             >
               {t( "Community-Guidelines" )}
-            </Body2>
+            </UnderlinedLink>
             <View className="items-center justify-center">
               <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
             </View>

@@ -9,18 +9,13 @@ on:
     branches:
       - 'main'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
-  setup:
-    runs-on: macos-14
-    steps:
-      - uses: fkirc/skip-duplicate-actions@master
-        with:
-          github_token: ${{ github.token }}
-          cancel_others: true
-
   checksecret:
     name: check for oauth client
-    needs: setup
     runs-on: macos-14
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
@@ -37,22 +32,27 @@ jobs:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
     runs-on: macos-14
-    # Kill the task if not finished after 60 minutes
-    timeout-minutes: 60
+    # Kill the task if not finished after 120 minutes
+    timeout-minutes: 120
 
     steps:
     - name: Check out Git repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
 
     - name: Install Node.js, NPM and Yarn
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 18
 
+    - name: Setup Ruby version according to .ruby-version with cached gems
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true        
+
     - name: Cache node modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: cache
       with:
         path: node_modules
@@ -67,7 +67,7 @@ jobs:
       run: npm install
 
     - name: Cache Pods
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: podcache
       with:
         path: ios/Pods
@@ -98,8 +98,13 @@ jobs:
       run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
 
     # Install prerequisites for detox and build app, and test
-    - run: brew tap wix/brew
-    - run: brew install applesimutils
+    - name: Install macOS dependencies
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: |
+        brew tap wix/brew
+        brew install applesimutils
 
     - name: Build test app
       run: npm run e2e:build:ios
@@ -112,11 +117,11 @@ jobs:
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
     - name: Run e2e test
-      run: npm run e2e:test:ios -- --cleanup --take-screenshots failing --record-videos failing -l debug
+      run: npm run e2e:test:ios -- --cleanup --take-screenshots failing --record-videos failing --record-logs all -l trace
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: detox-artifacts

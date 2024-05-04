@@ -1,7 +1,7 @@
 // @flow
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import { Body3, Body4 } from "components/SharedComponents";
+import { Body4 } from "components/SharedComponents";
 import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -9,15 +9,21 @@ import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  observation: Object,
-  obscured?: boolean,
   classNameMargin?: string,
-  details?: boolean,
-  large?: boolean
+  details?: boolean, // Same as withCoordinates && withGeoprivacy
+  obscured?: boolean,
+  observation: Object,
+  withCoordinates?: boolean,
+  withGeoprivacy?: boolean,
 };
 
 const ObservationLocation = ( {
-  observation, classNameMargin, details, large, obscured
+  classNameMargin,
+  details,
+  obscured,
+  observation,
+  withCoordinates,
+  withGeoprivacy
 }: Props ): Node => {
   const { t } = useTranslation( );
   const geoprivacy = observation?.geoprivacy;
@@ -34,10 +40,6 @@ const ObservationLocation = ( {
     }
     return t( "Open" );
   }, [geoprivacy, t] );
-
-  const TextComponent = large
-    ? Body3
-    : Body4;
 
   const displayCoords = useMemo( ( ) => {
     if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
@@ -81,20 +83,62 @@ const ObservationLocation = ( {
     if ( displayPrivacy === null || displayPrivacy === "open" ) {
       displayPrivacy = "Open";
     }
+    const geoprivacyInner = (
+      <View className="flex-row space-x-[2px]">
+        <Body4
+          className="text-darkGray"
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {t( "Geoprivacy-status", { status: t( displayPrivacy ) } )}
+        </Body4>
+      </View>
+    );
     return (
       <ContentWithIcon icon="globe-outline" size={14} classNameMargin="mt-[11px]">
-        <View className="flex-row space-x-[2px]">
-          <TextComponent
-            className="text-darkGray"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {t( "Geoprivacy-status", { status: t( displayPrivacy ) } )}
-          </TextComponent>
-        </View>
+        { geoprivacyInner }
       </ContentWithIcon>
     );
-  }, [displayGeoprivacy, t] );
+  }, [
+    displayGeoprivacy,
+    t
+  ] );
+
+  const inner = useMemo( ( ) => (
+    <View className="flex-col space-y-[11px]">
+      <Body4
+        className="text-darkGray"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {displayLocation}
+      </Body4>
+      {( ( details || withCoordinates ) && displayCoords )
+       && (
+         <Body4
+           className="text-darkGray"
+           numberOfLines={1}
+           ellipsizeMode="tail"
+         >
+           {displayCoords}
+         </Body4>
+       )}
+    </View>
+  ), [
+    details,
+    displayCoords,
+    displayLocation,
+    withCoordinates
+  ] );
+
+  const locationIcon = () => {
+    if ( geoprivacy === "obscured" ) {
+      return "obscured";
+    } if ( geoprivacy === "private" ) {
+      return "private";
+    }
+    return "location";
+  };
 
   if ( !observation ) {
     return null;
@@ -109,29 +153,8 @@ const ObservationLocation = ( {
         text: displayLocation
       }}
     >
-      <ContentWithIcon icon="location" size={14}>
-        <View className="flex-col space-y-[11px]">
-          <TextComponent
-            className="text-darkGray"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {displayLocation}
-          </TextComponent>
-          {( details && displayCoords )
-           && (
-             <TextComponent
-               className="text-darkGray"
-               numberOfLines={1}
-               ellipsizeMode="tail"
-             >
-               {displayCoords}
-             </TextComponent>
-           )}
-        </View>
-      </ContentWithIcon>
-      {details
-        && showGeoprivacy()}
+      <ContentWithIcon icon={locationIcon()} size={14}>{ inner }</ContentWithIcon>
+      {( details || withGeoprivacy ) && showGeoprivacy()}
     </View>
   );
 };

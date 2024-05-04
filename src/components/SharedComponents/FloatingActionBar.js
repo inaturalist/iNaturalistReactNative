@@ -4,16 +4,13 @@ import { View } from "components/styledComponents";
 import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Animated, Keyboard } from "react-native";
-import { useTheme } from "react-native-paper";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
   shadowOpacity: 0.4,
-  shadowRadius: 4,
-  elevation: 5
+  shadowRadius: 4
 } );
 
 type Props = {
@@ -33,7 +30,6 @@ const FloatingActionBar = ( {
   children,
   show
 }: Props ): React.Node => {
-  const theme = useTheme();
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
   const [keyboardOpen, setKeyboardOpen] = useState( false );
   const isBottom = position === "bottomEnd" || position === "bottomStart";
@@ -110,7 +106,7 @@ const FloatingActionBar = ( {
     >
       <View
         className={classNames( "bg-white", containerClass )}
-        style={getShadow( theme.colors.primary )}
+        style={DROP_SHADOW}
       >
         {children}
       </View>
