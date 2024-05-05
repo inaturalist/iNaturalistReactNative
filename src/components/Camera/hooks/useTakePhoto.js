@@ -1,8 +1,10 @@
 // @flow
 
+import { RealmContext } from "providers/contexts";
 import {
   useState
 } from "react";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import {
   rotatePhotoPatch,
@@ -12,7 +14,10 @@ import {
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useStore from "stores/useStore";
 
+const { useRealm } = RealmContext;
+
 const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): Object => {
+  const realm = useRealm( );
   const currentObservation = useStore( state => state.currentObservation );
   const { deviceOrientation } = useDeviceOrientation( );
   const hasFlash = device?.hasFlash;
@@ -20,6 +25,7 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
     enableShutterSound: true,
     ...( hasFlash && { flash: "off" } )
   };
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
 
@@ -28,7 +34,9 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
 
-  const takePhoto = async ( replaceExisting = false ) => {
+  const takePhoto = async ( options = { } ) => {
+    const { replaceExisting = false } = options;
+
     setTakingPhoto( true );
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
 
@@ -54,12 +62,25 @@ const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): 
         originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
       } );
     } else {
+      if ( replaceExisting && cameraPreviewUris?.length > 0 ) {
+        // First, need to delete previously-created observation photo (happens when getting into
+        // AI camera, snapping photo, then backing out from suggestions screen)
+        const uriToDelete = cameraPreviewUris[0];
+        deletePhotoFromObservation( uriToDelete );
+        await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+      }
+
       setCameraState( {
         cameraPreviewUris: replaceExisting
           ? [uri]
           : cameraPreviewUris.concat( [uri] ),
+        evidenceToAdd: replaceExisting
+          ? [uri]
+          : [...evidenceToAdd, uri],
         // Remember original (unresized) camera URI
-        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
+        originalCameraUrisMap: replaceExisting
+          ? { [uri]: cameraPhoto.path }
+          : { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
       } );
     }
     setTakingPhoto( false );
