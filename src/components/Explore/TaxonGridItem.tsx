@@ -67,6 +67,7 @@ const TaxonGridItem = ( {
           <DisplayTaxonName
             keyBase={taxon?.id}
             taxon={taxon}
+            scientificNameFirst={currentUser?.prefers_scientific_name_first}
             layout="vertical"
             color="text-white"
           />
