@@ -70,15 +70,21 @@ const createObservationFlowSlice = set => ( {
   photoEvidenceUris: [],
   savingPhoto: false,
   unsavedChanges: false,
-  deletePhotoFromObservation: uri => set( state => ( {
-    photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
-    cameraPreviewUris: [..._.pull( state.cameraPreviewUris, uri )],
-    evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
-    observations: removeObsPhotoFromObservation(
+  deletePhotoFromObservation: uri => set( state => {
+    const newObservations = removeObsPhotoFromObservation(
       state.observations[state.currentObservationIndex],
       uri
-    )
-  } ) ),
+    );
+
+    return {
+      photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
+      cameraPreviewUris: [..._.pull( state.cameraPreviewUris, uri )],
+      evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
+      observations: newObservations,
+      currentObservation: observationToJSON( newObservations[state.currentObservationIndex] )
+    };
+  } ),
+
   deleteSoundFromObservation: uri => set( state => {
     const newObservations = removeObsSoundFromObservation(
       state.observations[state.currentObservationIndex],

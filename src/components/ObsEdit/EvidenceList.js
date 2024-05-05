@@ -7,7 +7,9 @@ import { ActivityIndicator, INatIcon, INatIconButton } from "components/SharedCo
 import { Image, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback, useMemo, useState
+} from "react";
 import { Alert } from "react-native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -145,6 +147,12 @@ const EvidenceList = ( {
     ( params, optsWithAuth ) => deleteRemoteObservationSound( params, optsWithAuth )
   );
 
+  const onDeletePhoto = useCallback( async uriToDelete => {
+    deletePhotoFromObservation( uriToDelete );
+    await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+    afterMediaDeleted( );
+  }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation, realm] );
+
   const onDeleteSound = useCallback( async uriToDelete => {
     const obsSound = observationSounds.find( os => os.sound.file_url === uriToDelete );
     async function removeLocalSound( ) {
@@ -203,11 +211,7 @@ const EvidenceList = ( {
         editable
         showModal={!!selectedMediaUri}
         onClose={( ) => setSelectedMediaUri( null )}
-        onDeletePhoto={async uriToDelete => {
-          deletePhotoFromObservation( uriToDelete );
-          await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
-          afterMediaDeleted( );
-        }}
+        onDeletePhoto={onDeletePhoto}
         onDeleteSound={onDeleteSound}
         uri={selectedMediaUri}
         photos={observationPhotos.map( obsPhoto => obsPhoto.photo )}
