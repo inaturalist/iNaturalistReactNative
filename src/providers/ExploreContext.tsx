@@ -32,7 +32,8 @@ export enum EXPLORE_ACTION {
   SET_WILD_STATUS = "SET_WILD_STATUS",
   SET_REVIEWED = "SET_REVIEWED",
   SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
-  SET_MAP_BOUNDARIES = "SET_MAP_BOUNDARIES"
+  SET_MAP_BOUNDARIES = "SET_MAP_BOUNDARIES",
+  USE_STORED_STATE = "USE_STORED_STATE",
 }
 
 export enum SORT_BY {
@@ -144,7 +145,7 @@ interface MapBoundaries {
   place_guess: string
 }
 
-type CountProviderProps = {children: React.ReactNode}
+type ExploreProviderProps = {children: React.ReactNode}
 type State = {
   verifiable: boolean,
   return_bounds: boolean,
@@ -500,7 +501,7 @@ function exploreReducer( state: State, action: Action ) {
   }
 }
 
-const ExploreProvider = ( { children }: CountProviderProps ) => {
+const ExploreProvider = ( { children }: ExploreProviderProps ) => {
   const [state, dispatch] = React.useReducer( exploreReducer, initialState );
 
   // To store a snapshot of the state, e.g when the user opens the filters modal
