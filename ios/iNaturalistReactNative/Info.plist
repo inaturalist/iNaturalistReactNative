@@ -67,7 +67,6 @@
 	<string>Export and import ${PRODUCT_NAME} photos to and from your library.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>MaterialCommunityIcons.ttf</string>
 		<string>MaterialIcons.ttf</string>
 		<string>inaturalisticons.ttf</string>
 		<string>INatIcon.ttf</string>
