@@ -280,96 +280,6 @@ const MyObservationsContainer = ( ): Node => {
     }
   }, [currentUser] );
 
-  const uploadObservationAndCatchError = useCallback( async observation => {
-    try {
-      await uploadObservation( observation, realm );
-    } catch ( uploadError ) {
-      let { message } = uploadError;
-      if ( uploadError?.json?.errors ) {
-        // TODO localize comma join
-        message = uploadError.json.errors.map( e => {
-          if ( e.message?.errors ) {
-            return e.message.errors.flat( ).join( ", " );
-          }
-          return e.message;
-        } ).join( ", " );
-      } else if ( uploadError.message?.match( /Network request failed/ ) ) {
-        message = t( "Connection-problem-Please-try-again-later" );
-        logger.error(
-          `[MyObservationsContainer.js] upload failed due to network problem: ${uploadError}`
-        );
-      } else {
-        logger.error( `[MyObservationsContainer.js] upload failed: ${uploadError}` );
-        throw uploadError;
-      }
-      dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
-    }
-  }, [
-    realm,
-    t
-  ] );
-
-  const uploadSingleObservation = useCallback( async ( observation, options ) => {
-    if ( !currentUser ) {
-      toggleLoginSheet( );
-      return;
-    }
-    if ( !isOnline ) {
-      showInternetErrorAlert( );
-      return;
-    }
-    if ( !options || options?.singleUpload !== false ) {
-      dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
-    }
-    await uploadObservationAndCatchError( observation );
-    dispatch( { type: "UPLOADS_COMPLETE" } );
-  }, [
-    currentUser,
-    isOnline,
-    showInternetErrorAlert,
-    toggleLoginSheet,
-    uploadObservationAndCatchError
-  ] );
-
-  const uploadMultipleObservations = useCallback( async ( ) => {
-    if ( !currentUser ) {
-      toggleLoginSheet( );
-      return;
-    }
-    if ( numUnuploadedObservations === 0 || uploadInProgress ) {
-      return;
-    }
-    if ( !isOnline ) {
-      showInternetErrorAlert( );
-      return;
-    }
-    dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
-
-    try {
-      await Promise.all( uploads.map( async obsToUpload => {
-        await uploadObservationAndCatchError( obsToUpload );
-        dispatch( { type: "START_NEXT_UPLOAD" } );
-      } ) );
-      dispatch( { type: "UPLOADS_COMPLETE" } );
-    } catch ( uploadMultipleObservationsError ) {
-      logger.error( "Failed to uploadMultipleObservations: ", uploadMultipleObservationsError );
-      dispatch( {
-        type: "SET_UPLOAD_ERROR",
-        error: t( "Something-went-wrong" )
-      } );
-    }
-  }, [
-    currentUser,
-    isOnline,
-    numUnuploadedObservations,
-    showInternetErrorAlert,
-    t,
-    toggleLoginSheet,
-    uploadInProgress,
-    uploadObservationAndCatchError,
-    uploads
-  ] );
-
   const stopUploads = useCallback( ( ) => {
     dispatch( { type: "STOP_UPLOADS" } );
     deactivateKeepAwake( );
@@ -501,6 +411,96 @@ const MyObservationsContainer = ( ): Node => {
     updateSyncTime,
     uploadInProgress,
     uploadsComplete
+  ] );
+
+  const uploadObservationAndCatchError = useCallback( async observation => {
+    try {
+      await uploadObservation( observation, realm );
+    } catch ( uploadError ) {
+      let { message } = uploadError;
+      if ( uploadError?.json?.errors ) {
+        // TODO localize comma join
+        message = uploadError.json.errors.map( e => {
+          if ( e.message?.errors ) {
+            return e.message.errors.flat( ).join( ", " );
+          }
+          return e.message;
+        } ).join( ", " );
+      } else if ( uploadError.message?.match( /Network request failed/ ) ) {
+        message = t( "Connection-problem-Please-try-again-later" );
+        logger.error(
+          `[MyObservationsContainer.js] upload failed due to network problem: ${uploadError}`
+        );
+      } else {
+        logger.error( `[MyObservationsContainer.js] upload failed: ${uploadError}` );
+        throw uploadError;
+      }
+      dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
+    }
+  }, [
+    realm,
+    t
+  ] );
+
+  const uploadSingleObservation = useCallback( async ( observation, options ) => {
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      return;
+    }
+    if ( !isOnline ) {
+      showInternetErrorAlert( );
+      return;
+    }
+    if ( !options || options?.singleUpload !== false ) {
+      dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
+    }
+    await uploadObservationAndCatchError( observation );
+    dispatch( { type: "UPLOADS_COMPLETE" } );
+  }, [
+    currentUser,
+    isOnline,
+    showInternetErrorAlert,
+    toggleLoginSheet,
+    uploadObservationAndCatchError
+  ] );
+
+  const uploadMultipleObservations = useCallback( async ( ) => {
+    if ( !currentUser ) {
+      toggleLoginSheet( );
+      return;
+    }
+    if ( numUnuploadedObservations === 0 || uploadInProgress ) {
+      return;
+    }
+    if ( !isOnline ) {
+      showInternetErrorAlert( );
+      return;
+    }
+    dispatch( { type: "START_UPLOAD", singleUpload: uploads.length === 1 } );
+
+    try {
+      await Promise.all( uploads.map( async obsToUpload => {
+        await uploadObservationAndCatchError( obsToUpload );
+        dispatch( { type: "START_NEXT_UPLOAD" } );
+      } ) );
+      dispatch( { type: "UPLOADS_COMPLETE" } );
+    } catch ( uploadMultipleObservationsError ) {
+      logger.error( "Failed to uploadMultipleObservations: ", uploadMultipleObservationsError );
+      dispatch( {
+        type: "SET_UPLOAD_ERROR",
+        error: t( "Something-went-wrong" )
+      } );
+    }
+  }, [
+    currentUser,
+    isOnline,
+    numUnuploadedObservations,
+    showInternetErrorAlert,
+    t,
+    toggleLoginSheet,
+    uploadInProgress,
+    uploadObservationAndCatchError,
+    uploads
   ] );
 
   useEffect( ( ) => {

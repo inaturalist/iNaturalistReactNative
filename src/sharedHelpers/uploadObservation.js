@@ -3,6 +3,7 @@ import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-k
 import {
   createObservation,
   createOrUpdateEvidence,
+  fetchRemoteObservation,
   updateObservation
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
@@ -195,6 +196,7 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   const uploadParams = {
     observation: { ...newObs },
     fields: { id: true }
+    // fields: "all"
   };
 
   // we're emitting progress increments:
@@ -260,6 +262,9 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
       )
       : null
   ] );
+  // fetch observation and upsert it
+  const remoteObs = await fetchRemoteObservation( obsUUID, { fields: Observation.FIELDS } );
+  Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
   deactivateKeepAwake( );
   return response;
 };

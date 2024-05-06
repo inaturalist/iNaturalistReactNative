@@ -649,6 +649,7 @@
     "comment": "Month of June",
     "val": "June"
   },
+  "Label-colon-value": "{ $label }: { $value }",
   "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
     "val": "Last Active: { $date }"

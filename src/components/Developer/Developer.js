@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
 import {
   Button,
@@ -126,6 +127,18 @@ const Developer = (): Node => {
         <H2>Caches</H2>
         <P>
           <CODE>{RNFS.CachesDirectoryPath}</CODE>
+        </P>
+        <H2>Config.API_URL</H2>
+        <P>
+          <CODE>{Config.API_URL}</CODE>
+        </P>
+        <H2>Config.API_URL</H2>
+        <P>
+          <CODE>{Config.API_URL}</CODE>
+        </P>
+        <H2>getUserAgent()</H2>
+        <P>
+          <CODE>{getUserAgent()}</CODE>
         </P>
         {displayFileSizes( )}
         <H1>Log file contents</H1>
