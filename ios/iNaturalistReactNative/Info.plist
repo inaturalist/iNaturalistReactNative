@@ -67,15 +67,13 @@
 	<string>Export and import ${PRODUCT_NAME} photos to and from your library.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>MaterialIcons.ttf</string>
-		<string>inaturalisticons.ttf</string>
-		<string>INatIcon.ttf</string>
 		<string>Lato-Bold.ttf</string>
 		<string>Lato-BoldItalic.ttf</string>
 		<string>Lato-Italic.ttf</string>
 		<string>Lato-Medium.ttf</string>
 		<string>Lato-MediumItalic.ttf</string>
 		<string>Lato-Regular.ttf</string>
+		<string>INatIcon.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
