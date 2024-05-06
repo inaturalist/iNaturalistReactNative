@@ -2,8 +2,8 @@
 
 import classnames from "classnames";
 import TransparentCircleButton, {
-  CIRCLE_BUTTON_DIM
-} from "components/SharedComponents/Buttons/TransparentCircleButton";
+  CIRCLE_SIZE
+} from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -27,10 +27,7 @@ const CameraButtonPlaceholder = ( ) => (
   <View
     accessibilityElementsHidden
     aria-hidden
-    className={classnames(
-      `w-[${CIRCLE_BUTTON_DIM}px]`,
-      `h-[${CIRCLE_BUTTON_DIM}px]`
-    )}
+    className={CIRCLE_SIZE}
   />
 );
 

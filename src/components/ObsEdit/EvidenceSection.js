@@ -60,8 +60,12 @@ const EvidenceSection = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const obsPhotos = currentObservation?.observationPhotos;
-  const obsSounds = currentObservation?.observationSounds;
+  // TODO fix this hack, and not with a workaround like
+  // checkCamelAndSnakeCase. This component should only ever receive a local
+  // Realm Observation or something that quacks like it, *not* a POJO from
+  // the API
+  const obsPhotos = currentObservation?.observationPhotos || currentObservation?.observation_photos;
+  const obsSounds = currentObservation?.observationSounds || currentObservation?.observation_sounds;
   const navigation = useNavigation( );
 
   const navToLocationPicker = ( ) => {

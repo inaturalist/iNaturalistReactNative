@@ -17,6 +17,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -40,10 +41,8 @@ const exploreViewIcon = {
 };
 
 type Props = {
-  changeExploreView: Function,
   closeFiltersModal: Function,
   count: Object,
-  exploreView: string,
   hideBackButton: boolean,
   isOnline: boolean,
   loadingStatus: boolean,
@@ -55,10 +54,8 @@ type Props = {
 }
 
 const Explore = ( {
-  changeExploreView,
   closeFiltersModal,
   count,
-  exploreView,
   hideBackButton,
   isOnline,
   loadingStatus,
@@ -73,6 +70,8 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
+  const exploreView = useStore( state => state.exploreView );
+  const setExploreView = useStore( state => state.setExploreView );
 
   const exploreViewAccessibilityLabel = {
     observations: t( "Observations-View" ),
@@ -134,7 +133,7 @@ const Explore = ( {
         headerText={t( "EXPLORE" )}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
-          changeExploreView( newView );
+          setExploreView( newView );
           setShowExploreBottomSheet( false );
         }}
         radioValues={values}

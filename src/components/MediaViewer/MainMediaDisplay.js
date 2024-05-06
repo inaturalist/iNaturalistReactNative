@@ -60,7 +60,7 @@ const MainMediaDisplay = ( {
   const atLastItem = selectedMediaIndex === items.length - 1;
 
   const renderPhoto = useCallback( photo => {
-    const uri = Photo.displayLargePhoto( photo.url || photo.localFilePath );
+    const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     return (
       <View>
         <CustomImageZoom

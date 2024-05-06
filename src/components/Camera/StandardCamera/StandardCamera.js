@@ -2,11 +2,11 @@
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import CameraView from "components/Camera/CameraView";
+import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
-import useTakePhoto from "components/Camera/hooks/useTakePhoto";
-import useZoom from "components/Camera/hooks/useZoom";
+import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
+import useZoom from "components/Camera/hooks/useZoom.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { View } from "components/styledComponents";
 import { getCurrentRoute } from "navigation/navigationUtils";
@@ -61,11 +61,10 @@ const StandardCamera = ( {
   const {
     animatedProps,
     changeZoom,
-    onZoomChange,
-    onZoomStart,
+    pinchToZoom,
+    resetZoom,
     showZoomButton,
-    zoomTextValue,
-    resetZoom
+    zoomTextValue
   } = useZoom( device );
   const {
     rotatableAnimatedStyle,
@@ -170,15 +169,14 @@ const StandardCamera = ( {
       <View className="relative flex-1">
         {device && (
           <CameraView
+            animatedProps={animatedProps}
             cameraRef={camera}
             device={device}
-            animatedProps={animatedProps}
-            onZoomStart={onZoomStart}
-            onZoomChange={onZoomChange}
+            onCameraError={handleCameraError}
+            onCaptureError={handleCaptureError}
             onClassifierError={handleClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
-            onCaptureError={handleCaptureError}
-            onCameraError={handleCameraError}
+            pinchToZoom={pinchToZoom}
           />
         )}
         <FadeInOutView takingPhoto={takingPhoto} />

@@ -7,6 +7,8 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useStore from "stores/useStore";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import BottomButtons from "./BottomButtons";
 import EvidenceSectionContainer from "./EvidenceSectionContainer";
@@ -14,6 +16,10 @@ import Header from "./Header";
 import IdentificationSection from "./IdentificationSection";
 import MultipleObservationsArrows from "./MultipleObservationsArrows";
 import OtherDataSection from "./OtherDataSection";
+
+const DROP_SHADOW = getShadowForColor( colors.black, {
+  offsetHeight: -2
+} );
 
 const ObsEdit = ( ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
@@ -35,35 +41,42 @@ const ObsEdit = ( ): Node => {
             currentObservation={currentObservation}
             observations={observations}
           />
-          <KeyboardAwareScrollView className="bg-white mb-[80px]">
+          <KeyboardAwareScrollView className="mb-[80px]">
             {currentObservation && (
-              <View className="pb-5">
-                {observations.length > 1 && (
-                  <MultipleObservationsArrows
-                    currentObservationIndex={currentObservationIndex}
-                    observations={observations}
-                    setCurrentObservationIndex={setCurrentObservationIndex}
-                    setResetScreen={setResetScreen}
+              <View
+                className="bg-white rounded-t-3xl mt-1"
+                style={( observations.length > 1 )
+                  ? DROP_SHADOW
+                  : undefined}
+              >
+                <View className="pb-5">
+                  {observations.length > 1 && (
+                    <MultipleObservationsArrows
+                      currentObservationIndex={currentObservationIndex}
+                      observations={observations}
+                      setCurrentObservationIndex={setCurrentObservationIndex}
+                      setResetScreen={setResetScreen}
+                    />
+                  )}
+                  <EvidenceSectionContainer
+                    currentObservation={currentObservation}
+                    passesEvidenceTest={passesEvidenceTest}
+                    setPassesEvidenceTest={setPassesEvidenceTest}
+                    updateObservationKeys={updateObservationKeys}
                   />
-                )}
-                <EvidenceSectionContainer
-                  currentObservation={currentObservation}
-                  passesEvidenceTest={passesEvidenceTest}
-                  setPassesEvidenceTest={setPassesEvidenceTest}
-                  updateObservationKeys={updateObservationKeys}
-                />
-                <IdentificationSection
-                  currentObservation={currentObservation}
-                  passesIdentificationTest={passesIdentificationTest}
-                  resetScreen={resetScreen}
-                  setPassesIdentificationTest={setPassesIdentificationTest}
-                  setResetScreen={setResetScreen}
-                  updateObservationKeys={updateObservationKeys}
-                />
-                <OtherDataSection
-                  currentObservation={currentObservation}
-                  updateObservationKeys={updateObservationKeys}
-                />
+                  <IdentificationSection
+                    currentObservation={currentObservation}
+                    passesIdentificationTest={passesIdentificationTest}
+                    resetScreen={resetScreen}
+                    setPassesIdentificationTest={setPassesIdentificationTest}
+                    setResetScreen={setResetScreen}
+                    updateObservationKeys={updateObservationKeys}
+                  />
+                  <OtherDataSection
+                    currentObservation={currentObservation}
+                    updateObservationKeys={updateObservationKeys}
+                  />
+                </View>
               </View>
             )}
           </KeyboardAwareScrollView>

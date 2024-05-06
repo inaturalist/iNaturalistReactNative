@@ -31,6 +31,9 @@ const ObsGridItem = ( {
   uploadState,
   explore
 }: Props ): Node => {
+  const photo = observation?.observationPhotos?.[0]?.photo
+    || observation?.observation_photos?.[0]?.photo
+    || null;
   const photoCount = observation?.observationPhotos?.length
     || observation?.observation_photos?.length;
   const hasSound = !!(
@@ -41,9 +44,7 @@ const ObsGridItem = ( {
   return (
     <ObsImagePreview
       source={{
-        uri: Photo.displayLocalOrRemoteMediumPhoto(
-          observation?.observationPhotos?.[0]?.photo || observation?.observation_photos?.[0]?.photo
-        )
+        uri: Photo.displayLocalOrRemoteMediumPhoto( photo )
       }}
       width={width}
       height={height}

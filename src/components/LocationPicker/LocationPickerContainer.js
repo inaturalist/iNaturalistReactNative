@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { metersToLatitudeDelta } from "components/SharedComponents/Map";
+import { metersToLatitudeDelta } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import type { Node } from "react";
 import React, {
   useCallback,

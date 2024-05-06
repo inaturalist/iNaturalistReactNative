@@ -276,7 +276,8 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should show the first photo when tapped", async ( ) => {
       await navigateToTaxonDetail( );
-      const photo = await screen.findByTestId( "TaxonDetails.photo" );
+      const photoId = taxon.taxonPhotos[0].photo.id;
+      const photo = await screen.findByTestId( `TaxonDetails.photo.${photoId}` );
       expect( photo ).toBeVisible( );
       await act( async ( ) => actor.press( photo ) );
       expect(
@@ -288,7 +289,8 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should not show delete button", async ( ) => {
       await navigateToTaxonDetail( );
-      const photo = await screen.findByTestId( "TaxonDetails.photo" );
+      const photoId = taxon.taxonPhotos[0].photo.id;
+      const photo = await screen.findByTestId( `TaxonDetails.photo.${photoId}` );
       expect( photo ).toBeVisible( );
       await act( async ( ) => actor.press( photo ) );
       expect(
@@ -333,8 +335,8 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should show the selected photo when tapped", async () => {
       await navigateToSuggestions( );
-      const photoUri =
-        observation.observation_photos[observation.observation_photos.length - 1].photo.url;
+      const photoUri
+        = observation.observation_photos[observation.observation_photos.length - 1].photo.url;
       const firstPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${photoUri}`
       );
@@ -363,8 +365,8 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should not show delete button", async () => {
       await navigateToSuggestions();
-      const photoUri =
-        observation.observation_photos[observation.observation_photos.length - 1].photo.url;
+      const photoUri
+        = observation.observation_photos[observation.observation_photos.length - 1].photo.url;
       const firstPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${photoUri}`
       );

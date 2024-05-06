@@ -2,7 +2,7 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { useTheme } from "react-native-paper";
 
-import { Confetti } from "./Confetti";
+import Confetti from "./Confetti";
 import IndeterminateProgressBar from "./IndeterminateProgressBar";
 
 const count = 30;

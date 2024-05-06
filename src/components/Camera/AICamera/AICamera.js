@@ -4,8 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
-import useTakePhoto from "components/Camera/hooks/useTakePhoto";
-import useZoom from "components/Camera/hooks/useZoom";
+import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
+import useZoom from "components/Camera/hooks/useZoom.ts";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -13,6 +13,7 @@ import React from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores";
 import { useDebugMode, useTranslation } from "sharedHooks";
 
@@ -57,8 +58,7 @@ const AICamera = ( {
   const {
     animatedProps,
     changeZoom,
-    onZoomChange,
-    onZoomStart,
+    pinchToZoom,
     showZoomButton,
     zoomTextValue
   } = useZoom( device );
@@ -113,6 +113,8 @@ const AICamera = ( {
       : null );
   };
 
+  const insets = useSafeAreaInsets( );
+
   return (
     <>
       {device && (
@@ -131,8 +133,7 @@ const AICamera = ( {
             onCameraError={handleCameraError}
             onLog={handleLog}
             animatedProps={animatedProps}
-            onZoomStart={onZoomStart}
-            onZoomChange={onZoomChange}
+            pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
           />
         </View>
@@ -145,12 +146,13 @@ const AICamera = ( {
             ? 0.3
             : 1
         ]}
-        className="w-full"
+        className="w-full h-[219px]"
       >
         <View
-          className={classnames( "self-center h-[219px]", {
+          className={classnames( "self-center", {
             "w-[493px]": isTablet,
-            "pt-8 w-[346px]": !isTablet
+            "w-[346px] top-8": !isTablet,
+            "top-14": insets.top > 0
           } )}
         >
           {showPrediction && result

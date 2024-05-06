@@ -1,8 +1,11 @@
-// @flow
-
 import {
+  useCallback,
+  useMemo,
   useState
 } from "react";
+import {
+  Gesture, GestureResponderEvent
+} from "react-native-gesture-handler";
 import {
   Extrapolate,
   interpolate,
@@ -10,6 +13,7 @@ import {
   useSharedValue,
   withSpring
 } from "react-native-reanimated";
+import type { CameraProps } from "react-native-vision-camera";
 
 // This is taken from react-native-vision library itself: https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/Constants.ts#L19 https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/CameraPage.tsx#L34
 // The maximum zoom factor you should be able to zoom in
@@ -42,15 +46,18 @@ const useZoom = ( device: Object ): Object => {
     }
   };
 
-  const onZoomStart = () => {
+  const onZoomStart = useCallback( ( ) => {
     startZoom.value = zoom.value;
-  };
+  }, [
+    startZoom,
+    zoom.value
+  ] );
 
   const resetZoom = () => {
     zoom.value = initialZoom;
   };
 
-  const onZoomChange = scale => {
+  const onZoomChange = useCallback( scale => {
     // Calculate new zoom value (since scale factor is relative to initial pinch)
     const newScale = interpolate(
       scale,
@@ -65,21 +72,38 @@ const useZoom = ( device: Object ): Object => {
       Extrapolate.CLAMP
     );
     zoom.value = newZoom;
-  };
+  }, [
+    maxZoom,
+    minZoom,
+    startZoom.value,
+    zoom
+  ] );
 
-  const animatedProps = useAnimatedProps(
+  const animatedProps = useAnimatedProps < CameraProps >(
     () => ( { zoom: zoom.value } ),
     [zoom]
   );
+
+  const pinchToZoom = useMemo( ( ) => Gesture.Pinch( )
+    .runOnJS( true )
+    .onStart( _ => {
+      onZoomStart( );
+    } ).onChange( ( e: GestureResponderEvent ) => {
+      onZoomChange( e.scale );
+    } ), [
+    onZoomChange,
+    onZoomStart
+  ] );
 
   return {
     animatedProps,
     changeZoom,
     onZoomChange,
     onZoomStart,
+    pinchToZoom,
+    resetZoom,
     showZoomButton: device.isMultiCam,
-    zoomTextValue,
-    resetZoom
+    zoomTextValue
   };
 };
 

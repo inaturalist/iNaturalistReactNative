@@ -93,7 +93,7 @@ const MapView = ( {
           if ( Platform.OS === "android" && Math.round( newRegion.latitude ) === 0 ) {
             return;
           }
-          await updateMapBoundaries( boundaries );
+          await updateMapBoundaries( newRegion, boundaries );
           if ( startAtNearby ) {
             onZoomToNearby( boundaries );
           }
