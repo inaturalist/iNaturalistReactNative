@@ -16,7 +16,7 @@ import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
-const useTakePhoto = ( camera: Object, addEvidence: ?boolean, device: Object ): Object => {
+const useTakePhoto = ( camera: Object, addEvidence?: boolean, device?: Object ): Object => {
   const realm = useRealm( );
   const currentObservation = useStore( state => state.currentObservation );
   const { deviceOrientation } = useDeviceOrientation( );

@@ -84,7 +84,7 @@ const AICamera = ( {
     takePhotoOptions,
     takingPhoto,
     toggleFlash
-  } = useTakePhoto( camera, null, device );
+  } = useTakePhoto( camera, false, device );
   const { t } = useTranslation();
   const theme = useTheme();
   const navigation = useNavigation();
