@@ -196,7 +196,6 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   const uploadParams = {
     observation: { ...newObs },
     fields: { id: true }
-    // fields: "all"
   };
 
   // we're emitting progress increments:
