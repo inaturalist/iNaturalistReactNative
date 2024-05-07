@@ -126,27 +126,29 @@ class Observation extends Realm.Object {
     return observation;
   }
 
-  static upsertRemoteObservations( remoteObservations, realm ) {
-    if ( remoteObservations && remoteObservations.length > 0 ) {
-      const obsToUpsert = remoteObservations.filter(
-        obs => !Observation.isUnsyncedObservation( realm, obs )
-      );
-      const msg = obsToUpsert.map( remoteObservation => {
-        const obsPhotoUUIDs = remoteObservation.observation_photos?.map( op => op.uuid );
-        return `obs ${remoteObservation.uuid}, ops: ${obsPhotoUUIDs}`;
+  static upsertRemoteObservations( remoteObservations, realm, options = {} ) {
+    if ( !remoteObservations ) return;
+    if ( remoteObservations.length === 0 ) return;
+    const obsToUpsert = options.force
+      ? remoteObservations
+      : remoteObservations.filter( obs => !Observation.isUnsyncedObservation( realm, obs ) );
+    const msg = obsToUpsert.map( remoteObservation => {
+      const obsPhotoUUIDs = remoteObservation.observation_photos?.map( op => op.uuid );
+      return `obs ${remoteObservation.uuid}, ops: ${obsPhotoUUIDs}`;
+    } );
+    // Trying to debug disappearing photos
+    logger.info( "upsertRemoteObservations, upserting: ", msg );
+    safeRealmWrite( realm, ( ) => {
+      obsToUpsert.forEach( remoteObservation => {
+        const obsMappedForRealm = Observation.mapApiToRealm( remoteObservation, realm );
+        logger.info( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
+        realm.create(
+          "Observation",
+          obsMappedForRealm,
+          "modified"
+        );
       } );
-      // Trying to debug disappearing photos
-      logger.info( "upsertRemoteObservations, upserting: ", msg );
-      safeRealmWrite( realm, ( ) => {
-        obsToUpsert.forEach( remoteObservation => {
-          realm.create(
-            "Observation",
-            Observation.mapApiToRealm( remoteObservation, realm ),
-            "modified"
-          );
-        } );
-      }, "upserting remote observations in Observation" );
-    }
+    }, "upserting remote observations in Observation" );
   }
 
   static mapApiToRealm( obs, realm = null ) {

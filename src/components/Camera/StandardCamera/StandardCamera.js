@@ -103,7 +103,7 @@ const StandardCamera = ( {
     takePhotoOptions,
     takingPhoto,
     toggleFlash
-  } = useTakePhoto( camera, addEvidence, device );
+  } = useTakePhoto( camera, !!addEvidence, device );
 
   const { t } = useTranslation( );
 

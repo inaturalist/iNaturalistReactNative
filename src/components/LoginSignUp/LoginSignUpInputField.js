@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { forwardRef } from "react";
 import { TextInput, useTheme } from "react-native-paper";
 
 type Props = {
@@ -20,7 +20,7 @@ type Props = {
   textContentType?: string
 }
 
-const LoginSignUpInputField = ( {
+const LoginSignUpInputField: Function = forwardRef( ( {
   accessibilityLabel,
   autoComplete,
   headerText,
@@ -30,7 +30,7 @@ const LoginSignUpInputField = ( {
   secureTextEntry = false,
   testID,
   textContentType
-}: Props ): Node => {
+}: Props, ref: any ): Node => {
   const theme = useTheme( );
 
   return (
@@ -39,6 +39,7 @@ const LoginSignUpInputField = ( {
         {headerText}
       </Heading4>
       <TextInput
+        ref={ref}
         accessibilityLabel={accessibilityLabel}
         autoCapitalize="none"
         autoComplete={autoComplete}
@@ -53,6 +54,6 @@ const LoginSignUpInputField = ( {
       />
     </View>
   );
-};
+} );
 
 export default LoginSignUpInputField;
