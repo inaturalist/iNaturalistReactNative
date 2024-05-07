@@ -335,14 +335,16 @@ describe( "MediaViewer navigation", ( ) => {
 
     it( "should show the selected photo when tapped", async () => {
       await navigateToSuggestions( );
+      const photoUri
+        = observation.observation_photos[observation.observation_photos.length - 1].photo.url;
       const firstPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+        `ObsPhotoSelectionList.${photoUri}`
       );
       expect( firstPhoto ).toBeVisible();
       await act( async () => actor.press( firstPhoto ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+          `CustomImageZoom.${photoUri}`
         )
       ).toBeVisible();
     } );
@@ -350,26 +352,28 @@ describe( "MediaViewer navigation", ( ) => {
     it( "should not show the currently not selected photo when tapped", async () => {
       await navigateToSuggestions( );
       const secondPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${observation.observation_photos[1].photo.url}`
+        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
       );
       expect( secondPhoto ).toBeVisible();
       await act( async () => actor.press( secondPhoto ) );
       expect(
         screen.queryByTestId(
-          `CustomImageZoom.${observation.observation_photos[1].photo.url}`
+          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
         )
       ).toBeFalsy();
     } );
 
     it( "should not show delete button", async () => {
       await navigateToSuggestions();
+      const photoUri
+        = observation.observation_photos[observation.observation_photos.length - 1].photo.url;
       const firstPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+        `ObsPhotoSelectionList.${photoUri}`
       );
       await act( async () => actor.press( firstPhoto ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+          `CustomImageZoom.${photoUri}`
         )
       ).toBeVisible();
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy();

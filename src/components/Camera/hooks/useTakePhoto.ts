@@ -1,7 +1,10 @@
+// @flow
+
+import { RealmContext } from "providers/contexts";
 import {
   useState
 } from "react";
-import type { PhotoFile } from "react-native-vision-camera";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import {
   rotatePhotoPatch,
@@ -11,7 +14,10 @@ import {
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useStore from "stores/useStore";
 
-const useTakePhoto = ( camera: Object, addEvidence: boolean, device: Object ): Object => {
+const { useRealm } = RealmContext;
+
+const useTakePhoto = ( camera: Object, addEvidence?: boolean, device?: Object ): Object => {
+  const realm = useRealm( );
   const currentObservation = useStore( state => state.currentObservation );
   const { deviceOrientation } = useDeviceOrientation( );
   const hasFlash = device?.hasFlash;
@@ -19,6 +25,7 @@ const useTakePhoto = ( camera: Object, addEvidence: boolean, device: Object ): O
     enableShutterSound: true,
     ...( hasFlash && { flash: "off" } )
   };
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
 
@@ -27,9 +34,11 @@ const useTakePhoto = ( camera: Object, addEvidence: boolean, device: Object ): O
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
 
-  const takePhoto = async ( ) => {
+  const takePhoto = async ( options = { } ) => {
+    const { replaceExisting = false } = options;
+
     setTakingPhoto( true );
-    const cameraPhoto: PhotoFile = await camera.current.takePhoto( takePhotoOptions );
+    const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
 
     // Rotate the original photo depending on device orientation
     const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
@@ -44,7 +53,8 @@ const useTakePhoto = ( camera: Object, addEvidence: boolean, device: Object ): O
     } );
     const uri = newPhoto.localFilePath;
 
-    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
+    if ( ( addEvidence || currentObservation?.observationPhotos?.length > 0 )
+      && !replaceExisting ) {
       setCameraState( {
         cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
         evidenceToAdd: [...evidenceToAdd, uri],
@@ -52,10 +62,25 @@ const useTakePhoto = ( camera: Object, addEvidence: boolean, device: Object ): O
         originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
       } );
     } else {
+      if ( replaceExisting && cameraPreviewUris?.length > 0 ) {
+        // First, need to delete previously-created observation photo (happens when getting into
+        // AI camera, snapping photo, then backing out from suggestions screen)
+        const uriToDelete = cameraPreviewUris[0];
+        deletePhotoFromObservation( uriToDelete );
+        await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+      }
+
       setCameraState( {
-        cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
+        cameraPreviewUris: replaceExisting
+          ? [uri]
+          : cameraPreviewUris.concat( [uri] ),
+        evidenceToAdd: replaceExisting
+          ? [uri]
+          : [...evidenceToAdd, uri],
         // Remember original (unresized) camera URI
-        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
+        originalCameraUrisMap: replaceExisting
+          ? { [uri]: cameraPhoto.path }
+          : { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
       } );
     }
     setTakingPhoto( false );
