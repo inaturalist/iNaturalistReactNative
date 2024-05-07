@@ -107,6 +107,14 @@ const ObsListItemDemo = ( ) => (
         observation={{ uuid: "the-uuid" }}
         uploadState={{ uploadProgress: { "the-uuid": 1 } }}
       />
+      <Heading2 className="my-2">Upload complete, w/ animation, w/ ID</Heading2>
+      <ObsListItem
+        observation={{
+          uuid: "the-uuid",
+          identifications: [{ uuid: "another-uuid", current: true }]
+        }}
+        uploadState={{ uploadProgress: { "the-uuid": 1 } }}
+      />
       <Heading2 className="my-2">Upload complete, before animation</Heading2>
       <ObsListItem
         observation={{ uuid: "the-uuid" }}

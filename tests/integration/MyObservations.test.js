@@ -129,6 +129,12 @@ describe( "MyObservations", ( ) => {
         const mockObs = mockObservations.find( o => o.uuid === params.observation.uuid );
         return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
       } );
+      inatjs.observations.fetch.mockImplementation( ( uuid, _params, _opts ) => {
+        const mockObs = mockObservations.find( o => o.uuid === uuid );
+        // It would be a lot better if this returned something that looks like
+        // a remote obs, but this works
+        return Promise.resolve( makeResponse( [mockObs] ) );
+      } );
       inatjs.observation_photos.create.mockImplementation( async ( params, _opts ) => {
         const mockObsPhotos = flatten( mockObservations.map( o => o.observationPhotos ) );
         const mockObsPhoto = mockObsPhotos.find(
