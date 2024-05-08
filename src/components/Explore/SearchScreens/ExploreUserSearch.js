@@ -53,7 +53,7 @@ const ExploreUserSearch = ( ): Node => {
     ( { item } ) => (
       <UserListItem
         item={{ user: item }}
-        countText="X-Observations"
+        countText={t( "X-Observations", { count: item.observations_count } )}
         accessibilityLabel={t( "Select-user" )}
         onPress={( ) => onUserSelected( item )}
       />

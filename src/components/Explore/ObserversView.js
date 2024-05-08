@@ -46,7 +46,6 @@ const ObserversView = ( {
   const renderItem = ( { item } ) => (
     <UserListItem
       item={item}
-      count={item.observation_count}
       countText={t( "X-Observations", { count: item.observation_count } )}
     />
   );

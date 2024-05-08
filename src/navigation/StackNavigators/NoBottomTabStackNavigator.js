@@ -43,7 +43,7 @@ const GROUP_PHOTOS_OPTIONS = {
   ...showHeader,
   ...showCustomHeader,
   lazy: true,
-  title: t( "Group-Photos" ),
+  headerTitle: t( "Group-Photos" ),
   headerShadowVisible: false
 };
 
