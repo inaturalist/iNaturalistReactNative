@@ -7,7 +7,6 @@ import { isTablet } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import {
   useSharedValue as useWorkletSharedValue,
-  useWorklet,
   Worklets
 } from "react-native-worklets-core";
 import {
@@ -154,8 +153,7 @@ export const usePatchedRunAsync = ( ) => {
     console.log( "logOnJs - ", log, " - error?:", error?.message ?? "no error" );
   } );
   const isAsyncContextBusy = useWorkletSharedValue( false );
-  const customRunOnAsyncContext = useWorklet(
-    "default",
+  const customRunOnAsyncContext = Worklets.defaultContext.createRunAsync(
     ( frame, func ) => {
       "worklet";
 
@@ -167,8 +165,7 @@ export const usePatchedRunAsync = ( ) => {
         frame.decrementRefCount();
         isAsyncContextBusy.value = false;
       }
-    },
-    []
+    }
   );
 
   function customRunAsync( frame, func ) {
