@@ -1288,7 +1288,7 @@
   },
   "Uploading-x-of-y-observations": {
     "comment": "Shows the number of observations a user is currently uploading out of total on my observations page",
-    "val": "Uploading { $currentUploadCount } of { $total ->\n  [one] 1 observation\n *[other] { $total } observations\n}"
+    "val": "{ $total ->\n  [one] Uploading { $currentUploadCount } observation\n *[other] Uploading { $currentUploadCount } of { $total } observations\n}"
   },
   "Use-iNaturalists-AI-Camera": "Use iNaturalist's AI Camera to identify organisms in real-time",
   "USE-LOCATION": {
