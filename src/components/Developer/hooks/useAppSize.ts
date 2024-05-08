@@ -101,7 +101,6 @@ const useAppSize = ( ) => {
       const tempFileSizes = { };
       const size = await Promise.all( directories.map( async ( { directoryName, path } ) => {
         const contentSizes = await getDirectoryContentSizes( path );
-        console.log( contentSizes, "content sizes" );
         tempFileSizes[directoryName] = contentSizes;
         return tempFileSizes;
       } ) );

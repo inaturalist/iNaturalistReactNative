@@ -46,7 +46,6 @@ const taxonomyFileName = Platform.select( {
 /* eslint-disable i18next/no-literal-string */
 const Developer = (): Node => {
   const fileSizes = useAppSize( );
-  console.log( fileSizes, "file sizes" );
 
   const boldClassname = ( line, isDirectory = false ) => classnames(
     {
