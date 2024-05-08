@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* iNaturalistReactNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */; };
 		03BE06B8FED98F5CD10273BB /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20043186B311EE211FEB259A /* libPods-iNaturalistReactNative.a */; };
-		08387561362A4099A1D58774 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 121B82B7918941189871CFD5 /* INatIcon.ttf */; };
 		085DD3205807404CAFC32228 /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */; };
+		0928C25974EC489BA89D9E45 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E5BA7B171CE84F61B07BAAF3 /* INatIcon.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -18,7 +18,6 @@
 		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
 		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
 		3DE2C0F71E184822B561A1ED /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A54425709BB4844AFBC680D /* Lato-Italic.ttf */; };
-		4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */; };
 		54EB1EFEC1F74152902EED02 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C2D97D72EED451C887998A8 /* Lato-BoldItalic.ttf */; };
 		5A8D64AB921678B40E0229C8 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		725BA058C5384A9185E8036A /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00752F4ADC554701A45A848A /* Lato-Bold.ttf */; };
@@ -70,7 +69,6 @@
 		00E356EE1AD99517003FC87E /* iNaturalistReactNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNaturalistReactNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iNaturalistReactNativeTests.m; sourceTree = "<group>"; };
-		121B82B7918941189871CFD5 /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNaturalistReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iNaturalistReactNative/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = iNaturalistReactNative/AppDelegate.mm; sourceTree = "<group>"; };
@@ -102,8 +100,8 @@
 		B8FC28F6DD66FAD52B79E072 /* Pods-iNaturalistReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.debug.xcconfig"; sourceTree = "<group>"; };
 		D7AE5BDBC584A83878A04344 /* Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		D8663889EABFBFC3077401E3 /* Pods-iNaturalistReactNative-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		E5BA7B171CE84F61B07BAAF3 /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = inaturalisticons.ttf; path = ../assets/fonts/inaturalisticons.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,14 +247,13 @@
 		E7A0E0AA690545D78AA7CC73 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */,
-				121B82B7918941189871CFD5 /* INatIcon.ttf */,
 				00752F4ADC554701A45A848A /* Lato-Bold.ttf */,
 				8C2D97D72EED451C887998A8 /* Lato-BoldItalic.ttf */,
 				3A54425709BB4844AFBC680D /* Lato-Italic.ttf */,
 				3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */,
 				69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */,
 				4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */,
+				E5BA7B171CE84F61B07BAAF3 /* INatIcon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -384,14 +381,13 @@
 				1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				8F1AC6772BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
-				4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */,
-				08387561362A4099A1D58774 /* INatIcon.ttf in Resources */,
 				725BA058C5384A9185E8036A /* Lato-Bold.ttf in Resources */,
 				54EB1EFEC1F74152902EED02 /* Lato-BoldItalic.ttf in Resources */,
 				3DE2C0F71E184822B561A1ED /* Lato-Italic.ttf in Resources */,
 				085DD3205807404CAFC32228 /* Lato-Medium.ttf in Resources */,
 				E5DFC1C6FBFA45739CE91C69 /* Lato-MediumItalic.ttf in Resources */,
 				AE4DC81B3A87484CB3FD6750 /* Lato-Regular.ttf in Resources */,
+				0928C25974EC489BA89D9E45 /* INatIcon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

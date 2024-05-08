@@ -16,7 +16,7 @@ apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.grad
 
 // add vector icons to project
 project.ext.vectoricons = [
-    iconFontNames: [ 'MaterialCommunityIcons.ttf', 'MaterialIcons.ttf' ]
+    iconFontNames: []
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

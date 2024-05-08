@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 
 // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
@@ -20,11 +21,7 @@ export function formatSizeUnits( bytes ) {
   return bytes;
 }
 
-export const directories = [
-  {
-    path: RNFS.MainBundlePath,
-    directoryName: "MainBundle"
-  },
+const sharedDirectories = [
   {
     path: RNFS.DocumentDirectoryPath,
     directoryName: "DocumentDirectory"
@@ -36,11 +33,38 @@ export const directories = [
   {
     path: RNFS.TemporaryDirectoryPath,
     directoryName: "TemporaryDirectory"
-  }, {
+  }
+];
+
+const iOSDirectories = [
+  {
+    path: RNFS.MainBundlePath,
+    directoryName: "MainBundle"
+  },
+  {
     path: RNFS.LibraryDirectoryPath,
     directoryName: "LibraryDirectory"
   }
 ];
+
+const androidDirectories = [
+  {
+    path: RNFS.DownloadDirectoryPath,
+    directoryName: "DownloadDirectory"
+  },
+  {
+    path: RNFS.ExternalDirectoryPath,
+    directoryName: "ExternalDirectory"
+  },
+  {
+    path: RNFS.ExternalStorageDirectoryPath,
+    directoryName: "ExternalStorageDirectory"
+  }
+];
+
+export const directories = Platform.OS === "android"
+  ? sharedDirectories.concat( androidDirectories )
+  : iOSDirectories.concat( sharedDirectories );
 
 export function formatAppSizeString( name, size ) {
   return `${name}: ${formatSizeUnits( size )}`;
