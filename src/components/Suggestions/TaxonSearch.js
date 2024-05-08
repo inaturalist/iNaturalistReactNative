@@ -30,7 +30,11 @@ const TaxonSearch = ( ): Node => {
   const taxonList = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
-  useNavigateWithTaxonSelected( selectedTaxon, { vision: false } );
+  useNavigateWithTaxonSelected(
+    selectedTaxon,
+    ( ) => setSelectedTaxon( null ),
+    { vision: false }
+  );
 
   const renderFooter = useCallback( ( ) => <View className="pb-10" />, [] );
 
