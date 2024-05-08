@@ -140,11 +140,12 @@ export const iPadStylePatch = deviceOrientation => {
   return {};
 };
 
-// This patch is currently required because we are using react-native-vision-camera v3.9.1
+// This patch is currently required because we are using react-native-vision-camera v4.0.3
 // together wit react-native-reanimated. The problem is that the runAsync function
 // from react-native-vision-camera does not work in release mode with this reanimated.
-// Uses this workaround: https://gist.github.com/nonam4/7a6409cd1273e8ed7466ba3a48dd1ecc
-// Posted on this currently open issue: https://github.com/mrousavy/react-native-vision-camera/issues/2589
+// Uses this workaround: https://gist.github.com/nonam4/7a6409cd1273e8ed7466ba3a48dd1ecc but adapted it to
+// version 4 of vision-camera.
+// Originally, posted on this currently open issue: https://github.com/mrousavy/react-native-vision-camera/issues/2589
 export const usePatchedRunAsync = ( ) => {
   /**
    * Print worklets logs/errors on js thread
