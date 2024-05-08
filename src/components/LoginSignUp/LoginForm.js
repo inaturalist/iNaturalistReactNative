@@ -52,13 +52,13 @@ const LoginForm = ( {
   };
 
   useEffect( () => {
-    const listener1 = navigation.addListener( "blur", blurFields );
-    const listener2 = navigation.addListener( "transitionEnd", blurFields );
+    const unsubscribe = navigation.addListener( "blur", blurFields );
+    return unsubscribe;
+  }, [navigation] );
 
-    return () => {
-      listener1.remove();
-      listener2.remove();
-    };
+  useEffect( () => {
+    const unsubscribe = navigation.addListener( "transitionEnd", blurFields );
+    return unsubscribe;
   }, [navigation] );
 
   const login = async ( ) => {
