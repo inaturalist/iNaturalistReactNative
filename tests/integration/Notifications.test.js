@@ -3,7 +3,7 @@ import NotificationsContainer from "components/Notifications/NotificationsContai
 import inatjs from "inaturalistjs";
 import React from "react";
 import factory, { makeResponse } from "tests/factory";
-import { renderAppWithComponent } from "tests/helpers/render";
+import { queryClient, renderAppWithComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
@@ -30,8 +30,33 @@ afterAll( uniqueRealmAfterAll );
 
 const mockUser = factory( "LocalUser" );
 
+function makeMockObsUpdatesResponse( mockObs ) {
+  const mockObservation = mockObs || factory( "RemoteObservation", {
+    user: mockUser
+  } );
+  const mockComment = factory( "RemoteComment", { parent_id: mockObservation.id } );
+  const mockUpdate = {
+    id: 123,
+    created_at: mockComment.created_at,
+    comment: mockComment,
+    comment_id: mockComment.id,
+    notifier_id: mockComment.id,
+    notifier_type: "Comment",
+    notification: "activity",
+    resource_owner_id: mockUser.id,
+    resource_type: "Observation",
+    resource_id: mockObservation.id,
+    resource_uuid: mockObservation.uuid,
+    viewed: false
+  };
+  const obsUpdatesResponse = makeResponse( [mockUpdate] );
+  inatjs.observations.updates.mockResolvedValue( obsUpdatesResponse );
+  inatjs.observations.fetch.mockResolvedValue( makeResponse( [mockObservation] ) );
+  return obsUpdatesResponse;
+}
+
 describe( "Notifications", () => {
-  beforeAll( async () => {
+  beforeEach( async () => {
     jest.useFakeTimers( );
     signIn( mockUser, { realm: global.mockRealms[__filename] } );
   } );
@@ -39,43 +64,19 @@ describe( "Notifications", () => {
   afterEach( () => {
     jest.clearAllMocks();
     signOut( { realm: global.mockRealms[__filename] } );
+    queryClient.clear( );
   } );
 
-  function makeMockObsUpdatesResponse( mockObs ) {
-    const mockObservation = mockObs || factory( "RemoteObservation", {
-      user: mockUser
+  it( "should show a notification", async ( ) => {
+    makeMockObsUpdatesResponse( );
+    renderAppWithComponent( <NotificationsContainer /> );
+    await waitFor( ( ) => {
+      expect( inatjs.observations.updates ).toHaveBeenCalled( );
     } );
-    const mockComment = factory( "RemoteComment", { parent_id: mockObservation.id } );
-    const mockUpdate = {
-      id: 123,
-      created_at: mockComment.created_at,
-      comment: mockComment,
-      comment_id: mockComment.id,
-      notifier_id: mockComment.id,
-      notifier_type: "Comment",
-      notification: "activity",
-      resource_owner_id: mockUser.id,
-      resource_type: "Observation",
-      resource_id: mockObservation.id,
-      resource_uuid: mockObservation.uuid,
-      viewed: false
-    };
-    const response = makeResponse( [mockUpdate] );
-    inatjs.observations.updates.mockResolvedValue( response );
-    return response;
-  }
-  // TODO: this test interferes with 2nd for reasons we dont understand
-  // it( "should show a notification", async ( ) => {
-  //   const mockObservation = factory( "RemoteObservation" );
-  //   makeMockObsUpdatesResponse( mockObservation );
-  //   inatjs.observations.fetch.mockResolvedValue( makeResponse([mockObservation]) );
-  //   renderAppWithComponent( <NotificationsContainer /> );
-  //   await waitFor( ( ) => {
-  //     expect( inatjs.observations.updates ).toHaveBeenCalled( );
-  //   } );
-  //   expect( await screen.findByText( /added a comment to an observation by you/ ) )
-  // .toBeVisible( );
-  // } );
+    expect(
+      await screen.findByText( /added a comment to an observation by you/ )
+    ).toBeVisible( );
+  } );
 
   it( "should show a photo for an observation not in the local database", async ( ) => {
     const mockObservation = factory( "RemoteObservation", {
@@ -92,11 +93,8 @@ describe( "Notifications", () => {
     expect( photoUrl ).toBeTruthy( );
     const response = makeMockObsUpdatesResponse( mockObservation );
     const { comment } = response.results[0];
-    inatjs.observations.fetch.mockResolvedValue( makeResponse( [mockObservation] ) );
-
+    expect( response.results[0].resource_uuid ).toEqual( mockObservation.uuid );
     renderAppWithComponent( <NotificationsContainer /> );
-    // expect( await screen.findByText( /added a comment to an observation by you/ ) )
-    // .toBeVisible( );
     expect( await screen.findByText( comment.user.login ) ).toBeVisible( );
     const localObservationAfter = global.mockRealms[__filename].objectForPrimaryKey(
       "Observation",
@@ -104,12 +102,8 @@ describe( "Notifications", () => {
     );
     expect( localObservationAfter ).toBeTruthy( );
     const image = await screen.findByTestId( "ObservationIcon.photo" );
-    const expectedImageSource
-      = {
-        uri: photoUrl
-      };
     await waitFor( () => {
-      expect( image.props.source ).toStrictEqual( expectedImageSource );
+      expect( image.props.source ).toStrictEqual( { uri: photoUrl } );
     } );
   } );
 } );
