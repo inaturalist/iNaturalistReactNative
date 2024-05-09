@@ -1,6 +1,7 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import computerVisionPath from "appConstants/paths.ts";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import type { Node } from "react";
 import React, {
@@ -8,6 +9,7 @@ import React, {
   useEffect,
   useState
 } from "react";
+import RNFS from "react-native-fs";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import useStore from "stores/useStore";
 
@@ -17,6 +19,7 @@ import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
+  const navigation = useNavigation( );
   const { params } = useRoute( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
@@ -85,6 +88,27 @@ const SuggestionsContainer = ( ): Node => {
       setIsLoading( false );
     }
   }, [loadingOfflineSuggestions, hasSuggestions] );
+
+  useEffect( ( ) => {
+    // this isn't perfect, since it doesn't delete the current resized image(s) created in
+    // useOnlineSuggestions, and the resizer is seemingly getting called multiple times
+    // on the same image. but for storage size, it's an improvement on what we were doing
+    // before, which was storing an infinite amount of resized images used temporarily
+    // for the online API
+    const clearComputerVisionDirectory = async ( ) => {
+      const files = await RNFS.readDir( computerVisionPath );
+
+      const clearDirectory = files.forEach( async ( { path } ) => {
+        const pathExists = await RNFS.exists( path );
+        if ( !pathExists ) { return; }
+        await RNFS.unlink( path );
+      } );
+      return clearDirectory;
+    };
+    navigation.addListener( "blur", async ( ) => {
+      await clearComputerVisionDirectory( );
+    } );
+  }, [navigation] );
 
   return (
     <>

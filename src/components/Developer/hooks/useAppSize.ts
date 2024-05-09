@@ -112,6 +112,8 @@ const useAppSize = ( ) => {
       // on first render. feel free to rewrite if there's a better way to do this
       const tempFileSizes = { };
       const size = await Promise.all( directories.map( async ( { directoryName, path } ) => {
+        const pathExists = await RNFS.exists( path );
+        if ( !pathExists ) { return null; }
         const contentSizes = await getDirectoryContentSizes( path );
         tempFileSizes[directoryName] = contentSizes;
         return tempFileSizes;
