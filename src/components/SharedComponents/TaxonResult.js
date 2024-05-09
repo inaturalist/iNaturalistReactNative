@@ -66,6 +66,9 @@ const TaxonResult = ( {
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
+  // useTaxon could return null, and it's at least remotely possible taxonProp is null
+  if ( !usableTaxon ) return null;
+
   const taxonImage = { uri: usableTaxon?.default_photo?.url };
   const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
 
@@ -110,7 +113,7 @@ const TaxonResult = ( {
                 />
               )
           }
-          {( confidence && confidencePosition === "photo" ) && (
+          {!!( confidence && confidencePosition === "photo" ) && (
             <View className="absolute -bottom-4 w-full items-center">
               <ConfidenceInterval
                 confidence={confidence}
@@ -124,7 +127,7 @@ const TaxonResult = ( {
             taxon={usableTaxon}
             color={clearBackground && "text-white"}
           />
-          {( confidence && confidencePosition === "text" ) && (
+          {!!( confidence && confidencePosition === "text" ) && (
             <View className="mt-1 w-[62px]">
               <ConfidenceInterval
                 confidence={confidence}
@@ -133,7 +136,6 @@ const TaxonResult = ( {
             </View>
           )}
         </View>
-
       </Pressable>
       <View className="flex-row items-center">
         { showInfoButton && (

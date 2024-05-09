@@ -51,7 +51,11 @@ const SuggestionsContainer = ( ): Node => {
     tryOfflineSuggestions
   } );
 
-  useNavigateWithTaxonSelected( selectedTaxon, { vision: true } );
+  useNavigateWithTaxonSelected(
+    selectedTaxon,
+    ( ) => setSelectedTaxon( null ),
+    { vision: true }
+  );
 
   const onPressPhoto = useCallback(
     uri => {

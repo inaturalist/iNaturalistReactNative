@@ -26,7 +26,7 @@ import Suggestion from "./Suggestion";
 import SuggestionsEmpty from "./SuggestionsEmpty";
 
 type Props = {
-  commonAncestor: ?string,
+  commonAncestor: ?Object,
   debugData: Object,
   hasVisionSuggestion: boolean,
   loading: boolean,

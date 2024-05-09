@@ -2,6 +2,25 @@
 import { Realm } from "@realm/react";
 import _ from "lodash";
 
+const DEFAULT_STATE = {
+  cameraPreviewUris: [],
+  cameraRollUris: [],
+  comment: "",
+  currentObservation: {},
+  currentObservationIndex: 0,
+  evidenceToAdd: [],
+  galleryUris: [],
+  groupedPhotos: [],
+  observations: [],
+  // Track when any obs was last marked as viewed so we know when to update
+  // the notifications indicator
+  observationMarkedAsViewedAt: null,
+  originalCameraUrisMap: {},
+  photoEvidenceUris: [],
+  savingPhoto: false,
+  unsavedChanges: false
+};
+
 const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   if ( _.isEmpty( currentObservation ) ) { return []; }
   const updatedObservation = currentObservation;
@@ -54,22 +73,7 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
 };
 
 const createObservationFlowSlice = set => ( {
-  cameraPreviewUris: [],
-  cameraRollUris: [],
-  comment: "",
-  currentObservation: {},
-  currentObservationIndex: 0,
-  evidenceToAdd: [],
-  galleryUris: [],
-  groupedPhotos: [],
-  observations: [],
-  // Track when any obs was last marked as viewed so we know when to update
-  // the notifications indicator
-  observationMarkedAsViewedAt: null,
-  originalCameraUrisMap: {},
-  photoEvidenceUris: [],
-  savingPhoto: false,
-  unsavedChanges: false,
+  ...DEFAULT_STATE,
   deletePhotoFromObservation: uri => set( state => ( {
     photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
     cameraPreviewUris: [..._.pull( state.cameraPreviewUris, uri )],
@@ -92,21 +96,7 @@ const createObservationFlowSlice = set => ( {
       currentObservation: newObservation
     };
   } ),
-  resetStore: ( ) => set( {
-    cameraPreviewUris: [],
-    cameraRollUris: [],
-    comment: "",
-    currentObservation: {},
-    currentObservationIndex: 0,
-    evidenceToAdd: [],
-    galleryUris: [],
-    groupedPhotos: [],
-    observations: [],
-    originalCameraUrisMap: {},
-    photoEvidenceUris: [],
-    savingPhoto: false,
-    unsavedChanges: false
-  } ),
+  resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
   addCameraRollUri: uri => set( state => {
     const savedUris = state.cameraRollUris;
     savedUris.push( uri );
