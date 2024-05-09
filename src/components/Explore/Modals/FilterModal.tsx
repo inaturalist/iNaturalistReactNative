@@ -753,7 +753,7 @@ const FilterModal = ( {
                 }}
                 accessibilityLabel={t( "Sort-by" )}
               />
-              {openSheet === SORT_BY_M && (
+              {/* {openSheet === SORT_BY_M && (
                 <RadioButtonSheet
                   headerText={t( "SORT-BY" )}
                   confirm={newSortBy => {
@@ -767,7 +767,7 @@ const FilterModal = ( {
                   radioValues={sortByValues}
                   selectedValue={sortBy}
                 />
-              )}
+              )} */}
             </View>
           </View>
 
@@ -1250,6 +1250,22 @@ const FilterModal = ( {
       </StickyToolbar>
 
       {/* BottomSheets */}
+      {openSheet === SORT_BY_M && (
+        <RadioButtonSheet
+          headerText={t( "SORT-BY" )}
+          confirm={newSortBy => {
+            dispatch( {
+              type: EXPLORE_ACTION.CHANGE_SORT_BY,
+              sortBy: newSortBy
+            } );
+            setOpenSheet( NONE );
+          }}
+          handleClose={() => setOpenSheet( NONE )}
+          radioValues={sortByValues}
+          selectedValue={sortBy}
+          insideModal
+        />
+      )}
       {openSheet === HRANK && (
         <PickerSheet
           headerText={t( "HIGHEST-RANK" )}
