@@ -10,6 +10,8 @@ const useClearComputerVisionDirectory = ( ) => {
     // before, which was storing an infinite amount of resized images used temporarily
     // for the online API
     const clearComputerVisionDirectory = async ( ) => {
+      const directoryExists = await RNFS.exists( computerVisionPath );
+      if ( !directoryExists ) { return null; }
       const files = await RNFS.readDir( computerVisionPath );
 
       const clearDirectory = files.forEach( async ( { path } ) => {
