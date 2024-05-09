@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import User from "realmModels/User";
-import { useInfiniteScroll } from "sharedHooks";
+import { useInfiniteScroll, useTranslation } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
 
@@ -24,6 +24,7 @@ const ObserversView = ( {
   queryParams,
   updateCount
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const {
     data,
     isFetchingNextPage,
@@ -35,6 +36,7 @@ const ObserversView = ( {
     fetchObservers,
     {
       ...queryParams,
+      order_by: "observation_count",
       fields: {
         user: User.FIELDS
       }
@@ -45,7 +47,7 @@ const ObserversView = ( {
     <UserListItem
       item={item}
       count={item.observation_count}
-      countText="X-Observations"
+      countText={t( "X-Observations", { count: item.observation_count } )}
     />
   );
 

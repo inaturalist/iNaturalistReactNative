@@ -35,7 +35,6 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey,
-    keepPreviousData: false,
     queryFn: async ( { pageParam } ) => {
       const apiToken = await getJWT( );
       const options = {
@@ -56,6 +55,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
       const { results } = await searchObservations( params, options );
       return results.map( observation => Observation.mapApiToRealm( observation ) ) || [];
     },
+    initialPageParam: 0,
     getNextPageParam: lastPage => last( lastPage )?.id,
     // allow a user to see the Explore screen Observations
     // content while logged out

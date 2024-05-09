@@ -1,6 +1,7 @@
 // @flow
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -18,16 +19,15 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 
 type Props = {
   observations: Array<Object>,
-  updateObservations: Function,
   currentObservation: Object
 }
 
 const Header = ( {
   observations,
-  updateObservations,
   currentObservation
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
+  const updateObservations = useStore( state => state.updateObservations );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -35,40 +35,27 @@ const Header = ( {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
-
-  const savedLocally = currentObservation?._created_at;
   const unsynced = !currentObservation?._synced_at;
+  const savedLocally = currentObservation?._created_at;
 
-  const navToObsDetails = useCallback( ( ) => {
+  const navToObsList = useCallback( ( ) => {
     navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator",
+      screen: "TabStackNavigator",
       params: {
-        screen: "ObsDetails",
-        params: {
-          uuid: currentObservation?.uuid
-        }
+        screen: "ObsList"
       }
     } );
-  }, [navigation, currentObservation] );
-
-  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
-    screen: "ObservationsStackNavigator",
-    params: {
-      screen: "ObsList"
-    }
-  } ), [navigation] );
+  }, [navigation] );
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    updateObservations( [] );
-    navToObsDetails( );
-  }, [updateObservations, navToObsDetails] );
+    navigateToObsDetails( navigation, currentObservation?.uuid );
+  }, [currentObservation?.uuid, navigation] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
-    updateObservations( [] );
     navToObsList( );
-  }, [updateObservations, navToObsList] );
+  }, [navToObsList] );
 
   const renderHeaderTitle = useCallback( ( ) => {
     let headingText = "";
@@ -101,15 +88,10 @@ const Header = ( {
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navToObsDetails( );
+      navigateToObsDetails( navigation, currentObservation?.uuid );
     }
   }, [
-    unsynced,
-    savedLocally,
-    navigation,
-    unsavedChanges,
-    params,
-    navToObsDetails
+    params?.lastScreen, unsynced, savedLocally, unsavedChanges, navigation, currentObservation?.uuid
   ] );
 
   const renderBackButton = useCallback( ( ) => {

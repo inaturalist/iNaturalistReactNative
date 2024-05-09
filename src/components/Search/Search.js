@@ -2,18 +2,19 @@
 
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
-import PlaceholderText from "components/PlaceholderText";
-import { ActivityIndicator, InputField, ViewWrapper } from "components/SharedComponents";
-import * as React from "react";
 import {
-  FlatList,
+  ActivityIndicator, Body3, InputField, ViewWrapper
+} from "components/SharedComponents";
+import {
   Image,
   Pressable,
-  Text,
   View
+} from "components/styledComponents";
+import * as React from "react";
+import {
+  FlatList
 } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import { imageStyles, viewStyles } from "styles/search/search";
 
 const Search = (): React.Node => {
   const navigation = useNavigation();
@@ -41,34 +42,38 @@ const Search = (): React.Node => {
         && item.default_photo && { uri: item.default_photo.square_url };
       return (
         <Pressable
+          className="py-1.5"
           accessibilityRole="button"
+          accessibilityLabel="Navigates-to-taxon-details"
           onPress={navToTaxonDetails}
-          style={viewStyles.row}
           testID={`Search.taxa.${item.id}`}
         >
           <Image
             source={imageUrl}
-            style={imageStyles.squareImage}
+            className="w-full h-full mr-[10px]"
             testID={`Search.${item.id}.photo`}
+            accessibilityIgnoresInvertColors
           />
-          <Text>{`${item.preferred_common_name} (${item.rank} ${item.name})`}</Text>
+          <Body3>{`${item.preferred_common_name} (${item.rank} ${item.name})`}</Body3>
         </Pressable>
       );
     }
     return (
       <Pressable
         accessibilityRole="button"
+        accessibilityLabel="Navigates-to-user-profile"
         onPress={navToUserProfile}
-        style={viewStyles.row}
+        className="py-1.5"
         testID={`Search.user.${item.login}`}
       >
         {/* TODO: add an empty icon when user doesn't have an icon */}
         <Image
           source={{ uri: item.icon }}
-          style={imageStyles.circularImage}
+          className="w-full h-full rounded-lg"
           testID={`Search.${item.login}.photo`}
+          accessibilityIgnoresInvertColors
         />
-        <Text>{`${item.login} (${item.name})`}</Text>
+        <Body3>{`${item.login} (${item.name})`}</Body3>
       </Pressable>
     );
   };
@@ -78,21 +83,19 @@ const Search = (): React.Node => {
 
   return (
     <ViewWrapper testID="Search">
-      <View style={viewStyles.toggleRow}>
+      <View>
         <Pressable
           onPress={setTaxaSearch}
           testID="Search.taxa"
           accessibilityRole="button"
-        >
-          <PlaceholderText text="search taxa" />
-        </Pressable>
+          accessibilityLabel="Set-taxon-search"
+        />
         <Pressable
           onPress={setUserSearch}
+          accessibilityLabel="Set-user-search"
           testID="Search.users"
           accessibilityRole="button"
-        >
-          <PlaceholderText text="search users" />
-        </Pressable>
+        />
       </View>
       <InputField
         handleTextChange={setQ}

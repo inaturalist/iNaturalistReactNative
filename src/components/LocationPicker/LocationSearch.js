@@ -10,26 +10,27 @@ import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef } from "react";
 import { Keyboard } from "react-native";
-import { useTheme } from "react-native-paper";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
+
+const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 type Props = {
-  locationName: ?string,
+  locationName: string,
   updateLocationName: Function,
-  getShadow: Function,
   selectPlaceResult: Function,
   hidePlaceResults: boolean
 };
 
 const LocationSearch = ( {
-  locationName, updateLocationName, getShadow, selectPlaceResult, hidePlaceResults
+  locationName = "", updateLocationName, selectPlaceResult, hidePlaceResults
 }: Props ): Node => {
-  const theme = useTheme( );
   const queryClient = useQueryClient( );
   const locationInput = useRef( );
 
   // this seems necessary for clearing the cache between searches
-  queryClient.invalidateQueries( ["fetchSearchResults"] );
+  queryClient.invalidateQueries( { queryKey: ["fetchSearchResults"] } );
 
   const {
     data: placeResults
@@ -60,7 +61,7 @@ const LocationSearch = ( {
       />
       <View
         className="absolute top-[65px] right-[26px] left-[26px] bg-white rounded-lg z-100"
-        style={getShadow( theme.colors.primary )}
+        style={DROP_SHADOW}
       >
         {!hidePlaceResults && placeResults?.map( place => (
           <Pressable

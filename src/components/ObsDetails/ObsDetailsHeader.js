@@ -61,7 +61,9 @@ const ObsDetailsHeader = ( {
               testID="ObsDetail.editButton"
               onPress={() => {
                 setObservations( [observation] );
-                navigation.navigate( "ObsEdit" );
+                navigation.navigate( "NoBottomTabStackNavigator", {
+                  screen: "ObsEdit"
+                } );
               }}
               icon="pencil"
               color={!rightIconBlack

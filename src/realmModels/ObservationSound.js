@@ -1,21 +1,16 @@
 import { Realm } from "@realm/react";
 import { FileUpload } from "inaturalistjs";
 import { Platform } from "react-native";
-import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
-const SOUND_UPLOADS_DIRNAME = "soundUploads";
-const SOUND_UPLOADS_PATH = `${RNFS.DocumentDirectoryPath}/${SOUND_UPLOADS_DIRNAME}`;
+import Sound from "./Sound";
 
 class ObservationSound extends Realm.Object {
   static OBSERVATION_SOUNDS_FIELDS = {
     id: true,
     uuid: true,
-    sound: {
-      id: true,
-      file_url: true
-    }
+    sound: Sound.SOUND_FIELDS
   };
 
   needsSync( ) {
@@ -26,38 +21,23 @@ class ObservationSound extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static async moveFromCacheToDocumentDirectory( srcPath, options = {} ) {
-    const srcFileName = srcPath.split( "/" ).at( -1 );
-    const srcFileExt = srcFileName.split( "." ).at( -1 );
-    let fileName = srcFileName;
-    if ( options.basename ) {
-      fileName = `${options.basename}.${srcFileExt}`;
-    }
-    await RNFS.mkdir( SOUND_UPLOADS_PATH );
-    const dstPath = `${SOUND_UPLOADS_PATH}/${fileName}`;
-
-    await RNFS.moveFile( srcPath, dstPath );
-    return dstPath;
-  }
-
-  static async new( sound ) {
+  static async new( observationSound ) {
     const soundUUID = uuid.v4( );
-    /* eslint-disable camelcase */
-    let { file_url } = sound;
-    if ( sound?.file_url.match( /file:\/\// ) ) {
-      file_url = await ObservationSound.moveFromCacheToDocumentDirectory( sound.file_url, {
-        basename: soundUUID
-      } );
-      // this needs a protocol for the sound player to play it when it's local
-      file_url = `file://${file_url}`;
-    }
 
     return {
-      ...sound,
-      file_url,
+      ...observationSound,
       uuid: soundUUID
     };
     /* eslint-enable camelcase */
+  }
+
+  static mapApiToRealm( observationSound, realm = null ) {
+    const localObsSound = {
+      ...observationSound,
+      _synced_at: new Date( ),
+      photo: Sound.mapApiToRealm( observationSound.sound, realm )
+    };
+    return localObsSound;
   }
 
   static mapSoundForUpload( id, observationSound ) {
@@ -66,9 +46,13 @@ class ObservationSound extends Realm.Object {
       : "m4a";
 
     return {
-      "sound[uuid]": observationSound.uuid,
+      // Sound UUIDs don't really do anything at present. When
+      // https://github.com/inaturalist/iNaturalistReactNative/issues/1068 is
+      // completed we can use them to prevent the creation of duplicate sound
+      // records
+      // "sound[uuid]": observationSound.sound.uuid,
       file: new FileUpload( {
-        uri: observationSound.file_url,
+        uri: observationSound.sound.file_url,
         name: `${observationSound.uuid}.${fileExt}`,
         type: `audio/${fileExt}`
       } )
@@ -82,15 +66,9 @@ class ObservationSound extends Realm.Object {
     };
   }
 
-  static deleteSoundFromDeviceStorage( path ) {
-    RNFS.exists( path ).then( fileExists => {
-      if ( fileExists ) RNFS.unlink( path );
-    } );
-  }
-
-  static async deleteLocalSound( realm, uri, obsUUID ) {
+  static async deleteLocalObservationSound( realm, uri, obsUUID ) {
     // delete uri on disk
-    ObservationSound.deleteSoundFromDeviceStorage( uri );
+    Sound.deleteSoundFromDeviceStorage( uri );
     const realmObs = realm.objectForPrimaryKey( "Observation", obsUUID );
     const obsSoundToDelete = realmObs?.observationSounds
       .find( p => p.file_url === uri );
@@ -113,7 +91,8 @@ class ObservationSound extends Realm.Object {
       _updated_at: "date?",
       uuid: "string",
       id: "int?",
-      file_url: { type: "string", mapTo: "fileUrl" },
+      // file_url: { type: "string", mapTo: "fileUrl" },
+      sound: "Sound?",
       // this creates an inverse relationship so observation sounds
       // automatically keep track of which Observation they are assigned to
       assignee: {

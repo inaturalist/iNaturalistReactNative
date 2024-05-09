@@ -1,10 +1,10 @@
 // @flow
 
 import classnames from "classnames";
+import { Body3 } from "components/SharedComponents";
 import {
-  CIRCLE_BUTTON_DIM
-} from "components/SharedComponents/Buttons/TransparentCircleButton";
-import INatText from "components/SharedComponents/Typography/INatText";
+  CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE
+} from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
 import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -13,15 +13,6 @@ import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 
 const isTablet = DeviceInfo.isTablet();
-
-const circleOptionsClasses = [
-  "bg-black/50",
-  `h-[${CIRCLE_BUTTON_DIM}px]`,
-  "items-center",
-  "justify-center",
-  "rounded-full",
-  `w-[${CIRCLE_BUTTON_DIM}px]`
-].join( " " );
 
 type Props = {
   rotatableAnimatedStyle: Object,
@@ -49,19 +40,18 @@ const CameraZoom = ( {
   return (
     <Animated.View
       style={!isTablet && rotatableAnimatedStyle}
-      className={classnames( zoomClassName, "m-0", "border-0" )}
+      className={classnames( zoomClassName )}
     >
       <Pressable
-        className={classnames( circleOptionsClasses )}
+        className={classnames( CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE )}
         onPress={changeZoom}
         accessibilityRole="button"
-        accessibilityLabel={t( "Camera-button-zoom" )}
+        accessibilityLabel={t( "Change-zoom" )}
         accessibilityState={{ disabled: false }}
-        size={20}
       >
-        <INatText className="text-s font-semibold text-white">
+        <Body3 className="text-s text-white">
           {zoomButtonText}
-        </INatText>
+        </Body3>
       </Pressable>
     </Animated.View>
   );

@@ -3,6 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React from "react";
 import { Platform } from "react-native";
+import {
+  useTranslation
+} from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -30,11 +33,13 @@ const BackButton = ( {
 }: Props ): Node => {
   const navigation = useNavigation();
   const tintColor = color || colors.black;
+  const { t } = useTranslation( );
 
   if ( navigation?.canGoBack( ) ) {
     return (
       <HeaderBackButton
-        tintColor={tintColor}
+        accessibilityLabel={t( "Go-back" )}
+        labelVisible={false}
         onPress={onPress || navigation.goBack}
         // move backbutton to same start as in react-navigation
         style={[
@@ -42,6 +47,7 @@ const BackButton = ( {
           customStyles
         ]}
         testID={testID}
+        tintColor={tintColor}
       />
     );
   }

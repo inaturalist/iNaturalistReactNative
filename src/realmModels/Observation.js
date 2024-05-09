@@ -1,6 +1,7 @@
 import { Realm } from "@realm/react";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
+import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -9,9 +10,12 @@ import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
+import Sound from "./Sound";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
+
+const logger = log.extend( "Observation" );
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
@@ -23,7 +27,6 @@ class Observation extends Realm.Object {
     comments: Comment.COMMENT_FIELDS,
     created_at: true,
     description: true,
-    faves: Vote.VOTE_FIELDS,
     geojson: true,
     geoprivacy: true,
     id: true,
@@ -48,6 +51,7 @@ class Observation extends Realm.Object {
     },
     updated_at: true,
     viewer_trusted_by_observer: true,
+    votes: Vote.VOTE_FIELDS,
     private_geojson: true,
     private_location: true,
     private_place_guess: true,
@@ -115,21 +119,29 @@ class Observation extends Realm.Object {
 
   static async createObsWithSoundPath( soundPath ) {
     const observation = await Observation.new( );
-    const sound = await ObservationSound.new( { file_url: soundPath } );
+    const sound = await ObservationSound.new( {
+      sound: await Sound.new( { file_url: soundPath } )
+    } );
     observation.observationSounds = [sound];
     return observation;
   }
 
-  static upsertRemoteObservations( observations, realm ) {
-    if ( observations && observations.length > 0 ) {
-      const obsToUpsert = observations.filter(
+  static upsertRemoteObservations( remoteObservations, realm ) {
+    if ( remoteObservations && remoteObservations.length > 0 ) {
+      const obsToUpsert = remoteObservations.filter(
         obs => !Observation.isUnsyncedObservation( realm, obs )
       );
+      const msg = obsToUpsert.map( remoteObservation => {
+        const obsPhotoUUIDs = remoteObservation.observation_photos?.map( op => op.uuid );
+        return `obs ${remoteObservation.uuid}, ops: ${obsPhotoUUIDs}`;
+      } );
+      // Trying to debug disappearing photos
+      logger.info( "upsertRemoteObservations, upserting: ", msg );
       safeRealmWrite( realm, ( ) => {
-        obsToUpsert.forEach( obs => {
+        obsToUpsert.forEach( remoteObservation => {
           realm.create(
             "Observation",
-            Observation.mapApiToRealm( obs, realm ),
+            Observation.mapApiToRealm( remoteObservation, realm ),
             "modified"
           );
         } );
@@ -157,6 +169,20 @@ class Observation extends Realm.Object {
       return mappedObsPhoto;
     } );
 
+    const observationSounds = (
+      obs.observation_sounds || obs.observationSounds || []
+    ).map( obsSound => {
+      const mappedObsSound = ObservationSound.mapApiToRealm( obsSound, realm );
+      const existingObsSound = existingObs?.observationSounds?.find(
+        os => os.uuid === obsSound.uuid
+      );
+      if ( !existingObsSound ) {
+        mappedObsSound._created_at = new Date( );
+        mappedObsSound.sound._created_at = new Date( );
+      }
+      return mappedObsSound;
+    } );
+
     const identifications = obs.identifications
       ? obs.identifications.map( id => Identification.mapApiToRealm( id, realm ) )
       : [];
@@ -174,11 +200,7 @@ class Observation extends Realm.Object {
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
       observationPhotos,
-      observationSounds: obs.observation_sounds?.map( observationSound => ( {
-        id: observationSound.id,
-        uuid: observationSound.uuid,
-        file_url: observationSound.sound.file_url
-      } ) ),
+      observationSounds,
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
       taxon
     };
@@ -346,6 +368,17 @@ class Observation extends Realm.Object {
     return updatedObs;
   };
 
+  static appendObsSounds = ( obsSounds, currentObservation ) => {
+    const updatedObs = currentObservation;
+
+    // need empty case for when a user creates an observation with no sounds,
+    // then tries to add sounds to observation later
+    const currentObservationSounds = updatedObs?.observationSounds || [];
+
+    updatedObs.observationSounds = [...currentObservationSounds, ...obsSounds];
+    return updatedObs;
+  };
+
   static schema = {
     name: "Observation",
     primaryKey: "uuid",
@@ -365,7 +398,6 @@ class Observation extends Realm.Object {
       // timestamp of when observation was created on the server; not editable
       created_at: { type: "string", mapTo: "createdAt", optional: true },
       description: "string?",
-      faves: "Vote[]",
       geoprivacy: "string?",
       id: "int?",
       identifications: "Identification[]",
@@ -397,6 +429,7 @@ class Observation extends Realm.Object {
         mapTo: "viewerTrustedByObserver",
         optional: true
       },
+      votes: "Vote[]",
       private_place_guess: { type: "string", mapTo: "privatePlaceGuess", optional: true },
       private_location: { type: "string", mapTo: "privateLocation", optional: true },
       privateLatitude: "double?",
@@ -425,6 +458,11 @@ class Observation extends Realm.Object {
 
   unviewed() {
     return !this.viewed();
+  }
+
+  // Faves are the subset of votes for which vote_scope is null
+  faves() {
+    return this.votes.filter( vote => vote?.vote_scope === null );
   }
 }
 

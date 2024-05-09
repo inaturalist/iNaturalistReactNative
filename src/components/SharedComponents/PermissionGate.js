@@ -32,7 +32,7 @@ const PermissionGate = ( {
   requestPermission,
   grantStatus,
   icon,
-  title = t( "Grant-Permission" ),
+  title = t( "Grant-Permission-title" ),
   titleDenied = t( "Please-Grant-Permission" ),
   body,
   blockedPrompt = t( "Youve-denied-permission-prompt" ),
@@ -54,12 +54,12 @@ const PermissionGate = ( {
       )}
     >
       <INatIconButton
+        testID="close-permission-gate"
         icon="close"
         color={colors.white}
         onPress={() => onClose( )}
         className="absolute top-2 right-2 z-10"
         accessibilityLabel={t( "Close-permission-request-screen" )}
-        testID="close-permission-gate"
       />
       <View
         className={classnames(

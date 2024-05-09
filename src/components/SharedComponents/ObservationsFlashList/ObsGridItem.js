@@ -1,6 +1,6 @@
 // @flow
 
-import { DisplayTaxonName, ObsStatus } from "components/SharedComponents";
+import { Body2, DisplayTaxonName, ObsStatus } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -17,7 +17,7 @@ type Props = {
   style?: Object,
   uploadSingleObservation?: Function,
   uploadState: {
-    uploadProgress: Number
+    uploadProgress: number
   },
   explore: boolean
 };
@@ -31,21 +31,26 @@ const ObsGridItem = ( {
   uploadState,
   explore
 }: Props ): Node => {
+  const photo = observation?.observationPhotos?.[0]?.photo
+    || observation?.observation_photos?.[0]?.photo
+    || null;
   const photoCount = observation?.observationPhotos?.length
     || observation?.observation_photos?.length;
+  const hasSound = !!(
+    observation?.observationSounds?.length
+    || observation?.observation_sounds?.length
+  );
   const currentUser = useCurrentUser( );
   return (
     <ObsImagePreview
       source={{
-        uri: Photo.displayLocalOrRemoteMediumPhoto(
-          observation?.observationPhotos?.[0]?.photo || observation?.observation_photos?.[0]?.photo
-        )
+        uri: Photo.displayLocalOrRemoteMediumPhoto( photo )
       }}
       width={width}
       height={height}
       style={style}
       obsPhotosCount={photoCount ?? 0}
-      hasSound={!!observation?.observationSounds?.length}
+      hasSound={hasSound}
       isMultiplePhotosTop
       testID={`MyObservations.gridItem.${observation.uuid}`}
       iconicTaxonName={observation.taxon?.iconic_taxon_name}
@@ -81,6 +86,7 @@ const ObsGridItem = ( {
           layout="vertical"
           color="text-white"
           ellipsizeCommonName
+          bottomTextComponent={Body2}
         />
       </View>
     </ObsImagePreview>

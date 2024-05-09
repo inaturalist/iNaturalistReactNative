@@ -1,0 +1,12 @@
+NEW
+* iOS splash screen image
+* Follow button on UserProfile
+
+UPDATED
+* Explore header matches designs
+* Upload success status goes away after 5s
+* Hide non-MVP parts of UserProfile
+* Make un-pressable stats on UserProfile gray
+
+FIXED
+* Text in iOS share dialog gets used as desc of first observation

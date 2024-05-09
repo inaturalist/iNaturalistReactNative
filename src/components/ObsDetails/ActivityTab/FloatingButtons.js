@@ -8,8 +8,13 @@ import React from "react";
 import {
   useTranslation
 } from "sharedHooks";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
+
+const DROP_SHADOW = getShadowForColor( colors.black, {
+  offsetHeight: -3,
+  shadowOpacity: 0.2
+} );
 
 type Props = {
   navToSuggestions: Function,
@@ -27,15 +32,7 @@ const FloatingButtons = ( {
   return (
     <View
       className="flex-row justify-evenly bg-white pt-4 pb-4 px-6"
-      style={getShadowStyle( {
-        shadowColor: colors.black,
-        offsetWidth: 0,
-        offsetHeight: -3,
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        radius: 5,
-        elevation: 5
-      } )}
+      style={DROP_SHADOW}
     >
       <Button
         text={t( "COMMENT" )}
@@ -51,7 +48,7 @@ const FloatingButtons = ( {
         className="w-1/2 mx-6"
         testID="ObsDetail.cvSuggestionsButton"
         accessibilityRole="link"
-        accessibilityHint={t( "Navigates-to-suggest-identification" )}
+        accessibilityHint={t( "Shows-identification-suggestions" )}
       />
     </View>
   );

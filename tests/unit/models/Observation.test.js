@@ -35,7 +35,7 @@ describe( "Observation", ( ) => {
       const mappedObservation = Observation.mapApiToRealm( {
         observation_sounds: [remoteObservationSound]
       } );
-      expect( mappedObservation.observationSounds[0].file_url )
+      expect( mappedObservation.observationSounds[0].sound.file_url )
         .toEqual( remoteObservationSound.sound.file_url );
       expect( mappedObservation.observationSounds[0].uuid )
         .toEqual( remoteObservationSound.uuid );

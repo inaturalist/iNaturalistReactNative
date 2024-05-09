@@ -10,44 +10,49 @@ import { useCallback, useEffect, useState } from "react";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTranslation } from "sharedHooks";
+import { initialMapRegion } from "stores/createExploreSlice.ts";
+import useStore from "stores/useStore";
 
 const logger = log.extend( "useMapLocation" );
 
 const { useRealm } = RealmContext;
 
-const DELTA = 0.2;
-
 const useMapLocation = ( ): Object => {
   const { params } = useRoute( );
   const place = params?.place;
+  const worldwide = params?.worldwide;
   const realm = useRealm( );
   const { dispatch, state } = useExplore( );
   const [mapBoundaries, setMapBoundaries] = useState( null );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
   const [permissionRequested, setPermissionRequested] = useState( null );
-  const [region, setRegion] = useState( {
-    latitude: 0.0,
-    longitude: 0.0,
-    latitudeDelta: DELTA,
-    longitudeDelta: DELTA
-  } );
-  const [startAtNearby, setStartAtNearby] = useState( !state.swlat );
+  const mapRegion = useStore( s => s.mapRegion );
+  const setMapRegion = useStore( s => s.setMapRegion );
+
+  const hasPlace = state.swlat || state.place_id || state.lat;
+  const [startAtNearby, setStartAtNearby] = useState( !hasPlace && !worldwide );
   const { t } = useTranslation( );
 
   const onPanDrag = ( ) => setShowMapBoundaryButton( true );
 
-  const updateMapBoundaries = useCallback( async boundaries => {
+  const mapWasReset = state.place_guess === t( "Nearby" ) || state.place_guess === t( "Worldwide" );
+  const placeIdWasSet = state.place_id;
+  const mapWasPanned = state?.lat !== mapRegion.lat;
+
+  const updateMapBoundaries = useCallback( async ( newRegion, boundaries ) => {
     const boundaryAPIParams = {
-      swlat: boundaries.southWest.latitude,
-      swlng: boundaries.southWest.longitude,
-      nelat: boundaries.northEast.latitude,
-      nelng: boundaries.northEast.longitude,
+      swlat: boundaries?.southWest?.latitude,
+      swlng: boundaries?.southWest?.longitude,
+      nelat: boundaries?.northEast?.latitude,
+      nelng: boundaries?.northEast?.longitude,
       place_guess: t( "Map-Area" )
     };
 
     setMapBoundaries( boundaryAPIParams );
+    logger.info( "setting map region based on user pan/zoom" );
+    setMapRegion( newRegion );
     return boundaryAPIParams;
-  }, [t] );
+  }, [t, setMapBoundaries, setMapRegion] );
 
   const redoSearchInMapArea = ( ) => {
     logger.info( "searching for observations with map boundaries: ", mapBoundaries );
@@ -110,17 +115,31 @@ const useMapLocation = ( ): Object => {
 
   useEffect( ( ) => {
     // region gets set when a user is navigating from ExploreLocationSearch
-    if ( place ) {
+    if ( placeIdWasSet ) {
       logger.info( "setting map region based on location search" );
       const { coordinates } = place.point_geojson;
-      setRegion( {
+      setMapRegion( {
+        ...initialMapRegion,
         latitude: coordinates[1],
-        longitude: coordinates[0],
-        latitudeDelta: DELTA,
-        longitudeDelta: DELTA
+        longitude: coordinates[0]
+      } );
+    } else if ( mapWasReset ) {
+    // map gets set or reset back to nearby/worldwide
+      logger.info( "setting initial nearby or worldwide map region" );
+      setMapRegion( {
+        ...initialMapRegion,
+        latitude: state?.lat,
+        longitude: state?.lng
       } );
     }
-  }, [place] );
+  }, [
+    mapWasReset,
+    mapWasPanned,
+    place,
+    placeIdWasSet,
+    setMapRegion,
+    state
+  ] );
 
   return {
     onPanDrag,
@@ -130,7 +149,7 @@ const useMapLocation = ( ): Object => {
     onZoomToNearby,
     permissionRequested,
     redoSearchInMapArea,
-    region,
+    region: mapRegion,
     showMapBoundaryButton,
     startAtNearby,
     updateMapBoundaries

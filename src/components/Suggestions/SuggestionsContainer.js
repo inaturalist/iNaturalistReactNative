@@ -1,27 +1,30 @@
 // @flow
 
+import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import type { Node } from "react";
 import React, {
   useCallback,
+  useEffect,
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import useStore from "stores/useStore";
 
-import useObservers from "./hooks/useObservers";
+import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
-import useTaxonSelected from "./hooks/useTaxonSelected";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
+  const { params } = useRoute( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [isLoading, setIsLoading] = useState( true );
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
@@ -29,10 +32,7 @@ const SuggestionsContainer = ( ): Node => {
     onlineSuggestions,
     loadingOnlineSuggestions,
     timedOut
-  } = useOnlineSuggestions( selectedPhotoUri, {
-    latitude: currentObservation?.latitude,
-    longitude: currentObservation?.longitude
-  } );
+  } = useOnlineSuggestions( selectedPhotoUri );
 
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = timedOut || (
@@ -51,22 +51,7 @@ const SuggestionsContainer = ( ): Node => {
     tryOfflineSuggestions
   } );
 
-  const suggestions = onlineSuggestions?.results?.length > 0
-    ? onlineSuggestions.results
-    : offlineSuggestions;
-
-  const topSuggestion = onlineSuggestions?.common_ancestor;
-
-  const taxonIds = suggestions?.map(
-    suggestion => suggestion.taxon.id
-  );
-
-  const observers = useObservers( taxonIds );
-
-  useTaxonSelected( selectedTaxon, { vision: true } );
-
-  const loadingSuggestions = ( loadingOnlineSuggestions || loadingOfflineSuggestions )
-    && photoUris.length > 0;
+  useNavigateWithTaxonSelected( selectedTaxon, { vision: true } );
 
   const onPressPhoto = useCallback(
     uri => {
@@ -78,28 +63,42 @@ const SuggestionsContainer = ( ): Node => {
     [selectedPhotoUri]
   );
 
+  const usingOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
+
+  const debugData = {
+    timedOut,
+    onlineSuggestions,
+    offlineSuggestions,
+    onlineSuggestionsError,
+    onlineSuggestionsUpdatedAt,
+    selectedPhotoUri
+  };
+
+  const suggestions = onlineSuggestions?.results?.length > 0
+    ? onlineSuggestions.results
+    : offlineSuggestions;
+
+  const hasSuggestions = suggestions.length > 0;
+
+  useEffect( ( ) => {
+    if ( hasSuggestions || loadingOfflineSuggestions === false ) {
+      setIsLoading( false );
+    }
+  }, [loadingOfflineSuggestions, hasSuggestions] );
+
   return (
     <>
       <Suggestions
-        loadingSuggestions={loadingSuggestions}
-        topSuggestion={topSuggestion}
-        suggestions={suggestions}
+        commonAncestor={onlineSuggestions?.common_ancestor}
+        debugData={debugData}
+        hasVisionSuggestion={params?.hasVisionSuggestion}
+        loading={isLoading}
+        onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
         selectedPhotoUri={selectedPhotoUri}
-        onPressPhoto={onPressPhoto}
-        observers={observers}
-        usingOfflineSuggestions={
-          tryOfflineSuggestions && offlineSuggestions?.length > 0
-        }
-        debugData={{
-          timedOut,
-          onlineSuggestions,
-          offlineSuggestions,
-          onlineSuggestionsError,
-          onlineSuggestionsUpdatedAt,
-          selectedPhotoUri
-        }}
+        suggestions={suggestions}
+        usingOfflineSuggestions={usingOfflineSuggestions}
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}

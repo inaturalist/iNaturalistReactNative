@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import FilterModal from "components/Explore/Modals/FilterModal";
+import FilterModal from "components/Explore/Modals/FilterModal.tsx";
 import { ExploreProvider } from "providers/ExploreContext.tsx";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";

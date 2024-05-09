@@ -34,6 +34,20 @@ export const I18NEXT_CONFIG = {
     // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
     useSuspense: false,
     defaultTransParent: Text
+  },
+  // For some reason this is how you pass options to i18next-fluent, per
+  // https://github.com/i18next/i18next-fluent?tab=readme-ov-file#options
+  i18nFormat: {
+    fluentBundleOptions: {
+      useIsolating: false,
+      functions: {
+        VOWORCON: ( [txt] ) => (
+          "aeiou".indexOf( txt[0].toLowerCase( ) ) >= 0
+            ? "vow"
+            : "con"
+        )
+      }
+    }
   }
 };
 

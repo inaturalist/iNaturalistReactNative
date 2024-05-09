@@ -1,5 +1,17 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# If ggshield is installed, run it
+if command -v ggshield &> /dev/null; then
+  ggshield secret scan pre-commit
+# Otherwise require that inaturalist.org git users install it
+elif git config --list | grep -q "user.email.*inaturalist.org"; then
+  echo
+  echo "Git users w/ inaturalist.org emails must install ggshield: https://docs.gitguardian.com/ggshield-docs/getting-started"
+  echo
+  exit 1
+else
+  echo
+  echo "If you are iNat staff, you should install ggshield: https://docs.gitguardian.com/ggshield-docs/getting-started"
+  echo
+fi
 
 # Run lint and flow
 npm run lint
@@ -8,4 +20,7 @@ npm run lint
 npm run translate
 # ...and add them to the commit; this assumes src/i18n/l10n/ *only* contains
 #    files you want to add
-git status --porcelain --untracked-files src/i18n/l10n/ | cut -c 4- | xargs git add
+git status --porcelain --untracked-files src/i18n/l10n/ \
+  | grep -v "D .*" \
+  | cut -c 4- \
+  | xargs git add

@@ -12,7 +12,7 @@ import colors from "styles/tailwindColors";
 type Props = {
   attribution?: string,
   licenseCode?: string,
-  optionalClasses?: any
+  optionalClasses?: string
 };
 
 const AttributionButton = ( {

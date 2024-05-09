@@ -1,8 +1,10 @@
 import { define } from "factoria";
 
+import soundFactory from "./LocalSound";
+
 export default define( "LocalObservationSound", faker => ( {
   uuid: faker.string.uuid( ),
-  file_url: faker.system.filePath( ),
+  sound: soundFactory( "LocalSound" ),
   wasSynced: jest.fn( ( ) => false ),
   toJSON: jest.fn( ( ) => ( { } ) )
 } ), {

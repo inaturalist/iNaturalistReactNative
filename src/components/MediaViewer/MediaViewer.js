@@ -20,6 +20,7 @@ import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
 
 type Props = {
+  autoPlaySound?: boolean, // automatically start playing a sound when it is visible
   editable?: boolean,
   // Optional component to use as the header
   header?: Function,
@@ -34,17 +35,16 @@ type Props = {
     licenseCode?: string
   }>,
   sounds?: Array<{
-    id?: number,
-    file_url: string,
-    uuid: string
+    file_url: string
   }>,
   uri?: string | null
 }
 
 const MediaViewer = ( {
+  autoPlaySound,
   editable,
   header,
-  onClose = ( ) => { },
+  onClose = ( ) => undefined,
   onDeletePhoto,
   onDeleteSound,
   photos = [],
@@ -117,6 +117,7 @@ const MediaViewer = ( {
           )
       }
       <MainMediaDisplay
+        autoPlaySound={autoPlaySound}
         editable={editable}
         photos={photos}
         sounds={sounds}
@@ -137,7 +138,7 @@ const MediaViewer = ( {
         <WarningSheet
           handleClose={( ) => setMediaToDelete( null )}
           confirm={confirmDelete}
-          headerText={t( "DISCARD-MEDIA" )}
+          headerText={t( "DISCARD-MEDIA--question" )}
           buttonText={t( "DISCARD" )}
           secondButtonText={t( "CANCEL" )}
           handleSecondButtonPress={( ) => setMediaToDelete( null )}

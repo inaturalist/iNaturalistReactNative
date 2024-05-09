@@ -137,7 +137,7 @@ describe( "location fetching", () => {
 
     // Location may not fetch immediately, so wait for twice the default fetch
     // interval before testing whether the mock was called
-    await waitFor( () => {}, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
+    await waitFor( () => undefined, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
 
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
   } );
@@ -163,7 +163,7 @@ describe( "location fetching", () => {
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
     ).toBeTruthy();
 
-    await waitFor( () => {}, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
+    await waitFor( () => undefined, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
 
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
   } );

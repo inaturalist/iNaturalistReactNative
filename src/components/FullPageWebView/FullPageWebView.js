@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { getUserAgent } from "api/userAgent";
 import { getAPIToken } from "components/LoginSignUp/AuthenticationService";
-import { ActivityIndicator, ViewWrapper } from "components/SharedComponents";
+import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Linking } from "react-native";
@@ -32,7 +32,7 @@ const FullPageWebView = ( ) => {
       } );
       return unsubscribe;
     }
-    return ( ) => { };
+    return ( ) => undefined;
   }, [navigation, params.blurEvent] );
 
   useFocusEffect(
@@ -64,44 +64,46 @@ const FullPageWebView = ( ) => {
   );
 
   return (
-    <ViewWrapper>
-      {( !params.loggedIn || source.headers ) && (
-        <WebView
-          className="h-full w-full flex-1"
-          source={source}
-          onShouldStartLoadWithRequest={request => {
+    <Mortal>
+      <ViewWrapper>
+        {( !params.loggedIn || source.headers ) && (
+          <WebView
+            className="h-full w-full flex-1"
+            source={source}
+            onShouldStartLoadWithRequest={request => {
             // If we're just loading the same page, that's fine
-            if ( request.url === source.uri ) return true;
+              if ( request.url === source.uri ) return true;
 
-            // If we're going to a different anchor on the same page, also fine
-            const requestUrl = new URL( request.url );
-            const sourceUrl = new URL( source.uri );
-            if (
-              requestUrl.host === sourceUrl.host
+              // If we're going to a different anchor on the same page, also fine
+              const requestUrl = new URL( request.url );
+              const sourceUrl = new URL( source.uri );
+              if (
+                requestUrl.host === sourceUrl.host
               && requestUrl.search === sourceUrl.search
-            ) {
+              ) {
+                return true;
+              }
+
+              // Otherwise we might want to open a browser
+              if ( params.openLinksInBrowser ) {
+                Linking.openURL( request.url ).catch( linkingError => {
+                  logger.info( "User refused to open ", request.url, ", error: ", linkingError );
+                } );
+                return false;
+              }
+
+              if ( params.skipSetSourceInShouldStartLoadWithRequest ) return true;
+              // Note: this will cause infinite re-renders if the page has iframes
+              setSource( { ...source, uri: request.url } );
               return true;
-            }
-
-            // Otherwise we might want to open a browser
-            if ( params.openLinksInBrowser ) {
-              Linking.openURL( request.url ).catch( linkingError => {
-                logger.info( "User refused to open ", request.url, ", error: ", linkingError );
-              } );
-              return false;
-            }
-
-            if ( params.skipSetSourceInShouldStartLoadWithRequest ) return true;
-            // Note: this will cause infinite re-renders if the page has iframes
-            setSource( { ...source, uri: request.url } );
-            return true;
-          }}
-          renderLoading={LoadingView}
-          startInLoadingState
-          userAgent={getUserAgent()}
-        />
-      )}
-    </ViewWrapper>
+            }}
+            renderLoading={LoadingView}
+            startInLoadingState
+            userAgent={getUserAgent()}
+          />
+        )}
+      </ViewWrapper>
+    </Mortal>
   );
 };
 

@@ -16,12 +16,15 @@ const ONE_WEEK_MS = (
   * 7 // day / wk
 );
 
-const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
+// $FlowIgnore
+const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
   const realm = useRealm( );
+  // taxon id is returned as a string, not a number, from CV model
+  const taxonId = Number( taxon?.id );
 
-  const localTaxon = taxon.id && realm.objectForPrimaryKey( "Taxon", taxon.id );
+  const localTaxon = taxonId && realm.objectForPrimaryKey( "Taxon", taxonId );
 
-  const canFetchTaxon = !!taxon?.id;
+  const canFetchTaxon = !!taxonId;
   const localTaxonNeedsSync = (
     // Definitely sync if there's no local copy
     !localTaxon
@@ -36,8 +39,8 @@ const useTaxon = ( taxon: Object, fetchRemote: boolean = true ): Object => {
     data: remoteTaxon,
     isLoading
   } = useAuthenticatedQuery(
-    ["fetchTaxon", taxon?.id],
-    optsWithAuth => fetchTaxon( taxon.id, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
+    ["fetchTaxon", taxonId],
+    optsWithAuth => fetchTaxon( taxonId, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
     {
       enabled
     }

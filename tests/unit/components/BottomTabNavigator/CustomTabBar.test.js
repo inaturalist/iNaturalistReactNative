@@ -2,10 +2,13 @@ import { screen } from "@testing-library/react-native";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
-import * as useIsConnected from "sharedHooks/useIsConnected";
+import * as useIsConnected from "sharedHooks/useIsConnected.ts";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
+
+const initialPersistedStoreState = useStore.getState( );
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
@@ -29,11 +32,11 @@ describe( "CustomTabBar", () => {
     jest.useFakeTimers();
   } );
 
-  it( "should render correctly", async () => {
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+  // it( "should render correctly", async () => {
+  //   renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
-    await expect( screen ).toMatchSnapshot();
-  } );
+  //   await expect( screen ).toMatchSnapshot();
+  // } );
 
   it( "should not have accessibility errors", async () => {
     const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
@@ -62,5 +65,31 @@ describe( "CustomTabBar", () => {
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
     await expect( personIcon ).toBeVisible( );
+  } );
+} );
+
+describe( "CustomTabBar with advanced user layout", () => {
+  beforeAll( ( ) => {
+    useStore.setState( { isAdvancedUser: true } );
+  } );
+
+  afterAll( ( ) => {
+    useStore.setState( initialPersistedStoreState );
+  } );
+
+  beforeEach( ( ) => {
+    jest.resetAllMocks();
+  } );
+
+  it( "should render correctly", async () => {
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+
+    await expect( screen ).toMatchSnapshot();
+  } );
+
+  it( "should not have accessibility errors", async () => {
+    const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
+
+    await expect( tabBar ).toBeAccessible();
   } );
 } );

@@ -5,11 +5,11 @@ import {
   Heading2,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import { fontMonoClass, Text, View } from "components/styledComponents";
+import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import useLogs from "sharedHooks/useLogs";

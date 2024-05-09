@@ -8,6 +8,7 @@ import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -23,17 +24,19 @@ type Props = {
   handleDragAndDrop: Function,
   isFetchingLocation: boolean,
   locationPermissionNeeded: boolean,
-  locationTextClassNames: any,
+  locationTextClassNames: Array<string>,
   onLocationPermissionBlocked: Function,
   onLocationPermissionDenied: Function,
   onLocationPermissionGranted: Function,
   passesEvidenceTest: Function,
-  photos: Array<Object>,
+  observationPhotos: Array<Object>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
-  sounds?: Array<{
+  observationSounds?: Array<{
     id?: number,
-    file_url: string,
+    sound: {
+      file_url: string,
+    },
     uuid: string
   }>,
   updateObservationKeys: Function,
@@ -49,15 +52,16 @@ const EvidenceSection = ( {
   onLocationPermissionDenied,
   onLocationPermissionGranted,
   passesEvidenceTest,
-  photos,
+  observationPhotos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
-  sounds,
+  observationSounds,
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
   const obsPhotos = currentObservation?.observationPhotos;
+  const obsSounds = currentObservation?.observationSounds;
   const navigation = useNavigation( );
 
   const navToLocationPicker = ( ) => {
@@ -96,7 +100,10 @@ const EvidenceSection = ( {
   return (
     <View className="mx-6">
       <AddEvidenceSheet
-        disableAddingMoreEvidence={obsPhotos?.length >= MAX_PHOTOS_ALLOWED}
+        disableAddingMoreEvidence={
+          obsPhotos?.length >= MAX_PHOTOS_ALLOWED
+          || obsSounds?.length >= MAX_SOUNDS_ALLOWED
+        }
         hidden={!showAddEvidenceSheet}
         onClose={( ) => setShowAddEvidenceSheet( false )}
       />
@@ -114,14 +121,14 @@ const EvidenceSection = ( {
       <EvidenceList
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
         handleDragAndDrop={handleDragAndDrop}
-        photos={photos}
-        sounds={sounds}
+        observationPhotos={observationPhotos}
+        observationSounds={observationSounds}
       />
       <Pressable
-        accessibilityRole="button"
+        accessibilityRole="link"
         className="flex-row flex-nowrap pb-3"
         onPress={navToLocationPicker}
-        accessibilityLabel={t( "Navigate-to-location-picker-screen" )}
+        accessibilityLabel={t( "Edit-location" )}
       >
         <View className="w-[30px] items-center mr-1">
           {isFetchingLocation && (

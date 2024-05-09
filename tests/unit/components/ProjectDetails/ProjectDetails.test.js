@@ -20,6 +20,14 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   } )
 } ) );
 
+const mockMutate = jest.fn();
+jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    mutate: mockMutate
+  } )
+} ) );
+
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -28,14 +36,18 @@ jest.mock( "@react-navigation/native", ( ) => {
       params: {
         id: mockProject.id
       }
-    } )
+    } ),
+    useNavigation: jest.fn( )
   };
+} );
+
+beforeAll( async () => {
+  jest.useFakeTimers( );
 } );
 
 describe( "ProjectDetails", ( ) => {
   test( "should not have accessibility errors", async ( ) => {
-    renderComponent( <ProjectDetailsContainer /> );
-    const projectDetails = await screen.findByTestId( "project-details" );
+    const projectDetails = <ProjectDetailsContainer />;
     expect( projectDetails ).toBeAccessible();
   } );
 

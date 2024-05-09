@@ -2,23 +2,24 @@ import "react-native-gesture-handler/jestSetup";
 import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
+import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
-import mockRNLocalize from "react-native-localize/mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
+import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
 
 import factory, { makeResponse } from "./factory";
 import {
   mockCamera,
   mockSortDevices,
   mockUseCameraDevice,
-  mockUseCameraDevices
+  mockUseCameraFormat
 } from "./vision-camera/vision-camera";
 
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
@@ -39,12 +40,16 @@ jest.mock( "../react-native-logs.config", () => {
 } );
 
 jest.mock( "vision-camera-plugin-inatvision", () => ( {
-  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) )
+  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) ),
+  removeLogListener: jest.fn( ),
+  resetStoredResults: jest.fn( )
 } ) );
 
 jest.mock( "react-native-worklets-core", () => ( {
+  useSharedValue: jest.fn(),
+  useWorklet: jest.fn(),
   Worklets: {
-    createRunInJsFn: jest.fn()
+    createRunOnJS: jest.fn()
   }
 } ) );
 
@@ -56,18 +61,17 @@ jest.mock(
   () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
 );
 
-require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
+require( "react-native-reanimated" ).setUpTests();
 
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
   sortDevices: mockSortDevices,
-  // react-native-vision-camera v2
-  useCameraDevices: mockUseCameraDevices,
-  // react-native-vision-camera v3
   useCameraDevice: mockUseCameraDevice,
+  useCameraFormat: mockUseCameraFormat,
   VisionCameraProxy: {
-    getFrameProcessorPlugin: jest.fn( )
-  }
+    initFrameProcessorPlugin: jest.fn( )
+  },
+  useFrameProcessor: jest.fn( )
 } ) );
 
 jest.mock( "react-native-localize", () => mockRNLocalize );
@@ -293,7 +297,8 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
     getAlbums: jest.fn( ( ) => ( {
       // Expecting album titles as keys and photo counts as values
       // "My Amazing album": 12
-    } ) )
+    } ) ),
+    save: jest.fn( )
   }
 } ) );
 
@@ -370,19 +375,37 @@ jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
   )
 } ) );
 
-jest.mock( "react-native-jwt-io", ( ) => ( {
-  encode: jest.fn( ( ) => "an-encoded-jwt" )
-} ) );
+jest.mock( "jsrsasign" );
 
 inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
 jest.mock( "react-native-audio-recorder-player", ( ) => MockAudioRecorderPlayer );
 
-jest.mock( "react-native-fast-image", ( ) => {
-  const actualNav = jest.requireActual( "react-native-fast-image" );
+jest.mock( "@react-native-clipboard/clipboard", () => mockClipboard );
+
+jest.mock( "react-native-webview", () => {
+  const MockWebView = jest.requireActual( "react-native" ).View;
+
   return {
-    ...actualNav,
-    preload: jest.fn( )
+    __esModule: true,
+    WebView: MockWebView,
+    default: MockWebView
+  };
+} );
+
+jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
+  const turboModuleRegistry = jest
+    .requireActual( "react-native/Libraries/TurboModule/TurboModuleRegistry" );
+  return {
+    ...turboModuleRegistry,
+    getEnforcing: name => {
+      // List of TurboModules libraries to mock.
+      const modulesToMock = ["ReactNativeKCKeepAwake"];
+      if ( modulesToMock.includes( name ) ) {
+        return null;
+      }
+      return turboModuleRegistry.getEnforcing( name );
+    }
   };
 } );

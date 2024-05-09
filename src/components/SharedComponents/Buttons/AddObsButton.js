@@ -1,13 +1,13 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal";
-import { INatIcon, Modal } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Modal } from "components/SharedComponents";
+import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { t } from "i18next";
+import { getCurrentRoute } from "navigation/navigationUtils";
 import * as React from "react";
-import LinearGradient from "react-native-linear-gradient";
-import { dropShadow } from "styles/global";
-import colors from "styles/tailwindColors";
+import useStore from "stores/useStore";
 
 const AddObsButton = (): React.Node => {
   const [showModal, setModal] = React.useState( false );
@@ -15,7 +15,25 @@ const AddObsButton = (): React.Node => {
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
-  const addObsModal = <AddObsModal closeModal={closeModal} />;
+  const resetStore = useStore( state => state.resetStore );
+  const isAdvancedUser = useStore( state => state.isAdvancedUser );
+  const navigation = useNavigation( );
+
+  const navAndCloseModal = ( screen, params ) => {
+    const currentRoute = getCurrentRoute();
+    if ( screen !== "ObsEdit" ) {
+      resetStore( );
+    }
+    // access nested screen
+    navigation.navigate( "NoBottomTabStackNavigator", {
+      screen,
+      params: { ...params, previousScreen: currentRoute }
+    } );
+    closeModal( );
+  };
+  const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };
+
+  const addObsModal = <AddObsModal closeModal={closeModal} navAndCloseModal={navAndCloseModal} />;
 
   return (
     <>
@@ -24,29 +42,15 @@ const AddObsButton = (): React.Node => {
         closeModal={closeModal}
         modal={addObsModal}
       />
-      <Pressable
-        className="w-[69px] h-[69px] rounded-full overflow-hidden"
-        style={dropShadow}
-        onPress={openModal}
-        testID="add-obs-button"
-        disabled={false}
-        accessibilityLabel={t( "Add-observations" )}
-        accessibilityHint={t( "Opens-add-observation-modal" )}
-        accessibilityRole="button"
-        accessibilityState={{
-          disabled: false
-        }}
-      >
-        <LinearGradient
-          colors={[colors.inatGreen, "#297F87"]}
-          angle={156.95}
-          useAngle
-        >
-          <View className="grow aspect-square flex items-center justify-center">
-            <INatIcon name="plus" size={31} color={colors.white} />
-          </View>
-        </LinearGradient>
-      </Pressable>
+      <GradientButton
+        sizeClassName="w-[69px] h-[69px]"
+        onPress={isAdvancedUser
+          ? openModal
+          : navToARCamera}
+        accessibilityHint={isAdvancedUser && t( "Opens-add-observation-modal" )}
+        iconName={isAdvancedUser && "plus"}
+        iconSize={isAdvancedUser && 31}
+      />
     </>
   );
 };

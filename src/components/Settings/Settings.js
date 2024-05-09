@@ -3,8 +3,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
 import {
   ActivityIndicator,
-  Body2, Button, Heading4, RadioButtonRow,
-  ViewWrapper
+  Body2,
+  Button,
+  Heading4,
+  RadioButtonRow,
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
 import {
@@ -13,9 +16,13 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
-import { useTranslation } from "sharedHooks";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import useUserMe from "sharedHooks/useUserMe";
+import {
+  useAuthenticatedMutation,
+  useCurrentUser,
+  useTranslation,
+  useUserMe
+} from "sharedHooks";
+import useStore from "stores/useStore";
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
@@ -23,10 +30,13 @@ const FINISHED_WEB_SETTINGS = "finished-web-settings";
 const Settings = ( ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation();
+  const currentUser = useCurrentUser( );
+  const { remoteUser, isLoading, refetchUserMe } = useUserMe();
+  const isAdvancedUser = useStore( state => state.isAdvancedUser );
+  const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
+
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
-
-  const { remoteUser, isLoading, refetchUserMe } = useUserMe();
 
   const queryClient = useQueryClient();
 
@@ -35,7 +45,7 @@ const Settings = ( ) => {
     {
       onSuccess: () => {
         console.log( "[DEBUG Settings.js] updated user, refetching userMe" );
-        queryClient.invalidateQueries( ["fetchUserMe"] );
+        queryClient.invalidateQueries( { queryKey: ["fetchUserMe"] } );
         refetchUserMe();
       },
       onError: () => {
@@ -84,46 +94,84 @@ const Settings = ( ) => {
     updateUserMutation.mutate( payload );
   };
 
-  return (
-    <ViewWrapper>
-      <StatusBar barStyle="dark-content" />
-      <View className="p-5">
-        <Heading4>{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
-        <Body2 className="mt-2">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
+  const renderLoggedOut = ( ) => (
+    <>
+      <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
+      <Body2 className="mt-3">{t( "When-tapping-the-green-observation-button" )}</Body2>
+      <View className="mt-5">
         <RadioButtonRow
-          className="mt-4"
+          smallLabel
+          checked={!isAdvancedUser}
+          onPress={() => setIsAdvancedUser( false )}
+          label={t( "iNaturalist-AI-Camera" )}
+        />
+      </View>
+      <View className="mt-2">
+        <RadioButtonRow
+          testID="all-observation-option"
+          smallLabel
+          checked={isAdvancedUser}
+          onPress={() => setIsAdvancedUser( true )}
+          label={t( "All-observation-option" )}
+        />
+      </View>
+    </>
+  );
+
+  const renderLoggedIn = ( ) => (
+    <>
+      <Heading4 className="mt-7">{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
+      <Body2 className="mt-3">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
+      <View className="mt-5">
+        <RadioButtonRow
+          smallLabel
           checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
           onPress={() => changeTaxonNameDisplay( 1 )}
           label={t( "Common-Name-Scientific-Name" )}
         />
+      </View>
+      <View className="mt-2">
         <RadioButtonRow
-          className="mt-2"
+          smallLabel
           checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
           onPress={() => changeTaxonNameDisplay( 2 )}
           label={t( "Scientific-Name-Common-Name" )}
         />
+      </View>
+      <View className="mt-2">
         <RadioButtonRow
-          className="mt-2"
+          smallLabel
           checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}
           onPress={() => changeTaxonNameDisplay( 3 )}
           label={t( "Scientific-Name" )}
         />
-        <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
-        <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
-        <Button
-          className="mt-4"
-          text={t( "INATURALIST-SETTINGS" )}
-          onPress={() => {
-            navigation.navigate( "FullPageWebView", {
-              title: t( "Settings" ),
-              loggedIn: true,
-              initialUrl: SETTINGS_URL,
-              openLinksInBrowser: true,
-              blurEvent: FINISHED_WEB_SETTINGS
-            } );
-          }}
-          accessibilityLabel={t( "Edit" )}
-        />
+      </View>
+
+      <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
+      <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
+      <Button
+        className="mt-4"
+        text={t( "INATURALIST-SETTINGS" )}
+        onPress={() => {
+          navigation.navigate( "FullPageWebView", {
+            title: t( "Settings" ),
+            loggedIn: true,
+            initialUrl: SETTINGS_URL,
+            openLinksInBrowser: true,
+            blurEvent: FINISHED_WEB_SETTINGS
+          } );
+        }}
+        accessibilityLabel={t( "Edit" )}
+      />
+    </>
+  );
+
+  return (
+    <ScrollViewWrapper>
+      <StatusBar barStyle="dark-content" />
+      <View className="p-5">
+        {renderLoggedOut( )}
+        {currentUser && renderLoggedIn( )}
       </View>
       {( isSaving || isLoading ) && (
         <View className="absolute z-10 bg-lightGray/70
@@ -132,7 +180,7 @@ const Settings = ( ) => {
           <ActivityIndicator size={50} />
         </View>
       )}
-    </ViewWrapper>
+    </ScrollViewWrapper>
   );
 };
 

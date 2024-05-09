@@ -1,0 +1,16 @@
+NEW
+* Interactive sound progress
+* Switched font to Lato
+* Obs location shows icon indicating user geoprivacy choice
+
+UPDATED
+* Obs list media preview icons
+* UI Library should work
+* Alert when trying to sync or upload while offline
+* Play sound in MediaViewer when play button tapped in SoundRecorder
+* Map obs grid tiles now orange and less opaque
+* Map satellite view shows labels
+
+FIXED
+* Settings allows scroll
+* AICamera should not show an old suggestion after saving an obs

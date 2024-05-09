@@ -12,9 +12,6 @@ import {
   ScrollViewWrapper
 } from "components/SharedComponents";
 import {
-  Image,
-  LinearGradient,
-  Pressable,
   View
 } from "components/styledComponents";
 import { compact } from "lodash";
@@ -28,14 +25,16 @@ import {
   Share,
   StatusBar
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { Menu, useTheme } from "react-native-paper";
-import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 
 import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
+import TaxonMapPreview from "./TaxonMapPreview";
+import TaxonMedia from "./TaxonMedia";
 import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
 
@@ -44,6 +43,8 @@ const logger = log.extend( "TaxonDetails" );
 const { useRealm } = RealmContext;
 
 const TAXON_URL = "https://www.inaturalist.org/taxa";
+
+const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
   const theme = useTheme( );
@@ -119,10 +120,11 @@ const TaxonDetails = ( ): Node => {
     }
 
     return (
-      <View className="mx-3">
+      <View className="mx-3 mb-3">
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} />
+        <TaxonMapPreview taxon={taxon} />
       </View>
     );
   };
@@ -141,24 +143,12 @@ const TaxonDetails = ( ): Node => {
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View className="flex-1 h-full bg-black">
         <View className="w-full h-[420px] shrink-1">
-          <Pressable
-            onPress={() => setMediaViewerVisible( true )}
-            accessibilityLabel={t( "View-photo" )}
-            accessibilityRole="link"
-          >
-            <Image
-              testID="TaxonDetails.photo"
-              className="w-full h-full"
-              source={{
-                uri: Photo.displayMediumPhoto( photos.at( 0 )?.url )
-              }}
-              accessibilityIgnoresInvertColors
-            />
-            <LinearGradient
-              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-              className="absolute w-full h-full"
-            />
-          </Pressable>
+          <TaxonMedia loading={isLoading} photos={photos} tablet={isTablet} />
+          {/* cant figure out how to have the gradient show with carousel - angie20240418 */}
+          {/* <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+            className="absolute w-full h-full"
+          />  */}
           <View className="absolute left-5 top-5">
             <BackButton
               color={theme.colors.onPrimary}
@@ -213,13 +203,17 @@ const TaxonDetails = ( ): Node => {
             <INatIconButton
               icon="compass-rose-outline"
               onPress={( ) => navigation.navigate( "TabNavigator", {
-                screen: "ObservationsStackNavigator",
+                screen: "TabStackNavigator",
                 params: {
                   screen: "Explore",
-                  params: { taxon, worldwide: true }
+                  params: {
+                    taxon,
+                    worldwide: true,
+                    resetStoredParams: true
+                  }
                 }
               } )}
-              accessibilityLabel={t( "Explore" )}
+              accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
               accessibilityHint={t( "Navigates-to-explore" )}
               size={30}
               color={theme.colors.onPrimary}

@@ -16,7 +16,7 @@ const PARAMS = {
   fields: "all"
 };
 
-const fetchSearchResults = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+const fetchSearchResults = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
     const response = await inatjs.search( { ...PARAMS, ...params }, opts );
     if ( !response ) { return null; }

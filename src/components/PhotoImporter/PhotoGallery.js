@@ -1,4 +1,5 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer";
@@ -46,24 +47,12 @@ const PhotoGallery = ( ): Node => {
 
   const navToObsList = useCallback( ( ) => {
     navigation.navigate( "TabNavigator", {
-      screen: "ObservationsStackNavigator",
+      screen: "TabStackNavigator",
       params: {
         screen: "ObsList"
       }
     } );
   }, [navigation] );
-
-  const navToObsDetails = useCallback( uuid => navigation.navigate( "TabNavigator", {
-    screen: "ObservationsStackNavigator",
-    params: {
-      // Need to return to ObsDetails but with a navigation stack that goes back to ObsList
-      screen: "ObsList",
-      params: {
-        navToObsDetails: true,
-        uuid
-      }
-    }
-  } ), [navigation] );
 
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
     lastScreen: "PhotoGallery"
@@ -99,7 +88,7 @@ const PhotoGallery = ( ): Node => {
 
       if ( fromGroupPhotos ) {
         // This screen was called from the plus button of the group photos screen - get back to it
-        navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+        navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
         navigation.setParams( { fromGroupPhotos: false } );
       } else if ( skipGroupPhotos ) {
         // This only happens when being called from ObsEdit
@@ -107,7 +96,7 @@ const PhotoGallery = ( ): Node => {
 
         // Determine if we need to go back to ObsList or ObsDetails screen
       } else if ( params && params.previousScreen && params.previousScreen.name === "ObsDetails" ) {
-        navToObsDetails( params.previousScreen.params.uuid );
+        navigateToObsDetails( navigation, params.previousScreen.params.uuid );
       } else {
         navToObsList();
       }
@@ -124,7 +113,7 @@ const PhotoGallery = ( ): Node => {
         photos: [photo]
       } ) )] );
       navigation.setParams( { fromGroupPhotos: false } );
-      navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+      navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
       setPhotoGalleryShown( false );
       return;
     }
@@ -170,14 +159,14 @@ const PhotoGallery = ( ): Node => {
         } ) )
       } );
       navigation.setParams( { fromGroupPhotos: false } );
-      navigation.navigate( "CameraNavigator", { screen: "GroupPhotos" } );
+      navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
       setPhotoGalleryShown( false );
     }
   }, [
     navToObsEdit, navToObsList, photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
     evidenceToAdd, galleryUris, navigation, setGroupedPhotos, fromGroupPhotos, skipGroupPhotos,
     groupedPhotos, currentObservation, updateObservations, observations, currentObservationIndex,
-    navToObsDetails, params
+    params
   ] );
 
   const onPermissionGranted = () => {

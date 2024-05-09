@@ -21,7 +21,6 @@ import {
 import {
   useTranslation
 } from "sharedHooks";
-import { viewStyles } from "styles/projects/projects";
 
 type Props = {
   searchInput: string,
@@ -57,13 +56,12 @@ const Projects = ( {
 
   const renderProject = ( { item: project } ) => (
     <Pressable
-      className="px-4"
+      className="px-4 py-1.5"
       onPress={( ) => navigation.navigate( "ProjectDetails", { id: project.id } )}
-      style={viewStyles.row}
       testID={`Project.${project.id}`}
       accessible
       accessibilityRole="button"
-      accessibilityLabel={t( "Navigate-to-project-details" )}
+      accessibilityLabel={t( "Navigates-to-project-details" )}
     >
       <ProjectListItem item={project} />
     </Pressable>

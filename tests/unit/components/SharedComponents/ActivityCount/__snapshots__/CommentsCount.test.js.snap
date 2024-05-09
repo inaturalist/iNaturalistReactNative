@@ -42,26 +42,19 @@ exports[`CommentsCount renders default reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontSize": 13,
+          "lineHeight": 18,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Medium",
         },
         [
-          [
-            {
-              "fontSize": 14,
-              "lineHeight": 18,
-            },
-            {
-              "fontWeight": "400",
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "marginLeft": 6,
-              },
-            ],
-          ],
+          {
+            "marginLeft": 6,
+          },
         ],
       ]
     }
@@ -113,26 +106,19 @@ exports[`CommentsCount renders filled reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontSize": 13,
+          "lineHeight": 18,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Medium",
         },
         [
-          [
-            {
-              "fontSize": 14,
-              "lineHeight": 18,
-            },
-            {
-              "fontWeight": "400",
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "marginLeft": 6,
-              },
-            ],
-          ],
+          {
+            "marginLeft": 6,
+          },
         ],
       ]
     }
@@ -184,29 +170,22 @@ exports[`CommentsCount renders white reliably 1`] = `
     style={
       [
         {
-          "fontFamily": "Whitney-Medium",
+          "fontSize": 13,
+          "lineHeight": 18,
+        },
+        {
+          "color": "#454545",
+        },
+        {
+          "fontFamily": "Lato-Medium",
         },
         [
-          [
-            {
-              "fontSize": 14,
-              "lineHeight": 18,
-            },
-            {
-              "fontWeight": "400",
-            },
-            {
-              "color": "#454545",
-            },
-            [
-              {
-                "marginLeft": 6,
-              },
-              {
-                "color": "#ffffff",
-              },
-            ],
-          ],
+          {
+            "marginLeft": 6,
+          },
+          {
+            "color": "#ffffff",
+          },
         ],
       ]
     }

@@ -18,7 +18,7 @@ const queryClient = new QueryClient( {
       retry: false,
       // Prevent `Jest did not exit one second after the test run has completed.` error
       // https://react-query-v3.tanstack.com/guides/testing#set-cachetime-to-infinity-with-jest
-      cacheTime: Infinity
+      gcTime: Infinity
     }
   }
 } );
@@ -52,7 +52,7 @@ function renderApp( update = null ) {
 async function renderAppWithObservations(
   observations: Array,
   realmIdentifier: string
-): any {
+) {
   if ( observations.length > 0 ) {
     await Promise.all( observations.map( async observation => {
       // If it looks like it was supposed to be unsynced, save it like a new

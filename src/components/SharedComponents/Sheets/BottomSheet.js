@@ -1,22 +1,23 @@
 // @flow
 
 import BottomSheet, {
-  BottomSheetModal,
-  BottomSheetView,
-  useBottomSheetDynamicSnapPoints
+  BottomSheetModal, BottomSheetScrollView
 } from "@gorhom/bottom-sheet";
+import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useRef
 } from "react";
 import { Dimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
-import { viewStyles } from "styles/sharedComponents/bottomSheet";
+import colors from "styles/tailwindColors";
+
+const borderRadius = 24;
 
 type Props = {
   children: Node,
@@ -25,7 +26,7 @@ type Props = {
   handleClose?: Function,
   hideCloseButton?: boolean,
   headerText?: string,
-  snapPoints?: any,
+  snapPoints?: Array<string>,
   insideModal?: boolean
 }
 
@@ -45,17 +46,22 @@ const StandardBottomSheet = ( {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
   }
 
+  const shadow = {
+    shadowColor: colors.black,
+    borderTopStartRadius: borderRadius,
+    borderTopEndRadius: borderRadius,
+    shadowOffset: {
+      width: 0,
+      height: 12
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 16.0,
+    elevation: 24
+  };
+
   const { t } = useTranslation( );
   const sheetRef = useRef( null );
-
-  const initialSnapPoints = useMemo( () => ["CONTENT_HEIGHT"], [] );
-
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout
-  } = useBottomSheetDynamicSnapPoints( initialSnapPoints );
+  const insets = useSafeAreaInsets( );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
@@ -106,20 +112,25 @@ const StandardBottomSheet = ( {
 
   return (
     <BottomSheetComponent
-      ref={sheetRef}
-      index={0}
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
-      style={[viewStyles.shadow, marginOnWide]}
-      handleComponent={noHandle}
       backdropComponent={renderBackdrop}
+      enableDynamicSizing
+      handleComponent={noHandle}
+      index={0}
       onChange={onChange || handleBackdropPress}
+      ref={sheetRef}
+      style={[shadow, marginOnWide]}
     >
-      <SafeAreaView>
-        <BottomSheetView onLayout={handleContentLayout}>
+      <BottomSheetScrollView>
+        <View
+          className={classnames(
+            "pt-7",
+            insets.bottom > 0
+              ? "pb-7"
+              : null
+          )}
+        >
           <View className="items-center">
-            <Heading4 className="pt-7">{headerText}</Heading4>
+            <Heading4 testID="bottom-sheet-header">{headerText}</Heading4>
           </View>
           {children}
           {!hideCloseButton && (
@@ -132,8 +143,8 @@ const StandardBottomSheet = ( {
               accessibilityLabel={t( "Close" )}
             />
           )}
-        </BottomSheetView>
-      </SafeAreaView>
+        </View>
+      </BottomSheetScrollView>
     </BottomSheetComponent>
   );
 };

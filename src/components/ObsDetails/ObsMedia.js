@@ -24,9 +24,7 @@ type Props = {
     licenseCode?: string
   }>,
   sounds?: Array<{
-    id?: number,
-    file_url: string,
-    uuid: string
+    file_url: string
   }>,
   tablet: boolean
 }
@@ -38,7 +36,7 @@ const ObsMedia = ( {
   tablet
 }: Props ): Node => {
   const { width } = Dimensions.get( "window" );
-  const [index, setIndex] = useState<number>( 0 );
+  const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const paginationColor = colors.white;
 

@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   Body1,
@@ -24,6 +24,8 @@ import React, {
 import { StatusBar } from "react-native";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import Observation from "realmModels/Observation";
+import ObservationSound from "realmModels/ObservationSound";
+import Sound from "realmModels/Sound";
 import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -38,12 +40,15 @@ const NOT_STARTED = "notStarted";
 const RECORDING = "recording";
 const STOPPED = "stopped";
 
+export const MAX_SOUNDS_ALLOWED = 20;
+
 const SoundRecorder = (): Node => {
   const audioRecorderPlayerRef = useRef( new AudioRecorderPlayer( ) );
   const audioRecorderPlayer = audioRecorderPlayerRef.current;
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const setObservations = useStore( state => state.setObservations );
   const navigation = useNavigation();
+  const { params } = useRoute();
   const { t } = useTranslation();
   const [sound, setSound] = useState( INITIAL_SOUND );
   const [uri, setUri] = useState( null );
@@ -51,6 +56,10 @@ const SoundRecorder = (): Node => {
   const [exitWarningShown, setExitWarningShown] = useState( false );
   const [resetWarningShown, setResetWarningShown] = useState( false );
   const meteringHistory = useRef( [] );
+  const currentObservation = useStore( state => state.currentObservation );
+  const observations = useStore( state => state.observations );
+  const currentObservationIndex = useStore( state => state.currentObservationIndex );
+  const updateObservations = useStore( state => state.updateObservations );
 
   const [
     status,
@@ -63,8 +72,22 @@ const SoundRecorder = (): Node => {
   audioRecorderPlayer.setSubscriptionDuration( 0.09 ); // optional. Default is 0.1
 
   const addSound = async ( ) => {
-    const newObservation = await Observation.createObsWithSoundPath( uri );
-    setObservations( [newObservation] );
+    if ( !params.addEvidence ) {
+      // New observation with sound
+      const newObservation = await Observation.createObsWithSoundPath( uri );
+      setObservations( [newObservation] );
+    } else {
+      // Add new sounds to existing observation
+      let updatedCurrentObservation = currentObservation;
+
+      const obsSound = await ObservationSound.new( {
+        sound: await Sound.new( { file_url: uri } )
+      } );
+      updatedCurrentObservation = Observation
+        .appendObsSounds( [obsSound], updatedCurrentObservation );
+      observations[currentObservationIndex] = updatedCurrentObservation;
+      updateObservations( observations );
+    }
   };
 
   const resetRecording = useCallback( ( ) => {
@@ -163,7 +186,7 @@ const SoundRecorder = (): Node => {
   ] );
 
   const sounds = uri
-    ? [{ file_url: uri, uuid: "fake-uuid" }]
+    ? [{ file_url: uri }]
     : [];
 
   let helpText = t( "Press-record-to-start" );
@@ -177,6 +200,14 @@ const SoundRecorder = (): Node => {
     default:
       helpText = t( "Press-record-to-start" );
   }
+
+  const onBack = () => {
+    if ( !params.addEvidence ) {
+      navigation.goBack( );
+    } else {
+      navigation.navigate( "ObsEdit" );
+    }
+  };
 
   return (
     <ViewWrapper wrapperClassName="bg-black justify-between">
@@ -238,7 +269,7 @@ const SoundRecorder = (): Node => {
           if ( uri ) {
             setExitWarningShown( true );
           } else {
-            navigation.goBack( );
+            onBack();
           }
         }}
         mediaCaptured={uri}
@@ -249,6 +280,7 @@ const SoundRecorder = (): Node => {
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
         sounds={sounds}
+        autoPlaySound
       />
       <BottomSheet
         headerText="RECORDING SOUNDS"
@@ -276,9 +308,9 @@ const SoundRecorder = (): Node => {
       </BottomSheet>
       <WarningSheet
         hidden={!exitWarningShown}
-        headerText={t( "DISCARD-SOUND-header" )}
+        headerText={t( "DISCARD-SOUND--question" )}
         text={t( "By-exiting-your-recorded-sound-will-not-be-saved" )}
-        confirm={( ) => navigation.goBack( )}
+        confirm={onBack}
         handleClose={( ) => setExitWarningShown( false )}
         buttonText={t( "DISCARD-RECORDING" )}
       />

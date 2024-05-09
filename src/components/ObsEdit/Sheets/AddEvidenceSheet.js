@@ -7,7 +7,6 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Alert } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -35,7 +34,7 @@ const AddEvidenceSheet = ( {
         if ( position > -1 ) return;
 
         if ( choice === "camera" ) {
-          navigation.navigate( "CameraNavigator", {
+          navigation.navigate( "NoBottomTabStackNavigator", {
             screen: "Camera",
             params: {
               addEvidence: true,
@@ -44,18 +43,21 @@ const AddEvidenceSheet = ( {
           } );
         } else if ( choice === "import" ) {
           // Show photo gallery, but skip group photos phase
-          navigation.navigate( "CameraNavigator", {
+          navigation.navigate( "NoBottomTabStackNavigator", {
             screen: "PhotoGallery",
             params: { skipGroupPhotos: true }
           } );
         } else if ( choice === "sound" ) {
-          Alert.alert( "TODO", "Still need to implement sound recording" );
+          navigation.navigate(
+            "NoBottomTabStackNavigator",
+            { screen: "SoundRecorder", params: { addEvidence: true } }
+          );
         }
       }}
     >
       <View className="items-center p-5">
         {disableAddingMoreEvidence && (
-          <List2>
+          <List2 className="mb-5">
             {t( "You-can-add-up-to-20-media" )}
           </List2>
         )}

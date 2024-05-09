@@ -6,7 +6,7 @@ import {
 import ScientificName from "components/SharedComponents/ScientificName";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -54,7 +54,7 @@ const DisplayTaxonName = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const textClass = useCallback( ( ) => {
+  const textClassName = useMemo( ( ) => {
     const textColorClass = color || "text-darkGray";
     if ( withdrawn ) {
       return "text-darkGray opacity-50 line-through";
@@ -67,7 +67,7 @@ const DisplayTaxonName = ( {
       ? taxon.toJSON( )
       : taxon;
 
-    // this is mostly for the ARCamera, but might be helpful to display elsewhere
+    // this is mostly for the AICamera, but might be helpful to display elsewhere
     if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
       taxonPojo.rank = rankNames[taxonPojo?.rank_level];
     }
@@ -86,15 +86,15 @@ const DisplayTaxonName = ( {
 
     let TopTextComponent = TopTextComponentProp;
     if ( !TopTextComponent ) {
-      TopTextComponent = !small
-        ? Body1
-        : Body3;
+      TopTextComponent = small
+        ? Body3
+        : Body1;
     }
     let BottomTextComponent = BottomTextComponentProp;
     if ( !BottomTextComponent ) {
-      BottomTextComponent = !small
-        ? Body3
-        : Body4;
+      BottomTextComponent = small
+        ? Body4
+        : Body3;
     }
 
     const setNumberOfLines = ( ) => {
@@ -115,7 +115,7 @@ const DisplayTaxonName = ( {
         } )}
       >
         <TopTextComponent
-          className={textClass( )}
+          className={textClassName}
           numberOfLines={setNumberOfLines( )}
           ellipsizeMode="tail"
         >
@@ -129,9 +129,9 @@ const DisplayTaxonName = ( {
                   rank={rank}
                   fontComponent={TopTextComponent}
                   isHorizontal={isHorizontal}
-                  textClass={textClass}
+                  textClassName={textClassName}
                   taxonId={taxon.id}
-                  keyBase={keyBase}
+                  keyBase={`${keyBase}-top`}
                   isTitle
                 />
               )
@@ -143,7 +143,7 @@ const DisplayTaxonName = ( {
 
         {
           commonName && (
-            <BottomTextComponent className={textClass( )}>
+            <BottomTextComponent className={textClassName}>
               {scientificNameFirst
                 ? commonName
                 : (
@@ -154,9 +154,9 @@ const DisplayTaxonName = ( {
                     rank={rank}
                     fontComponent={BottomTextComponent}
                     isHorizontal={isHorizontal}
-                    textClass={textClass}
+                    textClassName={textClassName}
                     taxonId={taxon.id}
-                    keyBase={keyBase}
+                    keyBase={`${keyBase}-bot`}
                   />
                 )}
             </BottomTextComponent>
@@ -172,14 +172,14 @@ const DisplayTaxonName = ( {
     scientificNameFirst,
     small,
     taxon,
-    textClass,
+    textClassName,
     TopTextComponentProp
   ] );
 
   if ( !taxon ) {
     return (
-      <Body1 className={textClass( )} numberOfLines={1}>
-        {t( "unknown" )}
+      <Body1 className={textClassName} numberOfLines={1}>
+        {t( "Unknown--taxon" )}
       </Body1>
     );
   }

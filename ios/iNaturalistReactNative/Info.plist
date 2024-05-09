@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.27.0</string>
+	<string>0.32.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -32,17 +32,25 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>79</string>
+	<string>88</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>https</string>
+		<string>mailto</string>
+		<string>googlegmail</string>
+		<string>inbox-gmail</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
-	<dict/>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Add existing photos and sounds to your observations.</string>
 	<key>NSCameraUsageDescription</key>
@@ -61,24 +69,14 @@
 	<array>
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>MaterialIcons.ttf</string>
-		<string>Whitney-Light-Pro.otf</string>
-		<string>Whitney-Medium-Pro.otf</string>
-		<string>Whitney-BookItalic-Pro.otf</string>
 		<string>inaturalisticons.ttf</string>
 		<string>INatIcon.ttf</string>
-		<string>Whitney-Book-Pro.otf</string>
-		<string>Whitney-MediumItalic-Pro.otf</string>
-		<string>Whitney-Semibold-Pro.otf</string>
-		<string>Whitney-Book-Italic.otf</string>
-		<string>Whitney-Book.otf</string>
-		<string>Whitney-Light-Italic.otf</string>
-		<string>Whitney-Light.otf</string>
-		<string>Whitney-LightItalic-Pro.otf</string>
-		<string>Whitney-Medium-Italic.otf</string>
-		<string>Whitney-Medium.otf</string>
-		<string>Whitney-Semibold-Italic.otf</string>
-		<string>Whitney-Semibold.otf</string>
-		<string>Whitney-SemiboldItalic-Pro.otf</string>
+		<string>Lato-Bold.ttf</string>
+		<string>Lato-BoldItalic.ttf</string>
+		<string>Lato-Italic.ttf</string>
+		<string>Lato-Medium.ttf</string>
+		<string>Lato-MediumItalic.ttf</string>
+		<string>Lato-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

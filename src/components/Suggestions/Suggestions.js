@@ -2,12 +2,9 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  ActivityIndicator,
-  Body1,
   Body3,
   Button,
   Heading4,
-  TaxonResult,
   ViewWrapper
 } from "components/SharedComponents";
 import {
@@ -16,86 +13,81 @@ import {
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
-import {
-  convertOfflineScoreToConfidence,
-  convertOnlineScoreToConfidence
-} from "sharedHelpers/convertScores";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import Attribution from "./Attribution";
 import CommentBox from "./CommentBox";
+import useObservers from "./hooks/useObservers";
 import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
+import Suggestion from "./Suggestion";
+import SuggestionsEmpty from "./SuggestionsEmpty";
 
 type Props = {
-  loadingSuggestions: boolean,
-  suggestions: Array<Object>,
+  commonAncestor: ?string,
+  debugData: Object,
+  hasVisionSuggestion: boolean,
+  loading: boolean,
+  onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  onPressPhoto: Function,
-  observers: Array<string>,
-  topSuggestion: Object,
+  suggestions: Array<Object>,
   usingOfflineSuggestions: boolean,
-  debugData: any
 };
 
-const Suggestion = ( { suggestion, onChosen } ) => (
-  <TaxonResult
-    key={suggestion.taxon.id}
-    taxon={suggestion.taxon}
-    handleCheckmarkPress={onChosen}
-    testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
-    confidence={suggestion?.score
-      ? convertOfflineScoreToConfidence( suggestion?.score )
-      : convertOnlineScoreToConfidence( suggestion.combined_score )}
-    activeColor="bg-inatGreen"
-    confidencePosition="text"
-    first
-  />
-);
-
 const Suggestions = ( {
-  loadingSuggestions,
-  suggestions,
+  commonAncestor,
+  debugData,
+  hasVisionSuggestion,
+  loading,
+  onPressPhoto,
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  onPressPhoto,
-  observers,
-  topSuggestion,
-  usingOfflineSuggestions,
-  debugData
+  suggestions: unfilteredSuggestions,
+  usingOfflineSuggestions
 }: Props ): Node => {
+  const currentObservation = useStore( state => state.currentObservation );
+
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
   const { isDebug } = useDebugMode( );
 
+  const hideVisionResultFromAllSuggestions = list => {
+    if ( !hasVisionSuggestion ) { return list; }
+    return list.filter(
+      result => result?.taxon?.id !== currentObservation?.taxon?.id
+    ).map( r => r );
+  };
+
+  const suggestions = hideVisionResultFromAllSuggestions( unfilteredSuggestions );
+
+  const topSuggestion = hasVisionSuggestion
+    ? currentObservation
+    : commonAncestor;
+
+  const taxonIds = suggestions?.map(
+    suggestion => suggestion.taxon.id
+  );
+
+  const observers = useObservers( taxonIds );
+
   const renderItem = useCallback( ( { item: suggestion } ) => (
-    <Suggestion suggestion={suggestion} onChosen={onTaxonChosen} />
-  ), [onTaxonChosen] );
+    <Suggestion
+      accessibilityLabel={t( "Choose-taxon" )}
+      suggestion={suggestion}
+      onTaxonChosen={onTaxonChosen}
+    />
+  ), [onTaxonChosen, t] );
 
-  const renderEmptyList = useCallback( ( ) => {
-    if ( loadingSuggestions ) {
-      return (
-        <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
-          <ActivityIndicator size={50} />
-        </View>
-      );
-    }
-
-    if ( !suggestions || suggestions.length === 0 ) {
-      return (
-        <Body1 className="mt-10 px-10 text-center">
-          {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
-        </Body1>
-      );
-    }
-    return null;
-  }, [loadingSuggestions, suggestions, t] );
+  const renderEmptyList = useCallback( ( ) => (
+    <SuggestionsEmpty loading={loading} />
+  ), [loading] );
 
   /* eslint-disable i18next/no-literal-string */
   /* eslint-disable react/jsx-one-expression-per-line */
@@ -146,7 +138,11 @@ const Suggestions = ( {
         <>
           <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
           <View className="bg-inatGreen/[.13]">
-            <Suggestion suggestion={topSuggestion} onChosen={onTaxonChosen} />
+            <Suggestion
+              accessibilityLabel={t( "Choose-taxon" )}
+              suggestion={topSuggestion}
+              onTaxonChosen={onTaxonChosen}
+            />
           </View>
         </>
       ) }

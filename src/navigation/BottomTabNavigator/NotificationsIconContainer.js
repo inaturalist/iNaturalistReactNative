@@ -13,8 +13,8 @@ import useStore from "stores/useStore";
 
 type Props = {
   testID: string,
-  icon: any,
-  onPress: any,
+  icon: string,
+  onPress: Function,
   active:boolean,
   accessibilityLabel: string,
   accessibilityRole?: string,

@@ -3,15 +3,11 @@ import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
-const getShadow = (shadowColor: string) => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
   elevation: 6
 } );
 
@@ -21,13 +17,19 @@ interface Props {
 }
 
 const NumberBadge = ( { number, light }: Props ): Node => {
-  const theme = useTheme();
-  const backgroundColor = light ? "bg-white" : "bg-inatGreen";
-  const textColor = light ? "text-darkGray" : "text-white";
+  const backgroundColor = light
+    ? "bg-white"
+    : "bg-inatGreen";
+  const textColor = light
+    ? "text-darkGray"
+    : "text-white";
   return (
     <View
-      className={classNames("w-5 h-5 justify-center items-center rounded-full", backgroundColor)}
-      style={getShadow( theme.colors.primary )}
+      className={classNames(
+        "w-[24px] h-[24px] justify-center items-center rounded-full",
+        backgroundColor
+      )}
+      style={DROP_SHADOW}
     >
       <Body3 className={textColor}>{number}</Body3>
     </View>

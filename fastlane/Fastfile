@@ -256,8 +256,9 @@ platform :android do
   end
 
   lane :clean do
+    sh "rm -rf ../android/.gradle", step_name: "Deleting Android .gradle folder"
     sh "rm -rf ../android/build", step_name: "Deleting Android build folder"
-    sh "(cd ../android && ./gradlew clean)", step_name: "Cleaning Android build environment"
+    sh "(cd ../android && ./gradlew --stop && ./gradlew clean)", step_name: "Cleaning Android build environment"
     Dir.glob( File.join( File.dirname( get_aab_path ), "*.aab" ) ).each do | aab_path |
       UI.message "Deleting #{aab_path}"
       File.delete aab_path
@@ -359,7 +360,6 @@ lane :release do
     version: last_tag,
     api_token: ENV["GITHUB_TOKEN"]
   )
-
   if github_release
     UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
   else
@@ -425,7 +425,7 @@ lane :beta do
 
   build_number = get_build_number( xcodeproj: XCODEPROJ )
 
-  UI.message "Play Store: promoting build #{build_number} to beta track"
+  # UI.message "Play Store: promoting build #{build_number} to beta track"
   upload_to_play_store(
     version_code: build_number,
     track: "internal",
@@ -441,14 +441,14 @@ end
 
 lane :prod do
   desc "Push builds for the latest tag to production"
-  build_number = get_build_number( xcodeproj: XCODEPROJ )
-  # In theory this will move the release associated with the build_number in
-  # the beta track to the production track and 100% rollout... but I haven't
-  # been able to test that yet
-  upload_to_play_store(
-    version_code: build_number,
-    track: "beta",
-    track_promote_to: "production"
-  )
+  # build_number = get_build_number( xcodeproj: XCODEPROJ )
+  # # In theory this will move the release associated with the build_number in
+  # # the beta track to the production track and 100% rollout... but I haven't
+  # # been able to test that yet
+  # upload_to_play_store(
+  #   version_code: build_number,
+  #   track: "beta",
+  #   track_promote_to: "production"
+  # )
   UI.abort_with_message! "This doesn't upload iOS builds yet"
 end

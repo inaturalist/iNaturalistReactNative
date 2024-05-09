@@ -35,7 +35,7 @@ const setPlaceName = ( results: Array<Object> ): string => {
   return placeName;
 };
 
-const fetchPlaceName = async ( lat: ?number, lng: ?number ): any => {
+const fetchPlaceName = async ( lat: ?number, lng: ?number ): Promise<?string> => {
   if ( !lat || !lng ) { return null; }
   const { isInternetReachable } = await NetInfo.fetch( );
   if ( !isInternetReachable ) { return null; }

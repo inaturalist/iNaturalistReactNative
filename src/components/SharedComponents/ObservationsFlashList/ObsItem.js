@@ -20,7 +20,10 @@ const GUTTER = 15;
 const ObsItem = ( {
   observation, layout, gridItemWidth, uploadState, uploadSingleObservation, explore
 }: Props ): Node => (
-  <MyObservationsPressable observation={observation} testID="MyObservationsPressable">
+  <MyObservationsPressable
+    observation={observation}
+    testID={`MyObservationsPressable.${observation.uuid}`}
+  >
     {
       layout === "grid"
         ? (

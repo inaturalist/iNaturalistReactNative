@@ -2,7 +2,9 @@
 import { useNavigation } from "@react-navigation/native";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import {
-  Button, Heading1, INatIconButton,
+  Button,
+  Heading1,
+  INatIconButton,
   Subheading1
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -25,7 +27,8 @@ type Props = {
   uploadMultipleObservations: Function,
   stopUploads: Function,
   syncObservations: Function,
-  toolbarProgress: number
+  toolbarProgress: number,
+  logInButtonNeutral: boolean
 }
 
 const Header = ( {
@@ -38,7 +41,8 @@ const Header = ( {
   uploadMultipleObservations,
   stopUploads,
   syncObservations,
-  toolbarProgress
+  toolbarProgress,
+  logInButtonNeutral
 }: Props ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -94,11 +98,13 @@ const Header = ( {
           )}
       </View>
       <Button
-        onPress={( ) => navigation.navigate( "LoginNavigator" )}
+        onPress={( ) => navigation.navigate( "LoginStackNavigator" )}
         accessibilityRole="link"
-        accessibilityLabel={t( "Navigate-to-login-screen" )}
+        accessibilityLabel={t( "Log-in" )}
         text={t( "LOG-IN-TO-INATURALIST" )}
-        level="focus"
+        level={logInButtonNeutral
+          ? "neutral"
+          : "focus"}
         testID="log-in-to-iNaturalist-button"
       />
     </View>

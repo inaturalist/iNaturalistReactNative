@@ -12,42 +12,38 @@ import React, {
   useState
 } from "react";
 import { FlatList } from "react-native";
-import { useTheme } from "react-native-paper";
-import useTaxonSearch from "sharedHooks/useTaxonSearch";
-import { getShadowStyle } from "styles/global";
+import { useTaxonSearch, useTranslation } from "sharedHooks";
+import { getShadowForColor } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import CommentBox from "./CommentBox";
-import useTaxonSelected from "./hooks/useTaxonSelected";
+import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 4,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
+const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+  offsetHeight: 4
 } );
 
 const TaxonSearch = ( ): Node => {
-  const theme = useTheme();
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const taxonList = useTaxonSearch( taxonQuery );
+  const { t } = useTranslation( );
 
-  useTaxonSelected( selectedTaxon, { vision: false } );
+  useNavigateWithTaxonSelected( selectedTaxon, { vision: false } );
 
   const renderFooter = useCallback( ( ) => <View className="pb-10" />, [] );
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
+      accessibilityLabel={t( "Choose-taxon" )}
       taxon={taxon}
       handleCheckmarkPress={() => setSelectedTaxon( taxon )}
       testID={`Search.taxa.${taxon.id}`}
       first={index === 0}
       fetchRemote={false}
     />
-  ), [setSelectedTaxon] );
+  ), [setSelectedTaxon, t] );
 
   return (
     <ViewWrapper>
@@ -55,7 +51,7 @@ const TaxonSearch = ( ): Node => {
       <CommentBox />
       <View
         className="bg-white px-6 pt-2 pb-8"
-        style={getShadow( theme.colors.primary )}
+        style={DROP_SHADOW}
       >
         <SearchBar
           handleTextChange={setTaxonQuery}

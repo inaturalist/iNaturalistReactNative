@@ -28,7 +28,7 @@ const CoordinatesCopiedNotification = ( ): React.Node => {
       style={getShadowForColor( theme.colors.primary )}
     >
       <Body2 className="mr-3">
-        {t( "Coordinates-copied-to-keyboard" )}
+        {t( "Coordinates-copied-to-clipboard" )}
       </Body2>
       <INatIcon
         name="checkmark-circle"

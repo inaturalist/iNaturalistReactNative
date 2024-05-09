@@ -13,6 +13,10 @@ module.exports = {
       config: "e2e/jest.config.js",
       _: ["e2e"],
     },
+    jest: {
+      setupTimeout: 900000,
+      teardownTimeout: 900000,
+    },
   },
   apps: {
     "ios.debug": {

@@ -5,20 +5,15 @@ exports[`Body2 renders correctly 1`] = `
   style={
     [
       {
-        "fontFamily": "Whitney-Book",
+        "fontSize": 15,
+        "lineHeight": 18,
       },
-      [
-        {
-          "fontSize": 16,
-          "lineHeight": 18,
-        },
-        {
-          "fontWeight": "300",
-        },
-        {
-          "color": "#454545",
-        },
-      ],
+      {
+        "color": "#454545",
+      },
+      {
+        "fontFamily": "Lato-Regular",
+      },
     ]
   }
 >
