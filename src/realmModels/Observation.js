@@ -138,10 +138,14 @@ class Observation extends Realm.Object {
     } );
     // Trying to debug disappearing photos
     logger.info( "upsertRemoteObservations, upserting: ", msg );
+    // console.log( "upsertRemoteObservations, upserting: ", msg );
+
     safeRealmWrite( realm, ( ) => {
       obsToUpsert.forEach( remoteObservation => {
         const obsMappedForRealm = Observation.mapApiToRealm( remoteObservation, realm );
-        // logger.info( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
+        logger.info( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
+        // console.log( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
+
         realm.create(
           "Observation",
           obsMappedForRealm,

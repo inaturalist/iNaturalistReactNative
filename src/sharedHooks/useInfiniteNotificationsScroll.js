@@ -46,7 +46,9 @@ const useInfiniteNotificationsScroll = ( ): Object => {
       //     update local database with observation in notification
 
       console.log( "[DEBUG useInfiniteNotificationsScroll.js] response: ", response );
-      response?.forEach( async notification => {
+      // TODO: request all obs at once
+      // TODO: make sure we don't overwrite obs w changes
+      const upsertPromises = response?.map( async notification => {
         const remoteObs = await fetchRemoteObservation(
           notification.resource_uuid,
           { fields: Observation.FIELDS },
@@ -57,7 +59,11 @@ const useInfiniteNotificationsScroll = ( ): Object => {
           [remoteObs],
           realm
         );
-      } );
+      } )
+      if(upsertPromises){
+        await Promise.all( upsertPromises );
+      }
+      console.log( "finished upserting notifications obs" );
 
       return response;
     },
