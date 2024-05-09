@@ -12,12 +12,17 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import useStore from "stores/useStore";
 
+import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
+  // clearing the cache of resized images for the score_image API
+  // placing this here means we can keep the app size small
+  // and only have the latest resized image stored in computerVisionSuggestions
+  useClearComputerVisionDirectory( );
   const { params } = useRoute( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
