@@ -9,19 +9,30 @@ import React, {
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import Photo from "realmModels/Photo";
 import useStore from "stores/useStore";
 
+import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
+  // clearing the cache of resized images for the score_image API
+  // placing this here means we can keep the app size small
+  // and only have the latest resized image stored in computerVisionSuggestions
+  useClearComputerVisionDirectory( );
   const { params } = useRoute( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
-  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[photoUris.length - 1] );
+  // Ensure that if this URI is a remote thumbnail that we are resizing
+  // a reasonably-sized image and not deliverying a handful of
+  // upsampled pixels
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState(
+    Photo.displayMediumPhoto( photoUris[photoUris.length - 1] )
+  );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [isLoading, setIsLoading] = useState( true );

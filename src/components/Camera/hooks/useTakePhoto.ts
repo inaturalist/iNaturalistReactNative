@@ -30,7 +30,7 @@ const useTakePhoto = ( camera: Object, addEvidence?: boolean, device?: Object ):
   const [takingPhoto, setTakingPhoto] = useState( false );
 
   const setCameraState = useStore( state => state.setCameraState );
-  const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
+  const originalOrRotatedCameraUrisMap = useStore( state => state.originalOrRotatedCameraUrisMap );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
 
@@ -58,8 +58,11 @@ const useTakePhoto = ( camera: Object, addEvidence?: boolean, device?: Object ):
       setCameraState( {
         cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
         evidenceToAdd: [...evidenceToAdd, uri],
-        // Remember original (unresized) camera URI
-        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
+        // Remember original or rotated (unresized for upload) camera URI
+        originalOrRotatedCameraUrisMap: {
+          ...originalOrRotatedCameraUrisMap,
+          [uri]: cameraPhoto.path
+        }
       } );
     } else {
       if ( replaceExisting && cameraPreviewUris?.length > 0 ) {
@@ -77,10 +80,10 @@ const useTakePhoto = ( camera: Object, addEvidence?: boolean, device?: Object ):
         evidenceToAdd: replaceExisting
           ? [uri]
           : [...evidenceToAdd, uri],
-        // Remember original (unresized) camera URI
-        originalCameraUrisMap: replaceExisting
+        // Remember original or rotated (unresized for upload) camera URI
+        originalOrRotatedCameraUrisMap: replaceExisting
           ? { [uri]: cameraPhoto.path }
-          : { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
+          : { ...originalOrRotatedCameraUrisMap, [uri]: cameraPhoto.path }
       } );
     }
     setTakingPhoto( false );

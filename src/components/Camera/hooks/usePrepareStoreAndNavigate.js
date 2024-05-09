@@ -25,7 +25,7 @@ const usePrepareStoreAndNavigate = (
   const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
   const currentObservation = useStore( state => state.currentObservation );
   const addCameraRollUri = useStore( state => state.addCameraRollUri );
-  const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
+  const originalOrRotatedCameraUrisMap = useStore( state => state.originalOrRotatedCameraUrisMap );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
 
@@ -37,7 +37,7 @@ const usePrepareStoreAndNavigate = (
         type: "photo",
         album: "iNaturalist Next"
       } );
-      logger.info( "savedUris: ", savedPhotoUri );
+      logger.info( "saved to camera roll: ", savedPhotoUri );
       // Save these camera roll URIs, so later on observation editor can update
       // the EXIF metadata of these photos, once we retrieve a location.
       addCameraRollUri( savedPhotoUri );
@@ -53,13 +53,13 @@ const usePrepareStoreAndNavigate = (
     if ( permissionGranted !== "granted" ) { return; }
     uris.forEach( async uri => {
     // Find original camera URI of each scaled-down photo
-      const originalCameraUri = originalCameraUrisMap[uri];
+      const originalOrRotatedCameraUri = originalOrRotatedCameraUrisMap[uri];
 
-      if ( !originalCameraUri ) {
-        console.error( `Couldn't find original camera URI for: ${uri}` );
+      if ( !originalOrRotatedCameraUri ) {
+        console.error( `Couldn't find original or rotated camera URI for: ${uri}` );
       }
-      logger.info( "saving originalCameraUri: ", originalCameraUri );
-      await saveToiNaturalistNextAlbum( originalCameraUri );
+      logger.info( "saving originalOrRotatedCameraUri: ", originalOrRotatedCameraUri );
+      await saveToiNaturalistNextAlbum( originalOrRotatedCameraUri );
     } );
 
     navigation.push( "Suggestions", {
@@ -68,7 +68,7 @@ const usePrepareStoreAndNavigate = (
     } );
   }, [
     navigation,
-    originalCameraUrisMap,
+    originalOrRotatedCameraUrisMap,
     permissionGranted,
     saveToiNaturalistNextAlbum
   ] );

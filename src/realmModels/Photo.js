@@ -1,7 +1,8 @@
-import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { Realm } from "@realm/react";
+import { photoUploadPath } from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
+import resizeImage from "sharedHelpers/resizeImage.ts";
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
@@ -10,8 +11,6 @@ class Photo extends Realm.Object {
     license_code: true,
     url: true
   };
-
-  static photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
 
   static mapApiToRealm( photo, _realm = null ) {
     const localPhoto = {
@@ -24,7 +23,6 @@ class Photo extends Realm.Object {
 
   static async resizeImageForUpload( pathOrUri, options = {} ) {
     const width = 2048;
-    const { photoUploadPath } = Photo;
     await RNFS.mkdir( photoUploadPath );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
 
@@ -51,20 +49,16 @@ class Photo extends Realm.Object {
       uriForResize = `file://${uriForResize}`;
     }
 
-    const { uri } = await ImageResizer.createResizedImage(
-      uriForResize,
+    const uri = await resizeImage( uriForResize, {
       width,
-      width, // height
-      "JPEG", // compressFormat
-      100, // quality
-      options.rotation || 0, // rotation
-      photoUploadPath,
-      true, // keep metadata
-      {
+      rotation: options.rotation,
+      outputPath: photoUploadPath,
+      imageOptions: {
         mode: "contain",
         onlyScaleDown: true
       }
-    );
+    } );
+
     return uri;
   }
 
@@ -82,7 +76,7 @@ class Photo extends Realm.Object {
   // without this, local photos will not show up when the app updates
   static accessLocalPhoto( url ) {
     const uuidAndJpgSuffix = url?.split( "photoUploads/" )[1];
-    const localPath = `${Photo.photoUploadPath}/${uuidAndJpgSuffix}`;
+    const localPath = `${photoUploadPath}/${uuidAndJpgSuffix}`;
     return localPath || null;
   }
 
