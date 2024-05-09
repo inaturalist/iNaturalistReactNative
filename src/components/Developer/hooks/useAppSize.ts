@@ -33,6 +33,18 @@ const sharedDirectories = [
   {
     path: RNFS.TemporaryDirectoryPath,
     directoryName: "TemporaryDirectory"
+  },
+  {
+    path: `${RNFS.DocumentDirectoryPath}/computerVisionSuggestions`,
+    directoryName: "ComputerVisionSuggestions"
+  },
+  {
+    path: `${RNFS.DocumentDirectoryPath}/photoUploads`,
+    directoryName: "PhotoUploads"
+  },
+  {
+    path: `${RNFS.DocumentDirectoryPath}/rotatedTemporaryPhotos`,
+    directoryName: "RotatedTemporaryPhotos"
   }
 ];
 
