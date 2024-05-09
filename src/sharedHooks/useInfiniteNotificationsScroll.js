@@ -1,10 +1,11 @@
 // @flow
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchObservationUpdates, fetchRemoteObservation } from "api/observations";
+import { fetchObservationUpdates, fetchRemoteObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { flatten } from "lodash";
 import { RealmContext } from "providers/contexts";
+import { useCallback } from "react";
 import Observation from "realmModels/Observation";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import { useCurrentUser } from "sharedHooks";
@@ -23,6 +24,15 @@ const useInfiniteNotificationsScroll = ( ): Object => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
 
+  const fetchObsByUUIDs = useCallback( async ( uuids, authOptions ) => {
+    const observations = await fetchRemoteObservations(
+      uuids,
+      { fields: Observation.FIELDS },
+      authOptions
+    );
+    Observation.upsertRemoteObservations( observations, realm );
+  }, [realm] );
+
   const infQueryResult = useInfiniteQuery( {
     queryKey: ["useInfiniteNotificationsScroll"],
     queryFn: async ( { pageParam } ) => {
@@ -40,22 +50,9 @@ const useInfiniteNotificationsScroll = ( ): Object => {
       }
 
       const response = await fetchObservationUpdates( params, options );
-
-      // TODO: request all obs at once
-      // TODO: make sure we don't overwrite obs w changes
-      const upsertPromises = response?.map( async notification => {
-        const remoteObs = await fetchRemoteObservation(
-          notification.resource_uuid,
-          { fields: Observation.FIELDS },
-          options
-        );
-        Observation.upsertRemoteObservations(
-          [remoteObs],
-          realm
-        );
-      } );
-      if ( upsertPromises ) {
-        await Promise.all( upsertPromises );
+      const obsUUIDs = response?.map( obsUpdate => obsUpdate.resource_uuid ) || [];
+      if ( obsUUIDs.length > 0 ) {
+        await fetchObsByUUIDs( obsUUIDs, options );
       }
 
       return response;
