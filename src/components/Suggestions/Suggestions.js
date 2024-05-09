@@ -26,7 +26,7 @@ import Suggestion from "./Suggestion";
 import SuggestionsEmpty from "./SuggestionsEmpty";
 
 type Props = {
-  commonAncestor: ?string,
+  commonAncestor: ?Object,
   debugData: Object,
   hasVisionSuggestion: boolean,
   loading: boolean,
@@ -67,28 +67,9 @@ const Suggestions = ( {
 
   const suggestions = hideVisionResultFromAllSuggestions( unfilteredSuggestions );
 
-  const showTopSuggestion = ( ) => {
-    if ( hasVisionSuggestion ) {
-      return currentObservation;
-    }
-    if ( usingOfflineSuggestions ) {
-      return suggestions[0];
-    }
-    return commonAncestor;
-  };
-
-  const topSuggestion = showTopSuggestion( );
-
-  const showSuggestions = ( ) => {
-    if ( usingOfflineSuggestions ) {
-      const displayedSuggestions = suggestions;
-      displayedSuggestions.shift( );
-      return displayedSuggestions;
-    }
-    return suggestions;
-  };
-
-  const allOrNearbySuggestions = showSuggestions( );
+  const topSuggestion = hasVisionSuggestion
+    ? currentObservation
+    : commonAncestor;
 
   const taxonIds = suggestions?.map(
     suggestion => suggestion.taxon.id
@@ -165,10 +146,10 @@ const Suggestions = ( {
           </View>
         </>
       ) }
-      { allOrNearbySuggestions?.length > 0 && (
+      { suggestions?.length > 0 && (
         <Heading4 className="mt-6 mb-4 ml-4">
           {
-            allOrNearbySuggestions[0]?.score
+            suggestions[0]?.score
               ? t( "ALL-SUGGESTIONS" )
               : t( "NEARBY-SUGGESTIONS" )
           }
@@ -177,15 +158,15 @@ const Suggestions = ( {
       <CommentBox />
     </>
   ), [
-    allOrNearbySuggestions,
     lastScreen,
     navigation,
-    onPressPhoto,
-    onTaxonChosen,
-    photoUris,
-    selectedPhotoUri,
     t,
     topSuggestion,
+    photoUris,
+    selectedPhotoUri,
+    onPressPhoto,
+    suggestions,
+    onTaxonChosen,
     usingOfflineSuggestions
   ] );
 
