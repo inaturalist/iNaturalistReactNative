@@ -29,6 +29,7 @@ const ObsNotification = ( { item }: Props ): Node => {
 
   const observation = realm.objectForPrimaryKey( "Observation", item.resource_uuid );
   const photoUrl = observation?.observationPhotos[0]?.photo?.url;
+
   const renderIcon = () => {
     switch ( type ) {
       case "Identification":
