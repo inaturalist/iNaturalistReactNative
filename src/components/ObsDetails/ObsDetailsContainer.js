@@ -22,8 +22,9 @@ import {
   useObservationsUpdates,
   useTranslation
 } from "sharedHooks";
-import useRemoteObservation,
-{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
+import useRemoteObservation, {
+  fetchRemoteObservationKey
+} from "sharedHooks/useRemoteObservation";
 import { ACTIVITY_TAB_ID, DETAILS_TAB_ID } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 

@@ -141,7 +141,7 @@ class Observation extends Realm.Object {
     safeRealmWrite( realm, ( ) => {
       obsToUpsert.forEach( remoteObservation => {
         const obsMappedForRealm = Observation.mapApiToRealm( remoteObservation, realm );
-        logger.info( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
+        // logger.info( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
         realm.create(
           "Observation",
           obsMappedForRealm,

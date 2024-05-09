@@ -1,11 +1,15 @@
 // @flow
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchObservationUpdates } from "api/observations";
+import { fetchObservationUpdates, fetchRemoteObservation } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { flatten } from "lodash";
+import { RealmContext } from "providers/contexts";
+import Observation from "realmModels/Observation";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import { useCurrentUser } from "sharedHooks";
+
+const { useRealm } = RealmContext;
 
 const BASE_PARAMS = {
   observations_by: "owner",
@@ -17,6 +21,7 @@ const BASE_PARAMS = {
 
 const useInfiniteNotificationsScroll = ( ): Object => {
   const currentUser = useCurrentUser( );
+  const realm = useRealm( );
 
   const infQueryResult = useInfiniteQuery( {
     queryKey: ["useInfiniteNotificationsScroll"],
@@ -35,6 +40,24 @@ const useInfiniteNotificationsScroll = ( ): Object => {
       }
 
       const response = await fetchObservationUpdates( params, options );
+
+      // for notification in notifications
+      //     fetch observation in notification
+      //     update local database with observation in notification
+
+      console.log( "[DEBUG useInfiniteNotificationsScroll.js] response: ", response );
+      response?.forEach( async notification => {
+        const remoteObs = await fetchRemoteObservation(
+          notification.resource_uuid,
+          { fields: Observation.FIELDS },
+          options
+        );
+        console.log( "[DEBUG useInfiniteNotificationsScroll.js] remoteObs: ", remoteObs );
+        Observation.upsertRemoteObservations(
+          [remoteObs],
+          realm
+        );
+      } );
 
       return response;
     },
