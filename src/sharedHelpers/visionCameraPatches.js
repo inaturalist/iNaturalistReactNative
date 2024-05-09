@@ -1,7 +1,7 @@
 /*
     This file contains various patches for handling the react-native-vision-camera library.
 */
-import ImageResizer from "@bam.tech/react-native-image-resizer";
+
 import { Platform } from "react-native";
 import { isTablet } from "react-native-device-info";
 import RNFS from "react-native-fs";
@@ -9,6 +9,7 @@ import {
   useSharedValue as useWorkletSharedValue,
   Worklets
 } from "react-native-worklets-core";
+import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
@@ -84,15 +85,14 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
   const tempPath = `${RNFS.DocumentDirectoryPath}/rotatedTemporaryPhotos`;
   await RNFS.mkdir( tempPath );
   // Rotate the image with ImageResizer
-  const { uri: tempUri } = await ImageResizer.createResizedImage(
+  const tempUri = await resizeImage(
     photo.path,
-    photo.width,
-    photo.height, // height
-    "JPEG", // compressFormat
-    100, // quality
-    rotation, // rotation
-    tempPath,
-    true // keep metadata
+    {
+      width: photo.width,
+      height: photo.height,
+      rotation,
+      outputPath: tempPath
+    }
   );
 
   // Remove original photo

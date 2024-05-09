@@ -1,11 +1,11 @@
 // @flow
 
-import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import { FileUpload } from "inaturalistjs";
 import { useEffect, useState } from "react";
 import Photo from "realmModels/Photo";
+import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
   useAuthenticatedQuery,
   useIsConnected
@@ -13,29 +13,6 @@ import {
 import useStore from "stores/useStore";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
-
-const resizeImage = async (
-  path: string,
-  width: number,
-  height?: number,
-  outputPath?: string
-): Promise<string> => {
-  // Note that the default behavior of this library is to resize to contain,
-  // i.e. it will not adjust aspect ratio
-  const { uri } = await ImageResizer.createResizedImage(
-    path,
-    width,
-    height || width, // height
-    "JPEG", // compressFormat
-    100, // quality
-    0, // rotation
-    // $FlowFixMe
-    outputPath, // outputPath
-    true // keep metadata
-  );
-
-  return uri;
-};
 
 type FlattenUploadArgs = {
   image: {
@@ -52,7 +29,9 @@ const flattenUploadParams = async (
   latitude?: number,
   longitude?: number
 ): Promise<FlattenUploadArgs> => {
-  const uploadUri = await resizeImage( uri, 640 );
+  const uploadUri = await resizeImage( uri, {
+    width: 640
+  } );
 
   const params: FlattenUploadArgs = {
     image: new FileUpload( {

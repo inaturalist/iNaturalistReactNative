@@ -1,7 +1,7 @@
-import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { Realm } from "@realm/react";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
+import resizeImage from "sharedHelpers/resizeImage.ts";
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
@@ -51,20 +51,16 @@ class Photo extends Realm.Object {
       uriForResize = `file://${uriForResize}`;
     }
 
-    const { uri } = await ImageResizer.createResizedImage(
-      uriForResize,
+    const uri = await resizeImage( uriForResize, {
       width,
-      width, // height
-      "JPEG", // compressFormat
-      100, // quality
-      options.rotation || 0, // rotation
-      photoUploadPath,
-      true, // keep metadata
-      {
+      rotation: options.rotation,
+      outputPath: photoUploadPath,
+      imageOptions: {
         mode: "contain",
         onlyScaleDown: true
       }
-    );
+    } );
+
     return uri;
   }
 
