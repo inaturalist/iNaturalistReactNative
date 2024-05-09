@@ -210,7 +210,7 @@ describe( "MyObservations", ( ) => {
         fireEvent.press( uploadIcon );
         await waitFor( ( ) => {
           // Status reflects that we are only uploading one individual observation
-          const uploadInProgressText = screen.getByText( /Uploading 1 of 1 observation/ );
+          const uploadInProgressText = screen.getByText( /Uploading 1 observation/ );
           expect( uploadInProgressText ).toBeVisible( );
         } );
         const uploadInProgressIcon = screen.getByTestId(

@@ -34,11 +34,11 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
   const showARCamera = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
     || ( Platform.OS === "android" && Platform.Version > 21 );
 
-  const resetStore = useStore( state => state.resetStore );
+  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const setObservations = useStore( state => state.setObservations );
 
   const navToObsEdit = async ( ) => {
-    resetStore( );
+    resetObservationFlowSlice( );
     const newObservation = await Observation.new( );
     setObservations( [newObservation] );
     navAndCloseModal( "ObsEdit" );

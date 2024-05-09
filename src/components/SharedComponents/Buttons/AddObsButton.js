@@ -15,14 +15,14 @@ const AddObsButton = (): React.Node => {
   const openModal = React.useCallback( () => setModal( true ), [] );
   const closeModal = React.useCallback( () => setModal( false ), [] );
 
-  const resetStore = useStore( state => state.resetStore );
+  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const navigation = useNavigation( );
 
   const navAndCloseModal = ( screen, params ) => {
     const currentRoute = getCurrentRoute();
     if ( screen !== "ObsEdit" ) {
-      resetStore( );
+      resetObservationFlowSlice( );
     }
     // access nested screen
     navigation.navigate( "NoBottomTabStackNavigator", {

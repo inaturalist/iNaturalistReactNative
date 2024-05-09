@@ -954,9 +954,9 @@ Uploaded-via-application = Uploaded via: { $application }
 Uploading-x-of-y = Uploading { $currentUploadCount } of { $total }
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations =
-    Uploading { $currentUploadCount } of { $total ->
-        [one] 1 observation
-       *[other] { $total } observations
+    { $total ->
+        [one] Uploading { $currentUploadCount } observation
+       *[other] Uploading { $currentUploadCount } of { $total } observations
     }
 Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real-time
 # Text for a button prompting the user to grant access to location
