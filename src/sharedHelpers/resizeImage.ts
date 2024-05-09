@@ -4,7 +4,7 @@ import { log } from "sharedHelpers/logger";
 const logger = log.extend( "resizeImage" );
 
 const resizeImage = async (
-  path: string,
+  pathOrUri: string,
   options: {
     width: number,
     height?: number,
@@ -23,10 +23,12 @@ const resizeImage = async (
     outputPath,
     imageOptions
   } = options;
+
   // Note that the default behavior of this library is to resize to contain,
   // i.e. it will not adjust aspect ratio
-  const { uri } = await ImageResizer.createResizedImage(
-    path,
+  logger.info( "outputPath", outputPath );
+  const resizedPhoto = await ImageResizer.createResizedImage(
+    pathOrUri,
     width, // maxWidth
     height || width, // maxHeight
     "JPEG", // compressFormat
@@ -37,7 +39,9 @@ const resizeImage = async (
     imageOptions // mode and scale options
   );
 
-  logger.info( "resized image: ", uri );
+  const { uri } = resizedPhoto;
+
+  logger.info( "resized image: ", resizedPhoto );
   return uri;
 };
 

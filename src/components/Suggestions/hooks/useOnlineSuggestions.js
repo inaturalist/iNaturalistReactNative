@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import { FileUpload } from "inaturalistjs";
 import { useEffect, useState } from "react";
+import RNFS from "react-native-fs";
 import Photo from "realmModels/Photo";
 import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
@@ -29,8 +30,11 @@ const flattenUploadParams = async (
   latitude?: number,
   longitude?: number
 ): Promise<FlattenUploadArgs> => {
+  const outputPath = `${RNFS.DocumentDirectoryPath}/computerVisionSuggestions`;
+  await RNFS.mkdir( outputPath );
   const uploadUri = await resizeImage( uri, {
-    width: 640
+    width: 640,
+    outputPath
   } );
 
   const params: FlattenUploadArgs = {
