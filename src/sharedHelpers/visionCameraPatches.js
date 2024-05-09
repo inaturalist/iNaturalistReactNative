@@ -2,6 +2,9 @@
     This file contains various patches for handling the react-native-vision-camera library.
 */
 
+import {
+  rotatedTemporaryPhotosPath
+} from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import { isTablet } from "react-native-device-info";
 import RNFS from "react-native-fs";
@@ -82,7 +85,7 @@ export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
 // Because the photos coming from the vision camera are not oriented correctly, we
 // rotate them with image-resizer as a first step, replacing the original photo.
 export const rotatePhotoPatch = async ( photo, rotation ) => {
-  const tempPath = `${RNFS.DocumentDirectoryPath}/rotatedTemporaryPhotos`;
+  const tempPath = rotatedTemporaryPhotosPath;
   await RNFS.mkdir( tempPath );
   // Rotate the image with ImageResizer
   const tempUri = await resizeImage(

@@ -67,9 +67,28 @@ const Suggestions = ( {
 
   const suggestions = hideVisionResultFromAllSuggestions( unfilteredSuggestions );
 
-  const topSuggestion = hasVisionSuggestion
-    ? currentObservation
-    : commonAncestor;
+  const showTopSuggestion = ( ) => {
+    if ( hasVisionSuggestion ) {
+      return currentObservation;
+    }
+    if ( usingOfflineSuggestions ) {
+      return suggestions[0];
+    }
+    return commonAncestor;
+  };
+
+  const topSuggestion = showTopSuggestion( );
+
+  const showSuggestions = ( ) => {
+    if ( usingOfflineSuggestions ) {
+      const displayedSuggestions = suggestions;
+      displayedSuggestions.shift( );
+      return displayedSuggestions;
+    }
+    return suggestions;
+  };
+
+  const allOrNearbySuggestions = showSuggestions( );
 
   const taxonIds = suggestions?.map(
     suggestion => suggestion.taxon.id
@@ -146,10 +165,10 @@ const Suggestions = ( {
           </View>
         </>
       ) }
-      { suggestions?.length > 0 && (
+      { allOrNearbySuggestions?.length > 0 && (
         <Heading4 className="mt-6 mb-4 ml-4">
           {
-            suggestions[0]?.score
+            allOrNearbySuggestions[0]?.score
               ? t( "ALL-SUGGESTIONS" )
               : t( "NEARBY-SUGGESTIONS" )
           }
@@ -158,15 +177,15 @@ const Suggestions = ( {
       <CommentBox />
     </>
   ), [
+    allOrNearbySuggestions,
     lastScreen,
     navigation,
-    t,
-    topSuggestion,
+    onPressPhoto,
+    onTaxonChosen,
     photoUris,
     selectedPhotoUri,
-    onPressPhoto,
-    suggestions,
-    onTaxonChosen,
+    t,
+    topSuggestion,
     usingOfflineSuggestions
   ] );
 

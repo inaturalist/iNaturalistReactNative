@@ -263,9 +263,7 @@ jest.mock( "react-native-fs", ( ) => {
     mkdir: jest.fn( async ( filepath, _options ) => {
       mockFs.mkdir( filepath, jest.fn( ) );
     } ),
-    unlink: jest.fn( async path => {
-      mockFs.unlink( path, jest.fn( ) );
-    } )
+    unlink: jest.fn( )
   };
 
   return RNFS;

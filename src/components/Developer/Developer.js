@@ -60,8 +60,8 @@ const Developer = (): Node => {
     if ( !directory || !contents ) { return null; }
     const totalDirectorySize = formatSizeUnits( getTotalDirectorySize( contents ) );
     return (
-      <>
-        <H2 key={directory}>
+      <View key={directory}>
+        <H2>
           File Sizes:
           {" "}
           {directory}
@@ -81,7 +81,7 @@ const Developer = (): Node => {
             </P>
           );
         } )}
-      </>
+      </View>
     );
   } ), [fileSizes] );
 

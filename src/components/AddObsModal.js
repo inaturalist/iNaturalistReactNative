@@ -12,6 +12,8 @@ import Observation from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
+
 type Props = {
   closeModal: ( ) => void,
   navAndCloseModal: Function
@@ -20,6 +22,12 @@ type Props = {
 const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
+
+  // clearing the cache of resized images for the score_image API
+  // placing this here means we can keep the app size small
+  // while users move through the ObsEdit flow multiple times
+  // and we don't interfere with the Suggestions -> ObsEdit -> Suggestions flow
+  useClearComputerVisionDirectory( );
 
   const majorVersionIOS = parseInt( Platform.Version, 10 );
 

@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import { photoUploadPath } from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import resizeImage from "sharedHelpers/resizeImage.ts";
@@ -11,8 +12,6 @@ class Photo extends Realm.Object {
     url: true
   };
 
-  static photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
-
   static mapApiToRealm( photo, _realm = null ) {
     const localPhoto = {
       ...photo,
@@ -24,7 +23,6 @@ class Photo extends Realm.Object {
 
   static async resizeImageForUpload( pathOrUri, options = {} ) {
     const width = 2048;
-    const { photoUploadPath } = Photo;
     await RNFS.mkdir( photoUploadPath );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
 
@@ -78,7 +76,7 @@ class Photo extends Realm.Object {
   // without this, local photos will not show up when the app updates
   static accessLocalPhoto( url ) {
     const uuidAndJpgSuffix = url?.split( "photoUploads/" )[1];
-    const localPath = `${Photo.photoUploadPath}/${uuidAndJpgSuffix}`;
+    const localPath = `${photoUploadPath}/${uuidAndJpgSuffix}`;
     return localPath || null;
   }
 

@@ -1,3 +1,8 @@
+import {
+  computerVisionPath,
+  photoUploadPath,
+  rotatedTemporaryPhotosPath
+} from "appConstants/paths.ts";
 import _ from "lodash";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
@@ -35,15 +40,15 @@ const sharedDirectories = [
     directoryName: "TemporaryDirectory"
   },
   {
-    path: `${RNFS.DocumentDirectoryPath}/computerVisionSuggestions`,
+    path: computerVisionPath,
     directoryName: "ComputerVisionSuggestions"
   },
   {
-    path: `${RNFS.DocumentDirectoryPath}/photoUploads`,
+    path: photoUploadPath,
     directoryName: "PhotoUploads"
   },
   {
-    path: `${RNFS.DocumentDirectoryPath}/rotatedTemporaryPhotos`,
+    path: rotatedTemporaryPhotosPath,
     directoryName: "RotatedTemporaryPhotos"
   }
 ];

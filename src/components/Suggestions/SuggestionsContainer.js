@@ -1,7 +1,6 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
-import computerVisionPath from "appConstants/paths.ts";
+import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import type { Node } from "react";
 import React, {
@@ -9,8 +8,8 @@ import React, {
   useEffect,
   useState
 } from "react";
-import RNFS from "react-native-fs";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import Photo from "realmModels/Photo";
 import useStore from "stores/useStore";
 
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
@@ -19,12 +18,16 @@ import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 
 const SuggestionsContainer = ( ): Node => {
-  const navigation = useNavigation( );
   const { params } = useRoute( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
-  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[photoUris.length - 1] );
+  // Ensure that if this URI is a remote thumbnail that we are resizing
+  // a reasonably-sized image and not deliverying a handful of
+  // upsampled pixels
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState(
+    Photo.displayMediumPhoto( photoUris[photoUris.length - 1] )
+  );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [isLoading, setIsLoading] = useState( true );
@@ -88,27 +91,6 @@ const SuggestionsContainer = ( ): Node => {
       setIsLoading( false );
     }
   }, [loadingOfflineSuggestions, hasSuggestions] );
-
-  useEffect( ( ) => {
-    // this isn't perfect, since it doesn't delete the current resized image(s) created in
-    // useOnlineSuggestions, and the resizer is seemingly getting called multiple times
-    // on the same image. but for storage size, it's an improvement on what we were doing
-    // before, which was storing an infinite amount of resized images used temporarily
-    // for the online API
-    const clearComputerVisionDirectory = async ( ) => {
-      const files = await RNFS.readDir( computerVisionPath );
-
-      const clearDirectory = files.forEach( async ( { path } ) => {
-        const pathExists = await RNFS.exists( path );
-        if ( !pathExists ) { return; }
-        await RNFS.unlink( path );
-      } );
-      return clearDirectory;
-    };
-    navigation.addListener( "blur", async ( ) => {
-      await clearComputerVisionDirectory( );
-    } );
-  }, [navigation] );
 
   return (
     <>

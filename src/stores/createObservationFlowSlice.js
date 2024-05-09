@@ -54,6 +54,7 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
 };
 
 const createObservationFlowSlice = set => ( {
+  // cameraPreviewUris uses the photoUploads photo, rather than the original or rotated photo
   cameraPreviewUris: [],
   cameraRollUris: [],
   comment: "",
@@ -66,7 +67,10 @@ const createObservationFlowSlice = set => ( {
   // Track when any obs was last marked as viewed so we know when to update
   // the notifications indicator
   observationMarkedAsViewedAt: null,
-  originalCameraUrisMap: {},
+  // this is mapped as [photoUploads]: { tmp } where the resized photo
+  // for upload is the key, and the value is the original or rotated photo in the
+  // temporary directory
+  originalOrRotatedCameraUrisMap: {},
   photoEvidenceUris: [],
   savingPhoto: false,
   unsavedChanges: false,
@@ -102,7 +106,7 @@ const createObservationFlowSlice = set => ( {
     galleryUris: [],
     groupedPhotos: [],
     observations: [],
-    originalCameraUrisMap: {},
+    originalOrRotatedCameraUrisMap: {},
     photoEvidenceUris: [],
     savingPhoto: false,
     unsavedChanges: false
@@ -119,7 +123,8 @@ const createObservationFlowSlice = set => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     cameraPreviewUris: options?.cameraPreviewUris || state.cameraPreviewUris,
     savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto,
-    originalCameraUrisMap: options?.originalCameraUrisMap || state.originalCameraUrisMap
+    originalOrRotatedCameraUrisMap:
+      options?.originalOrRotatedCameraUrisMap || state.originalOrRotatedCameraUrisMap
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,

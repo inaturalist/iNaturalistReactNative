@@ -1,10 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
-import computerVisionPath from "appConstants/paths.ts";
+import { computerVisionPath } from "appConstants/paths.ts";
 import { FileUpload } from "inaturalistjs";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import RNFS from "react-native-fs";
-import Photo from "realmModels/Photo";
 import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
   useAuthenticatedQuery,
@@ -65,29 +64,14 @@ const useOnlineSuggestions = (
   selectedPhotoUri: string
 ): OnlineSuggestionsResponse => {
   const currentObservation = useStore( state => state.currentObservation );
+  const options = {
+    latitude: currentObservation?.latitude,
+    longitude: currentObservation?.longitude
+  };
 
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
   const isOnline = useIsConnected( );
-
-  const scoreImageParams = useMemo( async ( ) => {
-    const options = {
-      latitude: currentObservation?.latitude,
-      longitude: currentObservation?.longitude
-    };
-
-    const imageParams = await flattenUploadParams(
-      // Ensure that if this URI is a remote thumbnail that we are resizing
-      // a reasonably-sized image and not deliverying a handful of
-      // upsampled pixels
-      Photo.displayMediumPhoto( selectedPhotoUri ),
-      options?.latitude,
-      options?.longitude
-    );
-    return imageParams;
-  }, [currentObservation, selectedPhotoUri] );
-
-  const imageName = scoreImageParams?.image?.uri?.split( "computerVisionSuggestions/" )[1];
 
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
@@ -99,10 +83,17 @@ const useOnlineSuggestions = (
     isError,
     error
   } = useAuthenticatedQuery(
-    ["scoreImage", imageName],
-    async optsWithAuth => scoreImage( scoreImageParams, optsWithAuth ),
+    ["scoreImage", selectedPhotoUri],
+    async optsWithAuth => {
+      const scoreImageParams = await flattenUploadParams(
+        selectedPhotoUri,
+        options?.latitude,
+        options?.longitude
+      );
+      return scoreImage( scoreImageParams, optsWithAuth );
+    },
     {
-      enabled: !!imageName,
+      enabled: !!selectedPhotoUri,
       allowAnonymousJWT: true
     }
   );
