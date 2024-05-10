@@ -199,7 +199,7 @@ const StandardCamera = ( {
         />
       </View>
       <CameraNavButtons
-        disabled={disallowAddingPhotos}
+        disabled={disallowAddingPhotos || takingPhoto}
         handleCheckmarkPress={handleCheckmarkPress}
         handleClose={handleBackButtonPress}
         photosTaken={photosTaken}
