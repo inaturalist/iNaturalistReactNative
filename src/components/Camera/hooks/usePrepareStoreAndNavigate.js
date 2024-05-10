@@ -22,10 +22,9 @@ const usePrepareStoreAndNavigate = (
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
-  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
   const currentObservation = useStore( state => state.currentObservation );
   const addCameraRollUri = useStore( state => state.addCameraRollUri );
-  const originalOrRotatedCameraUrisMap = useStore( state => state.originalOrRotatedCameraUrisMap );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
 
@@ -46,31 +45,33 @@ const usePrepareStoreAndNavigate = (
     }
   }, [addCameraRollUri] );
 
-  // Save URIs to camera gallery (if a photo was taken using the app,
-  // we want it accessible in the camera's folder, as if the user has taken those photos
-  // via their own camera app).
-  const savePhotosToCameraGallery = useCallback( async ( uris, visionResult ) => {
-    if ( permissionGranted !== "granted" ) { return; }
-    uris.forEach( async uri => {
-    // Find original camera URI of each scaled-down photo
-      const originalOrRotatedCameraUri = originalOrRotatedCameraUrisMap[uri];
-
-      if ( !originalOrRotatedCameraUri ) {
-        console.error( `Couldn't find original or rotated camera URI for: ${uri}` );
-      }
-      logger.info( "saving originalOrRotatedCameraUri: ", originalOrRotatedCameraUri );
-      await saveToiNaturalistNextAlbum( originalOrRotatedCameraUri );
-    } );
-
+  const navigateToSuggestions = useCallback( visionResult => {
     navigation.push( "Suggestions", {
       lastScreen: "CameraWithDevice",
       hasVisionSuggestion: visionResult
     } );
+  }, [navigation] );
+
+  // Save URIs to camera gallery (if a photo was taken using the app,
+  // we want it accessible in the camera's folder, as if the user has taken those photos
+  // via their own camera app).
+  const savePhotosToCameraGallery = useCallback( async ( uris, visionResult ) => {
+    if ( permissionGranted !== "granted" ) {
+      navigateToSuggestions( visionResult );
+    } else {
+      const savedToCameraRoll = Promise.all( uris.map( async uri => {
+        logger.info( "saving rotated original camera photo: ", uri );
+        await saveToiNaturalistNextAlbum( uri );
+      } ) );
+
+      if ( savedToCameraRoll ) {
+        navigateToSuggestions( visionResult );
+      }
+    }
   }, [
-    navigation,
-    originalOrRotatedCameraUrisMap,
     permissionGranted,
-    saveToiNaturalistNextAlbum
+    saveToiNaturalistNextAlbum,
+    navigateToSuggestions
   ] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
@@ -99,14 +100,17 @@ const usePrepareStoreAndNavigate = (
     setObservations( [newObservation] );
     logger.info(
       "calling savePhotosToCameraGallery with paths: ",
-      localFilePaths
+      rotatedOriginalCameraPhotos
     );
 
-    return savePhotosToCameraGallery( localFilePaths, visionResult );
-  }, [savePhotosToCameraGallery, setObservations] );
+    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos, visionResult );
+  }, [rotatedOriginalCameraPhotos, savePhotosToCameraGallery, setObservations] );
 
   const prepareStateForObsEdit = useCallback( async visionResult => {
     if ( !checkmarkTapped ) { return null; }
+
+    // save all to camera roll
+
     // handle case where user backs out from ObsEdit -> Suggestions -> Camera
     // and already has a taxon selected
     if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
@@ -125,10 +129,10 @@ const usePrepareStoreAndNavigate = (
       );
       return savePhotosToCameraGallery( evidenceToAdd, visionResult );
     }
-    return createObsWithCameraPhotos( cameraPreviewUris, visionResult );
+    return createObsWithCameraPhotos( rotatedOriginalCameraPhotos, visionResult );
   }, [
     addEvidence,
-    cameraPreviewUris,
+    rotatedOriginalCameraPhotos,
     checkmarkTapped,
     createObsWithCameraPhotos,
     currentObservation,

@@ -107,12 +107,12 @@ const StandardCamera = ( {
 
   const { t } = useTranslation( );
 
-  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
   const galleryUris = useStore( state => state.galleryUris );
 
   const totalObsPhotoUris = useMemo(
-    ( ) => [...cameraPreviewUris, ...galleryUris].length,
-    [cameraPreviewUris, galleryUris]
+    ( ) => [...rotatedOriginalCameraPhotos, ...galleryUris].length,
+    [rotatedOriginalCameraPhotos, galleryUris]
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
@@ -164,7 +164,7 @@ const StandardCamera = ( {
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
-        cameraPreviewUris={cameraPreviewUris}
+        rotatedOriginalCameraPhotos={rotatedOriginalCameraPhotos}
       />
       <View className="relative flex-1">
         {device && (

@@ -34,6 +34,7 @@ import {
   useTranslation
 } from "sharedHooks";
 
+import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
 import useDeleteObservations from "./hooks/useDeleteObservations";
 import MyObservations from "./MyObservations";
 
@@ -134,6 +135,8 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
+  // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
+  useClearRotatedOriginalPhotos( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );

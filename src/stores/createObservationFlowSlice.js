@@ -3,8 +3,6 @@ import { Realm } from "@realm/react";
 import _ from "lodash";
 
 const DEFAULT_STATE = {
-  // cameraPreviewUris uses the photoUploads photo, rather than the original or rotated photo
-  cameraPreviewUris: [],
   cameraRollUris: [],
   comment: "",
   currentObservation: {},
@@ -16,11 +14,8 @@ const DEFAULT_STATE = {
   // Track when any obs was last marked as viewed so we know when to update
   // the notifications indicator
   observationMarkedAsViewedAt: null,
-  // this is mapped as [photoUploads]: { tmp } where the resized photo
-  // for upload is the key, and the value is the original or rotated photo in the
-  // temporary directory
-  originalOrRotatedCameraUrisMap: {},
   photoEvidenceUris: [],
+  rotatedOriginalCameraPhotos: [],
   savingPhoto: false,
   unsavedChanges: false
 };
@@ -80,7 +75,7 @@ const createObservationFlowSlice = set => ( {
   ...DEFAULT_STATE,
   deletePhotoFromObservation: uri => set( state => ( {
     photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
-    cameraPreviewUris: [..._.pull( state.cameraPreviewUris, uri )],
+    rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
     evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
     observations: removeObsPhotoFromObservation(
       state.observations[state.currentObservationIndex],
@@ -111,10 +106,9 @@ const createObservationFlowSlice = set => ( {
   } ),
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
-    cameraPreviewUris: options?.cameraPreviewUris || state.cameraPreviewUris,
-    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto,
-    originalOrRotatedCameraUrisMap:
-      options?.originalOrRotatedCameraUrisMap || state.originalOrRotatedCameraUrisMap
+    rotatedOriginalCameraPhotos:
+      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos,
+    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,
