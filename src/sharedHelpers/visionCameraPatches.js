@@ -3,7 +3,7 @@
 */
 
 import {
-  rotatedTemporaryPhotosPath
+  rotatedOriginalPhotosPath
 } from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import { isTablet } from "react-native-device-info";
@@ -85,23 +85,21 @@ export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
 // Because the photos coming from the vision camera are not oriented correctly, we
 // rotate them with image-resizer as a first step, replacing the original photo.
 export const rotatePhotoPatch = async ( photo, rotation ) => {
-  const tempPath = rotatedTemporaryPhotosPath;
-  await RNFS.mkdir( tempPath );
+  const path = rotatedOriginalPhotosPath;
+  await RNFS.mkdir( path );
   // Rotate the image with ImageResizer
-  const tempUri = await resizeImage(
+  const image = await resizeImage(
     photo.path,
     {
       width: photo.width,
       height: photo.height,
       rotation,
-      outputPath: tempPath
+      outputPath: path
     }
   );
-
   // Remove original photo
   await RNFS.unlink( photo.path );
-  // Replace original photo with rotated photo
-  await RNFS.moveFile( tempUri, photo.path );
+  return image;
 };
 
 // Needed for react-native-vision-camera v3.9.0

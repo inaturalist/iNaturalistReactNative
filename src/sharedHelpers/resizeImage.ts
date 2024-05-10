@@ -26,7 +26,6 @@ const resizeImage = async (
 
   // Note that the default behavior of this library is to resize to contain,
   // i.e. it will not adjust aspect ratio
-  logger.info( "outputPath", outputPath );
   const resizedPhoto = await ImageResizer.createResizedImage(
     pathOrUri,
     width, // maxWidth

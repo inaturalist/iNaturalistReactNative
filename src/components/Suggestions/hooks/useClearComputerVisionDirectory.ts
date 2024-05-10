@@ -1,6 +1,6 @@
 import { computerVisionPath } from "appConstants/paths.ts";
 import { useEffect } from "react";
-import RNFS from "react-native-fs";
+import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 
 const useClearComputerVisionDirectory = ( ) => {
   useEffect( ( ) => {
@@ -10,14 +10,7 @@ const useClearComputerVisionDirectory = ( ) => {
     // before, which was storing an infinite amount of resized images used temporarily
     // for the online API
     const clearComputerVisionDirectory = async ( ) => {
-      const files = await RNFS.readDir( computerVisionPath );
-
-      const clearDirectory = files.forEach( async ( { path } ) => {
-        const pathExists = await RNFS.exists( path );
-        if ( !pathExists ) { return; }
-        await RNFS.unlink( path );
-      } );
-      return clearDirectory;
+      await removeAllFilesFromDirectory( computerVisionPath );
     };
 
     clearComputerVisionDirectory( );

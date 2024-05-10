@@ -107,12 +107,13 @@ const StandardCamera = ( {
 
   const { t } = useTranslation( );
 
-  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
+  const resetEvidenceToAdd = useStore( state => state.resetEvidenceToAdd );
   const galleryUris = useStore( state => state.galleryUris );
 
   const totalObsPhotoUris = useMemo(
-    ( ) => [...cameraPreviewUris, ...galleryUris].length,
-    [cameraPreviewUris, galleryUris]
+    ( ) => [...rotatedOriginalCameraPhotos, ...galleryUris].length,
+    [rotatedOriginalCameraPhotos, galleryUris]
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
@@ -125,7 +126,8 @@ const StandardCamera = ( {
   useFocusEffect(
     useCallback( ( ) => {
       // Reset camera zoom every time we get into a fresh camera view
-      resetZoom();
+      resetZoom( );
+      resetEvidenceToAdd( );
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] )
@@ -164,7 +166,7 @@ const StandardCamera = ( {
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
-        cameraPreviewUris={cameraPreviewUris}
+        rotatedOriginalCameraPhotos={rotatedOriginalCameraPhotos}
       />
       <View className="relative flex-1">
         {device && (
@@ -197,7 +199,7 @@ const StandardCamera = ( {
         />
       </View>
       <CameraNavButtons
-        disabled={disallowAddingPhotos}
+        disabled={disallowAddingPhotos || takingPhoto}
         handleCheckmarkPress={handleCheckmarkPress}
         handleClose={handleBackButtonPress}
         photosTaken={photosTaken}

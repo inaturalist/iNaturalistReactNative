@@ -4,4 +4,4 @@ export const computerVisionPath = `${RNFS.DocumentDirectoryPath}/computerVisionS
 
 export const photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
 
-export const rotatedTemporaryPhotosPath = `${RNFS.DocumentDirectoryPath}/rotatedTemporaryPhotos`;
+export const rotatedOriginalPhotosPath = `${RNFS.DocumentDirectoryPath}/rotatedOriginalPhotos`;
