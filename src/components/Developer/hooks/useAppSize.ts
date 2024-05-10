@@ -46,7 +46,7 @@ const sharedDirectories = [
   },
   {
     path: galleryPhotosPath,
-    directoryName: "GalleryPhotosPath"
+    directoryName: "GalleryPhotos"
   },
   {
     path: photoUploadPath,
