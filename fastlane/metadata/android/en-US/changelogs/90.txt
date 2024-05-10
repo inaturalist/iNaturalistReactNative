@@ -1,0 +1,13 @@
+UPDATED
+* Keyboard hidden by default on login / signup
+
+FIXED
+* SoundRecorder back button takes you back
+* Accurate metadata on MyObs immediately after upload
+* Suggestions use latest photo by default
+* Backing out of Suggestions to AICamera removes the prev photo
+* Improved disk usage & app binary size
+* Fixed issues w/ prev taxon appearing on ObsEdit and navigating to ObsEdit
+  inappropriately
+* Notifications show photos for obs not yet on device
+* Unsynced photos should survive app update
