@@ -14,10 +14,12 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
+  hasTopSuggestion?: boolean,
   loading: boolean
 }
 
 const SuggestionsEmpty = ( {
+  hasTopSuggestion = false,
   loading
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -37,9 +39,11 @@ const SuggestionsEmpty = ( {
     }
     return (
       <>
-        <Body1 className={textClass}>
-          {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
-        </Body1>
+        { !hasTopSuggestion && (
+          <Body1 className={textClass}>
+            {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
+          </Body1>
+        ) }
         {lastScreen === "CameraWithDevice" && (
           <>
             <Body1 className={textClass}>
