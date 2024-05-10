@@ -36,6 +36,7 @@ import {
 
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
 import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
+import useClearSyncedPhotosForUpload from "./hooks/useClearSyncedPhotosForUpload";
 import useDeleteObservations from "./hooks/useDeleteObservations";
 import MyObservations from "./MyObservations";
 
@@ -139,6 +140,7 @@ const MyObservationsContainer = ( ): Node => {
   // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
   useClearRotatedOriginalPhotos( );
   useClearGalleryPhotos( );
+  useClearSyncedPhotosForUpload( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );
