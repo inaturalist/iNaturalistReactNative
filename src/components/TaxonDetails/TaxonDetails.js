@@ -26,7 +26,7 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { Menu, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 
@@ -163,7 +163,7 @@ const TaxonDetails = ( ): Node => {
               large
               white
             >
-              <Menu.Item
+              <KebabMenu.Item
                 testID="MenuItem.OpenInBrowser"
                 onPress={( ) => {
                   openURLInBrowser( taxonUrl );
@@ -171,7 +171,7 @@ const TaxonDetails = ( ): Node => {
                 }}
                 title={t( "View-in-browser" )}
               />
-              <Menu.Item
+              <KebabMenu.Item
                 testID="MenuItem.Share"
                 onPress={async ( ) => {
                   const sharingOptions = {
