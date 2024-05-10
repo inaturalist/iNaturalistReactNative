@@ -6,9 +6,9 @@ import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
   BackButton,
   Body3,
+  DisplayTaxon,
   INatIcon,
-  INatIconButton,
-  TaxonResult
+  INatIconButton
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { useExplore } from "providers/ExploreContext.tsx";
@@ -64,15 +64,12 @@ const Header = ( {
                 testID="Explore.BackButton"
               />
             ) }
-            <View>
+            <View className="flex-1">
               {taxon
                 ? (
-                  <TaxonResult
+                  <DisplayTaxon
                     accessibilityLabel={t( "Change-taxon-filter" )}
-                    asListItem={false}
                     taxon={taxon}
-                    showInfoButton={false}
-                    showCheckmark={false}
                     handlePress={() => navigation.navigate( "ExploreTaxonSearch" )}
                   />
                 )
