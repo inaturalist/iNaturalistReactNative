@@ -95,6 +95,7 @@ const createObservationFlowSlice = set => ( {
       currentObservation: newObservation
     };
   } ),
+  resetEvidenceToAdd: ( ) => set( { evidenceToAdd: [] } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
   addCameraRollUri: uri => set( state => {
     const savedUris = state.cameraRollUris;

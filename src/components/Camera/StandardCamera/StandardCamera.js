@@ -108,6 +108,7 @@ const StandardCamera = ( {
   const { t } = useTranslation( );
 
   const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
+  const resetEvidenceToAdd = useStore( state => state.resetEvidenceToAdd );
   const galleryUris = useStore( state => state.galleryUris );
 
   const totalObsPhotoUris = useMemo(
@@ -125,7 +126,8 @@ const StandardCamera = ( {
   useFocusEffect(
     useCallback( ( ) => {
       // Reset camera zoom every time we get into a fresh camera view
-      resetZoom();
+      resetZoom( );
+      resetEvidenceToAdd( );
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] )
