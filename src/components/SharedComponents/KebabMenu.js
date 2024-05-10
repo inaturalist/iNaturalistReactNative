@@ -8,6 +8,8 @@ import { Menu } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import Body3 from "./Typography/Body3";
+
 type Props = {
   accessibilityHint?: string,
   accessibilityLabel?: string,
@@ -18,7 +20,6 @@ type Props = {
   visible: boolean,
   white?: boolean,
 }
-import Body3 from "./Typography/Body3";
 
 const KebabMenu = ( {
   accessibilityHint,
@@ -65,12 +66,18 @@ const KebabMenu = ( {
   );
 };
 
+type KebabMenuItemProps = {
+  accessibilityLabel?: string,
+  onPress: Function,
+  testID: string,
+  title: string
+}
 const KebabMenuItem = ( {
   accessibilityLabel,
   onPress,
   testID,
   title
-} ) => (
+}: KebabMenuItemProps ): Node => (
   <Pressable
     testID={testID}
     accessibilityRole="button"
