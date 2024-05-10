@@ -86,8 +86,8 @@ const Suggestions = ( {
   ), [onTaxonChosen, t] );
 
   const renderEmptyList = useCallback( ( ) => (
-    <SuggestionsEmpty loading={loading} />
-  ), [loading] );
+    <SuggestionsEmpty loading={loading} hasTopSuggestion={!!topSuggestion} />
+  ), [loading, topSuggestion] );
 
   /* eslint-disable i18next/no-literal-string */
   /* eslint-disable react/jsx-one-expression-per-line */
