@@ -1,5 +1,6 @@
 import {
   computerVisionPath,
+  galleryPhotosPath,
   photoUploadPath,
   rotatedOriginalPhotosPath
 } from "appConstants/paths.ts";
@@ -42,6 +43,10 @@ const sharedDirectories = [
   {
     path: computerVisionPath,
     directoryName: "ComputerVisionSuggestions"
+  },
+  {
+    path: galleryPhotosPath,
+    directoryName: "GalleryPhotosPath"
   },
   {
     path: photoUploadPath,
