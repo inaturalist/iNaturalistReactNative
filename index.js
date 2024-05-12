@@ -54,7 +54,7 @@ if (
 
 // I'm not convinced this ever catches anything... ~~~kueda 20240110
 const jsErrorHandler = ( e, isFatal ) => {
-  logger.info( "[DEBUG index.js] jsErrorHandler called with error: ", e );
+  // logger.info( "[DEBUG index.js] jsErrorHandler called with error: ", e );
   // not 100% sure why jsErrorHandler logs e.name and e.message as undefined sometimes,
   // but I believe it relates to this issue, which reports an unnecessary console.error
   // under the hood: https://github.com/a7ul/react-native-exception-handler/issues/143
@@ -63,10 +63,10 @@ const jsErrorHandler = ( e, isFatal ) => {
   // https://github.com/a7ul/react-native-exception-handler/issues/60
   // if ( !e.name && !e.message ) return;
   if ( isFatal ) {
-    logger.error( `JS Error: Fatal: ${e.stack}` );
+    logger.error( "Fatal JS Error: ", e );
     Alert.alert( "D'OH", `${e.message}\n\n${e.stack}` );
   } else {
-    logger.error( `JS Error: ${e.stack}` );
+    logger.error( "JS Error: ", e );
   }
 };
 

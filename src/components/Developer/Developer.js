@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { INatApiError } from "api/error";
 import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
 import {
@@ -108,6 +109,16 @@ const Developer = (): Node => {
         <Button
           onPress={() => { throw new Error( "Test error" ); }}
           text="Test error"
+          className="mb-5"
+        />
+        <Button
+          onPress={() => { throw new INatApiError( { error: "Test error", status: 422 } ); }}
+          text="Test INatApiError"
+          className="mb-5"
+        />
+        <Button
+          onPress={async () => { throw new Error( "Test error in promise" ); }}
+          text="Test unhandled promise rejection"
           className="mb-5"
         />
         <H1>Computer Vision</H1>
