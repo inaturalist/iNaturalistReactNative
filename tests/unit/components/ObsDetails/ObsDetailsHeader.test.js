@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import ObsDetailsHeader from "components/ObsDetails/ObsDetailsHeader";
+import ObsDetailsHeader from "components/ObsDetails/ObsDetailsHeader.tsx";
 import i18next from "i18next";
 import React from "react";
 import factory from "tests/factory";
