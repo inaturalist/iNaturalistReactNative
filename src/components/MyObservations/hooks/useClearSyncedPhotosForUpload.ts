@@ -1,11 +1,9 @@
 import { photoUploadPath } from "appConstants/paths.ts";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
-import RNFS from "react-native-fs";
 import Observation from "realmModels/Observation";
-import { log } from "sharedHelpers/logger";
 
-const logger = log.extend( "useClearSyncedPhotosForUpload" );
+import removeSyncedFilesFromDirectory from "../../../sharedHelpers/removeSyncedFilesFromDirectory";
 
 const { useQuery } = RealmContext;
 
@@ -20,7 +18,7 @@ const useClearSyncedPhotosForUpload = ( ) => {
     observations => observations.filtered( unsyncedObservationPhotos )
   );
 
-  const unsyncedLocalFilePaths = unsyncedObservations.map( observation => {
+  const unsyncedPhotos = unsyncedObservations.map( observation => {
     const { observationPhotos } = observation;
     const { photo } = observationPhotos[0];
     const { localFilePath } = photo;
@@ -32,25 +30,11 @@ const useClearSyncedPhotosForUpload = ( ) => {
 
   useEffect( ( ) => {
     const clearSyncedPhotos = async ( ) => {
-      const directoryExists = await RNFS.exists( photoUploadPath );
-      if ( !directoryExists ) { return null; }
-
-      const files = await RNFS.readDir( photoUploadPath );
-
-      const clearSynced = files.forEach( async ( { path, name } ) => {
-        const pathExists = await RNFS.exists( path );
-        if ( !pathExists ) { return; }
-        if ( unsyncedLocalFilePaths.includes( name ) ) {
-          return;
-        }
-        logger.info( "unlinking", path, "from photoUploads/" );
-        await RNFS.unlink( path );
-      } );
-      return clearSynced;
+      await removeSyncedFilesFromDirectory( photoUploadPath, unsyncedPhotos );
     };
 
     clearSyncedPhotos( );
-  }, [unsyncedLocalFilePaths] );
+  }, [unsyncedPhotos] );
   return null;
 };
 
