@@ -66,7 +66,9 @@ const jsErrorHandler = ( e, isFatal ) => {
     logger.error( "Fatal JS Error: ", e );
     Alert.alert( "D'OH", `${e.message}\n\n${e.stack}` );
   } else {
-    logger.error( "JS Error: ", e );
+    // logger.error( "JS Error: ", e );
+    // This should get logged by ErrorBoundary. For some reason this handler
+    // gets called too, so we don't want to double-report errors
   }
 };
 

@@ -28,7 +28,12 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch( error, info ) {
     this.setState( { info } );
-    logger.error( error, info.componentStack );
+    if ( info?.componentStack ) {
+      // componentStack is a little more informative than what's generally in
+      // stack, so put that in there before logging
+      error.stack = info.componentStack;
+    }
+    logger.error( error );
   }
 
   render() {
