@@ -2,8 +2,7 @@ import { photoUploadPath } from "appConstants/paths.ts";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
-
-import removeSyncedFilesFromDirectory from "../../../sharedHelpers/removeSyncedFilesFromDirectory";
+import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory.ts";
 
 const { useQuery } = RealmContext;
 
