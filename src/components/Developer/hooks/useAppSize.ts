@@ -2,7 +2,8 @@ import {
   computerVisionPath,
   galleryPhotosPath,
   photoUploadPath,
-  rotatedOriginalPhotosPath
+  rotatedOriginalPhotosPath,
+  soundUploadPath
 } from "appConstants/paths.ts";
 import _ from "lodash";
 import { useEffect, useState } from "react";
@@ -55,6 +56,10 @@ const sharedDirectories = [
   {
     path: rotatedOriginalPhotosPath,
     directoryName: "RotatedOriginalPhotos"
+  },
+  {
+    path: soundUploadPath,
+    directoryName: "SoundUploads"
   }
 ];
 

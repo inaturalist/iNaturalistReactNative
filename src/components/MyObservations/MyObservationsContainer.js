@@ -37,6 +37,7 @@ import {
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
 import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
 import useClearSyncedPhotosForUpload from "./hooks/useClearSyncedPhotosForUpload";
+import useClearSyncedSoundsForUpload from "./hooks/useClearSyncedSoundsForUpload";
 import useDeleteObservations from "./hooks/useDeleteObservations";
 import MyObservations from "./MyObservations";
 
@@ -141,6 +142,7 @@ const MyObservationsContainer = ( ): Node => {
   useClearRotatedOriginalPhotos( );
   useClearGalleryPhotos( );
   useClearSyncedPhotosForUpload( );
+  useClearSyncedSoundsForUpload( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );
