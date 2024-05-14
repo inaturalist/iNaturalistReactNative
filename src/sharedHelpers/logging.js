@@ -20,7 +20,8 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   }
   logger.warn(
     `reactQueryRetry, error: ${error.message}, failureCount: ${failureCount}, options:`,
-    options
+    options,
+    error
   );
   let shouldRetry = failureCount < 2;
   if (
