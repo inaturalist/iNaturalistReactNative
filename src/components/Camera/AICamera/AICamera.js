@@ -159,12 +159,13 @@ const AICamera = ( {
             ? (
               <TaxonResult
                 accessibilityLabel={t( "View-suggestions" )}
-                taxon={result?.taxon}
-                handleCheckmarkPress={handlePress}
-                testID={`AICamera.taxa.${result?.taxon?.id}`}
-                confidence={convertOfflineScoreToConfidence( result?.score )}
                 asListItem={false}
                 clearBackground
+                confidence={convertOfflineScoreToConfidence( result?.score )}
+                handleCheckmarkPress={handlePress}
+                hideNavButtons
+                taxon={result?.taxon}
+                testID={`AICamera.taxa.${result?.taxon?.id}`}
                 white
               />
             )

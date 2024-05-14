@@ -41,11 +41,12 @@ const TaxonSearch = ( ): Node => {
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       accessibilityLabel={t( "Choose-taxon" )}
-      taxon={taxon}
-      handleCheckmarkPress={() => setSelectedTaxon( taxon )}
-      testID={`Search.taxa.${taxon.id}`}
-      first={index === 0}
       fetchRemote={false}
+      first={index === 0}
+      handleCheckmarkPress={() => setSelectedTaxon( taxon )}
+      hideNavButtons
+      taxon={taxon}
+      testID={`Search.taxa.${taxon.id}`}
     />
   ), [setSelectedTaxon, t] );
 

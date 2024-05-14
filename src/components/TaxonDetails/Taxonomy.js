@@ -16,10 +16,11 @@ import { accessibleTaxonName, generateTaxonPieces } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
-  taxon?: Object
+  taxon?: Object,
+  hideNavButtons: boolean
 }
 
-const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
+const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
   const [viewChildren, setViewChildren] = useState( false );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -132,7 +133,7 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
         className="flex-row py-2 flex-wrap"
         key={id}
         disabled={isCurrentTaxon}
-        onPress={( ) => navigation.navigate( "TaxonDetails", { id } )}
+        onPress={( ) => navigation.navigate( "TaxonDetails", { id, hideNavButtons } )}
         accessibilityLabel={accessibleName}
         accessibilityState={{
           disabled: isCurrentTaxon
@@ -157,7 +158,7 @@ const Taxonomy = ( { taxon: currentTaxon }: Props ): Node => {
         )}
       </Pressable>
     );
-  }, [currentUser, navigation, t] );
+  }, [currentUser, hideNavButtons, navigation, t] );
 
   const displayTaxonomy = useCallback(
     ( ) => (
