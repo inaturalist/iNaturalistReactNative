@@ -88,6 +88,7 @@ const Explore = ( {
       hideBackButton={hideBackButton}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
+      updateTaxon={updateTaxon}
       onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );

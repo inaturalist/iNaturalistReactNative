@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
+import ExploreTaxonSearchModal from "components/Explore/Modals/ExploreTaxonSearchModal.tsx";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
   BackButton,
@@ -13,7 +14,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import { useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { Surface, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -27,7 +28,8 @@ type Props = {
   hideBackButton: boolean,
   loadingStatus: boolean,
   onPressCount?: Function,
-  openFiltersModal: Function
+  openFiltersModal: Function,
+  updateTaxon: Function
 }
 
 const Header = ( {
@@ -37,7 +39,8 @@ const Header = ( {
   hideBackButton,
   loadingStatus,
   onPressCount,
-  openFiltersModal
+  openFiltersModal,
+  updateTaxon
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -45,6 +48,7 @@ const Header = ( {
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
   const placeGuess = state.place_guess;
+  const [showTaxonSearch, setShowTaxonSearch] = useState( false );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
@@ -73,14 +77,14 @@ const Header = ( {
                     taxon={taxon}
                     showInfoButton={false}
                     showCheckmark={false}
-                    handlePress={() => navigation.navigate( "ExploreTaxonSearch" )}
+                    handlePress={() => setShowTaxonSearch( true )}
                   />
                 )
                 : (
                   <Pressable
                     accessibilityRole="button"
                     className="flex-row items-center"
-                    onPress={() => navigation.navigate( "ExploreTaxonSearch" )}
+                    onPress={() => setShowTaxonSearch( true )}
                   >
                     <INatIcon name="label-outline" size={15} />
                     <Body3 className="ml-3">{t( "All-organisms" )}</Body3>
@@ -125,6 +129,11 @@ const Header = ( {
           onPress={onPressCount}
         />
       </Surface>
+      <ExploreTaxonSearchModal
+        showModal={showTaxonSearch}
+        closeModal={() => { setShowTaxonSearch( false ); }}
+        updateTaxon={updateTaxon}
+      />
     </View>
   );
 };
