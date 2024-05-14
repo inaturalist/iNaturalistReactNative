@@ -131,6 +131,7 @@ const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
   delete filteredParams.wildStatus;
   delete filteredParams.reviewedFilter;
   delete filteredParams.photoLicense;
+  delete filteredParams.place;
 
   return filteredParams;
 };
