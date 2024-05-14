@@ -145,6 +145,16 @@ interface MapBoundaries {
   place_guess: string
 }
 
+interface PLACE {
+  display_name: string,
+  id: number,
+  place_type: number,
+  point_geojson: {
+    coordinates: Array<number>
+  },
+  type: string
+}
+
 type ExploreProviderProps = {children: React.ReactNode}
 type State = {
   verifiable: boolean,
@@ -153,6 +163,7 @@ type State = {
   // and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | undefined,
+  place: PLACE | null | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
@@ -198,6 +209,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: Object}
   | {
     type: EXPLORE_ACTION.SET_PLACE,
+    place: PLACE,
     placeId: number,
     placeName: string,
     lat: number,
@@ -322,6 +334,7 @@ function exploreReducer( state: State, action: Action ) {
       const placeState = {
         ...state,
         ...action.storedState,
+        place: action.place,
         place_id: action.placeId,
         place_guess: action.placeGuess,
         lat: action.lat,
