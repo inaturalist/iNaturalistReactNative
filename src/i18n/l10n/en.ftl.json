@@ -464,6 +464,10 @@
     "comment": "TODO this and many other uses of placeables are not currently translatable\nwithout knowing the vowel/consonant state of the first letter of the\nplaceable",
     "val": "Endemic to { $place }"
   },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Error"
+  },
   "Error-Could-Not-Fetch-Taxon": "Error: Could Not Fetch Taxon",
   "ERROR-LOADING-DQA": "ERROR LOADING IN DQA",
   "Error-title": {
@@ -578,6 +582,7 @@
   "Identify-an-organism-with-the-iNaturalist-AI-Camera": "Identify an organism with the iNaturalist AI Camera",
   "If-an-account-with-that-email-exists": "If an account with that email exists, we've sent password reset instructions to your email.",
   "If-you-want-to-collate-compare-promote": "If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.",
+  "If-youre-seeing-this-error": "If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.",
   "Import-Photos-From": "Import Photos From",
   "IMPORT-X-OBSERVATIONS": {
     "comment": "Shows the number of observations a user is about to import",
@@ -1057,6 +1062,7 @@
     "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
     "val": "Reset"
   },
+  "RESTART-APP": "RESTART APP",
   "Restore": {
     "comment": "Label for button that restores a withdrawn identification",
     "val": "Restore"
