@@ -9,7 +9,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback, useLayoutEffect, useRef, useState
+  useCallback, useState
 } from "react";
 import { FlatList } from "react-native";
 import { useIconicTaxa } from "sharedHooks";
@@ -24,12 +24,6 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 const ExploreTaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
-  // Ref for the input field
-  const inputRef = useRef( null );
-  // Focus input field on mount
-  useLayoutEffect( ( ) => {
-    inputRef.current?.focus();
-  }, [] );
 
   const iconicTaxa = useIconicTaxa( { reload: false } );
   const taxonList = useTaxonSearch( taxonQuery );
@@ -63,7 +57,6 @@ const ExploreTaxonSearch = ( ): Node => {
           handleTextChange={setTaxonQuery}
           value={taxonQuery}
           testID="SearchTaxon"
-          input={inputRef}
         />
       </View>
 
