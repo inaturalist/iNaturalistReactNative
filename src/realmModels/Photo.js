@@ -100,8 +100,10 @@ class Photo extends Realm.Object {
     return photo?.url || Photo.accessLocalPhoto( photo?.localFilePath );
   }
 
-  static deletePhotoFromDeviceStorage( url ) {
-    RNFS.unlink( Photo.accessLocalPhoto( url ) );
+  static deletePhotoFromDeviceStorage( path ) {
+    RNFS.exists( path ).then( fileExists => {
+      if ( fileExists ) RNFS.unlink( path );
+    } );
   }
 
   static schema = {

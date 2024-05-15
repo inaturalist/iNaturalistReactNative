@@ -30,48 +30,29 @@ const usePrepareStoreAndNavigate = (
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
-  const saveToiNaturalistNextAlbum = useCallback( async uri => {
-    try {
-      const savedPhotoUri = await CameraRoll.save( uri, {
-        type: "photo",
-        album: "iNaturalist Next"
-      } );
-      logger.info( "saved to camera roll: ", savedPhotoUri );
-      // Save these camera roll URIs, so later on observation editor can update
-      // the EXIF metadata of these photos, once we retrieve a location.
-      addCameraRollUri( savedPhotoUri );
-    } catch {
-      console.log( "couldn't save photo to iNaturalist Next album" );
-    }
-  }, [addCameraRollUri] );
-
-  const navigateToSuggestions = useCallback( visionResult => {
-    navigation.push( "Suggestions", {
-      lastScreen: "CameraWithDevice",
-      hasVisionSuggestion: visionResult
-    } );
-  }, [navigation] );
-
   // Save URIs to camera gallery (if a photo was taken using the app,
   // we want it accessible in the camera's folder, as if the user has taken those photos
   // via their own camera app).
-  const savePhotosToCameraGallery = useCallback( async ( uris, visionResult ) => {
-    if ( permissionGranted !== "granted" ) {
-      navigateToSuggestions( visionResult );
-    } else {
-      const savedToCameraRoll = Promise.all( uris.map( async uri => {
-        logger.info( "saving rotated original camera photo: ", uri );
-        await saveToiNaturalistNextAlbum( uri );
-      } ) );
-
-      if ( savedToCameraRoll ) {
-        navigateToSuggestions( visionResult );
+  const savePhotosToCameraGallery = useCallback( async uris => {
+    if ( permissionGranted !== "granted" ) return Promise.resolve( );
+    return Promise.all( uris.map( async uri => {
+      logger.info( "saving rotated original camera photo: ", uri );
+      try {
+        const savedPhotoUri = await CameraRoll.save( uri, {
+          type: "photo",
+          album: "iNaturalist Next"
+        } );
+        logger.info( "saved to camera roll: ", savedPhotoUri );
+        // Save these camera roll URIs, so later on observation editor can update
+        // the EXIF metadata of these photos, once we retrieve a location.
+        addCameraRollUri( savedPhotoUri );
+      } catch {
+        console.log( "couldn't save photo to iNaturalist Next album" );
       }
-    }
+    } ) );
   }, [
-    permissionGranted,
-    saveToiNaturalistNextAlbum,
-    navigateToSuggestions
+    addCameraRollUri,
+    permissionGranted
   ] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
@@ -103,38 +84,27 @@ const usePrepareStoreAndNavigate = (
       rotatedOriginalCameraPhotos
     );
 
-    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos, visionResult );
+    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos );
   }, [rotatedOriginalCameraPhotos, savePhotosToCameraGallery, setObservations] );
 
-  const prepareStateForObsEdit = useCallback( async visionResult => {
-    if ( !checkmarkTapped ) { return null; }
-
-    // save all to camera roll
-
-    // handle case where user backs out from ObsEdit -> Suggestions -> Camera
-    // and already has a taxon selected
-    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
-      const obsPhotos = await ObservationPhoto
-        .createObsPhotosWithPosition( evidenceToAdd, {
-          position: numOfObsPhotos,
-          local: true
-        } );
-      const updatedCurrentObservation = Observation
-        .appendObsPhotos( obsPhotos, currentObservation );
-      observations[currentObservationIndex] = updatedCurrentObservation;
-      updateObservations( observations );
-      logger.info(
-        "calling savePhotosToCameraGallery with evidence to add: ",
-        evidenceToAdd
-      );
-      return savePhotosToCameraGallery( evidenceToAdd, visionResult );
-    }
-    return createObsWithCameraPhotos( rotatedOriginalCameraPhotos, visionResult );
+  const updateObsWithCameraPhotos = useCallback( async ( ) => {
+    const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(
+      evidenceToAdd,
+      {
+        position: numOfObsPhotos,
+        local: true
+      }
+    );
+    const updatedCurrentObservation = Observation
+      .appendObsPhotos( obsPhotos, currentObservation );
+    observations[currentObservationIndex] = updatedCurrentObservation;
+    updateObservations( observations );
+    logger.info(
+      "calling savePhotosToCameraGallery with evidence to add: ",
+      evidenceToAdd
+    );
+    await savePhotosToCameraGallery( evidenceToAdd );
   }, [
-    addEvidence,
-    rotatedOriginalCameraPhotos,
-    checkmarkTapped,
-    createObsWithCameraPhotos,
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
@@ -144,9 +114,39 @@ const usePrepareStoreAndNavigate = (
     updateObservations
   ] );
 
-  return {
-    prepareStateForObsEdit: visionResult => prepareStateForObsEdit( visionResult )
-  };
+  const prepareStoreAndNavigate = useCallback( async ( visionResult = null ) => {
+    if ( !checkmarkTapped ) { return null; }
+
+    // save all to camera roll
+
+    // handle case where user backs out from ObsEdit -> Suggestions -> Camera
+    // and already has a taxon selected
+    // TODO this isn't checking for a selected taxon, and why is it checking
+    // for existing photos? If reached from addEvidence, you are always
+    // updating an existing obs
+    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
+      await updateObsWithCameraPhotos( );
+    } else {
+      await createObsWithCameraPhotos( rotatedOriginalCameraPhotos, visionResult );
+    }
+    if ( addEvidence ) {
+      return navigation.goBack( );
+    }
+    return navigation.push( "Suggestions", {
+      lastScreen: "CameraWithDevice",
+      hasVisionSuggestion: visionResult
+    } );
+  }, [
+    addEvidence,
+    rotatedOriginalCameraPhotos,
+    checkmarkTapped,
+    createObsWithCameraPhotos,
+    currentObservation,
+    navigation,
+    updateObsWithCameraPhotos
+  ] );
+
+  return prepareStoreAndNavigate;
 };
 
 export default usePrepareStoreAndNavigate;
