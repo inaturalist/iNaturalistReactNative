@@ -84,7 +84,7 @@ const TaxonResult = ( {
         classnames(
           "flex-row items-center justify-between",
           {
-            "px-4 py-3": asListItem,
+            "px-4": asListItem,
             "border-b-[1px] border-lightGray": asListItem,
             "border-t-[1px]": first
           }
@@ -93,7 +93,11 @@ const TaxonResult = ( {
       testID={testID}
     >
       <Pressable
-        className="flex-row items-center shrink"
+        className={
+          classnames( "flex-row items-center shrink", {
+            "py-3": asListItem
+          } )
+        }
         onPress={handlePress || navToTaxonDetails}
         accessible
         accessibilityRole="link"
@@ -126,7 +130,7 @@ const TaxonResult = ( {
             </View>
           )}
         </View>
-        <View className="shrink ml-3">
+        <View className="shrink ml-3 flex-1">
           <DisplayTaxonName
             taxon={usableTaxon}
             color={clearBackground && "text-white"}
