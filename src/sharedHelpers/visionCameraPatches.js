@@ -98,7 +98,8 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
     }
   );
   // Remove original photo
-  await RNFS.unlink( photo.path );
+  const fileExists = await RNFS.exists( photo.path );
+  if ( fileExists ) await RNFS.unlink( photo.path );
   return image;
 };
 

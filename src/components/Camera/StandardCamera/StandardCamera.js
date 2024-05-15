@@ -119,9 +119,14 @@ const StandardCamera = ( {
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
   const [dismissChanges, setDismissChanges] = useState( false );
+  const [newPhotoCount, setNewPhotoCount] = useState( 0 );
   const { screenWidth } = useDeviceOrientation( );
 
-  const photosTaken = totalObsPhotoUris > 0;
+  // newPhotoCount tracks photos taken in *this* instance of the camera. The
+  // camera might be instantiated with several rotatedOriginalCameraPhotos or
+  // galleryUris already in state, but we only want to show the CTA button
+  // when the user has taken a photo with *this* instance of the camera
+  const photosTaken = newPhotoCount > 0 && totalObsPhotoUris > 0;
 
   useFocusEffect(
     useCallback( ( ) => {
@@ -140,6 +145,7 @@ const StandardCamera = ( {
     // to sometimes pop back up on the next screen - see GH issue #629
     if ( !showDiscardSheet ) {
       if ( dismissChanges ) {
+        // TODO delete any new photos taken
         navigation.goBack();
       }
     }
@@ -151,6 +157,7 @@ const StandardCamera = ( {
       return;
     }
     await takePhoto( );
+    setNewPhotoCount( newPhotoCount + 1 );
   };
 
   const containerClasses = ["flex-1"];

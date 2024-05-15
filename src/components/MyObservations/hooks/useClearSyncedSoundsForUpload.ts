@@ -28,11 +28,7 @@ const useClearSyncedSoundsForUpload = ( ) => {
   } );
 
   useEffect( ( ) => {
-    const clearSyncedSounds = async ( ) => {
-      await removeSyncedFilesFromDirectory( soundUploadPath, unsyncedSounds );
-    };
-
-    clearSyncedSounds( );
+    removeSyncedFilesFromDirectory( soundUploadPath, unsyncedSounds );
   }, [unsyncedSounds] );
   return null;
 };

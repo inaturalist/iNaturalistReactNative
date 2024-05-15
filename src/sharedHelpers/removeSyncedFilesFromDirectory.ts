@@ -9,16 +9,18 @@ const removeSyncedFilesFromDirectory = async ( directoryPath, unsyncedFiles ) =>
 
   const files = await RNFS.readDir( directoryPath );
 
-  const clearSynced = files.forEach( async ( { path, name } ) => {
+  return Promise.all( files.map( async ( { path, name } ) => {
+    if ( unsyncedFiles.includes( name ) ) return;
     const pathExists = await RNFS.exists( path );
-    if ( !pathExists ) { return; }
-    if ( unsyncedFiles.includes( name ) ) {
-      return;
-    }
+    if ( !pathExists ) return;
     logger.info( "unlinking", path, "from", directoryPath );
-    await RNFS.unlink( path );
-  } );
-  return clearSynced;
+    try {
+      await RNFS.unlink( path );
+    } catch ( unlinkError ) {
+      if ( !unlinkError.message.match( /no such file/ ) ) throw unlinkError;
+      // If we catch the no such file error, that's fine. We just want it gone.
+    }
+  } ) );
 };
 
 export default removeSyncedFilesFromDirectory;

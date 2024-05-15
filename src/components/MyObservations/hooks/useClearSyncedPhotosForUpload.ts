@@ -28,11 +28,7 @@ const useClearSyncedPhotosForUpload = ( ) => {
   } );
 
   useEffect( ( ) => {
-    const clearSyncedPhotos = async ( ) => {
-      await removeSyncedFilesFromDirectory( photoUploadPath, unsyncedPhotos );
-    };
-
-    clearSyncedPhotos( );
+    removeSyncedFilesFromDirectory( photoUploadPath, unsyncedPhotos );
   }, [unsyncedPhotos] );
   return null;
 };
