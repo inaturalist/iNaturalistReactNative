@@ -48,6 +48,7 @@ const TaxonResult = ( {
   fromLocal = true,
   handleCheckmarkPress,
   handlePress,
+  hideNavButtons = false,
   showInfoButton = true,
   showCheckmark = true,
   taxon: taxonProp,
@@ -72,7 +73,10 @@ const TaxonResult = ( {
   const taxonImage = { uri: usableTaxon?.default_photo?.url };
   const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
 
-  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: usableTaxon?.id } );
+  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", {
+    id: usableTaxon?.id,
+    hideNavButtons
+  } );
 
   return (
     <View
