@@ -26,7 +26,10 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
     if ( unsynced ) {
       setObservations( [observation] );
       navigation.navigate( "NoBottomTabStackNavigator", {
-        screen: "ObsEdit"
+        screen: "ObsEdit",
+        params: {
+          lastScreen: "ObsList"
+        }
       } );
     } else {
       navigation.navigate( "ObsDetails", { uuid } );
