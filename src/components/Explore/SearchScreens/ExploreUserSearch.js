@@ -80,15 +80,16 @@ const ExploreUserSearch = ( ): Node => {
         />
       </View>
       <FlashList
-        data={userList}
-        initialNumToRender={5}
-        estimatedItemSize={100}
-        testID="SearchUserList"
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        ListHeaderComponent={renderItemSeparator}
         ItemSeparatorComponent={renderItemSeparator}
+        ListHeaderComponent={renderItemSeparator}
         accessible
+        data={userList}
+        estimatedItemSize={100}
+        initialNumToRender={5}
+        keyExtractor={item => item.id}
+        keyboardShouldPersistTaps="handled"
+        renderItem={renderItem}
+        testID="SearchUserList"
       />
     </ViewWrapper>
   );
