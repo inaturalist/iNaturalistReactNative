@@ -3,14 +3,14 @@ import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "removeSyncedFilesFromDirectory" );
 
-const removeSyncedFilesFromDirectory = async ( directoryPath, unsyncedFiles ) => {
+const removeSyncedFilesFromDirectory = async ( directoryPath, filesToKeep = [] ) => {
   const directoryExists = await RNFS.exists( directoryPath );
   if ( !directoryExists ) { return null; }
 
   const files = await RNFS.readDir( directoryPath );
 
   return Promise.all( files.map( async ( { path, name } ) => {
-    if ( unsyncedFiles.includes( name ) ) return;
+    if ( filesToKeep.includes( name ) ) return;
     const pathExists = await RNFS.exists( path );
     if ( !pathExists ) return;
     logger.info( "unlinking", path, "from", directoryPath );
