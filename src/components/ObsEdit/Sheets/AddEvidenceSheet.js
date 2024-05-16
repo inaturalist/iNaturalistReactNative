@@ -55,6 +55,10 @@ const AddEvidenceSheet = ( {
             { screen: "SoundRecorder", params: { addEvidence: true } }
           );
         }
+        // make sure backdrop press is handled
+        if ( onClose && position === -1 ) {
+          onClose( );
+        }
       }}
     >
       <View className="items-center p-5">
