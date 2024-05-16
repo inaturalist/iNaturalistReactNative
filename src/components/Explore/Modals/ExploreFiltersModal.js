@@ -7,15 +7,21 @@ import React from "react";
 import FilterModal from "./FilterModal";
 
 type Props = {
-    showModal: boolean,
-    closeModal: Function,
-    updateTaxon: Function,
-  };
+  showModal: boolean,
+  closeModal: Function,
+  updateTaxon: Function,
+  updateLocation: Function,
+  updateUser: Function,
+  updateProject: Function
+};
 
 const ExploreFiltersModal = ( {
   showModal,
   closeModal,
-  updateTaxon
+  updateTaxon,
+  updateLocation,
+  updateUser,
+  updateProject
 }: Props ): Node => (
   <Modal
     showModal={showModal}
@@ -26,6 +32,9 @@ const ExploreFiltersModal = ( {
       <FilterModal
         closeModal={closeModal}
         updateTaxon={updateTaxon}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
       />
     )}
   />

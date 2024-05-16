@@ -1,7 +1,7 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
+import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal.tsx";
 import ExploreTaxonSearchModal from "components/Explore/Modals/ExploreTaxonSearchModal.tsx";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
@@ -29,7 +29,8 @@ type Props = {
   loadingStatus: boolean,
   onPressCount?: Function,
   openFiltersModal: Function,
-  updateTaxon: Function
+  updateTaxon: Function,
+  updateLocation: Function
 }
 
 const Header = ( {
@@ -40,15 +41,16 @@ const Header = ( {
   loadingStatus,
   onPressCount,
   openFiltersModal,
-  updateTaxon
+  updateTaxon,
+  updateLocation
 }: Props ): Node => {
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
   const theme = useTheme( );
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
   const placeGuess = state.place_guess;
   const [showTaxonSearch, setShowTaxonSearch] = useState( false );
+  const [showLocationSearch, setShowLocationSearch] = useState( false );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
@@ -92,7 +94,7 @@ const Header = ( {
                 )}
               <Pressable
                 accessibilityRole="button"
-                onPress={( ) => navigation.navigate( "ExploreLocationSearch" )}
+                onPress={( ) => setShowLocationSearch( true )}
                 className="flex-row items-center pt-3"
               >
                 <INatIcon name="location" size={15} />
@@ -133,6 +135,11 @@ const Header = ( {
         showModal={showTaxonSearch}
         closeModal={() => { setShowTaxonSearch( false ); }}
         updateTaxon={updateTaxon}
+      />
+      <ExploreLocationSearchModal
+        showModal={showLocationSearch}
+        closeModal={() => { setShowLocationSearch( false ); }}
+        updateLocation={updateLocation}
       />
     </View>
   );

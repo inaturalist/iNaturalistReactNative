@@ -1,9 +1,10 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import fetchSearchResults from "api/search";
 import {
+  Heading4,
+  INatIconButton,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
@@ -22,9 +23,13 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4
 } );
 
-const ExploreUserSearch = ( ): Node => {
+type Props = {
+  closeModal: Function,
+  updateUser: Function
+};
+
+const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
-  const navigation = useNavigation( );
   const { t } = useTranslation();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
@@ -46,8 +51,9 @@ const ExploreUserSearch = ( ): Node => {
       // TODO: user facing error message
       return;
     }
-    navigation.navigate( "Explore", { user } );
-  }, [navigation] );
+    updateUser( user );
+    closeModal();
+  }, [updateUser, closeModal] );
 
   const renderItem = useCallback(
     ( { item } ) => (
@@ -69,6 +75,17 @@ const ExploreUserSearch = ( ): Node => {
 
   return (
     <ViewWrapper className="flex-1">
+      <View className="flex-row justify-center p-5 bg-white">
+        <INatIconButton
+          testID="ExploreTaxonSearch.close"
+          size={18}
+          icon="back"
+          className="absolute top-2 left-3 z-10"
+          onPress={( ) => closeModal()}
+          accessibilityLabel={t( "SEARCH-USERS" )}
+        />
+        <Heading4>{t( "SEARCH-USERS" )}</Heading4>
+      </View>
       <View
         className="bg-white px-6 pt-2 pb-8"
         style={DROP_SHADOW}

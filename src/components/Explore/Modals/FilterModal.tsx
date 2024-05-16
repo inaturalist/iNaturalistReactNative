@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
@@ -44,7 +43,10 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
+import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
+import ExploreUserSearchModal from "./ExploreUserSearchModal";
 
 const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
@@ -56,14 +58,19 @@ const { useRealm } = RealmContext;
 interface Props {
   closeModal: Function,
   updateTaxon: Function,
+  updateLocation: Function,
+  updateUser: Function,
+  updateProject: Function
 }
 
 const FilterModal = ( {
   closeModal,
-  updateTaxon
+  updateTaxon,
+  updateLocation,
+  updateUser,
+  updateProject
 }: Props ) => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const realm = useRealm();
   const currentUser = useCurrentUser();
 
@@ -119,6 +126,9 @@ const FilterModal = ( {
   const CONFIRMATION = "CONFIRMATION";
   const [openSheet, setOpenSheet] = useState( NONE );
   const [showTaxonSearchModal, setShowTaxonSearchModal] = useState( false );
+  const [showLocationSearchModal, setShowLocationSearchModal] = useState( false );
+  const [showUserSearchModal, setShowUserSearchModal] = useState( false );
+  const [showProjectSearchModal, setShowProjectSearchModal] = useState( false );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -725,7 +735,7 @@ const FilterModal = ( {
                     <Button
                       text={t( "EDIT-LOCATION" )}
                       onPress={() => {
-                        navigation.navigate( "ExploreLocationSearch" );
+                        setShowLocationSearchModal( true );
                       }}
                       accessibilityLabel={t( "Edit" )}
                     />
@@ -735,7 +745,7 @@ const FilterModal = ( {
                   <Button
                     text={t( "SEARCH-FOR-A-LOCATION" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreLocationSearch" );
+                      setShowLocationSearchModal( true );
                     }}
                     accessibilityLabel={t( "Search" )}
                   />
@@ -794,7 +804,7 @@ const FilterModal = ( {
                     accessibilityRole="button"
                     accessibilityLabel={t( "Change-user" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreUserSearch" );
+                      setShowUserSearchModal( true );
                     }}
                   >
                     <UserListItem
@@ -809,7 +819,7 @@ const FilterModal = ( {
                   <Button
                     text={t( "FILTER-BY-A-USER" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreUserSearch" );
+                      setShowUserSearchModal( true );
                     }}
                     accessibilityLabel={t( "Filter" )}
                   />
@@ -828,7 +838,7 @@ const FilterModal = ( {
                     accessibilityRole="button"
                     accessibilityLabel={t( "Change-project" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreProjectSearch" );
+                      setShowProjectSearchModal( true );
                     }}
                   >
                     <ProjectListItem item={project} />
@@ -839,7 +849,7 @@ const FilterModal = ( {
                   <Button
                     text={t( "FILTER-BY-A-PROJECT" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreProjectSearch" );
+                      setShowProjectSearchModal( true );
                     }}
                     accessibilityLabel={t( "Filter" )}
                   />
@@ -1276,6 +1286,21 @@ const FilterModal = ( {
         showModal={showTaxonSearchModal}
         closeModal={() => { setShowTaxonSearchModal( false ); }}
         updateTaxon={updateTaxon}
+      />
+      <ExploreLocationSearchModal
+        showModal={showLocationSearchModal}
+        closeModal={() => { setShowLocationSearchModal( false ); }}
+        updateLocation={updateLocation}
+      />
+      <ExploreUserSearchModal
+        showModal={showUserSearchModal}
+        closeModal={() => { setShowUserSearchModal( false ); }}
+        updateUser={updateUser}
+      />
+      <ExploreProjectSearchModal
+        showModal={showProjectSearchModal}
+        closeModal={() => { setShowProjectSearchModal( false ); }}
+        updateProject={updateProject}
       />
     </View>
   );

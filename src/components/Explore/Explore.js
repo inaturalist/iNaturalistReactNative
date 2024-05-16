@@ -50,7 +50,10 @@ type Props = {
   queryParams: Object,
   showFiltersModal: boolean,
   updateCount: Function,
-  updateTaxon: Function
+  updateTaxon: Function,
+  updateLocation: Function,
+  updateUser: Function,
+  updateProject: Function
 }
 
 const Explore = ( {
@@ -63,7 +66,10 @@ const Explore = ( {
   queryParams,
   showFiltersModal,
   updateCount,
-  updateTaxon
+  updateTaxon,
+  updateLocation,
+  updateUser,
+  updateProject
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -89,6 +95,7 @@ const Explore = ( {
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
       updateTaxon={updateTaxon}
+      updateLocation={updateLocation}
       onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );
@@ -237,6 +244,9 @@ const Explore = ( {
         showModal={showFiltersModal}
         closeModal={closeFiltersModal}
         updateTaxon={updateTaxon}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
       />
       {renderSheet()}
     </>
