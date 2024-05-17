@@ -52,6 +52,7 @@ const ExploreContainerWithContext = ( ): Node => {
       navigation.setParams( { place } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
+        place:place,
         placeId: place?.id,
         placeGuess: place?.display_name
       } );
