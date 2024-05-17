@@ -809,8 +809,7 @@ const FilterModal = ( {
                   >
                     <UserListItem
                       item={{ user }}
-                      count={user.observations_count}
-                      countText="X-Observations"
+                      countText={t( "X-Observations", { count: user.observations_count } )}
                     />
                     <INatIcon name="edit" size={22} />
                   </Pressable>

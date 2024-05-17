@@ -1,6 +1,7 @@
 // @flow
 import createFlag from "api/flags";
 import {
+  BackButton,
   Body1, Body3, Button, Checkbox, Subheading1
 } from "components/SharedComponents";
 import {
@@ -17,7 +18,6 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextInput } from "react-native-paper";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 type Props = {
@@ -103,7 +103,7 @@ const FlagItemModal = ( {
     >
       <SafeAreaView className="flex-1">
         <View className="flex-row-reverse justify-between p-6 border-b">
-          <IconMaterial name="close" onPress={closeFlagItemModal} size={30} />
+          <BackButton onPress={closeFlagItemModal} />
           <Subheading1 className="text-xl">
             {t( "Flag-An-Item" )}
           </Subheading1>

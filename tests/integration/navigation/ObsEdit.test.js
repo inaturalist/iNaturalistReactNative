@@ -31,7 +31,8 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
     }
   };
 } );
@@ -105,6 +106,8 @@ describe( "ObsEdit", ( ) => {
         expect( await screen.findByText( /Edit Observation/ ) ).toBeTruthy( );
         expect( await screen.findByText( syncedObservation.taxon.name ) ).toBeTruthy( );
       } );
+
+      it.todo( "should show photos when reached from ObsDetails" );
     } );
   } );
 } );

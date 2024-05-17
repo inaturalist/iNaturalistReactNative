@@ -121,6 +121,7 @@ function renderHook( renderCallback, options = {} ) {
 }
 
 export {
+  queryClient,
   renderApp,
   renderAppWithComponent,
   renderAppWithObservations,

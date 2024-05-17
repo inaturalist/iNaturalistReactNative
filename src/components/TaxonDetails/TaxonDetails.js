@@ -26,7 +26,7 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { Menu, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 
@@ -50,7 +50,7 @@ const TaxonDetails = ( ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { id } = params;
+  const { id, hideNavButtons } = params;
   const { t } = useTranslation( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const { remoteUser } = useUserMe( );
@@ -123,7 +123,7 @@ const TaxonDetails = ( ): Node => {
       <View className="mx-3 mb-3">
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
-        <Taxonomy taxon={taxon} />
+        <Taxonomy taxon={taxon} hideNavButtons={hideNavButtons} />
         <TaxonMapPreview taxon={taxon} />
       </View>
     );
@@ -156,75 +156,79 @@ const TaxonDetails = ( ): Node => {
             />
           </View>
 
-          <View className="absolute right-5 top-5">
-            <KebabMenu
-              visible={kebabMenuVisible}
-              setVisible={setKebabMenuVisible}
-              large
-              white
-            >
-              <Menu.Item
-                testID="MenuItem.OpenInBrowser"
-                onPress={( ) => {
-                  openURLInBrowser( taxonUrl );
-                  setKebabMenuVisible( false );
-                }}
-                title={t( "View-in-browser" )}
-              />
-              <Menu.Item
-                testID="MenuItem.Share"
-                onPress={async ( ) => {
-                  const sharingOptions = {
-                    url: "",
-                    message: ""
-                  };
+          {!hideNavButtons && (
+            <View className="absolute right-5 top-5">
+              <KebabMenu
+                visible={kebabMenuVisible}
+                setVisible={setKebabMenuVisible}
+                large
+                white
+              >
+                <KebabMenu.Item
+                  testID="MenuItem.OpenInBrowser"
+                  onPress={( ) => {
+                    openURLInBrowser( taxonUrl );
+                    setKebabMenuVisible( false );
+                  }}
+                  title={t( "View-in-browser" )}
+                />
+                <KebabMenu.Item
+                  testID="MenuItem.Share"
+                  onPress={async ( ) => {
+                    const sharingOptions = {
+                      url: "",
+                      message: ""
+                    };
 
-                  if ( Platform.OS === "ios" ) {
-                    sharingOptions.url = taxonUrl;
-                  } else {
-                    sharingOptions.message = taxonUrl;
-                  }
+                    if ( Platform.OS === "ios" ) {
+                      sharingOptions.url = taxonUrl;
+                    } else {
+                      sharingOptions.message = taxonUrl;
+                    }
 
-                  setKebabMenuVisible( false );
+                    setKebabMenuVisible( false );
 
-                  try {
-                    return await Share.share( sharingOptions );
-                  } catch ( err ) {
-                    Alert.alert( err.message );
-                    return null;
-                  }
-                }}
-                title={t( "Share" )}
-              />
-            </KebabMenu>
-          </View>
+                    try {
+                      return await Share.share( sharingOptions );
+                    } catch ( err ) {
+                      Alert.alert( err.message );
+                      return null;
+                    }
+                  }}
+                  title={t( "Share" )}
+                />
+              </KebabMenu>
+            </View>
+          )}
           <View className="absolute bottom-0 p-5 w-full flex-row items-center">
             <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
-            <INatIconButton
-              icon="compass-rose-outline"
-              onPress={( ) => navigation.navigate( "TabNavigator", {
-                screen: "TabStackNavigator",
-                params: {
-                  screen: "Explore",
+            {!hideNavButtons && (
+              <INatIconButton
+                icon="compass-rose-outline"
+                onPress={( ) => navigation.navigate( "TabNavigator", {
+                  screen: "TabStackNavigator",
                   params: {
-                    taxon,
-                    worldwide: true,
-                    resetStoredParams: true
+                    screen: "Explore",
+                    params: {
+                      taxon,
+                      worldwide: true,
+                      resetStoredParams: true
+                    }
                   }
-                }
-              } )}
-              accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
-              accessibilityHint={t( "Navigates-to-explore" )}
-              size={30}
-              color={theme.colors.onPrimary}
-              // FWIW, IconButton has a little margin we can control and a
-              // little padding that we can't control, so the negative margin
-              // here is to ensure the visible icon is flush with the edge of
-              // the container
-              className="ml-5 bg-inatGreen rounded-full"
-              mode="contained"
-              preventTransparency
-            />
+                } )}
+                accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
+                accessibilityHint={t( "Navigates-to-explore" )}
+                size={30}
+                color={theme.colors.onPrimary}
+                // FWIW, IconButton has a little margin we can control and a
+                // little padding that we can't control, so the negative margin
+                // here is to ensure the visible icon is flush with the edge of
+                // the container
+                className="ml-5 bg-inatGreen rounded-full"
+                mode="contained"
+                preventTransparency
+              />
+            )}
           </View>
         </View>
         <View className="bg-white pt-5 h-full flex-1">

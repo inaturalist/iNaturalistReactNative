@@ -211,7 +211,7 @@ fastlane beta
 fastlane prod
 ```
 
-### Example: Build & Release for Internal Testing
+### Example: Build & Release for People Outside the Dev Team
 
 1. Ensure all tests are passing on the main branch
 1. Manual testing
@@ -238,4 +238,5 @@ fastlane prod
 1. Commit changes
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
 1. `bundle exec fastlane release` to build and push a release to Github
-1. `bundle exec fastlane internal` to distribute the builds to TestFlight and the Play Store
+1. `bundle exec fastlane internal` to distribute the builds to internal test groups in TestFlight and the Play Store
+1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store

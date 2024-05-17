@@ -59,7 +59,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     ( { item } ) => (
       <UserListItem
         item={{ user: item }}
-        countText="X-Observations"
+        countText={t( "X-Observations", { count: item.observations_count } )}
         accessibilityLabel={t( "Select-user" )}
         onPress={( ) => onUserSelected( item )}
       />
@@ -97,15 +97,16 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
         />
       </View>
       <FlashList
-        data={userList}
-        initialNumToRender={5}
-        estimatedItemSize={100}
-        testID="SearchUserList"
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        ListHeaderComponent={renderItemSeparator}
         ItemSeparatorComponent={renderItemSeparator}
+        ListHeaderComponent={renderItemSeparator}
         accessible
+        data={userList}
+        estimatedItemSize={100}
+        initialNumToRender={5}
+        keyExtractor={item => item.id}
+        keyboardShouldPersistTaps="handled"
+        renderItem={renderItem}
+        testID="SearchUserList"
       />
     </ViewWrapper>
   );
