@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
   Body3,
@@ -13,10 +12,13 @@ import {
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
+import {
+  EXPLORE_ACTION,
+  useExplore
+} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useEffect,
   useState
 } from "react";
 import { FlatList } from "react-native";
@@ -34,15 +36,18 @@ type Props = {
 };
 
 const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node => {
-  const navigation = useNavigation();
   const { t } = useTranslation( );
+  const { dispatch, setExploreLocation } = useExplore( );
 
   const [locationName, setLocationName] = useState( "" );
   const [permissionNeeded, setPermissionNeeded] = useState( false );
 
   const resetPlace = useCallback(
-    ( ) => { updateLocation( "worldwide" ); },
-    [updateLocation]
+    ( ) => {
+      updateLocation( "worldwide" );
+      closeModal();
+    },
+    [updateLocation, closeModal]
   );
 
   const { data: placeResults } = useAuthenticatedQuery(
@@ -86,18 +91,6 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
     ),
     [onPlaceSelected]
   );
-
-  useEffect( ( ) => {
-    const resetButton = ( ) => (
-      <Body3 onPress={resetPlace}>
-        {t( "Reset" )}
-      </Body3>
-    );
-
-    navigation.setOptions( {
-      headerRight: resetButton
-    } );
-  }, [navigation, t, resetPlace] );
 
   const data = placeResults || [];
 
@@ -151,9 +144,11 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
       <LocationPermissionGate
         permissionNeeded={permissionNeeded}
         withoutNavigation
-        onPermissionGranted={( ) => {
+        onPermissionGranted={async ( ) => {
           setPermissionNeeded( false );
-          navigation.navigate( "Explore", { nearby: true } );
+          const exploreLocation = await setExploreLocation( );
+          dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
+          closeModal();
         }}
         onPermissionDenied={( ) => {
           setPermissionNeeded( false );

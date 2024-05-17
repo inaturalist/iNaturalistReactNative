@@ -48,12 +48,14 @@ const ExploreContainerWithContext = ( ): Node => {
         placeId: null,
         placeGuess: worldwidePlaceText
       } );
+    } else {
+      navigation.setParams( { place } );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeId: place?.id,
+        placeGuess: place?.display_name
+      } );
     }
-    dispatch( {
-      type: EXPLORE_ACTION.SET_PLACE,
-      placeId: place?.id,
-      placeGuess: place?.display_name
-    } );
   };
 
   const updateUser = ( user: Object ) => {
