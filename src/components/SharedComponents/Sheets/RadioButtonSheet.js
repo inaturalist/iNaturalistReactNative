@@ -15,7 +15,8 @@ type Props = {
   confirm: Function,
   headerText: string,
   radioValues: Object,
-  selectedValue?: string
+  selectedValue?: string,
+  insideModal?: boolean
 }
 
 const RadioButtonSheet = ( {
@@ -23,7 +24,8 @@ const RadioButtonSheet = ( {
   confirm,
   headerText,
   radioValues,
-  selectedValue = "none"
+  selectedValue = "none",
+  insideModal
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [checked, setChecked] = useState( selectedValue );
@@ -44,6 +46,7 @@ const RadioButtonSheet = ( {
     <BottomSheet
       handleClose={handleClose}
       headerText={headerText}
+      insideModal={insideModal}
     >
       <View className="p-5">
         {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}

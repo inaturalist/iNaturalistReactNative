@@ -47,9 +47,11 @@ jest.mock( "vision-camera-plugin-inatvision", () => ( {
 
 jest.mock( "react-native-worklets-core", () => ( {
   useSharedValue: jest.fn(),
-  useWorklet: jest.fn(),
   Worklets: {
-    createRunOnJS: jest.fn()
+    createRunOnJS: jest.fn(),
+    defaultContext: {
+      createRunAsync: jest.fn()
+    }
   }
 } ) );
 
@@ -261,7 +263,7 @@ jest.mock( "react-native-fs", ( ) => {
     mkdir: jest.fn( async ( filepath, _options ) => {
       mockFs.mkdir( filepath, jest.fn( ) );
     } ),
-    unlink: jest.fn( async path => {
+    unlink: jest.fn( async ( path = "" ) => {
       mockFs.unlink( path, jest.fn( ) );
     } )
   };

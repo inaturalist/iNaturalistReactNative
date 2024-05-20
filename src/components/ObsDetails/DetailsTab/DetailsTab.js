@@ -159,6 +159,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
         {application && (
           <Body4>{t( "Uploaded-via-application", { application } )}</Body4>
         )}
+        <Body4>{t( "Label-colon-value", { label: "ID", value: observation.id } )}</Body4>
+        <Body4>{t( "Label-colon-value", { label: "UUID", value: observation.uuid } )}</Body4>
         <ViewInBrowserButton id={observation.id} />
       </View>
     </>

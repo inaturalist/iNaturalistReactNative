@@ -14,12 +14,13 @@ const HIDE_HEADER_HEIGHT = 580;
 
 const SignUp = ( ): Node => {
   const {
+    keyboardShown,
     keyboardVerticalOffset,
     nonKeyboardHeight
   } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
 
-  const hideHeader = nonKeyboardHeight < HIDE_HEADER_HEIGHT;
-  const hideFooter = nonKeyboardHeight < HIDE_HEADER_HEIGHT;
+  const hideHeader = nonKeyboardHeight < HIDE_HEADER_HEIGHT && keyboardShown;
+  const hideFooter = nonKeyboardHeight < HIDE_HEADER_HEIGHT && keyboardShown;
 
   return (
     <LoginSignUpWrapper

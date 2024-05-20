@@ -36,7 +36,7 @@ exports[`CommentsCount renders default reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={
@@ -100,7 +100,7 @@ exports[`CommentsCount renders filled reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={
@@ -164,7 +164,7 @@ exports[`CommentsCount renders white reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     style={

@@ -20,7 +20,6 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import openMap from "react-native-open-maps";
 import { useTheme } from "react-native-paper";
-import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
 import { getShadowForColor } from "styles/global";
 
 type Props = {
@@ -52,18 +51,7 @@ const FloatingActionButton = ( {
     "m-5",
     buttonClassName
   );
-  if ( icon === "export-variant" ) {
-    return (
-      <INatIconButton
-        style={getShadowForColor( theme.colors.primary )}
-        className={fabClassNames}
-        onPress={onPress}
-        accessibilityLabel={accessibilityLabel}
-      >
-        <IconMaterial name={icon} size={24} />
-      </INatIconButton>
-    );
-  }
+
   return (
     <INatIconButton
       style={getShadowForColor( theme.colors.primary )}

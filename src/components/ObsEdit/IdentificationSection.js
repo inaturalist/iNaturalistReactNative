@@ -49,14 +49,9 @@ const IdentificationSection = ( {
     || identification.isIconic
     || identification.name === "Life";
 
-  const onTaxonChosen = taxonName => {
-    const selectedTaxon = realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName );
-    updateObservationKeys( {
-      taxon: selectedTaxon.length > 0
-        ? selectedTaxon[0]
-        : null
-    } );
-  };
+  const onTaxonChosen = taxonName => updateObservationKeys( {
+    taxon: realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName )[0]
+  } );
 
   const navToSuggestions = useCallback( ( ) => {
     if ( hasPhotos ) {

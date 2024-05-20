@@ -1,17 +1,19 @@
+import { RealmContext } from "providers/contexts";
 import {
   useState
 } from "react";
-import type { PhotoFile } from "react-native-vision-camera";
-import Photo from "realmModels/Photo";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
   rotatePhotoPatch,
-  rotationLocalPhotoPatch,
   rotationTempPhotoPatch
 } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useStore from "stores/useStore";
 
-const useTakePhoto = ( camera: Object, addEvidence: boolean, device: Object ): Object => {
+const { useRealm } = RealmContext;
+
+const useTakePhoto = ( camera: Object, addEvidence?: boolean, device?: Object ): Object => {
+  const realm = useRealm( );
   const currentObservation = useStore( state => state.currentObservation );
   const { deviceOrientation } = useDeviceOrientation( );
   const hasFlash = device?.hasFlash;
@@ -19,45 +21,54 @@ const useTakePhoto = ( camera: Object, addEvidence: boolean, device: Object ): O
     enableShutterSound: true,
     ...( hasFlash && { flash: "off" } )
   };
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
 
   const setCameraState = useStore( state => state.setCameraState );
-  const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
-  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
 
-  const takePhoto = async ( ) => {
-    setTakingPhoto( true );
-    const cameraPhoto: PhotoFile = await camera.current.takePhoto( takePhotoOptions );
-
+  const saveRotatedPhotoToDocumentsDirectory = async cameraPhoto => {
     // Rotate the original photo depending on device orientation
     const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
-    await rotatePhotoPatch( cameraPhoto, photoRotation );
+    return rotatePhotoPatch( cameraPhoto, photoRotation );
+  };
 
-    // Get the rotation for the local photo
-    const rotationLocalPhoto = rotationLocalPhotoPatch( );
+  const updateStore = async ( uri, options ) => {
+    const { replaceExisting = false } = options;
 
-    // Create a local copy photo of the original
-    const newPhoto = await Photo.new( cameraPhoto.path, {
-      rotation: rotationLocalPhoto
-    } );
-    const uri = newPhoto.localFilePath;
-
-    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
+    if ( ( addEvidence || currentObservation?.observationPhotos?.length > 0 )
+      && !replaceExisting ) {
       setCameraState( {
-        cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
-        evidenceToAdd: [...evidenceToAdd, uri],
-        // Remember original (unresized) camera URI
-        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
+        rotatedOriginalCameraPhotos: rotatedOriginalCameraPhotos.concat( [uri] ),
+        evidenceToAdd: [...evidenceToAdd, uri]
       } );
     } else {
+      if ( replaceExisting && rotatedOriginalCameraPhotos?.length > 0 ) {
+        // First, need to delete previously-created observation photo (happens when getting into
+        // AI camera, snapping photo, then backing out from suggestions screen)
+        const uriToDelete = rotatedOriginalCameraPhotos[0];
+        deletePhotoFromObservation( uriToDelete );
+        await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+      }
+
       setCameraState( {
-        cameraPreviewUris: cameraPreviewUris.concat( [uri] ),
-        // Remember original (unresized) camera URI
-        originalCameraUrisMap: { ...originalCameraUrisMap, [uri]: cameraPhoto.path }
+        rotatedOriginalCameraPhotos: replaceExisting
+          ? [uri]
+          : rotatedOriginalCameraPhotos.concat( [uri] ),
+        evidenceToAdd: replaceExisting
+          ? [uri]
+          : [...evidenceToAdd, uri]
       } );
     }
+  };
+
+  const takePhoto = async ( options = { } ) => {
+    setTakingPhoto( true );
+    const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
+    const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto );
+    await updateStore( uri, options );
     setTakingPhoto( false );
   };
 

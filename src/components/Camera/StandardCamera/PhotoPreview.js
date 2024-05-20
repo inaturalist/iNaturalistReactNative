@@ -21,7 +21,7 @@ type Props = {
   isLargeScreen?: boolean,
   isTablet?: boolean,
   takingPhoto: boolean,
-  cameraPreviewUris: Function,
+  rotatedOriginalCameraPhotos: Function,
 }
 
 const STYLE = {
@@ -36,7 +36,7 @@ const PhotoPreview = ( {
   isTablet,
   rotation,
   takingPhoto,
-  cameraPreviewUris
+  rotatedOriginalCameraPhotos
 }: Props ): Node => {
   const { t } = useTranslation( );
   const wrapperDim = isLargeScreen
@@ -88,11 +88,11 @@ const PhotoPreview = ( {
       style={[STYLE, dynamicStyle]}
     >
       {
-        cameraPreviewUris.length === 0 && !takingPhoto
+        rotatedOriginalCameraPhotos.length === 0 && !takingPhoto
           ? noPhotosNotice
           : (
             <PhotoCarousel
-              photoUris={cameraPreviewUris.slice().reverse()}
+              photoUris={rotatedOriginalCameraPhotos.slice().reverse()}
               rotation={rotation}
               takingPhoto={takingPhoto}
               isLargeScreen={isLargeScreen}

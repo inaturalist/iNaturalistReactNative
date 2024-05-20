@@ -34,12 +34,14 @@ const AddEvidenceSheet = ( {
         if ( position > -1 ) return;
 
         if ( choice === "camera" ) {
-          navigation.navigate( "NoBottomTabStackNavigator", {
-            screen: "Camera",
-            params: {
-              addEvidence: true,
-              camera: "Standard"
-            }
+          // Since we're on ObsEdit, the "Camera" screen might already be in
+          // the stack, e.g. the AICamera, so if we use navigate() we risk
+          // going *back* to it and popping ObsEdit off the stack. Instead,
+          // we *push* another instance of that screen on to the stack so we
+          // can return to ObsEdit
+          navigation.push( "Camera", {
+            addEvidence: true,
+            camera: "Standard"
           } );
         } else if ( choice === "import" ) {
           // Show photo gallery, but skip group photos phase
@@ -52,6 +54,10 @@ const AddEvidenceSheet = ( {
             "NoBottomTabStackNavigator",
             { screen: "SoundRecorder", params: { addEvidence: true } }
           );
+        }
+        // make sure backdrop press is handled
+        if ( onClose && position === -1 ) {
+          onClose( );
         }
       }}
     >

@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import FilterModal from "components/Explore/Modals/FilterModal.tsx";
+import ExploreFiltersModal from "components/Explore/Modals/ExploreFiltersModal";
 import {
   INatIconButton,
   RadioButtonSheet,
@@ -50,7 +50,10 @@ type Props = {
   queryParams: Object,
   showFiltersModal: boolean,
   updateCount: Function,
-  updateTaxon: Function
+  updateTaxon: Function,
+  updateLocation: Function,
+  updateUser: Function,
+  updateProject: Function
 }
 
 const Explore = ( {
@@ -63,7 +66,10 @@ const Explore = ( {
   queryParams,
   showFiltersModal,
   updateCount,
-  updateTaxon
+  updateTaxon,
+  updateLocation,
+  updateUser,
+  updateProject
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -88,6 +94,8 @@ const Explore = ( {
       hideBackButton={hideBackButton}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
+      updateTaxon={updateTaxon}
+      updateLocation={updateLocation}
       onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );
@@ -232,14 +240,14 @@ const Explore = ( {
           </View>
         </View>
       </ViewWrapper>
-      {showFiltersModal && (
-        <ViewWrapper wrapperClassName="absolute w-full h-full overflow-hidden">
-          <FilterModal
-            closeModal={closeFiltersModal}
-            updateTaxon={updateTaxon}
-          />
-        </ViewWrapper>
-      )}
+      <ExploreFiltersModal
+        showModal={showFiltersModal}
+        closeModal={closeFiltersModal}
+        updateTaxon={updateTaxon}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
+      />
       {renderSheet()}
     </>
   );

@@ -12,15 +12,15 @@ import useStore from "stores/useStore";
 
 const useBackPress = ( onBack: Function ): Object => {
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
-  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( cameraPreviewUris.length > 0 ) {
+    if ( rotatedOriginalCameraPhotos.length > 0 ) {
       setShowDiscardSheet( true );
     } else {
       onBack();
     }
-  }, [setShowDiscardSheet, cameraPreviewUris, onBack] );
+  }, [setShowDiscardSheet, rotatedOriginalCameraPhotos, onBack] );
 
   useFocusEffect(
     // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator

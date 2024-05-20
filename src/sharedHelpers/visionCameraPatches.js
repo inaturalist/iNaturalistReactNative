@@ -1,15 +1,18 @@
 /*
     This file contains various patches for handling the react-native-vision-camera library.
 */
-import ImageResizer from "@bam.tech/react-native-image-resizer";
+
+import {
+  rotatedOriginalPhotosPath
+} from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import { isTablet } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import {
   useSharedValue as useWorkletSharedValue,
-  useWorklet,
   Worklets
 } from "react-native-worklets-core";
+import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
@@ -82,24 +85,22 @@ export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
 // Because the photos coming from the vision camera are not oriented correctly, we
 // rotate them with image-resizer as a first step, replacing the original photo.
 export const rotatePhotoPatch = async ( photo, rotation ) => {
-  const tempPath = `${RNFS.DocumentDirectoryPath}/rotatedTemporaryPhotos`;
-  await RNFS.mkdir( tempPath );
+  const path = rotatedOriginalPhotosPath;
+  await RNFS.mkdir( path );
   // Rotate the image with ImageResizer
-  const { uri: tempUri } = await ImageResizer.createResizedImage(
+  const image = await resizeImage(
     photo.path,
-    photo.width,
-    photo.height, // height
-    "JPEG", // compressFormat
-    100, // quality
-    rotation, // rotation
-    tempPath,
-    true // keep metadata
+    {
+      width: photo.width,
+      height: photo.height,
+      rotation,
+      outputPath: path
+    }
   );
-
   // Remove original photo
-  await RNFS.unlink( photo.path );
-  // Replace original photo with rotated photo
-  await RNFS.moveFile( tempUri, photo.path );
+  const fileExists = await RNFS.exists( photo.path );
+  if ( fileExists ) await RNFS.unlink( photo.path );
+  return image;
 };
 
 // Needed for react-native-vision-camera v3.9.0
@@ -141,11 +142,12 @@ export const iPadStylePatch = deviceOrientation => {
   return {};
 };
 
-// This patch is currently required because we are using react-native-vision-camera v3.9.1
+// This patch is currently required because we are using react-native-vision-camera v4.0.3
 // together wit react-native-reanimated. The problem is that the runAsync function
 // from react-native-vision-camera does not work in release mode with this reanimated.
-// Uses this workaround: https://gist.github.com/nonam4/7a6409cd1273e8ed7466ba3a48dd1ecc
-// Posted on this currently open issue: https://github.com/mrousavy/react-native-vision-camera/issues/2589
+// Uses this workaround: https://gist.github.com/nonam4/7a6409cd1273e8ed7466ba3a48dd1ecc but adapted it to
+// version 4 of vision-camera.
+// Originally, posted on this currently open issue: https://github.com/mrousavy/react-native-vision-camera/issues/2589
 export const usePatchedRunAsync = ( ) => {
   /**
    * Print worklets logs/errors on js thread
@@ -154,8 +156,7 @@ export const usePatchedRunAsync = ( ) => {
     console.log( "logOnJs - ", log, " - error?:", error?.message ?? "no error" );
   } );
   const isAsyncContextBusy = useWorkletSharedValue( false );
-  const customRunOnAsyncContext = useWorklet(
-    "default",
+  const customRunOnAsyncContext = Worklets.defaultContext.createRunAsync(
     ( frame, func ) => {
       "worklet";
 
@@ -167,8 +168,7 @@ export const usePatchedRunAsync = ( ) => {
         frame.decrementRefCount();
         isAsyncContextBusy.value = false;
       }
-    },
-    []
+    }
   );
 
   function customRunAsync( frame, func ) {

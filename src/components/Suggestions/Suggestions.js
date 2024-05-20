@@ -26,7 +26,7 @@ import Suggestion from "./Suggestion";
 import SuggestionsEmpty from "./SuggestionsEmpty";
 
 type Props = {
-  commonAncestor: ?string,
+  commonAncestor: ?Object,
   debugData: Object,
   hasVisionSuggestion: boolean,
   loading: boolean,
@@ -86,8 +86,8 @@ const Suggestions = ( {
   ), [onTaxonChosen, t] );
 
   const renderEmptyList = useCallback( ( ) => (
-    <SuggestionsEmpty loading={loading} />
-  ), [loading] );
+    <SuggestionsEmpty loading={loading} hasTopSuggestion={!!topSuggestion} />
+  ), [loading, topSuggestion] );
 
   /* eslint-disable i18next/no-literal-string */
   /* eslint-disable react/jsx-one-expression-per-line */

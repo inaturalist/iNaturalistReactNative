@@ -1,4 +1,3 @@
-// @flow
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
@@ -8,10 +7,10 @@ import {
 import {
   LinearGradient
 } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import {
+  useLocalObservation,
   useTranslation
 } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -21,18 +20,21 @@ import HeaderKebabMenu from "./HeaderKebabMenu";
 
 const isTablet = DeviceInfo.isTablet( );
 
-type Props = {
+interface Props {
   belongsToCurrentUser?: boolean,
-  observation: Object,
-  rightIconBlack?: boolean
+  observationId: number,
+  rightIconBlack?: boolean,
+  uuid: string
 }
 
 const ObsDetailsHeader = ( {
   belongsToCurrentUser,
-  observation,
-  rightIconBlack = false
-}: Props ): Node => {
+  observationId,
+  rightIconBlack = false,
+  uuid
+}: Props ) => {
   const navigation = useNavigation( );
+  const localObservation = useLocalObservation( uuid );
   const { t } = useTranslation( );
   const setObservations = useStore( state => state.setObservations );
 
@@ -60,7 +62,7 @@ const ObsDetailsHeader = ( {
             <INatIconButton
               testID="ObsDetail.editButton"
               onPress={() => {
-                setObservations( [observation] );
+                setObservations( [localObservation] );
                 navigation.navigate( "NoBottomTabStackNavigator", {
                   screen: "ObsEdit"
                 } );
@@ -72,7 +74,7 @@ const ObsDetailsHeader = ( {
               accessibilityLabel={t( "Edit" )}
             />
           )
-          : <HeaderKebabMenu observationId={observation?.id} white={!rightIconBlack} />
+          : <HeaderKebabMenu observationId={observationId} white={!rightIconBlack} />
       }
     </LinearGradient>
   );
