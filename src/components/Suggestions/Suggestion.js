@@ -12,12 +12,14 @@ import {
 
 type Props = {
   accessibilityLabel: string,
+  fetchRemote: boolean,
   onTaxonChosen: Function,
-  suggestion: Object,
+  suggestion: Object
 };
 
 const Suggestion = ( {
   accessibilityLabel,
+  fetchRemote,
   suggestion,
   onTaxonChosen
 }: Props ): Node => (
@@ -28,6 +30,7 @@ const Suggestion = ( {
       ? convertOfflineScoreToConfidence( suggestion?.score )
       : convertOnlineScoreToConfidence( suggestion.combined_score )}
     confidencePosition="text"
+    fetchRemote={fetchRemote}
     first
     handleCheckmarkPress={onTaxonChosen}
     hideNavButtons
