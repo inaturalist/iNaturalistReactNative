@@ -34,9 +34,12 @@ const ObsStatus = ( {
     : "mr-2";
 
   const showCurrentIdCount = useCallback( ( ) => {
-    const numCurrentIdents = observation?.identifications?.filter(
+    let numCurrentIdents = observation?.identifications?.filter(
       id => id.current === true
     )?.length || 0;
+    if ( numCurrentIdents === 0 && observation?.taxon ) {
+      numCurrentIdents = 1;
+    }
     const identificationsFilled = observation?.identifications_viewed === false;
 
     return (

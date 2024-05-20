@@ -103,14 +103,15 @@ const EvidenceSection = ( {
 
   return (
     <View className="mx-6">
-      <AddEvidenceSheet
-        disableAddingMoreEvidence={
-          obsPhotos?.length >= MAX_PHOTOS_ALLOWED
+      {showAddEvidenceSheet && (
+        <AddEvidenceSheet
+          disableAddingMoreEvidence={
+            obsPhotos?.length >= MAX_PHOTOS_ALLOWED
           || obsSounds?.length >= MAX_SOUNDS_ALLOWED
-        }
-        hidden={!showAddEvidenceSheet}
-        onClose={( ) => setShowAddEvidenceSheet( false )}
-      />
+          }
+          onClose={( ) => setShowAddEvidenceSheet( false )}
+        />
+      )}
       <View className="flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">

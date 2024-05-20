@@ -16,6 +16,7 @@ type Props = {
   headerText: string,
   pickerValues: Object,
   selectedValue: boolean,
+  insideModal?: boolean
 };
 
 const PickerSheet = ( {
@@ -23,13 +24,18 @@ const PickerSheet = ( {
   confirm,
   headerText,
   pickerValues,
-  selectedValue
+  selectedValue,
+  insideModal
 }: Props ): Node => {
   const { t } = useTranslation();
   const [selection, setSelection] = useState( selectedValue );
 
   return (
-    <BottomSheet handleClose={handleClose} headerText={headerText}>
+    <BottomSheet
+      handleClose={handleClose}
+      headerText={headerText}
+      insideModal={insideModal}
+    >
       <View className="p-5">
         <Picker
           selectedValue={selection}

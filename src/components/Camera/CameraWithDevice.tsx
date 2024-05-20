@@ -55,9 +55,11 @@ const CameraWithDevice = ( {
   // permission gate on ObsEdit
   const [addPhotoPermissionGateWasClosed, setAddPhotoPermissionGateWasClosed] = useState( false );
 
-  const {
-    prepareStateForObsEdit
-  } = usePrepareStoreAndNavigate( addPhotoPermissionResult, addEvidence, checkmarkTapped );
+  const prepareStoreAndNavigate = usePrepareStoreAndNavigate(
+    addPhotoPermissionResult,
+    addEvidence,
+    checkmarkTapped
+  );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -72,9 +74,9 @@ const CameraWithDevice = ( {
     ? "flex-row"
     : "flex-col";
 
-  const storeCurrentObservation = useCallback( async ( ) => {
-    await prepareStateForObsEdit( visionCameraResult );
-  }, [visionCameraResult, prepareStateForObsEdit] );
+  const storeCurrentObservationAndNavigate = useCallback( async ( ) => {
+    await prepareStoreAndNavigate( visionCameraResult );
+  }, [visionCameraResult, prepareStoreAndNavigate] );
 
   const handleCheckmarkPress = visionResult => {
     setVisionCameraResult( visionResult?.taxon
@@ -101,10 +103,10 @@ const CameraWithDevice = ( {
     ) {
       setCheckmarkTapped( false );
       setAddPhotoPermissionGateWasClosed( false );
-      storeCurrentObservation( );
+      storeCurrentObservationAndNavigate( );
     }
   }, [
-    storeCurrentObservation,
+    storeCurrentObservationAndNavigate,
     checkmarkTapped,
     addPhotoPermissionGateWasClosed,
     addPhotoPermissionResult

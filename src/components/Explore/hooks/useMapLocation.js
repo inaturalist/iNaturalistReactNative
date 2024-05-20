@@ -19,7 +19,6 @@ const { useRealm } = RealmContext;
 
 const useMapLocation = ( ): Object => {
   const { params } = useRoute( );
-  const place = params?.place;
   const worldwide = params?.worldwide;
   const realm = useRealm( );
   const { dispatch, state } = useExplore( );
@@ -28,6 +27,8 @@ const useMapLocation = ( ): Object => {
   const [permissionRequested, setPermissionRequested] = useState( null );
   const mapRegion = useStore( s => s.mapRegion );
   const setMapRegion = useStore( s => s.setMapRegion );
+
+  const place = state?.place;
 
   const hasPlace = state.swlat || state.place_id || state.lat;
   const [startAtNearby, setStartAtNearby] = useState( !hasPlace && !worldwide );

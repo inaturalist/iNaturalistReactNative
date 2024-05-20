@@ -333,6 +333,8 @@ Endemic = Endemic
 # without knowing the vowel/consonant state of the first letter of the
 # placeable
 Endemic-to-place = Endemic to { $place }
+# Title for a section describing an error
+Error = Error
 Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 ERROR-LOADING-DQA = ERROR LOADING IN DQA
 # Title of dialog or section describing an error
@@ -421,6 +423,7 @@ Identify-an-organism = Identify an organism
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with the iNaturalist AI Camera
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
+If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
 Import-Photos-From = Import Photos From
 # Shows the number of observations a user is about to import
 IMPORT-X-OBSERVATIONS =
@@ -485,6 +488,7 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
 July = July
 # Month of June
 June = June
+Label-colon-value = { $label }: { $value }
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: { $date }
 # Latitude, longitude on a single line on a single line
@@ -775,6 +779,7 @@ RESET-SOUND-header = RESET SOUND?
 # Label for a button that resets the state of an interface, e.g. a button that
 # resets the sound recorder to its original state
 Reset-verb = Reset
+RESTART-APP = RESTART APP
 # Label for button that restores a withdrawn identification
 Restore = Restore
 Return-to-Login = Return to Login
@@ -953,9 +958,9 @@ Uploaded-via-application = Uploaded via: { $application }
 Uploading-x-of-y = Uploading { $currentUploadCount } of { $total }
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations =
-    Uploading { $currentUploadCount } of { $total ->
-        [one] 1 observation
-       *[other] { $total } observations
+    { $total ->
+        [one] Uploading { $currentUploadCount } observation
+       *[other] Uploading { $currentUploadCount } of { $total } observations
     }
 Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real-time
 # Text for a button prompting the user to grant access to location
@@ -971,7 +976,7 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
-View-in-browser = View in Browser
+View-in-browser = View in browser
 VIEW-IN-EXPLORE = VIEW IN EXPLORE
 VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
 # Button or accessibility label for an element that lets the user view a

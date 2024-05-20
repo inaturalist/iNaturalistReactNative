@@ -9,7 +9,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 import CrosshairCircle from "./CrosshairCircle";
@@ -60,6 +60,9 @@ const LocationPicker = ( {
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
+
+  // prevent initial map render from resetting the coordinates and locationName
+  const [initialMapRender, setInitialMapRender] = useState( true );
 
   return (
     <ViewWrapper testID="location-picker" className="flex-1">
@@ -112,7 +115,11 @@ const LocationPicker = ( {
           mapViewRef={mapViewRef}
           mapType={mapType}
           onRegionChangeComplete={async newRegion => {
-            updateRegion( newRegion );
+            if ( !initialMapRender ) {
+              updateRegion( newRegion );
+            } else {
+              setInitialMapRender( false );
+            }
           }}
           onMapReady={setMapReady}
           showCurrentLocationButton

@@ -30,68 +30,67 @@ const ObsEdit = ( ): Node => {
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
-
   const isFocused = useIsFocused( );
 
-  return isFocused
-    ? (
-      <>
-        <ViewWrapper testID="obs-edit">
-          <Header
-            currentObservation={currentObservation}
-            observations={observations}
-          />
-          <KeyboardAwareScrollView className="mb-[80px]">
-            {currentObservation && (
-              <View
-                className="bg-white rounded-t-3xl mt-1"
-                style={( observations.length > 1 )
-                  ? DROP_SHADOW
-                  : undefined}
-              >
-                <View className="pb-5">
-                  {observations.length > 1 && (
-                    <MultipleObservationsArrows
-                      currentObservationIndex={currentObservationIndex}
-                      observations={observations}
-                      setCurrentObservationIndex={setCurrentObservationIndex}
-                      setResetScreen={setResetScreen}
-                    />
-                  )}
-                  <EvidenceSectionContainer
-                    currentObservation={currentObservation}
-                    passesEvidenceTest={passesEvidenceTest}
-                    setPassesEvidenceTest={setPassesEvidenceTest}
-                    updateObservationKeys={updateObservationKeys}
-                  />
-                  <IdentificationSection
-                    currentObservation={currentObservation}
-                    passesIdentificationTest={passesIdentificationTest}
-                    resetScreen={resetScreen}
-                    setPassesIdentificationTest={setPassesIdentificationTest}
-                    setResetScreen={setResetScreen}
-                    updateObservationKeys={updateObservationKeys}
-                  />
-                  <OtherDataSection
-                    currentObservation={currentObservation}
-                    updateObservationKeys={updateObservationKeys}
-                  />
-                </View>
-              </View>
-            )}
-          </KeyboardAwareScrollView>
-        </ViewWrapper>
-        <BottomButtons
+  if ( !isFocused ) return null;
+
+  return (
+    <>
+      <ViewWrapper testID="obs-edit">
+        <Header
           currentObservation={currentObservation}
-          currentObservationIndex={currentObservationIndex}
           observations={observations}
-          passesEvidenceTest={passesEvidenceTest}
-          passesIdentificationTest={passesIdentificationTest}
-          setCurrentObservationIndex={setCurrentObservationIndex}
         />
-      </>
-    )
-    : null;
+        <KeyboardAwareScrollView className="mb-[80px]">
+          {currentObservation && (
+            <View
+              className="bg-white rounded-t-3xl mt-1"
+              style={( observations.length > 1 )
+                ? DROP_SHADOW
+                : undefined}
+            >
+              <View className="pb-5">
+                {observations.length > 1 && (
+                  <MultipleObservationsArrows
+                    currentObservationIndex={currentObservationIndex}
+                    observations={observations}
+                    setCurrentObservationIndex={setCurrentObservationIndex}
+                    setResetScreen={setResetScreen}
+                  />
+                )}
+                <EvidenceSectionContainer
+                  currentObservation={currentObservation}
+                  passesEvidenceTest={passesEvidenceTest}
+                  setPassesEvidenceTest={setPassesEvidenceTest}
+                  updateObservationKeys={updateObservationKeys}
+                />
+                <IdentificationSection
+                  currentObservation={currentObservation}
+                  passesIdentificationTest={passesIdentificationTest}
+                  resetScreen={resetScreen}
+                  setPassesIdentificationTest={setPassesIdentificationTest}
+                  setResetScreen={setResetScreen}
+                  updateObservationKeys={updateObservationKeys}
+                />
+                <OtherDataSection
+                  currentObservation={currentObservation}
+                  updateObservationKeys={updateObservationKeys}
+                />
+              </View>
+            </View>
+          )}
+        </KeyboardAwareScrollView>
+      </ViewWrapper>
+      <BottomButtons
+        currentObservation={currentObservation}
+        currentObservationIndex={currentObservationIndex}
+        observations={observations}
+        passesEvidenceTest={passesEvidenceTest}
+        passesIdentificationTest={passesIdentificationTest}
+        setCurrentObservationIndex={setCurrentObservationIndex}
+      />
+    </>
+  );
 };
 
 export default ObsEdit;

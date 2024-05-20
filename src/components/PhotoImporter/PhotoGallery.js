@@ -1,4 +1,7 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  galleryPhotosPath
+} from "appConstants/paths.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
@@ -14,6 +17,7 @@ import {
   Platform,
   View
 } from "react-native";
+import RNFS from "react-native-fs";
 import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -57,6 +61,27 @@ const PhotoGallery = ( ): Node => {
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
     lastScreen: "PhotoGallery"
   } ), [navigation] );
+
+  const moveImagesToDocumentsDirectory = async selectedImages => {
+    const path = galleryPhotosPath;
+    await RNFS.mkdir( path );
+
+    const movedImages = await Promise.all( selectedImages.map( async ( { image } ) => {
+      const { fileName } = image;
+      const destPath = `${path}/${fileName}`;
+      const sourcePath = `${RNFS.TemporaryDirectoryPath}/${fileName}`;
+      await RNFS.moveFile( sourcePath, destPath );
+      return {
+        image: {
+          ...image,
+          uri: Platform.OS === "ios"
+            ? `file://${destPath}`
+            : destPath
+        }
+      };
+    } ) );
+    return movedImages;
+  };
 
   const showPhotoGallery = React.useCallback( async () => {
     if ( photoGalleryShown ) {
@@ -104,7 +129,8 @@ const PhotoGallery = ( ): Node => {
       return;
     }
 
-    const selectedImages = response.assets.map( x => ( { image: x } ) );
+    const selectedTmpDirectoryImages = response.assets.map( x => ( { image: x } ) );
+    const selectedImages = await moveImagesToDocumentsDirectory( selectedTmpDirectoryImages );
 
     if ( fromGroupPhotos ) {
       // This screen was called from the plus button of the group photos screen - get back to it
@@ -118,7 +144,7 @@ const PhotoGallery = ( ): Node => {
       return;
     }
 
-    const importedPhotoUris = response.assets.map( x => x.uri );
+    const importedPhotoUris = selectedImages.map( x => x.uri );
 
     if ( skipGroupPhotos ) {
       // add evidence to existing observation

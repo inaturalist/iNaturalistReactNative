@@ -12,26 +12,30 @@ import {
 
 type Props = {
   accessibilityLabel: string,
+  fetchRemote: boolean,
   onTaxonChosen: Function,
-  suggestion: Object,
+  suggestion: Object
 };
 
 const Suggestion = ( {
   accessibilityLabel,
+  fetchRemote,
   suggestion,
   onTaxonChosen
 }: Props ): Node => (
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
-    taxon={suggestion.taxon}
-    handleCheckmarkPress={onTaxonChosen}
-    testID={`SuggestionsList.taxa.${suggestion?.taxon?.id}`}
+    activeColor="bg-inatGreen"
     confidence={suggestion?.score
       ? convertOfflineScoreToConfidence( suggestion?.score )
       : convertOnlineScoreToConfidence( suggestion.combined_score )}
-    activeColor="bg-inatGreen"
     confidencePosition="text"
+    fetchRemote={fetchRemote}
     first
+    handleCheckmarkPress={onTaxonChosen}
+    hideNavButtons
+    taxon={suggestion.taxon}
+    testID={`SuggestionsList.taxa.${suggestion?.taxon?.id}`}
   />
 );
 

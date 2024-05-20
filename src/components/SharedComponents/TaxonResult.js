@@ -48,6 +48,7 @@ const TaxonResult = ( {
   fromLocal = true,
   handleCheckmarkPress,
   handlePress,
+  hideNavButtons = false,
   showInfoButton = true,
   showCheckmark = true,
   taxon: taxonProp,
@@ -66,10 +67,16 @@ const TaxonResult = ( {
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
+  // useTaxon could return null, and it's at least remotely possible taxonProp is null
+  if ( !usableTaxon ) return null;
+
   const taxonImage = { uri: usableTaxon?.default_photo?.url };
   const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
 
-  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: usableTaxon?.id } );
+  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", {
+    id: usableTaxon?.id,
+    hideNavButtons
+  } );
 
   return (
     <View
@@ -77,7 +84,7 @@ const TaxonResult = ( {
         classnames(
           "flex-row items-center justify-between",
           {
-            "px-4 py-3": asListItem,
+            "px-4": asListItem,
             "border-b-[1px] border-lightGray": asListItem,
             "border-t-[1px]": first
           }
@@ -86,7 +93,11 @@ const TaxonResult = ( {
       testID={testID}
     >
       <Pressable
-        className="flex-row items-center shrink"
+        className={
+          classnames( "flex-row items-center shrink", {
+            "py-3": asListItem
+          } )
+        }
         onPress={handlePress || navToTaxonDetails}
         accessible
         accessibilityRole="link"
@@ -110,7 +121,7 @@ const TaxonResult = ( {
                 />
               )
           }
-          {( confidence && confidencePosition === "photo" ) && (
+          {!!( confidence && confidencePosition === "photo" ) && (
             <View className="absolute -bottom-4 w-full items-center">
               <ConfidenceInterval
                 confidence={confidence}
@@ -119,12 +130,12 @@ const TaxonResult = ( {
             </View>
           )}
         </View>
-        <View className="shrink ml-3">
+        <View className="shrink ml-3 flex-1">
           <DisplayTaxonName
             taxon={usableTaxon}
             color={clearBackground && "text-white"}
           />
-          {( confidence && confidencePosition === "text" ) && (
+          {!!( confidence && confidencePosition === "text" ) && (
             <View className="mt-1 w-[62px]">
               <ConfidenceInterval
                 confidence={confidence}
@@ -133,7 +144,6 @@ const TaxonResult = ( {
             </View>
           )}
         </View>
-
       </Pressable>
       <View className="flex-row items-center">
         { showInfoButton && (
