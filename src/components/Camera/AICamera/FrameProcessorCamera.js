@@ -86,14 +86,16 @@ const FrameProcessorCamera = ( {
     const unsubscribeFocus = navigation.addListener( "focus", () => {
       InatVision.resetStoredResults();
     } );
+
+    return () => unsubscribeFocus;
+  }, [navigation] );
+
+  useEffect( () => {
     const unsubscribeBlur = navigation.addListener( "blur", () => {
       InatVision.resetStoredResults();
     } );
 
-    return () => {
-      unsubscribeFocus();
-      unsubscribeBlur();
-    };
+    return () => unsubscribeBlur;
   }, [navigation] );
 
   const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
