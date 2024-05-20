@@ -1,7 +1,8 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
+import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal.tsx";
+import ExploreTaxonSearchModal from "components/Explore/Modals/ExploreTaxonSearchModal.tsx";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
   BackButton,
@@ -13,7 +14,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import { useExplore } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { Surface, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -27,7 +28,9 @@ type Props = {
   hideBackButton: boolean,
   loadingStatus: boolean,
   onPressCount?: Function,
-  openFiltersModal: Function
+  openFiltersModal: Function,
+  updateTaxon: Function,
+  updateLocation: Function
 }
 
 const Header = ( {
@@ -37,14 +40,17 @@ const Header = ( {
   hideBackButton,
   loadingStatus,
   onPressCount,
-  openFiltersModal
+  openFiltersModal,
+  updateTaxon,
+  updateLocation
 }: Props ): Node => {
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
   const theme = useTheme( );
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
   const placeGuess = state.place_guess;
+  const [showTaxonSearch, setShowTaxonSearch] = useState( false );
+  const [showLocationSearch, setShowLocationSearch] = useState( false );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
@@ -70,14 +76,16 @@ const Header = ( {
                   <DisplayTaxon
                     accessibilityLabel={t( "Change-taxon-filter" )}
                     taxon={taxon}
-                    handlePress={() => navigation.navigate( "ExploreTaxonSearch" )}
+                    showInfoButton={false}
+                    showCheckmark={false}
+                    handlePress={() => setShowTaxonSearch( true )}
                   />
                 )
                 : (
                   <Pressable
                     accessibilityRole="button"
                     className="flex-row items-center"
-                    onPress={() => navigation.navigate( "ExploreTaxonSearch" )}
+                    onPress={() => setShowTaxonSearch( true )}
                   >
                     <INatIcon name="label-outline" size={15} />
                     <Body3 className="ml-3">{t( "All-organisms" )}</Body3>
@@ -85,7 +93,7 @@ const Header = ( {
                 )}
               <Pressable
                 accessibilityRole="button"
-                onPress={( ) => navigation.navigate( "ExploreLocationSearch" )}
+                onPress={( ) => setShowLocationSearch( true )}
                 className="flex-row items-center pt-3"
               >
                 <INatIcon name="location" size={15} />
@@ -122,6 +130,16 @@ const Header = ( {
           onPress={onPressCount}
         />
       </Surface>
+      <ExploreTaxonSearchModal
+        showModal={showTaxonSearch}
+        closeModal={() => { setShowTaxonSearch( false ); }}
+        updateTaxon={updateTaxon}
+      />
+      <ExploreLocationSearchModal
+        showModal={showLocationSearch}
+        closeModal={() => { setShowLocationSearch( false ); }}
+        updateLocation={updateLocation}
+      />
     </View>
   );
 };

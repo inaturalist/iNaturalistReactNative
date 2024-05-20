@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge.tsx";
 import {
@@ -44,6 +43,11 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
+import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
+import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
+import ExploreUserSearchModal from "./ExploreUserSearchModal";
+
 const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4,
   elevation: 6
@@ -54,14 +58,19 @@ const { useRealm } = RealmContext;
 interface Props {
   closeModal: Function,
   updateTaxon: Function,
+  updateLocation: Function,
+  updateUser: Function,
+  updateProject: Function
 }
 
 const FilterModal = ( {
   closeModal,
-  updateTaxon
+  updateTaxon,
+  updateLocation,
+  updateUser,
+  updateProject
 }: Props ) => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const realm = useRealm();
   const currentUser = useCurrentUser();
 
@@ -116,6 +125,10 @@ const FilterModal = ( {
   const PHOTO_LICENSING = "PHOTO_LICENSING";
   const CONFIRMATION = "CONFIRMATION";
   const [openSheet, setOpenSheet] = useState( NONE );
+  const [showTaxonSearchModal, setShowTaxonSearchModal] = useState( false );
+  const [showLocationSearchModal, setShowLocationSearchModal] = useState( false );
+  const [showUserSearchModal, setShowUserSearchModal] = useState( false );
+  const [showProjectSearchModal, setShowProjectSearchModal] = useState( false );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -621,7 +634,7 @@ const FilterModal = ( {
       >
         <View className="flex-row items-center">
           <INatIconButton
-            icon="chevron-left"
+            icon="close"
             onPress={
               !differsFromSnapshot
                 ? () => {
@@ -671,7 +684,7 @@ const FilterModal = ( {
                   accessibilityRole="button"
                   accessibilityLabel={t( "Change-taxon" )}
                   onPress={() => {
-                    navigation.navigate( "ExploreTaxonSearch" );
+                    setShowTaxonSearchModal( true );
                   }}
                 >
                   <DisplayTaxon taxon={taxon} />
@@ -682,7 +695,7 @@ const FilterModal = ( {
                 <Button
                   text={t( "SEARCH-FOR-A-TAXON" )}
                   onPress={() => {
-                    navigation.navigate( "ExploreTaxonSearch" );
+                    setShowTaxonSearchModal( true );
                   }}
                   accessibilityLabel={t( "Search" )}
                 />
@@ -722,7 +735,7 @@ const FilterModal = ( {
                     <Button
                       text={t( "EDIT-LOCATION" )}
                       onPress={() => {
-                        navigation.navigate( "ExploreLocationSearch" );
+                        setShowLocationSearchModal( true );
                       }}
                       accessibilityLabel={t( "Edit" )}
                     />
@@ -732,7 +745,7 @@ const FilterModal = ( {
                   <Button
                     text={t( "SEARCH-FOR-A-LOCATION" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreLocationSearch" );
+                      setShowLocationSearchModal( true );
                     }}
                     accessibilityLabel={t( "Search" )}
                   />
@@ -753,21 +766,6 @@ const FilterModal = ( {
                 }}
                 accessibilityLabel={t( "Sort-by" )}
               />
-              {openSheet === SORT_BY_M && (
-                <RadioButtonSheet
-                  headerText={t( "SORT-BY" )}
-                  confirm={newSortBy => {
-                    dispatch( {
-                      type: EXPLORE_ACTION.CHANGE_SORT_BY,
-                      sortBy: newSortBy
-                    } );
-                    setOpenSheet( NONE );
-                  }}
-                  handleClose={() => setOpenSheet( NONE )}
-                  radioValues={sortByValues}
-                  selectedValue={sortBy}
-                />
-              )}
             </View>
           </View>
 
@@ -806,7 +804,7 @@ const FilterModal = ( {
                     accessibilityRole="button"
                     accessibilityLabel={t( "Change-user" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreUserSearch" );
+                      setShowUserSearchModal( true );
                     }}
                   >
                     <UserListItem
@@ -820,7 +818,7 @@ const FilterModal = ( {
                   <Button
                     text={t( "FILTER-BY-A-USER" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreUserSearch" );
+                      setShowUserSearchModal( true );
                     }}
                     accessibilityLabel={t( "Filter" )}
                   />
@@ -839,7 +837,7 @@ const FilterModal = ( {
                     accessibilityRole="button"
                     accessibilityLabel={t( "Change-project" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreProjectSearch" );
+                      setShowProjectSearchModal( true );
                     }}
                   >
                     <ProjectListItem item={project} />
@@ -850,7 +848,7 @@ const FilterModal = ( {
                   <Button
                     text={t( "FILTER-BY-A-PROJECT" )}
                     onPress={() => {
-                      navigation.navigate( "ExploreProjectSearch" );
+                      setShowProjectSearchModal( true );
                     }}
                     accessibilityLabel={t( "Filter" )}
                   />
@@ -873,21 +871,6 @@ const FilterModal = ( {
               }}
               accessibilityLabel={t( "Highest" )}
             />
-            {openSheet === HRANK && (
-              <PickerSheet
-                headerText={t( "HIGHEST-RANK" )}
-                confirm={newRank => {
-                  dispatch( {
-                    type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
-                    hrank: newRank
-                  } );
-                  setOpenSheet( NONE );
-                }}
-                handleClose={() => setOpenSheet( NONE )}
-                pickerValues={taxonomicRankValues}
-                selectedValue={hrank}
-              />
-            )}
             <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
             <Button
               text={lrank
@@ -900,21 +883,6 @@ const FilterModal = ( {
               }}
               accessibilityLabel={t( "Lowest" )}
             />
-            {openSheet === LRANK && (
-              <PickerSheet
-                headerText={t( "LOWEST-RANK" )}
-                confirm={newRank => {
-                  dispatch( {
-                    type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
-                    lrank: newRank
-                  } );
-                  setOpenSheet( NONE );
-                }}
-                handleClose={() => setOpenSheet( NONE )}
-                pickerValues={taxonomicRankValues}
-                selectedValue={lrank}
-              />
-            )}
           </View>
 
           {/* Date observed section */}
@@ -1011,18 +979,6 @@ const FilterModal = ( {
                 />
               </View>
             ) )}
-            {openSheet === DATE_OBSERVED_M && (
-              <RadioButtonSheet
-                headerText={t( "DATE-OBSERVED" )}
-                confirm={newDateObserved => {
-                  updateDateObserved( { newDateObserved } );
-                  setOpenSheet( NONE );
-                }}
-                handleClose={() => setOpenSheet( NONE )}
-                radioValues={dateObservedValues}
-                selectedValue={dateObserved}
-              />
-            )}
           </View>
 
           {/* Date uploaded section */}
@@ -1112,18 +1068,6 @@ const FilterModal = ( {
                 />
               </View>
             )}
-            {openSheet === DATE_UPLOADED_M && (
-              <RadioButtonSheet
-                headerText={t( "DATE-UPLOADED" )}
-                confirm={newDateUploaded => {
-                  updateDateUploaded( { newDateUploaded } );
-                  setOpenSheet( NONE );
-                }}
-                handleClose={() => setOpenSheet( NONE )}
-                radioValues={dateUploadedValues}
-                selectedValue={dateUploaded}
-              />
-            )}
           </View>
 
           {/* Media section */}
@@ -1212,27 +1156,12 @@ const FilterModal = ( {
               }}
               accessibilityLabel={t( "View-photo-licensing-info" )}
             />
-            {openSheet === PHOTO_LICENSING && (
-              <RadioButtonSheet
-                headerText={t( "PHOTO-LICENSING" )}
-                confirm={newLicense => {
-                  dispatch( {
-                    type: EXPLORE_ACTION.SET_PHOTO_LICENSE,
-                    photoLicense: newLicense
-                  } );
-                  setOpenSheet( NONE );
-                }}
-                handleClose={() => setOpenSheet( NONE )}
-                radioValues={photoLicenseValues}
-                selectedValue={photoLicense}
-              />
-            )}
           </View>
         </View>
       </ScrollView>
       {/* This view is to offset the absolute StickyToolbar below */}
       <View className="mb-10" />
-      <StickyToolbar>
+      <StickyToolbar containerClass="z-9">
         <View className="flex-1 flex-row items-center">
           <Button
             disabled={!differsFromSnapshot || hasError}
@@ -1244,21 +1173,134 @@ const FilterModal = ( {
             accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
           />
         </View>
-        {openSheet === CONFIRMATION && (
-          <WarningSheet
-            handleClose={() => setOpenSheet( NONE )}
-            confirm={() => {
-              discardChanges();
-              closeModal();
-            }}
-            headerText={t( "DISCARD-FILTER-CHANGES" )}
-            text={t( "You-changed-filters-will-be-discarded" )}
-            buttonText={t( "DISCARD-CHANGES" )}
-            handleSecondButtonPress={() => setOpenSheet( NONE )}
-            secondButtonText={t( "CANCEL" )}
-          />
-        )}
       </StickyToolbar>
+
+      {/* BottomSheets */}
+      {openSheet === SORT_BY_M && (
+        <RadioButtonSheet
+          headerText={t( "SORT-BY" )}
+          confirm={newSortBy => {
+            dispatch( {
+              type: EXPLORE_ACTION.CHANGE_SORT_BY,
+              sortBy: newSortBy
+            } );
+            setOpenSheet( NONE );
+          }}
+          handleClose={() => setOpenSheet( NONE )}
+          radioValues={sortByValues}
+          selectedValue={sortBy}
+          insideModal
+        />
+      )}
+      {openSheet === HRANK && (
+        <PickerSheet
+          headerText={t( "HIGHEST-RANK" )}
+          confirm={newRank => {
+            dispatch( {
+              type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
+              hrank: newRank
+            } );
+            setOpenSheet( NONE );
+          }}
+          handleClose={() => setOpenSheet( NONE )}
+          pickerValues={taxonomicRankValues}
+          selectedValue={hrank}
+          insideModal
+        />
+      )}
+      {openSheet === LRANK && (
+        <PickerSheet
+          headerText={t( "LOWEST-RANK" )}
+          confirm={newRank => {
+            dispatch( {
+              type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
+              lrank: newRank
+            } );
+            setOpenSheet( NONE );
+          }}
+          handleClose={() => setOpenSheet( NONE )}
+          pickerValues={taxonomicRankValues}
+          selectedValue={lrank}
+          insideModal
+        />
+      )}
+      {openSheet === DATE_UPLOADED_M && (
+        <RadioButtonSheet
+          headerText={t( "DATE-UPLOADED" )}
+          confirm={newDateUploaded => {
+            updateDateUploaded( { newDateUploaded } );
+            setOpenSheet( NONE );
+          }}
+          handleClose={() => setOpenSheet( NONE )}
+          radioValues={dateUploadedValues}
+          selectedValue={dateUploaded}
+          insideModal
+        />
+      )}
+      {openSheet === DATE_OBSERVED_M && (
+        <RadioButtonSheet
+          headerText={t( "DATE-OBSERVED" )}
+          confirm={newDateObserved => {
+            updateDateObserved( { newDateObserved } );
+            setOpenSheet( NONE );
+          }}
+          handleClose={() => setOpenSheet( NONE )}
+          radioValues={dateObservedValues}
+          selectedValue={dateObserved}
+          insideModal
+        />
+      )}
+      {openSheet === PHOTO_LICENSING && (
+        <RadioButtonSheet
+          headerText={t( "PHOTO-LICENSING" )}
+          confirm={newLicense => {
+            dispatch( {
+              type: EXPLORE_ACTION.SET_PHOTO_LICENSE,
+              photoLicense: newLicense
+            } );
+            setOpenSheet( NONE );
+          }}
+          handleClose={() => setOpenSheet( NONE )}
+          radioValues={photoLicenseValues}
+          selectedValue={photoLicense}
+          insideModal
+        />
+      )}
+      {openSheet === CONFIRMATION && (
+        <WarningSheet
+          handleClose={() => setOpenSheet( NONE )}
+          confirm={() => {
+            discardChanges();
+            closeModal();
+          }}
+          headerText={t( "DISCARD-FILTER-CHANGES" )}
+          text={t( "You-changed-filters-will-be-discarded" )}
+          buttonText={t( "DISCARD-CHANGES" )}
+          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          secondButtonText={t( "CANCEL" )}
+          insideModal
+        />
+      )}
+      <ExploreTaxonSearchModal
+        showModal={showTaxonSearchModal}
+        closeModal={() => { setShowTaxonSearchModal( false ); }}
+        updateTaxon={updateTaxon}
+      />
+      <ExploreLocationSearchModal
+        showModal={showLocationSearchModal}
+        closeModal={() => { setShowLocationSearchModal( false ); }}
+        updateLocation={updateLocation}
+      />
+      <ExploreUserSearchModal
+        showModal={showUserSearchModal}
+        closeModal={() => { setShowUserSearchModal( false ); }}
+        updateUser={updateUser}
+      />
+      <ExploreProjectSearchModal
+        showModal={showProjectSearchModal}
+        closeModal={() => { setShowProjectSearchModal( false ); }}
+        updateProject={updateProject}
+      />
     </View>
   );
 };
