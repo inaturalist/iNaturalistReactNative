@@ -432,7 +432,6 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-iNaturalistReactNative-checkManifestLockResult.txt",
