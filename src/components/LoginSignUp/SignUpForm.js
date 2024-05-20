@@ -38,13 +38,15 @@ const SignUpForm = ( { hideFooter }: Props ): Node => {
   };
 
   useEffect( () => {
-    const listener1 = navigation.addListener( "blur", blurFields );
-    const listener2 = navigation.addListener( "transitionEnd", blurFields );
+    const unsubscribeBlur = navigation.addListener( "blur", blurFields );
 
-    return () => {
-      listener1.remove();
-      listener2.remove();
-    };
+    return () => unsubscribeBlur;
+  }, [navigation] );
+
+  useEffect( () => {
+    const unsubscrubeTransition = navigation.addListener( "transitionEnd", blurFields );
+
+    return () => unsubscrubeTransition;
   }, [navigation] );
 
   return (
