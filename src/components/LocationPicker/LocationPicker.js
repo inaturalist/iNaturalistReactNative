@@ -65,7 +65,7 @@ const LocationPicker = ( {
   const [initialMapRender, setInitialMapRender] = useState( true );
 
   return (
-    <ViewWrapper testID="location-picker" className="flex-1">
+    <ViewWrapper testID="location-picker">
       <View className="justify-center">
         <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
         <View className="absolute right-2">
