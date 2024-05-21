@@ -211,7 +211,7 @@ const TaxonDetails = ( ): Node => {
             className="absolute bottom-0 p-0 w-full"
             pointerEvents="box-none"
           >
-            {photos.length > 1 && (
+            {!isTablet && photos.length > 1 && (
               <View
                 className="flex flex-row w-full justify-center items-center mb-3"
                 pointerEvents="none"
