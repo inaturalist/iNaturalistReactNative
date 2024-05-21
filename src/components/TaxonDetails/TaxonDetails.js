@@ -2,6 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchTaxon } from "api/taxa";
+import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
@@ -55,6 +56,7 @@ const TaxonDetails = ( ): Node => {
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const { remoteUser } = useUserMe( );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
+  const [mediaIndex, setMediaIndex] = useState( 0 );
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
@@ -143,7 +145,12 @@ const TaxonDetails = ( ): Node => {
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View className="flex-1 h-full bg-black">
         <View className="w-full h-[420px] shrink-1">
-          <TaxonMedia loading={isLoading} photos={photos} tablet={isTablet} />
+          <TaxonMedia
+            loading={isLoading}
+            photos={photos}
+            tablet={isTablet}
+            onChangeIndex={setMediaIndex}
+          />
           {/* cant figure out how to have the gradient show with carousel - angie20240418 */}
           {/* <LinearGradient
             colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
@@ -200,35 +207,56 @@ const TaxonDetails = ( ): Node => {
               </KebabMenu>
             </View>
           )}
-          <View className="absolute bottom-0 p-5 w-full flex-row items-center">
-            <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
-            {!hideNavButtons && (
-              <INatIconButton
-                icon="compass-rose-outline"
-                onPress={( ) => navigation.navigate( "TabNavigator", {
-                  screen: "TabStackNavigator",
-                  params: {
-                    screen: "Explore",
-                    params: {
-                      taxon,
-                      worldwide: true,
-                      resetStoredParams: true
-                    }
-                  }
-                } )}
-                accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
-                accessibilityHint={t( "Navigates-to-explore" )}
-                size={30}
-                color={theme.colors.onPrimary}
-                // FWIW, IconButton has a little margin we can control and a
-                // little padding that we can't control, so the negative margin
-                // here is to ensure the visible icon is flush with the edge of
-                // the container
-                className="ml-5 bg-inatGreen rounded-full"
-                mode="contained"
-                preventTransparency
-              />
+          <View
+            className="absolute bottom-0 p-0 w-full"
+            pointerEvents="box-none"
+          >
+            {photos.length > 1 && (
+              <View
+                className="flex flex-row w-full justify-center items-center mb-3"
+                pointerEvents="none"
+              >
+                { photos.map( ( item, idx ) => (
+                  <View
+                    key={`dot-${item.id}`}
+                    className={classnames(
+                      "rounded-full bg-white m-[2.5]",
+                      idx === mediaIndex
+                        ? "w-[4px] h-[4px]"
+                        : "w-[2px] h-[2px]"
+                    )}
+                  />
+                ) )}
+              </View>
             )}
+            <View className="w-full flex-row items-center pl-5 pr-5 pb-5" pointerEvents="box-none">
+              <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
+              {!hideNavButtons && (
+                <View className="ml-5">
+                  <INatIconButton
+                    icon="compass-rose-outline"
+                    onPress={( ) => navigation.navigate( "TabNavigator", {
+                      screen: "TabStackNavigator",
+                      params: {
+                        screen: "Explore",
+                        params: {
+                          taxon,
+                          worldwide: true,
+                          resetStoredParams: true
+                        }
+                      }
+                    } )}
+                    accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
+                    accessibilityHint={t( "Navigates-to-explore" )}
+                    size={30}
+                    color={theme.colors.onPrimary}
+                    className="bg-inatGreen rounded-full"
+                    mode="contained"
+                    preventTransparency
+                  />
+                </View>
+              )}
+            </View>
           </View>
         </View>
         <View className="bg-white pt-5 h-full flex-1">
