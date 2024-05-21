@@ -71,7 +71,7 @@ const TaxonDetailsTitle = ( {
   const { t } = useTranslation( );
 
   return (
-    <View className="flex-1 flex-col ml-4">
+    <View className="flex-1 flex-col" pointerEvents="none">
       { taxon?.rank && (
         <View className="flex-row items-center">
           <Heading4 className={optionalClasses}>
