@@ -127,10 +127,10 @@ const UserProfile = ( ): Node => {
           )}
         </View>
         { user?.description && (
-          <>
+          <View className="mb-3">
             <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
             <UserText text={user?.description} />
-          </>
+          </View>
         ) }
         <Body2 className="mb-5">
           {t( "Joined-date", { date: formatUserProfileDate( user.created_at, t ) } )}

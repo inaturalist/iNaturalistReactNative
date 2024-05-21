@@ -77,13 +77,14 @@ const Suggestions = ( {
 
   const observers = useObservers( taxonIds );
 
-  const renderItem = useCallback( ( { item: suggestion } ) => (
+  const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
       accessibilityLabel={t( "Choose-taxon" )}
+      fetchRemote={!usingOfflineSuggestions}
       suggestion={suggestion}
       onTaxonChosen={onTaxonChosen}
     />
-  ), [onTaxonChosen, t] );
+  ), [onTaxonChosen, t, usingOfflineSuggestions] );
 
   const renderEmptyList = useCallback( ( ) => (
     <SuggestionsEmpty loading={loading} hasTopSuggestion={!!topSuggestion} />
@@ -138,11 +139,7 @@ const Suggestions = ( {
         <>
           <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
           <View className="bg-inatGreen/[.13]">
-            <Suggestion
-              accessibilityLabel={t( "Choose-taxon" )}
-              suggestion={topSuggestion}
-              onTaxonChosen={onTaxonChosen}
-            />
+            {renderSuggestion( { item: topSuggestion } )}
           </View>
         </>
       ) }
@@ -160,13 +157,13 @@ const Suggestions = ( {
   ), [
     lastScreen,
     navigation,
+    onPressPhoto,
+    photoUris,
+    renderSuggestion,
+    selectedPhotoUri,
+    suggestions,
     t,
     topSuggestion,
-    photoUris,
-    selectedPhotoUri,
-    onPressPhoto,
-    suggestions,
-    onTaxonChosen,
     usingOfflineSuggestions
   ] );
 
@@ -174,7 +171,7 @@ const Suggestions = ( {
     <ViewWrapper testID="suggestions">
       <FlatList
         data={suggestions}
-        renderItem={renderItem}
+        renderItem={renderSuggestion}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
         ListHeaderComponent={renderHeader}
