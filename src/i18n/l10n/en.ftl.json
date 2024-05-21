@@ -1224,6 +1224,10 @@
   "Syncing": "Syncing...",
   "Take-photo": "Take photo",
   "Take-photos-with-the-camera": "Take photos of a single organism with the camera",
+  "Tap-outside-text-input-to-dismiss-keyboard": {
+    "comment": "Accessibility label for screen wrapper that allows user to dismiss keyboard",
+    "val": "Tap outside text input to dismiss keyboard"
+  },
   "TAXON": "TAXON",
   "TAXON-NAMES-DISPLAY": {
     "comment": "Settings screen",
