@@ -32,7 +32,7 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
         }
       } );
     } else {
-      navigation.navigate( "ObsDetails", { uuid } );
+      navigation.push( "ObsDetails", { uuid } );
     }
   };
 
