@@ -8,7 +8,7 @@ import {
   Heading4,
   INatIcon
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import Taxon from "realmModels/Taxon";
@@ -28,15 +28,16 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
   const scientificNameFirst = currentUser?.prefers_scientific_name_first;
 
   const displayCommonName = useCallback( ( commonName, options ) => (
-    <Body2 className={
-      classnames( {
-        "font-bold mr-1": !scientificNameFirst,
-        "text-inatGreen": options?.isCurrentTaxon,
-        underline: !options?.isCurrentTaxon && !scientificNameFirst
-      } )
-    }
+    <Body2
+      className={
+        classnames( {
+          "font-bold mr-1": !scientificNameFirst,
+          "text-inatGreen": options?.isCurrentTaxon,
+          underline: !options?.isCurrentTaxon && !scientificNameFirst
+        } )
+      }
     >
-      {scientificNameFirst && commonName && " ("}
+      {scientificNameFirst && commonName && "("}
       {commonName}
       {scientificNameFirst && commonName && ")"}
     </Body2>
@@ -98,7 +99,7 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
               className={
                 classnames( {
                   "font-bold": !hasCommonName || scientificNameFirst,
-                  underline: scientificNameFirst,
+                  underline,
                   "text-inatGreen": isCurrentTaxon
                 } )
               }
@@ -133,6 +134,17 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
       rank
     } = generateTaxonPieces( taxon );
     const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+    const sciNameComponent = displayScientificName(
+      rank,
+      scientificNamePieces,
+      rankLevel,
+      rankPiece,
+      {
+        isCurrentTaxon,
+        hasCommonName: commonName
+      }
+    );
+    const comNameComponent = displayCommonName( commonName, { isCurrentTaxon } );
 
     return (
       <Pressable
@@ -152,37 +164,15 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
             <INatIcon name="arrow-turn-down-right" size={11} />
           </View>
         )}
-        {scientificNameFirst
-          ? (
-            <View className="flex-row flex-wrap">
-              {displayScientificName(
-                rank,
-                scientificNamePieces,
-                rankLevel,
-                rankPiece,
-                {
-                  isCurrentTaxon,
-                  hasCommonName: commonName
-                }
-              )}
-              {displayCommonName( commonName, { isCurrentTaxon } )}
-            </View>
-          )
-          : (
-            <View className="flex-row flex-wrap">
-              {displayCommonName( commonName, { isCurrentTaxon } )}
-              {displayScientificName(
-                rank,
-                scientificNamePieces,
-                rankLevel,
-                rankPiece,
-                {
-                  isCurrentTaxon,
-                  hasCommonName: commonName
-                }
-              )}
-            </View>
-          )}
+        <View className="flex-row flex-wrap shrink">
+          <Text>
+            {
+              scientificNameFirst
+                ? [sciNameComponent, " ", comNameComponent]
+                : [comNameComponent, " ", sciNameComponent]
+            }
+          </Text>
+        </View>
       </Pressable>
     );
   }, [currentUser, displayCommonName, displayScientificName, navigation,
