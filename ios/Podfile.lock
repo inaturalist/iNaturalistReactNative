@@ -907,7 +907,7 @@ PODS:
     - react-native-config/App (= 1.5.1)
   - react-native-config/App (1.5.1):
     - React-Core
-  - react-native-exif-reader (0.2.3):
+  - react-native-exif-reader (0.4.0):
     - React-Core
   - react-native-geocoder-reborn (0.9.0):
     - React
@@ -1510,7 +1510,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 6f392912435adb8fbf4c3eee0e79a0a0b4e4b717
   react-native-cameraroll: af8eec1e585d053ff485d98ec837f9a8a11b5745
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
-  react-native-exif-reader: b2ad2175125a5d7dbd399ac6bd3bc4ba8753f85a
+  react-native-exif-reader: 6b105a75e55cc26d2137ef46be3c97cfdd41f23a
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation: ed9e1d132f576b9a4a503af46f9704413ea0dec1
   react-native-image-picker: ddbbe4d226d9c82a82360f5de66bf71a657a42e6
@@ -1570,7 +1570,7 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: b633f90960feab2669b7a1c51f8a201dd0a5bfc3
   VisionCameraPluginInatVision: 2f2aa58b49c50b1b09bb552cab85c605fbb80053
-  Yoga: c716aea2ee01df6258550c7505fa61b248145ced
+  Yoga: 47d399a73c0c0caa9ff824e5c657eae31215bfee
 
 PODFILE CHECKSUM: eebd76aa39f99b44754431ed68ce0cfbfc5ec2f7
 
