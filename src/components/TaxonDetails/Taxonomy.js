@@ -130,7 +130,7 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
     return (
       <Pressable
         accessibilityRole="link"
-        className="flex-row py-2 flex-wrap"
+        className="flex-row py-2"
         key={id}
         disabled={isCurrentTaxon}
         onPress={( ) => navigation.navigate( "TaxonDetails", { id, hideNavButtons } )}
@@ -141,21 +141,23 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
         testID={`TaxonomyRow.${id}`}
       >
         {isChild && (
-          <View className="ml-2 mr-1">
+          <View className="mt-[2px] ml-2 mr-1">
             <INatIcon name="arrow-turn-down-right" size={11} />
           </View>
         )}
-        {displayCommonName( commonName, { isCurrentTaxon } )}
-        {displayScientificName(
-          rank,
-          scientificNamePieces,
-          rankLevel,
-          rankPiece,
-          {
-            isCurrentTaxon,
-            hasCommonName: commonName
-          }
-        )}
+        <View className="flex-row flex-wrap">
+          {displayCommonName( commonName, { isCurrentTaxon } )}
+          {displayScientificName(
+            rank,
+            scientificNamePieces,
+            rankLevel,
+            rankPiece,
+            {
+              isCurrentTaxon,
+              hasCommonName: commonName
+            }
+          )}
+        </View>
       </Pressable>
     );
   }, [currentUser, hideNavButtons, navigation, t] );

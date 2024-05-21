@@ -30,7 +30,7 @@ const Help = ( ): Node => {
   const onContactPressed = ( ) => {
     openComposer( {
       to: "support@inaturalist.org",
-      subject: "Help with iNaturalist Beta"
+      subject: "Help with iNaturalist Next"
     } );
   };
 

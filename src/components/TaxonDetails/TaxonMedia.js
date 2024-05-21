@@ -7,15 +7,19 @@ import {
   Image, Pressable, View
 } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import { Dimensions, StatusBar } from "react-native";
-import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
 import Photo from "realmModels/Photo";
-import colors from "styles/tailwindColors";
 
 type Props = {
   loading: boolean,
+  onChangeIndex?: Function,
   photos: Array<{
     id?: number,
     url: string,
@@ -28,6 +32,7 @@ type Props = {
 
 const TaxonMedia = ( {
   loading,
+  onChangeIndex,
   photos = [],
   sounds = [],
   tablet
@@ -35,7 +40,6 @@ const TaxonMedia = ( {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const paginationColor = colors.white;
 
   const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
 
@@ -59,6 +63,12 @@ const TaxonMedia = ( {
     [setMediaViewerVisible]
   );
 
+  useEffect( ( ) => {
+    if ( onChangeIndex ) {
+      onChangeIndex( index );
+    }
+  }, [index, onChangeIndex] );
+
   const currentPhotoUrl = index >= photos.length
     ? undefined
     : photos[index]?.url;
@@ -72,66 +82,24 @@ const TaxonMedia = ( {
   );
 
   const renderPhone = ( ) => (
-    <>
-      {loading
-        ? loadingIndicator
-        : (
-          <Carousel
-            testID="photo-scroll"
-            loop={false}
-            horizontal
-            width={width}
-            height={420}
-            scrollAnimationDuration={100}
-            data={items}
-            renderItem={CarouselSlide}
-            pagingEnabled
-            onProgressChange={( _, absoluteProgress ) => {
-              setIndex( Math.round( absoluteProgress ) );
-            }}
-          />
-        )}
-      {items.length > 1 && (
-        <View
-          className="flex absolute top-5 w-full items-center p-[15px]"
-        >
-          <AnimatedDotsCarousel
-            length={items.length}
-            currentIndex={index}
-            maxIndicators={items.length}
-            interpolateOpacityAndColor={false}
-            activeIndicatorConfig={{
-              color: paginationColor,
-              margin: 2.5,
-              opacity: 1,
-              size: 4
-            }}
-            inactiveIndicatorConfig={{
-              color: paginationColor,
-              margin: 2.5,
-              opacity: 1,
-              size: 2
-            }}
-            // required by the component although we don't need it.
-            // Size of decreasing dots set to the same
-            decreasingDots={[
-              {
-                config: {
-                  color: paginationColor, margin: 3, opacity: 0.5, size: 4
-                },
-                quantity: 1
-              },
-              {
-                config: {
-                  color: paginationColor, margin: 3, opacity: 0.5, size: 2
-                },
-                quantity: 1
-              }
-            ]}
-          />
-        </View>
-      )}
-    </>
+    loading
+      ? loadingIndicator
+      : (
+        <Carousel
+          testID="photo-scroll"
+          loop={false}
+          horizontal
+          width={width}
+          height={420}
+          scrollAnimationDuration={100}
+          data={items}
+          renderItem={CarouselSlide}
+          pagingEnabled
+          onProgressChange={( _, absoluteProgress ) => {
+            setIndex( Math.round( absoluteProgress ) );
+          }}
+        />
+      )
   );
 
   const renderTablet = () => (
