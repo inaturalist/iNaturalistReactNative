@@ -114,6 +114,7 @@ const LocationPicker = ( {
           region={region}
           mapViewRef={mapViewRef}
           mapType={mapType}
+          onCurrentLocationPress={( ) => setInitialMapRender( false )}
           onRegionChangeComplete={async newRegion => {
             if ( !initialMapRender ) {
               updateRegion( newRegion );
