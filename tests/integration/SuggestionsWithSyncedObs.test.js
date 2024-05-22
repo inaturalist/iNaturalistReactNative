@@ -266,6 +266,8 @@ describe( "Suggestions", ( ) => {
     );
     expect( topTaxonResultButton ).toBeTruthy( );
     await actor.press( topTaxonResultButton );
+    const activityTabBtn = await screen.findByText( "ACTIVITY" );
+    await actor.press( activityTabBtn );
     const activityTab = await screen.findByTestId( "ActivityTab" );
     expect( activityTab ).toBeVisible( );
     // Wait for the actual identification we created to appear
