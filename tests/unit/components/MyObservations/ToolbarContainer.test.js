@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import * as useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations";
+import * as useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations.ts";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import i18next from "i18next";
 import React from "react";

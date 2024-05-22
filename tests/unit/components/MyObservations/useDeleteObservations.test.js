@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations";
+import useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";

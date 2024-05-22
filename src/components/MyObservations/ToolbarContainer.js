@@ -42,12 +42,11 @@ const ToolbarContainer = ( {
 
   const {
     currentDeleteCount,
-    deletions,
     deletionsInProgress,
     deletionsComplete,
-    error: deleteError
+    error: deleteError,
+    totalDeletions
   } = deletionState;
-  const totalDeletions = deletions.length;
   const deletionsProgress = totalDeletions > 0
     ? currentDeleteCount / totalDeletions
     : 0;
