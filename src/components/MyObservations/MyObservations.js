@@ -66,11 +66,11 @@ const MyObservations = ( {
             logInButtonNeutral={observations.length === 0}
           />
         )}
-        renderScrollable={onSroll => (
+        renderScrollable={onScroll => (
           <ObservationsFlashList
             dataCanBeFetched={!!currentUser}
             data={observations.filter( o => o.isValid() )}
-            handleScroll={onSroll}
+            handleScroll={onScroll}
             hideLoadingWheel={!isFetchingNextPage || !currentUser}
             isFetchingNextPage={isFetchingNextPage}
             isOnline={isOnline}
