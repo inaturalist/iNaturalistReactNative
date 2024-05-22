@@ -43,7 +43,7 @@ const updateDeletedSyncTime = realm => {
   };
   safeRealmWrite( realm, ( ) => {
     realm.create( "LocalPreferences", updatedPrefs, "modified" );
-  }, "updating last deleted sync time" );
+  }, "updating last remotely deleted sync time" );
 };
 
 export default syncRemoteDeletedObservations = async realm => {
