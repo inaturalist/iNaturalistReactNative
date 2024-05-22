@@ -1,6 +1,7 @@
 // @flow
 import classNames from "classnames";
 import { Body3 } from "components/SharedComponents";
+import { random } from "lodash";
 import type { Node } from "react";
 import React from "react";
 import Taxon from "realmModels/Taxon";
@@ -42,7 +43,7 @@ const ScientificName = ( {
 
     return (
       <FontComponent
-        key={`DisplayTaxonName-${keyBase}-${taxonId}-${rankLevel}-${piece}`}
+        key={`DisplayTaxonName-${keyBase}-${taxonId}-${rankLevel}-${piece}-${random( 0, 10000 )}`}
         className={classNames(
           "font-normal",
           textClassName,

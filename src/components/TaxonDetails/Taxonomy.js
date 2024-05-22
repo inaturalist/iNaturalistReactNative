@@ -8,7 +8,7 @@ import {
   Heading4,
   INatIcon
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable, Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import Taxon from "realmModels/Taxon";
@@ -25,94 +25,102 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
+  const scientificNameFirst = currentUser?.prefers_scientific_name_first;
 
-  const displayCommonName = ( commonName, options ) => (
-    <Body2 className={
-      classnames( "font-bold mr-1", {
-        "text-inatGreen": options?.isCurrentTaxon,
-        underline: !options?.isCurrentTaxon
-      } )
-    }
-    >
-      {commonName}
-    </Body2>
-  );
-
-  const displayScientificName = ( rank, scientificNamePieces, rankLevel, rankPiece, options ) => {
-    const isCurrentTaxon = options?.isCurrentTaxon;
-    const hasCommonName = options?.hasCommonName;
-    const underline = !isCurrentTaxon && !hasCommonName;
-    // italics part ported over from DisplayTaxonName
-    const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
-      const isItalics = piece !== rankPiece && (
-        rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
-      );
-      const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) )
-        ? " "
-        : "";
-      const text = piece + spaceChar;
-
-      return (
-        <Body2
-          key={text}
-          className={
-            classnames( {
-              italic: isItalics,
-              "font-bold": underline,
-              "text-inatGreen": isCurrentTaxon
-            } )
-          }
-        >
-          {text}
-        </Body2>
-      );
-    } );
-
-    return (
-      <Body2 className={
+  const displayCommonName = useCallback( ( commonName, options ) => (
+    <Body2
+      className={
         classnames( {
-          underline,
-          "text-inatGreen": isCurrentTaxon,
-          "-ml-1 ": !hasCommonName
+          "font-bold mr-1": !scientificNameFirst,
+          "text-inatGreen": options?.isCurrentTaxon,
+          underline: !options?.isCurrentTaxon && !scientificNameFirst
         } )
       }
-      >
-        {hasCommonName && (
-          <Body2 className={
-            classnames( {
-              "text-inatGreen": isCurrentTaxon
-            } )
-          }
-          >
-            (
-          </Body2>
-        )}
-        {rankLevel > 10 && (
+    >
+      {scientificNameFirst && commonName && "("}
+      {commonName}
+      {scientificNameFirst && commonName && ")"}
+    </Body2>
+  ), [scientificNameFirst] );
+
+  const displayScientificName
+    = useCallback( ( rank, scientificNamePieces, rankLevel, rankPiece, options ) => {
+      const isCurrentTaxon = options?.isCurrentTaxon;
+      const hasCommonName = options?.hasCommonName;
+      const underline = ( !hasCommonName || scientificNameFirst ) && !isCurrentTaxon;
+      // italics part ported over from DisplayTaxonName
+      const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
+        const isItalics = piece !== rankPiece && (
+          rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
+        );
+        const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) )
+          ? " "
+          : "";
+        const text = piece + spaceChar;
+
+        return (
           <Body2
+            key={text}
             className={
               classnames( {
-                "font-bold": !hasCommonName,
+                italic: isItalics,
+                "font-bold": !hasCommonName || scientificNameFirst,
                 "text-inatGreen": isCurrentTaxon
               } )
             }
           >
-            {`${rank} `}
+            {text}
           </Body2>
-        )}
-        {scientificNameComponent}
-        {hasCommonName && (
-          <Body2 className={
-            classnames( {
-              "text-inatGreen": isCurrentTaxon
-            } )
-          }
-          >
-            )
-          </Body2>
-        )}
-      </Body2>
-    );
-  };
+        );
+      } );
+
+      return (
+        <Body2 className={
+          classnames( {
+            underline,
+            "text-inatGreen": isCurrentTaxon,
+            "-ml-1 ": !hasCommonName,
+            "font-bold": scientificNameFirst
+          } )
+        }
+        >
+          {hasCommonName && !scientificNameFirst && (
+            <Body2 className={
+              classnames( {
+                "text-inatGreen": isCurrentTaxon
+              } )
+            }
+            >
+              (
+            </Body2>
+          )}
+          {rankLevel > 10 && (
+            <Body2
+              className={
+                classnames( {
+                  "font-bold": !hasCommonName || scientificNameFirst,
+                  underline,
+                  "text-inatGreen": isCurrentTaxon
+                } )
+              }
+            >
+              {`${rank} `}
+            </Body2>
+          )}
+          {scientificNameComponent}
+          {hasCommonName && !scientificNameFirst && (
+            <Body2 className={
+              classnames( {
+                "text-inatGreen": isCurrentTaxon
+              } )
+            }
+            >
+              )
+            </Body2>
+          )}
+        </Body2>
+      );
+    }, [scientificNameFirst] );
 
   const renderTaxon = useCallback( ( taxon, options ) => {
     const id = taxon?.id || "";
@@ -126,6 +134,17 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
       rank
     } = generateTaxonPieces( taxon );
     const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+    const sciNameComponent = displayScientificName(
+      rank,
+      scientificNamePieces,
+      rankLevel,
+      rankPiece,
+      {
+        isCurrentTaxon,
+        hasCommonName: commonName
+      }
+    );
+    const comNameComponent = displayCommonName( commonName, { isCurrentTaxon } );
 
     return (
       <Pressable
@@ -145,22 +164,19 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
             <INatIcon name="arrow-turn-down-right" size={11} />
           </View>
         )}
-        <View className="flex-row flex-wrap">
-          {displayCommonName( commonName, { isCurrentTaxon } )}
-          {displayScientificName(
-            rank,
-            scientificNamePieces,
-            rankLevel,
-            rankPiece,
+        <View className="flex-row flex-wrap shrink">
+          <Text>
             {
-              isCurrentTaxon,
-              hasCommonName: commonName
+              scientificNameFirst
+                ? [sciNameComponent, " ", comNameComponent]
+                : [comNameComponent, " ", sciNameComponent]
             }
-          )}
+          </Text>
         </View>
       </Pressable>
     );
-  }, [currentUser, hideNavButtons, navigation, t] );
+  }, [currentUser, displayCommonName, displayScientificName, navigation,
+    scientificNameFirst, t, hideNavButtons] );
 
   const displayTaxonomy = useCallback(
     ( ) => (

@@ -70,13 +70,6 @@ const makeMockObservations = ( ) => ( [
   } )
 ] );
 
-async function setupAppWithSignedInUser( ) {
-  const observations = makeMockObservations( );
-  useStore.setState( { observations } );
-  await renderAppWithObservations( observations, __filename );
-  return { observations };
-}
-
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
@@ -237,16 +230,16 @@ describe( "Suggestions", ( ) => {
 
   // We need to navigate from MyObs to ObsDetails to Suggestions for all of these
   // tests
-  async function navigateToSuggestionsForObservation( observation ) {
+  const navigateToSuggestionsForObservation = async observation => {
     const observationRow = await screen.findByTestId(
       `MyObservations.obsListItem.${observation.uuid}`
     );
     await actor.press( observationRow );
     const suggestIdButton = await screen.findByText( "SUGGEST ID" );
     await act( async ( ) => actor.press( suggestIdButton ) );
-  }
+  };
 
-  async function navigateToSuggestionsForObservationViaObsEdit( observation ) {
+  const navigateToSuggestionsForObservationViaObsEdit = async observation => {
     const observationRow = await screen.findByTestId(
       `MyObservations.obsListItem.${observation.uuid}`
     );
@@ -255,7 +248,14 @@ describe( "Suggestions", ( ) => {
     await act( async ( ) => actor.press( editButton ) );
     const addIdButton = await screen.findByText( "ADD AN ID" );
     await actor.press( addIdButton );
-  }
+  };
+
+  const setupAppWithSignedInUser = async ( ) => {
+    const observations = makeMockObservations( );
+    useStore.setState( { observations } );
+    await renderAppWithObservations( observations, __filename );
+    return { observations };
+  };
 
   it( "should create ident with vision=true via ObsDetails", async ( ) => {
     const { observations } = await setupAppWithSignedInUser( );
@@ -266,6 +266,8 @@ describe( "Suggestions", ( ) => {
     );
     expect( topTaxonResultButton ).toBeTruthy( );
     await actor.press( topTaxonResultButton );
+    const activityTabBtn = await screen.findByText( "ACTIVITY" );
+    await actor.press( activityTabBtn );
     const activityTab = await screen.findByTestId( "ActivityTab" );
     expect( activityTab ).toBeVisible( );
     // Wait for the actual identification we created to appear

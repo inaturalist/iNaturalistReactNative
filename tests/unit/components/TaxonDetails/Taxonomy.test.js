@@ -60,7 +60,7 @@ describe( "Taxonomy", ( ) => {
     const commonName = currentTaxon.preferred_common_name;
     const currentTaxonRow = screen.getByTestId( `TaxonomyRow.${currentTaxon.id}` );
 
-    expect( currentTaxonRow ).toHaveTextContent( `${commonName}(${rankAndName})` );
+    expect( currentTaxonRow ).toHaveTextContent( `${commonName} (${rankAndName})` );
   } );
 
   test( "renders all ancestors", ( ) => {
