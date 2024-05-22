@@ -221,7 +221,7 @@ const PhotoGallery = ( ): Node => {
   );
 
   return (
-    <ViewWrapper testID="PhotoGallery" className="flex-1">
+    <ViewWrapper testID="PhotoGallery">
       <View className="flex-1 w-full h-full justify-center items-center">
         <ActivityAnimation />
         {!permissionGranted && (
