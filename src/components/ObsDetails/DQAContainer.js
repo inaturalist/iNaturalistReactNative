@@ -4,7 +4,6 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
 import { faveObservation, unfaveObservation } from "api/observations";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
@@ -23,12 +22,9 @@ import {
   useAuthenticatedMutation,
   useLocalObservation
 } from "sharedHooks";
-import useRemoteObservation, {
-  fetchRemoteObservationKey
-} from "sharedHooks/useRemoteObservation";
+import useRemoteObservation from "sharedHooks/useRemoteObservation";
 
 const DQAContainer = ( ): React.Node => {
-  const queryClient = useQueryClient( );
   const { isInternetReachable: isOnline } = useNetInfo( );
   const { params } = useRoute( );
   const { observationUUID } = params;
@@ -120,12 +116,6 @@ const DQAContainer = ( ): React.Node => {
     ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries( {
-          queryKey: [
-            fetchRemoteObservationKey,
-            observationUUID
-          ]
-        } );
         refetchRemoteObservation();
       },
       onError: () => {
@@ -138,12 +128,6 @@ const DQAContainer = ( ): React.Node => {
     ( faveParams, optsWithAuth ) => unfaveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries( {
-          queryKey: [
-            fetchRemoteObservationKey,
-            observationUUID
-          ]
-        } );
         refetchRemoteObservation();
       },
       onError: () => {

@@ -37,6 +37,8 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): Object => {
     }
   );
 
+  console.log( remoteObservation, "remote observation" );
+
   const needsLocalUpdate = remoteObservation
     && currentUser
     && remoteObservation?.user?.id === currentUser.id;
