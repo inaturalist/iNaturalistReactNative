@@ -202,7 +202,7 @@ const GroupPhotos = ( {
           />
         </View>
       </FloatingActionBar>
-      <StickyToolbar containerClass="items-center">
+      <StickyToolbar containerClass="items-center z-50">
         <Button
           className="max-w-[500px] w-full"
           level="focus"
