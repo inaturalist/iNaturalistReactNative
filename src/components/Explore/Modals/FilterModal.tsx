@@ -19,6 +19,7 @@ import {
   RadioButtonRow,
   RadioButtonSheet,
   StickyToolbar,
+  ViewWrapper,
   WarningSheet
 } from "components/SharedComponents";
 import UserListItem from "components/SharedComponents/UserListItem";
@@ -626,7 +627,7 @@ const FilterModal = ( {
   const hasError = observedEndBeforeStart || uploadedEndBeforeStart;
 
   return (
-    <View className="flex-1 bg-white" testID="filter-modal">
+    <ViewWrapper className="flex-1 bg-white" testID="filter-modal">
       {/* Header */}
       <View
         className="flex-row items-center p-5 justify-between bg-white"
@@ -1301,7 +1302,7 @@ const FilterModal = ( {
         closeModal={() => { setShowProjectSearchModal( false ); }}
         updateProject={updateProject}
       />
-    </View>
+    </ViewWrapper>
   );
 };
 
