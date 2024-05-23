@@ -82,7 +82,8 @@ describe( "MyObservations", ( ) => {
     const mockUser = factory( "LocalUser", {
       login: faker.internet.userName( ),
       iconUrl: faker.image.url( ),
-      locale: "en"
+      locale: "en",
+      signedIn: true
     } );
 
     beforeEach( async ( ) => {
@@ -311,14 +312,16 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      describe( "on screen focus", ( ) => {
-        beforeEach( ( ) => {
+      describe( "on screen focus for signed in user", ( ) => {
+        beforeEach( async ( ) => {
           safeRealmWrite( global.mockRealms[__filename], ( ) => {
             global.mockRealms[__filename].create( "LocalPreferences", {
               last_sync_time: new Date( "2023-11-01" ),
               last_deleted_sync_time: new Date( "2024-05-01" )
             } );
           }, "add last_sync_time to LocalPreferences, MyObservations integration test" );
+
+          await signIn( mockUser, { realm: global.mockRealms[__filename] } );
         } );
 
         it( "downloads deleted observations from server when screen focused", async ( ) => {

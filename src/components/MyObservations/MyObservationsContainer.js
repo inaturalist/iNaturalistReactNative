@@ -179,18 +179,17 @@ const MyObservationsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const realm = useRealm( );
+  const currentUser = useCurrentUser( );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
-  useDeleteObservations( state.canBeginDeletions, dispatch );
+  useDeleteObservations( state.canBeginDeletions, dispatch, currentUser );
   const numUnuploadedObservations = useNumUnuploadedObservations( );
   const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
 
   const isOnline = useIsConnected( );
-
-  const currentUser = useCurrentUser();
 
   useObservationsUpdates( !!currentUser );
   const {
