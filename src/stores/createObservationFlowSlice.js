@@ -3,6 +3,7 @@ import { Realm } from "@realm/react";
 import _ from "lodash";
 
 const DEFAULT_STATE = {
+  abortController: new AbortController( ),
   cameraRollUris: [],
   comment: "",
   currentObservation: {},
@@ -151,7 +152,12 @@ const createObservationFlowSlice = set => ( {
     currentObservation:
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
     unsavedChanges: true
-  } ) )
+  } ) ),
+  newAbortController: ( ) => {
+    const abc = new AbortController( );
+    set( ( ) => ( { abortController: abc } ) );
+    return abc;
+  }
 } );
 
 export default createObservationFlowSlice;

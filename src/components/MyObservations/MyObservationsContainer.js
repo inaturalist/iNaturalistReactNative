@@ -12,7 +12,6 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useReducer,
   useState
 } from "react";
@@ -24,7 +23,7 @@ import {
 } from "sharedHelpers/emitUploadProgress";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import uploadObservation from "sharedHelpers/uploadObservation";
+import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
 import { sleep } from "sharedHelpers/util";
 import {
   useCurrentUser,
@@ -36,6 +35,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
 import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
@@ -179,9 +179,15 @@ const MyObservationsContainer = ( ): Node => {
   const realm = useRealm( );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
+  const [uploadingObsUUID, setUploadingObsUUID] = useState( null );
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
+  // The existing abortController lets you abort...
+  const abortController = useStore( storeState => storeState.abortController );
+  // ...but whenever you start a new abortable upload process, you need to
+  //    mint a new abort controller
+  const newAbortController = useStore( storeState => storeState.newAbortController );
   const { deletionsCompletedAt } = useDeleteObservations( );
   const numUnuploadedObservations = useNumUnuploadedObservations( );
 
@@ -211,6 +217,10 @@ const MyObservationsContainer = ( ): Node => {
     totalProgressIncrements
   } = state;
 
+  useEffect( ( ) => {
+    setUploadingObsUUID( navParams?.uploadingObsUUID );
+  }, [navParams?.uploadingObsUUID] );
+
   useEffect( () => {
     let timer;
     if ( uploadsComplete && !error ) {
@@ -238,8 +248,6 @@ const MyObservationsContainer = ( ): Node => {
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
-  const abortController = useMemo( ( ) => new AbortController( ), [] );
-
   const toggleLayout = ( ) => {
     writeLayoutToStorage( layout === "grid"
       ? "list"
@@ -248,10 +256,24 @@ const MyObservationsContainer = ( ): Node => {
 
   useEffect( ( ) => {
     // show progress in toolbar for observations uploaded on ObsEdit
-    if ( navParams?.uuid && !state.uploadInProgress && currentUser ) {
-      const savedObservation = realm?.objectForPrimaryKey( "Observation", navParams?.uuid );
+    if (
+      uploadingObsUUID
+      && !state.uploadInProgress
+      && currentUser
+      && realm
+    ) {
+      const savedObservation = realm.objectForPrimaryKey(
+        "Observation",
+        uploadingObsUUID
+      );
+      // Reset this value so we don't run this effect again. We only need to
+      // show uploading UI once.
+      setUploadingObsUUID( null );
       const wasSynced = savedObservation?.wasSynced( );
-      if ( !wasSynced ) {
+      if ( savedObservation && !wasSynced ) {
+        // FYI, this doesn't actually start the upload. Here we're assuming
+        // the upload was started from ObsEdit and we're just updating upload
+        // state to match.
         dispatch( {
           type: "START_UPLOAD",
           observation: savedObservation,
@@ -259,7 +281,13 @@ const MyObservationsContainer = ( ): Node => {
         } );
       }
     }
-  }, [navParams, state.uploadInProgress, realm, currentUser] );
+  }, [
+    currentUser,
+    navigation,
+    realm,
+    state.uploadInProgress,
+    uploadingObsUUID
+  ] );
 
   useEffect( ( ) => {
     let currentProgress = state.uploadProgress;
@@ -324,27 +352,14 @@ const MyObservationsContainer = ( ): Node => {
 
   const uploadObservationAndCatchError = useCallback( async observation => {
     try {
-      await uploadObservation( observation, realm, { signal: abortController.signal } );
+      await uploadObservation( observation, realm, { signal: newAbortController( ).signal } );
       dispatch( { type: "ADD_UPLOADED", obsUUID: observation.uuid } );
     } catch ( uploadError ) {
-      let { message } = uploadError;
-      if ( uploadError?.json?.errors ) {
-        // TODO localize comma join
-        message = uploadError.json.errors.map( e => {
-          if ( e.message?.errors ) {
-            return e.message.errors.flat( ).join( ", " );
-          }
-          return e.message;
-        } ).join( ", " );
-      } else if ( uploadError.message?.match( /Network request failed/ ) ) {
-        message = t( "Connection-problem-Please-try-again-later" );
-      } else {
-        throw uploadError;
-      }
+      const message = handleUploadError( uploadError, t );
       dispatch( { type: "ADD_UPLOAD_ERROR", obsUUID: observation.uuid, error: message } );
     }
   }, [
-    abortController.signal,
+    newAbortController,
     realm,
     t
   ] );
@@ -361,7 +376,15 @@ const MyObservationsContainer = ( ): Node => {
     if ( !options || options?.singleUpload !== false ) {
       dispatch( { type: "START_UPLOAD", observation, singleUpload: true } );
     }
-    await uploadObservationAndCatchError( observation );
+    try {
+      await uploadObservationAndCatchError( observation );
+    } catch ( uploadSingleObservationError ) {
+      if ( uploadSingleObservationError.message === "Aborted" ) {
+        dispatch( { type: "STOP_UPLOADS" } );
+        return;
+      }
+      throw uploadSingleObservationError;
+    }
     dispatch( { type: "UPLOADS_COMPLETE" } );
   }, [
     currentUser,

@@ -1,4 +1,5 @@
 // @flow
+import { INatApiError } from "api/error";
 import {
   createObservation,
   createOrUpdateEvidence,
@@ -267,5 +268,28 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
   return response;
 };
+
+export function handleUploadError( uploadError: Error | INatApiError, t: Function ): string {
+  let { message } = uploadError;
+  // uploadError might be an INatApiError but I don't know how to tell flow to
+  // shut up about the possibility that uploadError might not have this
+  // attribute... even though ?. will prevent that from being a problem.
+  // ~~~~kueda20240523
+  // $FlowIgnore
+  if ( uploadError?.json?.errors ) {
+    // TODO localize comma join
+    message = uploadError.json.errors.map( e => {
+      if ( e.message?.errors ) {
+        return e.message.errors.flat( ).join( ", " );
+      }
+      return e.message;
+    } ).join( ", " );
+  } else if ( uploadError.message?.match( /Network request failed/ ) ) {
+    message = t( "Connection-problem-Please-try-again-later" );
+  } else {
+    throw uploadError;
+  }
+  return message;
+}
 
 export default uploadObservation;

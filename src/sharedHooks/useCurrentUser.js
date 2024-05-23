@@ -8,16 +8,15 @@ const { useRealm } = RealmContext;
 
 const useCurrentUser = ( ): ?Object => {
   const realm = useRealm( );
-  const currentUser = User.currentUser( realm );
-  const currentUserIsValid = currentUser?.isValid( );
+  const currentUserIsValid = User.currentUser( realm )?.isValid( );
   return useMemo( ( ) => {
     if ( currentUserIsValid ) {
-      return currentUser;
+      return User.currentUser( realm );
     }
     return null;
   }, [
-    currentUser,
-    currentUserIsValid
+    currentUserIsValid,
+    realm
   ] );
 };
 
