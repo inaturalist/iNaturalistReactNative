@@ -1,5 +1,8 @@
 import { screen } from "@testing-library/react-native";
 import * as useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations.ts";
+import {
+  INITIAL_STATE as MYOBS_INITIAL_STATE
+} from "components/MyObservations/MyObservationsContainer";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import i18next from "i18next";
 import React from "react";
@@ -25,13 +28,10 @@ const deletionState = {
 };
 
 const uploadState = {
+  ...MYOBS_INITIAL_STATE,
   uploads: [{}],
   numUnuploadedObs: 1,
-  numToUpload: 1,
-  numFinishedUploads: 0,
-  uploadInProgress: false,
-  uploadsComplete: false,
-  error: null
+  numToUpload: 1
 };
 
 describe( "Toolbar", () => {
@@ -69,7 +69,8 @@ describe( "Toolbar", () => {
       uploadState={{
         ...uploadState,
         uploadsComplete: true,
-        numFinishedUploads
+        numFinishedUploads,
+        uploaded: [...Array( numFinishedUploads ).keys( )].map( i => `fake-uuid-${i}` )
       }}
     /> );
 
@@ -80,15 +81,15 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays an upload error", async () => {
-    const error = "Couldn't complete upload";
+    const multiError = "Couldn't complete upload";
     renderComponent( <ToolbarContainer
       uploadState={{
         ...uploadState,
-        error
+        multiError
       }}
       numUnuploadedObs={1}
     /> );
-    expect( screen.getByText( error ) ).toBeVisible( );
+    expect( screen.getByText( multiError ) ).toBeVisible( );
   } );
 
   it( "displays multiple pending uploads", async () => {
@@ -130,7 +131,8 @@ describe( "Toolbar", () => {
         ...uploadState,
         uploads: [{}, {}, {}, {}, {}, {}, {}],
         uploadsComplete: true,
-        numToUpload: 7
+        numToUpload: 7,
+        uploaded: ["1", "2", "3", "4", "5", "6", "7"]
       }}
     /> );
 

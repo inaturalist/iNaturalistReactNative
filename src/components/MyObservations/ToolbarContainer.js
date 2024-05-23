@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Dimensions, PixelRatio } from "react-native";
 import { useTheme } from "react-native-paper";
 import {
@@ -53,12 +53,14 @@ const ToolbarContainer = ( {
     : 0;
 
   const {
-    error: uploadError,
+    multiError: uploadMultiError,
+    errorsByUuid: uploadErrorsByUuid,
     uploadInProgress,
     uploadsComplete,
     numToUpload,
     numFinishedUploads,
-    syncInProgress
+    syncInProgress,
+    uploaded
   } = uploadState;
 
   const handleSyncButtonPress = useCallback( async ( ) => {
@@ -86,10 +88,10 @@ const ToolbarContainer = ( {
   const theme = useTheme( );
   const progress = toolbarProgress;
   const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
-  const showsCheckmark = ( uploadsComplete && !uploadError )
+  const showsCheckmark = ( uploadsComplete && !uploadMultiError )
     || ( deletionsComplete && !deleteError );
   const needsSync = !uploadInProgress
-    && ( numUnuploadedObs > 0 || uploadError );
+    && ( numUnuploadedObs > 0 || uploadMultiError );
 
   const getStatusText = useCallback( ( ) => {
     const deletionParams = {
@@ -130,7 +132,7 @@ const ToolbarContainer = ( {
       // Note that numToUpload is kind of the number of obs being uploaded in
       // the current upload session, so it might be 1 if a single obs is
       // being uploaded even though 5 obs need upload
-      return t( "X-observations-uploaded", { count: numToUpload } );
+      return t( "X-observations-uploaded", { count: uploaded.length } );
     }
 
     if ( numUnuploadedObs && numUnuploadedObs !== 0 ) {
@@ -148,17 +150,44 @@ const ToolbarContainer = ( {
     numFinishedUploads,
     uploadsComplete,
     uploadInProgress,
-    syncInProgress
+    syncInProgress,
+    uploaded.length
+  ] );
+
+  const errorText = useMemo( ( ) => {
+    let error;
+    if ( deleteError ) {
+      error = deleteError;
+    } else if ( Object.keys( uploadErrorsByUuid ).length > 0 ) {
+      error = t( "x-uploads-failed", { count: Object.keys( uploadErrorsByUuid ).length } );
+    } else {
+      error = uploadMultiError;
+    }
+    return error;
+  }, [
+    deleteError,
+    t,
+    uploadErrorsByUuid,
+    uploadMultiError
   ] );
 
   const getSyncIconColor = useCallback( ( ) => {
-    if ( uploadError ) {
+    if ( uploadInProgress ) {
+      return theme.colors.secondary;
+    }
+    if ( errorText ) {
       return theme.colors.error;
-    } if ( uploadInProgress || numUnuploadedObs > 0 ) {
+    }
+    if ( numUnuploadedObs > 0 ) {
       return theme.colors.secondary;
     }
     return theme.colors.primary;
-  }, [theme, uploadInProgress, uploadError, numUnuploadedObs] );
+  }, [
+    errorText,
+    numUnuploadedObs,
+    theme,
+    uploadInProgress
+  ] );
 
   const statusText = getStatusText( );
   const syncIconColor = getSyncIconColor( );
@@ -178,7 +207,7 @@ const ToolbarContainer = ( {
       stopUploads={stopUploads}
       syncIconColor={syncIconColor}
       toggleLayout={toggleLayout}
-      error={deleteError || uploadError}
+      error={errorText}
     />
   );
 };

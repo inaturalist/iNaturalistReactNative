@@ -1,6 +1,7 @@
 // @flow
 
 import classnames from "classnames";
+import { KeyboardDismissableView } from "components/SharedComponents";
 import { SafeAreaView } from "components/styledComponents";
 import * as React from "react";
 import { StatusBar } from "react-native";
@@ -18,13 +19,15 @@ const ViewWrapper = ( {
   wrapperClassName,
   testID
 }: Props ): React.Node => (
-  <SafeAreaView
-    className={classnames( "flex-1", "bg-white", wrapperClassName )}
-    testID={testID}
-  >
-    <StatusBar barStyle="dark-content" backgroundColor="white" />
-    {children}
-  </SafeAreaView>
+  <KeyboardDismissableView>
+    <SafeAreaView
+      className={classnames( "flex-1", "bg-white", wrapperClassName )}
+      testID={testID}
+    >
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      {children}
+    </SafeAreaView>
+  </KeyboardDismissableView>
 );
 
 export default ViewWrapper;

@@ -902,6 +902,8 @@ Sync-observations = Sync observations
 Syncing = Syncing...
 Take-photo = Take photo
 Take-photos-with-the-camera = Take photos of a single organism with the camera
+# Accessibility label for screen wrapper that allows user to dismiss keyboard
+Tap-outside-text-input-to-dismiss-keyboard = Tap outside text input to dismiss keyboard
 TAXON = TAXON
 # Settings screen
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
@@ -1102,6 +1104,11 @@ X-Species =
     { $count ->
         [one] { $count } Species
        *[other] { $count } Species
+    }
+x-uploads-failed =
+    { $count ->
+        [one] { $count } upload failed
+       *[other] { $count } uploads failed
     }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.

@@ -43,6 +43,12 @@ const logger = log.extend( "MyObservationsContainer" );
 export const INITIAL_STATE = {
   canBeginDeletions: true,
   error: null,
+  // Single error caught during multiple obs upload
+  multiError: null,
+  // $FlowIgnore
+  errorsByUuid: {},
+  // $FlowIgnore
+  uploaded: [],
   singleUpload: true,
   totalProgressIncrements: 0,
   uploadInProgress: false,
@@ -51,13 +57,17 @@ export const INITIAL_STATE = {
   // $FlowIgnore
   uploads: [],
   numToUpload: 0,
+  // Increments even if there was an error, so here "finished" means we tried
+  // to upload it, not that it succeeded
   numFinishedUploads: 0,
   uploadsComplete: false,
   syncInProgress: false
 };
 
 const startUploadState = uploads => ( {
-  error: null,
+  multiError: null,
+  errorsByUuid: {},
+  uploaded: [],
   uploadInProgress: true,
   uploadsComplete: false,
   uploads,
@@ -79,11 +89,30 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
         ...state,
         uploadInProgress: false
       };
-    case "SET_UPLOAD_ERROR":
+    case "SET_MULTI_UPLOAD_ERROR":
       return {
         ...state,
         error: action.error,
         uploadInProgress: false
+      };
+    case "ADD_UPLOAD_ERROR":
+      return {
+        ...state,
+        errorsByUuid: {
+          ...state.errorsByUuid,
+          [action.obsUUID]: [
+            ...( state.errorsByUuid[action.obsUUID] || [] ),
+            action.error
+          ]
+        }
+      };
+    case "ADD_UPLOADED":
+      return {
+        ...state,
+        uploaded: [
+          ...state.uploaded,
+          action.obsUUID
+        ]
       };
     case "SET_UPLOADS":
       return {
@@ -295,6 +324,7 @@ const MyObservationsContainer = ( ): Node => {
   const uploadObservationAndCatchError = useCallback( async observation => {
     try {
       await uploadObservation( observation, realm );
+      dispatch( { type: "ADD_UPLOADED", obsUUID: observation.uuid } );
     } catch ( uploadError ) {
       let { message } = uploadError;
       if ( uploadError?.json?.errors ) {
@@ -307,14 +337,10 @@ const MyObservationsContainer = ( ): Node => {
         } ).join( ", " );
       } else if ( uploadError.message?.match( /Network request failed/ ) ) {
         message = t( "Connection-problem-Please-try-again-later" );
-        logger.error(
-          `upload failed due to network problem: ${uploadError}`
-        );
       } else {
-        logger.error( `upload failed: ${uploadError}` );
         throw uploadError;
       }
-      dispatch( { type: "SET_UPLOAD_ERROR", error: message } );
+      dispatch( { type: "ADD_UPLOAD_ERROR", obsUUID: observation.uuid, error: message } );
     }
   }, [
     realm,
@@ -366,7 +392,7 @@ const MyObservationsContainer = ( ): Node => {
     } catch ( uploadMultipleObservationsError ) {
       logger.error( "Failed to uploadMultipleObservations: ", uploadMultipleObservationsError );
       dispatch( {
-        type: "SET_UPLOAD_ERROR",
+        type: "SET_MULTI_UPLOAD_ERROR",
         error: t( "Something-went-wrong" )
       } );
     }

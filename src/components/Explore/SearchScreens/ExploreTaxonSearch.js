@@ -55,7 +55,7 @@ const ExploreTaxonSearch = ( { closeModal, updateTaxon }: Props ): Node => {
   }
 
   return (
-    <ViewWrapper className="flex-1">
+    <ViewWrapper>
       <View className="flex-row justify-center p-5 bg-white">
         <INatIconButton
           testID="ExploreTaxonSearch.close"
