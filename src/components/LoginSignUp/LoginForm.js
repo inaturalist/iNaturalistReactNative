@@ -54,13 +54,13 @@ const LoginForm = ( {
   useEffect( () => {
     const unsubscribeBlur = navigation.addListener( "blur", blurFields );
 
-    return () => unsubscribeBlur;
+    return unsubscribeBlur;
   }, [navigation] );
 
   useEffect( () => {
     const unsubscrubeTransition = navigation.addListener( "transitionEnd", blurFields );
 
-    return () => unsubscrubeTransition;
+    return unsubscrubeTransition;
   }, [navigation] );
 
   const login = async ( ) => {

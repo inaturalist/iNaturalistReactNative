@@ -30,13 +30,13 @@ const ForgotPasswordForm = ( { reset }: Props ): Node => {
   useEffect( () => {
     const unsubscribeBlur = navigation.addListener( "blur", blurFields );
 
-    return () => unsubscribeBlur;
+    return unsubscribeBlur;
   }, [navigation] );
 
   useEffect( () => {
     const unsubscribeTransition = navigation.addListener( "transitionEnd", blurFields );
 
-    return () => unsubscribeTransition;
+    return unsubscribeTransition;
   }, [navigation] );
 
   return (

@@ -97,7 +97,7 @@ const AICamera = ( {
       setResult( null );
     } );
 
-    return () => unsubscribeBlur;
+    return unsubscribeBlur;
   }, [navigation, setResult] );
 
   React.useEffect( () => {
@@ -105,7 +105,7 @@ const AICamera = ( {
       setResult( null );
     } );
 
-    return () => unsubscribeFocus;
+    return unsubscribeFocus;
   }, [navigation, setResult] );
 
   const handlePress = async ( ) => {
