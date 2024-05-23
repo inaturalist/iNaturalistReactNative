@@ -93,17 +93,19 @@ const AICamera = ( {
   const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
 
   React.useEffect( () => {
-    const unsubscribeFocus = navigation.addListener( "focus", () => {
-      setResult( null );
-    } );
     const unsubscribeBlur = navigation.addListener( "blur", () => {
       setResult( null );
     } );
 
-    return () => {
-      unsubscribeFocus();
-      unsubscribeBlur();
-    };
+    return unsubscribeBlur;
+  }, [navigation, setResult] );
+
+  React.useEffect( () => {
+    const unsubscribeFocus = navigation.addListener( "focus", () => {
+      setResult( null );
+    } );
+
+    return unsubscribeFocus;
   }, [navigation, setResult] );
 
   const handlePress = async ( ) => {
