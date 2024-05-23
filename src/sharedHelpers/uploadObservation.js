@@ -1,5 +1,4 @@
 // @flow
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import {
   createObservation,
   createOrUpdateEvidence,
@@ -133,7 +132,6 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
       "Gack, tried to upload an observation without API token!"
     );
   }
-  activateKeepAwake();
   const obsToUpload = Observation.mapObservationForUpload( obs );
   const options = { api_token: apiToken };
 
@@ -221,7 +219,6 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   const { uuid: obsUUID } = response.results[0];
 
   await Promise.all( [
-    markRecordUploaded( obs.uuid, null, "Observation", response, realm ),
     // Attach the newly uploaded photos/sounds to the uploaded observation
     unsyncedObservationPhotos.length > 0
       ? await uploadEvidence(
@@ -261,10 +258,13 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
       )
       : null
   ] );
+  // Make sure this happens *after* ObservationPhotos and ObservationSounds
+  // are created so the observation doesn't appear uploaded until all its
+  // media successfully uploads
+  await markRecordUploaded( obs.uuid, null, "Observation", response, realm );
   // fetch observation and upsert it
   const remoteObs = await fetchRemoteObservation( obsUUID, { fields: Observation.FIELDS } );
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
-  deactivateKeepAwake( );
   return response;
 };
 

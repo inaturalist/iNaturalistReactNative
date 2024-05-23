@@ -1105,6 +1105,11 @@ X-Species =
         [one] { $count } Species
        *[other] { $count } Species
     }
+x-uploads-failed =
+    { $count ->
+        [one] { $count } upload failed
+       *[other] { $count } uploads failed
+    }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.

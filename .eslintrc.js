@@ -84,6 +84,7 @@ module.exports = {
     "prefer-destructuring": [2, { object: true, array: false }],
     quotes: [2, "double"],
     "space-in-parens": [2, "always"],
+    "max-classes-per-file": 0,
     "module-resolver/use-alias": 2,
     "multiline-ternary": ["error", "always"],
     // At least before we start making production builds
