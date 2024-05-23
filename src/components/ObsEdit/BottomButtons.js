@@ -86,12 +86,9 @@ const BottomButtons = ( {
   ] );
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
-    logger.info( "saving observation ", currentObservation.uuid );
     const savedObservation = await saveObservation( currentObservation );
-    logger.info( "saved observation ", savedObservation.uuid );
     const params = {};
     if ( type === "upload" ) {
-      // $FlowIgnore
       uploadObservation( savedObservation, realm );
       params.uuid = savedObservation.uuid;
     }
@@ -106,7 +103,6 @@ const BottomButtons = ( {
           params
         }
       } );
-      logger.info( "navigated back to MyObs" );
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );

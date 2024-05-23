@@ -10,8 +10,11 @@ import { format } from "date-fns";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect,
-  useReducer, useState
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState
 } from "react";
 import { Alert } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
@@ -235,6 +238,8 @@ const MyObservationsContainer = ( ): Node => {
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
+  const abortController = useMemo( ( ) => new AbortController( ), [] );
+
   const toggleLayout = ( ) => {
     writeLayoutToStorage( layout === "grid"
       ? "list"
@@ -319,7 +324,7 @@ const MyObservationsContainer = ( ): Node => {
 
   const uploadObservationAndCatchError = useCallback( async observation => {
     try {
-      await uploadObservation( observation, realm );
+      await uploadObservation( observation, realm, { signal: abortController.signal } );
       dispatch( { type: "ADD_UPLOADED", obsUUID: observation.uuid } );
     } catch ( uploadError ) {
       let { message } = uploadError;
@@ -339,6 +344,7 @@ const MyObservationsContainer = ( ): Node => {
       dispatch( { type: "ADD_UPLOAD_ERROR", obsUUID: observation.uuid, error: message } );
     }
   }, [
+    abortController.signal,
     realm,
     t
   ] );
@@ -386,6 +392,10 @@ const MyObservationsContainer = ( ): Node => {
       } ) );
       dispatch( { type: "UPLOADS_COMPLETE" } );
     } catch ( uploadMultipleObservationsError ) {
+      if ( uploadMultipleObservationsError.message === "Aborted" ) {
+        dispatch( { type: "STOP_UPLOADS" } );
+        return;
+      }
       logger.error( "Failed to uploadMultipleObservations: ", uploadMultipleObservationsError );
       dispatch( {
         type: "SET_MULTI_UPLOAD_ERROR",
@@ -406,8 +416,9 @@ const MyObservationsContainer = ( ): Node => {
 
   const stopUploads = useCallback( ( ) => {
     dispatch( { type: "STOP_UPLOADS" } );
+    abortController.abort( );
     deactivateKeepAwake( );
-  }, [] );
+  }, [abortController] );
 
   const downloadRemoteObservationsFromServer = useCallback( async ( ) => {
     const apiToken = await getJWT( );

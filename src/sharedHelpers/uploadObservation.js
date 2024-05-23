@@ -124,7 +124,7 @@ const uploadEvidence = async (
   return responses[0];
 };
 
-const uploadObservation = async ( obs: Object, realm: Object ): Object => {
+const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} ): Object => {
   const apiToken = await getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {
@@ -133,7 +133,7 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
     );
   }
   const obsToUpload = Observation.mapObservationForUpload( obs );
-  const options = { api_token: apiToken };
+  const options = { ...opts, api_token: apiToken };
 
   // Remove all null values, b/c the API doesn't seem to like them for some
   // reason (might be an error with the API as of 20220801)
