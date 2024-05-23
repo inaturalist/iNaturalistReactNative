@@ -4,7 +4,7 @@ import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { useAuthenticatedMutation } from "sharedHooks";
+import { useAuthenticatedMutation, useCurrentUser } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import filterLocalObservationsToDelete from "../helpers/filterLocalObservationsToDelete";
@@ -15,6 +15,7 @@ const logger = log.extend( "useDeleteObservations" );
 const { useRealm } = RealmContext;
 
 const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Object => {
+  const currentUser = useCurrentUser( );
   const deletions = useStore( state => state.deletions );
   const deletionsComplete = useStore( state => state.deletionsComplete );
   const deletionsInProgress = useStore( state => state.deletionsInProgress );
@@ -102,7 +103,9 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
   useEffect( ( ) => {
     const beginDeletions = async ( ) => {
       logger.info( "syncing remotely deleted observations" );
-      await syncRemoteDeletedObservations( realm );
+      if ( currentUser ) {
+        await syncRemoteDeletedObservations( realm );
+      }
       logger.info( "syncing locally deleted observations" );
       const localObservations = filterLocalObservationsToDelete( realm );
       if ( localObservations.length > 0 && deletions.length === 0 ) {
@@ -115,6 +118,7 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
     }
   }, [
     canBeginDeletions,
+    currentUser,
     deletions,
     myObservationsDispatch,
     realm,
