@@ -9,8 +9,8 @@ import {
   useCurrentUser,
   useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
-import useDeleteObservations from "./hooks/useDeleteObservations";
 import Toolbar from "./Toolbar";
 
 const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
@@ -36,17 +36,14 @@ const ToolbarContainer = ( {
   uploadMultipleObservations,
   uploadState
 }: Props ): Node => {
-  const deletionState = useDeleteObservations( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
+  const deletions = useStore( state => state.deletions );
+  const deletionsComplete = useStore( state => state.deletionsComplete );
+  const currentDeleteCount = useStore( state => state.currentDeleteCount );
+  const deleteError = useStore( state => state.error );
+  const deletionsInProgress = useStore( state => state.deletionsInProgress );
 
-  const {
-    currentDeleteCount,
-    deletions,
-    deletionsInProgress,
-    deletionsComplete,
-    error: deleteError
-  } = deletionState;
   const totalDeletions = deletions.length;
   const deletionsProgress = totalDeletions > 0
     ? currentDeleteCount / totalDeletions

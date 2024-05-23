@@ -1,25 +1,16 @@
 import { screen } from "@testing-library/react-native";
-import * as useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations";
 import {
   INITIAL_STATE as MYOBS_INITIAL_STATE
 } from "components/MyObservations/MyObservationsContainer";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import i18next from "i18next";
 import React from "react";
+import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 
-jest.mock( "components/MyObservations/hooks/useDeleteObservations", () => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    currentDeleteCount: 1,
-    deletions: [],
-    deletionsComplete: false,
-    deletionsInProgress: false,
-    error: null
-  } )
-} ) );
+const initialStoreState = useStore.getState( );
 
-const deletionState = {
+const deletionStore = {
   currentDeleteCount: 3,
   deletions: [{}, {}, {}],
   deletionsComplete: false,
@@ -35,6 +26,10 @@ const uploadState = {
 };
 
 describe( "Toolbar", () => {
+  beforeAll( async () => {
+    useStore.setState( initialStoreState, true );
+  } );
+
   it( "displays a pending upload", async () => {
     renderComponent( <ToolbarContainer
       numUnuploadedObs={1}
@@ -143,11 +138,11 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays deletions in progress", async () => {
-    jest.spyOn( useDeleteObservations, "default" ).mockImplementation( ( ) => ( {
-      ...deletionState,
+    useStore.setState( {
+      ...deletionStore,
       deletionsInProgress: true,
       currentDeleteCount: 2
-    } ) );
+    } );
     renderComponent( <ToolbarContainer uploadState={uploadState} /> );
 
     const statusText = screen.getByText( i18next.t( "Deleting-x-of-y-observations", {
@@ -158,10 +153,10 @@ describe( "Toolbar", () => {
   } );
 
   it( "displays deletions completed", async () => {
-    jest.spyOn( useDeleteObservations, "default" ).mockImplementation( ( ) => ( {
-      ...deletionState,
+    useStore.setState( {
+      ...deletionStore,
       deletionsComplete: true
-    } ) );
+    } );
     renderComponent( <ToolbarContainer uploadState={uploadState} /> );
 
     const statusText = screen.getByText( i18next.t( "X-observations-deleted", {
@@ -172,10 +167,10 @@ describe( "Toolbar", () => {
 
   it( "displays deletion error", async () => {
     const error = "Unknown problem deleting observations";
-    jest.spyOn( useDeleteObservations, "default" ).mockImplementation( ( ) => ( {
-      ...deletionState,
+    useStore.setState( {
+      ...deletionStore,
       error
-    } ) );
+    } );
     renderComponent( <ToolbarContainer uploadState={uploadState} /> );
 
     const statusText = screen.getByText( error );
