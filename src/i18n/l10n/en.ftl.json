@@ -1394,6 +1394,7 @@
     "val": "{ $count ->\n  [one] 1 SOUND\n *[other] { $count } SOUNDS\n}"
   },
   "X-Species": "{ $count ->\n  [one] { $count } Species\n *[other] { $count } Species\n}",
+  "x-uploads-failed": "{ $count ->\n  [one] { $count } upload failed\n *[other] { $count } uploads failed\n}",
   "Yes-license-my-photos": "Yes, license my photos, sounds, and observations so scientists can use my data (recommended)",
   "You-are-offline-Tap-to-try-again": "You are offline. Tap to try again.",
   "You-can-add-up-to-20-media": "You can add up to 20 photos and 20 sounds per observation.",
