@@ -4,7 +4,7 @@ const DEFAULT_STATE = {
   deletionsComplete: false,
   deletionsCompletedAt: null,
   deletionsInProgress: false,
-  error: null
+  deleteError: null
 };
 
 interface DeleteObservationsSlice {
@@ -13,7 +13,7 @@ interface DeleteObservationsSlice {
   deletionsComplete: boolean,
   deletionsCompletedAt: Date,
   deletionsInProgress: boolean,
-  error: string | null
+  deleteError: string | null
 }
 
 const createDeleteObservationsSlice: StateCreator<DeleteObservationsSlice> = set => ( {
@@ -30,7 +30,7 @@ const createDeleteObservationsSlice: StateCreator<DeleteObservationsSlice> = set
   } ) ),
   resetDeleteObservationsSlice: ( ) => set( DEFAULT_STATE ),
   setDeletionError: message => set( ( ) => ( {
-    error: message
+    deleteError: message
   } ) )
 } );
 

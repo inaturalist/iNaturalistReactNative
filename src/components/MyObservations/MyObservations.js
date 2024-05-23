@@ -21,13 +21,11 @@ type Props = {
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
   status: string,
-  stopUploads: Function,
   syncObservations: Function,
   toggleLayout: Function,
-  toolbarProgress: number,
   uploadMultipleObservations: Function,
   uploadSingleObservation: Function,
-  uploadState: Object
+  syncInProgress: boolean
 };
 
 const MyObservations = ( {
@@ -40,13 +38,11 @@ const MyObservations = ( {
   setShowLoginSheet,
   showLoginSheet,
   status,
-  stopUploads,
   syncObservations,
   toggleLayout,
-  toolbarProgress,
   uploadMultipleObservations,
   uploadSingleObservation,
-  uploadState
+  syncInProgress
 }: Props ): Node => (
   <>
     <ViewWrapper>
@@ -57,12 +53,10 @@ const MyObservations = ( {
             hideToolbar={observations.length === 0}
             layout={layout}
             setHeightAboveToolbar={setStickyAt}
-            stopUploads={stopUploads}
             syncObservations={syncObservations}
             toggleLayout={toggleLayout}
-            toolbarProgress={toolbarProgress}
             uploadMultipleObservations={uploadMultipleObservations}
-            uploadState={uploadState}
+            syncInProgress={syncInProgress}
             logInButtonNeutral={observations.length === 0}
           />
         )}
@@ -80,7 +74,6 @@ const MyObservations = ( {
             status={status}
             testID="MyObservationsAnimatedList"
             uploadSingleObservation={uploadSingleObservation}
-            uploadState={uploadState}
             renderHeader={(
               <Announcements isOnline={isOnline} />
             )}

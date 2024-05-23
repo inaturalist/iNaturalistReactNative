@@ -1,5 +1,6 @@
 // @flow
 
+import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import classNames from "classnames";
 import {
   Body2,
@@ -13,6 +14,7 @@ import type { Node } from "react";
 import React from "react";
 import { ProgressBar, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
   error: ?string,
@@ -26,7 +28,6 @@ type Props = {
   showsCheckmark: boolean,
   showsExploreIcon: boolean,
   statusText: ?string,
-  stopUploads: Function,
   syncIconColor: string,
   toggleLayout: Function
 }
@@ -43,12 +44,12 @@ const Toolbar = ( {
   showsCheckmark,
   showsExploreIcon,
   statusText,
-  stopUploads,
   syncIconColor,
   toggleLayout
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
+  const stopAllUploads = useStore( state => state.stopAllUploads );
 
   return (
     <View className={
@@ -117,7 +118,10 @@ const Toolbar = ( {
               icon="close"
               size={11}
               accessibilityLabel={t( "Stop-upload" )}
-              onPress={stopUploads}
+              onPress={( ) => {
+                stopAllUploads( );
+                deactivateKeepAwake( );
+              }}
             />
           )}
         </View>

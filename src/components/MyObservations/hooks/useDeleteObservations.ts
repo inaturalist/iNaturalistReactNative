@@ -19,7 +19,7 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
   const deletionsComplete = useStore( state => state.deletionsComplete );
   const deletionsInProgress = useStore( state => state.deletionsInProgress );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
-  const error = useStore( state => state.error );
+  const error = useStore( state => state.deleteError );
   const finishDeletions = useStore( state => state.finishDeletions );
   const resetDeleteObservationsSlice = useStore( state => state.resetDeleteObservationsSlice );
   const setDeletions = useStore( state => state.setDeletions );

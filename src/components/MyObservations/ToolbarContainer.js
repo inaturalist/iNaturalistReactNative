@@ -18,47 +18,40 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 type Props = {
   layout: string,
   numUnuploadedObs: number,
-  stopUploads: Function,
   syncObservations: Function,
   toggleLayout: Function,
-  toolbarProgress: number,
   uploadMultipleObservations: Function,
-  uploadState: Object
+  syncInProgress: boolean
 }
 
 const ToolbarContainer = ( {
   layout,
   numUnuploadedObs,
-  stopUploads,
   syncObservations,
   toggleLayout,
-  toolbarProgress,
   uploadMultipleObservations,
-  uploadState
+  syncInProgress
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const deletions = useStore( state => state.deletions );
   const deletionsComplete = useStore( state => state.deletionsComplete );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
-  const deleteError = useStore( state => state.error );
+  const deleteError = useStore( state => state.deleteError );
   const deletionsInProgress = useStore( state => state.deletionsInProgress );
+  const toolbarProgress = useStore( state => state.toolbarProgress );
+  const uploadMultiError = useStore( state => state.multiError );
+  const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
+  const uploadInProgress = useStore( state => state.uploadInProgress );
+  const uploadsComplete = useStore( state => state.uploadsComplete );
+  const numToUpload = useStore( state => state.numToUpload );
+  const numFinishedUploads = useStore( state => state.numFinishedUploads );
+  const uploaded = useStore( state => state.uploaded );
 
   const totalDeletions = deletions.length;
   const deletionsProgress = totalDeletions > 0
     ? currentDeleteCount / totalDeletions
     : 0;
-
-  const {
-    multiError: uploadMultiError,
-    errorsByUuid: uploadErrorsByUuid,
-    uploadInProgress,
-    uploadsComplete,
-    numToUpload,
-    numFinishedUploads,
-    syncInProgress,
-    uploaded
-  } = uploadState;
 
   const handleSyncButtonPress = useCallback( async ( ) => {
     if ( numUnuploadedObs > 0 ) {
@@ -201,7 +194,6 @@ const ToolbarContainer = ( {
       showsCheckmark={showsCheckmark}
       showsExploreIcon={currentUser}
       statusText={statusText}
-      stopUploads={stopUploads}
       syncIconColor={syncIconColor}
       toggleLayout={toggleLayout}
       error={errorText}

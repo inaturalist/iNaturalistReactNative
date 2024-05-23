@@ -16,9 +16,6 @@ type Props = {
   height?: string,
   style?: Object,
   uploadSingleObservation?: Function,
-  uploadState: {
-    uploadProgress: number
-  },
   explore: boolean
 };
 
@@ -28,7 +25,6 @@ const ObsGridItem = ( {
   height = "w-[200px]",
   style,
   uploadSingleObservation,
-  uploadState,
   explore
 }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo
@@ -73,9 +69,7 @@ const ObsGridItem = ( {
               white
               classNameMargin="mb-1"
               uploadSingleObservation={uploadSingleObservation}
-              uploadState={uploadState}
             />
-
           )}
         <DisplayTaxonName
           keyBase={observation?.uuid}

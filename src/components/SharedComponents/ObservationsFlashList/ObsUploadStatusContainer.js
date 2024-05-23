@@ -2,6 +2,7 @@
 
 import type { Node } from "react";
 import React from "react";
+import useStore from "stores/useStore";
 
 import ObsUploadStatus from "./ObsUploadStatus";
 
@@ -10,8 +11,7 @@ type Props = {
   layout?: "horizontal" | "vertical",
   white?: boolean,
   classNameMargin?: string,
-  uploadSingleObservation?: Function,
-  uploadState: Object
+  uploadSingleObservation?: Function
 };
 
 const ObsUploadStatusContainer = ( {
@@ -19,10 +19,9 @@ const ObsUploadStatusContainer = ( {
   layout,
   white = false,
   classNameMargin,
-  uploadSingleObservation,
-  uploadState
+  uploadSingleObservation
 }: Props ): Node => {
-  const uploadProgress = uploadState?.uploadProgress;
+  const uploadProgress = useStore( state => state.uploadProgress );
 
   const needsSync = item => !item._synced_at
     || item._synced_at <= item._updated_at;
