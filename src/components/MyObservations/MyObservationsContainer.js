@@ -2,11 +2,8 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
-import {
-  checkForDeletedObservations, searchObservations
-} from "api/observations";
+import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import { format } from "date-fns";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -47,6 +44,7 @@ import MyObservations from "./MyObservations";
 const logger = log.extend( "MyObservationsContainer" );
 
 export const INITIAL_STATE = {
+  canBeginDeletions: true,
   // Single error caught during multiple obs upload
   multiError: null,
   // $FlowIgnore
@@ -161,6 +159,11 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
         ...state,
         syncInProgress: true
       };
+    case "SET_START_DELETIONS":
+      return {
+        ...state,
+        canBeginDeletions: false
+      };
     default:
       return state;
   }
@@ -188,8 +191,9 @@ const MyObservationsContainer = ( ): Node => {
   // ...but whenever you start a new abortable upload process, you need to
   //    mint a new abort controller
   const newAbortController = useStore( storeState => storeState.newAbortController );
-  const { deletionsCompletedAt } = useDeleteObservations( );
+  useDeleteObservations( state.canBeginDeletions, dispatch );
   const numUnuploadedObservations = useNumUnuploadedObservations( );
+  const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
 
   const isOnline = useIsConnected( );
 
@@ -461,18 +465,18 @@ const MyObservationsContainer = ( ): Node => {
       if ( msSinceDeletionsCompleted < 5_000 ) {
         const naptime = 10_000 - msSinceDeletionsCompleted;
         logger.info(
-          "[MyObservationsContainer.js] downloadRemoteObservationsFromServer finished deleting "
+          "downloadRemoteObservationsFromServer finished deleting "
           + `recently deleted, waiting ${naptime} ms`
         );
         await sleep( naptime );
       }
     }
     logger.info(
-      "[MyObservationsContainer.js] downloadRemoteObservationsFromServer, fetching observations"
+      "downloadRemoteObservationsFromServer, fetching observations"
     );
     const { results } = await searchObservations( searchParams, { api_token: apiToken } );
     logger.info(
-      "[MyObservationsContainer.js] downloadRemoteObservationsFromServer, fetched",
+      "downloadRemoteObservationsFromServer, fetched",
       results.length,
       "results, upserting..."
     );
@@ -482,36 +486,6 @@ const MyObservationsContainer = ( ): Node => {
     deletionsCompletedAt,
     realm
   ] );
-
-  // TODO move this logic to a helper or a model so it can be more easily unit tested
-  const syncRemoteDeletedObservations = useCallback( async ( ) => {
-    const apiToken = await getJWT( );
-    const lastSyncTime = realm.objects( "LocalPreferences" )?.[0]?.last_sync_time;
-    const deletedParams = { since: format( new Date( ), "yyyy-MM-dd" ) };
-    if ( lastSyncTime ) {
-      try {
-        deletedParams.since = format( lastSyncTime, "yyyy-MM-dd" );
-      } catch ( lastSyncTimeFormatError ) {
-        if ( lastSyncTimeFormatError instanceof RangeError ) {
-          // If we can't parse that date, assume we've never synced and use the default
-        } else {
-          throw lastSyncTimeFormatError;
-        }
-      }
-    }
-    const response = await checkForDeletedObservations( deletedParams, { api_token: apiToken } );
-    const deletedObservations = response?.results;
-    if ( !deletedObservations ) { return; }
-    if ( deletedObservations?.length > 0 ) {
-      safeRealmWrite( realm, ( ) => {
-        const localObservationsToDelete = realm.objects( "Observation" )
-          .filtered( `id IN { ${deletedObservations} }` );
-        localObservationsToDelete.forEach( observation => {
-          realm.delete( observation );
-        } );
-      }, "deleting remote deleted observations in MyObservationsContainer" );
-    }
-  }, [realm] );
 
   const updateSyncTime = useCallback( ( ) => {
     const localPrefs = realm.objects( "LocalPreferences" )[0];
@@ -525,46 +499,42 @@ const MyObservationsContainer = ( ): Node => {
   }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {
-    logger.info( "[MyObservationsContainer.js] syncObservations: starting" );
+    logger.info( "syncObservations: starting" );
     if ( !uploadInProgress && uploadsComplete ) {
-      logger.info( "[MyObservationsContainer.js] syncObservations: dispatch RESET_STATE" );
+      logger.info( "syncObservations: dispatch RESET_STATE" );
       dispatch( { type: "RESET_STATE" } );
     }
-    logger.info( "[MyObservationsContainer.js] syncObservations: calling toggleLoginSheet" );
+    logger.info( "syncObservations: calling toggleLoginSheet" );
     if ( !currentUser ) {
       toggleLoginSheet( );
       dispatch( { type: "RESET_STATE" } );
       return;
     }
-    logger.info( "[MyObservationsContainer.js] syncObservations: calling showInternetErrorAlert" );
+    logger.info( "syncObservations: calling showInternetErrorAlert" );
     if ( !isOnline ) {
       showInternetErrorAlert( );
       dispatch( { type: "RESET_STATE" } );
       return;
     }
     dispatch( { type: "START_SYNC" } );
-    logger.info( "[MyObservationsContainer.js] syncObservations: calling activateKeepAwake" );
+    logger.info( "syncObservations: calling activateKeepAwake" );
     activateKeepAwake( );
+
     logger.info(
-      "[MyObservationsContainer.js] syncObservations: calling syncRemoteDeletedObservations"
-    );
-    await syncRemoteDeletedObservations( );
-    logger.info(
-      "[MyObservationsContainer.js] syncObservations: calling downloadRemoteObservationsFromServer"
+      "syncObservations: calling downloadRemoteObservationsFromServer"
     );
     await downloadRemoteObservationsFromServer( );
-    logger.info( "[MyObservationsContainer.js] syncObservations: calling updateSyncTime" );
+    logger.info( "syncObservations: calling updateSyncTime" );
     updateSyncTime( );
-    logger.info( "[MyObservationsContainer.js] syncObservations: calling deactivateKeepAwake" );
+    logger.info( "syncObservations: calling deactivateKeepAwake" );
     deactivateKeepAwake( );
     dispatch( { type: "RESET_STATE" } );
-    logger.info( "[MyObservationsContainer.js] syncObservations: done" );
+    logger.info( "syncObservations: done" );
   }, [
     currentUser,
     downloadRemoteObservationsFromServer,
     isOnline,
     showInternetErrorAlert,
-    syncRemoteDeletedObservations,
     toggleLoginSheet,
     updateSyncTime,
     uploadInProgress,

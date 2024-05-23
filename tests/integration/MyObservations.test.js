@@ -311,25 +311,21 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      describe( "after initial sync", ( ) => {
+      describe( "on screen focus", ( ) => {
         beforeEach( ( ) => {
           safeRealmWrite( global.mockRealms[__filename], ( ) => {
             global.mockRealms[__filename].create( "LocalPreferences", {
-              last_sync_time: new Date( "2023-11-01" )
+              last_sync_time: new Date( "2023-11-01" ),
+              last_deleted_sync_time: new Date( "2024-05-01" )
             } );
           }, "add last_sync_time to LocalPreferences, MyObservations integration test" );
         } );
 
-        it( "downloads deleted observations from server when sync button tapped", async ( ) => {
+        it( "downloads deleted observations from server when screen focused", async ( ) => {
           const realm = global.mockRealms[__filename];
           expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
           renderAppWithComponent( <MyObservationsContainer /> );
-          const syncIcon = await screen.findByTestId( "SyncButton" );
-          await waitFor( ( ) => {
-            expect( syncIcon ).toBeVisible( );
-          } );
-          fireEvent.press( syncIcon );
-          const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_sync_time;
+          const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_deleted_sync_time;
           await waitFor( ( ) => {
             expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
               {
@@ -343,11 +339,6 @@ describe( "MyObservations", ( ) => {
         it( "deletes local observations if they have been deleted on server", async ( ) => {
           inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
           renderAppWithComponent( <MyObservationsContainer /> );
-          const syncIcon = await screen.findByTestId( "SyncButton" );
-          await waitFor( ( ) => {
-            expect( syncIcon ).toBeVisible( );
-          } );
-          fireEvent.press( syncIcon );
           const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
           await waitFor( ( ) => {
             expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
