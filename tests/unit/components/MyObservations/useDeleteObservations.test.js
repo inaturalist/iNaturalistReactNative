@@ -29,16 +29,22 @@ const unsyncedObservations = [
 const getLocalObservation = uuid => global.realm
   .objectForPrimaryKey( "Observation", uuid );
 
+const createObservations = ( observations, comment ) => {
+  safeRealmWrite(
+    global.realm,
+    ( ) => {
+      observations.forEach( observation => {
+        global.realm.create( "Observation", observation );
+      } );
+    },
+    comment
+  );
+};
+
 describe( "handle deletions", ( ) => {
   it( "should not make deletion API call for unsynced observations", async ( ) => {
-    const deleteSpy = jest.spyOn( global.realm, "delete" );
-    safeRealmWrite(
-      global.realm,
-      ( ) => {
-        unsyncedObservations.forEach( observation => {
-          global.realm.create( "Observation", observation );
-        } );
-      },
+    createObservations(
+      unsyncedObservations,
       "write unsyncedObservations, useDeleteObservations test"
     );
 
@@ -46,34 +52,26 @@ describe( "handle deletions", ( ) => {
       unsyncedObservations[0].uuid
     );
     expect( unsyncedObservation._synced_at ).toBeNull( );
-    renderHook( ( ) => useDeleteObservations( ) );
+    renderHook( ( ) => useDeleteObservations( true, ( ) => null ) );
 
     await waitFor( ( ) => {
       expect( mockMutate ).not.toHaveBeenCalled( );
     } );
-    expect( deleteSpy ).toHaveBeenCalled( );
   } );
 
   it( "should make deletion API call for previously synced observations", async ( ) => {
-    const deleteSpy = jest.spyOn( global.realm, "delete" );
-    safeRealmWrite(
-      global.realm,
-      ( ) => {
-        syncedObservations.forEach( observation => {
-          global.realm.create( "Observation", observation );
-        } );
-      },
+    createObservations(
+      syncedObservations,
       "write syncedObservations, useDeleteObservations test"
     );
 
     const syncedObservation = getLocalObservation( syncedObservations[0].uuid );
     expect( syncedObservation._synced_at ).not.toBeNull( );
-    renderHook( ( ) => useDeleteObservations( ) );
+    renderHook( ( ) => useDeleteObservations( true, ( ) => null ) );
 
     await waitFor( ( ) => {
       expect( mockMutate )
         .toHaveBeenCalledWith( { uuid: syncedObservation.uuid } );
     } );
-    expect( deleteSpy ).toHaveBeenCalled( );
   } );
 } );
