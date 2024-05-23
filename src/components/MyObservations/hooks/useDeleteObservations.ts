@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
-import { useCallback, useEffect, useReducer } from "react";
+import { useCallback, useEffect } from "react";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedMutation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import filterLocalObservationsToDelete from "../helpers/filterLocalObservationsToDelete";
 import syncRemoteDeletedObservations from "../helpers/syncRemoteDeletedObservations";
@@ -13,60 +14,20 @@ const logger = log.extend( "useDeleteObservations" );
 
 const { useRealm } = RealmContext;
 
-export const INITIAL_DELETION_STATE = {
-  currentDeleteCount: 1,
-  deletions: [],
-  deletionsComplete: false,
-  deletionsCompletedAt: null,
-  deletionsInProgress: false,
-  error: null
-};
-
-const deletionReducer = ( state: Object, action: Function ): Object => {
-  switch ( action.type ) {
-    case "SET_DELETE_ERROR":
-      return {
-        ...state,
-        error: action.error,
-        deletionsInProgress: false
-      };
-    case "SET_DELETIONS":
-      return {
-        ...state,
-        deletions: action.deletions
-      };
-    case "START_NEXT_DELETION":
-      return {
-        ...state,
-        currentDeleteCount: state.currentDeleteCount + 1,
-        deletionsInProgress: true
-      };
-    case "DELETIONS_COMPLETE":
-      return {
-        ...state,
-        deletionsInProgress: false,
-        deletionsComplete: true,
-        deletionsCompletedAt: new Date( )
-      };
-    case "RESET_STATE":
-      return INITIAL_DELETION_STATE;
-    default:
-      return state;
-  }
-};
-
 const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Object => {
-  const realm = useRealm( );
-  const [state, dispatch] = useReducer( deletionReducer, INITIAL_DELETION_STATE );
-  const navigation = useNavigation( );
+  const deletions = useStore( state => state.deletions );
+  const deletionsComplete = useStore( state => state.deletionsComplete );
+  const deletionsInProgress = useStore( state => state.deletionsInProgress );
+  const currentDeleteCount = useStore( state => state.currentDeleteCount );
+  const error = useStore( state => state.error );
+  const finishDeletions = useStore( state => state.finishDeletions );
+  const resetDeleteObservationsSlice = useStore( state => state.resetDeleteObservationsSlice );
+  const setDeletions = useStore( state => state.setDeletions );
+  const startNextDeletion = useStore( state => state.startNextDeletion );
+  const setDeletionError = useStore( state => state.setDeletionError );
 
-  const {
-    currentDeleteCount,
-    deletions,
-    deletionsInProgress,
-    deletionsComplete,
-    error
-  } = state;
+  const realm = useRealm( );
+  const navigation = useNavigation( );
 
   const observationToDelete = deletions[currentDeleteCount - 1];
   const uuid = observationToDelete?.uuid;
@@ -133,10 +94,10 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
       } else {
         throw deleteError;
       }
-      dispatch( { type: "SET_DELETE_ERROR", error: message } );
+      setDeletionError( message );
       return false;
     }
-  }, [deleteObservation] );
+  }, [deleteObservation, setDeletionError] );
 
   useEffect( ( ) => {
     const beginDeletions = async ( ) => {
@@ -145,10 +106,7 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
       logger.info( "syncing locally deleted observations" );
       const localObservations = filterLocalObservationsToDelete( realm );
       if ( localObservations.length > 0 && deletions.length === 0 ) {
-        dispatch( {
-          type: "SET_DELETIONS",
-          deletions: localObservations
-        } );
+        setDeletions( localObservations );
       }
     };
     if ( canBeginDeletions ) {
@@ -159,7 +117,8 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
     canBeginDeletions,
     deletions,
     myObservationsDispatch,
-    realm
+    realm,
+    setDeletions
   ] );
 
   useEffect( ( ) => {
@@ -167,37 +126,43 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
       deletions.forEach( async ( observation, i ) => {
         await deleteRemoteObservationAndCatchError( );
         if ( i > 0 ) {
-          dispatch( { type: "START_NEXT_DELETION" } );
+          startNextDeletion( );
         }
         if ( i === deletions.length - 1 ) {
-          dispatch( { type: "DELETIONS_COMPLETE" } );
+          finishDeletions( );
         }
       } );
     }
-  }, [deletions, deleteRemoteObservationAndCatchError, canStartDeletingLocalObservations] );
+  }, [
+    canStartDeletingLocalObservations,
+    deleteRemoteObservationAndCatchError,
+    deletions,
+    finishDeletions,
+    startNextDeletion
+  ] );
 
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
-        dispatch( { type: "RESET_STATE" } );
+        resetDeleteObservationsSlice( );
       } );
     },
-    [navigation]
+    [navigation, resetDeleteObservationsSlice]
   );
 
-  useEffect( () => {
+  useEffect( ( ) => {
     let timer;
     if ( deletionsComplete && !error ) {
-      timer = setTimeout( () => {
-        dispatch( { type: "RESET_STATE" } );
+      timer = setTimeout( ( ) => {
+        resetDeleteObservationsSlice( );
       }, 5000 );
     }
-    return () => {
+    return ( ) => {
       clearTimeout( timer );
     };
-  }, [deletionsComplete, error] );
+  }, [deletionsComplete, error, resetDeleteObservationsSlice] );
 
-  return state;
+  return null;
 };
 
 export default useDeleteObservations;

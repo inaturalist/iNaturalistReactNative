@@ -30,6 +30,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
 import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
@@ -183,8 +184,9 @@ const MyObservationsContainer = ( ): Node => {
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
-  const { deletionsCompletedAt } = useDeleteObservations( state.canBeginDeletions, dispatch );
+  useDeleteObservations( state.canBeginDeletions, dispatch );
   const numUnuploadedObservations = useNumUnuploadedObservations( );
+  const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
 
   const isOnline = useIsConnected( );
 
