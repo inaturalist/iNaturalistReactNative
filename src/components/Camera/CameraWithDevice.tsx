@@ -3,14 +3,13 @@ import LocationPermissionGate from "components/SharedComponents/LocationPermissi
 import PermissionGateContainer, { WRITE_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
 import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-import { Camera } from "react-native-vision-camera";
+import { Camera, CameraDevice } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
@@ -27,7 +26,7 @@ interface Props {
   addEvidence: boolean,
   cameraType: string,
   cameraPosition: string,
-  device: Object,
+  device: CameraDevice,
   setCameraPosition: Function,
 }
 
@@ -37,7 +36,7 @@ const CameraWithDevice = ( {
   cameraPosition,
   device,
   setCameraPosition
-}: Props ): Node => {
+}: Props ) => {
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
     Orientation.lockToPortrait( );
@@ -46,7 +45,10 @@ const CameraWithDevice = ( {
   const { t } = useTranslation( );
   const camera = useRef<Camera>( null );
   const { deviceOrientation } = useDeviceOrientation( );
-  const [addPhotoPermissionResult, setAddPhotoPermissionResult] = useState( null );
+  const [
+    addPhotoPermissionResult,
+    setAddPhotoPermissionResult
+  ] = useState<"granted" | "denied" | null>( null );
   const [checkmarkTapped, setCheckmarkTapped] = useState( false );
   const [visionCameraResult, setVisionCameraResult] = useState( null );
   // We track this because we only want to navigate away when the permission
