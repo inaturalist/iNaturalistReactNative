@@ -1,5 +1,4 @@
 import { useRoute } from "@react-navigation/native";
-import type { Node } from "react";
 import React, {
   useState
 } from "react";
@@ -9,7 +8,7 @@ import {
 
 import CameraWithDevice from "./CameraWithDevice";
 
-const CameraContainer = ( ): Node => {
+const CameraContainer = ( ) => {
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
@@ -22,6 +21,10 @@ const CameraContainer = ( ): Node => {
       "telephoto-camera"
     ]
   } );
+
+  if ( !device ) {
+    return null;
+  }
 
   return (
     <CameraWithDevice
