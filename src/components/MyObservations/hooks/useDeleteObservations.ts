@@ -55,7 +55,7 @@ const deletionReducer = ( state: Object, action: Function ): Object => {
   }
 };
 
-const useDeleteObservations = ( ): Object => {
+const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Object => {
   const realm = useRealm( );
   const [state, dispatch] = useReducer( deletionReducer, INITIAL_DELETION_STATE );
   const navigation = useNavigation( );
@@ -151,8 +151,16 @@ const useDeleteObservations = ( ): Object => {
         } );
       }
     };
-    beginDeletions( );
-  }, [deletions, realm] );
+    if ( canBeginDeletions ) {
+      myObservationsDispatch( { type: "SET_START_DELETIONS" } );
+      beginDeletions( );
+    }
+  }, [
+    canBeginDeletions,
+    deletions,
+    myObservationsDispatch,
+    realm
+  ] );
 
   useEffect( ( ) => {
     if ( canStartDeletingLocalObservations ) {

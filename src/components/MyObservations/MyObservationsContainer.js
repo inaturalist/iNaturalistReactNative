@@ -41,6 +41,7 @@ import MyObservations from "./MyObservations";
 const logger = log.extend( "MyObservationsContainer" );
 
 export const INITIAL_STATE = {
+  canBeginDeletions: true,
   error: null,
   singleUpload: true,
   totalProgressIncrements: 0,
@@ -127,6 +128,11 @@ const uploadReducer = ( state: Object, action: Function ): Object => {
         ...state,
         syncInProgress: true
       };
+    case "SET_START_DELETIONS":
+      return {
+        ...state,
+        canBeginDeletions: false
+      };
     default:
       return state;
   }
@@ -148,7 +154,7 @@ const MyObservationsContainer = ( ): Node => {
   const [state, dispatch] = useReducer( uploadReducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
-  const { deletionsCompletedAt } = useDeleteObservations( );
+  const { deletionsCompletedAt } = useDeleteObservations( state.canBeginDeletions, dispatch );
   const numUnuploadedObservations = useNumUnuploadedObservations( );
 
   const isOnline = useIsConnected( );
