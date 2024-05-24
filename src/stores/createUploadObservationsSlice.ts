@@ -13,7 +13,8 @@ const DEFAULT_STATE = {
   numFinishedUploads: 0,
   uploadsComplete: false,
   totalToolbarProgress: 0,
-  totalUploadProgress: []
+  totalUploadProgress: [],
+  numUnuploadedObs: 0
 };
 
 interface TotalUploadProgress {
@@ -35,7 +36,8 @@ interface UploadObservationsSlice {
   numFinishedUploads: number,
   uploadsComplete: boolean,
   totalToolbarProgress: number,
-  totalUploadProgress: Array<TotalUploadProgress>
+  totalUploadProgress: Array<TotalUploadProgress>,
+  numUnuploadedObs: number
 }
 
 const startUploadState = uploads => ( {
@@ -46,7 +48,8 @@ const startUploadState = uploads => ( {
   uploadsComplete: false,
   uploads,
   numToUpload: uploads.length,
-  numFinishedUploads: 0
+  numFinishedUploads: 0,
+  numUnuploadedObs: uploads.length
 } );
 
 const countEvidenceIncrements = ( upload, evidence ) => {
@@ -89,6 +92,8 @@ const setTotalToolbarProgress = totalUploadProgress => {
   return ( currentProgress / totalProgress ) || 0;
 };
 
+const calculateNumberOfObsToUpload = state => state.uploads.length - state.uploaded.length;
+
 const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set => ( {
   ...DEFAULT_STATE,
   startSingleUpload: observation => set( ( ) => ( {
@@ -119,7 +124,8 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     uploads
   } ) ),
   startNextUpload: ( ) => set( state => ( {
-    numFinishedUploads: state.numFinishedUploads + 1
+    numFinishedUploads: state.numFinishedUploads + 1,
+    numUnuploadedObs: calculateNumberOfObsToUpload( state )
   } ) ),
   stopAllUploads: ( ) => set( DEFAULT_STATE ),
   completeUploads: ( ) => set( ( ) => ( {

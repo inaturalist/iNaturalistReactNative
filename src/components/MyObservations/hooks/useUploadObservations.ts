@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect
+  useCallback, useEffect, useState
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
@@ -11,7 +11,6 @@ import {
 } from "sharedHelpers/emitUploadProgress";
 import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
 import {
-  useNumUnuploadedObservations,
   useTranslation
 } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -38,6 +37,7 @@ export default useUploadObservations = (
   const uploads = useStore( state => state.uploads );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
   const stopAllUploads = useStore( state => state.stopAllUploads );
+  const numUnuploadedObs = useStore( state => state.numUnuploadedObs );
   const [uploadingObsUUID, setUploadingObsUUID] = useState( null );
 
   // The existing abortController lets you abort...
@@ -51,8 +51,6 @@ export default useUploadObservations = (
   const realm = useRealm( );
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
   const { params: navParams } = useRoute( );
-
-  const numUnuploadedObservations = useNumUnuploadedObservations( );
 
   useEffect( () => {
     let timer;
@@ -165,7 +163,7 @@ export default useUploadObservations = (
       toggleLoginSheet( );
       return;
     }
-    if ( numUnuploadedObservations === 0 || uploadInProgress ) {
+    if ( numUnuploadedObs === 0 || uploadInProgress ) {
       return;
     }
     if ( !isOnline ) {
@@ -190,7 +188,7 @@ export default useUploadObservations = (
     currentUser,
     isOnline,
     startNextUpload,
-    numUnuploadedObservations,
+    numUnuploadedObs,
     showInternetErrorAlert,
     stopAllUploads,
     toggleLoginSheet,

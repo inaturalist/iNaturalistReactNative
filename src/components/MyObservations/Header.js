@@ -13,7 +13,8 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
-import { useNumUnuploadedObservations, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import Onboarding from "./Onboarding";
 
@@ -44,7 +45,7 @@ const Header = ( {
 }: Props ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
-  const numUnuploadedObs = useNumUnuploadedObservations( );
+  const numUnuploadedObs = useStore( state => state.numUnuploadedObs );
   const { t } = useTranslation( );
 
   const signedInContent = ( ) => (
@@ -127,7 +128,6 @@ const Header = ( {
       {!hideToolbar && (
         <ToolbarContainer
           layout={layout}
-          numUnuploadedObs={numUnuploadedObs}
           stopUploads={stopUploads}
           syncInProgress={syncInProgress}
           syncObservations={syncObservations}

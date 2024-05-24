@@ -17,7 +17,6 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 
 type Props = {
   layout: string,
-  numUnuploadedObs: number,
   stopUploads: Function,
   syncInProgress: boolean,
   syncObservations: Function,
@@ -27,7 +26,6 @@ type Props = {
 
 const ToolbarContainer = ( {
   layout,
-  numUnuploadedObs,
   stopUploads,
   syncInProgress,
   syncObservations,
@@ -47,6 +45,7 @@ const ToolbarContainer = ( {
   const uploadsComplete = useStore( state => state.uploadsComplete );
   const numToUpload = useStore( state => state.numToUpload );
   const numFinishedUploads = useStore( state => state.numFinishedUploads );
+  const numUnuploadedObs = useStore( state => state.numUnuploadedObs );
   const uploaded = useStore( state => state.uploaded );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
 
