@@ -22,6 +22,7 @@ type Props = {
   syncObservations: Function,
   toggleLayout: Function,
   uploadMultipleObservations: Function,
+  numUnuploadedObs: number
 }
 
 const ToolbarContainer = ( {
@@ -30,7 +31,8 @@ const ToolbarContainer = ( {
   syncInProgress,
   syncObservations,
   toggleLayout,
-  uploadMultipleObservations
+  uploadMultipleObservations,
+  numUnuploadedObs
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
@@ -45,9 +47,10 @@ const ToolbarContainer = ( {
   const uploadsComplete = useStore( state => state.uploadsComplete );
   const numToUpload = useStore( state => state.numToUpload );
   const numFinishedUploads = useStore( state => state.numFinishedUploads );
-  const numUnuploadedObs = useStore( state => state.numUnuploadedObs );
   const uploaded = useStore( state => state.uploaded );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
+
+  console.log( numUnuploadedObs, "num unuploaded obs" );
 
   const totalDeletions = deletions.length;
   const deletionsProgress = totalDeletions > 0

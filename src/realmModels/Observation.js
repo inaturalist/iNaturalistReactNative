@@ -311,9 +311,12 @@ class Observation extends Realm.Object {
   static filterUnsyncedObservations = realm => {
     const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
     const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
+    const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
 
     const obs = realm.objects( "Observation" );
-    const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
+    const unsyncedObs = obs.filtered(
+      `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`
+    );
     return unsyncedObs;
   };
 

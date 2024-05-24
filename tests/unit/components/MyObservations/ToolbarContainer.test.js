@@ -29,10 +29,9 @@ describe( "Toolbar Container", () => {
 
   it( "displays a pending upload", async () => {
     useStore.setState( {
-      numToUpload: 1,
-      numUnuploadedObs: 1
+      numToUpload: 1
     } );
-    renderComponent( <ToolbarContainer /> );
+    renderComponent( <ToolbarContainer numUnuploadedObs={1} /> );
 
     const statusText = screen.getByText( i18next.t( "Upload-x-observations", { count: 1 } ) );
     expect( statusText ).toBeVisible( );
@@ -77,10 +76,9 @@ describe( "Toolbar Container", () => {
   it( "displays an upload error", async () => {
     const multiError = "Couldn't complete upload";
     useStore.setState( {
-      multiError,
-      numUnuploadedObs: 1
+      multiError
     } );
-    renderComponent( <ToolbarContainer /> );
+    renderComponent( <ToolbarContainer numUnuploadedObs={1} /> );
     expect( screen.getByText( multiError ) ).toBeVisible( );
   } );
 
@@ -89,10 +87,9 @@ describe( "Toolbar Container", () => {
       uploads: [{}, {}, {}, {}],
       multiError: null,
       uploaded: [],
-      numUnuploadedObs: 4,
       uploadsComplete: false
     } );
-    renderComponent( <ToolbarContainer /> );
+    renderComponent( <ToolbarContainer numUnuploadedObs={4} /> );
 
     const statusText = screen.getByText( i18next.t( "Upload-x-observations", { count: 4 } ) );
     expect( statusText ).toBeVisible( );
@@ -120,8 +117,7 @@ describe( "Toolbar Container", () => {
       uploadsComplete: true,
       numToUpload: 7,
       uploaded: ["1", "2", "3", "4", "5", "6", "7"],
-      totalToolbarProgress: 1,
-      numUnuploadedObs: 0
+      totalToolbarProgress: 1
     } );
     renderComponent( <ToolbarContainer /> );
 

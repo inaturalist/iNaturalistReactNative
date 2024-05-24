@@ -8,15 +8,18 @@ import {
   Subheading1
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useTheme } from "react-native-paper";
+import Observation from "realmModels/Observation";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import Onboarding from "./Onboarding";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   currentUser: ?Object,
@@ -43,9 +46,10 @@ const Header = ( {
   syncObservations,
   uploadMultipleObservations
 }: Props ): Node => {
+  const realm = useRealm( );
   const theme = useTheme( );
   const navigation = useNavigation( );
-  const numUnuploadedObs = useStore( state => state.numUnuploadedObs );
+  const numUnuploadedObs = Observation.filterUnsyncedObservations( realm ).length;
   const { t } = useTranslation( );
 
   const signedInContent = ( ) => (
@@ -128,6 +132,7 @@ const Header = ( {
       {!hideToolbar && (
         <ToolbarContainer
           layout={layout}
+          numUnuploadedObs={numUnuploadedObs}
           stopUploads={stopUploads}
           syncInProgress={syncInProgress}
           syncObservations={syncObservations}

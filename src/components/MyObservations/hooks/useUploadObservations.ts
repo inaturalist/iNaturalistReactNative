@@ -23,6 +23,7 @@ export default useUploadObservations = (
   currentUser,
   isOnline
 ): Object => {
+  const realm = useRealm( );
   const startSingleUpload = useStore( state => state.startSingleUpload );
   const startMultipleUploads = useStore( state => state.startMultipleUploads );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
@@ -37,7 +38,6 @@ export default useUploadObservations = (
   const uploads = useStore( state => state.uploads );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
   const stopAllUploads = useStore( state => state.stopAllUploads );
-  const numUnuploadedObs = useStore( state => state.numUnuploadedObs );
   const [uploadingObsUUID, setUploadingObsUUID] = useState( null );
 
   // The existing abortController lets you abort...
@@ -48,8 +48,9 @@ export default useUploadObservations = (
 
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  const realm = useRealm( );
+
   const allObsToUpload = Observation.filterUnsyncedObservations( realm );
+  const numUnuploadedObs = allObsToUpload.length;
   const { params: navParams } = useRoute( );
 
   useEffect( () => {
@@ -175,7 +176,8 @@ export default useUploadObservations = (
     try {
       await Promise.all( uploads.map( async obsToUpload => {
         await uploadObservationAndCatchError( obsToUpload );
-        startNextUpload( );
+        const unsynced = Observation.filterUnsyncedObservations( realm );
+        startNextUpload( unsynced.length );
       } ) );
       completeUploads( );
     } catch ( uploadMultipleObservationsError ) {
@@ -191,6 +193,7 @@ export default useUploadObservations = (
     numUnuploadedObs,
     showInternetErrorAlert,
     stopAllUploads,
+    realm,
     toggleLoginSheet,
     uploadInProgress,
     uploadObservationAndCatchError,
@@ -198,28 +201,21 @@ export default useUploadObservations = (
     startMultipleUploads
   ] );
 
-  useEffect( ( ) => {
-    if ( uploadInProgress || uploadsComplete ) {
-      return;
-    }
-    if ( allObsToUpload?.length > 0 && allObsToUpload.length > uploads.length ) {
-      setUploads( allObsToUpload );
-    }
-  }, [
-    allObsToUpload,
-    setUploads,
-    uploads,
-    uploadInProgress,
-    uploadsComplete
-  ] );
-
   useEffect(
     ( ) => {
       navigation.addListener( "focus", ( ) => {
         resetUploadObservationsSlice( );
+        const unsynced = Observation.filterUnsyncedObservations( realm );
+        setUploads( allObsToUpload, unsynced.length );
       } );
     },
-    [navigation, realm, resetUploadObservationsSlice]
+    [
+      allObsToUpload,
+      navigation,
+      realm,
+      resetUploadObservationsSlice,
+      setUploads
+    ]
   );
 
   const stopUploads = useCallback( ( ) => {
