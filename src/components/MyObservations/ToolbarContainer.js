@@ -18,19 +18,21 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 type Props = {
   layout: string,
   numUnuploadedObs: number,
+  stopUploads: Function,
+  syncInProgress: boolean,
   syncObservations: Function,
   toggleLayout: Function,
   uploadMultipleObservations: Function,
-  syncInProgress: boolean
 }
 
 const ToolbarContainer = ( {
   layout,
   numUnuploadedObs,
+  stopUploads,
+  syncInProgress,
   syncObservations,
   toggleLayout,
-  uploadMultipleObservations,
-  syncInProgress
+  uploadMultipleObservations
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
@@ -184,6 +186,7 @@ const ToolbarContainer = ( {
 
   return (
     <Toolbar
+      error={errorText}
       handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}
       navToExplore={navToExplore}
@@ -194,9 +197,9 @@ const ToolbarContainer = ( {
       showsCheckmark={showsCheckmark}
       showsExploreIcon={currentUser}
       statusText={statusText}
+      stopUploads={stopUploads}
       syncIconColor={syncIconColor}
       toggleLayout={toggleLayout}
-      error={errorText}
     />
   );
 };

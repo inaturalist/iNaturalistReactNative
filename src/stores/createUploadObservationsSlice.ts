@@ -100,10 +100,6 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     singleUpload: state.uploads.length === 1
   } ) ),
   resetUploadObservationsSlice: ( ) => set( DEFAULT_STATE ),
-  setMultiUploadError: uploadError => set( ( ) => ( {
-    uploadError,
-    uploadInProgress: false
-  } ) ),
   addUploadError: ( error, obsUUID ) => set( state => ( {
     errorsByUuid: {
       ...state.errorsByUuid,

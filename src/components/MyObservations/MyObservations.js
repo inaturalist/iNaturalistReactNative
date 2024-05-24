@@ -21,11 +21,12 @@ type Props = {
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
   status: string,
+  stopUploads: Function,
+  syncInProgress: boolean,
   syncObservations: Function,
   toggleLayout: Function,
   uploadMultipleObservations: Function,
-  uploadSingleObservation: Function,
-  syncInProgress: boolean
+  uploadSingleObservation: Function
 };
 
 const MyObservations = ( {
@@ -38,11 +39,12 @@ const MyObservations = ( {
   setShowLoginSheet,
   showLoginSheet,
   status,
+  stopUploads,
+  syncInProgress,
   syncObservations,
   toggleLayout,
   uploadMultipleObservations,
-  uploadSingleObservation,
-  syncInProgress
+  uploadSingleObservation
 }: Props ): Node => (
   <>
     <ViewWrapper>
@@ -52,12 +54,13 @@ const MyObservations = ( {
             currentUser={currentUser}
             hideToolbar={observations.length === 0}
             layout={layout}
+            logInButtonNeutral={observations.length === 0}
             setHeightAboveToolbar={setStickyAt}
+            stopUploads={stopUploads}
+            syncInProgress={syncInProgress}
             syncObservations={syncObservations}
             toggleLayout={toggleLayout}
             uploadMultipleObservations={uploadMultipleObservations}
-            syncInProgress={syncInProgress}
-            logInButtonNeutral={observations.length === 0}
           />
         )}
         renderScrollable={onScroll => (

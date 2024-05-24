@@ -13,7 +13,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { writeExifToFile } from "sharedHelpers/parseExif";
-import uploadObservation from "sharedHelpers/uploadObservation";
+import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -45,6 +45,7 @@ const BottomButtons = ( {
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
+  const newAbortController = useStore( state => state.newAbortController );
   const navigation = useNavigation( );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
@@ -86,14 +87,22 @@ const BottomButtons = ( {
   ] );
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
-    logger.info( "saving observation ", currentObservation.uuid );
     const savedObservation = await saveObservation( currentObservation );
-    logger.info( "saved observation ", savedObservation.uuid );
     const params = {};
     if ( type === "upload" ) {
-      // $FlowIgnore
-      uploadObservation( savedObservation, realm );
-      params.uuid = savedObservation.uuid;
+      uploadObservation( savedObservation, realm, { signal: newAbortController( ).signal } )
+        .catch( uploadError => {
+          try {
+            handleUploadError( uploadError );
+          } catch ( handleUploadErrorError ) {
+            if ( handleUploadErrorError.message === "Aborted" ) {
+              // If the upload was aborted, just ignore
+              return;
+            }
+            throw uploadError;
+          }
+        } );
+      params.uploadingObsUUID = savedObservation.uuid;
     }
 
     if ( observations.length === 1 ) {
@@ -106,7 +115,6 @@ const BottomButtons = ( {
           params
         }
       } );
-      logger.info( "navigated back to MyObs" );
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
@@ -118,6 +126,7 @@ const BottomButtons = ( {
       setLoading( false );
     }
   }, [
+    newAbortController,
     currentObservation,
     currentObservationIndex,
     navigation,

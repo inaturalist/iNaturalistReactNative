@@ -120,7 +120,8 @@ const MyObservationsContainer = ( ): Node => {
 
   const {
     uploadMultipleObservations,
-    uploadSingleObservation
+    uploadSingleObservation,
+    stopUploads
   } = useUploadObservations(
     toggleLoginSheet,
     showInternetErrorAlert,
@@ -242,11 +243,12 @@ const MyObservationsContainer = ( ): Node => {
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
       status={observationListStatus}
+      stopUploads={stopUploads}
+      syncInProgress={syncInProgress}
       syncObservations={syncObservations}
       toggleLayout={toggleLayout}
       uploadMultipleObservations={uploadMultipleObservations}
       uploadSingleObservation={uploadSingleObservation}
-      syncInProgress={syncInProgress}
     />
   );
 };

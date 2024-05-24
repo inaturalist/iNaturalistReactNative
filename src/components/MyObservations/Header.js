@@ -18,27 +18,29 @@ import { useNumUnuploadedObservations, useTranslation } from "sharedHooks";
 import Onboarding from "./Onboarding";
 
 type Props = {
-  toggleLayout: Function;
-  layout: string,
   currentUser: ?Object,
   hideToolbar: boolean,
+  layout: string,
+  logInButtonNeutral: boolean,
   setHeightAboveToolbar: Function,
+  stopUploads: Function,
   syncInProgress: boolean,
-  uploadMultipleObservations: Function,
   syncObservations: Function,
-  logInButtonNeutral: boolean
+  toggleLayout: Function;
+  uploadMultipleObservations: Function,
 }
 
 const Header = ( {
   toggleLayout,
-  layout,
   currentUser,
   hideToolbar,
+  layout,
+  logInButtonNeutral,
   setHeightAboveToolbar,
+  stopUploads,
   syncInProgress,
-  uploadMultipleObservations,
   syncObservations,
-  logInButtonNeutral
+  uploadMultipleObservations
 }: Props ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -124,12 +126,13 @@ const Header = ( {
       </View>
       {!hideToolbar && (
         <ToolbarContainer
-          toggleLayout={toggleLayout}
           layout={layout}
           numUnuploadedObs={numUnuploadedObs}
+          stopUploads={stopUploads}
           syncInProgress={syncInProgress}
-          uploadMultipleObservations={uploadMultipleObservations}
           syncObservations={syncObservations}
+          toggleLayout={toggleLayout}
+          uploadMultipleObservations={uploadMultipleObservations}
         />
       )}
     </>
