@@ -3,7 +3,7 @@ import {
   screen,
   userEvent
 } from "@testing-library/react-native";
-import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
 import useStore from "stores/useStore";
 import { renderApp } from "tests/helpers/render";
