@@ -21,19 +21,13 @@ const ObsUploadStatusContainer = ( {
   classNameMargin,
   uploadSingleObservation
 }: Props ): Node => {
-  const uploadProgress = useStore( state => state.uploadProgress );
+  const totalUploadProgress = useStore( state => state.totalUploadProgress );
 
   const needsSync = item => !item._synced_at
     || item._synced_at <= item._updated_at;
 
-  const currentProgress = uploadProgress?.[observation.uuid] || 0;
-  const currentProgressIncrements = observation?.observationPhotos
-    ? 1 + observation.observationPhotos.length
-    : 1;
-
-  const progress = currentProgress / currentProgressIncrements || 0;
-
-  const showUploadStatus = !!( ( needsSync( observation ) || uploadProgress?.[observation.uuid] ) );
+  const currentObservation = totalUploadProgress.find( o => o.uuid === observation.uuid );
+  const showUploadStatus = !!( ( needsSync( observation ) || currentObservation ) );
 
   return (
     <ObsUploadStatus
@@ -47,7 +41,6 @@ const ObsUploadStatusContainer = ( {
         }
       }}
       showUploadStatus={showUploadStatus}
-      progress={progress}
     />
   );
 };

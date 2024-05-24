@@ -14,11 +14,11 @@ import Reanimated, {
   withTiming
 } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
   color?: string,
   completeColor?: string,
-  progress: number,
   uploadObservation: Function,
   layout: string,
   // $FlowIgnore
@@ -45,12 +45,15 @@ const keyframe = new Keyframe( {
 const UploadStatus = ( {
   color,
   completeColor,
-  progress,
   uploadObservation,
   layout,
   children,
   uuid
 }: Props ): Node => {
+  const totalUploadProgress = useStore( state => state.totalUploadProgress );
+  const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
+  const progress = currentObservation?.totalProgress || 0;
+
   const { t } = useTranslation( );
   const theme = useTheme( );
   const defaultColor = theme.colors.primary;

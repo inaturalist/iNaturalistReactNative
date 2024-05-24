@@ -11,8 +11,7 @@ type Props = {
   white?: boolean,
   classNameMargin?: string,
   uploadSingleObservation: Function,
-  showUploadStatus: boolean,
-  progress: number
+  showUploadStatus: boolean
 };
 
 const ObsUploadStatus = ( {
@@ -21,8 +20,7 @@ const ObsUploadStatus = ( {
   white = false,
   classNameMargin,
   uploadSingleObservation,
-  showUploadStatus,
-  progress
+  showUploadStatus
 }: Props ): Node => {
   const theme = useTheme( );
   const whiteColor = white && theme.colors.onPrimary;
@@ -43,7 +41,6 @@ const ObsUploadStatus = ( {
 
   return (
     <UploadStatus
-      progress={progress}
       uploadObservation={uploadSingleObservation}
       color={whiteColor}
       completeColor={whiteColor}

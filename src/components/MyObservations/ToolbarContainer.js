@@ -39,7 +39,6 @@ const ToolbarContainer = ( {
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const deleteError = useStore( state => state.deleteError );
   const deletionsInProgress = useStore( state => state.deletionsInProgress );
-  const toolbarProgress = useStore( state => state.toolbarProgress );
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const uploadInProgress = useStore( state => state.uploadInProgress );
@@ -47,6 +46,7 @@ const ToolbarContainer = ( {
   const numToUpload = useStore( state => state.numToUpload );
   const numFinishedUploads = useStore( state => state.numFinishedUploads );
   const uploaded = useStore( state => state.uploaded );
+  const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
 
   const totalDeletions = deletions.length;
   const deletionsProgress = totalDeletions > 0
@@ -76,7 +76,7 @@ const ToolbarContainer = ( {
 
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const progress = toolbarProgress;
+  const progress = totalToolbarProgress;
   const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadMultiError )
     || ( deletionsComplete && !deleteError );

@@ -8,12 +8,15 @@ import Observation from "realmModels/Observation";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
+import { log } from "sharedHelpers/logger";
 import uploadObservation from "sharedHelpers/uploadObservation";
 import {
   useNumUnuploadedObservations,
   useTranslation
 } from "sharedHooks";
 import useStore from "stores/useStore";
+
+const logger = log.extend( "useUploadObservations" );
 
 const { useRealm } = RealmContext;
 
@@ -32,14 +35,11 @@ export default useUploadObservations = (
   const setUploads = useStore( state => state.setUploads );
   const startNextUpload = useStore( state => state.startNextUpload );
   const completeUploads = useStore( state => state.completeUploads );
-  const updateUploadProgress = useStore( state => state.updateUploadProgress );
-  const singleUpload = useStore( state => state.singleUpload );
-  const totalProgressIncrements = useStore( state => state.totalProgressIncrements );
-  const uploadProgress = useStore( state => state.uploadProgress );
   const error = useStore( state => state.uploadError );
   const uploadsComplete = useStore( state => state.uploadsComplete );
   const uploadInProgress = useStore( state => state.uploadInProgress );
   const uploads = useStore( state => state.uploads );
+  const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
 
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -73,50 +73,19 @@ export default useUploadObservations = (
   }, [navParams, uploadInProgress, realm, currentUser, startSingleUpload] );
 
   useEffect( ( ) => {
-    let currentProgress = uploadProgress;
     const progressListener = EventRegister.addEventListener(
       INCREMENT_SINGLE_UPLOAD_PROGRESS,
       increments => {
         const uuid = increments[0];
         const increment = increments[1];
-
-        if ( singleUpload && !currentProgress[uuid] ) {
-          currentProgress = { };
-        }
-
-        currentProgress[uuid] = ( uploadProgress[uuid] || 0 ) + increment;
-
-        // This is really hacky, but our obs upload logic is distributed so much that I can not
-        // figure out a better way to do this. This is true for an observation without media
-        // for which this useEffect is only triggered once, and therefore completeUploads( )
-        // is never dispatched.
-        const isOne = totalProgressIncrements === 1;
-        if (
-          singleUpload
-          && (
-            uploadProgress[uuid] >= totalProgressIncrements
-            || isOne
-          )
-        ) {
-          if ( isOne ) {
-            updateUploadProgress( currentProgress );
-          }
-          completeUploads( );
-        } else {
-          updateUploadProgress( currentProgress );
-        }
+        updateTotalUploadProgress( uuid, increment );
       }
     );
     return ( ) => {
       EventRegister?.removeEventListener( progressListener );
     };
   }, [
-    updateUploadProgress,
-    completeUploads,
-    uploadProgress,
-    singleUpload,
-    totalProgressIncrements,
-    uploadInProgress
+    updateTotalUploadProgress
   ] );
 
   const uploadObservationAndCatchError = useCallback( async observation => {
