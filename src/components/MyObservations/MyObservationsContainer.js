@@ -191,13 +191,15 @@ const MyObservationsContainer = ( ): Node => {
   // ...but whenever you start a new abortable upload process, you need to
   //    mint a new abort controller
   const newAbortController = useStore( storeState => storeState.newAbortController );
-  useDeleteObservations( state.canBeginDeletions, dispatch );
   const numUnuploadedObservations = useNumUnuploadedObservations( );
   const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
 
   const isOnline = useIsConnected( );
-
   const currentUser = useCurrentUser();
+  useDeleteObservations(
+    currentUser?.id && state.canBeginDeletions,
+    dispatch
+  );
 
   useObservationsUpdates( !!currentUser );
   const {
