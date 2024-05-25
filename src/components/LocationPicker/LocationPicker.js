@@ -4,6 +4,7 @@ import classnames from "classnames";
 import {
   CloseButton,
   Heading4,
+  KeyboardDismissableView,
   Map,
   ViewWrapper
 } from "components/SharedComponents";
@@ -64,78 +65,82 @@ const LocationPicker = ( {
   // prevent initial map render from resetting the coordinates and locationName
   const [initialMapRender, setInitialMapRender] = useState( true );
 
+  console.log( "[DEBUG LocationPicker.js] rendering" );
+
   return (
-    <ViewWrapper testID="location-picker">
-      <View className="justify-center">
-        <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
-        <View className="absolute right-2">
-          <CloseButton black size={19} />
+    <KeyboardDismissableView>
+      <ViewWrapper testID="location-picker">
+        <View className="justify-center">
+          <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
+          <View className="absolute right-2">
+            <CloseButton black size={19} />
+          </View>
         </View>
-      </View>
-      <View className="flex-grow">
-        <View className="z-20">
-          <LocationSearch
-            locationName={locationName}
-            updateLocationName={updateLocationName}
-            selectPlaceResult={selectPlaceResult}
-            hidePlaceResults={hidePlaceResults}
-          />
-        </View>
-        <View className="z-10">
-          <DisplayLatLng
-            region={region}
-            accuracy={accuracy}
-          />
-        </View>
-        <View
-          className={classnames(
-            "absolute",
-            "z-10",
-            "flex-1",
-            "items-center",
-            "justify-center",
-            "w-full",
-            "h-full"
-          )}
-          pointerEvents="none"
-        >
-          {showCrosshairs && (
-            <CrosshairCircle
-              accuracyTest={accuracyTest}
+        <View className="flex-grow">
+          <View className="z-20">
+            <LocationSearch
+              locationName={locationName}
+              updateLocationName={updateLocationName}
+              selectPlaceResult={selectPlaceResult}
+              hidePlaceResults={hidePlaceResults}
             />
-          )}
+          </View>
+          <View className="z-10">
+            <DisplayLatLng
+              region={region}
+              accuracy={accuracy}
+            />
+          </View>
+          <View
+            className={classnames(
+              "absolute",
+              "z-10",
+              "flex-1",
+              "items-center",
+              "justify-center",
+              "w-full",
+              "h-full"
+            )}
+            pointerEvents="none"
+          >
+            {showCrosshairs && (
+              <CrosshairCircle
+                accuracyTest={accuracyTest}
+              />
+            )}
+          </View>
+          <View className="top-1/2 left-1/2 absolute z-10">
+            {loading && <LoadingIndicator />}
+          </View>
+          <Map
+            className="h-full"
+            showsCompass={false}
+            region={region}
+            mapViewRef={mapViewRef}
+            mapType={mapType}
+            onCurrentLocationPress={( ) => setInitialMapRender( false )}
+            onRegionChangeComplete={async newRegion => {
+              if ( !initialMapRender ) {
+                updateRegion( newRegion );
+              } else {
+                setInitialMapRender( false );
+              }
+            }}
+            onMapReady={setMapReady}
+            showCurrentLocationButton
+            showSwitchMapTypeButton
+            obsLatitude={region.latitude}
+            obsLongitude={region.longitude}
+            testID="LocationPicker.Map"
+          />
         </View>
-        <View className="top-1/2 left-1/2 absolute z-10">
-          {loading && <LoadingIndicator />}
-        </View>
-        <Map
-          className="h-full"
-          showsCompass={false}
-          region={region}
-          mapViewRef={mapViewRef}
-          mapType={mapType}
-          onCurrentLocationPress={( ) => setInitialMapRender( false )}
-          onRegionChangeComplete={async newRegion => {
-            if ( !initialMapRender ) {
-              updateRegion( newRegion );
-            } else {
-              setInitialMapRender( false );
-            }
-          }}
-          onMapReady={setMapReady}
-          showCurrentLocationButton
-          showSwitchMapTypeButton
-          obsLatitude={region.latitude}
-          obsLongitude={region.longitude}
-          testID="LocationPicker.Map"
+        <Footer
+          keysToUpdate={keysToUpdate}
+          goBackOnSave={goBackOnSave}
+          updateObservationKeys={updateObservationKeys}
         />
-      </View>
-      <Footer
-        keysToUpdate={keysToUpdate}
-        goBackOnSave={goBackOnSave}
-        updateObservationKeys={updateObservationKeys}
-      />
-    </ViewWrapper>
+      </ViewWrapper>
+    </KeyboardDismissableView>
   );
 };
 
