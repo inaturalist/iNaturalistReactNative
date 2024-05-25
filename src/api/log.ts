@@ -66,7 +66,7 @@ const iNatLogstashTransport: transportFunctionType = async props => {
       Authorization: [
         userToken,
         anonymousToken
-      ].flat( ).join( ", " ),
+      ].flat( ).join( ", " )
     }
   } );
 };
