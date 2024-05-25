@@ -48,10 +48,8 @@ const mockState = {
   uploads: mockObservations,
   error: null,
   numToUpload: 3,
-  uploadInProgress: true,
   totalProgressIncrements: 4,
-  uploadProgress: 1,
-  uploadsComplete: false
+  uploadProgress: 1
 };
 
 const mockOnEndReached = jest.fn( );

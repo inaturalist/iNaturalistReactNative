@@ -43,14 +43,11 @@ const ToolbarContainer = ( {
   const deletionsInProgress = useStore( state => state.deletionsInProgress );
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
-  const uploadInProgress = useStore( state => state.uploadInProgress );
-  const uploadsComplete = useStore( state => state.uploadsComplete );
   const numToUpload = useStore( state => state.numToUpload );
   const numFinishedUploads = useStore( state => state.numFinishedUploads );
   const uploaded = useStore( state => state.uploaded );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
-
-  console.log( numUnuploadedObs, "num unuploaded obs" );
+  const uploadStatus = useStore( state => state.uploadStatus );
 
   const totalDeletions = deletions.length;
   const deletionsProgress = totalDeletions > 0
@@ -81,10 +78,10 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
   const progress = totalToolbarProgress;
-  const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
-  const showsCheckmark = ( uploadsComplete && !uploadMultiError )
+  const rotating = syncInProgress || uploadStatus === "uploadInProgress" || deletionsInProgress;
+  const showsCheckmark = ( uploadStatus === "complete" && !uploadMultiError )
     || ( deletionsComplete && !deleteError );
-  const needsSync = !uploadInProgress
+  const needsSync = uploadStatus !== "uploadInProgress"
     && ( numUnuploadedObs > 0 || uploadMultiError );
 
   const getStatusText = useCallback( ( ) => {
@@ -109,7 +106,10 @@ const ToolbarContainer = ( {
       return t( "Deleting-x-of-y-observations", deletionParams );
     }
 
-    if ( uploadInProgress ) {
+    // Note that numToUpload is kind of the number of obs being uploaded in
+    // the current upload session, so it might be 1 if a single obs is
+    // being uploaded even though 5 obs need upload
+    if ( uploadStatus === "uploadInProgress" ) {
       const translationParams = {
         total: numToUpload,
         currentUploadCount: Math.min( numFinishedUploads + 1, numToUpload )
@@ -122,14 +122,11 @@ const ToolbarContainer = ( {
       return t( "Uploading-x-of-y-observations", translationParams );
     }
 
-    if ( uploadsComplete ) {
-      // Note that numToUpload is kind of the number of obs being uploaded in
-      // the current upload session, so it might be 1 if a single obs is
-      // being uploaded even though 5 obs need upload
+    if ( uploadStatus === "complete" ) {
       return t( "X-observations-uploaded", { count: uploaded.length } );
     }
 
-    if ( numUnuploadedObs && numUnuploadedObs !== 0 ) {
+    if ( uploadStatus === "pending" && numUnuploadedObs > 0 ) {
       return t( "Upload-x-observations", { count: numUnuploadedObs } );
     }
 
@@ -137,14 +134,13 @@ const ToolbarContainer = ( {
   }, [
     currentDeleteCount,
     deletionsComplete,
+    numFinishedUploads,
+    numToUpload,
     numUnuploadedObs,
+    syncInProgress,
     t,
     totalDeletions,
-    numToUpload,
-    numFinishedUploads,
-    uploadsComplete,
-    uploadInProgress,
-    syncInProgress,
+    uploadStatus,
     uploaded.length
   ] );
 
@@ -166,21 +162,20 @@ const ToolbarContainer = ( {
   ] );
 
   const getSyncIconColor = useCallback( ( ) => {
-    if ( uploadInProgress ) {
+    if ( uploadStatus === "uploadInProgress" ) {
       return theme.colors.secondary;
     }
     if ( errorText ) {
       return theme.colors.error;
     }
-    if ( numUnuploadedObs > 0 ) {
+    if ( uploadStatus === "pending" ) {
       return theme.colors.secondary;
     }
     return theme.colors.primary;
   }, [
     errorText,
-    numUnuploadedObs,
     theme,
-    uploadInProgress
+    uploadStatus
   ] );
 
   const statusText = getStatusText( );
@@ -195,7 +190,7 @@ const ToolbarContainer = ( {
       needsSync={needsSync}
       progress={deletionsProgress || progress}
       rotating={rotating}
-      showsCancelUploadButton={uploadInProgress}
+      showsCancelUploadButton={uploadStatus === "uploadInProgress"}
       showsCheckmark={showsCheckmark}
       showsExploreIcon={currentUser}
       statusText={statusText}

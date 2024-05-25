@@ -5,15 +5,15 @@ const DEFAULT_STATE = {
   errorsByUuid: {},
   uploaded: [],
   singleUpload: true,
-  uploadInProgress: false,
   uploads: [],
   numToUpload: 0,
   // Increments even if there was an error, so here "finished" means we tried
   // to upload it, not that it succeeded
   numFinishedUploads: 0,
-  uploadsComplete: false,
   totalToolbarProgress: 0,
-  totalUploadProgress: []
+  totalUploadProgress: [],
+  uploadStatus: "pending",
+  totalToolbarIncrements: 0
 };
 
 interface TotalUploadProgress {
@@ -27,15 +27,15 @@ interface UploadObservationsSlice {
   uploadError: string | null,
   multiError: string | null,
   errorsByUuid: Object,
-  uploaded: Array<Object>,
+  uploaded: Array<string>,
   singleUpload: boolean,
-  uploadInProgress: boolean,
   uploads: Array<Object>,
   numToUpload: number,
   numFinishedUploads: number,
-  uploadsComplete: boolean,
   totalToolbarProgress: number,
-  totalUploadProgress: Array<TotalUploadProgress>
+  totalUploadProgress: Array<TotalUploadProgress>,
+  uploadStatus: string | null,
+  totalToolbarIncrements: number
 }
 
 const startUploadState = uploads => ( {
@@ -43,7 +43,6 @@ const startUploadState = uploads => ( {
   errorsByUuid: {},
   uploaded: [],
   uploadInProgress: true,
-  uploadsComplete: false,
   uploads,
   numToUpload: uploads.length,
   numFinishedUploads: 0
@@ -79,15 +78,13 @@ const countMappedIncrements = list => list.reduce(
   0
 );
 
-const setTotalToolbarProgress = totalUploadProgress => {
-  const currentProgress = countMappedIncrements(
-    totalUploadProgress.map( u => u.currentIncrements )
-  );
-  const totalProgress = countMappedIncrements(
-    totalUploadProgress.map( u => u.totalIncrements )
-  );
-  return ( currentProgress / totalProgress ) || 0;
-};
+const setCurrentToolbarIncrements = totalUploadProgress => countMappedIncrements(
+  totalUploadProgress.map( u => u.currentIncrements )
+);
+
+const calculateTotalToolbarIncrements = uploads => countMappedIncrements(
+  uploads.map( u => countTotalIncrements( u ) )
+);
 
 const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set => ( {
   ...DEFAULT_STATE,
@@ -113,18 +110,19 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     uploaded: [
       ...state.uploaded,
       obsUUID
-    ]
+    ],
+    numFinishedUploads: state.uploaded.length + 1
   } ) ),
   setUploads: uploads => set( ( ) => ( {
-    uploads
+    uploads,
+    totalToolbarIncrements: calculateTotalToolbarIncrements( uploads )
   } ) ),
-  startNextUpload: ( ) => set( state => ( {
-    numFinishedUploads: state.numFinishedUploads + 1
+  startNextUpload: ( ) => set( ( ) => ( {
+    uploadStatus: "uploadInProgress"
   } ) ),
   stopAllUploads: ( ) => set( DEFAULT_STATE ),
   completeUploads: ( ) => set( ( ) => ( {
-    uploadInProgress: false,
-    uploadsComplete: true
+    uploadStatus: "complete"
   } ) ),
   updateTotalUploadProgress: ( uuid, increment ) => set( state => {
     const { totalUploadProgress, uploads } = state;
@@ -143,9 +141,13 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       = observation.currentIncrements / observation.totalIncrements;
     return ( {
       totalUploadProgress,
-      totalToolbarProgress: setTotalToolbarProgress( totalUploadProgress )
+      totalToolbarProgress:
+        setCurrentToolbarIncrements( totalUploadProgress ) / state.totalToolbarIncrements
     } );
-  } )
+  } ),
+  setUploadStatus: uploadStatus => set( ( ) => ( {
+    uploadStatus
+  } ) )
 } );
 
 export default createUploadObservationsSlice;

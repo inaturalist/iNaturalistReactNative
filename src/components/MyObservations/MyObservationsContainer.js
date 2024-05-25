@@ -67,8 +67,7 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
-  const uploadInProgress = useStore( state => state.uploadInProgress );
-  const uploadsComplete = useStore( state => state.uploadsComplete );
+  const uploadStatus = useStore( state => state.uploadStatus );
   const [state, dispatch] = useReducer( reducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -182,7 +181,7 @@ const MyObservationsContainer = ( ): Node => {
 
   const syncObservations = useCallback( async ( ) => {
     logger.info( "syncObservations: starting" );
-    if ( !uploadInProgress && uploadsComplete ) {
+    if ( uploadStatus === "complete" ) {
       logger.info( "syncObservations: dispatch RESET_STATE" );
       resetUploadObservationsSlice( );
     }
@@ -219,8 +218,7 @@ const MyObservationsContainer = ( ): Node => {
     showInternetErrorAlert,
     toggleLoginSheet,
     updateSyncTime,
-    uploadInProgress,
-    uploadsComplete,
+    uploadStatus,
     resetUploadObservationsSlice
   ] );
 

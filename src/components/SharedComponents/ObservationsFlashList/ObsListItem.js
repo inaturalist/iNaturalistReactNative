@@ -22,7 +22,7 @@ type Props = {
 const ObsListItem = ( {
   observation, uploadSingleObservation, explore = false
 }: Props ): Node => {
-  const uploadInProgress = useStore( state => state.uploadInProgress );
+  const uploadStatus = useStore( state => state.uploadStatus );
 
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
@@ -67,7 +67,7 @@ const ObsListItem = ( {
       <View
         className={classnames(
           "flex-0 justify-start flex-row",
-          { "justify-center": uploadInProgress }
+          { "justify-center": uploadStatus === "uploadInProgress" }
         )}
       >
         {explore

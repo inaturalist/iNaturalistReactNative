@@ -33,8 +33,7 @@ export default useUploadObservations = (
   const startNextUpload = useStore( state => state.startNextUpload );
   const completeUploads = useStore( state => state.completeUploads );
   const error = useStore( state => state.uploadError );
-  const uploadsComplete = useStore( state => state.uploadsComplete );
-  const uploadInProgress = useStore( state => state.uploadInProgress );
+  const uploadStatus = useStore( state => state.uploadStatus );
   const uploads = useStore( state => state.uploads );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
   const stopAllUploads = useStore( state => state.stopAllUploads );
@@ -55,7 +54,7 @@ export default useUploadObservations = (
 
   useEffect( () => {
     let timer;
-    if ( uploadsComplete && !error ) {
+    if ( uploadStatus === "complete" && !error ) {
       timer = setTimeout( () => {
         resetUploadObservationsSlice( );
       }, 5000 );
@@ -63,7 +62,7 @@ export default useUploadObservations = (
     return () => {
       clearTimeout( timer );
     };
-  }, [uploadsComplete, error, resetUploadObservationsSlice] );
+  }, [uploadStatus, error, resetUploadObservationsSlice] );
 
   useEffect( ( ) => {
     setUploadingObsUUID( navParams?.uploadingObsUUID );
@@ -73,7 +72,7 @@ export default useUploadObservations = (
     // show progress in toolbar for observations uploaded on ObsEdit
     if (
       uploadingObsUUID
-      && !uploadInProgress
+      && uploadStatus !== "uploadInProgress"
       && currentUser
       && realm
     ) {
@@ -92,7 +91,7 @@ export default useUploadObservations = (
         startSingleUpload( savedObservation );
       }
     }
-  }, [uploadInProgress, realm, currentUser, startSingleUpload, uploadingObsUUID] );
+  }, [uploadStatus, realm, currentUser, startSingleUpload, uploadingObsUUID] );
 
   useEffect( ( ) => {
     const progressListener = EventRegister.addEventListener(
@@ -164,7 +163,7 @@ export default useUploadObservations = (
       toggleLoginSheet( );
       return;
     }
-    if ( numUnuploadedObs === 0 || uploadInProgress ) {
+    if ( numUnuploadedObs === 0 || uploadStatus === "uploadInProgress" ) {
       return;
     }
     if ( !isOnline ) {
@@ -176,8 +175,7 @@ export default useUploadObservations = (
     try {
       await Promise.all( uploads.map( async obsToUpload => {
         await uploadObservationAndCatchError( obsToUpload );
-        const unsynced = Observation.filterUnsyncedObservations( realm );
-        startNextUpload( unsynced.length );
+        startNextUpload( );
       } ) );
       completeUploads( );
     } catch ( uploadMultipleObservationsError ) {
@@ -189,24 +187,31 @@ export default useUploadObservations = (
     completeUploads,
     currentUser,
     isOnline,
-    startNextUpload,
     numUnuploadedObs,
     showInternetErrorAlert,
+    startMultipleUploads,
+    startNextUpload,
     stopAllUploads,
-    realm,
     toggleLoginSheet,
-    uploadInProgress,
     uploadObservationAndCatchError,
-    uploads,
-    startMultipleUploads
+    uploadStatus,
+    uploads
   ] );
+
+  useEffect( ( ) => {
+    // put uploads into upload stack
+    if ( uploadStatus === "pending"
+      && allObsToUpload?.length > 0
+      && allObsToUpload.length > uploads.length
+    ) {
+      setUploads( allObsToUpload );
+    }
+  }, [allObsToUpload, uploads, uploadStatus, setUploads] );
 
   useEffect(
     ( ) => {
       navigation.addListener( "focus", ( ) => {
         resetUploadObservationsSlice( );
-        const unsynced = Observation.filterUnsyncedObservations( realm );
-        setUploads( allObsToUpload, unsynced.length );
       } );
     },
     [

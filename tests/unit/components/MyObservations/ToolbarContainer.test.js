@@ -23,10 +23,6 @@ describe( "Toolbar Container", () => {
     useStore.setState( initialStoreState, true );
   } );
 
-  afterEach( async () => {
-    useStore.setState( initialStoreState, true );
-  } );
-
   it( "displays a pending upload", async () => {
     useStore.setState( {
       numToUpload: 1
@@ -40,7 +36,7 @@ describe( "Toolbar Container", () => {
   it( "displays an upload in progress", async () => {
     useStore.setState( {
       numToUpload: 1,
-      uploadInProgress: true
+      uploadStatus: "uploadInProgress"
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -55,15 +51,14 @@ describe( "Toolbar Container", () => {
     const numFinishedUploads = 1;
     useStore.setState( {
       numFinishedUploads,
-      uploadsComplete: true,
+      uploadStatus: "complete",
       uploaded: [...Array( numFinishedUploads ).keys( )].map( i => `fake-uuid-${i}` ),
       totalUploadProgress: [
         {
           uuid: mockUUID,
           totalProgress: 1
         }
-      ],
-      uploadInProgress: false
+      ]
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -87,7 +82,7 @@ describe( "Toolbar Container", () => {
       uploads: [{}, {}, {}, {}],
       multiError: null,
       uploaded: [],
-      uploadsComplete: false
+      uploadStatus: "pending"
     } );
     renderComponent( <ToolbarContainer numUnuploadedObs={4} /> );
 
@@ -97,7 +92,7 @@ describe( "Toolbar Container", () => {
 
   it( "displays multiple uploads in progress", async () => {
     useStore.setState( {
-      uploadInProgress: true,
+      uploadStatus: "uploadInProgress",
       uploads: [{}, {}, {}, {}],
       numToUpload: 5,
       numFinishedUploads: 1
@@ -114,7 +109,7 @@ describe( "Toolbar Container", () => {
   it( "displays multiple completed uploads", async () => {
     useStore.setState( {
       uploads: [{}, {}, {}, {}, {}, {}, {}],
-      uploadsComplete: true,
+      uploadStatus: "complete",
       numToUpload: 7,
       uploaded: ["1", "2", "3", "4", "5", "6", "7"],
       totalToolbarProgress: 1
