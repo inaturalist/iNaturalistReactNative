@@ -4,35 +4,32 @@ import { create } from "apisauce";
 import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
 import Config from "react-native-config";
 import { transportFunctionType } from "react-native-logs";
+import { installID } from "sharedHelpers/userData";
 
 const API_HOST: string
     = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
+
+const api = create( {
+  baseURL: API_HOST,
+  headers: {
+    "User-Agent": getUserAgent( ),
+    "X-Installation-ID": installID( )
+  }
+} );
 
 function isError( error ) {
   if ( error instanceof Error ) return true;
   if ( error && error.stack && error.message ) return true;
   return false;
 }
+
 // Custom transport for posting to iNat API logging
 const iNatLogstashTransport: transportFunctionType = async props => {
   const userToken = await getJWT();
-  if ( !userToken ) {
-    return;
-  }
   const anonymousToken = getAnonymousJWT();
-  if ( !anonymousToken ) {
+  if ( !userToken && !anonymousToken ) {
     return;
   }
-  const api = create( {
-    baseURL: API_HOST,
-    headers: {
-      "User-Agent": getUserAgent(),
-      Authorization: [
-        userToken,
-        anonymousToken
-      ].join( ", " )
-    }
-  } );
   // if message is an Error or is an array ending in an error, extract
   // error_type and backtrace
   let message;
@@ -64,7 +61,14 @@ const iNatLogstashTransport: transportFunctionType = async props => {
     error_type: errorType,
     backtrace
   };
-  await api.post( "/log", formData );
+  await api.post( "/log", formData, {
+    headers: {
+      Authorization: [
+        userToken,
+        anonymousToken
+      ].flat( ).join( ", " ),
+    }
+  } );
 };
 
 export default iNatLogstashTransport;
