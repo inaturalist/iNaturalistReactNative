@@ -14,6 +14,7 @@ import Realm from "realm";
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { installID } from "sharedHelpers/userData";
 import { sleep } from "sharedHelpers/util";
 
 import { log, logFilePath } from "../../../react-native-logs.config";
@@ -78,7 +79,11 @@ async function deleteSensitiveItem( key, options = {} ) {
  */
 const createAPI = additionalHeaders => create( {
   axiosInstance,
-  headers: { "User-Agent": getUserAgent(), ...additionalHeaders }
+  headers: {
+    "User-Agent": getUserAgent(),
+    "X-Installation-ID": installID( ),
+    ...additionalHeaders
+  }
 } );
 
 /**
