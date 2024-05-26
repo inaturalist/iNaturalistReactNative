@@ -29,12 +29,12 @@ const usePredictions = ( ): Object => {
     }
     setResultTimestamp( cvResult.timestamp );
     let prediction = null;
-    const { predictions: branch } = cvResult;
+    const { predictions } = cvResult;
     // As of react-native-worklets-core v1.3.0 there is a discrepancy in the way
     // objects are returned from worklets. The "object" returned is not possible
     // to be used with ...spread syntax or Object.assign which we might be using in other
     // places that reference these prediction objects here so better to create a real JS object here
-    branch
+    const branch = predictions
       .map( p => ( {
         name: p.name,
         rank_level: p.rank_level,
