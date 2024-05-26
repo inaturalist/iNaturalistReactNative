@@ -168,8 +168,20 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
           <Text>
             {
               scientificNameFirst
-                ? [sciNameComponent, " ", comNameComponent]
-                : [comNameComponent, " ", sciNameComponent]
+                ? (
+                  <>
+                    { sciNameComponent }
+                    { " " }
+                    { comNameComponent }
+                  </>
+                )
+                : (
+                  <>
+                    { comNameComponent }
+                    { " " }
+                    { sciNameComponent }
+                  </>
+                )
             }
           </Text>
         </View>
