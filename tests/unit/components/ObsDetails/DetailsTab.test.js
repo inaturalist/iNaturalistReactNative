@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
+import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
@@ -41,7 +42,7 @@ jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
   default: () => mockAttribution
 } ) );
 
-const baseUrl = "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
+const baseUrl = `${TILE_URL}/grid/{z}/{x}/{y}.png`;
 
 describe( "DetailsTab", ( ) => {
   test( "should show description of observation", async ( ) => {
