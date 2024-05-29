@@ -38,9 +38,8 @@ async function getSensitiveItem( key, options = {} ) {
   try {
     return await RNSInfo.getItem( key, options );
   } catch ( getItemError ) {
-    console.log( "[DEBUG AuthenticationService.js] getItemError: ", getItemError );
     if ( getItemError.message.match( /Protected data not available yet/ ) ) {
-      await sleep( 500 );
+      await sleep( 1_000 );
       return RNSInfo.getItem( key, options );
     }
     throw getItemError;
@@ -51,9 +50,8 @@ async function setSensitiveItem( key, value, options = {} ) {
   try {
     return await RNSInfo.setItem( key, value, options );
   } catch ( setItemError ) {
-    console.log( "[DEBUG AuthenticationService.js] setItemError: ", setItemError );
     if ( setItemError.message.match( /Protected data not available yet/ ) ) {
-      await sleep( 500 );
+      await sleep( 1_000 );
       return RNSInfo.setItem( key, value, options );
     }
     throw setItemError;
