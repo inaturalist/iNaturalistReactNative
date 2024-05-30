@@ -82,9 +82,20 @@ const checkToolbarResetWithUnsyncedObs = async ( ) => {
 };
 
 const writeObservationsToRealm = ( observations, message ) => {
-  safeRealmWrite( global.mockRealms[__filename], ( ) => {
+  const realm = global.mockRealms[__filename];
+  safeRealmWrite( realm, ( ) => {
     observations.forEach( mockObservation => {
-      global.mockRealms[__filename].create( "Observation", mockObservation );
+      realm.create( "Observation", mockObservation );
+    } );
+  }, message );
+};
+
+const deleteObservationsFromRealm = message => {
+  const realm = global.mockRealms[__filename];
+  const observations = realm.objects( "Observation" );
+  safeRealmWrite( realm, ( ) => {
+    observations.forEach( obs => {
+      realm.delete( obs );
     } );
   }, message );
 };
@@ -205,6 +216,10 @@ describe( "MyObservations", ( ) => {
         );
       } );
 
+      afterEach( ( ) => {
+        deleteObservationsFromRealm( "MyObservations delete realm observations" );
+      } );
+
       it( "renders grid view on button press", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
@@ -227,6 +242,32 @@ describe( "MyObservations", ( ) => {
         mockUnsyncedObservations.forEach( obs => {
           const uploadIcon = screen.getByTestId( `UploadIcon.start.${obs.uuid}` );
           expect( uploadIcon ).toBeVisible( );
+        } );
+      } );
+
+      it( "displays upload in progress status when toolbar tapped", async () => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await checkToolbarResetWithUnsyncedObs( );
+        const syncIcon = screen.getByTestId( "SyncButton" );
+        expect( syncIcon ).toBeVisible( );
+        fireEvent.press( syncIcon );
+        await waitFor( ( ) => {
+          const uploadInProgressText = screen.getByText( /Uploading [1-2] of 2 observations/ );
+          expect( uploadInProgressText ).toBeVisible( );
+        } );
+        const uploadInProgressIcon = screen.getByTestId(
+          `UploadIcon.progress.${mockUnsyncedObservations[1].uuid}`
+        );
+        expect( uploadInProgressIcon ).toBeVisible( );
+        await waitFor( ( ) => {
+          const secondUploadInProgressIcon = screen.getByTestId(
+            `UploadIcon.progress.${mockUnsyncedObservations[0].uuid}`
+          );
+          expect( secondUploadInProgressIcon ).toBeVisible( );
+        } );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /2 observations uploaded/ );
+          expect( toolbarText ).toBeVisible( );
         } );
       } );
 
@@ -254,26 +295,6 @@ describe( "MyObservations", ( ) => {
         expect( secondUploadIcon ).toBeVisible( );
         await waitFor( ( ) => {
           const toolbarText = screen.getByText( /1 observation uploaded/ );
-          expect( toolbarText ).toBeVisible( );
-        } );
-      } );
-
-      it( "displays upload in progress status when toolbar tapped", async () => {
-        renderAppWithComponent( <MyObservationsContainer /> );
-        await checkToolbarResetWithUnsyncedObs( );
-        const syncIcon = screen.getByTestId( "SyncButton" );
-        expect( syncIcon ).toBeVisible( );
-        fireEvent.press( syncIcon );
-        await waitFor( ( ) => {
-          const uploadInProgressText = screen.getByText( /Uploading [1-2] of 2 observations/ );
-          expect( uploadInProgressText ).toBeVisible( );
-        } );
-        const uploadInProgressIcon = screen.getByTestId(
-          `UploadIcon.progress.${mockUnsyncedObservations[1].uuid}`
-        );
-        expect( uploadInProgressIcon ).toBeVisible( );
-        await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /2 observations uploaded/ );
           expect( toolbarText ).toBeVisible( );
         } );
       } );
