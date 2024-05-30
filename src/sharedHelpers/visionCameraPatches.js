@@ -13,6 +13,7 @@ import {
   Worklets
 } from "react-native-worklets-core";
 import resizeImage from "sharedHelpers/resizeImage.ts";
+import { unlink } from "sharedHelpers/util";
 import {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
@@ -98,8 +99,7 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
     }
   );
   // Remove original photo
-  const fileExists = await RNFS.exists( photo.path );
-  if ( fileExists ) await RNFS.unlink( photo.path );
+  await unlink( photo.path );
   return image;
 };
 

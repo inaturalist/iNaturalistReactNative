@@ -2,6 +2,7 @@ import { Realm } from "@realm/react";
 import { soundUploadPath } from "appConstants/paths.ts";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
+import { unlink } from "sharedHelpers/util";
 
 class Sound extends Realm.Object {
   static SOUND_FIELDS = {
@@ -70,9 +71,7 @@ class Sound extends Realm.Object {
   }
 
   static deleteSoundFromDeviceStorage( path ) {
-    RNFS.exists( path ).then( fileExists => {
-      if ( fileExists ) RNFS.unlink( path );
-    } );
+    unlink( path );
   }
 
   // An unpleasant hack around another unpleasant hack, i.e. when we "need" to
