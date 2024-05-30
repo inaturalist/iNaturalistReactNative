@@ -120,10 +120,12 @@ export default useUploadObservations = ( ): Object => {
   ] );
 
   useEffect( ( ) => {
-    const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
-    const numUnuploadedObs = allUnsyncedObservations.length;
-    setNumUnuploadedObservations( numUnuploadedObs );
-  }, [realm, setNumUnuploadedObservations] );
+    if ( uploadStatus === "pending" ) {
+      const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
+      const numUnuploadedObs = allUnsyncedObservations.length;
+      setNumUnuploadedObservations( numUnuploadedObs );
+    }
+  }, [realm, setNumUnuploadedObservations, uploadStatus] );
 
   useEffect( ( ) => {
     if ( uploadQueue.length === numObservationsInQueue ) {
