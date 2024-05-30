@@ -1,18 +1,13 @@
+import { View } from "components/styledComponents";
 import React from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import { useTranslation } from "sharedHooks";
 
-const KeyboardDismissibleView = ( { children } ) => {
-  const { t } = useTranslation( );
-  return (
-    <TouchableWithoutFeedback
-      accessibilityLabel={t( "Tap-outside-text-input-to-dismiss-keyboard" )}
-      accessibilityRole="button"
-      onPress={Keyboard.dismiss}
-    >
+const KeyboardDismissibleView = ( { children } ) => (
+  <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
+    <View className="flex-1">
       {children}
-    </TouchableWithoutFeedback>
-  );
-};
+    </View>
+  </TouchableWithoutFeedback>
+);
 
 export default KeyboardDismissibleView;

@@ -902,8 +902,6 @@ Sync-observations = Sync observations
 Syncing = Syncing...
 Take-photo = Take photo
 Take-photos-with-the-camera = Take photos of a single organism with the camera
-# Accessibility label for screen wrapper that allows user to dismiss keyboard
-Tap-outside-text-input-to-dismiss-keyboard = Tap outside text input to dismiss keyboard
 TAXON = TAXON
 # Settings screen
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY

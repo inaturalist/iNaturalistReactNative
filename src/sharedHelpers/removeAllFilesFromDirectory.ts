@@ -1,20 +1,11 @@
 import RNFS from "react-native-fs";
-// import { log } from "sharedHelpers/logger";
-
-// const logger = log.extend( "removeAllFilesFromDirectory" );
+import { unlink } from "sharedHelpers/util";
 
 const removeAllFilesFromDirectory = async directoryPath => {
   const directoryExists = await RNFS.exists( directoryPath );
   if ( !directoryExists ) { return null; }
   const files = await RNFS.readDir( directoryPath );
-
-  const clearDirectory = files.forEach( async ( { path } ) => {
-    const pathExists = await RNFS.exists( path );
-    if ( !pathExists ) { return; }
-    // logger.info( "unlinking", path, "from", directoryPath );
-    await RNFS.unlink( path );
-  } );
-  return clearDirectory;
+  return Promise.all( files.map( unlink ) );
 };
 
 export default removeAllFilesFromDirectory;

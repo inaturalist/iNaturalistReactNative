@@ -175,16 +175,20 @@ const ObsDetailsContainer = ( ): Node => {
     || ( !observation?.user && !observation?.id )
   );
 
-  const invalidateRemoteObservation = useCallback( ( ) => {
-    queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey, observation.uuid] } );
-  }, [queryClient, observation.uuid] );
+  const invalidateRemoteObservationFetch = useCallback( ( ) => {
+    if ( observation?.uuid ) {
+      queryClient.invalidateQueries( {
+        queryKey: [fetchRemoteObservationKey, observation.uuid]
+      } );
+    }
+  }, [queryClient, observation?.uuid] );
 
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      invalidateRemoteObservation( );
-    }, [invalidateRemoteObservation] )
+      invalidateRemoteObservationFetch( );
+    }, [invalidateRemoteObservationFetch] )
   );
 
   useEffect( ( ) => {
@@ -346,7 +350,7 @@ const ObsDetailsContainer = ( ): Node => {
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
   const invalidateQueryAndRefetch = ( ) => {
-    invalidateRemoteObservation( );
+    invalidateRemoteObservationFetch( );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };

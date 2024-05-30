@@ -75,7 +75,6 @@ const MyObservationsContainer = ( ): Node => {
   const [state, dispatch] = useReducer( reducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
-  useDeleteObservations( state.canBeginDeletions, dispatch );
 
   const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
 
@@ -84,6 +83,11 @@ const MyObservationsContainer = ( ): Node => {
   const canUpload = currentUser && isOnline;
 
   const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
+
+  useDeleteObservations(
+    currentUser?.id && state.canBeginDeletions,
+    dispatch
+  );
 
   useObservationsUpdates( !!currentUser );
 

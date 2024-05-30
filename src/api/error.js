@@ -33,10 +33,9 @@ async function handleError( e: Object, options: Object = {} ): Object {
   } catch ( jsonError ) {
     if ( jsonError.message.match( /JSON Parse error/ ) ) {
       // This happens a lot and I want to know where it's coming from ~~~~kueda 20240520
-      logger.error(
-        `Error parsing JSON from ${e.response?.url} (status: ${e.response?.status})`,
-        jsonError
-      );
+      jsonError.message = `Error parsing JSON from ${e.response?.url} `
+        + `(status: ${e.response?.status})`;
+      logger.error( jsonError );
     }
     if ( options.throw === false ) {
       return e;

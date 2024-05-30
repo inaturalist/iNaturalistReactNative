@@ -23,6 +23,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { reactQueryRetry } from "sharedHelpers/logging";
+import { installID } from "sharedHelpers/userData";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -92,7 +93,10 @@ initI18next();
 inatjs.setConfig( {
   apiURL: Config.API_URL,
   writeApiURL: Config.API_URL,
-  userAgent: getUserAgent()
+  userAgent: getUserAgent(),
+  headers: {
+    "X-Installation-ID": installID( )
+  }
 } );
 
 const queryClient = new QueryClient( {

@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
@@ -101,9 +102,22 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
 
   useEffect( ( ) => {
     const beginDeletions = async ( ) => {
-      // logger.info( "syncing remotely deleted observations" );
-      await syncRemoteDeletedObservations( realm );
-      // logger.info( "syncing locally deleted observations" );
+      logger.info( "syncing remotely deleted observations" );
+      try {
+        await syncRemoteDeletedObservations( realm );
+      } catch ( syncRemoteError ) {
+        // For some reason this seems to run even when signed out, in which
+        // case we end up sending no JWT or the anon JWT, wich fails auth. If
+        // that happens, we can just return and call it a day.
+        if (
+          syncRemoteError instanceof INatApiError
+          && syncRemoteError?.status === 401
+        ) {
+          return;
+        }
+        throw syncRemoteError;
+      }
+      logger.info( "syncing locally deleted observations" );
       const localObservations = filterLocalObservationsToDelete( realm );
       if ( localObservations.length > 0 && deletions.length === 0 ) {
         setDeletions( localObservations );

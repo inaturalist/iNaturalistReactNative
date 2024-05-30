@@ -264,6 +264,8 @@ jest.mock( "react-native-fs", ( ) => {
       mockFs.mkdir( filepath, jest.fn( ) );
     } ),
     unlink: jest.fn( async ( path = "" ) => {
+      if ( !path ) return;
+      if ( typeof ( path ) !== "string" ) return;
       mockFs.unlink( path, jest.fn( ) );
     } )
   };

@@ -25,7 +25,8 @@ const safeRealmWrite = (
     return response;
   } catch ( e ) {
     // logger.info( "couldn't write to realm: ", e );
-    throw new Error( `${description}: ${e.message}` );
+    e.message = `${description}: ${e.message}`;
+    throw e;
   }
 };
 
