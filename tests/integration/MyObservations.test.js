@@ -16,6 +16,80 @@ import { renderAppWithComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
+const mockUnsyncedObservations = [
+  factory( "LocalObservation", {
+    _synced_at: null,
+    observationPhotos: [
+      factory( "LocalObservationPhoto", {
+        photo: {
+          url: faker.image.url( ),
+          position: 0
+        }
+      } )
+    ]
+  } ),
+  factory( "LocalObservation", {
+    _synced_at: null,
+    observationPhotos: [
+      factory( "LocalObservationPhoto", {
+        photo: {
+          url: `${faker.image.url( )}/100`,
+          position: 0
+        }
+      } ),
+      factory( "LocalObservationPhoto", {
+        photo: {
+          url: `${faker.image.url( )}/200`,
+          position: 1
+        }
+      } )
+    ]
+  } )
+];
+
+const mockDeletedIds = [
+  faker.number.int( ),
+  faker.number.int( )
+];
+
+const mockSyncedObservations = [
+  factory( "LocalObservation", {
+    _synced_at: faker.date.past( ),
+    id: mockDeletedIds[0]
+  } ),
+  factory( "LocalObservation", {
+    _synced_at: faker.date.past( )
+  } )
+];
+
+const mockUser = factory( "LocalUser", {
+  login: faker.internet.userName( ),
+  iconUrl: faker.image.url( ),
+  locale: "en"
+} );
+
+const mockSpanishUser = factory( "LocalUser", {
+  login: faker.internet.userName( ),
+  iconUrl: faker.image.url( ),
+  locale: "es"
+} );
+
+const checkToolbarResetWithUnsyncedObs = async ( ) => {
+  await waitFor( ( ) => {
+    const toolbarText = screen.getByText( /Upload 2 observations/ );
+    expect( toolbarText ).toBeVisible( );
+  } );
+};
+
+const writeObservationsToRealm = ( observations, message ) => {
+  safeRealmWrite( global.mockRealms[__filename], ( ) => {
+    global.mockRealms[__filename].deleteAll( );
+    observations.forEach( mockObservation => {
+      global.mockRealms[__filename].create( "Observation", mockObservation );
+    } );
+  }, message );
+};
+
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
@@ -79,12 +153,6 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "when signed in", ( ) => {
-    const mockUser = factory( "LocalUser", {
-      login: faker.internet.userName( ),
-      iconUrl: faker.image.url( ),
-      locale: "en"
-    } );
-
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
@@ -94,50 +162,19 @@ describe( "MyObservations", ( ) => {
     } );
 
     describe( "with unsynced observations", ( ) => {
-      const mockObservations = [
-        factory( "LocalObservation", {
-          _synced_at: null,
-          observationPhotos: [
-            factory( "LocalObservationPhoto", {
-              photo: {
-                url: faker.image.url( ),
-                position: 0
-              }
-            } )
-          ]
-        } ),
-        factory( "LocalObservation", {
-          _synced_at: null,
-          observationPhotos: [
-            factory( "LocalObservationPhoto", {
-              photo: {
-                url: `${faker.image.url( )}/100`,
-                position: 0
-              }
-            } ),
-            factory( "LocalObservationPhoto", {
-              photo: {
-                url: `${faker.image.url( )}/200`,
-                position: 1
-              }
-            } )
-          ]
-        } )
-      ];
-
       // Mock inatjs endpoints so they return the right responses for the right test data
       inatjs.observations.create.mockImplementation( ( params, _opts ) => {
-        const mockObs = mockObservations.find( o => o.uuid === params.observation.uuid );
+        const mockObs = mockUnsyncedObservations.find( o => o.uuid === params.observation.uuid );
         return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
       } );
       inatjs.observations.fetch.mockImplementation( ( uuid, _params, _opts ) => {
-        const mockObs = mockObservations.find( o => o.uuid === uuid );
+        const mockObs = mockUnsyncedObservations.find( o => o.uuid === uuid );
         // It would be a lot better if this returned something that looks like
         // a remote obs, but this works
         return Promise.resolve( makeResponse( [mockObs] ) );
       } );
       inatjs.observation_photos.create.mockImplementation( async ( params, _opts ) => {
-        const mockObsPhotos = flatten( mockObservations.map( o => o.observationPhotos ) );
+        const mockObsPhotos = flatten( mockUnsyncedObservations.map( o => o.observationPhotos ) );
         const mockObsPhoto = mockObsPhotos.find(
           op => op.uuid === params.observation_photo.uuid
         );
@@ -152,15 +189,6 @@ describe( "MyObservations", ( ) => {
         id: faker.number.int( )
       }] ) ) );
 
-      beforeEach( ( ) => {
-        // Write local observation to Realm
-        safeRealmWrite( global.mockRealms[__filename], ( ) => {
-          mockObservations.forEach( mockObservation => {
-            global.mockRealms[__filename].create( "Observation", mockObservation );
-          } );
-        }, "write local observation, MyObservations integration test with unsynced observations" );
-      } );
-
       it( "should make a request to observations/updates", async ( ) => {
         // Let's make sure the mock hasn't already been used
         expect( inatjs.observations.updates ).not.toHaveBeenCalled();
@@ -171,6 +199,17 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
+      beforeEach( ( ) => {
+        writeObservationsToRealm(
+          mockUnsyncedObservations,
+          "MyObservations integration test with unsynced observations"
+        );
+      } );
+
+      afterEach( ( ) => {
+        jest.clearAllMocks( );
+      } );
+
       it( "renders grid view on button press", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
@@ -178,9 +217,9 @@ describe( "MyObservations", ( ) => {
         const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
         fireEvent.press( button );
         // Awaiting the first observation because using await in the forEach errors out
-        const firstObs = mockObservations[0];
+        const firstObs = mockUnsyncedObservations[0];
         await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
-        mockObservations.forEach( obs => {
+        mockUnsyncedObservations.forEach( obs => {
           expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
         } );
       } );
@@ -189,11 +228,8 @@ describe( "MyObservations", ( ) => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
         renderAppWithComponent( <MyObservationsContainer /> );
-        await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /Upload 2 observations/ );
-          expect( toolbarText ).toBeVisible( );
-        } );
-        mockObservations.forEach( obs => {
+        await checkToolbarResetWithUnsyncedObs( );
+        mockUnsyncedObservations.forEach( obs => {
           const uploadIcon = screen.getByTestId( `UploadIcon.start.${obs.uuid}` );
           expect( uploadIcon ).toBeVisible( );
         } );
@@ -201,12 +237,11 @@ describe( "MyObservations", ( ) => {
 
       it( "displays upload in progress status when individual upload tapped", async () => {
         renderAppWithComponent( <MyObservationsContainer /> );
-        await waitFor( ( ) => {
-          // There are two unuploaded observations, and we are about to upload one of them
-          const toolbarText = screen.getByText( /Upload 2 observations/ );
-          expect( toolbarText ).toBeVisible( );
-        } );
-        const uploadIcon = screen.getByTestId( `UploadIcon.start.${mockObservations[0].uuid}` );
+        // There are two unuploaded observations, and we are about to upload one of them
+        await checkToolbarResetWithUnsyncedObs( );
+        const uploadIcon = screen.getByTestId(
+          `UploadIcon.start.${mockUnsyncedObservations[0].uuid}`
+        );
         expect( uploadIcon ).toBeVisible( );
         fireEvent.press( uploadIcon );
         await waitFor( ( ) => {
@@ -215,11 +250,11 @@ describe( "MyObservations", ( ) => {
           expect( uploadInProgressText ).toBeVisible( );
         } );
         const uploadInProgressIcon = screen.getByTestId(
-          `UploadIcon.progress.${mockObservations[0].uuid}`
+          `UploadIcon.progress.${mockUnsyncedObservations[0].uuid}`
         );
         expect( uploadInProgressIcon ).toBeVisible( );
         const secondUploadIcon = screen.getByTestId(
-          `UploadIcon.start.${mockObservations[1].uuid}`
+          `UploadIcon.start.${mockUnsyncedObservations[1].uuid}`
         );
         expect( secondUploadIcon ).toBeVisible( );
         await waitFor( ( ) => {
@@ -230,10 +265,7 @@ describe( "MyObservations", ( ) => {
 
       it( "displays upload in progress status when toolbar tapped", async () => {
         renderAppWithComponent( <MyObservationsContainer /> );
-        await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /Upload 2 observations/ );
-          expect( toolbarText ).toBeVisible( );
-        } );
+        await checkToolbarResetWithUnsyncedObs( );
         const syncIcon = screen.getByTestId( "SyncButton" );
         expect( syncIcon ).toBeVisible( );
         fireEvent.press( syncIcon );
@@ -242,7 +274,7 @@ describe( "MyObservations", ( ) => {
           expect( uploadInProgressText ).toBeVisible( );
         } );
         const uploadInProgressIcon = screen.getByTestId(
-          `UploadIcon.progress.${mockObservations[1].uuid}`
+          `UploadIcon.progress.${mockUnsyncedObservations[1].uuid}`
         );
         expect( uploadInProgressIcon ).toBeVisible( );
         // await waitFor( ( ) => {
@@ -253,28 +285,11 @@ describe( "MyObservations", ( ) => {
     } );
 
     describe( "with synced observations", ( ) => {
-      const mockDeletedIds = [
-        faker.number.int( ),
-        faker.number.int( )
-      ];
-
-      const mockObservationsSynced = [
-        factory( "LocalObservation", {
-          _synced_at: faker.date.past( ),
-          id: mockDeletedIds[0]
-        } ),
-        factory( "LocalObservation", {
-          _synced_at: faker.date.past( )
-        } )
-      ];
-
       beforeEach( ( ) => {
-        safeRealmWrite( global.mockRealms[__filename], ( ) => {
-          global.mockRealms[__filename].deleteAll( );
-          mockObservationsSynced.forEach( mockObservation => {
-            global.mockRealms[__filename].create( "Observation", mockObservation );
-          } );
-        }, "delete all and create synced observations, MyObservations integration test" );
+        writeObservationsToRealm(
+          mockSyncedObservations,
+          "MyObservations integration test with synced observations"
+        );
       } );
 
       afterEach( ( ) => {
@@ -289,7 +304,7 @@ describe( "MyObservations", ( ) => {
         await waitFor( ( ) => {
           expect( syncIcon ).toBeVisible( );
         } );
-        mockObservationsSynced.forEach( obs => {
+        mockSyncedObservations.forEach( obs => {
           const obsStatus = screen.getByTestId( `ObsStatus.${obs.uuid}` );
           expect( obsStatus ).toBeVisible( );
         } );
@@ -354,11 +369,6 @@ describe( "MyObservations", ( ) => {
       signOut( { realm: global.mockRealms[__filename] } );
     } );
     it( "should be English by default", async ( ) => {
-      const mockUser = factory( "LocalUser", {
-        login: faker.internet.userName( ),
-        iconUrl: faker.image.url( ),
-        locale: "en"
-      } );
       expect( mockUser.locale ).toEqual( "en" );
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
       renderAppWithComponent( <MyObservationsContainer /> );
@@ -369,11 +379,6 @@ describe( "MyObservations", ( ) => {
     } );
 
     it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
-      const mockSpanishUser = factory( "LocalUser", {
-        login: faker.internet.userName( ),
-        iconUrl: faker.image.url( ),
-        locale: "es"
-      } );
       expect( mockSpanishUser.locale ).toEqual( "es" );
       await signIn( mockSpanishUser, { realm: global.mockRealms[__filename] } );
       renderAppWithComponent( <MyObservationsContainer /> );
@@ -386,18 +391,13 @@ describe( "MyObservations", ( ) => {
     it(
       "should change to es when local user locale is en but remote user locale is es",
       async ( ) => {
-        const mockUser = factory( "LocalUser", {
-          login: faker.internet.userName( ),
-          iconUrl: faker.image.url( ),
-          locale: "en"
-        } );
         expect( mockUser.locale ).toEqual( "en" );
         await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 
-        const mockSpanishUser = factory( "LocalUser", {
+        const mockSpanishUser2 = factory( "LocalUser", {
           locale: "es"
         } );
-        inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser] ) );
+        inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser2] ) );
 
         renderAppWithComponent( <MyObservationsContainer /> );
         // I'd prefer to wait for the Spanish text to appear, but that never
