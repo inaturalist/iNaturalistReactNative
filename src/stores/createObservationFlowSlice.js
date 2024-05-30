@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 import { Realm } from "@realm/react";
 import _ from "lodash";
+import Photo from "realmModels/Photo";
 
 const DEFAULT_STATE = {
   abortController: new AbortController( ),
@@ -30,7 +31,9 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
     // removed
     _.remove(
       obsPhotos,
-      obsPhoto => obsPhoto.photo.localFilePath === uri || obsPhoto.originalPhotoUri === uri
+      obsPhoto => Photo.accessLocalPhoto(
+        obsPhoto.photo.localFilePath
+      ) === uri || obsPhoto.originalPhotoUri === uri
     );
     updatedObservation.observationPhotos = obsPhotos;
     return [updatedObservation];
@@ -74,23 +77,26 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
 
 const createObservationFlowSlice = set => ( {
   ...DEFAULT_STATE,
-  deletePhotoFromObservation: uri => set( state => ( {
-    photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
-    rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
-    evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
-    observations: removeObsPhotoFromObservation(
+  deletePhotoFromObservation: uri => set( state => {
+    const newObservations = removeObsPhotoFromObservation(
       state.observations[state.currentObservationIndex],
       uri
-    )
-  } ) ),
+    );
+    const newObservation = newObservations[state.currentObservationIndex];
+    return ( {
+      photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
+      rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
+      evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
+      observations: newObservations,
+      currentObservation: newObservation
+    } );
+  } ),
   deleteSoundFromObservation: uri => set( state => {
     const newObservations = removeObsSoundFromObservation(
       state.observations[state.currentObservationIndex],
       uri
     );
-    // FWIW, i don't really understand why this *isn't* necessary in
-    // deletePhotoFromObservation ~~~kueda20240222
-    const newObservation = removeObsSoundFromObservation( state.currentObservation, uri )[0];
+    const newObservation = newObservations[state.currentObservationIndex];
     return {
       observations: newObservations,
       currentObservation: newObservation

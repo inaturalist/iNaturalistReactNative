@@ -104,7 +104,7 @@ class ObservationPhoto extends Realm.Object {
     Photo.deletePhotoFromDeviceStorage( uri );
     const obsPhotoToDelete = currentObservation
       ?.observationPhotos
-      ?.find( p => p.localFilePath === uri );
+      ?.find( p => Photo.accessLocalPhoto( p.localFilePath ) === uri );
     if ( obsPhotoToDelete ) {
       safeRealmWrite( realm, ( ) => {
         realm?.delete( obsPhotoToDelete );

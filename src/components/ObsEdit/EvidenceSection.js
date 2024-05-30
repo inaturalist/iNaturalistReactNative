@@ -58,6 +58,7 @@ const EvidenceSection = ( {
   observationSounds,
   updateObservationKeys
 }: Props ): Node => {
+  console.log( currentObservation?.observationPhotos, "current obs in evidence" );
   const { t } = useTranslation( );
   const theme = useTheme( );
   // TODO fix this hack, and not with a workaround like
