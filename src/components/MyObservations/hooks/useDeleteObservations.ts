@@ -101,9 +101,9 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
 
   useEffect( ( ) => {
     const beginDeletions = async ( ) => {
-      logger.info( "syncing remotely deleted observations" );
+      // logger.info( "syncing remotely deleted observations" );
       await syncRemoteDeletedObservations( realm );
-      logger.info( "syncing locally deleted observations" );
+      // logger.info( "syncing locally deleted observations" );
       const localObservations = filterLocalObservationsToDelete( realm );
       if ( localObservations.length > 0 && deletions.length === 0 ) {
         setDeletions( localObservations );

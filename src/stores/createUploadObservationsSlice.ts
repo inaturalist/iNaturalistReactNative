@@ -35,7 +35,7 @@ interface UploadObservationsSlice {
   totalToolbarProgress: number,
   totalUploadProgress: Array<TotalUploadProgress>,
   uploadQueue: Array<string>,
-  uploadStatus: "pending" | "uploadInProgress" | "complete"
+  uploadStatus: "pending" | "beginUploads" | "uploadInProgress" | "complete"
 }
 
 const countEvidenceIncrements = ( upload, evidence ) => {
@@ -91,8 +91,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   } ) ),
   stopAllUploads: ( ) => set( DEFAULT_STATE ),
   completeUploads: ( ) => set( ( ) => ( {
-    uploadStatus: "complete",
-    numObservationsInQueue: 0
+    uploadStatus: "complete"
   } ) ),
   updateTotalUploadProgress: ( uuid, increment ) => set( state => {
     const { totalUploadProgress, currentUpload } = state;

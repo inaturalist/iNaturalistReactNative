@@ -68,6 +68,13 @@ const ToolbarContainer = ( {
   const deletionsProgress = totalDeletions > 0
     ? currentDeleteCount / totalDeletions
     : 0;
+  const deletionParams = useMemo( ( ) => ( {
+    total: totalDeletions,
+    currentDeleteCount
+  } ), [
+    totalDeletions,
+    currentDeleteCount
+  ] );
 
   const handleSyncButtonPress = useCallback( async ( ) => {
     if ( numUnuploadedObservations > 0 ) {
@@ -96,63 +103,55 @@ const ToolbarContainer = ( {
 
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const progress = totalToolbarProgress;
   const rotating = syncInProgress || uploadStatus === "uploadInProgress" || deletionsInProgress;
   const showsCheckmark = ( uploadStatus === "complete" && !uploadMultiError )
     || ( deletionsComplete && !deleteError );
   const showsExclamation = ( uploadStatus === "pending" && numUnuploadedObservations > 0 )
     || uploadMultiError;
+  const pendingUpload = uploadStatus === "pending" && numUnuploadedObservations > 0;
+  const uploadInProgress = uploadStatus === "uploadInProgress" && numUploadsAttempted > 0;
+  const uploadsComplete = uploadStatus === "complete" && numObservationsInQueue > 0;
 
   const getStatusText = useCallback( ( ) => {
-    const deletionParams = {
-      total: totalDeletions,
-      currentDeleteCount
-    };
+    if ( syncInProgress ) { return t( "Syncing" ); }
 
-    if ( syncInProgress ) {
-      return t( "Syncing" );
-    }
-
-    if ( totalDeletions > 0 ) {
+    if ( deletionParams.total > 0 ) {
       if ( deletionsComplete ) {
-        return t( "X-observations-deleted", { count: totalDeletions } );
+        return t( "X-observations-deleted", { count: deletionParams.total } );
       }
       // iPhone 4 pixel width
-      if ( screenWidth <= 640 ) {
-        return t( "Deleting-x-of-y", deletionParams );
-      }
-
-      return t( "Deleting-x-of-y-observations", deletionParams );
+      return screenWidth <= 640
+        ? t( "Deleting-x-of-y", deletionParams )
+        : t( "Deleting-x-of-y-observations", deletionParams );
     }
 
-    if ( uploadStatus === "pending" && numUnuploadedObservations > 0 ) {
+    if ( pendingUpload ) {
       return t( "Upload-x-observations", { count: numUnuploadedObservations } );
     }
 
-    if ( uploadStatus === "uploadInProgress" && numUploadsAttempted > 0 ) {
+    if ( uploadInProgress ) {
       // iPhone 4 pixel width
-      if ( screenWidth <= 640 ) {
-        return t( "Uploading-x-of-y", translationParams );
-      }
-
-      return t( "Uploading-x-of-y-observations", translationParams );
+      return screenWidth <= 640
+        ? t( "Uploading-x-of-y", translationParams )
+        : t( "Uploading-x-of-y-observations", translationParams );
     }
 
-    if ( uploadStatus === "complete" ) {
+    if ( uploadsComplete ) {
       return t( "X-observations-uploaded", { count: numUploadsAttempted } );
     }
 
     return "";
   }, [
-    currentDeleteCount,
+    deletionParams,
     deletionsComplete,
-    numUnuploadedObservations,
     numUploadsAttempted,
+    numUnuploadedObservations,
+    pendingUpload,
     syncInProgress,
     t,
-    totalDeletions,
     translationParams,
-    uploadStatus
+    uploadInProgress,
+    uploadsComplete
   ] );
 
   const errorText = useMemo( ( ) => {
@@ -198,7 +197,7 @@ const ToolbarContainer = ( {
       handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}
       navToExplore={navToExplore}
-      progress={deletionsProgress || progress}
+      progress={deletionsProgress || totalToolbarProgress}
       rotating={rotating}
       showsCancelUploadButton={uploadStatus === "uploadInProgress"}
       showsCheckmark={showsCheckmark}

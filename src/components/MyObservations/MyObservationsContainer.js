@@ -120,7 +120,6 @@ const MyObservationsContainer = ( ): Node => {
   const checkUserCanUpload = useCallback( ( ) => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
-    console.log( canUpload, "checking can upload" );
     if ( canUpload ) {
       setUploadStatus( "uploadInProgress" );
     } else {
