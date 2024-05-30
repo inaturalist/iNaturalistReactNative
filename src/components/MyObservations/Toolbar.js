@@ -19,16 +19,16 @@ type Props = {
   handleSyncButtonPress: Function,
   layout: string,
   navToExplore: Function,
-  needsSync: boolean,
   progress: number,
   rotating: boolean,
   showsCancelUploadButton: boolean,
   showsCheckmark: boolean,
+  showsExclamation: boolean,
   showsExploreIcon: boolean,
   statusText: ?string,
   stopAllUploads: Function,
   syncIconColor: string,
-  toggleLayout: Function,
+  toggleLayout: Function
 }
 
 const Toolbar = ( {
@@ -36,11 +36,11 @@ const Toolbar = ( {
   handleSyncButtonPress,
   layout,
   navToExplore,
-  needsSync,
   progress,
   rotating,
   showsCancelUploadButton,
   showsCheckmark,
+  showsExclamation,
   showsExploreIcon,
   statusText,
   stopAllUploads,
@@ -81,7 +81,7 @@ const Toolbar = ( {
         >
           <RotatingINatIconButton
             icon={
-              needsSync
+              showsExclamation
                 ? "sync-unsynced"
                 : "sync"
             }
@@ -93,8 +93,8 @@ const Toolbar = ( {
             size={30}
             testID="SyncButton"
           />
-          {statusText && (
-            <View className="flex ml-1 shrink">
+          <View className="flex ml-1 shrink">
+            {statusText && (
               <View className="flex-row items-center shrink">
                 <Body2>
                   {statusText}
@@ -105,13 +105,13 @@ const Toolbar = ( {
                   </View>
                 )}
               </View>
-              {error && (
-                <Body4 className="mt-[3px] color-warningRed">
-                  {error}
-                </Body4>
-              )}
-            </View>
-          )}
+            )}
+            {error && (
+              <Body4 className="mt-[3px] color-warningRed">
+                {error}
+              </Body4>
+            )}
+          </View>
           {showsCancelUploadButton && (
             <INatIconButton
               icon="close"

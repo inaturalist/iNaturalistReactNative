@@ -45,14 +45,17 @@ const ToolbarContainer = ( {
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const numObservationsInQueue = useStore( state => state.numObservationsInQueue );
+  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const stopAllUploads = useStore( state => state.stopAllUploads );
-  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
-  const numUnuploadedObs = allUnsyncedObservations.length;
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
+  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
 
+  // Note that numObservationsInQueue is the number of obs being uploaded in
+  // the current upload session, so it might be 1 if a single obs is
+  // being uploaded even though 5 obs need upload
   const translationParams = useMemo( ( ) => ( {
     total: numObservationsInQueue,
     currentUploadCount: Math.min( numUploadsAttempted, numObservationsInQueue )
@@ -67,7 +70,7 @@ const ToolbarContainer = ( {
     : 0;
 
   const handleSyncButtonPress = useCallback( async ( ) => {
-    if ( numUnuploadedObs > 0 ) {
+    if ( numUnuploadedObservations > 0 ) {
       const uploadUuids = allUnsyncedObservations.map( o => o.uuid );
       addToUploadQueue( uploadUuids );
       checkUserCanUpload( );
@@ -78,7 +81,7 @@ const ToolbarContainer = ( {
     addToUploadQueue,
     allUnsyncedObservations,
     checkUserCanUpload,
-    numUnuploadedObs,
+    numUnuploadedObservations,
     syncObservations
   ] );
 
@@ -97,8 +100,8 @@ const ToolbarContainer = ( {
   const rotating = syncInProgress || uploadStatus === "uploadInProgress" || deletionsInProgress;
   const showsCheckmark = ( uploadStatus === "complete" && !uploadMultiError )
     || ( deletionsComplete && !deleteError );
-  const needsSync = uploadStatus !== "uploadInProgress"
-    && ( numUnuploadedObs > 0 || uploadMultiError );
+  const showsExclamation = ( uploadStatus === "pending" && numUnuploadedObservations > 0 )
+    || uploadMultiError;
 
   const getStatusText = useCallback( ( ) => {
     const deletionParams = {
@@ -122,14 +125,11 @@ const ToolbarContainer = ( {
       return t( "Deleting-x-of-y-observations", deletionParams );
     }
 
-    if ( uploadStatus === "pending" && numUnuploadedObs > 0 ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObs } );
+    if ( uploadStatus === "pending" && numUnuploadedObservations > 0 ) {
+      return t( "Upload-x-observations", { count: numUnuploadedObservations } );
     }
 
-    // Note that numObservationsInQueue is kind of the number of obs being uploaded in
-    // the current upload session, so it might be 1 if a single obs is
-    // being uploaded even though 5 obs need upload
-    if ( uploadStatus === "uploadInProgress" ) {
+    if ( uploadStatus === "uploadInProgress" && numUploadsAttempted > 0 ) {
       // iPhone 4 pixel width
       if ( screenWidth <= 640 ) {
         return t( "Uploading-x-of-y", translationParams );
@@ -146,7 +146,7 @@ const ToolbarContainer = ( {
   }, [
     currentDeleteCount,
     deletionsComplete,
-    numUnuploadedObs,
+    numUnuploadedObservations,
     numUploadsAttempted,
     syncInProgress,
     t,
@@ -198,11 +198,11 @@ const ToolbarContainer = ( {
       handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}
       navToExplore={navToExplore}
-      needsSync={needsSync}
       progress={deletionsProgress || progress}
       rotating={rotating}
       showsCancelUploadButton={uploadStatus === "uploadInProgress"}
       showsCheckmark={showsCheckmark}
+      showsExclamation={showsExclamation}
       showsExploreIcon={currentUser}
       statusText={statusText}
       stopAllUploads={stopAllUploads}

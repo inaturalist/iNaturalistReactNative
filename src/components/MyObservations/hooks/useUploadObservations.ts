@@ -5,6 +5,7 @@ import {
   useCallback, useEffect
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
+import Observation from "realmModels/Observation";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
@@ -29,6 +30,7 @@ export default useUploadObservations = ( ): Object => {
   const setCurrentUpload = useStore( state => state.setCurrentUpload );
   const currentUpload = useStore( state => state.currentUpload );
   const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
+  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -115,6 +117,12 @@ export default useUploadObservations = ( ): Object => {
     uploadQueue,
     uploadStatus
   ] );
+
+  useEffect( ( ) => {
+    const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
+    const numUnuploadedObs = allUnsyncedObservations.length;
+    setNumUnuploadedObservations( numUnuploadedObs );
+  }, [realm, setNumUnuploadedObservations] );
 
   useEffect( ( ) => {
     const uuidsQuery = uploadQueue.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );

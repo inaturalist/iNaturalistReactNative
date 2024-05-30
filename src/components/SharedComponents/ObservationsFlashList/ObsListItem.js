@@ -11,7 +11,7 @@ import { useCurrentUser } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
+import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
   checkUserCanUpload: Function,
@@ -81,7 +81,7 @@ const ObsListItem = ( {
             />
           )
           : (
-            <ObsUploadStatusContainer
+            <ObsUploadStatus
               checkUserCanUpload={checkUserCanUpload}
               layout="vertical"
               observation={observation}

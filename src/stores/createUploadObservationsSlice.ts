@@ -6,13 +6,13 @@ const DEFAULT_STATE = {
   // Single error caught during multiple obs upload
   multiError: null,
   numObservationsInQueue: 0,
+  numUnuploadedObservations: 0,
   // Increments even if there was an error, so here "attempted" means we tried
   // to upload it, not that it succeeded
   numUploadsAttempted: 0,
   totalToolbarIncrements: 0,
   totalToolbarProgress: 0,
   totalUploadProgress: [],
-  uploadError: null,
   uploadQueue: [],
   uploadStatus: "pending"
 };
@@ -29,12 +29,13 @@ interface UploadObservationsSlice {
   errorsByUuid: Object,
   multiError: string | null,
   numObservationsInQueue: number,
+  numUnuploadedObservations: number,
+  numUploadsAttempted: number,
   totalToolbarIncrements: number,
   totalToolbarProgress: number,
   totalUploadProgress: Array<TotalUploadProgress>,
-  uploadError: string | null,
   uploadQueue: Array<string>,
-  uploadStatus: "pending" | "uploadInProgress" | "complete",
+  uploadStatus: "pending" | "uploadInProgress" | "complete"
 }
 
 const countEvidenceIncrements = ( upload, evidence ) => {
@@ -85,7 +86,8 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
         ...( state.errorsByUuid[obsUUID] || [] ),
         error
       ]
-    }
+    },
+    multiError: error
   } ) ),
   stopAllUploads: ( ) => set( DEFAULT_STATE ),
   completeUploads: ( ) => set( ( ) => ( {
@@ -125,6 +127,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     }
     return ( {
       uploadQueue: copyOfUploadQueue,
+      uploadStatus: "uploadInProgress",
       numObservationsInQueue: state.numObservationsInQueue
         + ( typeof uuids === "string"
           ? 1
@@ -145,6 +148,9 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   } ) ),
   setTotalToolbarIncrements: queuedObservations => set( ( ) => ( {
     totalToolbarIncrements: calculateTotalToolbarIncrements( queuedObservations )
+  } ) ),
+  setNumUnuploadedObservations: numUnuploadedObservations => set( ( ) => ( {
+    numUnuploadedObservations
   } ) )
 } );
 

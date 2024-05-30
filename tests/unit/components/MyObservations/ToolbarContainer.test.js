@@ -25,9 +25,10 @@ describe( "Toolbar Container", () => {
 
   it( "displays a pending upload", async () => {
     useStore.setState( {
-      numToUpload: 1
+      numUnuploadedObservations: 1,
+      uploadStatus: "pending"
     } );
-    renderComponent( <ToolbarContainer numUnuploadedObs={1} /> );
+    renderComponent( <ToolbarContainer /> );
 
     const statusText = screen.getByText( i18next.t( "Upload-x-observations", { count: 1 } ) );
     expect( statusText ).toBeVisible( );
@@ -35,7 +36,8 @@ describe( "Toolbar Container", () => {
 
   it( "displays an upload in progress", async () => {
     useStore.setState( {
-      numToUpload: 1,
+      numObservationsInQueue: 1,
+      numUploadsAttempted: 1,
       uploadStatus: "uploadInProgress"
     } );
     renderComponent( <ToolbarContainer /> );
@@ -48,11 +50,10 @@ describe( "Toolbar Container", () => {
   } );
 
   it( "displays a completed upload", async () => {
-    const numFinishedUploads = 1;
+    const numUploadsAttempted = 1;
     useStore.setState( {
-      numFinishedUploads,
+      numUploadsAttempted,
       uploadStatus: "complete",
-      uploaded: [...Array( numFinishedUploads ).keys( )].map( i => `fake-uuid-${i}` ),
       totalUploadProgress: [
         {
           uuid: mockUUID,
@@ -63,7 +64,7 @@ describe( "Toolbar Container", () => {
     renderComponent( <ToolbarContainer /> );
 
     const statusText = screen.getByText( i18next.t( "X-observations-uploaded", {
-      count: numFinishedUploads
+      count: numUploadsAttempted
     } ) );
     expect( statusText ).toBeVisible( );
   } );
@@ -73,18 +74,16 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       multiError
     } );
-    renderComponent( <ToolbarContainer numUnuploadedObs={1} /> );
+    renderComponent( <ToolbarContainer /> );
     expect( screen.getByText( multiError ) ).toBeVisible( );
   } );
 
   it( "displays multiple pending uploads", async () => {
     useStore.setState( {
-      uploads: [{}, {}, {}, {}],
-      multiError: null,
-      uploaded: [],
+      numUnuploadedObservations: 4,
       uploadStatus: "pending"
     } );
-    renderComponent( <ToolbarContainer numUnuploadedObs={4} /> );
+    renderComponent( <ToolbarContainer /> );
 
     const statusText = screen.getByText( i18next.t( "Upload-x-observations", { count: 4 } ) );
     expect( statusText ).toBeVisible( );
@@ -93,9 +92,8 @@ describe( "Toolbar Container", () => {
   it( "displays multiple uploads in progress", async () => {
     useStore.setState( {
       uploadStatus: "uploadInProgress",
-      uploads: [{}, {}, {}, {}],
-      numToUpload: 5,
-      numFinishedUploads: 1
+      numObservationsInQueue: 5,
+      numUploadsAttempted: 2
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -108,11 +106,8 @@ describe( "Toolbar Container", () => {
 
   it( "displays multiple completed uploads", async () => {
     useStore.setState( {
-      uploads: [{}, {}, {}, {}, {}, {}, {}],
-      uploadStatus: "complete",
-      numToUpload: 7,
-      uploaded: ["1", "2", "3", "4", "5", "6", "7"],
-      totalToolbarProgress: 1
+      numUploadsAttempted: 7,
+      uploadStatus: "complete"
     } );
     renderComponent( <ToolbarContainer /> );
 

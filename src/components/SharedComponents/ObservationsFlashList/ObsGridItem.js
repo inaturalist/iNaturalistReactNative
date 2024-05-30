@@ -8,7 +8,7 @@ import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
+import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
   checkUserCanUpload: Function,
@@ -63,7 +63,7 @@ const ObsGridItem = ( {
             />
           )
           : (
-            <ObsUploadStatusContainer
+            <ObsUploadStatus
               checkUserCanUpload={checkUserCanUpload}
               classNameMargin="mb-1"
               layout="horizontal"
