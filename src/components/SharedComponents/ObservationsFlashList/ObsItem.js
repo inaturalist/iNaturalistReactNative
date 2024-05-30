@@ -7,17 +7,21 @@ import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
 
 type Props = {
-  observation: Object,
+  checkUserCanUpload: Function,
+  explore: boolean,
   gridItemWidth: number,
   layout: "list" | "grid",
-  uploadSingleObservation?: Function,
-  explore: boolean
+  observation: Object
 };
 
 const GUTTER = 15;
 
 const ObsItem = ( {
-  observation, layout, gridItemWidth, uploadSingleObservation, explore
+  checkUserCanUpload,
+  explore,
+  gridItemWidth,
+  layout,
+  observation
 }: Props ): Node => (
   <MyObservationsPressable
     observation={observation}
@@ -27,6 +31,8 @@ const ObsItem = ( {
       layout === "grid"
         ? (
           <ObsGridItem
+            checkUserCanUpload={checkUserCanUpload}
+            explore={explore}
             observation={observation}
             // 03022023 it seems like Flatlist is designed to work
             // better with RN styles than with Tailwind classes
@@ -35,15 +41,14 @@ const ObsItem = ( {
               width: gridItemWidth,
               margin: GUTTER / 2
             }}
-            uploadSingleObservation={uploadSingleObservation}
-            explore={explore}
+
           />
         )
         : (
           <ObsListItem
-            observation={observation}
-            uploadSingleObservation={uploadSingleObservation}
+            checkUserCanUpload={checkUserCanUpload}
             explore={explore}
+            observation={observation}
           />
         )
     }

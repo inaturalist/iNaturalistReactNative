@@ -1,52 +1,41 @@
+import { RealmObservation } from "realmModels/types.d.ts";
+
 const DEFAULT_STATE = {
-  uploadError: null,
+  currentUpload: null,
+  errorsByUuid: {},
   // Single error caught during multiple obs upload
   multiError: null,
-  errorsByUuid: {},
-  uploaded: [],
-  singleUpload: true,
-  uploads: [],
-  numToUpload: 0,
-  // Increments even if there was an error, so here "finished" means we tried
+  numObservationsInQueue: 0,
+  // Increments even if there was an error, so here "attempted" means we tried
   // to upload it, not that it succeeded
-  numFinishedUploads: 0,
+  numUploadsAttempted: 0,
+  totalToolbarIncrements: 0,
   totalToolbarProgress: 0,
   totalUploadProgress: [],
-  uploadStatus: "pending",
-  totalToolbarIncrements: 0
+  uploadError: null,
+  uploadQueue: [],
+  uploadStatus: "pending"
 };
 
 interface TotalUploadProgress {
   uuid: string,
-  totalIncrements: number,
   currentIncrements: number,
+  totalIncrements: number,
   totalProgress: number
 }
 
 interface UploadObservationsSlice {
-  uploadError: string | null,
-  multiError: string | null,
+  currentUpload: RealmObservation,
   errorsByUuid: Object,
-  uploaded: Array<string>,
-  singleUpload: boolean,
-  uploads: Array<Object>,
-  numToUpload: number,
-  numFinishedUploads: number,
+  multiError: string | null,
+  numObservationsInQueue: number,
+  totalToolbarIncrements: number,
   totalToolbarProgress: number,
   totalUploadProgress: Array<TotalUploadProgress>,
-  uploadStatus: string | null,
-  totalToolbarIncrements: number
+  uploadError: string | null,
+  uploadQueue: Array<string>,
+  uploadStatus: "pending" | "uploadInProgress" | "complete",
 }
-
-const startUploadState = uploads => ( {
-  multiError: null,
-  errorsByUuid: {},
-  uploaded: [],
-  uploadInProgress: true,
-  uploads,
-  numToUpload: uploads.length,
-  numFinishedUploads: 0
-} );
 
 const countEvidenceIncrements = ( upload, evidence ) => {
   const evidenceToUpload = upload?.[evidence];
@@ -88,14 +77,6 @@ const calculateTotalToolbarIncrements = uploads => countMappedIncrements(
 
 const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set => ( {
   ...DEFAULT_STATE,
-  startSingleUpload: observation => set( ( ) => ( {
-    ...startUploadState( [observation] ),
-    singleUpload: true
-  } ) ),
-  startMultipleUploads: ( ) => set( state => ( {
-    ...startUploadState( state.uploads ),
-    singleUpload: state.uploads.length === 1
-  } ) ),
   resetUploadObservationsSlice: ( ) => set( DEFAULT_STATE ),
   addUploadError: ( error, obsUUID ) => set( state => ( {
     errorsByUuid: {
@@ -106,30 +87,17 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       ]
     }
   } ) ),
-  addUploaded: obsUUID => set( state => ( {
-    uploaded: [
-      ...state.uploaded,
-      obsUUID
-    ],
-    numFinishedUploads: state.uploaded.length + 1
-  } ) ),
-  setUploads: uploads => set( ( ) => ( {
-    uploads,
-    totalToolbarIncrements: calculateTotalToolbarIncrements( uploads )
-  } ) ),
-  startNextUpload: ( ) => set( ( ) => ( {
-    uploadStatus: "uploadInProgress"
-  } ) ),
   stopAllUploads: ( ) => set( DEFAULT_STATE ),
   completeUploads: ( ) => set( ( ) => ( {
-    uploadStatus: "complete"
+    uploadStatus: "complete",
+    numObservationsInQueue: 0
   } ) ),
   updateTotalUploadProgress: ( uuid, increment ) => set( state => {
-    const { totalUploadProgress, uploads } = state;
+    const { totalUploadProgress, currentUpload } = state;
     const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
     if ( !currentObservation ) {
       const progressObj = createUploadProgressObj(
-        uploads.find( o => o.uuid === uuid ),
+        currentUpload,
         increment
       );
       totalUploadProgress.push( progressObj );
@@ -147,6 +115,36 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   } ),
   setUploadStatus: uploadStatus => set( ( ) => ( {
     uploadStatus
+  } ) ),
+  addToUploadQueue: uuids => set( state => {
+    let copyOfUploadQueue = state.uploadQueue;
+    if ( typeof uuids === "string" ) {
+      copyOfUploadQueue.push( uuids );
+    } else {
+      copyOfUploadQueue = copyOfUploadQueue.concat( uuids );
+    }
+    return ( {
+      uploadQueue: copyOfUploadQueue,
+      numObservationsInQueue: state.numObservationsInQueue
+        + ( typeof uuids === "string"
+          ? 1
+          : uuids.length )
+    } );
+  } ),
+  removeFromUploadQueue: ( ) => set( state => {
+    const copyOfUploadQueue = state.uploadQueue;
+    copyOfUploadQueue.pop( );
+    return ( {
+      uploadQueue: copyOfUploadQueue,
+      currentUpload: null
+    } );
+  } ),
+  setCurrentUpload: observation => set( state => ( {
+    currentUpload: observation,
+    numUploadsAttempted: state.numUploadsAttempted + 1
+  } ) ),
+  setTotalToolbarIncrements: queuedObservations => set( ( ) => ( {
+    totalToolbarIncrements: calculateTotalToolbarIncrements( queuedObservations )
   } ) )
 } );
 

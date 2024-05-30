@@ -6,21 +6,21 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  observation: Object,
-  layout?: "horizontal" | "vertical",
-  white?: boolean,
+  checkUserCanUpload: Function,
   classNameMargin?: string,
-  uploadSingleObservation: Function,
-  showUploadStatus: boolean
+  layout?: "horizontal" | "vertical",
+  observation: Object,
+  showUploadStatus: boolean,
+  white?: boolean
 };
 
 const ObsUploadStatus = ( {
-  observation,
-  layout,
-  white = false,
+  checkUserCanUpload,
   classNameMargin,
-  uploadSingleObservation,
-  showUploadStatus
+  layout,
+  observation,
+  showUploadStatus,
+  white = false
 }: Props ): Node => {
   const theme = useTheme( );
   const whiteColor = white && theme.colors.onPrimary;
@@ -41,7 +41,7 @@ const ObsUploadStatus = ( {
 
   return (
     <UploadStatus
-      uploadObservation={uploadSingleObservation}
+      checkUserCanUpload={checkUserCanUpload}
       color={whiteColor}
       completeColor={whiteColor}
       layout={layout}

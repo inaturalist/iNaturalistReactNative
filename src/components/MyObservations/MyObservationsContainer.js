@@ -68,6 +68,7 @@ const MyObservationsContainer = ( ): Node => {
   const realm = useRealm( );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const setUploadStatus = useStore( state => state.setUploadStatus );
   const [state, dispatch] = useReducer( reducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -76,7 +77,8 @@ const MyObservationsContainer = ( ): Node => {
   const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
 
   const isOnline = useIsConnected( );
-  const currentUser = useCurrentUser();
+  const currentUser = useCurrentUser( );
+  const canUpload = currentUser && isOnline;
 
   useObservationsUpdates( !!currentUser );
 
@@ -101,11 +103,13 @@ const MyObservationsContainer = ( ): Node => {
   };
 
   const showInternetErrorAlert = useCallback( ( ) => {
-    Alert.alert(
-      t( "Internet-Connection-Required" ),
-      t( "Please-try-again-when-you-are-connected-to-the-internet" )
-    );
-  }, [t] );
+    if ( !isOnline ) {
+      Alert.alert(
+        t( "Internet-Connection-Required" ),
+        t( "Please-try-again-when-you-are-connected-to-the-internet" )
+      );
+    }
+  }, [t, isOnline] );
 
   const toggleLoginSheet = useCallback( ( ) => {
     if ( !currentUser ) {
@@ -113,20 +117,27 @@ const MyObservationsContainer = ( ): Node => {
     }
   }, [currentUser] );
 
+  const checkUserCanUpload = useCallback( ( ) => {
+    toggleLoginSheet( );
+    showInternetErrorAlert( );
+    console.log( canUpload, "checking can upload" );
+    if ( canUpload ) {
+      setUploadStatus( "uploadInProgress" );
+    } else {
+      setUploadStatus( "pending" );
+    }
+  }, [
+    canUpload,
+    setUploadStatus,
+    showInternetErrorAlert,
+    toggleLoginSheet
+  ] );
+
   const {
     syncInProgress
   } = state;
 
-  const {
-    uploadMultipleObservations,
-    uploadSingleObservation,
-    stopUploads
-  } = useUploadObservations(
-    toggleLoginSheet,
-    showInternetErrorAlert,
-    currentUser,
-    isOnline
-  );
+  useUploadObservations( );
 
   const downloadRemoteObservationsFromServer = useCallback( async ( ) => {
     const apiToken = await getJWT( );
@@ -232,6 +243,7 @@ const MyObservationsContainer = ( ): Node => {
 
   return (
     <MyObservations
+      checkUserCanUpload={checkUserCanUpload}
       currentUser={currentUser}
       isFetchingNextPage={isFetchingNextPage}
       isOnline={isOnline}
@@ -241,12 +253,9 @@ const MyObservationsContainer = ( ): Node => {
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
       status={observationListStatus}
-      stopUploads={stopUploads}
       syncInProgress={syncInProgress}
       syncObservations={syncObservations}
       toggleLayout={toggleLayout}
-      uploadMultipleObservations={uploadMultipleObservations}
-      uploadSingleObservation={uploadSingleObservation}
     />
   );
 };

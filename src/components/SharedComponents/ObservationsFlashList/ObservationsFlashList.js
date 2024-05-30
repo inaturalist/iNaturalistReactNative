@@ -17,6 +17,7 @@ import ObsItem from "./ObsItem";
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
+  checkUserCanUpload: Function,
   contentContainerStyle?: Object,
   data: Array<Object>,
   dataCanBeFetched?: boolean,
@@ -30,13 +31,13 @@ type Props = {
   renderHeader?: Function,
   showObservationsEmptyScreen?: boolean,
   status?: string,
-  testID: string,
-  uploadSingleObservation?: Function
+  testID: string
 };
 
 const GUTTER = 15;
 
 const ObservationsFlashList = ( {
+  checkUserCanUpload,
   contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
@@ -50,8 +51,7 @@ const ObservationsFlashList = ( {
   renderHeader,
   showObservationsEmptyScreen,
   status,
-  testID,
-  uploadSingleObservation
+  testID
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -86,13 +86,13 @@ const ObservationsFlashList = ( {
 
   const renderItem = useCallback( ( { item } ) => (
     <ObsItem
-      observation={item}
-      layout={layout}
-      gridItemWidth={gridItemWidth}
-      uploadSingleObservation={uploadSingleObservation}
       explore={explore}
+      gridItemWidth={gridItemWidth}
+      layout={layout}
+      observation={item}
+      checkUserCanUpload={checkUserCanUpload}
     />
-  ), [gridItemWidth, explore, layout, uploadSingleObservation] );
+  ), [gridItemWidth, explore, layout, checkUserCanUpload] );
 
   const renderItemSeparator = useCallback( ( ) => {
     if ( layout === "grid" ) {

@@ -26,7 +26,7 @@ type Props = {
   showsCheckmark: boolean,
   showsExploreIcon: boolean,
   statusText: ?string,
-  stopUploads: Function,
+  stopAllUploads: Function,
   syncIconColor: string,
   toggleLayout: Function,
 }
@@ -43,7 +43,7 @@ const Toolbar = ( {
   showsCheckmark,
   showsExploreIcon,
   statusText,
-  stopUploads,
+  stopAllUploads,
   syncIconColor,
   toggleLayout
 }: Props ): Node => {
@@ -117,7 +117,7 @@ const Toolbar = ( {
               icon="close"
               size={11}
               accessibilityLabel={t( "Stop-upload" )}
-              onPress={stopUploads}
+              onPress={stopAllUploads}
             />
           )}
         </View>

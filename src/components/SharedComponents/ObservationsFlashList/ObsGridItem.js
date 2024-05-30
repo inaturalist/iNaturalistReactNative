@@ -11,21 +11,21 @@ import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
-  observation: Object,
-  width?: string,
+  checkUserCanUpload: Function,
+  explore: boolean,
   height?: string,
+  observation: Object,
   style?: Object,
-  uploadSingleObservation?: Function,
-  explore: boolean
+  width?: string
 };
 
 const ObsGridItem = ( {
-  observation,
-  width = "w-[200px]",
+  checkUserCanUpload,
+  explore,
   height = "w-[200px]",
+  observation,
   style,
-  uploadSingleObservation,
-  explore
+  width = "w-[200px]"
 }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
@@ -64,11 +64,11 @@ const ObsGridItem = ( {
           )
           : (
             <ObsUploadStatusContainer
-              observation={observation}
-              layout="horizontal"
-              white
+              checkUserCanUpload={checkUserCanUpload}
               classNameMargin="mb-1"
-              uploadSingleObservation={uploadSingleObservation}
+              layout="horizontal"
+              observation={observation}
+              white
             />
           )}
         <DisplayTaxonName

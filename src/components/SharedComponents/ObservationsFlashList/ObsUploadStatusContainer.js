@@ -7,19 +7,19 @@ import useStore from "stores/useStore";
 import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
+  checkUserCanUpload: Function,
   observation: Object,
   layout?: "horizontal" | "vertical",
   white?: boolean,
-  classNameMargin?: string,
-  uploadSingleObservation?: Function
+  classNameMargin?: string
 };
 
 const ObsUploadStatusContainer = ( {
+  checkUserCanUpload,
   observation,
   layout,
   white = false,
-  classNameMargin,
-  uploadSingleObservation
+  classNameMargin
 }: Props ): Node => {
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
 
@@ -31,15 +31,11 @@ const ObsUploadStatusContainer = ( {
 
   return (
     <ObsUploadStatus
+      checkUserCanUpload={checkUserCanUpload}
       observation={observation}
       layout={layout}
       white={white}
       classNameMargin={classNameMargin}
-      uploadSingleObservation={( ) => {
-        if ( uploadSingleObservation ) {
-          uploadSingleObservation( observation );
-        }
-      }}
       showUploadStatus={showUploadStatus}
     />
   );

@@ -12,6 +12,7 @@ import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 
 type Props = {
+  checkUserCanUpload: Function,
   currentUser: Object,
   isFetchingNextPage: boolean,
   isOnline: boolean,
@@ -21,15 +22,13 @@ type Props = {
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
   status: string,
-  stopUploads: Function,
   syncInProgress: boolean,
   syncObservations: Function,
-  toggleLayout: Function,
-  uploadMultipleObservations: Function,
-  uploadSingleObservation: Function
+  toggleLayout: Function
 };
 
 const MyObservations = ( {
+  checkUserCanUpload,
   currentUser,
   isFetchingNextPage,
   isOnline,
@@ -39,32 +38,29 @@ const MyObservations = ( {
   setShowLoginSheet,
   showLoginSheet,
   status,
-  stopUploads,
   syncInProgress,
   syncObservations,
-  toggleLayout,
-  uploadMultipleObservations,
-  uploadSingleObservation
+  toggleLayout
 }: Props ): Node => (
   <>
     <ViewWrapper>
       <ScrollableWithStickyHeader
         renderHeader={setStickyAt => (
           <Header
+            checkUserCanUpload={checkUserCanUpload}
             currentUser={currentUser}
             hideToolbar={observations.length === 0}
             layout={layout}
             logInButtonNeutral={observations.length === 0}
             setHeightAboveToolbar={setStickyAt}
-            stopUploads={stopUploads}
             syncInProgress={syncInProgress}
             syncObservations={syncObservations}
             toggleLayout={toggleLayout}
-            uploadMultipleObservations={uploadMultipleObservations}
           />
         )}
         renderScrollable={onScroll => (
           <ObservationsFlashList
+            checkUserCanUpload={checkUserCanUpload}
             dataCanBeFetched={!!currentUser}
             data={observations.filter( o => o.isValid() )}
             handleScroll={onScroll}
@@ -76,7 +72,6 @@ const MyObservations = ( {
             showObservationsEmptyScreen
             status={status}
             testID="MyObservationsAnimatedList"
-            uploadSingleObservation={uploadSingleObservation}
             renderHeader={(
               <Announcements isOnline={isOnline} />
             )}

@@ -1,10 +1,12 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions, PixelRatio } from "react-native";
 import { useTheme } from "react-native-paper";
+import Observation from "realmModels/Observation";
 import {
   useCurrentUser,
   useTranslation
@@ -13,27 +15,26 @@ import useStore from "stores/useStore";
 
 import Toolbar from "./Toolbar";
 
+const { useRealm } = RealmContext;
+
 const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 
 type Props = {
+  checkUserCanUpload: Function,
   layout: string,
-  stopUploads: Function,
   syncInProgress: boolean,
   syncObservations: Function,
-  toggleLayout: Function,
-  uploadMultipleObservations: Function,
-  numUnuploadedObs: number
+  toggleLayout: Function
 }
 
 const ToolbarContainer = ( {
+  checkUserCanUpload,
   layout,
-  stopUploads,
   syncInProgress,
   syncObservations,
-  toggleLayout,
-  uploadMultipleObservations,
-  numUnuploadedObs
+  toggleLayout
 }: Props ): Node => {
+  const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const deletions = useStore( state => state.deletions );
@@ -43,11 +44,22 @@ const ToolbarContainer = ( {
   const deletionsInProgress = useStore( state => state.deletionsInProgress );
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
-  const numToUpload = useStore( state => state.numToUpload );
-  const numFinishedUploads = useStore( state => state.numFinishedUploads );
-  const uploaded = useStore( state => state.uploaded );
+  const numObservationsInQueue = useStore( state => state.numObservationsInQueue );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const stopAllUploads = useStore( state => state.stopAllUploads );
+  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
+  const numUnuploadedObs = allUnsyncedObservations.length;
+  const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
+
+  const translationParams = useMemo( ( ) => ( {
+    total: numObservationsInQueue,
+    currentUploadCount: Math.min( numUploadsAttempted, numObservationsInQueue )
+  } ), [
+    numObservationsInQueue,
+    numUploadsAttempted
+  ] );
 
   const totalDeletions = deletions.length;
   const deletionsProgress = totalDeletions > 0
@@ -56,14 +68,18 @@ const ToolbarContainer = ( {
 
   const handleSyncButtonPress = useCallback( async ( ) => {
     if ( numUnuploadedObs > 0 ) {
-      await uploadMultipleObservations( );
+      const uploadUuids = allUnsyncedObservations.map( o => o.uuid );
+      addToUploadQueue( uploadUuids );
+      checkUserCanUpload( );
     } else {
       syncObservations( );
     }
   }, [
+    addToUploadQueue,
+    allUnsyncedObservations,
+    checkUserCanUpload,
     numUnuploadedObs,
-    syncObservations,
-    uploadMultipleObservations
+    syncObservations
   ] );
 
   const navToExplore = useCallback(
@@ -106,14 +122,14 @@ const ToolbarContainer = ( {
       return t( "Deleting-x-of-y-observations", deletionParams );
     }
 
-    // Note that numToUpload is kind of the number of obs being uploaded in
+    if ( uploadStatus === "pending" && numUnuploadedObs > 0 ) {
+      return t( "Upload-x-observations", { count: numUnuploadedObs } );
+    }
+
+    // Note that numObservationsInQueue is kind of the number of obs being uploaded in
     // the current upload session, so it might be 1 if a single obs is
     // being uploaded even though 5 obs need upload
     if ( uploadStatus === "uploadInProgress" ) {
-      const translationParams = {
-        total: numToUpload,
-        currentUploadCount: Math.min( numFinishedUploads + 1, numToUpload )
-      };
       // iPhone 4 pixel width
       if ( screenWidth <= 640 ) {
         return t( "Uploading-x-of-y", translationParams );
@@ -123,25 +139,20 @@ const ToolbarContainer = ( {
     }
 
     if ( uploadStatus === "complete" ) {
-      return t( "X-observations-uploaded", { count: uploaded.length } );
-    }
-
-    if ( uploadStatus === "pending" && numUnuploadedObs > 0 ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObs } );
+      return t( "X-observations-uploaded", { count: numUploadsAttempted } );
     }
 
     return "";
   }, [
     currentDeleteCount,
     deletionsComplete,
-    numFinishedUploads,
-    numToUpload,
     numUnuploadedObs,
+    numUploadsAttempted,
     syncInProgress,
     t,
     totalDeletions,
-    uploadStatus,
-    uploaded.length
+    translationParams,
+    uploadStatus
   ] );
 
   const errorText = useMemo( ( ) => {
@@ -194,7 +205,7 @@ const ToolbarContainer = ( {
       showsCheckmark={showsCheckmark}
       showsExploreIcon={currentUser}
       statusText={statusText}
-      stopUploads={stopUploads}
+      stopAllUploads={stopAllUploads}
       syncIconColor={syncIconColor}
       toggleLayout={toggleLayout}
     />

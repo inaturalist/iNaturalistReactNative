@@ -22,29 +22,27 @@ import Onboarding from "./Onboarding";
 const { useRealm } = RealmContext;
 
 type Props = {
+  checkUserCanUpload: Function,
   currentUser: ?Object,
   hideToolbar: boolean,
   layout: string,
   logInButtonNeutral: boolean,
   setHeightAboveToolbar: Function,
-  stopUploads: Function,
   syncInProgress: boolean,
   syncObservations: Function,
-  toggleLayout: Function;
-  uploadMultipleObservations: Function,
+  toggleLayout: Function
 }
 
 const Header = ( {
-  toggleLayout,
+  checkUserCanUpload,
   currentUser,
   hideToolbar,
   layout,
   logInButtonNeutral,
   setHeightAboveToolbar,
-  stopUploads,
   syncInProgress,
   syncObservations,
-  uploadMultipleObservations
+  toggleLayout
 }: Props ): Node => {
   const realm = useRealm( );
   const theme = useTheme( );
@@ -131,13 +129,11 @@ const Header = ( {
       </View>
       {!hideToolbar && (
         <ToolbarContainer
+          checkUserCanUpload={checkUserCanUpload}
           layout={layout}
-          numUnuploadedObs={numUnuploadedObs}
-          stopUploads={stopUploads}
           syncInProgress={syncInProgress}
           syncObservations={syncObservations}
           toggleLayout={toggleLayout}
-          uploadMultipleObservations={uploadMultipleObservations}
         />
       )}
     </>

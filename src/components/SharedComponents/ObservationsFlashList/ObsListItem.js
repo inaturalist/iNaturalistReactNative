@@ -14,13 +14,15 @@ import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
 
 type Props = {
-  observation: Object,
-  uploadSingleObservation?: Function,
-  explore: boolean
+  checkUserCanUpload: Function,
+  explore: boolean,
+  observation: Object
 };
 
 const ObsListItem = ( {
-  observation, uploadSingleObservation, explore = false
+  checkUserCanUpload,
+  explore = false,
+  observation
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
 
@@ -80,9 +82,9 @@ const ObsListItem = ( {
           )
           : (
             <ObsUploadStatusContainer
-              observation={observation}
+              checkUserCanUpload={checkUserCanUpload}
               layout="vertical"
-              uploadSingleObservation={uploadSingleObservation}
+              observation={observation}
             />
           )}
       </View>

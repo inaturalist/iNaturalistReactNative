@@ -1,11 +1,10 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useState
+  useCallback, useEffect
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
-import Observation from "realmModels/Observation";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
@@ -17,27 +16,19 @@ import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
-export default useUploadObservations = (
-  toggleLoginSheet,
-  showInternetErrorAlert,
-  currentUser,
-  isOnline
-): Object => {
+export default useUploadObservations = ( ): Object => {
   const realm = useRealm( );
-  const startSingleUpload = useStore( state => state.startSingleUpload );
-  const startMultipleUploads = useStore( state => state.startMultipleUploads );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const addUploadError = useStore( state => state.addUploadError );
-  const addUploaded = useStore( state => state.addUploaded );
-  const setUploads = useStore( state => state.setUploads );
-  const startNextUpload = useStore( state => state.startNextUpload );
   const completeUploads = useStore( state => state.completeUploads );
   const error = useStore( state => state.uploadError );
   const uploadStatus = useStore( state => state.uploadStatus );
-  const uploads = useStore( state => state.uploads );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
-  const stopAllUploads = useStore( state => state.stopAllUploads );
-  const [uploadingObsUUID, setUploadingObsUUID] = useState( null );
+  const removeFromUploadQueue = useStore( state => state.removeFromUploadQueue );
+  const uploadQueue = useStore( state => state.uploadQueue );
+  const setCurrentUpload = useStore( state => state.setCurrentUpload );
+  const currentUpload = useStore( state => state.currentUpload );
+  const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -47,10 +38,6 @@ export default useUploadObservations = (
 
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-
-  const allObsToUpload = Observation.filterUnsyncedObservations( realm );
-  const numUnuploadedObs = allObsToUpload.length;
-  const { params: navParams } = useRoute( );
 
   useEffect( () => {
     let timer;
@@ -63,35 +50,6 @@ export default useUploadObservations = (
       clearTimeout( timer );
     };
   }, [uploadStatus, error, resetUploadObservationsSlice] );
-
-  useEffect( ( ) => {
-    setUploadingObsUUID( navParams?.uploadingObsUUID );
-  }, [navParams?.uploadingObsUUID] );
-
-  useEffect( ( ) => {
-    // show progress in toolbar for observations uploaded on ObsEdit
-    if (
-      uploadingObsUUID
-      && uploadStatus !== "uploadInProgress"
-      && currentUser
-      && realm
-    ) {
-      const savedObservation = realm.objectForPrimaryKey(
-        "Observation",
-        uploadingObsUUID
-      );
-      // Reset this value so we don't run this effect again. We only need to
-      // show uploading UI once.
-      setUploadingObsUUID( null );
-      const wasSynced = savedObservation?.wasSynced( );
-      if ( savedObservation && !wasSynced ) {
-        // FYI, this doesn't actually start the upload. Here we're assuming
-        // the upload was started from ObsEdit and we're just updating upload
-        // state to match.
-        startSingleUpload( savedObservation );
-      }
-    }
-  }, [uploadStatus, realm, currentUser, startSingleUpload, uploadingObsUUID] );
 
   useEffect( ( ) => {
     const progressListener = EventRegister.addEventListener(
@@ -110,128 +68,80 @@ export default useUploadObservations = (
   ] );
 
   const uploadObservationAndCatchError = useCallback( async observation => {
+    setCurrentUpload( observation );
     try {
       await uploadObservation( observation, realm, { signal: newAbortController( ).signal } );
-      addUploaded( observation.uuid );
+      removeFromUploadQueue( );
+      if (
+        uploadQueue.length === 0
+        && !currentUpload
+      ) {
+        completeUploads( );
+      }
     } catch ( uploadError ) {
       const message = handleUploadError( uploadError, t );
       addUploadError( message, observation.uuid );
     }
   }, [
-    realm,
-    addUploaded,
     addUploadError,
+    completeUploads,
+    currentUpload,
     newAbortController,
-    t
-  ] );
-
-  const uploadSingleObservation = useCallback( async ( observation, options ) => {
-    if ( !currentUser ) {
-      toggleLoginSheet( );
-      return;
-    }
-    if ( !isOnline ) {
-      showInternetErrorAlert( );
-      return;
-    }
-    if ( !options || options?.singleUpload !== false ) {
-      startSingleUpload( observation );
-    }
-    try {
-      await uploadObservationAndCatchError( observation );
-    } catch ( uploadSingleObservationError ) {
-      if ( uploadSingleObservationError.message === "Aborted" ) {
-        stopAllUploads( );
-        return;
-      }
-      throw uploadSingleObservationError;
-    }
-    completeUploads( );
-  }, [
-    completeUploads,
-    currentUser,
-    isOnline,
-    showInternetErrorAlert,
-    toggleLoginSheet,
-    uploadObservationAndCatchError,
-    startSingleUpload,
-    stopAllUploads
-  ] );
-
-  const uploadMultipleObservations = useCallback( async ( ) => {
-    if ( !currentUser ) {
-      toggleLoginSheet( );
-      return;
-    }
-    if ( numUnuploadedObs === 0 || uploadStatus === "uploadInProgress" ) {
-      return;
-    }
-    if ( !isOnline ) {
-      showInternetErrorAlert( );
-      return;
-    }
-    startMultipleUploads( );
-
-    try {
-      await Promise.all( uploads.map( async obsToUpload => {
-        await uploadObservationAndCatchError( obsToUpload );
-        startNextUpload( );
-      } ) );
-      completeUploads( );
-    } catch ( uploadMultipleObservationsError ) {
-      if ( uploadMultipleObservationsError.message === "Aborted" ) {
-        stopAllUploads( );
-      }
-    }
-  }, [
-    completeUploads,
-    currentUser,
-    isOnline,
-    numUnuploadedObs,
-    showInternetErrorAlert,
-    startMultipleUploads,
-    startNextUpload,
-    stopAllUploads,
-    toggleLoginSheet,
-    uploadObservationAndCatchError,
-    uploadStatus,
-    uploads
+    realm,
+    removeFromUploadQueue,
+    setCurrentUpload,
+    t,
+    uploadQueue
   ] );
 
   useEffect( ( ) => {
-    // put uploads into upload stack
-    if ( uploadStatus === "pending"
-      && allObsToUpload?.length > 0
-      && allObsToUpload.length > uploads.length
+    const startUpload = async ( ) => {
+      const lastQueuedUuid = uploadQueue[uploadQueue.length - 1];
+      const localObservation = realm.objectForPrimaryKey( "Observation", lastQueuedUuid );
+      if ( localObservation ) {
+        await uploadObservationAndCatchError( localObservation );
+      }
+    };
+    if ( uploadStatus === "uploadInProgress"
+      && uploadQueue.length > 0
+      && !currentUpload
     ) {
-      setUploads( allObsToUpload );
+      startUpload( );
     }
-  }, [allObsToUpload, uploads, uploadStatus, setUploads] );
+  }, [
+    currentUpload,
+    realm,
+    uploadObservationAndCatchError,
+    uploadQueue,
+    uploadStatus
+  ] );
+
+  useEffect( ( ) => {
+    const uuidsQuery = uploadQueue.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
+    const uploads = realm.objects( "Observation" )
+      .filtered( `uuid IN { ${uuidsQuery} }` );
+    setTotalToolbarIncrements( uploads );
+  }, [setTotalToolbarIncrements, realm, uploadQueue, uploadQueue.length] );
 
   useEffect(
     ( ) => {
-      navigation.addListener( "focus", ( ) => {
+      navigation.addListener( "blur", ( ) => {
         resetUploadObservationsSlice( );
       } );
     },
     [
-      allObsToUpload,
       navigation,
-      realm,
-      resetUploadObservationsSlice,
-      setUploads
+      resetUploadObservationsSlice
     ]
   );
 
-  const stopUploads = useCallback( ( ) => {
-    stopAllUploads( );
-    abortController.abort( );
-    deactivateKeepAwake( );
-  }, [abortController, stopAllUploads] );
+  useEffect( ( ) => {
+    // fully stop uploads when cancel upload button is tapped
+    if ( uploadStatus === "pending" ) {
+      abortController.abort( );
+      deactivateKeepAwake( );
+    }
+  }, [abortController, uploadStatus] );
 
-  return {
-    uploadMultipleObservations,
-    uploadSingleObservation,
-    stopUploads
-  };
+  return null;
 };
