@@ -217,6 +217,11 @@ fastlane prod
 1. Manual testing
     1. Install a "Release" build on an iOS device
         1. Online
+            1. Sign out if already signed in
+            1. Make an observation using the AI Camera
+            1. Delete the observation you just made
+            1. Go to Explore and view a taxon
+            1. Change to observations view and view an observation
             1. Sign in
             1. Make an observation by taking a new photo in the AI Camera; tap "Upload Now" to upload immediately; wait for upload to complete before moving on
             1. Make an observation by taking a new photo in the StandardCamera; save without upload

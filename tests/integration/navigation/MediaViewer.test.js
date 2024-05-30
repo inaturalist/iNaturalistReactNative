@@ -75,7 +75,7 @@ describe( "MediaViewer navigation", ( ) => {
   } );
 
   beforeEach( async ( ) => {
-    await signIn( mockUser );
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
   } );
 
   afterEach( ( ) => {

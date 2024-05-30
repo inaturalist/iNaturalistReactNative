@@ -60,7 +60,8 @@ const AICamera = ( {
     changeZoom,
     pinchToZoom,
     showZoomButton,
-    zoomTextValue
+    zoomTextValue,
+    resetZoom
   } = useZoom( device );
   const {
     rotatableAnimatedStyle
@@ -95,18 +96,20 @@ const AICamera = ( {
   React.useEffect( () => {
     const unsubscribeBlur = navigation.addListener( "blur", () => {
       setResult( null );
+      resetZoom( );
     } );
 
     return unsubscribeBlur;
-  }, [navigation, setResult] );
+  }, [navigation, setResult, resetZoom] );
 
   React.useEffect( () => {
     const unsubscribeFocus = navigation.addListener( "focus", () => {
       setResult( null );
+      resetZoom( );
     } );
 
     return unsubscribeFocus;
-  }, [navigation, setResult] );
+  }, [navigation, setResult, resetZoom] );
 
   const handlePress = async ( ) => {
     await takePhoto( { replaceExisting: true } );

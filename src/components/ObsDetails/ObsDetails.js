@@ -225,7 +225,7 @@ const ObsDetails = ( {
           )}
         </View>
       </ScrollView>
-      {showActivityTab && (
+      {showActivityTab && currentUser && (
         <FloatingButtons
           navToSuggestions={navToSuggestions}
           openCommentBox={openCommentBox}

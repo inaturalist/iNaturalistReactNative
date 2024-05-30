@@ -43,7 +43,7 @@ class ErrorBoundary extends React.Component {
       // boundaries can customize their error states
       return (
         <SafeAreaView className="flex-1">
-          <ScrollView className="p-5">
+          <ScrollView className="p-5 bg-white">
             <Heading1 className="my-3">{ t( "Something-went-wrong" ) }</Heading1>
             <Body1>
               { t( "If-youre-seeing-this-error" ) }

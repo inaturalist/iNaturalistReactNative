@@ -19,13 +19,14 @@ const safeRealmWrite = (
   // https://www.mongodb.com/docs/realm-sdks/react/latest/classes/Realm-1.html#beginTransaction.beginTransaction-1
   realm.beginTransaction( );
   try {
-    logger.info( "writing to realm:", description );
+    // logger.info( "writing to realm:", description );
     const response = action( );
     realm.commitTransaction( );
     return response;
   } catch ( e ) {
-    logger.info( "couldn't write to realm: ", e );
-    throw new Error( `${description}: ${e.message}` );
+    // logger.info( "couldn't write to realm: ", e );
+    e.message = `${description}: ${e.message}`;
+    throw e;
   }
 };
 
