@@ -83,7 +83,6 @@ const checkToolbarResetWithUnsyncedObs = async ( ) => {
 
 const writeObservationsToRealm = ( observations, message ) => {
   safeRealmWrite( global.mockRealms[__filename], ( ) => {
-    global.mockRealms[__filename].deleteAll( );
     observations.forEach( mockObservation => {
       global.mockRealms[__filename].create( "Observation", mockObservation );
     } );
@@ -206,10 +205,6 @@ describe( "MyObservations", ( ) => {
         );
       } );
 
-      afterEach( ( ) => {
-        jest.clearAllMocks( );
-      } );
-
       it( "renders grid view on button press", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
@@ -277,10 +272,10 @@ describe( "MyObservations", ( ) => {
           `UploadIcon.progress.${mockUnsyncedObservations[1].uuid}`
         );
         expect( uploadInProgressIcon ).toBeVisible( );
-        // await waitFor( ( ) => {
-        //   const toolbarText = screen.getByText( /2 observations uploaded/ );
-        //   expect( toolbarText ).toBeVisible( );
-        // } );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /2 observations uploaded/ );
+          expect( toolbarText ).toBeVisible( );
+        } );
       } );
     } );
 
