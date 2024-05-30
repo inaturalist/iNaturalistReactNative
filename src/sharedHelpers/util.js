@@ -8,6 +8,7 @@ export const sleep = ms => new Promise( resolve => {
 // Unlink file at path. Tries to catch some common exceptions when we try to
 // unlink something that was already unlinked
 export const unlink = async path => {
+  if ( !path ) return;
   const pathExists = await RNFS.exists( path );
   if ( !pathExists ) return;
   try {
