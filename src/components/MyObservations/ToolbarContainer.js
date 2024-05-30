@@ -79,21 +79,22 @@ const ToolbarContainer = ( {
 
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const rotating = syncInProgress || uploadStatus === "uploadInProgress" || deletionsInProgress;
-  const showsCheckmark = ( uploadStatus === "complete" && !uploadMultiError )
-    || ( deletionsComplete && !deleteError );
-  const showsExclamation = ( uploadStatus === "pending" && numUnuploadedObservations > 0 )
-    || uploadMultiError;
+
   const pendingUpload = uploadStatus === "pending" && numUnuploadedObservations > 0;
   const uploadInProgress = uploadStatus === "uploadInProgress" && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === "complete" && numObservationsInQueue > 0;
 
+  const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
+  const showsCheckmark = ( uploadsComplete && !uploadMultiError )
+    || ( deletionsComplete && !deleteError );
+  const showsExclamation = pendingUpload || uploadMultiError;
+
   const getStatusText = useCallback( ( ) => {
     if ( syncInProgress ) { return t( "Syncing" ); }
 
-    if ( deletionParams.total > 0 ) {
+    if ( totalDeletions > 0 ) {
       if ( deletionsComplete ) {
-        return t( "X-observations-deleted", { count: deletionParams.total } );
+        return t( "X-observations-deleted", { count: totalDeletions } );
       }
       // iPhone 4 pixel width
       return screenWidth <= 640
@@ -125,6 +126,7 @@ const ToolbarContainer = ( {
     pendingUpload,
     syncInProgress,
     t,
+    totalDeletions,
     translationParams,
     uploadInProgress,
     uploadsComplete
@@ -148,20 +150,18 @@ const ToolbarContainer = ( {
   ] );
 
   const getSyncIconColor = useCallback( ( ) => {
-    if ( uploadStatus === "uploadInProgress" ) {
-      return theme.colors.secondary;
-    }
     if ( errorText ) {
       return theme.colors.error;
     }
-    if ( uploadStatus === "pending" ) {
+    if ( pendingUpload || uploadInProgress ) {
       return theme.colors.secondary;
     }
     return theme.colors.primary;
   }, [
     errorText,
     theme,
-    uploadStatus
+    pendingUpload,
+    uploadInProgress
   ] );
 
   const statusText = getStatusText( );
@@ -175,7 +175,7 @@ const ToolbarContainer = ( {
       navToExplore={navToExplore}
       progress={deletionsProgress || totalToolbarProgress}
       rotating={rotating}
-      showsCancelUploadButton={uploadStatus === "uploadInProgress"}
+      showsCancelUploadButton={uploadInProgress}
       showsCheckmark={showsCheckmark}
       showsExclamation={showsExclamation}
       showsExploreIcon={currentUser}

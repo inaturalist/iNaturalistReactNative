@@ -11,8 +11,8 @@ import ObsListItem from "./ObsListItem";
 const { useRealm } = RealmContext;
 
 type Props = {
-  checkUserCanUpload: Function,
   explore: boolean,
+  handleIndividualUploadPress: Function,
   gridItemWidth: number,
   layout: "list" | "grid",
   observation: Object
@@ -21,8 +21,8 @@ type Props = {
 const GUTTER = 15;
 
 const ObsItem = ( {
-  checkUserCanUpload,
   explore,
+  handleIndividualUploadPress,
   gridItemWidth,
   layout,
   observation
@@ -42,8 +42,8 @@ const ObsItem = ( {
         layout === "grid"
           ? (
             <ObsGridItem
-              checkUserCanUpload={checkUserCanUpload}
               explore={explore}
+              handleIndividualUploadPress={handleIndividualUploadPress}
               observation={observation}
               showUploadStatus={showUploadStatus}
               // 03022023 it seems like Flatlist is designed to work
@@ -58,8 +58,8 @@ const ObsItem = ( {
           )
           : (
             <ObsListItem
-              checkUserCanUpload={checkUserCanUpload}
               explore={explore}
+              handleIndividualUploadPress={handleIndividualUploadPress}
               showUploadStatus={showUploadStatus}
               observation={observation}
             />

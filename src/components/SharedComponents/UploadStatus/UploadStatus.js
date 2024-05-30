@@ -17,9 +17,9 @@ import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 type Props = {
-  checkUserCanUpload: Function,
   color?: string,
   completeColor?: string,
+  handleIndividualUploadPress: Function,
   layout: string,
   // $FlowIgnore
   children: unknown,
@@ -43,14 +43,13 @@ const keyframe = new Keyframe( {
 } );
 
 const UploadStatus = ( {
-  checkUserCanUpload,
   color,
   completeColor,
+  handleIndividualUploadPress,
   layout,
   children,
   uuid
 }: Props ): Node => {
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
   const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
   const progress = currentObservation?.totalProgress || 0;
@@ -99,8 +98,7 @@ const UploadStatus = ( {
 
   const uploadSingleObservation = ( ) => {
     startAnimation( );
-    addToUploadQueue( uuid );
-    checkUserCanUpload( );
+    handleIndividualUploadPress( uuid );
   };
 
   useEffect( ( ) => ( ) => cancelAnimation( rotation ), [rotation] );

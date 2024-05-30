@@ -14,15 +14,15 @@ import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
-  checkUserCanUpload: Function,
   explore: boolean,
+  handleIndividualUploadPress: Function,
   showUploadStatus: boolean,
   observation: Object
 };
 
 const ObsListItem = ( {
-  checkUserCanUpload,
   explore = false,
+  handleIndividualUploadPress,
   showUploadStatus,
   observation
 }: Props ): Node => {
@@ -84,7 +84,7 @@ const ObsListItem = ( {
           )
           : (
             <ObsUploadStatus
-              checkUserCanUpload={checkUserCanUpload}
+              handleIndividualUploadPress={handleIndividualUploadPress}
               layout="vertical"
               showUploadStatus={showUploadStatus}
               observation={observation}

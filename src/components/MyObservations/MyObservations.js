@@ -12,8 +12,8 @@ import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 
 type Props = {
-  checkUserCanUpload: Function,
   currentUser: Object,
+  handleIndividualUploadPress: Function,
   handleSyncButtonPress: Function,
   isFetchingNextPage: boolean,
   isOnline: boolean,
@@ -28,8 +28,8 @@ type Props = {
 };
 
 const MyObservations = ( {
-  checkUserCanUpload,
   currentUser,
+  handleIndividualUploadPress,
   handleSyncButtonPress,
   isFetchingNextPage,
   isOnline,
@@ -59,9 +59,9 @@ const MyObservations = ( {
         )}
         renderScrollable={onScroll => (
           <ObservationsFlashList
-            checkUserCanUpload={checkUserCanUpload}
             dataCanBeFetched={!!currentUser}
             data={observations.filter( o => o.isValid() )}
+            handleIndividualUploadPress={handleIndividualUploadPress}
             handleScroll={onScroll}
             hideLoadingWheel={!isFetchingNextPage || !currentUser}
             isFetchingNextPage={isFetchingNextPage}

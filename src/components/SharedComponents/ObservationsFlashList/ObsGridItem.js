@@ -11,8 +11,8 @@ import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
-  checkUserCanUpload: Function,
   explore: boolean,
+  handleIndividualUploadPress: Function,
   height?: string,
   observation: Object,
   showUploadStatus: boolean,
@@ -21,8 +21,8 @@ type Props = {
 };
 
 const ObsGridItem = ( {
-  checkUserCanUpload,
   explore,
+  handleIndividualUploadPress,
   height = "w-[200px]",
   observation,
   showUploadStatus,
@@ -66,8 +66,8 @@ const ObsGridItem = ( {
           )
           : (
             <ObsUploadStatus
-              checkUserCanUpload={checkUserCanUpload}
               classNameMargin="mb-1"
+              handleIndividualUploadPress={handleIndividualUploadPress}
               layout="horizontal"
               observation={observation}
               showUploadStatus={showUploadStatus}

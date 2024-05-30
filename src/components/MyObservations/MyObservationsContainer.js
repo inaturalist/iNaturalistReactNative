@@ -237,7 +237,7 @@ const MyObservationsContainer = ( ): Node => {
     resetUploadObservationsSlice
   ] );
 
-  const handleSyncButtonPress = useCallback( async ( ) => {
+  const handleSyncButtonPress = useCallback( ( ) => {
     if ( numUnuploadedObservations > 0 ) {
       const uploadUuids = allUnsyncedObservations.map( o => o.uuid );
       addToUploadQueue( uploadUuids );
@@ -253,6 +253,14 @@ const MyObservationsContainer = ( ): Node => {
     syncObservations
   ] );
 
+  const handleIndividualUploadPress = useCallback( uuid => {
+    addToUploadQueue( uuid );
+    checkUserCanUpload( );
+  }, [
+    addToUploadQueue,
+    checkUserCanUpload
+  ] );
+
   if ( !layout ) { return null; }
 
   // remote data is available before data is synced locally; this check
@@ -263,10 +271,10 @@ const MyObservationsContainer = ( ): Node => {
 
   return (
     <MyObservations
-      checkUserCanUpload={checkUserCanUpload}
       currentUser={currentUser}
       isFetchingNextPage={isFetchingNextPage}
       isOnline={isOnline}
+      handleIndividualUploadPress={handleIndividualUploadPress}
       handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}
       observations={observations}

@@ -17,11 +17,11 @@ import ObsItem from "./ObsItem";
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 type Props = {
-  checkUserCanUpload: Function,
   contentContainerStyle?: Object,
   data: Array<Object>,
   dataCanBeFetched?: boolean,
   explore: boolean,
+  handleIndividualUploadPress: Function,
   handleScroll?: Function,
   hideLoadingWheel: boolean,
   isFetchingNextPage?: boolean,
@@ -37,11 +37,11 @@ type Props = {
 const GUTTER = 15;
 
 const ObservationsFlashList = ( {
-  checkUserCanUpload,
   contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
   explore,
+  handleIndividualUploadPress,
   handleScroll,
   hideLoadingWheel,
   isFetchingNextPage,
@@ -88,11 +88,11 @@ const ObservationsFlashList = ( {
     <ObsItem
       explore={explore}
       gridItemWidth={gridItemWidth}
+      handleIndividualUploadPress={handleIndividualUploadPress}
       layout={layout}
       observation={item}
-      checkUserCanUpload={checkUserCanUpload}
     />
-  ), [gridItemWidth, explore, layout, checkUserCanUpload] );
+  ), [gridItemWidth, explore, layout, handleIndividualUploadPress] );
 
   const renderItemSeparator = useCallback( ( ) => {
     if ( layout === "grid" ) {

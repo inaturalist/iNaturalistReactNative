@@ -6,8 +6,8 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  checkUserCanUpload: Function,
   classNameMargin?: string,
+  handleIndividualUploadPress: Function,
   layout?: "horizontal" | "vertical",
   observation: Object,
   showUploadStatus: boolean,
@@ -15,8 +15,8 @@ type Props = {
 };
 
 const ObsUploadStatus = ( {
-  checkUserCanUpload,
   classNameMargin,
+  handleIndividualUploadPress,
   layout,
   observation,
   showUploadStatus,
@@ -41,9 +41,9 @@ const ObsUploadStatus = ( {
 
   return (
     <UploadStatus
-      checkUserCanUpload={checkUserCanUpload}
       color={whiteColor}
       completeColor={whiteColor}
+      handleIndividualUploadPress={handleIndividualUploadPress}
       layout={layout}
       uuid={observation.uuid}
     >
