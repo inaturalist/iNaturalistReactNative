@@ -95,7 +95,7 @@ const uploadEvidence = async (
       // half one when the obsPhoto/obsSound is attached to the obs
       emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
       // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
-      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
+      await markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
         record: currentEvidence
       } );
     }
