@@ -74,12 +74,10 @@ const mockSpanishUser = factory( "LocalUser", {
   locale: "es"
 } );
 
-const checkToolbarResetWithUnsyncedObs = async ( ) => {
-  await waitFor( ( ) => {
-    const toolbarText = screen.getByText( /Upload 2 observations/ );
-    expect( toolbarText ).toBeVisible( );
-  } );
-};
+const checkToolbarResetWithUnsyncedObs = ( ) => waitFor( ( ) => {
+  const toolbarText = screen.getByText( /Upload 2 observations/ );
+  expect( toolbarText ).toBeVisible( );
+} );
 
 const writeObservationsToRealm = ( observations, message ) => {
   const realm = global.mockRealms[__filename];
@@ -199,6 +197,17 @@ describe( "MyObservations", ( ) => {
         id: faker.number.int( )
       }] ) ) );
 
+      beforeEach( ( ) => {
+        writeObservationsToRealm(
+          mockUnsyncedObservations,
+          "writing unsynced observations for MyObservations integration test"
+        );
+      } );
+
+      afterEach( ( ) => {
+        deleteObservationsFromRealm( "deleting observations for MyObservations integration test" );
+      } );
+
       it( "should make a request to observations/updates", async ( ) => {
         // Let's make sure the mock hasn't already been used
         expect( inatjs.observations.updates ).not.toHaveBeenCalled();
@@ -207,17 +216,6 @@ describe( "MyObservations", ( ) => {
         await waitFor( ( ) => {
           expect( inatjs.observations.updates ).toHaveBeenCalled( );
         } );
-      } );
-
-      beforeEach( ( ) => {
-        writeObservationsToRealm(
-          mockUnsyncedObservations,
-          "MyObservations integration test with unsynced observations"
-        );
-      } );
-
-      afterEach( ( ) => {
-        deleteObservationsFromRealm( "MyObservations delete realm observations" );
       } );
 
       it( "renders grid view on button press", async () => {

@@ -39,11 +39,6 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const initialStoreState = useStore.getState( );
-beforeAll( ( ) => {
-  useStore.setState( initialStoreState, true );
-} );
-
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "components/Suggestions/hooks/useOnlineSuggestions.ts", ( ) => jest.fn( () => ( {
@@ -149,12 +144,8 @@ describe( "MediaViewer navigation", ( ) => {
       await findAndPressByLabelText( "Camera" );
     }
 
-    beforeAll( ( ) => {
+    beforeEach( ( ) => {
       useStore.setState( { isAdvancedUser: true } );
-    } );
-
-    afterAll( ( ) => {
-      useStore.setState( initialStoreState );
     } );
 
     it( "should show a photo when tapped", async ( ) => {

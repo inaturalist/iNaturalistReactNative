@@ -95,7 +95,7 @@ const uploadEvidence = async (
       // half one when the obsPhoto/obsSound is attached to the obs
       emitUploadProgress( observationUUID, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
       // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
-      await markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
+      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
         record: currentEvidence
       } );
     }
@@ -262,7 +262,7 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
   // Make sure this happens *after* ObservationPhotos and ObservationSounds
   // are created so the observation doesn't appear uploaded until all its
   // media successfully uploads
-  await markRecordUploaded( obs.uuid, null, "Observation", response, realm );
+  markRecordUploaded( obs.uuid, null, "Observation", response, realm );
   // fetch observation and upsert it
   const remoteObs = await fetchRemoteObservation( obsUUID, { fields: Observation.FIELDS } );
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );

@@ -94,7 +94,14 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     uploadStatus: "complete"
   } ) ),
   updateTotalUploadProgress: ( uuid, increment ) => set( state => {
-    const { totalUploadProgress, currentUpload } = state;
+    const { existingTotalUploadProgress, currentUpload } = state;
+    // Zustand does *not* make deep copies when making supposedly immutable
+    // state changes, so for nested objects like this, we need to create a
+    // new object explicitly.
+    // https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md#nested-objects
+    const totalUploadProgress = existingTotalUploadProgress
+      ? [...existingTotalUploadProgress]
+      : [];
     const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
     if ( !currentObservation ) {
       const progressObj = createUploadProgressObj(
