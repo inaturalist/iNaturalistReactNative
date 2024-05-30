@@ -15,6 +15,7 @@ type Props = {
   explore: boolean,
   height?: string,
   observation: Object,
+  showUploadStatus: boolean,
   style?: Object,
   width?: string
 };
@@ -24,6 +25,7 @@ const ObsGridItem = ( {
   explore,
   height = "w-[200px]",
   observation,
+  showUploadStatus,
   style,
   width = "w-[200px]"
 }: Props ): Node => {
@@ -68,6 +70,7 @@ const ObsGridItem = ( {
               classNameMargin="mb-1"
               layout="horizontal"
               observation={observation}
+              showUploadStatus={showUploadStatus}
               white
             />
           )}

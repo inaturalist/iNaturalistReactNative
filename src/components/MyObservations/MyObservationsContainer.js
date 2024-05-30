@@ -6,7 +6,8 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useReducer, useState
+  useCallback,
+  useReducer, useState
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
@@ -69,6 +70,8 @@ const MyObservationsContainer = ( ): Node => {
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const uploadStatus = useStore( state => state.uploadStatus );
   const setUploadStatus = useStore( state => state.setUploadStatus );
+  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
+  const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const [state, dispatch] = useReducer( reducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -79,6 +82,8 @@ const MyObservationsContainer = ( ): Node => {
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
   const canUpload = currentUser && isOnline;
+
+  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
 
   useObservationsUpdates( !!currentUser );
 
@@ -232,6 +237,22 @@ const MyObservationsContainer = ( ): Node => {
     resetUploadObservationsSlice
   ] );
 
+  const handleSyncButtonPress = useCallback( async ( ) => {
+    if ( numUnuploadedObservations > 0 ) {
+      const uploadUuids = allUnsyncedObservations.map( o => o.uuid );
+      addToUploadQueue( uploadUuids );
+      checkUserCanUpload( );
+    } else {
+      syncObservations( );
+    }
+  }, [
+    addToUploadQueue,
+    allUnsyncedObservations,
+    checkUserCanUpload,
+    numUnuploadedObservations,
+    syncObservations
+  ] );
+
   if ( !layout ) { return null; }
 
   // remote data is available before data is synced locally; this check
@@ -246,6 +267,7 @@ const MyObservationsContainer = ( ): Node => {
       currentUser={currentUser}
       isFetchingNextPage={isFetchingNextPage}
       isOnline={isOnline}
+      handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}
       observations={observations}
       onEndReached={fetchNextPage}
@@ -253,7 +275,6 @@ const MyObservationsContainer = ( ): Node => {
       showLoginSheet={showLoginSheet}
       status={observationListStatus}
       syncInProgress={syncInProgress}
-      syncObservations={syncObservations}
       toggleLayout={toggleLayout}
     />
   );

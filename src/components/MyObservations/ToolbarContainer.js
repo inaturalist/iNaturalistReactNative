@@ -1,12 +1,10 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions, PixelRatio } from "react-native";
 import { useTheme } from "react-native-paper";
-import Observation from "realmModels/Observation";
 import {
   useCurrentUser,
   useTranslation
@@ -15,26 +13,21 @@ import useStore from "stores/useStore";
 
 import Toolbar from "./Toolbar";
 
-const { useRealm } = RealmContext;
-
 const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 
 type Props = {
-  checkUserCanUpload: Function,
+  handleSyncButtonPress: Function,
   layout: string,
   syncInProgress: boolean,
-  syncObservations: Function,
   toggleLayout: Function
 }
 
 const ToolbarContainer = ( {
-  checkUserCanUpload,
+  handleSyncButtonPress,
   layout,
   syncInProgress,
-  syncObservations,
   toggleLayout
 }: Props ): Node => {
-  const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const deletions = useStore( state => state.deletions );
@@ -48,10 +41,9 @@ const ToolbarContainer = ( {
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
+
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
-  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
 
   // Note that numObservationsInQueue is the number of obs being uploaded in
   // the current upload session, so it might be 1 if a single obs is
@@ -74,22 +66,6 @@ const ToolbarContainer = ( {
   } ), [
     totalDeletions,
     currentDeleteCount
-  ] );
-
-  const handleSyncButtonPress = useCallback( async ( ) => {
-    if ( numUnuploadedObservations > 0 ) {
-      const uploadUuids = allUnsyncedObservations.map( o => o.uuid );
-      addToUploadQueue( uploadUuids );
-      checkUserCanUpload( );
-    } else {
-      syncObservations( );
-    }
-  }, [
-    addToUploadQueue,
-    allUnsyncedObservations,
-    checkUserCanUpload,
-    numUnuploadedObservations,
-    syncObservations
   ] );
 
   const navToExplore = useCallback(

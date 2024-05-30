@@ -16,12 +16,14 @@ import ObsUploadStatus from "./ObsUploadStatus";
 type Props = {
   checkUserCanUpload: Function,
   explore: boolean,
+  showUploadStatus: boolean,
   observation: Object
 };
 
 const ObsListItem = ( {
   checkUserCanUpload,
   explore = false,
+  showUploadStatus,
   observation
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
@@ -84,6 +86,7 @@ const ObsListItem = ( {
             <ObsUploadStatus
               checkUserCanUpload={checkUserCanUpload}
               layout="vertical"
+              showUploadStatus={showUploadStatus}
               observation={observation}
             />
           )}

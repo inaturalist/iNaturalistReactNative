@@ -1,5 +1,5 @@
 // @flow
-import Header from "components/MyObservations/Header";
+import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
 import {
   ObservationsFlashList,
   ScrollableWithStickyHeader,
@@ -14,6 +14,7 @@ import LoginSheet from "./LoginSheet";
 type Props = {
   checkUserCanUpload: Function,
   currentUser: Object,
+  handleSyncButtonPress: Function,
   isFetchingNextPage: boolean,
   isOnline: boolean,
   layout: "list" | "grid",
@@ -23,13 +24,13 @@ type Props = {
   showLoginSheet: boolean,
   status: string,
   syncInProgress: boolean,
-  syncObservations: Function,
   toggleLayout: Function
 };
 
 const MyObservations = ( {
   checkUserCanUpload,
   currentUser,
+  handleSyncButtonPress,
   isFetchingNextPage,
   isOnline,
   layout,
@@ -39,22 +40,20 @@ const MyObservations = ( {
   showLoginSheet,
   status,
   syncInProgress,
-  syncObservations,
   toggleLayout
 }: Props ): Node => (
   <>
     <ViewWrapper>
       <ScrollableWithStickyHeader
         renderHeader={setStickyAt => (
-          <Header
-            checkUserCanUpload={checkUserCanUpload}
+          <MyObservationsHeader
+            handleSyncButtonPress={handleSyncButtonPress}
             currentUser={currentUser}
             hideToolbar={observations.length === 0}
             layout={layout}
             logInButtonNeutral={observations.length === 0}
             setHeightAboveToolbar={setStickyAt}
             syncInProgress={syncInProgress}
-            syncObservations={syncObservations}
             toggleLayout={toggleLayout}
           />
         )}

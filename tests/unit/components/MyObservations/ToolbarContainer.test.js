@@ -3,7 +3,6 @@ import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import i18next from "i18next";
 import React from "react";
 import useStore from "stores/useStore";
-import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const initialStoreState = useStore.getState( );
@@ -15,8 +14,6 @@ const deletionStore = {
   deletionsInProgress: false,
   error: null
 };
-
-const mockUUID = faker.string.uuid( );
 
 describe( "Toolbar Container", () => {
   beforeEach( async () => {
@@ -53,13 +50,8 @@ describe( "Toolbar Container", () => {
     const numUploadsAttempted = 1;
     useStore.setState( {
       numUploadsAttempted,
-      uploadStatus: "complete",
-      totalUploadProgress: [
-        {
-          uuid: mockUUID,
-          totalProgress: 1
-        }
-      ]
+      numObservationsInQueue: numUploadsAttempted,
+      uploadStatus: "complete"
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -105,14 +97,16 @@ describe( "Toolbar Container", () => {
   } );
 
   it( "displays multiple completed uploads", async () => {
+    const numUploadsAttempted = 7;
     useStore.setState( {
-      numUploadsAttempted: 7,
+      numUploadsAttempted,
+      numObservationsInQueue: numUploadsAttempted,
       uploadStatus: "complete"
     } );
     renderComponent( <ToolbarContainer /> );
 
     const statusText = screen.getByText( i18next.t( "X-observations-uploaded", {
-      count: 7
+      count: numUploadsAttempted
     } ) );
     expect( statusText ).toBeVisible( );
   } );
