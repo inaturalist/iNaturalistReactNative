@@ -59,7 +59,7 @@ describe( "ObsEdit", () => {
     const evidenceList = screen.getByTestId( "EvidenceList.DraggableFlatList" );
 
     await waitFor( ( ) => {
-      expect( evidenceList ).toHaveProp( "data", observationPhotos );
+      expect( evidenceList ).toHaveProp( "data", observationPhotos[0].uri );
     } );
   } );
 } );
