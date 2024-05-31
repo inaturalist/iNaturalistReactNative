@@ -83,11 +83,16 @@ const ToolbarContainer = ( {
   const pendingUpload = uploadStatus === "pending" && numUnuploadedObservations > 0;
   const uploadInProgress = uploadStatus === "uploadInProgress" && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === "complete" && numObservationsInQueue > 0;
+  const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
+
+  const showFinalUploadError = ( totalUploadErrors > 0 && uploadsComplete )
+    || ( totalUploadErrors > 0 && ( numUploadsAttempted === numObservationsInQueue ) );
 
   const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadMultiError )
     || ( deletionsComplete && !deleteError );
-  const showsExclamation = pendingUpload || uploadMultiError;
+
+  const showsExclamation = pendingUpload || showFinalUploadError;
 
   const getStatusText = useCallback( ( ) => {
     if ( syncInProgress ) { return t( "Syncing" ); }
@@ -136,8 +141,8 @@ const ToolbarContainer = ( {
     let error;
     if ( deleteError ) {
       error = deleteError;
-    } else if ( Object.keys( uploadErrorsByUuid ).length > 0 ) {
-      error = t( "x-uploads-failed", { count: Object.keys( uploadErrorsByUuid ).length } );
+    } else if ( totalUploadErrors > 0 ) {
+      error = t( "x-uploads-failed", { count: totalUploadErrors } );
     } else {
       error = uploadMultiError;
     }
@@ -145,12 +150,12 @@ const ToolbarContainer = ( {
   }, [
     deleteError,
     t,
-    uploadErrorsByUuid,
+    totalUploadErrors,
     uploadMultiError
   ] );
 
   const getSyncIconColor = useCallback( ( ) => {
-    if ( errorText ) {
+    if ( showFinalUploadError ) {
       return theme.colors.error;
     }
     if ( pendingUpload || uploadInProgress ) {
@@ -158,8 +163,8 @@ const ToolbarContainer = ( {
     }
     return theme.colors.primary;
   }, [
-    errorText,
     theme,
+    showFinalUploadError,
     pendingUpload,
     uploadInProgress
   ] );
