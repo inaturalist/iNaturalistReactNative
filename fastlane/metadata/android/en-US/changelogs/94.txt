@@ -1,0 +1,3 @@
+Fixed:
+Progress bar and Toolbar text more accurately reflects bulk upload progress
+Add an ID when sharing photos in the app no longer crashes
