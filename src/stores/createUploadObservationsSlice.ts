@@ -196,7 +196,8 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     observation.totalProgress = observation.totalIncrements;
     observation.currentIncrements = observation.totalIncrements;
 
-    const queueWithDeleted = _.remove( uploadQueue, o => o.uuid === uuid );
+    // return the new queue without the uuid of the object already deleted remotely
+    const queueWithDeleted = _.remove( uploadQueue, uuidInQueue => uuidInQueue !== uuid );
 
     return ( {
       uploadQueue: queueWithDeleted,

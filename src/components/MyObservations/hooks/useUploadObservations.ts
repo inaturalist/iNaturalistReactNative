@@ -84,6 +84,7 @@ export default useUploadObservations = ( ): Object => {
         completeUploads( );
       }
     } catch ( uploadError ) {
+      console.log( uploadError, "upload error" );
       const message = handleUploadError( uploadError, t );
       if ( message?.match( /That observation no longer exists./ ) ) {
         // 20240531 amanda - it seems like we have to update the UI
