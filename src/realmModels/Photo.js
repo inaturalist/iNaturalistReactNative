@@ -102,7 +102,8 @@ class Photo extends Realm.Object {
   }
 
   static deletePhotoFromDeviceStorage( path ) {
-    unlink( path );
+    const localPhoto = Photo.accessLocalPhoto( path );
+    unlink( localPhoto );
   }
 
   static schema = {
