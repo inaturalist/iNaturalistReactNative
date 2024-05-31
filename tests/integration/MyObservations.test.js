@@ -218,17 +218,6 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      beforeEach( ( ) => {
-        writeObservationsToRealm(
-          mockUnsyncedObservations,
-          "MyObservations integration test with unsynced observations"
-        );
-      } );
-
-      afterEach( ( ) => {
-        deleteObservationsFromRealm( "MyObservations delete realm observations" );
-      } );
-
       it( "renders grid view on button press", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
