@@ -94,7 +94,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     uploadStatus: "complete"
   } ) ),
   updateTotalUploadProgress: ( uuid, increment ) => set( state => {
-    const { existingTotalUploadProgress, currentUpload } = state;
+    const { totalUploadProgress: existingTotalUploadProgress, currentUpload } = state;
     // Zustand does *not* make deep copies when making supposedly immutable
     // state changes, so for nested objects like this, we need to create a
     // new object explicitly.

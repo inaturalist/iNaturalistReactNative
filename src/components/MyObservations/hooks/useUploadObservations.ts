@@ -125,10 +125,17 @@ export default useUploadObservations = ( ): Object => {
       const numUnuploadedObs = allUnsyncedObservations.length;
       setNumUnuploadedObservations( numUnuploadedObs );
     }
-  }, [realm, setNumUnuploadedObservations, uploadStatus] );
+  }, [
+    realm,
+    setNumUnuploadedObservations,
+    uploadStatus
+  ] );
 
   useEffect( ( ) => {
-    if ( uploadQueue.length === numObservationsInQueue ) {
+    if ( uploadStatus === "uploadInProgress"
+      && ( uploadQueue.length === numObservationsInQueue )
+    ) {
+      console.log( "setting toolbar increments in useEffect" );
       const uuidsQuery = uploadQueue.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
       const uploads = realm.objects( "Observation" )
         .filtered( `uuid IN { ${uuidsQuery} }` );
@@ -138,6 +145,7 @@ export default useUploadObservations = ( ): Object => {
     numObservationsInQueue,
     realm,
     setTotalToolbarIncrements,
+    uploadStatus,
     uploadQueue,
     uploadQueue.length
   ] );
