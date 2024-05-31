@@ -126,6 +126,12 @@ const uploadEvidence = async (
 };
 
 const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} ): Object => {
+  // we're emitting progress increments:
+  // half one when upload of obs started
+  // half one when upload of obs finished
+  // half one when obsPhoto/obsSound is successfully uploaded
+  // half one when the obsPhoto/obsSound is attached to the obs
+  emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   const apiToken = await getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {
@@ -197,20 +203,16 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
     fields: { id: true }
   };
 
-  // we're emitting progress increments:
-  // one when the upload of obs
-  // half one when obsPhoto/obsSound is successfully uploaded
-  // half one when the obsPhoto/obsSound is attached to the obs
   if ( wasPreviouslySynced ) {
     response = await updateObservation( {
       ...uploadParams,
       id: newObs.uuid,
       ignore_photos: true
     }, options );
-    emitUploadProgress( obs.uuid, UPLOAD_PROGRESS_INCREMENT );
+    emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   } else {
     response = await createObservation( uploadParams, options );
-    emitUploadProgress( obs.uuid, UPLOAD_PROGRESS_INCREMENT );
+    emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   }
 
   if ( !response ) {

@@ -72,6 +72,8 @@ const MyObservationsContainer = ( ): Node => {
   const setUploadStatus = useStore( state => state.setUploadStatus );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
+  const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
   const [state, dispatch] = useReducer( reducer, INITIAL_STATE );
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -244,6 +246,10 @@ const MyObservationsContainer = ( ): Node => {
   const handleSyncButtonPress = useCallback( ( ) => {
     if ( numUnuploadedObservations > 0 ) {
       const uploadUuids = allUnsyncedObservations.map( o => o.uuid );
+      const uuidsQuery = uploadUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
+      const uploads = realm.objects( "Observation" )
+        .filtered( `uuid IN { ${uuidsQuery} }` );
+      setTotalToolbarIncrements( uploads );
       addToUploadQueue( uploadUuids );
       checkUserCanUpload( );
     } else {
@@ -254,15 +260,21 @@ const MyObservationsContainer = ( ): Node => {
     allUnsyncedObservations,
     checkUserCanUpload,
     numUnuploadedObservations,
+    realm,
+    setTotalToolbarIncrements,
     syncObservations
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
+    const observation = realm.objectForPrimaryKey( "Observation", uuid );
+    addTotalToolbarIncrements( observation );
     addToUploadQueue( uuid );
     checkUserCanUpload( );
   }, [
     addToUploadQueue,
-    checkUserCanUpload
+    addTotalToolbarIncrements,
+    checkUserCanUpload,
+    realm
   ] );
 
   if ( !layout ) { return null; }

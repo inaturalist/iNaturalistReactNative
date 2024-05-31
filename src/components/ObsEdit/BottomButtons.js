@@ -46,6 +46,7 @@ const BottomButtons = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const navigation = useNavigation( );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
@@ -90,6 +91,7 @@ const BottomButtons = ( {
     const savedObservation = await saveObservation( currentObservation );
     if ( type === "upload" ) {
       const { uuid } = savedObservation;
+      addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
     }
 
@@ -113,6 +115,7 @@ const BottomButtons = ( {
       setLoading( false );
     }
   }, [
+    addTotalToolbarIncrements,
     addToUploadQueue,
     currentObservation,
     currentObservationIndex,
