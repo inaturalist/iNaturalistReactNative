@@ -3,8 +3,8 @@ import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
+import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedMutation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -37,15 +37,8 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
     && !deletionsInProgress
     && !deletionsComplete;
 
-  const deleteLocalObservation = useCallback( ( ) => {
-    const realmObservation = realm?.objectForPrimaryKey( "Observation", uuid );
-    logger.info( "Local observation to delete: ", realmObservation?.uuid );
-    if ( realmObservation ) {
-      safeRealmWrite( realm, ( ) => {
-        realm?.delete( realmObservation );
-      }, `deleting local observation ${realmObservation.uuid} in useDeleteObservations` );
-      logger.info( "Local observation deleted" );
-    }
+  const deleteLocalObservation = useCallback( async ( ) => {
+    await Observation.deleteLocalObservation( realm, uuid );
     return true;
   }, [realm, uuid] );
 
@@ -176,7 +169,9 @@ const useDeleteObservations = ( canBeginDeletions, myObservationsDispatch ): Obj
     };
   }, [deletionsComplete, error, resetDeleteObservationsSlice] );
 
-  return null;
+  return {
+    deleteLocalObservation
+  };
 };
 
 export default useDeleteObservations;

@@ -30,6 +30,9 @@ export default useUploadObservations = ( ): Object => {
   const setCurrentUpload = useStore( state => state.setCurrentUpload );
   const currentUpload = useStore( state => state.currentUpload );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+  const removeDeletedObsFromUploadQueue = useStore(
+    state => state.removeDeletedObsFromUploadQueue
+  );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -69,6 +72,7 @@ export default useUploadObservations = ( ): Object => {
   ] );
 
   const uploadObservationAndCatchError = useCallback( async observation => {
+    const { uuid } = observation;
     setCurrentUpload( observation );
     try {
       await uploadObservation( observation, realm, { signal: newAbortController( ).signal } );
@@ -81,7 +85,16 @@ export default useUploadObservations = ( ): Object => {
       }
     } catch ( uploadError ) {
       const message = handleUploadError( uploadError, t );
-      addUploadError( message, observation.uuid );
+      if ( message?.match( /That observation no longer exists./ ) ) {
+        // 20240531 amanda - it seems like we have to update the UI
+        // for the progress bar before actually deleting the observation
+        // locally, otherwise Realm will throw an error while trying
+        // to load the individual progress for a deleted observation
+        removeDeletedObsFromUploadQueue( uuid );
+        await Observation.deleteLocalObservation( realm, uuid );
+      } else {
+        addUploadError( message, uuid );
+      }
     }
   }, [
     addUploadError,
@@ -89,6 +102,7 @@ export default useUploadObservations = ( ): Object => {
     currentUpload,
     newAbortController,
     realm,
+    removeDeletedObsFromUploadQueue,
     removeFromUploadQueue,
     setCurrentUpload,
     t,

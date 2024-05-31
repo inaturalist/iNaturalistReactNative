@@ -414,6 +414,17 @@ class Observation extends Realm.Object {
     return updatedObs;
   };
 
+  static deleteLocalObservation = async ( realm, uuidToDelete ) => {
+    const observation = realm?.objectForPrimaryKey( "Observation", uuidToDelete );
+    if ( observation ) {
+      await safeRealmWrite( realm, ( ) => {
+        realm?.delete( observation );
+      }, `deleting local observation ${uuidToDelete} in deleteLocalObservation` );
+      return true;
+    }
+    return false;
+  };
+
   static schema = {
     name: "Observation",
     primaryKey: "uuid",
