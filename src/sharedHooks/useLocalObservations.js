@@ -6,6 +6,7 @@ import {
   useEffect, useRef,
   useState
 } from "react";
+import Observation from "realmModels/Observation";
 
 const { useRealm } = RealmContext;
 
@@ -30,7 +31,14 @@ const useLocalObservations = ( ): Object => {
       stagedObservationList.current = [...collection];
 
       if ( isFocused ) {
-        setObservationList( stagedObservationList.current );
+        const validObservations = stagedObservationList.current.filter( o => o.isValid( ) );
+        // 20240530 amanda - we only need about half of the keys in an Observation object to
+        // display to the user on MyObservations, so I think passing around smaller objects
+        // will improve render time here. if it causes problems, we can remove and pass around
+        // the full realm object
+        const mappedObservations = validObservations
+          .map( o => Observation.mapObservationForFlashList( o ) );
+        setObservationList( mappedObservations );
       }
     } );
     // eslint-disable-next-line consistent-return

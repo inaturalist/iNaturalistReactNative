@@ -288,6 +288,36 @@ class Observation extends Realm.Object {
     };
   }
 
+  static mapObservationForFlashList( obs ) {
+    return {
+      _created_at: obs._created_at,
+      _deleted_at: obs._deleted_at,
+      _synced_at: obs._synced_at,
+      _updated_at: obs._updated_at,
+      uuid: obs.uuid,
+      comments: obs.comments,
+      description: obs.description,
+      geoprivacy: obs.geoprivacy,
+      id: obs.id,
+      identifications: obs.identifications,
+      latitude: obs.latitude,
+      longitude: obs.longitude,
+      observationPhotos: obs.observationPhotos,
+      observationSounds: obs.observationSounds,
+      observed_on_string: obs.observed_on_string,
+      obscured: obs.obscured,
+      place_guess: obs.place_guess,
+      positional_accuracy: obs.positional_accuracy,
+      quality_grade: obs.quality_grade,
+      taxon: obs.taxon,
+      time_observed_at: obs.time_observed_at,
+      comments_viewed: obs.comments_viewed,
+      identifications_viewed: obs.identifications_viewed,
+      privateLatitude: obs.privateLatitude,
+      privateLongitude: obs.privateLongitude
+    };
+  }
+
   static projectUri = obs => {
     const photo = obs?.observation_photos?.[0];
     if ( !photo ) { return null; }
