@@ -3,6 +3,7 @@ import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
 import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory.ts";
+import useStore from "stores/useStore";
 
 const { useQuery } = RealmContext;
 
@@ -10,9 +11,12 @@ const { useQuery } = RealmContext;
 // and only keeps the references to photos which have not yet been uploaded
 // clearing this directory helps to keep the app size small
 const useClearSyncedPhotosForUpload = ( ) => {
+  const unsavedChanges = useStore( state => state.observations );
   const unsyncedObservations = useQuery(
     Observation,
-    observations => observations.filtered( "observationPhotos._synced_at == nil" )
+    observations => observations.filtered(
+      "observationPhotos._synced_at == null"
+    )
   );
 
   const unsyncedPhotoFileNames = unsyncedObservations
@@ -23,8 +27,10 @@ const useClearSyncedPhotosForUpload = ( ) => {
     .filter( Boolean );
 
   useEffect( ( ) => {
-    removeSyncedFilesFromDirectory( photoUploadPath, unsyncedPhotoFileNames );
-  }, [unsyncedPhotoFileNames] );
+    if ( !unsavedChanges ) {
+      removeSyncedFilesFromDirectory( photoUploadPath, unsyncedPhotoFileNames );
+    }
+  }, [unsavedChanges, unsyncedPhotoFileNames] );
   return null;
 };
 
