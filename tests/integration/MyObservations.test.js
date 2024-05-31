@@ -208,30 +208,6 @@ describe( "MyObservations", ( ) => {
         deleteObservationsFromRealm( "deleting observations for MyObservations integration test" );
       } );
 
-      it( "should make a request to observations/updates", async ( ) => {
-        // Let's make sure the mock hasn't already been used
-        expect( inatjs.observations.updates ).not.toHaveBeenCalled();
-        renderAppWithComponent( <MyObservationsContainer /> );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
-        await waitFor( ( ) => {
-          expect( inatjs.observations.updates ).toHaveBeenCalled( );
-        } );
-      } );
-
-      it( "renders grid view on button press", async () => {
-        const realm = global.mockRealms[__filename];
-        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
-        fireEvent.press( button );
-        // Awaiting the first observation because using await in the forEach errors out
-        const firstObs = mockUnsyncedObservations[0];
-        await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
-        mockUnsyncedObservations.forEach( obs => {
-          expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
-        } );
-      } );
-
       it( "displays unuploaded status", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
@@ -310,6 +286,31 @@ describe( "MyObservations", ( ) => {
         jest.clearAllMocks( );
       } );
 
+      it( "should make a request to observations/updates", async ( ) => {
+        // Let's make sure the mock hasn't already been used
+        // expect( inatjs.observations.updates ).not.toHaveBeenCalled();
+        inatjs.observations.updates.mockClear( );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
+        await waitFor( ( ) => {
+          expect( inatjs.observations.updates ).toHaveBeenCalled( );
+        } );
+      } );
+
+      it( "renders grid view on button press", async () => {
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
+        fireEvent.press( button );
+        // Awaiting the first observation because using await in the forEach errors out
+        const firstObs = mockSyncedObservations[0];
+        await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
+        mockSyncedObservations.forEach( obs => {
+          expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
+        } );
+      } );
+
       it( "displays observation status", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
@@ -324,20 +325,18 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      describe( "before initial sync", ( ) => {
-        it( "doesn't throw an error when sync button tapped", async ( ) => {
-          const realm = global.mockRealms[__filename];
-          expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-          expect( realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
-          renderAppWithComponent( <MyObservationsContainer /> );
-          const syncIcon = await screen.findByTestId( "SyncButton" );
-          await waitFor( ( ) => {
-            expect( syncIcon ).toBeVisible( );
-          } );
-          expect( ( ) => {
-            fireEvent.press( syncIcon );
-          } ).not.toThrow( );
+      it( "doesn't throw an error when sync button tapped", async ( ) => {
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        expect( realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const syncIcon = await screen.findByTestId( "SyncButton" );
+        await waitFor( ( ) => {
+          expect( syncIcon ).toBeVisible( );
         } );
+        expect( ( ) => {
+          fireEvent.press( syncIcon );
+        } ).not.toThrow( );
       } );
 
       describe( "on screen focus", ( ) => {
