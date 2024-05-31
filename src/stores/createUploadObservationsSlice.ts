@@ -94,7 +94,18 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     uploadStatus: "complete"
   } ) ),
   updateTotalUploadProgress: ( uuid, increment ) => set( state => {
-    const { totalUploadProgress, currentUpload } = state;
+    const {
+      currentUpload,
+      totalToolbarIncrements,
+      totalUploadProgress: existingTotalUploadProgress
+    } = state;
+    // Zustand does *not* make deep copies when making supposedly immutable
+    // state changes, so for nested objects like this, we need to create a
+    // new object explicitly.
+    // https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md#nested-objects
+    const totalUploadProgress = existingTotalUploadProgress
+      ? [...existingTotalUploadProgress]
+      : [];
     const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
     if ( !currentObservation ) {
       const progressObj = createUploadProgressObj(
@@ -110,8 +121,9 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       = observation.currentIncrements / observation.totalIncrements;
     return ( {
       totalUploadProgress,
-      totalToolbarProgress:
-        setCurrentToolbarIncrements( totalUploadProgress ) / state.totalToolbarIncrements
+      totalToolbarProgress: totalToolbarIncrements > 0
+        ? setCurrentToolbarIncrements( totalUploadProgress ) / totalToolbarIncrements
+        : 0
     } );
   } ),
   setUploadStatus: uploadStatus => set( ( ) => ( {
@@ -148,6 +160,15 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   setTotalToolbarIncrements: queuedObservations => set( ( ) => ( {
     totalToolbarIncrements: calculateTotalToolbarIncrements( queuedObservations )
   } ) ),
+  addTotalToolbarIncrements: observation => set( state => {
+    const { totalToolbarIncrements: previousToolbarIncrements } = state;
+
+    const additionalToolbarIncrements = calculateTotalToolbarIncrements( [observation] );
+
+    return ( {
+      totalToolbarIncrements: previousToolbarIncrements + additionalToolbarIncrements
+    } );
+  } ),
   setNumUnuploadedObservations: numUnuploadedObservations => set( ( ) => ( {
     numUnuploadedObservations
   } ) )

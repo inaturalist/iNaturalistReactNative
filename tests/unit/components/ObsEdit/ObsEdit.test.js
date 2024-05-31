@@ -5,8 +5,6 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const initialStoreState = useStore.getState( );
-
 jest.mock( "sharedHooks/useCurrentObservationLocation", () => ( {
   __esModule: true,
   default: ( ) => ( {
@@ -39,15 +37,14 @@ const mockObservation = factory( "LocalObservation", {
   time_observed_at: null
 } );
 
-beforeAll( async ( ) => {
-  useStore.setState( initialStoreState, true );
-  useStore.setState( {
-    currentObservation: mockObservation,
-    observations: [mockObservation]
-  } );
-} );
-
 describe( "ObsEdit", () => {
+  beforeEach( ( ) => {
+    useStore.setState( {
+      currentObservation: mockObservation,
+      observations: [mockObservation]
+    } );
+  } );
+
   it( "should not have accessibility errors", async ( ) => {
     const obsEdit = <ObsEdit />;
     expect( obsEdit ).toBeAccessible();

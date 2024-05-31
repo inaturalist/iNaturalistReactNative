@@ -82,15 +82,14 @@ const UploadStatus = ( {
     );
   };
 
-  const translationParams = {
-    uploadProgress: progress * 100
-  };
-
   const accessibilityLabelText = ( ) => {
     if ( progress < 0.05 ) {
       return t( "Saved-Observation" );
     }
     if ( progress < 1 ) {
+      const translationParams = {
+        uploadProgress: progress * 100
+      };
       return t( "Upload-Progress", translationParams );
     }
     return t( "Upload-Complete" );

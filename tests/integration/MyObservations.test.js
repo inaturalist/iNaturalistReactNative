@@ -74,12 +74,10 @@ const mockSpanishUser = factory( "LocalUser", {
   locale: "es"
 } );
 
-const checkToolbarResetWithUnsyncedObs = async ( ) => {
-  await waitFor( ( ) => {
-    const toolbarText = screen.getByText( /Upload 2 observations/ );
-    expect( toolbarText ).toBeVisible( );
-  } );
-};
+const checkToolbarResetWithUnsyncedObs = ( ) => waitFor( ( ) => {
+  const toolbarText = screen.getByText( /Upload 2 observations/ );
+  expect( toolbarText ).toBeVisible( );
+} );
 
 const writeObservationsToRealm = ( observations, message ) => {
   const realm = global.mockRealms[__filename];
@@ -198,6 +196,17 @@ describe( "MyObservations", ( ) => {
       inatjs.photos.create.mockImplementation( ( ) => Promise.resolve( makeResponse( [{
         id: faker.number.int( )
       }] ) ) );
+
+      beforeEach( ( ) => {
+        writeObservationsToRealm(
+          mockUnsyncedObservations,
+          "writing unsynced observations for MyObservations integration test"
+        );
+      } );
+
+      afterEach( ( ) => {
+        deleteObservationsFromRealm( "deleting observations for MyObservations integration test" );
+      } );
 
       it( "should make a request to observations/updates", async ( ) => {
         // Let's make sure the mock hasn't already been used

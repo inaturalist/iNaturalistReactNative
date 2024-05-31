@@ -19,7 +19,7 @@ const safeRealmWrite = (
   // https://www.mongodb.com/docs/realm-sdks/react/latest/classes/Realm-1.html#beginTransaction.beginTransaction-1
   realm.beginTransaction( );
   try {
-    // logger.info( "writing to realm:", description );
+    // logger.debug( `committing to realm: ${description}` );
     const response = action( );
     realm.commitTransaction( );
     return response;

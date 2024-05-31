@@ -29,9 +29,7 @@ export default useUploadObservations = ( ): Object => {
   const uploadQueue = useStore( state => state.uploadQueue );
   const setCurrentUpload = useStore( state => state.setCurrentUpload );
   const currentUpload = useStore( state => state.currentUpload );
-  const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
-  const numObservationsInQueue = useStore( state => state.numObservationsInQueue );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -120,24 +118,15 @@ export default useUploadObservations = ( ): Object => {
   ] );
 
   useEffect( ( ) => {
-    const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
-    const numUnuploadedObs = allUnsyncedObservations.length;
-    setNumUnuploadedObservations( numUnuploadedObs );
-  }, [realm, setNumUnuploadedObservations] );
-
-  useEffect( ( ) => {
-    if ( uploadQueue.length === numObservationsInQueue ) {
-      const uuidsQuery = uploadQueue.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
-      const uploads = realm.objects( "Observation" )
-        .filtered( `uuid IN { ${uuidsQuery} }` );
-      setTotalToolbarIncrements( uploads );
+    if ( uploadStatus === "pending" ) {
+      const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
+      const numUnuploadedObs = allUnsyncedObservations.length;
+      setNumUnuploadedObservations( numUnuploadedObs );
     }
   }, [
-    numObservationsInQueue,
     realm,
-    setTotalToolbarIncrements,
-    uploadQueue,
-    uploadQueue.length
+    setNumUnuploadedObservations,
+    uploadStatus
   ] );
 
   useEffect(
