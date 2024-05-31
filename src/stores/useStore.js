@@ -6,6 +6,7 @@ import createDeleteObservationsSlice from "./createDeleteObservationsSlice";
 import createExploreSlice from "./createExploreSlice";
 import createLayoutSlice from "./createLayoutSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
+import createUploadObservationsSlice from "./createUploadObservationsSlice";
 
 const storage = new MMKV();
 
@@ -27,7 +28,8 @@ const useStore = create( persist(
       createDeleteObservationsSlice( ...args ),
       createExploreSlice( ...args ),
       createObservationFlowSlice( ...args ),
-      createLayoutSlice( ...args )
+      createLayoutSlice( ...args ),
+      createUploadObservationsSlice( ...args )
     ];
 
     // Now let's make sure they're not clobbering each other because

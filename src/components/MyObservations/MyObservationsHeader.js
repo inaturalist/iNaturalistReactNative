@@ -8,45 +8,45 @@ import {
   Subheading1
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useTheme } from "react-native-paper";
+import Observation from "realmModels/Observation";
 import User from "realmModels/User";
-import { useNumUnuploadedObservations, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 
 import Onboarding from "./Onboarding";
 
+const { useRealm } = RealmContext;
+
 type Props = {
-  toggleLayout: Function;
-  layout: string,
   currentUser: ?Object,
+  handleSyncButtonPress: Function,
   hideToolbar: boolean,
+  layout: string,
+  logInButtonNeutral: boolean,
   setHeightAboveToolbar: Function,
-  uploadState: Object,
-  uploadMultipleObservations: Function,
-  stopUploads: Function,
-  syncObservations: Function,
-  toolbarProgress: number,
-  logInButtonNeutral: boolean
+  syncInProgress: boolean,
+  toggleLayout: Function
 }
 
-const Header = ( {
-  toggleLayout,
-  layout,
+const MyObservationsHeader = ( {
   currentUser,
+  handleSyncButtonPress,
   hideToolbar,
+  layout,
+  logInButtonNeutral,
   setHeightAboveToolbar,
-  uploadState,
-  uploadMultipleObservations,
-  stopUploads,
-  syncObservations,
-  toolbarProgress,
-  logInButtonNeutral
+  syncInProgress,
+  toggleLayout
 }: Props ): Node => {
+  const realm = useRealm( );
   const theme = useTheme( );
   const navigation = useNavigation( );
-  const numUnuploadedObs = useNumUnuploadedObservations( );
+  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
+  const numUnuploadedObs = allUnsyncedObservations.length;
   const { t } = useTranslation( );
 
   const signedInContent = ( ) => (
@@ -128,18 +128,14 @@ const Header = ( {
       </View>
       {!hideToolbar && (
         <ToolbarContainer
-          toggleLayout={toggleLayout}
+          handleSyncButtonPress={handleSyncButtonPress}
           layout={layout}
-          numUnuploadedObs={numUnuploadedObs}
-          uploadState={uploadState}
-          uploadMultipleObservations={uploadMultipleObservations}
-          stopUploads={stopUploads}
-          syncObservations={syncObservations}
-          toolbarProgress={toolbarProgress}
+          syncInProgress={syncInProgress}
+          toggleLayout={toggleLayout}
         />
       )}
     </>
   );
 };
 
-export default Header;
+export default MyObservationsHeader;

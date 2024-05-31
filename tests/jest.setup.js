@@ -4,6 +4,7 @@ import "@shopify/flash-list/jestSetup";
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
+// import { act } from "@testing-library/react";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
@@ -13,6 +14,7 @@ import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
 import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
+import * as mockZustand from "tests/mocks/zustand.ts";
 
 import factory, { makeResponse } from "./factory";
 import {
@@ -264,6 +266,8 @@ jest.mock( "react-native-fs", ( ) => {
       mockFs.mkdir( filepath, jest.fn( ) );
     } ),
     unlink: jest.fn( async ( path = "" ) => {
+      if ( !path ) return;
+      if ( typeof ( path ) !== "string" ) return;
       mockFs.unlink( path, jest.fn( ) );
     } )
   };
@@ -411,3 +415,13 @@ jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
     }
   };
 } );
+
+// Mock zustand in a way that will allow us to reset its state between tests
+jest.mock( "zustand", ( ) => mockZustand );
+// afterEach( () => {
+//   act( () => {
+//     mockZustand.storeResetFns.forEach( resetFn => {
+//       resetFn();
+//     } );
+//   } );
+// } );

@@ -3,6 +3,7 @@ import { photoUploadPath } from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import resizeImage from "sharedHelpers/resizeImage.ts";
+import { unlink } from "sharedHelpers/util";
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
@@ -101,9 +102,8 @@ class Photo extends Realm.Object {
   }
 
   static deletePhotoFromDeviceStorage( path ) {
-    RNFS.exists( path ).then( fileExists => {
-      if ( fileExists ) RNFS.unlink( path );
-    } );
+    const localPhoto = Photo.accessLocalPhoto( path );
+    unlink( localPhoto );
   }
 
   static schema = {

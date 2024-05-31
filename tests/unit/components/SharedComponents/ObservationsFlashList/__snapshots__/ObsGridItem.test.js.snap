@@ -224,112 +224,163 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
     }
   >
     <View
-      accessibilityLabel="Saved observation, in queue to upload"
-      accessible={true}
       style={
         [
           [
             {
-              "height": 44,
+              "flexDirection": "row",
             },
             {
-              "justifyContent": "flex-end",
+              "marginBottom": 4,
             },
           ],
         ]
       }
+      testID="ObsStatus.00000000-0000-0000-0000-000000000000"
     >
-      <View>
-        <View
-          accessibilityLabel="Start upload"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+      <View
+        accessibilityLabel="0 identifications"
+        accessible={true}
+        style={
+          [
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "marginRight": 8,
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
           style={
             [
               {
-                "alignItems": "center",
-                "height": 44,
-                "justifyContent": "center",
-                "opacity": 1,
-                "width": 44,
+                "color": "rgba(255, 255, 255, 1)",
+                "fontSize": 14,
               },
-              false,
               undefined,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
             ]
           }
-          testID="UploadIcon.start.00000000-0000-0000-0000-000000000000"
         >
-          <View
-            style={
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "fontSize": 13,
+                "lineHeight": 18,
+              },
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Medium",
+              },
               [
-                [
-                  {
-                    "position": "relative",
-                  },
-                  {
-                    "position": "relative",
-                  },
-                  {
-                    "left": 0.2,
-                  },
-                  {
-                    "top": 0.1,
-                  },
-                ],
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "rgba(255, 255, 255, 1)",
-                    "fontSize": 33,
-                  },
-                  undefined,
-                  {
-                    "fontFamily": "INatIcon",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </View>
+                {
+                  "marginLeft": 6,
+                },
+                {
+                  "color": "#ffffff",
+                },
+              ],
+            ]
+          }
+        >
+          0
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="0 comments"
+        accessible={true}
+        style={
+          [
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "marginRight": 8,
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "rgba(255, 255, 255, 1)",
+                "fontSize": 14,
+              },
+              undefined,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "fontSize": 13,
+                "lineHeight": 18,
+              },
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Medium",
+              },
+              [
+                {
+                  "marginLeft": 6,
+                },
+                {
+                  "color": "#ffffff",
+                },
+              ],
+            ]
+          }
+          testID="ObsStatus.commentsCount"
+        >
+          0
+        </Text>
+      </View>
+      <View>
+        <SvgMock
+          accessibilityLabel="Quality Grade Casual"
+          accessible={true}
+          color="rgba(255, 255, 255, 1)"
+          opacity={1}
+          testID="QualityGrade.casual"
+        />
       </View>
     </View>
     <Text
@@ -584,112 +635,163 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
     }
   >
     <View
-      accessibilityLabel="Saved observation, in queue to upload"
-      accessible={true}
       style={
         [
           [
             {
-              "height": 44,
+              "flexDirection": "row",
             },
             {
-              "justifyContent": "flex-end",
+              "marginBottom": 4,
             },
           ],
         ]
       }
+      testID="ObsStatus.00000000-0000-0000-0000-000000000000"
     >
-      <View>
-        <View
-          accessibilityLabel="Start upload"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+      <View
+        accessibilityLabel="0 identifications"
+        accessible={true}
+        style={
+          [
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "marginRight": 8,
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
           style={
             [
               {
-                "alignItems": "center",
-                "height": 44,
-                "justifyContent": "center",
-                "opacity": 1,
-                "width": 44,
+                "color": "rgba(255, 255, 255, 1)",
+                "fontSize": 14,
               },
-              false,
               undefined,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
             ]
           }
-          testID="UploadIcon.start.00000000-0000-0000-0000-000000000000"
         >
-          <View
-            style={
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "fontSize": 13,
+                "lineHeight": 18,
+              },
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Medium",
+              },
               [
-                [
-                  {
-                    "position": "relative",
-                  },
-                  {
-                    "position": "relative",
-                  },
-                  {
-                    "left": 0.2,
-                  },
-                  {
-                    "top": 0.1,
-                  },
-                ],
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "rgba(255, 255, 255, 1)",
-                    "fontSize": 33,
-                  },
-                  undefined,
-                  {
-                    "fontFamily": "INatIcon",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </View>
+                {
+                  "marginLeft": 6,
+                },
+                {
+                  "color": "#ffffff",
+                },
+              ],
+            ]
+          }
+        >
+          0
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="0 comments"
+        accessible={true}
+        style={
+          [
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "marginRight": 8,
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "rgba(255, 255, 255, 1)",
+                "fontSize": 14,
+              },
+              undefined,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "fontSize": 13,
+                "lineHeight": 18,
+              },
+              {
+                "color": "#454545",
+              },
+              {
+                "fontFamily": "Lato-Medium",
+              },
+              [
+                {
+                  "marginLeft": 6,
+                },
+                {
+                  "color": "#ffffff",
+                },
+              ],
+            ]
+          }
+          testID="ObsStatus.commentsCount"
+        >
+          0
+        </Text>
+      </View>
+      <View>
+        <SvgMock
+          accessibilityLabel="Quality Grade Casual"
+          accessible={true}
+          color="rgba(255, 255, 255, 1)"
+          opacity={1}
+          testID="QualityGrade.casual"
+        />
       </View>
     </View>
     <Text

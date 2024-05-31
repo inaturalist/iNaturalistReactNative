@@ -15,7 +15,7 @@ import realmConfig from "realmModels/index";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { installID } from "sharedHelpers/userData";
-import { sleep } from "sharedHelpers/util";
+import { sleep, unlink } from "sharedHelpers/util";
 
 import { log, logFilePath } from "../../../react-native-logs.config";
 
@@ -38,9 +38,8 @@ async function getSensitiveItem( key, options = {} ) {
   try {
     return await RNSInfo.getItem( key, options );
   } catch ( getItemError ) {
-    console.log( "[DEBUG AuthenticationService.js] getItemError: ", getItemError );
     if ( getItemError.message.match( /Protected data not available yet/ ) ) {
-      await sleep( 500 );
+      await sleep( 1_000 );
       return RNSInfo.getItem( key, options );
     }
     throw getItemError;
@@ -51,9 +50,8 @@ async function setSensitiveItem( key, value, options = {} ) {
   try {
     return await RNSInfo.setItem( key, value, options );
   } catch ( setItemError ) {
-    console.log( "[DEBUG AuthenticationService.js] setItemError: ", setItemError );
     if ( setItemError.message.match( /Protected data not available yet/ ) ) {
-      await sleep( 500 );
+      await sleep( 1_000 );
       return RNSInfo.setItem( key, value, options );
     }
     throw setItemError;
@@ -154,9 +152,7 @@ const signOut = async (
   await deleteSensitiveItem( "jwtGeneratedAt" );
   await deleteSensitiveItem( "username" );
   await deleteSensitiveItem( "accessToken" );
-  RNFS.exists( logFilePath ).then( fileExists => {
-    if ( fileExists ) RNFS.unlink( logFilePath );
-  } );
+  await unlink( logFilePath );
 };
 
 /**

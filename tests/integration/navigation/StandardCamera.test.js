@@ -38,8 +38,9 @@ afterAll( uniqueRealmAfterAll );
 beforeAll( async () => {
   await initI18next();
   jest.useFakeTimers( );
-  useStore.setState( { isAdvancedUser: true } );
 } );
+
+beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
 
 describe( "StandardCamera navigation with advanced user layout", ( ) => {
   const actor = userEvent.setup( );
