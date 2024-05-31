@@ -21,6 +21,7 @@ type Props = {
   data: Array<Object>,
   dataCanBeFetched?: boolean,
   explore: boolean,
+  handleIndividualUploadPress: Function,
   handleScroll?: Function,
   hideLoadingWheel: boolean,
   isFetchingNextPage?: boolean,
@@ -30,9 +31,7 @@ type Props = {
   renderHeader?: Function,
   showObservationsEmptyScreen?: boolean,
   status?: string,
-  testID: string,
-  uploadSingleObservation?: Function,
-  uploadState: Object
+  testID: string
 };
 
 const GUTTER = 15;
@@ -42,6 +41,7 @@ const ObservationsFlashList = ( {
   data,
   dataCanBeFetched,
   explore,
+  handleIndividualUploadPress,
   handleScroll,
   hideLoadingWheel,
   isFetchingNextPage,
@@ -51,9 +51,7 @@ const ObservationsFlashList = ( {
   renderHeader,
   showObservationsEmptyScreen,
   status,
-  testID,
-  uploadSingleObservation,
-  uploadState
+  testID
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -88,14 +86,13 @@ const ObservationsFlashList = ( {
 
   const renderItem = useCallback( ( { item } ) => (
     <ObsItem
-      observation={item}
-      layout={layout}
-      gridItemWidth={gridItemWidth}
-      uploadSingleObservation={uploadSingleObservation}
-      uploadState={uploadState}
       explore={explore}
+      gridItemWidth={gridItemWidth}
+      handleIndividualUploadPress={handleIndividualUploadPress}
+      layout={layout}
+      observation={item}
     />
-  ), [gridItemWidth, explore, layout, uploadState, uploadSingleObservation] );
+  ), [gridItemWidth, explore, layout, handleIndividualUploadPress] );
 
   const renderItemSeparator = useCallback( ( ) => {
     if ( layout === "grid" ) {

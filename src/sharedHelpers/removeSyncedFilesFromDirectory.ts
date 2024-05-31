@@ -1,8 +1,5 @@
 import RNFS from "react-native-fs";
-import { log } from "sharedHelpers/logger";
 import { unlink } from "sharedHelpers/util";
-
-const logger = log.extend( "removeSyncedFilesFromDirectory" );
 
 const removeSyncedFilesFromDirectory = async ( directoryPath, filesToKeep = [] ) => {
   const directoryExists = await RNFS.exists( directoryPath );
@@ -13,7 +10,6 @@ const removeSyncedFilesFromDirectory = async ( directoryPath, filesToKeep = [] )
   return Promise.all( files.map( async ( { path, name } ) => {
     if ( filesToKeep.includes( name ) ) return;
     await unlink( path );
-    logger.info( "unlinked", path, "from", directoryPath );
   } ) );
 };
 

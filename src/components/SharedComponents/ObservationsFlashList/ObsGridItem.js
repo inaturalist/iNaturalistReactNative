@@ -8,28 +8,26 @@ import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
+import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
-  observation: Object,
-  width?: string,
+  explore: boolean,
+  handleIndividualUploadPress: Function,
   height?: string,
+  observation: Object,
+  showUploadStatus: boolean,
   style?: Object,
-  uploadSingleObservation?: Function,
-  uploadState: {
-    uploadProgress: number
-  },
-  explore: boolean
+  width?: string
 };
 
 const ObsGridItem = ( {
-  observation,
-  width = "w-[200px]",
+  explore,
+  handleIndividualUploadPress,
   height = "w-[200px]",
+  observation,
+  showUploadStatus,
   style,
-  uploadSingleObservation,
-  uploadState,
-  explore
+  width = "w-[200px]"
 }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
@@ -67,15 +65,14 @@ const ObsGridItem = ( {
             />
           )
           : (
-            <ObsUploadStatusContainer
-              observation={observation}
-              layout="horizontal"
-              white
+            <ObsUploadStatus
               classNameMargin="mb-1"
-              uploadSingleObservation={uploadSingleObservation}
-              uploadState={uploadState}
+              handleIndividualUploadPress={handleIndividualUploadPress}
+              layout="horizontal"
+              observation={observation}
+              showUploadStatus={showUploadStatus}
+              white
             />
-
           )}
         <DisplayTaxonName
           keyBase={observation?.uuid}

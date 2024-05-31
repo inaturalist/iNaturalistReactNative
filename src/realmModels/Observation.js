@@ -273,18 +273,18 @@ class Observation extends Realm.Object {
 
   static mapObservationForUpload( obs ) {
     return {
-      species_guess: obs.species_guess,
+      captive_flag: obs.captive_flag,
       description: obs.description,
-      observed_on_string: obs.observed_on_string,
-      place_guess: obs.place_guess,
+      geoprivacy: obs.geoprivacy,
       latitude: obs.latitude,
       longitude: obs.longitude,
+      observed_on_string: obs.observed_on_string,
+      owners_identification_from_vision: obs.owners_identification_from_vision,
+      place_guess: obs.place_guess,
       positional_accuracy: obs.positional_accuracy,
+      species_guess: obs.species_guess,
       taxon_id: obs.taxon && obs.taxon.id,
-      geoprivacy: obs.geoprivacy,
-      uuid: obs.uuid,
-      captive_flag: obs.captive_flag,
-      owners_identification_from_vision: obs.owners_identification_from_vision
+      uuid: obs.uuid
     };
   }
 
@@ -311,9 +311,12 @@ class Observation extends Realm.Object {
   static filterUnsyncedObservations = realm => {
     const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
     const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
+    const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
 
     const obs = realm.objects( "Observation" );
-    const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
+    const unsyncedObs = obs.filtered(
+      `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`
+    );
     return unsyncedObs;
   };
 
