@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { RealmObservation } from "realmModels/types.d.ts";
 
 const DEFAULT_STATE = {
@@ -76,6 +77,12 @@ const calculateTotalToolbarIncrements = uploads => countMappedIncrements(
   uploads.map( u => countTotalIncrements( u ) )
 );
 
+const setTotalToolbarProgress = ( totalToolbarIncrements, totalUploadProgress ) => (
+  totalToolbarIncrements > 0
+    ? setCurrentToolbarIncrements( totalUploadProgress ) / totalToolbarIncrements
+    : 0
+);
+
 const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set => ( {
   ...DEFAULT_STATE,
   resetUploadObservationsSlice: ( ) => set( DEFAULT_STATE ),
@@ -121,9 +128,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       = observation.currentIncrements / observation.totalIncrements;
     return ( {
       totalUploadProgress,
-      totalToolbarProgress: totalToolbarIncrements > 0
-        ? setCurrentToolbarIncrements( totalUploadProgress ) / totalToolbarIncrements
-        : 0
+      totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress )
     } );
   } ),
   setUploadStatus: uploadStatus => set( ( ) => ( {
@@ -171,7 +176,39 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   } ),
   setNumUnuploadedObservations: numUnuploadedObservations => set( ( ) => ( {
     numUnuploadedObservations
-  } ) )
+  } ) ),
+  removeDeletedObsFromUploadQueue: uuid => set( state => {
+    const {
+      numObservationsInQueue,
+      numUploadsAttempted,
+      totalToolbarIncrements,
+      totalUploadProgress: existingTotalUploadProgress,
+      uploadQueue
+    } = state;
+    // Zustand does *not* make deep copies when making supposedly immutable
+    // state changes, so for nested objects like this, we need to create a
+    // new object explicitly.
+    // https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md#nested-objects
+    const totalUploadProgress = existingTotalUploadProgress
+      ? [...existingTotalUploadProgress]
+      : [];
+    const observation = totalUploadProgress.find( o => o.uuid === uuid );
+    observation.totalProgress = observation.totalIncrements;
+    observation.currentIncrements = observation.totalIncrements;
+
+    // return the new queue without the uuid of the object already deleted remotely
+    const queueWithDeleted = _.remove( uploadQueue, uuidInQueue => uuidInQueue !== uuid );
+
+    return ( {
+      uploadQueue: queueWithDeleted,
+      currentUpload: null,
+      totalUploadProgress,
+      totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress ),
+      uploadStatus: numUploadsAttempted === numObservationsInQueue
+        ? "complete"
+        : "uploadInProgress"
+    } );
+  } )
 } );
 
 export default createUploadObservationsSlice;

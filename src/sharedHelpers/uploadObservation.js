@@ -284,7 +284,8 @@ export function handleUploadError( uploadError: Error | INatApiError, t: Functio
       if ( e.message?.errors ) {
         return e.message.errors.flat( ).join( ", " );
       }
-      return e.message;
+      // 410 error for observations previously deleted uses e.message?.error format
+      return e.message?.error || e.message;
     } ).join( ", " );
   } else if ( uploadError.message?.match( /Network request failed/ ) ) {
     message = t( "Connection-problem-Please-try-again-later" );
