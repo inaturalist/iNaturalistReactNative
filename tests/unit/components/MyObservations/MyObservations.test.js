@@ -70,7 +70,6 @@ describe( "MyObservations", () => {
         observations={mockObservations}
         onEndReached={jest.fn( )}
         toggleLayout={jest.fn( )}
-        uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
         uploadState={INITIAL_STATE}
       />
@@ -117,7 +116,6 @@ describe( "MyObservations", () => {
         observations={mockObservations}
         onEndReached={jest.fn( )}
         toggleLayout={jest.fn( )}
-        uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
         uploadState={INITIAL_STATE}
       />
@@ -134,7 +132,6 @@ describe( "MyObservations", () => {
         observations={mockObservations}
         onEndReached={jest.fn( )}
         toggleLayout={jest.fn( )}
-        uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
         uploadState={INITIAL_STATE}
       />

@@ -49,7 +49,6 @@ const Toolbar = ( {
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
-
   return (
     <View className={
       classNames(

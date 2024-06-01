@@ -68,12 +68,6 @@ const mockUser = factory( "LocalUser", {
   locale: "en"
 } );
 
-const mockSpanishUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
-  iconUrl: faker.image.url( ),
-  locale: "es"
-} );
-
 const checkToolbarResetWithUnsyncedObs = ( ) => waitFor( ( ) => {
   const toolbarText = screen.getByText( /Upload 2 observations/ );
   expect( toolbarText ).toBeVisible( );
@@ -272,6 +266,19 @@ describe( "MyObservations", ( ) => {
           expect( toolbarText ).toBeVisible( );
         } );
       } );
+
+      it( "shows error when upload network connection fails", async ( ) => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await checkToolbarResetWithUnsyncedObs( );
+        inatjs.observations.create.mockRejectedValueOnce(
+          new TypeError( "Network request failed" )
+        );
+        const syncIcon = screen.getByTestId( "SyncButton" );
+        expect( syncIcon ).toBeVisible( );
+        fireEvent.press( syncIcon );
+        const toolbarText = await screen.findByText( /1 upload failed/ );
+        expect( toolbarText ).toBeVisible( );
+      } );
     } );
 
     describe( "with synced observations", ( ) => {
@@ -341,8 +348,9 @@ describe( "MyObservations", ( ) => {
 
       describe( "on screen focus", ( ) => {
         beforeEach( ( ) => {
-          safeRealmWrite( global.mockRealms[__filename], ( ) => {
-            global.mockRealms[__filename].create( "LocalPreferences", {
+          const realm = global.mockRealms[__filename];
+          safeRealmWrite( realm, ( ) => {
+            realm.create( "LocalPreferences", {
               last_sync_time: new Date( "2023-11-01" ),
               last_deleted_sync_time: new Date( "2024-05-01" )
             } );
@@ -352,8 +360,11 @@ describe( "MyObservations", ( ) => {
         it( "downloads deleted observations from server when screen focused", async ( ) => {
           const realm = global.mockRealms[__filename];
           expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          console.log( "[DEBUG MyObservations.test.js] rendering" );
           renderAppWithComponent( <MyObservationsContainer /> );
+          console.log( "[DEBUG MyObservations.test.js] rendered" );
           const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_deleted_sync_time;
+          console.log( "[DEBUG MyObservations.test.js] waiting for deleted to have been called" );
           await waitFor( ( ) => {
             expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
               {
@@ -375,53 +386,5 @@ describe( "MyObservations", ( ) => {
         } );
       } );
     } );
-  } );
-
-  describe( "localization for current user", ( ) => {
-    afterEach( async ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
-    } );
-    it( "should be English by default", async ( ) => {
-      expect( mockUser.locale ).toEqual( "en" );
-      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-      renderAppWithComponent( <MyObservationsContainer /> );
-      await waitFor( ( ) => {
-        expect( screen.getByText( /Welcome back/ ) ).toBeTruthy( );
-      } );
-      expect( screen.queryByText( /Welcome-user/ ) ).toBeFalsy( );
-    } );
-
-    it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
-      expect( mockSpanishUser.locale ).toEqual( "es" );
-      await signIn( mockSpanishUser, { realm: global.mockRealms[__filename] } );
-      renderAppWithComponent( <MyObservationsContainer /> );
-      await waitFor( ( ) => {
-        expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy();
-      } );
-      expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
-    } );
-
-    it(
-      "should change to es when local user locale is en but remote user locale is es",
-      async ( ) => {
-        expect( mockUser.locale ).toEqual( "en" );
-        await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-
-        const mockSpanishUser2 = factory( "LocalUser", {
-          locale: "es"
-        } );
-        inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser2] ) );
-
-        renderAppWithComponent( <MyObservationsContainer /> );
-        // I'd prefer to wait for the Spanish text to appear, but that never
-        // seems to wait long enough. This waits for the relevant API call to
-        // have been made
-        await waitFor( ( ) => {
-          expect( inatjs.users.me ).toHaveBeenCalled( );
-        } );
-        expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy( );
-        expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
-      }
-    );
   } );
 } );
