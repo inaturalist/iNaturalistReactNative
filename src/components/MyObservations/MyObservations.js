@@ -60,7 +60,7 @@ const MyObservations = ( {
         renderScrollable={onScroll => (
           <ObservationsFlashList
             dataCanBeFetched={!!currentUser}
-            data={observations}
+            data={observations.filter( o => o.isValid() )}
             handleIndividualUploadPress={handleIndividualUploadPress}
             handleScroll={onScroll}
             hideLoadingWheel={!isFetchingNextPage || !currentUser}
