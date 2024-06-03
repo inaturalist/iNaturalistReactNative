@@ -71,16 +71,17 @@ const TaxonMapPreview = ( {
       <View className="relative h-[390px]">
         <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
         <Map
-          region={region}
+          // Disable interaction
           mapHeight={230}
+          mapViewClassName="-mx-3"
           openMapScreen={() => setShowMapModal( true )}
+          permissionRequested={false}
+          region={region}
+          scrollEnabled={false}
           tileMapParams={obsParams}
           withObsTiles
-          mapViewClassName="-mx-3"
-          // Disable interaction
           zoomEnabled={false}
           zoomTapEnabled={false}
-          scrollEnabled={false}
         />
         <Modal
           animationIn="fadeIn"

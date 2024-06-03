@@ -20,7 +20,11 @@ import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
-import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
+import {
+  useAuthenticatedQuery,
+  useCurrentUser,
+  useIsConnected
+} from "sharedHooks";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
@@ -32,6 +36,7 @@ const UserProfile = ( ): Node => {
   const { userId } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
+  const isOnline = useIsConnected( );
 
   const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", userId],
@@ -49,7 +54,10 @@ const UserProfile = ( ): Node => {
       q: user?.login,
       fields: "following,friend_user,id",
       ttl: -1
-    }, optsWithAuth )
+    }, optsWithAuth ),
+    {
+      enabled: !!isOnline && !!currentUser
+    }
   );
   let relationshipResults = null;
   if ( relationships?.results && relationships.results.length > 0 ) {
@@ -127,10 +135,10 @@ const UserProfile = ( ): Node => {
           )}
         </View>
         { user?.description && (
-          <>
+          <View className="mb-3">
             <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
             <UserText text={user?.description} />
-          </>
+          </View>
         ) }
         <Body2 className="mb-5">
           {t( "Joined-date", { date: formatUserProfileDate( user.created_at, t ) } )}

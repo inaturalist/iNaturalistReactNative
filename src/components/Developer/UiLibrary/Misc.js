@@ -380,6 +380,14 @@ const Misc = (): Node => {
             icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
           }}
         />
+        <ProjectListItem
+          item={{
+            id: 2,
+            title: "Project Title with a very long title that should wrap to the next line",
+            project_type: "collection",
+            icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
+          }}
+        />
         <Heading1 className="my-2">RadioButtonRow</Heading1>
         <RadioButtonRow
           value="radio1"

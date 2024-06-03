@@ -1,6 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import CameraView from "components/Camera/CameraView";
+import CameraView from "components/Camera/CameraView.tsx";
 import type { Node } from "react";
 import React, {
   useEffect,
@@ -34,8 +34,7 @@ type Props = {
   onDeviceNotSupported: Function,
   onLog: Function,
   onTaxaDetected: Function,
-  onZoomChange?: Function,
-  onZoomStart?: Function,
+  pinchToZoom?: Function,
   takingPhoto: boolean
 };
 
@@ -50,18 +49,17 @@ const FrameProcessorCamera = ( {
   animatedProps,
   cameraRef,
   confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
+  cropRatio = DEFAULT_CROP_RATIO,
   device,
   fps = DEFAULT_FPS,
   numStoredResults = DEFAULT_NUM_STORED_RESULTS,
-  cropRatio = DEFAULT_CROP_RATIO,
   onCameraError,
   onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
   onLog,
   onTaxaDetected,
-  onZoomChange,
-  onZoomStart,
+  pinchToZoom,
   takingPhoto
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
@@ -88,38 +86,30 @@ const FrameProcessorCamera = ( {
     const unsubscribeFocus = navigation.addListener( "focus", () => {
       InatVision.resetStoredResults();
     } );
+
+    return unsubscribeFocus;
+  }, [navigation] );
+
+  useEffect( () => {
     const unsubscribeBlur = navigation.addListener( "blur", () => {
       InatVision.resetStoredResults();
     } );
 
-    return () => {
-      unsubscribeFocus();
-      unsubscribeBlur();
-    };
+    return unsubscribeBlur;
   }, [navigation] );
 
-  const handleResults = Worklets.createRunInJsFn( ( result, timeTaken ) => {
-    // I don't know if it is a temporary thing but as of vision-camera@3.9.1
-    // and react-native-woklets-core@0.4.0 the Array in the worklet does not have all
-    // the methods of a normal array, so we need to convert it to a normal array here
-    // getPredictionsForImage is fine
-    let { predictions } = result;
-    if ( !Array.isArray( predictions ) ) {
-      predictions = Object.keys( predictions ).map( key => predictions[key] );
-    }
-    const handledResult = { predictions, timestamp: result.timestamp };
-    // TODO: using current time here now, for some reason result.timestamp is not working
-    setLastTimestamp( Date.now() );
+  const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
+    setLastTimestamp( result.timestamp );
     framesProcessingTime.push( timeTaken );
     if ( framesProcessingTime.length === 10 ) {
       const avgTime = framesProcessingTime.reduce( ( a, b ) => a + b, 0 ) / 10;
       onLog( { log: `Average frame processing time over 10 frames: ${avgTime}ms` } );
       framesProcessingTime = [];
     }
-    onTaxaDetected( handledResult );
+    onTaxaDetected( result );
   } );
 
-  const handleError = Worklets.createRunInJsFn( error => {
+  const handleError = Worklets.createRunOnJS( error => {
     onClassifierError( error );
   } );
 
@@ -178,16 +168,15 @@ const FrameProcessorCamera = ( {
 
   return (
     <CameraView
+      animatedProps={animatedProps}
       cameraRef={cameraRef}
       device={device}
+      frameProcessor={frameProcessor}
+      onCameraError={onCameraError}
+      onCaptureError={onCaptureError}
       onClassifierError={onClassifierError}
       onDeviceNotSupported={onDeviceNotSupported}
-      onCaptureError={onCaptureError}
-      onCameraError={onCameraError}
-      frameProcessor={frameProcessor}
-      animatedProps={animatedProps}
-      onZoomStart={onZoomStart}
-      onZoomChange={onZoomChange}
+      pinchToZoom={pinchToZoom}
     />
   );
 };

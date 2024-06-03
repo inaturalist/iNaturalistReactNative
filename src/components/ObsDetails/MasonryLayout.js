@@ -1,6 +1,7 @@
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
+import Photo from "realmModels/Photo";
 
 import PhotoContainer from "./PhotoContainer";
 import SoundContainer from "./SoundContainer";
@@ -15,9 +16,7 @@ const getImageDimensions = async uri => new Promise( resolve => {
   } );
 } );
 
-const photoUrl = photo => ( photo?.url
-  ? photo.url.replace( "square", "large" )
-  : photo.localFilePath );
+const photoUrl = photo => Photo.displayLocalOrRemoteLargePhoto( photo );
 
 const MasonryLayout = ( { items, onImagePress } ) => {
   const [columns, setColumns] = useState(

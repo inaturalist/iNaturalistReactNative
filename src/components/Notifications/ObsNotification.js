@@ -28,11 +28,7 @@ const ObsNotification = ( { item }: Props ): Node => {
   const theme = useTheme();
 
   const observation = realm.objectForPrimaryKey( "Observation", item.resource_uuid );
-  const displayPhoto = observation?.observationPhotos[0]?.photo;
-
-  const photoUrl = displayPhoto?.url
-    ? displayPhoto.url.replace( "square", "large" )
-    : null;
+  const photoUrl = observation?.observationPhotos[0]?.photo?.url;
 
   const renderIcon = () => {
     switch ( type ) {
@@ -47,10 +43,10 @@ const ObsNotification = ( { item }: Props ): Node => {
 
   return (
     <View
-      className="flex-row space-x-[10px]"
+      className="shrink flex-row space-x-[10px]"
     >
       <ObservationIcon uri={photoUrl} />
-      <View className="flex-col w-2/3 justify-between p-1 space-y-[8px]">
+      <View className="flex-col shrink justify-between pspace-y-[8px]">
         <ObsNotificationText type={type} userName={user.login} />
         <View className="flex-row space-x-[8px]">
           {

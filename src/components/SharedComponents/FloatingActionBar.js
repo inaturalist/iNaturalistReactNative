@@ -99,7 +99,7 @@ const FloatingActionBar = ( {
       style={{
         overflow: "visible",
         position: "absolute",
-        zIndex: 50,
+        zIndex: 40,
         transform: [{ translateY: animate }],
         ...positionStyle
       }}

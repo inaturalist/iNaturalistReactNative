@@ -14,14 +14,20 @@ const useParams = ( ): Object => {
   const { params } = useRoute( );
   const { dispatch, setExploreLocation } = useExplore( );
   const storedParams = useStore( state => state.storedParams );
+  const setExploreView = useStore( state => state.setExploreView );
 
   const worldwidePlaceText = t( "Worldwide" );
 
   const updateContextWithParams = useCallback( async ( storedState = { } ) => {
+    if ( params?.viewSpecies ) {
+      setExploreView( "species" );
+    }
+
     const setWorldwide = ( ) => {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
+        place: null,
         placeId: null,
         placeGuess: worldwidePlaceText
       } );
@@ -50,6 +56,7 @@ const useParams = ( ): Object => {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
+        place: params.place,
         placeId: params.place?.id,
         placeGuess: params.place?.display_name
       } );
@@ -70,7 +77,13 @@ const useParams = ( ): Object => {
         projectId: params.project.id
       } );
     }
-  }, [params, dispatch, worldwidePlaceText, setExploreLocation] );
+  }, [
+    dispatch,
+    params,
+    setExploreLocation,
+    setExploreView,
+    worldwidePlaceText
+  ] );
 
   useEffect( ( ) => {
     if ( params?.resetStoredParams ) {

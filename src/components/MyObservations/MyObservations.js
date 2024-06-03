@@ -1,5 +1,5 @@
 // @flow
-import Header from "components/MyObservations/Header";
+import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
 import {
   ObservationsFlashList,
   ScrollableWithStickyHeader,
@@ -13,6 +13,8 @@ import LoginSheet from "./LoginSheet";
 
 type Props = {
   currentUser: Object,
+  handleIndividualUploadPress: Function,
+  handleSyncButtonPress: Function,
   isFetchingNextPage: boolean,
   isOnline: boolean,
   layout: "list" | "grid",
@@ -21,17 +23,14 @@ type Props = {
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
   status: string,
-  stopUploads: Function,
-  syncObservations: Function,
-  toggleLayout: Function,
-  toolbarProgress: number,
-  uploadMultipleObservations: Function,
-  uploadSingleObservation: Function,
-  uploadState: Object
+  syncInProgress: boolean,
+  toggleLayout: Function
 };
 
 const MyObservations = ( {
   currentUser,
+  handleIndividualUploadPress,
+  handleSyncButtonPress,
   isFetchingNextPage,
   isOnline,
   layout,
@@ -40,37 +39,30 @@ const MyObservations = ( {
   setShowLoginSheet,
   showLoginSheet,
   status,
-  stopUploads,
-  syncObservations,
-  toggleLayout,
-  toolbarProgress,
-  uploadMultipleObservations,
-  uploadSingleObservation,
-  uploadState
+  syncInProgress,
+  toggleLayout
 }: Props ): Node => (
   <>
     <ViewWrapper>
       <ScrollableWithStickyHeader
         renderHeader={setStickyAt => (
-          <Header
+          <MyObservationsHeader
+            handleSyncButtonPress={handleSyncButtonPress}
             currentUser={currentUser}
             hideToolbar={observations.length === 0}
             layout={layout}
-            setHeightAboveToolbar={setStickyAt}
-            stopUploads={stopUploads}
-            syncObservations={syncObservations}
-            toggleLayout={toggleLayout}
-            toolbarProgress={toolbarProgress}
-            uploadMultipleObservations={uploadMultipleObservations}
-            uploadState={uploadState}
             logInButtonNeutral={observations.length === 0}
+            setHeightAboveToolbar={setStickyAt}
+            syncInProgress={syncInProgress}
+            toggleLayout={toggleLayout}
           />
         )}
-        renderScrollable={onSroll => (
+        renderScrollable={onScroll => (
           <ObservationsFlashList
             dataCanBeFetched={!!currentUser}
             data={observations.filter( o => o.isValid() )}
-            handleScroll={onSroll}
+            handleIndividualUploadPress={handleIndividualUploadPress}
+            handleScroll={onScroll}
             hideLoadingWheel={!isFetchingNextPage || !currentUser}
             isFetchingNextPage={isFetchingNextPage}
             isOnline={isOnline}
@@ -79,8 +71,6 @@ const MyObservations = ( {
             showObservationsEmptyScreen
             status={status}
             testID="MyObservationsAnimatedList"
-            uploadSingleObservation={uploadSingleObservation}
-            uploadState={uploadState}
             renderHeader={(
               <Announcements isOnline={isOnline} />
             )}

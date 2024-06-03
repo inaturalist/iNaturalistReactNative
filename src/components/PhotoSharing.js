@@ -17,7 +17,7 @@ const PhotoSharing = ( ): Node => {
   const { params } = useRoute( );
   const { item } = params;
   const sharedText = item.extraData?.userInput;
-  const resetStore = useStore( state => state.resetStore );
+  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const setObservations = useStore( state => state.setObservations );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
   const [navigationHandled, setNavigationHandled] = useState( null );
@@ -49,8 +49,8 @@ const PhotoSharing = ( ): Node => {
     }
 
     // Move to ObsEdit screen (new observation, with shared photos).
-    logger.info( "calling resetStore" );
-    resetStore( );
+    logger.info( "calling resetObservationFlowSlice" );
+    resetObservationFlowSlice( );
 
     // Create a new observation with multiple shared photos (one or more)
     let photoUris;
@@ -94,7 +94,7 @@ const PhotoSharing = ( ): Node => {
     createObservationAndNavToObsEdit,
     item,
     navigation,
-    resetStore,
+    resetObservationFlowSlice,
     setObservations,
     setPhotoImporterState,
     sharedText

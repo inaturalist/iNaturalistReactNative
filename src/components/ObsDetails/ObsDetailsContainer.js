@@ -22,8 +22,9 @@ import {
   useObservationsUpdates,
   useTranslation
 } from "sharedHooks";
-import useRemoteObservation,
-{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
+import useRemoteObservation, {
+  fetchRemoteObservationKey
+} from "sharedHooks/useRemoteObservation";
 import { ACTIVITY_TAB_ID, DETAILS_TAB_ID } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
@@ -163,6 +164,7 @@ const ObsDetailsContainer = ( ): Node => {
   ] );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
+  const hasPhotos = observation?.observationPhotos?.length > 0;
 
   // In theory the only situation in which an observation would not have a
   // user is when a user is not signed but has made a new observation in the
@@ -173,12 +175,20 @@ const ObsDetailsContainer = ( ): Node => {
     || ( !observation?.user && !observation?.id )
   );
 
+  const invalidateRemoteObservationFetch = useCallback( ( ) => {
+    if ( observation?.uuid ) {
+      queryClient.invalidateQueries( {
+        queryKey: [fetchRemoteObservationKey, observation.uuid]
+      } );
+    }
+  }, [queryClient, observation?.uuid] );
+
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      queryClient.invalidateQueries( { queryKey: fetchRemoteObservationKey } );
-    }, [queryClient] )
+      invalidateRemoteObservationFetch( );
+    }, [invalidateRemoteObservationFetch] )
   );
 
   useEffect( ( ) => {
@@ -329,13 +339,18 @@ const ObsDetailsContainer = ( ): Node => {
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
-    navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
+    if ( hasPhotos ) {
+      navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
+    } else {
+      // Go directly to taxon search in case there are no photos
+      navigation.navigate( "TaxonSearch", { lastScreen: "ObsDetails" } );
+    }
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
-  const refetchObservation = ( ) => {
-    queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey] } );
+  const invalidateQueryAndRefetch = ( ) => {
+    invalidateRemoteObservationFetch( );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };
@@ -360,7 +375,7 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
   };
 
-  return (
+  return observationShown && (
     <ObsDetails
       activityItems={activityItems}
       addingActivityItem={addingActivityItem}
@@ -373,12 +388,14 @@ const ObsDetailsContainer = ( ): Node => {
       isOnline={isOnline}
       isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
-      observation={observation}
+      // saving observation in state (i.e. using observationShown)
+      // limits the number of rerenders to entire obs details tree
+      observation={observationShown}
       onAgree={onAgree}
       onCommentAdded={onCommentAdded}
       onIDAgreePressed={onIDAgreePressed}
       openCommentBox={openCommentBox}
-      refetchRemoteObservation={refetchObservation}
+      refetchRemoteObservation={invalidateQueryAndRefetch}
       remoteObsWasDeleted={remoteObsWasDeleted}
       showActivityTab={showActivityTab}
       showAgreeWithIdSheet={showAgreeWithIdSheet}

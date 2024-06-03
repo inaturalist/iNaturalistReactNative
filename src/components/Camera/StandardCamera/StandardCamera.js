@@ -2,11 +2,11 @@
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import CameraView from "components/Camera/CameraView";
+import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
-import useTakePhoto from "components/Camera/hooks/useTakePhoto";
-import useZoom from "components/Camera/hooks/useZoom";
+import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
+import useZoom from "components/Camera/hooks/useZoom.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { View } from "components/styledComponents";
 import { getCurrentRoute } from "navigation/navigationUtils";
@@ -61,11 +61,10 @@ const StandardCamera = ( {
   const {
     animatedProps,
     changeZoom,
-    onZoomChange,
-    onZoomStart,
+    pinchToZoom,
+    resetZoom,
     showZoomButton,
-    zoomTextValue,
-    resetZoom
+    zoomTextValue
   } = useZoom( device );
   const {
     rotatableAnimatedStyle,
@@ -104,29 +103,36 @@ const StandardCamera = ( {
     takePhotoOptions,
     takingPhoto,
     toggleFlash
-  } = useTakePhoto( camera, addEvidence, device );
+  } = useTakePhoto( camera, !!addEvidence, device );
 
   const { t } = useTranslation( );
 
-  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
+  const resetEvidenceToAdd = useStore( state => state.resetEvidenceToAdd );
   const galleryUris = useStore( state => state.galleryUris );
 
   const totalObsPhotoUris = useMemo(
-    ( ) => [...cameraPreviewUris, ...galleryUris].length,
-    [cameraPreviewUris, galleryUris]
+    ( ) => [...rotatedOriginalCameraPhotos, ...galleryUris].length,
+    [rotatedOriginalCameraPhotos, galleryUris]
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
   const [dismissChanges, setDismissChanges] = useState( false );
+  const [newPhotoCount, setNewPhotoCount] = useState( 0 );
   const { screenWidth } = useDeviceOrientation( );
 
-  const photosTaken = totalObsPhotoUris > 0;
+  // newPhotoCount tracks photos taken in *this* instance of the camera. The
+  // camera might be instantiated with several rotatedOriginalCameraPhotos or
+  // galleryUris already in state, but we only want to show the CTA button
+  // when the user has taken a photo with *this* instance of the camera
+  const photosTaken = newPhotoCount > 0 && totalObsPhotoUris > 0;
 
   useFocusEffect(
     useCallback( ( ) => {
       // Reset camera zoom every time we get into a fresh camera view
-      resetZoom();
+      resetZoom( );
+      resetEvidenceToAdd( );
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] )
@@ -139,6 +145,7 @@ const StandardCamera = ( {
     // to sometimes pop back up on the next screen - see GH issue #629
     if ( !showDiscardSheet ) {
       if ( dismissChanges ) {
+        // TODO delete any new photos taken
         navigation.goBack();
       }
     }
@@ -150,6 +157,7 @@ const StandardCamera = ( {
       return;
     }
     await takePhoto( );
+    setNewPhotoCount( newPhotoCount + 1 );
   };
 
   const containerClasses = ["flex-1"];
@@ -165,20 +173,19 @@ const StandardCamera = ( {
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
-        cameraPreviewUris={cameraPreviewUris}
+        rotatedOriginalCameraPhotos={rotatedOriginalCameraPhotos}
       />
       <View className="relative flex-1">
         {device && (
           <CameraView
+            animatedProps={animatedProps}
             cameraRef={camera}
             device={device}
-            animatedProps={animatedProps}
-            onZoomStart={onZoomStart}
-            onZoomChange={onZoomChange}
+            onCameraError={handleCameraError}
+            onCaptureError={handleCaptureError}
             onClassifierError={handleClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
-            onCaptureError={handleCaptureError}
-            onCameraError={handleCameraError}
+            pinchToZoom={pinchToZoom}
           />
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
@@ -199,7 +206,7 @@ const StandardCamera = ( {
         />
       </View>
       <CameraNavButtons
-        disabled={disallowAddingPhotos}
+        disabled={disallowAddingPhotos || takingPhoto}
         handleCheckmarkPress={handleCheckmarkPress}
         handleClose={handleBackButtonPress}
         photosTaken={photosTaken}

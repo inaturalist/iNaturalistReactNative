@@ -1,4 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
+import { INatApiError } from "api/error";
+import { getUserAgent } from "api/userAgent";
+import classnames from "classnames";
 import {
   Button,
   Heading1,
@@ -8,16 +11,30 @@ import {
 import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import useLogs from "sharedHooks/useLogs";
 
+import useAppSize, {
+  formatAppSizeString, formatSizeUnits, getTotalDirectorySize
+} from "./hooks/useAppSize";
+
 const H1 = ( { children } ) => <Heading1 className="mt-3 mb-2">{children}</Heading1>;
 const H2 = ( { children } ) => <Heading2 className="mt-3 mb-2">{children}</Heading2>;
 const P = ( { children } ) => <Text selectable className="mb-2">{children}</Text>;
-const CODE = ( { children } ) => <Text selectable className={fontMonoClass}>{children}</Text>;
+const CODE = ( { children, optionalClassName } ) => (
+  <Text
+    selectable
+    className={classnames(
+      fontMonoClass,
+      optionalClassName
+    )}
+  >
+    {children}
+  </Text>
+);
 
 const modelFileName: string = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,
@@ -30,6 +47,45 @@ const taxonomyFileName = Platform.select( {
 
 /* eslint-disable i18next/no-literal-string */
 const Developer = (): Node => {
+  const fileSizes = useAppSize( );
+
+  const boldClassname = ( line, isDirectory = false ) => classnames(
+    {
+      "text-red font-bold": line.includes( "MB" ),
+      "text-blue": isDirectory
+    }
+  );
+
+  const displayFileSizes = useCallback( ( ) => Object.keys( fileSizes ).map( directory => {
+    const contents = fileSizes[directory];
+    if ( !directory || !contents ) { return null; }
+    const totalDirectorySize = formatSizeUnits( getTotalDirectorySize( contents ) );
+    return (
+      <View key={directory}>
+        <H2>
+          File Sizes:
+          {" "}
+          {directory}
+        </H2>
+        <P>
+          <CODE optionalClassName={boldClassname( totalDirectorySize, true )}>
+            {`Total Directory Size: ${totalDirectorySize}`}
+          </CODE>
+        </P>
+        {contents.map( ( { name, size } ) => {
+          const line = formatAppSizeString( name, size );
+          return (
+            <P key={name}>
+              <CODE optionalClassName={boldClassname( line )}>
+                {line}
+              </CODE>
+            </P>
+          );
+        } )}
+      </View>
+    );
+  } ), [fileSizes] );
+
   const navigation = useNavigation( );
   const { shareLogFile, emailLogFile } = useLogs();
   return (
@@ -55,6 +111,16 @@ const Developer = (): Node => {
           text="Test error"
           className="mb-5"
         />
+        <Button
+          onPress={() => { throw new INatApiError( { error: "Test error", status: 422 } ); }}
+          text="Test INatApiError"
+          className="mb-5"
+        />
+        <Button
+          onPress={async () => { throw new Error( "Test error in promise" ); }}
+          text="Test unhandled promise rejection"
+          className="mb-5"
+        />
         <H1>Computer Vision</H1>
         <View className="flex-row">
           <Text className="font-bold">Model: </Text>
@@ -73,6 +139,19 @@ const Developer = (): Node => {
         <P>
           <CODE>{RNFS.CachesDirectoryPath}</CODE>
         </P>
+        <H2>Config.API_URL</H2>
+        <P>
+          <CODE>{Config.API_URL}</CODE>
+        </P>
+        <H2>Config.API_URL</H2>
+        <P>
+          <CODE>{Config.API_URL}</CODE>
+        </P>
+        <H2>getUserAgent()</H2>
+        <P>
+          <CODE>{getUserAgent()}</CODE>
+        </P>
+        {displayFileSizes( )}
         <H1>Log file contents</H1>
         <Button
           level="focus"

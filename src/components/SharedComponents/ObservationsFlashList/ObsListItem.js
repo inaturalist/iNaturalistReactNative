@@ -8,20 +8,26 @@ import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
+import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
-  observation: Object,
-  uploadSingleObservation?: Function,
-  uploadState: Object,
-  explore: boolean
+  explore: boolean,
+  handleIndividualUploadPress: Function,
+  showUploadStatus: boolean,
+  observation: Object
 };
 
 const ObsListItem = ( {
-  observation, uploadSingleObservation, uploadState, explore = false
+  explore = false,
+  handleIndividualUploadPress,
+  showUploadStatus,
+  observation
 }: Props ): Node => {
+  const uploadStatus = useStore( state => state.uploadStatus );
+
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
@@ -65,7 +71,7 @@ const ObsListItem = ( {
       <View
         className={classnames(
           "flex-0 justify-start flex-row",
-          { "justify-center": uploadState }
+          { "justify-center": uploadStatus === "uploadInProgress" }
         )}
       >
         {explore
@@ -77,11 +83,11 @@ const ObsListItem = ( {
             />
           )
           : (
-            <ObsUploadStatusContainer
-              observation={observation}
+            <ObsUploadStatus
+              handleIndividualUploadPress={handleIndividualUploadPress}
               layout="vertical"
-              uploadSingleObservation={uploadSingleObservation}
-              uploadState={uploadState}
+              showUploadStatus={showUploadStatus}
+              observation={observation}
             />
           )}
       </View>

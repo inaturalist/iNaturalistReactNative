@@ -1,7 +1,7 @@
 // @flow
 
 import { utcToZonedTime } from "date-fns-tz";
-import { readExif, writeExif } from "react-native-exif-reader";
+import { readExif, writeLocation } from "react-native-exif-reader";
 import * as RNLocalize from "react-native-localize";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 
@@ -52,7 +52,7 @@ interface ExifToWrite {
 export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): Promise<Object> => {
   logger.debug( "writeExifToFile, photoUri: ", photoUri );
   try {
-    return writeExif( photoUri, exif );
+    return writeLocation( photoUri, exif );
   } catch ( e ) {
     console.error( e, "Couldn't write EXIF" );
     return null;
@@ -71,16 +71,22 @@ export const formatExifDateAsString = ( datetime: string ): string => {
 export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Promise<Object> => {
   const unifiedExif = {};
 
-  const allExifPhotos = await Promise.all(
-    photoUris.map( async uri => parseExif( uri ) )
-  );
+  const responses = await Promise.allSettled( photoUris.map( parseExif ) );
+  const allExifPhotos: Array<{
+    latitude: number,
+    longitude: number,
+    positional_accuracy: number,
+    date: string
+  // Flow will complain that value is undefined, but the filter call ensures
+  // that it isn't
+  // $FlowIgnore
+  }> = responses.filter( r => r.value ).map( r => r.value );
 
   allExifPhotos.filter( x => x ).forEach(
     currentPhotoExif => {
       const {
         latitude, longitude, positional_accuracy: positionalAccuracy, date
-      }
-        = currentPhotoExif;
+      } = currentPhotoExif;
 
       if ( !unifiedExif.latitude ) {
         unifiedExif.latitude = latitude;

@@ -12,7 +12,6 @@ export { default as useInterval } from "./useInterval";
 export { default as useIsConnected } from "./useIsConnected";
 export { default as useLocalObservation } from "./useLocalObservation";
 export { default as useLocalObservations } from "./useLocalObservations";
-export { default as useNumUnuploadedObservations } from "./useNumUnuploadedObservations";
 export { default as useObservationsUpdates } from "./useObservationsUpdates";
 export { default as useObservationUpdatesWhenFocused } from "./useObservationUpdatesWhenFocused";
 export { default as useRemoteObservation } from "./useRemoteObservation";

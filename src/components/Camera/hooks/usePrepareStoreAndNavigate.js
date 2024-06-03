@@ -22,10 +22,9 @@ const usePrepareStoreAndNavigate = (
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
-  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
   const currentObservation = useStore( state => state.currentObservation );
-  const setCameraRollUris = useStore( state => state.setCameraRollUris );
-  const originalCameraUrisMap = useStore( state => state.originalCameraUrisMap );
+  const addCameraRollUri = useStore( state => state.addCameraRollUri );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
 
@@ -34,33 +33,26 @@ const usePrepareStoreAndNavigate = (
   // Save URIs to camera gallery (if a photo was taken using the app,
   // we want it accessible in the camera's folder, as if the user has taken those photos
   // via their own camera app).
-  const savePhotosToCameraGallery = useCallback( async ( uris, visionResult ) => {
-    if ( permissionGranted === "granted" ) {
-      const savedUris = await Promise.all( uris.map( async uri => {
-      // Find original camera URI of each scaled-down photo
-        const cameraUri = originalCameraUrisMap[uri];
-
-        if ( !cameraUri ) {
-          console.error( `Couldn't find original camera URI for: ${uri}` );
-        }
-        logger.info( "savePhotosToCameraGallery, saving cameraUri: ", cameraUri );
-        return CameraRoll.save( cameraUri, { type: "photo", album: "Camera" } );
-      } ) );
-
-      logger.info( "savePhotosToCameraGallery, savedUris: ", savedUris );
-      // Save these camera roll URIs, so later on observation editor can update
-      // the EXIF metadata of these photos, once we retrieve a location.
-      setCameraRollUris( savedUris );
-    }
-    navigation.push( "Suggestions", {
-      lastScreen: "CameraWithDevice",
-      hasVisionSuggestion: visionResult
-    } );
+  const savePhotosToCameraGallery = useCallback( async uris => {
+    if ( permissionGranted !== "granted" ) return Promise.resolve( );
+    return Promise.all( uris.map( async uri => {
+      logger.info( "saving rotated original camera photo: ", uri );
+      try {
+        const savedPhotoUri = await CameraRoll.save( uri, {
+          type: "photo",
+          album: "iNaturalist Next"
+        } );
+        logger.info( "saved to camera roll: ", savedPhotoUri );
+        // Save these camera roll URIs, so later on observation editor can update
+        // the EXIF metadata of these photos, once we retrieve a location.
+        addCameraRollUri( savedPhotoUri );
+      } catch {
+        console.log( "couldn't save photo to iNaturalist Next album" );
+      }
+    } ) );
   }, [
-    navigation,
-    originalCameraUrisMap,
-    permissionGranted,
-    setCameraRollUris
+    addCameraRollUri,
+    permissionGranted
   ] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
@@ -88,39 +80,31 @@ const usePrepareStoreAndNavigate = (
     }
     setObservations( [newObservation] );
     logger.info(
-      "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
-      localFilePaths
+      "calling savePhotosToCameraGallery with paths: ",
+      rotatedOriginalCameraPhotos
     );
 
-    return savePhotosToCameraGallery( localFilePaths, visionResult );
-  }, [savePhotosToCameraGallery, setObservations] );
+    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos );
+  }, [rotatedOriginalCameraPhotos, savePhotosToCameraGallery, setObservations] );
 
-  const prepareStateForObsEdit = useCallback( async visionResult => {
-    if ( !checkmarkTapped ) { return null; }
-    // handle case where user backs out from ObsEdit -> Suggestions -> Camera
-    // and already has a taxon selected
-    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
-      const obsPhotos = await ObservationPhoto
-        .createObsPhotosWithPosition( evidenceToAdd, {
-          position: numOfObsPhotos,
-          local: true
-        } );
-      const updatedCurrentObservation = Observation
-        .appendObsPhotos( obsPhotos, currentObservation );
-      observations[currentObservationIndex] = updatedCurrentObservation;
-      updateObservations( observations );
-      logger.info(
-        "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
-        evidenceToAdd
-      );
-      return savePhotosToCameraGallery( evidenceToAdd, visionResult );
-    }
-    return createObsWithCameraPhotos( cameraPreviewUris, visionResult );
+  const updateObsWithCameraPhotos = useCallback( async ( ) => {
+    const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(
+      evidenceToAdd,
+      {
+        position: numOfObsPhotos,
+        local: true
+      }
+    );
+    const updatedCurrentObservation = Observation
+      .appendObsPhotos( obsPhotos, currentObservation );
+    observations[currentObservationIndex] = updatedCurrentObservation;
+    updateObservations( observations );
+    logger.info(
+      "calling savePhotosToCameraGallery with evidence to add: ",
+      evidenceToAdd
+    );
+    await savePhotosToCameraGallery( evidenceToAdd );
   }, [
-    addEvidence,
-    cameraPreviewUris,
-    checkmarkTapped,
-    createObsWithCameraPhotos,
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
@@ -130,9 +114,39 @@ const usePrepareStoreAndNavigate = (
     updateObservations
   ] );
 
-  return {
-    prepareStateForObsEdit: visionResult => prepareStateForObsEdit( visionResult )
-  };
+  const prepareStoreAndNavigate = useCallback( async ( visionResult = null ) => {
+    if ( !checkmarkTapped ) { return null; }
+
+    // save all to camera roll
+
+    // handle case where user backs out from ObsEdit -> Suggestions -> Camera
+    // and already has a taxon selected
+    // TODO this isn't checking for a selected taxon, and why is it checking
+    // for existing photos? If reached from addEvidence, you are always
+    // updating an existing obs
+    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
+      await updateObsWithCameraPhotos( );
+    } else {
+      await createObsWithCameraPhotos( rotatedOriginalCameraPhotos, visionResult );
+    }
+    if ( addEvidence ) {
+      return navigation.goBack( );
+    }
+    return navigation.push( "Suggestions", {
+      lastScreen: "CameraWithDevice",
+      hasVisionSuggestion: visionResult
+    } );
+  }, [
+    addEvidence,
+    rotatedOriginalCameraPhotos,
+    checkmarkTapped,
+    createObsWithCameraPhotos,
+    currentObservation,
+    navigation,
+    updateObsWithCameraPhotos
+  ] );
+
+  return prepareStoreAndNavigate;
 };
 
 export default usePrepareStoreAndNavigate;

@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
@@ -8,7 +8,7 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useCurrentUser, useIsConnected } from "sharedHooks";
+import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
@@ -17,8 +17,8 @@ import useHeaderCount from "./hooks/useHeaderCount";
 import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
+  const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const { params } = useRoute( );
   const isOnline = useIsConnected( );
   const setStoredParams = useStore( state => state.setStoredParams );
 
@@ -27,15 +27,10 @@ const ExploreContainerWithContext = ( ): Node => {
   const { state, dispatch, makeSnapshot } = useExplore();
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
-  const [exploreView, setExploreView] = useState( params?.viewSpecies
-    ? "species"
-    : "observations" );
+
+  const worldwidePlaceText = t( "Worldwide" );
 
   useParams( );
-
-  const changeExploreView = newView => {
-    setExploreView( newView );
-  };
 
   const updateTaxon = ( taxon: Object ) => {
     dispatch( {
@@ -43,6 +38,40 @@ const ExploreContainerWithContext = ( ): Node => {
       taxon,
       taxonId: taxon?.id,
       taxonName: taxon?.preferred_common_name || taxon?.name
+    } );
+  };
+
+  const updateLocation = ( place: Object ) => {
+    if ( place === "worldwide" ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeId: null,
+        placeGuess: worldwidePlaceText
+      } );
+    } else {
+      navigation.setParams( { place } );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        place,
+        placeId: place?.id,
+        placeGuess: place?.display_name
+      } );
+    }
+  };
+
+  const updateUser = ( user: Object ) => {
+    dispatch( {
+      type: EXPLORE_ACTION.SET_USER,
+      user,
+      userId: user?.id
+    } );
+  };
+
+  const updateProject = ( project: Object ) => {
+    dispatch( {
+      type: EXPLORE_ACTION.SET_PROJECT,
+      project,
+      projectId: project?.id
     } );
   };
 
@@ -55,9 +84,6 @@ const ExploreContainerWithContext = ( ): Node => {
     ...filteredParams,
     per_page: 20
   };
-  if ( exploreView === "observers" ) {
-    queryParams.order_by = "observation_count";
-  }
 
   // need this hook to be top-level enough that HeaderCount rerenders
   const { count, loadingStatus, updateCount } = useHeaderCount( );
@@ -77,10 +103,8 @@ const ExploreContainerWithContext = ( ): Node => {
 
   return (
     <Explore
-      changeExploreView={changeExploreView}
       closeFiltersModal={closeFiltersModal}
       count={count}
-      exploreView={exploreView}
       hideBackButton={false}
       isOnline={isOnline}
       loadingStatus={loadingStatus}
@@ -89,6 +113,9 @@ const ExploreContainerWithContext = ( ): Node => {
       showFiltersModal={showFiltersModal}
       updateCount={updateCount}
       updateTaxon={updateTaxon}
+      updateLocation={updateLocation}
+      updateUser={updateUser}
+      updateProject={updateProject}
     />
   );
 };

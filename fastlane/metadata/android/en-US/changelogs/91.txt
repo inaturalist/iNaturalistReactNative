@@ -1,0 +1,12 @@
+UPDATED
+* Removed Explore button and header menu from TaxonDetails via Suggestions
+* TaxonResult tappable area expanded
+* Explore user search focuses on search bar
+
+FIXED
+* Bugs related to ObsEdit having wrong data
+* Explore crash for certain place/taxon combos
+* Return to MyObs when backing out from ObsEdit for unsynced obs
+* LocationPicker should not reset locality notes
+* Adding camera photos from ObsEdit should return to ObsEdit
+* Explore user search should select user on tap

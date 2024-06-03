@@ -2,6 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchTaxon } from "api/taxa";
+import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
@@ -12,9 +13,6 @@ import {
   ScrollViewWrapper
 } from "components/SharedComponents";
 import {
-  Image,
-  LinearGradient,
-  Pressable,
   View
 } from "components/styledComponents";
 import { compact } from "lodash";
@@ -28,8 +26,8 @@ import {
   Share,
   StatusBar
 } from "react-native";
-import { Menu, useTheme } from "react-native-paper";
-import Photo from "realmModels/Photo";
+import DeviceInfo from "react-native-device-info";
+import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
 
@@ -37,6 +35,7 @@ import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 import TaxonMapPreview from "./TaxonMapPreview";
+import TaxonMedia from "./TaxonMedia";
 import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
 
@@ -46,15 +45,18 @@ const { useRealm } = RealmContext;
 
 const TAXON_URL = "https://www.inaturalist.org/taxa";
 
+const isTablet = DeviceInfo.isTablet();
+
 const TaxonDetails = ( ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { id } = params;
+  const { id, hideNavButtons } = params;
   const { t } = useTranslation( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const { remoteUser } = useUserMe( );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
+  const [mediaIndex, setMediaIndex] = useState( 0 );
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
@@ -123,7 +125,7 @@ const TaxonDetails = ( ): Node => {
       <View className="mx-3 mb-3">
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
-        <Taxonomy taxon={taxon} />
+        <Taxonomy taxon={taxon} hideNavButtons={hideNavButtons} />
         <TaxonMapPreview taxon={taxon} />
       </View>
     );
@@ -143,24 +145,17 @@ const TaxonDetails = ( ): Node => {
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View className="flex-1 h-full bg-black">
         <View className="w-full h-[420px] shrink-1">
-          <Pressable
-            onPress={() => setMediaViewerVisible( true )}
-            accessibilityLabel={t( "View-photo" )}
-            accessibilityRole="link"
-          >
-            <Image
-              testID="TaxonDetails.photo"
-              className="w-full h-full"
-              source={{
-                uri: Photo.displayMediumPhoto( photos.at( 0 )?.url )
-              }}
-              accessibilityIgnoresInvertColors
-            />
-            <LinearGradient
-              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-              className="absolute w-full h-full"
-            />
-          </Pressable>
+          <TaxonMedia
+            loading={isLoading}
+            photos={photos}
+            tablet={isTablet}
+            onChangeIndex={setMediaIndex}
+          />
+          {/* cant figure out how to have the gradient show with carousel - angie20240418 */}
+          {/* <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+            className="absolute w-full h-full"
+          />  */}
           <View className="absolute left-5 top-5">
             <BackButton
               color={theme.colors.onPrimary}
@@ -168,75 +163,100 @@ const TaxonDetails = ( ): Node => {
             />
           </View>
 
-          <View className="absolute right-5 top-5">
-            <KebabMenu
-              visible={kebabMenuVisible}
-              setVisible={setKebabMenuVisible}
-              large
-              white
-            >
-              <Menu.Item
-                testID="MenuItem.OpenInBrowser"
-                onPress={( ) => {
-                  openURLInBrowser( taxonUrl );
-                  setKebabMenuVisible( false );
-                }}
-                title={t( "View-in-browser" )}
-              />
-              <Menu.Item
-                testID="MenuItem.Share"
-                onPress={async ( ) => {
-                  const sharingOptions = {
-                    url: "",
-                    message: ""
-                  };
+          {!hideNavButtons && (
+            <View className="absolute right-5 top-5">
+              <KebabMenu
+                visible={kebabMenuVisible}
+                setVisible={setKebabMenuVisible}
+                large
+                white
+              >
+                <KebabMenu.Item
+                  testID="MenuItem.OpenInBrowser"
+                  onPress={( ) => {
+                    openURLInBrowser( taxonUrl );
+                    setKebabMenuVisible( false );
+                  }}
+                  title={t( "View-in-browser" )}
+                />
+                <KebabMenu.Item
+                  testID="MenuItem.Share"
+                  onPress={async ( ) => {
+                    const sharingOptions = {
+                      url: "",
+                      message: ""
+                    };
 
-                  if ( Platform.OS === "ios" ) {
-                    sharingOptions.url = taxonUrl;
-                  } else {
-                    sharingOptions.message = taxonUrl;
-                  }
+                    if ( Platform.OS === "ios" ) {
+                      sharingOptions.url = taxonUrl;
+                    } else {
+                      sharingOptions.message = taxonUrl;
+                    }
 
-                  setKebabMenuVisible( false );
+                    setKebabMenuVisible( false );
 
-                  try {
-                    return await Share.share( sharingOptions );
-                  } catch ( err ) {
-                    Alert.alert( err.message );
-                    return null;
-                  }
-                }}
-                title={t( "Share" )}
-              />
-            </KebabMenu>
-          </View>
-          <View className="absolute bottom-0 p-5 w-full flex-row items-center">
-            <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
-            <INatIconButton
-              icon="compass-rose-outline"
-              onPress={( ) => navigation.navigate( "TabNavigator", {
-                screen: "TabStackNavigator",
-                params: {
-                  screen: "Explore",
-                  params: {
-                    taxon,
-                    worldwide: true,
-                    resetStoredParams: true
-                  }
-                }
-              } )}
-              accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
-              accessibilityHint={t( "Navigates-to-explore" )}
-              size={30}
-              color={theme.colors.onPrimary}
-              // FWIW, IconButton has a little margin we can control and a
-              // little padding that we can't control, so the negative margin
-              // here is to ensure the visible icon is flush with the edge of
-              // the container
-              className="ml-5 bg-inatGreen rounded-full"
-              mode="contained"
-              preventTransparency
-            />
+                    try {
+                      return await Share.share( sharingOptions );
+                    } catch ( err ) {
+                      Alert.alert( err.message );
+                      return null;
+                    }
+                  }}
+                  title={t( "Share" )}
+                />
+              </KebabMenu>
+            </View>
+          )}
+          <View
+            className="absolute bottom-0 p-0 w-full"
+            pointerEvents="box-none"
+          >
+            {!isTablet && photos.length > 1 && (
+              <View
+                className="flex flex-row w-full justify-center items-center mb-3"
+                pointerEvents="none"
+              >
+                { photos.map( ( item, idx ) => (
+                  <View
+                    key={`dot-${item.id}`}
+                    className={classnames(
+                      "rounded-full bg-white m-[2.5]",
+                      idx === mediaIndex
+                        ? "w-[4px] h-[4px]"
+                        : "w-[2px] h-[2px]"
+                    )}
+                  />
+                ) )}
+              </View>
+            )}
+            <View className="w-full flex-row items-center pl-5 pr-5 pb-5" pointerEvents="box-none">
+              <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
+              {!hideNavButtons && (
+                <View className="ml-5">
+                  <INatIconButton
+                    icon="compass-rose-outline"
+                    onPress={( ) => navigation.navigate( "TabNavigator", {
+                      screen: "TabStackNavigator",
+                      params: {
+                        screen: "Explore",
+                        params: {
+                          taxon,
+                          worldwide: true,
+                          resetStoredParams: true
+                        }
+                      }
+                    } )}
+                    accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
+                    accessibilityHint={t( "Navigates-to-explore" )}
+                    size={30}
+                    color={theme.colors.onPrimary}
+                    className="bg-inatGreen rounded-full"
+                    mode="contained"
+                    preventTransparency
+                  />
+                </View>
+              )}
+            </View>
           </View>
         </View>
         <View className="bg-white pt-5 h-full flex-1">

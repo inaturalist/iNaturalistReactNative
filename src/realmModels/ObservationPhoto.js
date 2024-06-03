@@ -33,8 +33,8 @@ class ObservationPhoto extends Realm.Object {
   static mapPhotoForUpload( observationID, photo ) {
     return {
       file: new FileUpload( {
-        uri: photo.localFilePath,
-        name: photo.localFilePath,
+        uri: Photo.accessLocalPhoto( photo.localFilePath ),
+        name: Photo.accessLocalPhoto( photo.localFilePath ),
         type: "image/jpeg"
       } )
     };
@@ -102,8 +102,9 @@ class ObservationPhoto extends Realm.Object {
   static async deleteLocalPhoto( realm, uri, currentObservation ) {
     // delete uri on disk
     Photo.deletePhotoFromDeviceStorage( uri );
-    const obsPhotoToDelete = currentObservation?.observationPhotos
-      .find( p => p.localFilePath === uri );
+    const obsPhotoToDelete = currentObservation
+      ?.observationPhotos
+      ?.find( p => Photo.accessLocalPhoto( p.localFilePath ) === uri );
     if ( obsPhotoToDelete ) {
       safeRealmWrite( realm, ( ) => {
         realm?.delete( obsPhotoToDelete );

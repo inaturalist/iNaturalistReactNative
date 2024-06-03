@@ -211,12 +211,17 @@ fastlane beta
 fastlane prod
 ```
 
-### Example: Build & Release for Internal Testing
+### Example: Build & Release for People Outside the Dev Team
 
 1. Ensure all tests are passing on the main branch
 1. Manual testing
     1. Install a "Release" build on an iOS device
         1. Online
+            1. Sign out if already signed in
+            1. Make an observation using the AI Camera
+            1. Delete the observation you just made
+            1. Go to Explore and view a taxon
+            1. Change to observations view and view an observation
             1. Sign in
             1. Make an observation by taking a new photo in the AI Camera; tap "Upload Now" to upload immediately; wait for upload to complete before moving on
             1. Make an observation by taking a new photo in the StandardCamera; save without upload
@@ -238,4 +243,5 @@ fastlane prod
 1. Commit changes
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
 1. `bundle exec fastlane release` to build and push a release to Github
-1. `bundle exec fastlane internal` to distribute the builds to TestFlight and the Play Store
+1. `bundle exec fastlane internal` to distribute the builds to internal test groups in TestFlight and the Play Store
+1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store

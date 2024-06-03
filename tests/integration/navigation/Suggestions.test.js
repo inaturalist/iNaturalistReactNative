@@ -26,7 +26,8 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
     }
   };
 } );
@@ -127,8 +128,6 @@ describe( "Suggestions", ( ) => {
         useStore.setState( { observations } );
         await renderAppWithObservations( observations, __filename );
         await navigateToSuggestionsForObservation( observations[0] );
-        const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
-        await actor.press( searchButton );
         const searchInput = await screen.findByLabelText( "Search for a taxon" );
         const mockSearchResultTaxon = factory( "RemoteTaxon" );
         inatjs.taxa.search.mockResolvedValue( makeResponse( [

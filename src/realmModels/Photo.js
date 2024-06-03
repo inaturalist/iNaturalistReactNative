@@ -1,7 +1,9 @@
-import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { Realm } from "@realm/react";
+import { photoUploadPath } from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
+import resizeImage from "sharedHelpers/resizeImage.ts";
+import { unlink } from "sharedHelpers/util";
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
@@ -10,8 +12,6 @@ class Photo extends Realm.Object {
     license_code: true,
     url: true
   };
-
-  static photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
 
   static mapApiToRealm( photo, _realm = null ) {
     const localPhoto = {
@@ -24,7 +24,6 @@ class Photo extends Realm.Object {
 
   static async resizeImageForUpload( pathOrUri, options = {} ) {
     const width = 2048;
-    const { photoUploadPath } = Photo;
     await RNFS.mkdir( photoUploadPath );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
 
@@ -51,20 +50,16 @@ class Photo extends Realm.Object {
       uriForResize = `file://${uriForResize}`;
     }
 
-    const { uri } = await ImageResizer.createResizedImage(
-      uriForResize,
+    const uri = await resizeImage( uriForResize, {
       width,
-      width, // height
-      "JPEG", // compressFormat
-      100, // quality
-      options.rotation || 0, // rotation
-      photoUploadPath,
-      true, // keep metadata
-      {
+      rotation: options.rotation,
+      outputPath: photoUploadPath,
+      imageOptions: {
         mode: "contain",
         onlyScaleDown: true
       }
-    );
+    } );
+
     return uri;
   }
 
@@ -78,6 +73,14 @@ class Photo extends Realm.Object {
     };
   }
 
+  // this is necessary because photos cannot be found reliably via the file:/// name.
+  // without this, local photos will not show up when the app updates
+  static accessLocalPhoto( url ) {
+    const uuidAndJpgSuffix = url?.split( "photoUploads/" )[1];
+    const localPath = `${photoUploadPath}/${uuidAndJpgSuffix}`;
+    return localPath || null;
+  }
+
   static displayLargePhoto( url ) {
     return url?.replace( "square", "large" );
   }
@@ -86,17 +89,21 @@ class Photo extends Realm.Object {
     return url?.replace( "square", "medium" );
   }
 
+  static displayLocalOrRemoteLargePhoto( photo ) {
+    return Photo.displayLargePhoto( photo?.url ) || Photo.accessLocalPhoto( photo?.localFilePath );
+  }
+
   static displayLocalOrRemoteMediumPhoto( photo ) {
-    return Photo.displayMediumPhoto( photo?.url ) || photo?.localFilePath;
+    return Photo.displayMediumPhoto( photo?.url ) || Photo.accessLocalPhoto( photo?.localFilePath );
   }
 
   static displayLocalOrRemoteSquarePhoto( photo ) {
-    return photo?.url || photo?.localFilePath;
+    return photo?.url || Photo.accessLocalPhoto( photo?.localFilePath );
   }
 
-  static deletePhotoFromDeviceStorage( photoPath ) {
-    const fileName = photoPath.split( "photoUploads/" )[1];
-    RNFS.unlink( `${Photo.photoUploadPath}/${fileName}` );
+  static deletePhotoFromDeviceStorage( path ) {
+    const localPhoto = Photo.accessLocalPhoto( path );
+    unlink( localPhoto );
   }
 
   static schema = {

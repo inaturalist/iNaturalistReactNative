@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import FilterModal from "components/Explore/Modals/FilterModal.tsx";
+import ExploreFiltersModal from "components/Explore/Modals/ExploreFiltersModal";
 import {
   INatIconButton,
   RadioButtonSheet,
@@ -17,6 +17,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -40,10 +41,8 @@ const exploreViewIcon = {
 };
 
 type Props = {
-  changeExploreView: Function,
   closeFiltersModal: Function,
   count: Object,
-  exploreView: string,
   hideBackButton: boolean,
   isOnline: boolean,
   loadingStatus: boolean,
@@ -51,14 +50,15 @@ type Props = {
   queryParams: Object,
   showFiltersModal: boolean,
   updateCount: Function,
-  updateTaxon: Function
+  updateTaxon: Function,
+  updateLocation: Function,
+  updateUser: Function,
+  updateProject: Function
 }
 
 const Explore = ( {
-  changeExploreView,
   closeFiltersModal,
   count,
-  exploreView,
   hideBackButton,
   isOnline,
   loadingStatus,
@@ -66,13 +66,18 @@ const Explore = ( {
   queryParams,
   showFiltersModal,
   updateCount,
-  updateTaxon
+  updateTaxon,
+  updateLocation,
+  updateUser,
+  updateProject
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
+  const exploreView = useStore( state => state.exploreView );
+  const setExploreView = useStore( state => state.setExploreView );
 
   const exploreViewAccessibilityLabel = {
     observations: t( "Observations-View" ),
@@ -89,6 +94,8 @@ const Explore = ( {
       hideBackButton={hideBackButton}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
+      updateTaxon={updateTaxon}
+      updateLocation={updateLocation}
       onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );
@@ -134,7 +141,7 @@ const Explore = ( {
         headerText={t( "EXPLORE" )}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
-          changeExploreView( newView );
+          setExploreView( newView );
           setShowExploreBottomSheet( false );
         }}
         radioValues={values}
@@ -233,14 +240,14 @@ const Explore = ( {
           </View>
         </View>
       </ViewWrapper>
-      {showFiltersModal && (
-        <ViewWrapper wrapperClassName="absolute w-full h-full overflow-hidden">
-          <FilterModal
-            closeModal={closeFiltersModal}
-            updateTaxon={updateTaxon}
-          />
-        </ViewWrapper>
-      )}
+      <ExploreFiltersModal
+        showModal={showFiltersModal}
+        closeModal={closeFiltersModal}
+        updateTaxon={updateTaxon}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
+      />
       {renderSheet()}
     </>
   );

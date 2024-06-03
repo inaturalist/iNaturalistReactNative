@@ -1,0 +1,14 @@
+UPDATED
+* Explore filters full screen modal
+* Stop showing spinners for taxa while offline
+* Change name to iNat Next
+
+FIXED
+* Adding media to existing observations
+* Show correct view in Explore when tapping species count
+* From Explore, always navigate back to explore from ObsDetails
+* Keyboard can be dismissed from Location Picker
+* Always show sci name first when preferred
+* Never show deleted observations
+* Stop upload button works
+* AICamera does not remember zoom

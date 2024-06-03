@@ -13,7 +13,8 @@ import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import { t } from "i18next";
 import {
   hideHeader,
-  removeBottomBorder
+  removeBottomBorder,
+  showSimpleCustomHeader
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -80,12 +81,12 @@ const SharedStackScreens = ( ): Node => (
           headerTitle: taxonSearchTitle
         }}
       />
-      <Stack.Screen
-        name="FullPageWebView"
-        component={FullPageWebView}
-        options={{ headerTitle: "" }}
-      />
     </Stack.Group>
+    <Stack.Screen
+      name="FullPageWebView"
+      component={FullPageWebView}
+      options={showSimpleCustomHeader}
+    />
   </Stack.Group>
 );
 

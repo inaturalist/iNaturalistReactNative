@@ -23,17 +23,19 @@ const RootExploreContainerWithContext = ( ): Node => {
   const currentUser = useCurrentUser( );
   const storedParams = useStore( state => state.storedParams );
   const setStoredParams = useStore( state => state.setStoredParams );
+  const setExploreView = useStore( state => state.setExploreView );
+
+  const worldwidePlaceText = t( "Worldwide" );
 
   const {
     state, dispatch, makeSnapshot, setExploreLocation
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
-  const [exploreView, setExploreView] = useState( "species" );
 
-  const changeExploreView = newView => {
-    setExploreView( newView );
-  };
+  useEffect( ( ) => {
+    setExploreView( "species" );
+  }, [setExploreView] );
 
   const updateTaxon = ( taxon: Object ) => {
     dispatch( {
@@ -41,6 +43,40 @@ const RootExploreContainerWithContext = ( ): Node => {
       taxon,
       taxonId: taxon?.id,
       taxonName: taxon?.preferred_common_name || taxon?.name
+    } );
+  };
+
+  const updateLocation = ( place: Object ) => {
+    if ( place === "worldwide" ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeId: null,
+        placeGuess: worldwidePlaceText
+      } );
+    } else {
+      navigation.setParams( { place } );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        place,
+        placeId: place?.id,
+        placeGuess: place?.display_name
+      } );
+    }
+  };
+
+  const updateUser = ( user: Object ) => {
+    dispatch( {
+      type: EXPLORE_ACTION.SET_USER,
+      user,
+      userId: user?.id
+    } );
+  };
+
+  const updateProject = ( project: Object ) => {
+    dispatch( {
+      type: EXPLORE_ACTION.SET_PROJECT,
+      project,
+      projectId: project?.id
     } );
   };
 
@@ -53,9 +89,6 @@ const RootExploreContainerWithContext = ( ): Node => {
     ...filteredParams,
     per_page: 20
   };
-  if ( exploreView === "observers" ) {
-    queryParams.order_by = "observation_count";
-  }
 
   // need this hook to be top-level enough that HeaderCount rerenders
   const { count, loadingStatus, updateCount } = useHeaderCount( );
@@ -109,10 +142,8 @@ const RootExploreContainerWithContext = ( ): Node => {
   return (
     <>
       <Explore
-        changeExploreView={changeExploreView}
         closeFiltersModal={closeFiltersModal}
         count={count}
-        exploreView={exploreView}
         hideBackButton
         isOnline={isOnline}
         loadingStatus={loadingStatus}
@@ -121,6 +152,9 @@ const RootExploreContainerWithContext = ( ): Node => {
         showFiltersModal={showFiltersModal}
         updateCount={updateCount}
         updateTaxon={updateTaxon}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
       />
       <LocationPermissionGate
         permissionNeeded

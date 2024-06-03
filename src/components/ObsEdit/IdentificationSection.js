@@ -40,6 +40,7 @@ const IdentificationSection = ( {
   const realm = useRealm( );
 
   const identification = currentObservation?.taxon;
+  const hasPhotos = currentObservation?.observationPhotos?.length > 0;
 
   const hasIdentification = identification && identification.rank_level !== 100;
 
@@ -48,18 +49,18 @@ const IdentificationSection = ( {
     || identification.isIconic
     || identification.name === "Life";
 
-  const onTaxonChosen = taxonName => {
-    const selectedTaxon = realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName );
-    updateObservationKeys( {
-      taxon: selectedTaxon.length > 0
-        ? selectedTaxon[0]
-        : null
-    } );
-  };
+  const onTaxonChosen = taxonName => updateObservationKeys( {
+    taxon: realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName )[0]
+  } );
 
   const navToSuggestions = useCallback( ( ) => {
-    navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
-  }, [navigation] );
+    if ( hasPhotos ) {
+      navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
+    } else {
+      // Go directly to taxon search in case there are no photos
+      navigation.navigate( "TaxonSearch", { lastScreen: "ObsEdit" } );
+    }
+  }, [hasPhotos, navigation] );
 
   useEffect( ( ) => {
     if ( hasIdentification && !passesIdentificationTest ) {

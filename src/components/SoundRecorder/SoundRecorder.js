@@ -203,7 +203,12 @@ const SoundRecorder = (): Node => {
 
   const onBack = () => {
     if ( !params.addEvidence ) {
-      navigation.goBack( );
+      navigation.navigate( "TabNavigator", {
+        screen: "TabStackNavigator",
+        params: {
+          screen: "ObsList"
+        }
+      } );
     } else {
       navigation.navigate( "ObsEdit" );
     }

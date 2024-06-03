@@ -24,6 +24,7 @@ const GroupPhotosContainer = ( ): Node => {
 
   useEffect( ( ) => {
     navigation.setOptions( {
+      headerTitle: t( "Group-Photos" ),
       headerSubtitle: t( "X-PHOTOS-X-OBSERVATIONS", {
         photoCount: totalPhotos,
         observationCount: groupedPhotos.length
