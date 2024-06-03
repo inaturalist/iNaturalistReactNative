@@ -9,8 +9,8 @@ import {
   Button,
   Heading4,
   RadioButtonRow,
-  RadioButtonSheet,
-  ScrollViewWrapper
+  ScrollViewWrapper,
+  PickerSheet
 } from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
 import {
@@ -206,7 +206,7 @@ const Settings = ( ) => {
       )}
       {localeSheetOpen
         && (
-          <RadioButtonSheet
+          <PickerSheet
             headerText={t( "APP-LANGUAGE" )}
             confirm={newLocale => {
               setLocaleSheetOpen( false );
@@ -218,8 +218,8 @@ const Settings = ( ) => {
               changeUserLocale( newLocale );
             }}
             handleClose={() => setLocaleSheetOpen( false )}
-            radioValues={availableLocalesOptions}
             selectedValue={currentLocale || i18n.language}
+            pickerValues={availableLocalesOptions}
           />
         )}
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
