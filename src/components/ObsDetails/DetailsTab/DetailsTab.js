@@ -22,6 +22,7 @@ import Attribution from "./Attribution";
 import LocationSection from "./LocationSection";
 
 type Props = {
+  currentUser: Object,
   observation: Object
 }
 
@@ -73,7 +74,7 @@ const qualityGradeDescription = option => {
 const headingClass = "mt-[20px] mb-[11px] text-black";
 const sectionClass = "mx-[15px] mb-[20px]";
 
-const DetailsTab = ( { observation }: Props ): Node => {
+const DetailsTab = ( { currentUser, observation }: Props ): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
   const application = observation?.application?.name;
@@ -138,11 +139,13 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Body4>
             {qualityGradeDescription( qualityGrade )}
           </Body4>
-          <Button
-            testID="DetailsTab.DQA"
-            text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
-            onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
-          />
+          {currentUser && (
+            <Button
+              testID="DetailsTab.DQA"
+              text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
+              onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
+            />
+          )}
         </View>
       </View>
       <Divider />
