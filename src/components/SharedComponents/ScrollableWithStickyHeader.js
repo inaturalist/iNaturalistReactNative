@@ -6,10 +6,11 @@
 // (stickyAt)
 //
 // To use this, you need to give it two functions, one to render the header
-// and the other to render the scrollable. renderHeader takes a single
-// argument, the setStickyAt function, that sets the scroll offset at which
-// the header sticks (this is probably dependent on the height of the
-// rendered layout).
+// and the other to render an *animated* scrollable (i.e. whatever subclass
+// of ScrollView you're using must be wrapped in
+// Animated.createAnimatedComponent()). renderHeader takes a single argument,
+// the setStickyAt function, that sets the scroll offset at which the header
+// sticks (this is probably dependent on the height of the rendered layout).
 //
 // renderScrollable takes a single argument, the onScroll callback, which
 // should be passed to the scrollable's onScroll prop, and/or get called with
@@ -39,8 +40,6 @@ import React, {
 } from "react";
 import { Animated } from "react-native";
 import { useDeviceOrientation } from "sharedHooks";
-
-const { diffClamp } = Animated;
 
 type Props = {
   renderHeader: Function,
@@ -77,22 +76,6 @@ const ScrollableWithStickyHeader = ( {
       useNativeDriver: true
     }
   );
-
-  // On Android, the scroll view offset is a double (not an integer), and interpolation shouldn't be
-  // one-to-one, which causes a jittery header while slow scrolling (see issue #634).
-  // See here as well: https://stackoverflow.com/a/60898411/1233767
-  const scrollYClamped = diffClamp(
-    scrollY.current,
-    0,
-    stickyAt * 2
-  );
-
-  // Same as comment above (see here: https://stackoverflow.com/a/60898411/1233767)
-  const offsetForHeader = scrollYClamped.interpolate( {
-    inputRange: [0, stickyAt * 2],
-    // $FlowIgnore
-    outputRange: [0, -stickyAt]
-  } );
 
   useEffect( () => {
     const currentScrollY = scrollY.current;
@@ -135,14 +118,35 @@ const ScrollableWithStickyHeader = ( {
     // nicely with its peers, not flow off the screen.
     <View className="overflow-hidden h-full">
       <Animated.View
-        style={[
-          {
-            transform: [{ translateY: offsetForHeader }],
-            // Set the height to flow off screen so that when we translate the
-            // view up, there's no gap at the bottom
-            height: contentHeight + stickyAt
-          }
-        ]}
+        style={{
+          transform: [{
+            // Translate the view up (negative value) relative to scroll
+            // position *until* the user scrolls to stickyAt, at which point
+            // we stop translating because the sticky part needs to stick. So
+            // roughly any scroll positions between 0 and stickyAt get mapped
+            // to values between 0 and -stickyAt
+            //
+            // The input range is doubled because on Android, the scroll view
+            // offset is a double (not an integer), and interpolation
+            // shouldn't be one-to-one, which causes a jittery header while
+            // slow scrolling(see issue #634). See here as well:
+            // https://stackoverflow.com/a/60898411/1233767
+            //
+            // The third value in the interpolation ranges ensures that any
+            // scroll values beyond stickyAt always get mapped to -stickyAt,
+            // which has the effect of only unsticking the header when you're
+            // scrolled to the top of the screen
+            //
+            // And finally, that +1 seems to solve an error in iOS
+            translateY: scrollY.current.interpolate( {
+              inputRange: [0, stickyAt * 2, stickyAt * 2 + 1],
+              outputRange: [0, -stickyAt, -stickyAt]
+            } )
+          }],
+          // Set the height to flow off screen so that when we translate the
+          // view up, there's no gap at the bottom
+          height: contentHeight + stickyAt
+        }}
       >
         {renderHeader( setStickyAt )}
         {renderScrollable( onScroll )}

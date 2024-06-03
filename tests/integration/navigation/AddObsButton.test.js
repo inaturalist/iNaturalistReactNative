@@ -18,8 +18,6 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
-const initialPersistedStoreState = useStore.getState( );
-
 beforeAll( ( ) => {
   jest.useFakeTimers( );
 } );
@@ -42,12 +40,8 @@ describe( "AddObsButton", ( ) => {
 } );
 
 describe( "with advanced user layout", ( ) => {
-  beforeAll( ( ) => {
+  beforeEach( ( ) => {
     useStore.setState( { isAdvancedUser: true } );
-  } );
-
-  afterAll( ( ) => {
-    useStore.setState( initialPersistedStoreState );
   } );
 
   it( "opens AddObsModal", async ( ) => {

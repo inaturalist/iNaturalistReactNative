@@ -1,7 +1,15 @@
+import Config from "react-native-config";
 import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 
 export const OBSCURATION_CELL_SIZE = 0.2;
+// tiles should be requested from tiles.inaturalist.org for better resource
+// balancing
+const API_URL = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
+export const TILE_URL = API_URL.match( /api\.inaturalist\.org/ )
+  ? API_URL.replace( "api.inaturalist", "tiles.inaturalist" )
+  : API_URL;
+const POINT_TILES_ENDPOINT = `${TILE_URL}/points`;
 
 export function calculateZoom( width, delta ) {
   return Math.round(
@@ -53,7 +61,6 @@ export function metersToLatitudeDelta( meters: number, latitude: number ): numbe
   return latitudeDelta;
 }
 
-const POINT_TILES_ENDPOINT = "https://tiles.inaturalist.org/v1/points";
 export async function fetchObservationUUID( currentZoom, latLng, params ) {
   const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
   const {

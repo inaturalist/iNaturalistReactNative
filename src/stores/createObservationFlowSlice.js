@@ -1,6 +1,26 @@
 // eslint-disable-next-line
 import { Realm } from "@realm/react";
 import _ from "lodash";
+import Photo from "realmModels/Photo";
+
+const DEFAULT_STATE = {
+  abortController: new AbortController( ),
+  cameraRollUris: [],
+  comment: "",
+  currentObservation: {},
+  currentObservationIndex: 0,
+  evidenceToAdd: [],
+  galleryUris: [],
+  groupedPhotos: [],
+  observations: [],
+  // Track when any obs was last marked as viewed so we know when to update
+  // the notifications indicator
+  observationMarkedAsViewedAt: null,
+  photoEvidenceUris: [],
+  rotatedOriginalCameraPhotos: [],
+  savingPhoto: false,
+  unsavedChanges: false
+};
 
 const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   if ( _.isEmpty( currentObservation ) ) { return []; }
@@ -11,7 +31,9 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
     // removed
     _.remove(
       obsPhotos,
-      obsPhoto => obsPhoto.photo.localFilePath === uri || obsPhoto.originalPhotoUri === uri
+      obsPhoto => Photo.accessLocalPhoto(
+        obsPhoto.photo.localFilePath
+      ) === uri || obsPhoto.originalPhotoUri === uri
     );
     updatedObservation.observationPhotos = obsPhotos;
     return [updatedObservation];
@@ -54,65 +76,34 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
 };
 
 const createObservationFlowSlice = set => ( {
-  cameraPreviewUris: [],
-  cameraRollUris: [],
-  comment: "",
-  currentObservation: {},
-  currentObservationIndex: 0,
-  evidenceToAdd: [],
-  galleryUris: [],
-  groupedPhotos: [],
-  observations: [],
-  // Track when any obs was last marked as viewed so we know when to update
-  // the notifications indicator
-  observationMarkedAsViewedAt: null,
-  originalCameraUrisMap: {},
-  photoEvidenceUris: [],
-  savingPhoto: false,
-  unsavedChanges: false,
+  ...DEFAULT_STATE,
   deletePhotoFromObservation: uri => set( state => {
     const newObservations = removeObsPhotoFromObservation(
       state.observations[state.currentObservationIndex],
       uri
     );
-
-    return {
+    const newObservation = newObservations[state.currentObservationIndex];
+    return ( {
       photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
-      cameraPreviewUris: [..._.pull( state.cameraPreviewUris, uri )],
+      rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
       evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
       observations: newObservations,
-      currentObservation: observationToJSON( newObservations[state.currentObservationIndex] )
-    };
+      currentObservation: newObservation
+    } );
   } ),
-
   deleteSoundFromObservation: uri => set( state => {
     const newObservations = removeObsSoundFromObservation(
       state.observations[state.currentObservationIndex],
       uri
     );
-    // FWIW, i don't really understand why this *isn't* necessary in
-    // deletePhotoFromObservation ~~~kueda20240222
-    const newObservation = removeObsSoundFromObservation( state.currentObservation, uri )[0];
+    const newObservation = newObservations[state.currentObservationIndex];
     return {
       observations: newObservations,
       currentObservation: newObservation
     };
   } ),
-  resetStore: ( ) => set( {
-    cameraPreviewUris: [],
-    cameraRollUris: [],
-    comment: "",
-    currentObservation: {},
-    currentObservationIndex: 0,
-    evidenceToAdd: [],
-    galleryUris: [],
-    groupedPhotos: [],
-    observations: [],
-    originalCameraUrisMap: {},
-    photoEvidenceUris: [],
-    savingPhoto: false,
-    unsavedChanges: false
-  } ),
+  resetEvidenceToAdd: ( ) => set( { evidenceToAdd: [] } ),
+  resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
   addCameraRollUri: uri => set( state => {
     const savedUris = state.cameraRollUris;
     savedUris.push( uri );
@@ -123,9 +114,9 @@ const createObservationFlowSlice = set => ( {
   } ),
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
-    cameraPreviewUris: options?.cameraPreviewUris || state.cameraPreviewUris,
-    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto,
-    originalCameraUrisMap: options?.originalCameraUrisMap || state.originalCameraUrisMap
+    rotatedOriginalCameraPhotos:
+      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos,
+    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,
@@ -167,7 +158,12 @@ const createObservationFlowSlice = set => ( {
     currentObservation:
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
     unsavedChanges: true
-  } ) )
+  } ) ),
+  newAbortController: ( ) => {
+    const abc = new AbortController( );
+    set( ( ) => ( { abortController: abc } ) );
+    return abc;
+  }
 } );
 
 export default createObservationFlowSlice;

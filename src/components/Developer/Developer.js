@@ -1,4 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
+import { INatApiError } from "api/error";
+import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
 import {
   Button,
@@ -59,8 +61,8 @@ const Developer = (): Node => {
     if ( !directory || !contents ) { return null; }
     const totalDirectorySize = formatSizeUnits( getTotalDirectorySize( contents ) );
     return (
-      <>
-        <H2 key={directory}>
+      <View key={directory}>
+        <H2>
           File Sizes:
           {" "}
           {directory}
@@ -80,7 +82,7 @@ const Developer = (): Node => {
             </P>
           );
         } )}
-      </>
+      </View>
     );
   } ), [fileSizes] );
 
@@ -109,6 +111,16 @@ const Developer = (): Node => {
           text="Test error"
           className="mb-5"
         />
+        <Button
+          onPress={() => { throw new INatApiError( { error: "Test error", status: 422 } ); }}
+          text="Test INatApiError"
+          className="mb-5"
+        />
+        <Button
+          onPress={async () => { throw new Error( "Test error in promise" ); }}
+          text="Test unhandled promise rejection"
+          className="mb-5"
+        />
         <H1>Computer Vision</H1>
         <View className="flex-row">
           <Text className="font-bold">Model: </Text>
@@ -126,6 +138,18 @@ const Developer = (): Node => {
         <H2>Caches</H2>
         <P>
           <CODE>{RNFS.CachesDirectoryPath}</CODE>
+        </P>
+        <H2>Config.API_URL</H2>
+        <P>
+          <CODE>{Config.API_URL}</CODE>
+        </P>
+        <H2>Config.API_URL</H2>
+        <P>
+          <CODE>{Config.API_URL}</CODE>
+        </P>
+        <H2>getUserAgent()</H2>
+        <P>
+          <CODE>{getUserAgent()}</CODE>
         </P>
         {displayFileSizes( )}
         <H1>Log file contents</H1>

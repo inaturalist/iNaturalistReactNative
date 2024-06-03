@@ -4,7 +4,7 @@ import {
   INatIconButton
 } from "components/SharedComponents";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Animated, {
   cancelAnimation,
   Easing,
@@ -53,6 +53,8 @@ const RotatingINatIconButton = ( {
   width
 }: Props ): Node => {
   const rotation = useSharedValue( 0 );
+  // eslint-disable-next-line no-unused-vars
+  const [_, setNeedsReRender] = useState( false );
 
   const animatedStyles = useAnimatedStyle(
     () => ( {
@@ -77,6 +79,8 @@ const RotatingINatIconButton = ( {
     const cleanup = () => {
       cancelAnimation( rotation );
       rotation.value = 0;
+      // Trigger oen more render to ensure the rotation gets reset to 0
+      setNeedsReRender( true );
     };
 
     if ( rotating ) {

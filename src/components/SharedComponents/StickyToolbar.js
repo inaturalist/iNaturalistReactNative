@@ -22,7 +22,7 @@ const StickyToolbar = ( {
 }: Props ): React.Node => (
   <View
     className={classNames(
-      "absolute z-50 bg-white bottom-0 p-[15px] w-full",
+      "absolute bg-white bottom-0 p-[15px] w-full",
       containerClass
     )}
     style={DROP_SHADOW}

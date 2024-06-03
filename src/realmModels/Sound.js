@@ -1,9 +1,8 @@
 import { Realm } from "@realm/react";
+import { soundUploadPath } from "appConstants/paths.ts";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
-
-const SOUND_UPLOADS_DIRNAME = "soundUploads";
-const SOUND_UPLOADS_PATH = `${RNFS.DocumentDirectoryPath}/${SOUND_UPLOADS_DIRNAME}`;
+import { unlink } from "sharedHelpers/util";
 
 class Sound extends Realm.Object {
   static SOUND_FIELDS = {
@@ -46,8 +45,8 @@ class Sound extends Realm.Object {
     if ( options.basename ) {
       fileName = `${options.basename}.${srcFileExt}`;
     }
-    await RNFS.mkdir( SOUND_UPLOADS_PATH );
-    const dstPath = `${SOUND_UPLOADS_PATH}/${fileName}`;
+    await RNFS.mkdir( soundUploadPath );
+    const dstPath = `${soundUploadPath}/${fileName}`;
 
     await RNFS.moveFile( srcPath, dstPath );
     return dstPath;
@@ -72,9 +71,7 @@ class Sound extends Realm.Object {
   }
 
   static deleteSoundFromDeviceStorage( path ) {
-    RNFS.exists( path ).then( fileExists => {
-      if ( fileExists ) RNFS.unlink( path );
-    } );
+    unlink( path );
   }
 
   // An unpleasant hack around another unpleasant hack, i.e. when we "need" to

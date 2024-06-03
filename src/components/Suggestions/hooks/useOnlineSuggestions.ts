@@ -1,11 +1,10 @@
-// @flow
-
-import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
+import { computerVisionPath } from "appConstants/paths.ts";
 import { FileUpload } from "inaturalistjs";
 import { useEffect, useState } from "react";
-import Photo from "realmModels/Photo";
+import RNFS from "react-native-fs";
+import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
   useAuthenticatedQuery,
   useIsConnected
@@ -14,28 +13,7 @@ import useStore from "stores/useStore";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
-const resizeImage = async (
-  path: string,
-  width: number,
-  height?: number,
-  outputPath?: string
-): Promise<string> => {
-  // Note that the default behavior of this library is to resize to contain,
-  // i.e. it will not adjust aspect ratio
-  const { uri } = await ImageResizer.createResizedImage(
-    path,
-    width,
-    height || width, // height
-    "JPEG", // compressFormat
-    100, // quality
-    0, // rotation
-    // $FlowFixMe
-    outputPath, // outputPath
-    true // keep metadata
-  );
-
-  return uri;
-};
+const outputPath = computerVisionPath;
 
 type FlattenUploadArgs = {
   image: {
@@ -52,7 +30,15 @@ const flattenUploadParams = async (
   latitude?: number,
   longitude?: number
 ): Promise<FlattenUploadArgs> => {
-  const uploadUri = await resizeImage( uri, 640 );
+  await RNFS.mkdir( outputPath );
+  const uploadUri = await resizeImage( uri, {
+    // this max width/height is the same as the legacy Android app
+    // we always want the width/height to be bigger than 299x299
+    // and want to preserve the aspect ratio (not crunch the image down into a square)
+    // for the best results
+    width: 640,
+    outputPath
+  } );
 
   const params: FlattenUploadArgs = {
     image: new FileUpload( {
@@ -86,6 +72,7 @@ const useOnlineSuggestions = (
     latitude: currentObservation?.latitude,
     longitude: currentObservation?.longitude
   };
+
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
   const isOnline = useIsConnected( );
@@ -103,10 +90,7 @@ const useOnlineSuggestions = (
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => {
       const scoreImageParams = await flattenUploadParams(
-        // Ensure that if this URI is a remote thumbnail that we are resizing
-        // a reasonably-sized image and not deliverying a handful of
-        // upsampled pixels
-        Photo.displayMediumPhoto( selectedPhotoUri ),
+        selectedPhotoUri,
         options?.latitude,
         options?.longitude
       );

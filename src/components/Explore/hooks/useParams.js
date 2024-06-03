@@ -27,6 +27,7 @@ const useParams = ( ): Object => {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
+        place: null,
         placeId: null,
         placeGuess: worldwidePlaceText
       } );
@@ -55,6 +56,7 @@ const useParams = ( ): Object => {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
+        place: params.place,
         placeId: params.place?.id,
         placeGuess: params.place?.display_name
       } );

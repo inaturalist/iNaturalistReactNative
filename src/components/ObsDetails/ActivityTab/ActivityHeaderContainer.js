@@ -1,13 +1,11 @@
 // @flow
 
-import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments, updateComment } from "api/comments";
 import { updateIdentification as apiUpdateIdentification } from "api/identifications";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import { fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
 
 import ActivityHeader from "./ActivityHeader";
 
@@ -29,7 +27,6 @@ const ActivityHeaderContainer = ( {
   const [currentUser, setCurrentUser] = useState( false );
   const [flagged, setFlagged] = useState( false );
   const [loading, setLoading] = useState( false );
-  const queryClient = useQueryClient( );
   const { user } = item;
 
   const numFlags = item.flags?.length || 0;
@@ -51,7 +48,6 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: ( ) => {
         setLoading( false );
-        queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey, item.uuid] } );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
@@ -72,7 +68,6 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: () => {
         setLoading( false );
-        queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey, item.uuid] } );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }
@@ -99,7 +94,6 @@ const ActivityHeaderContainer = ( {
     {
       onSuccess: () => {
         setLoading( false );
-        queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey, item.uuid] } );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
         }

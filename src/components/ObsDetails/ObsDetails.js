@@ -164,8 +164,9 @@ const ObsDetails = ( {
       </View>
       <ObsDetailsHeader
         belongsToCurrentUser={belongsToCurrentUser}
-        observation={observation}
+        observationId={observation?.id}
         rightIconBlack
+        uuid={observation?.uuid}
       />
     </View>
   );
@@ -182,7 +183,8 @@ const ObsDetails = ( {
       >
         <ObsDetailsHeader
           belongsToCurrentUser={belongsToCurrentUser}
-          observation={observation}
+          observationId={observation?.id}
+          uuid={observation?.uuid}
         />
         <View>
           <ObsMediaDisplayContainer observation={observation} />
@@ -223,7 +225,7 @@ const ObsDetails = ( {
           )}
         </View>
       </ScrollView>
-      {showActivityTab && (
+      {showActivityTab && currentUser && (
         <FloatingButtons
           navToSuggestions={navToSuggestions}
           openCommentBox={openCommentBox}

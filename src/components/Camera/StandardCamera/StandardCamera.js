@@ -103,29 +103,36 @@ const StandardCamera = ( {
     takePhotoOptions,
     takingPhoto,
     toggleFlash
-  } = useTakePhoto( camera, addEvidence, device );
+  } = useTakePhoto( camera, !!addEvidence, device );
 
   const { t } = useTranslation( );
 
-  const cameraPreviewUris = useStore( state => state.cameraPreviewUris );
+  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
+  const resetEvidenceToAdd = useStore( state => state.resetEvidenceToAdd );
   const galleryUris = useStore( state => state.galleryUris );
 
   const totalObsPhotoUris = useMemo(
-    ( ) => [...cameraPreviewUris, ...galleryUris].length,
-    [cameraPreviewUris, galleryUris]
+    ( ) => [...rotatedOriginalCameraPhotos, ...galleryUris].length,
+    [rotatedOriginalCameraPhotos, galleryUris]
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
   const [dismissChanges, setDismissChanges] = useState( false );
+  const [newPhotoCount, setNewPhotoCount] = useState( 0 );
   const { screenWidth } = useDeviceOrientation( );
 
-  const photosTaken = totalObsPhotoUris > 0;
+  // newPhotoCount tracks photos taken in *this* instance of the camera. The
+  // camera might be instantiated with several rotatedOriginalCameraPhotos or
+  // galleryUris already in state, but we only want to show the CTA button
+  // when the user has taken a photo with *this* instance of the camera
+  const photosTaken = newPhotoCount > 0 && totalObsPhotoUris > 0;
 
   useFocusEffect(
     useCallback( ( ) => {
       // Reset camera zoom every time we get into a fresh camera view
-      resetZoom();
+      resetZoom( );
+      resetEvidenceToAdd( );
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] )
@@ -138,6 +145,7 @@ const StandardCamera = ( {
     // to sometimes pop back up on the next screen - see GH issue #629
     if ( !showDiscardSheet ) {
       if ( dismissChanges ) {
+        // TODO delete any new photos taken
         navigation.goBack();
       }
     }
@@ -149,6 +157,7 @@ const StandardCamera = ( {
       return;
     }
     await takePhoto( );
+    setNewPhotoCount( newPhotoCount + 1 );
   };
 
   const containerClasses = ["flex-1"];
@@ -164,7 +173,7 @@ const StandardCamera = ( {
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
-        cameraPreviewUris={cameraPreviewUris}
+        rotatedOriginalCameraPhotos={rotatedOriginalCameraPhotos}
       />
       <View className="relative flex-1">
         {device && (
@@ -197,7 +206,7 @@ const StandardCamera = ( {
         />
       </View>
       <CameraNavButtons
-        disabled={disallowAddingPhotos}
+        disabled={disallowAddingPhotos || takingPhoto}
         handleCheckmarkPress={handleCheckmarkPress}
         handleClose={handleBackButtonPress}
         photosTaken={photosTaken}

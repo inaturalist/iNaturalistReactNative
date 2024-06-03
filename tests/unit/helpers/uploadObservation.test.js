@@ -10,6 +10,20 @@ jest.mock( "components/LoginSignUp/AuthenticationService", ( ) => ( {
 // Mock safeRealmWrite b/c this function writes to realm
 jest.mock( "sharedHelpers/safeRealmWrite", ( ) => jest.fn( ) );
 
+// Mock fetches, since this helper will try to fetch the most up-to-date copy
+// of the obs after POSTing
+inatjs.observations.fetch.mockImplementation(
+  uuid => makeResponse( [factory( "RemoteObservation", { uuid } )] )
+);
+
+// Mock upsert, but only upsert. It should happen but we don't care if it
+// works in a unit test
+jest.mock( "realmModels/Observation", () => {
+  const actual = jest.requireActual( "realmModels/Observation" );
+  actual.default.upsertRemoteObservations = jest.fn( );
+  return actual;
+} );
+
 // This function also tries to retrieve records from Realm. If your test needs
 // this to fetch a specific record, you'll need to change the mock
 // implementation here
@@ -19,10 +33,6 @@ const realm = {
 
 function makeObservationWithPhotos( ) {
   const mockObservationPhoto = factory( "LocalObservationPhoto" );
-  // I haven't figured out a way to fake toJSON in a factoria object. This
-  // makes sure that toJSON returns something object like with all the same
-  // values. ~~~kueda 20240221
-  mockObservationPhoto.toJSON.mockImplementation( ( ) => mockObservationPhoto );
   const mockObservation = factory( "LocalObservation", {
     observationPhotos: [mockObservationPhoto]
   } );
@@ -31,7 +41,6 @@ function makeObservationWithPhotos( ) {
 
 function makeObservationWithSounds( ) {
   const mockObservationSound = factory( "LocalObservationSound" );
-  mockObservationSound.toJSON.mockImplementation( ( ) => mockObservationSound );
   const mockObservation = factory( "LocalObservation", {
     observationSounds: [mockObservationSound]
   } );
@@ -92,12 +101,15 @@ describe( "uploadObservation", ( ) => {
     it( "should call inatjs.observation_photos.update", async ( ) => {
       const mockObservationPhoto = factory.states( "uploaded" )( "LocalObservationPhoto" );
       mockObservationPhoto.needsSync.mockImplementation( ( ) => true );
-      mockObservationPhoto.toJSON.mockImplementation( ( ) => mockObservationPhoto );
       const mockObservation = factory.states( "uploaded" )( "LocalObservation", {
         observationPhotos: [mockObservationPhoto]
       } );
+      const mockRemoteObservation = factory( "RemoteObservation" );
       inatjs.observations.update.mockResolvedValue(
-        makeResponse( [factory( "RemoteObservation" )] )
+        makeResponse( [mockRemoteObservation] )
+      );
+      inatjs.observations.fetch.mockResolvedValue(
+        makeResponse( [mockRemoteObservation] )
       );
       await uploadObservation( mockObservation, realm );
       expect( inatjs.observation_photos.update ).toHaveBeenCalledTimes( 1 );

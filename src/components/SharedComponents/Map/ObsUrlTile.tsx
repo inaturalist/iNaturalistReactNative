@@ -5,7 +5,7 @@ import {
   UrlTile
 } from "react-native-maps";
 
-const API_ENDPOINT = "https://api.inaturalist.org/v2";
+import { TILE_URL } from "./helpers/mapHelpers";
 
 type Props = {
   params?: Object,
@@ -24,8 +24,8 @@ const ObsUrlTile = ( {
 
   // We want green points and (default) orange grid
   const tileUrlTemplate = showPointTiles
-    ? `${API_ENDPOINT}/points/{z}/{x}/{y}.png?${queryString}&color=%2374ac00`
-    : `${API_ENDPOINT}/grid/{z}/{x}/{y}.png?${queryString}`;
+    ? `${TILE_URL}/points/{z}/{x}/{y}.png?${queryString}&color=%2374ac00`
+    : `${TILE_URL}/grid/{z}/{x}/{y}.png?${queryString}`;
 
   if ( !tileUrlTemplate ) return <View />;
   if ( !withPressableObsTiles && !withObsTiles ) return <View />;

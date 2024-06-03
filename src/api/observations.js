@@ -65,6 +65,28 @@ const fetchRemoteObservation = async (
   }
 };
 
+const fetchRemoteObservations = async (
+  uuids: Array<string>,
+  params: Object = {},
+  opts: Object = {}
+): Promise<?number> => {
+  try {
+    const response = await inatjs.observations.fetch(
+      uuids,
+      params,
+      opts
+    );
+    if ( !response ) { return null; }
+    const { results } = response;
+    if ( results?.length > 0 ) {
+      return results.map( mapToLocalSchema );
+    }
+    return null;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 const markAsReviewed = async ( params: Object = {}, opts: Object = {} ): Promise<?number> => {
   try {
     return await inatjs.observations.review( params, opts );
@@ -205,6 +227,7 @@ export {
   fetchObservationUpdates,
   fetchObservers,
   fetchRemoteObservation,
+  fetchRemoteObservations,
   fetchSpeciesCounts,
   fetchUnviewedObservationUpdatesCount,
   markAsReviewed,

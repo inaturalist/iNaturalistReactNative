@@ -3,11 +3,16 @@ import { Body4, DisplayTaxonName } from "components/SharedComponents";
 import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
 import SpeciesSeenCheckmark from "components/SharedComponents/SpeciesSeenCheckmark";
 import { Pressable, View } from "components/styledComponents";
+import {
+  EXPLORE_ACTION,
+  useExplore
+} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 interface Props {
   count: number,
@@ -23,6 +28,10 @@ const TaxonGridItem = ( {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
+  const setExploreView = useStore( state => state.setExploreView );
+  const {
+    dispatch
+  } = useExplore( );
 
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
@@ -58,7 +67,15 @@ const TaxonGridItem = ( {
           {count && (
             <Body4
               className="text-white py-1"
-              onPress={( ) => navigation.navigate( "Explore", { taxon } )}
+              onPress={( ) => {
+                dispatch( {
+                  type: EXPLORE_ACTION.CHANGE_TAXON,
+                  taxon,
+                  taxonId: taxon?.id,
+                  taxonName: taxon?.preferred_common_name || taxon?.name
+                } );
+                setExploreView( "observations" );
+              }}
               accessibilityRole="link"
             >
               {t( "X-Observations", { count } )}
@@ -67,6 +84,7 @@ const TaxonGridItem = ( {
           <DisplayTaxonName
             keyBase={taxon?.id}
             taxon={taxon}
+            scientificNameFirst={currentUser?.prefers_scientific_name_first}
             layout="vertical"
             color="text-white"
           />

@@ -52,30 +52,29 @@ const EvidenceList = ( {
   const [selectedMediaUri, setSelectedMediaUri]: [string | null, Function] = useState( null );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
   const photoUris = observationPhotos.map(
-    obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+    obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
   );
   const mediaUris = useMemo( ( ) => ( [
     ...photoUris,
     ...observationSounds.map( obsSound => obsSound.sound.file_url )
   ] ), [photoUris, observationSounds] );
 
-  const renderPhoto = useCallback( ( { item: obsPhoto, _getIndex, drag } ) => {
-    const uri = Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo );
-    return (
+  const renderPhoto = useCallback(
+    ( { item: obsPhoto, _getIndex, drag } ) => (
       <ScaleDecorator>
         <Pressable
           onLongPress={drag}
           accessibilityRole="button"
           accessibilityLabel={t( "Select-or-drag-media" )}
           onPress={( ) => {
-            setSelectedMediaUri( uri );
+            setSelectedMediaUri( obsPhoto );
           }}
           className={classnames( imageClass )}
-          testID={`EvidenceList.${obsPhoto.photo?.url || obsPhoto.photo?.localFilePath}`}
+          testID={`EvidenceList.${obsPhoto}`}
         >
           <View className="rounded-lg overflow-hidden">
             <Image
-              source={{ uri }}
+              source={{ uri: obsPhoto }}
               testID="ObsEdit.photo"
               className="w-fit h-full flex items-center justify-center"
               accessibilityIgnoresInvertColors
@@ -83,8 +82,9 @@ const EvidenceList = ( {
           </View>
         </Pressable>
       </ScaleDecorator>
-    );
-  }, [setSelectedMediaUri, t] );
+    ),
+    [setSelectedMediaUri, t]
+  );
 
   const renderFooter = useCallback( ( ) => (
     <View className="flex-1 flex-row">
@@ -194,28 +194,44 @@ const EvidenceList = ( {
     t
   ] );
 
+  const onDeletePhoto = async uriToDelete => {
+    deletePhotoFromObservation( uriToDelete );
+    await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+    afterMediaDeleted( );
+  };
+
+  const evidenceList = useMemo( ( ) => (
+    <DraggableFlatList
+      testID="EvidenceList.DraggableFlatList"
+      horizontal
+      data={photoUris}
+      renderItem={renderPhoto}
+      keyExtractor={obsPhoto => obsPhoto}
+      onDragEnd={handleDragAndDrop}
+      ListHeaderComponent={renderHeader}
+      ListFooterComponent={renderFooter}
+      className="py-5"
+    />
+  ), [
+    handleDragAndDrop,
+    photoUris,
+    renderFooter,
+    renderHeader,
+    renderPhoto
+  ] );
+
   return (
     <>
-      <DraggableFlatList
-        testID="EvidenceList.DraggableFlatList"
-        horizontal
-        data={observationPhotos}
-        renderItem={renderPhoto}
-        keyExtractor={obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath}
-        onDragEnd={handleDragAndDrop}
-        ListHeaderComponent={renderHeader}
-        ListFooterComponent={renderFooter}
-        className="py-5"
-      />
+      {evidenceList}
       <MediaViewerModal
         editable
-        showModal={!!selectedMediaUri}
         onClose={( ) => setSelectedMediaUri( null )}
         onDeletePhoto={onDeletePhoto}
         onDeleteSound={onDeleteSound}
-        uri={selectedMediaUri}
         photos={observationPhotos.map( obsPhoto => obsPhoto.photo )}
+        showModal={!!selectedMediaUri}
         sounds={observationSounds.map( obsSound => obsSound.sound )}
+        uri={selectedMediaUri}
       />
     </>
   );

@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import MyObservations from "components/MyObservations/MyObservations";
+import { INITIAL_STATE } from "components/MyObservations/MyObservationsContainer";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -71,12 +72,7 @@ describe( "MyObservations", () => {
         toggleLayout={jest.fn( )}
         uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
-        uploadState={{
-          uploads: [],
-          error: null,
-          numToUpload: 0,
-          uploadInProgress: false
-        }}
+        uploadState={INITIAL_STATE}
       />
     );
     const obs = mockObservations[0];
@@ -98,12 +94,7 @@ describe( "MyObservations", () => {
         toggleLayout={jest.fn( )}
         uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
-        uploadState={{
-          uploads: [],
-          error: null,
-          numToUpload: 0,
-          uploadInProgress: false
-        }}
+        uploadState={INITIAL_STATE}
       />
     );
     // Awaiting the first observation because using await in the forEach errors out
@@ -128,12 +119,7 @@ describe( "MyObservations", () => {
         toggleLayout={jest.fn( )}
         uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
-        uploadState={{
-          uploads: [],
-          error: null,
-          numToUpload: 0,
-          uploadInProgress: false
-        }}
+        uploadState={INITIAL_STATE}
       />
     );
     mockObservations.forEach( obs => {
@@ -150,12 +136,7 @@ describe( "MyObservations", () => {
         toggleLayout={jest.fn( )}
         uploadStatus={{}}
         setShowLoginSheet={jest.fn( )}
-        uploadState={{
-          uploads: [],
-          error: null,
-          numToUpload: 0,
-          uploadInProgress: false
-        }}
+        uploadState={INITIAL_STATE}
       />
     );
     describe( "portrait orientation", ( ) => {

@@ -77,11 +77,14 @@ const Header = ( {
     );
   }, [observations, t, savedLocally] );
 
+  const navigateBack = params?.lastScreen === "GroupPhotos"
+    || ( unsynced && savedLocally )
+    || ( unsynced && !unsavedChanges );
+
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( params?.lastScreen === "GroupPhotos"
-      || ( unsynced && savedLocally )
-      || ( unsynced && !unsavedChanges )
-    ) {
+    if ( params?.lastScreen === "ObsList" ) {
+      navToObsList( );
+    } else if ( navigateBack ) {
       navigation.goBack( );
     } else if ( !savedLocally ) {
       setDiscardObservationSheetVisible( true );
@@ -91,7 +94,13 @@ const Header = ( {
       navigateToObsDetails( navigation, currentObservation?.uuid );
     }
   }, [
-    params?.lastScreen, unsynced, savedLocally, unsavedChanges, navigation, currentObservation?.uuid
+    currentObservation?.uuid,
+    navToObsList,
+    navigateBack,
+    navigation,
+    params?.lastScreen,
+    savedLocally,
+    unsavedChanges
   ] );
 
   const renderBackButton = useCallback( ( ) => {

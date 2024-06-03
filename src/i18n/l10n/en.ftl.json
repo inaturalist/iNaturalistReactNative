@@ -464,6 +464,10 @@
     "comment": "TODO this and many other uses of placeables are not currently translatable\nwithout knowing the vowel/consonant state of the first letter of the\nplaceable",
     "val": "Endemic to { $place }"
   },
+  "Error": {
+    "comment": "Title for a section describing an error",
+    "val": "Error"
+  },
   "Error-Could-Not-Fetch-Taxon": "Error: Could Not Fetch Taxon",
   "ERROR-LOADING-DQA": "ERROR LOADING IN DQA",
   "Error-title": {
@@ -578,6 +582,7 @@
   "Identify-an-organism-with-the-iNaturalist-AI-Camera": "Identify an organism with the iNaturalist AI Camera",
   "If-an-account-with-that-email-exists": "If an account with that email exists, we've sent password reset instructions to your email.",
   "If-you-want-to-collate-compare-promote": "If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.",
+  "If-youre-seeing-this-error": "If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.",
   "Import-Photos-From": "Import Photos From",
   "IMPORT-X-OBSERVATIONS": {
     "comment": "Shows the number of observations a user is about to import",
@@ -649,6 +654,7 @@
     "comment": "Month of June",
     "val": "June"
   },
+  "Label-colon-value": "{ $label }: { $value }",
   "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
     "val": "Last Active: { $date }"
@@ -1056,6 +1062,7 @@
     "comment": "Label for a button that resets the state of an interface, e.g. a button that\nresets the sound recorder to its original state",
     "val": "Reset"
   },
+  "RESTART-APP": "RESTART APP",
   "Restore": {
     "comment": "Label for button that restores a withdrawn identification",
     "val": "Restore"
@@ -1287,7 +1294,7 @@
   },
   "Uploading-x-of-y-observations": {
     "comment": "Shows the number of observations a user is currently uploading out of total on my observations page",
-    "val": "Uploading { $currentUploadCount } of { $total ->\n  [one] 1 observation\n *[other] { $total } observations\n}"
+    "val": "{ $total ->\n  [one] Uploading { $currentUploadCount } observation\n *[other] Uploading { $currentUploadCount } of { $total } observations\n}"
   },
   "Use-iNaturalists-AI-Camera": "Use iNaturalist's AI Camera to identify organisms in real-time",
   "USE-LOCATION": {
@@ -1307,7 +1314,7 @@
   "Using-iNaturalist-requires-the-storage": "Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.",
   "VIEW-CHILDREN-TAXA": "VIEW CHILDREN TAXA",
   "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
-  "View-in-browser": "View in Browser",
+  "View-in-browser": "View in browser",
   "VIEW-IN-EXPLORE": "VIEW IN EXPLORE",
   "VIEW-INATURALIST-HELP": "VIEW INATURALIST HELP",
   "View-photo": {
@@ -1383,6 +1390,7 @@
     "val": "{ $count ->\n  [one] 1 SOUND\n *[other] { $count } SOUNDS\n}"
   },
   "X-Species": "{ $count ->\n  [one] { $count } Species\n *[other] { $count } Species\n}",
+  "x-uploads-failed": "{ $count ->\n  [one] { $count } upload failed\n *[other] { $count } uploads failed\n}",
   "Yes-license-my-photos": "Yes, license my photos, sounds, and observations so scientists can use my data (recommended)",
   "You-are-offline-Tap-to-try-again": "You are offline. Tap to try again.",
   "You-can-add-up-to-20-media": "You can add up to 20 photos and 20 sounds per observation.",

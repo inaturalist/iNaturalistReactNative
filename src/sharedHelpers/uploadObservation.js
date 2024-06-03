@@ -1,8 +1,9 @@
 // @flow
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import { INatApiError } from "api/error";
 import {
   createObservation,
   createOrUpdateEvidence,
+  fetchRemoteObservation,
   updateObservation
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
@@ -124,7 +125,13 @@ const uploadEvidence = async (
   return responses[0];
 };
 
-const uploadObservation = async ( obs: Object, realm: Object ): Object => {
+const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} ): Object => {
+  // we're emitting progress increments:
+  // half one when upload of obs started
+  // half one when upload of obs finished
+  // half one when obsPhoto/obsSound is successfully uploaded
+  // half one when the obsPhoto/obsSound is attached to the obs
+  emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   const apiToken = await getJWT( );
   // don't bother trying to upload unless there's a logged in user
   if ( !apiToken ) {
@@ -132,9 +139,8 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
       "Gack, tried to upload an observation without API token!"
     );
   }
-  activateKeepAwake();
   const obsToUpload = Observation.mapObservationForUpload( obs );
-  const options = { api_token: apiToken };
+  const options = { ...opts, api_token: apiToken };
 
   // Remove all null values, b/c the API doesn't seem to like them for some
   // reason (might be an error with the API as of 20220801)
@@ -197,20 +203,16 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
     fields: { id: true }
   };
 
-  // we're emitting progress increments:
-  // one when the upload of obs
-  // half one when obsPhoto/obsSound is successfully uploaded
-  // half one when the obsPhoto/obsSound is attached to the obs
   if ( wasPreviouslySynced ) {
     response = await updateObservation( {
       ...uploadParams,
       id: newObs.uuid,
       ignore_photos: true
     }, options );
-    emitUploadProgress( obs.uuid, UPLOAD_PROGRESS_INCREMENT );
+    emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   } else {
     response = await createObservation( uploadParams, options );
-    emitUploadProgress( obs.uuid, UPLOAD_PROGRESS_INCREMENT );
+    emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   }
 
   if ( !response ) {
@@ -220,7 +222,6 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
   const { uuid: obsUUID } = response.results[0];
 
   await Promise.all( [
-    markRecordUploaded( obs.uuid, null, "Observation", response, realm ),
     // Attach the newly uploaded photos/sounds to the uploaded observation
     unsyncedObservationPhotos.length > 0
       ? await uploadEvidence(
@@ -260,8 +261,38 @@ const uploadObservation = async ( obs: Object, realm: Object ): Object => {
       )
       : null
   ] );
-  deactivateKeepAwake( );
+  // Make sure this happens *after* ObservationPhotos and ObservationSounds
+  // are created so the observation doesn't appear uploaded until all its
+  // media successfully uploads
+  markRecordUploaded( obs.uuid, null, "Observation", response, realm );
+  // fetch observation and upsert it
+  const remoteObs = await fetchRemoteObservation( obsUUID, { fields: Observation.FIELDS } );
+  Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
   return response;
 };
+
+export function handleUploadError( uploadError: Error | INatApiError, t: Function ): string {
+  let { message } = uploadError;
+  // uploadError might be an INatApiError but I don't know how to tell flow to
+  // shut up about the possibility that uploadError might not have this
+  // attribute... even though ?. will prevent that from being a problem.
+  // ~~~~kueda20240523
+  // $FlowIgnore
+  if ( uploadError?.json?.errors ) {
+    // TODO localize comma join
+    message = uploadError.json.errors.map( e => {
+      if ( e.message?.errors ) {
+        return e.message.errors.flat( ).join( ", " );
+      }
+      // 410 error for observations previously deleted uses e.message?.error format
+      return e.message?.error || e.message;
+    } ).join( ", " );
+  } else if ( uploadError.message?.match( /Network request failed/ ) ) {
+    message = t( "Connection-problem-Please-try-again-later" );
+  } else {
+    throw uploadError;
+  }
+  return message;
+}
 
 export default uploadObservation;

@@ -22,8 +22,9 @@ import {
   useObservationsUpdates,
   useTranslation
 } from "sharedHooks";
-import useRemoteObservation,
-{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
+import useRemoteObservation, {
+  fetchRemoteObservationKey
+} from "sharedHooks/useRemoteObservation";
 import { ACTIVITY_TAB_ID, DETAILS_TAB_ID } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
@@ -174,12 +175,20 @@ const ObsDetailsContainer = ( ): Node => {
     || ( !observation?.user && !observation?.id )
   );
 
+  const invalidateRemoteObservationFetch = useCallback( ( ) => {
+    if ( observation?.uuid ) {
+      queryClient.invalidateQueries( {
+        queryKey: [fetchRemoteObservationKey, observation.uuid]
+      } );
+    }
+  }, [queryClient, observation?.uuid] );
+
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      queryClient.invalidateQueries( { queryKey: fetchRemoteObservationKey } );
-    }, [queryClient] )
+      invalidateRemoteObservationFetch( );
+    }, [invalidateRemoteObservationFetch] )
   );
 
   useEffect( ( ) => {
@@ -340,8 +349,8 @@ const ObsDetailsContainer = ( ): Node => {
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
-  const refetchObservation = ( ) => {
-    queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey] } );
+  const invalidateQueryAndRefetch = ( ) => {
+    invalidateRemoteObservationFetch( );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };
@@ -386,7 +395,7 @@ const ObsDetailsContainer = ( ): Node => {
       onCommentAdded={onCommentAdded}
       onIDAgreePressed={onIDAgreePressed}
       openCommentBox={openCommentBox}
-      refetchRemoteObservation={refetchObservation}
+      refetchRemoteObservation={invalidateQueryAndRefetch}
       remoteObsWasDeleted={remoteObsWasDeleted}
       showActivityTab={showActivityTab}
       showAgreeWithIdSheet={showAgreeWithIdSheet}

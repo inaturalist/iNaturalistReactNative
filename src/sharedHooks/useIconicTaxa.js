@@ -12,12 +12,13 @@ const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ): Obje
   const realm = useRealm( );
   const isConnected = useIsConnected( );
   const [isUpdatingRealm, setIsUpdatingRealm] = useState( );
+  const enabled = !!isConnected && !!reload;
 
   const queryKey = ["searchTaxa", reload];
   const { data: iconicTaxa } = useAuthenticatedQuery(
     queryKey,
     ( ) => searchTaxa( { iconic: true } ),
-    { enabled: !!isConnected && !!reload }
+    { enabled }
   );
 
   useEffect( ( ) => {

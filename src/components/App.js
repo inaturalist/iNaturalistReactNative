@@ -60,10 +60,14 @@ const App = ( { children }: Props ): Node => {
 
   useEffect( ( ) => {
     if ( realm?.path ) {
-      logger.debug( "[App.js] Need to open Realm in another app?" );
-      logger.debug( "[App.js] realm.path: ", realm.path );
+      console.debug( "Need to open Realm in another app?" );
+      console.debug( "realm.path: ", realm.path );
     }
   }, [realm?.path] );
+
+  useEffect( ( ) => {
+    logger.info( "pickup" );
+  }, [] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

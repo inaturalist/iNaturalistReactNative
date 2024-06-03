@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import {
+  Button,
   Heading4,
   INatIconButton,
   ScrollViewWrapper
@@ -16,7 +17,6 @@ import React, {
   useState
 } from "react";
 import { Platform, Text } from "react-native";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useLogs from "sharedHooks/useLogs";
 
 /* eslint-disable i18next/no-literal-string */
@@ -37,13 +37,10 @@ const Log = (): Node => {
           />
         </View>
       ) }
-      <IconMaterial
-        name="mail"
-        size={24}
+      <Button
+        className="p-2"
         onPress={emailLogFile}
-        accessibilityLabel="Email logs"
-        accessibilityHint="Opens email app"
-        color="white"
+        text="Email log"
       />
     </>
   ), [emailLogFile, shareLogFile] );

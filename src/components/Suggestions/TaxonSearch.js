@@ -30,18 +30,23 @@ const TaxonSearch = ( ): Node => {
   const taxonList = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
-  useNavigateWithTaxonSelected( selectedTaxon, { vision: false } );
+  useNavigateWithTaxonSelected(
+    selectedTaxon,
+    ( ) => setSelectedTaxon( null ),
+    { vision: false }
+  );
 
   const renderFooter = useCallback( ( ) => <View className="pb-10" />, [] );
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       accessibilityLabel={t( "Choose-taxon" )}
-      taxon={taxon}
-      handleCheckmarkPress={() => setSelectedTaxon( taxon )}
-      testID={`Search.taxa.${taxon.id}`}
-      first={index === 0}
       fetchRemote={false}
+      first={index === 0}
+      handleCheckmarkPress={() => setSelectedTaxon( taxon )}
+      hideNavButtons
+      taxon={taxon}
+      testID={`Search.taxa.${taxon.id}`}
     />
   ), [setSelectedTaxon, t] );
 

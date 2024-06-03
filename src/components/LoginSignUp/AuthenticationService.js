@@ -14,6 +14,8 @@ import Realm from "realm";
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { installID } from "sharedHelpers/userData";
+import { sleep, unlink } from "sharedHelpers/util";
 
 import { log, logFilePath } from "../../../react-native-logs.config";
 
@@ -23,12 +25,51 @@ const logger = log.extend( "AuthenticationService" );
 // either by placing it in .env file, or in an environment variable.
 const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
 
-// JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
+// JWT Tokens expire after 30 mins - consider 25 mins as the max time
+// (safe margin). Actually they expire in 24 hours, but ideally they would
+// expire every 30 mins, so might as well be futureproof.
 const JWT_EXPIRATION_MINS = 25;
 
 const axiosInstance = axios.create( {
   baseURL: API_HOST
 } );
+
+async function getSensitiveItem( key, options = {} ) {
+  try {
+    return await RNSInfo.getItem( key, options );
+  } catch ( getItemError ) {
+    if ( getItemError.message.match( /Protected data not available yet/ ) ) {
+      await sleep( 1_000 );
+      return RNSInfo.getItem( key, options );
+    }
+    throw getItemError;
+  }
+}
+
+async function setSensitiveItem( key, value, options = {} ) {
+  try {
+    return await RNSInfo.setItem( key, value, options );
+  } catch ( setItemError ) {
+    if ( setItemError.message.match( /Protected data not available yet/ ) ) {
+      await sleep( 1_000 );
+      return RNSInfo.setItem( key, value, options );
+    }
+    throw setItemError;
+  }
+}
+
+async function deleteSensitiveItem( key, options = {} ) {
+  try {
+    return await RNSInfo.deleteItem( key, options );
+  } catch ( deleteItemError ) {
+    console.log( "[DEBUG AuthenticationService.js] deleteItemError: ", deleteItemError );
+    if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
+      await sleep( 500 );
+      return RNSInfo.deleteItem( key, options );
+    }
+    throw deleteItemError;
+  }
+}
 
 /**
  * Creates base API client for all requests
@@ -36,7 +77,11 @@ const axiosInstance = axios.create( {
  */
 const createAPI = additionalHeaders => create( {
   axiosInstance,
-  headers: { "User-Agent": getUserAgent(), ...additionalHeaders }
+  headers: {
+    "User-Agent": getUserAgent(),
+    "X-Installation-ID": installID( ),
+    ...additionalHeaders
+  }
 } );
 
 /**
@@ -45,7 +90,7 @@ const createAPI = additionalHeaders => create( {
  * @returns {Promise<boolean>}
  */
 const isLoggedIn = async (): Promise<boolean> => {
-  const accessToken = await RNSInfo.getItem( "accessToken", {} );
+  const accessToken = await getSensitiveItem( "accessToken" );
   return typeof accessToken === "string";
 };
 
@@ -54,7 +99,7 @@ const isLoggedIn = async (): Promise<boolean> => {
  *
  * @returns {Promise<boolean>}
  */
-const getUsername = async (): Promise<string> => RNSInfo.getItem( "username", {} );
+const getUsername = async (): Promise<string> => getSensitiveItem( "username" );
 
 /**
  * Signs out the user
@@ -103,13 +148,11 @@ const signOut = async (
 
   const username = await getUsername( );
   logger.debug( "signed out user with username:", username );
-  await RNSInfo.deleteItem( "jwtToken", {} );
-  await RNSInfo.deleteItem( "jwtGeneratedAt", {} );
-  await RNSInfo.deleteItem( "username", {} );
-  await RNSInfo.deleteItem( "accessToken", {} );
-  RNFS.exists( logFilePath ).then( fileExists => {
-    if ( fileExists ) RNFS.unlink( logFilePath );
-  } );
+  await deleteSensitiveItem( "jwtToken" );
+  await deleteSensitiveItem( "jwtGeneratedAt" );
+  await deleteSensitiveItem( "username" );
+  await deleteSensitiveItem( "accessToken" );
+  await unlink( logFilePath );
 };
 
 /**
@@ -151,8 +194,8 @@ const getAnonymousJWT = (): string => {
  */
 // $FlowIgnore
 const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
-  let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
-  let jwtGeneratedAt = await RNSInfo.getItem( "jwtGeneratedAt", {} );
+  let jwtToken = await getSensitiveItem( "jwtToken" );
+  let jwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
   if ( jwtGeneratedAt ) {
     jwtGeneratedAt = parseInt( jwtGeneratedAt, 10 );
   }
@@ -175,7 +218,7 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older
     // than 25 mins (safe margin) - ask for a new one
 
-    const accessToken = await RNSInfo.getItem( "accessToken", {} );
+    const accessToken = await getSensitiveItem( "accessToken" );
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     let response;
     try {
@@ -211,8 +254,8 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
     jwtToken = response.data.api_token;
     jwtGeneratedAt = Date.now();
 
-    await RNSInfo.setItem( "jwtToken", jwtToken, {} );
-    await RNSInfo.setItem( "jwtGeneratedAt", jwtGeneratedAt.toString(), {} );
+    await setSensitiveItem( "jwtToken", jwtToken );
+    await setSensitiveItem( "jwtGeneratedAt", jwtGeneratedAt.toString() );
 
     return jwtToken;
   }
@@ -242,7 +285,7 @@ const getAPIToken = async (
   if ( useJWT ) {
     return getJWT( allowAnonymousJWT );
   }
-  const accessToken = await RNSInfo.getItem( "accessToken", {} );
+  const accessToken = await getSensitiveItem( "accessToken" );
   return `Bearer ${accessToken}`;
 };
 
@@ -363,8 +406,8 @@ const authenticateUser = async (
   }
 
   // Save authentication details to secure storage
-  await RNSInfo.setItem( "username", remoteUsername, {} );
-  await RNSInfo.setItem( "accessToken", accessToken, {} );
+  await setSensitiveItem( "username", remoteUsername );
+  await setSensitiveItem( "accessToken", accessToken );
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
