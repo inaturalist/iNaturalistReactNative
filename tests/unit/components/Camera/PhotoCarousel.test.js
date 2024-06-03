@@ -56,7 +56,6 @@ describe( "PhotoCarousel", ( ) => {
     useStore.setState( {
       evidenceToAdd: [mockPhotoUris[2]],
       rotatedOriginalCameraPhotos: mockPhotoUris,
-      photoEvidenceUris: mockPhotoUris,
       deletePhotoFromObservation: uri => useStore.setState( {
         rotatedOriginalCameraPhotos: [...removePhotoFromList( mockPhotoUris, uri )]
       } )
