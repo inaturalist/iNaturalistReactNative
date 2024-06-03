@@ -83,12 +83,19 @@ const createObservationFlowSlice = set => ( {
       uri
     );
     const newObservation = newObservations[state.currentObservationIndex];
+    const index = newObservation.observationPhotos.findIndex(
+      op => ( op.photo?.localFilePath || op.photo?.url ) === uri
+    );
+    if ( index > -1 ) {
+      newObservation.observationPhotos.splice( index, 1 );
+    }
+
     return ( {
       photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
       rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
       evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
       observations: newObservations,
-      currentObservation: newObservation
+      currentObservation: observationToJSON( newObservation )
     } );
   } ),
   deleteSoundFromObservation: uri => set( state => {

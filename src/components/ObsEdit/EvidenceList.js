@@ -148,8 +148,8 @@ const EvidenceList = ( {
   );
 
   const onDeletePhoto = useCallback( async uriToDelete => {
-    deletePhotoFromObservation( uriToDelete );
     await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+    deletePhotoFromObservation( uriToDelete );
     afterMediaDeleted( );
   }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation, realm] );
 
@@ -193,12 +193,6 @@ const EvidenceList = ( {
     observationSounds,
     t
   ] );
-
-  const onDeletePhoto = async uriToDelete => {
-    deletePhotoFromObservation( uriToDelete );
-    await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
-    afterMediaDeleted( );
-  };
 
   const evidenceList = useMemo( ( ) => (
     <DraggableFlatList

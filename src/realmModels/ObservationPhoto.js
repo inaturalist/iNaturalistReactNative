@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react";
-import { FileUpload } from "inaturalistjs";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import inatjs, { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Photo from "./Photo";
 
@@ -89,34 +89,27 @@ class ObservationPhoto extends Realm.Object {
   };
 
   static async deleteRemotePhoto( realm, uri, currentObservation ) {
-    // right now it doesn't look like there's a way to delete a photo OR an observation photo from
-    // api v2, so just going to worry about deleting locally for now
-    const obsPhotoToDelete = currentObservation?.observationPhotos.find( p => p.url === uri );
+    const obsPhotoToDelete = currentObservation?.observationPhotos?.find(
+      p => p.photo?.url === uri
+    );
+
     if ( obsPhotoToDelete ) {
-      safeRealmWrite( realm, ( ) => {
-        realm?.delete( obsPhotoToDelete );
-      }, "deleting remote observation photo in ObservationPhoto" );
+      const apiToken = await getJWT( );
+      const options = { api_token: apiToken };
+      await inatjs.observation_photos.delete( { id: obsPhotoToDelete.uuid }, options );
     }
   }
 
-  static async deleteLocalPhoto( realm, uri, currentObservation ) {
+  static async deleteLocalPhoto( realm, uri ) {
     // delete uri on disk
     Photo.deletePhotoFromDeviceStorage( uri );
-    const obsPhotoToDelete = currentObservation
-      ?.observationPhotos
-      ?.find( p => Photo.accessLocalPhoto( p.localFilePath ) === uri );
-    if ( obsPhotoToDelete ) {
-      safeRealmWrite( realm, ( ) => {
-        realm?.delete( obsPhotoToDelete );
-      }, "deleting local observation photo in ObservationPhoto" );
-    }
   }
 
   static async deletePhoto( realm, uri, currentObservation ) {
     if ( uri.includes( "https://" ) ) {
       ObservationPhoto.deleteRemotePhoto( realm, uri, currentObservation );
     } else {
-      ObservationPhoto.deleteLocalPhoto( realm, uri, currentObservation );
+      ObservationPhoto.deleteLocalPhoto( realm, uri );
     }
   }
 

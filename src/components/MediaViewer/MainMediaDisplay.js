@@ -73,7 +73,7 @@ const MainMediaDisplay = ( {
             ? (
               <View className="absolute bottom-4 right-4">
                 <TransparentCircleButton
-                  onPress={( ) => onDeletePhoto( photo.localFilePath )}
+                  onPress={( ) => onDeletePhoto( photo.localFilePath || photo.url )}
                   icon="trash-outline"
                   color={colors.white}
                   accessibilityLabel={t( "Delete-photo" )}
