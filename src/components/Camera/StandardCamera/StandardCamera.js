@@ -120,6 +120,8 @@ const StandardCamera = ( {
   const [showAlert, setShowAlert] = useState( false );
   const [dismissChanges, setDismissChanges] = useState( false );
   const [newPhotoCount, setNewPhotoCount] = useState( 0 );
+  const [newPhotoUris, setNewPhotoUris] = useState( [] );
+
   const { screenWidth } = useDeviceOrientation( );
 
   // newPhotoCount tracks photos taken in *this* instance of the camera. The
@@ -156,8 +158,9 @@ const StandardCamera = ( {
       setShowAlert( true );
       return;
     }
-    await takePhoto( );
+    const uri = await takePhoto( );
     setNewPhotoCount( newPhotoCount + 1 );
+    setNewPhotoUris( [...newPhotoUris, uri] );
   };
 
   const containerClasses = ["flex-1"];
