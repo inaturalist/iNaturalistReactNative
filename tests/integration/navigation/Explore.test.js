@@ -233,8 +233,8 @@ describe( "logged in", ( ) => {
         await actor.press( taxonDetailsExploreButton );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
         expect( defaultGlobalLocation ).toBeVisible( );
-        const speciesIcon = await screen.findByLabelText( /Species View/ );
-        expect( speciesIcon ).toBeVisible( );
+        const observationsIcon = await screen.findByLabelText( /Observations View/ );
+        expect( observationsIcon ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         await actor.press( backButton );
         expect( taxonDetailsExploreButton ).toBeVisible( );
