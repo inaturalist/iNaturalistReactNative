@@ -30,6 +30,7 @@ import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import EstablishmentMeans from "./EstablishmentMeans";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
@@ -48,6 +49,7 @@ const TAXON_URL = "https://www.inaturalist.org/taxa";
 const isTablet = DeviceInfo.isTablet();
 
 const TaxonDetails = ( ): Node => {
+  const setExploreView = useStore( state => state.setExploreView );
   const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -229,17 +231,20 @@ const TaxonDetails = ( ): Node => {
                 <View className="ml-5">
                   <INatIconButton
                     icon="compass-rose-outline"
-                    onPress={( ) => navigation.navigate( "TabNavigator", {
-                      screen: "TabStackNavigator",
-                      params: {
-                        screen: "Explore",
+                    onPress={( ) => {
+                      setExploreView( "observations" );
+                      navigation.navigate( "TabNavigator", {
+                        screen: "TabStackNavigator",
                         params: {
-                          taxon,
-                          worldwide: true,
-                          resetStoredParams: true
+                          screen: "Explore",
+                          params: {
+                            taxon,
+                            worldwide: true,
+                            resetStoredParams: true
+                          }
                         }
-                      }
-                    } )}
+                      } );
+                    }}
                     accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
                     accessibilityHint={t( "Navigates-to-explore" )}
                     size={30}

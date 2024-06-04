@@ -23,7 +23,6 @@ const RootExploreContainerWithContext = ( ): Node => {
   const currentUser = useCurrentUser( );
   const storedParams = useStore( state => state.storedParams );
   const setStoredParams = useStore( state => state.setStoredParams );
-  const setExploreView = useStore( state => state.setExploreView );
 
   const worldwidePlaceText = t( "Worldwide" );
 
@@ -32,10 +31,6 @@ const RootExploreContainerWithContext = ( ): Node => {
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
-
-  useEffect( ( ) => {
-    setExploreView( "species" );
-  }, [setExploreView] );
 
   const updateTaxon = ( taxon: Object ) => {
     dispatch( {

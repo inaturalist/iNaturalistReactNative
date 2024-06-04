@@ -25,11 +25,13 @@ import {
   useCurrentUser,
   useIsConnected
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ): Node => {
+  const setExploreView = useStore( state => state.setExploreView );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
@@ -79,22 +81,27 @@ const UserProfile = ( ): Node => {
   // }, [navigation, user, currentUser] );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      user,
-      worldwide: true,
-      resetStoredParams: true
-    } ),
-    [navigation, user]
+    ( ) => {
+      setExploreView( "observations" );
+      navigation.navigate( "Explore", {
+        user,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, user, setExploreView]
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      user,
-      worldwide: true,
-      viewSpecies: true,
-      resetStoredParams: true
-    } ),
-    [navigation, user]
+    ( ) => {
+      setExploreView( "species" );
+      navigation.navigate( "Explore", {
+        user,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, user, setExploreView]
   );
 
   if ( !user ) {

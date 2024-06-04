@@ -28,6 +28,7 @@ const ToolbarContainer = ( {
   syncInProgress,
   toggleLayout
 }: Props ): Node => {
+  const setExploreView = useStore( state => state.setExploreView );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const deletions = useStore( state => state.deletions );
@@ -69,12 +70,15 @@ const ToolbarContainer = ( {
   ] );
 
   const navToExplore = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      user: currentUser,
-      worldwide: true,
-      resetStoredParams: true
-    } ),
-    [navigation, currentUser]
+    ( ) => {
+      setExploreView( "observations" );
+      navigation.navigate( "Explore", {
+        user: currentUser,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, currentUser, setExploreView]
   );
 
   const { t } = useTranslation( );
