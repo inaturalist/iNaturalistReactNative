@@ -15,7 +15,6 @@ import React, { useCallback } from "react";
 import { FlatList } from "react-native";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import AddCommentPrompt from "./AddCommentPrompt";
 import Attribution from "./Attribution";
@@ -26,54 +25,35 @@ import Suggestion from "./Suggestion";
 import SuggestionsEmpty from "./SuggestionsEmpty";
 
 type Props = {
-  commonAncestor: ?Object,
   debugData: Object,
-  hasVisionSuggestion: boolean,
   loading: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
   suggestions: Array<Object>,
+  topSuggestion: Object,
   usingOfflineSuggestions: boolean,
 };
 
 const Suggestions = ( {
-  commonAncestor,
   debugData,
-  hasVisionSuggestion,
   loading,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  suggestions: unfilteredSuggestions,
+  suggestions,
+  topSuggestion,
   usingOfflineSuggestions
 }: Props ): Node => {
-  const currentObservation = useStore( state => state.currentObservation );
-
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
   const { isDebug } = useDebugMode( );
 
-  const hideVisionResultFromAllSuggestions = list => {
-    if ( !hasVisionSuggestion ) { return list; }
-    return list.filter(
-      result => result?.taxon?.id !== currentObservation?.taxon?.id
-    ).map( r => r );
-  };
-
-  const suggestions = hideVisionResultFromAllSuggestions( unfilteredSuggestions );
-
-  const topSuggestion = hasVisionSuggestion
-    ? currentObservation
-    : commonAncestor;
-
-  const taxonIds = suggestions?.map(
-    suggestion => suggestion.taxon.id
-  );
+  const taxonIds = suggestions?.map( s => s.taxon.id );
 
   const observers = useObservers( taxonIds );
 
