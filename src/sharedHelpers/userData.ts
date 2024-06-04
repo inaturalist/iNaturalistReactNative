@@ -11,7 +11,7 @@ export default userData;
 export function installID( ) {
   const id = userData.getString( INSTALL_ID );
   if ( id ) return id;
-  const newID = uuid.v4( );
+  const newID: string = uuid.v4( ).toString( );
   userData.set( INSTALL_ID, newID );
   return newID;
 }

@@ -1,3 +1,23 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"],
+      "appConstants": "src/appConstants",
+      "api": ["src/api"],
+      "components": ["src/components"],
+      "dictionaries": ["src/dictionaries"],
+      "i18n": ["src/i18n"],
+      "images": ["src/images"],
+      "navigation": ["src/navigation"],
+      "providers": ["src/providers"],
+      "realmModels": ["src/realmModels"],
+      "sharedHelpers": ["src/sharedHelpers/*"],
+      "sharedHooks": ["src/sharedHooks"],
+      "stores": ["src/stores"],
+      "styles": ["src/styles"],
+      "tests": ["tests"],
+    }
+  }
 }
