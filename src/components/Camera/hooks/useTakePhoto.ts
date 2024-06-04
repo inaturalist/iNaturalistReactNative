@@ -76,6 +76,7 @@ const useTakePhoto = (
     const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto );
     await updateStore( uri, options );
     setTakingPhoto( false );
+    return uri;
   };
 
   const toggleFlash = ( ) => {
