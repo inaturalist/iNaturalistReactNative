@@ -151,18 +151,12 @@ const TaxonDetails = ( ): Node => {
             tablet={isTablet}
             onChangeIndex={setMediaIndex}
           />
-          {/* cant figure out how to have the gradient show with carousel - angie20240418 */}
-          {/* <LinearGradient
-            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-            className="absolute w-full h-full"
-          />  */}
           <View className="absolute left-5 top-5">
             <BackButton
               color={theme.colors.onPrimary}
               onPress={( ) => navigation.goBack( )}
             />
           </View>
-
           {!hideNavButtons && (
             <View className="absolute right-5 top-5">
               <KebabMenu
