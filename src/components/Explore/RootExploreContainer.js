@@ -162,10 +162,10 @@ const RootExploreContainerWithContext = ( ): Node => {
   );
 };
 
-const ExploreContainer = (): Node => (
+const RootExploreContainer = (): Node => (
   <ExploreProvider>
     <RootExploreContainerWithContext />
   </ExploreProvider>
 );
 
-export default ExploreContainer;
+export default RootExploreContainer;
