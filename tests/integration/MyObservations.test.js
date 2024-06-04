@@ -278,6 +278,12 @@ describe( "MyObservations", ( ) => {
         fireEvent.press( syncIcon );
         const toolbarText = await screen.findByText( /1 upload failed/ );
         expect( toolbarText ).toBeVisible( );
+        // Wait for the toolbar to reset to its default state so there aren't
+        // any pending async processes that will interfere with other tests
+        await waitFor( ( ) => {
+          const resetToolbarText = screen.getByText( /Upload 1 observation/ );
+          expect( resetToolbarText ).toBeVisible( );
+        }, { timeout: 6_000, interval: 500 } );
       } );
     } );
 
@@ -360,11 +366,8 @@ describe( "MyObservations", ( ) => {
         it( "downloads deleted observations from server when screen focused", async ( ) => {
           const realm = global.mockRealms[__filename];
           expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-          console.log( "[DEBUG MyObservations.test.js] rendering" );
           renderAppWithComponent( <MyObservationsContainer /> );
-          console.log( "[DEBUG MyObservations.test.js] rendered" );
           const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_deleted_sync_time;
-          console.log( "[DEBUG MyObservations.test.js] waiting for deleted to have been called" );
           await waitFor( ( ) => {
             expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
               {
