@@ -31,7 +31,7 @@ const SuggestionsContainer = ( ): Node => {
   // a reasonably-sized image and not deliverying a handful of
   // upsampled pixels
   const [selectedPhotoUri, setSelectedPhotoUri] = useState(
-    Photo.displayMediumPhoto( photoUris[photoUris.length - 1] )
+    Photo.displayMediumPhoto( photoUris[0] )
   );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
