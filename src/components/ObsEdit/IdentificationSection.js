@@ -3,10 +3,11 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  Button, DisplayTaxon,
-  Heading4, IconicTaxonChooser,
+  Button,
+  Heading4,
+  IconicTaxonChooser,
   INatIcon,
-  INatIconButton
+  TaxonResult
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -119,26 +120,22 @@ const IdentificationSection = ( {
           </View>
         )}
       </View>
-      <View className="ml-1">
-        {identification && (
-          <View className="flex-row items-center justify-between mr-5 mt-5 ml-5">
-            <DisplayTaxon
-              taxon={identification}
-              handlePress={navToSuggestions}
-              accessibilityLabel={t( "Edits-this-observations-taxon" )}
-            />
-            <INatIconButton
-              icon="edit"
-              size={20}
-              onPress={navToSuggestions}
-              accessibilityLabel={t( "Edit" )}
-              accessibilityHint={t( "Edits-this-observations-taxon" )}
-            />
-          </View>
-        )}
-        <View className="mt-5">
-          {showIconicTaxonChooser && renderIconicTaxonChooser( )}
+      {identification && (
+        <View className="mt-5 mx-5">
+          <TaxonResult
+            accessibilityLabel={t( "Edits-this-observations-taxon" )}
+            asListItem={false}
+            handlePress={navToSuggestions}
+            hideNavButtons
+            taxon={identification}
+            showInfoButton={false}
+            showCheckmark={false}
+            showEditButton
+          />
         </View>
+      )}
+      <View className="mt-5">
+        {showIconicTaxonChooser && renderIconicTaxonChooser( )}
       </View>
     </View>
   );
