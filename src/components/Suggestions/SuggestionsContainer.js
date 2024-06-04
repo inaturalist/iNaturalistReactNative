@@ -32,10 +32,10 @@ const SuggestionsContainer = ( ): Node => {
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
   // Ensure that if this URI is a remote thumbnail that we are resizing
-  // a reasonably-sized image and not deliverying a handful of
+  // a reasonably-sized image and not delivering a handful of
   // upsampled pixels
   const [selectedPhotoUri, setSelectedPhotoUri] = useState(
-    Photo.displayMediumPhoto( photoUris[0] )
+    Photo.displayMediumPhoto( photoUris[photoUris.length - 1] )
   );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );

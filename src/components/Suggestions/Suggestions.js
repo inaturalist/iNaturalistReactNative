@@ -150,6 +150,7 @@ const Suggestions = ( {
   return (
     <ViewWrapper testID="suggestions">
       <FlatList
+        testID="Suggestions.FlatList"
         data={suggestions}
         renderItem={renderSuggestion}
         ListEmptyComponent={renderEmptyList}
