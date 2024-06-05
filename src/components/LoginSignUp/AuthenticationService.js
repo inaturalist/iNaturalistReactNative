@@ -244,9 +244,6 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
       if ( response.status === 401 ) {
         signOut( { clearRealm: true } );
       }
-      logger.warn(
-        `Error while renewing JWT: ${response.problem} - ${response.status}`
-      );
       return null;
     }
 

@@ -13,6 +13,7 @@ import {
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import AboutProjectType from "./AboutProjectType";
 
@@ -26,6 +27,8 @@ type Props = {
 const ProjectDetails = ( {
   project, joinProject, leaveProject, loadingProjectMembership
 }: Props ): Node => {
+  const setExploreView = useStore( state => state.setExploreView );
+
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -39,13 +42,15 @@ const ProjectDetails = ( {
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      project,
-      worldwide: true,
-      viewSpecies: true,
-      resetStoredParams: true
-    } ),
-    [navigation, project]
+    ( ) => {
+      setExploreView( "species" );
+      navigation.navigate( "Explore", {
+        project,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, project, setExploreView]
   );
 
   if ( !project ) {

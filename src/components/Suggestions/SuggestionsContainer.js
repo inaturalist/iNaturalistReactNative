@@ -2,6 +2,7 @@
 
 import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import _ from "lodash";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -17,12 +18,15 @@ import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 
+const HUMAN_ID = 43584;
+
 const SuggestionsContainer = ( ): Node => {
   // clearing the cache of resized images for the score_image API
   // placing this here means we can keep the app size small
   // and only have the latest resized image stored in computerVisionSuggestions
   useClearComputerVisionDirectory( );
   const { params } = useRoute( );
+  const hasVisionSuggestion = params?.hasVisionSuggestion;
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
@@ -89,6 +93,19 @@ const SuggestionsContainer = ( ): Node => {
     : offlineSuggestions;
 
   const hasSuggestions = suggestions.length > 0;
+  const humanSuggestion = _.find( suggestions, s => s.taxon.id === HUMAN_ID );
+
+  const filterSuggestions = ( ) => {
+    if ( humanSuggestion ) {
+      return [humanSuggestion];
+    }
+    if ( hasVisionSuggestion ) {
+      return suggestions.filter(
+        result => result?.taxon?.id !== currentObservation?.taxon?.id
+      ).map( r => r );
+    }
+    return suggestions;
+  };
 
   useEffect( ( ) => {
     if ( hasSuggestions || loadingOfflineSuggestions === false ) {
@@ -96,18 +113,21 @@ const SuggestionsContainer = ( ): Node => {
     }
   }, [loadingOfflineSuggestions, hasSuggestions] );
 
+  const topSuggestion = hasVisionSuggestion
+    ? currentObservation
+    : onlineSuggestions?.common_ancestor;
+
   return (
     <>
       <Suggestions
-        commonAncestor={onlineSuggestions?.common_ancestor}
         debugData={debugData}
-        hasVisionSuggestion={params?.hasVisionSuggestion}
         loading={isLoading}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
         selectedPhotoUri={selectedPhotoUri}
-        suggestions={suggestions}
+        suggestions={filterSuggestions( )}
+        topSuggestion={topSuggestion}
         usingOfflineSuggestions={usingOfflineSuggestions}
       />
       <MediaViewerModal
