@@ -4,7 +4,7 @@ import { create } from "apisauce";
 import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
 import Config from "react-native-config";
 import { transportFunctionType } from "react-native-logs";
-import { installID } from "sharedHelpers/userData";
+import { installID } from "sharedHelpers/userData.ts";
 
 const API_HOST: string
     = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
@@ -17,9 +17,9 @@ const api = create( {
   }
 } );
 
-function isError( error ) {
+function isError( error: { message?: string, stack?: string } ) {
   if ( error instanceof Error ) return true;
-  if ( error && error.stack && error.message ) return true;
+  if ( error?.stack && error?.message ) return true;
   return false;
 }
 

@@ -14,7 +14,7 @@ import Realm from "realm";
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { installID } from "sharedHelpers/userData";
+import { installID } from "sharedHelpers/userData.ts";
 import { sleep, unlink } from "sharedHelpers/util";
 
 import { log, logFilePath } from "../../../react-native-logs.config";
