@@ -10,7 +10,6 @@ import React, {
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import Photo from "realmModels/Photo";
 import useStore from "stores/useStore";
 
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
@@ -31,12 +30,8 @@ const SuggestionsContainer = ( ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
-  // Ensure that if this URI is a remote thumbnail that we are resizing
-  // a reasonably-sized image and not delivering a handful of
-  // upsampled pixels
-  const [selectedPhotoUri, setSelectedPhotoUri] = useState(
-    Photo.displayMediumPhoto( photoUris[photoUris.length - 1] )
-  );
+
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [isLoading, setIsLoading] = useState( true );
