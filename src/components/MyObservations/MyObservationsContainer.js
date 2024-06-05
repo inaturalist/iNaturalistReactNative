@@ -80,7 +80,7 @@ const MyObservationsContainer = ( ): Node => {
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
   const [state, dispatch] = useReducer( reducer, INITIAL_STATE );
-  const { observationList: observations } = useLocalObservations( );
+  const { observationList: observations, unsyncedUuids } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
@@ -88,8 +88,6 @@ const MyObservationsContainer = ( ): Node => {
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
   const canUpload = currentUser && isOnline;
-
-  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
 
   useDeleteObservations(
     currentUser?.id && state.canBeginDeletions,
@@ -239,24 +237,23 @@ const MyObservationsContainer = ( ): Node => {
 
   const handleSyncButtonPress = useCallback( ( ) => {
     if ( numUnuploadedObservations > 0 ) {
-      const uploadUuids = allUnsyncedObservations.map( o => o.uuid );
-      const uuidsQuery = uploadUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
+      const uuidsQuery = unsyncedUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
       const uploads = realm.objects( "Observation" )
         .filtered( `uuid IN { ${uuidsQuery} }` );
       setTotalToolbarIncrements( uploads );
-      addToUploadQueue( uploadUuids );
+      addToUploadQueue( unsyncedUuids );
       startUpload( );
     } else {
       syncObservations( );
     }
   }, [
     addToUploadQueue,
-    allUnsyncedObservations,
     startUpload,
     numUnuploadedObservations,
     realm,
     setTotalToolbarIncrements,
-    syncObservations
+    syncObservations,
+    unsyncedUuids
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {

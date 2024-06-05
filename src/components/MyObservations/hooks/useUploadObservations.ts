@@ -16,8 +16,7 @@ import {
 import {
   UPLOAD_CANCELLED,
   UPLOAD_COMPLETE,
-  UPLOAD_IN_PROGRESS,
-  UPLOAD_PENDING
+  UPLOAD_IN_PROGRESS
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
@@ -38,7 +37,6 @@ export default useUploadObservations = ( ) => {
   const removeFromUploadQueue = useStore( state => state.removeFromUploadQueue );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const setCurrentUpload = useStore( state => state.setCurrentUpload );
-  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
   const uploadQueue = useStore( state => state.uploadQueue );
   const uploadStatus = useStore( state => state.uploadStatus );
@@ -147,18 +145,6 @@ export default useUploadObservations = ( ) => {
     realm,
     uploadObservationAndCatchError,
     uploadQueue,
-    uploadStatus
-  ] );
-
-  useEffect( ( ) => {
-    if ( uploadStatus === UPLOAD_PENDING ) {
-      const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
-      const numUnuploadedObs = allUnsyncedObservations.length;
-      setNumUnuploadedObservations( numUnuploadedObs );
-    }
-  }, [
-    realm,
-    setNumUnuploadedObservations,
     uploadStatus
   ] );
 
