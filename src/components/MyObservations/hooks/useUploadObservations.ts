@@ -40,6 +40,7 @@ export default useUploadObservations = ( ) => {
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
   const uploadQueue = useStore( state => state.uploadQueue );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -55,12 +56,19 @@ export default useUploadObservations = ( ) => {
     if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
       timer = setTimeout( () => {
         resetUploadObservationsSlice( );
+        const unsynced = Observation.filterUnsyncedObservations( realm );
+        setNumUnuploadedObservations( unsynced.length );
       }, MS_BEFORE_TOOLBAR_RESET );
     }
     return () => {
       clearTimeout( timer );
     };
-  }, [uploadStatus, resetUploadObservationsSlice] );
+  }, [
+    realm,
+    resetUploadObservationsSlice,
+    setNumUnuploadedObservations,
+    uploadStatus
+  ] );
 
   useEffect( ( ) => {
     const progressListener = EventRegister.addEventListener(
