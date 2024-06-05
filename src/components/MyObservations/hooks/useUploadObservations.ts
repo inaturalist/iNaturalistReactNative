@@ -16,8 +16,7 @@ import {
 import {
   UPLOAD_CANCELLED,
   UPLOAD_COMPLETE,
-  UPLOAD_IN_PROGRESS,
-  UPLOAD_PENDING
+  UPLOAD_IN_PROGRESS
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
@@ -38,10 +37,10 @@ export default useUploadObservations = ( ) => {
   const removeFromUploadQueue = useStore( state => state.removeFromUploadQueue );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const setCurrentUpload = useStore( state => state.setCurrentUpload );
-  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
   const uploadQueue = useStore( state => state.uploadQueue );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -57,12 +56,19 @@ export default useUploadObservations = ( ) => {
     if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
       timer = setTimeout( () => {
         resetUploadObservationsSlice( );
+        const unsynced = Observation.filterUnsyncedObservations( realm );
+        setNumUnuploadedObservations( unsynced.length );
       }, MS_BEFORE_TOOLBAR_RESET );
     }
     return () => {
       clearTimeout( timer );
     };
-  }, [uploadStatus, resetUploadObservationsSlice] );
+  }, [
+    realm,
+    resetUploadObservationsSlice,
+    setNumUnuploadedObservations,
+    uploadStatus
+  ] );
 
   useEffect( ( ) => {
     const progressListener = EventRegister.addEventListener(
@@ -147,18 +153,6 @@ export default useUploadObservations = ( ) => {
     realm,
     uploadObservationAndCatchError,
     uploadQueue,
-    uploadStatus
-  ] );
-
-  useEffect( ( ) => {
-    if ( uploadStatus === UPLOAD_PENDING ) {
-      const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
-      const numUnuploadedObs = allUnsyncedObservations.length;
-      setNumUnuploadedObservations( numUnuploadedObs );
-    }
-  }, [
-    realm,
-    setNumUnuploadedObservations,
     uploadStatus
   ] );
 
