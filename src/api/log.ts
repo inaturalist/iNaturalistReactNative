@@ -17,9 +17,9 @@ const api = create( {
   }
 } );
 
-function isError( error: { message?: string, backtrace?: string } ) {
+function isError( error: { message?: string, stack?: string } ) {
   if ( error instanceof Error ) return true;
-  if ( error?.backtrace && error?.message ) return true;
+  if ( error?.stack && error?.message ) return true;
   return false;
 }
 
