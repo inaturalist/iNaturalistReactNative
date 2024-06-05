@@ -50,13 +50,11 @@ const useMapLocation = ( ): Object => {
     };
 
     setMapBoundaries( boundaryAPIParams );
-    logger.info( "setting map region based on user pan/zoom" );
     setMapRegion( newRegion );
     return boundaryAPIParams;
   }, [t, setMapBoundaries, setMapRegion] );
 
   const redoSearchInMapArea = ( ) => {
-    logger.info( "searching for observations with map boundaries: ", mapBoundaries );
     setShowMapBoundaryButton( false );
     dispatch( { type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries } );
   };

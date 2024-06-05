@@ -12,7 +12,7 @@ import useStore from "stores/useStore";
 const useParams = ( ): Object => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
-  const { dispatch, setExploreLocation } = useExplore( );
+  const { dispatch, defaultExploreLocation } = useExplore( );
   const storedParams = useStore( state => state.storedParams );
 
   const worldwidePlaceText = t( "Worldwide" );
@@ -32,7 +32,7 @@ const useParams = ( ): Object => {
       setWorldwide( );
     }
     if ( params?.nearby ) {
-      const exploreLocation = await setExploreLocation( );
+      const exploreLocation = await defaultExploreLocation( );
       dispatch( {
         type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
         exploreLocation
@@ -75,7 +75,7 @@ const useParams = ( ): Object => {
   }, [
     dispatch,
     params,
-    setExploreLocation,
+    defaultExploreLocation,
     worldwidePlaceText
   ] );
 

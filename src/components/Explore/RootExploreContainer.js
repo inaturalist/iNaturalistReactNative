@@ -27,7 +27,7 @@ const RootExploreContainerWithContext = ( ): Node => {
   const worldwidePlaceText = t( "Worldwide" );
 
   const {
-    state, dispatch, makeSnapshot, setExploreLocation
+    state, dispatch, makeSnapshot, defaultExploreLocation
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
@@ -97,7 +97,7 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   const onPermissionGranted = async ( ) => {
     if ( state.place_guess ) { return; }
-    const exploreLocation = await setExploreLocation( );
+    const exploreLocation = await defaultExploreLocation( );
     dispatch( {
       type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
       exploreLocation
