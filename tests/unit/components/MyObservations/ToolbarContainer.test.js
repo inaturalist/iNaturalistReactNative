@@ -2,6 +2,11 @@ import { screen } from "@testing-library/react-native";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import i18next from "i18next";
 import React from "react";
+import {
+  UPLOAD_COMPLETE,
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_PENDING
+} from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 
@@ -23,7 +28,7 @@ describe( "Toolbar Container", () => {
   it( "displays a pending upload", async () => {
     useStore.setState( {
       numUnuploadedObservations: 1,
-      uploadStatus: "pending"
+      uploadStatus: UPLOAD_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -35,7 +40,7 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       numObservationsInQueue: 1,
       numUploadsAttempted: 1,
-      uploadStatus: "uploadInProgress"
+      uploadStatus: UPLOAD_IN_PROGRESS
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -51,7 +56,7 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       numUploadsAttempted,
       numObservationsInQueue: numUploadsAttempted,
-      uploadStatus: "complete"
+      uploadStatus: UPLOAD_COMPLETE
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -73,7 +78,7 @@ describe( "Toolbar Container", () => {
   it( "displays multiple pending uploads", async () => {
     useStore.setState( {
       numUnuploadedObservations: 4,
-      uploadStatus: "pending"
+      uploadStatus: UPLOAD_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -83,7 +88,7 @@ describe( "Toolbar Container", () => {
 
   it( "displays multiple uploads in progress", async () => {
     useStore.setState( {
-      uploadStatus: "uploadInProgress",
+      uploadStatus: UPLOAD_IN_PROGRESS,
       numObservationsInQueue: 5,
       numUploadsAttempted: 2
     } );
@@ -101,7 +106,7 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       numUploadsAttempted,
       numObservationsInQueue: numUploadsAttempted,
-      uploadStatus: "complete"
+      uploadStatus: UPLOAD_COMPLETE
     } );
     renderComponent( <ToolbarContainer /> );
 

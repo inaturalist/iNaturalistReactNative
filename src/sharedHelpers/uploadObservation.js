@@ -34,6 +34,7 @@ const markRecordUploaded = (
   }
 ) => {
   const { id } = response.results[0];
+  if ( !realm || realm.isClosed ) return;
   const observation = realm?.objectForPrimaryKey( "Observation", observationUUID );
 
   let record;
@@ -41,10 +42,10 @@ const markRecordUploaded = (
   if ( type === "Observation" ) {
     record = observation;
   } else if ( type === "ObservationPhoto" ) {
-    const existingObsPhoto = observation.observationPhotos?.find( op => op.uuid === recordUUID );
+    const existingObsPhoto = observation?.observationPhotos?.find( op => op.uuid === recordUUID );
     record = existingObsPhoto;
   } else if ( type === "ObservationSound" ) {
-    const existingObsSound = observation.observationSounds?.find( os => os.uuid === recordUUID );
+    const existingObsSound = observation?.observationSounds?.find( os => os.uuid === recordUUID );
     record = existingObsSound;
   } else if ( type === "Photo" ) {
     // Photos do not have UUIDs, so we pass the Photo itself as an option
@@ -53,7 +54,7 @@ const markRecordUploaded = (
 
   if ( !record ) {
     throw new Error(
-      `Cannot find local Realm object, type: ${type}, recordUUID: ${recordUUID || ""}`
+      `Cannot find local Realm object to mark as updated (${type}), recordUUID: ${recordUUID || ""}`
     );
   }
 
@@ -125,7 +126,7 @@ const uploadEvidence = async (
   return responses[0];
 };
 
-const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} ): Object => {
+async function uploadObservation( obs: Object, realm: Object, opts: Object = {} ): Object {
   // we're emitting progress increments:
   // half one when upload of obs started
   // half one when upload of obs finished
@@ -165,7 +166,7 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
 
   await Promise.all( [
     unsyncedPhotos.length > 0
-      ? await uploadEvidence(
+      ? uploadEvidence(
         unsyncedPhotos,
         "Photo",
         ObservationPhoto.mapPhotoForUpload,
@@ -184,7 +185,7 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
     : [];
   await Promise.all( [
     unsyncedObservationSounds.length > 0
-      ? await uploadEvidence(
+      ? uploadEvidence(
         unsyncedObservationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForUpload,
@@ -224,7 +225,7 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
   await Promise.all( [
     // Attach the newly uploaded photos/sounds to the uploaded observation
     unsyncedObservationPhotos.length > 0
-      ? await uploadEvidence(
+      ? uploadEvidence(
         unsyncedObservationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForAttachingToObs,
@@ -236,7 +237,7 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
       )
       : null,
     unsyncedObservationSounds.length > 0
-      ? await uploadEvidence(
+      ? uploadEvidence(
         unsyncedObservationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForAttachingToObs,
@@ -249,7 +250,7 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
       : null,
     // Update any existing modified photos/sounds
     modifiedObservationPhotos.length > 0
-      ? await uploadEvidence(
+      ? uploadEvidence(
         modifiedObservationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForUpdating,
@@ -269,7 +270,7 @@ const uploadObservation = async ( obs: Object, realm: Object, opts: Object = {} 
   const remoteObs = await fetchRemoteObservation( obsUUID, { fields: Observation.FIELDS } );
   Observation.upsertRemoteObservations( [remoteObs], realm, { force: true } );
   return response;
-};
+}
 
 export function handleUploadError( uploadError: Error | INatApiError, t: Function ): string {
   let { message } = uploadError;

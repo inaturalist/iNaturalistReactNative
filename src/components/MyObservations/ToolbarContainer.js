@@ -9,6 +9,11 @@ import {
   useCurrentUser,
   useTranslation
 } from "sharedHooks";
+import {
+  UPLOAD_COMPLETE,
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_PENDING
+} from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 import Toolbar from "./Toolbar";
@@ -84,9 +89,9 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
-  const pendingUpload = uploadStatus === "pending" && numUnuploadedObservations > 0;
-  const uploadInProgress = uploadStatus === "uploadInProgress" && numUploadsAttempted > 0;
-  const uploadsComplete = uploadStatus === "complete" && numObservationsInQueue > 0;
+  const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
+  const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
+  const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && numObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
 
   const showFinalUploadError = ( totalUploadErrors > 0 && uploadsComplete )
