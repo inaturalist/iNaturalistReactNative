@@ -17,14 +17,7 @@ const api = create( {
   }
 } );
 
-// Not sure how else to do this with typescript. Not all Error objects have
-// these attributes, but some do
-interface ErrorWithContext {
-  message: string,
-  backtrace: string
-}
-
-function isError( error: Error | ErrorWithContext ) {
+function isError( error: { message?: string, backtrace?: string } ) {
   if ( error instanceof Error ) return true;
   if ( error?.backtrace && error?.message ) return true;
   return false;
