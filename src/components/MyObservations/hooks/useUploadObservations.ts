@@ -21,6 +21,9 @@ import {
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
+export const MS_BEFORE_TOOLBAR_RESET = 5_000;
+const MS_BEFORE_UPLOAD_TIMES_OUT = 15_000;
+
 const { useRealm } = RealmContext;
 
 export default useUploadObservations = ( ) => {
@@ -29,16 +32,16 @@ export default useUploadObservations = ( ) => {
   const addUploadError = useStore( state => state.addUploadError );
   const completeUploads = useStore( state => state.completeUploads );
   const currentUpload = useStore( state => state.currentUpload );
+  const removeDeletedObsFromUploadQueue = useStore(
+    state => state.removeDeletedObsFromUploadQueue
+  );
   const removeFromUploadQueue = useStore( state => state.removeFromUploadQueue );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const setCurrentUpload = useStore( state => state.setCurrentUpload );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
-  const removeDeletedObsFromUploadQueue = useStore(
-    state => state.removeDeletedObsFromUploadQueue
-  );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
-  const uploadStatus = useStore( state => state.uploadStatus );
   const uploadQueue = useStore( state => state.uploadQueue );
+  const uploadStatus = useStore( state => state.uploadStatus );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -50,11 +53,11 @@ export default useUploadObservations = ( ) => {
   const { t } = useTranslation( );
 
   useEffect( () => {
-    let timer;
+    let timer: number | NodeJS.Timeout;
     if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
       timer = setTimeout( () => {
         resetUploadObservationsSlice( );
-      }, 5000 );
+      }, MS_BEFORE_TOOLBAR_RESET );
     }
     return () => {
       clearTimeout( timer );
@@ -81,7 +84,7 @@ export default useUploadObservations = ( ) => {
     const { uuid } = observation;
     setCurrentUpload( observation );
     try {
-      const timeoutID = setTimeout( ( ) => abortController.abort( ), 15_000 );
+      const timeoutID = setTimeout( ( ) => abortController.abort( ), MS_BEFORE_UPLOAD_TIMES_OUT );
       await uploadObservation( observation, realm, { signal: abortController.signal } );
       clearTimeout( timeoutID );
     } catch ( uploadErr ) {

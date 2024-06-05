@@ -2,6 +2,7 @@
 // remote data retrieval and local data persistence
 
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations.ts";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import { format } from "date-fns";
 import i18next from "i18next";
@@ -283,7 +284,7 @@ describe( "MyObservations", ( ) => {
         await waitFor( ( ) => {
           const resetToolbarText = screen.getByText( /Upload 1 observation/ );
           expect( resetToolbarText ).toBeVisible( );
-        }, { timeout: 6_000, interval: 500 } );
+        }, { timeout: MS_BEFORE_TOOLBAR_RESET + 1000, interval: 500 } );
       } );
     } );
 
