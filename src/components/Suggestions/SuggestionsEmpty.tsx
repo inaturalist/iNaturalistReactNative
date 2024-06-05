@@ -29,21 +29,19 @@ const SuggestionsEmpty = ( {
 
   const textClass = "mt-10 px-10 text-center";
 
-  const renderEmpty = ( ) => {
-    if ( loading ) {
-      return (
-        <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
-          <ActivityIndicator size={50} />
-        </View>
-      );
-    }
+  if ( loading ) {
+    return (
+      <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
+        <ActivityIndicator size={50} />
+      </View>
+    );
+  }
+  if ( !hasTopSuggestion ) {
     return (
       <>
-        { !hasTopSuggestion && (
-          <Body1 className={textClass}>
-            {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
-          </Body1>
-        ) }
+        <Body1 className={textClass}>
+          {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
+        </Body1>
         {lastScreen === "CameraWithDevice" && (
           <>
             <Body1 className={textClass}>
@@ -59,9 +57,8 @@ const SuggestionsEmpty = ( {
         )}
       </>
     );
-  };
-
-  return renderEmpty( );
+  }
+  return null;
 };
 
 export default SuggestionsEmpty;
