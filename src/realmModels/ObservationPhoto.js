@@ -123,7 +123,10 @@ class ObservationPhoto extends Realm.Object {
   static mapObsPhotoUris( observation ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
     const obsPhotoUris = ( obsPhotos || [] ).map(
-      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+      // Ensure that if this URI is a remote thumbnail that we are resizing
+      // a reasonably-sized image for Suggestions and not delivering a handful of
+      // upsampled pixels
+      obsPhoto => Photo.displayMediumPhoto( obsPhoto.photo?.url || obsPhoto.photo?.localFilePath )
     );
     return obsPhotoUris;
   }
