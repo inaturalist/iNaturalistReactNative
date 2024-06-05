@@ -31,6 +31,7 @@ type Props = {
   handlePress: Function,
   showInfoButton?: boolean,
   showCheckmark?: boolean,
+  showEditButton?: boolean,
   taxon: Object,
   testID: string,
   white?: boolean
@@ -49,6 +50,7 @@ const TaxonResult = ( {
   handleCheckmarkPress,
   handlePress,
   hideNavButtons = false,
+  showEditButton = false,
   showInfoButton = true,
   showCheckmark = true,
   taxon: taxonProp,
@@ -177,6 +179,16 @@ const TaxonResult = ( {
               testID={`${testID}.checkmark`}
             />
           )}
+        { showEditButton
+            && (
+              <INatIconButton
+                icon="edit"
+                size={20}
+                onPress={handlePress}
+                accessibilityLabel={t( "Edit" )}
+                accessibilityHint={t( "Edits-this-observations-taxon" )}
+              />
+            )}
       </View>
     </View>
   );

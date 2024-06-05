@@ -21,7 +21,6 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 type Props = {
   currentObservation: Object,
-  handleDragAndDrop: Function,
   isFetchingLocation: boolean,
   locationPermissionNeeded: boolean,
   locationTextClassNames: Array<string>,
@@ -44,7 +43,6 @@ type Props = {
 
 const EvidenceSection = ( {
   currentObservation,
-  handleDragAndDrop,
   isFetchingLocation,
   locationPermissionNeeded,
   locationTextClassNames,
@@ -52,7 +50,6 @@ const EvidenceSection = ( {
   onLocationPermissionDenied,
   onLocationPermissionGranted,
   passesEvidenceTest,
-  observationPhotos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
   observationSounds,
@@ -125,8 +122,6 @@ const EvidenceSection = ( {
       </View>
       <EvidenceList
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
-        handleDragAndDrop={handleDragAndDrop}
-        observationPhotos={observationPhotos}
         observationSounds={observationSounds}
       />
       <Pressable

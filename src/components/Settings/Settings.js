@@ -1,5 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import fetchAvailableLocales from "api/translations";
 import { updateUsers } from "api/users";
 import {
   ActivityIndicator,
@@ -7,7 +9,8 @@ import {
   Button,
   Heading4,
   RadioButtonRow,
-  ScrollViewWrapper
+  ScrollViewWrapper,
+  PickerSheet
 } from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
 import {
@@ -29,14 +32,23 @@ const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
 const Settings = ( ) => {
   const navigation = useNavigation( );
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const currentUser = useCurrentUser( );
   const { remoteUser, isLoading, refetchUserMe } = useUserMe();
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
 
   const [settings, setSettings] = useState( {} );
+  const [currentLocale, setCurrentLocale] = useState( i18n.language );
   const [isSaving, setIsSaving] = useState( false );
+  const [availableLocales, setAvailableLocales] = useState( [] );
+  const availableLocalesOptions = Object.fromEntries(
+    availableLocales.map( locale => [locale.locale, {
+      label: locale.language_in_locale,
+      value: locale.locale
+    }] )
+  );
+  const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
 
   const queryClient = useQueryClient();
 
@@ -57,6 +69,7 @@ const Settings = ( ) => {
   useEffect( () => {
     if ( remoteUser ) {
       setSettings( remoteUser );
+      setCurrentLocale( remoteUser.locale );
       setIsSaving( false );
     }
   }, [remoteUser] );
@@ -72,6 +85,27 @@ const Settings = ( ) => {
       EventRegister?.removeEventListener( listener );
     };
   }, [refetchUserMe] );
+
+  useEffect( () => {
+    async function fetchLocales() {
+      const savedLocale = await AsyncStorage.getItem( "currentLocale" );
+      if ( savedLocale ) {
+        setCurrentLocale( savedLocale );
+      }
+
+      // Whenever possible, save latest available locales from server
+      const currentLocales = await AsyncStorage.getItem( "availableLocales" );
+
+      setAvailableLocales( currentLocales
+        ? JSON.parse( currentLocales )
+        : [] );
+
+      const locales = await fetchAvailableLocales();
+      await AsyncStorage.setItem( "availableLocales", JSON.stringify( locales ) );
+      setAvailableLocales( locales );
+    }
+    fetchLocales();
+  }, [] );
 
   const changeTaxonNameDisplay = v => {
     setIsSaving( true );
@@ -91,6 +125,17 @@ const Settings = ( ) => {
       payload["user[prefers_scientific_name_first]"] = false;
     }
 
+    updateUserMutation.mutate( payload );
+  };
+
+  const changeUserLocale = locale => {
+    setIsSaving( true );
+
+    const payload = {
+      id: settings?.id
+    };
+
+    payload["user[locale]"] = locale;
     updateUserMutation.mutate( payload );
   };
 
@@ -146,7 +191,37 @@ const Settings = ( ) => {
           label={t( "Scientific-Name" )}
         />
       </View>
+      {availableLocales.length > 0 && (
+        <>
+          <Heading4 className="mt-7">{t( "APP-LANGUAGE" )}</Heading4>
+          <Button
+            className="mt-4"
+            text={t( "CHANGE-APP-LANGUAGE" )}
+            onPress={() => {
+              setLocaleSheetOpen( true );
+            }}
+            accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
+          />
+        </>
+      )}
+      {localeSheetOpen
+        && (
+          <PickerSheet
+            headerText={t( "APP-LANGUAGE" )}
+            confirm={newLocale => {
+              setLocaleSheetOpen( false );
+              // Remember the new locale locally
+              AsyncStorage.setItem( "currentLocale", newLocale );
+              i18n.changeLanguage( newLocale );
 
+              // Also try and set the locale remotely
+              changeUserLocale( newLocale );
+            }}
+            handleClose={() => setLocaleSheetOpen( false )}
+            selectedValue={currentLocale || i18n.language}
+            pickerValues={availableLocalesOptions}
+          />
+        )}
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
       <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
       <Button
@@ -161,7 +236,7 @@ const Settings = ( ) => {
             blurEvent: FINISHED_WEB_SETTINGS
           } );
         }}
-        accessibilityLabel={t( "Edit" )}
+        accessibilityLabel={t( "INATURALIST-SETTINGS" )}
       />
     </>
   );

@@ -8,6 +8,7 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import Observation from "realmModels/Observation";
+import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
@@ -25,7 +26,7 @@ const DiscardObservationSheet = ( {
   observations
 }: Props ): Node => {
   const realm = useRealm( );
-
+  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const multipleObservations = observations.length > 1;
 
   const saveAllObservations = async ( ) => {
@@ -38,10 +39,15 @@ const DiscardObservationSheet = ( {
     } ) );
   };
 
+  const discardObservationandReset = () => {
+    resetObservationFlowSlice();
+    discardObservation();
+  };
+
   return (
     <WarningSheet
       handleClose={handleClose}
-      confirm={discardObservation}
+      confirm={discardObservationandReset}
       headerText={multipleObservations
         ? t( "DISCARD-X-OBSERVATIONS", { count: observations.length } )
         : t( "DISCARD-OBSERVATION" )}

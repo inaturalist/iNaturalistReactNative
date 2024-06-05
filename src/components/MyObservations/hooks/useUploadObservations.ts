@@ -33,9 +33,12 @@ export default useUploadObservations = ( ) => {
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const setCurrentUpload = useStore( state => state.setCurrentUpload );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+  const removeDeletedObsFromUploadQueue = useStore(
+    state => state.removeDeletedObsFromUploadQueue
+  );
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
-  const uploadQueue = useStore( state => state.uploadQueue );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const uploadQueue = useStore( state => state.uploadQueue );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -75,6 +78,7 @@ export default useUploadObservations = ( ) => {
   ] );
 
   const uploadObservationAndCatchError = useCallback( async observation => {
+    const { uuid } = observation;
     setCurrentUpload( observation );
     try {
       const timeoutID = setTimeout( ( ) => abortController.abort( ), 15_000 );
@@ -85,7 +89,16 @@ export default useUploadObservations = ( ) => {
         addUploadError( "aborted", observation.uuid );
       } else {
         const message = handleUploadError( uploadError, t );
-        addUploadError( message, observation.uuid );
+        if ( message?.match( /That observation no longer exists./ ) ) {
+          // 20240531 amanda - it seems like we have to update the UI
+          // for the progress bar before actually deleting the observation
+          // locally, otherwise Realm will throw an error while trying
+          // to load the individual progress for a deleted observation
+          removeDeletedObsFromUploadQueue( uuid );
+          await Observation.deleteLocalObservation( realm, uuid );
+        } else {
+          addUploadError( message, uuid );
+        }
       }
     } finally {
       removeFromUploadQueue( );
@@ -102,6 +115,7 @@ export default useUploadObservations = ( ) => {
     completeUploads,
     currentUpload,
     realm,
+    removeDeletedObsFromUploadQueue,
     removeFromUploadQueue,
     setCurrentUpload,
     t,

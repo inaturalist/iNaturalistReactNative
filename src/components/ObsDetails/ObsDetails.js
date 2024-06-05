@@ -103,6 +103,27 @@ const ObsDetails = ( {
     height: 125
   };
 
+  const renderActivityTab = ( ) => (
+    <HideView show={showActivityTab}>
+      <ActivityTab
+        activityItems={activityItems}
+        isOnline={isOnline}
+        observation={observation}
+        onIDAgreePressed={onIDAgreePressed}
+        refetchRemoteObservation={refetchRemoteObservation}
+      />
+    </HideView>
+  );
+
+  const renderDetailsTab = ( ) => (
+    <HideView noInitialRender show={!showActivityTab}>
+      <DetailsTab
+        currentUser={currentUser}
+        observation={observation}
+      />
+    </HideView>
+  );
+
   const renderTablet = () => (
     <View className="flex-1 flex-row bg-white">
       <View className="w-[33%]">
@@ -135,18 +156,8 @@ const ObsDetails = ( {
           endFillColor="white"
         >
           <View className="bg-white h-full">
-            <HideView show={showActivityTab}>
-              <ActivityTab
-                observation={observation}
-                refetchRemoteObservation={refetchRemoteObservation}
-                onIDAgreePressed={onIDAgreePressed}
-                activityItems={activityItems}
-                isOnline={isOnline}
-              />
-            </HideView>
-            <HideView noInitialRender show={!showActivityTab}>
-              <DetailsTab observation={observation} />
-            </HideView>
+            {renderActivityTab( )}
+            {renderDetailsTab( )}
             {addingActivityItem && (
               <View className="flex-row items-center justify-center p-10">
                 <ActivityIndicator size={50} />
@@ -206,18 +217,8 @@ const ObsDetails = ( {
           <Tabs tabs={tabs} activeId={currentTabId} />
         </View>
         <View className="bg-white h-full">
-          <HideView show={showActivityTab}>
-            <ActivityTab
-              observation={observation}
-              refetchRemoteObservation={refetchRemoteObservation}
-              onIDAgreePressed={onIDAgreePressed}
-              activityItems={activityItems}
-              isOnline={isOnline}
-            />
-          </HideView>
-          <HideView noInitialRender show={!showActivityTab}>
-            <DetailsTab observation={observation} />
-          </HideView>
+          {renderActivityTab( )}
+          {renderDetailsTab( )}
           {addingActivityItem && (
             <View className="flex-row items-center justify-center p-10">
               <ActivityIndicator size={50} />

@@ -5,6 +5,7 @@ import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIcon, INatIconButton } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
+import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
@@ -24,8 +25,6 @@ const logger = log.extend( "EvidenceList" );
 
 type Props = {
   handleAddEvidence?: Function,
-  handleDragAndDrop: Function,
-  observationPhotos?: Array<Object>,
   observationSounds?: Array<{
     id?: number,
     sound: {
@@ -37,25 +36,49 @@ type Props = {
 
 const EvidenceList = ( {
   handleAddEvidence,
-  handleDragAndDrop,
-  observationPhotos = [],
   observationSounds = []
 }: Props ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
+
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const deleteSoundFromObservation = useStore( state => state.deleteSoundFromObservation );
+  const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
   const { t } = useTranslation( );
   const [selectedMediaUri, setSelectedMediaUri]: [string | null, Function] = useState( null );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
-  const photoUris = observationPhotos.map(
+
+  const observationPhotos = useMemo(
+    ( ) => currentObservation?.observationPhotos || [],
+    [currentObservation]
+  );
+
+  const photoUris = observationPhotos?.map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
   );
   const mediaUris = useMemo( ( ) => ( [
     ...photoUris,
     ...observationSounds.map( obsSound => obsSound.sound.file_url )
   ] ), [photoUris, observationSounds] );
+
+  const handleDragAndDrop = useCallback( ( { data: newPhotoPositions } ) => {
+    const newObsPhotos = observationPhotos.map( ( obsPhoto => {
+      const { photo } = obsPhoto;
+      const photoUri = Photo.displayLocalOrRemoteSquarePhoto( photo );
+      const newPosition = _.findIndex( newPhotoPositions, p => p === photoUri );
+      obsPhoto.position = newPosition;
+      return obsPhoto;
+    } ) );
+    const sortedObsPhotos = _.sortBy( newObsPhotos, obsPhoto => obsPhoto.position );
+
+    updateObservationKeys( {
+      observationPhotos: sortedObsPhotos
+    } );
+  }, [
+    observationPhotos,
+    updateObservationKeys
+  ] );
 
   const renderPhoto = useCallback(
     ( { item: obsPhoto, _getIndex, drag } ) => (

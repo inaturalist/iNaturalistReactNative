@@ -15,7 +15,6 @@ const DEFAULT_STATE = {
   // Track when any obs was last marked as viewed so we know when to update
   // the notifications indicator
   observationMarkedAsViewedAt: null,
-  photoEvidenceUris: [],
   rotatedOriginalCameraPhotos: [],
   savingPhoto: false,
   unsavedChanges: false
@@ -83,7 +82,6 @@ const createObservationFlowSlice = set => ( {
     );
     const newObservation = newObservations[state.currentObservationIndex];
     return ( {
-      photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
       rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
       evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
       observations: newObservations,
@@ -131,9 +129,6 @@ const createObservationFlowSlice = set => ( {
     observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )
   } ) ),
-  setPhotoEvidenceUris: uris => set( {
-    photoEvidenceUris: uris
-  } ),
   setPhotoImporterState: options => set( state => ( {
     galleryUris: options?.galleryUris || state.galleryUris,
     savingPhoto: options?.savingPhoto || state.savingPhoto,

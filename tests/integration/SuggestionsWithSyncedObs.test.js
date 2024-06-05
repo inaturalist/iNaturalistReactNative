@@ -79,6 +79,10 @@ const otherSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Alia suggestione" } ),
   combined_score: 50
 };
+const humanSuggestion = {
+  taxon: factory( "RemoteTaxon", { name: "Homo sapiens", id: 43584 } ),
+  combined_score: 86
+};
 
 beforeEach( async ( ) => {
   const mockScoreImageResponse = makeResponse( [topSuggestion, otherSuggestion] );
@@ -328,6 +332,22 @@ describe( "Suggestions", ( ) => {
       const savedObservation = global.mockRealms[__filename]
         .objectForPrimaryKey( "Observation", observations[0].uuid );
       expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
+    }
+  );
+
+  it(
+    "should display only a single human observation if human is found in suggestions",
+    async ( ) => {
+      inatjs.computervision.score_image
+        .mockResolvedValue( makeResponse( [humanSuggestion, otherSuggestion] ) );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+      const humanResultButton = await screen.findByTestId(
+        `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`
+      );
+      expect( humanResultButton ).toBeVisible( );
+      const flatList = screen.getByTestId( "Suggestions.FlatList" );
+      expect( flatList ).toHaveProp( "data", [humanSuggestion] );
     }
   );
 
