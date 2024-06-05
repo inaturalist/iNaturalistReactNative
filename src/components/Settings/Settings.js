@@ -8,9 +8,9 @@ import {
   Body2,
   Button,
   Heading4,
+  PickerSheet,
   RadioButtonRow,
-  ScrollViewWrapper,
-  PickerSheet
+  ScrollViewWrapper
 } from "components/SharedComponents";
 import React, { useEffect, useState } from "react";
 import {

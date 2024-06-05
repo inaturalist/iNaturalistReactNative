@@ -84,7 +84,8 @@ export default useUploadObservations = ( ) => {
       const timeoutID = setTimeout( ( ) => abortController.abort( ), 15_000 );
       await uploadObservation( observation, realm, { signal: abortController.signal } );
       clearTimeout( timeoutID );
-    } catch ( uploadError: any ) {
+    } catch ( uploadErr ) {
+      const uploadError = uploadErr as Error;
       if ( uploadError.name === "AbortError" ) {
         addUploadError( "aborted", observation.uuid );
       } else {
