@@ -1,8 +1,5 @@
 // @flow
 
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
-import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -10,10 +7,6 @@ import React, {
   useReducer, useState
 } from "react";
 import { Alert } from "react-native";
-import Observation from "realmModels/Observation";
-import { log } from "sharedHelpers/logger";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { sleep } from "sharedHelpers/util";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -24,7 +17,6 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
-  UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -35,14 +27,12 @@ import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos
 import useClearSyncedPhotosForUpload from "./hooks/useClearSyncedPhotosForUpload";
 import useClearSyncedSoundsForUpload from "./hooks/useClearSyncedSoundsForUpload";
 import useDeleteObservations from "./hooks/useDeleteObservations";
+import useSyncRemoteObservations from "./hooks/useSyncRemoteObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
 
-const logger = log.extend( "MyObservationsContainer" );
-
 export const INITIAL_STATE = {
-  canBeginDeletions: true,
-  syncInProgress: false
+  canBeginDeletions: true
 };
 
 const reducer = ( state: Object, action: Function ): Object => {
@@ -51,11 +41,6 @@ const reducer = ( state: Object, action: Function ): Object => {
       return {
         ...state,
         canBeginDeletions: false
-      };
-    case "START_SYNC":
-      return {
-        ...state,
-        syncInProgress: true
       };
     default:
       return state;
@@ -72,8 +57,6 @@ const MyObservationsContainer = ( ): Node => {
   useClearSyncedSoundsForUpload( );
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const resetUploadObservationsSlice = useStore( state => state?.resetUploadObservationsSlice );
-  const uploadStatus = useStore( state => state.uploadStatus );
   const setUploadStatus = useStore( state => state.setUploadStatus );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
@@ -83,8 +66,6 @@ const MyObservationsContainer = ( ): Node => {
   const { observationList: observations, unsyncedUuids } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
-  const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
-
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
   const canUpload = currentUser && isOnline;
@@ -93,6 +74,8 @@ const MyObservationsContainer = ( ): Node => {
     currentUser?.id && state.canBeginDeletions,
     dispatch
   );
+
+  const { syncObservations } = useSyncRemoteObservations( );
 
   useObservationsUpdates( !!currentUser );
 
@@ -146,94 +129,7 @@ const MyObservationsContainer = ( ): Node => {
     toggleLoginSheet
   ] );
 
-  const {
-    syncInProgress
-  } = state;
-
   useUploadObservations( );
-
-  const downloadRemoteObservationsFromServer = useCallback( async ( ) => {
-    const apiToken = await getJWT( );
-    const searchParams = {
-      user_id: currentUser?.id,
-      per_page: 50,
-      fields: Observation.FIELDS,
-      ttl: -1
-    };
-    // Between elasticsearch update time and API caches, there's no absolute
-    // guarantee fetching observations won't include something we just
-    // deleted, so we check to see if deletions recently completed and if
-    // they did, make sure 10s have elapsed since deletions complated before
-    // fetching new obs
-    if ( deletionsCompletedAt ) {
-      const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
-      if ( msSinceDeletionsCompleted < 5_000 ) {
-        const naptime = 10_000 - msSinceDeletionsCompleted;
-        logger.info(
-          "downloadRemoteObservationsFromServer finished deleting "
-          + `recently deleted, waiting ${naptime} ms`
-        );
-        await sleep( naptime );
-      }
-    }
-    logger.info(
-      "downloadRemoteObservationsFromServer, fetching observations"
-    );
-    const { results } = await searchObservations( searchParams, { api_token: apiToken } );
-    logger.info(
-      "downloadRemoteObservationsFromServer, fetched",
-      results.length,
-      "results, upserting..."
-    );
-    Observation.upsertRemoteObservations( results, realm );
-  }, [
-    currentUser,
-    deletionsCompletedAt,
-    realm
-  ] );
-
-  const updateSyncTime = useCallback( ( ) => {
-    const localPrefs = realm.objects( "LocalPreferences" )[0];
-    const updatedPrefs = {
-      ...localPrefs,
-      last_sync_time: new Date( )
-    };
-    safeRealmWrite( realm, ( ) => {
-      realm.create( "LocalPreferences", updatedPrefs, "modified" );
-    }, "updating sync time in MyObservationsContainer" );
-  }, [realm] );
-
-  const syncObservations = useCallback( async ( ) => {
-    if ( uploadStatus === UPLOAD_COMPLETE ) {
-      resetUploadObservationsSlice( );
-    }
-    if ( !currentUser ) {
-      toggleLoginSheet( );
-      resetUploadObservationsSlice( );
-      return;
-    }
-    if ( !isOnline ) {
-      showInternetErrorAlert( );
-      resetUploadObservationsSlice( );
-      return;
-    }
-    dispatch( { type: "START_SYNC" } );
-    activateKeepAwake( );
-
-    await downloadRemoteObservationsFromServer( );
-    updateSyncTime( );
-    deactivateKeepAwake( );
-    resetUploadObservationsSlice( );
-  }, [
-    currentUser,
-    downloadRemoteObservationsFromServer,
-    isOnline,
-    showInternetErrorAlert,
-    toggleLoginSheet,
-    updateSyncTime,
-    uploadStatus,
-    resetUploadObservationsSlice
-  ] );
 
   const handleSyncButtonPress = useCallback( ( ) => {
     if ( numUnuploadedObservations > 0 ) {
@@ -289,7 +185,6 @@ const MyObservationsContainer = ( ): Node => {
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
       status={observationListStatus}
-      syncInProgress={syncInProgress}
       toggleLayout={toggleLayout}
     />
   );

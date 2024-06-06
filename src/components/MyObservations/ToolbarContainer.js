@@ -10,6 +10,9 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
+  FETCHING_COMPLETE
+} from "stores/createDeleteObservationsSlice.ts";
+import {
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
   UPLOAD_PENDING
@@ -23,14 +26,12 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 type Props = {
   handleSyncButtonPress: Function,
   layout: string,
-  syncInProgress: boolean,
   toggleLayout: Function
 }
 
 const ToolbarContainer = ( {
   handleSyncButtonPress,
   layout,
-  syncInProgress,
   toggleLayout
 }: Props ): Node => {
   const setExploreView = useStore( state => state.setExploreView );
@@ -47,9 +48,12 @@ const ToolbarContainer = ( {
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const preUploadStatus = useStore( state => state.preUploadStatus );
 
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
+
+  console.log( preUploadStatus, "pre upload status" );
 
   // Note that numObservationsInQueue is the number of obs being uploaded in
   // the current upload session, so it might be 1 if a single obs is
@@ -89,6 +93,7 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
+  const syncInProgress = preUploadStatus !== FETCHING_COMPLETE;
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && numObservationsInQueue > 0;

@@ -1,10 +1,17 @@
+export const DELETIONS_PENDING = "deletions-pending";
+export const DELETIONS_COMPLETE = "deletions-complete";
+export const DELETIONS_IN_PROGRESS = "deletions-in-progress";
+export const FETCHING_REMOTE_OBSERVATIONS = "fetching-remote";
+export const FETCHING_COMPLETE = "fetching-remote-complete";
+
 const DEFAULT_STATE = {
   currentDeleteCount: 1,
   deletions: [],
   deletionsComplete: false,
   deletionsCompletedAt: null,
   deletionsInProgress: false,
-  deleteError: null
+  deleteError: null,
+  preUploadStatus: FETCHING_REMOTE_OBSERVATIONS
 };
 
 interface DeleteObservationsSlice {
@@ -13,7 +20,12 @@ interface DeleteObservationsSlice {
   deletionsComplete: boolean,
   deletionsCompletedAt: Date,
   deletionsInProgress: boolean,
-  deleteError: string | null
+  deleteError: string | null,
+  preUploadStatus: typeof DELETIONS_PENDING
+  | typeof DELETIONS_IN_PROGRESS
+  | typeof DELETIONS_COMPLETE
+  | typeof FETCHING_REMOTE_OBSERVATIONS
+  | typeof FETCHING_COMPLETE
 }
 
 const createDeleteObservationsSlice: StateCreator<DeleteObservationsSlice> = set => ( {
@@ -31,6 +43,9 @@ const createDeleteObservationsSlice: StateCreator<DeleteObservationsSlice> = set
   resetDeleteObservationsSlice: ( ) => set( DEFAULT_STATE ),
   setDeletionError: message => set( ( ) => ( {
     deleteError: message
+  } ) ),
+  setPreUploadStatus: preUploadStatus => set( ( ) => ( {
+    preUploadStatus
   } ) )
 } );
 
