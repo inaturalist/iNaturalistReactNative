@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react-native";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
 import React from "react";
-import * as useCurrentUser from "sharedHooks/useCurrentUser";
+import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import * as useIsConnected from "sharedHooks/useIsConnected.ts";
 import useStore from "stores/useStore";
 import factory from "tests/factory";

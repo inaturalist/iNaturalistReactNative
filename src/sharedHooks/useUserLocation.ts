@@ -24,15 +24,21 @@ interface UserLocation {
   accuracy?: number
 }
 
-interface UserUserLocationValue {
+interface UserLocationResponse {
   userLocation?: UserLocation,
   isLoading: boolean
 }
 
-const useUserLocation = ( {
-  skipPlaceGuess = false,
-  permissionsGranted: permissionsGrantedProp = false
-} ): UserUserLocationValue => {
+function useUserLocation(
+  options?: {
+    skipName?: boolean,
+    permissionsGranted?: boolean
+  }
+): UserLocationResponse {
+  const {
+    skipName = false,
+    permissionsGranted: permissionsGrantedProp = false
+  } = options || {};
   const [userLocation, setUserLocation] = useState<UserLocation | undefined>( undefined );
   const [isLoading, setIsLoading] = useState( true );
   const [permissionsGranted, setPermissionsGranted] = useState( permissionsGrantedProp );
@@ -69,7 +75,7 @@ const useUserLocation = ( {
         if ( !isCurrent ) { return; }
         const { coords } = position;
         let locationName;
-        if ( !skipPlaceGuess ) {
+        if ( !skipName ) {
           locationName = await fetchPlaceName( coords.latitude, coords.longitude );
         }
         setUserLocation( {
@@ -87,13 +93,13 @@ const useUserLocation = ( {
         setIsLoading( false );
       };
 
-      const options = {
+      const gcpOptions = {
         enableHighAccuracy: true,
         maximumAge: 0,
         timeout: CURRENT_LOCATION_TIMEOUT_MS
       };
 
-      Geolocation.getCurrentPosition( success, failure, options );
+      Geolocation.getCurrentPosition( success, failure, gcpOptions );
     };
 
     if ( permissionsGranted ) {
@@ -105,12 +111,12 @@ const useUserLocation = ( {
     return ( ) => {
       isCurrent = false;
     };
-  }, [permissionsGranted, skipPlaceGuess] );
+  }, [permissionsGranted, skipName] );
 
   return {
     userLocation,
     isLoading
   };
-};
+}
 
 export default useUserLocation;
