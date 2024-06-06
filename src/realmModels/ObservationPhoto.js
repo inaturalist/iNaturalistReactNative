@@ -45,7 +45,8 @@ class ObservationPhoto extends Realm.Object {
       observation_photo: {
         uuid: observationPhoto.uuid,
         observation_id: observationID,
-        photo_id: observationPhoto.photo.id
+        photo_id: observationPhoto.photo.id,
+        position: observationPhoto.position
       }
     };
   }
