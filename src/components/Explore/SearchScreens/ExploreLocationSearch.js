@@ -37,7 +37,7 @@ type Props = {
 
 const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node => {
   const { t } = useTranslation( );
-  const { dispatch, setExploreLocation } = useExplore( );
+  const { dispatch, defaultExploreLocation } = useExplore( );
 
   const [locationName, setLocationName] = useState( "" );
   const [permissionNeeded, setPermissionNeeded] = useState( false );
@@ -146,7 +146,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
         withoutNavigation
         onPermissionGranted={async ( ) => {
           setPermissionNeeded( false );
-          const exploreLocation = await setExploreLocation( );
+          const exploreLocation = await defaultExploreLocation( );
           dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
           closeModal();
         }}
