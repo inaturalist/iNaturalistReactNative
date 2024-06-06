@@ -15,7 +15,6 @@ import {
   UserText
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User";
@@ -23,7 +22,8 @@ import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useIsConnected
+  useIsConnected,
+  useTranslation
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -39,6 +39,7 @@ const UserProfile = ( ): Node => {
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
   const isOnline = useIsConnected( );
+  const { t } = useTranslation( );
 
   const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", userId],
