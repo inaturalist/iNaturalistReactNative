@@ -1,24 +1,39 @@
-// @flow
-
-import Geolocation from "@react-native-community/geolocation";
+import Geolocation, {
+  GeolocationError,
+  GeolocationResponse
+} from "@react-native-community/geolocation";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer";
 import { useEffect, useState } from "react";
 import {
-  checkMultiple, RESULTS
+  checkMultiple,
+  Permission,
+  RESULTS
 } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 
 // Max time to wait while fetching current location
 const CURRENT_LOCATION_TIMEOUT_MS = 30000;
 
+interface UserLocation {
+  name?: string,
+  latitude: number,
+  longitude: number,
+  accuracy?: number
+}
+
+interface UserUserLocationValue {
+  userLocation?: UserLocation,
+  isLoading: boolean
+}
+
 const useUserLocation = ( {
   skipPlaceGuess = false,
   permissionsGranted: permissionsGrantedProp = false
-}: Object ): Object => {
-  const [latLng, setLatLng] = useState( null );
+} ): UserUserLocationValue => {
+  const [userLocation, setUserLocation] = useState<UserLocation | undefined>( undefined );
   const [isLoading, setIsLoading] = useState( true );
   const [permissionsGranted, setPermissionsGranted] = useState( permissionsGrantedProp );
 
@@ -31,7 +46,7 @@ const useUserLocation = ( {
   useEffect( ( ) => {
     async function checkPermissions() {
       const permissionsResult = permissionResultFromMultiple(
-        await checkMultiple( LOCATION_PERMISSIONS )
+        await checkMultiple( LOCATION_PERMISSIONS as Permission[] )
       );
       if ( permissionsResult === RESULTS.GRANTED ) {
         setPermissionsGranted( true );
@@ -50,23 +65,24 @@ const useUserLocation = ( {
     const fetchLocation = async ( ) => {
       setIsLoading( true );
 
-      const success = async ( { coords } ) => {
+      const success = async ( position: GeolocationResponse ) => {
         if ( !isCurrent ) { return; }
-        let placeGuess = null;
+        const { coords } = position;
+        let locationName;
         if ( !skipPlaceGuess ) {
-          placeGuess = await fetchPlaceName( coords.latitude, coords.longitude );
+          locationName = await fetchPlaceName( coords.latitude, coords.longitude );
         }
-        setLatLng( {
-          place_guess: placeGuess,
+        setUserLocation( {
+          name: locationName || undefined,
           latitude: coords.latitude,
           longitude: coords.longitude,
-          positional_accuracy: coords.accuracy
+          accuracy: coords.accuracy
         } );
         setIsLoading( false );
       };
 
       // TODO: set geolocation fetch error
-      const failure = error => {
+      const failure = ( error: GeolocationError ) => {
         console.warn( `useUserLocation: ${error.message} (${error.code})` );
         setIsLoading( false );
       };
@@ -92,7 +108,7 @@ const useUserLocation = ( {
   }, [permissionsGranted, skipPlaceGuess] );
 
   return {
-    latLng,
+    userLocation,
     isLoading
   };
 };

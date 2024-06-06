@@ -7,7 +7,7 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
