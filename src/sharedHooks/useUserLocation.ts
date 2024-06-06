@@ -42,6 +42,7 @@ function useUserLocation(
   const [userLocation, setUserLocation] = useState<UserLocation | undefined>( undefined );
   const [isLoading, setIsLoading] = useState( true );
   const [permissionsGranted, setPermissionsGranted] = useState( permissionsGrantedProp );
+  const [permissionsChecked, setPermissionsChecked] = useState( false );
 
   useEffect( ( ) => {
     if ( permissionsGrantedProp === true && permissionsGranted === false ) {
@@ -61,6 +62,7 @@ function useUserLocation(
           "Location permissions have not been granted. You probably need to use a PermissionGate"
         );
       }
+      setPermissionsChecked( true );
     }
     checkPermissions( );
   }, [] );
@@ -104,14 +106,18 @@ function useUserLocation(
 
     if ( permissionsGranted ) {
       fetchLocation( );
-    } else {
+    } else if ( permissionsChecked ) {
       setIsLoading( false );
     }
 
     return ( ) => {
       isCurrent = false;
     };
-  }, [permissionsGranted, skipName] );
+  }, [
+    permissionsChecked,
+    permissionsGranted,
+    skipName
+  ] );
 
   return {
     userLocation,
