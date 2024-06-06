@@ -4,25 +4,33 @@ import { createRelationships, updateRelationships } from "api/relationships";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { useAuthenticatedMutation } from "sharedHooks";
+import { log } from "sharedHelpers/logger";
+import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 import FollowButton from "./FollowButton";
 
+const logger = log.extend( "FollowButtonContainer" );
+
 type Props = {
-    userId: number,
-    relationship: Object,
-    refetchRelationship: Function,
-    setShowLoginSheet: Function,
-    setShowUnfollowSheet: Function,
-    currentUser: Object
-  };
+  currentUser: Object,
+  refetchRelationship: Function,
+  relationship: Object,
+  setShowLoginSheet: Function,
+  setShowUnfollowSheet: Function,
+  userId: number,
+};
 
 const FollowButtonContainer = ( {
-  userId, setShowLoginSheet, setShowUnfollowSheet,
-  currentUser, relationship, refetchRelationship
+  currentUser,
+  refetchRelationship,
+  relationship,
+  setShowLoginSheet,
+  setShowUnfollowSheet,
+  userId
 }: Props ): Node => {
   const [loading, setLoading] = useState( false );
   const [following, setFollowing] = useState( false );
+  const { t } = useTranslation( );
 
   useEffect( ( ) => {
     if ( relationship?.following === true ) {
@@ -33,11 +41,11 @@ const FollowButtonContainer = ( {
   }, [relationship, refetchRelationship] );
 
   const createRelationshipsMutation = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => createRelationships( id, optsWithAuth )
+    ( params, optsWithAuth ) => createRelationships( params, optsWithAuth )
   );
 
   const updateRelationshipsMutation = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )
+    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth )
   );
 
   const createRelationshipsMutate = ( ) => createRelationshipsMutation.mutate( {
@@ -52,7 +60,8 @@ const FollowButtonContainer = ( {
     },
     onError: error => {
       setLoading( false );
-      Alert.alert( "Error Following/Unfollowing", error );
+      logger.error( error );
+      Alert.alert( t( "Something-went-wrong" ) );
     }
   } );
 
@@ -68,7 +77,8 @@ const FollowButtonContainer = ( {
     },
     onError: error => {
       setLoading( false );
-      Alert.alert( "Error Following/Unfollowing", error );
+      logger.error( error );
+      Alert.alert( t( "Something-went-wrong" ) );
     }
   } );
 
