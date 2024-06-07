@@ -68,7 +68,7 @@ export default useSyncRemoteObservations = ( ) => {
   ] );
 
   const updateSyncTime = useCallback( ( ) => {
-    const localPrefs = realm.objects( "LocalPreferences" )[0];
+    const localPrefs = realm?.objects( "LocalPreferences" )[0];
     const updatedPrefs = {
       ...localPrefs,
       last_sync_time: new Date( )

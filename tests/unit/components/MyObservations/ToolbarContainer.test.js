@@ -27,6 +27,10 @@ const deletionStore = {
   syncType: AUTOMATIC_SYNC
 };
 
+beforeAll( ( ) => {
+  jest.useFakeTimers( );
+} );
+
 describe( "Toolbar Container", () => {
   beforeEach( ( ) => {
     useStore.setState( initialStoreState, true );
@@ -143,6 +147,17 @@ describe( "Toolbar Container", () => {
     renderComponent( <ToolbarContainer /> );
 
     const statusText = screen.getByText( /7 observations uploaded/ );
+    expect( statusText ).toBeVisible( );
+  } );
+
+  it( "displays deletions in progress", async () => {
+    useStore.setState( {
+      ...deletionStore,
+      preUploadStatus: HANDLING_LOCAL_DELETIONS
+    } );
+    renderComponent( <ToolbarContainer /> );
+
+    const statusText = screen.getByText( /Deleting 1 of 1 observation/ );
     expect( statusText ).toBeVisible( );
   } );
 

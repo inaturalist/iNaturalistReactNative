@@ -8,19 +8,19 @@ export const USER_TAPPED_BUTTON = "button";
 export const AUTOMATIC_SYNC = "automatic";
 
 const DEFAULT_STATE = {
-  currentDeleteCount: 0,
+  currentDeleteCount: 1,
+  deleteError: null,
   deletions: [],
   deletionsCompletedAt: null,
-  deleteError: null,
   preUploadStatus: DELETIONS_PENDING,
   syncType: AUTOMATIC_SYNC
 };
 
 interface DeleteSyncObservationsSlice {
   currentDeleteCount: number,
+  deleteError: string | null,
   deletions: Array<Object>,
   deletionsCompletedAt: Date,
-  deleteError: string | null,
   preUploadStatus: typeof DELETIONS_PENDING
   | typeof SYNCING_REMOTE_DELETIONS
   | typeof HANDLING_LOCAL_DELETIONS

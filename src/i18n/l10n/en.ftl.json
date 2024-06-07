@@ -385,6 +385,14 @@
     "val": "Delete photo"
   },
   "Delete-sound": "Delete sound",
+  "Deleting-x-of-y": {
+    "comment": "Shows the progress of deletions for X of Y",
+    "val": "Deleting { $currentDeleteCount } of { $total }"
+  },
+  "Deleting-x-of-y-observations": {
+    "comment": "Shows the number of observations a user is currently deleting out of total on my observations page",
+    "val": "Deleting { $currentDeleteCount } of { $total ->\n  [one] 1 observation\n *[other] { $total } observations\n}"
+  },
   "DETAILS": {
     "comment": "Tab label or section title for content that describes further details, e.g.\nthe details of an observation",
     "val": "DETAILS"

@@ -86,27 +86,27 @@ const useDeleteLocalObservations = ( ): Object => {
     if ( preUploadStatus === HANDLING_LOCAL_DELETIONS ) {
       logger.info( "syncing locally deleted observations" );
 
-      if ( deletions.length > 0 ) {
-        deletions.forEach( async ( observation, i ) => {
-          await deleteRemoteObservationAndCatchError( );
-          if ( i > 0 ) {
-            startNextDeletion( );
-          }
-          if ( i === deletions.length - 1 ) {
-            finishLocalDeletions( );
-          }
-        } );
-      } else {
+      if ( deletions.length === 0 ) {
         finishLocalDeletions( );
+        return;
       }
+      deletions.forEach( async ( observation, i ) => {
+        await deleteRemoteObservationAndCatchError( );
+        if ( i > 0 ) {
+          startNextDeletion( );
+        }
+        if ( i === deletions.length - 1 ) {
+          finishLocalDeletions( );
+        }
+      } );
     }
   }, [
     deleteRemoteObservationAndCatchError,
     deletions,
     finishLocalDeletions,
-    startNextDeletion,
     preUploadStatus,
-    realm
+    realm,
+    startNextDeletion
   ] );
 
   return {

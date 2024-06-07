@@ -27,6 +27,8 @@ import Toolbar from "./Toolbar";
 
 const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 
+const DELETION_STARTED_PROGRESS = 0.25;
+
 type Props = {
   handleSyncButtonPress: Function,
   layout: string,
@@ -67,11 +69,6 @@ const ToolbarContainer = ( {
     numUploadsAttempted
   ] );
 
-  const totalDeletions = deletions.length;
-  const deletionsProgress = totalDeletions > 0
-    ? currentDeleteCount / totalDeletions
-    : 0;
-
   const navToExplore = useCallback(
     ( ) => {
       setExploreView( "observations" );
@@ -87,9 +84,11 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
+  const totalDeletions = deletions.length;
   const syncing = [SYNCING_REMOTE_DELETIONS, HANDLING_LOCAL_DELETIONS, FETCHING_IN_PROGRESS];
-
   const deletionsComplete = preUploadStatus === DELETE_AND_SYNC_COMPLETE;
+  const deletionsInProgress = totalDeletions > 0 && !deletionsComplete;
+
   const syncInProgress = syncType === USER_TAPPED_BUTTON
     && syncing.includes( preUploadStatus );
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
@@ -97,20 +96,47 @@ const ToolbarContainer = ( {
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && numObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
 
+  const setDeletionsProgress = ( ) => {
+    // TODO: we should emit deletions progress like we do for uploads for an accurate progress
+    // right now, a user can only delete a single local upload at a time from ObsEdit
+    // so we don't need a more robust count here (20240607)
+    if ( totalDeletions === 0 ) {
+      return 0;
+    }
+    if ( !deletionsComplete ) {
+      return currentDeleteCount * DELETION_STARTED_PROGRESS;
+    }
+    return 1;
+  };
+  const deletionsProgress = setDeletionsProgress( );
+
+  const deletionParams = useMemo( ( ) => ( {
+    total: totalDeletions,
+    currentDeleteCount
+  } ), [
+    totalDeletions,
+    currentDeleteCount
+  ] );
+
   const showFinalUploadError = ( totalUploadErrors > 0 && uploadsComplete )
-    || ( totalUploadErrors > 0 && ( numUploadsAttempted === numObservationsInQueue ) );
-
-  const rotating = syncInProgress || uploadInProgress;
-  const showsCheckmark = ( uploadsComplete && !uploadMultiError )
-    || ( deletionsComplete && !deleteError && totalDeletions > 0 );
-
+  || ( totalUploadErrors > 0 && ( numUploadsAttempted === numObservationsInQueue ) );
   const showsExclamation = pendingUpload || showFinalUploadError;
+
+  const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
+  const showsCheckmark = ( uploadsComplete && !uploadMultiError )
+  || ( deletionsComplete && !deleteError && totalDeletions > 0 );
 
   const getStatusText = useCallback( ( ) => {
     if ( syncInProgress ) { return t( "Syncing" ); }
 
-    if ( deletionsComplete && totalDeletions > 0 ) {
-      return t( "X-observations-deleted", { count: totalDeletions } );
+    if ( totalDeletions > 0 ) {
+      if ( deletionsComplete ) {
+        return t( "X-observations-deleted", { count: totalDeletions } );
+      }
+      // iPhone 4 pixel width
+      return screenWidth <= 640
+        ? t( "Deleting-x-of-y", deletionParams )
+        : t( "Deleting-x-of-y-observations", deletionParams );
     }
 
     if ( pendingUpload ) {
@@ -130,6 +156,7 @@ const ToolbarContainer = ( {
 
     return "";
   }, [
+    deletionParams,
     deletionsComplete,
     numUploadsAttempted,
     numUnuploadedObservations,
