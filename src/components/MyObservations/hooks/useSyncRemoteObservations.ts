@@ -1,5 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { RealmContext } from "providers/contexts";
@@ -10,11 +9,12 @@ import {
 import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { sleep } from "sharedHelpers/util";
 import { useCurrentUser } from "sharedHooks";
 import {
-  FETCHING_COMPLETE,
-  FETCHING_REMOTE_OBSERVATIONS
-} from "stores/createDeleteObservationsSlice.ts";
+  DELETE_AND_SYNC_COMPLETE,
+  FETCHING_IN_PROGRESS
+} from "stores/createDeleteAndSyncObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
@@ -22,9 +22,9 @@ const { useRealm } = RealmContext;
 const logger = log.extend( "useSyncRemoteObservations" );
 
 export default useSyncRemoteObservations = ( ) => {
-  const navigation = useNavigation( );
   const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
   const setPreUploadStatus = useStore( s => s.setPreUploadStatus );
+  const preUploadStatus = useStore( state => state.preUploadStatus );
 
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
@@ -48,18 +48,15 @@ export default useSyncRemoteObservations = ( ) => {
       if ( msSinceDeletionsCompleted < 5_000 ) {
         const naptime = 10_000 - msSinceDeletionsCompleted;
         logger.info(
-          "downloadRemoteObservationsFromServer finished deleting "
-          + `recently deleted, waiting ${naptime} ms`
+          "finished deleting "
+          + `recently deleted, waiting ${naptime} ms to download remote observations`
         );
         await sleep( naptime );
       }
     }
-    logger.info(
-      "downloadRemoteObservationsFromServer, fetching observations"
-    );
     const { results } = await searchObservations( params, { api_token: apiToken } );
     logger.info(
-      "downloadRemoteObservationsFromServer, fetched",
+      "fetched remote observations from server with",
       results.length,
       "results, upserting..."
     );
@@ -82,11 +79,10 @@ export default useSyncRemoteObservations = ( ) => {
   }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {
-    activateKeepAwake( );
-    setPreUploadStatus( FETCHING_REMOTE_OBSERVATIONS );
+    setPreUploadStatus( FETCHING_IN_PROGRESS );
 
     await downloadRemoteObservationsFromServer( );
-    setPreUploadStatus( FETCHING_COMPLETE );
+    setPreUploadStatus( DELETE_AND_SYNC_COMPLETE );
     updateSyncTime( );
     deactivateKeepAwake( );
   }, [
@@ -95,17 +91,11 @@ export default useSyncRemoteObservations = ( ) => {
     setPreUploadStatus
   ] );
 
-  useEffect(
-    ( ) => {
-      navigation.addListener( "focus", ( ) => {
-        syncObservations( );
-      } );
-    },
-    [
-      navigation,
-      syncObservations
-    ]
-  );
+  useEffect( ( ) => {
+    if ( preUploadStatus === FETCHING_IN_PROGRESS ) {
+      syncObservations( );
+    }
+  }, [preUploadStatus, syncObservations] );
 
   return {
     syncObservations

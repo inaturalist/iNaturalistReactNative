@@ -1,10 +1,12 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
+import { activateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback,
-  useReducer, useState
+  useCallback, useEffect,
+  useState
 } from "react";
 import { Alert } from "react-native";
 import {
@@ -17,6 +19,12 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
+  DELETIONS_PENDING,
+  HANDLING_LOCAL_DELETIONS,
+  SYNCING_REMOTE_DELETIONS,
+  USER_TAPPED_BUTTON
+} from "stores/createDeleteAndSyncObservationsSlice.ts";
+import {
   UPLOAD_IN_PROGRESS,
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
@@ -26,30 +34,16 @@ import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
 import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
 import useClearSyncedPhotosForUpload from "./hooks/useClearSyncedPhotosForUpload";
 import useClearSyncedSoundsForUpload from "./hooks/useClearSyncedSoundsForUpload";
-import useDeleteObservations from "./hooks/useDeleteObservations";
+import useDeleteLocalObservations from "./hooks/useDeleteLocalObservations";
+import useSyncRemoteDeletions from "./hooks/useSyncRemoteDeletions";
 import useSyncRemoteObservations from "./hooks/useSyncRemoteObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
 
-export const INITIAL_STATE = {
-  canBeginDeletions: true
-};
-
-const reducer = ( state: Object, action: Function ): Object => {
-  switch ( action.type ) {
-    case "SET_START_DELETIONS":
-      return {
-        ...state,
-        canBeginDeletions: false
-      };
-    default:
-      return state;
-  }
-};
-
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
+  const navigation = useNavigation( );
   // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
   useClearRotatedOriginalPhotos( );
   useClearGalleryPhotos( );
@@ -58,24 +52,26 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const setUploadStatus = useStore( state => state.setUploadStatus );
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
-  const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
-  const [state, dispatch] = useReducer( reducer, INITIAL_STATE );
-  const { observationList: observations, unsyncedUuids } = useLocalObservations( );
+  const setSyncType = useStore( state => state.setSyncType );
+  const preUploadStatus = useStore( state => state.preUploadStatus );
+  const setPreUploadStatus = useStore( state => state.setPreUploadStatus );
+  const resetDeleteAndSyncObservationsSlice
+    = useStore( state => state.resetDeleteAndSyncObservationsSlice );
+
+  const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
+  const currentUserId = currentUser?.id;
   const canUpload = currentUser && isOnline;
 
-  useDeleteObservations(
-    currentUser?.id && state.canBeginDeletions,
-    dispatch
-  );
-
-  const { syncObservations } = useSyncRemoteObservations( );
+  useSyncRemoteDeletions( );
+  useDeleteLocalObservations( );
+  useSyncRemoteObservations( );
+  useUploadObservations( canUpload );
 
   useObservationsUpdates( !!currentUser );
 
@@ -129,27 +125,17 @@ const MyObservationsContainer = ( ): Node => {
     toggleLoginSheet
   ] );
 
-  useUploadObservations( );
-
   const handleSyncButtonPress = useCallback( ( ) => {
-    if ( numUnuploadedObservations > 0 ) {
-      const uuidsQuery = unsyncedUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
-      const uploads = realm.objects( "Observation" )
-        .filtered( `uuid IN { ${uuidsQuery} }` );
-      setTotalToolbarIncrements( uploads );
-      addToUploadQueue( unsyncedUuids );
-      startUpload( );
-    } else {
-      syncObservations( );
-    }
+    toggleLoginSheet( );
+    showInternetErrorAlert( );
+    setSyncType( USER_TAPPED_BUTTON );
+    activateKeepAwake( );
+    setPreUploadStatus( SYNCING_REMOTE_DELETIONS );
   }, [
-    addToUploadQueue,
-    startUpload,
-    numUnuploadedObservations,
-    realm,
-    setTotalToolbarIncrements,
-    syncObservations,
-    unsyncedUuids
+    toggleLoginSheet,
+    showInternetErrorAlert,
+    setSyncType,
+    setPreUploadStatus
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
@@ -163,6 +149,31 @@ const MyObservationsContainer = ( ): Node => {
     startUpload,
     realm
   ] );
+
+  useEffect(
+    ( ) => {
+      // this is intended to make sure the syncing process only runs once
+      // when a user lands on MyObservations
+      if ( preUploadStatus !== DELETIONS_PENDING ) { return; }
+      activateKeepAwake( );
+      if ( currentUserId ) {
+        setPreUploadStatus( SYNCING_REMOTE_DELETIONS );
+      } else {
+        setPreUploadStatus( HANDLING_LOCAL_DELETIONS );
+      }
+    },
+    [
+      currentUserId,
+      preUploadStatus,
+      setPreUploadStatus
+    ]
+  );
+
+  useEffect( ( ) => {
+    navigation.addListener( "blur", ( ) => {
+      resetDeleteAndSyncObservationsSlice( );
+    } );
+  }, [navigation, resetDeleteAndSyncObservationsSlice] );
 
   if ( !layout ) { return null; }
 

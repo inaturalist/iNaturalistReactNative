@@ -9,14 +9,21 @@ import Observation from "realmModels/Observation";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
+import { log } from "sharedHelpers/logger";
 import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
 import {
+  useLocalObservations,
   useTranslation
 } from "sharedHooks";
 import {
+  DELETE_AND_SYNC_COMPLETE,
+  USER_TAPPED_BUTTON
+} from "stores/createDeleteAndSyncObservationsSlice.ts";
+import {
   UPLOAD_CANCELLED,
   UPLOAD_COMPLETE,
-  UPLOAD_IN_PROGRESS
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
@@ -25,7 +32,9 @@ const MS_BEFORE_UPLOAD_TIMES_OUT = 15_000;
 
 const { useRealm } = RealmContext;
 
-export default useUploadObservations = ( ) => {
+const logger = log.extend( "useUploadbservations" );
+
+export default useUploadObservations = canUpload => {
   const realm = useRealm( );
 
   const addUploadError = useStore( state => state.addUploadError );
@@ -41,6 +50,19 @@ export default useUploadObservations = ( ) => {
   const uploadQueue = useStore( state => state.uploadQueue );
   const uploadStatus = useStore( state => state.uploadStatus );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+  const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
+  const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const setUploadStatus = useStore( state => state.setUploadStatus );
+  const syncType = useStore( state => state.syncType );
+  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
+  const preUploadStatus = useStore( state => state.preUploadStatus );
+
+  const { unsyncedUuids } = useLocalObservations( );
+
+  const continueToUploads = syncType === USER_TAPPED_BUTTON
+    && numUnuploadedObservations > 0
+    && preUploadStatus === DELETE_AND_SYNC_COMPLETE
+    && uploadStatus === UPLOAD_PENDING;
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -175,4 +197,40 @@ export default useUploadObservations = ( ) => {
       deactivateKeepAwake( );
     }
   }, [abortController, uploadStatus] );
+
+  const startUpload = useCallback( ( ) => {
+    if ( canUpload ) {
+      setUploadStatus( UPLOAD_IN_PROGRESS );
+    } else {
+      setUploadStatus( UPLOAD_PENDING );
+    }
+  }, [
+    canUpload,
+    setUploadStatus
+  ] );
+
+  const createUploadQueue = useCallback( ( ) => {
+    const uuidsQuery = unsyncedUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
+    const uploads = realm.objects( "Observation" )
+      .filtered( `uuid IN { ${uuidsQuery} }` );
+    setTotalToolbarIncrements( uploads );
+    addToUploadQueue( unsyncedUuids );
+    startUpload( );
+  }, [
+    realm,
+    setTotalToolbarIncrements,
+    unsyncedUuids,
+    addToUploadQueue,
+    startUpload
+  ] );
+
+  useEffect( ( ) => {
+    if ( continueToUploads ) {
+      logger.info( "creating upload queue" );
+      createUploadQueue( );
+    }
+  }, [
+    continueToUploads,
+    createUploadQueue
+  ] );
 };

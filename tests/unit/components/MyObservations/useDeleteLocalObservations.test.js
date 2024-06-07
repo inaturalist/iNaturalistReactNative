@@ -1,6 +1,10 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import useDeleteObservations from "components/MyObservations/hooks/useDeleteObservations.ts";
+import useDeleteLocalObservations
+  from "components/MyObservations/hooks/useDeleteLocalObservations.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import {
+  HANDLING_LOCAL_DELETIONS
+} from "stores/createDeleteAndSyncObservationsSlice.ts";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -8,11 +12,10 @@ import faker from "tests/helpers/faker";
 const initialStoreState = useStore.getState( );
 
 const deletionStore = {
-  currentDeleteCount: 3,
-  deletions: [{}, {}, {}],
-  deletionsComplete: false,
-  deletionsInProgress: false,
-  error: null
+  currentDeleteCount: 1,
+  deletions: [{}],
+  preUploadStatus: HANDLING_LOCAL_DELETIONS,
+  deleteError: null
 };
 
 const mockMutate = jest.fn();
@@ -60,14 +63,14 @@ describe( "handle deletions", ( ) => {
   it( "should not make deletion API call for unsynced observations", async ( ) => {
     createObservations(
       unsyncedObservations,
-      "write unsyncedObservations, useDeleteObservations test"
+      "write unsyncedObservations, useDeleteLocalObservations test"
     );
 
     const unsyncedObservation = getLocalObservation(
       unsyncedObservations[0].uuid
     );
     expect( unsyncedObservation._synced_at ).toBeNull( );
-    renderHook( ( ) => useDeleteObservations( true, ( ) => null ) );
+    renderHook( ( ) => useDeleteLocalObservations( ) );
     useStore.setState( {
       ...deletionStore,
       deletions: unsyncedObservations,
@@ -82,12 +85,12 @@ describe( "handle deletions", ( ) => {
   it( "should make deletion API call for previously synced observations", async ( ) => {
     createObservations(
       syncedObservations,
-      "write syncedObservations, useDeleteObservations test"
+      "write syncedObservations, useDeleteLocalObservations test"
     );
 
     const syncedObservation = getLocalObservation( syncedObservations[0].uuid );
     expect( syncedObservation._synced_at ).not.toBeNull( );
-    renderHook( ( ) => useDeleteObservations( true, ( ) => null ) );
+    renderHook( ( ) => useDeleteLocalObservations( ) );
     useStore.setState( {
       ...deletionStore,
       deletions: syncedObservations,

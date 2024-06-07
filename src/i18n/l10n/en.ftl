@@ -274,14 +274,6 @@ DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Delete photo
 Delete-sound = Delete sound
-# Shows the progress of deletions for X of Y
-Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
-# Shows the number of observations a user is currently deleting out of total on my observations page
-Deleting-x-of-y-observations =
-    Deleting { $currentDeleteCount } of { $total ->
-        [one] 1 observation
-       *[other] { $total } observations
-    }
 # Tab label or section title for content that describes further details, e.g.
 # the details of an observation
 DETAILS = DETAILS

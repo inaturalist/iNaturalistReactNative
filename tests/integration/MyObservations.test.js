@@ -74,6 +74,16 @@ const checkToolbarResetWithUnsyncedObs = ( ) => waitFor( ( ) => {
   expect( toolbarText ).toBeVisible( );
 } );
 
+const tapSyncButton = async ( ) => {
+  const syncIcon = screen.getByTestId( "SyncButton" );
+  expect( syncIcon ).toBeVisible( );
+  fireEvent.press( syncIcon );
+  await waitFor( ( ) => {
+    const syncingText = screen.getByText( /Syncing.../ );
+    expect( syncingText ).toBeVisible( );
+  } );
+};
+
 const writeObservationsToRealm = ( observations, message ) => {
   const realm = global.mockRealms[__filename];
   safeRealmWrite( realm, ( ) => {
@@ -214,12 +224,16 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
+      it( "displays syncing text when toolbar tapped", async () => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await checkToolbarResetWithUnsyncedObs( );
+        await tapSyncButton( );
+      } );
+
       it( "displays upload in progress status when toolbar tapped", async () => {
         renderAppWithComponent( <MyObservationsContainer /> );
         await checkToolbarResetWithUnsyncedObs( );
-        const syncIcon = screen.getByTestId( "SyncButton" );
-        expect( syncIcon ).toBeVisible( );
-        fireEvent.press( syncIcon );
+        await tapSyncButton( );
         await waitFor( ( ) => {
           const uploadInProgressText = screen.getByText( /Uploading [1-2] of 2 observations/ );
           expect( uploadInProgressText ).toBeVisible( );
