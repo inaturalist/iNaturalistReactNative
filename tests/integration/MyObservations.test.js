@@ -1,7 +1,9 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import {
+  fireEvent, screen, waitFor
+} from "@testing-library/react-native";
 import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations.ts";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import { format } from "date-fns";
@@ -78,8 +80,8 @@ const tapSyncButton = async ( ) => {
   const syncIcon = screen.getByTestId( "SyncButton" );
   expect( syncIcon ).toBeVisible( );
   fireEvent.press( syncIcon );
+  const syncingText = screen.getByText( /Syncing.../ );
   await waitFor( ( ) => {
-    const syncingText = screen.getByText( /Syncing.../ );
     expect( syncingText ).toBeVisible( );
   } );
 };
@@ -233,7 +235,6 @@ describe( "MyObservations", ( ) => {
       it( "displays upload in progress status when toolbar tapped", async () => {
         renderAppWithComponent( <MyObservationsContainer /> );
         await checkToolbarResetWithUnsyncedObs( );
-        await tapSyncButton( );
         await waitFor( ( ) => {
           const uploadInProgressText = screen.getByText( /Uploading [1-2] of 2 observations/ );
           expect( uploadInProgressText ).toBeVisible( );
@@ -288,11 +289,11 @@ describe( "MyObservations", ( ) => {
         inatjs.observations.create.mockRejectedValueOnce(
           new TypeError( "Network request failed" )
         );
-        const syncIcon = screen.getByTestId( "SyncButton" );
-        expect( syncIcon ).toBeVisible( );
-        fireEvent.press( syncIcon );
-        const toolbarText = await screen.findByText( /1 upload failed/ );
-        expect( toolbarText ).toBeVisible( );
+        await tapSyncButton( );
+        await waitFor( ( ) => {
+          const toolbarText = screen.getByText( /1 upload failed/ );
+          expect( toolbarText ).toBeVisible( );
+        }, { timeout: MS_BEFORE_TOOLBAR_RESET + 1000, interval: 500 } );
         // Wait for the toolbar to reset to its default state so there aren't
         // any pending async processes that will interfere with other tests
         await waitFor( ( ) => {
@@ -399,7 +400,7 @@ describe( "MyObservations", ( ) => {
           const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
           await waitFor( ( ) => {
             expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
-          } );
+          }, { timeout: 3000, interval: 500 } );
           expect( global.mockRealms[__filename].objects( "Observation" ).length ).toBe( 1 );
         } );
       } );

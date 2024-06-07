@@ -9,7 +9,7 @@ import {
 import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { sleep } from "sharedHelpers/util";
+// import { sleep } from "sharedHelpers/util";
 import { useCurrentUser } from "sharedHooks";
 import {
   DELETE_AND_SYNC_COMPLETE,
@@ -46,12 +46,17 @@ export default useSyncRemoteObservations = ( ) => {
     if ( deletionsCompletedAt ) {
       const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
       if ( msSinceDeletionsCompleted < 5_000 ) {
-        const naptime = 10_000 - msSinceDeletionsCompleted;
-        logger.info(
-          "finished deleting "
-          + `recently deleted, waiting ${naptime} ms to download remote observations`
-        );
-        await sleep( naptime );
+        // 20240607 amanda - now that the sync button involves a sequential process of handling
+        // remote and local deletions, then downloading remote observations, then
+        // uploading observations, we don't want to hold up the upload process
+        // by triggering a naptime here. instead, we're moving on to uploads
+        setPreUploadStatus( DELETE_AND_SYNC_COMPLETE );
+        // const naptime = 10_000 - msSinceDeletionsCompleted;
+        // logger.info(
+        //   "finished deleting "
+        //   + `recently deleted, waiting ${naptime} ms to download remote observations`
+        // );
+        // await sleep( naptime );
       }
     }
     const { results } = await searchObservations( params, { api_token: apiToken } );
@@ -64,7 +69,8 @@ export default useSyncRemoteObservations = ( ) => {
   }, [
     params,
     deletionsCompletedAt,
-    realm
+    realm,
+    setPreUploadStatus
   ] );
 
   const updateSyncTime = useCallback( ( ) => {
