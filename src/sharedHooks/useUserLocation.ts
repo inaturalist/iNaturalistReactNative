@@ -6,7 +6,7 @@ import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   checkMultiple,
   Permission,
@@ -32,17 +32,21 @@ interface UserLocationResponse {
 function useUserLocation(
   options?: {
     skipName?: boolean,
-    permissionsGranted?: boolean
+    permissionsGranted?: boolean,
+    untilAcc?: number | undefined
   }
 ): UserLocationResponse {
   const {
     skipName = false,
-    permissionsGranted: permissionsGrantedProp = false
+    permissionsGranted: permissionsGrantedProp = false,
+    untilAcc
   } = options || {};
   const [userLocation, setUserLocation] = useState<UserLocation | undefined>( undefined );
   const [isLoading, setIsLoading] = useState( true );
   const [permissionsGranted, setPermissionsGranted] = useState( permissionsGrantedProp );
   const [permissionsChecked, setPermissionsChecked] = useState( false );
+  const fetchingLocation = useRef<Boolean>( false );
+  const [accGoodEnough, setAccGoodEnough] = useState( false );
 
   useEffect( ( ) => {
     if ( permissionsGrantedProp === true && permissionsGranted === false ) {
@@ -71,6 +75,7 @@ function useUserLocation(
     let isCurrent = true;
 
     const fetchLocation = async ( ) => {
+      fetchingLocation.current = true;
       setIsLoading( true );
 
       const success = async ( position: GeolocationResponse ) => {
@@ -87,12 +92,19 @@ function useUserLocation(
           accuracy: coords.accuracy
         } );
         setIsLoading( false );
+        fetchingLocation.current = false;
+        setAccGoodEnough( true );
+        if ( untilAcc && coords?.accuracy && coords?.accuracy > untilAcc ) {
+          setTimeout( ( ) => setAccGoodEnough( false ), 1000 );
+        }
       };
 
       // TODO: set geolocation fetch error
       const failure = ( error: GeolocationError ) => {
         console.warn( `useUserLocation: ${error.message} (${error.code})` );
         setIsLoading( false );
+        fetchingLocation.current = false;
+        setAccGoodEnough( true );
       };
 
       const gcpOptions = {
@@ -104,19 +116,30 @@ function useUserLocation(
       Geolocation.getCurrentPosition( success, failure, gcpOptions );
     };
 
-    if ( permissionsGranted ) {
-      fetchLocation( );
-    } else if ( permissionsChecked ) {
+    if ( permissionsChecked && !permissionsGranted ) {
       setIsLoading( false );
+      fetchingLocation.current = false;
+    } else if (
+      // we have permission
+      permissionsGranted
+      // and we're not already fetching
+      && !fetchingLocation.current
+      // and we're not waiting OR we are and acc is above threshold
+      && !accGoodEnough
+    ) {
+      fetchingLocation.current = true;
+      fetchLocation( );
     }
 
     return ( ) => {
       isCurrent = false;
     };
   }, [
+    accGoodEnough,
     permissionsChecked,
     permissionsGranted,
-    skipName
+    skipName,
+    untilAcc
   ] );
 
   return {

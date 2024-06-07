@@ -2,8 +2,6 @@ import Geolocation from "@react-native-community/geolocation";
 import { renderHook, waitFor } from "@testing-library/react-native";
 import useUserLocation from "sharedHooks/useUserLocation.ts";
 
-const mockedGeolocation = jest.mocked( Geolocation );
-
 const mockPositions = [
   {
     coords: {
@@ -30,13 +28,18 @@ const mockPositions = [
 
 describe( "useUserLocation", ( ) => {
   beforeEach( ( ) => {
-    mockedGeolocation.getCurrentPosition.mockClear( );
-    mockedGeolocation.getCurrentPosition
+    Geolocation.getCurrentPosition.mockReset( );
+    // Mock so success gets called immediately and so that three subsequent
+    // calls succeed with changing coordinates and improving accuracy
+    Geolocation.getCurrentPosition
       .mockImplementationOnce( success => success( mockPositions[0] ) )
       .mockImplementationOnce( success => success( mockPositions[1] ) )
       .mockImplementationOnce( success => success( mockPositions[2] ) );
   } );
 
+  // Geolocation.getCurrentPosition should have been called and that roughly
+  // marks the end of async effects, so hopefull this prevents "outside of
+  // act" warnings
   afterEach( ( ) => waitFor( ( ) => {
     expect( Geolocation.getCurrentPosition ).toHaveBeenCalled( );
   } ) );
@@ -53,6 +56,20 @@ describe( "useUserLocation", ( ) => {
     await waitFor( ( ) => {
       expect( result.current.userLocation ).toBeDefined( );
     } );
-    expect( result?.current?.userLocation?.longitude ).toEqual( mockPositions[0].coords.latitude );
+    expect( result?.current?.userLocation?.longitude )
+      .toEqual( mockPositions[0].coords.latitude );
+  } );
+
+  describe( "untilAcc", ( ) => {
+    it( "should fetch coordinates until target accuracy reached", async ( ) => {
+      const { result } = renderHook( ( ) => useUserLocation( {
+        untilAcc: 10
+      } ) );
+      await waitFor( ( ) => {
+        expect( result.current.userLocation?.accuracy )
+          .toEqual( mockPositions[2].coords.accuracy );
+      }, { timeout: 4000, interval: 1000 } );
+      expect( Geolocation.getCurrentPosition ).toHaveBeenCalledTimes( 3 );
+    } );
   } );
 } );
