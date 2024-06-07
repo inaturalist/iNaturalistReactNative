@@ -56,12 +56,17 @@ export default useUploadObservations = canUpload => {
   const syncType = useStore( state => state.syncType );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const preUploadStatus = useStore( state => state.preUploadStatus );
+  const resetDeleteAndSyncObservationsSlice
+    = useStore( state => state.resetDeleteAndSyncObservationsSlice );
+  const deleteError = useStore( state => state.deleteError );
+
+  const syncComplete = preUploadStatus === DELETE_AND_SYNC_COMPLETE;
 
   const { unsyncedUuids } = useLocalObservations( );
 
   const continueToUploads = syncType === USER_TAPPED_BUTTON
     && numUnuploadedObservations > 0
-    && preUploadStatus === DELETE_AND_SYNC_COMPLETE
+    && syncComplete
     && uploadStatus === UPLOAD_PENDING;
 
   // The existing abortController lets you abort...
@@ -232,5 +237,23 @@ export default useUploadObservations = canUpload => {
   }, [
     continueToUploads,
     createUploadQueue
+  ] );
+
+  useEffect( ( ) => {
+    if ( continueToUploads ) { return null; }
+    let timer;
+    if ( syncComplete && !deleteError ) {
+      timer = setTimeout( ( ) => {
+        resetDeleteAndSyncObservationsSlice( );
+      }, 5000 );
+    }
+    return ( ) => {
+      clearTimeout( timer );
+    };
+  }, [
+    continueToUploads,
+    deleteError,
+    resetDeleteAndSyncObservationsSlice,
+    syncComplete
   ] );
 };
