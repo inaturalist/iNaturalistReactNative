@@ -21,7 +21,7 @@ import {
 import useStore from "stores/useStore";
 
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
-const MS_BEFORE_UPLOAD_TIMES_OUT = 15_000;
+const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
 
 const { useRealm } = RealmContext;
 
@@ -41,6 +41,7 @@ export default useUploadObservations = ( ) => {
   const uploadQueue = useStore( state => state.uploadQueue );
   const uploadStatus = useStore( state => state.uploadStatus );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+  const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -137,18 +138,25 @@ export default useUploadObservations = ( ) => {
       const lastQueuedUuid = uploadQueue[uploadQueue.length - 1];
       const localObservation = realm.objectForPrimaryKey( "Observation", lastQueuedUuid );
       if ( localObservation ) {
-        newAbortController( );
         await uploadObservationAndCatchError( localObservation );
       }
     };
-    if ( uploadStatus === UPLOAD_IN_PROGRESS
+    if (
+      uploadStatus === UPLOAD_IN_PROGRESS
       && uploadQueue.length > 0
       && !currentUpload
     ) {
+      const startingNewUploadQueue = initialNumObservationsInQueue === uploadQueue.length;
+      if ( startingNewUploadQueue ) {
+        // We want the same abort controller for the entire upload queue so
+        // cancelling cancels every request
+        newAbortController( );
+      }
       startUpload( );
     }
   }, [
     currentUpload,
+    initialNumObservationsInQueue,
     newAbortController,
     realm,
     uploadObservationAndCatchError,
