@@ -107,14 +107,15 @@ const Projects = ( {
 
   return (
     <ViewWrapper testID="Projects">
-      <SearchBar
-        handleTextChange={setSearchInput}
-        value={searchInput}
-        testID="ProjectSearch.input"
-        containerClass="pb-5 mx-4"
-        placeholder={t( "Search-for-a-project" )}
-        clearSearch={( ) => setSearchInput( "" )}
-      />
+      <View className="py-5 mx-4">
+        <SearchBar
+          handleTextChange={setSearchInput}
+          value={searchInput}
+          testID="ProjectSearch.input"
+          placeholder={t( "Search-for-a-project" )}
+          clearSearch={( ) => setSearchInput( "" )}
+        />
+      </View>
       {searchInput.length === 0 && (
         <>
           <Tabs tabs={tabs} activeId={currentTabId} />
