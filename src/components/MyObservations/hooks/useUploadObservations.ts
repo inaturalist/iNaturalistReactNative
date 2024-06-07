@@ -240,9 +240,8 @@ export default useUploadObservations = canUpload => {
   ] );
 
   useEffect( ( ) => {
-    if ( continueToUploads ) { return null; }
     let timer;
-    if ( syncComplete && !deleteError ) {
+    if ( !continueToUploads && syncComplete && !deleteError ) {
       timer = setTimeout( ( ) => {
         resetDeleteAndSyncObservationsSlice( );
       }, 5000 );
