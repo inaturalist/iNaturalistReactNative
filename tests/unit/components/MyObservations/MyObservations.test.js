@@ -71,7 +71,6 @@ describe( "MyObservations", () => {
   beforeAll( async () => {
     jest.useFakeTimers( );
   } );
-
   it( "renders an observation", async () => {
     renderMyObservations( "list" );
     const obs = mockObservations[0];

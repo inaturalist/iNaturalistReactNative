@@ -55,11 +55,11 @@ const createObservations = ( observations, comment ) => {
   );
 };
 
-describe( "handle deletions", ( ) => {
-  beforeAll( async () => {
-    useStore.setState( initialStoreState, true );
-  } );
+beforeAll( async () => {
+  useStore.setState( initialStoreState, true );
+} );
 
+describe( "handle deletions", ( ) => {
   it( "should not make deletion API call for unsynced observations", async ( ) => {
     createObservations(
       unsyncedObservations,
@@ -70,12 +70,12 @@ describe( "handle deletions", ( ) => {
       unsyncedObservations[0].uuid
     );
     expect( unsyncedObservation._synced_at ).toBeNull( );
-    renderHook( ( ) => useDeleteLocalObservations( ) );
     useStore.setState( {
       ...deletionStore,
       deletions: unsyncedObservations,
       currentDeleteCount: 1
     } );
+    renderHook( ( ) => useDeleteLocalObservations( ) );
 
     await waitFor( ( ) => {
       expect( mockMutate ).not.toHaveBeenCalled( );
@@ -90,12 +90,12 @@ describe( "handle deletions", ( ) => {
 
     const syncedObservation = getLocalObservation( syncedObservations[0].uuid );
     expect( syncedObservation._synced_at ).not.toBeNull( );
-    renderHook( ( ) => useDeleteLocalObservations( ) );
     useStore.setState( {
       ...deletionStore,
       deletions: syncedObservations,
       currentDeleteCount: 1
     } );
+    renderHook( ( ) => useDeleteLocalObservations( ) );
 
     await waitFor( ( ) => {
       expect( mockMutate )
