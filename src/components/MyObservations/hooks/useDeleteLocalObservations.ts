@@ -20,6 +20,7 @@ const useDeleteLocalObservations = ( ): Object => {
   const startNextDeletion = useStore( state => state.startNextDeletion );
   const setDeletionError = useStore( state => state.setDeletionError );
   const preUploadStatus = useStore( state => state.preUploadStatus );
+  const syncType = useStore( state => state.syncType );
 
   const realm = useRealm( );
 
@@ -84,7 +85,7 @@ const useDeleteLocalObservations = ( ): Object => {
 
   useEffect( ( ) => {
     if ( preUploadStatus === HANDLING_LOCAL_DELETIONS ) {
-      logger.info( "syncing locally deleted observations" );
+      logger.info( `${syncType} sync #2: handling locally deleted observations` );
 
       if ( deletions.length === 0 ) {
         finishLocalDeletions( );
@@ -106,7 +107,8 @@ const useDeleteLocalObservations = ( ): Object => {
     finishLocalDeletions,
     preUploadStatus,
     realm,
-    startNextDeletion
+    startNextDeletion,
+    syncType
   ] );
 
   return {

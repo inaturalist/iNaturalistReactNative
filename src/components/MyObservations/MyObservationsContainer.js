@@ -9,6 +9,7 @@ import React, {
   useState
 } from "react";
 import { Alert } from "react-native";
+import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -19,8 +20,8 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
-  DELETIONS_PENDING,
   HANDLING_LOCAL_DELETIONS,
+  SYNC_PENDING,
   SYNCING_REMOTE_DELETIONS,
   USER_TAPPED_BUTTON
 } from "stores/createDeleteAndSyncObservationsSlice.ts";
@@ -39,6 +40,8 @@ import useSyncRemoteDeletions from "./hooks/useSyncRemoteDeletions";
 import useSyncRemoteObservations from "./hooks/useSyncRemoteObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
+
+const logger = log.extend( "MyObservationsContainer" );
 
 const { useRealm } = RealmContext;
 
@@ -59,6 +62,7 @@ const MyObservationsContainer = ( ): Node => {
   const setPreUploadStatus = useStore( state => state.setPreUploadStatus );
   const resetDeleteAndSyncObservationsSlice
     = useStore( state => state.resetDeleteAndSyncObservationsSlice );
+  const [hasAutomaticallySynced, setHasAutomaticallySynced] = useState( false );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -68,9 +72,9 @@ const MyObservationsContainer = ( ): Node => {
   const currentUserId = currentUser?.id;
   const canUpload = currentUser && isOnline;
 
-  useSyncRemoteDeletions( );
+  useSyncRemoteDeletions( currentUserId );
   useDeleteLocalObservations( );
-  useSyncRemoteObservations( );
+  useSyncRemoteObservations( currentUserId );
   useUploadObservations( canUpload );
 
   useObservationsUpdates( !!currentUser );
@@ -83,7 +87,7 @@ const MyObservationsContainer = ( ): Node => {
   } = useInfiniteObservationsScroll( {
     upsert: true,
     params: {
-      user_id: currentUser?.id
+      user_id: currentUserId
     }
   } );
 
@@ -126,21 +130,25 @@ const MyObservationsContainer = ( ): Node => {
   ] );
 
   const handleSyncButtonPress = useCallback( ( ) => {
+    logger.info( "User tapped sync button" );
+    resetDeleteAndSyncObservationsSlice( );
     toggleLoginSheet( );
     showInternetErrorAlert( );
     setSyncType( USER_TAPPED_BUTTON );
     activateKeepAwake( );
     setPreUploadStatus( SYNCING_REMOTE_DELETIONS );
   }, [
-    toggleLoginSheet,
-    showInternetErrorAlert,
+    resetDeleteAndSyncObservationsSlice,
+    setPreUploadStatus,
     setSyncType,
-    setPreUploadStatus
+    showInternetErrorAlert,
+    toggleLoginSheet
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
     const observation = realm.objectForPrimaryKey( "Observation", uuid );
     addTotalToolbarIncrements( observation );
+    logger.info( "beginning individual upload:", uuid );
     addToUploadQueue( uuid );
     startUpload( );
   }, [
@@ -150,30 +158,37 @@ const MyObservationsContainer = ( ): Node => {
     realm
   ] );
 
-  useEffect(
-    ( ) => {
-      // this is intended to make sure the syncing process only runs once
-      // when a user lands on MyObservations
-      if ( preUploadStatus !== DELETIONS_PENDING ) { return; }
-      activateKeepAwake( );
-      if ( currentUserId ) {
-        setPreUploadStatus( SYNCING_REMOTE_DELETIONS );
-      } else {
-        setPreUploadStatus( HANDLING_LOCAL_DELETIONS );
-      }
-    },
-    [
-      currentUserId,
-      preUploadStatus,
-      setPreUploadStatus
-    ]
-  );
+  const startAutomaticSync = useCallback( ( ) => {
+    if ( preUploadStatus !== SYNC_PENDING || hasAutomaticallySynced ) { return; }
+    setHasAutomaticallySynced( true );
+    activateKeepAwake( );
+    console.log( currentUserId, "current user id" );
+    if ( currentUserId ) {
+      setPreUploadStatus( SYNCING_REMOTE_DELETIONS );
+    } else {
+      setPreUploadStatus( HANDLING_LOCAL_DELETIONS );
+    }
+  }, [
+    currentUserId,
+    hasAutomaticallySynced,
+    preUploadStatus,
+    setPreUploadStatus
+  ] );
 
   useEffect( ( ) => {
+    // this is intended to have the automatic sync run once
+    // every time a user lands on MyObservations. we will likely want
+    // an abort controller to disable this process if a user
+    // taps the sync button, but for now we're temporarily
+    // disabling the sync button while automatic updates are in flight
+    navigation.addListener( "focus", ( ) => {
+      startAutomaticSync( );
+    } );
     navigation.addListener( "blur", ( ) => {
       resetDeleteAndSyncObservationsSlice( );
+      setHasAutomaticallySynced( false );
     } );
-  }, [navigation, resetDeleteAndSyncObservationsSlice] );
+  }, [navigation, startAutomaticSync, resetDeleteAndSyncObservationsSlice] );
 
   if ( !layout ) { return null; }
 

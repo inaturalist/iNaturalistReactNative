@@ -10,10 +10,9 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
-  DELETE_AND_SYNC_COMPLETE,
-  FETCHING_IN_PROGRESS,
-  HANDLING_LOCAL_DELETIONS,
-  SYNCING_REMOTE_DELETIONS,
+  AUTOMATIC_SYNC,
+  AUTOMATIC_SYNC_COMPLETE,
+  USER_INITIATED_SYNC_COMPLETE,
   USER_TAPPED_BUTTON
 } from "stores/createDeleteAndSyncObservationsSlice.ts";
 import {
@@ -85,16 +84,19 @@ const ToolbarContainer = ( {
   const theme = useTheme( );
 
   const totalDeletions = deletions.length;
-  const syncing = [SYNCING_REMOTE_DELETIONS, HANDLING_LOCAL_DELETIONS, FETCHING_IN_PROGRESS];
-  const deletionsComplete = preUploadStatus === DELETE_AND_SYNC_COMPLETE;
+  const deletionsComplete = preUploadStatus === AUTOMATIC_SYNC_COMPLETE
+    || preUploadStatus === USER_INITIATED_SYNC_COMPLETE;
   const deletionsInProgress = totalDeletions > 0 && !deletionsComplete;
 
   const syncInProgress = syncType === USER_TAPPED_BUTTON
-    && syncing.includes( preUploadStatus );
+    && preUploadStatus !== USER_INITIATED_SYNC_COMPLETE;
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && numObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
+
+  const automaticSyncInProgress = syncType === AUTOMATIC_SYNC
+    && preUploadStatus !== AUTOMATIC_SYNC_COMPLETE;
 
   const setDeletionsProgress = ( ) => {
     // TODO: we should emit deletions progress like we do for uploads for an accurate progress
@@ -218,6 +220,7 @@ const ToolbarContainer = ( {
       showsExploreIcon={currentUser}
       statusText={statusText}
       stopAllUploads={stopAllUploads}
+      syncButtonDisabled={rotating || automaticSyncInProgress}
       syncIconColor={syncIconColor}
       toggleLayout={toggleLayout}
     />

@@ -27,6 +27,7 @@ type Props = {
   showsExploreIcon: boolean,
   statusText: ?string,
   stopAllUploads: Function,
+  syncButtonDisabled: boolean,
   syncIconColor: string,
   toggleLayout: Function
 }
@@ -44,6 +45,7 @@ const Toolbar = ( {
   showsExploreIcon,
   statusText,
   stopAllUploads,
+  syncButtonDisabled,
   syncIconColor,
   toggleLayout
 }: Props ): Node => {
@@ -87,7 +89,7 @@ const Toolbar = ( {
             rotating={rotating}
             onPress={handleSyncButtonPress}
             color={syncIconColor}
-            disabled={rotating}
+            disabled={syncButtonDisabled}
             accessibilityLabel={t( "Sync-observations" )}
             size={30}
             testID="SyncButton"

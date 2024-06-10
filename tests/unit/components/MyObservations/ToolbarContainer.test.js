@@ -3,9 +3,9 @@ import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import React from "react";
 import {
   AUTOMATIC_SYNC,
-  DELETE_AND_SYNC_COMPLETE,
-  DELETIONS_PENDING,
+  AUTOMATIC_SYNC_COMPLETE,
   HANDLING_LOCAL_DELETIONS,
+  SYNC_PENDING,
   SYNCING_REMOTE_DELETIONS,
   USER_TAPPED_BUTTON
 } from "stores/createDeleteAndSyncObservationsSlice.ts";
@@ -23,7 +23,7 @@ const deletionStore = {
   currentDeleteCount: 1,
   deletions: [{}],
   deleteError: null,
-  preUploadStatus: DELETIONS_PENDING,
+  preUploadStatus: SYNC_PENDING,
   syncType: AUTOMATIC_SYNC
 };
 
@@ -66,7 +66,7 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       numUnuploadedObservations: 1,
       uploadStatus: UPLOAD_PENDING,
-      preUploadStatus: DELETIONS_PENDING
+      preUploadStatus: SYNC_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -79,7 +79,7 @@ describe( "Toolbar Container", () => {
       numObservationsInQueue: 1,
       numUploadsAttempted: 1,
       uploadStatus: UPLOAD_IN_PROGRESS,
-      preUploadStatus: DELETIONS_PENDING
+      preUploadStatus: SYNC_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -93,7 +93,7 @@ describe( "Toolbar Container", () => {
       numUploadsAttempted,
       numObservationsInQueue: numUploadsAttempted,
       uploadStatus: UPLOAD_COMPLETE,
-      preUploadStatus: DELETIONS_PENDING
+      preUploadStatus: SYNC_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -105,7 +105,7 @@ describe( "Toolbar Container", () => {
     const multiError = "Couldn't complete upload";
     useStore.setState( {
       multiError,
-      preUploadStatus: DELETIONS_PENDING
+      preUploadStatus: SYNC_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
     expect( screen.getByText( multiError ) ).toBeVisible( );
@@ -115,7 +115,7 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       numUnuploadedObservations: 4,
       uploadStatus: UPLOAD_PENDING,
-      preUploadStatus: DELETIONS_PENDING
+      preUploadStatus: SYNC_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -128,7 +128,7 @@ describe( "Toolbar Container", () => {
       uploadStatus: UPLOAD_IN_PROGRESS,
       numObservationsInQueue: 5,
       numUploadsAttempted: 2,
-      preUploadStatus: DELETIONS_PENDING
+      preUploadStatus: SYNC_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -142,7 +142,7 @@ describe( "Toolbar Container", () => {
       numUploadsAttempted,
       numObservationsInQueue: numUploadsAttempted,
       uploadStatus: UPLOAD_COMPLETE,
-      preUploadStatus: DELETIONS_PENDING
+      preUploadStatus: SYNC_PENDING
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -164,7 +164,7 @@ describe( "Toolbar Container", () => {
   it( "displays deletions completed", () => {
     useStore.setState( {
       ...deletionStore,
-      preUploadStatus: DELETE_AND_SYNC_COMPLETE
+      preUploadStatus: AUTOMATIC_SYNC_COMPLETE
     } );
     renderComponent( <ToolbarContainer /> );
 

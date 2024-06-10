@@ -1,19 +1,18 @@
-import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect,
-  useMemo
+  useCallback, useEffect, useState
 } from "react";
 import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-// import { sleep } from "sharedHelpers/util";
-import { useCurrentUser } from "sharedHooks";
+import { sleep } from "sharedHelpers/util";
+import { useAuthenticatedQuery } from "sharedHooks";
 import {
-  DELETE_AND_SYNC_COMPLETE,
-  FETCHING_IN_PROGRESS
+  AUTOMATIC_SYNC,
+  AUTOMATIC_SYNC_COMPLETE,
+  FETCHING_REMOTE_OBSERVATIONS,
+  USER_INITIATED_SYNC_COMPLETE
 } from "stores/createDeleteAndSyncObservationsSlice.ts";
 import useStore from "stores/useStore";
 
@@ -21,57 +20,64 @@ const { useRealm } = RealmContext;
 
 const logger = log.extend( "useSyncRemoteObservations" );
 
-export default useSyncRemoteObservations = ( ) => {
+export default useSyncRemoteObservations = currentUserId => {
   const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
   const setPreUploadStatus = useStore( s => s.setPreUploadStatus );
   const preUploadStatus = useStore( state => state.preUploadStatus );
+  const syncType = useStore( state => state.syncType );
+  const [canFetch, setCanFetch] = useState( false );
+  const [syncTypeInFlight, setSyncTypeInFlight] = useState( AUTOMATIC_SYNC );
 
-  const currentUser = useCurrentUser( );
+  useEffect( ( ) => {
+    const waitForSleep = async naptime => {
+      const readyToFetch = await sleep( naptime );
+      if ( readyToFetch ) {
+        setCanFetch( true );
+      }
+    };
+    if ( deletionsCompletedAt ) {
+      // Between elasticsearch update time and API caches, there's no absolute
+      // guarantee fetching observations won't include something we just
+      // deleted, so we check to see if deletions recently completed and if
+      // they did, make sure 10s have elapsed since deletions complated before
+      // fetching new obs
+      const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
+      const naptime = 10_000 - msSinceDeletionsCompleted;
+      logger.info(
+        `${syncType} sync #2.5: recently deleted, waiting ${naptime} ms`
+      );
+      setSyncTypeInFlight( syncType );
+      waitForSleep( naptime );
+    } else {
+      setSyncTypeInFlight( syncType );
+      setCanFetch( true );
+    }
+  }, [deletionsCompletedAt, syncType] );
+
   const realm = useRealm( );
 
-  const params = useMemo( ( ) => ( {
-    user_id: currentUser?.id,
-    per_page: 50,
-    fields: Observation.FIELDS,
-    ttl: -1
-  } ), [currentUser?.id] );
-
-  const downloadRemoteObservationsFromServer = useCallback( async ( ) => {
-    const apiToken = await getJWT( );
-    // Between elasticsearch update time and API caches, there's no absolute
-    // guarantee fetching observations won't include something we just
-    // deleted, so we check to see if deletions recently completed and if
-    // they did, make sure 10s have elapsed since deletions complated before
-    // fetching new obs
-    if ( deletionsCompletedAt ) {
-      const msSinceDeletionsCompleted = ( new Date( ) - deletionsCompletedAt );
-      if ( msSinceDeletionsCompleted < 5_000 ) {
-        // 20240607 amanda - now that the sync button involves a sequential process of handling
-        // remote and local deletions, then downloading remote observations, then
-        // uploading observations, we don't want to hold up the upload process
-        // by triggering a naptime here. instead, we're moving on to uploads
-        setPreUploadStatus( DELETE_AND_SYNC_COMPLETE );
-        // const naptime = 10_000 - msSinceDeletionsCompleted;
-        // logger.info(
-        //   "finished deleting "
-        //   + `recently deleted, waiting ${naptime} ms to download remote observations`
-        // );
-        // await sleep( naptime );
-      }
+  const {
+    data,
+    isFetched
+  } = useAuthenticatedQuery(
+    ["searchObservations", currentUserId],
+    optsWithAuth => searchObservations(
+      {
+        user_id: currentUserId,
+        per_page: 50,
+        fields: Observation.LIST_FIELDS,
+        ttl: -1
+      },
+      optsWithAuth
+    ),
+    {
+      enabled: !!currentUserId
+        && preUploadStatus === FETCHING_REMOTE_OBSERVATIONS
+        && canFetch
     }
-    const { results } = await searchObservations( params, { api_token: apiToken } );
-    logger.info(
-      "fetched remote observations from server with",
-      results.length,
-      "results, upserting..."
-    );
-    await Observation.upsertRemoteObservations( results, realm );
-  }, [
-    params,
-    deletionsCompletedAt,
-    realm,
-    setPreUploadStatus
-  ] );
+  );
+
+  const results = data?.results;
 
   const updateSyncTime = useCallback( ( ) => {
     const localPrefs = realm?.objects( "LocalPreferences" )[0];
@@ -84,26 +90,39 @@ export default useSyncRemoteObservations = ( ) => {
     }, "updating sync time in useSyncRemoteObservations" );
   }, [realm] );
 
-  const syncObservations = useCallback( async ( ) => {
-    setPreUploadStatus( FETCHING_IN_PROGRESS );
+  useEffect( ( ) => {
+    if ( preUploadStatus !== FETCHING_REMOTE_OBSERVATIONS ) { return; }
+    const syncComplete = syncTypeInFlight === AUTOMATIC_SYNC
+      ? AUTOMATIC_SYNC_COMPLETE
+      : USER_INITIATED_SYNC_COMPLETE;
+    const upsertingRemoteObservations = async ( ) => {
+      logger.info(
+        `${syncTypeInFlight} sync #3: fetched remote observations from server with`,
+        results.length,
+        "results, upserting..."
+      );
+      await Observation.upsertRemoteObservations( results, realm );
+      updateSyncTime( );
+      setPreUploadStatus( syncComplete );
+    };
 
-    await downloadRemoteObservationsFromServer( );
-    setPreUploadStatus( DELETE_AND_SYNC_COMPLETE );
-    updateSyncTime( );
-    deactivateKeepAwake( );
+    if ( !isFetched ) { return; }
+    if ( results?.length > 0 ) {
+      upsertingRemoteObservations( );
+    } else {
+      logger.info( "sync #3: no remote observations" );
+      updateSyncTime( );
+      setPreUploadStatus( syncComplete );
+    }
   }, [
-    downloadRemoteObservationsFromServer,
-    updateSyncTime,
-    setPreUploadStatus
+    isFetched,
+    preUploadStatus,
+    realm,
+    results,
+    setPreUploadStatus,
+    syncTypeInFlight,
+    updateSyncTime
   ] );
 
-  useEffect( ( ) => {
-    if ( preUploadStatus === FETCHING_IN_PROGRESS ) {
-      syncObservations( );
-    }
-  }, [preUploadStatus, syncObservations] );
-
-  return {
-    syncObservations
-  };
+  return null;
 };

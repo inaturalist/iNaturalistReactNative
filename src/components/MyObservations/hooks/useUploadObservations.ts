@@ -16,7 +16,9 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
-  DELETE_AND_SYNC_COMPLETE,
+  AUTOMATIC_SYNC,
+  AUTOMATIC_SYNC_COMPLETE,
+  USER_INITIATED_SYNC_COMPLETE,
   USER_TAPPED_BUTTON
 } from "stores/createDeleteAndSyncObservationsSlice.ts";
 import {
@@ -56,17 +58,17 @@ export default useUploadObservations = canUpload => {
   const syncType = useStore( state => state.syncType );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const preUploadStatus = useStore( state => state.preUploadStatus );
-  const resetDeleteAndSyncObservationsSlice
-    = useStore( state => state.resetDeleteAndSyncObservationsSlice );
-  const deleteError = useStore( state => state.deleteError );
+  const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
 
-  const syncComplete = preUploadStatus === DELETE_AND_SYNC_COMPLETE;
+  const automaticSyncComplete = syncType === AUTOMATIC_SYNC
+    && preUploadStatus === AUTOMATIC_SYNC_COMPLETE;
+  const userInitiatedSyncComplete = preUploadStatus === USER_INITIATED_SYNC_COMPLETE;
 
   const { unsyncedUuids } = useLocalObservations( );
 
   const continueToUploads = syncType === USER_TAPPED_BUTTON
     && numUnuploadedObservations > 0
-    && syncComplete
+    && userInitiatedSyncComplete
     && uploadStatus === UPLOAD_PENDING;
 
   // The existing abortController lets you abort...
@@ -86,12 +88,20 @@ export default useUploadObservations = canUpload => {
         const unsynced = Observation.filterUnsyncedObservations( realm );
         setNumUnuploadedObservations( unsynced.length );
       }, MS_BEFORE_TOOLBAR_RESET );
+    } else if ( automaticSyncComplete ) {
+      timer = setTimeout( () => {
+        resetSyncToolbar( );
+        const unsynced = Observation.filterUnsyncedObservations( realm );
+        setNumUnuploadedObservations( unsynced.length );
+      }, MS_BEFORE_TOOLBAR_RESET );
     }
     return () => {
       clearTimeout( timer );
     };
   }, [
+    automaticSyncComplete,
     realm,
+    resetSyncToolbar,
     resetUploadObservationsSlice,
     setNumUnuploadedObservations,
     uploadStatus
@@ -231,28 +241,12 @@ export default useUploadObservations = canUpload => {
 
   useEffect( ( ) => {
     if ( continueToUploads ) {
-      logger.info( "creating upload queue" );
+      logger.info( `${syncType} sync #4: user tapped toolbar sync; creating upload queue` );
       createUploadQueue( );
     }
   }, [
     continueToUploads,
-    createUploadQueue
-  ] );
-
-  useEffect( ( ) => {
-    let timer;
-    if ( !continueToUploads && syncComplete && !deleteError ) {
-      timer = setTimeout( ( ) => {
-        resetDeleteAndSyncObservationsSlice( );
-      }, 5000 );
-    }
-    return ( ) => {
-      clearTimeout( timer );
-    };
-  }, [
-    continueToUploads,
-    deleteError,
-    resetDeleteAndSyncObservationsSlice,
-    syncComplete
+    createUploadQueue,
+    syncType
   ] );
 };

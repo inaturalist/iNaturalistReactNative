@@ -13,6 +13,7 @@ import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util";
+import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
@@ -127,6 +128,8 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
+const initialStoreState = useStore.getState( );
+
 describe( "MyObservations", ( ) => {
   // For some reason this interferes with the "should not make a request to
   // users/me" test below, can't figure out why ~~~kueda 20230105
@@ -170,6 +173,7 @@ describe( "MyObservations", ( ) => {
   describe( "when signed in", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+      useStore.setState( initialStoreState, true );
     } );
 
     afterEach( ( ) => {
@@ -357,7 +361,6 @@ describe( "MyObservations", ( ) => {
       it( "doesn't throw an error when sync button tapped", async ( ) => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        expect( realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
         renderAppWithComponent( <MyObservationsContainer /> );
         const syncIcon = await screen.findByTestId( "SyncButton" );
         await waitFor( ( ) => {
@@ -382,6 +385,7 @@ describe( "MyObservations", ( ) => {
         it( "downloads deleted observations from server when screen focused", async ( ) => {
           const realm = global.mockRealms[__filename];
           expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          expect( realm.objects( "LocalPreferences" )[0] ).toBeTruthy( );
           renderAppWithComponent( <MyObservationsContainer /> );
           const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_deleted_sync_time;
           await waitFor( ( ) => {
