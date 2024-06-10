@@ -47,7 +47,7 @@ const ToolbarContainer = ( {
   const deleteError = useStore( state => state.deleteError );
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
-  const numObservationsInQueue = useStore( state => state.numObservationsInQueue );
+  const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
@@ -57,14 +57,14 @@ const ToolbarContainer = ( {
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
 
-  // Note that numObservationsInQueue is the number of obs being uploaded in
+  // Note that initialNumObservationsInQueue is the number of obs being uploaded in
   // the current upload session, so it might be 1 if a single obs is
   // being uploaded even though 5 obs need upload
   const translationParams = useMemo( ( ) => ( {
-    total: numObservationsInQueue,
-    currentUploadCount: Math.min( numUploadsAttempted, numObservationsInQueue )
+    total: initialNumObservationsInQueue,
+    currentUploadCount: Math.min( numUploadsAttempted, initialNumObservationsInQueue )
   } ), [
-    numObservationsInQueue,
+    initialNumObservationsInQueue,
     numUploadsAttempted
   ] );
 
@@ -92,7 +92,7 @@ const ToolbarContainer = ( {
     && preUploadStatus !== USER_INITIATED_SYNC_COMPLETE;
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
-  const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && numObservationsInQueue > 0;
+  const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && initialNumObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
 
   const automaticSyncInProgress = syncType === AUTOMATIC_SYNC
@@ -121,12 +121,13 @@ const ToolbarContainer = ( {
   ] );
 
   const showFinalUploadError = ( totalUploadErrors > 0 && uploadsComplete )
-  || ( totalUploadErrors > 0 && ( numUploadsAttempted === numObservationsInQueue ) );
-  const showsExclamation = pendingUpload || showFinalUploadError;
+  || ( totalUploadErrors > 0 && ( numUploadsAttempted === initialNumObservationsInQueue ) );
 
   const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadMultiError )
-  || ( deletionsComplete && !deleteError && totalDeletions > 0 );
+    || ( deletionsComplete && !deleteError && totalDeletions > 0 );
+
+  const showsExclamation = pendingUpload || showFinalUploadError;
 
   const getStatusText = useCallback( ( ) => {
     if ( syncInProgress ) { return t( "Syncing" ); }

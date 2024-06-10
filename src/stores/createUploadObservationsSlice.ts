@@ -12,7 +12,7 @@ const DEFAULT_STATE = {
   errorsByUuid: {},
   // Single error caught during multiple obs upload
   multiError: null,
-  numObservationsInQueue: 0,
+  initialNumObservationsInQueue: 0,
   numUnuploadedObservations: 0,
   // Increments even if there was an error, so here "attempted" means we tried
   // to upload it, not that it succeeded
@@ -35,7 +35,7 @@ interface UploadObservationsSlice {
   currentUpload: RealmObservation,
   errorsByUuid: Object,
   multiError: string | null,
-  numObservationsInQueue: number,
+  initialNumObservationsInQueue: number,
   numUnuploadedObservations: number,
   numUploadsAttempted: number,
   totalToolbarIncrements: number,
@@ -156,7 +156,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     return ( {
       uploadQueue: copyOfUploadQueue,
       uploadStatus: UPLOAD_IN_PROGRESS,
-      numObservationsInQueue: state.numObservationsInQueue
+      initialNumObservationsInQueue: state.initialNumObservationsInQueue
         + ( typeof uuids === "string"
           ? 1
           : uuids.length )
@@ -196,7 +196,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   },
   removeDeletedObsFromUploadQueue: uuid => set( state => {
     const {
-      numObservationsInQueue,
+      initialNumObservationsInQueue,
       numUploadsAttempted,
       totalToolbarIncrements,
       totalUploadProgress: existingTotalUploadProgress,
@@ -221,7 +221,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       currentUpload: null,
       totalUploadProgress,
       totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress ),
-      uploadStatus: numUploadsAttempted === numObservationsInQueue
+      uploadStatus: numUploadsAttempted === initialNumObservationsInQueue
         ? "complete"
         : "uploadInProgress"
     } );
