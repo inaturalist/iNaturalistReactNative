@@ -124,6 +124,7 @@ const TabStackNavigator = ( ): Node => (
       <Stack.Screen
         name="Projects"
         component={ProjectsContainer}
+        options={{ ...removeBottomBorder }}
       />
       <Stack.Screen
         name="ProjectDetails"

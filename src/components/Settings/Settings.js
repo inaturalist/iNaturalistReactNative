@@ -151,7 +151,7 @@ const Settings = ( ) => {
           label={t( "iNaturalist-AI-Camera" )}
         />
       </View>
-      <View className="mt-2">
+      <View className="mt-2 pr-5">
         <RadioButtonRow
           testID="all-observation-option"
           smallLabel
