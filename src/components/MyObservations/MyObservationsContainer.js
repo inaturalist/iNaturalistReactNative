@@ -162,7 +162,6 @@ const MyObservationsContainer = ( ): Node => {
     if ( preUploadStatus !== SYNC_PENDING || hasAutomaticallySynced ) { return; }
     setHasAutomaticallySynced( true );
     activateKeepAwake( );
-    console.log( currentUserId, "current user id" );
     if ( currentUserId ) {
       setPreUploadStatus( SYNCING_REMOTE_DELETIONS );
     } else {
