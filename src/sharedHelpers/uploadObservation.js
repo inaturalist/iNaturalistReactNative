@@ -35,22 +35,24 @@ const markRecordUploaded = (
 ) => {
   const { id } = response.results[0];
   if ( !realm || realm.isClosed ) return;
-  const observation = realm?.objectForPrimaryKey( "Observation", observationUUID );
-
-  let record;
-
-  if ( type === "Observation" ) {
-    record = observation;
-  } else if ( type === "ObservationPhoto" ) {
-    const existingObsPhoto = observation?.observationPhotos?.find( op => op.uuid === recordUUID );
-    record = existingObsPhoto;
-  } else if ( type === "ObservationSound" ) {
-    const existingObsSound = observation?.observationSounds?.find( os => os.uuid === recordUUID );
-    record = existingObsSound;
-  } else if ( type === "Photo" ) {
-    // Photos do not have UUIDs, so we pass the Photo itself as an option
-    record = options?.record;
+  function extractRecord( obsUUID, recUUID, recordType, opts ) {
+    const observation = realm?.objectForPrimaryKey( "Observation", obsUUID );
+    let record;
+    if ( recordType === "Observation" ) {
+      record = observation;
+    } else if ( recordType === "ObservationPhoto" ) {
+      const existingObsPhoto = observation?.observationPhotos?.find( op => op.uuid === recUUID );
+      record = existingObsPhoto;
+    } else if ( recordType === "ObservationSound" ) {
+      const existingObsSound = observation?.observationSounds?.find( os => os.uuid === recUUID );
+      record = existingObsSound;
+    } else if ( recordType === "Photo" ) {
+      // Photos do not have UUIDs, so we pass the Photo itself as an option
+      record = opts?.record;
+    }
+    return record;
   }
+  let record = extractRecord( observationUUID, recordUUID, type, options );
 
   if ( !record ) {
     throw new Error(
@@ -58,14 +60,30 @@ const markRecordUploaded = (
     );
   }
 
-  safeRealmWrite( realm, ( ) => {
-    // These flow errors don't make any sense b/c if record is undefined, we
-    // will throw an error above
-    // $FlowIgnore
-    record.id = id;
-    // $FlowIgnore
-    record._synced_at = new Date( );
-  }, `marking record uploaded in uploadObservation.js, type: ${type}` );
+  try {
+    safeRealmWrite( realm, ( ) => {
+      // These flow errors don't make any sense b/c if record is undefined, we
+      // will throw an error above
+      // $FlowIgnore
+      record.id = id;
+      // $FlowIgnore
+      record._synced_at = new Date( );
+    }, `marking record uploaded in uploadObservation.js, type: ${type}` );
+  } catch ( realmWriteError ) {
+    // Try it one more time in case it was invalidated but it's still in the
+    // database
+    if ( realmWriteError.message.match( /invalidated or deleted/ ) ) {
+      record = extractRecord( observationUUID, recordUUID, type, options );
+      safeRealmWrite( realm, ( ) => {
+        // These flow errors don't make any sense b/c if record is undefined, we
+        // will throw an error above
+        // $FlowIgnore
+        record.id = id;
+        // $FlowIgnore
+        record._synced_at = new Date( );
+      }, `marking record uploaded in uploadObservation.js, type: ${type}` );
+    }
+  }
 };
 
 const uploadEvidence = async (

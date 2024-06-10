@@ -38,7 +38,7 @@ describe( "Toolbar Container", () => {
 
   it( "displays an upload in progress", async () => {
     useStore.setState( {
-      numObservationsInQueue: 1,
+      initialNumObservationsInQueue: 1,
       numUploadsAttempted: 1,
       uploadStatus: UPLOAD_IN_PROGRESS
     } );
@@ -55,7 +55,7 @@ describe( "Toolbar Container", () => {
     const numUploadsAttempted = 1;
     useStore.setState( {
       numUploadsAttempted,
-      numObservationsInQueue: numUploadsAttempted,
+      initialNumObservationsInQueue: numUploadsAttempted,
       uploadStatus: UPLOAD_COMPLETE
     } );
     renderComponent( <ToolbarContainer /> );
@@ -89,7 +89,7 @@ describe( "Toolbar Container", () => {
   it( "displays multiple uploads in progress", async () => {
     useStore.setState( {
       uploadStatus: UPLOAD_IN_PROGRESS,
-      numObservationsInQueue: 5,
+      initialNumObservationsInQueue: 5,
       numUploadsAttempted: 2
     } );
     renderComponent( <ToolbarContainer /> );
@@ -105,7 +105,7 @@ describe( "Toolbar Container", () => {
     const numUploadsAttempted = 7;
     useStore.setState( {
       numUploadsAttempted,
-      numObservationsInQueue: numUploadsAttempted,
+      initialNumObservationsInQueue: numUploadsAttempted,
       uploadStatus: UPLOAD_COMPLETE
     } );
     renderComponent( <ToolbarContainer /> );
