@@ -281,21 +281,22 @@ const ObsDetailsContainer = ( ): Node => {
       onSuccess: data => {
         refetchRemoteObservation( );
         if ( belongsToCurrentUser ) {
+          const newIdentification = data[0];
+          let newIdentTaxon;
+          if ( newIdentification.taxon?.id ) {
+            newIdentTaxon = realm?.objectForPrimaryKey( "Taxon", newIdentification.taxon.id );
+          }
+          newIdentTaxon = newIdentTaxon || newIdentification.taxon;
           safeRealmWrite( realm, ( ) => {
-            const localIdentifications = localObservation?.identifications;
-            const newIdentification = data[0];
             newIdentification.user = currentUser;
-            newIdentification.taxon = realm?.objectForPrimaryKey(
-              "Taxon",
-              newIdentification.taxon.id
-            ) || newIdentification.taxon;
-            if ( vision ) {
-              newIdentification.vision = true;
-            }
-            localIdentifications.push( newIdentification );
+            if ( newIdentTaxon ) newIdentification.taxon = newIdentTaxon;
+            if ( vision ) newIdentification.vision = true;
+            localObservation?.identifications?.push( newIdentification );
           }, "setting local identification in ObsDetailsContainer" );
-          const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-          dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+          if ( uuid ) {
+            const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
+            dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+          }
         }
       },
       onError: e => {
