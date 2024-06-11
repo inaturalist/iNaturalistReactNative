@@ -31,16 +31,19 @@ interface UserLocationResponse {
 
 function useUserLocation(
   options?: {
+    enabled?: boolean,
     skipName?: boolean,
     permissionsGranted?: boolean,
     untilAcc?: number | undefined
   }
 ): UserLocationResponse {
   const {
+    enabled: enabledOpt,
     skipName = false,
     permissionsGranted: permissionsGrantedProp = false,
     untilAcc
   } = options || {};
+  const enabled = enabledOpt !== false;
   const [userLocation, setUserLocation] = useState<UserLocation | undefined>( undefined );
   const [isLoading, setIsLoading] = useState( true );
   const [permissionsGranted, setPermissionsGranted] = useState( permissionsGrantedProp );
@@ -72,14 +75,11 @@ function useUserLocation(
   }, [] );
 
   useEffect( ( ) => {
-    let isCurrent = true;
-
     const fetchLocation = async ( ) => {
       fetchingLocation.current = true;
       setIsLoading( true );
 
       const success = async ( position: GeolocationResponse ) => {
-        if ( !isCurrent ) { return; }
         const { coords } = position;
         let locationName;
         if ( !skipName ) {
@@ -126,16 +126,14 @@ function useUserLocation(
       && !fetchingLocation.current
       // and we're not waiting OR we are and acc is above threshold
       && !accGoodEnough
+      && enabled
     ) {
       fetchingLocation.current = true;
       fetchLocation( );
     }
-
-    return ( ) => {
-      isCurrent = false;
-    };
   }, [
     accGoodEnough,
+    enabled,
     permissionsChecked,
     permissionsGranted,
     skipName,
