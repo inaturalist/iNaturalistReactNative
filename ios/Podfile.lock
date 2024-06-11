@@ -1181,7 +1181,7 @@ PODS:
   - VisionCamera/React (4.0.3):
     - React-Core
     - VisionCamera/FrameProcessors
-  - VisionCameraPluginInatVision (4.0.2):
+  - VisionCameraPluginInatVision (4.0.4):
     - React-Core
   - Yoga (1.14.0)
 
@@ -1569,7 +1569,7 @@ SPEC CHECKSUMS:
   RNVectorIcons: 73ab573085f65a572d3b6233e68996d4707fd505
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: b633f90960feab2669b7a1c51f8a201dd0a5bfc3
-  VisionCameraPluginInatVision: 2f2aa58b49c50b1b09bb552cab85c605fbb80053
+  VisionCameraPluginInatVision: 547e06ae37d5794992c17fc93ffa9c5363ccda42
   Yoga: c716aea2ee01df6258550c7505fa61b248145ced
 
 PODFILE CHECKSUM: eebd76aa39f99b44754431ed68ce0cfbfc5ec2f7
