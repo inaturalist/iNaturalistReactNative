@@ -16,12 +16,6 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
-  AUTOMATIC_SYNC,
-  AUTOMATIC_SYNC_COMPLETE,
-  USER_INITIATED_SYNC_COMPLETE,
-  USER_TAPPED_BUTTON
-} from "stores/createDeleteAndSyncObservationsSlice.ts";
-import {
   UPLOAD_CANCELLED,
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
@@ -29,12 +23,12 @@ import {
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
+const logger = log.extend( "useUploadObservations" );
+
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
 const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
 
 const { useRealm } = RealmContext;
-
-const logger = log.extend( "useUploadbservations" );
 
 export default useUploadObservations = canUpload => {
   const realm = useRealm( );
@@ -55,22 +49,10 @@ export default useUploadObservations = canUpload => {
   const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const setUploadStatus = useStore( state => state.setUploadStatus );
-  const syncType = useStore( state => state.syncType );
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
-  const preUploadStatus = useStore( state => state.preUploadStatus );
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
 
-  const automaticSyncComplete = syncType === AUTOMATIC_SYNC
-    && preUploadStatus === AUTOMATIC_SYNC_COMPLETE;
-  const userInitiatedSyncComplete = preUploadStatus === USER_INITIATED_SYNC_COMPLETE;
-
   const { unsyncedUuids } = useLocalObservations( );
-
-  const continueToUploads = syncType === USER_TAPPED_BUTTON
-    && numUnuploadedObservations > 0
-    && userInitiatedSyncComplete
-    && uploadStatus === UPLOAD_PENDING;
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -89,7 +71,7 @@ export default useUploadObservations = canUpload => {
         const unsynced = Observation.filterUnsyncedObservations( realm );
         setNumUnuploadedObservations( unsynced.length );
       }, MS_BEFORE_TOOLBAR_RESET );
-    } else if ( automaticSyncComplete ) {
+    } else {
       timer = setTimeout( () => {
         resetSyncToolbar( );
         const unsynced = Observation.filterUnsyncedObservations( realm );
@@ -100,7 +82,6 @@ export default useUploadObservations = canUpload => {
       clearTimeout( timer );
     };
   }, [
-    automaticSyncComplete,
     realm,
     resetSyncToolbar,
     resetUploadObservationsSlice,
@@ -223,6 +204,7 @@ export default useUploadObservations = canUpload => {
 
   const startUpload = useCallback( ( ) => {
     if ( canUpload ) {
+      logger.debug( "sync #4.2: starting upload" );
       setUploadStatus( UPLOAD_IN_PROGRESS );
     } else {
       setUploadStatus( UPLOAD_PENDING );
@@ -247,14 +229,14 @@ export default useUploadObservations = canUpload => {
     startUpload
   ] );
 
-  useEffect( ( ) => {
-    if ( continueToUploads ) {
-      logger.info( `${syncType} sync #4: user tapped toolbar sync; creating upload queue` );
-      createUploadQueue( );
-    }
+  const uploadObservations = useCallback( async ( ) => {
+    logger.debug( "sync #4.1: creating upload queue" );
+    createUploadQueue( );
   }, [
-    continueToUploads,
-    createUploadQueue,
-    syncType
+    createUploadQueue
   ] );
+
+  return {
+    uploadObservations
+  };
 };

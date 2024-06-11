@@ -1,10 +1,9 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import useDeleteLocalObservations
-  from "components/MyObservations/hooks/useDeleteLocalObservations.ts";
+import useSyncObservations from "components/MyObservations/hooks/useSyncObservations.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   HANDLING_LOCAL_DELETIONS
-} from "stores/createDeleteAndSyncObservationsSlice.ts";
+} from "stores/createSyncObservationsSlice.ts";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -14,7 +13,7 @@ const initialStoreState = useStore.getState( );
 const deletionStore = {
   currentDeleteCount: 1,
   deletions: [{}],
-  preUploadStatus: HANDLING_LOCAL_DELETIONS,
+  syncingStatus: HANDLING_LOCAL_DELETIONS,
   deleteError: null
 };
 
@@ -63,7 +62,7 @@ describe( "handle deletions", ( ) => {
   it( "should not make deletion API call for unsynced observations", async ( ) => {
     createObservations(
       unsyncedObservations,
-      "write unsyncedObservations, useDeleteLocalObservations test"
+      "write unsyncedObservations, useSyncObservations test"
     );
 
     const unsyncedObservation = getLocalObservation(
@@ -75,7 +74,7 @@ describe( "handle deletions", ( ) => {
       deletions: unsyncedObservations,
       currentDeleteCount: 1
     } );
-    renderHook( ( ) => useDeleteLocalObservations( ) );
+    renderHook( ( ) => useSyncObservations( ) );
 
     await waitFor( ( ) => {
       expect( mockMutate ).not.toHaveBeenCalled( );
@@ -85,7 +84,7 @@ describe( "handle deletions", ( ) => {
   it( "should make deletion API call for previously synced observations", async ( ) => {
     createObservations(
       syncedObservations,
-      "write syncedObservations, useDeleteLocalObservations test"
+      "write syncedObservations, useSyncObservations test"
     );
 
     const syncedObservation = getLocalObservation( syncedObservations[0].uuid );
@@ -95,7 +94,7 @@ describe( "handle deletions", ( ) => {
       deletions: syncedObservations,
       currentDeleteCount: 1
     } );
-    renderHook( ( ) => useDeleteLocalObservations( ) );
+    renderHook( ( ) => useSyncObservations( ) );
 
     await waitFor( ( ) => {
       expect( mockMutate )

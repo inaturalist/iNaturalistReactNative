@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { activateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -20,14 +19,7 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
-  HANDLING_LOCAL_DELETIONS,
-  SYNC_PENDING,
-  SYNCING_REMOTE_DELETIONS,
-  USER_TAPPED_BUTTON
-} from "stores/createDeleteAndSyncObservationsSlice.ts";
-import {
-  UPLOAD_IN_PROGRESS,
-  UPLOAD_PENDING
+  UPLOAD_IN_PROGRESS
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
@@ -35,9 +27,7 @@ import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
 import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
 import useClearSyncedPhotosForUpload from "./hooks/useClearSyncedPhotosForUpload";
 import useClearSyncedSoundsForUpload from "./hooks/useClearSyncedSoundsForUpload";
-import useDeleteLocalObservations from "./hooks/useDeleteLocalObservations";
-import useSyncRemoteDeletions from "./hooks/useSyncRemoteDeletions";
-import useSyncRemoteObservations from "./hooks/useSyncRemoteObservations";
+import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
 
@@ -57,12 +47,11 @@ const MyObservationsContainer = ( ): Node => {
   const setUploadStatus = useStore( state => state.setUploadStatus );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
-  const setSyncType = useStore( state => state.setSyncType );
-  const preUploadStatus = useStore( state => state.preUploadStatus );
-  const setPreUploadStatus = useStore( state => state.setPreUploadStatus );
-  const resetDeleteAndSyncObservationsSlice
-    = useStore( state => state.resetDeleteAndSyncObservationsSlice );
-  const [hasAutomaticallySynced, setHasAutomaticallySynced] = useState( false );
+  const syncingStatus = useStore( state => state.syncingStatus );
+  const resetSyncObservationsSlice
+    = useStore( state => state.resetSyncObservationsSlice );
+  const startManualSync = useStore( state => state.startManualSync );
+  const startAutomaticSync = useStore( state => state.startAutomaticSync );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -72,10 +61,11 @@ const MyObservationsContainer = ( ): Node => {
   const currentUserId = currentUser?.id;
   const canUpload = currentUser && isOnline;
 
-  useSyncRemoteDeletions( currentUserId );
-  useDeleteLocalObservations( );
-  useSyncRemoteObservations( currentUserId );
-  useUploadObservations( canUpload );
+  const { uploadObservations } = useUploadObservations( canUpload );
+  useSyncObservations(
+    currentUserId,
+    uploadObservations
+  );
 
   useObservationsUpdates( !!currentUser );
 
@@ -99,79 +89,50 @@ const MyObservationsContainer = ( ): Node => {
       : "grid" );
   };
 
-  const showInternetErrorAlert = useCallback( ( ) => {
+  const confirmInternetConnection = useCallback( ( ) => {
     if ( !isOnline ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
         t( "Please-try-again-when-you-are-connected-to-the-internet" )
       );
     }
+    return isOnline;
   }, [t, isOnline] );
 
-  const toggleLoginSheet = useCallback( ( ) => {
+  const confirmLoggedIn = useCallback( ( ) => {
     if ( !currentUser ) {
       setShowLoginSheet( true );
     }
+    return currentUser;
   }, [currentUser] );
 
-  const startUpload = useCallback( ( ) => {
-    toggleLoginSheet( );
-    showInternetErrorAlert( );
-    if ( canUpload ) {
-      setUploadStatus( UPLOAD_IN_PROGRESS );
-    } else {
-      setUploadStatus( UPLOAD_PENDING );
-    }
-  }, [
-    canUpload,
-    setUploadStatus,
-    showInternetErrorAlert,
-    toggleLoginSheet
-  ] );
-
   const handleSyncButtonPress = useCallback( ( ) => {
-    logger.info( "User tapped sync button" );
-    resetDeleteAndSyncObservationsSlice( );
-    toggleLoginSheet( );
-    showInternetErrorAlert( );
-    setSyncType( USER_TAPPED_BUTTON );
-    activateKeepAwake( );
-    setPreUploadStatus( SYNCING_REMOTE_DELETIONS );
+    logger.debug( "Manual sync starting: user tapped sync button" );
+    if ( !confirmLoggedIn( ) ) { return; }
+    if ( !confirmInternetConnection( ) ) { return; }
+
+    startManualSync( );
   }, [
-    resetDeleteAndSyncObservationsSlice,
-    setPreUploadStatus,
-    setSyncType,
-    showInternetErrorAlert,
-    toggleLoginSheet
+    startManualSync,
+    confirmInternetConnection,
+    confirmLoggedIn
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
+    logger.debug( "Starting individual upload:", uuid );
+    if ( !confirmLoggedIn( ) ) { return; }
+    if ( !confirmInternetConnection( ) ) { return; }
     const observation = realm.objectForPrimaryKey( "Observation", uuid );
     addTotalToolbarIncrements( observation );
-    logger.info( "beginning individual upload:", uuid );
     addToUploadQueue( uuid );
-    startUpload( );
+    setUploadStatus( UPLOAD_IN_PROGRESS );
   }, [
-    addToUploadQueue,
+    confirmLoggedIn,
+    confirmInternetConnection,
+    realm,
     addTotalToolbarIncrements,
-    startUpload,
-    realm
-  ] );
-
-  const startAutomaticSync = useCallback( ( ) => {
-    if ( preUploadStatus !== SYNC_PENDING || hasAutomaticallySynced ) { return; }
-    setHasAutomaticallySynced( true );
-    activateKeepAwake( );
-    if ( currentUserId ) {
-      setPreUploadStatus( SYNCING_REMOTE_DELETIONS );
-    } else {
-      setPreUploadStatus( HANDLING_LOCAL_DELETIONS );
-    }
-  }, [
-    currentUserId,
-    hasAutomaticallySynced,
-    preUploadStatus,
-    setPreUploadStatus
+    addToUploadQueue,
+    setUploadStatus
   ] );
 
   useEffect( ( ) => {
@@ -184,10 +145,14 @@ const MyObservationsContainer = ( ): Node => {
       startAutomaticSync( );
     } );
     navigation.addListener( "blur", ( ) => {
-      resetDeleteAndSyncObservationsSlice( );
-      setHasAutomaticallySynced( false );
+      resetSyncObservationsSlice( );
     } );
-  }, [navigation, startAutomaticSync, resetDeleteAndSyncObservationsSlice] );
+  }, [
+    navigation,
+    startAutomaticSync,
+    syncingStatus,
+    resetSyncObservationsSlice
+  ] );
 
   if ( !layout ) { return null; }
 

@@ -13,7 +13,7 @@ import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util";
-import useStore from "stores/useStore";
+// import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
@@ -96,15 +96,15 @@ const writeObservationsToRealm = ( observations, message ) => {
   }, message );
 };
 
-const deleteObservationsFromRealm = message => {
-  const realm = global.mockRealms[__filename];
-  const observations = realm.objects( "Observation" );
-  safeRealmWrite( realm, ( ) => {
-    observations.forEach( obs => {
-      realm.delete( obs );
-    } );
-  }, message );
-};
+// const deleteObservationsFromRealm = message => {
+//   const realm = global.mockRealms[__filename];
+//   const observations = realm.objects( "Observation" );
+//   safeRealmWrite( realm, ( ) => {
+//     observations.forEach( obs => {
+//       realm.delete( obs );
+//     } );
+//   }, message );
+// };
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -128,9 +128,9 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const initialStoreState = useStore.getState( );
+// const initialStoreState = useStore.getState( );
 
-describe( "MyObservations", ( ) => {
+describe( "MyObservations when signed out", ( ) => {
   // For some reason this interferes with the "should not make a request to
   // users/me" test below, can't figure out why ~~~kueda 20230105
   // TODO: this looks to me more like it should be covered by unit tests - @jtklein
@@ -146,268 +146,268 @@ describe( "MyObservations", ( ) => {
   //   } );
   // } );
 
-  describe( "when signed out", ( ) => {
-    async function testApiMethodNotCalled( apiMethod ) {
-      // Let's make sure the mock hasn't already been used
+  async function testApiMethodNotCalled( apiMethod ) {
+    // Let's make sure the mock hasn't already been used
+    expect( apiMethod ).not.toHaveBeenCalled( );
+    const realm = global.mockRealms[__filename];
+    const signedInUsers = realm.objects( "User" ).filtered( "signedIn == true" );
+    expect( signedInUsers.length ).toEqual( 0 );
+    renderAppWithComponent( <MyObservationsContainer /> );
+    const loginText = i18next.t( "Log-in-to-contribute-your-observations" );
+    expect( await screen.findByText( loginText ) ).toBeTruthy( );
+    // Unpleasant, but without adjusting the timeout it doesn't seem like
+    // all of these requests get caught
+    await waitFor( ( ) => {
       expect( apiMethod ).not.toHaveBeenCalled( );
-      const realm = global.mockRealms[__filename];
-      const signedInUsers = realm.objects( "User" ).filtered( "signedIn == true" );
-      expect( signedInUsers.length ).toEqual( 0 );
-      renderAppWithComponent( <MyObservationsContainer /> );
-      const loginText = i18next.t( "Log-in-to-contribute-your-observations" );
-      expect( await screen.findByText( loginText ) ).toBeTruthy( );
-      // Unpleasant, but without adjusting the timeout it doesn't seem like
-      // all of these requests get caught
-      await waitFor( ( ) => {
-        expect( apiMethod ).not.toHaveBeenCalled( );
-      }, { timeout: 3000, interval: 500 } );
-    }
-    it( "should not make a request to users/me", async ( ) => {
-      await testApiMethodNotCalled( inatjs.users.me );
+    }, { timeout: 3000, interval: 500 } );
+  }
+  it( "should not make a request to users/me", async ( ) => {
+    await testApiMethodNotCalled( inatjs.users.me );
+  } );
+  it( "should not make a request to observations/updates", async ( ) => {
+    await testApiMethodNotCalled( inatjs.observations.updates );
+  } );
+} );
+
+describe( "MyObservations when signed in with unsynced observations", ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+    writeObservationsToRealm(
+      mockUnsyncedObservations,
+      "writing unsynced observations for MyObservations integration test"
+    );
+    // useStore.setState( initialStoreState, true );
+    // Mock inatjs endpoints so they return the right responses for the right test data
+    inatjs.observations.create.mockImplementation( ( params, _opts ) => {
+      const mockObs = mockUnsyncedObservations.find( o => o.uuid === params.observation.uuid );
+      return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
     } );
-    it( "should not make a request to observations/updates", async ( ) => {
-      await testApiMethodNotCalled( inatjs.observations.updates );
+    inatjs.observations.fetch.mockImplementation( ( uuid, _params, _opts ) => {
+      const mockObs = mockUnsyncedObservations.find( o => o.uuid === uuid );
+      // It would be a lot better if this returned something that looks like
+      // a remote obs, but this works
+      return Promise.resolve( makeResponse( [mockObs] ) );
+    } );
+    inatjs.observation_photos.create.mockImplementation( async ( params, _opts ) => {
+      const mockObsPhotos = flatten( mockUnsyncedObservations.map( o => o.observationPhotos ) );
+      const mockObsPhoto = mockObsPhotos.find(
+        op => op.uuid === params.observation_photo.uuid
+      );
+      // Pretend this takes a bit
+      await sleep( 500 );
+      return makeResponse( [{
+        id: faker.number.int( ),
+        uuid: mockObsPhoto.uuid
+      }] );
+    } );
+    inatjs.photos.create.mockImplementation( ( ) => Promise.resolve( makeResponse( [{
+      id: faker.number.int( )
+    }] ) ) );
+  } );
+
+  afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
+    // deleteObservationsFromRealm( "deleting observations for MyObservations integration test" );
+  } );
+
+  it( "displays unuploaded status", async () => {
+    const realm = global.mockRealms[__filename];
+    expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+    renderAppWithComponent( <MyObservationsContainer /> );
+    await checkToolbarResetWithUnsyncedObs( );
+    mockUnsyncedObservations.forEach( obs => {
+      const uploadIcon = screen.getByTestId( `UploadIcon.start.${obs.uuid}` );
+      expect( uploadIcon ).toBeVisible( );
     } );
   } );
 
-  describe( "when signed in", ( ) => {
-    beforeEach( async ( ) => {
-      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-      useStore.setState( initialStoreState, true );
+  it( "displays syncing text when toolbar tapped", async () => {
+    renderAppWithComponent( <MyObservationsContainer /> );
+    await checkToolbarResetWithUnsyncedObs( );
+    await tapSyncButton( );
+  } );
+
+  it( "displays upload in progress status when toolbar tapped", async () => {
+    renderAppWithComponent( <MyObservationsContainer /> );
+    await checkToolbarResetWithUnsyncedObs( );
+    await waitFor( ( ) => {
+      const uploadInProgressText = screen.getByText( /Uploading [1-2] of 2 observations/ );
+      expect( uploadInProgressText ).toBeVisible( );
     } );
-
-    afterEach( ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
+    const uploadInProgressIcon = screen.getByTestId(
+      `UploadIcon.progress.${mockUnsyncedObservations[1].uuid}`
+    );
+    expect( uploadInProgressIcon ).toBeVisible( );
+    await waitFor( ( ) => {
+      const secondUploadInProgressIcon = screen.getByTestId(
+        `UploadIcon.progress.${mockUnsyncedObservations[0].uuid}`
+      );
+      expect( secondUploadInProgressIcon ).toBeVisible( );
     } );
-
-    describe( "with unsynced observations", ( ) => {
-      // Mock inatjs endpoints so they return the right responses for the right test data
-      inatjs.observations.create.mockImplementation( ( params, _opts ) => {
-        const mockObs = mockUnsyncedObservations.find( o => o.uuid === params.observation.uuid );
-        return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
-      } );
-      inatjs.observations.fetch.mockImplementation( ( uuid, _params, _opts ) => {
-        const mockObs = mockUnsyncedObservations.find( o => o.uuid === uuid );
-        // It would be a lot better if this returned something that looks like
-        // a remote obs, but this works
-        return Promise.resolve( makeResponse( [mockObs] ) );
-      } );
-      inatjs.observation_photos.create.mockImplementation( async ( params, _opts ) => {
-        const mockObsPhotos = flatten( mockUnsyncedObservations.map( o => o.observationPhotos ) );
-        const mockObsPhoto = mockObsPhotos.find(
-          op => op.uuid === params.observation_photo.uuid
-        );
-        // Pretend this takes a bit
-        await sleep( 500 );
-        return makeResponse( [{
-          id: faker.number.int( ),
-          uuid: mockObsPhoto.uuid
-        }] );
-      } );
-      inatjs.photos.create.mockImplementation( ( ) => Promise.resolve( makeResponse( [{
-        id: faker.number.int( )
-      }] ) ) );
-
-      beforeEach( ( ) => {
-        writeObservationsToRealm(
-          mockUnsyncedObservations,
-          "writing unsynced observations for MyObservations integration test"
-        );
-      } );
-
-      afterEach( ( ) => {
-        deleteObservationsFromRealm( "deleting observations for MyObservations integration test" );
-      } );
-
-      it( "displays unuploaded status", async () => {
-        const realm = global.mockRealms[__filename];
-        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        await checkToolbarResetWithUnsyncedObs( );
-        mockUnsyncedObservations.forEach( obs => {
-          const uploadIcon = screen.getByTestId( `UploadIcon.start.${obs.uuid}` );
-          expect( uploadIcon ).toBeVisible( );
-        } );
-      } );
-
-      it( "displays syncing text when toolbar tapped", async () => {
-        renderAppWithComponent( <MyObservationsContainer /> );
-        await checkToolbarResetWithUnsyncedObs( );
-        await tapSyncButton( );
-      } );
-
-      it( "displays upload in progress status when toolbar tapped", async () => {
-        renderAppWithComponent( <MyObservationsContainer /> );
-        await checkToolbarResetWithUnsyncedObs( );
-        await waitFor( ( ) => {
-          const uploadInProgressText = screen.getByText( /Uploading [1-2] of 2 observations/ );
-          expect( uploadInProgressText ).toBeVisible( );
-        } );
-        const uploadInProgressIcon = screen.getByTestId(
-          `UploadIcon.progress.${mockUnsyncedObservations[1].uuid}`
-        );
-        expect( uploadInProgressIcon ).toBeVisible( );
-        await waitFor( ( ) => {
-          const secondUploadInProgressIcon = screen.getByTestId(
-            `UploadIcon.progress.${mockUnsyncedObservations[0].uuid}`
-          );
-          expect( secondUploadInProgressIcon ).toBeVisible( );
-        } );
-        await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /2 observations uploaded/ );
-          expect( toolbarText ).toBeVisible( );
-        } );
-      } );
-
-      it( "displays upload in progress status when individual upload tapped", async () => {
-        renderAppWithComponent( <MyObservationsContainer /> );
-        // There are two unuploaded observations, and we are about to upload one of them
-        await checkToolbarResetWithUnsyncedObs( );
-        const uploadIcon = screen.getByTestId(
-          `UploadIcon.start.${mockUnsyncedObservations[0].uuid}`
-        );
-        expect( uploadIcon ).toBeVisible( );
-        fireEvent.press( uploadIcon );
-        await waitFor( ( ) => {
-          // Status reflects that we are only uploading one individual observation
-          const uploadInProgressText = screen.getByText( /Uploading 1 observation/ );
-          expect( uploadInProgressText ).toBeVisible( );
-        } );
-        const uploadInProgressIcon = screen.getByTestId(
-          `UploadIcon.progress.${mockUnsyncedObservations[0].uuid}`
-        );
-        expect( uploadInProgressIcon ).toBeVisible( );
-        const secondUploadIcon = screen.getByTestId(
-          `UploadIcon.start.${mockUnsyncedObservations[1].uuid}`
-        );
-        expect( secondUploadIcon ).toBeVisible( );
-        await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /1 observation uploaded/ );
-          expect( toolbarText ).toBeVisible( );
-        } );
-      } );
-
-      it( "shows error when upload network connection fails", async ( ) => {
-        renderAppWithComponent( <MyObservationsContainer /> );
-        await checkToolbarResetWithUnsyncedObs( );
-        inatjs.observations.create.mockRejectedValueOnce(
-          new TypeError( "Network request failed" )
-        );
-        await tapSyncButton( );
-        await waitFor( ( ) => {
-          const toolbarText = screen.getByText( /1 upload failed/ );
-          expect( toolbarText ).toBeVisible( );
-        }, { timeout: MS_BEFORE_TOOLBAR_RESET + 1000, interval: 500 } );
-        // Wait for the toolbar to reset to its default state so there aren't
-        // any pending async processes that will interfere with other tests
-        await waitFor( ( ) => {
-          const resetToolbarText = screen.getByText( /Upload 1 observation/ );
-          expect( resetToolbarText ).toBeVisible( );
-        }, { timeout: MS_BEFORE_TOOLBAR_RESET + 1000, interval: 500 } );
-      } );
+    await waitFor( ( ) => {
+      const toolbarText = screen.getByText( /2 observations uploaded/ );
+      expect( toolbarText ).toBeVisible( );
     } );
+  } );
 
-    describe( "with synced observations", ( ) => {
-      beforeEach( ( ) => {
-        writeObservationsToRealm(
-          mockSyncedObservations,
-          "MyObservations integration test with synced observations"
-        );
-      } );
-
-      afterEach( ( ) => {
-        jest.clearAllMocks( );
-      } );
-
-      it( "should make a request to observations/updates", async ( ) => {
-        // Let's make sure the mock hasn't already been used
-        // expect( inatjs.observations.updates ).not.toHaveBeenCalled();
-        inatjs.observations.updates.mockClear( );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
-        await waitFor( ( ) => {
-          expect( inatjs.observations.updates ).toHaveBeenCalled( );
-        } );
-      } );
-
-      it( "renders grid view on button press", async () => {
-        const realm = global.mockRealms[__filename];
-        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
-        fireEvent.press( button );
-        // Awaiting the first observation because using await in the forEach errors out
-        const firstObs = mockSyncedObservations[0];
-        await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
-        mockSyncedObservations.forEach( obs => {
-          expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
-        } );
-      } );
-
-      it( "displays observation status", async () => {
-        const realm = global.mockRealms[__filename];
-        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const syncIcon = await screen.findByTestId( "SyncButton" );
-        await waitFor( ( ) => {
-          expect( syncIcon ).toBeVisible( );
-        } );
-        mockSyncedObservations.forEach( obs => {
-          const obsStatus = screen.getByTestId( `ObsStatus.${obs.uuid}` );
-          expect( obsStatus ).toBeVisible( );
-        } );
-      } );
-
-      it( "doesn't throw an error when sync button tapped", async ( ) => {
-        const realm = global.mockRealms[__filename];
-        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const syncIcon = await screen.findByTestId( "SyncButton" );
-        await waitFor( ( ) => {
-          expect( syncIcon ).toBeVisible( );
-        } );
-        expect( ( ) => {
-          fireEvent.press( syncIcon );
-        } ).not.toThrow( );
-      } );
-
-      describe( "on screen focus", ( ) => {
-        beforeEach( ( ) => {
-          const realm = global.mockRealms[__filename];
-          safeRealmWrite( realm, ( ) => {
-            realm.create( "LocalPreferences", {
-              last_sync_time: new Date( "2023-11-01" ),
-              last_deleted_sync_time: new Date( "2024-05-01" )
-            } );
-          }, "add last_sync_time to LocalPreferences, MyObservations integration test" );
-        } );
-
-        it( "downloads deleted observations from server when screen focused", async ( ) => {
-          const realm = global.mockRealms[__filename];
-          expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-          expect( realm.objects( "LocalPreferences" )[0] ).toBeTruthy( );
-          renderAppWithComponent( <MyObservationsContainer /> );
-          const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_deleted_sync_time;
-          await waitFor( ( ) => {
-            expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
-              {
-                since: format( lastSyncTime, "yyyy-MM-dd" )
-              },
-              expect.anything( )
-            );
-          } );
-        } );
-
-        it( "deletes local observations if they have been deleted on server", async ( ) => {
-          inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
-          renderAppWithComponent( <MyObservationsContainer /> );
-          const deleteSpy = jest.spyOn( global.mockRealms[__filename], "delete" );
-          await waitFor( ( ) => {
-            expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
-          }, { timeout: 3000, interval: 500 } );
-          expect( global.mockRealms[__filename].objects( "Observation" ).length ).toBe( 1 );
-        } );
-      } );
+  it( "displays upload in progress status when individual upload tapped", async () => {
+    renderAppWithComponent( <MyObservationsContainer /> );
+    // There are two unuploaded observations, and we are about to upload one of them
+    await checkToolbarResetWithUnsyncedObs( );
+    const uploadIcon = screen.getByTestId(
+      `UploadIcon.start.${mockUnsyncedObservations[0].uuid}`
+    );
+    expect( uploadIcon ).toBeVisible( );
+    fireEvent.press( uploadIcon );
+    await waitFor( ( ) => {
+      // Status reflects that we are only uploading one individual observation
+      const uploadInProgressText = screen.getByText( /Uploading 1 observation/ );
+      expect( uploadInProgressText ).toBeVisible( );
     } );
+    const uploadInProgressIcon = screen.getByTestId(
+      `UploadIcon.progress.${mockUnsyncedObservations[0].uuid}`
+    );
+    expect( uploadInProgressIcon ).toBeVisible( );
+    const secondUploadIcon = screen.getByTestId(
+      `UploadIcon.start.${mockUnsyncedObservations[1].uuid}`
+    );
+    expect( secondUploadIcon ).toBeVisible( );
+    await waitFor( ( ) => {
+      const toolbarText = screen.getByText( /1 observation uploaded/ );
+      expect( toolbarText ).toBeVisible( );
+    } );
+  } );
+
+  it( "shows error when upload network connection fails", async ( ) => {
+    renderAppWithComponent( <MyObservationsContainer /> );
+    await checkToolbarResetWithUnsyncedObs( );
+    inatjs.observations.create.mockRejectedValueOnce(
+      new TypeError( "Network request failed" )
+    );
+    await tapSyncButton( );
+    await waitFor( ( ) => {
+      const toolbarText = screen.getByText( /1 upload failed/ );
+      expect( toolbarText ).toBeVisible( );
+    }, { timeout: MS_BEFORE_TOOLBAR_RESET + 1000, interval: 500 } );
+    // Wait for the toolbar to reset to its default state so there aren't
+    // any pending async processes that will interfere with other tests
+    await waitFor( ( ) => {
+      const resetToolbarText = screen.getByText( /Upload 1 observation/ );
+      expect( resetToolbarText ).toBeVisible( );
+    }, { timeout: MS_BEFORE_TOOLBAR_RESET + 1000, interval: 500 } );
+  } );
+} );
+
+describe( "MyObservations while signed in with synced observations", ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+    writeObservationsToRealm(
+      mockSyncedObservations,
+      "MyObservations integration test with synced observations"
+    );
+  } );
+
+  afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
+    // jest.clearAllMocks( );
+  } );
+
+  it( "should make a request to observations/updates", async ( ) => {
+    // Let's make sure the mock hasn't already been used
+    // expect( inatjs.observations.updates ).not.toHaveBeenCalled();
+    inatjs.observations.updates.mockClear( );
+    renderAppWithComponent( <MyObservationsContainer /> );
+    expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
+    await waitFor( ( ) => {
+      expect( inatjs.observations.updates ).toHaveBeenCalled( );
+    } );
+  } );
+
+  it( "renders grid view on button press", async () => {
+    const realm = global.mockRealms[__filename];
+    expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+    renderAppWithComponent( <MyObservationsContainer /> );
+    const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
+    fireEvent.press( button );
+    // Awaiting the first observation because using await in the forEach errors out
+    const firstObs = mockSyncedObservations[0];
+    await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
+    mockSyncedObservations.forEach( obs => {
+      expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
+    } );
+  } );
+
+  it( "displays observation status", async () => {
+    const realm = global.mockRealms[__filename];
+    expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+    renderAppWithComponent( <MyObservationsContainer /> );
+    const syncIcon = await screen.findByTestId( "SyncButton" );
+    await waitFor( ( ) => {
+      expect( syncIcon ).toBeVisible( );
+    } );
+    mockSyncedObservations.forEach( obs => {
+      const obsStatus = screen.getByTestId( `ObsStatus.${obs.uuid}` );
+      expect( obsStatus ).toBeVisible( );
+    } );
+  } );
+
+  it( "doesn't throw an error when sync button tapped", async ( ) => {
+    const realm = global.mockRealms[__filename];
+    expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+    renderAppWithComponent( <MyObservationsContainer /> );
+    const syncIcon = await screen.findByTestId( "SyncButton" );
+    await waitFor( ( ) => {
+      expect( syncIcon ).toBeVisible( );
+    } );
+    expect( ( ) => {
+      fireEvent.press( syncIcon );
+    } ).not.toThrow( );
+  } );
+} );
+
+describe( "MyObservations when signed in on screen focus", ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+    const realm = global.mockRealms[__filename];
+    writeObservationsToRealm(
+      mockSyncedObservations,
+      "MyObservations screen focus with synced observations integration test"
+    );
+    safeRealmWrite( realm, ( ) => {
+      realm.create( "LocalPreferences", {
+        last_sync_time: new Date( "2023-11-01" ),
+        last_deleted_sync_time: new Date( "2024-05-01" )
+      } );
+    }, "add last_sync_time to LocalPreferences, MyObservations integration test" );
+    inatjs.observations.deleted.mockResolvedValue( makeResponse( mockDeletedIds ) );
+  } );
+
+  afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
+  } );
+
+  it( "downloads deleted observations from server when screen focused", async ( ) => {
+    const realm = global.mockRealms[__filename];
+    expect( realm.objects( "LocalPreferences" )[0] ).toBeTruthy( );
+    renderAppWithComponent( <MyObservationsContainer /> );
+    const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_deleted_sync_time;
+    await waitFor( ( ) => {
+      expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
+        {
+          since: format( lastSyncTime, "yyyy-MM-dd" )
+        },
+        expect.anything( )
+      );
+    } );
+  } );
+
+  it( "deletes local observations if they have been deleted on server", async ( ) => {
+    const realm = global.mockRealms[__filename];
+    renderAppWithComponent( <MyObservationsContainer /> );
+    const deleteSpy = jest.spyOn( realm, "delete" );
+    await waitFor( ( ) => {
+      expect( deleteSpy ).toHaveBeenCalledTimes( 1 );
+    }, { timeout: 3000, interval: 500 } );
+    expect( realm.objects( "Observation" ).length ).toBe( 1 );
   } );
 } );

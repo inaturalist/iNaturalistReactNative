@@ -10,11 +10,8 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
-  AUTOMATIC_SYNC,
-  AUTOMATIC_SYNC_COMPLETE,
-  USER_INITIATED_SYNC_COMPLETE,
-  USER_TAPPED_BUTTON
-} from "stores/createDeleteAndSyncObservationsSlice.ts";
+  SYNC_PENDING
+} from "stores/createSyncObservationsSlice.ts";
 import {
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
@@ -51,8 +48,7 @@ const ToolbarContainer = ( {
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
-  const preUploadStatus = useStore( state => state.preUploadStatus );
-  const syncType = useStore( state => state.syncType );
+  const syncingStatus = useStore( state => state.syncingStatus );
 
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
@@ -84,19 +80,14 @@ const ToolbarContainer = ( {
   const theme = useTheme( );
 
   const totalDeletions = deletions.length;
-  const deletionsComplete = preUploadStatus === AUTOMATIC_SYNC_COMPLETE
-    || preUploadStatus === USER_INITIATED_SYNC_COMPLETE;
+  const deletionsComplete = deletions.length === currentDeleteCount;
   const deletionsInProgress = totalDeletions > 0 && !deletionsComplete;
 
-  const syncInProgress = syncType === USER_TAPPED_BUTTON
-    && preUploadStatus !== USER_INITIATED_SYNC_COMPLETE;
+  const syncInProgress = syncingStatus !== SYNC_PENDING;
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && initialNumObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
-
-  const automaticSyncInProgress = syncType === AUTOMATIC_SYNC
-    && preUploadStatus !== AUTOMATIC_SYNC_COMPLETE;
 
   const setDeletionsProgress = ( ) => {
     // TODO: we should emit deletions progress like we do for uploads for an accurate progress
@@ -112,14 +103,6 @@ const ToolbarContainer = ( {
   };
   const deletionsProgress = setDeletionsProgress( );
 
-  const deletionParams = useMemo( ( ) => ( {
-    total: totalDeletions,
-    currentDeleteCount
-  } ), [
-    totalDeletions,
-    currentDeleteCount
-  ] );
-
   const showFinalUploadError = ( totalUploadErrors > 0 && uploadsComplete )
   || ( totalUploadErrors > 0 && ( numUploadsAttempted === initialNumObservationsInQueue ) );
 
@@ -131,6 +114,11 @@ const ToolbarContainer = ( {
 
   const getStatusText = useCallback( ( ) => {
     if ( syncInProgress ) { return t( "Syncing" ); }
+
+    const deletionParams = {
+      total: totalDeletions,
+      currentDeleteCount
+    };
 
     if ( totalDeletions > 0 ) {
       if ( deletionsComplete ) {
@@ -159,7 +147,7 @@ const ToolbarContainer = ( {
 
     return "";
   }, [
-    deletionParams,
+    currentDeleteCount,
     deletionsComplete,
     numUploadsAttempted,
     numUnuploadedObservations,
@@ -221,7 +209,7 @@ const ToolbarContainer = ( {
       showsExploreIcon={currentUser}
       statusText={statusText}
       stopAllUploads={stopAllUploads}
-      syncButtonDisabled={rotating || automaticSyncInProgress}
+      syncButtonDisabled={rotating}
       syncIconColor={syncIconColor}
       toggleLayout={toggleLayout}
     />
