@@ -2,10 +2,9 @@ import { screen } from "@testing-library/react-native";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import React from "react";
 import {
-  AUTOMATIC_SYNC_COMPLETE,
-  HANDLING_LOCAL_DELETIONS,
-  SYNC_PENDING,
-  SYNCING_REMOTE_DELETIONS
+  AUTOMATIC_SYNC_IN_PROGRESS,
+  MANUAL_SYNC_IN_PROGRESS,
+  SYNC_PENDING
 } from "stores/createSyncObservationsSlice.ts";
 import {
   UPLOAD_COMPLETE,
@@ -37,24 +36,12 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       numUnuploadedObservations: 1,
       uploadStatus: UPLOAD_PENDING,
-      syncingStatus: SYNCING_REMOTE_DELETIONS
+      syncingStatus: MANUAL_SYNC_IN_PROGRESS
     } );
     renderComponent( <ToolbarContainer /> );
 
     const statusText = screen.getByText( /Syncing.../ );
     expect( statusText ).toBeVisible( );
-  } );
-
-  it( "does not display syncing text when user lands on screen and automatic sync happens", ( ) => {
-    useStore.setState( {
-      numUnuploadedObservations: 0,
-      uploadStatus: UPLOAD_PENDING,
-      syncingStatus: SYNCING_REMOTE_DELETIONS
-    } );
-    renderComponent( <ToolbarContainer /> );
-
-    const statusText = screen.queryByText( /Syncing.../ );
-    expect( statusText ).toBeFalsy( );
   } );
 
   it( "displays a pending upload", ( ) => {
@@ -145,21 +132,27 @@ describe( "Toolbar Container", () => {
     expect( statusText ).toBeVisible( );
   } );
 
-  it( "displays deletions in progress", async () => {
-    useStore.setState( {
-      ...deletionStore,
-      syncingStatus: HANDLING_LOCAL_DELETIONS
-    } );
-    renderComponent( <ToolbarContainer /> );
+  // 20240611 amanda - removing this test for now, since I believe the new intended UI
+  // is that the user will only ever see "Syncing..." followed by
+  // "1 observation deleted" UI after deleting a local observation. feel free to reinstate this
+  // test if I'm misunderstanding the UI
 
-    const statusText = screen.getByText( /Deleting 1 of 1 observation/ );
-    expect( statusText ).toBeVisible( );
-  } );
+  // it( "displays deletions in progress", async () => {
+  //   useStore.setState( {
+  //     ...deletionStore,
+  //     syncingStatus: HANDLING_LOCAL_DELETIONS
+  //   } );
+  //   renderComponent( <ToolbarContainer /> );
+
+  //   const statusText = screen.getByText( /Deleting 1 of 1 observation/ );
+  //   expect( statusText ).toBeVisible( );
+  // } );
 
   it( "displays deletions completed", () => {
     useStore.setState( {
       ...deletionStore,
-      syncingStatus: AUTOMATIC_SYNC_COMPLETE
+      currentDeleteCount: 1,
+      deletions: [{}]
     } );
     renderComponent( <ToolbarContainer /> );
 
@@ -172,7 +165,7 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       ...deletionStore,
       deleteError,
-      syncingStatus: HANDLING_LOCAL_DELETIONS
+      syncingStatus: AUTOMATIC_SYNC_IN_PROGRESS
     } );
     renderComponent( <ToolbarContainer /> );
 

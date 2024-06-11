@@ -49,7 +49,9 @@ const updateDeletedSyncTime = realm => {
 export default syncRemoteDeletedObservations = async realm => {
   const apiToken = await getJWT( );
   const deletedParams = setParamsWithLastSyncTime( realm );
+  console.log( deletedParams, "deleted params" );
   const response = await checkForDeletedObservations( deletedParams, { api_token: apiToken } );
+  console.log( response, "response" );
   updateDeletedSyncTime( realm );
   const deletedObservations = response?.results;
   deleteRemotelyDeletedObservations( deletedObservations, realm );

@@ -137,10 +137,15 @@ const MyObservationsContainer = ( ): Node => {
 
   useEffect( ( ) => {
     // this is intended to have the automatic sync run once
-    // every time a user lands on MyObservations. we will likely want
-    // an abort controller to disable this process if a user
-    // taps the sync button, but for now we're temporarily
-    // disabling the sync button while automatic updates are in flight
+    // the very first time a user lands on MyObservations
+    startAutomaticSync( );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [] );
+
+  useEffect( ( ) => {
+    // this is intended to have the automatic sync run once
+    // every time a user lands on MyObservations from a different tab screen.
+    // ideally, we wouldn't need both this and the useEffect hook above
     navigation.addListener( "focus", ( ) => {
       startAutomaticSync( );
     } );

@@ -8,14 +8,14 @@ import { sleep } from "sharedHelpers/util";
 const logger = log.extend( "syncRemoteObservations.ts" );
 
 const updateSyncTime = realm => {
-  const localPrefs = realm.objects( "LocalPreferences" )[0];
+  const localPrefs = realm?.objects( "LocalPreferences" )[0];
   const updatedPrefs = {
     ...localPrefs,
     last_sync_time: new Date( )
   };
   safeRealmWrite( realm, ( ) => {
-    realm.create( "LocalPreferences", updatedPrefs, "modified" );
-  }, "updating sync time in MyObservationsContainer" );
+    realm?.create( "LocalPreferences", updatedPrefs, "modified" );
+  }, "updating sync time in syncRemoteObservations" );
 };
 
 export default syncRemoteObservations = async ( realm, currentUserId, deletionsCompletedAt ) => {
@@ -51,6 +51,6 @@ export default syncRemoteObservations = async ( realm, currentUserId, deletionsC
     results.length,
     "results, upserting..."
   );
-  await Observation.upsertRemoteObservations( results, realm );
   updateSyncTime( realm );
+  await Observation.upsertRemoteObservations( results, realm );
 };

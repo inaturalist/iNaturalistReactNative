@@ -117,7 +117,18 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   ] );
 
   const fetchRemoteObservations = useCallback( async ( ) => {
-    await syncRemoteObservations( realm, currentUserId, deletionsCompletedAt );
+    try {
+      await syncRemoteObservations( realm, currentUserId, deletionsCompletedAt );
+      return true;
+    } catch ( syncRemoteError ) {
+      if (
+        syncRemoteError instanceof INatApiError
+          && syncRemoteError?.status === 401
+      ) {
+        return false;
+      }
+      throw syncRemoteError;
+    }
   }, [
     realm,
     currentUserId,
