@@ -229,6 +229,8 @@ export default useUploadObservations = canUpload => {
     startUpload
   ] );
 
+  console.log( uploadQueue, canUpload, "can upload queue" );
+
   const uploadObservations = useCallback( async ( ) => {
     logger.debug( "sync #4.1: creating upload queue" );
     createUploadQueue( );

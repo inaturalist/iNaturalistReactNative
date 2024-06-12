@@ -1,6 +1,7 @@
 import { INatApiError } from "api/error";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
+import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import {
@@ -19,7 +20,7 @@ const logger = log.extend( "useSyncObservations" );
 const { useRealm } = RealmContext;
 
 const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
-  const loggedIn = currentUserId;
+  const loggedIn = !!currentUserId;
   const deletions = useStore( state => state.deletions );
   const deletionsCompletedAt = useStore( state => state.deletionsCompletedAt );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
@@ -137,11 +138,11 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
 
   const syncAutomatically = useCallback( async ( ) => {
     logger.debug( "sync #1: syncing remotely deleted observations" );
-    if ( loggedIn ) { await fetchRemoteDeletions( ); }
+    if ( loggedIn ) await fetchRemoteDeletions( );
     logger.debug( "sync #2: handling locally deleted observations" );
     await deleteLocalObservations( );
     logger.debug( "sync #3: fetching remote observations" );
-    await fetchRemoteObservations( );
+    if ( loggedIn ) await fetchRemoteObservations( );
     completeSync( );
   }, [
     deleteLocalObservations,
@@ -153,11 +154,11 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
 
   const syncManually = useCallback( async ( ) => {
     logger.debug( "sync #1: syncing remotely deleted observations" );
-    if ( loggedIn ) { await fetchRemoteDeletions( ); }
+    if ( loggedIn ) await fetchRemoteDeletions( );
     logger.debug( "sync #2: handling locally deleted observations" );
     await deleteLocalObservations( );
     logger.debug( "sync #3: fetching remote observations" );
-    await fetchRemoteObservations( );
+    if ( loggedIn ) await fetchRemoteObservations( );
     resetSyncToolbar( );
     logger.debug( "sync #4: uploading all unsynced observations" );
     if ( loggedIn ) await uploadObservations( );
