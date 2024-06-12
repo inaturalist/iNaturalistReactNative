@@ -6,7 +6,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useCurrentUser from "sharedHooks/useCurrentUser";
+import useCurrentUser from "sharedHooks/useCurrentUser.ts";
 
 import MessageList from "./MessageList";
 

@@ -7,17 +7,26 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import { log } from "sharedHelpers/logger";
+import { useUserLocation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "usePrepareStoreAndNavigate" );
 
-const usePrepareStoreAndNavigate = (
-  permissionGranted: ?string,
+type Options = {
+  addPhotoPermissionResult: ?string,
   addEvidence: ?boolean,
-  checkmarkTapped: boolean
-): Object => {
+  checkmarkTapped: boolean,
+  shouldFetchLocation: boolean
+};
+
+const usePrepareStoreAndNavigate = ( options: Options ): Function => {
+  const {
+    addPhotoPermissionResult,
+    addEvidence,
+    checkmarkTapped,
+    shouldFetchLocation
+  } = ( options || {} );
   const navigation = useNavigation( );
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
@@ -27,6 +36,7 @@ const usePrepareStoreAndNavigate = (
   const addCameraRollUri = useStore( state => state.addCameraRollUri );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
+  const { userLocation } = useUserLocation( { untilAcc: 5, enabled: !!shouldFetchLocation } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
@@ -34,7 +44,7 @@ const usePrepareStoreAndNavigate = (
   // we want it accessible in the camera's folder, as if the user has taken those photos
   // via their own camera app).
   const savePhotosToCameraGallery = useCallback( async uris => {
-    if ( permissionGranted !== "granted" ) return Promise.resolve( );
+    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
     return Promise.all( uris.map( async uri => {
       logger.info( "saving rotated original camera photo: ", uri );
       try {
@@ -46,24 +56,24 @@ const usePrepareStoreAndNavigate = (
         // Save these camera roll URIs, so later on observation editor can update
         // the EXIF metadata of these photos, once we retrieve a location.
         addCameraRollUri( savedPhotoUri );
-      } catch {
+      } catch ( cameraRollSaveError ) {
+        logger.error( cameraRollSaveError );
         console.log( "couldn't save photo to iNaturalist Next album" );
       }
     } ) );
   }, [
     addCameraRollUri,
-    permissionGranted
+    addPhotoPermissionResult
   ] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
     const newObservation = await Observation.new( );
 
     // location is needed for fetching online Suggestions on the next screen
-    const location = await fetchUserLocation( );
-    if ( location?.latitude ) {
-      newObservation.latitude = location?.latitude;
-      newObservation.longitude = location?.longitude;
-      newObservation.positional_accuracy = location?.positional_accuracy;
+    if ( userLocation?.latitude ) {
+      newObservation.latitude = userLocation?.latitude;
+      newObservation.longitude = userLocation?.longitude;
+      newObservation.positional_accuracy = userLocation?.accuracy;
     }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( localFilePaths, {
@@ -85,7 +95,14 @@ const usePrepareStoreAndNavigate = (
     );
 
     return savePhotosToCameraGallery( rotatedOriginalCameraPhotos );
-  }, [rotatedOriginalCameraPhotos, savePhotosToCameraGallery, setObservations] );
+  }, [
+    rotatedOriginalCameraPhotos,
+    savePhotosToCameraGallery,
+    setObservations,
+    userLocation?.accuracy,
+    userLocation?.latitude,
+    userLocation?.longitude
+  ] );
 
   const updateObsWithCameraPhotos = useCallback( async ( ) => {
     const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(

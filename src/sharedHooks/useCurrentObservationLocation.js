@@ -1,5 +1,6 @@
 // @flow
 
+import { galleryPhotosPath } from "appConstants/paths.ts";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
@@ -9,7 +10,9 @@ import {
   useState
 } from "react";
 import { checkMultiple, RESULTS } from "react-native-permissions";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+
+// For some reason this doesn't work with the path alias *and* a typescript file
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
@@ -31,7 +34,7 @@ const useCurrentObservationLocation = (
   const hasLocation = latitude || longitude;
   const originalPhotoUri = currentObservation?.observationPhotos
     && currentObservation?.observationPhotos[0]?.originalPhotoUri;
-  const isGalleryPhoto = originalPhotoUri && !originalPhotoUri?.includes( "photoUploads" );
+  const isGalleryPhoto = originalPhotoUri?.includes( galleryPhotosPath );
   const locationNotSetYet = useRef( true );
   const prevObservation = useRef( currentObservation );
 
@@ -79,10 +82,11 @@ const useCurrentObservationLocation = (
       if ( !mountedRef.current ) return;
       if ( !shouldFetchLocation ) return;
 
-      setPermissionResult( permissionResultFromMultiple(
+      const newPermissionResult = permissionResultFromMultiple(
         await checkMultiple( LOCATION_PERMISSIONS )
-      ) );
-      if ( permissionResult !== RESULTS.GRANTED ) {
+      );
+      setPermissionResult( newPermissionResult );
+      if ( newPermissionResult !== RESULTS.GRANTED ) {
         setFetchingLocation( false );
         setShouldFetchLocation( false );
         return;

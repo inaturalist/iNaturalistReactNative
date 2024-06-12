@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react-native";
 import BottomButtons from "components/ObsEdit/BottomButtons";
 import React from "react";
-import * as useCurrentUser from "sharedHooks/useCurrentUser";
+import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";

@@ -1,6 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
-import PermissionGateContainer, { WRITE_MEDIA_PERMISSIONS }
+import PermissionGateContainer, {
+  LOCATION_PERMISSIONS,
+  permissionResultFromMultiple,
+  WRITE_MEDIA_PERMISSIONS
+}
   from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
 import React, {
@@ -9,6 +13,11 @@ import React, {
 import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
+import {
+  checkMultiple,
+  Permission,
+  RESULTS
+} from "react-native-permissions";
 import { Camera, CameraDevice } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
@@ -56,12 +65,19 @@ const CameraWithDevice = ( {
   // try to open when the user lands on the next screen, e.g. the location
   // permission gate on ObsEdit
   const [addPhotoPermissionGateWasClosed, setAddPhotoPermissionGateWasClosed] = useState( false );
+  const isFocused = useIsFocused( );
+  const [locationPermissionGranted, setLocationPermissionGranted] = useState( false );
 
-  const prepareStoreAndNavigate = usePrepareStoreAndNavigate(
+  const prepareStoreAndNavigate = usePrepareStoreAndNavigate( {
     addPhotoPermissionResult,
     addEvidence,
-    checkmarkTapped
-  );
+    checkmarkTapped,
+    // usePrepareStoreAndNavigate will fetch the location while the camera is
+    // up and use that to pass along to Suggestions when the user navigates
+    // there... but we only want to do that while the camera has focus and we
+    // have permission
+    shouldFetchLocation: isFocused && locationPermissionGranted
+  } );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -134,8 +150,37 @@ const CameraWithDevice = ( {
     return unsubscribe;
   }, [navigation] );
 
+  // Check if location permission granted b/c usePrepareStoreAndNavigate and
+  // useUserLocation need to know if permission has been granted to fetch the
+  // user's location while the camera is active. We don't want to *ask* for
+  // permission here b/c we want to avoid overloading a new user with
+  // permission requests and they will just have seen the camera permission
+  // request before landing here, so it's ok if we're not fetching the
+  // location here for the user's first observation (suggestions might be a
+  // bit off and we'll fetch the obs coordinates on ObsEdit)
+  useEffect( ( ) => {
+    async function checkLocationPermissions() {
+      const permissionsResult = permissionResultFromMultiple(
+        await checkMultiple( LOCATION_PERMISSIONS as Permission[] )
+      );
+      if ( permissionsResult === RESULTS.GRANTED ) {
+        setLocationPermissionGranted( true );
+      } else {
+        console.warn(
+          "Location permissions have not been granted. You probably need to use a PermissionGate"
+        );
+      }
+    }
+    checkLocationPermissions( );
+  }, [] );
+
   return (
-    <View className={`flex-1 bg-black ${flexDirection}`}>
+    <View
+      className={`flex-1 bg-black ${flexDirection}`}
+      testID="CameraWithDevice"
+    >
+      {/* TODO why is this even here? The camera doesn't need location
+      permissions. Suggestions does. ~~~~kueda20240611 */}
       {/* a weird quirk of react-native-modal is you can show subsequent modals
         when a modal is nested in another modal. location permission is shown first
         because the save photo modal pops up a second system alert on iOS asking
@@ -143,6 +188,13 @@ const CameraWithDevice = ( {
       <LocationPermissionGate
         permissionNeeded={checkmarkTapped}
         withoutNavigation
+        onPermissionGranted={( ) => {
+          // This probably doesn't do anything, but on the off chance we're
+          // able to grab coordinates immediately after the user grants
+          // permission, that will probably yield better suggestions on the
+          // next screen than nothing.
+          setLocationPermissionGranted( true );
+        }}
       >
         <PermissionGateContainer
           permissions={WRITE_MEDIA_PERMISSIONS}

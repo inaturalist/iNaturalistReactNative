@@ -6,7 +6,7 @@ import React from "react";
 import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import * as useCurrentUser from "sharedHooks/useCurrentUser";
+import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import useIsConnected from "sharedHooks/useIsConnected.ts";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
 import useStore from "stores/useStore";

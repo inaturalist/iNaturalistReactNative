@@ -21,7 +21,7 @@ import NotificationsContainer from "components/Notifications/NotificationsContai
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
-import ProjectsContainer from "components/Projects/ProjectsContainer";
+import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import Settings from "components/Settings/Settings";
 import { Heading4 } from "components/SharedComponents";
 import UserProfile from "components/UserProfile/UserProfile";

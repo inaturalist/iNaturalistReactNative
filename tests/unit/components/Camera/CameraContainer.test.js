@@ -1,11 +1,12 @@
 import {
-  fireEvent, render, screen
+  fireEvent,
+  screen
 } from "@testing-library/react-native";
 import CameraContainer from "components/Camera/CameraContainer.tsx";
-import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
+import { renderComponent } from "tests/helpers/render";
 
 const mockedNavigate = jest.fn();
 
@@ -52,37 +53,32 @@ jest.mock( "components/Camera/AICamera/FrameProcessorCamera", () => ( {
   default: () => mockView
 } ) );
 
-const renderCameraContainer = () => render(
-  <INatPaperProvider>
-    <CameraContainer />
-  </INatPaperProvider>
-);
+function renderCameraContainer( ) {
+  return renderComponent( <CameraContainer /> );
+}
 
 describe( "CameraContainer", ( ) => {
   beforeAll( async ( ) => {
     jest.useFakeTimers( );
   } );
 
-  it( "should not have accessibility errors", () => {
-    const Camera = <CameraContainer />;
-
-    expect( Camera ).toBeAccessible();
+  it( "should not have accessibility errors", async ( ) => {
+    renderCameraContainer( );
+    const cameraWithDevice = await screen.findByTestId( "CameraWithDevice" );
+    expect( cameraWithDevice ).toBeAccessible();
   } );
 
   it( "should first render with flash disabled", async () => {
-    renderCameraContainer();
-
+    renderCameraContainer( );
     await screen.findByTestId( "flash-button-label-flash-off" );
   } );
 
   it( "should change to flash enabled on button press", async () => {
-    renderCameraContainer();
-
+    renderCameraContainer( );
     const flashButton = await screen.findByTestId(
       "flash-button-label-flash-off"
     );
     fireEvent.press( flashButton );
-
     await screen.findByTestId( "flash-button-label-flash" );
   } );
 } );

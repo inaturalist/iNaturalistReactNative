@@ -160,8 +160,8 @@ describe( "MyObservations", ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
-    afterEach( ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
+    afterEach( async ( ) => {
+      await signOut( { realm: global.mockRealms[__filename] } );
     } );
 
     describe( "with unsynced observations", ( ) => {
