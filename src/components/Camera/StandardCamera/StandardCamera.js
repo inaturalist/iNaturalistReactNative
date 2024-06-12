@@ -1,15 +1,13 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
-import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { View } from "components/styledComponents";
-import { getCurrentRoute } from "navigation/navigationUtils";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -71,33 +69,6 @@ const StandardCamera = ( {
     rotation
   } = useRotation( );
   const navigation = useNavigation( );
-  const { params } = useRoute();
-  const onBack = () => {
-    const currentRoute = getCurrentRoute();
-    if ( currentRoute?.params?.addEvidence ) {
-      navigation.navigate( "ObsEdit" );
-    } else {
-      const previousScreen = params && params.previousScreen
-        ? params.previousScreen
-        : null;
-
-      if ( previousScreen && previousScreen.name === "ObsDetails" ) {
-        navigateToObsDetails( navigation, previousScreen.params.uuid );
-      } else {
-        navigation.navigate( "TabNavigator", {
-          screen: "TabStackNavigator",
-          params: {
-            screen: "ObsList"
-          }
-        } );
-      }
-    }
-  };
-  const {
-    handleBackButtonPress,
-    setShowDiscardSheet,
-    showDiscardSheet
-  } = useBackPress( onBack );
   const {
     takePhoto,
     takePhotoOptions,
@@ -126,9 +97,14 @@ const StandardCamera = ( {
 
   // newPhotoCount tracks photos taken in *this* instance of the camera. The
   // camera might be instantiated with several rotatedOriginalCameraPhotos or
-  // galleryUris already in state, but we only want to show the CTA button
+  // galleryUris already in state, but we only want to show the CTA button or discard modal
   // when the user has taken a photo with *this* instance of the camera
   const photosTaken = newPhotoCount > 0 && totalObsPhotoUris > 0;
+  const {
+    handleBackButtonPress,
+    setShowDiscardSheet,
+    showDiscardSheet
+  } = useBackPress( photosTaken );
 
   useFocusEffect(
     useCallback( ( ) => {
