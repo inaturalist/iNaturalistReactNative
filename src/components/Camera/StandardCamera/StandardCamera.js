@@ -90,16 +90,15 @@ const StandardCamera = ( {
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
   const [dismissChanges, setDismissChanges] = useState( false );
-  const [newPhotoCount, setNewPhotoCount] = useState( 0 );
   const [newPhotoUris, setNewPhotoUris] = useState( [] );
 
   const { screenWidth } = useDeviceOrientation( );
 
-  // newPhotoCount tracks photos taken in *this* instance of the camera. The
+  // newPhotoUris tracks photos taken in *this* instance of the camera. The
   // camera might be instantiated with several rotatedOriginalCameraPhotos or
   // galleryUris already in state, but we only want to show the CTA button or discard modal
   // when the user has taken a photo with *this* instance of the camera
-  const photosTaken = newPhotoCount > 0 && totalObsPhotoUris > 0;
+  const photosTaken = newPhotoUris.length > 0 && totalObsPhotoUris > 0;
   const {
     handleBackButtonPress,
     setShowDiscardSheet,
@@ -135,7 +134,6 @@ const StandardCamera = ( {
       return;
     }
     const uri = await takePhoto( );
-    setNewPhotoCount( newPhotoCount + 1 );
     setNewPhotoUris( [...newPhotoUris, uri] );
   };
 
