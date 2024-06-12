@@ -113,6 +113,8 @@ function useUserLocation(
         timeout: CURRENT_LOCATION_TIMEOUT_MS
       };
 
+      // TODO refactor to use fetchUserLocation, which is promise-ified and
+      // mockable in an e2e context
       Geolocation.getCurrentPosition( success, failure, gcpOptions );
     };
 
