@@ -23,7 +23,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { reactQueryRetry } from "sharedHelpers/logging";
-import { installID } from "sharedHelpers/userData";
+import { installID } from "sharedHelpers/userData.ts";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";

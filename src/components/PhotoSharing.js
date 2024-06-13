@@ -27,7 +27,7 @@ const PhotoSharing = ( ): Node => {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
       setObservations( [newObservation] );
-      navigation.navigate( "ObsEdit" );
+      navigation.navigate( "NoBottomTabStackNavigator", { screen: "ObsEdit" } );
     } catch ( e ) {
       Alert.alert(
         "Photo sharing failed: couldn't create new observation:",

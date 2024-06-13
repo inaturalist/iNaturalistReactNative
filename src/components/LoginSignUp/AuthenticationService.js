@@ -14,7 +14,7 @@ import Realm from "realm";
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { installID } from "sharedHelpers/userData";
+import { installID } from "sharedHelpers/userData.ts";
 import { sleep, unlink } from "sharedHelpers/util";
 
 import { log, logFilePath } from "../../../react-native-logs.config";
@@ -244,9 +244,6 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
       if ( response.status === 401 ) {
         signOut( { clearRealm: true } );
       }
-      logger.warn(
-        `Error while renewing JWT: ${response.problem} - ${response.status}`
-      );
       return null;
     }
 

@@ -41,7 +41,7 @@ const ObsEdit = ( ): Node => {
           currentObservation={currentObservation}
           observations={observations}
         />
-        <KeyboardAwareScrollView className="mb-[80px]">
+        <KeyboardAwareScrollView>
           {currentObservation && (
             <View
               className="bg-white rounded-t-3xl mt-1"
@@ -49,7 +49,7 @@ const ObsEdit = ( ): Node => {
                 ? DROP_SHADOW
                 : undefined}
             >
-              <View className="pb-5">
+              <View className="h-screen">
                 {observations.length > 1 && (
                   <MultipleObservationsArrows
                     currentObservationIndex={currentObservationIndex}

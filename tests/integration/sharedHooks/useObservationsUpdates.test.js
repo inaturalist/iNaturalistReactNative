@@ -3,6 +3,29 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
+
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
+    }
+  };
+} );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
 jest.mock( "api/observations" );
 
@@ -41,14 +64,15 @@ describe( "useObservationsUpdates", ( ) => {
   describe( "when there is no local observation with the resource_uuid", ( ) => {
     beforeEach( ( ) => {
       // Write mock observation to realm
-      safeRealmWrite( global.realm, ( ) => {
-        global.realm.create( "Observation", mockObservation );
+      safeRealmWrite( global.mockRealms[mockRealmIdentifier], ( ) => {
+        global.mockRealms[mockRealmIdentifier].create( "Observation", mockObservation );
       }, "write mock observation, useObservationUpdates test" );
     } );
 
     it( "should return without writing to a local observation", ( ) => {
       const { result } = renderHook( ( ) => useObservationsUpdates( ) );
-      const observation = global.realm.objectForPrimaryKey( "Observation", mockObservation.uuid );
+      const observation = global.mockRealms[mockRealmIdentifier]
+        .objectForPrimaryKey( "Observation", mockObservation.uuid );
       expect( mockCommentUpdate.resource_uuid ).not.toEqual( observation.uuid );
       expect( mockIdentificationUpdate.resource_uuid ).not.toEqual( observation.uuid );
       expect( result.current.refetch ).toEqual( undefined );
@@ -69,9 +93,9 @@ describe( "useObservationsUpdates", ( ) => {
     ] )( "when the local observation has %s", ( a1, viewedComments, viewedIdentifications ) => {
       beforeEach( ( ) => {
       // Write mock observation to realm
-        safeRealmWrite( global.realm, ( ) => {
-          global.realm.deleteAll( );
-          global.realm.create( "Observation", {
+        safeRealmWrite( global.mockRealms[mockRealmIdentifier], ( ) => {
+          global.mockRealms[mockRealmIdentifier].deleteAll( );
+          global.mockRealms[mockRealmIdentifier].create( "Observation", {
             ...mockObservation,
             comments_viewed: viewedComments,
             identifications_viewed: viewedIdentifications
@@ -81,7 +105,7 @@ describe( "useObservationsUpdates", ( ) => {
 
       it( "should write correct viewed status for comments and identifications", ( ) => {
         renderHook( ( ) => useObservationsUpdates( mockUser ) );
-        const observation = global.realm.objects( "Observation" )[0];
+        const observation = global.mockRealms[mockRealmIdentifier].objects( "Observation" )[0];
         expect( observation.comments_viewed ).toEqual( viewedComments );
         expect( observation.identifications_viewed ).toEqual( viewedIdentifications );
       } );

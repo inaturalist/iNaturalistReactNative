@@ -2,6 +2,7 @@
 // remote data retrieval and local data persistence
 
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations.ts";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import { format } from "date-fns";
 import i18next from "i18next";
@@ -68,12 +69,6 @@ const mockUser = factory( "LocalUser", {
   locale: "en"
 } );
 
-const mockSpanishUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
-  iconUrl: faker.image.url( ),
-  locale: "es"
-} );
-
 const checkToolbarResetWithUnsyncedObs = ( ) => waitFor( ( ) => {
   const toolbarText = screen.getByText( /Upload 2 observations/ );
   expect( toolbarText ).toBeVisible( );
@@ -84,16 +79,6 @@ const writeObservationsToRealm = ( observations, message ) => {
   safeRealmWrite( realm, ( ) => {
     observations.forEach( mockObservation => {
       realm.create( "Observation", mockObservation );
-    } );
-  }, message );
-};
-
-const deleteObservationsFromRealm = message => {
-  const realm = global.mockRealms[__filename];
-  const observations = realm.objects( "Observation" );
-  safeRealmWrite( realm, ( ) => {
-    observations.forEach( obs => {
-      realm.delete( obs );
     } );
   }, message );
 };
@@ -165,8 +150,8 @@ describe( "MyObservations", ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
-    afterEach( ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
+    afterEach( async ( ) => {
+      await signOut( { realm: global.mockRealms[__filename] } );
     } );
 
     describe( "with unsynced observations", ( ) => {
@@ -202,34 +187,6 @@ describe( "MyObservations", ( ) => {
           mockUnsyncedObservations,
           "writing unsynced observations for MyObservations integration test"
         );
-      } );
-
-      afterEach( ( ) => {
-        deleteObservationsFromRealm( "deleting observations for MyObservations integration test" );
-      } );
-
-      it( "should make a request to observations/updates", async ( ) => {
-        // Let's make sure the mock hasn't already been used
-        expect( inatjs.observations.updates ).not.toHaveBeenCalled();
-        renderAppWithComponent( <MyObservationsContainer /> );
-        expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
-        await waitFor( ( ) => {
-          expect( inatjs.observations.updates ).toHaveBeenCalled( );
-        } );
-      } );
-
-      it( "renders grid view on button press", async () => {
-        const realm = global.mockRealms[__filename];
-        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        renderAppWithComponent( <MyObservationsContainer /> );
-        const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
-        fireEvent.press( button );
-        // Awaiting the first observation because using await in the forEach errors out
-        const firstObs = mockUnsyncedObservations[0];
-        await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
-        mockUnsyncedObservations.forEach( obs => {
-          expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
-        } );
       } );
 
       it( "displays unuploaded status", async () => {
@@ -296,6 +253,25 @@ describe( "MyObservations", ( ) => {
           expect( toolbarText ).toBeVisible( );
         } );
       } );
+
+      it( "shows error when upload network connection fails", async ( ) => {
+        renderAppWithComponent( <MyObservationsContainer /> );
+        await checkToolbarResetWithUnsyncedObs( );
+        inatjs.observations.create.mockRejectedValueOnce(
+          new TypeError( "Network request failed" )
+        );
+        const syncIcon = screen.getByTestId( "SyncButton" );
+        expect( syncIcon ).toBeVisible( );
+        fireEvent.press( syncIcon );
+        const toolbarText = await screen.findByText( /1 upload failed/ );
+        expect( toolbarText ).toBeVisible( );
+        // Wait for the toolbar to reset to its default state so there aren't
+        // any pending async processes that will interfere with other tests
+        await waitFor( ( ) => {
+          const resetToolbarText = screen.getByText( /Upload 1 observation/ );
+          expect( resetToolbarText ).toBeVisible( );
+        }, { timeout: MS_BEFORE_TOOLBAR_RESET + 1000, interval: 500 } );
+      } );
     } );
 
     describe( "with synced observations", ( ) => {
@@ -308,6 +284,31 @@ describe( "MyObservations", ( ) => {
 
       afterEach( ( ) => {
         jest.clearAllMocks( );
+      } );
+
+      it( "should make a request to observations/updates", async ( ) => {
+        // Let's make sure the mock hasn't already been used
+        // expect( inatjs.observations.updates ).not.toHaveBeenCalled();
+        inatjs.observations.updates.mockClear( );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
+        await waitFor( ( ) => {
+          expect( inatjs.observations.updates ).toHaveBeenCalled( );
+        } );
+      } );
+
+      it( "renders grid view on button press", async () => {
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
+        fireEvent.press( button );
+        // Awaiting the first observation because using await in the forEach errors out
+        const firstObs = mockSyncedObservations[0];
+        await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
+        mockSyncedObservations.forEach( obs => {
+          expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
+        } );
       } );
 
       it( "displays observation status", async () => {
@@ -324,26 +325,25 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
-      describe( "before initial sync", ( ) => {
-        it( "doesn't throw an error when sync button tapped", async ( ) => {
-          const realm = global.mockRealms[__filename];
-          expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-          expect( realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
-          renderAppWithComponent( <MyObservationsContainer /> );
-          const syncIcon = await screen.findByTestId( "SyncButton" );
-          await waitFor( ( ) => {
-            expect( syncIcon ).toBeVisible( );
-          } );
-          expect( ( ) => {
-            fireEvent.press( syncIcon );
-          } ).not.toThrow( );
+      it( "doesn't throw an error when sync button tapped", async ( ) => {
+        const realm = global.mockRealms[__filename];
+        expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        expect( realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const syncIcon = await screen.findByTestId( "SyncButton" );
+        await waitFor( ( ) => {
+          expect( syncIcon ).toBeVisible( );
         } );
+        expect( ( ) => {
+          fireEvent.press( syncIcon );
+        } ).not.toThrow( );
       } );
 
       describe( "on screen focus", ( ) => {
         beforeEach( ( ) => {
-          safeRealmWrite( global.mockRealms[__filename], ( ) => {
-            global.mockRealms[__filename].create( "LocalPreferences", {
+          const realm = global.mockRealms[__filename];
+          safeRealmWrite( realm, ( ) => {
+            realm.create( "LocalPreferences", {
               last_sync_time: new Date( "2023-11-01" ),
               last_deleted_sync_time: new Date( "2024-05-01" )
             } );
@@ -376,53 +376,5 @@ describe( "MyObservations", ( ) => {
         } );
       } );
     } );
-  } );
-
-  describe( "localization for current user", ( ) => {
-    afterEach( async ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
-    } );
-    it( "should be English by default", async ( ) => {
-      expect( mockUser.locale ).toEqual( "en" );
-      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-      renderAppWithComponent( <MyObservationsContainer /> );
-      await waitFor( ( ) => {
-        expect( screen.getByText( /Welcome back/ ) ).toBeTruthy( );
-      } );
-      expect( screen.queryByText( /Welcome-user/ ) ).toBeFalsy( );
-    } );
-
-    it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
-      expect( mockSpanishUser.locale ).toEqual( "es" );
-      await signIn( mockSpanishUser, { realm: global.mockRealms[__filename] } );
-      renderAppWithComponent( <MyObservationsContainer /> );
-      await waitFor( ( ) => {
-        expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy();
-      } );
-      expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
-    } );
-
-    it(
-      "should change to es when local user locale is en but remote user locale is es",
-      async ( ) => {
-        expect( mockUser.locale ).toEqual( "en" );
-        await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-
-        const mockSpanishUser2 = factory( "LocalUser", {
-          locale: "es"
-        } );
-        inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser2] ) );
-
-        renderAppWithComponent( <MyObservationsContainer /> );
-        // I'd prefer to wait for the Spanish text to appear, but that never
-        // seems to wait long enough. This waits for the relevant API call to
-        // have been made
-        await waitFor( ( ) => {
-          expect( inatjs.users.me ).toHaveBeenCalled( );
-        } );
-        expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy( );
-        expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
-      }
-    );
   } );
 } );

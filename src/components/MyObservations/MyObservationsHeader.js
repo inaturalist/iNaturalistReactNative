@@ -8,18 +8,15 @@ import {
   Subheading1
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useTheme } from "react-native-paper";
-import Observation from "realmModels/Observation";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import Onboarding from "./Onboarding";
-
-const { useRealm } = RealmContext;
 
 type Props = {
   currentUser: ?Object,
@@ -42,11 +39,9 @@ const MyObservationsHeader = ( {
   syncInProgress,
   toggleLayout
 }: Props ): Node => {
-  const realm = useRealm( );
+  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const theme = useTheme( );
   const navigation = useNavigation( );
-  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
-  const numUnuploadedObs = allUnsyncedObservations.length;
   const { t } = useTranslation( );
 
   const signedInContent = ( ) => (
@@ -75,7 +70,7 @@ const MyObservationsHeader = ( {
           width={67}
           height={67}
         />
-        {numUnuploadedObs > 0
+        {numUnuploadedObservations > 0
           ? (
             <View className="shrink">
               <Subheading1
@@ -84,7 +79,7 @@ const MyObservationsHeader = ( {
                 {t( "Log-in-to-contribute-and-sync" )}
               </Subheading1>
               <Heading1>
-                { t( "X-observations", { count: numUnuploadedObs } ) }
+                { t( "X-observations", { count: numUnuploadedObservations } ) }
               </Heading1>
             </View>
           )

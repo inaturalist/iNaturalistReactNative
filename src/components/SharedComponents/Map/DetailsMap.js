@@ -97,18 +97,18 @@ const DetailsMap = ( {
   };
 
   return (
-    <SafeAreaView className="flex-1">
-      <View
-        className="bg-white w-fit flex-row py-[22px] items-start"
-      >
-        <HeaderBackButton
-          tintColor={theme.colors.primary}
-          onPress={( ) => closeModal()}
-          labelVisible={false}
-        />
-        {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
-      </View>
-      <View className="flex-1 h-full">
+    <View className="flex-1">
+      <SafeAreaView>
+        <View className="bg-white w-fit flex-row py-[22px] pl-[21px] pr-[24px] items-start">
+          <HeaderBackButton
+            tintColor={theme.colors.primary}
+            onPress={( ) => closeModal()}
+            labelVisible={false}
+          />
+          {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
+        </View>
+      </SafeAreaView>
+      <View className="flex-1">
         <Map
           mapHeight="100%"
           mapViewRef={mapViewRef}
@@ -158,7 +158,7 @@ const DetailsMap = ( {
         )}
         backdropOpacity={0}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
