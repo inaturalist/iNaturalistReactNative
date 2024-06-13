@@ -59,7 +59,6 @@ const StandardCamera = ( {
   handleCheckmarkPress,
   isLandscapeMode
 }: Props ): Node => {
-  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const realm = useRealm( );
   const hasFlash = device?.hasFlash;
   const {
@@ -87,6 +86,7 @@ const StandardCamera = ( {
   const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
   const resetEvidenceToAdd = useStore( state => state.resetEvidenceToAdd );
   const galleryUris = useStore( state => state.galleryUris );
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...rotatedOriginalCameraPhotos, ...galleryUris].length,
@@ -116,7 +116,6 @@ const StandardCamera = ( {
       // Reset camera zoom every time we get into a fresh camera view
       resetZoom( );
       resetEvidenceToAdd( );
-
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] )
   );
