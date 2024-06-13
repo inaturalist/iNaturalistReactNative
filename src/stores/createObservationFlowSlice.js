@@ -24,7 +24,7 @@ const DEFAULT_STATE = {
 const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   if ( _.isEmpty( currentObservation ) ) { return []; }
   const updatedObservation = currentObservation;
-  const obsPhotos = Array.from( currentObservation?.observationPhotos );
+  const obsPhotos = Array.from( currentObservation?.observationPhotos || [] );
   if ( obsPhotos.length > 0 ) {
     // FYI, _.remove edits the array in place and returns the items you
     // removed
