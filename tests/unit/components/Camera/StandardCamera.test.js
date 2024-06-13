@@ -38,9 +38,6 @@ describe( "StandardCamera", ( ) => {
     const { rotatedOriginalCameraPhotos } = useStore.getState( );
 
     render(
-      // <StandardCamera
-      //   photoUris={rotatedOriginalCameraPhotos}
-      // />
       <StandardCamera
         camera={{}}
         device={{}}
@@ -50,6 +47,11 @@ describe( "StandardCamera", ( ) => {
     const photoImage = screen.getByTestId(
       `PhotoCarousel.displayPhoto.${rotatedOriginalCameraPhotos[2]}`
     );
+    const predeletedPhoto = screen.queryByTestId(
+      `PhotoCarousel.displayPhoto.${rotatedOriginalCameraPhotos[2]}`
+    );
+    expect( predeletedPhoto ).toBeVisible( );
+
     fireEvent( photoImage, "onLongPress" );
     const deleteMode = screen.getByTestId(
       `PhotoCarousel.deletePhoto.${rotatedOriginalCameraPhotos[2]}`
