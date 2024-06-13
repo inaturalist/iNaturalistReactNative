@@ -31,7 +31,7 @@ jobs:
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-14
+    runs-on: macos-14-xlarge
     # Kill the task if not finished after 120 minutes
     timeout-minutes: 120
 
