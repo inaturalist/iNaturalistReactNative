@@ -9,7 +9,7 @@ import { checkMultiple, RESULTS } from "react-native-permissions";
 const options = {
   enableHighAccuracy: true,
   maximumAge: 0,
-  timeout: 700
+  timeout: 2000
 } as const;
 
 const getCurrentPosition = ( ): Promise<GeolocationResponse> => new Promise(
