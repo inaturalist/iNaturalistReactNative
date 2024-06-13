@@ -125,6 +125,7 @@ const StandardCamera = ( {
     if ( !deletePhotoFromObservation ) return;
     deletePhotoFromObservation( photoUri );
     await ObservationPhoto.deletePhoto( realm, photoUri );
+    setNewPhotoUris( newPhotoUris.filter( uri => uri !== photoUri ) );
   }, [deletePhotoFromObservation, realm, newPhotoUris] );
 
   useEffect( ( ) => {
@@ -134,11 +135,13 @@ const StandardCamera = ( {
     // to sometimes pop back up on the next screen - see GH issue #629
     if ( !showDiscardSheet ) {
       if ( dismissChanges ) {
-        // TODO delete any new photos taken
+        newPhotoUris.forEach( uri => {
+          deletePhotoByUri( uri );
+        } );
         navigation.goBack();
       }
     }
-  }, [dismissChanges, showDiscardSheet, navigation] );
+  }, [dismissChanges, showDiscardSheet, navigation, newPhotoUris, deletePhotoByUri] );
 
   const handleTakePhoto = async ( ) => {
     if ( disallowAddingPhotos ) {
