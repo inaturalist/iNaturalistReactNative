@@ -110,11 +110,11 @@ const createObservationFlowSlice = set => ( {
       savingPhoto: false
     } );
   } ),
+  setSavingPhoto: saving => set( { savingPhoto: saving } ),
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     rotatedOriginalCameraPhotos:
-      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos,
-    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto
+      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,

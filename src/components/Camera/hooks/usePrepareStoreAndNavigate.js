@@ -27,6 +27,7 @@ const usePrepareStoreAndNavigate = (
   const addCameraRollUri = useStore( state => state.addCameraRollUri );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
+  const setSavingPhoto = useStore( state => state.setSavingPhoto );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
@@ -117,6 +118,7 @@ const usePrepareStoreAndNavigate = (
   const prepareStoreAndNavigate = useCallback( async ( visionResult = null ) => {
     if ( !checkmarkTapped ) { return null; }
 
+    setSavingPhoto( true );
     // save all to camera roll
 
     // handle case where user backs out from ObsEdit -> Suggestions -> Camera
@@ -143,7 +145,8 @@ const usePrepareStoreAndNavigate = (
     createObsWithCameraPhotos,
     currentObservation,
     navigation,
-    updateObsWithCameraPhotos
+    updateObsWithCameraPhotos,
+    setSavingPhoto
   ] );
 
   return prepareStoreAndNavigate;
