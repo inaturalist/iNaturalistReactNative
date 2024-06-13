@@ -20,6 +20,7 @@ interface Props {
   isTablet?: boolean;
   takingPhoto: boolean;
   rotatedOriginalCameraPhotos: string[];
+  onDelete: ( _uri: string ) => void;
 }
 
 const STYLE = {
@@ -34,7 +35,8 @@ const PhotoPreview = ( {
   isTablet,
   rotation,
   takingPhoto,
-  rotatedOriginalCameraPhotos
+  rotatedOriginalCameraPhotos,
+  onDelete
 }: Props ) => {
   const { t } = useTranslation( );
   const wrapperDim = isLargeScreen
@@ -98,6 +100,7 @@ const PhotoPreview = ( {
               isLargeScreen={isLargeScreen}
               isTablet={isTablet}
               isLandscapeMode={isLandscapeMode}
+              onDelete={onDelete}
             />
           )
       }

@@ -8,6 +8,7 @@ import useRotation from "components/Camera/hooks/useRotation";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -17,6 +18,7 @@ import React, {
 } from "react";
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -33,6 +35,8 @@ import CameraOptionsButtons from "./CameraOptionsButtons";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import useBackPress from "./hooks/useBackPress";
 import PhotoPreview from "./PhotoPreview";
+
+const { useRealm } = RealmContext;
 
 const isTablet = DeviceInfo.isTablet( );
 
@@ -55,6 +59,8 @@ const StandardCamera = ( {
   handleCheckmarkPress,
   isLandscapeMode
 }: Props ): Node => {
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
+  const realm = useRealm( );
   const hasFlash = device?.hasFlash;
   const {
     animatedProps,
@@ -115,6 +121,12 @@ const StandardCamera = ( {
     }, [] )
   );
 
+  const deletePhotoByUri = useCallback( async ( photoUri: string ) => {
+    if ( !deletePhotoFromObservation ) return;
+    deletePhotoFromObservation( photoUri );
+    await ObservationPhoto.deletePhoto( realm, photoUri );
+  }, [deletePhotoFromObservation, realm, newPhotoUris] );
+
   useEffect( ( ) => {
     // We do this navigation indirectly (vs doing it directly in DiscardChangesSheet),
     // since we need for the bottom sheet of discard-changes to first finish dismissing,
@@ -151,6 +163,7 @@ const StandardCamera = ( {
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
         rotatedOriginalCameraPhotos={rotatedOriginalCameraPhotos}
+        onDelete={deletePhotoByUri}
       />
       <View className="relative flex-1">
         {device && (

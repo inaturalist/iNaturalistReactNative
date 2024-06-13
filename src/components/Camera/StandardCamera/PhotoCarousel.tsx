@@ -2,7 +2,6 @@ import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
@@ -15,11 +14,8 @@ import Animated, {
   useAnimatedStyle,
   withTiming
 } from "react-native-reanimated";
-import ObservationPhoto from "realmModels/ObservationPhoto";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
-
-const { useRealm } = RealmContext;
 
 interface Props {
   takingPhoto?: boolean;
@@ -30,6 +26,7 @@ interface Props {
     value: number
   };
   photoUris: string[];
+  onDelete: ( _uri: string ) => void;
 }
 
 export const SMALL_PHOTO_DIM = 42;
@@ -56,10 +53,10 @@ const PhotoCarousel = ( {
   isLargeScreen,
   isTablet,
   rotation,
-  photoUris
+  photoUris,
+  onDelete
 }: Props ) => {
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
-  const realm = useRealm( );
   const { t } = useTranslation( );
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
@@ -134,12 +131,6 @@ const PhotoCarousel = ( {
     setTappedPhotoIndex
   ] );
 
-  const deletePhotoByUri = useCallback( async ( photoUri: string ) => {
-    if ( !deletePhotoFromObservation ) return;
-    deletePhotoFromObservation( photoUri );
-    await ObservationPhoto.deletePhoto( realm, photoUri );
-  }, [deletePhotoFromObservation, realm] );
-
   const renderPhotoOrEvidenceButton = useCallback( ( {
     item: photoUri,
     index
@@ -179,7 +170,7 @@ const PhotoCarousel = ( {
                         backgroundColor="rgba(0, 0, 0, 0.5)"
                         testID={`PhotoCarousel.deletePhoto.${photoUri}`}
                         accessibilityLabel={t( "Delete-photo" )}
-                        onPress={( ) => deletePhotoByUri( photoUri )}
+                        onPress={( ) => onDelete( photoUri )}
                       />
                     </View>
                   )
@@ -201,7 +192,7 @@ const PhotoCarousel = ( {
     </>
   ), [
     animatedStyle,
-    deletePhotoByUri,
+    onDelete,
     deletePhotoMode,
     isTablet,
     photoClasses,
@@ -303,7 +294,7 @@ const PhotoCarousel = ( {
         showModal={tappedPhotoIndex >= 0}
         onClose={( ) => setTappedPhotoIndex( -1 )}
         onDeletePhoto={async ( photoUri: string ) => {
-          await deletePhotoByUri( photoUri );
+          await onDelete( photoUri );
           setTappedPhotoIndex( tappedPhotoIndex - 1 );
         }}
         uri={photoUris[tappedPhotoIndex]}
