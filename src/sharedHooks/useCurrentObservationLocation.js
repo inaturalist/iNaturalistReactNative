@@ -9,7 +9,7 @@ import {
   useState
 } from "react";
 import { checkMultiple, RESULTS } from "react-native-permissions";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;

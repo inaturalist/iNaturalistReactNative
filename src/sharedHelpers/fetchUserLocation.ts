@@ -1,6 +1,4 @@
-// @flow
-
-import Geolocation from "@react-native-community/geolocation";
+import Geolocation, { GeolocationResponse } from "@react-native-community/geolocation";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
@@ -10,22 +8,22 @@ import { checkMultiple, RESULTS } from "react-native-permissions";
 
 const options = {
   enableHighAccuracy: true,
-  maximumAge: 0
-};
+  maximumAge: 0,
+  timeout: 700
+} as const;
 
-const getCurrentPosition = ( ) => new Promise(
+const getCurrentPosition = ( ): Promise<GeolocationResponse> => new Promise(
   ( resolve, error ) => {
     Geolocation.getCurrentPosition( resolve, error, options );
   }
 );
 
-type UserLocation = {
-  latitude: number,
-  longitude: number,
-  positional_accuracy: number
-
+interface UserLocation {
+  latitude: number;
+  longitude: number;
+  positional_accuracy: number;
 }
-const fetchUserLocation = async ( ): Promise<?UserLocation> => {
+const fetchUserLocation = async ( ): Promise<UserLocation | null> => {
   const permissionResult = permissionResultFromMultiple(
     await checkMultiple( LOCATION_PERMISSIONS )
   );
