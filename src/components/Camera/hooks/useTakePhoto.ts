@@ -2,7 +2,9 @@ import { RealmContext } from "providers/contexts";
 import {
   useState
 } from "react";
-import { Camera } from "react-native-vision-camera";
+import {
+  Camera, CameraDevice, PhotoFile, TakePhotoOptions
+} from "react-native-vision-camera";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
   rotatePhotoPatch,
@@ -16,7 +18,7 @@ const { useRealm } = RealmContext;
 const useTakePhoto = (
   camera: React.RefObject<Camera>,
   addEvidence?: boolean,
-  device?: Object
+  device?: CameraDevice
 ): Object => {
   const realm = useRealm( );
   const { deviceOrientation } = useDeviceOrientation( );
@@ -30,12 +32,12 @@ const useTakePhoto = (
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
     enableShutterSound: true,
-    ...( hasFlash && { flash: "off" } )
-  };
-  const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
+    ...( hasFlash && { flash: "off" } as const )
+  } as const;
+  const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
 
-  const saveRotatedPhotoToDocumentsDirectory = async cameraPhoto => {
+  const saveRotatedPhotoToDocumentsDirectory = async ( cameraPhoto: PhotoFile ) => {
     // Rotate the original photo depending on device orientation
     const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
     return rotatePhotoPatch( cameraPhoto, photoRotation );
