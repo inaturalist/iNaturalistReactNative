@@ -41,14 +41,14 @@ const INatIconButton = ( {
   children,
   color,
   disabled = false,
-  height = 44,
+  height = MIN_ACCESSIBLE_DIM,
   icon,
   onPress,
   preventTransparency,
   size = 18,
   style,
   testID,
-  width = 44,
+  width = MIN_ACCESSIBLE_DIM,
   backgroundColor,
   mode
 }: Props ) => {

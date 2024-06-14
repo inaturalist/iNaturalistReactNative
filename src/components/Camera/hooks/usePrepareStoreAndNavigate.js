@@ -46,7 +46,10 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   // via their own camera app).
   const savePhotosToCameraGallery = useCallback( async uris => {
     if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
-    return Promise.all( uris.map( async uri => {
+    // We use reduce to ensure promises execute in sequence. If we do this in
+    // parallel with Promise.all CameraRoll will create new albums for every
+    // photo.
+    return uris.reduce( async ( _memo, uri ) => {
       logger.info( "saving rotated original camera photo: ", uri );
       try {
         const savedPhotoUri = await CameraRoll.save( uri, {
@@ -61,7 +64,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
         logger.error( cameraRollSaveError );
         console.log( "couldn't save photo to iNaturalist Next album" );
       }
-    } ) );
+    } );
   }, [
     addCameraRollUri,
     addPhotoPermissionResult
