@@ -23,7 +23,7 @@ const DEFAULT_STATE = {
 const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   if ( _.isEmpty( currentObservation ) ) { return []; }
   const updatedObservation = currentObservation;
-  const obsPhotos = Array.from( currentObservation?.observationPhotos );
+  const obsPhotos = Array.from( currentObservation?.observationPhotos || [] );
   if ( obsPhotos.length > 0 ) {
     // FYI, _.remove edits the array in place and returns the items you
     // removed
@@ -109,11 +109,11 @@ const createObservationFlowSlice = set => ( {
       savingPhoto: false
     } );
   } ),
+  setSavingPhoto: saving => set( { savingPhoto: saving } ),
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     rotatedOriginalCameraPhotos:
-      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos,
-    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto
+      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,

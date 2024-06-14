@@ -16,7 +16,7 @@ concurrency:
 jobs:
   checksecret:
     name: check for oauth client
-    runs-on: macos-14
+    runs-on: macos-13
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -131,7 +131,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-14
+    runs-on: macos-13
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null

@@ -3,8 +3,7 @@
 import { t } from "i18next";
 import * as React from "react";
 import { LatLng } from "react-native-maps";
-
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 
 export enum EXPLORE_ACTION {
   CHANGE_SORT_BY = "CHANGE_SORT_BY",

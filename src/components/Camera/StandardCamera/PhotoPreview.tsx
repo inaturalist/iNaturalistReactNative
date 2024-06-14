@@ -1,8 +1,6 @@
-// @flow
 import classnames from "classnames";
 import { Subheading1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
@@ -13,22 +11,23 @@ import PhotoCarousel, {
   SMALL_PHOTO_GUTTER
 } from "./PhotoCarousel";
 
-type Props = {
+interface Props {
   rotation?: {
     value: number
-  },
-  isLandscapeMode?: boolean,
-  isLargeScreen?: boolean,
-  isTablet?: boolean,
-  takingPhoto: boolean,
-  rotatedOriginalCameraPhotos: Function,
+  };
+  isLandscapeMode?: boolean;
+  isLargeScreen?: boolean;
+  isTablet?: boolean;
+  takingPhoto: boolean;
+  rotatedOriginalCameraPhotos: string[];
+  onDelete: ( _uri: string ) => void;
 }
 
 const STYLE = {
   justifyContent: "center",
   flex: 0,
   flexShrink: 1
-};
+} as const;
 
 const PhotoPreview = ( {
   isLandscapeMode,
@@ -36,8 +35,9 @@ const PhotoPreview = ( {
   isTablet,
   rotation,
   takingPhoto,
-  rotatedOriginalCameraPhotos
-}: Props ): Node => {
+  rotatedOriginalCameraPhotos,
+  onDelete
+}: Props ) => {
   const { t } = useTranslation( );
   const wrapperDim = isLargeScreen
     ? LARGE_PHOTO_DIM + LARGE_PHOTO_GUTTER * 2
@@ -74,7 +74,10 @@ const PhotoPreview = ( {
     );
   }
 
-  const dynamicStyle = {};
+  const dynamicStyle: {
+    width?: number | string;
+    height?: number;
+  } = {};
   if ( isTablet && isLandscapeMode ) {
     dynamicStyle.width = wrapperDim;
   } else {
@@ -84,7 +87,6 @@ const PhotoPreview = ( {
 
   return (
     <View
-      // eslint-disable-next-line react-native/no-inline-styles
       style={[STYLE, dynamicStyle]}
     >
       {
@@ -98,6 +100,7 @@ const PhotoPreview = ( {
               isLargeScreen={isLargeScreen}
               isTablet={isTablet}
               isLandscapeMode={isLandscapeMode}
+              onDelete={onDelete}
             />
           )
       }

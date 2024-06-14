@@ -10,9 +10,7 @@ import {
   useState
 } from "react";
 import { checkMultiple, RESULTS } from "react-native-permissions";
-
-// For some reason this doesn't work with the path alias *and* a typescript file
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;

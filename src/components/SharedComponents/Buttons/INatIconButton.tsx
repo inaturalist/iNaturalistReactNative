@@ -1,32 +1,33 @@
-// @flow
-
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
-import { Platform, Pressable } from "react-native";
+import {
+  GestureResponderEvent,
+  Platform,
+  Pressable,
+  ViewStyle
+} from "react-native";
 import { useTheme } from "react-native-paper";
 
-type Props = {
-  accessibilityHint?: string,
-  accessibilityLabel: string,
-  // $FlowIgnore
-  children?: unknown,
-  color?: string,
-  disabled?: boolean,
-  height?: number,
-  icon: string,
-  onPress: Function,
+interface Props {
+  accessibilityHint?: string;
+  accessibilityLabel: string;
+  children?: React.ReactNode;
+  color?: string;
+  disabled?: boolean;
+  height?: number;
+  icon: string;
+  onPress: ( _event: GestureResponderEvent ) => void;
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
-  preventTransparency?: boolean,
-  size?: number,
-  style?: Object,
-  testID?: string,
-  width?: number,
-  backgroundColor?: string,
-  mode?: "contained"
+  preventTransparency?: boolean;
+  size?: number;
+  style?: ViewStyle;
+  testID?: string;
+  width?: number;
+  backgroundColor?: string;
+  mode?: "contained";
 }
 
 const MIN_ACCESSIBLE_DIM = 44;
@@ -50,7 +51,7 @@ const INatIconButton = ( {
   width = MIN_ACCESSIBLE_DIM,
   backgroundColor,
   mode
-}: Props ): Node => {
+}: Props ) => {
   const theme = useTheme( );
   // width || 0 is to placate flow. width should never be undefined because of
   // the defaultProps, but I guess flow can't figure that out.
@@ -69,7 +70,7 @@ const INatIconButton = ( {
       "Button needs an accessibility label"
     );
   }
-  const opacity = pressed => {
+  const opacity = ( pressed: boolean ) => {
     if ( disabled ) {
       return 0.5;
     }
@@ -97,7 +98,7 @@ const INatIconButton = ( {
         },
         mode === "contained" && {
           backgroundColor: preventTransparency
-            ? null
+            ? undefined
             : backgroundColor,
           borderRadius: 9999
         },

@@ -1,6 +1,6 @@
 // @flow
 
-import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
+import INatIconButton from "components/SharedComponents/Buttons/INatIconButton.tsx";
 import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
