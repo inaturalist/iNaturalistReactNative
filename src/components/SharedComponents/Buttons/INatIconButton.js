@@ -40,14 +40,14 @@ const INatIconButton = ( {
   children,
   color,
   disabled = false,
-  height = 44,
+  height = MIN_ACCESSIBLE_DIM,
   icon,
   onPress,
   preventTransparency,
   size = 18,
   style,
   testID,
-  width = 44,
+  width = MIN_ACCESSIBLE_DIM,
   backgroundColor,
   mode
 }: Props ): Node => {
@@ -107,7 +107,7 @@ const INatIconButton = ( {
     >
       <View
         className={classnames(
-          "relative relative",
+          "relative",
           // This degree of pixel pushing was meant for a ~22px icon, so it
           // might have to be made relative, but it's barely noticeable for
           // most icons
