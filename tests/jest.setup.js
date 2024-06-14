@@ -12,6 +12,7 @@ import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
+import mockFaker from "tests/helpers/faker";
 import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
 import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
 import * as mockZustand from "tests/mocks/zustand.ts";
@@ -304,7 +305,7 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
       // Expecting album titles as keys and photo counts as values
       // "My Amazing album": 12
     } ) ),
-    save: jest.fn( )
+    save: jest.fn( ( _uri, _options = {} ) => mockFaker.system.filePath( ) )
   }
 } ) );
 

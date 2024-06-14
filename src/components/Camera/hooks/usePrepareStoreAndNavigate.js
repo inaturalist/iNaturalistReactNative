@@ -20,6 +20,44 @@ type Options = {
   shouldFetchLocation: boolean
 };
 
+// Save URIs to camera gallery (if a photo was taken using the app,
+// we want it accessible in the camera's folder, as if the user has taken those photos
+// via their own camera app).
+// One could argue this is a private method and shouldn't be exported and
+// doesn't need to be tested... but hooks are complicated and this hook might
+// be too complicated, so this at least makes it easy to test this one part
+// ~~~kueda20240614
+// $FlowIgnore
+export async function savePhotosToCameraGallery(
+  uris: [string],
+  onEachSuccess: Function
+) {
+  // $FlowIgnore
+  uris.reduce(
+    async ( memo, uri ) => {
+      // logger.info( "saving rotated original camera photo: ", uri );
+      try {
+        const savedPhotoUri = await CameraRoll.save( uri, {
+          type: "photo",
+          album: "iNaturalist Next"
+        } );
+        // logger.info( "saved to camera roll: ", savedPhotoUri );
+        // Save these camera roll URIs, so later on observation editor can update
+        // the EXIF metadata of these photos, once we retrieve a location.
+        // addCameraRollUri( savedPhotoUri );
+        onEachSuccess( savedPhotoUri );
+      } catch ( cameraRollSaveError ) {
+        logger.error( cameraRollSaveError );
+        console.log( "couldn't save photo to iNaturalist Next album" );
+      }
+    },
+    // We need the initial value even if we're not using it, otherwise reduce
+    // will treat the first item in the array as the initial value and not
+    // call the reducer function on it
+    true
+  );
+}
+
 const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const {
     addPhotoPermissionResult,
@@ -40,35 +78,6 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const { userLocation } = useUserLocation( { untilAcc: 5, enabled: !!shouldFetchLocation } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
-
-  // Save URIs to camera gallery (if a photo was taken using the app,
-  // we want it accessible in the camera's folder, as if the user has taken those photos
-  // via their own camera app).
-  const savePhotosToCameraGallery = useCallback( async uris => {
-    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
-    // We use reduce to ensure promises execute in sequence. If we do this in
-    // parallel with Promise.all CameraRoll will create new albums for every
-    // photo.
-    return uris.reduce( async ( _memo, uri ) => {
-      logger.info( "saving rotated original camera photo: ", uri );
-      try {
-        const savedPhotoUri = await CameraRoll.save( uri, {
-          type: "photo",
-          album: "iNaturalist Next"
-        } );
-        logger.info( "saved to camera roll: ", savedPhotoUri );
-        // Save these camera roll URIs, so later on observation editor can update
-        // the EXIF metadata of these photos, once we retrieve a location.
-        addCameraRollUri( savedPhotoUri );
-      } catch ( cameraRollSaveError ) {
-        logger.error( cameraRollSaveError );
-        console.log( "couldn't save photo to iNaturalist Next album" );
-      }
-    } );
-  }, [
-    addCameraRollUri,
-    addPhotoPermissionResult
-  ] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
     const newObservation = await Observation.new( );
@@ -93,15 +102,12 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
       newObservation.score = visionResult.score;
     }
     setObservations( [newObservation] );
-    logger.info(
-      "calling savePhotosToCameraGallery with paths: ",
-      rotatedOriginalCameraPhotos
-    );
-
-    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos );
+    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
+    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos, addCameraRollUri );
   }, [
+    addCameraRollUri,
+    addPhotoPermissionResult,
     rotatedOriginalCameraPhotos,
-    savePhotosToCameraGallery,
     setObservations,
     userLocation?.accuracy,
     userLocation?.latitude,
@@ -120,18 +126,16 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
       .appendObsPhotos( obsPhotos, currentObservation );
     observations[currentObservationIndex] = updatedCurrentObservation;
     updateObservations( observations );
-    logger.info(
-      "calling savePhotosToCameraGallery with evidence to add: ",
-      evidenceToAdd
-    );
-    await savePhotosToCameraGallery( evidenceToAdd );
+    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
+    return savePhotosToCameraGallery( evidenceToAdd, addCameraRollUri );
   }, [
+    addCameraRollUri,
+    addPhotoPermissionResult,
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
     numOfObsPhotos,
     observations,
-    savePhotosToCameraGallery,
     updateObservations
   ] );
 
