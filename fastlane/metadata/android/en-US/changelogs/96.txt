@@ -1,0 +1,10 @@
+UPDATED
+* Tapping upload text in Toolbar starts upload
+* ObsDetail tab only remembered until app quits
+* Several UI fixes on Settings, Projects, Taxon Detail map
+
+FIXED
+* Removed warning and extra loading photo when backing out of camera w/o
+  taking a photo
+* Stopped album duplication
+* Location fetch before Suggestions runs until accuracy falls below threshold
