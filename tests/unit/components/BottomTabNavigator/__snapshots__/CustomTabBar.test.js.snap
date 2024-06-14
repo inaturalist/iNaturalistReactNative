@@ -118,9 +118,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                   "position": "relative",
                 },
                 {
-                  "position": "relative",
-                },
-                {
                   "left": 0.2,
                 },
                 {
@@ -205,9 +202,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           style={
             [
               [
-                {
-                  "position": "relative",
-                },
                 {
                   "position": "relative",
                 },
@@ -436,9 +430,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                   "position": "relative",
                 },
                 {
-                  "position": "relative",
-                },
-                {
                   "left": 0.2,
                 },
                 {
@@ -523,9 +514,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           style={
             [
               [
-                {
-                  "position": "relative",
-                },
                 {
                   "position": "relative",
                 },
