@@ -106,10 +106,7 @@ jobs:
         arch: x86_64
         profile: Nexus 5X
         avd-name: Pixel_8_API_34_AOSP
-        pre-emulator-launch-script: $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-audio -no-window -timezone America/Los_Angeles
-        script: $ANDROID_HOME/emulator/emulator -list-avds
-
     # Currently, ubuntu-latest runner has 3 Java versions pre-installed, default is 17
     # - name: Set up JDK 8
     #   uses: actions/setup-java@v4
@@ -132,6 +129,9 @@ jobs:
     #   with:
     #     java-version: '17'
     #     distribution: 'zulu'
+        script: |
+          $ANDROID_HOME/emulator/emulator -list-avds
+          $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
 
     # # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
     # # - name: Build for detox
