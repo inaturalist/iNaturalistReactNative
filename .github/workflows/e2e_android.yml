@@ -125,13 +125,13 @@ jobs:
           $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
 #           npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
 
-    # # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
-    # - name: Store Detox artifacts on test failure
-    #   uses: actions/upload-artifact@v4
-    #   if: failure()
-    #   with:
-    #     name: detox-artifacts
-    #     path: artifacts
+    # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
+    - name: Store Detox artifacts on test failure
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: detox-artifacts
+        path: artifacts
 
   notify:
     name: Notify Slack
