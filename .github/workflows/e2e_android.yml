@@ -91,6 +91,13 @@ jobs:
     - name: Download a fake cv model and taxonomy file into the assets folder
       run: npm run add-github-actions-test-model
 
+    - name: Ensure servers are running
+      run: |
+        # is rails running?
+        curl -I --fail "https://staging.inaturalist.org/ping"
+        # is node running & is ES working?
+        curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
+
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
@@ -140,13 +147,6 @@ jobs:
     #     $ANDROID_HOME/platform-tools/adb devices
     #     $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
     #     echo "Emulator started"
-
-    # - name: Ensure servers are running
-    #   run: |
-    #     # is rails running?
-    #     curl -I --fail "https://staging.inaturalist.org/ping"
-    #     # is node running & is ES working?
-    #     curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
     # # Start the Android e2e tests with extensive logging and screen captures for failing tests
     # - name: Android Detox
