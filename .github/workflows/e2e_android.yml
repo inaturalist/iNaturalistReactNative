@@ -69,6 +69,9 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
+    - name: Gradle cache
+      uses: gradle/actions/setup-gradle@v3
+
     # Generate the secret files needed for a release build
     - name: Create .env file
       env:
