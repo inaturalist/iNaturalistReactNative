@@ -98,7 +98,7 @@ jobs:
         # is node running & is ES working?
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
-    - name: run tests
+    - name: Start Android Emulator and run Detox tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 34
@@ -131,7 +131,9 @@ jobs:
     #     distribution: 'zulu'
         script: |
           $ANDROID_HOME/emulator/emulator -list-avds
+          $ANDROID_HOME/platform-tools/adb devices
           $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
+          npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
 
     # # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
     # # - name: Build for detox
