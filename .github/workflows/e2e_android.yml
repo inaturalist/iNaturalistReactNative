@@ -89,7 +89,7 @@ jobs:
         target: aosp_atd
         arch: x86_64
         profile: Nexus 5X
-        avd-name: Pixel_8_API_34_AOSP
+        avd-name: Pixel_5_API_34_AOSP
         force-avd-creation: false
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: false
@@ -143,8 +143,9 @@ jobs:
         target: aosp_atd
         arch: x86_64
         profile: Nexus 5X
-        avd-name: Pixel_8_API_34_AOSP
-        emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot-save -noaudio -no-boot-anim -no-audio -no-window -timezone America/Los_Angeles
+        avd-name: Pixel_5_API_34_AOSP
+        emulator-options: -no-window -no-snapshot-save -noaudio -no-boot-anim -no-audio -timezone America/Los_Angeles
+        # emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot-save -noaudio -no-boot-anim -no-audio -timezone America/Los_Angeles
         script: |
           $ANDROID_HOME/emulator/emulator -list-avds
           $ANDROID_HOME/platform-tools/adb devices
