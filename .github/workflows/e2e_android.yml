@@ -46,6 +46,13 @@ jobs:
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
 
+    # Setup Java 17 (required by >RN0.73) for the build step
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'zulu'
+
     - name: Cache node modules
       uses: actions/cache@v4
       id: cache
@@ -124,12 +131,6 @@ jobs:
     #     echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_8_API_34_AOSP --device "Nexus 5X" -k 'system-images;android-34;default;x86_64'
     #     $ANDROID_HOME/emulator/emulator -list-avds
   
-    # # Revert to default Java 17 (required by >RN0.73) for the build step, because somehow this is breaking emulator setup
-    # - name: Set up JDK 17
-    #   uses: actions/setup-java@v4
-    #   with:
-    #     java-version: '17'
-    #     distribution: 'zulu'
         script: |
           $ANDROID_HOME/emulator/emulator -list-avds
           $ANDROID_HOME/platform-tools/adb devices
