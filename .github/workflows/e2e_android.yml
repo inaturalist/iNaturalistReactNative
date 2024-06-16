@@ -20,7 +20,7 @@ jobs:
         run: |
             echo "is_SECRETS_PRESENT_set: ${{ env.SECRETS_PRESENT != '' }}"
             echo "::set-output name=is_SECRETS_PRESENT_set::${{ env.SECRETS_PRESENT != '' }}"
-          
+
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
