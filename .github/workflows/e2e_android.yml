@@ -12,6 +12,14 @@ jobs:
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 90
     steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
       - name: Install Dependencies
         run: npm install
       - name: Build for Detox
