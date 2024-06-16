@@ -49,13 +49,6 @@ jobs:
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
     # There were errors when setting Java version used to either 11 or 17 explicitly here.
-    - name: List
-      run: |
-        echo "no" | $ANDROID_HOME/tools/bin/avdmanager list
-
-    # Use the Android command line tools to download an AOSP emulator image, and setup new avd
-    # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
-    # There were errors when setting Java version used to either 11 or 17 explicitly here.
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-34;default;x86_64"
