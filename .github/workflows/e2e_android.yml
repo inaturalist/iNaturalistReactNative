@@ -106,6 +106,7 @@ jobs:
         arch: x86_64
         profile: Nexus 5X
         avd-name: Pixel_8_API_34_AOSP
+        pre-emulator-launch-script: $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-audio -no-window -timezone America/Los_Angeles
         script: $ANDROID_HOME/emulator/emulator -list-avds
 
