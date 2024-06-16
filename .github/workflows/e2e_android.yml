@@ -132,9 +132,9 @@ jobs:
         # is node running & is ES working?
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
-    # # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
-    # - name: Build for Detox
-    #   run: npm run e2e:build:android
+    # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
+    - name: Build for Detox
+      run: npm run e2e:build:android
 
     - name: Start Android Emulator and run Detox tests
       uses: reactivecircus/android-emulator-runner@v2
