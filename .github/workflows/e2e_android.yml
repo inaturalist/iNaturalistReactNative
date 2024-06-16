@@ -52,7 +52,7 @@ jobs:
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-34;default;x86_64"
-        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_8_API_34_AOSP --device "Nexus 5X" -k 'system-images;android-34;default;x86_64'
+        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_8_API_34_AOSP --device "Pixel 8" -k 'system-images;android-34;default;x86_64'
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
