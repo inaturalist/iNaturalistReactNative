@@ -7,9 +7,19 @@ concurrency:
   cancel-in-progress: true
     
 jobs:
+  testingbuild:
+    runs-on: ubuntu-latest
+    # Kill the task if not finished after 60 minutes
+    timeout-minutes: 90
+    steps:
+      - name: Install Dependencies
+        run: npm install
+      - name: Build for Detox
+        run: npm run e2e:build:android
+
   checksecret:
     name: check for oauth client
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -24,7 +34,7 @@ jobs:
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 90
 
@@ -39,12 +49,12 @@ jobs:
       with:
         node-version: 18
 
-    # # https://github.com/ReactiveCircus/android-emulator-runner?tab=readme-ov-file#running-hardware-accelerated-emulators-on-linux-runners
-    # - name: Enable KVM
-    #   run: |
-    #     echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-    #     sudo udevadm control --reload-rules
-    #     sudo udevadm trigger --name-match=kvm
+    # https://github.com/ReactiveCircus/android-emulator-runner?tab=readme-ov-file#running-hardware-accelerated-emulators-on-linux-runners
+    - name: Enable KVM
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
 
     # Setup Java 17 (required by >RN0.73) for the build step
     - name: Set up JDK 17
@@ -164,7 +174,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null
