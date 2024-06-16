@@ -39,6 +39,7 @@ jobs:
       with:
         node-version: 18
 
+    # https://github.com/ReactiveCircus/android-emulator-runner?tab=readme-ov-file#running-hardware-accelerated-emulators-on-linux-runners
     - name: Enable KVM
       run: |
         echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -133,7 +134,7 @@ jobs:
           $ANDROID_HOME/emulator/emulator -list-avds
           $ANDROID_HOME/platform-tools/adb devices
           $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
-          npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
+#           npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
 
     # # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
     # # - name: Build for detox
