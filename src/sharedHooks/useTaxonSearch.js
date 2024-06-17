@@ -1,7 +1,7 @@
 // @flow
 
-import { useAuthenticatedQuery } from "sharedHooks";
 import fetchSearchResults from "api/search";
+import { useAuthenticatedQuery } from "sharedHooks";
 
 const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
   const { data: taxonList } = useAuthenticatedQuery(
@@ -9,7 +9,7 @@ const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
     optsWithAuth => fetchSearchResults(
       {
         q: taxonQuery,
-        sources: "taxa",
+        sources: "taxa"
       },
       optsWithAuth
     )
