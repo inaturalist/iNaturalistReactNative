@@ -34,6 +34,11 @@ jobs:
       with:
         fetch-depth: 1
 
+    - uses: actions/cache@v4
+      with:
+        path: android/src/main/assets
+        key: apk
+
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v4
       with:
