@@ -1,21 +1,20 @@
 // @flow
 
-import { searchTaxa } from "api/taxa";
 import { useAuthenticatedQuery } from "sharedHooks";
+import fetchSearchResults from "api/search";
 
 const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
   const { data: taxonList } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
-    optsWithAuth => searchTaxa(
+    optsWithAuth => fetchSearchResults(
       {
-        q: taxonQuery
+        q: taxonQuery,
+        sources: "taxa",
       },
       optsWithAuth
-    ),
-    {
-      enabled: !!( taxonQuery.length > 0 )
-    }
+    )
   );
+
   return taxonList;
 };
 
