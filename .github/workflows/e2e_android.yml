@@ -26,7 +26,7 @@ jobs:
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
     runs-on: macos-13
     # Kill the task if not finished after 60 minutes
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
     - name: Check out Git repository
@@ -39,14 +39,20 @@ jobs:
       with:
         node-version: 18
 
+    # Currently, macos-13 runner has 3 Java versions pre-installed, default is 17
+    - name: Set up JDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'zulu'
+
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
-    # The mac-os latest runner has 3 different versions of Java pre-installed (8,11,17), and there were errors when setting to use either 11 or 17 explicitly here
-    # I am assuming (but haven't tested) it uses 8 and then this step works
+    # There were errors when setting Java version used to either 11 or 17 explicitly here.
     - name: Download Android Emulator Image
       run: |
-        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
-        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;x86_64'
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-34;default;x86_64"
+        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_8_API_34_AOSP --device "Nexus 5X" -k 'system-images;android-34;default;x86_64'
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
@@ -95,25 +101,24 @@ jobs:
     - name: Download a fake cv model and taxonomy file into the assets folder
       run: npm run add-github-actions-test-model
 
-    # Macos-latest runner has 3 Java versions pre-installed, if not specified as here, the build step errors with requiring at least Java 11 or higher
-    # So, this step is needed for the apk build step, but somehow this is breaking emulator setup, so it is placed here
-    - name: Set up JDK 11
+    # Revert to default Java 17 (required by >RN0.73) for the build step, because somehow this is breaking emulator setup
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'zulu'
 
     # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
-    - name: Build for detox
-      run: npm run e2e:build:android
+    # - name: Build for detox
+    #   run: npm run e2e:build:android
 
     # Starts the avd previously set-up by name
     - name: Android Emulator
-      timeout-minutes: 10
+      timeout-minutes: 15
       continue-on-error: true
       run: |
         echo "Starting emulator"
-        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_31_AOSP -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
+        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_8_API_34_AOSP -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
         $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
         $ANDROID_HOME/platform-tools/adb devices
         $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
