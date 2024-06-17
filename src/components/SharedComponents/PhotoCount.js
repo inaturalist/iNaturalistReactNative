@@ -30,12 +30,18 @@ const PhotoCount = ( {
     photoCount = 99;
   }
 
+  let paddingHorizontal = size === 50
+    ? 12.5
+    : 5;
+
+  if ( photoCount > 9 ) {
+    paddingHorizontal = 2;
+  }
+
   const textStyle = {
     position: "absolute",
     zIndex: 10,
-    paddingHorizontal: size === 50
-      ? 12.5
-      : 5,
+    paddingHorizontal,
     top: size === 50
       ? 22
       : 6

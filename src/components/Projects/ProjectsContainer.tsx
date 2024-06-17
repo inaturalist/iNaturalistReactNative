@@ -1,5 +1,3 @@
-// @flow
-
 import { searchProjects } from "api/projects";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import _ from "lodash";
@@ -26,8 +24,8 @@ const ProjectsContainer = ( ): Node => {
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
   const [permissionsGranted, setPermissionsGranted] = useState( false );
-  const { latLng } = useUserLocation( {
-    skipPlaceGuess: true,
+  const { userLocation } = useUserLocation( {
+    skipName: true,
     permissionsGranted
   } );
 
@@ -47,16 +45,16 @@ const ProjectsContainer = ( ): Node => {
       setApiParams( { member_id: memberId } );
     } else if ( currentTabId === FEATURED_TAB_ID ) {
       setApiParams( { featured: true } );
-    } else if ( currentTabId === NEARBY_TAB_ID && latLng ) {
+    } else if ( currentTabId === NEARBY_TAB_ID && userLocation ) {
       setApiParams( {
-        lat: latLng.latitude,
-        lng: latLng.longitude
+        lat: userLocation.latitude,
+        lng: userLocation.longitude
       } );
     }
   }, [
     memberId,
     currentTabId,
-    latLng,
+    userLocation,
     searchInput
   ] );
 

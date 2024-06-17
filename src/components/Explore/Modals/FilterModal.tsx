@@ -82,7 +82,7 @@ const FilterModal = ( {
     discardChanges,
     isNotInitialState,
     numberOfFilters,
-    setExploreLocation
+    defaultExploreLocation
   } = useExplore();
   const {
     taxon,
@@ -661,7 +661,7 @@ const FilterModal = ( {
             <Body3
               accessibilityRole="button"
               onPress={async ( ) => {
-                const exploreLocation = await setExploreLocation( );
+                const exploreLocation = await defaultExploreLocation( );
                 dispatch( { type: EXPLORE_ACTION.RESET, exploreLocation } );
               }}
             >

@@ -81,6 +81,7 @@ An-Internet-connection-is-required = An Internet connection is required to load 
 Any = Any
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
+APP-LANGUAGE = APP LANGUAGE
 APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
@@ -129,6 +130,7 @@ CC-BY-ND = CC BY-ND
 CC-BY-SA = CC BY-SA
 # Short label for the Creative Commons Zero declaration
 CC0 = CC0
+CHANGE-APP-LANGUAGE = CHANGE APP LANGUAGE
 # Label for a button that changes a selected date
 CHANGE-DATE = CHANGE DATE
 # Label for a button that changes a selected date

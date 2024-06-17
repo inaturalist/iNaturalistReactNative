@@ -12,11 +12,12 @@ const observationPhotos = [
   factory( "RemoteObservationPhoto" )
 ];
 
-const renderEvidenceList = obsPhotos => renderComponent(
-  <EvidenceList
-    observationPhotos={obsPhotos}
-    savingPhoto
-  />
+const mockObservation = factory( "LocalObservation", {
+  observationPhotos
+} );
+
+const renderEvidenceList = ( ) => renderComponent(
+  <EvidenceList />
 );
 
 describe( "EvidenceList", ( ) => {
@@ -25,22 +26,32 @@ describe( "EvidenceList", ( ) => {
   } );
 
   it( "should display add evidence button", ( ) => {
-    renderEvidenceList( observationPhotos );
+    useStore.setState( {
+      observations: [mockObservation],
+      currentObservation: mockObservation
+    } );
+    renderEvidenceList( );
 
     expect( screen.getByTestId( "EvidenceList.add" ) ).toBeVisible( );
   } );
 
   it( "should display loading wheel if photo is saving", ( ) => {
     useStore.setState( {
+      observations: [mockObservation],
+      currentObservation: mockObservation,
       savingPhoto: true
     } );
-    renderEvidenceList( observationPhotos );
+    renderEvidenceList( );
 
     expect( screen.getByTestId( "EvidenceList.saving" ) ).toBeVisible( );
   } );
 
   it( "should render all observation photos", ( ) => {
-    renderEvidenceList( observationPhotos );
+    useStore.setState( {
+      observations: [mockObservation],
+      currentObservation: mockObservation
+    } );
+    renderEvidenceList( );
 
     expect( screen.getByTestId( `EvidenceList.${observationPhotos[0].photo.url}` ) ).toBeVisible( );
     expect( screen.getByTestId( `EvidenceList.${observationPhotos[1].photo.url}` ) ).toBeVisible( );

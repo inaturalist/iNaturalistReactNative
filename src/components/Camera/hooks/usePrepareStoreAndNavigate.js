@@ -7,17 +7,64 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import { log } from "sharedHelpers/logger";
+import { useUserLocation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "usePrepareStoreAndNavigate" );
 
-const usePrepareStoreAndNavigate = (
-  permissionGranted: ?string,
+type Options = {
+  addPhotoPermissionResult: ?string,
   addEvidence: ?boolean,
-  checkmarkTapped: boolean
-): Object => {
+  checkmarkTapped: boolean,
+  shouldFetchLocation: boolean
+};
+
+// Save URIs to camera gallery (if a photo was taken using the app,
+// we want it accessible in the camera's folder, as if the user has taken those photos
+// via their own camera app).
+// One could argue this is a private method and shouldn't be exported and
+// doesn't need to be tested... but hooks are complicated and this hook might
+// be too complicated, so this at least makes it easy to test this one part
+// ~~~kueda20240614
+// $FlowIgnore
+export async function savePhotosToCameraGallery(
+  uris: [string],
+  onEachSuccess: Function
+) {
+  // $FlowIgnore
+  uris.reduce(
+    async ( memo, uri ) => {
+      // logger.info( "saving rotated original camera photo: ", uri );
+      try {
+        const savedPhotoUri = await CameraRoll.save( uri, {
+          type: "photo",
+          album: "iNaturalist Next"
+        } );
+        // logger.info( "saved to camera roll: ", savedPhotoUri );
+        // Save these camera roll URIs, so later on observation editor can update
+        // the EXIF metadata of these photos, once we retrieve a location.
+        // addCameraRollUri( savedPhotoUri );
+        onEachSuccess( savedPhotoUri );
+      } catch ( cameraRollSaveError ) {
+        logger.error( cameraRollSaveError );
+        console.log( "couldn't save photo to iNaturalist Next album" );
+      }
+    },
+    // We need the initial value even if we're not using it, otherwise reduce
+    // will treat the first item in the array as the initial value and not
+    // call the reducer function on it
+    true
+  );
+}
+
+const usePrepareStoreAndNavigate = ( options: Options ): Function => {
+  const {
+    addPhotoPermissionResult,
+    addEvidence,
+    checkmarkTapped,
+    shouldFetchLocation
+  } = ( options || {} );
   const navigation = useNavigation( );
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
@@ -27,43 +74,19 @@ const usePrepareStoreAndNavigate = (
   const addCameraRollUri = useStore( state => state.addCameraRollUri );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
+  const setSavingPhoto = useStore( state => state.setSavingPhoto );
+  const { userLocation } = useUserLocation( { untilAcc: 5, enabled: !!shouldFetchLocation } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
-
-  // Save URIs to camera gallery (if a photo was taken using the app,
-  // we want it accessible in the camera's folder, as if the user has taken those photos
-  // via their own camera app).
-  const savePhotosToCameraGallery = useCallback( async uris => {
-    if ( permissionGranted !== "granted" ) return Promise.resolve( );
-    return Promise.all( uris.map( async uri => {
-      logger.info( "saving rotated original camera photo: ", uri );
-      try {
-        const savedPhotoUri = await CameraRoll.save( uri, {
-          type: "photo",
-          album: "iNaturalist Next"
-        } );
-        logger.info( "saved to camera roll: ", savedPhotoUri );
-        // Save these camera roll URIs, so later on observation editor can update
-        // the EXIF metadata of these photos, once we retrieve a location.
-        addCameraRollUri( savedPhotoUri );
-      } catch {
-        console.log( "couldn't save photo to iNaturalist Next album" );
-      }
-    } ) );
-  }, [
-    addCameraRollUri,
-    permissionGranted
-  ] );
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
     const newObservation = await Observation.new( );
 
     // location is needed for fetching online Suggestions on the next screen
-    const location = await fetchUserLocation( );
-    if ( location?.latitude ) {
-      newObservation.latitude = location?.latitude;
-      newObservation.longitude = location?.longitude;
-      newObservation.positional_accuracy = location?.positional_accuracy;
+    if ( userLocation?.latitude ) {
+      newObservation.latitude = userLocation?.latitude;
+      newObservation.longitude = userLocation?.longitude;
+      newObservation.positional_accuracy = userLocation?.accuracy;
     }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( localFilePaths, {
@@ -79,13 +102,17 @@ const usePrepareStoreAndNavigate = (
       newObservation.score = visionResult.score;
     }
     setObservations( [newObservation] );
-    logger.info(
-      "calling savePhotosToCameraGallery with paths: ",
-      rotatedOriginalCameraPhotos
-    );
-
-    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos );
-  }, [rotatedOriginalCameraPhotos, savePhotosToCameraGallery, setObservations] );
+    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
+    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos, addCameraRollUri );
+  }, [
+    addCameraRollUri,
+    addPhotoPermissionResult,
+    rotatedOriginalCameraPhotos,
+    setObservations,
+    userLocation?.accuracy,
+    userLocation?.latitude,
+    userLocation?.longitude
+  ] );
 
   const updateObsWithCameraPhotos = useCallback( async ( ) => {
     const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(
@@ -99,24 +126,23 @@ const usePrepareStoreAndNavigate = (
       .appendObsPhotos( obsPhotos, currentObservation );
     observations[currentObservationIndex] = updatedCurrentObservation;
     updateObservations( observations );
-    logger.info(
-      "calling savePhotosToCameraGallery with evidence to add: ",
-      evidenceToAdd
-    );
-    await savePhotosToCameraGallery( evidenceToAdd );
+    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
+    return savePhotosToCameraGallery( evidenceToAdd, addCameraRollUri );
   }, [
+    addCameraRollUri,
+    addPhotoPermissionResult,
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
     numOfObsPhotos,
     observations,
-    savePhotosToCameraGallery,
     updateObservations
   ] );
 
   const prepareStoreAndNavigate = useCallback( async ( visionResult = null ) => {
     if ( !checkmarkTapped ) { return null; }
 
+    setSavingPhoto( true );
     // save all to camera roll
 
     // handle case where user backs out from ObsEdit -> Suggestions -> Camera
@@ -143,7 +169,8 @@ const usePrepareStoreAndNavigate = (
     createObsWithCameraPhotos,
     currentObservation,
     navigation,
-    updateObsWithCameraPhotos
+    updateObsWithCameraPhotos,
+    setSavingPhoto
   ] );
 
   return prepareStoreAndNavigate;

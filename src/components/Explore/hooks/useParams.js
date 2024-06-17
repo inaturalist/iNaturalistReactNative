@@ -12,17 +12,12 @@ import useStore from "stores/useStore";
 const useParams = ( ): Object => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
-  const { dispatch, setExploreLocation } = useExplore( );
+  const { dispatch, defaultExploreLocation } = useExplore( );
   const storedParams = useStore( state => state.storedParams );
-  const setExploreView = useStore( state => state.setExploreView );
 
   const worldwidePlaceText = t( "Worldwide" );
 
   const updateContextWithParams = useCallback( async ( storedState = { } ) => {
-    if ( params?.viewSpecies ) {
-      setExploreView( "species" );
-    }
-
     const setWorldwide = ( ) => {
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
@@ -37,7 +32,7 @@ const useParams = ( ): Object => {
       setWorldwide( );
     }
     if ( params?.nearby ) {
-      const exploreLocation = await setExploreLocation( );
+      const exploreLocation = await defaultExploreLocation( );
       dispatch( {
         type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
         exploreLocation
@@ -80,8 +75,7 @@ const useParams = ( ): Object => {
   }, [
     dispatch,
     params,
-    setExploreLocation,
-    setExploreView,
+    defaultExploreLocation,
     worldwidePlaceText
   ] );
 

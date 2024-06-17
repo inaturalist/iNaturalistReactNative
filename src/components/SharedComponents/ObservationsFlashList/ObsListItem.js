@@ -8,6 +8,7 @@ import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
+import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 import ObsImagePreview from "./ObsImagePreview";
@@ -71,7 +72,7 @@ const ObsListItem = ( {
       <View
         className={classnames(
           "flex-0 justify-start flex-row",
-          { "justify-center": uploadStatus === "uploadInProgress" }
+          { "justify-center": uploadStatus === UPLOAD_IN_PROGRESS }
         )}
       >
         {explore

@@ -8,7 +8,11 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState
+} from "react";
 import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -23,19 +27,14 @@ const RootExploreContainerWithContext = ( ): Node => {
   const currentUser = useCurrentUser( );
   const storedParams = useStore( state => state.storedParams );
   const setStoredParams = useStore( state => state.setStoredParams );
-  const setExploreView = useStore( state => state.setExploreView );
 
   const worldwidePlaceText = t( "Worldwide" );
 
   const {
-    state, dispatch, makeSnapshot, setExploreLocation
+    state, dispatch, makeSnapshot, defaultExploreLocation
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
-
-  useEffect( ( ) => {
-    setExploreView( "species" );
-  }, [setExploreView] );
 
   const updateTaxon = ( taxon: Object ) => {
     dispatch( {
@@ -100,30 +99,23 @@ const RootExploreContainerWithContext = ( ): Node => {
     makeSnapshot( );
   };
 
-  const onPermissionGranted = async ( ) => {
-    if ( state.place_guess ) { return; }
-    const exploreLocation = await setExploreLocation( );
+  const onPermissionGranted = useCallback( async ( ) => {
+    const exploreLocation = await defaultExploreLocation( );
     dispatch( {
       type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
       exploreLocation
     } );
-  };
+  }, [
+    defaultExploreLocation,
+    dispatch
+  ] );
 
-  const onPermissionDenied = ( ) => {
-    if ( state.place_guess ) { return; }
+  const resetToWorldWide = useCallback( ( ) => {
     dispatch( {
       type: EXPLORE_ACTION.SET_PLACE,
-      placeGuess: t( "Worldwide" )
+      placeGuess: worldwidePlaceText
     } );
-  };
-
-  const onPermissionBlocked = ( ) => {
-    if ( state.place_guess ) { return; }
-    dispatch( {
-      type: EXPLORE_ACTION.SET_PLACE,
-      placeGuess: t( "Worldwide" )
-    } );
-  };
+  }, [dispatch, worldwidePlaceText] );
 
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
@@ -159,18 +151,18 @@ const RootExploreContainerWithContext = ( ): Node => {
       <LocationPermissionGate
         permissionNeeded
         onPermissionGranted={onPermissionGranted}
-        onPermissionDenied={onPermissionDenied}
-        onPermissionBlocked={onPermissionBlocked}
+        onPermissionDenied={resetToWorldWide}
+        onPermissionBlocked={resetToWorldWide}
         withoutNavigation
       />
     </>
   );
 };
 
-const ExploreContainer = (): Node => (
+const RootExploreContainer = (): Node => (
   <ExploreProvider>
     <RootExploreContainerWithContext />
   </ExploreProvider>
 );
 
-export default ExploreContainer;
+export default RootExploreContainer;

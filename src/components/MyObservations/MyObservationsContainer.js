@@ -23,6 +23,11 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
+import {
+  UPLOAD_COMPLETE,
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_PENDING
+} from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
@@ -67,7 +72,7 @@ const MyObservationsContainer = ( ): Node => {
   useClearSyncedSoundsForUpload( );
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
+  const resetUploadObservationsSlice = useStore( state => state?.resetUploadObservationsSlice );
   const uploadStatus = useStore( state => state.uploadStatus );
   const setUploadStatus = useStore( state => state.setUploadStatus );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
@@ -75,7 +80,7 @@ const MyObservationsContainer = ( ): Node => {
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
   const [state, dispatch] = useReducer( reducer, INITIAL_STATE );
-  const { observationList: observations } = useLocalObservations( );
+  const { observationList: observations, unsyncedUuids } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const deletionsCompletedAt = useStore( s => s.deletionsCompletedAt );
@@ -83,8 +88,6 @@ const MyObservationsContainer = ( ): Node => {
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
   const canUpload = currentUser && isOnline;
-
-  const allUnsyncedObservations = Observation.filterUnsyncedObservations( realm );
 
   useDeleteObservations(
     currentUser?.id && state.canBeginDeletions,
@@ -128,13 +131,13 @@ const MyObservationsContainer = ( ): Node => {
     }
   }, [currentUser] );
 
-  const checkUserCanUpload = useCallback( ( ) => {
+  const startUpload = useCallback( ( ) => {
     toggleLoginSheet( );
     showInternetErrorAlert( );
     if ( canUpload ) {
-      setUploadStatus( "uploadInProgress" );
+      setUploadStatus( UPLOAD_IN_PROGRESS );
     } else {
-      setUploadStatus( "pending" );
+      setUploadStatus( UPLOAD_PENDING );
     }
   }, [
     canUpload,
@@ -201,37 +204,26 @@ const MyObservationsContainer = ( ): Node => {
   }, [realm] );
 
   const syncObservations = useCallback( async ( ) => {
-    logger.info( "syncObservations: starting" );
-    if ( uploadStatus === "complete" ) {
-      logger.info( "syncObservations: dispatch RESET_STATE" );
+    if ( uploadStatus === UPLOAD_COMPLETE ) {
       resetUploadObservationsSlice( );
     }
-    logger.info( "syncObservations: calling toggleLoginSheet" );
     if ( !currentUser ) {
       toggleLoginSheet( );
       resetUploadObservationsSlice( );
       return;
     }
-    logger.info( "syncObservations: calling showInternetErrorAlert" );
     if ( !isOnline ) {
       showInternetErrorAlert( );
       resetUploadObservationsSlice( );
       return;
     }
     dispatch( { type: "START_SYNC" } );
-    logger.info( "syncObservations: calling activateKeepAwake" );
     activateKeepAwake( );
 
-    logger.info(
-      "syncObservations: calling downloadRemoteObservationsFromServer"
-    );
     await downloadRemoteObservationsFromServer( );
-    logger.info( "syncObservations: calling updateSyncTime" );
     updateSyncTime( );
-    logger.info( "syncObservations: calling deactivateKeepAwake" );
     deactivateKeepAwake( );
     resetUploadObservationsSlice( );
-    logger.info( "syncObservations: done" );
   }, [
     currentUser,
     downloadRemoteObservationsFromServer,
@@ -245,35 +237,34 @@ const MyObservationsContainer = ( ): Node => {
 
   const handleSyncButtonPress = useCallback( ( ) => {
     if ( numUnuploadedObservations > 0 ) {
-      const uploadUuids = allUnsyncedObservations.map( o => o.uuid );
-      const uuidsQuery = uploadUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
+      const uuidsQuery = unsyncedUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
       const uploads = realm.objects( "Observation" )
         .filtered( `uuid IN { ${uuidsQuery} }` );
       setTotalToolbarIncrements( uploads );
-      addToUploadQueue( uploadUuids );
-      checkUserCanUpload( );
+      addToUploadQueue( unsyncedUuids );
+      startUpload( );
     } else {
       syncObservations( );
     }
   }, [
     addToUploadQueue,
-    allUnsyncedObservations,
-    checkUserCanUpload,
+    startUpload,
     numUnuploadedObservations,
     realm,
     setTotalToolbarIncrements,
-    syncObservations
+    syncObservations,
+    unsyncedUuids
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
     const observation = realm.objectForPrimaryKey( "Observation", uuid );
     addTotalToolbarIncrements( observation );
     addToUploadQueue( uuid );
-    checkUserCanUpload( );
+    startUpload( );
   }, [
     addToUploadQueue,
     addTotalToolbarIncrements,
-    checkUserCanUpload,
+    startUpload,
     realm
   ] );
 

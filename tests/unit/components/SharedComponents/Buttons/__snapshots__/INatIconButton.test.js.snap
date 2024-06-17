@@ -55,9 +55,6 @@ exports[`INatIconButton renders correctly 1`] = `
             "position": "relative",
           },
           {
-            "position": "relative",
-          },
-          {
             "left": 0.2,
           },
           {

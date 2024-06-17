@@ -9,6 +9,11 @@ import {
   useCurrentUser,
   useTranslation
 } from "sharedHooks";
+import {
+  UPLOAD_COMPLETE,
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_PENDING
+} from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 import Toolbar from "./Toolbar";
@@ -28,6 +33,7 @@ const ToolbarContainer = ( {
   syncInProgress,
   toggleLayout
 }: Props ): Node => {
+  const setExploreView = useStore( state => state.setExploreView );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const deletions = useStore( state => state.deletions );
@@ -37,7 +43,7 @@ const ToolbarContainer = ( {
   const deletionsInProgress = useStore( state => state.deletionsInProgress );
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
-  const numObservationsInQueue = useStore( state => state.numObservationsInQueue );
+  const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
@@ -45,14 +51,14 @@ const ToolbarContainer = ( {
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
 
-  // Note that numObservationsInQueue is the number of obs being uploaded in
+  // Note that initialNumObservationsInQueue is the number of obs being uploaded in
   // the current upload session, so it might be 1 if a single obs is
   // being uploaded even though 5 obs need upload
   const translationParams = useMemo( ( ) => ( {
-    total: numObservationsInQueue,
-    currentUploadCount: Math.min( numUploadsAttempted, numObservationsInQueue )
+    total: initialNumObservationsInQueue,
+    currentUploadCount: Math.min( numUploadsAttempted, initialNumObservationsInQueue )
   } ), [
-    numObservationsInQueue,
+    initialNumObservationsInQueue,
     numUploadsAttempted
   ] );
 
@@ -69,24 +75,27 @@ const ToolbarContainer = ( {
   ] );
 
   const navToExplore = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      user: currentUser,
-      worldwide: true,
-      resetStoredParams: true
-    } ),
-    [navigation, currentUser]
+    ( ) => {
+      setExploreView( "observations" );
+      navigation.navigate( "Explore", {
+        user: currentUser,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, currentUser, setExploreView]
   );
 
   const { t } = useTranslation( );
   const theme = useTheme( );
 
-  const pendingUpload = uploadStatus === "pending" && numUnuploadedObservations > 0;
-  const uploadInProgress = uploadStatus === "uploadInProgress" && numUploadsAttempted > 0;
-  const uploadsComplete = uploadStatus === "complete" && numObservationsInQueue > 0;
+  const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
+  const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
+  const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && initialNumObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
 
   const showFinalUploadError = ( totalUploadErrors > 0 && uploadsComplete )
-    || ( totalUploadErrors > 0 && ( numUploadsAttempted === numObservationsInQueue ) );
+    || ( totalUploadErrors > 0 && ( numUploadsAttempted === initialNumObservationsInQueue ) );
 
   const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadMultiError )

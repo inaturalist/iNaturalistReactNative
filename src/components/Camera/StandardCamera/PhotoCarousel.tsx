@@ -1,11 +1,7 @@
-// @flow
-
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
@@ -18,53 +14,49 @@ import Animated, {
   useAnimatedStyle,
   withTiming
 } from "react-native-reanimated";
-import ObservationPhoto from "realmModels/ObservationPhoto";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-const { useRealm } = RealmContext;
-
-type Props = {
-  emptyComponent?: Function,
-  takingPhoto?: boolean,
-  isLandscapeMode?:boolean,
-  isLargeScreen?: boolean,
-  isTablet?: boolean,
+interface Props {
+  takingPhoto?: boolean;
+  isLandscapeMode?: boolean;
+  isLargeScreen?: boolean;
+  isTablet?: boolean;
   rotation?: {
     value: number
-  },
-  photoUris: Array<string>
+  };
+  photoUris: string[];
+  onDelete: ( _uri: string ) => void;
 }
 
 export const SMALL_PHOTO_DIM = 42;
 export const LARGE_PHOTO_DIM = 83;
 export const SMALL_PHOTO_GUTTER = 6;
 export const LARGE_PHOTO_GUTTER = 17;
-const IMAGE_CONTAINER_CLASSES = ["justify-center", "items-center"];
+const IMAGE_CONTAINER_CLASSES = ["justify-center", "items-center"] as const;
 const SMALL_PHOTO_CLASSES = [
   "rounded-sm",
   "w-[42px]",
   "h-[42x]",
   "mx-[3px]"
-];
+] as const;
 const LARGE_PHOTO_CLASSES = [
   "rounded-md",
   "w-[83px]",
   "h-[83px]",
   "m-[8.5px]"
-];
+] as const;
 
 const PhotoCarousel = ( {
-  emptyComponent,
   takingPhoto,
   isLandscapeMode,
   isLargeScreen,
   isTablet,
   rotation,
-  photoUris
-}: Props ): Node => {
+  photoUris,
+  onDelete
+}: Props ) => {
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
-  const realm = useRealm( );
   const { t } = useTranslation( );
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
@@ -92,7 +84,7 @@ const PhotoCarousel = ( {
         {
           rotateZ: rotation
             ? withTiming( `${-1 * rotation.value}deg` )
-            : 0
+            : "0"
         }
       ]
     } ),
@@ -133,19 +125,16 @@ const PhotoCarousel = ( {
     }
   }, [deletePhotoFromObservation] );
 
-  const viewPhotoAtIndex = useCallback( ( item, index ) => {
+  const viewPhotoAtIndex = useCallback( ( index: number ) => {
     setTappedPhotoIndex( index );
   }, [
     setTappedPhotoIndex
   ] );
 
-  const deletePhotoByUri = useCallback( async photoUri => {
-    if ( !deletePhotoFromObservation ) return;
-    deletePhotoFromObservation( photoUri );
-    await ObservationPhoto.deletePhoto( realm, photoUri );
-  }, [deletePhotoFromObservation, realm] );
-
-  const renderPhotoOrEvidenceButton = useCallback( ( { item: photoUri, index } ) => (
+  const renderPhotoOrEvidenceButton = useCallback( ( {
+    item: photoUri,
+    index
+  } ) => (
     <>
       {index === 0 && renderSkeleton( )}
       <Animated.View style={!isTablet && animatedStyle}>
@@ -181,7 +170,7 @@ const PhotoCarousel = ( {
                         backgroundColor="rgba(0, 0, 0, 0.5)"
                         testID={`PhotoCarousel.deletePhoto.${photoUri}`}
                         accessibilityLabel={t( "Delete-photo" )}
-                        onPress={( ) => deletePhotoByUri( photoUri )}
+                        onPress={( ) => onDelete( photoUri )}
                       />
                     </View>
                   )
@@ -191,7 +180,7 @@ const PhotoCarousel = ( {
                       accessibilityLabel={t( "View-photo" )}
                       testID={`PhotoCarousel.displayPhoto.${photoUri}`}
                       onLongPress={showDeletePhotoMode}
-                      onPress={( ) => viewPhotoAtIndex( photoUri, index )}
+                      onPress={( ) => viewPhotoAtIndex( index )}
                       className="w-full h-full"
                     />
                   )
@@ -203,7 +192,7 @@ const PhotoCarousel = ( {
     </>
   ), [
     animatedStyle,
-    deletePhotoByUri,
+    onDelete,
     deletePhotoMode,
     isTablet,
     photoClasses,
@@ -221,7 +210,7 @@ const PhotoCarousel = ( {
       horizontal={!isTablet || !isLandscapeMode}
       ListEmptyComponent={takingPhoto
         ? renderSkeleton( )
-        : emptyComponent}
+        : null}
     />
   );
 
@@ -235,8 +224,13 @@ const PhotoCarousel = ( {
   // state, and use that to position another container inside the modal in
   // exactly the same place
 
-  const containerRef = useRef( );
-  const [containerPos, setContainerPos] = useState( { x: null, y: null } );
+  const containerRef = useRef<View>( );
+  const [containerPos, setContainerPos] = useState<{
+    x: number | null;
+    y: number | null;
+    w?: number;
+    h?: number;
+  }>( { x: null, y: null } );
   const containerStyle = {
     height: isTablet && isLandscapeMode
       ? photoUris.length * ( photoDim + photoGutter ) + photoGutter
@@ -299,8 +293,8 @@ const PhotoCarousel = ( {
         editable
         showModal={tappedPhotoIndex >= 0}
         onClose={( ) => setTappedPhotoIndex( -1 )}
-        onDeletePhoto={async photoUri => {
-          await deletePhotoByUri( photoUri );
+        onDeletePhoto={async ( photoUri: string ) => {
+          await onDelete( photoUri );
           setTappedPhotoIndex( tappedPhotoIndex - 1 );
         }}
         uri={photoUris[tappedPhotoIndex]}

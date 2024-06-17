@@ -3,7 +3,9 @@
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
-import { Body2, OfflineNotice, ViewWrapper } from "components/SharedComponents";
+import {
+  ActivityIndicator, Body2, OfflineNotice, ViewWrapper
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
@@ -12,7 +14,8 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   data: Object,
   isError?: boolean,
-  isLoading?: boolean,
+  isFetching?: boolean,
+  isInitialLoading?: boolean,
   isOnline: boolean,
   onEndReached: Function,
   reload: Function
@@ -21,7 +24,8 @@ type Props = {
 const NotificationsList = ( {
   data,
   isError,
-  isLoading,
+  isFetching,
+  isInitialLoading,
   isOnline,
   onEndReached,
   reload
@@ -36,14 +40,20 @@ const NotificationsList = ( {
 
   const renderFooter = useCallback( ( ) => (
     <InfiniteScrollLoadingWheel
-      hideLoadingWheel={!isLoading}
-      isOnline={isOnline}
       explore={false}
+      hideLoadingWheel={!isFetching || data?.length === 0}
+      isOnline={isOnline}
     />
-  ), [isLoading, isOnline] );
+  ), [isFetching, isOnline, data.length] );
 
   const renderEmptyComponent = useCallback( ( ) => {
-    if ( isLoading ) return null;
+    if ( isInitialLoading ) {
+      return (
+        <View className="h-full justify-center">
+          <ActivityIndicator size={50} />
+        </View>
+      );
+    }
 
     if ( !isOnline ) {
       return <OfflineNotice onPress={reload} />;
@@ -57,31 +67,24 @@ const NotificationsList = ( {
     return <Body2 className="mt-[150px] text-center mx-12">{msg}</Body2>;
   }, [
     isError,
-    isLoading,
+    isInitialLoading,
     isOnline,
     reload,
     t
   ] );
 
-  if ( !data || data.length === 0 ) {
-    return (
-      <ViewWrapper>
-        {renderEmptyComponent( )}
-      </ViewWrapper>
-    );
-  }
-
   return (
     <ViewWrapper>
       <FlashList
-        data={data}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
         ItemSeparatorComponent={renderItemSeparator}
-        estimatedItemSize={20}
-        onEndReached={onEndReached}
-        refreshing={isLoading}
+        ListEmptyComponent={renderEmptyComponent}
         ListFooterComponent={renderFooter}
+        data={data}
+        estimatedItemSize={20}
+        keyExtractor={item => item.id}
+        onEndReached={onEndReached}
+        refreshing={isFetching}
+        renderItem={renderItem}
       />
     </ViewWrapper>
   );

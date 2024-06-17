@@ -8,7 +8,7 @@ import {
   INatIconButton,
   RotatingINatIconButton
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { ProgressBar, useTheme } from "react-native-paper";
@@ -20,11 +20,11 @@ type Props = {
   layout: string,
   navToExplore: Function,
   progress: number,
-  rotating: boolean,
-  showsCancelUploadButton: boolean,
-  showsCheckmark: boolean,
-  showsExclamation: boolean,
-  showsExploreIcon: boolean,
+  rotating?: boolean,
+  showsCancelUploadButton?: boolean,
+  showsCheckmark?: boolean,
+  showsExclamation?: boolean,
+  showsExploreIcon?: boolean,
   statusText: ?string,
   stopAllUploads: Function,
   syncIconColor: string,
@@ -37,19 +37,18 @@ const Toolbar = ( {
   layout,
   navToExplore,
   progress,
-  rotating,
-  showsCancelUploadButton,
-  showsCheckmark,
-  showsExclamation,
-  showsExploreIcon,
-  statusText,
+  rotating = false,
+  showsCancelUploadButton = false,
+  showsCheckmark = false,
+  showsExclamation = false,
+  showsExploreIcon = false,
+  statusText = "",
   stopAllUploads,
   syncIconColor,
   toggleLayout
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
-
   return (
     <View className={
       classNames(
@@ -57,7 +56,8 @@ const Toolbar = ( {
       )
     }
     >
-      <View className="flex-row items-center mx-4">
+      <View className="flex-row mx-4">
+        {/* First col */}
         {showsExploreIcon && (
           <INatIconButton
             icon="compass-rose-outline"
@@ -71,56 +71,75 @@ const Toolbar = ( {
             // little padding that we can't control, so the negative margin
             // here is to ensure the visible icon is flush with the edge of
             // the container
-            className="m-0 ml-[-8px]"
+            className="-ml-[7px]"
           />
         )}
+
+        {/*
+          Center col. Initial width of 0 seems to be a hack that works to get
+          grow to work correctly with text content
+        */}
         <View
-        // Note that without shrink, the center element will grow and push
-        // the grid/list button off the screen
-          className="flex-row items-center shrink"
+          className={classNames(
+            "w-[0px] grow",
+            !showsExploreIcon && "-ml-[11px]"
+          )}
         >
-          <RotatingINatIconButton
-            icon={
-              showsExclamation
-                ? "sync-unsynced"
-                : "sync"
-            }
-            rotating={rotating}
-            onPress={handleSyncButtonPress}
-            color={syncIconColor}
-            disabled={rotating}
-            accessibilityLabel={t( "Sync-observations" )}
-            size={30}
-            testID="SyncButton"
-          />
-          <View className="flex ml-1 shrink">
-            {statusText && (
-              <View className="flex-row items-center shrink">
-                <Body2>
-                  {statusText}
-                </Body2>
-                {showsCheckmark && (
-                  <View className="ml-2">
-                    <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
-                  </View>
+          <View className="flex-row ml-1">
+            <View className="mr-1">
+              <RotatingINatIconButton
+                icon={
+                  showsExclamation
+                    ? "sync-unsynced"
+                    : "sync"
+                }
+                rotating={rotating}
+                onPress={handleSyncButtonPress}
+                color={syncIconColor}
+                disabled={rotating}
+                accessibilityLabel={t( "Sync-observations" )}
+                size={30}
+                testID="SyncButton"
+              />
+            </View>
+            <View className="flex-row shrink">
+              <View className="shrink pb-1 justify-center">
+                { statusText !== "" && (
+                  <Pressable
+                    onPress={handleSyncButtonPress}
+                    className="flex-row items-center grow"
+                    accessibilityRole="button"
+                    disabled={rotating || showsCheckmark}
+                  >
+                    <Body2>
+                      {statusText}
+                    </Body2>
+                    {showsCheckmark && (
+                      <View className="ml-2">
+                        <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
+                      </View>
+                    )}
+                  </Pressable>
+                )}
+                {error && (
+                  statusText === ""
+                    ? <Body2 className="color-warningRed">{error}</Body2>
+                    : <Body4 className="color-warningRed">{error}</Body4>
                 )}
               </View>
-            )}
-            {error && (
-              <Body4 className="mt-[3px] color-warningRed">
-                {error}
-              </Body4>
-            )}
+              {showsCancelUploadButton && (
+                <INatIconButton
+                  icon="close"
+                  size={11}
+                  accessibilityLabel={t( "Stop-upload" )}
+                  onPress={stopAllUploads}
+                />
+              )}
+            </View>
           </View>
-          {showsCancelUploadButton && (
-            <INatIconButton
-              icon="close"
-              size={11}
-              accessibilityLabel={t( "Stop-upload" )}
-              onPress={stopAllUploads}
-            />
-          )}
         </View>
+
+        {/* Last col */}
         <INatIconButton
           icon={layout === "grid"
             ? "listview"
@@ -139,7 +158,7 @@ const Toolbar = ( {
           // Negative margin here is similar to above: trying to get the icon
           // flush with the container. ml-auto is a bit of a hack to pull
           // this button all the way to the end.
-          className="m-0 mr-[-8px] ml-auto"
+          className="-mr-[7px]"
         />
       </View>
       <ProgressBar

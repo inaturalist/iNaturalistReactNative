@@ -4,7 +4,6 @@ import _ from "lodash";
 import Photo from "realmModels/Photo";
 
 const DEFAULT_STATE = {
-  abortController: new AbortController( ),
   cameraRollUris: [],
   comment: "",
   currentObservation: {},
@@ -16,7 +15,6 @@ const DEFAULT_STATE = {
   // Track when any obs was last marked as viewed so we know when to update
   // the notifications indicator
   observationMarkedAsViewedAt: null,
-  photoEvidenceUris: [],
   rotatedOriginalCameraPhotos: [],
   savingPhoto: false,
   unsavedChanges: false
@@ -25,7 +23,7 @@ const DEFAULT_STATE = {
 const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
   if ( _.isEmpty( currentObservation ) ) { return []; }
   const updatedObservation = currentObservation;
-  const obsPhotos = Array.from( currentObservation?.observationPhotos );
+  const obsPhotos = Array.from( currentObservation?.observationPhotos || [] );
   if ( obsPhotos.length > 0 ) {
     // FYI, _.remove edits the array in place and returns the items you
     // removed
@@ -91,7 +89,6 @@ const createObservationFlowSlice = set => ( {
     }
 
     return ( {
-      photoEvidenceUris: [..._.pull( state.photoEvidenceUris, uri )],
       rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
       evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
       observations: newObservations,
@@ -119,11 +116,11 @@ const createObservationFlowSlice = set => ( {
       savingPhoto: false
     } );
   } ),
+  setSavingPhoto: saving => set( { savingPhoto: saving } ),
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     rotatedOriginalCameraPhotos:
-      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos,
-    savingPhoto: options?.evidenceToAdd?.length > 0 || state.savingPhoto
+      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,
@@ -139,9 +136,6 @@ const createObservationFlowSlice = set => ( {
     observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )
   } ) ),
-  setPhotoEvidenceUris: uris => set( {
-    photoEvidenceUris: uris
-  } ),
   setPhotoImporterState: options => set( state => ( {
     galleryUris: options?.galleryUris || state.galleryUris,
     savingPhoto: options?.savingPhoto || state.savingPhoto,
@@ -165,12 +159,7 @@ const createObservationFlowSlice = set => ( {
     currentObservation:
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
     unsavedChanges: true
-  } ) ),
-  newAbortController: ( ) => {
-    const abc = new AbortController( );
-    set( ( ) => ( { abortController: abc } ) );
-    return abc;
-  }
+  } ) )
 } );
 
 export default createObservationFlowSlice;

@@ -1,6 +1,6 @@
 import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
-import { createJSONStorage, persist, StateStorage } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import createDeleteObservationsSlice from "./createDeleteObservationsSlice";
 import createExploreSlice from "./createExploreSlice";
@@ -10,7 +10,7 @@ import createUploadObservationsSlice from "./createUploadObservationsSlice";
 
 const storage = new MMKV();
 
-const zustandStorage: StateStorage = {
+const zustandStorage = {
   setItem: ( name, value ) => storage.set( name, value ),
   getItem: name => {
     const value = storage.getString( name );
@@ -66,8 +66,7 @@ const useStore = create( persist(
   {
     name: "persisted-zustand",
     partialize: state => ( {
-      isAdvancedUser: state.isAdvancedUser,
-      currentTabId: state.currentTabId
+      isAdvancedUser: state.isAdvancedUser
     } ),
     storage: createJSONStorage( () => zustandStorage )
   }

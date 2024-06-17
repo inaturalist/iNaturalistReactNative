@@ -15,7 +15,6 @@ import {
   UserText
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User";
@@ -23,13 +22,16 @@ import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useIsConnected
+  useIsConnected,
+  useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ): Node => {
+  const setExploreView = useStore( state => state.setExploreView );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
@@ -37,6 +39,7 @@ const UserProfile = ( ): Node => {
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
   const isOnline = useIsConnected( );
+  const { t } = useTranslation( );
 
   const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", userId],
@@ -79,22 +82,27 @@ const UserProfile = ( ): Node => {
   // }, [navigation, user, currentUser] );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      user,
-      worldwide: true,
-      resetStoredParams: true
-    } ),
-    [navigation, user]
+    ( ) => {
+      setExploreView( "observations" );
+      navigation.navigate( "Explore", {
+        user,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, user, setExploreView]
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      user,
-      worldwide: true,
-      viewSpecies: true,
-      resetStoredParams: true
-    } ),
-    [navigation, user]
+    ( ) => {
+      setExploreView( "species" );
+      navigation.navigate( "Explore", {
+        user,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, user, setExploreView]
   );
 
   if ( !user ) {

@@ -1,13 +1,12 @@
 // @flow
 
-import { Realm } from "@realm/react";
 import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   differenceInCalendarYears,
   isFuture,
   parseISO
 } from "date-fns";
-import { difference, isNil } from "lodash";
+import { isNil } from "lodash";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -37,20 +36,14 @@ const EvidenceSectionContainer = ( {
   currentObservation,
   updateObservationKeys
 }: Props ): Node => {
-  const photoEvidenceUris = useStore( state => state.photoEvidenceUris );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const isNewObs = !!currentObservation?._synced_at
     || ( currentObservation && !( "_synced_at" in currentObservation ) );
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
-
-  const setPhotoEvidenceUris = useStore( state => state.setPhotoEvidenceUris );
   const observationPhotos = currentObservation?.observationPhotos || [];
   const observationSounds = currentObservation?.observationSounds || [];
   const mountedRef = useRef( true );
-  const obsPhotoUris = observationPhotos.map(
-    observationPhoto => observationPhoto.photo.url || observationPhoto.photo.localFilePath
-  );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
@@ -75,12 +68,6 @@ const EvidenceSectionContainer = ( {
       mountedRef.current = false;
     };
   }, [mountedRef] );
-
-  useEffect( ( ) => {
-    if ( difference( obsPhotoUris, photoEvidenceUris ).length > 0 ) {
-      setPhotoEvidenceUris( obsPhotoUris );
-    }
-  }, [photoEvidenceUris, setPhotoEvidenceUris, obsPhotoUris] );
 
   const {
     hasLocation,
@@ -139,7 +126,14 @@ const EvidenceSectionContainer = ( {
       return true;
     }
     return false;
-  }, [currentObservation, longitude, latitude, hasLocation, isNewObs, hasImportedPhotos] );
+  }, [
+    currentObservation,
+    longitude,
+    latitude,
+    hasLocation,
+    isNewObs,
+    hasImportedPhotos
+  ] );
 
   const hasValidDate = useMemo( ( ) => {
     const observationDate = parseISO(
@@ -183,24 +177,6 @@ const EvidenceSectionContainer = ( {
     ? ["color-warningRed"]
     : [];
 
-  const handleDragAndDrop = ( { data } ) => {
-    // Turn from Realm object to simple JS objects (so we can update the position)
-    const newObsPhotos = data.map( obsPhoto => ( obsPhoto instanceof Realm.Object
-      ? obsPhoto.toJSON()
-      : obsPhoto ) );
-    newObsPhotos.forEach( ( obsPhoto, index ) => {
-      obsPhoto.position = index;
-    } );
-
-    updateObservationKeys( {
-      observationPhotos: newObsPhotos
-    } );
-    const uris = newObsPhotos.map(
-      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
-    );
-    setPhotoEvidenceUris( uris );
-  };
-
   useEffect( () => {
     if ( !currentPlaceGuess ) return;
 
@@ -238,7 +214,6 @@ const EvidenceSectionContainer = ( {
       currentObservation={currentObservation}
       updateObservationKeys={updateObservationKeys}
       locationTextClassNames={locationTextClassNames}
-      handleDragAndDrop={handleDragAndDrop}
       passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
       observationPhotos={observationPhotos}
