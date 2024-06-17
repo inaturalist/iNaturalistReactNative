@@ -126,7 +126,7 @@ jobs:
       continue-on-error: true
       run: |
         echo "Starting emulator"
-        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_31_AOSP -memory 4096 -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
+        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_31_AOSP -memory 4096 -cache-size 500 -partition-size 4096 -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
         $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
         $ANDROID_HOME/platform-tools/adb devices
         $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
