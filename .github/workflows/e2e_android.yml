@@ -116,9 +116,14 @@ jobs:
         key: apk
           
     # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
+    # - name: Build for detox
+    #   if: steps.cache-apk.outputs.cache-hit != 'true'
+    #   run: npm run e2e:build:android
     - name: Build for detox
       if: steps.cache-apk.outputs.cache-hit != 'true'
-      run: npm run e2e:build:android
+      run: |
+        mkdir -p android/app/build/outputs/apk
+        touch android/app/build/outputs/apk/cache-test.txt
 
     # Starts the avd previously set-up by name
     - name: Android Emulator
