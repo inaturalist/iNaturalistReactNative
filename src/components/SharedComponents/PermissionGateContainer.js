@@ -43,7 +43,7 @@ export const READ_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
   : androidReadPermissions;
 
 export const WRITE_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
-  ? [PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
+  ? [PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY, PERMISSIONS.IOS.PHOTO_LIBRARY]
   : androidReadPermissions;
 
 export const LOCATION_PERMISSIONS: Array<string> = Platform.OS === "ios"
