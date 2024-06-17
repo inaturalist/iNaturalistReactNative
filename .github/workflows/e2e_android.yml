@@ -34,119 +34,122 @@ jobs:
       with:
         fetch-depth: 1
 
-    - uses: actions/cache@v4
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v4
       with:
-        path: android/app/src/main/assets
-        key: apk
+        node-version: 18
 
-    # - name: Install Node.js, NPM and Yarn
-    #   uses: actions/setup-node@v4
-    #   with:
-    #     node-version: 18
+    # Currently, macos-13 runner has 3 Java versions pre-installed, default is 17
+    - name: Set up JDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'zulu'
 
-    # # Currently, macos-13 runner has 3 Java versions pre-installed, default is 17
-    # - name: Set up JDK 8
-    #   uses: actions/setup-java@v4
-    #   with:
-    #     java-version: '8'
-    #     distribution: 'zulu'
+    # Use the Android command line tools to download an AOSP emulator image, and setup new avd
+    # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
+    # There were errors when setting Java version used to either 11 or 17 explicitly here.
+    - name: Download Android Emulator Image
+      run: |
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-34;default;x86_64"
+        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_34_AOSP --device "Nexus 5X" -k 'system-images;android-34;default;x86_64'
+        $ANDROID_HOME/emulator/emulator -list-avds
 
-    # # Use the Android command line tools to download an AOSP emulator image, and setup new avd
-    # # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
-    # # There were errors when setting Java version used to either 11 or 17 explicitly here.
-    # - name: Download Android Emulator Image
-    #   run: |
-    #     echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-34;default;x86_64"
-    #     echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_34_AOSP --device "Nexus 5X" -k 'system-images;android-34;default;x86_64'
-    #     $ANDROID_HOME/emulator/emulator -list-avds
-
-    # - name: Cache node modules
-    #   uses: actions/cache@v4
-    #   id: cache
-    #   with:
-    #     path: node_modules
-    #     key: node-modules-${{ hashFiles('**/package-lock.json') }}
+    - name: Cache node modules
+      uses: actions/cache@v4
+      id: cache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
   
-    # - name: Rebuild detox from cache
-    #   if: steps.cache.outputs.cache-hit == 'true'
-    #   # Currently, (Detox 20) those two commands are macOS only
-    #   run: npx detox clean-framework-cache && npx detox build-framework-cache
+    - name: Rebuild detox from cache
+      if: steps.cache.outputs.cache-hit == 'true'
+      # Currently, (Detox 20) those two commands are macOS only
+      run: npx detox clean-framework-cache && npx detox build-framework-cache
 
-    # - name: Install Dependencies
-    #   if: steps.cache.outputs.cache-hit != 'true'
-    #   run: npm install
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install
 
-    # # Generate the secret files needed for a release build
-    # - name: Create .env file
-    #   env:
-    #     OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-    #     OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
-    #     E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
-    #     E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
-    #     JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-    #     GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
-    #   run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=small_inception_tf1.tflite\nANDROID_TAXONOMY_FILE_NAME=small_export_tax.csv\nIOS_MODEL_FILE_NAME=small_inception_tf1.mlmodel\nIOS_TAXONOMY_FILE_NAME=small_export_tax.json\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
-    # - name: Create keystore.properties file
-    #   env:
-    #     ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-    #     ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-    #     ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-    #   run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
-    # - name: Generate release keystore
-    #   env:
-    #     ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-    #     ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-    #     ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-    #   run: |
-    #     keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
-    # - name: Move keystore
-    #   run: mv release.keystore android/app/release.keystore
+    # Generate the secret files needed for a release build
+    - name: Create .env file
+      env:
+        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=small_inception_tf1.tflite\nANDROID_TAXONOMY_FILE_NAME=small_export_tax.csv\nIOS_MODEL_FILE_NAME=small_inception_tf1.mlmodel\nIOS_TAXONOMY_FILE_NAME=small_export_tax.json\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+    - name: Create keystore.properties file
+      env:
+        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+      run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
+    - name: Generate release keystore
+      env:
+        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      run: |
+        keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
+    - name: Move keystore
+      run: mv release.keystore android/app/release.keystore
 
-    # # Download the example model otherwise an error alert will be shown on app start, requires .env
-    # - name: Download a fake cv model and taxonomy file into the assets folder
-    #   run: npm run add-github-actions-test-model
+    # Download the example model otherwise an error alert will be shown on app start, requires .env
+    - name: Download a fake cv model and taxonomy file into the assets folder
+      run: npm run add-github-actions-test-model
 
-    # # Revert to default Java 17 (required by >RN0.73) for the build step, because somehow this is breaking emulator setup
-    # - name: Set up JDK 17
-    #   uses: actions/setup-java@v4
-    #   with:
-    #     java-version: '17'
-    #     distribution: 'zulu'
+    # Revert to default Java 17 (required by >RN0.73) for the build step, because somehow this is breaking emulator setup
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'zulu'
 
-    # # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
-    # - name: Build for detox
-    #   run: npm run e2e:build:android
+    - name: Cache APK
+      uses: actions/cache@v4
+      id: cache-apk
+      with:
+        path: android/app/build/outputs/apk
+        key: apk
+          
+    # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
+    - name: Build for detox
+      if: steps.cache-apk.outputs.cache-hit != 'true'
+      run: npm run e2e:build:android
 
-    # # Starts the avd previously set-up by name
-    # - name: Android Emulator
-    #   timeout-minutes: 15
-    #   continue-on-error: true
-    #   run: |
-    #     echo "Starting emulator"
-    #     nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_34_AOSP -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
-    #     $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
-    #     $ANDROID_HOME/platform-tools/adb devices
-    #     $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
-    #     echo "Emulator started"
+    # Starts the avd previously set-up by name
+    - name: Android Emulator
+      timeout-minutes: 15
+      continue-on-error: true
+      run: |
+        echo "Starting emulator"
+        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_34_AOSP -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
+        $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+        $ANDROID_HOME/platform-tools/adb devices
+        $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
+        echo "Emulator started"
 
-    # - name: Ensure servers are running
-    #   run: |
-    #     # is rails running?
-    #     curl -I --fail "https://staging.inaturalist.org/ping"
-    #     # is node running & is ES working?
-    #     curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
+    - name: Ensure servers are running
+      run: |
+        # is rails running?
+        curl -I --fail "https://staging.inaturalist.org/ping"
+        # is node running & is ES working?
+        curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
-    # # Start the Android e2e tests with extensive logging and screen captures for failing tests
-    # - name: Android Detox
-    #   run: npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
+    # Start the Android e2e tests with extensive logging and screen captures for failing tests
+    - name: Android Detox
+      run: npm run e2e:test:android -- --take-screenshots failing --record-videos failing -l debug
 
-    # # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
-    # - name: Store Detox artifacts on test failure
-    #   uses: actions/upload-artifact@v4
-    #   if: failure()
-    #   with:
-    #     name: detox-artifacts
-    #     path: artifacts
+    # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
+    - name: Store Detox artifacts on test failure
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: detox-artifacts
+        path: artifacts
 
   notify:
     name: Notify Slack
