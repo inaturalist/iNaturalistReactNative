@@ -1,29 +1,11 @@
 import { execSync } from "child_process";
 
-export async function iNatE2eBeforeAll( device ) {
-  if ( device.getPlatform() === "android" ) {
-    await device.launchApp( {
-      newInstance: true,
-      permissions: { location: "always" }
-    } );
-  }
-}
-
-export async function iNatE2eBeforeEach( device ) {
-  // device.launchApp would be preferred for an app of our complexity. It does work locally
-  // for both, but on CI for Android it does not work. So we use reloadReactNative for Android.
-  // if ( device.getPlatform() === "android" ) {
-  if ( device.getPlatform() === "android" ) {
-    // await device.reloadReactNative();
-    await device.launchApp( {
-      newInstance: true,
-      permissions: { location: "always" }
-    } );
-  } else {
-    await device.launchApp( {
-      newInstance: true,
-      permissions: { location: "always" }
-    } );
+export default async function iNatE2eBeforeEach( device ) {
+  await device.launchApp( {
+    newInstance: true,
+    permissions: { location: "always" }
+  } );
+  if ( device.getPlatform() === "ios" ) {
     // disable password autofill
     execSync(
       // eslint-disable-next-line max-len
