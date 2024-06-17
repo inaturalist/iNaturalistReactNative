@@ -36,7 +36,7 @@ jobs:
 
     - uses: actions/cache@v4
       with:
-        path: android/src/main/assets
+        path: iNaturalistReactNative/android/src/main/assets
         key: apk
 
     - name: Install Node.js, NPM and Yarn
