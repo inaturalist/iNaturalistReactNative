@@ -8,7 +8,9 @@ import { Image, Pressable, View } from "components/styledComponents";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback, useMemo, useState
+} from "react";
 import { Alert } from "react-native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -168,6 +170,12 @@ const EvidenceList = ( {
     ( params, optsWithAuth ) => deleteRemoteObservationSound( params, optsWithAuth )
   );
 
+  const onDeletePhoto = useCallback( async uriToDelete => {
+    await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
+    deletePhotoFromObservation( uriToDelete );
+    afterMediaDeleted( );
+  }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation, realm] );
+
   const onDeleteSound = useCallback( async uriToDelete => {
     const obsSound = observationSounds.find( os => os.sound.file_url === uriToDelete );
     async function removeLocalSound( ) {
@@ -208,12 +216,6 @@ const EvidenceList = ( {
     observationSounds,
     t
   ] );
-
-  const onDeletePhoto = async uriToDelete => {
-    deletePhotoFromObservation( uriToDelete );
-    await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
-    afterMediaDeleted( );
-  };
 
   const evidenceList = useMemo( ( ) => (
     <DraggableFlatList
