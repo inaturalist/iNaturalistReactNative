@@ -39,7 +39,6 @@ const ToolbarContainer = ( {
   const setExploreView = useStore( state => state.setExploreView );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
-  const deletions = useStore( state => state.deletions );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const deleteError = useStore( state => state.deleteError );
   const uploadMultiError = useStore( state => state.multiError );
@@ -49,6 +48,7 @@ const ToolbarContainer = ( {
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
   const syncingStatus = useStore( state => state.syncingStatus );
+  const initialNumDeletionsInQueue = useStore( state => state.initialNumDeletionsInQueue );
 
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
@@ -79,8 +79,8 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
-  const totalDeletions = deletions.length;
-  const deletionsComplete = deletions.length === currentDeleteCount;
+  const totalDeletions = initialNumDeletionsInQueue;
+  const deletionsComplete = totalDeletions === currentDeleteCount;
   const deletionsInProgress = totalDeletions > 0 && !deletionsComplete;
 
   const syncInProgress = syncingStatus !== SYNC_PENDING;

@@ -22,79 +22,64 @@ const { useRealm } = RealmContext;
 
 const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   const loggedIn = !!currentUserId;
-  const deletions = useStore( state => state.deletions );
+  const deleteQueue = useStore( state => state.deleteQueue );
   const deletionsCompletedAt = useStore( state => state.deletionsCompletedAt );
-  const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const completeLocalDeletions = useStore( state => state.completeLocalDeletions );
   const startNextDeletion = useStore( state => state.startNextDeletion );
   const setDeletionError = useStore( state => state.setDeletionError );
-  const observationToDelete = deletions[currentDeleteCount - 1];
-  const uuidToDelete = observationToDelete?.uuid;
-  const canDeleteRemoteObservation = observationToDelete?._synced_at && loggedIn;
   const syncingStatus = useStore( state => state.syncingStatus );
   const setSyncingStatus = useStore( state => state.setSyncingStatus );
   const completeSync = useStore( state => state.completeSync );
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
+  const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
 
   const realm = useRealm( );
 
-  const deleteRealmObservation = useCallback( async ( ) => {
-    await Observation.deleteLocalObservation( realm, uuidToDelete );
-  }, [realm, uuidToDelete] );
+  const deleteRealmObservation = useCallback( async uuid => {
+    await Observation.deleteLocalObservation( realm, uuid );
+  }, [realm] );
 
   const handleRemoteDeletion = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteRemoteObservation( params, optsWithAuth ),
     {
-      onSuccess: ( ) => {
-        logger.debug(
-          "Remote observation deleted, now deleting local observation"
-        );
-        deleteRealmObservation( );
-      },
+      onSuccess: ( ) => logger.debug( "Remote observation deleted" ),
       onError: deleteObservationError => {
-        setDeletionError( deleteObservationError );
-        // If we tried to delete and got a 404, this observation doesn't exist
-        // on the server any more and should be deleted locally
-        if ( deleteObservationError?.status === 404 ) {
-          deleteRealmObservation( );
-        } else {
-          throw deleteObservationError;
-        }
+        setDeletionError( deleteObservationError?.message );
+        throw deleteObservationError;
       }
     }
   );
 
   const deleteLocalObservations = useCallback( async ( ) => {
-    const deleteRemoteObservationAndCatchError = ( ) => {
-      handleRemoteDeletion.mutate( { uuid: uuidToDelete } );
-    };
+    if ( deleteQueue.length === 0 ) { return; }
 
-    if ( deletions.length === 0 ) { return; }
-
-    deletions.forEach( async ( observation, i ) => {
+    deleteQueue.forEach( async ( uuid, i ) => {
+      const observation = realm.objectForPrimaryKey( "Observation", uuid );
+      const canDeleteRemoteObservation = observation?._synced_at && loggedIn;
       if ( !canDeleteRemoteObservation ) {
-        return deleteRealmObservation( );
+        return deleteRealmObservation( uuid );
       }
-      await deleteRemoteObservationAndCatchError( );
+      await handleRemoteDeletion.mutate( { uuid } );
+      removeFromDeleteQueue( );
 
       if ( i > 0 ) {
         // this loop isn't really being used, since a user can only delete one
-        // observation at a time in soft launch. eventually, we'll probably want
-        // a deletion queue, similar to the uploads queue
+        // observation at a time in soft launch
         startNextDeletion( );
       }
-      if ( i === deletions.length - 1 ) {
+      if ( i === deleteQueue.length - 1 ) {
         completeLocalDeletions( );
       }
       return null;
     } );
   }, [
-    canDeleteRemoteObservation,
-    uuidToDelete,
+    completeLocalDeletions,
+    deleteQueue,
     deleteRealmObservation,
     handleRemoteDeletion,
-    deletions,
-    completeLocalDeletions,
+    loggedIn,
+    realm,
+    removeFromDeleteQueue,
     startNextDeletion
   ] );
 
@@ -138,12 +123,16 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   ] );
 
   const syncAutomatically = useCallback( async ( ) => {
-    logger.debug( "sync #1: syncing remotely deleted observations" );
-    if ( loggedIn ) await fetchRemoteDeletions( );
+    if ( loggedIn ) {
+      logger.debug( "sync #1: syncing remotely deleted observations" );
+      await fetchRemoteDeletions( );
+    }
     logger.debug( "sync #2: handling locally deleted observations" );
     await deleteLocalObservations( );
-    logger.debug( "sync #3: fetching remote observations" );
-    if ( loggedIn ) await fetchRemoteObservations( );
+    if ( loggedIn ) {
+      logger.debug( "sync #3: fetching remote observations" );
+      await fetchRemoteObservations( );
+    }
     completeSync( );
   }, [
     deleteLocalObservations,
@@ -154,15 +143,21 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   ] );
 
   const syncManually = useCallback( async ( ) => {
-    logger.debug( "sync #1: syncing remotely deleted observations" );
-    if ( loggedIn ) await fetchRemoteDeletions( );
+    if ( loggedIn ) {
+      logger.debug( "sync #1: syncing remotely deleted observations" );
+      await fetchRemoteDeletions( );
+    }
     logger.debug( "sync #2: handling locally deleted observations" );
     await deleteLocalObservations( );
-    logger.debug( "sync #3: fetching remote observations" );
-    if ( loggedIn ) await fetchRemoteObservations( );
+    if ( loggedIn ) {
+      logger.debug( "sync #3: fetching remote observations" );
+      await fetchRemoteObservations( );
+    }
     resetSyncToolbar( );
-    logger.debug( "sync #4: uploading all unsynced observations" );
-    if ( loggedIn ) await uploadObservations( );
+    if ( loggedIn ) {
+      logger.debug( "sync #4: uploading all unsynced observations" );
+      await uploadObservations( );
+    }
     completeSync( );
   }, [
     deleteLocalObservations,

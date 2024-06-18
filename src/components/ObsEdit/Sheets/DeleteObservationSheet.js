@@ -30,7 +30,7 @@ const DeleteObservationSheet = ( {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const { uuid } = currentObservation;
-  const setDeletions = useStore( state => state.setDeletions );
+  const addToDeleteQueue = useStore( state => state.addToDeleteQueue );
 
   const multipleObservations = observations.length > 1;
 
@@ -40,8 +40,7 @@ const DeleteObservationSheet = ( {
       safeRealmWrite( realm, ( ) => {
         localObsToDelete._deleted_at = new Date( );
       }, "adding _deleted_at date in DeleteObservationSheet" );
-      const deletion = realm.objectForPrimaryKey( "Observation", uuid );
-      setDeletions( [deletion] );
+      addToDeleteQueue( uuid );
     }
     if ( multipleObservations ) {
       updateObservations( observations.filter( o => o.uuid !== uuid ) );
@@ -55,7 +54,7 @@ const DeleteObservationSheet = ( {
     navToObsList,
     observations,
     realm,
-    setDeletions,
+    addToDeleteQueue,
     updateObservations,
     uuid
   ] );

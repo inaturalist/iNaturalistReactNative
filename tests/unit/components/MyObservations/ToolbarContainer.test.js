@@ -18,7 +18,7 @@ const initialStoreState = useStore.getState( );
 
 const deletionStore = {
   currentDeleteCount: 1,
-  deletions: [{}],
+  deleteQueue: [{}],
   deleteError: null,
   syncingStatus: SYNC_PENDING
 };
@@ -152,7 +152,8 @@ describe( "Toolbar Container", () => {
     useStore.setState( {
       ...deletionStore,
       currentDeleteCount: 1,
-      deletions: [{}]
+      deleteQueue: [{}],
+      initialNumDeletionsInQueue: 1
     } );
     renderComponent( <ToolbarContainer /> );
 

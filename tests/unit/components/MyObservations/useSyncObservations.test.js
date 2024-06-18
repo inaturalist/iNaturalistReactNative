@@ -37,7 +37,7 @@ const obsToDelete = unsyncedObservations[0];
 
 const syncingStore = {
   currentDeleteCount: 1,
-  deletions: [obsToDelete],
+  deleteQueue: [obsToDelete.uuid],
   syncingStatus: BEGIN_AUTOMATIC_SYNC,
   deleteError: null,
   deletionsCompletedAt: null
@@ -172,7 +172,7 @@ describe( "automatic sync while user is logged in", ( ) => {
       expect( unsyncedObservation._synced_at ).toBeNull( );
       useStore.setState( {
         ...syncingStore,
-        deletions: unsyncedObservations
+        deleteQueue: [unsyncedObservations[0].uuid]
       } );
       renderHook( ( ) => useSyncObservations( currentUserId ) );
 
@@ -191,7 +191,7 @@ describe( "automatic sync while user is logged in", ( ) => {
       expect( syncedObservation._synced_at ).not.toBeNull( );
       useStore.setState( {
         ...syncingStore,
-        deletions: syncedObservations
+        deleteQueue: [syncedObservations[0].uuid]
       } );
       renderHook( ( ) => useSyncObservations( currentUserId ) );
 

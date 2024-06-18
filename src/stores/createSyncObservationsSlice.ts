@@ -9,16 +9,18 @@ export const AUTOMATIC_SYNC_IN_PROGRESS = "automatic-sync-progress";
 const DEFAULT_STATE = {
   currentDeleteCount: 1,
   deleteError: null,
-  deletions: [],
+  deleteQueue: [],
   deletionsCompletedAt: null,
+  initialNumDeletionsInQueue: 0,
   syncingStatus: SYNC_PENDING
 };
 
 interface SyncObservationsSlice {
   currentDeleteCount: number,
   deleteError: string | null,
-  deletions: Array<Object>,
+  deleteQueue: Array<string>,
   deletionsCompletedAt: Date,
+  initialNumDeletionsInQueue: number,
   syncingStatus: typeof SYNC_PENDING
   | typeof AUTOMATIC_SYNC_IN_PROGRESS
   | typeof MANUAL_SYNC_IN_PROGRESS
@@ -26,7 +28,28 @@ interface SyncObservationsSlice {
 
 const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = set => ( {
   ...DEFAULT_STATE,
-  setDeletions: deletions => set( ( ) => ( { deletions } ) ),
+  addToDeleteQueue: uuids => set( state => {
+    let copyOfDeleteQueue = state.deleteQueue;
+    if ( typeof uuids === "string" ) {
+      copyOfDeleteQueue.push( uuids );
+    } else {
+      copyOfDeleteQueue = copyOfDeleteQueue.concat( uuids );
+    }
+    return ( {
+      deleteQueue: copyOfDeleteQueue,
+      initialNumDeletionsInQueue: state.initialNumDeletionsInQueue
+        + ( typeof uuids === "string"
+          ? 1
+          : uuids.length )
+    } );
+  } ),
+  removeFromDeleteQueue: ( ) => set( state => {
+    const copyOfDeleteQueue = state.deleteQueue;
+    copyOfDeleteQueue.pop( );
+    return ( {
+      deleteQueue: copyOfDeleteQueue
+    } );
+  } ),
   startNextDeletion: ( ) => set( state => ( {
     currentDeleteCount: state.currentDeleteCount + 1
   } ) ),
@@ -43,7 +66,8 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = set => 
   resetSyncToolbar: ( ) => set( ( ) => ( {
     currentDeleteCount: 1,
     deleteError: null,
-    deletions: []
+    deleteQueue: [],
+    initialNumDeletionsInQueue: 0
   } ) ),
   startManualSync: ( ) => set( ( ) => {
     activateKeepAwake( );
@@ -60,10 +84,11 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = set => 
   completeSync: ( ) => set( ( ) => {
     deactivateKeepAwake( );
     return ( {
-      syncingStatus: SYNC_PENDING,
       currentDeleteCount: 1,
       deleteError: null,
-      deletions: []
+      deleteQueue: [],
+      initialNumDeletionsInQueue: 0,
+      syncingStatus: SYNC_PENDING
     } );
   } )
 } );
