@@ -71,7 +71,9 @@ const ObsDetailsOverview = ( {
         {observation && (
           <DateDisplay
             dateString={
-              observation.time_observed_at || observation.observed_on_string
+              observation.time_observed_at
+              || observation.observed_on_string
+              || observation.observed_on
             }
           />
         )}

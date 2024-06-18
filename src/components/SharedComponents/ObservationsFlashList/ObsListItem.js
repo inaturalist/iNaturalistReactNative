@@ -64,7 +64,9 @@ const ObsListItem = ( {
         <ObservationLocation observation={observation} classNameMargin="mt-1" />
         <DateDisplay
           dateString={
-            observation.time_observed_at || observation.observed_on_string
+            observation.time_observed_at
+            || observation.observed_on_string
+            || observation.observed_on
           }
           classNameMargin="mt-1"
         />
