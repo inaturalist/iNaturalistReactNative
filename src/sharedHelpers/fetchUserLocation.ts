@@ -1,33 +1,37 @@
-// @flow
-
-import Geolocation from "@react-native-community/geolocation";
+import Geolocation, { GeolocationResponse } from "@react-native-community/geolocation";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer";
 import { Platform } from "react-native";
-import { checkMultiple, RESULTS } from "react-native-permissions";
+import {
+  checkMultiple,
+  Permission,
+  RESULTS
+} from "react-native-permissions";
 
 const options = {
   enableHighAccuracy: true,
-  maximumAge: 0
-};
+  maximumAge: 0,
+  timeout: 2000
+} as const;
 
-const getCurrentPosition = ( ) => new Promise(
+const getCurrentPosition = ( ): Promise<GeolocationResponse> => new Promise(
   ( resolve, error ) => {
     Geolocation.getCurrentPosition( resolve, error, options );
   }
 );
 
-type UserLocation = {
-  latitude: number,
-  longitude: number,
-  positional_accuracy: number
-
+interface UserLocation {
+  latitude: number;
+  longitude: number;
+  positional_accuracy: number;
 }
-const fetchUserLocation = async ( ): Promise<?UserLocation> => {
+const fetchUserLocation = async ( ): Promise<UserLocation | null> => {
   const permissionResult = permissionResultFromMultiple(
-    await checkMultiple( LOCATION_PERMISSIONS )
+    // TODO if/when we convert PermissionGateContainer to typescript, this
+    // case should be unnecessary
+    await checkMultiple( LOCATION_PERMISSIONS as Permission[] )
   );
 
   // TODO: handle case where iOS permissions are not granted

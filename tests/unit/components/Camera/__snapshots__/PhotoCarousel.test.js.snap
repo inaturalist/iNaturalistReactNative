@@ -13,6 +13,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
   }
 >
   <RCTScrollView
+    ListEmptyComponent={null}
     data={
       [
         "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
@@ -57,7 +58,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
               "value": {
                 "transform": [
                   {
-                    "rotateZ": 0,
+                    "rotateZ": "0",
                   },
                 ],
               },
@@ -67,7 +68,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
             {
               "transform": [
                 {
-                  "rotateZ": 0,
+                  "rotateZ": "0",
                 },
               ],
             }
@@ -226,7 +227,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
               "value": {
                 "transform": [
                   {
-                    "rotateZ": 0,
+                    "rotateZ": "0",
                   },
                 ],
               },
@@ -236,7 +237,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
             {
               "transform": [
                 {
-                  "rotateZ": 0,
+                  "rotateZ": "0",
                 },
               ],
             }
@@ -395,7 +396,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
               "value": {
                 "transform": [
                   {
-                    "rotateZ": 0,
+                    "rotateZ": "0",
                   },
                 ],
               },
@@ -405,7 +406,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
             {
               "transform": [
                 {
-                  "rotateZ": 0,
+                  "rotateZ": "0",
                 },
               ],
             }
@@ -563,6 +564,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
   }
 >
   <RCTScrollView
+    ListEmptyComponent={null}
     data={
       [
         "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
@@ -607,7 +609,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               "value": {
                 "transform": [
                   {
-                    "rotateZ": 0,
+                    "rotateZ": "0",
                   },
                 ],
               },
@@ -617,7 +619,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             {
               "transform": [
                 {
-                  "rotateZ": 0,
+                  "rotateZ": "0",
                 },
               ],
             }
@@ -781,7 +783,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               "value": {
                 "transform": [
                   {
-                    "rotateZ": 0,
+                    "rotateZ": "0",
                   },
                 ],
               },
@@ -791,7 +793,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             {
               "transform": [
                 {
-                  "rotateZ": 0,
+                  "rotateZ": "0",
                 },
               ],
             }
@@ -955,7 +957,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
               "value": {
                 "transform": [
                   {
-                    "rotateZ": 0,
+                    "rotateZ": "0",
                   },
                 ],
               },
@@ -965,7 +967,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             {
               "transform": [
                 {
-                  "rotateZ": 0,
+                  "rotateZ": "0",
                 },
               ],
             }

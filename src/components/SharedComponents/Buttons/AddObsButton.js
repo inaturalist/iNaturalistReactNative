@@ -5,7 +5,7 @@ import AddObsModal from "components/AddObsModal";
 import { Modal } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { t } from "i18next";
-import { getCurrentRoute } from "navigation/navigationUtils";
+import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import * as React from "react";
 import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";

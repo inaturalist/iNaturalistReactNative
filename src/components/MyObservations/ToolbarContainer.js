@@ -209,7 +209,6 @@ const ToolbarContainer = ( {
       showsExploreIcon={currentUser}
       statusText={statusText}
       stopAllUploads={stopAllUploads}
-      syncButtonDisabled={rotating}
       syncIconColor={syncIconColor}
       toggleLayout={toggleLayout}
     />

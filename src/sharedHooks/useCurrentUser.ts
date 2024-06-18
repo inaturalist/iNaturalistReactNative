@@ -1,12 +1,10 @@
-// @flow
-
 import { RealmContext } from "providers/contexts";
 import { useMemo } from "react";
 import User from "realmModels/User";
 
 const { useRealm } = RealmContext;
 
-const useCurrentUser = ( ): ?Object => {
+const useCurrentUser = ( ): User | null => {
   const realm = useRealm( );
   // TODO there has to be a better way. useMemo isn't doing anything here
   // because currentUser changes every time User.currentUser() gets called,

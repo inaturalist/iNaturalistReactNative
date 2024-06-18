@@ -66,8 +66,7 @@ const useStore = create( persist(
   {
     name: "persisted-zustand",
     partialize: state => ( {
-      isAdvancedUser: state.isAdvancedUser,
-      currentTabId: state.currentTabId
+      isAdvancedUser: state.isAdvancedUser
     } ),
     storage: createJSONStorage( () => zustandStorage )
   }

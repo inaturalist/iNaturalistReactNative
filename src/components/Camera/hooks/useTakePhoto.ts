@@ -2,6 +2,9 @@ import { RealmContext } from "providers/contexts";
 import {
   useState
 } from "react";
+import {
+  Camera, CameraDevice, PhotoFile, TakePhotoOptions
+} from "react-native-vision-camera";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
   rotatePhotoPatch,
@@ -12,24 +15,29 @@ import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
-const useTakePhoto = ( camera: Object, addEvidence?: boolean, device?: Object ): Object => {
+const useTakePhoto = (
+  camera: React.RefObject<Camera>,
+  addEvidence?: boolean,
+  device?: CameraDevice
+): Object => {
   const realm = useRealm( );
-  const currentObservation = useStore( state => state.currentObservation );
   const { deviceOrientation } = useDeviceOrientation( );
-  const hasFlash = device?.hasFlash;
-  const initialPhotoOptions = {
-    enableShutterSound: true,
-    ...( hasFlash && { flash: "off" } )
-  };
-  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
-  const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
-  const [takingPhoto, setTakingPhoto] = useState( false );
 
+  const currentObservation = useStore( state => state.currentObservation );
+  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const setCameraState = useStore( state => state.setCameraState );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
 
-  const saveRotatedPhotoToDocumentsDirectory = async cameraPhoto => {
+  const hasFlash = device?.hasFlash;
+  const initialPhotoOptions = {
+    enableShutterSound: true,
+    ...( hasFlash && { flash: "off" } as const )
+  } as const;
+  const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
+  const [takingPhoto, setTakingPhoto] = useState( false );
+
+  const saveRotatedPhotoToDocumentsDirectory = async ( cameraPhoto: PhotoFile ) => {
     // Rotate the original photo depending on device orientation
     const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
     return rotatePhotoPatch( cameraPhoto, photoRotation );
@@ -70,6 +78,7 @@ const useTakePhoto = ( camera: Object, addEvidence?: boolean, device?: Object ):
     const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto );
     await updateStore( uri, options );
     setTakingPhoto( false );
+    return uri;
   };
 
   const toggleFlash = ( ) => {

@@ -83,16 +83,6 @@ const writeObservationsToRealm = ( observations, message ) => {
   }, message );
 };
 
-const deleteObservationsFromRealm = message => {
-  const realm = global.mockRealms[__filename];
-  const observations = realm.objects( "Observation" );
-  safeRealmWrite( realm, ( ) => {
-    observations.forEach( obs => {
-      realm.delete( obs );
-    } );
-  }, message );
-};
-
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
@@ -160,8 +150,8 @@ describe( "MyObservations", ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
     } );
 
-    afterEach( ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
+    afterEach( async ( ) => {
+      await signOut( { realm: global.mockRealms[__filename] } );
     } );
 
     describe( "with unsynced observations", ( ) => {
@@ -197,10 +187,6 @@ describe( "MyObservations", ( ) => {
           mockUnsyncedObservations,
           "writing unsynced observations for MyObservations integration test"
         );
-      } );
-
-      afterEach( ( ) => {
-        deleteObservationsFromRealm( "deleting observations for MyObservations integration test" );
       } );
 
       it( "displays unuploaded status", async () => {

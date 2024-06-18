@@ -126,7 +126,14 @@ const EvidenceSectionContainer = ( {
       return true;
     }
     return false;
-  }, [currentObservation, longitude, latitude, hasLocation, isNewObs, hasImportedPhotos] );
+  }, [
+    currentObservation,
+    longitude,
+    latitude,
+    hasLocation,
+    isNewObs,
+    hasImportedPhotos
+  ] );
 
   const hasValidDate = useMemo( ( ) => {
     const observationDate = parseISO(

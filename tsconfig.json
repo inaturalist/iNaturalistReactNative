@@ -13,7 +13,7 @@
       "navigation": ["src/navigation"],
       "providers": ["src/providers"],
       "realmModels": ["src/realmModels"],
-      "sharedHelpers": ["src/sharedHelpers/*"],
+      "sharedHelpers": ["src/sharedHelpers"],
       "sharedHooks": ["src/sharedHooks"],
       "stores": ["src/stores"],
       "styles": ["src/styles"],

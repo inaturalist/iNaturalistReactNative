@@ -1,14 +1,11 @@
-// @flow
-
 import {
   tailwindFontRegular
 } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
-import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
 
-const Subheading1 = ( props: Object ): Node => (
+const Subheading1 = ( props: Object ) => (
   <Text
     className={classnames(
       "text-xl trailing-tight text-darkGray",
