@@ -122,7 +122,7 @@ const SuggestionsContainer = ( ): Node => {
     if ( hasVisionSuggestion ) {
       return currentObservation;
     }
-    if ( onlineSuggestions.length > 0 ) {
+    if ( onlineSuggestions?.length > 0 ) {
       return onlineSuggestions?.common_ancestor;
     }
     return [];
