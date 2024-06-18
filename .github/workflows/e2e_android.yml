@@ -51,16 +51,14 @@ jobs:
         java-version: '8'
         distribution: 'zulu'
 
-    - name: Update Android SDK
-      run: |
-        sdkmanager --update
-        sdkmanager "platform-tools" "emulator"
-
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
     # There were errors when setting Java version used to either 11 or 17 explicitly here.
     - name: Download Android Emulator Image
       run: |
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --update
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "platform-tools"
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "emulator"
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
         echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;x86_64'
         AVD_PATH="$HOME/.android/avd/Pixel_5_API_31_AOSP.avd"
