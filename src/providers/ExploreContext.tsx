@@ -3,7 +3,10 @@
 import { t } from "i18next";
 import * as React from "react";
 import { LatLng } from "react-native-maps";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
+
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 
 export enum EXPLORE_ACTION {
   CHANGE_SORT_BY = "CHANGE_SORT_BY",

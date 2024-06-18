@@ -19,6 +19,7 @@ import {
   RESULTS
 } from "react-native-permissions";
 import { Camera, CameraDevice } from "react-native-vision-camera";
+import { log } from "sharedHelpers/logger";
 import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
@@ -28,6 +29,8 @@ import useDeviceOrientation, {
 import AICamera from "./AICamera/AICamera";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 import StandardCamera from "./StandardCamera/StandardCamera";
+
+const logger = log.extend( "CameraWithDevice" );
 
 const isTablet = DeviceInfo.isTablet( );
 
@@ -68,6 +71,7 @@ const CameraWithDevice = ( {
   const isFocused = useIsFocused( );
   const [locationPermissionGranted, setLocationPermissionGranted] = useState( false );
 
+  logger.debug( `isFocused: ${isFocused}` );
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( {
     addPhotoPermissionResult,
     addEvidence,
