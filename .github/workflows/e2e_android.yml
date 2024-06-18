@@ -51,6 +51,11 @@ jobs:
         java-version: '8'
         distribution: 'zulu'
 
+    - name: Update Android SDK
+      run: |
+        sdkmanager --update
+        sdkmanager "platform-tools" "emulator"
+
     # Use the Android command line tools to download an AOSP emulator image, and setup new avd
     # The name of the device for testing has to be the same as on the .detoxrc.js file (even if it is not a Pixel)
     # There were errors when setting Java version used to either 11 or 17 explicitly here.
