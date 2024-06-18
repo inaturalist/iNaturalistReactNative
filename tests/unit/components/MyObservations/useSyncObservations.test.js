@@ -9,6 +9,7 @@ import {
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 const initialStoreState = useStore.getState( );
 
@@ -66,15 +67,38 @@ jest.mock( "components/MyObservations/hooks/useUploadObservations", ( ) => ( {
   } )
 } ) );
 
-const getLocalObservation = uuid => global.realm
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
+    }
+  };
+} );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
+
+const getLocalObservation = uuid => global.mockRealms[__filename]
   .objectForPrimaryKey( "Observation", uuid );
 
 const createObservations = ( observations, comment ) => {
+  const realm = global.mockRealms[__filename];
   safeRealmWrite(
-    global.realm,
+    realm,
     ( ) => {
       observations.forEach( observation => {
-        global.realm.create( "Observation", observation );
+        realm.create( "Observation", observation );
       } );
     },
     comment
@@ -87,8 +111,9 @@ beforeAll( async () => {
 
 describe( "automatic sync while user is logged out", ( ) => {
   beforeEach( () => {
-    safeRealmWrite( global.realm, ( ) => {
-      global.realm.create( "Observation", obsToDelete );
+    const realm = global.mockRealms[__filename];
+    safeRealmWrite( realm, ( ) => {
+      realm.create( "Observation", obsToDelete );
     }, "write Observation to delete, useSyncObservations.ts" );
   } );
   it( "should not fetch remote observations or deletions when user is logged out", async ( ) => {
@@ -105,13 +130,14 @@ describe( "automatic sync while user is logged out", ( ) => {
   } );
 
   it( "should delete local observations without making a server call", async ( ) => {
-    const obsForDeletion = global.realm.objectForPrimaryKey( "Observation", obsToDelete.uuid );
+    const realm = global.mockRealms[__filename];
+    const obsForDeletion = realm.objectForPrimaryKey( "Observation", obsToDelete.uuid );
     expect( obsForDeletion ).toBeTruthy( );
     useStore.setState( {
       ...syncingStore
     } );
     renderHook( ( ) => useSyncObservations( null ) );
-    const deletedObs = global.realm.objectForPrimaryKey( "Observation", obsToDelete.uuid );
+    const deletedObs = realm.objectForPrimaryKey( "Observation", obsToDelete.uuid );
     await waitFor( ( ) => {
       expect( deletedObs ).toBeFalsy( );
     } );
