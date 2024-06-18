@@ -88,23 +88,24 @@ const SuggestionsContainer = ( ): Node => {
     selectedPhotoUri
   };
 
-  const suggestions = onlineSuggestions?.results?.length > 0
+  const unfilteredSuggestions = onlineSuggestions?.results?.length > 0
     ? onlineSuggestions.results
     : offlineSuggestions;
 
-  const hasSuggestions = suggestions.length > 0;
-  const humanSuggestion = _.find( suggestions, s => s.taxon.id === HUMAN_ID );
+  const hasSuggestions = unfilteredSuggestions.length > 0;
+  const humanSuggestion = _.find( unfilteredSuggestions, s => s.taxon.id === HUMAN_ID );
 
   const filterSuggestions = ( ) => {
+    if ( isLoading ) { return []; }
     if ( humanSuggestion ) {
-      return [humanSuggestion];
+      return [];
     }
     if ( hasVisionSuggestion ) {
-      return suggestions.filter(
+      return unfilteredSuggestions.filter(
         result => result?.taxon?.id !== currentObservation?.taxon?.id
       ).map( r => r );
     }
-    return suggestions;
+    return unfilteredSuggestions;
   };
 
   useEffect( ( ) => {
@@ -113,9 +114,22 @@ const SuggestionsContainer = ( ): Node => {
     }
   }, [loadingOfflineSuggestions, hasSuggestions] );
 
-  const topSuggestion = hasVisionSuggestion
-    ? currentObservation
-    : onlineSuggestions?.common_ancestor;
+  const filterTopSuggestions = ( ) => {
+    if ( isLoading ) { return []; }
+    if ( humanSuggestion ) {
+      return humanSuggestion;
+    }
+    if ( hasVisionSuggestion ) {
+      return currentObservation;
+    }
+    if ( onlineSuggestions?.length > 0 ) {
+      return onlineSuggestions?.common_ancestor;
+    }
+    return [];
+  };
+
+  const topSuggestion = filterTopSuggestions( );
+  const suggestions = filterSuggestions( );
 
   return (
     <>
@@ -126,7 +140,7 @@ const SuggestionsContainer = ( ): Node => {
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
         selectedPhotoUri={selectedPhotoUri}
-        suggestions={filterSuggestions( )}
+        suggestions={suggestions}
         topSuggestion={topSuggestion}
         usingOfflineSuggestions={usingOfflineSuggestions}
       />
