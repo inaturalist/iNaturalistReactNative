@@ -9,6 +9,7 @@ import {
   useEffect, useRef,
   useState
 } from "react";
+import RNFS from "react-native-fs";
 import { checkMultiple, RESULTS } from "react-native-permissions";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
 
@@ -33,6 +34,10 @@ const useCurrentObservationLocation = (
   const originalPhotoUri = currentObservation?.observationPhotos
     && currentObservation?.observationPhotos[0]?.originalPhotoUri;
   const isGalleryPhoto = originalPhotoUri?.includes( galleryPhotosPath );
+  // Shared photo paths will look something like Shared/AppGroup/sdgsdgsdgk
+  const isSharedPhoto = (
+    originalPhotoUri && !originalPhotoUri.includes( RNFS.DocumentDirectoryPath )
+  );
   const locationNotSetYet = useRef( true );
   const prevObservation = useRef( currentObservation );
 
@@ -42,6 +47,7 @@ const useCurrentObservationLocation = (
       && !currentObservation?._synced_at
       && !hasLocation
       && !isGalleryPhoto
+      && !isSharedPhoto
   );
   const [numLocationFetches, setNumLocationFetches] = useState( 0 );
   const [fetchingLocation, setFetchingLocation] = useState( false );
