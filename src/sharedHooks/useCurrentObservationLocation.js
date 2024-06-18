@@ -11,7 +11,10 @@ import {
 } from "react";
 import RNFS from "react-native-fs";
 import { checkMultiple, RESULTS } from "react-native-permissions";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation.ts";
+
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
