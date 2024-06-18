@@ -10,7 +10,7 @@ type Props = {
 
 /**
  * React Navigation never unmounts a component, leading to weirdly immortal
- * componentsthat preserve their state forever, and to memory leaks when
+ * components that preserve their state forever, and to memory leaks when
  * effects open connections or load things and never disconnect them or
  * dispose of them. This component renders its children when it has focus in
  * React Navigation and does not when it loses focus, thereby unmounting
@@ -20,7 +20,6 @@ type Props = {
  */
 const Mortal = ( { children }: Props ): Node => {
   const [isVisible, setIsVisible] = useState( false );
-
   useFocusEffect(
     useCallback( ( ) => {
       setIsVisible( true );

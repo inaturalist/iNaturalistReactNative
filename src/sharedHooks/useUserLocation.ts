@@ -142,6 +142,15 @@ function useUserLocation(
     untilAcc
   ] );
 
+  // When the consumer tells us we no longer need to fetch location, reset the
+  // user location so it's not stale the next time we need to fetch
+  useEffect( ( ) => {
+    if ( enabled === false ) {
+      setUserLocation( undefined );
+      setAccGoodEnough( false );
+    }
+  }, [enabled] );
+
   return {
     userLocation,
     isLoading
