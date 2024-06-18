@@ -347,7 +347,9 @@ describe( "Suggestions", ( ) => {
       );
       expect( humanResultButton ).toBeVisible( );
       const flatList = screen.getByTestId( "Suggestions.FlatList" );
-      expect( flatList ).toHaveProp( "data", [humanSuggestion] );
+      expect( flatList ).toHaveProp( "data", [] );
+      const human = screen.getByText( /Homo sapiens/ );
+      expect( human ).toBeVisible( );
     }
   );
 

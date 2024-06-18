@@ -107,7 +107,8 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       await actor.press( takePhotoButton );
       const addIDButton = await screen.findByText( /ADD AN ID/ );
       expect( addIDButton ).toBeVisible( );
-      expect( screen.getByText( mockLocalTaxon.name ) ).toBeVisible( );
+      const topTaxon = await screen.findByText( mockLocalTaxon.name );
+      expect( topTaxon ).toBeVisible( );
     } );
   } );
 } );
