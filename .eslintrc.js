@@ -127,12 +127,13 @@ module.exports = {
     "react-native-a11y/has-valid-accessibility-ignores-invert-colors": 1,
     "react-native-a11y/has-valid-accessibility-live-region": 1,
     "react-native-a11y/has-valid-important-for-accessibility": 1,
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
 
     // TODO: we should actually type these at some point ~amanda 041824
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/no-unused-vars": 0,
     "@typescript-eslint/no-var-requires": 0
-
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {

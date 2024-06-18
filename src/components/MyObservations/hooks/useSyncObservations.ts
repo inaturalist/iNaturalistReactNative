@@ -1,4 +1,5 @@
 import { INatApiError } from "api/error";
+import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import Observation from "realmModels/Observation";
@@ -41,7 +42,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
     await Observation.deleteLocalObservation( realm, uuidToDelete );
   }, [realm, uuidToDelete] );
 
-  const deleteRemoteObservation = useAuthenticatedMutation(
+  const handleRemoteDeletion = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteRemoteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
@@ -65,7 +66,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
 
   const deleteLocalObservations = useCallback( async ( ) => {
     const deleteRemoteObservationAndCatchError = ( ) => {
-      deleteRemoteObservation.mutate( { uuid: uuidToDelete } );
+      handleRemoteDeletion.mutate( { uuid: uuidToDelete } );
     };
 
     if ( deletions.length === 0 ) { return; }
@@ -91,7 +92,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
     canDeleteRemoteObservation,
     uuidToDelete,
     deleteRealmObservation,
-    deleteRemoteObservation,
+    handleRemoteDeletion,
     deletions,
     completeLocalDeletions,
     startNextDeletion
