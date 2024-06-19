@@ -137,7 +137,12 @@ const EvidenceSection = ( {
               size={25}
             />
           )}
-          <View className={isFetchingLocation && "bottom-5"}>
+          <View
+            className={classnames(
+              "h-[18px] items-center justify-center",
+              isFetchingLocation && "bottom-5"
+            )}
+          >
             <INatIcon size={14} name="map-marker-outline" />
           </View>
         </View>
