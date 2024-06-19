@@ -135,7 +135,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
       await fetchRemoteObservations( );
     }
     completeSync( );
-    await sleep( 5000 );
+    await sleep( 5_000 );
     resetSyncToolbar( );
   }, [
     deleteLocalObservations,
