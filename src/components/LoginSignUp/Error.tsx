@@ -1,19 +1,16 @@
-// @flow
-
 import {
   INatIcon,
   List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 
-type Props = {
-  error: string
+interface Props {
+  error: string;
 }
 
-const Error = ( { error }: Props ): Node => {
+const Error = ( { error }: Props ) => {
   const theme = useTheme( );
 
   return (
