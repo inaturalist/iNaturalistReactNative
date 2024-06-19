@@ -11,13 +11,17 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
 
 import {
+  authenticateUser,
   registerUser
 } from "./AuthenticationService";
 import Error from "./Error";
+
+const { useRealm } = RealmContext;
 
 const NONE = "NONE";
 const LICENSES = "LICENSES";
@@ -25,6 +29,7 @@ const PERSONAL_INFO = "PERSONAL_INFO";
 const INFO_TRANSFER = "INFO_TRANSFER";
 
 const LicensePhotosForm = ( ): Node => {
+  const realm = useRealm( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { user } = params;
@@ -128,9 +133,14 @@ const LicensePhotosForm = ( ): Node => {
     const registrationError = await registerUser( user );
     if ( registrationError ) {
       setError( registrationError );
-    } else {
-      navigation.navigate( "SignUpConfirmation" );
+      return;
     }
+    const success = await authenticateUser( user.login, user.password, realm );
+    if ( !success ) {
+      setError( t( "Failed-to-log-in" ) );
+      return;
+    }
+    navigation.navigate( "SignUpConfirmation" );
   };
 
   const checkboxRow = row => {
