@@ -139,6 +139,8 @@ const EvidenceSection = ( {
           )}
           <View
             className={classnames(
+              // This line makes sure the icon is centered in the height
+              // of the Body3 label next to it
               "h-[18px] items-center justify-center",
               isFetchingLocation && "bottom-5"
             )}
