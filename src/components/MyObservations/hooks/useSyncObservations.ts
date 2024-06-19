@@ -4,6 +4,7 @@ import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
+import { sleep } from "sharedHelpers/util";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import {
   AUTOMATIC_SYNC_IN_PROGRESS,
@@ -134,12 +135,15 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
       await fetchRemoteObservations( );
     }
     completeSync( );
+    await sleep( 5000 );
+    resetSyncToolbar( );
   }, [
     deleteLocalObservations,
     fetchRemoteDeletions,
     fetchRemoteObservations,
     loggedIn,
-    completeSync
+    completeSync,
+    resetSyncToolbar
   ] );
 
   const syncManually = useCallback( async ( ) => {

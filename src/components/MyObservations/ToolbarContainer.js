@@ -79,9 +79,8 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
-  const totalDeletions = initialNumDeletionsInQueue;
-  const deletionsComplete = totalDeletions === currentDeleteCount;
-  const deletionsInProgress = totalDeletions > 0 && !deletionsComplete;
+  const deletionsComplete = initialNumDeletionsInQueue === currentDeleteCount;
+  const deletionsInProgress = initialNumDeletionsInQueue > 0 && !deletionsComplete;
 
   const syncInProgress = syncingStatus !== SYNC_PENDING;
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
@@ -93,7 +92,7 @@ const ToolbarContainer = ( {
     // TODO: we should emit deletions progress like we do for uploads for an accurate progress
     // right now, a user can only delete a single local upload at a time from ObsEdit
     // so we don't need a more robust count here (20240607)
-    if ( totalDeletions === 0 ) {
+    if ( initialNumDeletionsInQueue === 0 ) {
       return 0;
     }
     if ( !deletionsComplete ) {
@@ -108,7 +107,7 @@ const ToolbarContainer = ( {
 
   const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadMultiError )
-    || ( deletionsComplete && !deleteError && totalDeletions > 0 );
+    || ( deletionsComplete && !deleteError && initialNumDeletionsInQueue > 0 );
 
   const showsExclamation = pendingUpload || showFinalUploadError;
 
@@ -116,13 +115,13 @@ const ToolbarContainer = ( {
     if ( syncInProgress ) { return t( "Syncing" ); }
 
     const deletionParams = {
-      total: totalDeletions,
+      total: initialNumDeletionsInQueue,
       currentDeleteCount
     };
 
-    if ( totalDeletions > 0 ) {
+    if ( initialNumDeletionsInQueue > 0 ) {
       if ( deletionsComplete ) {
-        return t( "X-observations-deleted", { count: totalDeletions } );
+        return t( "X-observations-deleted", { count: initialNumDeletionsInQueue } );
       }
       // iPhone 4 pixel width
       return screenWidth <= 640
@@ -149,12 +148,12 @@ const ToolbarContainer = ( {
   }, [
     currentDeleteCount,
     deletionsComplete,
+    initialNumDeletionsInQueue,
     numUploadsAttempted,
     numUnuploadedObservations,
     pendingUpload,
     syncInProgress,
     t,
-    totalDeletions,
     translationParams,
     uploadInProgress,
     uploadsComplete
