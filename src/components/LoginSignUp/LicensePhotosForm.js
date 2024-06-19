@@ -3,13 +3,16 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  Body2, Button, TextSheet, UnderlinedLink
+  Body2,
+  Button,
+  Checkbox,
+  TextSheet,
+  UnderlinedLink
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Checkbox, useTheme } from "react-native-paper";
 
 import {
   registerUser
@@ -25,7 +28,6 @@ const LicensePhotosForm = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { user } = params;
-  const theme = useTheme( );
   const [learnSheet, setLearnSheet] = useState( NONE );
   const [error, setError] = useState( null );
 
@@ -137,16 +139,15 @@ const LicensePhotosForm = ( ): Node => {
     return (
       <View
         className={classnames( "flex-row mb-3", {
-          "mt-10 mb-0": row === "fifth"
+          "mt-10 mb-0": row === "fifth",
+          "items-start": row !== "fifth",
+          "items-center": row === "fifth"
         } )}
         key={row}
       >
-        <Checkbox.Android
-          color={theme.colors.secondary}
-          status={checked === true
-            ? "checked"
-            : "unchecked"}
-          label={text}
+        <Checkbox
+          transparent
+          isChecked={checked}
           onPress={( ) => {
             const updatedCheckboxes = checkboxes;
             if ( row === "fifth" ) {
@@ -165,7 +166,7 @@ const LicensePhotosForm = ( ): Node => {
             setCheckboxes( { ...updatedCheckboxes } );
           }}
         />
-        <View className="mt-2 flex-1">
+        <View className="flex-1">
           <Body2 className="flex-wrap color-white">{text}</Body2>
           {links && links.map( link => (
             <UnderlinedLink
@@ -229,7 +230,7 @@ const LicensePhotosForm = ( ): Node => {
         level="focus"
         text={t( "CREATE-AN-ACCOUNT" )}
         onPress={register}
-        className="mt-[30px]"
+        className="my-[36px]"
         disabled={
           !checkboxes.second.checked
           || !checkboxes.third.checked
