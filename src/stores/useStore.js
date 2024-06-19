@@ -2,10 +2,10 @@ import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import createDeleteObservationsSlice from "./createDeleteObservationsSlice";
 import createExploreSlice from "./createExploreSlice";
 import createLayoutSlice from "./createLayoutSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
+import createSyncObservationsSlice from "./createSyncObservationsSlice";
 import createUploadObservationsSlice from "./createUploadObservationsSlice";
 
 const storage = new MMKV();
@@ -25,7 +25,7 @@ const useStore = create( persist(
   ( ...args ) => {
     // Let's make our slices
     const slices = [
-      createDeleteObservationsSlice( ...args ),
+      createSyncObservationsSlice( ...args ),
       createExploreSlice( ...args ),
       createObservationFlowSlice( ...args ),
       createLayoutSlice( ...args ),
