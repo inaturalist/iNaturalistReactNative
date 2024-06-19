@@ -187,6 +187,7 @@ Connect-with-other-naturalists = Connect with other naturalists and engage in co
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
 CONTINUE = CONTINUE
+Continue-to-iNaturalist = Continue to iNaturalist
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coordinates copied to clipboard
 # Button that copies coordinates to the clipboard
@@ -784,7 +785,6 @@ Reset-verb = Reset
 RESTART-APP = RESTART APP
 # Label for button that restores a withdrawn identification
 Restore = Restore
-Return-to-Login = Return to Login
 REVIEW-INATURALIST = REVIEW INATURALIST
 # Title for section of observation filters for controls over whether you have
 # reviewed the observations or not

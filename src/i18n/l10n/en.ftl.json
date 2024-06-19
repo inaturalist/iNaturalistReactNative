@@ -263,6 +263,7 @@
   "Connection-problem-Please-try-again-later": "Connection problem. Please try again later.",
   "CONTACT-SUPPORT": "CONTACT SUPPORT",
   "CONTINUE": "CONTINUE",
+  "Continue-to-iNaturalist": "Continue to iNaturalist",
   "Coordinates-copied-to-clipboard": {
     "comment": "Notification when coordinates have been copied",
     "val": "Coordinates copied to clipboard"
@@ -1069,7 +1070,6 @@
     "comment": "Label for button that restores a withdrawn identification",
     "val": "Restore"
   },
-  "Return-to-Login": "Return to Login",
   "REVIEW-INATURALIST": "REVIEW INATURALIST",
   "REVIEWED": {
     "comment": "Title for section of observation filters for controls over whether you have\nreviewed the observations or not",

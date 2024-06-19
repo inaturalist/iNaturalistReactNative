@@ -1063,7 +1063,7 @@
     "comment": "Label for button that restores a withdrawn identification",
     "val": "Restore"
   },
-  "Return-to-Login": "Return to Login",
+  "Continue-to-iNaturalist": "Continue to iNaturalist",
   "REVIEW-INATURALIST": "REVIEW INATURALIST",
   "REVIEWED": {
     "comment": "Title for section of observation filters for controls over whether you have\nreviewed the observations or not",
