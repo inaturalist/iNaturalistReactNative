@@ -1,17 +1,13 @@
-// @flow
-
 import { Body2, INatIcon } from "components/SharedComponents";
-import type { Node } from "react";
 import React, { useMemo } from "react";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useTheme } from "react-native-paper";
 
-type Props = {
-  accessibilityLabel: string,
-  isChecked: boolean,
-  onPress: Function,
-  text: string
+interface Props {
+  accessibilityLabel: string;
+  isChecked: boolean;
+  onPress: ( _checked: boolean ) => void;
+  text: string;
 }
 
 const Checkbox = ( {
@@ -19,7 +15,7 @@ const Checkbox = ( {
   isChecked = false,
   onPress,
   text
-}: Props ): Node => {
+}: Props ) => {
   const theme = useTheme( );
 
   const renderCheckboxText = useMemo( ( ) => {
