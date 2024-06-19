@@ -138,7 +138,7 @@ const LicensePhotosForm = ( ): Node => {
 
     return (
       <View
-        className={classnames( "flex-row mb-3", {
+        className={classnames( "flex-row mb-4", {
           "mt-10 mb-0": row === "fifth",
           "items-start": row !== "fifth",
           "items-center": row === "fifth"
