@@ -1,14 +1,11 @@
-// @flow
-
 import {
   tailwindFontRegular
 } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
-import type { Node } from "react";
 import React from "react";
-import { Text } from "react-native";
+import { Text, TextProps } from "react-native";
 
-const Body4 = ( props: Object ): Node => (
+const Body4 = ( props: TextProps ) => (
   <Text
     className={classnames(
       "text-2xs text-darkGray",

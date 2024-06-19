@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import INatIcon from "components/SharedComponents/INatIcon";
-import Body3 from "components/SharedComponents/Typography/Body3";
+import Body3 from "components/SharedComponents/Typography/Body3.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";

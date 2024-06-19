@@ -1,15 +1,12 @@
-// @flow
-
 import {
   tailwindFontMedium
 } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
-import type { Node } from "react";
 import React from "react";
-import { Text } from "react-native";
+import { Text, TextProps } from "react-native";
 
 // This is the same as List1 Typography in Figma
-const Body1 = ( props: Object ): Node => (
+const Body1 = ( props: TextProps ) => (
   <Text
     className={classnames(
       "text-base trailing-tight text-darkGray",
