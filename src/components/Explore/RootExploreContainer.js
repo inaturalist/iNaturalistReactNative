@@ -37,12 +37,20 @@ const RootExploreContainerWithContext = ( ): Node => {
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
   const updateTaxon = ( taxon: Object ) => {
-    dispatch( {
-      type: EXPLORE_ACTION.CHANGE_TAXON,
-      taxon,
-      taxonId: taxon?.id,
-      taxonName: taxon?.preferred_common_name || taxon?.name
-    } );
+    if ( !taxon ) {
+      console.log( "notaxon" );
+      dispatch( {
+        type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
+        taxon: null
+      } );
+    } else {
+      dispatch( {
+        type: EXPLORE_ACTION.CHANGE_TAXON,
+        taxon,
+        taxonId: taxon?.id,
+        taxonName: taxon?.preferred_common_name || taxon?.name
+      } );
+    }
   };
 
   const updateLocation = ( place: Object ) => {

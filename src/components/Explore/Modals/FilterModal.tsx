@@ -706,14 +706,19 @@ const FilterModal = ( {
             before
             taxon={taxon}
             onTaxonChosen={( taxonName: string ) => {
-              const selectedTaxon = realm
-                ?.objects( "Taxon" )
-                .filtered( "name CONTAINS[c] $0", taxonName );
-              const iconicTaxon
+              if ( taxonName === "unknown" ) {
+                console.log( "taxon unknown, update" );
+                updateTaxon( );
+              } else {
+                const selectedTaxon = realm
+                  ?.objects( "Taxon" )
+                  .filtered( "name CONTAINS[c] $0", taxonName );
+                const iconicTaxon
                 = selectedTaxon.length > 0
                   ? selectedTaxon[0]
                   : null;
-              updateTaxon( iconicTaxon );
+                updateTaxon( iconicTaxon );
+              }
             }}
           />
         </View>
