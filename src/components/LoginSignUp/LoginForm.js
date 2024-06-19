@@ -150,7 +150,7 @@ const LoginForm = ( {
         />
         {!hideFooter && (
           <Body1
-            className="color-white self-center mt-[30px] underline"
+            className="color-white self-center my-[32px] underline"
             onPress={( ) => navigation.navigate( "SignUp" )}
           >
             {t( "Dont-have-an-account" )}
