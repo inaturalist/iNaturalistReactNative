@@ -8,7 +8,8 @@ import {
   Body1,
   INatIconButton,
   List2,
-  UserIcon
+  UserIcon,
+  WarningSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useCallback, useMemo, useState } from "react";
@@ -232,6 +233,16 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           {Object.keys( drawerItems ).map( item => renderDrawerItem( item ) )}
         </View>
       </View>
+      {showConfirm && (
+        <WarningSheet
+          handleClose={() => setShowConfirm( false )}
+          headerText={t( "LOG-OUT--question" )}
+          text={t( "Are-you-sure-you-want-to-log-out" )}
+          handleSecondButtonPress={() => setShowConfirm( false )}
+          secondButtonText={t( "CANCEL" )}
+          buttonText={t( "LOG-OUT" )}
+        />
+      )}
     </DrawerContentScrollView>
   );
 };
