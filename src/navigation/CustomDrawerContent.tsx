@@ -10,6 +10,7 @@ import {
 import {
   Body1,
   Heading4,
+  INatIcon,
   INatIconButton,
   List2,
   UserIcon,
@@ -148,11 +149,10 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   };
 
   const renderIcon = useCallback( ( key: string ) => (
-    <INatIconButton
-      icon={drawerItems[key].icon}
-      size={20}
+    <INatIcon
+      name={drawerItems[key].icon}
+      size={22}
       color={drawerItems[key].color}
-      accessibilityLabel={drawerItems[key].label}
     />
   ), [drawerItems] );
 
@@ -215,6 +215,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     <DrawerItem
       key={drawerItems[key].label}
       testID={drawerItems[key].testID}
+      accessibilityLabel={drawerItems[key].label}
       icon={( ) => renderIcon( key )}
       label={() => renderLabel( drawerItems[key].label )}
       onPress={( ) => {
