@@ -1,23 +1,22 @@
-// @flow
-
 import {
-  BottomSheet, Button, List2
+  BottomSheet,
+  Button,
+  List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  handleClose: Function,
-  headerText: string,
-  text?: string,
-  buttonText: string,
-  confirm: Function,
-  secondButtonText?: string,
-  handleSecondButtonPress?: Function,
-  buttonType?: string,
-  hidden?: boolean,
-  insideModal?: boolean
+interface Props {
+  handleClose: Function;
+  headerText: string;
+  text?: string;
+  buttonText: string;
+  confirm: () => void;
+  secondButtonText?: string;
+  handleSecondButtonPress?: () => void;
+  buttonType?: string;
+  hidden?: boolean;
+  insideModal?: boolean;
 }
 
 const WarningSheet = ( {
@@ -31,7 +30,7 @@ const WarningSheet = ( {
   buttonType,
   hidden,
   insideModal
-}: Props ): Node => (
+}: Props ) => (
   <BottomSheet
     handleClose={handleClose}
     headerText={headerText}
@@ -41,7 +40,7 @@ const WarningSheet = ( {
     <View className="items-center p-5">
       {text && <List2 className="mb-6">{text}</List2>}
       <View className="flex-row">
-        {secondButtonText && (
+        {secondButtonText && handleSecondButtonPress && (
           <Button
             onPress={handleSecondButtonPress}
             text={secondButtonText}
