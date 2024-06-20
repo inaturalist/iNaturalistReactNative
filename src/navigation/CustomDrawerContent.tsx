@@ -11,8 +11,8 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import React, { useCallback, useMemo } from "react";
-import { Dimensions } from "react-native";
+import React, { useCallback, useMemo, useState } from "react";
+import { Dimensions, ViewStyle } from "react-native";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
