@@ -101,7 +101,7 @@
     "val": "April"
   },
   "Are-you-a-teacher": "Are you a teacher wanting to use iNaturalist with your students?",
-  "Are-you-sure-you-want-to-sign-out": "Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.",
+  "Are-you-sure-you-want-to-log-out": "Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.",
   "As-you-upload-more-observations": {
     "comment": "Onboarding text on MyObservations: 0-10 observations",
     "val": "As you upload more observations, others in our community may be able to help you identify them!"
@@ -696,7 +696,10 @@
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
   "Log-in-to-iNaturalist": "Log in to iNaturalist",
   "LOG-OUT": "LOG OUT",
-  "Logged-in-as": "Logged in as: { $username }",
+  "Logged-in-as": {
+    "comment": "LOG-OUT--question = LOG OUT?",
+    "val": "Logged in as: { $username }"
+  },
   "Login-sub-title": {
     "comment": "Appears in the login screen",
     "val": "Document living things, identify organisms & contribute to science"

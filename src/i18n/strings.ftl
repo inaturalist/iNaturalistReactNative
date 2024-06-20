@@ -87,7 +87,7 @@ Apply-filters = Apply filters
 # Month of April
 April = April
 Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
-Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
+Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
 attribution-cc-by = some rights reserved (CC BY)
