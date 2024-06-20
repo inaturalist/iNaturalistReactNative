@@ -40,6 +40,8 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
 
+  const [showConfirm, setShowConfirm] = useState( false );
+
   const labelStyle = useMemo( ( ) => ( {
     fontSize: 16,
     lineHeight: 19.2,
@@ -106,23 +108,20 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         label: t( "SETTINGS" ),
         navigation: "Settings",
         icon: "gear"
-      },
-      login: {
-        label: currentUser
-          ? t( "LOG-OUT" )
-          : t( "LOG-IN" ),
-        navigation: "LoginStackNavigator",
+      }
+    };
+    if ( currentUser ) {
+      items.logout = {
+        label: t( "LOG-OUT" ),
         icon: "door-exit",
         style: {
           opacity: 0.5,
-          display: currentUser
-            ? "flex"
-            : "none"
-        }
-      }
-    };
+          display: "flex"
+        },
+        onPress: ( ) => setShowConfirm( true )
+      };
+    }
     if ( isDebug ) {
-      // $FlowIgnore
       items.debug = {
         label: "DEBUG",
         navigation: "Debug",
@@ -195,27 +194,24 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     </Pressable>
   ), [currentUser, navigation, t] );
 
-  const renderDrawerItem = useCallback( item => {
-    // $FlowIgnore
-    if ( drawerItems[item].loggedInOnly && !currentUser ) {
-      return null;
-    }
-    return (
-      <DrawerItem
-        key={drawerItems[item].label}
-        testID={drawerItems[item].testID}
-        label={drawerItems[item].label}
-        onPress={( ) => {
-          // $FlowIgnore
-          navigation.navigate( drawerItems[item].navigation, drawerItems[item].params );
-        }}
-        labelStyle={labelStyle}
-        icon={( ) => renderIcon( item )}
-        style={[drawerItemStyle, drawerItems[item].style]}
-      />
-    );
-  }, [
-    currentUser,
+  const renderDrawerItem = useCallback( ( key: string ) => (
+    <DrawerItem
+      key={drawerItems[key].label}
+      testID={drawerItems[key].testID}
+      label={drawerItems[key].label}
+      onPress={( ) => {
+        if ( drawerItems[key].navigation ) {
+          navigation.navigate( drawerItems[key].navigation );
+        }
+        if ( drawerItems[key].onPress ) {
+          drawerItems[key].onPress();
+        }
+      }}
+      labelStyle={labelStyle}
+      icon={( ) => renderIcon( key )}
+      style={[drawerItemStyle, drawerItems[key].style]}
+    />
+  ), [
     drawerItemStyle,
     labelStyle,
     renderIcon,
