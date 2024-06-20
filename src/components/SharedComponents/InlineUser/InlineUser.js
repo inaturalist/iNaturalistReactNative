@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 // Directly imported, not from index.js to avoid circular dependency
 import INatIcon from "components/SharedComponents/INatIcon/INatIcon";
 // Directly imported, not from index.js to avoid circular dependency
-import Body3 from "components/SharedComponents/Typography/Body3";
+import Body3 from "components/SharedComponents/Typography/Body3.tsx";
 // Directly imported, not from index.js to avoid circular dependency
 import UserIcon from "components/SharedComponents/UserIcon/UserIcon";
 import {

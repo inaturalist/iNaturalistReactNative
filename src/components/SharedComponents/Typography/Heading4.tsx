@@ -1,17 +1,14 @@
-// @flow
-
 import {
   tailwindFontBold
 } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
-import type { Node } from "react";
 import React from "react";
-import { Text } from "react-native";
+import { Text, TextProps } from "react-native";
 
-const Heading5 = ( props: Object ): Node => (
+const Heading4 = ( props: TextProps ) => (
   <Text
     className={classnames(
-      "text-3xs tracking-wide text-darkGray",
+      "text-md tracking-widest text-darkGray",
       tailwindFontBold
     )}
     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -19,4 +16,4 @@ const Heading5 = ( props: Object ): Node => (
   />
 );
 
-export default Heading5;
+export default Heading4;
