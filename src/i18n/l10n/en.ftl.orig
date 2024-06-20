@@ -782,7 +782,7 @@ RESET-SOUND-header = RESET SOUND?
 Reset-verb = Reset
 # Label for button that restores a withdrawn identification
 Restore = Restore
-Return-to-Login = Return to Login
+Continue-to-iNaturalist = Continue to iNaturalist
 REVIEW-INATURALIST = REVIEW INATURALIST
 # Title for section of observation filters for controls over whether you have
 # reviewed the observations or not

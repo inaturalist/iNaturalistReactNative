@@ -1,25 +1,23 @@
-// @flow
-
 import { Body2, INatIcon } from "components/SharedComponents";
-import type { Node } from "react";
 import React, { useMemo } from "react";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useTheme } from "react-native-paper";
 
-type Props = {
-  accessibilityLabel: string,
-  isChecked: boolean,
-  onPress: Function,
-  text: string
+interface Props {
+  transparent?: boolean;
+  accessibilityLabel: string;
+  isChecked: boolean;
+  onPress: ( _checked: boolean ) => void;
+  text?: string;
 }
 
 const Checkbox = ( {
+  transparent = false,
   accessibilityLabel,
   isChecked = false,
   onPress,
   text
-}: Props ): Node => {
+}: Props ) => {
   const theme = useTheme( );
 
   const renderCheckboxText = useMemo( ( ) => {
@@ -27,20 +25,27 @@ const Checkbox = ( {
     return <Body2 className="ml-3 flex-shrink">{text}</Body2>;
   }, [text] );
 
-  const renderIcon = useMemo( ( ) => (
-    <INatIcon
-      name="checkmark"
-      color={theme.colors.onPrimary}
-      size={19}
-    />
-  ), [theme] );
+  const renderIcon = useMemo( ( ) => ( isChecked
+    ? (
+      <INatIcon
+        name="checkmark"
+        color={theme.colors.onPrimary}
+        size={19}
+      />
+    )
+    : null ), [theme, isChecked] );
+
+  const checkedBorderColor = theme.colors.secondary;
+  const uncheckedBorderColor = transparent
+    ? theme.colors.onPrimary
+    : theme.colors.primary;
 
   const innerIconStyle = {
     borderRadius: 6,
     borderWidth: 2,
     borderColor: isChecked
-      ? theme.colors.secondary
-      : theme.colors.primary
+      ? checkedBorderColor
+      : uncheckedBorderColor
   };
 
   const iconStyle = { borderRadius: 6 };
@@ -49,7 +54,9 @@ const Checkbox = ( {
     <BouncyCheckbox
       size={25}
       fillColor={theme.colors.secondary}
-      unfillColor={theme.colors.onPrimary}
+      unfillColor={transparent
+        ? undefined
+        : theme.colors.onPrimary}
       iconComponent={renderIcon}
       onPress={onPress}
       isChecked={isChecked}
