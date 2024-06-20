@@ -6,7 +6,6 @@ import React, { useCallback } from "react";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
 import Header from "./Header";
-import useLoginState from "./hooks/useLoginState";
 import LoginForm from "./LoginForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
@@ -15,7 +14,6 @@ const HIDE_HEADER_HEIGHT = 560;
 const HIDE_FOOTER_HEIGHT = 500;
 
 const Login = ( ): Node => {
-  const { loggedIn, setLoggedIn } = useLoginState( );
   const {
     keyboardShown,
     keyboardVerticalOffset,
@@ -33,16 +31,14 @@ const Login = ( ): Node => {
       />
       <LoginForm
         hideFooter={hideFooter}
-        setLoggedIn={setLoggedIn}
       />
     </>
-  ), [hideHeader, hideFooter, setLoggedIn] );
+  ), [hideHeader, hideFooter] );
 
   return (
     <LoginSignUpWrapper
       backgroundSource={require( "images/toucan.png" )}
       keyboardVerticalOffset={keyboardVerticalOffset}
-      scrollEnabled={!loggedIn}
     >
       {renderLoginForm( )}
     </LoginSignUpWrapper>
