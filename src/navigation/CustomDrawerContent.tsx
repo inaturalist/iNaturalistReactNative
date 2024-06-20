@@ -2,8 +2,12 @@ import {
   DrawerContentScrollView,
   DrawerItem
 } from "@react-navigation/drawer";
+import { useQueryClient } from "@tanstack/react-query";
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
+import {
+  signOut
+} from "components/LoginSignUp/AuthenticationService";
 import {
   Body1,
   INatIconButton,
@@ -12,6 +16,7 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import React, { useCallback, useMemo, useState } from "react";
 import { Dimensions, ViewStyle } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -19,6 +24,12 @@ import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useCurrentUser, useDebugMode, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
+
+import { log } from "../../react-native-logs.config";
+
+const logger = log.extend( "Logout" );
+
+const { useRealm } = RealmContext;
 
 const { width } = Dimensions.get( "screen" );
 
@@ -36,6 +47,8 @@ interface Props {
 }
 
 const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
+  const realm = useRealm( );
+  const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -136,6 +149,17 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     isDebug,
     t
   ] );
+
+  const onSignOut = async ( ) => {
+    logger.info( `Signing out ${User.userHandle( currentUser ) || ""} at the request of the user` );
+    await signOut( { realm, clearRealm: true, queryClient } );
+    setShowConfirm( false );
+
+    // TODO might be necessary to restart the app at this point. We just
+    // deleted the realm file on disk, but the RealmProvider may still have a
+    // copy of realm in local state
+    navigation.goBack( );
+  };
 
   const renderIcon = useCallback( ( key: string ) => (
     <INatIconButton
@@ -240,6 +264,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           text={t( "Are-you-sure-you-want-to-log-out" )}
           handleSecondButtonPress={() => setShowConfirm( false )}
           secondButtonText={t( "CANCEL" )}
+          confirm={onSignOut}
           buttonText={t( "LOG-OUT" )}
         />
       )}
