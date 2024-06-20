@@ -72,7 +72,7 @@ const Logout = ( { onLogOut }: Props ) : Node => {
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog}>
           <Dialog.Content>
-            <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
+            <Paragraph>{t( "Are-you-sure-you-want-to-log-out" )}</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
             <Button
