@@ -1,7 +1,4 @@
-// @flow
-
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useCallback } from "react";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
@@ -9,11 +6,11 @@ import Header from "./Header";
 import LoginForm from "./LoginForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
-const TARGET_NON_KEYBOARD_HEIGHT = 420;
-const HIDE_HEADER_HEIGHT = 560;
-const HIDE_FOOTER_HEIGHT = 500;
+const TARGET_NON_KEYBOARD_HEIGHT = 420 as const;
+const HIDE_HEADER_HEIGHT = 560 as const;
+const HIDE_FOOTER_HEIGHT = 500 as const;
 
-const Login = ( ): Node => {
+const Login = ( ) => {
   const {
     keyboardShown,
     keyboardVerticalOffset,
