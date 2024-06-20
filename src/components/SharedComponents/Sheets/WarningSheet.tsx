@@ -7,7 +7,7 @@ import { View } from "components/styledComponents";
 import React from "react";
 
 interface Props {
-  handleClose: Function;
+  handleClose: () => void;
   headerText: string;
   text?: string;
   buttonText: string;
