@@ -124,8 +124,11 @@ const LicensePhotosForm = ( ): Node => {
     }
   };
   const [checkboxes, setCheckboxes] = useState( initialCheckboxState );
+  const [loading, setLoading] = useState( false );
 
   const register = async ( ) => {
+    if ( loading ) { return; }
+    setLoading( true );
     user.pi_consent = true;
     user.data_transfer_consent = true;
     if ( checkboxes.first.checked === true ) {
@@ -136,12 +139,14 @@ const LicensePhotosForm = ( ): Node => {
     const registrationError = await registerUser( user );
     if ( registrationError ) {
       setError( registrationError );
+      setLoading( false );
       return;
     }
     const success = await authenticateUser( user.login, user.password, realm );
     if ( !success ) {
       logger.error( "registerUser was successfull but authenticateUser failed immediately after" );
     }
+    setLoading( false );
     navigation.navigate( "SignUpConfirmation" );
   };
 
@@ -243,8 +248,10 @@ const LicensePhotosForm = ( ): Node => {
         text={t( "CREATE-AN-ACCOUNT" )}
         onPress={register}
         className="my-[36px]"
+        loading={loading}
         disabled={
-          !checkboxes.second.checked
+          loading
+          || !checkboxes.second.checked
           || !checkboxes.third.checked
           || !checkboxes.fourth.checked
         }
