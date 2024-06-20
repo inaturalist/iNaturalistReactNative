@@ -1,36 +1,21 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
 import { Body1, Button } from "components/SharedComponents";
 import { SafeAreaView, View } from "components/styledComponents";
 import { t } from "i18next";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
 
-import { log } from "../../../react-native-logs.config";
 import {
-  getUsername,
-  signOut
+  getUsername
 } from "./AuthenticationService";
 
-const logger = log.extend( "Logout" );
-
-const { useRealm } = RealmContext;
-
-type Props = {
-  onLogOut?: Function
-}
-
-const Logout = ( { onLogOut }: Props ) : Node => {
-  const navigation = useNavigation( );
+const Logout = ( ) : Node => {
   const [username, setUsername] = useState( null );
   const [visible, setVisible] = useState( false );
-  const realm = useRealm( );
 
   const showDialog = ( ) => setVisible( true );
   const hideDialog = ( ) => setVisible( false );
@@ -51,22 +36,6 @@ const Logout = ( { onLogOut }: Props ) : Node => {
     };
   }, [] );
 
-  const queryClient = useQueryClient( );
-
-  const onSignOut = async ( ) => {
-    logger.info( `Signing out ${username || ""} at the request of the user` );
-    await signOut( { realm, clearRealm: true, queryClient } );
-    if ( typeof ( onLogOut ) === "function" ) {
-      onLogOut( );
-    }
-    hideDialog( );
-
-    // TODO might be necessary to restart the app at this point. We just
-    // deleted the realm file on disk, but the RealmProvider may still have a
-    // copy of realm in local state
-    navigation.getParent( )?.goBack( );
-  };
-
   return (
     <>
       <Portal>
@@ -81,7 +50,6 @@ const Logout = ( { onLogOut }: Props ) : Node => {
               testID="Login.signOutButton"
               text={t( "Cancel" )}
             />
-            <Button level="focus" onPress={onSignOut} text={t( "Sign-out" )} />
           </Dialog.Actions>
         </Dialog>
       </Portal>

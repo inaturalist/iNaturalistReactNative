@@ -46,7 +46,7 @@ const Login = ( ): Node => {
       scrollEnabled={!loggedIn}
     >
       {loggedIn
-        ? <Logout onLogOut={() => setLoggedIn( false )} />
+        ? <Logout />
         : renderLoginForm( )}
     </LoginSignUpWrapper>
   );
