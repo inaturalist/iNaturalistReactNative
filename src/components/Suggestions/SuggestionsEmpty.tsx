@@ -50,7 +50,7 @@ const SuggestionsEmpty = ( {
             <Button
               className="mx-5 mt-10"
               text={t( "CONTINUE" )}
-              onPress={( ) => navigation.navigate( "ObsEdit" )}
+              onPress={( ) => navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } )}
               level="focus"
             />
           </>

@@ -40,7 +40,7 @@ const useNavigateWithTaxonSelected = (
         vision
       } );
     } else {
-      navigation.navigate( "ObsEdit" );
+      navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }
     // If we've navigated, there's no need to run this effect again
     unselectTaxon( );

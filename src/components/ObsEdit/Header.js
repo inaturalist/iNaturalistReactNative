@@ -84,6 +84,8 @@ const Header = ( {
   const handleBackButtonPress = useCallback( ( ) => {
     if ( params?.lastScreen === "ObsList" ) {
       navToObsList( );
+    } else if ( params?.lastScreen === "Suggestions" ) {
+      navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
     } else if ( navigateBack ) {
       navigation.goBack( );
     } else if ( !savedLocally ) {
