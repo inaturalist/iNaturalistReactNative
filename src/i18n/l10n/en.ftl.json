@@ -696,10 +696,8 @@
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
   "Log-in-to-iNaturalist": "Log in to iNaturalist",
   "LOG-OUT": "LOG OUT",
-  "Logged-in-as": {
-    "comment": "LOG-OUT--question = LOG OUT?",
-    "val": "Logged in as: { $username }"
-  },
+  "LOG-OUT--question": "LOG OUT?",
+  "Logged-in-as": "Logged in as: { $username }",
   "Login-sub-title": {
     "comment": "Appears in the login screen",
     "val": "Document living things, identify organisms & contribute to science"
