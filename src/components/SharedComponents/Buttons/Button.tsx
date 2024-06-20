@@ -16,7 +16,7 @@ interface ButtonProps {
   icon?: string;
   level?: string;
   loading?: boolean;
-  onPress: ( _event: GestureResponderEvent ) => void;
+  onPress: ( _event?: GestureResponderEvent ) => void;
   testID?: string;
   text: string;
   dropdown?: boolean;
