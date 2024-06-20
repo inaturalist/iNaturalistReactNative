@@ -9,7 +9,6 @@ import Header from "./Header";
 import useLoginState from "./hooks/useLoginState";
 import LoginForm from "./LoginForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
-import Logout from "./Logout";
 
 const TARGET_NON_KEYBOARD_HEIGHT = 420;
 const HIDE_HEADER_HEIGHT = 560;
@@ -45,9 +44,7 @@ const Login = ( ): Node => {
       keyboardVerticalOffset={keyboardVerticalOffset}
       scrollEnabled={!loggedIn}
     >
-      {loggedIn
-        ? <Logout />
-        : renderLoginForm( )}
+      {renderLoginForm( )}
     </LoginSignUpWrapper>
   );
 };
