@@ -521,7 +521,6 @@ LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
-Logged-in-as = Logged in as: { $username }
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
 # Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
@@ -852,7 +851,6 @@ Show-observation-options = Show observation options.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
-Sign-out = Sign out
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
 Something-went-wrong = Something went wrong.

@@ -27,7 +27,7 @@ import colors from "styles/tailwindColors";
 
 import { log } from "../../react-native-logs.config";
 
-const logger = log.extend( "Logout" );
+const logger = log.extend( "CustomDrawerContent" );
 
 const { useRealm } = RealmContext;
 
