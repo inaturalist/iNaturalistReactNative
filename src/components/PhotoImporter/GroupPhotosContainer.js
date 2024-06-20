@@ -146,7 +146,7 @@ const GroupPhotosContainer = ( ): Node => {
     } ) ) );
     setIsCreatingObservations( false );
     if ( newObservations.length === 1 ) {
-      navigation.navigate( "Suggestions", { lastScreen: "GroupPhotos" } );
+      navigation.push( "Suggestions", { lastScreen: "GroupPhotos" } );
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
     }
