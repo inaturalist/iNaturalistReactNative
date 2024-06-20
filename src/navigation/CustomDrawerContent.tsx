@@ -50,16 +50,27 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     textAlign: "left",
     textAlignVertical: "center",
     marginLeft: -20
-  } ), [theme.colors.primary] );
+  } as const ), [theme.colors.primary] );
 
   const drawerItemStyle = useMemo( ( ) => ( {
     marginBottom: width <= BREAKPOINTS.lg
       ? -15
       : -5
-  } ), [] );
+  } as const ), [] );
 
+  interface DrawerItem {
+    label: string;
+    navigation?: string;
+    icon: string;
+    color?: string;
+    style?: ViewStyle;
+    onPress?: ( ) => void;
+    testID?: string;
+  }
   const drawerItems = useMemo( ( ) => {
-    const items = {
+    const items: {
+      [key: string]: DrawerItem;
+    } = {
       // search: {
       //   label: t( "SEARCH" ),
       //   navigation: "search",
@@ -126,13 +137,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     t
   ] );
 
-  const renderIcon = useCallback( item => (
+  const renderIcon = useCallback( ( key: string ) => (
     <INatIconButton
-      icon={drawerItems[item].icon}
+      icon={drawerItems[key].icon}
       size={20}
-      // $FlowIgnore
-      color={drawerItems[item].color}
-      accessibilityLabel={drawerItems[item].label}
+      color={drawerItems[key].color}
+      accessibilityLabel={drawerItems[key].label}
     />
   ), [drawerItems] );
 
