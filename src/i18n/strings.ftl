@@ -520,6 +520,7 @@ Log-in-to-contribute-your-observations = Log in to contribute your observations 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
+LOG-OUT--question = LOG OUT?
 Logged-in-as = Logged in as: { $username }
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
