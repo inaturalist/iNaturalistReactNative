@@ -163,16 +163,12 @@ const TaxonResult = ( {
           && (
             <INatIconButton
               className="ml-2"
-              icon={
-                clearBackground
-                  ? "checkmark-circle-outline"
-                  : "checkmark-circle"
-              }
+              icon="checkmark-circle-outline"
               size={40}
               color={
                 clearBackground
                   ? theme.colors.onSecondary
-                  : theme.colors.secondary
+                  : theme.colors.primary
               }
               onPress={() => handleCheckmarkPress( usableTaxon )}
               accessibilityLabel={accessibilityLabel}

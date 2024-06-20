@@ -26,8 +26,8 @@ const SuggestionsContainer = ( ): Node => {
   // and only have the latest resized image stored in computerVisionSuggestions
   useClearComputerVisionDirectory( );
   const { params } = useRoute( );
-  const hasVisionSuggestion = params?.hasVisionSuggestion;
   const currentObservation = useStore( state => state.currentObservation );
+  const hasVisionSuggestion = params?.hasVisionSuggestion && currentObservation?.taxon;
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
 
@@ -114,6 +114,8 @@ const SuggestionsContainer = ( ): Node => {
     }
   }, [loadingOfflineSuggestions, hasSuggestions] );
 
+  const otherSuggestions = filterSuggestions( );
+
   const filterTopSuggestions = ( ) => {
     if ( isLoading ) { return []; }
     if ( humanSuggestion ) {
@@ -125,11 +127,14 @@ const SuggestionsContainer = ( ): Node => {
     if ( onlineSuggestions?.length > 0 ) {
       return onlineSuggestions?.common_ancestor;
     }
+    // if ( otherSuggestions?.length > 0 ) {
+    //   const firstSuggestion = otherSuggestions.shift( );
+    //   return firstSuggestion;
+    // }
     return [];
   };
 
   const topSuggestion = filterTopSuggestions( );
-  const suggestions = filterSuggestions( );
 
   return (
     <>
@@ -140,7 +145,7 @@ const SuggestionsContainer = ( ): Node => {
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
         selectedPhotoUri={selectedPhotoUri}
-        suggestions={suggestions}
+        otherSuggestions={otherSuggestions}
         topSuggestion={topSuggestion}
         usingOfflineSuggestions={usingOfflineSuggestions}
       />

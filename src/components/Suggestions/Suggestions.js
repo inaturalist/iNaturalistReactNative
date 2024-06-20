@@ -2,16 +2,15 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
+  Body1,
   Body3,
-  Button,
   Heading4,
+  INatIconButton,
   ViewWrapper
 } from "components/SharedComponents";
-import {
-  View
-} from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { FlatList } from "react-native";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
@@ -31,7 +30,7 @@ type Props = {
   onTaxonChosen: Function,
   photoUris: Array<string>,
   selectedPhotoUri: string,
-  suggestions: Array<Object>,
+  otherSuggestions: Array<Object>,
   topSuggestion: Object,
   usingOfflineSuggestions: boolean,
 };
@@ -43,7 +42,7 @@ const Suggestions = ( {
   onTaxonChosen,
   photoUris,
   selectedPhotoUri,
-  suggestions,
+  otherSuggestions,
   topSuggestion,
   usingOfflineSuggestions
 }: Props ): Node => {
@@ -53,9 +52,27 @@ const Suggestions = ( {
   const { lastScreen } = params;
   const { isDebug } = useDebugMode( );
 
-  const taxonIds = suggestions?.map( s => s.taxon.id );
+  const taxonIds = otherSuggestions?.map( s => s.taxon.id );
 
   const observers = useObservers( taxonIds );
+
+  const hasOtherSuggestions = otherSuggestions?.length > 0;
+
+  const headerRight = useCallback( ( ) => (
+    <INatIconButton
+      icon="magnifying-glass"
+      onPress={( ) => navigation.navigate( "TaxonSearch", { lastScreen } )}
+      accessibilityLabel={t( "Search" )}
+    />
+  ), [navigation, lastScreen, t] );
+
+  useEffect( ( ) => {
+    navigation.setOptions( { headerRight } );
+  }, [headerRight, navigation] );
+
+  const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
+    lastScreen: "Suggestions"
+  } ), [navigation] );
 
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
@@ -76,6 +93,14 @@ const Suggestions = ( {
   const renderFooter = useCallback( ( ) => (
     <>
       <Attribution observers={observers} />
+      <Body1
+        className="underline text-center py-6"
+        onPress={navToObsEdit}
+        accessibilityRole="link"
+        accessibilityHint={t( "Navigates-to-observation-edit-screen" )}
+      >
+        {t( "Add-an-ID-Later" )}
+      </Body1>
       { isDebug && (
         <View className="bg-deeppink text-white p-3">
           <Heading4 className="text-white">Diagnostics</Heading4>
@@ -88,7 +113,7 @@ const Suggestions = ( {
         </View>
       )}
     </>
-  ), [debugData, isDebug, observers] );
+  ), [debugData, isDebug, navToObsEdit, observers, t] );
   /* eslint-enable i18next/no-literal-string */
   /* eslint-enable react/jsx-one-expression-per-line */
   /* eslint-enable max-len */
@@ -102,46 +127,37 @@ const Suggestions = ( {
           selectedPhotoUri={selectedPhotoUri}
           onPressPhoto={onPressPhoto}
         />
-        <Body3 className="my-4 mx-3">{t( "Select-the-identification-you-want-to-add" )}</Body3>
-        <Button
-          text={t( "SEARCH-FOR-A-TAXON" )}
-          onPress={( ) => navigation.navigate( "TaxonSearch", { lastScreen } )}
-          accessibilityLabel={t( "Search" )}
-        />
       </View>
-      { usingOfflineSuggestions && (
-        <View className="bg-warningYellow px-8 py-5 mt-5">
-          <Heading4>{ t( "Viewing-Offline-Suggestions" ) }</Heading4>
-          <Body3>{ t( "Viewing-Offline-Suggestions-results-may-differ" ) }</Body3>
-        </View>
-      ) }
-      { topSuggestion && (
+      {!loading && (
         <>
-          <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
-          <View className="bg-inatGreen/[.13]">
-            {renderSuggestion( { item: topSuggestion } )}
-          </View>
+          { usingOfflineSuggestions && (
+            <View className="bg-warningYellow px-8 py-5 mt-5">
+              <Heading4>{ t( "Viewing-Offline-Suggestions" ) }</Heading4>
+              <Body3>{ t( "Viewing-Offline-Suggestions-results-may-differ" ) }</Body3>
+            </View>
+          ) }
+          { topSuggestion && (
+            <>
+              <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
+              <View className="bg-inatGreen/[.13]">
+                {renderSuggestion( { item: topSuggestion } )}
+              </View>
+            </>
+          ) }
+          { hasOtherSuggestions && (
+            <Heading4 className="mt-6 mb-4 ml-4">{t( "OTHER-SUGGESTIONS" )}</Heading4>
+          ) }
         </>
-      ) }
-      { suggestions?.length > 0 && (
-        <Heading4 className="mt-6 mb-4 ml-4">
-          {
-            suggestions[0]?.score
-              ? t( "ALL-SUGGESTIONS" )
-              : t( "NEARBY-SUGGESTIONS" )
-          }
-        </Heading4>
-      ) }
+      )}
       <CommentBox />
     </>
   ), [
-    lastScreen,
-    navigation,
+    hasOtherSuggestions,
+    loading,
     onPressPhoto,
     photoUris,
     renderSuggestion,
     selectedPhotoUri,
-    suggestions,
     t,
     topSuggestion,
     usingOfflineSuggestions
@@ -151,7 +167,7 @@ const Suggestions = ( {
     <ViewWrapper testID="suggestions">
       <FlatList
         testID="Suggestions.FlatList"
-        data={suggestions}
+        data={otherSuggestions}
         renderItem={renderSuggestion}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}

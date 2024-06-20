@@ -34,6 +34,7 @@ ACTIVITY = ACTIVITY
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID
+Add-an-ID-Later = Add an ID Later
 ADD-COMMENT = ADD COMMENT
 Add-comment = Add comment
 Add-Date-Time = Add Date/Time
@@ -72,7 +73,6 @@ All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
 # As in automated identification suggestions
-ALL-SUGGESTIONS = ALL SUGGESTIONS
 Almost-done = Almost done!
 Already-have-an-account = Already have an account? Log in
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
@@ -186,7 +186,6 @@ CONFIRM = CONFIRM
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
-CONTINUE = CONTINUE
 Continue-to-iNaturalist = Continue to iNaturalist
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coordinates copied to clipboard
@@ -448,6 +447,7 @@ iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and a
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
 iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
 iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
+iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
 iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
 iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who assist in the curation of taxonomy and moderation, to the volunteer translators at who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful for all the people of our community who make iNaturalist the platform it is.
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
@@ -572,7 +572,6 @@ Navigates-to-your-observations = Navigates to your observations
 # Header for nearby projects
 NEARBY = NEARBY
 Nearby = Nearby
-NEARBY-SUGGESTIONS = NEARBY SUGGESTIONS
 Needs-ID = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
@@ -666,6 +665,7 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 # one of the existing options
 Other = Other
 OTHER-DATA = OTHER DATA
+OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
 PERSONAL-INFO = PERSONAL INFO
 Photo-importer = Photo importer
@@ -832,7 +832,6 @@ Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
 Select-or-drag-media = Select or drag media
 Select-photo = Select photo
-Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
 # Label for an element that let's you select a user
 Select-user = Select user
 Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
