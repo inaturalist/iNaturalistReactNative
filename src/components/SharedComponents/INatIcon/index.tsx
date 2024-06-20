@@ -4,6 +4,7 @@ import { useTheme } from "react-native-paper";
 import Icon from "./INatIcon";
 
 interface Props {
+  testID?: string;
   name: string;
   color?: string;
   size?: number;
@@ -78,10 +79,19 @@ const ALIASES: Aliases = {
   "upvote-inactive": "arrow-up-bold-circle-outline"
 } as const;
 
-const INatIcon = ( { name, color, size }: Props ) => {
+const INatIcon = ( {
+  testID, name, color, size
+}: Props ) => {
   const theme = useTheme();
   // Use default color if none is specified
-  return <Icon name={ALIASES[name] || name} color={color || theme.colors.primary} size={size} />;
+  return (
+    <Icon
+      testID={testID}
+      name={ALIASES[name] || name}
+      color={color || theme.colors.primary}
+      size={size}
+    />
+  );
 };
 
 export default INatIcon;
