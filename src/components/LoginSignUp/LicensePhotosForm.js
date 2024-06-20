@@ -15,11 +15,14 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
 
+import { log } from "../../../react-native-logs.config";
 import {
   authenticateUser,
   registerUser
 } from "./AuthenticationService";
 import Error from "./Error";
+
+const logger = log.extend( "LicensePhotosForm" );
 
 const { useRealm } = RealmContext;
 
@@ -137,8 +140,7 @@ const LicensePhotosForm = ( ): Node => {
     }
     const success = await authenticateUser( user.login, user.password, realm );
     if ( !success ) {
-      setError( t( "Failed-to-log-in" ) );
-      return;
+      logger.error( "registerUser was successfull but authenticateUser failed immediately after" );
     }
     navigation.navigate( "SignUpConfirmation" );
   };
