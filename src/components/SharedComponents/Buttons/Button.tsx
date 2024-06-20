@@ -3,13 +3,14 @@ import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
-import { AccessibilityRole, GestureResponderEvent } from "react-native";
+import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 import { MD3Theme, useTheme } from "react-native-paper";
 
 interface ButtonProps {
   accessibilityHint?: string;
   accessibilityLabel?: string;
   accessibilityRole?: AccessibilityRole;
+  style?: ViewStyle;
   className?: string;
   disabled?: boolean;
   forceDark?: boolean;
@@ -148,6 +149,7 @@ const Button = ( {
   accessibilityHint,
   accessibilityLabel,
   accessibilityRole,
+  style,
   className,
   disabled,
   forceDark,
@@ -186,6 +188,7 @@ const Button = ( {
 
   return (
     <Pressable
+      style={style}
       onPress={onPress}
       className={classnames( buttonClasses )}
       disabled={disabled}
