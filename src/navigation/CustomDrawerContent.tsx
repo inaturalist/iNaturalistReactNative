@@ -212,22 +212,26 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   ), [currentUser, navigation, t] );
 
   const renderDrawerItem = useCallback( ( key: string ) => (
-    <DrawerItem
-      key={drawerItems[key].label}
-      testID={drawerItems[key].testID}
-      accessibilityLabel={drawerItems[key].label}
-      icon={( ) => renderIcon( key )}
-      label={() => renderLabel( drawerItems[key].label )}
-      onPress={( ) => {
-        if ( drawerItems[key].navigation ) {
-          navigation.navigate( drawerItems[key].navigation );
-        }
-        if ( drawerItems[key].onPress ) {
-          drawerItems[key].onPress();
-        }
-      }}
-      style={[drawerItemStyle, drawerItems[key].style]}
-    />
+    <View
+      className="mb-6"
+    >
+      <DrawerItem
+        key={drawerItems[key].label}
+        testID={drawerItems[key].testID}
+        accessibilityLabel={drawerItems[key].label}
+        icon={( ) => renderIcon( key )}
+        label={() => renderLabel( drawerItems[key].label )}
+        onPress={( ) => {
+          if ( drawerItems[key].navigation ) {
+            navigation.navigate( drawerItems[key].navigation );
+          }
+          if ( drawerItems[key].onPress ) {
+            drawerItems[key].onPress();
+          }
+        }}
+        style={[drawerItemStyle, drawerItems[key].style]}
+      />
+    </View>
   ), [
     drawerItemStyle,
     renderLabel,
@@ -243,9 +247,9 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       descriptors={descriptors}
       contentContainerStyle={drawerScrollViewStyle}
     >
-      <View className="py-5 flex h-full justify-between">
+      <View className="py-5 flex">
         {renderTopBanner( )}
-        <View className="grow">
+        <View className="ml-3">
           {Object.keys( drawerItems ).map( item => renderDrawerItem( item ) )}
         </View>
       </View>
