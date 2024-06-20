@@ -1,5 +1,3 @@
-// @flow
-
 import {
   DrawerContentScrollView,
   DrawerItem
@@ -13,7 +11,6 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -29,16 +26,15 @@ const drawerScrollViewStyle = {
   borderTopRightRadius: 20,
   borderBottomRightRadius: 20,
   height: "100%"
-};
+} as const;
 
-type Props = {
-  state: Object,
-  navigation: Object,
-  descriptors: Object
+interface Props {
+  state: Object;
+  navigation: Object;
+  descriptors: Object;
 }
 
-const CustomDrawerContent = ( { ...props }: Props ): Node => {
-  const { state, navigation, descriptors } = props;
+const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const currentUser = useCurrentUser( );
   const theme = useTheme( );
   const { t } = useTranslation( );
