@@ -3,13 +3,13 @@ import {
   DrawerItem
 } from "@react-navigation/drawer";
 import { useQueryClient } from "@tanstack/react-query";
-import { fontRegular } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import {
   signOut
 } from "components/LoginSignUp/AuthenticationService";
 import {
   Body1,
+  Heading4,
   INatIconButton,
   List2,
   UserIcon,
@@ -19,7 +19,6 @@ import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useMemo, useState } from "react";
 import { Dimensions, ViewStyle } from "react-native";
-import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useCurrentUser, useDebugMode, useTranslation } from "sharedHooks";
@@ -50,23 +49,10 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
-  const theme = useTheme( );
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
 
   const [showConfirm, setShowConfirm] = useState( false );
-
-  const labelStyle = useMemo( ( ) => ( {
-    fontSize: 16,
-    lineHeight: 19.2,
-    letterSpacing: 2,
-    fontFamily: fontRegular,
-    color: theme.colors.primary,
-    fontWeight: "700",
-    textAlign: "left",
-    textAlignVertical: "center",
-    marginLeft: -20
-  } as const ), [theme.colors.primary] );
 
   const drawerItemStyle = useMemo( ( ) => ( {
     marginBottom: width <= BREAKPOINTS.lg
@@ -170,6 +156,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     />
   ), [drawerItems] );
 
+  const renderLabel = useCallback( ( label: string ) => (
+    <Heading4>
+      {label}
+    </Heading4>
+  ), [] );
+
   const renderTopBanner = useCallback( ( ) => (
     <Pressable
       accessibilityRole="button"
@@ -223,7 +215,8 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     <DrawerItem
       key={drawerItems[key].label}
       testID={drawerItems[key].testID}
-      label={drawerItems[key].label}
+      icon={( ) => renderIcon( key )}
+      label={() => renderLabel( drawerItems[key].label )}
       onPress={( ) => {
         if ( drawerItems[key].navigation ) {
           navigation.navigate( drawerItems[key].navigation );
@@ -232,13 +225,11 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           drawerItems[key].onPress();
         }
       }}
-      labelStyle={labelStyle}
-      icon={( ) => renderIcon( key )}
       style={[drawerItemStyle, drawerItems[key].style]}
     />
   ), [
     drawerItemStyle,
-    labelStyle,
+    renderLabel,
     renderIcon,
     drawerItems,
     navigation
