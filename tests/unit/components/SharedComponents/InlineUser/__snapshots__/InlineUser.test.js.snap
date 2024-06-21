@@ -155,7 +155,7 @@ exports[`InlineUser when offline renders reliably 1`] = `
       style={
         [
           {
-            "color": undefined,
+            "color": "rgba(103, 80, 164, 1)",
             "fontSize": 22,
           },
           undefined,
@@ -261,7 +261,7 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
       style={
         [
           {
-            "color": undefined,
+            "color": "rgba(103, 80, 164, 1)",
             "fontSize": 22,
           },
           undefined,

@@ -23,12 +23,10 @@ const { useRealm } = RealmContext;
 
 type Props = {
   hideFooter?: boolean,
-  setLoggedIn: Function
 }
 
 const LoginForm = ( {
-  hideFooter,
-  setLoggedIn
+  hideFooter
 }: Props ): Node => {
   const { params } = useRoute( );
   const emailConfirmed = params?.emailConfirmed;
@@ -76,7 +74,6 @@ const LoginForm = ( {
       setLoading( false );
       return;
     }
-    setLoggedIn( true );
     setLoading( false );
 
     navigation.getParent( )?.goBack( );

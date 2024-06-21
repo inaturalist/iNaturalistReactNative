@@ -1,26 +1,35 @@
-// @flow
-
 import {
   DrawerContentScrollView,
   DrawerItem
 } from "@react-navigation/drawer";
-import { fontRegular } from "appConstants/fontFamilies.ts";
+import { useQueryClient } from "@tanstack/react-query";
 import classnames from "classnames";
 import {
+  signOut
+} from "components/LoginSignUp/AuthenticationService";
+import {
   Body1,
+  Heading4,
+  INatIcon,
   INatIconButton,
   List2,
-  UserIcon
+  UserIcon,
+  WarningSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
-import React, { useCallback, useMemo } from "react";
-import { Dimensions } from "react-native";
-import { useTheme } from "react-native-paper";
+import { RealmContext } from "providers/contexts";
+import React, { useCallback, useMemo, useState } from "react";
+import { Dimensions, ViewStyle } from "react-native";
 import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useCurrentUser, useDebugMode, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
+
+import { log } from "../../react-native-logs.config";
+
+const logger = log.extend( "CustomDrawerContent" );
+
+const { useRealm } = RealmContext;
 
 const { width } = Dimensions.get( "screen" );
 
@@ -29,41 +38,42 @@ const drawerScrollViewStyle = {
   borderTopRightRadius: 20,
   borderBottomRightRadius: 20,
   height: "100%"
-};
+} as const;
 
-type Props = {
-  state: Object,
-  navigation: Object,
-  descriptors: Object
+interface Props {
+  state: Object;
+  navigation: Object;
+  descriptors: Object;
 }
 
-const CustomDrawerContent = ( { ...props }: Props ): Node => {
-  const { state, navigation, descriptors } = props;
+const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
+  const realm = useRealm( );
+  const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
-  const theme = useTheme( );
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
 
-  const labelStyle = useMemo( ( ) => ( {
-    fontSize: 16,
-    lineHeight: 19.2,
-    letterSpacing: 2,
-    fontFamily: fontRegular,
-    color: theme.colors.primary,
-    fontWeight: "700",
-    textAlign: "left",
-    textAlignVertical: "center",
-    marginLeft: -20
-  } ), [theme.colors.primary] );
+  const [showConfirm, setShowConfirm] = useState( false );
 
   const drawerItemStyle = useMemo( ( ) => ( {
     marginBottom: width <= BREAKPOINTS.lg
       ? -15
       : -5
-  } ), [] );
+  } as const ), [] );
 
+  interface DrawerItem {
+    label: string;
+    navigation?: string;
+    icon: string;
+    color?: string;
+    style?: ViewStyle;
+    onPress?: ( ) => void;
+    testID?: string;
+  }
   const drawerItems = useMemo( ( ) => {
-    const items = {
+    const items: {
+      [key: string]: DrawerItem;
+    } = {
       // search: {
       //   label: t( "SEARCH" ),
       //   navigation: "search",
@@ -99,23 +109,20 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         label: t( "SETTINGS" ),
         navigation: "Settings",
         icon: "gear"
-      },
-      login: {
-        label: currentUser
-          ? t( "LOG-OUT" )
-          : t( "LOG-IN" ),
-        navigation: "LoginStackNavigator",
+      }
+    };
+    if ( currentUser ) {
+      items.logout = {
+        label: t( "LOG-OUT" ),
         icon: "door-exit",
         style: {
           opacity: 0.5,
-          display: currentUser
-            ? "flex"
-            : "none"
-        }
-      }
-    };
+          display: "flex"
+        },
+        onPress: ( ) => setShowConfirm( true )
+      };
+    }
     if ( isDebug ) {
-      // $FlowIgnore
       items.debug = {
         label: "DEBUG",
         navigation: "Debug",
@@ -130,15 +137,30 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     t
   ] );
 
-  const renderIcon = useCallback( item => (
-    <INatIconButton
-      icon={drawerItems[item].icon}
-      size={20}
-      // $FlowIgnore
-      color={drawerItems[item].color}
-      accessibilityLabel={drawerItems[item].label}
+  const onSignOut = async ( ) => {
+    logger.info( `Signing out ${User.userHandle( currentUser ) || ""} at the request of the user` );
+    await signOut( { realm, clearRealm: true, queryClient } );
+    setShowConfirm( false );
+
+    // TODO might be necessary to restart the app at this point. We just
+    // deleted the realm file on disk, but the RealmProvider may still have a
+    // copy of realm in local state
+    navigation.goBack( );
+  };
+
+  const renderIcon = useCallback( ( key: string ) => (
+    <INatIcon
+      name={drawerItems[key].icon}
+      size={22}
+      color={drawerItems[key].color}
     />
   ), [drawerItems] );
+
+  const renderLabel = useCallback( ( label: string ) => (
+    <Heading4>
+      {label}
+    </Heading4>
+  ), [] );
 
   const renderTopBanner = useCallback( ( ) => (
     <Pressable
@@ -189,29 +211,30 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     </Pressable>
   ), [currentUser, navigation, t] );
 
-  const renderDrawerItem = useCallback( item => {
-    // $FlowIgnore
-    if ( drawerItems[item].loggedInOnly && !currentUser ) {
-      return null;
-    }
-    return (
+  const renderDrawerItem = useCallback( ( key: string ) => (
+    <View
+      className="mb-6"
+    >
       <DrawerItem
-        key={drawerItems[item].label}
-        testID={drawerItems[item].testID}
-        label={drawerItems[item].label}
+        key={drawerItems[key].label}
+        testID={drawerItems[key].testID}
+        accessibilityLabel={drawerItems[key].label}
+        icon={( ) => renderIcon( key )}
+        label={() => renderLabel( drawerItems[key].label )}
         onPress={( ) => {
-          // $FlowIgnore
-          navigation.navigate( drawerItems[item].navigation, drawerItems[item].params );
+          if ( drawerItems[key].navigation ) {
+            navigation.navigate( drawerItems[key].navigation );
+          }
+          if ( drawerItems[key].onPress ) {
+            drawerItems[key].onPress();
+          }
         }}
-        labelStyle={labelStyle}
-        icon={( ) => renderIcon( item )}
-        style={[drawerItemStyle, drawerItems[item].style]}
+        style={[drawerItemStyle, drawerItems[key].style]}
       />
-    );
-  }, [
-    currentUser,
+    </View>
+  ), [
     drawerItemStyle,
-    labelStyle,
+    renderLabel,
     renderIcon,
     drawerItems,
     navigation
@@ -224,12 +247,23 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       descriptors={descriptors}
       contentContainerStyle={drawerScrollViewStyle}
     >
-      <View className="py-5 flex h-full justify-between">
+      <View className="py-5 flex">
         {renderTopBanner( )}
-        <View className="grow">
+        <View className="ml-3">
           {Object.keys( drawerItems ).map( item => renderDrawerItem( item ) )}
         </View>
       </View>
+      {showConfirm && (
+        <WarningSheet
+          handleClose={() => setShowConfirm( false )}
+          headerText={t( "LOG-OUT--question" )}
+          text={t( "Are-you-sure-you-want-to-log-out" )}
+          handleSecondButtonPress={() => setShowConfirm( false )}
+          secondButtonText={t( "CANCEL" )}
+          confirm={onSignOut}
+          buttonText={t( "LOG-OUT" )}
+        />
+      )}
     </DrawerContentScrollView>
   );
 };

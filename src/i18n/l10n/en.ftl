@@ -87,7 +87,7 @@ Apply-filters = Apply filters
 # Month of April
 April = April
 Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
-Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
+Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
 attribution-cc-by = some rights reserved (CC BY)
@@ -520,7 +520,7 @@ Log-in-to-contribute-your-observations = Log in to contribute your observations 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
-Logged-in-as = Logged in as: { $username }
+LOG-OUT--question = LOG OUT?
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
 # Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
@@ -851,7 +851,6 @@ Show-observation-options = Show observation options.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
-Sign-out = Sign out
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
 Something-went-wrong = Something went wrong.
