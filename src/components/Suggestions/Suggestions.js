@@ -5,6 +5,7 @@ import {
   Body1,
   Body2,
   Body3,
+  Button,
   Heading4,
   INatIcon,
   INatIconButton,
@@ -28,6 +29,7 @@ import SuggestionsEmpty from "./SuggestionsEmpty";
 
 type Props = {
   debugData: Object,
+  showSuggestionsWithLocation: boolean,
   loading: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
@@ -41,6 +43,7 @@ type Props = {
 
 const Suggestions = ( {
   debugData,
+  showSuggestionsWithLocation,
   loading,
   onPressPhoto,
   onTaxonChosen,
@@ -98,6 +101,25 @@ const Suggestions = ( {
   /* eslint-disable max-len */
   const renderFooter = useCallback( ( ) => (
     <>
+      {showSuggestionsWithLocation
+        ? (
+          <View className="px-4 py-6">
+            <Button
+              text={t( "IGNORE-LOCATION" )}
+              onPress={( ) => reloadSuggestions( { showLocation: false } )}
+              accessibilityLabel={t( "Search-suggestions-without-location" )}
+            />
+          </View>
+        )
+        : (
+          <View className="px-4 py-6">
+            <Button
+              text={t( "USE-LOCATION" )}
+              onPress={( ) => reloadSuggestions( { showLocation: true } )}
+              accessibilityLabel={t( "Search-suggestions-with-location" )}
+            />
+          </View>
+        )}
       <Attribution observers={observers} />
       <Body1
         className="underline text-center py-6"
@@ -113,13 +135,22 @@ const Suggestions = ( {
           <Body3 className="text-white">Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
           <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
           <Body3 className="text-white">Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
+          <Body3 className="text-white">Online suggestions using location: {JSON.stringify( debugData?.showSuggestionsWithLocation )}</Body3>
           <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
           <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
           <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
         </View>
       )}
     </>
-  ), [debugData, isDebug, navToObsEdit, observers, t] );
+  ), [
+    debugData,
+    isDebug,
+    showSuggestionsWithLocation,
+    navToObsEdit,
+    observers,
+    reloadSuggestions,
+    t
+  ] );
   /* eslint-enable i18next/no-literal-string */
   /* eslint-enable react/jsx-one-expression-per-line */
   /* eslint-enable max-len */

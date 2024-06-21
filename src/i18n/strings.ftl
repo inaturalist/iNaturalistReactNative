@@ -426,6 +426,7 @@ Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with 
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
+IGNORE-LOCATION = IGNORE LOCATION
 Import-Photos-From = Import Photos From
 # Shows the number of observations a user is about to import
 IMPORT-X-OBSERVATIONS =
@@ -816,6 +817,8 @@ SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
 Search-for-a-taxon = Search for a taxon
 SEARCH-LOCATION = SEARCH LOCATION
 SEARCH-PROJECTS = SEARCH PROJECTS
+Search-suggestions-with-location = Search suggestions with location
+Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
 # Accessibility label for Explore button on MyObservations toolbar

@@ -61,17 +61,24 @@ type OnlineSuggestionsResponse = {
   onlineSuggestions: Object,
   loadingOnlineSuggestions: boolean,
   timedOut: boolean,
-  error: Object
+  error: Object,
+  refetchSuggestions: Function
+  isRefetching: boolean
 }
 
 const useOnlineSuggestions = (
-  selectedPhotoUri: string
+  selectedPhotoUri: string,
+  options: Object
 ): OnlineSuggestionsResponse => {
   const currentObservation = useStore( state => state.currentObservation );
-  const options = {
-    latitude: currentObservation?.latitude,
-    longitude: currentObservation?.longitude
-  };
+  const { showSuggestionsWithLocation } = options;
+
+  const params = showSuggestionsWithLocation
+    ? {
+      latitude: currentObservation?.latitude,
+      longitude: currentObservation?.longitude
+    }
+    : null;
 
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
@@ -83,18 +90,15 @@ const useOnlineSuggestions = (
   const {
     data: onlineSuggestions,
     dataUpdatedAt,
-    isLoading: loadingOnlineSuggestions,
-    isError,
-    error,
-    refetch,
-    isRefetching
+    isPending,
+    error
   } = useAuthenticatedQuery(
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => {
       const scoreImageParams = await flattenUploadParams(
         selectedPhotoUri,
-        options?.latitude,
-        options?.longitude
+        params?.latitude,
+        params?.longitude
       );
       return scoreImage( scoreImageParams, optsWithAuth );
     },
@@ -103,6 +107,8 @@ const useOnlineSuggestions = (
       allowAnonymousJWT: true
     }
   );
+
+  console.log( isPending, "refetch in useOnlineSuggestions" );
 
   // Give up on suggestions request after a timeout
   useEffect( ( ) => {
@@ -118,6 +124,12 @@ const useOnlineSuggestions = (
     };
   }, [onlineSuggestions, selectedPhotoUri, queryClient] );
 
+  const refetchSuggestions = async ( ) => {
+    console.log( "refetching suggestions" );
+    setTimedOut( false );
+    await queryClient.refetchQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
+  };
+
   useEffect( () => {
     if ( isOnline === false ) {
       setTimedOut( true );
@@ -128,20 +140,18 @@ const useOnlineSuggestions = (
     dataUpdatedAt,
     error,
     timedOut,
-    refetch,
-    isRefetching
+    refetchSuggestions,
+    isPending
   };
 
   return timedOut
     ? {
       ...queryObject,
-      onlineSuggestions: undefined,
-      loadingOnlineSuggestions: false
+      onlineSuggestions: undefined
     }
     : {
       ...queryObject,
-      onlineSuggestions,
-      loadingOnlineSuggestions: loadingOnlineSuggestions && !isError
+      onlineSuggestions
     };
 };
 
