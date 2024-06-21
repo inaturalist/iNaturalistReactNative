@@ -209,6 +209,10 @@ type Action = {type: EXPLORE_ACTION.RESET}
     taxonName: string,
     storedState: State
   }
+  | {
+    type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
+    iconic_taxa: Object
+  }
   | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: Object}
   | {
     type: EXPLORE_ACTION.SET_PLACE,
@@ -325,7 +329,15 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         ...action.storedState,
         taxon: action.taxon,
-        taxon_id: action.taxonId
+        taxon_id: action.taxonId,
+        iconic_taxa: []
+      };
+    case EXPLORE_ACTION.CHANGE_TAXON_NONE:
+      return {
+        ...state,
+        taxon: "Unknown",
+        taxon_id: null,
+        iconic_taxa: ["unknown"]
       };
     case EXPLORE_ACTION.SET_EXPLORE_LOCATION:
       return {
