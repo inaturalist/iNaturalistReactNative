@@ -130,36 +130,36 @@ jobs:
       if: steps.cache-apk.outputs.cache-hit != 'true'
       run: npm run e2e:build:android
 
-    # # Starts the avd previously set-up by name
-    # - name: Android Emulator
-    #   timeout-minutes: 15
-    #   continue-on-error: true
-    #   run: |
-    #     echo "Starting emulator"
-    #     nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_31_AOSP -wipe-data -memory 4096 -cache-size 500 -partition-size 4096 -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
-    #     $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
-    #     $ANDROID_HOME/platform-tools/adb devices
-    #     $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
-    #     echo "Emulator started"
+    # Starts the avd previously set-up by name
+    - name: Android Emulator
+      timeout-minutes: 15
+      continue-on-error: true
+      run: |
+        echo "Starting emulator"
+        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_31_AOSP -wipe-data -memory 4096 -cache-size 500 -partition-size 4096 -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
+        $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+        $ANDROID_HOME/platform-tools/adb devices
+        $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
+        echo "Emulator started"
 
-    # - name: Ensure servers are running
-    #   run: |
-    #     # is rails running?
-    #     curl -I --fail "https://staging.inaturalist.org/ping"
-    #     # is node running & is ES working?
-    #     curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
+    - name: Ensure servers are running
+      run: |
+        # is rails running?
+        curl -I --fail "https://staging.inaturalist.org/ping"
+        # is node running & is ES working?
+        curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
-    # # Start the Android e2e tests with extensive logging and screen captures for failing tests
-    # - name: Android Detox
-    #   run: npm run e2e:test:android -- --take-screenshots failing --record-videos failing --record-logs all -l trace
+    # Start the Android e2e tests with extensive logging and screen captures for failing tests
+    - name: Android Detox
+      run: npm run e2e:test:android -- --take-screenshots failing --record-videos failing --record-logs all -l trace
 
-    # # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
-    # - name: Store Detox artifacts on test failure
-    #   uses: actions/upload-artifact@v4
-    #   if: failure()
-    #   with:
-    #     name: detox-artifacts
-    #     path: artifacts
+    # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
+    - name: Store Detox artifacts on test failure
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: detox-artifacts
+        path: artifacts
 
   notify:
     name: Notify Slack
