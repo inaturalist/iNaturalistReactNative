@@ -38,7 +38,6 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   const updateTaxon = ( taxon: Object ) => {
     if ( !taxon ) {
-      console.log( "notaxon" );
       dispatch( {
         type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
         taxon: null

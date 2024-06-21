@@ -34,13 +34,11 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const updateTaxon = ( taxon: Object ) => {
     if ( !taxon ) {
-      console.log( "notaxon" );
       dispatch( {
         type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
         taxon: null
       } );
     } else {
-      console.log( "updatetaxon", taxon );
       dispatch( {
         type: EXPLORE_ACTION.CHANGE_TAXON,
         taxon,

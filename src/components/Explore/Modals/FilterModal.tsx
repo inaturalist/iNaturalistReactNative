@@ -707,7 +707,6 @@ const FilterModal = ( {
             taxon={taxon}
             onTaxonChosen={( taxonName: string ) => {
               if ( taxonName === "unknown" ) {
-                console.log( "taxon unknown, update" );
                 updateTaxon( );
               } else {
                 const selectedTaxon = realm
