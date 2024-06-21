@@ -81,6 +81,7 @@ const createObservationFlowSlice = set => ( {
       uri
     );
     const newObservation = newObservations[state.currentObservationIndex];
+    if ( !newObservation ) return {};
     const index = newObservation.observationPhotos.findIndex(
       op => ( op.photo?.localFilePath || op.photo?.url ) === uri
     );

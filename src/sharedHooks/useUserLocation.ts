@@ -101,7 +101,7 @@ function useUserLocation(
         setIsLoading( false );
         fetchingLocation.current = false;
         setAccGoodEnough( true );
-        if ( untilAcc && coords?.accuracy && coords?.accuracy > untilAcc ) {
+        if ( typeof ( untilAcc ) === "number" && coords?.accuracy && coords?.accuracy > untilAcc ) {
           setTimeout( ( ) => setAccGoodEnough( false ), 1000 );
         }
       };
