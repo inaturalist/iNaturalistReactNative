@@ -13,8 +13,6 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
     ttl: -1
   };
 
-  console.log( "useInfiniteExploreScroll", newInputParams );
-
   const { fields, ...queryKeyParams } = baseParams;
 
   const queryKey = ["useInfiniteExploreScroll", "searchObservations", queryKeyParams];
