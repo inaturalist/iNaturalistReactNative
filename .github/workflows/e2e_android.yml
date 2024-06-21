@@ -9,7 +9,7 @@ concurrency:
 jobs:
   checksecret:
     name: check for oauth client
-    runs-on: macos-13
+    runs-on: macos-14
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -24,7 +24,7 @@ jobs:
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-13
+    runs-on: macos-14
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 90
 
@@ -44,7 +44,7 @@ jobs:
       with:
         node-version: 18
 
-    # Currently, macos-13 runner has 3 Java versions pre-installed, default is 17
+    # Currently, macos-14 runner has 3 Java versions pre-installed, default is 17
     - name: Set up JDK 8
       uses: actions/setup-java@v4
       with:
@@ -166,7 +166,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null
