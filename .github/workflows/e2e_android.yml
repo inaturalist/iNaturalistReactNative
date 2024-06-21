@@ -58,7 +58,7 @@ jobs:
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --update
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "platform-tools"
-        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;arm64-v8a"
         echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;x86_64'
         AVD_PATH="$HOME/.android/avd/Pixel_5_API_31_AOSP.avd"
         echo "hw.ramSize=2048" >> "$AVD_PATH/config.ini" # Set RAM to 2GB
