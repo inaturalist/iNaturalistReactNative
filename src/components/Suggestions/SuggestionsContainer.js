@@ -41,7 +41,9 @@ const SuggestionsContainer = ( ): Node => {
     error: onlineSuggestionsError,
     onlineSuggestions,
     loadingOnlineSuggestions,
-    timedOut
+    timedOut,
+    refetch,
+    isRefetching
   } = useOnlineSuggestions( selectedPhotoUri );
 
   // skip to offline suggestions if internet connection is spotty
@@ -124,7 +126,7 @@ const SuggestionsContainer = ( ): Node => {
     if ( hasVisionSuggestion ) {
       return currentObservation;
     }
-    if ( onlineSuggestions?.length > 0 ) {
+    if ( onlineSuggestions?.results?.length > 0 ) {
       return onlineSuggestions?.common_ancestor;
     }
     // if ( otherSuggestions?.length > 0 ) {
@@ -140,10 +142,11 @@ const SuggestionsContainer = ( ): Node => {
     <>
       <Suggestions
         debugData={debugData}
-        loading={isLoading}
+        loading={isLoading || isRefetching}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
+        reloadSuggestions={refetch}
         selectedPhotoUri={selectedPhotoUri}
         otherSuggestions={otherSuggestions}
         topSuggestion={topSuggestion}

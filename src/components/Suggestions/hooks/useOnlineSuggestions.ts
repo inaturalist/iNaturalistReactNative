@@ -85,7 +85,9 @@ const useOnlineSuggestions = (
     dataUpdatedAt,
     isLoading: loadingOnlineSuggestions,
     isError,
-    error
+    error,
+    refetch,
+    isRefetching
   } = useAuthenticatedQuery(
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => {
@@ -122,20 +124,24 @@ const useOnlineSuggestions = (
     }
   }, [isOnline] );
 
+  const queryObject = {
+    dataUpdatedAt,
+    error,
+    timedOut,
+    refetch,
+    isRefetching
+  };
+
   return timedOut
     ? {
-      dataUpdatedAt,
-      error,
+      ...queryObject,
       onlineSuggestions: undefined,
-      loadingOnlineSuggestions: false,
-      timedOut
+      loadingOnlineSuggestions: false
     }
     : {
-      dataUpdatedAt,
-      error,
+      ...queryObject,
       onlineSuggestions,
-      loadingOnlineSuggestions: loadingOnlineSuggestions && !isError,
-      timedOut
+      loadingOnlineSuggestions: loadingOnlineSuggestions && !isError
     };
 };
 

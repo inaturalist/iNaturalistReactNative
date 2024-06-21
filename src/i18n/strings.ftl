@@ -640,6 +640,7 @@ October = October
 Offensive-Inappropriate = Offensive/Inappropriate
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
+Offline-suggestions-do-not-use-your-location = Offline suggestions do not use your location and may differ from online suggestions. Taxon images and common names may not load.
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
 # Sort order, refers to newest or oldest date
@@ -990,10 +991,6 @@ VIEW-PROJECTS = VIEW PROJECTS
 # or photo
 View-suggestions = View suggestions
 VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
-# Title for a notice informing the user that they are viewing offline
-# identification suggestions
-Viewing-Offline-Suggestions = Viewing Offline Suggestions
-Viewing-Offline-Suggestions-results-may-differ = Results may differ from the online suggestions and images and common names may not display.
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 Welcome-to-iNaturalist = Welcome to iNaturalist!
@@ -1110,6 +1107,7 @@ x-uploads-failed =
        *[other] { $count } uploads failed
     }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!

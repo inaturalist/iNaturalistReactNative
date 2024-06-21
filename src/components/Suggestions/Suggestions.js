@@ -3,15 +3,18 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Body1,
+  Body2,
   Body3,
   Heading4,
+  INatIcon,
   INatIconButton,
   ViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
 import { FlatList } from "react-native";
+import { useTheme } from "react-native-paper";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
 
@@ -29,6 +32,7 @@ type Props = {
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
+  reloadSuggestions: Function,
   selectedPhotoUri: string,
   otherSuggestions: Array<Object>,
   topSuggestion: Object,
@@ -41,6 +45,7 @@ const Suggestions = ( {
   onPressPhoto,
   onTaxonChosen,
   photoUris,
+  reloadSuggestions,
   selectedPhotoUri,
   otherSuggestions,
   topSuggestion,
@@ -51,6 +56,7 @@ const Suggestions = ( {
   const { params } = useRoute( );
   const { lastScreen } = params;
   const { isDebug } = useDebugMode( );
+  const theme = useTheme( );
 
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
 
@@ -131,10 +137,23 @@ const Suggestions = ( {
       {!loading && (
         <>
           { usingOfflineSuggestions && (
-            <View className="bg-warningYellow px-8 py-5 mt-5">
-              <Heading4>{ t( "Viewing-Offline-Suggestions" ) }</Heading4>
-              <Body3>{ t( "Viewing-Offline-Suggestions-results-may-differ" ) }</Body3>
-            </View>
+            <Pressable
+              accessibilityRole="button"
+              className="border border-warningYellow border-[3px] m-5 rounded-2xl"
+              onPress={reloadSuggestions}
+            >
+              <View className="p-5">
+                <View className="flex-row mb-2">
+                  <INatIcon
+                    name="offline"
+                    size={22}
+                    color={theme.colors.warningYellow}
+                  />
+                  <Body2 className="mx-2">{t( "You-are-offline-Tap-to-reload" )}</Body2>
+                </View>
+                <Body3>{ t( "Offline-suggestions-do-not-use-your-location" ) }</Body3>
+              </View>
+            </Pressable>
           ) }
           { topSuggestion && (
             <>
@@ -156,9 +175,11 @@ const Suggestions = ( {
     loading,
     onPressPhoto,
     photoUris,
+    reloadSuggestions,
     renderSuggestion,
     selectedPhotoUri,
     t,
+    theme,
     topSuggestion,
     usingOfflineSuggestions
   ] );
