@@ -591,6 +591,7 @@
     "comment": "Shows the number of observations a user is about to import",
     "val": "IMPORT { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
   },
+  "IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION": "IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION",
   "improving--identification": {
     "comment": "Identification category",
     "val": "Improving"
@@ -886,6 +887,7 @@
   "Opens-add-comment-modal": "Opens add comment modal.",
   "Opens-add-observation-modal": "Opens add observation modal.",
   "Opens-AI-camera": "Opens AI camera.",
+  "Opens-location-permission-prompt": "Opens location permission prompt",
   "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
   "Organism-is-captive": {
     "comment": "Picker prompt on observation edit",

@@ -42,8 +42,12 @@ const SuggestionsContainer = ( ): Node => {
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [isLoading, setIsLoading] = useState( true );
   const [otherSuggestions, setOtherSuggestions] = useState( [] );
+  const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
 
   const evidenceHasLocation = !!( currentObservation?.latitude );
+  const showImproveWithLocationButton = !evidenceHasLocation
+    && params?.lastScreen === "CameraWithDevice";
+
   const [
     showSuggestionsWithLocation,
     setShowSuggestionsWithLocation
@@ -154,23 +158,27 @@ const SuggestionsContainer = ( ): Node => {
 
   logger.debug( `${loadingOnlineSuggestions} is pending` );
 
+  const reloadSuggestions = useCallback( ( { showLocation } ) => {
+    setOtherSuggestions( [] );
+    setIsLoading( true );
+    refetchSuggestions( );
+    setShowSuggestionsWithLocation( showLocation );
+  }, [refetchSuggestions] );
+
   return (
     <>
       <Suggestions
         debugData={debugData}
-        showSuggestionsWithLocation={showSuggestionsWithLocation}
         loading={isLoading}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
-        photoUris={photoUris}
-        reloadSuggestions={( { showLocation } ) => {
-          setOtherSuggestions( [] );
-          setIsLoading( true );
-          refetchSuggestions( );
-          setShowSuggestionsWithLocation( showLocation );
-        }}
-        selectedPhotoUri={selectedPhotoUri}
         otherSuggestions={otherSuggestions}
+        photoUris={photoUris}
+        reloadSuggestions={reloadSuggestions}
+        selectedPhotoUri={selectedPhotoUri}
+        setLocationPermissionNeeded={setLocationPermissionNeeded}
+        showImproveWithLocationButton={showImproveWithLocationButton}
+        showSuggestionsWithLocation={showSuggestionsWithLocation}
         topSuggestion={topSuggestion}
         usingOfflineSuggestions={usingOfflineSuggestions}
       />
@@ -181,7 +189,7 @@ const SuggestionsContainer = ( ): Node => {
         photos={innerPhotos}
       />
       <LocationPermissionGate
-        permissionNeeded={!evidenceHasLocation && params.lastScreen === "CameraWithDevice"}
+        permissionNeeded={locationPermissionNeeded}
         withoutNavigation
         onPermissionGranted={( ) => console.log( "permission granted" )}
         onPermissionDenied={( ) => console.log( "permission denied" )}
