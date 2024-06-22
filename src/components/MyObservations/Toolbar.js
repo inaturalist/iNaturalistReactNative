@@ -40,7 +40,7 @@ const Toolbar = ( {
   rotating = false,
   showsCancelUploadButton = false,
   showsCheckmark = false,
-  showsExclamation = false,
+  showsExclamation: showsExclamationProp = false,
   showsExploreIcon = false,
   statusText = "",
   stopAllUploads,
@@ -49,6 +49,10 @@ const Toolbar = ( {
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
+  // The exclamation mark should *never* appear while rotating, no matter what
+  // the props say
+  let showsExclamation = showsExclamationProp;
+  if ( rotating ) showsExclamation = false;
   return (
     <View className={
       classNames(
