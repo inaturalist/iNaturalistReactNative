@@ -28,7 +28,7 @@ type Props = {
   setLocationPermissionNeeded: Function,
   showImproveWithLocationButton: boolean,
   topSuggestion: Object,
-  usingOfflineSuggestions: boolean,
+  usingOfflineSuggestions: boolean
 };
 
 const SuggestionsHeader = ( {

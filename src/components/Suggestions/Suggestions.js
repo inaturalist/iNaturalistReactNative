@@ -1,24 +1,15 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
-import {
-  Body1,
-  Body3,
-  Button,
-  Heading4,
-  ViewWrapper
-} from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { ViewWrapper } from "components/SharedComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
-import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
-import { useDebugMode, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 
-import Attribution from "./Attribution";
 import useObservers from "./hooks/useObservers";
 import Suggestion from "./Suggestion";
 import SuggestionsEmpty from "./SuggestionsEmpty";
+import SuggestionsFooter from "./SuggestionsFooter";
 import SuggestionsHeader from "./SuggestionsHeader";
 
 type Props = {
@@ -53,15 +44,10 @@ const Suggestions = ( {
   usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const { isDebug } = useDebugMode( );
 
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
-
-  const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
-    lastScreen: "Suggestions"
-  } ), [navigation] );
+  const showLocationButton = !usingOfflineSuggestions && !loading;
 
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
@@ -76,64 +62,21 @@ const Suggestions = ( {
     <SuggestionsEmpty loading={loading} hasTopSuggestion={!!topSuggestion} />
   ), [loading, topSuggestion] );
 
-  /* eslint-disable i18next/no-literal-string */
-  /* eslint-disable react/jsx-one-expression-per-line */
-  /* eslint-disable max-len */
   const renderFooter = useCallback( ( ) => (
-    <>
-      {showSuggestionsWithLocation
-        ? (
-          <View className="px-4 py-6">
-            <Button
-              text={t( "IGNORE-LOCATION" )}
-              onPress={( ) => reloadSuggestions( { showLocation: false } )}
-              accessibilityLabel={t( "Search-suggestions-without-location" )}
-            />
-          </View>
-        )
-        : (
-          <View className="px-4 py-6">
-            <Button
-              text={t( "USE-LOCATION" )}
-              onPress={( ) => reloadSuggestions( { showLocation: true } )}
-              accessibilityLabel={t( "Search-suggestions-with-location" )}
-            />
-          </View>
-        )}
-      <Attribution observers={observers} />
-      <Body1
-        className="underline text-center py-6"
-        onPress={navToObsEdit}
-        accessibilityRole="link"
-        accessibilityHint={t( "Navigates-to-observation-edit-screen" )}
-      >
-        {t( "Add-an-ID-Later" )}
-      </Body1>
-      { isDebug && (
-        <View className="bg-deeppink text-white p-3">
-          <Heading4 className="text-white">Diagnostics</Heading4>
-          <Body3 className="text-white">Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
-          <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
-          <Body3 className="text-white">Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
-          <Body3 className="text-white">Online suggestions using location: {JSON.stringify( debugData?.showSuggestionsWithLocation )}</Body3>
-          <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
-          <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
-          <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
-        </View>
-      )}
-    </>
+    <SuggestionsFooter
+      debugData={debugData}
+      observers={observers}
+      reloadSuggestions={reloadSuggestions}
+      showLocationButton={showLocationButton}
+      showSuggestionsWithLocation={showSuggestionsWithLocation}
+    />
   ), [
     debugData,
-    isDebug,
-    showSuggestionsWithLocation,
-    navToObsEdit,
     observers,
     reloadSuggestions,
-    t
+    showLocationButton,
+    showSuggestionsWithLocation
   ] );
-  /* eslint-enable i18next/no-literal-string */
-  /* eslint-enable react/jsx-one-expression-per-line */
-  /* eslint-enable max-len */
 
   const renderHeader = useCallback( ( ) => (
     <SuggestionsHeader

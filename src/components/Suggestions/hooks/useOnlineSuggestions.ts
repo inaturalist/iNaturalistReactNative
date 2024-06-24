@@ -90,7 +90,7 @@ const useOnlineSuggestions = (
   const {
     data: onlineSuggestions,
     dataUpdatedAt,
-    isPending,
+    fetchStatus,
     error
   } = useAuthenticatedQuery(
     ["scoreImage", selectedPhotoUri],
@@ -108,8 +108,6 @@ const useOnlineSuggestions = (
     }
   );
 
-  console.log( isPending, "refetch in useOnlineSuggestions" );
-
   // Give up on suggestions request after a timeout
   useEffect( ( ) => {
     const timer = setTimeout( ( ) => {
@@ -125,7 +123,6 @@ const useOnlineSuggestions = (
   }, [onlineSuggestions, selectedPhotoUri, queryClient] );
 
   const refetchSuggestions = async ( ) => {
-    console.log( "refetching suggestions" );
     setTimedOut( false );
     await queryClient.refetchQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
   };
@@ -141,7 +138,7 @@ const useOnlineSuggestions = (
     error,
     timedOut,
     refetchSuggestions,
-    isPending
+    fetchStatus
   };
 
   return timedOut

@@ -1,4 +1,5 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import { StateCreator } from "zustand";
 
 export const SYNC_PENDING = "sync-pending";
 export const BEGIN_MANUAL_SYNC = "begin-manual-sync";

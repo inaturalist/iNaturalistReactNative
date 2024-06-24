@@ -11,7 +11,7 @@ import React, {
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import { log } from "sharedHelpers/logger";
+// import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
@@ -20,7 +20,7 @@ import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 
-const logger = log.extend( "SuggestionsContainer" );
+// const logger = log.extend( "SuggestionsContainer" );
 
 const HUMAN_ID = 43584;
 
@@ -43,6 +43,7 @@ const SuggestionsContainer = ( ): Node => {
   const [isLoading, setIsLoading] = useState( true );
   const [otherSuggestions, setOtherSuggestions] = useState( [] );
   const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
+  const [usingOfflineSuggestions, setUsingOfflineSuggestions] = useState( false );
 
   const evidenceHasLocation = !!( currentObservation?.latitude );
   const showImproveWithLocationButton = !evidenceHasLocation
@@ -59,10 +60,17 @@ const SuggestionsContainer = ( ): Node => {
     onlineSuggestions,
     timedOut,
     refetchSuggestions,
-    isPending: loadingOnlineSuggestions
+    fetchStatus
   } = useOnlineSuggestions( selectedPhotoUri, {
     showSuggestionsWithLocation
   } );
+
+  console.log( fetchStatus, "fetch status" );
+
+  const loadingOnlineSuggestions = fetchStatus === "fetching";
+
+  const hasOnlineSuggestions = !onlineSuggestions
+    || onlineSuggestions?.results?.length === 0;
 
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = timedOut || (
@@ -70,10 +78,10 @@ const SuggestionsContainer = ( ): Node => {
     !loadingOnlineSuggestions
     && (
       // Don't bother with offline if we have some online suggestions
-      !onlineSuggestions
-      || onlineSuggestions?.results?.length === 0
+      hasOnlineSuggestions
     )
   );
+
   const {
     offlineSuggestions,
     loadingOfflineSuggestions
@@ -97,8 +105,6 @@ const SuggestionsContainer = ( ): Node => {
     [selectedPhotoUri]
   );
 
-  const usingOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
-
   const debugData = {
     timedOut,
     onlineSuggestions,
@@ -120,25 +126,53 @@ const SuggestionsContainer = ( ): Node => {
     if ( humanSuggestion ) {
       return [];
     }
+    let filteredSuggestions = unfilteredSuggestions;
     if ( hasVisionSuggestion ) {
-      return unfilteredSuggestions.filter(
+      const hideVisionSuggestionFromOther = unfilteredSuggestions.filter(
         result => result?.taxon?.id !== taxonId
       ).map( r => r );
+      filteredSuggestions = hideVisionSuggestionFromOther;
     }
-    return unfilteredSuggestions;
+
+    const sortedSuggestions = ( ) => {
+      if ( usingOfflineSuggestions ) {
+        return filteredSuggestions;
+      }
+      // use the vision_score to display sorted suggestions when evidence
+      // does not include a location; use the combined_score to display
+      // sorted suggestions when evidence includes a location
+      if ( showSuggestionsWithLocation ) {
+        return _.orderBy( filteredSuggestions, "combined_score", "desc" );
+      }
+      return _.orderBy( filteredSuggestions, "vision_score", "desc" );
+    };
+
+    return sortedSuggestions( );
   }, [
     hasVisionSuggestion,
     humanSuggestion,
+    showSuggestionsWithLocation,
     taxonId,
-    unfilteredSuggestions
+    unfilteredSuggestions,
+    usingOfflineSuggestions
   ] );
 
   useEffect( ( ) => {
-    if ( hasSuggestions || loadingOfflineSuggestions === false ) {
-      setIsLoading( false );
+    if ( (
+      hasSuggestions || loadingOfflineSuggestions === false
+    ) && fetchStatus === "idle" ) {
       setOtherSuggestions( filterSuggestions( ) );
+      setIsLoading( false );
     }
-  }, [loadingOfflineSuggestions, hasSuggestions, filterSuggestions] );
+  }, [loadingOfflineSuggestions, hasSuggestions, filterSuggestions, fetchStatus] );
+
+  useEffect( ( ) => {
+    const hasOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
+    setUsingOfflineSuggestions( hasOfflineSuggestions );
+  }, [
+    offlineSuggestions.length,
+    tryOfflineSuggestions
+  ] );
 
   const filterTopSuggestions = ( ) => {
     if ( isLoading ) { return null; }
@@ -156,14 +190,15 @@ const SuggestionsContainer = ( ): Node => {
 
   const topSuggestion = filterTopSuggestions( );
 
-  logger.debug( `${loadingOnlineSuggestions} is pending` );
-
   const reloadSuggestions = useCallback( ( { showLocation } ) => {
-    setOtherSuggestions( [] );
     setIsLoading( true );
+    setOtherSuggestions( [] );
     refetchSuggestions( );
     setShowSuggestionsWithLocation( showLocation );
+    setUsingOfflineSuggestions( false );
   }, [refetchSuggestions] );
+
+  console.log( isLoading, loadingOnlineSuggestions, "is loading, loading online" );
 
   return (
     <>

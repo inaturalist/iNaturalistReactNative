@@ -434,6 +434,7 @@ IMPORT-X-OBSERVATIONS =
         [one] 1 OBSERVATION
        *[other] { $count } OBSERVATIONS
     }
+IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
@@ -657,6 +658,7 @@ OPEN-SETTINGS = OPEN SETTINGS
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-AI-camera = Opens AI camera.
+Opens-location-permission-prompt = Opens location permission prompt
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
@@ -1144,5 +1146,3 @@ Youve-previously-denied-location-permissions = You’ve previously denied locati
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
 Zoom-to-current-location = Zoom to current location
-IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
-Opens-location-permission-prompt = Opens location permission prompt

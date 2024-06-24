@@ -18,6 +18,7 @@ const updateSyncTime = realm => {
   }, "updating sync time in syncRemoteObservations" );
 };
 
+// eslint-disable-next-line no-undef
 export default syncRemoteObservations = async ( realm, currentUserId, deletionsCompletedAt ) => {
   const apiToken = await getJWT( );
   const searchParams = {

@@ -129,6 +129,10 @@ module.exports = {
     "react-native-a11y/has-valid-important-for-accessibility": 1,
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": "error",
+    // it's supposedly safe to remove no-undef because TS's compiler handles
+    // this, but I'm bumping into this error a lot in VSCode - 20240624 amanda
+    // https://eslint.org/docs/latest/rules/no-undef#handled_by_typescript
+    "no-undef": "error",
 
     // TODO: we should actually type these at some point ~amanda 041824
     "@typescript-eslint/ban-types": 0,
