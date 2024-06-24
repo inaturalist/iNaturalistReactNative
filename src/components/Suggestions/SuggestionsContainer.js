@@ -2,7 +2,7 @@
 
 import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+// import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import _ from "lodash";
 import type { Node } from "react";
 import React, {
@@ -42,12 +42,12 @@ const SuggestionsContainer = ( ): Node => {
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [isLoading, setIsLoading] = useState( true );
   const [otherSuggestions, setOtherSuggestions] = useState( [] );
-  const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
+  // const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
   const [usingOfflineSuggestions, setUsingOfflineSuggestions] = useState( false );
 
   const evidenceHasLocation = !!( currentObservation?.latitude );
-  const showImproveWithLocationButton = !evidenceHasLocation
-    && params?.lastScreen === "CameraWithDevice";
+  // const showImproveWithLocationButton = !evidenceHasLocation
+  //   && params?.lastScreen === "CameraWithDevice";
 
   const [
     showSuggestionsWithLocation,
@@ -64,8 +64,6 @@ const SuggestionsContainer = ( ): Node => {
   } = useOnlineSuggestions( selectedPhotoUri, {
     showSuggestionsWithLocation
   } );
-
-  console.log( fetchStatus, "fetch status" );
 
   const loadingOnlineSuggestions = fetchStatus === "fetching";
 
@@ -198,8 +196,6 @@ const SuggestionsContainer = ( ): Node => {
     setUsingOfflineSuggestions( false );
   }, [refetchSuggestions] );
 
-  console.log( isLoading, loadingOnlineSuggestions, "is loading, loading online" );
-
   return (
     <>
       <Suggestions
@@ -211,8 +207,8 @@ const SuggestionsContainer = ( ): Node => {
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
-        setLocationPermissionNeeded={setLocationPermissionNeeded}
-        showImproveWithLocationButton={showImproveWithLocationButton}
+        // setLocationPermissionNeeded={setLocationPermissionNeeded}
+        // showImproveWithLocationButton={showImproveWithLocationButton}
         showSuggestionsWithLocation={showSuggestionsWithLocation}
         topSuggestion={topSuggestion}
         usingOfflineSuggestions={usingOfflineSuggestions}
@@ -223,13 +219,13 @@ const SuggestionsContainer = ( ): Node => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
-      <LocationPermissionGate
+      {/* <LocationPermissionGate
         permissionNeeded={locationPermissionNeeded}
         withoutNavigation
         onPermissionGranted={( ) => console.log( "permission granted" )}
         onPermissionDenied={( ) => console.log( "permission denied" )}
         onPermissionBlocked={( ) => console.log( "permission blocked" )}
-      />
+      /> */}
     </>
   );
 };

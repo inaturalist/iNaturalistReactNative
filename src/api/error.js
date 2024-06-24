@@ -22,7 +22,6 @@ Object.defineProperty( INatApiError.prototype, "name", {
 } );
 
 async function handleError( e: Object, options: Object = {} ): Object {
-  console.log( e, "e in handleError" );
   if ( !e.response ) { throw e; }
 
   // Try to parse JSON in the response if this was an HTTP error. If we can't

@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Body2,
   Body3,
-  Button,
+  // Button,
   Heading4,
   INatIcon,
   INatIconButton
@@ -25,8 +25,8 @@ type Props = {
   reloadSuggestions: Function,
   renderSuggestion: Function,
   selectedPhotoUri: string,
-  setLocationPermissionNeeded: Function,
-  showImproveWithLocationButton: boolean,
+  // setLocationPermissionNeeded: Function,
+  // showImproveWithLocationButton: boolean,
   topSuggestion: Object,
   usingOfflineSuggestions: boolean
 };
@@ -39,8 +39,8 @@ const SuggestionsHeader = ( {
   reloadSuggestions,
   renderSuggestion,
   selectedPhotoUri,
-  setLocationPermissionNeeded,
-  showImproveWithLocationButton,
+  // setLocationPermissionNeeded,
+  // showImproveWithLocationButton,
   topSuggestion,
   usingOfflineSuggestions
 }: Props ): Node => {
@@ -74,7 +74,7 @@ const SuggestionsHeader = ( {
           onPressPhoto={onPressPhoto}
         />
       </View>
-      {showImproveWithLocationButton && (
+      {/* {showImproveWithLocationButton && (
         <View className="mx-5 mt-5">
           <Button
             text={t( "IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION" )}
@@ -83,7 +83,7 @@ const SuggestionsHeader = ( {
             onPress={( ) => setLocationPermissionNeeded( true )}
           />
         </View>
-      )}
+      )} */}
       {!loading && (
         <>
           { usingOfflineSuggestions && (

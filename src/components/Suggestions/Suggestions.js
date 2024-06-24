@@ -21,8 +21,8 @@ type Props = {
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  setLocationPermissionNeeded: Function,
-  showImproveWithLocationButton: boolean,
+  // setLocationPermissionNeeded: Function,
+  // showImproveWithLocationButton: boolean,
   showSuggestionsWithLocation: boolean,
   topSuggestion: Object,
   usingOfflineSuggestions: boolean,
@@ -37,8 +37,8 @@ const Suggestions = ( {
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
-  setLocationPermissionNeeded,
-  showImproveWithLocationButton,
+  // setLocationPermissionNeeded,
+  // showImproveWithLocationButton,
   showSuggestionsWithLocation,
   topSuggestion,
   usingOfflineSuggestions
@@ -87,8 +87,8 @@ const Suggestions = ( {
       reloadSuggestions={reloadSuggestions}
       renderSuggestion={renderSuggestion}
       selectedPhotoUri={selectedPhotoUri}
-      setLocationPermissionNeeded={setLocationPermissionNeeded}
-      showImproveWithLocationButton={showImproveWithLocationButton}
+      // setLocationPermissionNeeded={setLocationPermissionNeeded}
+      // showImproveWithLocationButton={showImproveWithLocationButton}
       showSuggestionsWithLocation={showSuggestionsWithLocation}
       topSuggestion={topSuggestion}
       usingOfflineSuggestions={usingOfflineSuggestions}
@@ -101,8 +101,8 @@ const Suggestions = ( {
     reloadSuggestions,
     renderSuggestion,
     selectedPhotoUri,
-    setLocationPermissionNeeded,
-    showImproveWithLocationButton,
+    // setLocationPermissionNeeded,
+    // showImproveWithLocationButton,
     showSuggestionsWithLocation,
     topSuggestion,
     usingOfflineSuggestions
