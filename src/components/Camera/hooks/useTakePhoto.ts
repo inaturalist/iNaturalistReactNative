@@ -31,7 +31,9 @@ const useTakePhoto = (
 
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
-    enableShutterSound: true,
+    // We had this set to true in Seek but received many reports of it not respecting OS-wide sound
+    // level and scared away wildlife. So maybe better to just disable it.
+    enableShutterSound: false,
     ...( hasFlash && { flash: "off" } as const )
   } as const;
   const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
