@@ -18,8 +18,8 @@ const DEFAULT_STATE = {
 interface MapRegion {
   latitude: number,
   longitude: number,
-  latitudeDelta: double,
-  longitudeDelta: double
+  latitudeDelta: number,
+  longitudeDelta: number
 }
 
 interface ExploreSlice {

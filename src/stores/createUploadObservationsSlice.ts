@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { RealmObservation } from "realmModels/types.d.ts";
+import { StateCreator } from "zustand";
 
 export const UPLOAD_CANCELLED = "cancelled";
 export const UPLOAD_PENDING = "pending";

@@ -46,6 +46,7 @@ const updateDeletedSyncTime = realm => {
   }, "updating last remotely deleted sync time" );
 };
 
+// eslint-disable-next-line no-undef
 export default syncRemoteDeletedObservations = async realm => {
   const apiToken = await getJWT( );
   const deletedParams = setParamsWithLastSyncTime( realm );

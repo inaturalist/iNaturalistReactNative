@@ -569,7 +569,7 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "color": "rgba(98, 91, 113, 1)",
+                "color": "rgba(103, 80, 164, 1)",
                 "fontSize": 40,
               },
               undefined,
@@ -582,7 +582,7 @@ exports[`TaxonResult should render correctly 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
     </View>
