@@ -6,10 +6,9 @@ import {
   waitFor
 } from "detox";
 
-import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import iNatE2eBeforeEach from "./helpers";
 
 describe( "Signed out user", () => {
-  beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
 
   it( "should start at My Observations with log in text", async () => {

@@ -3,10 +3,9 @@ import {
 } from "detox";
 import Config from "react-native-config-node";
 
-import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
+import iNatE2eBeforeEach from "./helpers";
 
 describe( "Signed in user", () => {
-  beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
 
   async function createAndUploadObservation( options = { upload: false } ) {
