@@ -4,7 +4,7 @@ import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import { useAuthenticatedMutation, useIsConnected } from "sharedHooks";
 import {
   AUTOMATIC_SYNC_IN_PROGRESS,
   BEGIN_AUTOMATIC_SYNC,
@@ -21,6 +21,7 @@ const logger = log.extend( "useSyncObservations" );
 const { useRealm } = RealmContext;
 
 const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
+  const isOnline = useIsConnected( );
   const loggedIn = !!currentUserId;
   const deleteQueue = useStore( state => state.deleteQueue );
   const deletionsCompletedAt = useStore( state => state.deletionsCompletedAt );
@@ -32,6 +33,8 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   const completeSync = useStore( state => state.completeSync );
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
+
+  const canSync = loggedIn && isOnline;
 
   const realm = useRealm( );
 
@@ -55,10 +58,17 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
 
     deleteQueue.forEach( async ( uuid, i ) => {
       const observation = realm.objectForPrimaryKey( "Observation", uuid );
-      const canDeleteRemoteObservation = observation?._synced_at && loggedIn;
-      if ( !canDeleteRemoteObservation ) {
+      const hasBeenSyncedRemotely = observation?._synced_at;
+
+      if ( !hasBeenSyncedRemotely ) {
         return deleteRealmObservation( uuid );
       }
+      if ( !canSync ) {
+        // TODO: do we want to let user know their deletions can't happen
+        // when they're offline or logged out?
+        return null;
+      }
+
       await handleRemoteDeletion.mutate( { uuid } );
       removeFromDeleteQueue( );
 
@@ -73,11 +83,11 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
       return null;
     } );
   }, [
+    canSync,
     completeLocalDeletions,
     deleteQueue,
     deleteRealmObservation,
     handleRemoteDeletion,
-    loggedIn,
     realm,
     removeFromDeleteQueue,
     startNextDeletion
@@ -123,49 +133,52 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   ] );
 
   const syncAutomatically = useCallback( async ( ) => {
-    if ( loggedIn ) {
+    if ( canSync ) {
       logger.debug( "sync #1: syncing remotely deleted observations" );
       await fetchRemoteDeletions( );
     }
     logger.debug( "sync #2: handling locally deleted observations" );
     await deleteLocalObservations( );
-    if ( loggedIn ) {
+    if ( canSync ) {
       logger.debug( "sync #3: fetching remote observations" );
       await fetchRemoteObservations( );
     }
     completeSync( );
   }, [
+    canSync,
     deleteLocalObservations,
     fetchRemoteDeletions,
     fetchRemoteObservations,
-    loggedIn,
     completeSync
   ] );
 
   const syncManually = useCallback( async ( ) => {
-    if ( loggedIn ) {
+    if ( canSync ) {
       logger.debug( "sync #1: syncing remotely deleted observations" );
       await fetchRemoteDeletions( );
     }
     logger.debug( "sync #2: handling locally deleted observations" );
     await deleteLocalObservations( );
-    if ( loggedIn ) {
+    if ( canSync ) {
       logger.debug( "sync #3: fetching remote observations" );
       await fetchRemoteObservations( );
     }
     resetSyncToolbar( );
+    // we want to show user error messages if upload fails from user
+    // being offline, so we're not checking internet connectivity here
     if ( loggedIn ) {
       logger.debug( "sync #4: uploading all unsynced observations" );
       await uploadObservations( );
     }
     completeSync( );
   }, [
+    canSync,
+    completeSync,
     deleteLocalObservations,
     fetchRemoteDeletions,
     fetchRemoteObservations,
     loggedIn,
     resetSyncToolbar,
-    completeSync,
     uploadObservations
   ] );
 
