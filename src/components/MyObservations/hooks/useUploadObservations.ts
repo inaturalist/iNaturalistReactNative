@@ -154,6 +154,7 @@ export default useUploadObservations = canUpload => {
   useEffect( ( ) => {
     const startUpload = async ( ) => {
       const lastQueuedUuid = uploadQueue[uploadQueue.length - 1];
+      console.log( "START UPLOAD", lastQueuedUuid );
       const localObservation = realm.objectForPrimaryKey( "Observation", lastQueuedUuid );
       if ( localObservation ) {
         await uploadObservationAndCatchError( localObservation );

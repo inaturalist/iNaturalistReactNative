@@ -45,6 +45,7 @@ const MyObservationsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const setUploadStatus = useStore( state => state.setUploadStatus );
+  const uploadQueue = useStore( state => state.uploadQueue );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const syncingStatus = useStore( state => state.syncingStatus );
@@ -119,6 +120,10 @@ const MyObservationsContainer = ( ): Node => {
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
+    const uploadExists = uploadQueue.includes( uuid );
+    if ( uploadExists ) {
+      return;
+    }
     logger.debug( "Starting individual upload:", uuid );
     if ( !confirmLoggedIn( ) ) { return; }
     if ( !confirmInternetConnection( ) ) { return; }
@@ -128,6 +133,7 @@ const MyObservationsContainer = ( ): Node => {
     setUploadStatus( UPLOAD_IN_PROGRESS );
   }, [
     confirmLoggedIn,
+    uploadQueue,
     confirmInternetConnection,
     realm,
     addTotalToolbarIncrements,
