@@ -6,6 +6,7 @@ import {
   rotatedOriginalPhotosPath
 } from "appConstants/paths.ts";
 import { Platform } from "react-native";
+import { isTablet } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import {
   useSharedValue as useWorkletSharedValue,
@@ -30,34 +31,23 @@ import {
 export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
   let photoRotation = 0;
   if ( Platform.OS === "ios" ) {
-    switch ( photo.metadata?.Orientation ) {
-      case 1:
-      case 3:
-        photoRotation = 180;
-        break;
-      case 6:
-      case 8:
-        photoRotation = 0;
-        break;
-      default:
-        photoRotation = 0;
-    }
-  } else {
-    switch ( deviceOrientation ) {
-      case PORTRAIT:
-        photoRotation = 90;
-        break;
-      case LANDSCAPE_RIGHT:
-        photoRotation = 180;
-        break;
-      case LANDSCAPE_LEFT:
-        photoRotation = 0;
-        break;
-      case PORTRAIT_UPSIDE_DOWN:
-        photoRotation = 270;
-        break;
-      default:
-        photoRotation = 90;
+    if ( !isTablet() ) {
+      switch ( deviceOrientation ) {
+        case PORTRAIT:
+          photoRotation = 90;
+          break;
+        case LANDSCAPE_RIGHT:
+          photoRotation = 90;
+          break;
+        case LANDSCAPE_LEFT:
+          photoRotation = -90;
+          break;
+        case PORTRAIT_UPSIDE_DOWN:
+          photoRotation = 180;
+          break;
+        default:
+          photoRotation = 0;
+      }
     }
   }
   return photoRotation;
