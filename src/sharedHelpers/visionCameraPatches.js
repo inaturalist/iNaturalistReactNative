@@ -6,7 +6,6 @@ import {
   rotatedOriginalPhotosPath
 } from "appConstants/paths.ts";
 import { Platform } from "react-native";
-import { isTablet } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import {
   useSharedValue as useWorkletSharedValue,
