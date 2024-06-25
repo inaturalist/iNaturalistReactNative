@@ -19,11 +19,11 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import useStore from "stores/useStore";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import Header from "./Header/Header";
+import useCurrentExploreView from "./hooks/useCurrentExploreView";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
@@ -78,21 +78,24 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
-  const exploreView = useStore( state => state.exploreView );
-  const setExploreView = useStore( state => state.setExploreView );
+  const { currentExploreView, setCurrentExploreView } = useCurrentExploreView( );
 
-  const exploreViewAccessibilityLabel = {
+  const exploreViewA11yLabel = {
     observations: t( "Observations-View" ),
     species: t( "Species-View" ),
     observers: t( "Observers-View" ),
     identifiers: t( "Identifiers-View" )
   };
 
+  const icon = exploreViewIcon[currentExploreView];
+  const a11yLabel = exploreViewA11yLabel[currentExploreView];
+  const headerCount = count[currentExploreView];
+
   const renderHeader = ( ) => (
     <Header
-      count={count[exploreView]}
-      exploreView={exploreView}
-      exploreViewIcon={exploreViewIcon[exploreView]}
+      count={headerCount}
+      exploreView={currentExploreView}
+      exploreViewIcon={icon}
       hideBackButton={hideBackButton}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
@@ -143,11 +146,11 @@ const Explore = ( {
         headerText={t( "EXPLORE" )}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
-          setExploreView( newView );
+          setCurrentExploreView( newView );
           setShowExploreBottomSheet( false );
         }}
         radioValues={values}
-        selectedValue={exploreView}
+        selectedValue={currentExploreView}
       />
     );
   };
@@ -159,7 +162,7 @@ const Explore = ( {
       <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
         <View className="flex-1 overflow-hidden">
           {renderHeader()}
-          {exploreView === "observations" && (
+          {currentExploreView === "observations" && (
             <ObservationsViewBar
               layout={layout}
               updateObservationsView={writeLayoutToStorage}
@@ -168,7 +171,7 @@ const Explore = ( {
           { isOnline
             ? (
               <View className="flex-1">
-                {exploreView === "observations" && (
+                {currentExploreView === "observations" && (
                   <ObservationsView
                     count={count}
                     layout={layout}
@@ -176,7 +179,7 @@ const Explore = ( {
                     updateCount={updateCount}
                   />
                 )}
-                {exploreView === "species" && (
+                {currentExploreView === "species" && (
                   <SpeciesView
                     count={count}
                     isOnline={isOnline}
@@ -184,7 +187,7 @@ const Explore = ( {
                     updateCount={updateCount}
                   />
                 )}
-                {exploreView === "observers" && (
+                {currentExploreView === "observers" && (
                   <ObserversView
                     count={count}
                     isOnline={isOnline}
@@ -192,7 +195,7 @@ const Explore = ( {
                     updateCount={updateCount}
                   />
                 )}
-                {exploreView === "identifiers" && (
+                {currentExploreView === "identifiers" && (
                   <IdentifiersView
                     count={count}
                     isOnline={isOnline}
@@ -237,14 +240,14 @@ const Explore = ( {
             />
           )}
           <INatIconButton
-            icon={exploreViewIcon[exploreView]}
+            icon={icon}
             color={theme.colors.onPrimary}
             size={27}
             className={classnames(
               grayCircleClass,
               "absolute bottom-5 z-10 right-5"
             )}
-            accessibilityLabel={exploreViewAccessibilityLabel[exploreView]}
+            accessibilityLabel={a11yLabel}
             onPress={() => setShowExploreBottomSheet( true )}
             style={DROP_SHADOW}
           />

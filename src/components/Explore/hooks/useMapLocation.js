@@ -7,13 +7,14 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import { useCallback, useEffect, useState } from "react";
-import { log } from "sharedHelpers/logger";
+// import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTranslation } from "sharedHooks";
 import { initialMapRegion } from "stores/createExploreSlice.ts";
-import useStore from "stores/useStore";
 
-const logger = log.extend( "useMapLocation" );
+import useCurrentMapRegion from "./useCurrentMapRegion";
+
+// const logger = log.extend( "useMapLocation" );
 
 const { useRealm } = RealmContext;
 
@@ -25,8 +26,7 @@ const useMapLocation = ( ): Object => {
   const [mapBoundaries, setMapBoundaries] = useState( null );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
   const [permissionRequested, setPermissionRequested] = useState( null );
-  const mapRegion = useStore( s => s.mapRegion );
-  const setMapRegion = useStore( s => s.setMapRegion );
+  const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
 
   const place = state?.place;
 
@@ -38,7 +38,7 @@ const useMapLocation = ( ): Object => {
 
   const mapWasReset = state.place_guess === t( "Nearby" ) || state.place_guess === t( "Worldwide" );
   const placeIdWasSet = state.place_id;
-  const mapWasPanned = state?.lat !== mapRegion.lat;
+  const mapWasPanned = state?.lat !== currentMapRegion.lat;
 
   const updateMapBoundaries = useCallback( async ( newRegion, boundaries ) => {
     const boundaryAPIParams = {
@@ -50,9 +50,9 @@ const useMapLocation = ( ): Object => {
     };
 
     setMapBoundaries( boundaryAPIParams );
-    setMapRegion( newRegion );
+    setCurrentMapRegion( newRegion );
     return boundaryAPIParams;
-  }, [t, setMapBoundaries, setMapRegion] );
+  }, [t, setMapBoundaries, setCurrentMapRegion] );
 
   const redoSearchInMapArea = ( ) => {
     setShowMapBoundaryButton( false );
@@ -69,7 +69,7 @@ const useMapLocation = ( ): Object => {
     // ensure LocationPermissionGate only pops up on fresh install of the app
     const localPrefs = realm.objects( "LocalPreferences" )[0];
     if ( !localPrefs || localPrefs?.explore_location_permission_shown === false ) {
-      logger.info( "showing LocationPermissionGate in Explore, first install only" );
+      // logger.debug( "showing LocationPermissionGate in Explore, first install only" );
       setPermissionRequested( true );
       safeRealmWrite( realm, ( ) => {
         if ( !localPrefs ) {
@@ -98,34 +98,34 @@ const useMapLocation = ( ): Object => {
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
   const onPermissionGranted = useCallback( ( ) => {
-    logger.info( "onPermissionGranted" );
+    // logger.debug( "onPermissionGranted" );
     setPermissionRequested( false );
   }, [setPermissionRequested] );
 
   const onPermissionBlocked = useCallback( ( ) => {
-    logger.info( "onPermissionBlocked" );
+    // logger.debug( "onPermissionBlocked" );
     setPermissionRequested( false );
   }, [setPermissionRequested] );
 
   const onPermissionDenied = useCallback( ( ) => {
-    logger.info( "onPermissionDenied" );
+    // logger.debug( "onPermissionDenied" );
     setPermissionRequested( false );
   }, [setPermissionRequested] );
 
   useEffect( ( ) => {
     // region gets set when a user is navigating from ExploreLocationSearch
     if ( placeIdWasSet ) {
-      logger.info( "setting map region based on location search" );
+      // logger.debug( "setting map region based on location search" );
       const { coordinates } = place.point_geojson;
-      setMapRegion( {
+      setCurrentMapRegion( {
         ...initialMapRegion,
         latitude: coordinates[1],
         longitude: coordinates[0]
       } );
     } else if ( mapWasReset ) {
     // map gets set or reset back to nearby/worldwide
-      logger.info( "setting initial nearby or worldwide map region" );
-      setMapRegion( {
+      // logger.debug( "setting initial nearby or worldwide map region" );
+      setCurrentMapRegion( {
         ...initialMapRegion,
         latitude: state?.lat,
         longitude: state?.lng
@@ -136,7 +136,7 @@ const useMapLocation = ( ): Object => {
     mapWasPanned,
     place,
     placeIdWasSet,
-    setMapRegion,
+    setCurrentMapRegion,
     state
   ] );
 
@@ -148,7 +148,7 @@ const useMapLocation = ( ): Object => {
     onZoomToNearby,
     permissionRequested,
     redoSearchInMapArea,
-    region: mapRegion,
+    region: currentMapRegion,
     showMapBoundaryButton,
     startAtNearby,
     updateMapBoundaries
