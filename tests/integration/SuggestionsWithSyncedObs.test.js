@@ -63,6 +63,7 @@ const makeMockObservations = ( ) => ( [
     wasSynced: jest.fn( ( ) => true ),
     // Suggestions won't load without a photo
     observationPhotos: [
+      factory( "RemoteObservationPhoto" ),
       factory( "RemoteObservationPhoto" )
     ],
     user: mockUser,

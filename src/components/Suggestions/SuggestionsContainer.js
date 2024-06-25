@@ -97,10 +97,16 @@ const SuggestionsContainer = ( ): Node => {
     uri => {
       if ( uri === selectedPhotoUri ) {
         setMediaViewerVisible( true );
+      } else {
+        setIsLoading( true );
+        setOtherSuggestions( [] );
+        setUsingOfflineSuggestions( false );
+        setSelectedPhotoUri( uri );
       }
-      setSelectedPhotoUri( uri );
     },
-    [selectedPhotoUri]
+    [
+      selectedPhotoUri
+    ]
   );
 
   const debugData = {
