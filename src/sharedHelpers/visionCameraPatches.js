@@ -113,35 +113,6 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
 // the smaller photo.
 export const rotationLocalPhotoPatch = () => 0;
 
-// Needed for react-native-vision-camera v3.3.1
-// This patch is used to rotate the camera view on iPads.
-// The only thing to do there is to rotate the camera view component
-// depending on the device orientation. The resulting photo is already rotated in other places.
-export const iPadStylePatch = deviceOrientation => {
-  // Do nothing on Android
-  if ( Platform.OS === "android" ) {
-    return {};
-  }
-  // Do nothing on phones
-  if ( !isTablet() ) {
-    return {};
-  }
-  if ( deviceOrientation === LANDSCAPE_RIGHT ) {
-    return {
-      transform: [{ rotate: "90deg" }]
-    };
-  } if ( deviceOrientation === LANDSCAPE_LEFT ) {
-    return {
-      transform: [{ rotate: "-90deg" }]
-    };
-  } if ( deviceOrientation === PORTRAIT_UPSIDE_DOWN ) {
-    return {
-      transform: [{ rotate: "180deg" }]
-    };
-  }
-  return {};
-};
-
 // This patch is currently required because we are using react-native-vision-camera v4.0.3
 // together wit react-native-reanimated. The problem is that the runAsync function
 // from react-native-vision-camera does not work in release mode with this reanimated.

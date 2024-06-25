@@ -124,19 +124,14 @@ const CameraView = ( {
     ]
   );
 
-  // react-native-vision-camera v3.9.0:
-  // iPad camera preview is wrong in anything else than portrait, hence the
-  // VeryBadIpadRotator, which will rotate its contents us a style transform
-  // and adjust position accordingly
-
   // Note that overflow-hidden handles what seems to be a bug in android in
   // which the Camera overflows its view
   return (
-    <GestureDetector
-      gesture={Gesture.Simultaneous( tapToFocus, pinchToZoom )}
-      className="overflow-hidden"
-    >
-      <VeryBadIpadRotator>
+    <>
+      <GestureDetector
+        gesture={Gesture.Simultaneous( tapToFocus, pinchToZoom )}
+        className="overflow-hidden"
+      >
         <ReanimatedCamera
           // Shared props between StandardCamera and AICamera
           ref={cameraRef}
@@ -158,11 +153,12 @@ const CameraView = ( {
           style={StyleSheet.absoluteFill}
 
         />
-        <FocusSquare
-          animatedStyle={animatedStyle}
-        />
-      </VeryBadIpadRotator>
-    </GestureDetector>
+      </GestureDetector>
+      <FocusSquare
+        animatedStyle={animatedStyle}
+      />
+    </>
+
   );
 };
 
