@@ -12,7 +12,8 @@ import React from "react";
 import Photo from "realmModels/Photo";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
+
+import useCurrentExploreView from "./hooks/useCurrentExploreView";
 
 interface Props {
   count: number,
@@ -28,7 +29,7 @@ const TaxonGridItem = ( {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const setExploreView = useStore( state => state.setExploreView );
+  const { setCurrentExploreView } = useCurrentExploreView( );
   const {
     dispatch
   } = useExplore( );
@@ -74,7 +75,7 @@ const TaxonGridItem = ( {
                   taxonId: taxon?.id,
                   taxonName: taxon?.preferred_common_name || taxon?.name
                 } );
-                setExploreView( "observations" );
+                setCurrentExploreView( "observations" );
               }}
               accessibilityRole="link"
             >
