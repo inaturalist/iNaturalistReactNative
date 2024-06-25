@@ -9,7 +9,7 @@ const useCurrentMapRegion = ( ): Object => {
   const rootMapRegion = useStore( s => s.rootMapRegion );
   const setRootMapRegion = useStore( s => s.setRootMapRegion );
   const navState = useNavigationState( nav => nav );
-  const currentScreen = _.last( navState?.routes ).name;
+  const currentScreen = _.last( navState?.routes )?.name;
 
   const currentMapRegion = currentScreen === "RootExplore"
     ? rootMapRegion

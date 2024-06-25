@@ -9,7 +9,7 @@ const useCurrentExploreView = ( ): Object => {
   const rootExploreView = useStore( state => state.rootExploreView );
   const setRootExploreView = useStore( state => state.setRootExploreView );
   const navState = useNavigationState( nav => nav );
-  const currentScreen = _.last( navState?.routes ).name;
+  const currentScreen = _.last( navState?.routes )?.name;
 
   const currentExploreView = currentScreen === "RootExplore"
     ? rootExploreView
