@@ -214,9 +214,9 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const renderDrawerItem = useCallback( ( key: string ) => (
     <View
       className="mb-6"
+      key={drawerItems[key].label}
     >
       <DrawerItem
-        key={drawerItems[key].label}
         testID={drawerItems[key].testID}
         accessibilityLabel={drawerItems[key].label}
         icon={( ) => renderIcon( key )}
