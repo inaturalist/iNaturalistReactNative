@@ -104,7 +104,7 @@ const EvidenceSection = ( {
         <AddEvidenceSheet
           disableAddingMoreEvidence={
             obsPhotos?.length >= MAX_PHOTOS_ALLOWED
-          || obsSounds?.length >= MAX_SOUNDS_ALLOWED
+            || obsSounds?.length >= MAX_SOUNDS_ALLOWED
           }
           onClose={( ) => setShowAddEvidenceSheet( false )}
         />

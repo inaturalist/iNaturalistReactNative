@@ -7,10 +7,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Alert, Platform } from "react-native";
 import Observation from "realmModels/Observation";
-import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
-
-const logger = log.extend( "PhotoSharing" );
 
 const PhotoSharing = ( ): Node => {
   const navigation = useNavigation( );
@@ -18,7 +15,7 @@ const PhotoSharing = ( ): Node => {
   const { item } = params;
   const sharedText = item.extraData?.userInput;
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
-  const setObservations = useStore( state => state.setObservations );
+  const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
   const [navigationHandled, setNavigationHandled] = useState( null );
 
@@ -26,7 +23,7 @@ const PhotoSharing = ( ): Node => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       newObservation.description = sharedText;
-      setObservations( [newObservation] );
+      prepareObsEdit( newObservation );
       navigation.navigate( "NoBottomTabStackNavigator", { screen: "ObsEdit" } );
     } catch ( e ) {
       Alert.alert(
@@ -36,7 +33,7 @@ const PhotoSharing = ( ): Node => {
     }
   }, [
     navigation,
-    setObservations,
+    prepareObsEdit,
     sharedText
   ] );
 
@@ -49,8 +46,6 @@ const PhotoSharing = ( ): Node => {
     }
 
     // Move to ObsEdit screen (new observation, with shared photos).
-    logger.info( "calling resetObservationFlowSlice" );
-    resetObservationFlowSlice( );
 
     // Create a new observation with multiple shared photos (one or more)
     let photoUris;
@@ -64,8 +59,6 @@ const PhotoSharing = ( ): Node => {
       photoUris = [data];
     }
 
-    logger.info( "photoUris: ", photoUris );
-
     if ( Platform.OS === "android" ) {
       photoUris = photoUris.map( x => ( { image: { uri: x } } ) );
     } else {
@@ -76,7 +69,6 @@ const PhotoSharing = ( ): Node => {
 
     if ( photoUris.length === 1 ) {
       // Only one photo - go to ObsEdit directly
-      logger.info( "creating observation in useShare with photoUris: ", photoUris );
       createObservationAndNavToObsEdit( photoUris );
     } else {
       // Go to GroupPhotos screen
@@ -95,7 +87,6 @@ const PhotoSharing = ( ): Node => {
     item,
     navigation,
     resetObservationFlowSlice,
-    setObservations,
     setPhotoImporterState,
     sharedText
   ] );

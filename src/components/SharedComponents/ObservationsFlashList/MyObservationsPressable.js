@@ -17,14 +17,14 @@ type Props = {
 const MyObservationsPressable = ( { observation, testID, children }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  const setObservations = useStore( state => state.setObservations );
+  const prepareObsEdit = useStore( state => state.prepareObsEdit );
 
   const unsynced = typeof observation.wasSynced !== "undefined" && !observation.wasSynced( );
 
   const navigateToObservation = ( ) => {
     const { uuid } = observation;
     if ( unsynced ) {
-      setObservations( [observation] );
+      prepareObsEdit( observation );
       navigation.navigate( "NoBottomTabStackNavigator", {
         screen: "ObsEdit",
         params: {

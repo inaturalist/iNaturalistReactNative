@@ -36,7 +36,7 @@ const ObsDetailsHeader = ( {
   const navigation = useNavigation( );
   const localObservation = useLocalObservation( uuid );
   const { t } = useTranslation( );
-  const setObservations = useStore( state => state.setObservations );
+  const prepareObsEdit = useStore( state => state.prepareObsEdit );
 
   return (
     <LinearGradient
@@ -62,7 +62,7 @@ const ObsDetailsHeader = ( {
             <INatIconButton
               testID="ObsDetail.editButton"
               onPress={() => {
-                setObservations( [localObservation] );
+                prepareObsEdit( localObservation );
                 navigation.navigate( "NoBottomTabStackNavigator", {
                   screen: "ObsEdit"
                 } );
