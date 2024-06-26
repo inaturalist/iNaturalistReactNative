@@ -95,7 +95,7 @@ const StandardCamera = ( {
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
-  const [dismissChanges, setDismissChanges] = useState( false );
+  const [discardedChanges, setDiscardedChanges] = useState( false );
   const [newPhotoUris, setNewPhotoUris] = useState( [] );
 
   const { screenWidth } = useDeviceOrientation( );
@@ -133,14 +133,16 @@ const StandardCamera = ( {
     // only then we can do the navigation - otherwise, this causes the bottom sheet
     // to sometimes pop back up on the next screen - see GH issue #629
     if ( !showDiscardSheet ) {
-      if ( dismissChanges ) {
+      if ( discardedChanges ) {
         newPhotoUris.forEach( uri => {
           deletePhotoByUri( uri );
         } );
         navigation.goBack();
+        // We don't want any navigation effect to run again
+        setDiscardedChanges( false );
       }
     }
-  }, [dismissChanges, showDiscardSheet, navigation, newPhotoUris, deletePhotoByUri] );
+  }, [discardedChanges, showDiscardSheet, navigation, newPhotoUris, deletePhotoByUri] );
 
   const handleTakePhoto = async ( ) => {
     if ( disallowAddingPhotos ) {
@@ -212,7 +214,7 @@ const StandardCamera = ( {
         setShowDiscardSheet={setShowDiscardSheet}
         hidden={!showDiscardSheet}
         onDiscard={() => {
-          setDismissChanges( true );
+          setDiscardedChanges( true );
         }}
       />
     </View>
