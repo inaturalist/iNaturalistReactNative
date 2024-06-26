@@ -30,7 +30,7 @@ const LoginSignUpInputField: Function = forwardRef( ( {
   secureTextEntry = false,
   testID,
   textContentType
-}: Props, ref: any ): Node => {
+}: Props, ref ): Node => {
   const theme = useTheme( );
 
   return (
