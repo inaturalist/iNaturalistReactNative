@@ -21,14 +21,14 @@ import {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation";
 
-// Needed for react-native-vision-camera v3.9.0
-// As of this version the photo from takePhoto is not oriented coming from the native side.
+// Needed for react-native-vision-camera on iPhones
+// As of this version the photo from takePhoto on is not oriented coming from the native side.
 // E.g. if you take a photo in landscape-right and save it to camera roll directly from the
 // vision camera, it will be tilted in the native photo app. So, on iOS, depending on the
 // metadata of the photo the rotation needs to be set to 0 or 180.
 // On Android, the rotation is derived from the device orientation at the time of taking the
 // photo, because orientation is not yet supported in the library.
-export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
+export const rotationTempPhotoPatch = deviceOrientation => {
   let photoRotation = 0;
   if ( Platform.OS === "ios" ) {
     if ( !isTablet() ) {
@@ -53,7 +53,7 @@ export const rotationTempPhotoPatch = ( photo, deviceOrientation ) => {
   return photoRotation;
 };
 
-// Needed for react-native-vision-camera v3.9.0
+// Needed for react-native-vision-camera
 // This patch is used to rotate the photo taken with the vision camera.
 // Because the photos coming from the vision camera are not oriented correctly, we
 // rotate them with image-resizer as a first step, replacing the original photo.
@@ -75,7 +75,7 @@ export const rotatePhotoPatch = async ( photo, rotation ) => {
   return image;
 };
 
-// Needed for react-native-vision-camera v3.9.0
+// Needed for react-native-vision-camera
 // This patch is here to remember to replace the rotation used when resizing the original
 // photo to a smaller local copy we keep in the app cache. Previously we had a flow where
 // we would resize the original photo to a smaller version including rotation. Now, we

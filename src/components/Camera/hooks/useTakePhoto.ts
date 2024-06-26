@@ -41,7 +41,7 @@ const useTakePhoto = (
 
   const saveRotatedPhotoToDocumentsDirectory = async ( cameraPhoto: PhotoFile ) => {
     // Rotate the original photo depending on device orientation
-    const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
+    const photoRotation = rotationTempPhotoPatch( deviceOrientation );
     return rotatePhotoPatch( cameraPhoto, photoRotation );
   };
 
