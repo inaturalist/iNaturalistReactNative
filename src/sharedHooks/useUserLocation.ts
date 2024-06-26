@@ -13,9 +13,9 @@ import {
   RESULTS
 } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { log } from "sharedHelpers/logger";
+// import { log } from "sharedHelpers/logger";
 
-const logger = log.extend( "userUserLocation" );
+// const logger = log.extend( "userUserLocation" );
 
 // Max time to wait while fetching current location
 const CURRENT_LOCATION_TIMEOUT_MS = 30000;
@@ -48,7 +48,7 @@ function useUserLocation(
   } = options || {};
   const enabled = enabledOpt !== false;
   const [userLocation, setUserLocation] = useState<UserLocation | undefined>( undefined );
-  logger.debug( `userLocation?.latitude: ${userLocation?.latitude}` );
+  // logger.debug( `userLocation?.latitude: ${userLocation?.latitude}` );
   const [isLoading, setIsLoading] = useState( true );
   const [permissionsGranted, setPermissionsGranted] = useState( permissionsGrantedProp );
   const [permissionsChecked, setPermissionsChecked] = useState( false );
@@ -84,9 +84,9 @@ function useUserLocation(
       setIsLoading( true );
 
       const success = async ( position: GeolocationResponse ) => {
-        logger.debug(
-          `getCurrentPosition success, position?.coords?.latitude: ${position?.coords?.latitude}`
-        );
+        // logger.debug(
+        //   `getCurrentPosition success, position?.coords?.latitude: ${position?.coords?.latitude}`
+        // );
         const { coords } = position;
         let locationName;
         if ( !skipName ) {
@@ -101,7 +101,7 @@ function useUserLocation(
         setIsLoading( false );
         fetchingLocation.current = false;
         setAccGoodEnough( true );
-        if ( untilAcc && coords?.accuracy && coords?.accuracy > untilAcc ) {
+        if ( typeof ( untilAcc ) === "number" && coords?.accuracy && coords?.accuracy > untilAcc ) {
           setTimeout( ( ) => setAccGoodEnough( false ), 1000 );
         }
       };
@@ -152,9 +152,9 @@ function useUserLocation(
   // When the consumer tells us we no longer need to fetch location, reset the
   // user location so it's not stale the next time we need to fetch
   useEffect( ( ) => {
-    logger.debug( "enabled effect" );
+    // logger.debug( "enabled effect" );
     if ( enabled === false ) {
-      logger.debug( "enabled effect, disabled resetting" );
+      // logger.debug( "enabled effect, disabled resetting" );
       setUserLocation( undefined );
       setAccGoodEnough( false );
     }

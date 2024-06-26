@@ -314,7 +314,10 @@ export function handleUploadError( uploadError: Error | INatApiError, t: Functio
     // TODO localize comma join
     message = uploadError.json.errors.map( e => {
       if ( e.message?.errors ) {
-        return e.message.errors.flat( ).join( ", " );
+        if ( typeof ( e.message.errors.flat ) === "function" ) {
+          return e.message.errors.flat( ).join( ", " );
+        }
+        return String( e.message.errors );
       }
       // 410 error for observations previously deleted uses e.message?.error format
       return e.message?.error || e.message;

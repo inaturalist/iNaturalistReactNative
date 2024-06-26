@@ -25,8 +25,8 @@ const RootExploreContainerWithContext = ( ): Node => {
   const { t } = useTranslation( );
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
-  const storedParams = useStore( state => state.storedParams );
-  const setStoredParams = useStore( state => state.setStoredParams );
+  const rootStoredParams = useStore( state => state.rootStoredParams );
+  const setRootStoredParams = useStore( state => state.setRootStoredParams );
 
   const worldwidePlaceText = t( "Worldwide" );
 
@@ -126,17 +126,17 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
-      const storedState = Object.keys( storedParams ).length > 0 || false;
+      const storedState = Object.keys( rootStoredParams ).length > 0 || false;
 
       if ( storedState ) {
-        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: storedParams } );
+        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: rootStoredParams } );
       }
     } );
 
     navigation.addListener( "blur", ( ) => {
-      setStoredParams( state );
+      setRootStoredParams( state );
     } );
-  }, [navigation, setStoredParams, state, dispatch, storedParams] );
+  }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
 
   return (
     <>

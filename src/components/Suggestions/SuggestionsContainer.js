@@ -2,6 +2,7 @@
 
 import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+// import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import _ from "lodash";
 import type { Node } from "react";
 import React, {
@@ -10,6 +11,7 @@ import React, {
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+// import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
@@ -17,6 +19,8 @@ import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
+
+// const logger = log.extend( "SuggestionsContainer" );
 
 const HUMAN_ID = 43584;
 
@@ -26,8 +30,10 @@ const SuggestionsContainer = ( ): Node => {
   // and only have the latest resized image stored in computerVisionSuggestions
   useClearComputerVisionDirectory( );
   const { params } = useRoute( );
-  const hasVisionSuggestion = params?.hasVisionSuggestion;
   const currentObservation = useStore( state => state.currentObservation );
+  const taxonId = currentObservation?.taxon?.id;
+  const hasVisionSuggestion = params?.hasVisionSuggestion
+    && !_.isEmpty( currentObservation?.taxon );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
 
@@ -35,14 +41,34 @@ const SuggestionsContainer = ( ): Node => {
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [isLoading, setIsLoading] = useState( true );
+  const [otherSuggestions, setOtherSuggestions] = useState( [] );
+  // const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
+  const [usingOfflineSuggestions, setUsingOfflineSuggestions] = useState( false );
+
+  const evidenceHasLocation = !!( currentObservation?.latitude );
+  // const showImproveWithLocationButton = !evidenceHasLocation
+  //   && params?.lastScreen === "CameraWithDevice";
+
+  const [
+    showSuggestionsWithLocation,
+    setShowSuggestionsWithLocation
+  ] = useState( evidenceHasLocation );
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
     error: onlineSuggestionsError,
     onlineSuggestions,
-    loadingOnlineSuggestions,
-    timedOut
-  } = useOnlineSuggestions( selectedPhotoUri );
+    timedOut,
+    refetchSuggestions,
+    fetchStatus
+  } = useOnlineSuggestions( selectedPhotoUri, {
+    showSuggestionsWithLocation
+  } );
+
+  const loadingOnlineSuggestions = fetchStatus === "fetching";
+
+  const hasOnlineSuggestions = !onlineSuggestions
+    || onlineSuggestions?.results?.length === 0;
 
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = timedOut || (
@@ -50,10 +76,10 @@ const SuggestionsContainer = ( ): Node => {
     !loadingOnlineSuggestions
     && (
       // Don't bother with offline if we have some online suggestions
-      !onlineSuggestions
-      || onlineSuggestions?.results?.length === 0
+      hasOnlineSuggestions
     )
   );
+
   const {
     offlineSuggestions,
     loadingOfflineSuggestions
@@ -71,13 +97,17 @@ const SuggestionsContainer = ( ): Node => {
     uri => {
       if ( uri === selectedPhotoUri ) {
         setMediaViewerVisible( true );
+      } else {
+        setIsLoading( true );
+        setOtherSuggestions( [] );
+        setUsingOfflineSuggestions( false );
+        setSelectedPhotoUri( uri );
       }
-      setSelectedPhotoUri( uri );
     },
-    [selectedPhotoUri]
+    [
+      selectedPhotoUri
+    ]
   );
-
-  const usingOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
 
   const debugData = {
     timedOut,
@@ -85,7 +115,8 @@ const SuggestionsContainer = ( ): Node => {
     offlineSuggestions,
     onlineSuggestionsError,
     onlineSuggestionsUpdatedAt,
-    selectedPhotoUri
+    selectedPhotoUri,
+    showSuggestionsWithLocation
   };
 
   const unfilteredSuggestions = onlineSuggestions?.results?.length > 0
@@ -95,41 +126,81 @@ const SuggestionsContainer = ( ): Node => {
   const hasSuggestions = unfilteredSuggestions.length > 0;
   const humanSuggestion = _.find( unfilteredSuggestions, s => s.taxon.id === HUMAN_ID );
 
-  const filterSuggestions = ( ) => {
-    if ( isLoading ) { return []; }
+  const filterSuggestions = useCallback( ( ) => {
     if ( humanSuggestion ) {
       return [];
     }
+    let filteredSuggestions = unfilteredSuggestions;
     if ( hasVisionSuggestion ) {
-      return unfilteredSuggestions.filter(
-        result => result?.taxon?.id !== currentObservation?.taxon?.id
+      const hideVisionSuggestionFromOther = unfilteredSuggestions.filter(
+        result => result?.taxon?.id !== taxonId
       ).map( r => r );
+      filteredSuggestions = hideVisionSuggestionFromOther;
     }
-    return unfilteredSuggestions;
-  };
+
+    const sortedSuggestions = ( ) => {
+      if ( usingOfflineSuggestions ) {
+        return filteredSuggestions;
+      }
+      // use the vision_score to display sorted suggestions when evidence
+      // does not include a location; use the combined_score to display
+      // sorted suggestions when evidence includes a location
+      if ( showSuggestionsWithLocation ) {
+        return _.orderBy( filteredSuggestions, "combined_score", "desc" );
+      }
+      return _.orderBy( filteredSuggestions, "vision_score", "desc" );
+    };
+
+    return sortedSuggestions( );
+  }, [
+    hasVisionSuggestion,
+    humanSuggestion,
+    showSuggestionsWithLocation,
+    taxonId,
+    unfilteredSuggestions,
+    usingOfflineSuggestions
+  ] );
 
   useEffect( ( ) => {
-    if ( hasSuggestions || loadingOfflineSuggestions === false ) {
+    if ( (
+      hasSuggestions || loadingOfflineSuggestions === false
+    ) && fetchStatus === "idle" ) {
+      setOtherSuggestions( filterSuggestions( ) );
       setIsLoading( false );
     }
-  }, [loadingOfflineSuggestions, hasSuggestions] );
+  }, [loadingOfflineSuggestions, hasSuggestions, filterSuggestions, fetchStatus] );
+
+  useEffect( ( ) => {
+    const hasOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
+    setUsingOfflineSuggestions( hasOfflineSuggestions );
+  }, [
+    offlineSuggestions.length,
+    tryOfflineSuggestions
+  ] );
 
   const filterTopSuggestions = ( ) => {
-    if ( isLoading ) { return []; }
+    if ( isLoading ) { return null; }
     if ( humanSuggestion ) {
       return humanSuggestion;
     }
     if ( hasVisionSuggestion ) {
       return currentObservation;
     }
-    if ( onlineSuggestions?.length > 0 ) {
+    if ( onlineSuggestions?.results?.length > 0 ) {
       return onlineSuggestions?.common_ancestor;
     }
-    return [];
+    return null;
   };
 
   const topSuggestion = filterTopSuggestions( );
-  const suggestions = filterSuggestions( );
+
+  const reloadSuggestions = useCallback( ( { showLocation } ) => {
+    setIsLoading( true );
+    setOtherSuggestions( [] );
+    refetchSuggestions( );
+    setShowSuggestionsWithLocation( showLocation );
+    setUsingOfflineSuggestions( false );
+  }, [refetchSuggestions] );
 
   return (
     <>
@@ -138,9 +209,13 @@ const SuggestionsContainer = ( ): Node => {
         loading={isLoading}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
+        otherSuggestions={otherSuggestions}
         photoUris={photoUris}
+        reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
-        suggestions={suggestions}
+        // setLocationPermissionNeeded={setLocationPermissionNeeded}
+        // showImproveWithLocationButton={showImproveWithLocationButton}
+        showSuggestionsWithLocation={showSuggestionsWithLocation}
         topSuggestion={topSuggestion}
         usingOfflineSuggestions={usingOfflineSuggestions}
       />
@@ -150,6 +225,13 @@ const SuggestionsContainer = ( ): Node => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
+      {/* <LocationPermissionGate
+        permissionNeeded={locationPermissionNeeded}
+        withoutNavigation
+        onPermissionGranted={( ) => console.log( "permission granted" )}
+        onPermissionDenied={( ) => console.log( "permission denied" )}
+        onPermissionBlocked={( ) => console.log( "permission blocked" )}
+      /> */}
     </>
   );
 };

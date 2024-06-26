@@ -30,6 +30,7 @@ const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
 
 const { useRealm } = RealmContext;
 
+// eslint-disable-next-line no-undef
 export default useUploadObservations = canUpload => {
   const realm = useRealm( );
 
@@ -64,6 +65,7 @@ export default useUploadObservations = canUpload => {
   const { t } = useTranslation( );
 
   useEffect( () => {
+    // eslint-disable-next-line no-undef
     let timer: number | NodeJS.Timeout;
     if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
       timer = setTimeout( () => {

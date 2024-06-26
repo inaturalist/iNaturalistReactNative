@@ -33,7 +33,7 @@ const useCurrentObservationLocation = (
 ): Object => {
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
-  const hasLocation = latitude || longitude;
+  const hasLocation = !!( latitude && longitude );
   const originalPhotoUri = currentObservation?.observationPhotos
     && currentObservation?.observationPhotos[0]?.originalPhotoUri;
   const isGalleryPhoto = originalPhotoUri?.includes( galleryPhotosPath );
@@ -41,17 +41,25 @@ const useCurrentObservationLocation = (
   const isSharedPhoto = (
     originalPhotoUri && !originalPhotoUri.includes( RNFS.DocumentDirectoryPath )
   );
+  const isNewObservation = (
+    !currentObservation?._created_at
+    && !currentObservation?._synced_at
+  );
+  const accGoodEnough = (
+    currentObservation?.positional_accuracy
+    && currentObservation.positional_accuracy <= TARGET_POSITIONAL_ACCURACY
+  );
   const locationNotSetYet = useRef( true );
   const prevObservation = useRef( currentObservation );
 
   const [shouldFetchLocation, setShouldFetchLocation] = useState(
     currentObservation
-      && !currentObservation?._created_at
-      && !currentObservation?._synced_at
-      && !hasLocation
+      && isNewObservation
+      && ( !hasLocation || !accGoodEnough )
       && !isGalleryPhoto
       && !isSharedPhoto
   );
+
   const [numLocationFetches, setNumLocationFetches] = useState( 0 );
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );

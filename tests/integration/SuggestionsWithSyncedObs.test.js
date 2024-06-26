@@ -63,6 +63,7 @@ const makeMockObservations = ( ) => ( [
     wasSynced: jest.fn( ( ) => true ),
     // Suggestions won't load without a photo
     observationPhotos: [
+      factory( "RemoteObservationPhoto" ),
       factory( "RemoteObservationPhoto" )
     ],
     user: mockUser,
@@ -319,7 +320,7 @@ describe( "Suggestions", ( ) => {
       );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-      const offlineNotice = await screen.findByText( "Viewing Offline Suggestions" );
+      const offlineNotice = await screen.findByText( /You are offline. Tap to reload/ );
       expect( offlineNotice ).toBeTruthy( );
       const topOfflineTaxonResultButton = await screen.findByTestId(
         `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`

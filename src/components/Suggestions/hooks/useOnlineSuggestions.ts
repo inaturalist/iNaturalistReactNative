@@ -61,17 +61,24 @@ type OnlineSuggestionsResponse = {
   onlineSuggestions: Object,
   loadingOnlineSuggestions: boolean,
   timedOut: boolean,
-  error: Object
+  error: Object,
+  refetchSuggestions: Function
+  isRefetching: boolean
 }
 
 const useOnlineSuggestions = (
-  selectedPhotoUri: string
+  selectedPhotoUri: string,
+  options: Object
 ): OnlineSuggestionsResponse => {
   const currentObservation = useStore( state => state.currentObservation );
-  const options = {
-    latitude: currentObservation?.latitude,
-    longitude: currentObservation?.longitude
-  };
+  const { showSuggestionsWithLocation } = options;
+
+  const params = showSuggestionsWithLocation
+    ? {
+      latitude: currentObservation?.latitude,
+      longitude: currentObservation?.longitude
+    }
+    : null;
 
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
@@ -83,16 +90,15 @@ const useOnlineSuggestions = (
   const {
     data: onlineSuggestions,
     dataUpdatedAt,
-    isLoading: loadingOnlineSuggestions,
-    isError,
+    fetchStatus,
     error
   } = useAuthenticatedQuery(
     ["scoreImage", selectedPhotoUri],
     async optsWithAuth => {
       const scoreImageParams = await flattenUploadParams(
         selectedPhotoUri,
-        options?.latitude,
-        options?.longitude
+        params?.latitude,
+        params?.longitude
       );
       return scoreImage( scoreImageParams, optsWithAuth );
     },
@@ -116,26 +122,33 @@ const useOnlineSuggestions = (
     };
   }, [onlineSuggestions, selectedPhotoUri, queryClient] );
 
+  const refetchSuggestions = async ( ) => {
+    setTimedOut( false );
+    await queryClient.refetchQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
+  };
+
   useEffect( () => {
     if ( isOnline === false ) {
       setTimedOut( true );
     }
   }, [isOnline] );
 
+  const queryObject = {
+    dataUpdatedAt,
+    error,
+    timedOut,
+    refetchSuggestions,
+    fetchStatus
+  };
+
   return timedOut
     ? {
-      dataUpdatedAt,
-      error,
-      onlineSuggestions: undefined,
-      loadingOnlineSuggestions: false,
-      timedOut
+      ...queryObject,
+      onlineSuggestions: undefined
     }
     : {
-      dataUpdatedAt,
-      error,
-      onlineSuggestions,
-      loadingOnlineSuggestions: loadingOnlineSuggestions && !isError,
-      timedOut
+      ...queryObject,
+      onlineSuggestions
     };
 };
 
