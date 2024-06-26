@@ -6,13 +6,13 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-disableAddingMoreEvidence: boolean,
-    hidden?: boolean,
-onClose: Function
+  disableAddingMoreEvidence: boolean,
+  hidden?: boolean,
+  onClose: Function
 }
 
 const AddEvidenceSheet = ( {
@@ -22,7 +22,6 @@ const AddEvidenceSheet = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const [choice, setChoice] = useState( null );
 
   return (
     <BottomSheet
@@ -33,25 +32,9 @@ const AddEvidenceSheet = ( {
         // -1 means the sheet is fully hidden... and in theory it's safe to navigate away
         if ( position > -1 ) return;
 
-        if ( choice === "camera" ) {
-          navigation.navigate( "NoBottomTabStackNavigator", {
-            screen: "Camera",
-            params: {
-              addEvidence: true,
-              camera: "Standard"
-            }
-          } );
-        } else if ( choice === "import" ) {
-          // Show photo gallery, but skip group photos phase
-          navigation.navigate( "NoBottomTabStackNavigator", {
-            screen: "PhotoGallery",
-            params: { skipGroupPhotos: true }
-          } );
-        } else if ( choice === "sound" ) {
-          navigation.navigate(
-            "NoBottomTabStackNavigator",
-            { screen: "SoundRecorder", params: { addEvidence: true } }
-          );
+        if ( position === -1 ) {
+          // make sure backdrop press is handled
+          onClose( );
         }
       }}
     >
@@ -65,8 +48,15 @@ const AddEvidenceSheet = ( {
           <EvidenceButton
             icon="camera"
             handlePress={( ) => {
-              setChoice( "camera" );
-              onClose( );
+              // Since we're on ObsEdit, the "Camera" screen might already be in
+              // the stack, e.g. the AICamera, so if we use navigate() we risk
+              // going *back* to it and popping ObsEdit off the stack. Instead,
+              // we *push* another instance of that screen on to the stack so we
+              // can return to ObsEdit
+              navigation.push( "Camera", {
+                addEvidence: true,
+                camera: "Standard"
+              } );
             }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Camera" )}
@@ -75,8 +65,11 @@ const AddEvidenceSheet = ( {
           <EvidenceButton
             icon="gallery"
             handlePress={( ) => {
-              setChoice( "import" );
-              onClose( );
+              // Show photo gallery, but skip group photos phase
+              navigation.navigate( "NoBottomTabStackNavigator", {
+                screen: "PhotoGallery",
+                params: { skipGroupPhotos: true }
+              } );
             }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Bulk-importer" )}
@@ -85,8 +78,10 @@ const AddEvidenceSheet = ( {
           <EvidenceButton
             icon="microphone"
             handlePress={( ) => {
-              setChoice( "sound" );
-              onClose( );
+              navigation.navigate(
+                "NoBottomTabStackNavigator",
+                { screen: "SoundRecorder", params: { addEvidence: true } }
+              );
             }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Sound-recorder" )}

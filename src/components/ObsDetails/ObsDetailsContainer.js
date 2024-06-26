@@ -22,8 +22,9 @@ import {
   useObservationsUpdates,
   useTranslation
 } from "sharedHooks";
-import useRemoteObservation,
-{ fetchRemoteObservationKey } from "sharedHooks/useRemoteObservation";
+import useRemoteObservation, {
+  fetchRemoteObservationKey
+} from "sharedHooks/useRemoteObservation";
 import { ACTIVITY_TAB_ID, DETAILS_TAB_ID } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
@@ -174,12 +175,20 @@ const ObsDetailsContainer = ( ): Node => {
     || ( !observation?.user && !observation?.id )
   );
 
+  const invalidateRemoteObservationFetch = useCallback( ( ) => {
+    if ( observation?.uuid ) {
+      queryClient.invalidateQueries( {
+        queryKey: [fetchRemoteObservationKey, observation.uuid]
+      } );
+    }
+  }, [queryClient, observation?.uuid] );
+
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
-      queryClient.invalidateQueries( { queryKey: fetchRemoteObservationKey } );
-    }, [queryClient] )
+      invalidateRemoteObservationFetch( );
+    }, [invalidateRemoteObservationFetch] )
   );
 
   useEffect( ( ) => {
@@ -272,21 +281,22 @@ const ObsDetailsContainer = ( ): Node => {
       onSuccess: data => {
         refetchRemoteObservation( );
         if ( belongsToCurrentUser ) {
+          const newIdentification = data[0];
+          let newIdentTaxon;
+          if ( newIdentification.taxon?.id ) {
+            newIdentTaxon = realm?.objectForPrimaryKey( "Taxon", newIdentification.taxon.id );
+          }
+          newIdentTaxon = newIdentTaxon || newIdentification.taxon;
           safeRealmWrite( realm, ( ) => {
-            const localIdentifications = localObservation?.identifications;
-            const newIdentification = data[0];
             newIdentification.user = currentUser;
-            newIdentification.taxon = realm?.objectForPrimaryKey(
-              "Taxon",
-              newIdentification.taxon.id
-            ) || newIdentification.taxon;
-            if ( vision ) {
-              newIdentification.vision = true;
-            }
-            localIdentifications.push( newIdentification );
+            if ( newIdentTaxon ) newIdentification.taxon = newIdentTaxon;
+            if ( vision ) newIdentification.vision = true;
+            localObservation?.identifications?.push( newIdentification );
           }, "setting local identification in ObsDetailsContainer" );
-          const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-          dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+          if ( uuid ) {
+            const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
+            dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+          }
         }
       },
       onError: e => {
@@ -331,7 +341,7 @@ const ObsDetailsContainer = ( ): Node => {
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
     if ( hasPhotos ) {
-      navigation.navigate( "Suggestions", { lastScreen: "ObsDetails" } );
+      navigation.push( "Suggestions", { lastScreen: "ObsDetails" } );
     } else {
       // Go directly to taxon search in case there are no photos
       navigation.navigate( "TaxonSearch", { lastScreen: "ObsDetails" } );
@@ -340,8 +350,8 @@ const ObsDetailsContainer = ( ): Node => {
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
 
-  const refetchObservation = ( ) => {
-    queryClient.invalidateQueries( { queryKey: [fetchRemoteObservationKey] } );
+  const invalidateQueryAndRefetch = ( ) => {
+    invalidateRemoteObservationFetch( );
     refetchRemoteObservation( );
     refetchObservationUpdates( );
   };
@@ -386,7 +396,7 @@ const ObsDetailsContainer = ( ): Node => {
       onCommentAdded={onCommentAdded}
       onIDAgreePressed={onIDAgreePressed}
       openCommentBox={openCommentBox}
-      refetchRemoteObservation={refetchObservation}
+      refetchRemoteObservation={invalidateQueryAndRefetch}
       remoteObsWasDeleted={remoteObsWasDeleted}
       showActivityTab={showActivityTab}
       showAgreeWithIdSheet={showAgreeWithIdSheet}

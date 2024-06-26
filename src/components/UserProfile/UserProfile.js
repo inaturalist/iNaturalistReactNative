@@ -15,23 +15,31 @@ import {
   UserText
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
-import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
+import {
+  useAuthenticatedQuery,
+  useCurrentUser,
+  useIsConnected,
+  useTranslation
+} from "sharedHooks";
+import useStore from "stores/useStore";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ): Node => {
+  const setExploreView = useStore( state => state.setExploreView );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
   const { userId } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
+  const isOnline = useIsConnected( );
+  const { t } = useTranslation( );
 
   const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", userId],
@@ -49,7 +57,10 @@ const UserProfile = ( ): Node => {
       q: user?.login,
       fields: "following,friend_user,id",
       ttl: -1
-    }, optsWithAuth )
+    }, optsWithAuth ),
+    {
+      enabled: !!isOnline && !!currentUser
+    }
   );
   let relationshipResults = null;
   if ( relationships?.results && relationships.results.length > 0 ) {
@@ -71,22 +82,27 @@ const UserProfile = ( ): Node => {
   // }, [navigation, user, currentUser] );
 
   const onObservationPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      user,
-      worldwide: true,
-      resetStoredParams: true
-    } ),
-    [navigation, user]
+    ( ) => {
+      setExploreView( "observations" );
+      navigation.navigate( "Explore", {
+        user,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, user, setExploreView]
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => navigation.navigate( "Explore", {
-      user,
-      worldwide: true,
-      viewSpecies: true,
-      resetStoredParams: true
-    } ),
-    [navigation, user]
+    ( ) => {
+      setExploreView( "species" );
+      navigation.navigate( "Explore", {
+        user,
+        worldwide: true,
+        resetStoredParams: true
+      } );
+    },
+    [navigation, user, setExploreView]
   );
 
   if ( !user ) {
@@ -127,10 +143,10 @@ const UserProfile = ( ): Node => {
           )}
         </View>
         { user?.description && (
-          <>
+          <View className="mb-3">
             <Heading4 className="mb-2 mt-5">{t( "ABOUT" )}</Heading4>
             <UserText text={user?.description} />
-          </>
+          </View>
         ) }
         <Body2 className="mb-5">
           {t( "Joined-date", { date: formatUserProfileDate( user.created_at, t ) } )}

@@ -14,12 +14,12 @@ import Reanimated, {
   withTiming
 } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 type Props = {
   color?: string,
   completeColor?: string,
-  progress: number,
-  uploadObservation: Function,
+  handleIndividualUploadPress: Function,
   layout: string,
   // $FlowIgnore
   children: unknown,
@@ -45,12 +45,15 @@ const keyframe = new Keyframe( {
 const UploadStatus = ( {
   color,
   completeColor,
-  progress,
-  uploadObservation,
+  handleIndividualUploadPress,
   layout,
   children,
   uuid
 }: Props ): Node => {
+  const totalUploadProgress = useStore( state => state.totalUploadProgress );
+  const currentObservation = totalUploadProgress.find( o => o.uuid === uuid );
+  const progress = currentObservation?.totalProgress || 0;
+
   const { t } = useTranslation( );
   const theme = useTheme( );
   const defaultColor = theme.colors.primary;
@@ -79,23 +82,22 @@ const UploadStatus = ( {
     );
   };
 
-  const translationParams = {
-    uploadProgress: progress * 100
-  };
-
   const accessibilityLabelText = ( ) => {
     if ( progress < 0.05 ) {
       return t( "Saved-Observation" );
     }
     if ( progress < 1 ) {
+      const translationParams = {
+        uploadProgress: progress * 100
+      };
       return t( "Upload-Progress", translationParams );
     }
     return t( "Upload-Complete" );
   };
 
-  const uploadSingleObservation = async ( ) => {
+  const uploadSingleObservation = ( ) => {
     startAnimation( );
-    await uploadObservation( );
+    handleIndividualUploadPress( uuid );
   };
 
   useEffect( ( ) => ( ) => cancelAnimation( rotation ), [rotation] );

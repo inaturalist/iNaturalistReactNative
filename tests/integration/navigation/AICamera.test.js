@@ -3,7 +3,7 @@ import {
   screen,
   userEvent
 } from "@testing-library/react-native";
-import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
 import useStore from "stores/useStore";
 import { renderApp } from "tests/helpers/render";
@@ -41,7 +41,8 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
     }
   };
 } );
@@ -52,8 +53,9 @@ afterAll( uniqueRealmAfterAll );
 beforeAll( async () => {
   await initI18next();
   jest.useFakeTimers( );
-  useStore.setState( { isAdvancedUser: true } );
 } );
+
+beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
 
 describe( "AICamera navigation with advanced user layout", ( ) => {
   const actor = userEvent.setup( );
@@ -103,8 +105,10 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
       const takePhotoButton = await screen.findByLabelText( /Take photo/ );
       await actor.press( takePhotoButton );
-      expect( await screen.findByText( /ADD AN ID/ ) ).toBeVisible( );
-      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
+      const addIDButton = await screen.findByText( /ADD AN ID/ );
+      expect( addIDButton ).toBeVisible( );
+      const topTaxon = await screen.findByText( mockLocalTaxon.name );
+      expect( topTaxon ).toBeVisible( );
     } );
   } );
 } );

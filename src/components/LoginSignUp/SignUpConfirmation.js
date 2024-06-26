@@ -41,10 +41,10 @@ const SignUpConfirmation = ( ): Node => {
             testID="Login.loginButton"
           />
           <Body1
-            className="color-white self-center mt-[30px] underline"
-            onPress={( ) => navigation.navigate( "LoginStackNavigator", { screen: "Login" } )}
+            className="color-white self-center mt-[31px] mb-[35px] underline"
+            onPress={( ) => navigation.navigate( "TabNavigator" )}
           >
-            {t( "Return-to-Login" )}
+            {t( "Continue-to-iNaturalist" )}
           </Body1>
         </View>
       </View>

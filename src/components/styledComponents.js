@@ -14,6 +14,7 @@ import {
   Pressable as StyledPressable,
   SafeAreaView as UnstyledSafeAreaView,
   ScrollView as UnstyledScrollView,
+  Text as UnstyledText,
   TextInput as UntyledTextInput,
   View as UnstyledView
 } from "react-native";
@@ -31,6 +32,8 @@ const SafeAreaView = styled( UnstyledSafeAreaView === undefined
   : UnstyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( UnstyledScrollView );
+// $FlowIgnore
+const Text = styled( UnstyledText );
 // $FlowIgnore
 const TextInput = styled( UntyledTextInput );
 // $FlowIgnore
@@ -66,6 +69,7 @@ export {
   Pressable,
   SafeAreaView,
   ScrollView,
+  Text,
   TextInput,
   View
 };

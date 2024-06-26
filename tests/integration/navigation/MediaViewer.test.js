@@ -30,7 +30,8 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
     }
   };
 } );
@@ -38,14 +39,9 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const initialStoreState = useStore.getState( );
-beforeAll( ( ) => {
-  useStore.setState( initialStoreState, true );
-} );
-
 const mockUser = factory( "LocalUser" );
 
-jest.mock( "components/Suggestions/hooks/useOnlineSuggestions", ( ) => jest.fn( () => ( {
+jest.mock( "components/Suggestions/hooks/useOnlineSuggestions.ts", ( ) => jest.fn( () => ( {
   dataUpdatedAt: new Date( ),
   error: null,
   loadingOnlineSuggestions: false,
@@ -74,7 +70,7 @@ describe( "MediaViewer navigation", ( ) => {
   } );
 
   beforeEach( async ( ) => {
-    await signIn( mockUser );
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
   } );
 
   afterEach( ( ) => {
@@ -148,12 +144,8 @@ describe( "MediaViewer navigation", ( ) => {
       await findAndPressByLabelText( "Camera" );
     }
 
-    beforeAll( ( ) => {
+    beforeEach( ( ) => {
       useStore.setState( { isAdvancedUser: true } );
-    } );
-
-    afterAll( ( ) => {
-      useStore.setState( initialStoreState );
     } );
 
     it( "should show a photo when tapped", async ( ) => {
@@ -310,6 +302,8 @@ describe( "MediaViewer navigation", ( ) => {
       ]
     } );
     const observations = [observation];
+    const defaultSelectedPhoto = observation.observation_photos[0].photo.url;
+    const defaultUnselectedPhoto = observation.observation_photos[1].photo.url;
     useStore.setState( { observations } );
 
     async function navigateToSuggestions( ) {
@@ -324,27 +318,25 @@ describe( "MediaViewer navigation", ( ) => {
       );
       await act( async () => actor.press( suggestButton ) );
       const firstPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+        `ObsPhotoSelectionList.${defaultSelectedPhoto}`
       );
       expect( firstPhoto ).toBeVisible();
       const secondPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${observation.observation_photos[1].photo.url}`
+        `ObsPhotoSelectionList.${defaultUnselectedPhoto}`
       );
       expect( secondPhoto ).toBeVisible();
     }
 
     it( "should show the selected photo when tapped", async () => {
       await navigateToSuggestions( );
-      const photoUri
-        = observation.observation_photos[observation.observation_photos.length - 1].photo.url;
       const firstPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${photoUri}`
+        `ObsPhotoSelectionList.${defaultSelectedPhoto}`
       );
       expect( firstPhoto ).toBeVisible();
       await act( async () => actor.press( firstPhoto ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${photoUri}`
+          `CustomImageZoom.${defaultSelectedPhoto}`
         )
       ).toBeVisible();
     } );
@@ -352,28 +344,26 @@ describe( "MediaViewer navigation", ( ) => {
     it( "should not show the currently not selected photo when tapped", async () => {
       await navigateToSuggestions( );
       const secondPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${observation.observation_photos[0].photo.url}`
+        `ObsPhotoSelectionList.${defaultUnselectedPhoto}`
       );
       expect( secondPhoto ).toBeVisible();
       await act( async () => actor.press( secondPhoto ) );
       expect(
         screen.queryByTestId(
-          `CustomImageZoom.${observation.observation_photos[0].photo.url}`
+          `CustomImageZoom.${defaultUnselectedPhoto}`
         )
       ).toBeFalsy();
     } );
 
     it( "should not show delete button", async () => {
       await navigateToSuggestions();
-      const photoUri
-        = observation.observation_photos[observation.observation_photos.length - 1].photo.url;
       const firstPhoto = await screen.findByTestId(
-        `ObsPhotoSelectionList.${photoUri}`
+        `ObsPhotoSelectionList.${defaultSelectedPhoto}`
       );
       await act( async () => actor.press( firstPhoto ) );
       expect(
         await screen.findByTestId(
-          `CustomImageZoom.${photoUri}`
+          `CustomImageZoom.${defaultSelectedPhoto}`
         )
       ).toBeVisible();
       expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy();

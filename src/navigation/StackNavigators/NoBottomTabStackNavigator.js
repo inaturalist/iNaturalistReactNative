@@ -33,7 +33,6 @@ const soundRecorderTitle = ( ) => (
 const CAMERA_SCREEN_OPTIONS = {
   ...hideHeader,
   orientation: "all",
-  unmountOnBlur: true,
   contentStyle: {
     backgroundColor: "black"
   }
@@ -43,7 +42,6 @@ const GROUP_PHOTOS_OPTIONS = {
   ...showHeader,
   ...showCustomHeader,
   lazy: true,
-  headerTitle: t( "Group-Photos" ),
   headerShadowVisible: false
 };
 
@@ -54,8 +52,7 @@ const SOUND_RECORDER_OPTIONS = {
   },
   headerTintColor: "white",
   headerTitle: soundRecorderTitle,
-  headerTitleAlign: "center",
-  unmountOnBlur: true
+  headerTitleAlign: "center"
 };
 
 const CameraContainerWithPermission = ( ) => (

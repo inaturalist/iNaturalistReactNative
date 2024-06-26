@@ -4,7 +4,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ForgotPassword from "components/LoginSignUp/ForgotPassword";
 import LicensePhotos from "components/LoginSignUp/LicensePhotos";
-import Login from "components/LoginSignUp/Login";
+import Login from "components/LoginSignUp/Login.tsx";
 import SignUp from "components/LoginSignUp/SignUp";
 import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
 import { CloseButton } from "components/SharedComponents";

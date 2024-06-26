@@ -20,7 +20,8 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   }
   logger.warn(
     `reactQueryRetry, error: ${error.message}, failureCount: ${failureCount}, options:`,
-    options
+    options,
+    error
   );
   let shouldRetry = failureCount < 2;
   if (
@@ -32,7 +33,7 @@ function reactQueryRetry( failureCount, error, options = {} ) {
     || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
   ) {
     shouldRetry = failureCount < 3;
-    logger.info(
+    console.log(
       "reactQueryRetry, handling 408 Request Timeout / Network request failed, "
       + `failureCount: ${failureCount}, shouldRetry: ${shouldRetry}, options: `,
       options
@@ -41,7 +42,7 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   // 404 means the record does not exist, so no need to retry
   if ( error.status === 404 ) {
     shouldRetry = false;
-    logger.info( "reactQueryRetry, handling 404, not retrying" );
+    console.log( "reactQueryRetry, handling 404, not retrying" );
   }
   handleError( error, {
     throw: false,
@@ -49,7 +50,7 @@ function reactQueryRetry( failureCount, error, options = {} ) {
       if ( apiError.status === 401 || apiError.status === 403 ) {
         // If we get a 401 or 403, call getJWT
         // which has a timestamp check if we need to refresh the token
-        logger.info( "reactQueryRetry, handling auth error, calling getJWT" );
+        console.log( "reactQueryRetry, handling auth error, calling getJWT" );
         getJWT( );
       }
       // Consider handling 500+ errors differently. if you can detect them

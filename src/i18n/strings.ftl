@@ -34,6 +34,7 @@ ACTIVITY = ACTIVITY
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID
+Add-an-ID-Later = Add an ID Later
 ADD-COMMENT = ADD COMMENT
 Add-comment = Add comment
 Add-Date-Time = Add Date/Time
@@ -72,7 +73,6 @@ All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
 # As in automated identification suggestions
-ALL-SUGGESTIONS = ALL SUGGESTIONS
 Almost-done = Almost done!
 Already-have-an-account = Already have an account? Log in
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
@@ -81,12 +81,13 @@ An-Internet-connection-is-required = An Internet connection is required to load 
 Any = Any
 #  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
+APP-LANGUAGE = APP LANGUAGE
 APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
 April = April
 Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
-Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
+Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
 attribution-cc-by = some rights reserved (CC BY)
@@ -129,6 +130,7 @@ CC-BY-ND = CC BY-ND
 CC-BY-SA = CC BY-SA
 # Short label for the Creative Commons Zero declaration
 CC0 = CC0
+CHANGE-APP-LANGUAGE = CHANGE APP LANGUAGE
 # Label for a button that changes a selected date
 CHANGE-DATE = CHANGE DATE
 # Label for a button that changes a selected date
@@ -184,7 +186,7 @@ CONFIRM = CONFIRM
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
-CONTINUE = CONTINUE
+Continue-to-iNaturalist = Continue to iNaturalist
 # Notification when coordinates have been copied
 Coordinates-copied-to-clipboard = Coordinates copied to clipboard
 # Button that copies coordinates to the clipboard
@@ -333,6 +335,8 @@ Endemic = Endemic
 # without knowing the vowel/consonant state of the first letter of the
 # placeable
 Endemic-to-place = Endemic to { $place }
+# Title for a section describing an error
+Error = Error
 Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 ERROR-LOADING-DQA = ERROR LOADING IN DQA
 # Title of dialog or section describing an error
@@ -421,6 +425,8 @@ Identify-an-organism = Identify an organism
 Identify-an-organism-with-the-iNaturalist-AI-Camera = Identify an organism with the iNaturalist AI Camera
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
+If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
+IGNORE-LOCATION = IGNORE LOCATION
 Import-Photos-From = Import Photos From
 # Shows the number of observations a user is about to import
 IMPORT-X-OBSERVATIONS =
@@ -428,6 +434,7 @@ IMPORT-X-OBSERVATIONS =
         [one] 1 OBSERVATION
        *[other] { $count } OBSERVATIONS
     }
+IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
@@ -442,6 +449,7 @@ iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and a
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
 iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
 iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
+iNaturalist-is-loading-ID-suggestions = iNaturalist is loading ID suggestions...
 iNaturalist-is-supported-by = iNaturalist is supported by an independent, 501(c)(3) nonprofit organization based in the United States of America. The iNaturalist platform includes this app, Seek by iNaturalist, the iNaturalist website, and more.
 iNaturalist-is-supported-by-community = iNaturalist is supported by our amazing community. From everyday naturalists who add observations and identifications, to curators who assist in the curation of taxonomy and moderation, to the volunteer translators at who make iNaturalist more accessible to worldwide audiences, to our community-based donors, we are extraordinarily grateful for all the people of our community who make iNaturalist the platform it is.
 iNaturalist-mission-is-to-connect = iNaturalist's mission is to connect people to nature and advance biodiversity science and conservation.
@@ -514,7 +522,7 @@ Log-in-to-contribute-your-observations = Log in to contribute your observations 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
-Logged-in-as = Logged in as: { $username }
+LOG-OUT--question = LOG OUT?
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
 # Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
@@ -566,7 +574,6 @@ Navigates-to-your-observations = Navigates to your observations
 # Header for nearby projects
 NEARBY = NEARBY
 Nearby = Nearby
-NEARBY-SUGGESTIONS = NEARBY SUGGESTIONS
 Needs-ID = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
@@ -635,6 +642,7 @@ October = October
 Offensive-Inappropriate = Offensive/Inappropriate
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
+Offline-suggestions-do-not-use-your-location = Offline suggestions do not use your location and may differ from online suggestions. Taxon images and common names may not load.
 # Generic confirmation, e.g. button on a warning alert
 OK = OK
 # Sort order, refers to newest or oldest date
@@ -650,6 +658,7 @@ OPEN-SETTINGS = OPEN SETTINGS
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-AI-camera = Opens AI camera.
+Opens-location-permission-prompt = Opens location permission prompt
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
@@ -660,6 +669,7 @@ Organisms-that-are-identified-to-species = Organisms that are identified to spec
 # one of the existing options
 Other = Other
 OTHER-DATA = OTHER DATA
+OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 PASSWORD = PASSWORD
 PERSONAL-INFO = PERSONAL INFO
 Photo-importer = Photo importer
@@ -776,9 +786,9 @@ RESET-SOUND-header = RESET SOUND?
 # Label for a button that resets the state of an interface, e.g. a button that
 # resets the sound recorder to its original state
 Reset-verb = Reset
+RESTART-APP = RESTART APP
 # Label for button that restores a withdrawn identification
 Restore = Restore
-Return-to-Login = Return to Login
 REVIEW-INATURALIST = REVIEW INATURALIST
 # Title for section of observation filters for controls over whether you have
 # reviewed the observations or not
@@ -809,6 +819,8 @@ SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
 Search-for-a-taxon = Search for a taxon
 SEARCH-LOCATION = SEARCH LOCATION
 SEARCH-PROJECTS = SEARCH PROJECTS
+Search-suggestions-with-location = Search suggestions with location
+Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
 # Accessibility label for Explore button on MyObservations toolbar
@@ -826,7 +838,6 @@ Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
 Select-or-drag-media = Select or drag media
 Select-photo = Select photo
-Select-the-identification-you-want-to-add = Select the identification you want to add to this observation. You can add a filter to further refine your results or search for a taxon.
 # Label for an element that let's you select a user
 Select-user = Select user
 Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
@@ -845,7 +856,6 @@ Show-observation-options = Show observation options.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
-Sign-out = Sign out
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
 Something-went-wrong = Something went wrong.
@@ -954,9 +964,9 @@ Uploaded-via-application = Uploaded via: { $application }
 Uploading-x-of-y = Uploading { $currentUploadCount } of { $total }
 # Shows the number of observations a user is currently uploading out of total on my observations page
 Uploading-x-of-y-observations =
-    Uploading { $currentUploadCount } of { $total ->
-        [one] 1 observation
-       *[other] { $total } observations
+    { $total ->
+        [one] Uploading { $currentUploadCount } observation
+       *[other] Uploading { $currentUploadCount } of { $total } observations
     }
 Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real-time
 # Text for a button prompting the user to grant access to location
@@ -972,7 +982,7 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
-View-in-browser = View in Browser
+View-in-browser = View in browser
 VIEW-IN-EXPLORE = VIEW IN EXPLORE
 VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
 # Button or accessibility label for an element that lets the user view a
@@ -985,10 +995,6 @@ VIEW-PROJECTS = VIEW PROJECTS
 # or photo
 View-suggestions = View suggestions
 VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
-# Title for a notice informing the user that they are viewing offline
-# identification suggestions
-Viewing-Offline-Suggestions = Viewing Offline Suggestions
-Viewing-Offline-Suggestions-results-may-differ = Results may differ from the online suggestions and images and common names may not display.
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 Welcome-to-iNaturalist = Welcome to iNaturalist!
@@ -1099,7 +1105,13 @@ X-Species =
         [one] { $count } Species
        *[other] { $count } Species
     }
+x-uploads-failed =
+    { $count ->
+        [one] { $count } upload failed
+       *[other] { $count } uploads failed
+    }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!

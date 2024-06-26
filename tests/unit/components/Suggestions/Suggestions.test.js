@@ -40,7 +40,7 @@ describe( "Suggestions", ( ) => {
   test( "should not have accessibility errors", async ( ) => {
     const suggestions = (
       <Suggestions
-        suggestions={mockSuggestionsList}
+        otherSuggestions={mockSuggestionsList}
       />
     );
     expect( suggestions ).toBeAccessible( );
@@ -48,7 +48,7 @@ describe( "Suggestions", ( ) => {
 
   it( "should fetch offline suggestions for current photo", async ( ) => {
     renderComponent( <Suggestions
-      suggestions={mockSuggestionsList}
+      otherSuggestions={mockSuggestionsList}
     /> );
     const taxonTopResult = screen.getByTestId(
       `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
@@ -63,7 +63,7 @@ describe( "Suggestions", ( ) => {
       comment: "This is a test comment"
     } );
     renderComponent( <Suggestions
-      suggestions={mockSuggestionsList}
+      otherSuggestions={mockSuggestionsList}
     /> );
     const commentSection = screen.getByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
@@ -73,26 +73,36 @@ describe( "Suggestions", ( ) => {
 
   it( "should display empty text if no suggestions are found", ( ) => {
     renderComponent( <Suggestions
-      suggestions={[]}
+      otherSuggestions={[]}
     /> );
     const emptyText = i18next
       .t( "iNaturalist-has-no-ID-suggestions-for-this-photo" );
     expect( screen.getByText( emptyText ) ).toBeVisible( );
   } );
 
-  it( "should display a loading wheel if suggestions are loading", ( ) => {
+  it( "should allow user to bypass suggestions screen", ( ) => {
     renderComponent( <Suggestions
-      suggestions={[]}
+      otherSuggestions={[]}
+    /> );
+    const bypassText = screen.getByText( /Add an ID Later/ );
+    expect( bypassText ).toBeVisible( );
+  } );
+
+  it( "should display loading wheel and text when suggestions are loading", ( ) => {
+    renderComponent( <Suggestions
+      otherSuggestions={[]}
       loading
       photoUris={["uri"]}
     /> );
     const loading = screen.getByTestId( "SuggestionsList.loading" );
     expect( loading ).toBeVisible( );
+    const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
+    expect( loadingText ).toBeVisible( );
   } );
 
   it( "should create an id when checkmark is pressed", async ( ) => {
     renderComponent( <Suggestions
-      suggestions={mockSuggestionsList}
+      otherSuggestions={mockSuggestionsList}
       onTaxonChosen={mockCreateId}
     /> );
     const testID = `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`;

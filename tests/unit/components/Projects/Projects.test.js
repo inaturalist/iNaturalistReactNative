@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import ProjectsContainer from "components/Projects/ProjectsContainer";
+import ProjectsContainer from "components/Projects/ProjectsContainer.tsx";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";

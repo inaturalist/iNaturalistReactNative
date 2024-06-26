@@ -8,7 +8,7 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useCurrentUser, useIsConnected } from "sharedHooks";
+import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
@@ -17,6 +17,7 @@ import useHeaderCount from "./hooks/useHeaderCount";
 import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
+  const { t } = useTranslation( );
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
   const setStoredParams = useStore( state => state.setStoredParams );
@@ -27,14 +28,57 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
+  const worldwidePlaceText = t( "Worldwide" );
+
   useParams( );
 
   const updateTaxon = ( taxon: Object ) => {
+    if ( !taxon ) {
+      dispatch( {
+        type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
+        taxon: null
+      } );
+    } else {
+      dispatch( {
+        type: EXPLORE_ACTION.CHANGE_TAXON,
+        taxon,
+        taxonId: taxon?.id,
+        taxonName: taxon?.preferred_common_name || taxon?.name
+      } );
+    }
+  };
+
+  const updateLocation = ( place: Object ) => {
+    if ( place === "worldwide" ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeId: null,
+        placeGuess: worldwidePlaceText
+      } );
+    } else {
+      navigation.setParams( { place } );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        place,
+        placeId: place?.id,
+        placeGuess: place?.display_name
+      } );
+    }
+  };
+
+  const updateUser = ( user: Object ) => {
     dispatch( {
-      type: EXPLORE_ACTION.CHANGE_TAXON,
-      taxon,
-      taxonId: taxon?.id,
-      taxonName: taxon?.preferred_common_name || taxon?.name
+      type: EXPLORE_ACTION.SET_USER,
+      user,
+      userId: user?.id
+    } );
+  };
+
+  const updateProject = ( project: Object ) => {
+    dispatch( {
+      type: EXPLORE_ACTION.SET_PROJECT,
+      project,
+      projectId: project?.id
     } );
   };
 
@@ -76,6 +120,9 @@ const ExploreContainerWithContext = ( ): Node => {
       showFiltersModal={showFiltersModal}
       updateCount={updateCount}
       updateTaxon={updateTaxon}
+      updateLocation={updateLocation}
+      updateUser={updateUser}
+      updateProject={updateProject}
     />
   );
 };

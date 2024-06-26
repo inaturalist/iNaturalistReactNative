@@ -27,7 +27,7 @@ type Props = {
 // Ensure this component is placed outside of scroll views
 
 const SearchBar = ( {
-  autoFocus = false,
+  autoFocus = true,
   clearSearch,
   containerClass,
   handleTextChange,

@@ -8,6 +8,7 @@ import type { Node } from "react";
 import React, { useCallback } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
@@ -29,6 +30,7 @@ const DeleteObservationSheet = ( {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const { uuid } = currentObservation;
+  const addToDeleteQueue = useStore( state => state.addToDeleteQueue );
 
   const multipleObservations = observations.length > 1;
 
@@ -38,6 +40,7 @@ const DeleteObservationSheet = ( {
       safeRealmWrite( realm, ( ) => {
         localObsToDelete._deleted_at = new Date( );
       }, "adding _deleted_at date in DeleteObservationSheet" );
+      addToDeleteQueue( uuid );
     }
     if ( multipleObservations ) {
       updateObservations( observations.filter( o => o.uuid !== uuid ) );
@@ -51,6 +54,7 @@ const DeleteObservationSheet = ( {
     navToObsList,
     observations,
     realm,
+    addToDeleteQueue,
     updateObservations,
     uuid
   ] );

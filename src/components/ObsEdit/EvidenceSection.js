@@ -21,7 +21,6 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 type Props = {
   currentObservation: Object,
-  handleDragAndDrop: Function,
   isFetchingLocation: boolean,
   locationPermissionNeeded: boolean,
   locationTextClassNames: Array<string>,
@@ -44,7 +43,6 @@ type Props = {
 
 const EvidenceSection = ( {
   currentObservation,
-  handleDragAndDrop,
   isFetchingLocation,
   locationPermissionNeeded,
   locationTextClassNames,
@@ -52,7 +50,6 @@ const EvidenceSection = ( {
   onLocationPermissionDenied,
   onLocationPermissionGranted,
   passesEvidenceTest,
-  observationPhotos,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
   observationSounds,
@@ -103,14 +100,15 @@ const EvidenceSection = ( {
 
   return (
     <View className="mx-6">
-      <AddEvidenceSheet
-        disableAddingMoreEvidence={
-          obsPhotos?.length >= MAX_PHOTOS_ALLOWED
-          || obsSounds?.length >= MAX_SOUNDS_ALLOWED
-        }
-        hidden={!showAddEvidenceSheet}
-        onClose={( ) => setShowAddEvidenceSheet( false )}
-      />
+      {showAddEvidenceSheet && (
+        <AddEvidenceSheet
+          disableAddingMoreEvidence={
+            obsPhotos?.length >= MAX_PHOTOS_ALLOWED
+            || obsSounds?.length >= MAX_SOUNDS_ALLOWED
+          }
+          onClose={( ) => setShowAddEvidenceSheet( false )}
+        />
+      )}
       <View className="flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">
@@ -124,8 +122,6 @@ const EvidenceSection = ( {
       </View>
       <EvidenceList
         handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
-        handleDragAndDrop={handleDragAndDrop}
-        observationPhotos={observationPhotos}
         observationSounds={observationSounds}
       />
       <Pressable
@@ -141,7 +137,14 @@ const EvidenceSection = ( {
               size={25}
             />
           )}
-          <View className={isFetchingLocation && "bottom-5"}>
+          <View
+            className={classnames(
+              // This line makes sure the icon is centered in the height
+              // of the Body3 label next to it
+              "h-[18px] items-center justify-center",
+              isFetchingLocation && "bottom-5"
+            )}
+          >
             <INatIcon size={14} name="map-marker-outline" />
           </View>
         </View>

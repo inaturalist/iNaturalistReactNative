@@ -25,13 +25,7 @@ exports[`Checkbox renders reliably 1`] = `
   disableBuiltInState={true}
   fillColor="rgba(98, 91, 113, 1)"
   focusable={true}
-  iconComponent={
-    <INatIcon
-      color="rgba(255, 255, 255, 1)"
-      name="checkmark"
-      size={19}
-    />
-  }
+  iconComponent={null}
   iconStyle={
     {
       "borderRadius": 6,
@@ -111,29 +105,7 @@ exports[`Checkbox renders reliably 1`] = `
           },
         ]
       }
-    >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
-        style={
-          [
-            {
-              "color": "rgba(255, 255, 255, 1)",
-              "fontSize": 19,
-            },
-            undefined,
-            {
-              "fontFamily": "INatIcon",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
-          ]
-        }
-      >
-        
-      </Text>
-    </View>
+    />
   </View>
   <Text
     style={
@@ -295,7 +267,7 @@ exports[`Checkbox renders reliably being checked 1`] = `
           ]
         }
       >
-        
+        
       </Text>
     </View>
   </View>

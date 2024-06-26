@@ -8,20 +8,27 @@ import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
+import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
+import useStore from "stores/useStore";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsUploadStatusContainer from "./ObsUploadStatusContainer";
+import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
-  observation: Object,
-  uploadSingleObservation?: Function,
-  uploadState: Object,
-  explore: boolean
+  explore: boolean,
+  handleIndividualUploadPress: Function,
+  showUploadStatus: boolean,
+  observation: Object
 };
 
 const ObsListItem = ( {
-  observation, uploadSingleObservation, uploadState, explore = false
+  explore = false,
+  handleIndividualUploadPress,
+  showUploadStatus,
+  observation
 }: Props ): Node => {
+  const uploadStatus = useStore( state => state.uploadStatus );
+
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
@@ -57,7 +64,9 @@ const ObsListItem = ( {
         <ObservationLocation observation={observation} classNameMargin="mt-1" />
         <DateDisplay
           dateString={
-            observation.time_observed_at || observation.observed_on_string
+            observation.time_observed_at
+            || observation.observed_on_string
+            || observation.observed_on
           }
           classNameMargin="mt-1"
         />
@@ -65,7 +74,7 @@ const ObsListItem = ( {
       <View
         className={classnames(
           "flex-0 justify-start flex-row",
-          { "justify-center": uploadState }
+          { "justify-center": uploadStatus === UPLOAD_IN_PROGRESS }
         )}
       >
         {explore
@@ -77,11 +86,11 @@ const ObsListItem = ( {
             />
           )
           : (
-            <ObsUploadStatusContainer
-              observation={observation}
+            <ObsUploadStatus
+              handleIndividualUploadPress={handleIndividualUploadPress}
               layout="vertical"
-              uploadSingleObservation={uploadSingleObservation}
-              uploadState={uploadState}
+              showUploadStatus={showUploadStatus}
+              observation={observation}
             />
           )}
       </View>

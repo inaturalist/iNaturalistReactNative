@@ -57,28 +57,22 @@ jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
   default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) )
 } ) );
 
+const renderMyObservations = layout => renderComponent(
+  <MyObservations
+    layout={layout}
+    observations={mockObservations}
+    onEndReached={jest.fn( )}
+    toggleLayout={jest.fn( )}
+    setShowLoginSheet={jest.fn( )}
+  />
+);
+
 describe( "MyObservations", () => {
   beforeAll( async () => {
     jest.useFakeTimers( );
   } );
-
   it( "renders an observation", async () => {
-    renderComponent(
-      <MyObservations
-        layout="list"
-        observations={mockObservations}
-        onEndReached={jest.fn( )}
-        toggleLayout={jest.fn( )}
-        uploadStatus={{}}
-        setShowLoginSheet={jest.fn( )}
-        uploadState={{
-          uploads: [],
-          error: null,
-          numToUpload: 0,
-          uploadInProgress: false
-        }}
-      />
-    );
+    renderMyObservations( "list" );
     const obs = mockObservations[0];
 
     const list = await screen.findByTestId( "MyObservationsAnimatedList" );
@@ -90,22 +84,7 @@ describe( "MyObservations", () => {
   } );
 
   it( "renders multiple observations", async () => {
-    renderComponent(
-      <MyObservations
-        layout="list"
-        observations={mockObservations}
-        onEndReached={jest.fn( )}
-        toggleLayout={jest.fn( )}
-        uploadStatus={{}}
-        setShowLoginSheet={jest.fn( )}
-        uploadState={{
-          uploads: [],
-          error: null,
-          numToUpload: 0,
-          uploadInProgress: false
-        }}
-      />
-    );
+    renderMyObservations( "list" );
     // Awaiting the first observation because using await in the forEach errors out
     const firstObs = mockObservations[0];
     await screen.findByTestId( `MyObservations.obsListItem.${firstObs.uuid}` );
@@ -120,48 +99,17 @@ describe( "MyObservations", () => {
   } );
 
   it( "render grid view", ( ) => {
-    renderComponent(
-      <MyObservations
-        layout="grid"
-        observations={mockObservations}
-        onEndReached={jest.fn( )}
-        toggleLayout={jest.fn( )}
-        uploadStatus={{}}
-        setShowLoginSheet={jest.fn( )}
-        uploadState={{
-          uploads: [],
-          error: null,
-          numToUpload: 0,
-          uploadInProgress: false
-        }}
-      />
-    );
+    renderMyObservations( "grid" );
     mockObservations.forEach( obs => {
       expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
     } );
   } );
 
   describe( "grid view", ( ) => {
-    const component = (
-      <MyObservations
-        layout="grid"
-        observations={mockObservations}
-        onEndReached={jest.fn( )}
-        toggleLayout={jest.fn( )}
-        uploadStatus={{}}
-        setShowLoginSheet={jest.fn( )}
-        uploadState={{
-          uploads: [],
-          error: null,
-          numToUpload: 0,
-          uploadInProgress: false
-        }}
-      />
-    );
     describe( "portrait orientation", ( ) => {
       describe( "on a phone", ( ) => {
         it( "should have 2 columns", async ( ) => {
-          renderComponent( component );
+          renderMyObservations( "grid" );
           const list = screen.getByTestId( "MyObservationsAnimatedList" );
           expect( list.props.numColumns ).toEqual( 2 );
         } );
@@ -172,7 +120,7 @@ describe( "MyObservations", () => {
         } );
         it( "should have 4 columns", async ( ) => {
           useDeviceOrientation.mockImplementation( ( ) => DEVICE_ORIENTATION_TABLET_PORTRAIT );
-          renderComponent( component );
+          renderMyObservations( "grid" );
           const list = screen.getByTestId( "MyObservationsAnimatedList" );
           expect( list.props.numColumns ).toEqual( 4 );
         } );
@@ -182,7 +130,7 @@ describe( "MyObservations", () => {
       describe( "on a phone", ( ) => {
         it( "should have 2 columns", async ( ) => {
           useDeviceOrientation.mockImplementation( ( ) => DEVICE_ORIENTATION_PHONE_LANDSCAPE );
-          renderComponent( component );
+          renderMyObservations( "grid" );
           const list = screen.getByTestId( "MyObservationsAnimatedList" );
           expect( list.props.numColumns ).toEqual( 2 );
         } );
@@ -193,7 +141,7 @@ describe( "MyObservations", () => {
         } );
         it( "should have 6 columns", async ( ) => {
           useDeviceOrientation.mockImplementation( ( ) => DEVICE_ORIENTATION_TABLET_LANDSCAPE );
-          renderComponent( component );
+          renderMyObservations( "grid" );
           const list = screen.getByTestId( "MyObservationsAnimatedList" );
           expect( list.props.numColumns ).toEqual( 6 );
         } );

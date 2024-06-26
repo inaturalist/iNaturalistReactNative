@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
+import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import React from "react";
 import { View } from "react-native";
 import factory from "tests/factory";
@@ -21,6 +22,8 @@ jest.mock( "components/SharedComponents/LocationPermissionGate", ( ) => "" );
 //   legacyFakeTimers: true
 // } );
 
+const mockUser = factory( "LocalUser" );
+
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
   time_observed_at: "2023-12-14T21:07:41-09:30",
@@ -41,7 +44,7 @@ jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
   default: () => mockAttribution
 } ) );
 
-const baseUrl = "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
+const baseUrl = `${TILE_URL}/grid/{z}/{x}/{y}.png`;
 
 describe( "DetailsTab", ( ) => {
   test( "should show description of observation", async ( ) => {
@@ -103,9 +106,15 @@ describe( "DetailsTab", ( ) => {
     expect( qualityGradeResearch ).toBeTruthy( );
   } );
 
-  test( "should display DQA button", async ( ) => {
-    renderComponent( <DetailsTab observation={mockObservation} /> );
-    const DQAButton = await screen.findByTestId( "DetailsTab.DQA" );
-    expect( DQAButton ).toBeTruthy( );
+  test( "should display DQA button if current user is logged in", ( ) => {
+    renderComponent( <DetailsTab observation={mockObservation} currentUser={mockUser} /> );
+    const DQAButton = screen.getByText( /VIEW DATA QUALITY ASSESSEMENT/ );
+    expect( DQAButton ).toBeVisible( );
+  } );
+
+  test( "should not display DQA button if current user is logged out", ( ) => {
+    renderComponent( <DetailsTab observation={mockObservation} currentUser={null} /> );
+    const DQAButton = screen.queryByText( /VIEW DATA QUALITY ASSESSEMENT/ );
+    expect( DQAButton ).toBeFalsy( );
   } );
 } );

@@ -23,12 +23,10 @@ const { useRealm } = RealmContext;
 
 type Props = {
   hideFooter?: boolean,
-  setLoggedIn: Function
 }
 
 const LoginForm = ( {
-  hideFooter,
-  setLoggedIn
+  hideFooter
 }: Props ): Node => {
   const { params } = useRoute( );
   const emailConfirmed = params?.emailConfirmed;
@@ -52,13 +50,15 @@ const LoginForm = ( {
   };
 
   useEffect( () => {
-    const unsubscribe = navigation.addListener( "blur", blurFields );
-    return unsubscribe;
+    const unsubscribeBlur = navigation.addListener( "blur", blurFields );
+
+    return unsubscribeBlur;
   }, [navigation] );
 
   useEffect( () => {
-    const unsubscribe = navigation.addListener( "transitionEnd", blurFields );
-    return unsubscribe;
+    const unsubscrubeTransition = navigation.addListener( "transitionEnd", blurFields );
+
+    return unsubscrubeTransition;
   }, [navigation] );
 
   const login = async ( ) => {
@@ -74,7 +74,6 @@ const LoginForm = ( {
       setLoading( false );
       return;
     }
-    setLoggedIn( true );
     setLoading( false );
 
     navigation.getParent( )?.goBack( );
@@ -148,7 +147,7 @@ const LoginForm = ( {
         />
         {!hideFooter && (
           <Body1
-            className="color-white self-center mt-[30px] underline"
+            className="color-white self-center mt-[31px] mb-[35px] underline"
             onPress={( ) => navigation.navigate( "SignUp" )}
           >
             {t( "Dont-have-an-account" )}

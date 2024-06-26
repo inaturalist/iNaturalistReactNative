@@ -176,7 +176,7 @@ const DisplayTaxonName = ( {
     TopTextComponentProp
   ] );
 
-  if ( !taxon ) {
+  if ( !taxon || !taxon.id ) {
     return (
       <Body1 className={textClassName} numberOfLines={1}>
         {t( "Unknown--taxon" )}

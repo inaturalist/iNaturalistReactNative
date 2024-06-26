@@ -1,7 +1,6 @@
 import { Realm } from "@realm/react";
-import { FileUpload } from "inaturalistjs";
+import inatjs, { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import Photo from "./Photo";
 
@@ -33,8 +32,8 @@ class ObservationPhoto extends Realm.Object {
   static mapPhotoForUpload( observationID, photo ) {
     return {
       file: new FileUpload( {
-        uri: photo.localFilePath,
-        name: photo.localFilePath,
+        uri: Photo.accessLocalPhoto( photo.localFilePath ),
+        name: Photo.accessLocalPhoto( photo.localFilePath ),
         type: "image/jpeg"
       } )
     };
@@ -45,7 +44,8 @@ class ObservationPhoto extends Realm.Object {
       observation_photo: {
         uuid: observationPhoto.uuid,
         observation_id: observationID,
-        photo_id: observationPhoto.photo.id
+        photo_id: observationPhoto.photo.id,
+        position: observationPhoto.position
       }
     };
   }
@@ -89,40 +89,38 @@ class ObservationPhoto extends Realm.Object {
   };
 
   static async deleteRemotePhoto( realm, uri, currentObservation ) {
-    // right now it doesn't look like there's a way to delete a photo OR an observation photo from
-    // api v2, so just going to worry about deleting locally for now
-    const obsPhotoToDelete = currentObservation?.observationPhotos.find( p => p.url === uri );
+    const obsPhotoToDelete = currentObservation?.observationPhotos?.find(
+      p => p.photo?.url === uri
+    );
+
     if ( obsPhotoToDelete ) {
-      safeRealmWrite( realm, ( ) => {
-        realm?.delete( obsPhotoToDelete );
-      }, "deleting remote observation photo in ObservationPhoto" );
+      const { getJWT } = require( "components/LoginSignUp/AuthenticationService" );
+      const apiToken = await getJWT( );
+      const options = { api_token: apiToken };
+      await inatjs.observation_photos.delete( { id: obsPhotoToDelete.uuid }, options );
     }
   }
 
-  static async deleteLocalPhoto( realm, uri, currentObservation ) {
+  static async deleteLocalPhoto( realm, uri ) {
     // delete uri on disk
     Photo.deletePhotoFromDeviceStorage( uri );
-    const obsPhotoToDelete = currentObservation?.observationPhotos
-      .find( p => p.localFilePath === uri );
-    if ( obsPhotoToDelete ) {
-      safeRealmWrite( realm, ( ) => {
-        realm?.delete( obsPhotoToDelete );
-      }, "deleting local observation photo in ObservationPhoto" );
-    }
   }
 
   static async deletePhoto( realm, uri, currentObservation ) {
     if ( uri.includes( "https://" ) ) {
       ObservationPhoto.deleteRemotePhoto( realm, uri, currentObservation );
     } else {
-      ObservationPhoto.deleteLocalPhoto( realm, uri, currentObservation );
+      ObservationPhoto.deleteLocalPhoto( realm, uri );
     }
   }
 
   static mapObsPhotoUris( observation ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
     const obsPhotoUris = ( obsPhotos || [] ).map(
-      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+      // Ensure that if this URI is a remote thumbnail that we are resizing
+      // a reasonably-sized image for Suggestions and not delivering a handful of
+      // upsampled pixels
+      obsPhoto => Photo.displayMediumPhoto( obsPhoto.photo?.url || obsPhoto.photo?.localFilePath )
     );
     return obsPhotoUris;
   }

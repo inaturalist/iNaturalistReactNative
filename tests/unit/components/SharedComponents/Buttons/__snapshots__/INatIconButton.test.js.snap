@@ -55,9 +55,6 @@ exports[`INatIconButton renders correctly 1`] = `
             "position": "relative",
           },
           {
-            "position": "relative",
-          },
-          {
             "left": 0.2,
           },
           {
@@ -86,7 +83,7 @@ exports[`INatIconButton renders correctly 1`] = `
         ]
       }
     >
-      
+      
     </Text>
   </View>
 </View>

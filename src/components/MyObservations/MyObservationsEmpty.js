@@ -27,10 +27,10 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const [showModal, setShowModal] = useState( false );
 
-  const resetStore = useStore( state => state.resetStore );
+  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navAndCloseModal = ( screen, params ) => {
     if ( screen !== "ObsEdit" ) {
-      resetStore( );
+      resetObservationFlowSlice( );
     }
     navigation.navigate( "NoBottomTabStackNavigator", {
       screen,

@@ -45,6 +45,7 @@ type Props = {
   obscured?: boolean,
   obsLatitude: number,
   obsLongitude: number,
+  onCurrentLocationPress?: Function,
   onMapReady?: Function,
   onPanDrag?: Function,
   onPermissionBlocked?: Function,
@@ -90,6 +91,7 @@ const Map = ( {
   obscured,
   obsLatitude,
   obsLongitude,
+  onCurrentLocationPress,
   onMapReady = ( ) => undefined,
   onPanDrag = ( ) => undefined,
   onPermissionBlocked: onPermissionBlockedProp,
@@ -374,6 +376,7 @@ const Map = ( {
         showCurrentLocationButton={showCurrentLocationButton}
         currentLocationButtonClassName={currentLocationButtonClassName}
         handlePress={( ) => {
+          if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
           setZoomToUserLocationRequested( true );
           setShowsUserLocation( true );
           setPermissionRequested( true );

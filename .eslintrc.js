@@ -84,6 +84,7 @@ module.exports = {
     "prefer-destructuring": [2, { object: true, array: false }],
     quotes: [2, "double"],
     "space-in-parens": [2, "always"],
+    "max-classes-per-file": 0,
     "module-resolver/use-alias": 2,
     "multiline-ternary": ["error", "always"],
     // At least before we start making production builds
@@ -126,12 +127,17 @@ module.exports = {
     "react-native-a11y/has-valid-accessibility-ignores-invert-colors": 1,
     "react-native-a11y/has-valid-accessibility-live-region": 1,
     "react-native-a11y/has-valid-important-for-accessibility": 1,
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    // it's supposedly safe to remove no-undef because TS's compiler handles
+    // this, but I'm bumping into this error a lot in VSCode - 20240624 amanda
+    // https://eslint.org/docs/latest/rules/no-undef#handled_by_typescript
+    "no-undef": "error",
 
     // TODO: we should actually type these at some point ~amanda 041824
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/no-unused-vars": 0,
     "@typescript-eslint/no-var-requires": 0
-
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {

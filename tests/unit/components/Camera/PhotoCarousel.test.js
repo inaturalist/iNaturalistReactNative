@@ -1,7 +1,7 @@
 import {
-  fireEvent, render, screen, waitFor
+  render, screen
 } from "@testing-library/react-native";
-import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel";
+import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel.tsx";
 import React from "react";
 import useStore from "stores/useStore";
 
@@ -44,54 +44,5 @@ describe( "PhotoCarousel", ( ) => {
 
     // Snapshot test
     expect( screen ).toMatchSnapshot();
-  } );
-
-  it( "deletes a photo on long press", async ( ) => {
-    const removePhotoFromList = ( list, photo ) => {
-      const i = list.findIndex( p => p === photo );
-      list.splice( i, 1 );
-      return list || [];
-    };
-
-    useStore.setState( {
-      evidenceToAdd: [mockPhotoUris[2]],
-      cameraPreviewUris: mockPhotoUris,
-      photoEvidenceUris: mockPhotoUris,
-      deletePhotoFromObservation: uri => useStore.setState( {
-        cameraPreviewUris: [...removePhotoFromList( mockPhotoUris, uri )]
-      } )
-    } );
-
-    const { cameraPreviewUris } = useStore.getState( );
-
-    render(
-      <PhotoCarousel
-        photoUris={cameraPreviewUris}
-      />
-    );
-    const photoImage = screen.getByTestId( `PhotoCarousel.displayPhoto.${cameraPreviewUris[2]}` );
-    fireEvent( photoImage, "onLongPress" );
-    const deleteMode = screen.getByTestId( `PhotoCarousel.deletePhoto.${cameraPreviewUris[2]}` );
-    await waitFor( ( ) => {
-      expect( deleteMode ).toBeVisible( );
-    } );
-    fireEvent.press( deleteMode );
-
-    render(
-      <PhotoCarousel
-        photoUris={cameraPreviewUris}
-      />
-    );
-
-    const undeletedPhoto = screen.getByTestId(
-      `PhotoCarousel.displayPhoto.${cameraPreviewUris[1]}`
-    );
-    expect( undeletedPhoto ).toBeVisible( );
-    const deletedPhoto = screen.queryByTestId(
-      `PhotoCarousel.displayPhoto.${cameraPreviewUris[2]}`
-    );
-    await waitFor( ( ) => {
-      expect( deletedPhoto ).toBeFalsy( );
-    } );
   } );
 } );

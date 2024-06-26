@@ -38,7 +38,8 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
     }
   };
 } );
@@ -62,19 +63,13 @@ const makeMockObservations = ( ) => ( [
     wasSynced: jest.fn( ( ) => true ),
     // Suggestions won't load without a photo
     observationPhotos: [
+      factory( "RemoteObservationPhoto" ),
       factory( "RemoteObservationPhoto" )
     ],
     user: mockUser,
     observed_on_string: "2020-01-01"
   } )
 ] );
-
-async function setupAppWithSignedInUser( ) {
-  const observations = makeMockObservations( );
-  useStore.setState( { observations } );
-  await renderAppWithObservations( observations, __filename );
-  return { observations };
-}
 
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
@@ -84,6 +79,10 @@ const topSuggestion = {
 const otherSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Alia suggestione" } ),
   combined_score: 50
+};
+const humanSuggestion = {
+  taxon: factory( "RemoteTaxon", { name: "Homo sapiens", id: 43584 } ),
+  combined_score: 86
 };
 
 beforeEach( async ( ) => {
@@ -236,16 +235,16 @@ describe( "Suggestions", ( ) => {
 
   // We need to navigate from MyObs to ObsDetails to Suggestions for all of these
   // tests
-  async function navigateToSuggestionsForObservation( observation ) {
+  const navigateToSuggestionsForObservation = async observation => {
     const observationRow = await screen.findByTestId(
       `MyObservations.obsListItem.${observation.uuid}`
     );
     await actor.press( observationRow );
     const suggestIdButton = await screen.findByText( "SUGGEST ID" );
     await act( async ( ) => actor.press( suggestIdButton ) );
-  }
+  };
 
-  async function navigateToSuggestionsForObservationViaObsEdit( observation ) {
+  const navigateToSuggestionsForObservationViaObsEdit = async observation => {
     const observationRow = await screen.findByTestId(
       `MyObservations.obsListItem.${observation.uuid}`
     );
@@ -254,7 +253,14 @@ describe( "Suggestions", ( ) => {
     await act( async ( ) => actor.press( editButton ) );
     const addIdButton = await screen.findByText( "ADD AN ID" );
     await actor.press( addIdButton );
-  }
+  };
+
+  const setupAppWithSignedInUser = async ( ) => {
+    const observations = makeMockObservations( );
+    useStore.setState( { observations } );
+    await renderAppWithObservations( observations, __filename );
+    return { observations };
+  };
 
   it( "should create ident with vision=true via ObsDetails", async ( ) => {
     const { observations } = await setupAppWithSignedInUser( );
@@ -265,6 +271,8 @@ describe( "Suggestions", ( ) => {
     );
     expect( topTaxonResultButton ).toBeTruthy( );
     await actor.press( topTaxonResultButton );
+    const activityTabBtn = await screen.findByText( "ACTIVITY" );
+    await actor.press( activityTabBtn );
     const activityTab = await screen.findByTestId( "ActivityTab" );
     expect( activityTab ).toBeVisible( );
     // Wait for the actual identification we created to appear
@@ -312,7 +320,7 @@ describe( "Suggestions", ( ) => {
       );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-      const offlineNotice = await screen.findByText( "Viewing Offline Suggestions" );
+      const offlineNotice = await screen.findByText( /You are offline. Tap to reload/ );
       expect( offlineNotice ).toBeTruthy( );
       const topOfflineTaxonResultButton = await screen.findByTestId(
         `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
@@ -325,6 +333,24 @@ describe( "Suggestions", ( ) => {
       const savedObservation = global.mockRealms[__filename]
         .objectForPrimaryKey( "Observation", observations[0].uuid );
       expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
+    }
+  );
+
+  it(
+    "should display only a single human observation if human is found in suggestions",
+    async ( ) => {
+      inatjs.computervision.score_image
+        .mockResolvedValue( makeResponse( [humanSuggestion, otherSuggestion] ) );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+      const humanResultButton = await screen.findByTestId(
+        `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`
+      );
+      expect( humanResultButton ).toBeVisible( );
+      const flatList = screen.getByTestId( "Suggestions.FlatList" );
+      expect( flatList ).toHaveProp( "data", [] );
+      const human = screen.getByText( /Homo sapiens/ );
+      expect( human ).toBeVisible( );
     }
   );
 

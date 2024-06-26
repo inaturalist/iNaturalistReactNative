@@ -1,5 +1,6 @@
 // @flow
 
+import { galleryPhotosPath } from "appConstants/paths.ts";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
@@ -8,8 +9,12 @@ import {
   useEffect, useRef,
   useState
 } from "react";
+import RNFS from "react-native-fs";
 import { checkMultiple, RESULTS } from "react-native-permissions";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
@@ -28,20 +33,33 @@ const useCurrentObservationLocation = (
 ): Object => {
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
-  const hasLocation = latitude || longitude;
+  const hasLocation = !!( latitude && longitude );
   const originalPhotoUri = currentObservation?.observationPhotos
     && currentObservation?.observationPhotos[0]?.originalPhotoUri;
-  const isGalleryPhoto = originalPhotoUri && !originalPhotoUri?.includes( "photoUploads" );
+  const isGalleryPhoto = originalPhotoUri?.includes( galleryPhotosPath );
+  // Shared photo paths will look something like Shared/AppGroup/sdgsdgsdgk
+  const isSharedPhoto = (
+    originalPhotoUri && !originalPhotoUri.includes( RNFS.DocumentDirectoryPath )
+  );
+  const isNewObservation = (
+    !currentObservation?._created_at
+    && !currentObservation?._synced_at
+  );
+  const accGoodEnough = (
+    currentObservation?.positional_accuracy
+    && currentObservation.positional_accuracy <= TARGET_POSITIONAL_ACCURACY
+  );
   const locationNotSetYet = useRef( true );
   const prevObservation = useRef( currentObservation );
 
   const [shouldFetchLocation, setShouldFetchLocation] = useState(
     currentObservation
-      && !currentObservation?._created_at
-      && !currentObservation?._synced_at
-      && !hasLocation
+      && isNewObservation
+      && ( !hasLocation || !accGoodEnough )
       && !isGalleryPhoto
+      && !isSharedPhoto
   );
+
   const [numLocationFetches, setNumLocationFetches] = useState( 0 );
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
@@ -79,10 +97,11 @@ const useCurrentObservationLocation = (
       if ( !mountedRef.current ) return;
       if ( !shouldFetchLocation ) return;
 
-      setPermissionResult( permissionResultFromMultiple(
+      const newPermissionResult = permissionResultFromMultiple(
         await checkMultiple( LOCATION_PERMISSIONS )
-      ) );
-      if ( permissionResult !== RESULTS.GRANTED ) {
+      );
+      setPermissionResult( newPermissionResult );
+      if ( newPermissionResult !== RESULTS.GRANTED ) {
         setFetchingLocation( false );
         setShouldFetchLocation( false );
         return;

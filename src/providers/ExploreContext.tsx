@@ -3,37 +3,40 @@
 import { t } from "i18next";
 import * as React from "react";
 import { LatLng } from "react-native-maps";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 
 export enum EXPLORE_ACTION {
+  CHANGE_SORT_BY = "CHANGE_SORT_BY",
+  CHANGE_TAXON = "CHANGE_TAXON",
   DISCARD = "DISCARD",
   RESET = "RESET",
-  CHANGE_TAXON = "CHANGE_TAXON",
-  SET_TAXON_NAME = "SET_TAXON_NAME",
-  SET_EXPLORE_LOCATION = "SET_EXPLORE_LOCATION",
-  SET_PLACE = "SET_PLACE",
-  SET_USER = "SET_USER",
-  SET_PROJECT = "SET_PROJECT",
-  CHANGE_SORT_BY = "CHANGE_SORT_BY",
-  TOGGLE_RESEARCH_GRADE = "TOGGLE_RESEARCH_GRADE",
-  TOGGLE_NEEDS_ID = "TOGGLE_NEEDS_ID",
-  TOGGLE_CASUAL = "TOGGLE_CASUAL",
-  SET_HIGHEST_TAXONOMIC_RANK = "SET_HIGHEST_TAXONOMIC_RANK",
-  SET_LOWEST_TAXONOMIC_RANK = "SET_LOWEST_TAXONOMIC_RANK",
-  SET_DATE_OBSERVED_MONTHS = "SET_DATE_OBSERVED_MONTHS",
-  SET_DATE_OBSERVED_EXACT = "SET_DATE_OBSERVED_EXACT",
-  SET_DATE_OBSERVED_RANGE = "SET_DATE_OBSERVED_RANGE",
   SET_DATE_OBSERVED_ALL = "SET_DATE_OBSERVED_ALL",
+  SET_DATE_OBSERVED_EXACT = "SET_DATE_OBSERVED_EXACT",
+  SET_DATE_OBSERVED_MONTHS = "SET_DATE_OBSERVED_MONTHS",
+  SET_DATE_OBSERVED_RANGE = "SET_DATE_OBSERVED_RANGE",
+  SET_DATE_UPLOADED_ALL = "SET_DATE_UPLOADED_ALL",
   SET_DATE_UPLOADED_EXACT = "SET_DATE_UPLOADED_EXACT",
   SET_DATE_UPLOADED_RANGE = "SET_DATE_UPLOADED_RANGE",
-  SET_DATE_UPLOADED_ALL = "SET_DATE_UPLOADED_ALL",
-  SET_MEDIA = "SET_MEDIA",
   SET_ESTABLISHMENT_MEAN = "SET_ESTABLISHMENT_MEAN",
-  SET_WILD_STATUS = "SET_WILD_STATUS",
-  SET_REVIEWED = "SET_REVIEWED",
-  SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
+  SET_EXPLORE_LOCATION = "SET_EXPLORE_LOCATION",
+  SET_HIGHEST_TAXONOMIC_RANK = "SET_HIGHEST_TAXONOMIC_RANK",
+  SET_LOWEST_TAXONOMIC_RANK = "SET_LOWEST_TAXONOMIC_RANK",
   SET_MAP_BOUNDARIES = "SET_MAP_BOUNDARIES",
-  USE_STORED_STATE = "USE_STORED_STATE",
+  SET_MEDIA = "SET_MEDIA",
+  SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
+  SET_PLACE = "SET_PLACE",
+  SET_PROJECT = "SET_PROJECT",
+  SET_REVIEWED = "SET_REVIEWED",
+  SET_TAXON_NAME = "SET_TAXON_NAME",
+  SET_USER = "SET_USER",
+  SET_WILD_STATUS = "SET_WILD_STATUS",
+  TOGGLE_CASUAL = "TOGGLE_CASUAL",
+  TOGGLE_NEEDS_ID = "TOGGLE_NEEDS_ID",
+  TOGGLE_RESEARCH_GRADE = "TOGGLE_RESEARCH_GRADE",
+  USE_STORED_STATE = "USE_STORED_STATE"
 }
 
 export enum SORT_BY {
@@ -145,6 +148,16 @@ interface MapBoundaries {
   place_guess: string
 }
 
+interface PLACE {
+  display_name: string,
+  id: number,
+  place_type: number,
+  point_geojson: {
+    coordinates: Array<number>
+  },
+  type: string
+}
+
 type ExploreProviderProps = {children: React.ReactNode}
 type State = {
   verifiable: boolean,
@@ -153,6 +166,7 @@ type State = {
   // and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | undefined,
+  place: PLACE | null | undefined,
   place_id: number | null | undefined,
   place_guess: string,
   user_id: number | undefined,
@@ -195,9 +209,14 @@ type Action = {type: EXPLORE_ACTION.RESET}
     taxonName: string,
     storedState: State
   }
+  | {
+    type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
+    iconic_taxa: Object
+  }
   | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: Object}
   | {
     type: EXPLORE_ACTION.SET_PLACE,
+    place: PLACE,
     placeId: number,
     placeName: string,
     lat: number,
@@ -281,7 +300,7 @@ function isValidDateFormat( date: string ): boolean {
   return regex.test( date );
 }
 
-async function setExploreLocation( ) {
+async function defaultExploreLocation( ) {
   const location = await fetchUserLocation( );
   if ( !location || !location.latitude ) {
     return {
@@ -310,7 +329,15 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         ...action.storedState,
         taxon: action.taxon,
-        taxon_id: action.taxonId
+        taxon_id: action.taxonId,
+        iconic_taxa: []
+      };
+    case EXPLORE_ACTION.CHANGE_TAXON_NONE:
+      return {
+        ...state,
+        taxon: "Unknown",
+        taxon_id: null,
+        iconic_taxa: ["unknown"]
       };
     case EXPLORE_ACTION.SET_EXPLORE_LOCATION:
       return {
@@ -322,6 +349,7 @@ function exploreReducer( state: State, action: Action ) {
       const placeState = {
         ...state,
         ...action.storedState,
+        place: action.place,
         place_id: action.placeId,
         place_guess: action.placeGuess,
         lat: action.lat,
@@ -483,14 +511,17 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         reviewedFilter: action.reviewedFilter
       };
-    case EXPLORE_ACTION.SET_MAP_BOUNDARIES:
-      // eslint-disable-next-line no-case-declarations
-      const boundState = {
+    case EXPLORE_ACTION.SET_MAP_BOUNDARIES: {
+      const newState = {
         ...state,
         ...action.mapBoundaries
       };
-      delete boundState.place_id;
-      return boundState;
+      delete newState.place_id;
+      delete newState.lat;
+      delete newState.lng;
+      delete newState.radius;
+      return newState;
+    }
     case EXPLORE_ACTION.USE_STORED_STATE:
       return {
         ...action.storedState
@@ -546,7 +577,7 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
   const value = {
     state,
     dispatch,
-    setExploreLocation,
+    defaultExploreLocation,
     isNotInitialState,
     numberOfFilters,
     makeSnapshot,
@@ -566,4 +597,8 @@ function useExplore() {
   return context;
 }
 
-export { ExploreProvider, useExplore };
+export {
+  ExploreProvider,
+  exploreReducer,
+  useExplore
+};

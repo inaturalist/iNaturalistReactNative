@@ -1,9 +1,10 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { searchProjects } from "api/projects";
 import {
+  Heading4,
+  INatIconButton,
   ProjectListItem,
   SearchBar,
   ViewWrapper
@@ -22,9 +23,13 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4
 } );
 
-const ExploreProjectSearch = ( ): Node => {
+type Props = {
+  closeModal: Function,
+  updateProject: Function
+};
+
+const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
-  const navigation = useNavigation( );
   const { t } = useTranslation();
 
   const { data: projects } = useAuthenticatedQuery(
@@ -38,9 +43,9 @@ const ExploreProjectSearch = ( ): Node => {
       // TODO: user facing error message
       return;
     }
-    console.log( "project :>> ", project );
-    navigation.navigate( "Explore", { project } );
-  }, [navigation] );
+    updateProject( project );
+    closeModal();
+  }, [updateProject, closeModal] );
 
   const renderItem = useCallback(
     ( { item } ) => (
@@ -64,7 +69,18 @@ const ExploreProjectSearch = ( ): Node => {
   );
 
   return (
-    <ViewWrapper className="flex-1">
+    <ViewWrapper>
+      <View className="flex-row justify-center p-5 bg-white">
+        <INatIconButton
+          testID="ExploreTaxonSearch.close"
+          size={18}
+          icon="back"
+          className="absolute top-2 left-3 z-10"
+          onPress={( ) => closeModal()}
+          accessibilityLabel={t( "SEARCH-PROJECTS" )}
+        />
+        <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>
+      </View>
       <View
         className="bg-white px-6 pt-2 pb-8"
         style={DROP_SHADOW}

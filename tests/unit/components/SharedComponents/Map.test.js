@@ -1,10 +1,11 @@
 import { screen } from "@testing-library/react-native";
 import { Map } from "components/SharedComponents";
+import { TILE_URL } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import React from "react";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
-const baseUrl = "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
+const baseUrl = `${TILE_URL}/grid/{z}/{x}/{y}.png`;
 
 describe( "Map", ( ) => {
   it( "should be accessible", ( ) => {

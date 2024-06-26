@@ -21,7 +21,8 @@ const ITEMS = sortBy( [
   { title: "Typography", component: "Typography" },
   { title: "ObsListItem", component: "ObsListItemDemo" },
   { title: "TaxonResult", component: "TaxonResultDemo" },
-  { title: "ObsGridItem", component: "ObsGridItemDemo" }
+  { title: "ObsGridItem", component: "ObsGridItemDemo" },
+  { title: "Toolbar", component: "ToolbarDemo" }
 ], item => item.title );
 ITEMS.push( { title: "Everything Else", component: "Misc" } );
 

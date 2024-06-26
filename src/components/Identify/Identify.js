@@ -32,7 +32,7 @@ const Identify = (): Node => {
   }
 
   return (
-    <ViewWrapper testID="Identify" className="flex-1">
+    <ViewWrapper testID="Identify">
       <ObservationsFlashList
         testID="MyObservationsAnimatedList"
         dataCanBeFetched={!!currentUser}

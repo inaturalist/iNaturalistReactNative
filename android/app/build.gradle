@@ -16,7 +16,7 @@ apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.grad
 
 // add vector icons to project
 project.ext.vectoricons = [
-    iconFontNames: [ 'MaterialCommunityIcons.ttf', 'MaterialIcons.ttf' ]
+    iconFontNames: []
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
@@ -111,8 +111,8 @@ android {
         applicationId "org.inaturalist.iNaturalistMobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 89
-        versionName "0.32.1"
+        versionCode 97
+        versionName "0.34.0"
         setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
         manifestPlaceholders = [ GMAPS_API_KEY:project.env.get("GMAPS_API_KEY") ]
         // Detox Android setup

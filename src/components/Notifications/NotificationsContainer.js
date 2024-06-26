@@ -30,10 +30,11 @@ const NotificationsContainer = (): Node => {
   return (
     <NotificationsList
       data={notifications}
-      onEndReached={fetchNextPage}
-      isOnline={isOnline}
-      isLoading={isInitialLoading || isFetching}
       isError={isError}
+      isFetching={isFetching}
+      isInitialLoading={isInitialLoading}
+      isOnline={isOnline}
+      onEndReached={fetchNextPage}
       reload={refetch}
     />
   );

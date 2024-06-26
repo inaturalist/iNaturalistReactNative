@@ -19,10 +19,6 @@ exports[`TaxonResult should render correctly 1`] = `
           "paddingRight": 16,
         },
         {
-          "paddingBottom": 12,
-          "paddingTop": 12,
-        },
-        {
           "borderBottomWidth": 1,
         },
         {
@@ -79,6 +75,10 @@ exports[`TaxonResult should render correctly 1`] = `
           },
           {
             "flexShrink": 1,
+          },
+          {
+            "paddingBottom": 12,
+            "paddingTop": 12,
           },
         ],
       ]
@@ -276,7 +276,7 @@ exports[`TaxonResult should render correctly 1`] = `
                   ]
                 }
               >
-                
+                
               </Text>
             </View>
           </View>
@@ -292,6 +292,11 @@ exports[`TaxonResult should render correctly 1`] = `
             },
             {
               "marginLeft": 12,
+            },
+            {
+              "flexBasis": "0%",
+              "flexGrow": 1,
+              "flexShrink": 1,
             },
           ],
         ]
@@ -458,9 +463,6 @@ exports[`TaxonResult should render correctly 1`] = `
                 "position": "relative",
               },
               {
-                "position": "relative",
-              },
-              {
                 "left": 0.2,
               },
               {
@@ -489,7 +491,7 @@ exports[`TaxonResult should render correctly 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
     </View>
@@ -552,9 +554,6 @@ exports[`TaxonResult should render correctly 1`] = `
                 "position": "relative",
               },
               {
-                "position": "relative",
-              },
-              {
                 "left": 0.2,
               },
               {
@@ -570,7 +569,7 @@ exports[`TaxonResult should render correctly 1`] = `
           style={
             [
               {
-                "color": "rgba(98, 91, 113, 1)",
+                "color": "rgba(103, 80, 164, 1)",
                 "fontSize": 40,
               },
               undefined,
@@ -583,7 +582,7 @@ exports[`TaxonResult should render correctly 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
     </View>

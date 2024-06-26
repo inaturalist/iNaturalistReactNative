@@ -12,7 +12,7 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
   optionalClasses?: string,
@@ -69,9 +69,10 @@ const TaxonDetailsTitle = ( {
   taxon
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
 
   return (
-    <View className="flex-1 flex-col ml-4">
+    <View className="flex-1 flex-col" pointerEvents="none">
       { taxon?.rank && (
         <View className="flex-row items-center">
           <Heading4 className={optionalClasses}>
@@ -89,6 +90,7 @@ const TaxonDetailsTitle = ( {
         color={optionalClasses}
         topTextComponent={Heading1}
         bottomTextComponent={Subheading1}
+        scientificNameFirst={currentUser?.prefers_scientific_name_first}
       />
     </View>
   );

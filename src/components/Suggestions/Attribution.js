@@ -24,7 +24,7 @@ const Attribution = ( {
   }
 
   return (
-    <Body3 className="mt-6 mb-4 mx-4">
+    <Body3 className="mx-4">
       {t( "iNaturalist-identification-suggestions-are-based-on", {
         user1: observers[0],
         user2: observers[1],

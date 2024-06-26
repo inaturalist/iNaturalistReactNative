@@ -1,20 +1,24 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
   Body3,
   Button,
+  Heading4,
+  INatIconButton,
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
+import {
+  EXPLORE_ACTION,
+  useExplore
+} from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useEffect,
   useState
 } from "react";
 import { FlatList } from "react-native";
@@ -26,16 +30,25 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   offsetHeight: 4
 } );
 
-const ExploreLocationSearch = ( ): Node => {
-  const navigation = useNavigation();
+type Props = {
+  closeModal: Function,
+  updateLocation: Function
+};
+
+const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node => {
   const { t } = useTranslation( );
+  const { dispatch, defaultExploreLocation } = useExplore( );
 
   const [locationName, setLocationName] = useState( "" );
   const [permissionNeeded, setPermissionNeeded] = useState( false );
 
-  const resetPlace = useCallback( ( ) => navigation.navigate( "Explore", {
-    worldwide: true
-  } ), [navigation] );
+  const resetPlace = useCallback(
+    ( ) => {
+      updateLocation( "worldwide" );
+      closeModal();
+    },
+    [updateLocation, closeModal]
+  );
 
   const { data: placeResults } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
@@ -56,9 +69,10 @@ const ExploreLocationSearch = ( ): Node => {
 
   const onPlaceSelected = useCallback(
     place => {
-      navigation.navigate( "Explore", { place } );
+      updateLocation( place );
+      closeModal();
     },
-    [navigation]
+    [updateLocation, closeModal]
   );
 
   const renderItem = useCallback(
@@ -78,22 +92,24 @@ const ExploreLocationSearch = ( ): Node => {
     [onPlaceSelected]
   );
 
-  useEffect( ( ) => {
-    const resetButton = ( ) => (
-      <Body3 onPress={resetPlace}>
-        {t( "Reset" )}
-      </Body3>
-    );
-
-    navigation.setOptions( {
-      headerRight: resetButton
-    } );
-  }, [navigation, t, resetPlace] );
-
   const data = placeResults || [];
 
   return (
     <ViewWrapper testID="explore-location-search">
+      <View className="flex-row justify-center p-5 bg-white">
+        <INatIconButton
+          testID="ExploreTaxonSearch.close"
+          size={18}
+          icon="back"
+          className="absolute top-2 left-3 z-10"
+          onPress={( ) => closeModal()}
+          accessibilityLabel={t( "SEARCH-LOCATION" )}
+        />
+        <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>
+        <Body3 onPress={resetPlace} className="absolute top-4 right-4">
+          {t( "Reset" )}
+        </Body3>
+      </View>
       <View
         className="bg-white pt-2 pb-5"
         style={DROP_SHADOW}
@@ -128,9 +144,11 @@ const ExploreLocationSearch = ( ): Node => {
       <LocationPermissionGate
         permissionNeeded={permissionNeeded}
         withoutNavigation
-        onPermissionGranted={( ) => {
+        onPermissionGranted={async ( ) => {
           setPermissionNeeded( false );
-          navigation.navigate( "Explore", { nearby: true } );
+          const exploreLocation = await defaultExploreLocation( );
+          dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
+          closeModal();
         }}
         onPermissionDenied={( ) => {
           setPermissionNeeded( false );

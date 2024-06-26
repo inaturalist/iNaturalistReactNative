@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
-import { log } from "sharedHelpers/logger";
+// import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -15,7 +15,7 @@ import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
 
-const logger = log.extend( "Observation" );
+// const logger = log.extend( "Observation" );
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
@@ -132,16 +132,16 @@ class Observation extends Realm.Object {
     const obsToUpsert = options.force
       ? remoteObservations
       : remoteObservations.filter( obs => !Observation.isUnsyncedObservation( realm, obs ) );
-    const msg = obsToUpsert.map( remoteObservation => {
-      const obsPhotoUUIDs = remoteObservation.observation_photos?.map( op => op.uuid );
-      return `obs ${remoteObservation.uuid}, ops: ${obsPhotoUUIDs}`;
-    } );
+    // const msg = obsToUpsert.map( remoteObservation => {
+    //   const obsPhotoUUIDs = remoteObservation.observation_photos?.map( op => op.uuid );
+    //   return `obs ${remoteObservation.uuid}, ops: ${obsPhotoUUIDs}`;
+    // } );
     // Trying to debug disappearing photos
-    logger.info( "upsertRemoteObservations, upserting: ", msg );
+    // logger.info( "upsertRemoteObservations, upserting: ", msg );
     safeRealmWrite( realm, ( ) => {
       obsToUpsert.forEach( remoteObservation => {
         const obsMappedForRealm = Observation.mapApiToRealm( remoteObservation, realm );
-        logger.info( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
+        // logger.info( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
         realm.create(
           "Observation",
           obsMappedForRealm,
@@ -273,20 +273,50 @@ class Observation extends Realm.Object {
 
   static mapObservationForUpload( obs ) {
     return {
-      species_guess: obs.species_guess,
+      captive_flag: obs.captive_flag,
       description: obs.description,
-      observed_on_string: obs.observed_on_string,
-      place_guess: obs.place_guess,
+      geoprivacy: obs.geoprivacy,
       latitude: obs.latitude,
       longitude: obs.longitude,
+      observed_on_string: obs.observed_on_string,
+      owners_identification_from_vision: obs.owners_identification_from_vision,
+      place_guess: obs.place_guess,
       positional_accuracy: obs.positional_accuracy,
+      species_guess: obs.species_guess,
       taxon_id: obs.taxon && obs.taxon.id,
-      geoprivacy: obs.geoprivacy,
-      uuid: obs.uuid,
-      captive_flag: obs.captive_flag,
-      owners_identification_from_vision: obs.owners_identification_from_vision
+      uuid: obs.uuid
     };
   }
+
+  // static mapObservationForFlashList( obs ) {
+  //   return {
+  //     _created_at: obs._created_at,
+  //     _deleted_at: obs._deleted_at,
+  //     _synced_at: obs._synced_at,
+  //     _updated_at: obs._updated_at,
+  //     uuid: obs.uuid,
+  //     comments: obs.comments,
+  //     description: obs.description,
+  //     geoprivacy: obs.geoprivacy,
+  //     id: obs.id,
+  //     identifications: obs.identifications,
+  //     latitude: obs.latitude,
+  //     longitude: obs.longitude,
+  //     observationPhotos: obs.observationPhotos,
+  //     observationSounds: obs.observationSounds,
+  //     observed_on_string: obs.observed_on_string,
+  //     obscured: obs.obscured,
+  //     place_guess: obs.place_guess,
+  //     positional_accuracy: obs.positional_accuracy,
+  //     quality_grade: obs.quality_grade,
+  //     taxon: obs.taxon,
+  //     time_observed_at: obs.time_observed_at,
+  //     comments_viewed: obs.comments_viewed,
+  //     identifications_viewed: obs.identifications_viewed,
+  //     privateLatitude: obs.privateLatitude,
+  //     privateLongitude: obs.privateLongitude
+  //   };
+  // }
 
   static projectUri = obs => {
     const photo = obs?.observation_photos?.[0];
@@ -311,9 +341,14 @@ class Observation extends Realm.Object {
   static filterUnsyncedObservations = realm => {
     const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
     const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
+    const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
 
     const obs = realm.objects( "Observation" );
-    const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
+    // we sort unsynced observations here to make sure observations
+    // with an older _created_at date get uploaded first
+    const unsyncedObs = obs.filtered(
+      `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`
+    ).sorted( "_created_at", true );
     return unsyncedObs;
   };
 
@@ -379,6 +414,17 @@ class Observation extends Realm.Object {
 
     updatedObs.observationSounds = [...currentObservationSounds, ...obsSounds];
     return updatedObs;
+  };
+
+  static deleteLocalObservation = async ( realm, uuidToDelete ) => {
+    const observation = realm?.objectForPrimaryKey( "Observation", uuidToDelete );
+    if ( observation ) {
+      await safeRealmWrite( realm, ( ) => {
+        realm?.delete( observation );
+      }, `deleting local observation ${uuidToDelete} in deleteLocalObservation` );
+      return true;
+    }
+    return false;
   };
 
   static schema = {

@@ -1,6 +1,6 @@
 // @flow
 import { updateRelationships } from "api/relationships";
-import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
+import WarningSheet from "components/SharedComponents/Sheets/WarningSheet.tsx";
 import type { Node } from "react";
 import React from "react";
 import { Alert } from "react-native";

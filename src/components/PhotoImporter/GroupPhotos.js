@@ -21,7 +21,7 @@ type Props = {
   combinePhotos: Function,
   groupedPhotos: Array<Object>,
   isCreatingObservations?: boolean,
-  navToObsEdit: Function,
+  navToObsEditOrSuggestions: Function,
   removePhotos: Function,
   selectedObservations: Array<Object>,
   selectObservationPhotos: Function,
@@ -35,7 +35,7 @@ const GroupPhotos = ( {
   combinePhotos,
   groupedPhotos,
   isCreatingObservations,
-  navToObsEdit,
+  navToObsEditOrSuggestions,
   removePhotos,
   selectedObservations,
   selectObservationPhotos,
@@ -202,12 +202,12 @@ const GroupPhotos = ( {
           />
         </View>
       </FloatingActionBar>
-      <StickyToolbar containerClass="items-center">
+      <StickyToolbar containerClass="items-center z-50">
         <Button
           className="max-w-[500px] w-full"
           level="focus"
           text={t( "IMPORT-X-OBSERVATIONS", { count: groupedPhotos.length } )}
-          onPress={navToObsEdit}
+          onPress={navToObsEditOrSuggestions}
           testID="GroupPhotos.next"
           loading={isCreatingObservations}
         />

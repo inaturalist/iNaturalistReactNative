@@ -13,8 +13,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { writeExifToFile } from "sharedHelpers/parseExif";
-import uploadObservation from "sharedHelpers/uploadObservation";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import { log } from "../../../react-native-logs.config";
@@ -42,9 +41,12 @@ const BottomButtons = ( {
   observations,
   setCurrentObservationIndex
 }: Props ): Node => {
+  const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
+  const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const navigation = useNavigation( );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
@@ -86,14 +88,11 @@ const BottomButtons = ( {
   ] );
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
-    logger.info( "saving observation ", currentObservation.uuid );
     const savedObservation = await saveObservation( currentObservation );
-    logger.info( "saved observation ", savedObservation.uuid );
-    const params = {};
     if ( type === "upload" ) {
-      // $FlowIgnore
-      uploadObservation( savedObservation, realm );
-      params.uuid = savedObservation.uuid;
+      const { uuid } = savedObservation;
+      addTotalToolbarIncrements( savedObservation );
+      addToUploadQueue( uuid );
     }
 
     if ( observations.length === 1 ) {
@@ -102,11 +101,9 @@ const BottomButtons = ( {
       navigation.navigate( "TabNavigator", {
         screen: "TabStackNavigator",
         params: {
-          screen: "ObsList",
-          params
+          screen: "ObsList"
         }
       } );
-      logger.info( "navigated back to MyObs" );
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
@@ -118,10 +115,11 @@ const BottomButtons = ( {
       setLoading( false );
     }
   }, [
+    addTotalToolbarIncrements,
+    addToUploadQueue,
     currentObservation,
     currentObservationIndex,
     navigation,
-    realm,
     saveObservation,
     observations,
     setCurrentObservationIndex
@@ -213,7 +211,7 @@ const BottomButtons = ( {
   ), [buttonPressed, loading, handlePress, t, passesTests] );
 
   const renderButtons = useCallback( ( ) => {
-    if ( !currentUser ) {
+    if ( !currentUser || !isOnline ) {
       return renderSaveButton( );
     }
     if ( currentObservation?._synced_at ) {
@@ -230,8 +228,9 @@ const BottomButtons = ( {
     );
   }, [
     currentObservation,
-    passesEvidenceTest,
     currentUser,
+    isOnline,
+    passesEvidenceTest,
     renderSaveButton,
     renderSaveChangesButton,
     renderUploadButton

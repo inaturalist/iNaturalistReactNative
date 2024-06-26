@@ -1,0 +1,16 @@
+NEW
+* Change app language while offline
+
+UPDATED
+* Removed DQA for signed out users
+* Explore view sticks within session
+
+FIXED
+* Upload obs in order created
+* Legible title on TaxonDetails over light photo
+* Hide bottom tabs on ObsEdit when sharing photo in
+* Upload should fail if you lose connection
+* Suggestions shows photos in order taken
+* Explore redo search in map area works outside of Nearby area
+* Crash when following someone you'd already followed
+* and more!

@@ -24,6 +24,7 @@ const GroupPhotosContainer = ( ): Node => {
 
   useEffect( ( ) => {
     navigation.setOptions( {
+      headerTitle: t( "Group-Photos" ),
       headerSubtitle: t( "X-PHOTOS-X-OBSERVATIONS", {
         photoCount: totalPhotos,
         observationCount: groupedPhotos.length
@@ -129,7 +130,7 @@ const GroupPhotosContainer = ( ): Node => {
     setSelectedObservations( [] );
   };
 
-  const navToObsEdit = async ( ) => {
+  const navToObsEditOrSuggestions = async ( ) => {
     setIsCreatingObservations( true );
     const newObservations = await Promise.all( groupedPhotos.map(
       ( { photos } ) => Observation.createObservationWithPhotos( photos )
@@ -144,20 +145,24 @@ const GroupPhotosContainer = ( ): Node => {
       ...newObs
     } ) ) );
     setIsCreatingObservations( false );
-    navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
+    if ( newObservations.length === 1 ) {
+      navigation.push( "Suggestions", { lastScreen: "GroupPhotos" } );
+    } else {
+      navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
+    }
   };
 
   return (
     <GroupPhotos
-      navToObsEdit={navToObsEdit}
-      groupedPhotos={groupedPhotos}
-      selectedObservations={selectedObservations}
-      selectObservationPhotos={selectObservationPhotos}
       combinePhotos={combinePhotos}
+      groupedPhotos={groupedPhotos}
+      isCreatingObservations={isCreatingObservations}
+      navToObsEditOrSuggestions={navToObsEditOrSuggestions}
       removePhotos={removePhotos}
+      selectObservationPhotos={selectObservationPhotos}
+      selectedObservations={selectedObservations}
       separatePhotos={separatePhotos}
       totalPhotos={totalPhotos}
-      isCreatingObservations={isCreatingObservations}
     />
   );
 };

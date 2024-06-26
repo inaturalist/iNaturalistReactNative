@@ -3,14 +3,14 @@ import { log } from "../../react-native-logs.config";
 
 const logger = log.extend( "INatApiError" );
 
-class INatApiError extends Error {
+export class INatApiError extends Error {
   // Object literal of the JSON body returned by the server
   json: Object;
 
   // HTTP status code of the server response
   status: number;
 
-  constructor( json, status ) {
+  constructor( json: Object, status?: number ) {
     super( JSON.stringify( json ) );
     this.json = json;
     this.status = status || json.status;
@@ -23,7 +23,25 @@ Object.defineProperty( INatApiError.prototype, "name", {
 
 async function handleError( e: Object, options: Object = {} ): Object {
   if ( !e.response ) { throw e; }
-  const errorJson = await e.response.json( );
+
+  // Try to parse JSON in the response if this was an HTTP error. If we can't
+  // parse the JSON, throw that error (presumably we should not be making
+  // requests to endpoints that don't return JSON)
+  let errorJson;
+  try {
+    errorJson = await e.response.json( );
+  } catch ( jsonError ) {
+    if ( jsonError.message.match( /JSON Parse error/ ) ) {
+      // This happens a lot and I want to know where it's coming from ~~~~kueda 20240520
+      jsonError.message = `Error parsing JSON from ${e.response?.url} `
+        + `(status: ${e.response?.status})`;
+      logger.error( jsonError );
+    }
+    if ( options.throw === false ) {
+      return e;
+    }
+    throw e;
+  }
   // Handle some of the insanity of our errors
   if ( errorJson.errors ) {
     errorJson.errors = errorJson.errors.map( error => {
@@ -34,11 +52,14 @@ async function handleError( e: Object, options: Object = {} ): Object {
     } );
   }
   const error = new INatApiError( errorJson, e.response.status );
-  // TODO: this will log all errors handled here to the log file, in a production build
-  // we probably don't want to do that, so change this back to console.error at one point
-  logger.error(
+  // In theory code higher up in the stack will handle this error when thrown,
+  // so it's probably not worth reporting at this stage. If it doesn't get
+  // handled, it will get logged when it gets caught by the app-wide error
+  // handler
+  console.error(
     `Error requesting ${e.response.url} (status: ${e.response.status}):
-    ${JSON.stringify( errorJson )}`
+    ${JSON.stringify( errorJson )}`,
+    error
   );
   if ( typeof ( options.onApiError ) === "function" ) {
     options.onApiError( error );

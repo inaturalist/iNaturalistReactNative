@@ -76,7 +76,11 @@ const DisplayTaxon = ( {
               />
             )}
           <View className="ml-3 shrink">
-            <DisplayTaxonName taxon={taxon} withdrawn={withdrawn} />
+            <DisplayTaxonName
+              taxon={taxon}
+              withdrawn={withdrawn}
+              scientificNameFirst={currentUser?.prefers_scientific_name_first}
+            />
           </View>
         </View>
       </View>

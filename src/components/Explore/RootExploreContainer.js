@@ -8,7 +8,11 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState
+} from "react";
 import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -21,26 +25,64 @@ const RootExploreContainerWithContext = ( ): Node => {
   const { t } = useTranslation( );
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
-  const storedParams = useStore( state => state.storedParams );
-  const setStoredParams = useStore( state => state.setStoredParams );
-  const setExploreView = useStore( state => state.setExploreView );
+  const rootStoredParams = useStore( state => state.rootStoredParams );
+  const setRootStoredParams = useStore( state => state.setRootStoredParams );
+
+  const worldwidePlaceText = t( "Worldwide" );
 
   const {
-    state, dispatch, makeSnapshot, setExploreLocation
+    state, dispatch, makeSnapshot, defaultExploreLocation
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
-  useEffect( ( ) => {
-    setExploreView( "species" );
-  }, [setExploreView] );
-
   const updateTaxon = ( taxon: Object ) => {
+    if ( !taxon ) {
+      dispatch( {
+        type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
+        taxon: null
+      } );
+    } else {
+      dispatch( {
+        type: EXPLORE_ACTION.CHANGE_TAXON,
+        taxon,
+        taxonId: taxon?.id,
+        taxonName: taxon?.preferred_common_name || taxon?.name
+      } );
+    }
+  };
+
+  const updateLocation = ( place: Object ) => {
+    if ( place === "worldwide" ) {
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        placeId: null,
+        placeGuess: worldwidePlaceText
+      } );
+    } else {
+      navigation.setParams( { place } );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_PLACE,
+        place,
+        placeId: place?.id,
+        placeGuess: place?.display_name
+      } );
+    }
+  };
+
+  const updateUser = ( user: Object ) => {
     dispatch( {
-      type: EXPLORE_ACTION.CHANGE_TAXON,
-      taxon,
-      taxonId: taxon?.id,
-      taxonName: taxon?.preferred_common_name || taxon?.name
+      type: EXPLORE_ACTION.SET_USER,
+      user,
+      userId: user?.id
+    } );
+  };
+
+  const updateProject = ( project: Object ) => {
+    dispatch( {
+      type: EXPLORE_ACTION.SET_PROJECT,
+      project,
+      projectId: project?.id
     } );
   };
 
@@ -64,44 +106,37 @@ const RootExploreContainerWithContext = ( ): Node => {
     makeSnapshot( );
   };
 
-  const onPermissionGranted = async ( ) => {
-    if ( state.place_guess ) { return; }
-    const exploreLocation = await setExploreLocation( );
+  const onPermissionGranted = useCallback( async ( ) => {
+    const exploreLocation = await defaultExploreLocation( );
     dispatch( {
       type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
       exploreLocation
     } );
-  };
+  }, [
+    defaultExploreLocation,
+    dispatch
+  ] );
 
-  const onPermissionDenied = ( ) => {
-    if ( state.place_guess ) { return; }
+  const resetToWorldWide = useCallback( ( ) => {
     dispatch( {
       type: EXPLORE_ACTION.SET_PLACE,
-      placeGuess: t( "Worldwide" )
+      placeGuess: worldwidePlaceText
     } );
-  };
-
-  const onPermissionBlocked = ( ) => {
-    if ( state.place_guess ) { return; }
-    dispatch( {
-      type: EXPLORE_ACTION.SET_PLACE,
-      placeGuess: t( "Worldwide" )
-    } );
-  };
+  }, [dispatch, worldwidePlaceText] );
 
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
-      const storedState = Object.keys( storedParams ).length > 0 || false;
+      const storedState = Object.keys( rootStoredParams ).length > 0 || false;
 
       if ( storedState ) {
-        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: storedParams } );
+        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: rootStoredParams } );
       }
     } );
 
     navigation.addListener( "blur", ( ) => {
-      setStoredParams( state );
+      setRootStoredParams( state );
     } );
-  }, [navigation, setStoredParams, state, dispatch, storedParams] );
+  }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
 
   return (
     <>
@@ -116,22 +151,25 @@ const RootExploreContainerWithContext = ( ): Node => {
         showFiltersModal={showFiltersModal}
         updateCount={updateCount}
         updateTaxon={updateTaxon}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
       />
       <LocationPermissionGate
         permissionNeeded
         onPermissionGranted={onPermissionGranted}
-        onPermissionDenied={onPermissionDenied}
-        onPermissionBlocked={onPermissionBlocked}
+        onPermissionDenied={resetToWorldWide}
+        onPermissionBlocked={resetToWorldWide}
         withoutNavigation
       />
     </>
   );
 };
 
-const ExploreContainer = (): Node => (
+const RootExploreContainer = (): Node => (
   <ExploreProvider>
     <RootExploreContainerWithContext />
   </ExploreProvider>
 );
 
-export default ExploreContainer;
+export default RootExploreContainer;

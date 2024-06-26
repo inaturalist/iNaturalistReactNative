@@ -50,8 +50,8 @@ function renderApp( update = null ) {
 }
 
 async function renderAppWithObservations(
-  observations: Array,
-  realmIdentifier: string
+  observations,
+  realmIdentifier
 ) {
   if ( observations.length > 0 ) {
     await Promise.all( observations.map( async observation => {
@@ -121,6 +121,7 @@ function renderHook( renderCallback, options = {} ) {
 }
 
 export {
+  queryClient,
   renderApp,
   renderAppWithComponent,
   renderAppWithObservations,
