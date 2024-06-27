@@ -2,6 +2,7 @@
 import { Realm } from "@realm/react";
 import _ from "lodash";
 import Photo from "realmModels/Photo";
+import Sound from "realmModels/Sound";
 
 const DEFAULT_STATE = {
   cameraRollUris: [],
@@ -46,7 +47,7 @@ const removeObsSoundFromObservation = ( currentObservation, uri ) => {
   if ( obsSounds.length > 0 ) {
     _.remove(
       obsSounds,
-      obsSound => obsSound.sound.file_url === uri
+      obsSound => Sound.accessLocalSound( obsSound.sound.file_url ) === uri
     );
     updatedObservation.observationSounds = obsSounds;
     return [updatedObservation];
