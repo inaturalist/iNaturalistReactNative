@@ -1,5 +1,5 @@
 import { RealmContext } from "providers/contexts";
-import {
+import React, {
   useState
 } from "react";
 import {
@@ -31,7 +31,9 @@ const useTakePhoto = (
 
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
-    enableShutterSound: true,
+    // We had this set to true in Seek but received many reports of it not respecting OS-wide sound
+    // level and scared away wildlife. So maybe better to just disable it.
+    enableShutterSound: false,
     ...( hasFlash && { flash: "off" } as const )
   } as const;
   const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
@@ -39,7 +41,7 @@ const useTakePhoto = (
 
   const saveRotatedPhotoToDocumentsDirectory = async ( cameraPhoto: PhotoFile ) => {
     // Rotate the original photo depending on device orientation
-    const photoRotation = rotationTempPhotoPatch( cameraPhoto, deviceOrientation );
+    const photoRotation = rotationTempPhotoPatch( deviceOrientation );
     return rotatePhotoPatch( cameraPhoto, photoRotation );
   };
 

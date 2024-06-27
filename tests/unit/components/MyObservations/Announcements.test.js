@@ -45,6 +45,10 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
 
 const containerID = "announcements-container";
 
+beforeAll( ( ) => {
+  jest.useFakeTimers( );
+} );
+
 describe( "Announcements", () => {
   beforeEach( ( ) => {
     inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {

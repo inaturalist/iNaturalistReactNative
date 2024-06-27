@@ -23,7 +23,6 @@ type Props = {
   setShowLoginSheet: Function,
   showLoginSheet: boolean,
   status: string,
-  syncInProgress: boolean,
   toggleLayout: Function
 };
 
@@ -39,7 +38,6 @@ const MyObservations = ( {
   setShowLoginSheet,
   showLoginSheet,
   status,
-  syncInProgress,
   toggleLayout
 }: Props ): Node => (
   <>
@@ -53,7 +51,6 @@ const MyObservations = ( {
             layout={layout}
             logInButtonNeutral={observations.length === 0}
             setHeightAboveToolbar={setStickyAt}
-            syncInProgress={syncInProgress}
             toggleLayout={toggleLayout}
           />
         )}

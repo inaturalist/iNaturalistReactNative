@@ -1,22 +1,19 @@
-// @flow
-
 import {
-  tailwindFontRegular
+  tailwindFontBold
 } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
-import type { Node } from "react";
 import React from "react";
-import { Text } from "react-native";
+import { Text, TextProps } from "react-native";
 
-const Body4 = ( props: Object ): Node => (
+const UnderlinedLink = ( props: TextProps ) => (
   <Text
     className={classnames(
-      "text-2xs text-darkGray",
-      tailwindFontRegular
+      "text-md text-darkGray underline",
+      tailwindFontBold
     )}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />
 );
 
-export default Body4;
+export default UnderlinedLink;

@@ -1,7 +1,6 @@
 import { useAppState } from "@react-native-community/hooks";
 import { useIsFocused } from "@react-navigation/native";
 import useFocusTap from "components/Camera/hooks/useFocusTap.ts";
-import VeryBadIpadRotator from "components/SharedComponents/VeryBadIpadRotator";
 import React, {
   useCallback
 } from "react";
@@ -12,8 +11,6 @@ import {
 import Reanimated from "react-native-reanimated";
 import type { CameraDevice, CameraProps, CameraRuntimeError } from "react-native-vision-camera";
 import { Camera, useCameraFormat } from "react-native-vision-camera";
-import { orientationPatch } from "sharedHelpers/visionCameraPatches";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
 import FocusSquare from "./FocusSquare";
 
@@ -70,8 +67,6 @@ const CameraView = ( {
   // Set the exposure to the middle of the min and max exposure
   const exposure = ( device.maxExposure + device.minExposure ) / 2;
 
-  const { deviceOrientation } = useDeviceOrientation();
-
   const onError = useCallback(
     ( error: CameraRuntimeError ) => {
       // { code: string, message: string, cause?: {} }
@@ -124,19 +119,14 @@ const CameraView = ( {
     ]
   );
 
-  // react-native-vision-camera v3.9.0:
-  // iPad camera preview is wrong in anything else than portrait, hence the
-  // VeryBadIpadRotator, which will rotate its contents us a style transform
-  // and adjust position accordingly
-
   // Note that overflow-hidden handles what seems to be a bug in android in
   // which the Camera overflows its view
   return (
-    <GestureDetector
-      gesture={Gesture.Simultaneous( tapToFocus, pinchToZoom )}
-      className="overflow-hidden"
-    >
-      <VeryBadIpadRotator>
+    <>
+      <GestureDetector
+        gesture={Gesture.Simultaneous( tapToFocus, pinchToZoom )}
+        className="overflow-hidden"
+      >
         <ReanimatedCamera
           // Shared props between StandardCamera and AICamera
           ref={cameraRef}
@@ -148,21 +138,20 @@ const CameraView = ( {
           frameProcessor={frameProcessor}
           isActive={isActive}
           onError={onError}
-          // react-native-vision-camera v3.9.0: This prop is undocumented, but does work on iOS
-          // it does nothing on Android so we set it to null there
-          orientation={orientationPatch( deviceOrientation )}
           photo
           photoQualityBalance="quality"
+          outputOrientation="device"
           pixelFormat="yuv"
           resizeMode={resizeMode || "cover"}
           style={StyleSheet.absoluteFill}
 
         />
-        <FocusSquare
-          animatedStyle={animatedStyle}
-        />
-      </VeryBadIpadRotator>
-    </GestureDetector>
+      </GestureDetector>
+      <FocusSquare
+        animatedStyle={animatedStyle}
+      />
+    </>
+
   );
 };
 

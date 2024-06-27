@@ -104,7 +104,7 @@ const EvidenceSection = ( {
         <AddEvidenceSheet
           disableAddingMoreEvidence={
             obsPhotos?.length >= MAX_PHOTOS_ALLOWED
-          || obsSounds?.length >= MAX_SOUNDS_ALLOWED
+            || obsSounds?.length >= MAX_SOUNDS_ALLOWED
           }
           onClose={( ) => setShowAddEvidenceSheet( false )}
         />
@@ -137,7 +137,14 @@ const EvidenceSection = ( {
               size={25}
             />
           )}
-          <View className={isFetchingLocation && "bottom-5"}>
+          <View
+            className={classnames(
+              // This line makes sure the icon is centered in the height
+              // of the Body3 label next to it
+              "h-[18px] items-center justify-center",
+              isFetchingLocation && "bottom-5"
+            )}
+          >
             <INatIcon size={14} name="map-marker-outline" />
           </View>
         </View>

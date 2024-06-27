@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { RealmObservation } from "realmModels/types.d.ts";
+import { StateCreator } from "zustand";
 
 export const UPLOAD_CANCELLED = "cancelled";
 export const UPLOAD_PENDING = "pending";
@@ -149,7 +150,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   addToUploadQueue: uuids => set( state => {
     let copyOfUploadQueue = state.uploadQueue;
     if ( typeof uuids === "string" ) {
-      copyOfUploadQueue.push( uuids );
+      copyOfUploadQueue.unshift( uuids );
     } else {
       copyOfUploadQueue = copyOfUploadQueue.concat( uuids );
     }

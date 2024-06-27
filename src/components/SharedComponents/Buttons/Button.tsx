@@ -1,27 +1,26 @@
-// @flow
-
 import { tailwindFontBold } from "appConstants/fontFamilies.ts";
 import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
-import { useTheme } from "react-native-paper";
+import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
+import { MD3Theme, useTheme } from "react-native-paper";
 
-type ButtonProps = {
-  accessibilityHint?: string,
-  accessibilityLabel?: string,
-  accessibilityRole?: string,
-  className?: string,
-  disabled?: boolean,
-  forceDark?: boolean,
-  icon?: string,
-  level?: string,
-  loading?: boolean,
-  onPress: Function,
-  style?: string | Array<string>,
-  testID?: string,
-  text: string,
-  dropdown?: boolean
+interface ButtonProps {
+  accessibilityHint?: string;
+  accessibilityLabel?: string;
+  accessibilityRole?: AccessibilityRole;
+  style?: ViewStyle;
+  className?: string;
+  disabled?: boolean;
+  forceDark?: boolean;
+  icon?: string;
+  level?: string;
+  loading?: boolean;
+  onPress: ( _event?: GestureResponderEvent ) => void;
+  testID?: string;
+  text: string;
+  dropdown?: boolean;
 }
 
 const setStyles = ( {
@@ -31,6 +30,13 @@ const setStyles = ( {
   isFocus,
   isPrimary,
   isWarning
+}: {
+  className?: string;
+  disabled?: boolean;
+  forceDark?: boolean;
+  isFocus: boolean;
+  isPrimary: boolean;
+  isWarning: boolean;
 } ) => {
   const buttonClasses = [
     "active:opacity-75",
@@ -120,6 +126,11 @@ const setStyles = ( {
 
 const activityIndicatorColor = ( {
   isPrimary, isWarning, isFocus, theme
+}: {
+  isPrimary: boolean;
+  isWarning: boolean;
+  isFocus: boolean;
+  theme: MD3Theme;
 } ) => {
   if ( isPrimary ) {
     return theme.colors.onPrimary;
@@ -138,6 +149,7 @@ const Button = ( {
   accessibilityHint,
   accessibilityLabel,
   accessibilityRole,
+  style,
   className,
   disabled,
   forceDark,
@@ -145,11 +157,10 @@ const Button = ( {
   level,
   loading,
   onPress,
-  style,
   testID,
   text,
   dropdown
-}: ButtonProps ): React.Node => {
+}: ButtonProps ) => {
   const isPrimary = level === "primary";
   const isWarning = level === "warning";
   const isFocus = level === "focus";
@@ -162,7 +173,7 @@ const Button = ( {
     isPrimary,
     isWarning
   } );
-  // Dark mode styles can be set with this function, but si scheduled to be worked on post-MVP
+  // Dark mode styles can be set with this function, but is scheduled to be worked on post-MVP
   // setDarkStyles( {
   //   buttonClasses,
   //   textClasses,
@@ -177,9 +188,9 @@ const Button = ( {
 
   return (
     <Pressable
+      style={style}
       onPress={onPress}
       className={classnames( buttonClasses )}
-      style={style}
       disabled={disabled}
       testID={testID}
       // has no accessibilityLabel prop because then the button text is read as label
@@ -192,9 +203,11 @@ const Button = ( {
         <ActivityIndicator
           size={18}
           className="mr-2"
-          color={!isNeutral && activityIndicatorColor( {
-            isPrimary, isWarning, isFocus, theme
-          } )}
+          color={!isNeutral
+            ? activityIndicatorColor( {
+              isPrimary, isWarning, isFocus, theme
+            } )
+            : undefined}
         />
       )}
       {icon && (

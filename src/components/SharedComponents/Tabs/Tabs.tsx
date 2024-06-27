@@ -1,27 +1,23 @@
-// @flow
-
 import Divider from "components/SharedComponents/Divider/Divider";
-import Heading4 from "components/SharedComponents/Typography/Heading4";
+import Heading4 from "components/SharedComponents/Typography/Heading4.tsx";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { GestureResponderEvent, TouchableOpacity } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Tab = {
-  id: string,
-  text: string,
-  testID?: string,
-  onPress: Function
+interface Tab {
+  id: string;
+  text: string;
+  testID?: string;
+  onPress: ( _event: GestureResponderEvent ) => void
 }
 
-type Props = {
-  tabs: Tab[],
-  activeId: string,
+interface Props {
+  tabs: Tab[];
+  activeId: string;
 }
 
-const DEFAULT_TABS = [];
-const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => {
+const Tabs = ( { tabs = [], activeId }: Props ) => {
   const { t } = useTranslation();
   return (
     <>

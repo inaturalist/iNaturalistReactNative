@@ -12,7 +12,10 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress";
+import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+
+const logger = log.extend( "uploadObservation.js" );
 
 const UPLOAD_PROGRESS_INCREMENT = 1;
 
@@ -177,7 +180,17 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
   const unsyncedObservationPhotos = hasPhotos
     ? obs?.observationPhotos?.filter( op => !op.wasSynced( ) )
     : [];
-  const unsyncedPhotos = unsyncedObservationPhotos?.map( op => op.photo );
+  const unsyncedPhotos = unsyncedObservationPhotos?.map( op => {
+    try {
+      return op.photo;
+    } catch ( accessError ) {
+      if ( !accessError.message.match( /No object with key/ ) ) {
+        throw accessError;
+      }
+      logger.error( "Failed to access photo to obsPhoto", accessError );
+      return null;
+    }
+  } ).flat( );
   const modifiedObservationPhotos = hasPhotos
     ? obs?.observationPhotos?.filter( op => op.wasSynced( ) && op.needsSync( ) )
     : [];
@@ -301,7 +314,10 @@ export function handleUploadError( uploadError: Error | INatApiError, t: Functio
     // TODO localize comma join
     message = uploadError.json.errors.map( e => {
       if ( e.message?.errors ) {
-        return e.message.errors.flat( ).join( ", " );
+        if ( typeof ( e.message.errors.flat ) === "function" ) {
+          return e.message.errors.flat( ).join( ", " );
+        }
+        return String( e.message.errors );
       }
       // 410 error for observations previously deleted uses e.message?.error format
       return e.message?.error || e.message;

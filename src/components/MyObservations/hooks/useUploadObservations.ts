@@ -9,23 +9,29 @@ import Observation from "realmModels/Observation";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
+import { log } from "sharedHelpers/logger";
 import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
 import {
+  useLocalObservations,
   useTranslation
 } from "sharedHooks";
 import {
   UPLOAD_CANCELLED,
   UPLOAD_COMPLETE,
-  UPLOAD_IN_PROGRESS
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
+
+const logger = log.extend( "useUploadObservations" );
 
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
 const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
 
 const { useRealm } = RealmContext;
 
-export default useUploadObservations = ( ) => {
+// eslint-disable-next-line no-undef
+export default useUploadObservations = canUpload => {
   const realm = useRealm( );
 
   const addUploadError = useStore( state => state.addUploadError );
@@ -41,7 +47,13 @@ export default useUploadObservations = ( ) => {
   const uploadQueue = useStore( state => state.uploadQueue );
   const uploadStatus = useStore( state => state.uploadStatus );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+  const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
+  const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const setUploadStatus = useStore( state => state.setUploadStatus );
+  const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
+
+  const { unsyncedUuids } = useLocalObservations( );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -53,10 +65,17 @@ export default useUploadObservations = ( ) => {
   const { t } = useTranslation( );
 
   useEffect( () => {
+    // eslint-disable-next-line no-undef
     let timer: number | NodeJS.Timeout;
     if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
       timer = setTimeout( () => {
         resetUploadObservationsSlice( );
+        const unsynced = Observation.filterUnsyncedObservations( realm );
+        setNumUnuploadedObservations( unsynced.length );
+      }, MS_BEFORE_TOOLBAR_RESET );
+    } else {
+      timer = setTimeout( () => {
+        resetSyncToolbar( );
         const unsynced = Observation.filterUnsyncedObservations( realm );
         setNumUnuploadedObservations( unsynced.length );
       }, MS_BEFORE_TOOLBAR_RESET );
@@ -66,6 +85,7 @@ export default useUploadObservations = ( ) => {
     };
   }, [
     realm,
+    resetSyncToolbar,
     resetUploadObservationsSlice,
     setNumUnuploadedObservations,
     uploadStatus
@@ -183,4 +203,42 @@ export default useUploadObservations = ( ) => {
       deactivateKeepAwake( );
     }
   }, [abortController, uploadStatus] );
+
+  const startUpload = useCallback( ( ) => {
+    if ( canUpload ) {
+      logger.debug( "sync #4.2: starting upload" );
+      setUploadStatus( UPLOAD_IN_PROGRESS );
+    } else {
+      setUploadStatus( UPLOAD_PENDING );
+    }
+  }, [
+    canUpload,
+    setUploadStatus
+  ] );
+
+  const createUploadQueue = useCallback( ( ) => {
+    const uuidsQuery = unsyncedUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
+    const uploads = realm.objects( "Observation" )
+      .filtered( `uuid IN { ${uuidsQuery} }` );
+    setTotalToolbarIncrements( uploads );
+    addToUploadQueue( unsyncedUuids );
+    startUpload( );
+  }, [
+    realm,
+    setTotalToolbarIncrements,
+    unsyncedUuids,
+    addToUploadQueue,
+    startUpload
+  ] );
+
+  const uploadObservations = useCallback( async ( ) => {
+    logger.debug( "sync #4.1: creating upload queue" );
+    createUploadQueue( );
+  }, [
+    createUploadQueue
+  ] );
+
+  return {
+    uploadObservations
+  };
 };

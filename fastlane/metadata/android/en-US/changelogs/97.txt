@@ -1,0 +1,17 @@
+Fixed
+- properly delete observation photo
+- show observation date when missing time
+- double digits observation count
+- getting location
+- make Human treatment in suggestions more similar to web
+- few small UI
+- Suggestions navigation
+- Explore filter for no taxon
+
+Changed
+- Now uses CV model 2.13
+- Email confirmatoin no longer required in register flow
+- Sign out directly from the drawer menu
+
+Added
+- Offline notice on Explore

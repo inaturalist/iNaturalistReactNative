@@ -1,9 +1,11 @@
 // @flow
 
+import { refresh } from "@react-native-community/netinfo";
 import classnames from "classnames";
 import ExploreFiltersModal from "components/Explore/Modals/ExploreFiltersModal";
 import {
   INatIconButton,
+  OfflineNotice,
   RadioButtonSheet,
   ViewWrapper
 } from "components/SharedComponents";
@@ -17,11 +19,11 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import useStore from "stores/useStore";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import Header from "./Header/Header";
+import useCurrentExploreView from "./hooks/useCurrentExploreView";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
@@ -76,21 +78,24 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
-  const exploreView = useStore( state => state.exploreView );
-  const setExploreView = useStore( state => state.setExploreView );
+  const { currentExploreView, setCurrentExploreView } = useCurrentExploreView( );
 
-  const exploreViewAccessibilityLabel = {
+  const exploreViewA11yLabel = {
     observations: t( "Observations-View" ),
     species: t( "Species-View" ),
     observers: t( "Observers-View" ),
     identifiers: t( "Identifiers-View" )
   };
 
+  const icon = exploreViewIcon[currentExploreView];
+  const a11yLabel = exploreViewA11yLabel[currentExploreView];
+  const headerCount = count[currentExploreView];
+
   const renderHeader = ( ) => (
     <Header
-      count={count[exploreView]}
-      exploreView={exploreView}
-      exploreViewIcon={exploreViewIcon[exploreView]}
+      count={headerCount}
+      exploreView={currentExploreView}
+      exploreViewIcon={icon}
       hideBackButton={hideBackButton}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
@@ -141,11 +146,11 @@ const Explore = ( {
         headerText={t( "EXPLORE" )}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
-          setExploreView( newView );
+          setCurrentExploreView( newView );
           setShowExploreBottomSheet( false );
         }}
         radioValues={values}
-        selectedValue={exploreView}
+        selectedValue={currentExploreView}
       />
     );
   };
@@ -157,87 +162,95 @@ const Explore = ( {
       <ViewWrapper testID="Explore" wrapperClassName="overflow-hidden">
         <View className="flex-1 overflow-hidden">
           {renderHeader()}
-          {exploreView === "observations" && (
+          {currentExploreView === "observations" && (
             <ObservationsViewBar
               layout={layout}
               updateObservationsView={writeLayoutToStorage}
             />
           )}
-          <View className="flex-1">
-            {isDebug && (
-              <INatIconButton
-                icon="triangle-exclamation"
-                className={classnames(
-                  "absolute",
-                  "bg-white",
-                  "bottom-[100px]",
-                  "h-[55px]",
-                  "right-5",
-                  "rounded-full",
-                  "w-[55px]",
-                  "z-10"
+          { isOnline
+            ? (
+              <View className="flex-1">
+                {currentExploreView === "observations" && (
+                  <ObservationsView
+                    count={count}
+                    layout={layout}
+                    queryParams={queryParams}
+                    updateCount={updateCount}
+                  />
                 )}
-                color="white"
-                size={27}
-                style={[
-                  DROP_SHADOW,
-                  // eslint-disable-next-line react-native/no-inline-styles
-                  { backgroundColor: "deeppink" }
-                ]}
-                accessibilityLabel="Diagnostics"
-                onPress={() => {
-                  Alert.alert(
-                    "Explore Info",
-                    `queryParams: ${JSON.stringify( queryParams )}`
-                  );
-                }}
+                {currentExploreView === "species" && (
+                  <SpeciesView
+                    count={count}
+                    isOnline={isOnline}
+                    queryParams={queryParams}
+                    updateCount={updateCount}
+                  />
+                )}
+                {currentExploreView === "observers" && (
+                  <ObserversView
+                    count={count}
+                    isOnline={isOnline}
+                    queryParams={queryParams}
+                    updateCount={updateCount}
+                  />
+                )}
+                {currentExploreView === "identifiers" && (
+                  <IdentifiersView
+                    count={count}
+                    isOnline={isOnline}
+                    queryParams={queryParams}
+                    updateCount={updateCount}
+                  />
+                )}
+              </View>
+            )
+            : (
+              <OfflineNotice
+                onPress={() => refresh()}
               />
             )}
+          {isDebug && (
             <INatIconButton
-              icon={exploreViewIcon[exploreView]}
-              color={theme.colors.onPrimary}
-              size={27}
+              icon="triangle-exclamation"
               className={classnames(
-                grayCircleClass,
-                "absolute bottom-5 z-10 right-5"
+                "absolute",
+                "bg-white",
+                "bottom-[100px]",
+                "h-[55px]",
+                "right-5",
+                "rounded-full",
+                "w-[55px]",
+                "z-10"
               )}
-              accessibilityLabel={exploreViewAccessibilityLabel[exploreView]}
-              onPress={() => setShowExploreBottomSheet( true )}
-              style={DROP_SHADOW}
+              color="white"
+              size={27}
+              style={[
+                DROP_SHADOW,
+                // eslint-disable-next-line react-native/no-inline-styles
+                { backgroundColor: "deeppink" }
+              ]}
+              accessibilityLabel="Diagnostics"
+              onPress={() => {
+                Alert.alert(
+                  "Explore Info",
+                  `queryParams: ${JSON.stringify( queryParams )}`
+                );
+              }}
             />
-            {exploreView === "observations" && (
-              <ObservationsView
-                count={count}
-                layout={layout}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
+          )}
+          <INatIconButton
+            icon={icon}
+            color={theme.colors.onPrimary}
+            size={27}
+            className={classnames(
+              grayCircleClass,
+              "absolute bottom-5 z-10 right-5"
             )}
-            {exploreView === "species" && (
-              <SpeciesView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-            {exploreView === "observers" && (
-              <ObserversView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-            {exploreView === "identifiers" && (
-              <IdentifiersView
-                count={count}
-                isOnline={isOnline}
-                queryParams={queryParams}
-                updateCount={updateCount}
-              />
-            )}
-          </View>
+            accessibilityLabel={a11yLabel}
+            onPress={() => setShowExploreBottomSheet( true )}
+            style={DROP_SHADOW}
+          />
         </View>
       </ViewWrapper>
       <ExploreFiltersModal

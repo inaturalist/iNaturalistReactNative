@@ -25,7 +25,6 @@ type Props = {
   layout: string,
   logInButtonNeutral: boolean,
   setHeightAboveToolbar: Function,
-  syncInProgress: boolean,
   toggleLayout: Function
 }
 
@@ -36,7 +35,6 @@ const MyObservationsHeader = ( {
   layout,
   logInButtonNeutral,
   setHeightAboveToolbar,
-  syncInProgress,
   toggleLayout
 }: Props ): Node => {
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
@@ -125,7 +123,6 @@ const MyObservationsHeader = ( {
         <ToolbarContainer
           handleSyncButtonPress={handleSyncButtonPress}
           layout={layout}
-          syncInProgress={syncInProgress}
           toggleLayout={toggleLayout}
         />
       )}

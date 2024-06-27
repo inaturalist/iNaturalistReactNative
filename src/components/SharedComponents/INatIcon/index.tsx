@@ -1,23 +1,23 @@
-// @flow
-
-import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 
 import Icon from "./INatIcon";
 
-// Flow types for the props
-type Props = {
-  name: string,
-  color?: string,
-  size?: number
-};
+interface Props {
+  testID?: string;
+  name: string;
+  color?: string;
+  size?: number;
+}
 
+type Aliases = {
+  [key: string]: string;
+};
 // Most of these are names for these icons used in design mapped to more
 // consistent and deduped filenames. We might also put aliases of convenience
 // here, e.g. "speech" and "chat" might both map to "comments" if we find
 // ourselves forgetting the name "comments"
-const ALIASES = {
+const ALIASES: Aliases = {
   addevidence: "plus",
   "evidence-add": "plus-bold",
   addid: "id-agree",
@@ -77,12 +77,21 @@ const ALIASES = {
   "upload-saved": "arrow-up-circle-dots",
   "upvote-active": "arrow-up-bold-circle",
   "upvote-inactive": "arrow-up-bold-circle-outline"
-};
+} as const;
 
-const INatIcon = ( { name, color, size }: Props ): Node => {
+const INatIcon = ( {
+  testID, name, color, size
+}: Props ) => {
   const theme = useTheme();
   // Use default color if none is specified
-  return <Icon name={ALIASES[name] || name} color={color || theme.colors.primary} size={size} />;
+  return (
+    <Icon
+      testID={testID}
+      name={ALIASES[name] || name}
+      color={color || theme.colors.primary}
+      size={size}
+    />
+  );
 };
 
 export default INatIcon;

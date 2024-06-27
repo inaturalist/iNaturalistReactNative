@@ -1,16 +1,16 @@
-import type { Node } from "react";
 import React from "react";
-import { ActivityIndicator as RNPActivityIndicator } from "react-native-paper";
+import { ViewStyle } from "react-native";
+import { ActivityIndicator as RNPActivityIndicator, MD3Theme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  animating?: boolean,
-  color?: string,
-  hidesWhenStopped?: boolean,
-  size?: number,
-  style?: Object,
-  testID?: string,
-  theme?: Object,
+interface Props {
+  animating?: boolean;
+  color?: string;
+  hidesWhenStopped?: boolean;
+  size?: number;
+  style?: ViewStyle;
+  testID?: string;
+  theme?: MD3Theme;
 }
 
 const ActivityIndicator = ( {
@@ -21,7 +21,7 @@ const ActivityIndicator = ( {
   style,
   testID,
   theme
-}: Props ): Node => (
+}: Props ) => (
   <RNPActivityIndicator
     animating={animating}
     color={color}

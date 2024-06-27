@@ -27,6 +27,7 @@ interface UserLocation {
   longitude: number;
   positional_accuracy: number;
 }
+
 const fetchUserLocation = async ( ): Promise<UserLocation | null> => {
   const permissionResult = permissionResultFromMultiple(
     // TODO if/when we convert PermissionGateContainer to typescript, this

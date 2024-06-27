@@ -1,7 +1,7 @@
 import ImageResizer from "@bam.tech/react-native-image-resizer";
-import { log } from "sharedHelpers/logger";
+// import { log } from "sharedHelpers/logger";
 
-const logger = log.extend( "resizeImage" );
+// const logger = log.extend( "resizeImage" );
 
 const resizeImage = async (
   pathOrUri: string,
@@ -40,7 +40,7 @@ const resizeImage = async (
 
   const { uri } = resizedPhoto;
 
-  logger.info( "resized image: ", resizedPhoto );
+  // logger.debug( "resized image: ", resizedPhoto );
   return uri;
 };
 

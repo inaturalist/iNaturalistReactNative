@@ -1,23 +1,21 @@
-// @flow
 import classnames from "classnames";
 import {
   Body2,
   INatIcon
 } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  color?: string,
-  onPress: Function
-};
+interface Props {
+  color?: string;
+  onPress: () => void;
+}
 
 const OfflineNotice = ( {
   color,
   onPress
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   if ( typeof ( onPress ) !== "function" ) {
     throw new Error( "OfflineNotice needs an onPress function" );

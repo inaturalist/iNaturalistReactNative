@@ -10,6 +10,9 @@ import {
   useTranslation
 } from "sharedHooks";
 import {
+  SYNC_PENDING
+} from "stores/createSyncObservationsSlice.ts";
+import {
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
   UPLOAD_PENDING
@@ -20,33 +23,32 @@ import Toolbar from "./Toolbar";
 
 const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 
+const DELETION_STARTED_PROGRESS = 0.25;
+
 type Props = {
   handleSyncButtonPress: Function,
   layout: string,
-  syncInProgress: boolean,
   toggleLayout: Function
 }
 
 const ToolbarContainer = ( {
   handleSyncButtonPress,
   layout,
-  syncInProgress,
   toggleLayout
 }: Props ): Node => {
   const setExploreView = useStore( state => state.setExploreView );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
-  const deletions = useStore( state => state.deletions );
-  const deletionsComplete = useStore( state => state.deletionsComplete );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const deleteError = useStore( state => state.deleteError );
-  const deletionsInProgress = useStore( state => state.deletionsInProgress );
   const uploadMultiError = useStore( state => state.multiError );
   const uploadErrorsByUuid = useStore( state => state.errorsByUuid );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const totalToolbarProgress = useStore( state => state.totalToolbarProgress );
   const uploadStatus = useStore( state => state.uploadStatus );
+  const syncingStatus = useStore( state => state.syncingStatus );
+  const initialNumDeletionsInQueue = useStore( state => state.initialNumDeletionsInQueue );
 
   const stopAllUploads = useStore( state => state.stopAllUploads );
   const numUploadsAttempted = useStore( state => state.numUploadsAttempted );
@@ -60,18 +62,6 @@ const ToolbarContainer = ( {
   } ), [
     initialNumObservationsInQueue,
     numUploadsAttempted
-  ] );
-
-  const totalDeletions = deletions.length;
-  const deletionsProgress = totalDeletions > 0
-    ? currentDeleteCount / totalDeletions
-    : 0;
-  const deletionParams = useMemo( ( ) => ( {
-    total: totalDeletions,
-    currentDeleteCount
-  } ), [
-    totalDeletions,
-    currentDeleteCount
   ] );
 
   const navToExplore = useCallback(
@@ -89,26 +79,49 @@ const ToolbarContainer = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
+  const deletionsComplete = initialNumDeletionsInQueue === currentDeleteCount;
+  const deletionsInProgress = initialNumDeletionsInQueue > 0 && !deletionsComplete;
+
+  const syncInProgress = syncingStatus !== SYNC_PENDING;
   const pendingUpload = uploadStatus === UPLOAD_PENDING && numUnuploadedObservations > 0;
   const uploadInProgress = uploadStatus === UPLOAD_IN_PROGRESS && numUploadsAttempted > 0;
   const uploadsComplete = uploadStatus === UPLOAD_COMPLETE && initialNumObservationsInQueue > 0;
   const totalUploadErrors = Object.keys( uploadErrorsByUuid ).length;
 
+  const setDeletionsProgress = ( ) => {
+    // TODO: we should emit deletions progress like we do for uploads for an accurate progress
+    // right now, a user can only delete a single local upload at a time from ObsEdit
+    // so we don't need a more robust count here (20240607)
+    if ( initialNumDeletionsInQueue === 0 ) {
+      return 0;
+    }
+    if ( !deletionsComplete ) {
+      return currentDeleteCount * DELETION_STARTED_PROGRESS;
+    }
+    return 1;
+  };
+  const deletionsProgress = setDeletionsProgress( );
+
   const showFinalUploadError = ( totalUploadErrors > 0 && uploadsComplete )
-    || ( totalUploadErrors > 0 && ( numUploadsAttempted === initialNumObservationsInQueue ) );
+  || ( totalUploadErrors > 0 && ( numUploadsAttempted === initialNumObservationsInQueue ) );
 
   const rotating = syncInProgress || uploadInProgress || deletionsInProgress;
   const showsCheckmark = ( uploadsComplete && !uploadMultiError )
-    || ( deletionsComplete && !deleteError );
+    || ( deletionsComplete && !deleteError && initialNumDeletionsInQueue > 0 );
 
   const showsExclamation = pendingUpload || showFinalUploadError;
 
   const getStatusText = useCallback( ( ) => {
     if ( syncInProgress ) { return t( "Syncing" ); }
 
-    if ( totalDeletions > 0 ) {
+    const deletionParams = {
+      total: initialNumDeletionsInQueue,
+      currentDeleteCount
+    };
+
+    if ( initialNumDeletionsInQueue > 0 ) {
       if ( deletionsComplete ) {
-        return t( "X-observations-deleted", { count: totalDeletions } );
+        return t( "X-observations-deleted", { count: initialNumDeletionsInQueue } );
       }
       // iPhone 4 pixel width
       return screenWidth <= 640
@@ -133,14 +146,14 @@ const ToolbarContainer = ( {
 
     return "";
   }, [
-    deletionParams,
+    currentDeleteCount,
     deletionsComplete,
+    initialNumDeletionsInQueue,
     numUploadsAttempted,
     numUnuploadedObservations,
     pendingUpload,
     syncInProgress,
     t,
-    totalDeletions,
     translationParams,
     uploadInProgress,
     uploadsComplete
@@ -187,7 +200,7 @@ const ToolbarContainer = ( {
       handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}
       navToExplore={navToExplore}
-      progress={deletionsProgress || totalToolbarProgress}
+      progress={totalToolbarProgress || deletionsProgress}
       rotating={rotating}
       showsCancelUploadButton={uploadInProgress}
       showsCheckmark={showsCheckmark}

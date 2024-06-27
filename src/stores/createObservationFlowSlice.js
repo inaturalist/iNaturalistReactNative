@@ -73,7 +73,7 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   return updatedObservations;
 };
 
-const createObservationFlowSlice = set => ( {
+const createObservationFlowSlice = ( set, get ) => ( {
   ...DEFAULT_STATE,
   deletePhotoFromObservation: uri => set( state => {
     const newObservations = removeObsPhotoFromObservation(
@@ -81,11 +81,19 @@ const createObservationFlowSlice = set => ( {
       uri
     );
     const newObservation = newObservations[state.currentObservationIndex];
+    if ( !newObservation ) return {};
+    const index = newObservation.observationPhotos.findIndex(
+      op => ( op.photo?.localFilePath || op.photo?.url ) === uri
+    );
+    if ( index > -1 ) {
+      newObservation.observationPhotos.splice( index, 1 );
+    }
+
     return ( {
       rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
       evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
       observations: newObservations,
-      currentObservation: newObservation
+      currentObservation: observationToJSON( newObservation )
     } );
   } ),
   deleteSoundFromObservation: uri => set( state => {
@@ -152,7 +160,12 @@ const createObservationFlowSlice = set => ( {
     currentObservation:
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
     unsavedChanges: true
-  } ) )
+  } ) ),
+  // Prepare state for showing ObsEdit for a single observation
+  prepareObsEdit: observation => {
+    get( ).resetObservationFlowSlice( );
+    get( ).updateObservations( [observation] );
+  }
 } );
 
 export default createObservationFlowSlice;

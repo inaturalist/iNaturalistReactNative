@@ -13,10 +13,8 @@ import {
 import { Worklets } from "react-native-worklets-core";
 import { modelPath, modelVersion, taxonomyPath } from "sharedHelpers/cvModel.ts";
 import {
-  orientationPatchFrameProcessor,
   usePatchedRunAsync
 } from "sharedHelpers/visionCameraPatches";
-import { useDeviceOrientation } from "sharedHooks";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
@@ -62,7 +60,6 @@ const FrameProcessorCamera = ( {
   pinchToZoom,
   takingPhoto
 }: Props ): Node => {
-  const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( Date.now() );
 
   const navigation = useNavigation();
@@ -113,7 +110,6 @@ const FrameProcessorCamera = ( {
     onClassifierError( error );
   } );
 
-  const patchedOrientationAndroid = orientationPatchFrameProcessor( deviceOrientation );
   const patchedRunAsync = usePatchedRunAsync( );
   const frameProcessor = useFrameProcessor(
     frame => {
@@ -141,8 +137,7 @@ const FrameProcessorCamera = ( {
             taxonomyPath,
             confidenceThreshold,
             numStoredResults,
-            cropRatio,
-            patchedOrientationAndroid
+            cropRatio
           } );
           const timeAfter = Date.now();
           const timeTaken = timeAfter - timeBefore;
@@ -158,7 +153,6 @@ const FrameProcessorCamera = ( {
       modelVersion,
       confidenceThreshold,
       takingPhoto,
-      patchedOrientationAndroid,
       numStoredResults,
       cropRatio,
       lastTimestamp,
