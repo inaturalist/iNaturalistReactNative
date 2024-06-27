@@ -647,7 +647,8 @@ Offline-suggestions-do-not-use-your-location = Offline suggestions do not use yo
 OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
-Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.\n\nYou’ll see notifications here once you log in & upload observations.
+Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
+You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
 One-last-step = One last step!
 # Adjective, as in geoprivacy
 Open = Open

@@ -647,7 +647,7 @@ Offline-suggestions-do-not-use-your-location = Offline suggestions do not use yo
 OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
-Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.\n\nYou’ll see notifications here once you log in & upload observations.
+Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
 One-last-step = One last step!
 # Adjective, as in geoprivacy
 Open = Open
@@ -1133,6 +1133,7 @@ You-must-be-logged-in-to-view-messages = You must be logged in to view messages
 You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = You need to log in to do that.
+You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:
