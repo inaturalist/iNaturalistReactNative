@@ -585,6 +585,7 @@ No-Media = No Media
 # As in a machine learning model that powers automated suggestions
 No-model-found = No model found
 No-Notifications-Found = You have no notifications! Get started by creating your own observations.
+Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade./n/nYou’ll see notifications here once you log in & upload observations.
 No-projects-match-that-search = No projects match that search
 # Used for explore screen when search params lead to a search with no data
 No-results-found = No results found
