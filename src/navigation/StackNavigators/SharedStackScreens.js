@@ -7,7 +7,7 @@ import LocationPickerContainer from "components/LocationPicker/LocationPickerCon
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import PhotoSharing from "components/PhotoSharing";
 import { Heading4 } from "components/SharedComponents";
-import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
+import SuggestionsContainer from "components/Suggestions/SuggestionsContainer.tsx";
 import TaxonSearch from "components/Suggestions/TaxonSearch";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import { t } from "i18next";

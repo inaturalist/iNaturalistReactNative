@@ -995,6 +995,7 @@ VIEW-PROJECTS = VIEW PROJECTS
 # or photo
 View-suggestions = View suggestions
 VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
+We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 Welcome-to-iNaturalist = Welcome to iNaturalist!

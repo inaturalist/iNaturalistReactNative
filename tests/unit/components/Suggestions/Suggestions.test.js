@@ -10,6 +10,14 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
+const initialSuggestions = {
+  topSuggestion: null,
+  otherSuggestions: [],
+  topSuggestionType: "none",
+  usingOfflineSuggestions: false,
+  isLoading: true
+};
+
 const mockCreateId = jest.fn( );
 
 const initialStoreState = useStore.getState( );
@@ -32,23 +40,27 @@ const mockSuggestionsList = [{
   taxon: mockTaxon
 }];
 
-describe( "Suggestions", ( ) => {
-  beforeAll( async ( ) => {
-    useStore.setState( initialStoreState, true );
-  } );
+beforeAll( async ( ) => {
+  useStore.setState( initialStoreState, true );
+  // userEvent recommends fake timers
+  jest.useFakeTimers( );
+} );
 
+describe( "Suggestions", ( ) => {
   test( "should not have accessibility errors", async ( ) => {
     const suggestions = (
-      <Suggestions
-        otherSuggestions={mockSuggestionsList}
-      />
+      <Suggestions suggestions={initialSuggestions} />
     );
     expect( suggestions ).toBeAccessible( );
   } );
 
   it( "should fetch offline suggestions for current photo", async ( ) => {
     renderComponent( <Suggestions
-      otherSuggestions={mockSuggestionsList}
+      suggestions={{
+        ...initialSuggestions,
+        otherSuggestions: mockSuggestionsList,
+        isLoading: false
+      }}
     /> );
     const taxonTopResult = screen.getByTestId(
       `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`
@@ -63,7 +75,11 @@ describe( "Suggestions", ( ) => {
       comment: "This is a test comment"
     } );
     renderComponent( <Suggestions
-      otherSuggestions={mockSuggestionsList}
+      suggestions={{
+        ...initialSuggestions,
+        otherSuggestions: mockSuggestionsList,
+        isLoading: false
+      }}
     /> );
     const commentSection = screen.getByText(
       i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
@@ -72,8 +88,10 @@ describe( "Suggestions", ( ) => {
   } );
 
   it( "should display empty text if no suggestions are found", ( ) => {
-    renderComponent( <Suggestions
-      otherSuggestions={[]}
+    renderComponent( <Suggestions suggestions={{
+      ...initialSuggestions,
+      isLoading: false
+    }}
     /> );
     const emptyText = i18next
       .t( "iNaturalist-has-no-ID-suggestions-for-this-photo" );
@@ -81,18 +99,16 @@ describe( "Suggestions", ( ) => {
   } );
 
   it( "should allow user to bypass suggestions screen", ( ) => {
-    renderComponent( <Suggestions
-      otherSuggestions={[]}
-    /> );
+    renderComponent( <Suggestions suggestions={initialSuggestions} /> );
     const bypassText = screen.getByText( /Add an ID Later/ );
     expect( bypassText ).toBeVisible( );
   } );
 
   it( "should display loading wheel and text when suggestions are loading", ( ) => {
     renderComponent( <Suggestions
-      otherSuggestions={[]}
-      loading
-      photoUris={["uri"]}
+      suggestions={{
+        ...initialSuggestions
+      }}
     /> );
     const loading = screen.getByTestId( "SuggestionsList.loading" );
     expect( loading ).toBeVisible( );
@@ -102,7 +118,11 @@ describe( "Suggestions", ( ) => {
 
   it( "should create an id when checkmark is pressed", async ( ) => {
     renderComponent( <Suggestions
-      otherSuggestions={mockSuggestionsList}
+      suggestions={{
+        ...initialSuggestions,
+        otherSuggestions: mockSuggestionsList,
+        isLoading: false
+      }}
       onTaxonChosen={mockCreateId}
     /> );
     const testID = `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`;

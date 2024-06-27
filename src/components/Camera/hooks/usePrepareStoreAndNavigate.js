@@ -159,8 +159,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
       return navigation.goBack( );
     }
     return navigation.push( "Suggestions", {
-      lastScreen: "CameraWithDevice",
-      hasVisionSuggestion: visionResult
+      lastScreen: "CameraWithDevice"
     } );
   }, [
     addEvidence,

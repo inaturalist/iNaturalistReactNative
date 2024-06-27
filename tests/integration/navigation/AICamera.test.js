@@ -86,7 +86,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
     } );
 
-    it( "should advance to suggestions and display top suggestion from AICamera", async ( ) => {
+    it( "should advance to suggestions screen", async ( ) => {
       jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
         handleTaxaDetected: jest.fn( ),
         modelLoaded: true,
@@ -107,8 +107,6 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       await actor.press( takePhotoButton );
       const addIDButton = await screen.findByText( /ADD AN ID/ );
       expect( addIDButton ).toBeVisible( );
-      const topTaxon = await screen.findByText( mockLocalTaxon.name );
-      expect( topTaxon ).toBeVisible( );
     } );
   } );
 } );
