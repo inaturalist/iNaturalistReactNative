@@ -41,9 +41,9 @@ const useNavigateWithTaxonSelected = (
         comment,
         vision
       } );
-      console.log( "navigating to obs details" );
+    } else if ( lastScreen === "ObsEdit" ) {
+      navigation.goBack( );
     } else {
-      console.log( "navigating to obs edit" );
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }
     // If we've navigated, there's no need to run this effect again

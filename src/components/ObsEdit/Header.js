@@ -77,7 +77,7 @@ const Header = ( {
     );
   }, [observations, t, savedLocally] );
 
-  const navigateBack = params?.lastScreen === "GroupPhotos"
+  const shouldNavigateBack = params?.lastScreen === "GroupPhotos"
     || ( unsynced && savedLocally )
     || ( unsynced && !unsavedChanges );
 
@@ -86,7 +86,7 @@ const Header = ( {
       navToObsList( );
     } else if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
-    } else if ( navigateBack ) {
+    } else if ( shouldNavigateBack ) {
       navigation.goBack( );
     } else if ( !savedLocally ) {
       setDiscardObservationSheetVisible( true );
@@ -98,7 +98,7 @@ const Header = ( {
   }, [
     currentObservation?.uuid,
     navToObsList,
-    navigateBack,
+    shouldNavigateBack,
     navigation,
     params?.lastScreen,
     savedLocally,
