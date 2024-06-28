@@ -10,6 +10,7 @@ import {
   TaxonResult
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { capitalize } from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
@@ -49,15 +50,6 @@ const IdentificationSection = ( {
     || identTaxon.name === identTaxon.iconic_taxon_name
     || identTaxon.isIconic
     || identTaxon.name === "Life";
-
-  const onTaxonChosen = taxonName => {
-    if ( taxonName === "unknown" ) {
-      updateObservationKeys( { taxon: undefined } );
-    } else {
-      const newTaxon = realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName )[0];
-      updateObservationKeys( { taxon: newTaxon } );
-    }
-  };
 
   const navToSuggestions = useCallback( ( ) => {
     if ( hasPhotos ) {
@@ -114,7 +106,21 @@ const IdentificationSection = ( {
             ? [identTaxon.name.toLowerCase()]
             : []
         }
-        onTaxonChosen={onTaxonChosen}
+        onTaxonChosen={taxonName => {
+          const capitalizedTaxonName = capitalize( taxonName );
+          if (
+            // user chose unknown
+            taxonName === "unknown"
+            // user tapped the selected iconic taxon to unselect
+            || identTaxon?.name === capitalizedTaxonName
+          ) {
+            updateObservationKeys( { taxon: undefined } );
+          } else {
+            const newTaxon = realm?.objects( "Taxon" )
+              .filtered( "name = $0", capitalizedTaxonName )[0];
+            updateObservationKeys( { taxon: newTaxon } );
+          }
+        }}
       />
     </View>
   );
