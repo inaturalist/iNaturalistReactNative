@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 import { t } from "i18next";
+import { isEqual } from "lodash";
 import * as React from "react";
 import { LatLng } from "react-native-maps";
 
@@ -12,6 +13,7 @@ export enum EXPLORE_ACTION {
   CHANGE_SORT_BY = "CHANGE_SORT_BY",
   CHANGE_TAXON = "CHANGE_TAXON",
   DISCARD = "DISCARD",
+  FILTER_BY_ICONIC_TAXON_UNKNOWN = "FILTER_BY_ICONIC_TAXON_UNKNOWN",
   RESET = "RESET",
   SET_DATE_OBSERVED_ALL = "SET_DATE_OBSERVED_ALL",
   SET_DATE_OBSERVED_EXACT = "SET_DATE_OBSERVED_EXACT",
@@ -160,65 +162,68 @@ interface PLACE {
 
 type ExploreProviderProps = {children: React.ReactNode}
 type State = {
-  verifiable: boolean,
+  casual: boolean,
+  created_d1: string | null | undefined,
+  created_d2: string | null | undefined,
+  created_on: string | null | undefined,
+  d1: string | null | undefined,
+  d2: string | null | undefined,
+  dateObserved: DATE_OBSERVED,
+  dateUploaded: DATE_UPLOADED,
+  establishmentMean: ESTABLISHMENT_MEAN,
+  hrank: TAXONOMIC_RANK | undefined | null,
+  iconic_taxa: string[] | undefined,
+  lat?: number,
+  lng?: number,
+  lrank: TAXONOMIC_RANK | undefined | null,
+  mapBoundaries: MapBoundaries | undefined,
+  media: MEDIA,
+  months: number[] | null | undefined,
+  needsID: boolean,
+  nelat?: number,
+  nelng?: number,
+  observed_on: string | null | undefined,
+  photoLicense: PHOTO_LICENSE,
+  place: PLACE | null | undefined,
+  place_guess: string,
+  place_id: number | null | undefined,
+  // TODO: technically this is not any Object but a "Project"
+  // and should be typed as such (e.g., in realm model)
+  project: Object | undefined,
+  project_id: number | undefined,
+  radius?: number,
+  researchGrade: boolean,
   return_bounds: boolean,
+  reviewedFilter: REVIEWED,
+  sortBy: SORT_BY,
+  swlat?: number,
+  swlng?: number,
   // TODO: technically this is not any Object but a "Taxon"
   // and should be typed as such (e.g., in realm model)
   taxon: Object | undefined,
   taxon_id: number | undefined,
-  place: PLACE | null | undefined,
-  place_id: number | null | undefined,
-  place_guess: string,
-  user_id: number | undefined,
   // TODO: technically this is not any Object but a "User"
   // and should be typed as such (e.g., in realm model)
   user: Object | undefined,
-  project_id: number | undefined,
-  // TODO: technically this is not any Object but a "Project"
-  // and should be typed as such (e.g., in realm model)
-  project: Object | undefined,
-  sortBy: SORT_BY,
-  researchGrade: boolean,
-  needsID: boolean,
-  casual: boolean,
-  hrank: TAXONOMIC_RANK | undefined | null,
-  lrank: TAXONOMIC_RANK | undefined | null,
-  dateObserved: DATE_OBSERVED,
-  observed_on: string | null | undefined,
-  d1: string | null | undefined,
-  d2: string | null | undefined,
-  months: number[] | null | undefined,
-  dateUploaded: DATE_UPLOADED,
-  created_on: string | null | undefined,
-  created_d1: string | null | undefined,
-  created_d2: string | null | undefined,
-  media: MEDIA,
-  establishmentMean: ESTABLISHMENT_MEAN,
-  wildStatus: WILD_STATUS,
-  reviewedFilter: REVIEWED,
-  photoLicense: PHOTO_LICENSE,
-  mapBoundaries: MapBoundaries
+  user_id: number | undefined,
+  verifiable: boolean,
+  wildStatus: WILD_STATUS
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
   | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number, storedState: State}
   | {
     type: EXPLORE_ACTION.CHANGE_TAXON,
-    taxon: Object,
-    taxonId: number,
-    taxonName: string,
+    taxon: { id: number },
     storedState: State
   }
-  | {
-    type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
-    iconic_taxa: Object
-  }
+  | { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN }
   | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: Object}
   | {
     type: EXPLORE_ACTION.SET_PLACE,
     place: PLACE,
     placeId: number,
-    placeName: string,
+    placeGuess: string,
     lat: number,
     lng: number,
     radius: number,
@@ -272,26 +277,29 @@ const calculatedFilters = {
 // Sort by: is NOT a filter criteria, but should return to default state when reset is pressed
 const defaultFilters = {
   ...calculatedFilters,
-  user: undefined,
-  project: undefined,
-  sortBy: SORT_BY.DATE_UPLOADED_NEWEST,
-  observed_on: undefined,
+  created_d1: undefined,
+  created_d2: undefined,
+  created_on: undefined,
   d1: undefined,
   d2: undefined,
+  iconic_taxa: undefined,
   months: undefined,
-  created_on: undefined,
-  created_d1: undefined,
-  created_d2: undefined
+  observed_on: undefined,
+  project: undefined,
+  sortBy: SORT_BY.DATE_UPLOADED_NEWEST,
+  user: undefined
 };
 
-const initialState = {
+const initialState: State = {
   ...defaultFilters,
+  mapBoundaries: undefined,
+  place: undefined,
+  place_guess: "",
+  place_id: undefined,
+  return_bounds: true,
   taxon: undefined,
   taxon_id: undefined,
-  place_id: undefined,
-  place_guess: "",
-  verifiable: true,
-  return_bounds: true
+  verifiable: true
 };
 
 // Checks if the date is in the format XXXX-XX-XX
@@ -315,6 +323,9 @@ async function defaultExploreLocation( ) {
   };
 }
 
+// Note: if an action needs to remove a value from state, do not `delete` it.
+// Instead, set it to undefined. This helps us detect changes to the default
+// state
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
     case EXPLORE_ACTION.RESET:
@@ -324,43 +335,56 @@ function exploreReducer( state: State, action: Action ) {
       };
     case EXPLORE_ACTION.DISCARD:
       return action.snapshot;
-    case EXPLORE_ACTION.CHANGE_TAXON:
-      return {
+    case EXPLORE_ACTION.CHANGE_TAXON: {
+      const newState = {
         ...state,
         ...action.storedState,
-        taxon: action.taxon,
-        taxon_id: action.taxonId,
-        iconic_taxa: []
+        iconic_taxa: undefined
       };
-    case EXPLORE_ACTION.CHANGE_TAXON_NONE:
-      return {
+      if ( action.taxon ) {
+        newState.taxon = action.taxon;
+        newState.taxon_id = action.taxon.id;
+      } else {
+        newState.taxon = undefined;
+        newState.taxon_id = undefined;
+      }
+      return newState;
+    }
+    // Every iconic taxon filter is essentially a taxon filter... except
+    // "unknown", which is a search for observations not associated with an
+    // iconic taxon (either they have no taxon or their taxon is not a
+    // descendant of an iconic taxon), so it needs its own special action.
+    // We could also redo this so all iconic taxon filters remove the taxon
+    // and add iconic_taxa.
+    case EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN: {
+      const newState = {
         ...state,
-        taxon: "Unknown",
-        taxon_id: null,
-        iconic_taxa: ["unknown"]
+        iconic_taxa: ["unknown"],
+        taxon: undefined,
+        taxon_id: undefined
       };
+      return newState;
+    }
     case EXPLORE_ACTION.SET_EXPLORE_LOCATION:
       return {
         ...state,
         ...action.exploreLocation
       };
     case EXPLORE_ACTION.SET_PLACE:
-      // eslint-disable-next-line no-case-declarations
-      const placeState = {
+      return {
         ...state,
         ...action.storedState,
-        place: action.place,
-        place_id: action.placeId,
-        place_guess: action.placeGuess,
         lat: action.lat,
         lng: action.lng,
-        radius: action.radius
+        nelat: undefined,
+        nelng: undefined,
+        place: action.place,
+        place_guess: action.placeGuess,
+        place_id: action.placeId,
+        radius: action.radius,
+        swlat: undefined,
+        swlng: undefined
       };
-      delete placeState.swlat;
-      delete placeState.swlng;
-      delete placeState.nelat;
-      delete placeState.nelng;
-      return placeState;
     case EXPLORE_ACTION.SET_USER:
       return {
         ...state,
@@ -512,15 +536,14 @@ function exploreReducer( state: State, action: Action ) {
         reviewedFilter: action.reviewedFilter
       };
     case EXPLORE_ACTION.SET_MAP_BOUNDARIES: {
-      const newState = {
+      return {
         ...state,
-        ...action.mapBoundaries
+        ...action.mapBoundaries,
+        lat: undefined,
+        lng: undefined,
+        place_id: undefined,
+        radius: undefined
       };
-      delete newState.place_id;
-      delete newState.lat;
-      delete newState.lng;
-      delete newState.radius;
-      return newState;
     }
     case EXPLORE_ACTION.USE_STORED_STATE:
       return {
@@ -544,9 +567,12 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
     if ( !snapshot ) {
       return false;
     }
-    return Object.keys( snapshot ).some( key => snapshot[key] !== state[key] );
+    return Object.keys( snapshot ).some( key => !isEqual( snapshot[key], state[key] ) );
   };
-  const differsFromSnapshot: boolean = checkSnapshot();
+  const differsFromSnapshot: boolean = React.useMemo(
+    checkSnapshot,
+    [state, snapshot]
+  );
 
   const discardChanges = () => {
     if ( !snapshot ) {

@@ -18,7 +18,7 @@ describe( "IconicTaxonChooser", () => {
       name: "Aves"
     } );
     expect(
-      <IconicTaxonChooser taxon={mockTaxon} />
+      <IconicTaxonChooser chosen={[mockTaxon.name.toLowerCase()]} />
     ).toBeAccessible( );
   } );
 
@@ -28,7 +28,7 @@ describe( "IconicTaxonChooser", () => {
       iconic_taxon_name: "Plantae"
     } );
 
-    render( <IconicTaxonChooser taxon={mockTaxon} /> );
+    render( <IconicTaxonChooser chosen={[mockTaxon.name.toLowerCase()]} /> );
 
     const plantButton = await screen.findByTestId(
       `IconicTaxonButton.${mockTaxon.name.toLowerCase( )}`

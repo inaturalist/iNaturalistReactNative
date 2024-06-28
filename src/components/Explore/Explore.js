@@ -45,6 +45,7 @@ const exploreViewIcon = {
 type Props = {
   closeFiltersModal: Function,
   count: Object,
+  filterByIconicTaxonUnknown: Function,
   hideBackButton: boolean,
   isOnline: boolean,
   loadingStatus: boolean,
@@ -61,6 +62,7 @@ type Props = {
 const Explore = ( {
   closeFiltersModal,
   count,
+  filterByIconicTaxonUnknown,
   hideBackButton,
   isOnline,
   loadingStatus,
@@ -256,6 +258,7 @@ const Explore = ( {
       <ExploreFiltersModal
         showModal={showFiltersModal}
         closeModal={closeFiltersModal}
+        filterByIconicTaxonUnknown={filterByIconicTaxonUnknown}
         updateTaxon={updateTaxon}
         updateLocation={updateLocation}
         updateUser={updateUser}

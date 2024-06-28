@@ -48,6 +48,7 @@ const Header = ( {
   const theme = useTheme( );
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
+  const iconicTaxonNames = state.iconic_taxa || [];
   const placeGuess = state.place_guess;
   const [showTaxonSearch, setShowTaxonSearch] = useState( false );
   const [showLocationSearch, setShowLocationSearch] = useState( false );
@@ -71,11 +72,11 @@ const Header = ( {
               />
             ) }
             <View className="flex-1">
-              {taxon
+              {( taxon || iconicTaxonNames.indexOf( "unknown" ) >= 0 )
                 ? (
                   <DisplayTaxon
                     accessibilityLabel={t( "Change-taxon-filter" )}
-                    taxon={taxon}
+                    taxon={taxon || "unknown"}
                     showInfoButton={false}
                     showCheckmark={false}
                     handlePress={() => setShowTaxonSearch( true )}
