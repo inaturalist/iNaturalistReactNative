@@ -33,7 +33,7 @@ describe( "ActivityItem", () => {
         isFirstDisplay
         item={mockIdentification}
         key={mockIdentification.uuid}
-        onIDAgreePressed={jest.fn()}
+        openAgreeWithIdSheet={jest.fn()}
         userAgreedId=""
       />
     );
@@ -61,19 +61,19 @@ describe( "ActivityItem", () => {
   } );
 
   it( "shows agree sheet with correct taxon", async ( ) => {
-    const mockOnIDAgreePressed = jest.fn();
+    const mockopenAgreeWithIdSheet = jest.fn();
     renderComponent(
       <ActivityItem
         isFirstDisplay
         item={mockIdentification}
-        onIDAgreePressed={mockOnIDAgreePressed}
+        openAgreeWithIdSheet={mockopenAgreeWithIdSheet}
       />
     );
     const agreeButton = await screen.findByTestId(
       `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`
     );
     fireEvent.press( agreeButton );
-    expect( mockOnIDAgreePressed ).toHaveBeenCalledWith( mockIdentification.taxon );
+    expect( mockopenAgreeWithIdSheet ).toHaveBeenCalledWith( mockIdentification.taxon );
   } );
 
   it( "renders withdrawn id label", async ( ) => {

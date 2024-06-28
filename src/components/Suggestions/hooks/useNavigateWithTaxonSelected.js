@@ -25,7 +25,8 @@ const useNavigateWithTaxonSelected = (
 
     updateObservationKeys( {
       owners_identification_from_vision: vision,
-      taxon: selectedTaxon
+      taxon: selectedTaxon,
+      description: comment
     } );
 
     // checking for previous screen here rather than a synced/unsynced observation
@@ -35,9 +36,7 @@ const useNavigateWithTaxonSelected = (
     if ( lastScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
-        suggestedTaxonId: selectedTaxon.id,
-        comment,
-        vision
+        suggestedTaxonId: selectedTaxon.id
       } );
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );

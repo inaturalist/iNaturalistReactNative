@@ -11,7 +11,7 @@ type Props = {
   observation:Object,
   refetchRemoteObservation: Function,
   activityItems: Array<Object>,
-  onIDAgreePressed: Function,
+  openAgreeWithIdSheet: Function,
   isOnline: boolean
 }
 
@@ -19,7 +19,7 @@ const ActivityTab = ( {
   observation,
   refetchRemoteObservation,
   activityItems,
-  onIDAgreePressed,
+  openAgreeWithIdSheet,
   isOnline
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
@@ -60,7 +60,7 @@ const ActivityTab = ( {
             isOnline={isOnline}
             item={item}
             key={item.uuid}
-            onIDAgreePressed={onIDAgreePressed}
+            openAgreeWithIdSheet={openAgreeWithIdSheet}
             refetchRemoteObservation={refetchRemoteObservation}
             userAgreedId={userAgreedToId}
           />
