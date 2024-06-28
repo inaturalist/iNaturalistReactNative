@@ -40,19 +40,24 @@ const IdentificationSection = ( {
   const navigation = useNavigation( );
   const realm = useRealm( );
 
-  const identification = currentObservation?.taxon;
+  const identTaxon = currentObservation?.taxon;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
 
-  const hasIdentification = identification && identification.rank_level !== 100;
+  const hasIdentification = identTaxon && identTaxon.rank_level !== 100;
 
-  const showIconicTaxonChooser = !identification
-    || identification.name === identification.iconic_taxon_name
-    || identification.isIconic
-    || identification.name === "Life";
+  const showIconicTaxonChooser = !identTaxon
+    || identTaxon.name === identTaxon.iconic_taxon_name
+    || identTaxon.isIconic
+    || identTaxon.name === "Life";
 
-  const onTaxonChosen = taxonName => updateObservationKeys( {
-    taxon: realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName )[0]
-  } );
+  const onTaxonChosen = taxonName => {
+    if ( taxonName === "unknown" ) {
+      updateObservationKeys( { taxon: undefined } );
+    } else {
+      const newTaxon = realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName )[0];
+      updateObservationKeys( { taxon: newTaxon } );
+    }
+  };
 
   const navToSuggestions = useCallback( ( ) => {
     if ( hasPhotos ) {
@@ -83,20 +88,20 @@ const IdentificationSection = ( {
       <IconicTaxonChooser
         before={(
           <Button
-            level={identification
+            level={identTaxon
               ? "neutral"
               : "focus"}
             onPress={navToSuggestions}
             text={t( "ADD-AN-ID" )}
             className={classnames( "rounded-full py-1 h-[36px] ml-4", {
-              "border border-darkGray border-[2px]": identification
+              "border border-darkGray border-[2px]": identTaxon
             } )}
             testID="ObsEdit.Suggestions"
             icon={(
               <INatIcon
                 name="sparkly-label"
                 size={24}
-                color={identification
+                color={identTaxon
                   ? theme.colors.primary
                   : theme.colors.onPrimary}
               />
@@ -104,7 +109,11 @@ const IdentificationSection = ( {
             accessibilityLabel={t( "View-suggestions" )}
           />
         )}
-        taxon={identification}
+        chosen={
+          identTaxon
+            ? [identTaxon.name.toLowerCase()]
+            : []
+        }
         onTaxonChosen={onTaxonChosen}
       />
     </View>
@@ -120,14 +129,14 @@ const IdentificationSection = ( {
           </View>
         )}
       </View>
-      {identification && (
+      {identTaxon && (
         <View className="mt-5 mx-5">
           <TaxonResult
             accessibilityLabel={t( "Edits-this-observations-taxon" )}
             asListItem={false}
             handlePress={navToSuggestions}
             hideNavButtons
-            taxon={identification}
+            taxon={identTaxon}
             showInfoButton={false}
             showCheckmark={false}
             showEditButton
