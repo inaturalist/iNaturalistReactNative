@@ -20,6 +20,8 @@ const useNavigateWithTaxonSelected = (
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const vision = options?.vision;
 
+  // console.log( vision, selectedTaxon, "vision and selected taxon", currentObservation );
+
   useEffect( ( ) => {
     if ( !selectedTaxon ) { return; }
 
@@ -39,7 +41,9 @@ const useNavigateWithTaxonSelected = (
         comment,
         vision
       } );
+      console.log( "navigating to obs details" );
     } else {
+      console.log( "navigating to obs edit" );
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }
     // If we've navigated, there's no need to run this effect again
