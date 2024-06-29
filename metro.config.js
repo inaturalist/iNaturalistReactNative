@@ -1,11 +1,12 @@
 /**
  * Metro configuration for React Native
- * https://github.com/facebook/react-native
+ * https://reactnative.dev/docs/metro
  * with added config for react-native-svg-transformer
  * https://www.npmjs.com/package/react-native-svg-transformer?activeTab
  *
  * @format
  */
+// eslint-disable-next-line import/no-unresolved
 const { getDefaultConfig, mergeConfig } = require( "@react-native/metro-config" );
 
 const {
