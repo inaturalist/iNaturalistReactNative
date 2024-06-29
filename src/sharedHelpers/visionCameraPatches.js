@@ -34,7 +34,7 @@ export const rotationTempPhotoPatch = deviceOrientation => {
     if ( !isTablet() ) {
       switch ( deviceOrientation ) {
         case PORTRAIT:
-          photoRotation = 0;
+          photoRotation = 90;
           break;
         case LANDSCAPE_RIGHT:
           photoRotation = 90;
