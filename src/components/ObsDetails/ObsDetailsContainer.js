@@ -430,8 +430,6 @@ const ObsDetailsContainer = ( ): Node => {
     }
   };
 
-  console.log( state.comment, state.taxonForAgreement, "state and taxon" );
-
   return observationShown && (
     <ObsDetails
       activityItems={activityItems}
