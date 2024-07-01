@@ -48,6 +48,7 @@ Add-Location = Add Location
 Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
+Add-suggestion-and-remarks-to-observation = Add suggestion and remarks to observation
 # Hint for a button that adds a vote of agreement
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
@@ -1017,6 +1018,7 @@ Withdraws-identification = Withdraws identification
 Worldwide = Worldwide
 WORLDWIDE = WORLDWIDE
 Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
+Would-you-like-to-suggest-the-following-identification = Would you like to suggest the following identification?
 x-comments =
     { $count ->
         [one] { $count } comment

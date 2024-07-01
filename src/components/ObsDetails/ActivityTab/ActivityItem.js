@@ -20,7 +20,7 @@ type Props = {
   isFirstDisplay: boolean,
   isOnline: boolean,
   item: Object,
-  onIDAgreePressed: Function,
+  openAgreeWithIdSheet: Function,
   refetchRemoteObservation: Function,
   userAgreedId?: string
 }
@@ -30,7 +30,7 @@ const ActivityItem = ( {
   isFirstDisplay,
   isOnline,
   item,
-  onIDAgreePressed,
+  openAgreeWithIdSheet,
   refetchRemoteObservation,
   userAgreedId
 }: Props ): Node => {
@@ -69,7 +69,7 @@ const ActivityItem = ( {
             { showAgreeButton && (
               <INatIconButton
                 testID={`ActivityItem.AgreeIdButton.${item.taxon.id}`}
-                onPress={( ) => onIDAgreePressed( item.taxon )}
+                onPress={( ) => openAgreeWithIdSheet( item.taxon )}
                 icon="id-agree"
                 size={33}
                 accessibilityLabel={t( "Agree" )}

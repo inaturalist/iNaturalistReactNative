@@ -43,6 +43,7 @@
   },
   "ADD-OPTIONAL-COMMENT": "ADD OPTIONAL COMMENT",
   "Add-optional-notes": "Add optional notes",
+  "Add-suggestion-and-remarks-to-observation": "Add suggestion and remarks to observation",
   "Adds-your-vote-of-agreement": {
     "comment": "Hint for a button that adds a vote of agreement",
     "val": "Adds your vote of agreement"
@@ -1363,6 +1364,7 @@
   "Worldwide": "Worldwide",
   "WORLDWIDE": "WORLDWIDE",
   "Would-you-like-to-discard-your-current-recording-and-start-over": "Would you like to discard your current recording and start over?",
+  "Would-you-like-to-suggest-the-following-identification": "Would you like to suggest the following identification?",
   "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
   "X-Identifications": "{ $count ->\n  [one] { $count } Identification\n *[other] { $count } Identifications\n}",
   "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}",
