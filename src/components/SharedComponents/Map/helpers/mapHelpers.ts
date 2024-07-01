@@ -12,7 +12,7 @@ export const TILE_URL = API_URL.match( /api\.inaturalist\.org/ )
   : API_URL;
 const POINT_TILES_ENDPOINT = `${TILE_URL}/points`;
 
-export function calculateZoom( width, delta ) {
+export function calculateZoom( width: number, delta: number ) {
   return Math.round(
     Math.log2( 360 * ( width / 256 / delta ) ) + 1
   );
@@ -20,7 +20,7 @@ export function calculateZoom( width, delta ) {
 
 // Kind of the inverse of calculateZoom. Probably not actually accurate for
 // longitude, but works for our purposes
-export function zoomToDeltas( zoom, screenWidth, screenHeight ) {
+export function zoomToDeltas( zoom: number, screenWidth: number, screenHeight: number ) {
   const longitudeDelta = screenWidth / 256 / ( 2 ** zoom / 360 );
   const latitudeDelta = screenHeight / 256 / ( 2 ** zoom / 360 );
   return [latitudeDelta, longitudeDelta];
@@ -28,7 +28,7 @@ export function zoomToDeltas( zoom, screenWidth, screenHeight ) {
 
 // Adapted from
 // https://github.com/inaturalist/inaturalist/blob/main/app/assets/javascripts/inaturalist/map3.js.erb#L1500
-export function obscurationCellForLatLng( lat, lng ) {
+export function obscurationCellForLatLng( lat: number, lng: number ) {
   const coords = [lat, lng];
   const firstCorner = [
     coords[0] - ( coords[0] % OBSCURATION_CELL_SIZE ),
@@ -62,7 +62,10 @@ export function metersToLatitudeDelta( meters: number, latitude: number ): numbe
   return latitudeDelta;
 }
 
-export async function fetchObservationUUID( currentZoom: number, latLng: LatLng, params ) {
+interface Params {
+  [key: string]: unknown;
+}
+export async function fetchObservationUUID( currentZoom: number, latLng: LatLng, params: Params ) {
   const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
   const {
     mTilePositionX,
@@ -70,7 +73,7 @@ export async function fetchObservationUUID( currentZoom: number, latLng: LatLng,
     mPixelPositionX,
     mPixelPositionY
   } = UTFPosition;
-  const tilesParams = {
+  const tilesParams: Params = {
     ...params,
     style: "geotilegrid"
   };
