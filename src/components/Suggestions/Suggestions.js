@@ -108,7 +108,7 @@ const Suggestions = ( {
       return null;
     }
     return (
-      <Heading4 className="mt-6 mb-4 ml-4">{section?.title}</Heading4>
+      <Heading4 className="mt-6 mb-4 ml-4 bg-white">{section?.title}</Heading4>
     );
   };
 
@@ -155,13 +155,14 @@ const Suggestions = ( {
   return (
     <ViewWrapper testID="suggestions">
       <SectionList
-        testID="Suggestions.SectionList"
-        sections={sections}
-        renderItem={renderSuggestion}
-        renderSectionHeader={renderSectionHeader}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
         ListHeaderComponent={renderHeader}
+        renderItem={renderSuggestion}
+        renderSectionHeader={renderSectionHeader}
+        sections={sections}
+        stickySectionHeadersEnabled={false}
+        testID="Suggestions.SectionList"
       />
     </ViewWrapper>
   );
