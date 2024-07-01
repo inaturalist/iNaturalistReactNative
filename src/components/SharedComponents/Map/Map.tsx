@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import { ViewStyle } from "react-native";
+import { DimensionValue, ViewStyle } from "react-native";
 import MapView, {
   BoundingBox, LatLng, MapType, Region
 } from "react-native-maps";
@@ -36,7 +36,7 @@ interface Props {
   className?: string;
   currentLocationButtonClassName?: string;
   currentLocationZoomLevel?: number;
-  mapHeight?: number | string; // allows for height to be defined as px or percentage
+  mapHeight?: DimensionValue;
   mapType?: MapType;
   mapViewClassName?: string;
   minZoomLevel?: number;
