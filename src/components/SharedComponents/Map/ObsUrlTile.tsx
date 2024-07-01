@@ -1,5 +1,4 @@
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import {
   UrlTile
@@ -19,7 +18,7 @@ const ObsUrlTile = ( {
   showPointTiles,
   withObsTiles,
   withPressableObsTiles
-}: Props ): Node => {
+}: Props ) => {
   const queryString = Object.keys( params ).map( key => `${key}=${params[key]}` ).join( "&" );
 
   // We want green points and (default) orange grid

@@ -1,5 +1,4 @@
 import LocationIndicatorIcon from "images/svg/location_indicator.svg";
-import type { Node } from "react";
 import React from "react";
 import {
   Circle,
@@ -19,7 +18,7 @@ const LocationIndicator = ( {
   obsLongitude,
   positionalAccuracy,
   showLocationIndicator
-}: Props ): Node => {
+}: Props ) => {
   const theme = useTheme( );
 
   const locationIndicator = ( ) => (
@@ -30,7 +29,7 @@ const LocationIndicator = ( {
     />
   );
 
-  return showLocationIndicator && (
+  return showLocationIndicator && positionalAccuracy && (
     <>
       <Circle
         center={{
