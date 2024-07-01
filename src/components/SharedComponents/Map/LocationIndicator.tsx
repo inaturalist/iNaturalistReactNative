@@ -29,7 +29,7 @@ const LocationIndicator = ( {
     />
   );
 
-  return showLocationIndicator && positionalAccuracy && (
+  return showLocationIndicator && (
     <>
       <Circle
         center={{
