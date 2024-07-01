@@ -1,5 +1,3 @@
-// @flow
-
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import {
@@ -7,6 +5,7 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import { useCallback, useEffect, useState } from "react";
+import { BoundingBox, Region } from "react-native-maps";
 // import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTranslation } from "sharedHooks";
@@ -18,14 +17,20 @@ import useCurrentMapRegion from "./useCurrentMapRegion";
 
 const { useRealm } = RealmContext;
 
-const useMapLocation = ( ): Object => {
+const useMapLocation = ( ) => {
   const { params } = useRoute( );
   const worldwide = params?.worldwide;
   const realm = useRealm( );
   const { dispatch, state } = useExplore( );
-  const [mapBoundaries, setMapBoundaries] = useState( null );
+  const [mapBoundaries, setMapBoundaries] = useState<{
+    swlat: number | undefined;
+    swlng: number | undefined;
+    nelat: number | undefined;
+    nelng: number | undefined;
+    place_guess: string;
+  } | null>( null );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
-  const [permissionRequested, setPermissionRequested] = useState( null );
+  const [permissionRequested, setPermissionRequested] = useState<boolean | null>( null );
   const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
 
   const place = state?.place;
@@ -40,7 +45,8 @@ const useMapLocation = ( ): Object => {
   const placeIdWasSet = state.place_id;
   const mapWasPanned = state?.lat !== currentMapRegion.lat;
 
-  const updateMapBoundaries = useCallback( async ( newRegion, boundaries ) => {
+  // eslint-disable-next-line max-len
+  const updateMapBoundaries = useCallback( async ( newRegion: Region, boundaries: BoundingBox | undefined ) => {
     const boundaryAPIParams = {
       swlat: boundaries?.southWest?.latitude,
       swlng: boundaries?.southWest?.longitude,
@@ -52,7 +58,11 @@ const useMapLocation = ( ): Object => {
     setMapBoundaries( boundaryAPIParams );
     setCurrentMapRegion( newRegion );
     return boundaryAPIParams;
-  }, [t, setMapBoundaries, setCurrentMapRegion] );
+  }, [
+    t,
+    setMapBoundaries,
+    setCurrentMapRegion
+  ] );
 
   const redoSearchInMapArea = ( ) => {
     setShowMapBoundaryButton( false );
@@ -81,8 +91,9 @@ const useMapLocation = ( ): Object => {
     }
   }, [realm] );
 
-  const onZoomToNearby = useCallback( async nearbyBoundaries => {
-    const newMapBoundaries = await updateMapBoundaries( nearbyBoundaries );
+  // eslint-disable-next-line max-len
+  const onZoomToNearby = useCallback( async ( newRegion: Region, nearbyBoundaries: BoundingBox | undefined ) => {
+    const newMapBoundaries = await updateMapBoundaries( newRegion, nearbyBoundaries );
     newMapBoundaries.place_guess = t( "Nearby" );
     dispatch( {
       type: EXPLORE_ACTION.SET_MAP_BOUNDARIES,
