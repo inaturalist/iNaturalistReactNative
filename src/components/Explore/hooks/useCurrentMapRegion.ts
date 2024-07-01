@@ -12,7 +12,7 @@ const useCurrentMapRegion = ( ) => {
   const navState = useNavigationState( nav => nav );
   const currentScreen = _.last( navState?.routes )?.name;
 
-  const currentMapRegion = currentScreen === "RootExplore"
+  const currentMapRegion: Region = currentScreen === "RootExplore"
     ? rootMapRegion
     : mapRegion;
 
