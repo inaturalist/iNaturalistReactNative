@@ -1,5 +1,3 @@
-// @flow
-
 import {
   useAnimatedStyle,
   useSharedValue,
@@ -11,7 +9,7 @@ import useDeviceOrientation, {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation.ts";
 
-const useRotation = ( ): Object => {
+const useRotation = ( ) => {
   const { deviceOrientation } = useDeviceOrientation( );
 
   const rotation = useSharedValue( 0 );
