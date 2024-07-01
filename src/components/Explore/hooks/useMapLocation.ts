@@ -28,7 +28,7 @@ const useMapLocation = ( ) => {
     nelat: number | undefined;
     nelng: number | undefined;
     place_guess: string;
-  } | null>( null );
+  }>( );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
   const [permissionRequested, setPermissionRequested] = useState<boolean | null>( null );
   const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
@@ -65,6 +65,7 @@ const useMapLocation = ( ) => {
   ] );
 
   const redoSearchInMapArea = ( ) => {
+    if ( !mapBoundaries ) return;
     setShowMapBoundaryButton( false );
     dispatch( { type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries } );
   };
