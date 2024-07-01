@@ -36,7 +36,7 @@ interface Props {
   className?: string;
   currentLocationButtonClassName?: string;
   currentLocationZoomLevel?: number;
-  mapHeight?: DimensionValue;
+  mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
   minZoomLevel?: number;

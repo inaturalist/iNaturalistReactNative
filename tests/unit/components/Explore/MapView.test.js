@@ -1,6 +1,6 @@
 import { screen, userEvent } from "@testing-library/react-native";
-import MapView from "components/Explore/MapView";
 import * as useMapLocation from "components/Explore/hooks/useMapLocation.ts";
+import MapView from "components/Explore/MapView.tsx";
 import { ExploreProvider } from "providers/ExploreContext.tsx";
 import React from "react";
 import factory from "tests/factory";

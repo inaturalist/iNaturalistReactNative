@@ -30,7 +30,7 @@ const useMapLocation = ( ) => {
     place_guess: string;
   }>( );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
-  const [permissionRequested, setPermissionRequested] = useState<boolean | null>( null );
+  const [permissionRequested, setPermissionRequested] = useState<boolean>( );
   const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
 
   const place = state?.place;
