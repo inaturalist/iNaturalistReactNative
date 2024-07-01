@@ -20,7 +20,7 @@ import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 

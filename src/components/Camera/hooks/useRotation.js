@@ -9,7 +9,7 @@ import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
   PORTRAIT_UPSIDE_DOWN
-} from "sharedHooks/useDeviceOrientation";
+} from "sharedHooks/useDeviceOrientation.ts";
 
 const useRotation = ( ): Object => {
   const { deviceOrientation } = useDeviceOrientation( );

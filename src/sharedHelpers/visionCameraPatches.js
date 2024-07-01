@@ -19,7 +19,7 @@ import {
   LANDSCAPE_RIGHT,
   PORTRAIT,
   PORTRAIT_UPSIDE_DOWN
-} from "sharedHooks/useDeviceOrientation";
+} from "sharedHooks/useDeviceOrientation.ts";
 
 // Needed for react-native-vision-camera on iPhones
 // As of this version the photo from takePhoto on is not oriented coming from the native side.

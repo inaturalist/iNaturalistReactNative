@@ -24,7 +24,7 @@ import { useTranslation } from "sharedHooks";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT
-} from "sharedHooks/useDeviceOrientation";
+} from "sharedHooks/useDeviceOrientation.ts";
 
 import AICamera from "./AICamera/AICamera";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
