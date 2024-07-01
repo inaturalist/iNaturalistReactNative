@@ -266,8 +266,7 @@ const Map = ( {
   ] );
 
   const params = useMemo( ( ) => {
-    if ( !tileMapParams ) return null;
-    const newTileParams: Object = { ...tileMapParams };
+    const newTileParams = { ...tileMapParams };
     delete newTileParams.order;
     delete newTileParams.order_by;
     delete newTileParams.per_page;
