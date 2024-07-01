@@ -20,6 +20,8 @@ const useNavigateWithTaxonSelected = (
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const vision = options?.vision;
 
+  // console.log( vision, selectedTaxon, "vision and selected taxon", currentObservation );
+
   useEffect( ( ) => {
     if ( !selectedTaxon ) { return; }
 
@@ -38,6 +40,8 @@ const useNavigateWithTaxonSelected = (
         uuid: currentObservation?.uuid,
         suggestedTaxonId: selectedTaxon.id
       } );
+    } else if ( lastScreen === "ObsEdit" ) {
+      navigation.goBack( );
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }

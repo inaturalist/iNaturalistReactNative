@@ -28,13 +28,13 @@ const Suggestion = ( {
     activeColor="bg-inatGreen"
     confidence={suggestion?.score
       ? convertOfflineScoreToConfidence( suggestion?.score )
-      : convertOnlineScoreToConfidence( suggestion.combined_score )}
+      : convertOnlineScoreToConfidence( suggestion?.combined_score )}
     confidencePosition="text"
     fetchRemote={fetchRemote}
     first
     handleCheckmarkPress={onTaxonChosen}
     hideNavButtons
-    taxon={suggestion.taxon}
+    taxon={suggestion?.taxon}
     testID={`SuggestionsList.taxa.${suggestion?.taxon?.id}`}
   />
 );
