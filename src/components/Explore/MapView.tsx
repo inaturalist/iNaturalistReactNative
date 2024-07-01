@@ -1,5 +1,3 @@
-// @flow
-
 import classnames from "classnames";
 import {
   Body1,
@@ -7,7 +5,6 @@ import {
   Map
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
 import { Platform } from "react-native";
 import { useDebugMode, useTranslation } from "sharedHooks";
@@ -29,7 +26,7 @@ type Props = {
 const MapView = ( {
   observations,
   queryParams
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
   const [zoom, setZoom] = useState( -1 );
@@ -103,7 +100,7 @@ const MapView = ( {
           }
           await updateMapBoundaries( newRegion, boundaries );
           if ( startAtNearby ) {
-            onZoomToNearby( boundaries );
+            onZoomToNearby( newRegion, boundaries );
           }
         }}
         onZoomToNearby={onZoomToNearby}
