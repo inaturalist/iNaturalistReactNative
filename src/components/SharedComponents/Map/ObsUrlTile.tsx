@@ -6,11 +6,11 @@ import {
 
 import { TILE_URL } from "./helpers/mapHelpers";
 
-type Props = {
-  params?: Object,
-  showPointTiles: boolean,
-  withObsTiles?: boolean,
-  withPressableObsTiles?: boolean
+interface Props {
+  params?: Object;
+  showPointTiles: boolean;
+  withObsTiles?: boolean;
+  withPressableObsTiles?: boolean;
 }
 
 const ObsUrlTile = ( {
