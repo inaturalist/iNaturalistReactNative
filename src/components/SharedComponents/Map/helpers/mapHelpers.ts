@@ -1,4 +1,5 @@
 import Config from "react-native-config";
+import { LatLng } from "react-native-maps";
 import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 
@@ -61,7 +62,7 @@ export function metersToLatitudeDelta( meters: number, latitude: number ): numbe
   return latitudeDelta;
 }
 
-export async function fetchObservationUUID( currentZoom, latLng, params ) {
+export async function fetchObservationUUID( currentZoom: number, latLng: LatLng, params ) {
   const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
   const {
     mTilePositionX,

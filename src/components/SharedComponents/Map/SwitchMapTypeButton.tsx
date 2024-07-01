@@ -15,7 +15,7 @@ interface Props {
   mapType?: string,
   setCurrentMapType: Function,
   showSwitchMapTypeButton?: boolean,
-  switchMapTypeButtonClassName: string
+  switchMapTypeButtonClassName?: string
 }
 
 const SwitchMapTypeButton = ( {
