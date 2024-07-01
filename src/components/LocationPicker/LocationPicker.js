@@ -31,8 +31,6 @@ type Props = {
   loading: boolean,
   locationName: string,
   mapType: string,
-  // $FlowIgnore
-  mapViewRef: unknown,
   region: Object,
   selectPlaceResult: Function,
   setMapReady: Function,
@@ -50,7 +48,6 @@ const LocationPicker = ( {
   keysToUpdate,
   loading,
   locationName,
-  mapViewRef,
   mapType,
   region,
   selectPlaceResult,
@@ -116,7 +113,6 @@ const LocationPicker = ( {
             className="h-full"
             showsCompass={false}
             region={region}
-            mapViewRef={mapViewRef}
             mapType={mapType}
             onCurrentLocationPress={( ) => setInitialMapRender( false )}
             onRegionChangeComplete={async newRegion => {
