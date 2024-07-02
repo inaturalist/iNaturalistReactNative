@@ -4,7 +4,9 @@ import {
   EXPLORE_ACTION,
   useExplore
 } from "providers/ExploreContext.tsx";
-import { useCallback, useEffect, useState } from "react";
+import {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import { BoundingBox, Region } from "react-native-maps";
 // import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
@@ -123,6 +125,7 @@ const useMapLocation = ( ) => {
     setPermissionRequested( false );
   }, [setPermissionRequested] );
 
+  const previousPlaceGuess = useRef( state.place_guess );
   useEffect( ( ) => {
     // region gets set when a user is navigating from ExploreLocationSearch
     if ( placeIdWasSet ) {
@@ -134,13 +137,18 @@ const useMapLocation = ( ) => {
         longitude: coordinates[0]
       } );
     } else if ( mapWasReset ) {
-      // map gets set or reset back to nearby/worldwide
+      // map gets set or reset back to nearby/worldwide, but only if the place_guess
+      // has changed
+      if ( previousPlaceGuess.current === state.place_guess ) {
+        return;
+      }
       // logger.debug( "setting initial nearby or worldwide map region" );
       setCurrentMapRegion( {
         ...initialMapRegion,
         latitude: state?.lat,
         longitude: state?.lng
       } );
+      previousPlaceGuess.current = state.place_guess;
     }
   }, [
     mapWasReset,
