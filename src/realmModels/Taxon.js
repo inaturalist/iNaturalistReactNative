@@ -4,6 +4,7 @@ import Photo from "./Photo";
 
 class Taxon extends Realm.Object {
   static TAXON_FIELDS = {
+    ancestor_ids: true,
     default_photo: {
       id: true,
       url: true,
@@ -127,6 +128,7 @@ class Taxon extends Realm.Object {
       rank_level: "float?",
       isIconic: "bool?",
       iconic_taxon_name: "string?",
+      ancestor_ids: "int[]",
       _synced_at: "date?"
     }
   };

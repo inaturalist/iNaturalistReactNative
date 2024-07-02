@@ -38,7 +38,8 @@ const useNavigateWithTaxonSelected = (
     if ( lastScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
-        suggestedTaxonId: selectedTaxon.id
+        suggestedTaxonId: selectedTaxon.id,
+        taxon: selectedTaxon
       } );
     } else if ( lastScreen === "ObsEdit" ) {
       navigation.goBack( );

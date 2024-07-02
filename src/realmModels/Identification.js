@@ -14,6 +14,7 @@ class Identification extends Realm.Object {
     disagreement: true,
     id: true,
     flags: Flag.FLAG_FIELDS,
+    previous_observation_taxon: Taxon.TAXON_FIELDS,
     taxon: Taxon.TAXON_FIELDS,
     updated_at: true,
     // $FlowFixMe
@@ -57,8 +58,10 @@ class Identification extends Realm.Object {
       category: "string?",
       current: "bool",
       created_at: { type: "string", mapTo: "createdAt", optional: true },
+      disagreement: "bool?",
       flags: "Flag[]",
       id: "int?",
+      previous_observation_taxon: "Taxon?",
       taxon: "Taxon?",
       user: "User?",
       vision: "bool?",
