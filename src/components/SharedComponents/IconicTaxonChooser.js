@@ -3,21 +3,15 @@ import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, {
-  useCallback, useEffect, useState
-} from "react";
+import React, { useCallback } from "react";
 import { FlatList } from "react-native";
-import { useIconicTaxa, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  // $FlowIgnore
-  before: unknown,
+  before?: Node,
+  chosen: string[],
   onTaxonChosen: Function,
-  taxon: {
-    id: number,
-    name: string
-  },
   testID?: string
 };
 
@@ -44,30 +38,13 @@ const iconicTaxonIcons = [
 
 const IconicTaxonChooser = ( {
   before,
+  chosen = [],
   onTaxonChosen,
-  taxon,
   testID
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const [selectedIcon, setSelectedIcon] = useState( null );
-  const iconicTaxa = useIconicTaxa( { reload: false } );
-  const isIconic = taxon?.id && iconicTaxa.filtered( `id = ${taxon?.id}` );
-
-  useEffect( ( ) => {
-    if ( !isIconic ) { return; }
-    setSelectedIcon( taxon.name.toLowerCase( ) );
-  }, [isIconic, taxon] );
-
-  useEffect( ( ) => {
-    // reset selectedIcon state when navigating multiple observations
-    // on ObsEdit screen
-    if ( !taxon && selectedIcon ) {
-      setSelectedIcon( null );
-    }
-  }, [taxon, selectedIcon] );
-
-  const renderIcon = useCallback( ( { item } ) => {
-    const isSelected = selectedIcon === item;
+  const renderIcon = useCallback( ( { item: iconicTaxonName } ) => {
+    const isSelected = chosen.indexOf( iconicTaxonName ) >= 0;
     return (
       <View
         className={
@@ -82,26 +59,30 @@ const IconicTaxonChooser = ( {
         accessibilityState={{
           selected: isSelected
         }}
-        testID={`IconicTaxonButton.${item}`}
+        testID={`IconicTaxonButton.${iconicTaxonName}`}
       >
         <INatIconButton
-          icon={`iconic-${item}`}
+          icon={`iconic-${iconicTaxonName}`}
           size={22}
           onPress={( ) => {
-            setSelectedIcon( item );
-            onTaxonChosen( item );
+            onTaxonChosen( iconicTaxonName );
           }}
           color={isSelected && colors.white}
           accessibilityLabel={
-            t( "Iconic-taxon-name", { iconicTaxon: item } )
+            t( "Iconic-taxon-name", { iconicTaxon: iconicTaxonName } )
           }
           accessibilityHint={
-            t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: item } )
+            t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: iconicTaxonName } )
           }
         />
       </View>
     );
-  }, [onTaxonChosen, t, selectedIcon] );
+  }, [
+    chosen,
+    onTaxonChosen,
+    t
+    // selectedIcon
+  ] );
 
   const renderHeader = useCallback( ( ) => {
     if ( before ) {

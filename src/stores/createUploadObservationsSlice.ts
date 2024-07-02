@@ -150,7 +150,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   addToUploadQueue: uuids => set( state => {
     let copyOfUploadQueue = state.uploadQueue;
     if ( typeof uuids === "string" ) {
-      copyOfUploadQueue.push( uuids );
+      copyOfUploadQueue.unshift( uuids );
     } else {
       copyOfUploadQueue = copyOfUploadQueue.concat( uuids );
     }

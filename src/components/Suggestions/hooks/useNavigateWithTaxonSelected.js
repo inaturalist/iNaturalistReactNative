@@ -20,12 +20,15 @@ const useNavigateWithTaxonSelected = (
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const vision = options?.vision;
 
+  // console.log( vision, selectedTaxon, "vision and selected taxon", currentObservation );
+
   useEffect( ( ) => {
     if ( !selectedTaxon ) { return; }
 
     updateObservationKeys( {
       owners_identification_from_vision: vision,
-      taxon: selectedTaxon
+      taxon: selectedTaxon,
+      description: comment
     } );
 
     // checking for previous screen here rather than a synced/unsynced observation
@@ -36,10 +39,10 @@ const useNavigateWithTaxonSelected = (
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
         suggestedTaxonId: selectedTaxon.id,
-        taxon: selectedTaxon,
-        comment,
-        vision
+        taxon: selectedTaxon
       } );
+    } else if ( lastScreen === "ObsEdit" ) {
+      navigation.goBack( );
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }

@@ -24,7 +24,6 @@ const useOfflineSuggestions = (
 
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
-      setLoadingOfflineSuggestions( true );
       let rawPredictions = [];
       try {
         const result = await predictImage( selectedPhotoUri );
@@ -58,6 +57,7 @@ const useOfflineSuggestions = (
       predictOffline( ).catch( predictOfflineError => {
         // For some reason if you throw here, it doesn't actually buble up. Is
         // an effect callback run in a promise?
+        setLoadingOfflineSuggestions( false );
         setError( predictOfflineError );
       } );
     }

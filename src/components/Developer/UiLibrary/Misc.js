@@ -344,11 +344,7 @@ const Misc = (): Node => {
         <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
         <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
         <IconicTaxonChooser
-          taxon={{
-            name: "Aves",
-            id: 3,
-            iconic_taxon_name: "Aves"
-          }}
+          chosen={["aves"]}
           before={<Button text={t( "ADD-AN-ID" )} className="rounded-full" />}
           onTaxonChosen={taxon => console.log( "taxon selected:", taxon )}
         />

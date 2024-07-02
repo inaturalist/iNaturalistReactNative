@@ -28,7 +28,7 @@ type Props = {
 
 const MapView = ( {
   observations,
-  queryParams: tileMapParams
+  queryParams
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
@@ -47,6 +47,14 @@ const MapView = ( {
     startAtNearby,
     updateMapBoundaries
   } = useMapLocation( );
+
+  const tileMapParams = {
+    ...queryParams
+  };
+  // Tile queries never need these params
+  delete tileMapParams.return_bounds;
+  delete tileMapParams.order;
+  delete tileMapParams.orderBy;
 
   return (
     <View className="flex-1 overflow-hidden h-full">

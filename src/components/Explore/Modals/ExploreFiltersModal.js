@@ -9,6 +9,7 @@ import FilterModal from "./FilterModal";
 type Props = {
   showModal: boolean,
   closeModal: Function,
+  filterByIconicTaxonUnknown: Function,
   updateTaxon: Function,
   updateLocation: Function,
   updateUser: Function,
@@ -18,6 +19,7 @@ type Props = {
 const ExploreFiltersModal = ( {
   showModal,
   closeModal,
+  filterByIconicTaxonUnknown,
   updateTaxon,
   updateLocation,
   updateUser,
@@ -31,6 +33,7 @@ const ExploreFiltersModal = ( {
     modal={(
       <FilterModal
         closeModal={closeModal}
+        filterByIconicTaxonUnknown={filterByIconicTaxonUnknown}
         updateTaxon={updateTaxon}
         updateLocation={updateLocation}
         updateUser={updateUser}

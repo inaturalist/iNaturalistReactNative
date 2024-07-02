@@ -32,22 +32,6 @@ const ExploreContainerWithContext = ( ): Node => {
 
   useParams( );
 
-  const updateTaxon = ( taxon: Object ) => {
-    if ( !taxon ) {
-      dispatch( {
-        type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
-        taxon: null
-      } );
-    } else {
-      dispatch( {
-        type: EXPLORE_ACTION.CHANGE_TAXON,
-        taxon,
-        taxonId: taxon?.id,
-        taxonName: taxon?.preferred_common_name || taxon?.name
-      } );
-    }
-  };
-
   const updateLocation = ( place: Object ) => {
     if ( place === "worldwide" ) {
       dispatch( {
@@ -113,13 +97,16 @@ const ExploreContainerWithContext = ( ): Node => {
       closeFiltersModal={closeFiltersModal}
       count={count}
       hideBackButton={false}
+      filterByIconicTaxonUnknown={
+        () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
+      }
       isOnline={isOnline}
       loadingStatus={loadingStatus}
       openFiltersModal={openFiltersModal}
       queryParams={queryParams}
       showFiltersModal={showFiltersModal}
       updateCount={updateCount}
-      updateTaxon={updateTaxon}
+      updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
       updateLocation={updateLocation}
       updateUser={updateUser}
       updateProject={updateProject}

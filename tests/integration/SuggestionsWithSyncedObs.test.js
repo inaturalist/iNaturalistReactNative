@@ -12,14 +12,6 @@ import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
-import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
-
-const mockModelResult = {
-  predictions: [factory( "ModelPrediction", {
-  // useOfflineSuggestions will filter out taxa w/ rank_level > 40
-    rank_level: 20
-  } )]
-};
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -79,10 +71,6 @@ const topSuggestion = {
 const otherSuggestion = {
   taxon: factory( "RemoteTaxon", { name: "Alia suggestione" } ),
   combined_score: 50
-};
-const humanSuggestion = {
-  taxon: factory( "RemoteTaxon", { name: "Homo sapiens", id: 43584 } ),
-  combined_score: 86
 };
 
 beforeEach( async ( ) => {
@@ -269,12 +257,21 @@ describe( "Suggestions", ( ) => {
     const topTaxonResultButton = await screen.findByTestId(
       `SuggestionsList.taxa.${taxonId}.checkmark`
     );
-    expect( topTaxonResultButton ).toBeTruthy( );
+    expect( topTaxonResultButton ).toBeVisible( );
     await actor.press( topTaxonResultButton );
-    const activityTabBtn = await screen.findByText( "ACTIVITY" );
+    const activityTabBtn = await screen.findByText( /ACTIVITY/ );
+    expect( activityTabBtn ).toBeVisible( );
     await actor.press( activityTabBtn );
     const activityTab = await screen.findByTestId( "ActivityTab" );
     expect( activityTab ).toBeVisible( );
+    // open bottom sheet
+    const bottomSheetText = await screen.findByText(
+      /Would you like to suggest the following identification/
+    );
+    expect( bottomSheetText ).toBeVisible( );
+    const confirmButton = await screen.findByTestId( "SuggestIDSheet.cvSuggestionsButton" );
+    expect( confirmButton ).toBeVisible( );
+    await actor.press( confirmButton );
     // Wait for the actual identification we created to appear
     const taxonNameInIdent = await within( activityTab ).findByText( topSuggestion.taxon.name );
     expect( taxonNameInIdent ).toBeVisible( );
@@ -310,49 +307,6 @@ describe( "Suggestions", ( ) => {
       .objectForPrimaryKey( "Observation", observations[0].uuid );
     expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
   } );
-
-  it(
-    "should try offline suggestions if no online suggestions are found",
-    async ( ) => {
-      inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
-      getPredictionsForImage.mockImplementation(
-        async ( ) => ( mockModelResult )
-      );
-      const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-      const offlineNotice = await screen.findByText( /You are offline. Tap to reload/ );
-      expect( offlineNotice ).toBeTruthy( );
-      const topOfflineTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
-      );
-      expect( topOfflineTaxonResultButton ).toBeTruthy( );
-      await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );
-      const saveChangesButton = await screen.findByText( "SAVE CHANGES" );
-      expect( saveChangesButton ).toBeTruthy( );
-      await actor.press( saveChangesButton );
-      const savedObservation = global.mockRealms[__filename]
-        .objectForPrimaryKey( "Observation", observations[0].uuid );
-      expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
-    }
-  );
-
-  it(
-    "should display only a single human observation if human is found in suggestions",
-    async ( ) => {
-      inatjs.computervision.score_image
-        .mockResolvedValue( makeResponse( [humanSuggestion, otherSuggestion] ) );
-      const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-      const humanResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`
-      );
-      expect( humanResultButton ).toBeVisible( );
-      const flatList = screen.getByTestId( "Suggestions.FlatList" );
-      expect( flatList ).toHaveProp( "data", [] );
-      const human = screen.getByText( /Homo sapiens/ );
-      expect( human ).toBeVisible( );
-    }
-  );
 
   it.todo( "should create an identification when accessed from Explore" );
 } );

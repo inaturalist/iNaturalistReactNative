@@ -9,7 +9,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
   data: Object,
@@ -31,6 +31,7 @@ const NotificationsList = ( {
   reload
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const user = useCurrentUser( );
 
   const renderItem = useCallback( ( { item } ) => (
     <NotificationsListItem item={item} />
@@ -60,12 +61,23 @@ const NotificationsList = ( {
     }
 
     let msg = t( "No-Notifications-Found" );
+    let msg2 = null;
+    if ( !user ) {
+      msg = t( "Once-you-create-and-upload-observations" );
+      msg2 = t( "You-will-see-notifications" );
+    }
     if ( isError ) {
       msg = t( "Something-went-wrong" );
     }
 
-    return <Body2 className="mt-[150px] text-center mx-12">{msg}</Body2>;
+    return (
+      <>
+        <Body2 className="mt-[150px] text-center mx-12">{msg}</Body2>
+        {msg2 && <Body2 className="mt-4 text-center mx-12">{msg2}</Body2>}
+      </>
+    );
   }, [
+    user,
     isError,
     isInitialLoading,
     isOnline,
