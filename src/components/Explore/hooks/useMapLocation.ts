@@ -43,7 +43,6 @@ const useMapLocation = ( ) => {
 
   const mapWasReset = state.place_guess === t( "Nearby" ) || state.place_guess === t( "Worldwide" );
   const placeIdWasSet = state.place_id;
-  const mapWasPanned = state?.lat !== currentMapRegion.lat;
 
   // eslint-disable-next-line max-len
   const updateMapBoundaries = useCallback( async ( newRegion: Region, boundaries: BoundingBox | undefined ) => {
@@ -135,7 +134,7 @@ const useMapLocation = ( ) => {
         longitude: coordinates[0]
       } );
     } else if ( mapWasReset ) {
-    // map gets set or reset back to nearby/worldwide
+      // map gets set or reset back to nearby/worldwide
       // logger.debug( "setting initial nearby or worldwide map region" );
       setCurrentMapRegion( {
         ...initialMapRegion,
@@ -145,7 +144,6 @@ const useMapLocation = ( ) => {
     }
   }, [
     mapWasReset,
-    mapWasPanned,
     place,
     placeIdWasSet,
     setCurrentMapRegion,
