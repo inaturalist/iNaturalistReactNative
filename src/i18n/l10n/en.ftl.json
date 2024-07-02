@@ -402,7 +402,7 @@
     "comment": "Button that disables the camera's flash",
     "val": "Disable flash"
   },
-  "Disagreement": "@ { $username } disagrees this is  { $commonName } ( { $scientificName } )",
+  "Disagreement": "@{ $username } disagrees this is { $commonName } ({ $scientificName })",
   "DISCARD": {
     "comment": "Button that discards changes or an item, e.g. a photo",
     "val": "DISCARD"

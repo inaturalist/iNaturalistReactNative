@@ -82,8 +82,13 @@ const ActivityItem = ( {
             <UserText text={item.body} />
           </View>
         )}
-        { disagreement
-         && <DisagreementText taxon={item.previous_observation_taxon} username={user.login} />}
+        { disagreement && (
+          <DisagreementText
+            taxon={item.previous_observation_taxon}
+            username={user.login}
+            withdrawn={idWithdrawn}
+          />
+        )}
       </View>
       <Divider />
     </View>

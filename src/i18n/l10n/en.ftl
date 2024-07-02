@@ -288,7 +288,7 @@ Deleting-x-of-y-observations =
 DETAILS = DETAILS
 # Button that disables the camera's flash
 Disable-flash = Disable flash
-Disagreement = @ { $username } disagrees this is  { $commonName } ( { $scientificName } )
+Disagreement = @{ $username } disagrees this is { $commonName } ({ $scientificName })
 # Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
 # Button that discards all items, e.g. imported photos

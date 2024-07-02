@@ -355,25 +355,6 @@ const ObsDetailsContainer = ( ): Node => {
   const openSuggestIdSheet = useCallback( () => {
     dispatch( { type: "SHOW_SUGGEST_ID_SHEET", showSuggestIdSheet: true } );
   }, [] );
-  // const doAddID = useCallback( potentialDisagree => {
-  //   if ( !suggestedTaxonId ) return;
-
-  //   // New taxon identification added by user
-  //   const idParams = {
-  //     observation_id: uuid,
-  //     taxon_id: suggestedTaxonId,
-  //     vision,
-  //     disagreement: potentialDisagree
-  //   };
-
-  //   if ( comment ) {
-  //     // $FlowIgnore
-  //     idParams.body = comment;
-  //   }
-
-  //   dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
-  //   createIdentificationMutation.mutate( { identification: idParams } );
-  // }, [comment, createIdentificationMutation, suggestedTaxonId, uuid, vision] );
 
   const onIDAdded = useCallback( ( ) => {
     let observationTaxon = observation.taxon;
@@ -458,14 +439,6 @@ const ObsDetailsContainer = ( ): Node => {
     } );
   };
 
-  // const onIDAgreePressed = agreeTaxon => {
-  //   dispatch( {
-  //     type: "SHOW_AGREE_SHEET",
-  //     showAgreeWithIdSheet: true,
-  //     taxonForAgreement: agreeTaxon
-  //   } );
-  // };
-
   const doSuggestId = potentialDisagree => {
     const remark = currentObservation?.description;
     // New taxon identification added by user
@@ -486,6 +459,7 @@ const ObsDetailsContainer = ( ): Node => {
   };
 
   const onSuggestId = useCallback( ( ) => {
+    // check for disagreement
     let observationTaxon = observation.taxon;
     if (
       observation.prefers_community_taxon === false

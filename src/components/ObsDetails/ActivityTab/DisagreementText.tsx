@@ -6,10 +6,11 @@ import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
     taxon:Object,
-    username:string
+    username:string,
+    withdrawn?: boolean
 }
 
-const DisagreementText = ( { taxon, username }: Props ): Node => {
+const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
   const { t } = useTranslation( );
   const taxonPojo = typeof ( taxon.toJSON ) === "function"
     ? taxon.toJSON( )
@@ -19,8 +20,16 @@ const DisagreementText = ( { taxon, username }: Props ): Node => {
     scientificName
   } = generateTaxonPieces( taxonPojo );
 
-  // TODO add italics to scientific name,
-  // and add cross out styling when withdrawn
+  // TODO add italics and styling to scientific name
+
+  if ( withdrawn ) {
+    return (
+      <Body4 className="line-through">
+        {t( "Disagreement", { username, commonName, scientificName } )}
+      </Body4>
+    );
+  }
+
   return (
     <Body4>
       {t( "Disagreement", { username, commonName, scientificName } )}
