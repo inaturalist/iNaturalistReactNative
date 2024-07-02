@@ -133,7 +133,15 @@ const useMapLocation = ( ) => {
         latitude: coordinates[1],
         longitude: coordinates[0]
       } );
-    } else if ( mapWasReset ) {
+    }
+  }, [
+    place,
+    placeIdWasSet,
+    setCurrentMapRegion
+  ] );
+
+  useEffect( ( ) => {
+    if ( mapWasReset ) {
       // map gets set or reset back to nearby/worldwide
       // logger.debug( "setting initial nearby or worldwide map region" );
       setCurrentMapRegion( {
@@ -144,8 +152,6 @@ const useMapLocation = ( ) => {
     }
   }, [
     mapWasReset,
-    place,
-    placeIdWasSet,
     setCurrentMapRegion,
     state
   ] );
