@@ -33,6 +33,13 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   } ) )
 } ) );
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: []
+  } )
+} ) );
+
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
