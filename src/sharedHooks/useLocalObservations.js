@@ -23,6 +23,25 @@ const useLocalObservations = ( ): Object => {
 
   const realm = useRealm( );
 
+  function sortByUnsynced( array ) {
+    return array.sort( ( a, b ) => {
+      const isUnsyncedA = a.needsSync();
+      const isUnsyncedB = b.needsSync();
+
+      // If both are unsynced or synced, sort by _created_at
+      if ( isUnsyncedA && isUnsyncedB ) {
+        return b._created_at - a._created_at;
+
+      // Otherwise, show unsynced first
+      } if ( isUnsyncedA ) {
+        return -1;
+      } if ( isUnsyncedB ) {
+        return 1;
+      }
+      return b._created_at - a._created_at;
+    } );
+  }
+
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
       return;
@@ -31,7 +50,7 @@ const useLocalObservations = ( ): Object => {
       .objects( "Observation" ).filtered( "_deleted_at == nil" );
     const localObservations = obsNotFlaggedForDeletion.sorted( "_created_at", true );
     localObservations.addListener( ( collection, _changes ) => {
-      stagedObservationList.current = [...collection];
+      stagedObservationList.current = sortByUnsynced( [...collection] );
 
       const unsynced = Observation.filterUnsyncedObservations( realm );
       const uploadUuids = unsynced.map( o => o.uuid );
