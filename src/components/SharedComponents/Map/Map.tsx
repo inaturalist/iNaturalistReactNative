@@ -137,8 +137,8 @@ const Map = ( {
   const initialLongitude = obsLongitude;
 
   let initialRegion: Region = {
-    latitude: initialLatitude || 0,
-    longitude: initialLongitude || 0,
+    latitude: initialLatitude || 25, // Default to something US centric
+    longitude: initialLongitude || -85, // Default to something US centric
     latitudeDelta: initialLatitude
       ? 0.2
       : 100,
