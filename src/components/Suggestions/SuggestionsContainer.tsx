@@ -8,6 +8,9 @@ import React, {
   useState
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import {
+  useIsConnected
+} from "sharedHooks";
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
@@ -30,6 +33,7 @@ const initialSuggestions = {
 };
 
 const SuggestionsContainer = ( ): Node => {
+  const isOnline = useIsConnected( );
   // clearing the cache of resized images for the score_image API
   // placing this here means we can keep the app size small
   // and only have the latest resized image stored in computerVisionSuggestions
@@ -41,17 +45,26 @@ const SuggestionsContainer = ( ): Node => {
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [suggestions, setSuggestions] = useState( initialSuggestions );
+  const evidenceHasLocation = !!( currentObservation?.latitude ) || false;
+  const [suggestions, setSuggestions] = useState( {
+    ...initialSuggestions,
+    showSuggestionsWithLocation: evidenceHasLocation
+  } );
   // const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
-
-  const evidenceHasLocation = !!( currentObservation?.latitude );
   // const showImproveWithLocationButton = !evidenceHasLocation
   //   && params?.lastScreen === "CameraWithDevice";
 
-  const [
+  const {
     showSuggestionsWithLocation,
-    setShowSuggestionsWithLocation
-  ] = useState( evidenceHasLocation );
+    isLoading,
+    topSuggestion,
+    otherSuggestions
+  } = suggestions;
+  console.log(
+    showSuggestionsWithLocation,
+    !!( currentObservation?.latitude ),
+    "show suggestions with location"
+  );
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
@@ -114,7 +127,8 @@ const SuggestionsContainer = ( ): Node => {
     onlineSuggestionsUpdatedAt,
     selectedPhotoUri,
     showSuggestionsWithLocation,
-    topSuggestionType: suggestions.topSuggestionType
+    topSuggestionType: suggestions.topSuggestionType,
+    usingOfflineSuggestions: suggestions.usingOfflineSuggestions
   };
 
   const unfilteredSuggestions = onlineSuggestions?.results?.length > 0
@@ -209,17 +223,28 @@ const SuggestionsContainer = ( ): Node => {
       || !loadingOfflineSuggestions
     );
 
+  const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
+  console.log( isEmptyList, "is empty list" );
+
   useEffect( ( ) => {
+    if ( !isEmptyList ) { return; }
     if ( allSuggestionsFetched ) {
       setSuggestions( filterSuggestions( ) );
     }
-  }, [allSuggestionsFetched, filterSuggestions] );
+  }, [allSuggestionsFetched, filterSuggestions, isEmptyList] );
+
+  const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
 
   const reloadSuggestions = useCallback( ( { showLocation } ) => {
-    setSuggestions( initialSuggestions );
-    refetchSuggestions( );
-    setShowSuggestionsWithLocation( showLocation );
-  }, [refetchSuggestions] );
+    if ( skipReload ) { return; }
+    setSuggestions( {
+      ...initialSuggestions,
+      showSuggestionsWithLocation: showLocation
+    } );
+    if ( isLoading ) {
+      refetchSuggestions( );
+    }
+  }, [refetchSuggestions, skipReload, isLoading] );
 
   return (
     <>
@@ -232,7 +257,6 @@ const SuggestionsContainer = ( ): Node => {
         selectedPhotoUri={selectedPhotoUri}
         // setLocationPermissionNeeded={setLocationPermissionNeeded}
         // showImproveWithLocationButton={showImproveWithLocationButton}
-        showSuggestionsWithLocation={showSuggestionsWithLocation}
         suggestions={suggestions}
       />
       <MediaViewerModal
