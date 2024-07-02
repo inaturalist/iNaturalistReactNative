@@ -14,6 +14,7 @@ import {
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
+import sortSuggestions from "./helpers/sortSuggestions";
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
@@ -21,8 +22,6 @@ import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
 
 // const logger = log.extend( "SuggestionsContainer" );
-
-const HUMAN_ID = 43584;
 
 const initialSuggestions = {
   topSuggestion: null,
@@ -56,15 +55,10 @@ const SuggestionsContainer = ( ): Node => {
 
   const {
     showSuggestionsWithLocation,
-    isLoading,
     topSuggestion,
-    otherSuggestions
+    otherSuggestions,
+    usingOfflineSuggestions
   } = suggestions;
-  console.log(
-    showSuggestionsWithLocation,
-    !!( currentObservation?.latitude ),
-    "show suggestions with location"
-  );
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
@@ -74,7 +68,8 @@ const SuggestionsContainer = ( ): Node => {
     refetchSuggestions,
     fetchStatus
   } = useOnlineSuggestions( selectedPhotoUri, {
-    showSuggestionsWithLocation
+    showSuggestionsWithLocation,
+    usingOfflineSuggestions
   } );
 
   const loadingOnlineSuggestions = fetchStatus === "fetching";
@@ -97,7 +92,7 @@ const SuggestionsContainer = ( ): Node => {
     tryOfflineSuggestions
   } );
 
-  const usingOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
+  const hasOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
 
   useNavigateWithTaxonSelected(
     selectedTaxon,
@@ -135,36 +130,16 @@ const SuggestionsContainer = ( ): Node => {
     ? onlineSuggestions.results
     : offlineSuggestions;
 
-  const humanSuggestion = _.find( unfilteredSuggestions, s => s.taxon.id === HUMAN_ID );
-
-  const sortSuggestions = useCallback( ( ) => {
-    if ( humanSuggestion ) {
-      return [humanSuggestion];
-    }
-    if ( !usingOfflineSuggestions ) {
-      // use the vision_score to display sorted suggestions when evidence
-      // does not include a location; use the combined_score to display
-      // sorted suggestions when evidence includes a location
-      if ( showSuggestionsWithLocation ) {
-        return _.orderBy( unfilteredSuggestions, "combined_score", "desc" );
-      }
-      return _.orderBy( unfilteredSuggestions, "vision_score", "desc" );
-    }
-    return unfilteredSuggestions;
-  }, [
-    humanSuggestion,
-    showSuggestionsWithLocation,
-    unfilteredSuggestions,
-    usingOfflineSuggestions
-  ] );
-
   const filterSuggestions = useCallback( ( ) => {
     const removeTopSuggestion = ( list, id ) => _.remove( list, item => item.taxon.id === id );
-    const sortedSuggestions = sortSuggestions( );
+    const sortedSuggestions = sortSuggestions( unfilteredSuggestions, {
+      showSuggestionsWithLocation: suggestions.showSuggestionsWithLocation,
+      hasOfflineSuggestions
+    } );
     const newSuggestions = {
-      topSuggestion: null,
+      ...suggestions,
       otherSuggestions: sortedSuggestions,
-      usingOfflineSuggestions,
+      usingOfflineSuggestions: hasOfflineSuggestions,
       isLoading: false
     };
     if ( sortedSuggestions.length === 0 ) {
@@ -176,7 +151,7 @@ const SuggestionsContainer = ( ): Node => {
     }
     // return first sorted result if there's a human suggestion, if we're
     // using offline suggestions, or if there's only one suggestion
-    if ( humanSuggestion || usingOfflineSuggestions || sortedSuggestions.length === 1 ) {
+    if ( hasOfflineSuggestions || sortedSuggestions.length === 1 ) {
       const firstSuggestion = sortedSuggestions.shift( );
       return {
         ...newSuggestions,
@@ -211,10 +186,10 @@ const SuggestionsContainer = ( ): Node => {
       topSuggestionType: "none"
     };
   }, [
-    humanSuggestion,
     onlineSuggestions?.common_ancestor,
-    sortSuggestions,
-    usingOfflineSuggestions
+    suggestions,
+    unfilteredSuggestions,
+    hasOfflineSuggestions
   ] );
 
   const allSuggestionsFetched = suggestions.isLoading
@@ -224,14 +199,18 @@ const SuggestionsContainer = ( ): Node => {
     );
 
   const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
-  console.log( isEmptyList, "is empty list" );
+
+  const updateSuggestions = useCallback( ( ) => {
+    if ( !isEmptyList ) { return; }
+    setSuggestions( filterSuggestions( ) );
+  }, [filterSuggestions, isEmptyList] );
 
   useEffect( ( ) => {
-    if ( !isEmptyList ) { return; }
+    // update suggestions when API call and/or offline suggestions are finished loading
     if ( allSuggestionsFetched ) {
-      setSuggestions( filterSuggestions( ) );
+      updateSuggestions( );
     }
-  }, [allSuggestionsFetched, filterSuggestions, isEmptyList] );
+  }, [allSuggestionsFetched, updateSuggestions] );
 
   const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
 
@@ -241,10 +220,8 @@ const SuggestionsContainer = ( ): Node => {
       ...initialSuggestions,
       showSuggestionsWithLocation: showLocation
     } );
-    if ( isLoading ) {
-      refetchSuggestions( );
-    }
-  }, [refetchSuggestions, skipReload, isLoading] );
+    refetchSuggestions( );
+  }, [refetchSuggestions, skipReload] );
 
   return (
     <>
