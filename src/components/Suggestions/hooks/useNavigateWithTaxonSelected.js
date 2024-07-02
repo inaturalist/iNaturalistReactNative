@@ -36,6 +36,7 @@ const useNavigateWithTaxonSelected = (
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
         suggestedTaxonId: selectedTaxon.id,
+        taxon: selectedTaxon,
         comment,
         vision
       } );

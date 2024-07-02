@@ -1,6 +1,8 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
+import PotentialDisagreementSheet from
+  "components/ObsDetails/Sheets/PotentialDisagreementSheet";
 import {
   ActivityIndicator,
   HideView,
@@ -50,15 +52,19 @@ type Props = {
   onAgree: Function,
   onCommentAdded: Function,
   onIDAgreePressed: Function,
+  onPotentialDisagreePressed: Function,
   openCommentBox: Function,
   openCommentBox: Function,
+  potentialDisagreeSheetDiscardChanges: Function,
   refetchRemoteObservation: Function,
   remoteObsWasDeleted?: boolean,
   showActivityTab: boolean,
   showAgreeWithIdSheet: boolean,
+  showPotentialDisagreementSheet: boolean,
   showCommentBox: Function,
   tabs: Array<Object>,
-  taxonForAgreement: ?Object
+  taxonForAgreement: ?Object,
+  taxonForDisagreement: ?Object
 }
 
 const ObsDetails = ( {
@@ -77,14 +83,18 @@ const ObsDetails = ( {
   onAgree,
   onCommentAdded,
   onIDAgreePressed,
+  onPotentialDisagreePressed,
   openCommentBox,
+  potentialDisagreeSheetDiscardChanges,
   refetchRemoteObservation,
   remoteObsWasDeleted,
   showActivityTab,
   showAgreeWithIdSheet,
+  showPotentialDisagreementSheet,
   showCommentBox,
   tabs,
-  taxonForAgreement
+  taxonForAgreement,
+  taxonForDisagreement
 }: Props ): Node => {
   const insets = useSafeAreaInsets();
   const { params } = useRoute( );
@@ -258,6 +268,13 @@ const ObsDetails = ( {
           headerText={t( "ADD-COMMENT" )}
           textInputStyle={textInputStyle}
           confirm={textInput => onCommentAdded( textInput )}
+        />
+      )}
+      {showPotentialDisagreementSheet && (
+        <PotentialDisagreementSheet
+          confirm={onPotentialDisagreePressed}
+          handleClose={potentialDisagreeSheetDiscardChanges}
+          taxon={taxonForDisagreement}
         />
       )}
       {/*

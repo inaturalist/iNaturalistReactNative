@@ -13,6 +13,7 @@ import { RadioButton, useTheme } from "react-native-paper";
 type Props = {
   testID: string,
   checked: boolean,
+  classNames: ?string,
   description: ?string,
   icon: string,
   label: string,
@@ -24,6 +25,7 @@ type Props = {
 const RadioButtonRow = ( {
   testID,
   description,
+  classNames,
   checked,
   label,
   onPress,
@@ -42,7 +44,7 @@ const RadioButtonRow = ( {
     : Body1;
 
   return (
-    <Pressable testID={testID} accessibilityRole="button" onPress={onPress}>
+    <Pressable className={classNames} testID={testID} accessibilityRole="button" onPress={onPress}>
       <View className="flex-row items-center">
         <RadioButton.Android
           onPress={onPress}

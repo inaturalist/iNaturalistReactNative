@@ -49,9 +49,11 @@ const initialState = {
   addingActivityItem: false,
   showAgreeWithIdSheet: false,
   showCommentBox: false,
+  showPotentialDisagreementSheet: false,
   observationShown: null,
   activityItems: [],
-  taxonForAgreement: null
+  taxonForAgreement: null,
+  taxonForDisagreement: null
 };
 
 const reducer = ( state, action ) => {
@@ -91,6 +93,12 @@ const reducer = ( state, action ) => {
         ...state,
         showCommentBox: action.showCommentBox
       };
+    case "SHOW_POTENTIAL_DISAGREEMENT_SHEET":
+      return {
+        ...state,
+        showPotentialDisagreementSheet: action.showPotentialDisagreementSheet,
+        taxonForDisagreement: action.taxonForDisagreement
+      };
     default:
       throw new Error( );
   }
@@ -105,6 +113,7 @@ const ObsDetailsContainer = ( ): Node => {
   const {
     comment,
     suggestedTaxonId,
+    taxon,
     uuid,
     vision
   } = params;
@@ -122,9 +131,10 @@ const ObsDetailsContainer = ( ): Node => {
     observationShown,
     showAgreeWithIdSheet,
     showCommentBox,
-    taxonForAgreement
+    taxonForAgreement,
+    taxonForDisagreement,
+    showPotentialDisagreementSheet
   } = state;
-
   const queryClient = useQueryClient( );
 
   const localObservation = useLocalObservation( uuid );
@@ -311,14 +321,15 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
-  const onIDAdded = useCallback( () => {
+  const doAddID = useCallback( potentialDisagree => {
     if ( !suggestedTaxonId ) return;
 
     // New taxon identification added by user
     const idParams = {
       observation_id: uuid,
       taxon_id: suggestedTaxonId,
-      vision
+      vision,
+      disagreement: potentialDisagree
     };
 
     if ( comment ) {
@@ -328,9 +339,32 @@ const ObsDetailsContainer = ( ): Node => {
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createIdentificationMutation.mutate( { identification: idParams } );
+  }, [comment, createIdentificationMutation, suggestedTaxonId, uuid, vision] );
 
+  const onIDAdded = useCallback( ( ) => {
+    let observationTaxon = observation.taxon;
+    if (
+      observation.prefers_community_taxon === false
+      || ( observation.user.prefers_community_taxa === false
+      && observation.prefers_community_taxon === null )
+    ) {
+      observationTaxon = observation.community_taxon || observation.taxon;
+    }
+    if (
+      observationTaxon
+      && suggestedTaxonId !== observationTaxon.id
+      && observationTaxon.ancestor_ids.includes( suggestedTaxonId )
+    ) {
+      dispatch( {
+        type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+        showPotentialDisagreementSheet: true,
+        taxonForDisagreement: taxon
+      } );
+    } else {
+      doAddID();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [suggestedTaxonId, uuid, vision] );
+  }, [suggestedTaxonId] );
 
   useEffect( () => {
     if ( !suggestedTaxonId ) return;
@@ -371,9 +405,27 @@ const ObsDetailsContainer = ( ): Node => {
   const agreeIdSheetDiscardChanges = ( ) => {
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: false } );
   };
+  const potentialDisagreeSheetDiscardChanges = ( ) => {
+    dispatch( {
+      type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+      showPotentialDisagreementSheet: false
+    } );
+  };
 
-  const onIDAgreePressed = taxon => {
-    dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
+  const onIDAgreePressed = agreeTaxon => {
+    dispatch( {
+      type: "SHOW_AGREE_SHEET",
+      showAgreeWithIdSheet: true,
+      taxonForAgreement: agreeTaxon
+    } );
+  };
+
+  const onPotentialDisagreePressed = potentialDisagree => {
+    dispatch( {
+      type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+      showPotentialDisagreementSheet: false
+    } );
+    doAddID( potentialDisagree );
   };
 
   return observationShown && (
@@ -385,6 +437,7 @@ const ObsDetailsContainer = ( ): Node => {
       confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
       currentTabId={currentTabId}
       currentUser={currentUser}
+      onPotentialDisagreePressed={onPotentialDisagreePressed}
       hideCommentBox={( ) => dispatch( { type: "SHOW_COMMENT_BOX", showCommentBox: false } )}
       isOnline={isOnline}
       isRefetching={isRefetching}
@@ -396,13 +449,16 @@ const ObsDetailsContainer = ( ): Node => {
       onCommentAdded={onCommentAdded}
       onIDAgreePressed={onIDAgreePressed}
       openCommentBox={openCommentBox}
+      potentialDisagreeSheetDiscardChanges={potentialDisagreeSheetDiscardChanges}
       refetchRemoteObservation={invalidateQueryAndRefetch}
       remoteObsWasDeleted={remoteObsWasDeleted}
       showActivityTab={showActivityTab}
       showAgreeWithIdSheet={showAgreeWithIdSheet}
       showCommentBox={showCommentBox}
+      showPotentialDisagreementSheet={showPotentialDisagreementSheet}
       tabs={tabs}
       taxonForAgreement={taxonForAgreement}
+      taxonForDisagreement={taxonForDisagreement}
     />
   );
 };

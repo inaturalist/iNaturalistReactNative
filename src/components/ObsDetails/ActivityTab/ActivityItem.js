@@ -14,6 +14,7 @@ import type { Node } from "react";
 import React from "react";
 
 import ActivityHeaderContainer from "./ActivityHeaderContainer";
+import DisagreementText from "./DisagreementText";
 
 type Props = {
   currentUserId?: number,
@@ -35,13 +36,12 @@ const ActivityItem = ( {
   userAgreedId
 }: Props ): Node => {
   const navigation = useNavigation( );
-  const { taxon, user } = item;
+  const { taxon, user, disagreement } = item;
   const isCurrent = item.current !== undefined
     ? item.current
     : undefined;
 
   const idWithdrawn = isCurrent !== undefined && !isCurrent;
-
   const showAgreeButton = user?.id !== currentUserId
     && userAgreedId !== taxon?.id
     && taxon?.is_active
@@ -51,7 +51,7 @@ const ActivityItem = ( {
 
   return (
     <View className="flex-column">
-      <View className="mx-[15px]">
+      <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}
           refetchRemoteObservation={refetchRemoteObservation}
@@ -82,6 +82,8 @@ const ActivityItem = ( {
             <UserText text={item.body} />
           </View>
         )}
+        { disagreement
+         && <DisagreementText taxon={item.previous_observation_taxon} username={user.login} />}
       </View>
       <Divider />
     </View>

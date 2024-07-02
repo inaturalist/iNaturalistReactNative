@@ -287,6 +287,7 @@ Deleting-x-of-y-observations =
 DETAILS = DETAILS
 # Button that disables the camera's flash
 Disable-flash = Disable flash
+Disagreement = @ { $username } disagrees this is  { $commonName } ( { $scientificName } )
 # Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
 # Button that discards all items, e.g. imported photos
@@ -689,6 +690,10 @@ Please-click-the-link = Please click the link in the email within 60 minutes  to
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
+POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
+Potential-disagreement-description = <0>Is the  evidence enough to confirm this is { $commonName }(</0><1>{ $scientificName }</1><0>)?</0>
+Potential-disagreement-disagree = No, but this is a member of { $commonName }({ $scientificName })
+Potential-disagreement-unsure = I don't know but I am sure this is { $commonName }({ $scientificName })
 # Help text for beginning a sound recording
 Press-record-to-start = Press record to start
 Previous-observation = Previous observation
@@ -900,6 +905,7 @@ Stop-upload = Stop upload
 Stop-verb = Stop
 # Accessibility hint for a button that stops the recording of a sound
 Stops-recording-sound = Stops recording sound
+SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 # Identification category
 supporting--identification = Supporting

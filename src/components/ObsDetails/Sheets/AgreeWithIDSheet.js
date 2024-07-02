@@ -37,7 +37,7 @@ const AgreeWithIDSheet = ( {
 }: Props ): Node => {
   const [comment, setComment] = useState( "" );
   const [showCommentBox, setShowCommentBox] = useState( false );
-
+  console.log( "AGREE TAXON", taxon );
   return (
     <BottomSheet
       handleClose={handleClose}
