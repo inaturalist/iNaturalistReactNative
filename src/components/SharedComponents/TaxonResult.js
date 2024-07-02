@@ -29,6 +29,7 @@ type Props = {
   fromLocal?: boolean,
   handleCheckmarkPress: Function,
   handlePress: Function,
+  onPressInfo?: Function,
   showInfoButton?: boolean,
   showCheckmark?: boolean,
   showEditButton?: boolean,
@@ -50,6 +51,7 @@ const TaxonResult = ( {
   handleCheckmarkPress,
   handlePress,
   hideNavButtons = false,
+  onPressInfo,
   showEditButton = false,
   showInfoButton = true,
   showCheckmark = true,
@@ -153,7 +155,13 @@ const TaxonResult = ( {
           <INatIconButton
             icon="info-circle-outline"
             size={22}
-            onPress={navToTaxonDetails}
+            onPress={( ) => {
+              if ( typeof ( onPressInfo ) === "function" ) {
+                onPressInfo( usableTaxon );
+                return;
+              }
+              navToTaxonDetails( );
+            }}
             color={clearBackground && theme.colors.onSecondary}
             accessibilityLabel={t( "More-info" )}
             accessibilityHint={t( "Navigates-to-taxon-details" )}

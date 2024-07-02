@@ -10,7 +10,8 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback, useState
+  useCallback,
+  useState
 } from "react";
 import { FlatList } from "react-native";
 import { useIconicTaxa, useTranslation } from "sharedHooks";
@@ -24,10 +25,15 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 
 type Props = {
   closeModal: Function,
+  onPressInfo?: Function,
   updateTaxon: Function
 };
 
-const ExploreTaxonSearch = ( { closeModal, updateTaxon }: Props ): Node => {
+const ExploreTaxonSearch = ( {
+  closeModal,
+  onPressInfo,
+  updateTaxon
+}: Props ): Node => {
   const { t } = useTranslation( );
   const [taxonQuery, setTaxonQuery] = useState( "" );
 
@@ -44,10 +50,11 @@ const ExploreTaxonSearch = ( { closeModal, updateTaxon }: Props ): Node => {
       taxon={taxon}
       showCheckmark={false}
       handlePress={() => onTaxonSelected( taxon )}
+      onPressInfo={onPressInfo}
       testID={`Search.taxa.${taxon.id}`}
       first={index === 0}
     />
-  ), [onTaxonSelected] );
+  ), [onPressInfo, onTaxonSelected] );
 
   let data = iconicTaxa;
   if ( taxonQuery.length > 0 ) {
