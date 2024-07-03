@@ -48,13 +48,13 @@ const RadioButtonSheet = ( {
       headerText={headerText}
       insideModal={insideModal}
     >
-      <View className="p-5">
+      <View className="pt-1 px-5 pb-3">
         {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
         <Button
           level="primary"
           onPress={( ) => confirm( checked )}
           text={radioValues[checked]?.buttonText ?? t( "CONFIRM" )}
-          className="mt-[15px]"
+          className="mt-7"
           accessibilityLabel={radioValues[checked]?.buttonText ?? t( "CONFIRM" )}
         />
       </View>
