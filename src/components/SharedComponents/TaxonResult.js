@@ -29,12 +29,14 @@ type Props = {
   handleCheckmarkPress: Function,
   handlePress: Function,
   hideInfoButton?: boolean,
+  lastScreen?: ?string,
   onPressInfo?: Function,
   showCheckmark?: boolean,
   showEditButton?: boolean,
   taxon: Object,
   testID: string,
-  white?: boolean
+  white?: boolean,
+  vision?: boolean
 };
 
 const TaxonResult = ( {
@@ -51,15 +53,18 @@ const TaxonResult = ( {
   handlePress,
   hideInfoButton = false,
   hideNavButtons = false,
+  lastScreen = null,
   onPressInfo,
   showEditButton = false,
   showCheckmark = true,
   taxon: taxonProp,
   testID,
-  white = false
+  white = false,
+  vision = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+
   const theme = useTheme( );
   const currentUser = useCurrentUser( );
   // thinking about future performance, it might make more sense to batch
@@ -76,10 +81,14 @@ const TaxonResult = ( {
   const taxonImage = { uri: usableTaxon?.default_photo?.url };
   const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
 
-  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", {
-    id: usableTaxon?.id,
-    hideNavButtons
-  } );
+  const navToTaxonDetails = ( ) => {
+    navigation.navigate( "TaxonDetails", {
+      id: usableTaxon?.id,
+      hideNavButtons,
+      lastScreen,
+      vision
+    } );
+  };
 
   return (
     <View
