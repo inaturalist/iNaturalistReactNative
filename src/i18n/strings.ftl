@@ -840,6 +840,7 @@ Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
 Select-or-drag-media = Select or drag media
 Select-photo = Select photo
+SELECT-THIS-TAXON = SELECT THIS TAXON
 # Label for an element that let's you select a user
 Select-user = Select user
 Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.

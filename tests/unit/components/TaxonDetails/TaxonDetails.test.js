@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useRoute } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import INatPaperProvider from "providers/INatPaperProvider";
@@ -35,11 +35,7 @@ jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
-    useRoute: ( ) => ( {
-      params: {
-        id: mockTaxon.id
-      }
-    } ),
+    useRoute: jest.fn( ),
     useNavigation: jest.fn( )
   };
 } );
@@ -74,6 +70,13 @@ jest.mock(
 );
 
 describe( "TaxonDetails", ( ) => {
+  beforeAll( ( ) => {
+    useRoute.mockImplementation( ( ) => ( {
+      params: { id: mockTaxon.id }
+    } ) );
+    jest.useFakeTimers( );
+  } );
+
   test( "renders taxon details from API call", async ( ) => {
     renderTaxonDetails( );
     expect( screen.getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );
@@ -95,5 +98,25 @@ describe( "TaxonDetails", ( ) => {
     fireEvent.press( screen.getByTestId( "TaxonDetails.wikipedia" ) );
     expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
     expect( Linking.openURL ).toHaveBeenCalledWith( mockTaxon.wikipedia_url );
+  } );
+
+  test( "does not show sticky select taxon button on default screen", ( ) => {
+    renderTaxonDetails( );
+    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
+    expect( selectTaxonButton ).toBeFalsy( );
+  } );
+} );
+
+describe( "TaxonDetails when coming from Suggestions screen", ( ) => {
+  beforeAll( ( ) => {
+    useRoute.mockImplementation( ( ) => ( {
+      params: { id: mockTaxon.id, lastScreen: "Suggestions" }
+    } ) );
+  } );
+
+  test( "shows sticky select taxon button when navigating from suggestions", ( ) => {
+    renderTaxonDetails( );
+    const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
+    expect( selectTaxonButton ).toBeTruthy( );
   } );
 } );

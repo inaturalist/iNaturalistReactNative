@@ -111,7 +111,8 @@ jest.mock( "@react-navigation/native", ( ) => {
       canGoBack: jest.fn( ( ) => true ),
       goBack: jest.fn( ),
       setOptions: jest.fn( )
-    } )
+    } ),
+    useNavigationState: jest.fn( )
   };
 } );
 
