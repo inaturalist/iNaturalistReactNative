@@ -12,15 +12,13 @@ import PhotoCarousel, {
 } from "./PhotoCarousel";
 
 interface Props {
-  rotation?: {
-    value: number
-  };
   isLandscapeMode?: boolean;
   isLargeScreen?: boolean;
   isTablet?: boolean;
-  takingPhoto: boolean;
-  rotatedOriginalCameraPhotos: string[];
   onDelete: ( _uri: string ) => void;
+  photoUris: string[];
+  rotation?: { value: number };
+  takingPhoto: boolean;
 }
 
 const STYLE = {
@@ -33,10 +31,10 @@ const PhotoPreview = ( {
   isLandscapeMode,
   isLargeScreen,
   isTablet,
+  onDelete,
+  photoUris,
   rotation,
-  takingPhoto,
-  rotatedOriginalCameraPhotos,
-  onDelete
+  takingPhoto
 }: Props ) => {
   const { t } = useTranslation( );
   const wrapperDim = isLargeScreen
@@ -90,11 +88,11 @@ const PhotoPreview = ( {
       style={[STYLE, dynamicStyle]}
     >
       {
-        rotatedOriginalCameraPhotos.length === 0 && !takingPhoto
+        photoUris.length === 0 && !takingPhoto
           ? noPhotosNotice
           : (
             <PhotoCarousel
-              photoUris={rotatedOriginalCameraPhotos.slice().reverse()}
+              photoUris={photoUris.slice().reverse()}
               rotation={rotation}
               takingPhoto={takingPhoto}
               isLargeScreen={isLargeScreen}
