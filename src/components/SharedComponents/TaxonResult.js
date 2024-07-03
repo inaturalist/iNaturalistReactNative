@@ -29,7 +29,8 @@ type Props = {
   fromLocal?: boolean,
   handleCheckmarkPress: Function,
   handlePress: Function,
-  showInfoButton?: boolean,
+  hideInfoButton?: boolean,
+  onPressInfo?: Function,
   showCheckmark?: boolean,
   showEditButton?: boolean,
   taxon: Object,
@@ -49,9 +50,10 @@ const TaxonResult = ( {
   fromLocal = true,
   handleCheckmarkPress,
   handlePress,
+  hideInfoButton = false,
   hideNavButtons = false,
+  onPressInfo,
   showEditButton = false,
-  showInfoButton = true,
   showCheckmark = true,
   taxon: taxonProp,
   testID,
@@ -149,11 +151,17 @@ const TaxonResult = ( {
         </View>
       </Pressable>
       <View className="flex-row items-center">
-        { showInfoButton && (
+        { !hideInfoButton && (
           <INatIconButton
             icon="info-circle-outline"
             size={22}
-            onPress={navToTaxonDetails}
+            onPress={( ) => {
+              if ( typeof ( onPressInfo ) === "function" ) {
+                onPressInfo( usableTaxon );
+                return;
+              }
+              navToTaxonDetails( );
+            }}
             color={clearBackground && theme.colors.onSecondary}
             accessibilityLabel={t( "More-info" )}
             accessibilityHint={t( "Navigates-to-taxon-details" )}

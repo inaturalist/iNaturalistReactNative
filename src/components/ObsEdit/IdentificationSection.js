@@ -143,7 +143,7 @@ const IdentificationSection = ( {
             handlePress={navToSuggestions}
             hideNavButtons
             taxon={identTaxon}
-            showInfoButton={false}
+            hideInfoButton
             showCheckmark={false}
             showEditButton
           />
