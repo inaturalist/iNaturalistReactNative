@@ -25,7 +25,7 @@ const CLASS_NAMES = [
 ];
 
 const ObsImage = ( {
-  iconicTaxonName = "unknown",
+  iconicTaxonName,
   imageClassName,
   isBackground = false,
   opaque = false,
@@ -39,7 +39,10 @@ const ObsImage = ( {
         imageClassName={[
           ...CLASS_NAMES,
           imageClassName,
-          { "bg-darkGray": white }
+          {
+            "bg-darkGray": white && isBackground,
+            "bg-transparent": white && !isBackground
+          }
         ]}
         iconicTaxonName={iconicTaxonName}
         white={white}

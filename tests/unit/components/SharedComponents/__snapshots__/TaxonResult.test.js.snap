@@ -130,12 +130,6 @@ exports[`TaxonResult should render correctly 1`] = `
                 "width": 62,
               },
               {
-                "borderBottomWidth": 2,
-                "borderLeftWidth": 2,
-                "borderRightWidth": 2,
-                "borderTopWidth": 2,
-              },
-              {
                 "justifyContent": "center",
               },
               {
@@ -220,12 +214,6 @@ exports[`TaxonResult should render correctly 1`] = `
                       "width": 62,
                     },
                     {
-                      "borderBottomWidth": 2,
-                      "borderLeftWidth": 2,
-                      "borderRightWidth": 2,
-                      "borderTopWidth": 2,
-                    },
-                    {
                       "justifyContent": "center",
                     },
                     {
@@ -241,10 +229,16 @@ exports[`TaxonResult should render correctly 1`] = `
                       "alignItems": "center",
                     },
                     {
-                      "borderBottomWidth": 1,
-                      "borderLeftWidth": 1,
-                      "borderRightWidth": 1,
-                      "borderTopWidth": 1,
+                      "borderBottomLeftRadius": 12,
+                      "borderBottomRightRadius": 12,
+                      "borderTopLeftRadius": 12,
+                      "borderTopRightRadius": 12,
+                    },
+                    {
+                      "borderBottomWidth": 2,
+                      "borderLeftWidth": 2,
+                      "borderRightWidth": 2,
+                      "borderTopWidth": 2,
                     },
                     {
                       "borderBottomColor": "#E8E8E8",
