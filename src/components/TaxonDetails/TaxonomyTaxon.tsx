@@ -12,7 +12,7 @@ interface Props {
   currentUser: { login: string, id: number };
   isChild?: boolean;
   isCurrentTaxon?: boolean;
-  onPress: ( ) => void;
+  navigateToTaxonDetails: ( _taxonId: number ) => void;
   scientificNameFirst?: boolean;
   t: Function;
   taxon: any;
@@ -22,12 +22,11 @@ const TaxonomyTaxon = ( {
   currentUser,
   isChild,
   isCurrentTaxon,
-  onPress,
+  navigateToTaxonDetails,
   scientificNameFirst,
   t,
   taxon
 }: Props ) => {
-  const id = taxon?.id || "";
   const {
     commonName,
     scientificNamePieces,
@@ -55,14 +54,14 @@ const TaxonomyTaxon = ( {
     <Pressable
       accessibilityRole="link"
       className="flex-row py-2"
-      key={id}
+      key={taxon.id}
       disabled={isCurrentTaxon}
-      onPress={onPress}
+      onPress={() => navigateToTaxonDetails( taxon.id )}
       accessibilityLabel={accessibleName}
       accessibilityState={{
         disabled: isCurrentTaxon
       }}
-      testID={`TaxonomyRow.${id}`}
+      testID={`TaxonomyTaxon.${taxon.id}`}
     >
       {isChild && (
         <View className="mt-[2px] ml-2 mr-1">

@@ -24,8 +24,8 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const scientificNameFirst = currentUser?.prefers_scientific_name_first;
 
-  const navigateToTaxonDetails = ( ) => (
-    navigation.navigate( "TaxonDetails", { id: currentTaxon.id, hideNavButtons } )
+  const navigateToTaxonDetails = taxonId => (
+    navigation.push( "TaxonDetails", { id: taxonId, hideNavButtons } )
   );
 
   return (
@@ -36,7 +36,8 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
       {currentTaxon.ancestors?.map( ancestor => (
         <TaxonomyTaxon
           currentUser={currentUser}
-          onPress={navigateToTaxonDetails}
+          key={ancestor.id}
+          navigateToTaxonDetails={navigateToTaxonDetails}
           scientificNameFirst={scientificNameFirst}
           t={t}
           taxon={ancestor}
@@ -45,7 +46,8 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
       <TaxonomyTaxon
         currentUser={currentUser}
         isCurrentTaxon
-        onPress={navigateToTaxonDetails}
+        key={currentTaxon.id}
+        navigateToTaxonDetails={navigateToTaxonDetails}
         scientificNameFirst={scientificNameFirst}
         t={t}
         taxon={currentTaxon}
@@ -54,7 +56,8 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ): Node => {
         <TaxonomyTaxon
           currentUser={currentUser}
           isChild
-          onPress={navigateToTaxonDetails}
+          key={child.id}
+          navigateToTaxonDetails={navigateToTaxonDetails}
           scientificNameFirst={scientificNameFirst}
           t={t}
           taxon={child}
