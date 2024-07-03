@@ -166,7 +166,7 @@ const StandardCamera = ( {
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
-        rotatedOriginalCameraPhotos={rotatedOriginalCameraPhotos}
+        photoUris={rotatedOriginalCameraPhotos}
         onDelete={deletePhotoByUri}
       />
       <View className="relative flex-1">
