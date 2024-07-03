@@ -56,11 +56,14 @@ const MapView = ( {
     data
   } = useAuthenticatedQuery(
     ["fetchTaxonBoundingBox"],
-    optsWithAuth => searchObservations( obsParams, optsWithAuth )
+    ( optsWithAuth: Object ) => searchObservations( obsParams, optsWithAuth ),
+    {
+      enabled: obsParams.taxon_id && !storedBoundingBoxes[obsParams.taxon_id]
+    }
   );
   // Only update the map once per taxon_id, so that it only zooms to the
   // bounding box on initial load
-  if ( !storedBoundingBoxes[obsParams.taxon_id] ) {
+  if ( obsParams.taxon_id && !storedBoundingBoxes[obsParams.taxon_id] ) {
     if ( data && data.total_bounds && data.total_bounds.nelat !== undefined ) {
       const boundsRegion = getMapRegion( data.total_bounds );
       updateMapBoundaries( boundsRegion );
