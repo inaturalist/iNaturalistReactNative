@@ -9,10 +9,12 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
+  disabled?: boolean,
   handleCheckmarkPress: Function
 }
 
 const GreenCheckmark = ( {
+  disabled,
   handleCheckmarkPress
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -22,7 +24,7 @@ const GreenCheckmark = ( {
       onPress={handleCheckmarkPress}
       accessibilityLabel={t( "View-suggestions" )}
       accessibilityHint={t( "Shows-identification-suggestions" )}
-      disabled={false}
+      disabled={disabled}
       icon="checkmark-circle"
       color={colors.inatGreen}
       size={40}
