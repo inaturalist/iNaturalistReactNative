@@ -32,6 +32,13 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   } ) )
 } ) );
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: []
+  } )
+} ) );
+
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
@@ -51,31 +58,32 @@ useRoute.mockImplementation( ( ) => ( {
   }
 } ) );
 
+async function expectMutateToHaveBeenCalled() {
+  expect( await mockMutate ).toHaveBeenCalled();
+  // Since we mocked the mutate() method, we're expecting mutation not to
+  // succeed. We want to wait for this so there are no extra things happening
+  // outside of act()
+  await screen.findByText( "ERROR LOADING IN DQA" );
+}
+
 describe( "DQA Vote Buttons", ( ) => {
   test( "renders DQA vote buttons", async ( ) => {
     renderComponent( <DQAContainer /> );
-
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );
-    fireEvent.press( emptyDisagreeButtons[0] );
-
-    expect( await mockMutate ).toHaveBeenCalled();
+    expect( emptyDisagreeButtons ).toBeTruthy( );
   } );
 
   test( "calls api when DQA disagree button is pressed", async ( ) => {
     renderComponent( <DQAContainer /> );
-
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyDisagree" );
     fireEvent.press( emptyDisagreeButtons[0] );
-
-    expect( await mockMutate ).toHaveBeenCalled();
+    await expectMutateToHaveBeenCalled();
   } );
 
   test( "calls api when DQA agree button is pressed", async ( ) => {
     renderComponent( <DQAContainer /> );
-
     const emptyDisagreeButtons = await screen.findAllByTestId( "DQAVoteButton.EmptyAgree" );
     fireEvent.press( emptyDisagreeButtons[0] );
-
-    expect( await mockMutate ).toHaveBeenCalled();
+    await expectMutateToHaveBeenCalled();
   } );
 } );
