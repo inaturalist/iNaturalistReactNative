@@ -6,8 +6,15 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockRedoSearch = jest.fn( );
+const mockData = { };
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: mockData
+  } )
+} ) );
 
+const mockRedoSearch = jest.fn( );
 jest.mock( "components/Explore/hooks/useMapLocation", () => ( {
   __esModule: true,
   default: ( ) => ( {
