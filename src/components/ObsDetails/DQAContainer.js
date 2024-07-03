@@ -45,7 +45,9 @@ const DQAContainer = ( ): React.Node => {
     refetchRemoteObservation,
     isRefetching
   } = useRemoteObservation( observationUUID, fetchRemoteObservationEnabled );
-  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
+  const observation = remoteObservation
+    ? Observation.mapApiToRealm( remoteObservation )
+    : localObservation;
 
   const fetchMetricsParams = {
     id: observationUUID,
@@ -126,6 +128,7 @@ const DQAContainer = ( ): React.Node => {
     {
       onSuccess: async ( ) => {
         await refetchQualityMetrics( );
+        await refetchRemoteObservation( );
         setNotLoading( );
       },
       onError: error => {
@@ -167,6 +170,7 @@ const DQAContainer = ( ): React.Node => {
     {
       onSuccess: async ( ) => {
         await refetchQualityMetrics( );
+        await refetchRemoteObservation( );
         setNotLoading( );
       },
       onError: error => {

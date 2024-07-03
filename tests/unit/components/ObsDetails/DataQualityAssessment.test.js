@@ -53,6 +53,15 @@ jest.mock( "sharedHooks/useLocalObservation", () => ( {
   default: jest.fn( ( ) => mockObservation )
 } ) );
 
+jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
+  __esModule: true,
+  default: ( _uuid, _fetchRemoteEnabled ) => ( {
+    remoteObservation: mockObservation,
+    refetchRemoteObservation: jest.fn( ),
+    isRefetching: false
+  } )
+} ) );
+
 useRoute.mockImplementation( ( ) => ( {
   params: {
     observationUUID: mockObservation.uuid
