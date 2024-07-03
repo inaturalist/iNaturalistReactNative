@@ -7,14 +7,16 @@ import type { Node } from "react";
 import React, { useState } from "react";
 
 type Props = {
-    showModal: boolean,
-    closeModal: Function,
-    updateTaxon: Function,
-  };
+  closeModal: Function,
+  hideInfoButton?: boolean,
+  showModal: boolean,
+  updateTaxon: Function
+};
 
 const ExploreTaxonSearchModal = ( {
-  showModal,
   closeModal,
+  hideInfoButton,
+  showModal,
   updateTaxon
 }: Props ): Node => {
   const navigation = useNavigation( );
@@ -35,12 +37,12 @@ const ExploreTaxonSearchModal = ( {
       modal={(
         <ExploreTaxonSearch
           closeModal={closeModal}
-          updateTaxon={updateTaxon}
+          hideInfoButton={hideInfoButton}
           onPressInfo={taxon => {
             setDetailTaxonId( taxon.id );
             closeModal();
           }}
-
+          updateTaxon={updateTaxon}
         />
       )}
     />

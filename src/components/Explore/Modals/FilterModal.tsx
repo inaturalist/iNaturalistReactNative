@@ -1287,8 +1287,9 @@ const FilterModal = ( {
         />
       )}
       <ExploreTaxonSearchModal
-        showModal={showTaxonSearchModal}
         closeModal={() => { setShowTaxonSearchModal( false ); }}
+        hideInfoButton
+        showModal={showTaxonSearchModal}
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal
