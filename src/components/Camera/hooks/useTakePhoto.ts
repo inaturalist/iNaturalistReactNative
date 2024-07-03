@@ -10,7 +10,7 @@ import {
   rotatePhotoPatch,
   rotationTempPhotoPatch
 } from "sharedHelpers/visionCameraPatches";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;

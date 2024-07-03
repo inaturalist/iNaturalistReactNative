@@ -1,16 +1,17 @@
-// @flow
-
+import { searchObservations } from "api/observations";
 import classnames from "classnames";
 import {
   Body1,
   Button,
   Map
 } from "components/SharedComponents";
+import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
 import { Platform } from "react-native";
+import { Region } from "react-native-maps";
 import { useDebugMode, useTranslation } from "sharedHooks";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -21,15 +22,17 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   elevation: 6
 } );
 
-type Props = {
-  observations: Array<Object>,
-  queryParams: Object
+interface Props {
+  observations: Object[];
+  queryParams: {
+    taxon_id?: number;
+  };
 }
 
 const MapView = ( {
   observations,
   queryParams
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
   const [zoom, setZoom] = useState( -1 );
@@ -47,6 +50,39 @@ const MapView = ( {
     startAtNearby,
     updateMapBoundaries
   } = useMapLocation( );
+
+  /*
+  * Query for the bounding box of the taxon_id, if it hasn't been fetched yet, and
+  * zoom to that bounding box on the map
+  */
+  interface StoredBoundingBoxes {
+    [taxonId: number]: Region;
+  }
+  const [storedBoundingBoxes, setStoredBoundingBoxes] = useState<StoredBoundingBoxes>( {} );
+  const obsParams = {
+    ...queryParams, return_bounds: true, per_page: 0
+  };
+  const {
+    data
+  } = useAuthenticatedQuery(
+    ["fetchTaxonBoundingBox"],
+    ( optsWithAuth: Object ) => searchObservations( obsParams, optsWithAuth ),
+    {
+      enabled: obsParams.taxon_id && !storedBoundingBoxes[obsParams.taxon_id]
+    }
+  );
+  // Only update the map once per taxon_id, so that it only zooms to the
+  // bounding box on initial load
+  if ( obsParams.taxon_id && !storedBoundingBoxes[obsParams.taxon_id] ) {
+    if ( data && data.total_bounds && data.total_bounds.nelat !== undefined ) {
+      const boundsRegion = getMapRegion( data.total_bounds );
+      updateMapBoundaries( boundsRegion );
+      setStoredBoundingBoxes( {
+        ...storedBoundingBoxes,
+        [obsParams.taxon_id]: boundsRegion
+      } );
+    }
+  }
 
   const tileMapParams = {
     ...queryParams
@@ -103,7 +139,7 @@ const MapView = ( {
           }
           await updateMapBoundaries( newRegion, boundaries );
           if ( startAtNearby ) {
-            onZoomToNearby( boundaries );
+            onZoomToNearby( newRegion, boundaries );
           }
         }}
         onZoomToNearby={onZoomToNearby}

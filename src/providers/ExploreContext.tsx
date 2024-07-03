@@ -143,10 +143,10 @@ export enum PHOTO_LICENSE {
 }
 
 interface MapBoundaries {
-  swlat: LatLng["latitude"],
-  swlng: LatLng["longitude"],
-  nelat: LatLng["latitude"],
-  nelng: LatLng["longitude"],
+  swlat?: LatLng["latitude"],
+  swlng?: LatLng["longitude"],
+  nelat?: LatLng["latitude"],
+  nelng?: LatLng["longitude"],
   place_guess: string
 }
 
@@ -176,7 +176,6 @@ type State = {
   lat?: number,
   lng?: number,
   lrank: TAXONOMIC_RANK | undefined | null,
-  mapBoundaries: MapBoundaries | undefined,
   media: MEDIA,
   months: number[] | null | undefined,
   needsID: boolean,
@@ -292,7 +291,6 @@ const defaultFilters = {
 
 const initialState: State = {
   ...defaultFilters,
-  mapBoundaries: undefined,
   place: undefined,
   place_guess: "",
   place_id: undefined,

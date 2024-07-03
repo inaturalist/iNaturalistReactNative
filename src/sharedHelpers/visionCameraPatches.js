@@ -19,7 +19,7 @@ import {
   LANDSCAPE_RIGHT,
   PORTRAIT,
   PORTRAIT_UPSIDE_DOWN
-} from "sharedHooks/useDeviceOrientation";
+} from "sharedHooks/useDeviceOrientation.ts";
 
 // Needed for react-native-vision-camera v3.9.0
 // This patch is used to determine the orientation prop for the Camera component.

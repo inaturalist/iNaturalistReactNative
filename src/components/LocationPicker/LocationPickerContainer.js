@@ -6,8 +6,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useReducer,
-  useRef
+  useReducer
 } from "react";
 import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
@@ -132,7 +131,6 @@ type Props = {
 };
 
 const LocationPickerContainer = ( { route }: Props ): Node => {
-  const mapViewRef = useRef( );
   const currentObservation = useStore( state => state.currentObservation );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
@@ -238,7 +236,6 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
       loading={loading}
       locationName={locationName}
       mapType={mapType}
-      mapViewRef={mapViewRef}
       region={region}
       selectPlaceResult={selectPlaceResult}
       setMapReady={setMapReady}

@@ -4,7 +4,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import useRotation from "components/Camera/hooks/useRotation";
+import useRotation from "components/Camera/hooks/useRotation.ts";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { View } from "components/styledComponents";
@@ -20,7 +20,7 @@ import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 
