@@ -15,6 +15,10 @@ const DEFAULT_STATE = {
   // Track when any obs was last marked as viewed so we know when to update
   // the notifications indicator
   observationMarkedAsViewedAt: null,
+  // Array of URIs of photos taken in the camera. These should be fully
+  // processed, including rotation or any other transformations. It might
+  // also include URIs of other photos that need to be visible as previews in
+  // the camera
   cameraUris: [],
   savingPhoto: false,
   unsavedChanges: false
