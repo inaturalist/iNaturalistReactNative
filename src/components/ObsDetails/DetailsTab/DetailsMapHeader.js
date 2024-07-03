@@ -27,7 +27,7 @@ const DetailsMapHeader = ( {
         withCoordinates
       />
       {obscured && (
-        <Body4 className="italic">
+        <Body4 className="mt-3 italic">
           {t( "Obscured-observation-location-map-description" )}
         </Body4>
       ) }
