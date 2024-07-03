@@ -1,5 +1,5 @@
 import Config from "react-native-config";
-import { LatLng } from "react-native-maps";
+import { LatLng, Region } from "react-native-maps";
 import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 
@@ -68,7 +68,7 @@ interface TotalBounds {
   swlat: number;
   swlng: number;
 }
-export function getMapRegion( totalBounds: TotalBounds ) {
+export function getMapRegion( totalBounds: TotalBounds ): Region {
   const {
     nelat, nelng, swlat, swlng
   } = totalBounds;

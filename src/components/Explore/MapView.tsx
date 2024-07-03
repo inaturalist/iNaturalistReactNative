@@ -9,6 +9,7 @@ import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import { Platform } from "react-native";
+import { Region } from "react-native-maps";
 import { useDebugMode, useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { getShadowForColor } from "styles/global";
@@ -21,9 +22,11 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
   elevation: 6
 } );
 
-type Props = {
-  observations: Array<Object>,
-  queryParams: Object
+interface Props {
+  observations: Object[];
+  queryParams: {
+    taxon_id?: number;
+  };
 }
 
 const MapView = ( {
@@ -48,7 +51,14 @@ const MapView = ( {
     updateMapBoundaries
   } = useMapLocation( );
 
-  const [storedBoundingBoxes, setStoredBoundingBoxes] = useState( {} );
+  /*
+  * Query for the bounding box of the taxon_id, if it hasn't been fetched yet, and
+  * zoom to that bounding box on the map
+  */
+  interface StoredBoundingBoxes {
+    [taxonId: number]: Region;
+  }
+  const [storedBoundingBoxes, setStoredBoundingBoxes] = useState<StoredBoundingBoxes>( {} );
   const obsParams = {
     ...queryParams, return_bounds: true, per_page: 0
   };

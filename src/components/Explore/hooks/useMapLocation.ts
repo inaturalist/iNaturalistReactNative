@@ -47,7 +47,7 @@ const useMapLocation = ( ) => {
   const placeIdWasSet = state.place_id;
 
   // eslint-disable-next-line max-len
-  const updateMapBoundaries = useCallback( async ( newRegion: Region, boundaries: BoundingBox | undefined ) => {
+  const updateMapBoundaries = useCallback( async ( newRegion: Region, boundaries?: BoundingBox ) => {
     const boundaryAPIParams = {
       swlat: boundaries?.southWest?.latitude,
       swlng: boundaries?.southWest?.longitude,
