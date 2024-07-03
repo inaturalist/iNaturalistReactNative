@@ -29,8 +29,8 @@ type Props = {
   fromLocal?: boolean,
   handleCheckmarkPress: Function,
   handlePress: Function,
+  hideInfoButton?: boolean,
   onPressInfo?: Function,
-  showInfoButton?: boolean,
   showCheckmark?: boolean,
   showEditButton?: boolean,
   taxon: Object,
@@ -50,10 +50,10 @@ const TaxonResult = ( {
   fromLocal = true,
   handleCheckmarkPress,
   handlePress,
+  hideInfoButton = false,
   hideNavButtons = false,
   onPressInfo,
   showEditButton = false,
-  showInfoButton = true,
   showCheckmark = true,
   taxon: taxonProp,
   testID,
@@ -151,7 +151,7 @@ const TaxonResult = ( {
         </View>
       </Pressable>
       <View className="flex-row items-center">
-        { showInfoButton && (
+        { !hideInfoButton && (
           <INatIconButton
             icon="info-circle-outline"
             size={22}
