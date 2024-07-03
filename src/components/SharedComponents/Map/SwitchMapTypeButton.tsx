@@ -11,11 +11,11 @@ import colors from "styles/tailwindColors";
 const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 interface Props {
-  currentMapType?: string,
-  mapType?: string,
-  setCurrentMapType: Function,
-  showSwitchMapTypeButton?: boolean,
-  switchMapTypeButtonClassName?: string
+  currentMapType?: string;
+  mapType?: string;
+  setCurrentMapType: Function;
+  showSwitchMapTypeButton?: boolean;
+  switchMapTypeButtonClassName?: string;
 }
 
 const SwitchMapTypeButton = ( {
