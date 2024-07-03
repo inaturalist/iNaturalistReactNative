@@ -3,7 +3,6 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  ActivityIndicator,
   DisplayTaxonName,
   INatIconButton
 } from "components/SharedComponents";
@@ -67,7 +66,7 @@ const TaxonResult = ( {
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AI camera &
   // a short list of taxa from offline Suggestions
-  const { taxon: localTaxon, isLoading } = useTaxon( taxonProp, fetchRemote );
+  const { taxon: localTaxon } = useTaxon( taxonProp, fetchRemote );
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
@@ -109,22 +108,15 @@ const TaxonResult = ( {
         accessibilityHint={t( "Navigates-to-taxon-details" )}
       >
         <View className="w-[62px] h-[62px] justify-center relative">
-          {
-            isLoading
-              ? (
-                <ActivityIndicator size={44} />
-              )
-              : (
-                <ObsImagePreview
-                  source={taxonImage}
-                  testID={`${testID}.photo`}
-                  iconicTaxonName={usableTaxon?.iconic_taxon_name}
-                  className="rounded-xl"
-                  isSmall
-                  white={white}
-                />
-              )
-          }
+          <ObsImagePreview
+            source={taxonImage}
+            testID={`${testID}.photo`}
+            iconicTaxonName={usableTaxon?.iconic_taxon_name}
+            className="rounded-xl"
+            isSmall
+            white={white}
+            isBackground={false}
+          />
           {!!( confidence && confidencePosition === "photo" ) && (
             <View className="absolute -bottom-4 w-full items-center">
               <ConfidenceInterval
