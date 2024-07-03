@@ -153,7 +153,7 @@ const ObservationLocation = ( {
         text: displayLocation
       }}
     >
-      <ContentWithIcon icon={locationIcon()} size={14}>{ inner }</ContentWithIcon>
+      <ContentWithIcon icon={locationIcon()} size={13}>{ inner }</ContentWithIcon>
       {( details || withGeoprivacy ) && showGeoprivacy()}
     </View>
   );

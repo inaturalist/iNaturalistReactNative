@@ -20,16 +20,14 @@ type Props = {
   debugData: Object,
   observers: Array<string>,
   reloadSuggestions: Function,
-  showLocationButton: boolean,
-  showSuggestionsWithLocation: boolean
+  suggestions: Object,
 };
 
 const SuggestionsFooter = ( {
   debugData,
   observers,
   reloadSuggestions,
-  showLocationButton = false,
-  showSuggestionsWithLocation
+  suggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
@@ -37,10 +35,16 @@ const SuggestionsFooter = ( {
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
     lastScreen: "Suggestions"
   } ), [navigation] );
+  const {
+    isLoading,
+    showSuggestionsWithLocation,
+    usingOfflineSuggestions
+  } = suggestions;
+  const hideLocationButton = usingOfflineSuggestions || isLoading;
 
   return (
     <>
-      {showLocationButton && (
+      {!hideLocationButton && (
         <>
           <View className="px-4 py-6">
             {showSuggestionsWithLocation
@@ -81,6 +85,7 @@ const SuggestionsFooter = ( {
           <Body3 className="text-white">Top suggestion type: {JSON.stringify( debugData?.topSuggestionType )}</Body3>
           <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
           <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
+          <Body3 className="text-white">Using offline suggestions: {JSON.stringify( debugData?.usingOfflineSuggestions )}</Body3>
           <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
         </View>
       )}

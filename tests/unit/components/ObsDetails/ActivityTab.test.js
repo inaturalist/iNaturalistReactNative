@@ -54,7 +54,7 @@ describe( "ActivityTab", () => {
         observation={mockObservation}
         activityItems={[]}
         refetchRemoteObservation={jest.fn()}
-        onIDAgreePressed={jest.fn()}
+        openAgreeWithIdSheet={jest.fn()}
       />
     );
     expect( await screen.findByTestId( "ActivityTab" ) ).toBeTruthy( );

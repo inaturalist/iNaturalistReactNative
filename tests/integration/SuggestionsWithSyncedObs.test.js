@@ -264,6 +264,14 @@ describe( "Suggestions", ( ) => {
     await actor.press( activityTabBtn );
     const activityTab = await screen.findByTestId( "ActivityTab" );
     expect( activityTab ).toBeVisible( );
+    // open bottom sheet
+    const bottomSheetText = await screen.findByText(
+      /Would you like to suggest the following identification/
+    );
+    expect( bottomSheetText ).toBeVisible( );
+    const confirmButton = await screen.findByTestId( "SuggestIDSheet.cvSuggestionsButton" );
+    expect( confirmButton ).toBeVisible( );
+    await actor.press( confirmButton );
     // Wait for the actual identification we created to appear
     const taxonNameInIdent = await within( activityTab ).findByText( topSuggestion.taxon.name );
     expect( taxonNameInIdent ).toBeVisible( );
