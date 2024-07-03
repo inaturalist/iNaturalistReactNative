@@ -17,31 +17,37 @@ import CommentBox from "./CommentBox";
 import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 
 type Props = {
-  loading: boolean,
   onPressPhoto: Function,
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
+  suggestions: Object,
   // setLocationPermissionNeeded: Function,
-  // showImproveWithLocationButton: boolean,
-  usingOfflineSuggestions: boolean
+  // showImproveWithLocationButton: boolean
 };
 
 const SuggestionsHeader = ( {
-  loading,
   onPressPhoto,
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
+  suggestions
   // setLocationPermissionNeeded,
   // showImproveWithLocationButton,
-  usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
   const theme = useTheme( );
+
+  const {
+    isLoading,
+    showSuggestionsWithLocation,
+    usingOfflineSuggestions
+  } = suggestions;
+
+  const showOfflineText = !isLoading && usingOfflineSuggestions;
 
   const headerRight = useCallback( ( ) => (
     <INatIconButton
@@ -75,11 +81,11 @@ const SuggestionsHeader = ( {
           />
         </View>
       )} */}
-      {( !loading && usingOfflineSuggestions ) && (
+      {showOfflineText && (
         <Pressable
           accessibilityRole="button"
           className="border border-warningYellow border-[3px] m-5 rounded-2xl"
-          onPress={reloadSuggestions}
+          onPress={( ) => reloadSuggestions( { showLocation: showSuggestionsWithLocation } )}
         >
           <View className="p-5">
             <View className="flex-row mb-2">
