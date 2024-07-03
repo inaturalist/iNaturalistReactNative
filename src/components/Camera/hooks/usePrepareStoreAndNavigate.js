@@ -69,12 +69,13 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
-  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
+  const cameraUris = useStore( state => state.cameraUris );
   const currentObservation = useStore( state => state.currentObservation );
   const addCameraRollUri = useStore( state => state.addCameraRollUri );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
+  const setCameraState = useStore( state => state.setCameraState );
   const { userLocation } = useUserLocation( { untilAcc: 0, enabled: !!shouldFetchLocation } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
@@ -103,11 +104,11 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     }
     setObservations( [newObservation] );
     if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
-    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos, addCameraRollUri );
+    return savePhotosToCameraGallery( cameraUris, addCameraRollUri );
   }, [
     addCameraRollUri,
     addPhotoPermissionResult,
-    rotatedOriginalCameraPhotos,
+    cameraUris,
     setObservations,
     userLocation?.accuracy,
     userLocation?.latitude,
@@ -153,8 +154,11 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
       await updateObsWithCameraPhotos( );
     } else {
-      await createObsWithCameraPhotos( rotatedOriginalCameraPhotos, visionResult );
+      await createObsWithCameraPhotos( cameraUris, visionResult );
     }
+    // When we've persisted photos to the observation, we don't need them in
+    // state anymore
+    setCameraState( { evidenceToAdd: [], cameraUris: [] } );
     if ( addEvidence ) {
       return navigation.goBack( );
     }
@@ -163,12 +167,13 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     } );
   }, [
     addEvidence,
-    rotatedOriginalCameraPhotos,
+    cameraUris,
     checkmarkTapped,
     createObsWithCameraPhotos,
     currentObservation,
     navigation,
     updateObsWithCameraPhotos,
+    setCameraState,
     setSavingPhoto
   ] );
 
