@@ -149,7 +149,7 @@ describe( "Signed in user", () => {
     await waitFor( commentButton ).toBeVisible().withTimeout( 10000 );
     await commentButton.tap();
     // Check that the comment modal is visible
-    const commentModalInput = element( by.id( "ObsEdit.notes" ) );
+    const commentModalInput = element( by.id( "TextInputSheet.notes" ) );
     await waitFor( commentModalInput ).toBeVisible().withTimeout( 10000 );
     // Add a comment
     await commentModalInput.tap();
@@ -158,7 +158,7 @@ describe( "Signed in user", () => {
     const bottomSheetHeader = element( by.id( "bottom-sheet-header" ) );
     await bottomSheetHeader.tap();
     // Tap the submit button
-    const commentModalSubmitButton = element( by.id( "ObsEdit.confirm" ) );
+    const commentModalSubmitButton = element( by.id( "TextInputSheet.confirm" ) );
     await commentModalSubmitButton.tap();
     // Check that the comment is visible
     await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "bottom" );

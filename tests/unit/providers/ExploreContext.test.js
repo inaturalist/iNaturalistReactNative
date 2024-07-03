@@ -40,5 +40,36 @@ describe( "ExploreContext", ( ) => {
         expect( reducedState.radius ).toBeUndefined( );
       } );
     } );
+    describe( EXPLORE_ACTION.CHANGE_TAXON, ( ) => {
+      it( "should remove iconic_taxa", ( ) => {
+        const taxon = factory( "RemoteTaxon" );
+        const initialState = { iconic_taxa: ["Animalia"] };
+        const reducedState = exploreReducer( initialState, {
+          type: EXPLORE_ACTION.CHANGE_TAXON,
+          taxon,
+          taxonId: taxon.id
+        } );
+        expect( reducedState.iconic_taxa ).toBeUndefined( );
+      } );
+      it( "should extract an id from a taxon", ( ) => {
+        const taxon = factory( "RemoteTaxon" );
+        const initialState = { };
+        const reducedState = exploreReducer( initialState, {
+          type: EXPLORE_ACTION.CHANGE_TAXON,
+          taxon
+        } );
+        expect( reducedState.taxon_id ).toEqual( taxon.id );
+      } );
+      it( "should remove an id from a blank taxon", ( ) => {
+        const taxon = factory( "RemoteTaxon" );
+        const initialState = { taxon, taxon_id: taxon.id };
+        const reducedState = exploreReducer( initialState, {
+          type: EXPLORE_ACTION.CHANGE_TAXON,
+          taxon: null
+        } );
+        // expect( reducedState ).not.toHaveProperty( "taxon_id" );
+        expect( reducedState.taxon_id ).toBeUndefined( );
+      } );
+    } );
   } );
 } );

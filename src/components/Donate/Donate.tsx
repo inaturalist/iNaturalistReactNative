@@ -1,19 +1,16 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   Body2, Button, Heading4, ScrollViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 import * as StoreReview from "react-native-store-review";
 
-const Donate = (): Node => {
+const Donate = () => {
   const navigation = useNavigation( );
   const onDonatePress = async ( ) => {
-    const url = "https://inaturalist.org/donate";
+    const url = "https://donorbox.org/support-inaturalist?utm_campaign=default&utm_medium=mobile&utm_source=iNatRN";
     navigation.navigate( "FullPageWebView", {
       title: t( "Donate-to-iNaturalist" ),
       initialUrl: url,

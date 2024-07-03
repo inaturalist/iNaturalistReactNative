@@ -31,13 +31,30 @@ export const taxonomyPath: string = Platform.select( {
 
 export const modelVersion = Config.CV_MODEL_VERSION;
 
-export const predictImage = ( uri: string ) => getPredictionsForImage( {
-  uri,
-  modelPath,
-  taxonomyPath,
-  version: modelVersion,
-  confidenceThreshold: 0.2
-} );
+export const predictImage = ( uri: string ) => {
+  // Ensure uri is actually well-formed and try to make it well-formed if it's
+  // a path
+  let url;
+  try {
+    url = new URL( uri );
+  } catch ( urlError ) {
+    try {
+      url = new URL( `file://${uri}` );
+    } catch ( urlError2 ) {
+      // will handle when url is blank
+    }
+  }
+  if ( !url ) {
+    throw new Error( `predictImage received invalid URI: ${uri}` );
+  }
+  return getPredictionsForImage( {
+    uri: url.toString(),
+    modelPath,
+    taxonomyPath,
+    version: modelVersion,
+    confidenceThreshold: 0.2
+  } );
+};
 
 const addCameraFilesAndroid = () => {
   const copyFilesAndroid = ( source, destination ) => {

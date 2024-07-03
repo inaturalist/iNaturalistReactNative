@@ -18,14 +18,14 @@ const DROP_SHADOW = getShadowForColor( colors.black, {
 
 type Props = {
   navToSuggestions: Function,
-  showCommentBox: Function,
-  openCommentBox: Function
+  showAddCommentSheet: Function,
+  openAddCommentSheet: Function
 }
 
 const FloatingButtons = ( {
   navToSuggestions,
-  openCommentBox,
-  showCommentBox
+  openAddCommentSheet,
+  showAddCommentSheet
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -36,10 +36,10 @@ const FloatingButtons = ( {
     >
       <Button
         text={t( "COMMENT" )}
-        onPress={openCommentBox}
+        onPress={openAddCommentSheet}
         className="w-1/2 mx-6"
         testID="ObsDetail.commentButton"
-        disabled={showCommentBox}
+        disabled={showAddCommentSheet}
         accessibilityHint={t( "Opens-add-comment-modal" )}
       />
       <Button

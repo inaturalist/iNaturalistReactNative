@@ -12,26 +12,32 @@ import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  handleClose: Function,
+  buttonText: string,
   confirm: Function,
+  handleClose: Function,
+  headerText: string,
   initialInput?: ?string,
   placeholder: string,
-  headerText: string,
   textInputStyle?: Object
 }
 
 const TextInputSheet = ( {
-  handleClose,
+  buttonText,
   confirm,
+  handleClose,
+  headerText,
   initialInput = null,
   placeholder,
-  headerText,
   textInputStyle
 }: Props ): Node => {
   const textInputRef = useRef( );
   const theme = useTheme( );
   const [input, setInput] = useState( initialInput );
+  const [hasChanged, setHasChanged] = useState( false );
   const { t } = useTranslation( );
+
+  // disable if user hasn't changed existing text
+  const confirmButtonDisabled = initialInput === input && !hasChanged;
 
   const inputStyle = useMemo( ( ) => ( {
     height: 223,
@@ -54,9 +60,14 @@ const TextInputSheet = ( {
             accessibilityLabel="Text input field"
             keyboardType="default"
             multiline
-            onChangeText={text => setInput( text )}
+            onChangeText={text => {
+              if ( !hasChanged ) {
+                setHasChanged( true );
+              }
+              setInput( text );
+            }}
             placeholder={placeholder}
-            testID="ObsEdit.notes"
+            testID="TextInputSheet.notes"
             style={[inputStyle, textInputStyle]}
             autoFocus
             defaultValue={input}
@@ -71,10 +82,11 @@ const TextInputSheet = ( {
           </Body3>
         </View>
         <Button
-          testID="ObsEdit.confirm"
+          testID="TextInputSheet.confirm"
           className="mt-5"
+          disabled={confirmButtonDisabled}
           level="primary"
-          text={t( "DONE" )}
+          text={buttonText || t( "DONE" )}
           onPress={() => {
             confirm( input );
             handleClose();

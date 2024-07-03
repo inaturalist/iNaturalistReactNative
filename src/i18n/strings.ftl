@@ -48,6 +48,7 @@ Add-Location = Add Location
 Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
+Add-suggestion-and-remarks-to-observation = Add suggestion and remarks to observation
 # Hint for a button that adds a vote of agreement
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
@@ -647,6 +648,7 @@ Offline-suggestions-do-not-use-your-location = Offline suggestions do not use yo
 OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
+Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
 One-last-step = One last step!
 # Adjective, as in geoprivacy
 Open = Open
@@ -995,6 +997,7 @@ VIEW-PROJECTS = VIEW PROJECTS
 # or photo
 View-suggestions = View suggestions
 VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
+We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 Welcome-to-iNaturalist = Welcome to iNaturalist!
@@ -1015,6 +1018,7 @@ Withdraws-identification = Withdraws identification
 Worldwide = Worldwide
 WORLDWIDE = WORLDWIDE
 Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
+Would-you-like-to-suggest-the-following-identification = Would you like to suggest the following identification?
 x-comments =
     { $count ->
         [one] { $count } comment
@@ -1132,6 +1136,7 @@ You-must-be-logged-in-to-view-messages = You must be logged in to view messages
 You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = You need to log in to do that.
+You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:

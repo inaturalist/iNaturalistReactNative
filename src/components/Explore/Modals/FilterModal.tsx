@@ -58,6 +58,7 @@ const { useRealm } = RealmContext;
 
 interface Props {
   closeModal: Function,
+  filterByIconicTaxonUnknown: Function
   updateTaxon: Function,
   updateLocation: Function,
   updateUser: Function,
@@ -66,6 +67,7 @@ interface Props {
 
 const FilterModal = ( {
   closeModal,
+  filterByIconicTaxonUnknown,
   updateTaxon,
   updateLocation,
   updateUser,
@@ -85,30 +87,31 @@ const FilterModal = ( {
     defaultExploreLocation
   } = useExplore();
   const {
-    taxon,
-    place_guess: placeGuess,
-    user,
-    project,
-    sortBy,
-    researchGrade,
-    needsID,
     casual,
-    hrank,
-    lrank,
-    dateObserved,
-    observed_on: observedOn,
-    d1,
-    d2,
-    months,
-    dateUploaded,
-    created_on: createdOn,
     created_d1: createdD1,
     created_d2: createdD2,
-    media,
+    created_on: createdOn,
+    d1,
+    d2,
+    dateObserved,
+    dateUploaded,
     establishmentMean,
-    wildStatus,
+    hrank,
+    iconic_taxa: iconicTaxonNames,
+    lrank,
+    media,
+    months,
+    needsID,
+    observed_on: observedOn,
+    photoLicense,
+    place_guess: placeGuess,
+    project,
+    researchGrade,
     reviewedFilter,
-    photoLicense
+    sortBy,
+    taxon,
+    user,
+    wildStatus
   } = state;
 
   const NONE = "NONE";
@@ -678,7 +681,7 @@ const FilterModal = ( {
         <View className="mb-7">
           <Heading4 className="px-4 mb-5">{t( "TAXON" )}</Heading4>
           <View className="px-4 mb-5">
-            {taxon
+            {( taxon || ( iconicTaxonNames || [] ).indexOf( "unknown" ) >= 0 )
               ? (
                 <Pressable
                   className="flex-row justify-between items-center"
@@ -688,7 +691,7 @@ const FilterModal = ( {
                     setShowTaxonSearchModal( true );
                   }}
                 >
-                  <DisplayTaxon taxon={taxon} />
+                  <DisplayTaxon taxon={taxon || "unknown"} />
                   <INatIcon name="edit" size={22} />
                 </Pressable>
               )
@@ -704,16 +707,21 @@ const FilterModal = ( {
           </View>
           <IconicTaxonChooser
             before
-            taxon={taxon}
+            chosen={iconicTaxonNames || [taxon?.name?.toLowerCase()]}
             onTaxonChosen={( taxonName: string ) => {
               if ( taxonName === "unknown" ) {
-                updateTaxon( );
+                if ( ( iconicTaxonNames || [] ).indexOf( taxonName ) >= 0 ) {
+                  updateTaxon( null );
+                } else {
+                  filterByIconicTaxonUnknown();
+                }
+              } else if ( taxon?.name?.toLowerCase() === taxonName ) {
+                updateTaxon( null );
               } else {
                 const selectedTaxon = realm
                   ?.objects( "Taxon" )
                   .filtered( "name CONTAINS[c] $0", taxonName );
-                const iconicTaxon
-                = selectedTaxon.length > 0
+                const iconicTaxon = selectedTaxon.length > 0
                   ? selectedTaxon[0]
                   : null;
                 updateTaxon( iconicTaxon );

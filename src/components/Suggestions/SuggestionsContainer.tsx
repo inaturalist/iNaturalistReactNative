@@ -1,6 +1,3 @@
-// @flow
-
-import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 // import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import _ from "lodash";
@@ -24,26 +21,28 @@ import Suggestions from "./Suggestions";
 
 const HUMAN_ID = 43584;
 
+const initialSuggestions = {
+  topSuggestion: null,
+  otherSuggestions: [],
+  topSuggestionType: "none",
+  usingOfflineSuggestions: false,
+  isLoading: true
+};
+
 const SuggestionsContainer = ( ): Node => {
   // clearing the cache of resized images for the score_image API
   // placing this here means we can keep the app size small
   // and only have the latest resized image stored in computerVisionSuggestions
   useClearComputerVisionDirectory( );
-  const { params } = useRoute( );
   const currentObservation = useStore( state => state.currentObservation );
-  const taxonId = currentObservation?.taxon?.id;
-  const hasVisionSuggestion = params?.hasVisionSuggestion
-    && !_.isEmpty( currentObservation?.taxon );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
 
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [isLoading, setIsLoading] = useState( true );
-  const [otherSuggestions, setOtherSuggestions] = useState( [] );
+  const [suggestions, setSuggestions] = useState( initialSuggestions );
   // const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
-  const [usingOfflineSuggestions, setUsingOfflineSuggestions] = useState( false );
 
   const evidenceHasLocation = !!( currentObservation?.latitude );
   // const showImproveWithLocationButton = !evidenceHasLocation
@@ -67,16 +66,14 @@ const SuggestionsContainer = ( ): Node => {
 
   const loadingOnlineSuggestions = fetchStatus === "fetching";
 
-  const hasOnlineSuggestions = !onlineSuggestions
-    || onlineSuggestions?.results?.length === 0;
-
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = timedOut || (
     // Don't try offline while online is loading
     !loadingOnlineSuggestions
     && (
       // Don't bother with offline if we have some online suggestions
-      hasOnlineSuggestions
+      !onlineSuggestions
+      || onlineSuggestions?.results?.length === 0
     )
   );
 
@@ -86,6 +83,8 @@ const SuggestionsContainer = ( ): Node => {
   } = useOfflineSuggestions( selectedPhotoUri, {
     tryOfflineSuggestions
   } );
+
+  const usingOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
 
   useNavigateWithTaxonSelected(
     selectedTaxon,
@@ -98,9 +97,7 @@ const SuggestionsContainer = ( ): Node => {
       if ( uri === selectedPhotoUri ) {
         setMediaViewerVisible( true );
       } else {
-        setIsLoading( true );
-        setOtherSuggestions( [] );
-        setUsingOfflineSuggestions( false );
+        setSuggestions( initialSuggestions );
         setSelectedPhotoUri( uri );
       }
     },
@@ -116,108 +113,127 @@ const SuggestionsContainer = ( ): Node => {
     onlineSuggestionsError,
     onlineSuggestionsUpdatedAt,
     selectedPhotoUri,
-    showSuggestionsWithLocation
+    showSuggestionsWithLocation,
+    topSuggestionType: suggestions.topSuggestionType
   };
 
   const unfilteredSuggestions = onlineSuggestions?.results?.length > 0
     ? onlineSuggestions.results
     : offlineSuggestions;
 
-  const hasSuggestions = unfilteredSuggestions.length > 0;
   const humanSuggestion = _.find( unfilteredSuggestions, s => s.taxon.id === HUMAN_ID );
 
-  const filterSuggestions = useCallback( ( ) => {
+  const sortSuggestions = useCallback( ( ) => {
     if ( humanSuggestion ) {
-      return [];
+      return [humanSuggestion];
     }
-    let filteredSuggestions = unfilteredSuggestions;
-    if ( hasVisionSuggestion ) {
-      const hideVisionSuggestionFromOther = unfilteredSuggestions.filter(
-        result => result?.taxon?.id !== taxonId
-      ).map( r => r );
-      filteredSuggestions = hideVisionSuggestionFromOther;
-    }
-
-    const sortedSuggestions = ( ) => {
-      if ( usingOfflineSuggestions ) {
-        return filteredSuggestions;
-      }
+    if ( !usingOfflineSuggestions ) {
       // use the vision_score to display sorted suggestions when evidence
       // does not include a location; use the combined_score to display
       // sorted suggestions when evidence includes a location
       if ( showSuggestionsWithLocation ) {
-        return _.orderBy( filteredSuggestions, "combined_score", "desc" );
+        return _.orderBy( unfilteredSuggestions, "combined_score", "desc" );
       }
-      return _.orderBy( filteredSuggestions, "vision_score", "desc" );
-    };
-
-    return sortedSuggestions( );
+      return _.orderBy( unfilteredSuggestions, "vision_score", "desc" );
+    }
+    return unfilteredSuggestions;
   }, [
-    hasVisionSuggestion,
     humanSuggestion,
     showSuggestionsWithLocation,
-    taxonId,
     unfilteredSuggestions,
     usingOfflineSuggestions
   ] );
 
-  useEffect( ( ) => {
-    if ( (
-      hasSuggestions || loadingOfflineSuggestions === false
-    ) && fetchStatus === "idle" ) {
-      setOtherSuggestions( filterSuggestions( ) );
-      setIsLoading( false );
+  const filterSuggestions = useCallback( ( ) => {
+    const removeTopSuggestion = ( list, id ) => _.remove( list, item => item.taxon.id === id );
+    const sortedSuggestions = sortSuggestions( );
+    const newSuggestions = {
+      topSuggestion: null,
+      otherSuggestions: sortedSuggestions,
+      usingOfflineSuggestions,
+      isLoading: false
+    };
+    if ( sortedSuggestions.length === 0 ) {
+      return {
+        ...newSuggestions,
+        otherSuggestions: [],
+        topSuggestionType: "none"
+      };
     }
-  }, [loadingOfflineSuggestions, hasSuggestions, filterSuggestions, fetchStatus] );
+    // return first sorted result if there's a human suggestion, if we're
+    // using offline suggestions, or if there's only one suggestion
+    if ( humanSuggestion || usingOfflineSuggestions || sortedSuggestions.length === 1 ) {
+      const firstSuggestion = sortedSuggestions.shift( );
+      return {
+        ...newSuggestions,
+        topSuggestion: firstSuggestion,
+        topSuggestionType: "first-sorted"
+      };
+    }
 
-  useEffect( ( ) => {
-    const hasOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
-    setUsingOfflineSuggestions( hasOfflineSuggestions );
+    const suggestionAboveThreshold = _.find( sortedSuggestions, s => s.combined_score > 0.78 );
+    if ( suggestionAboveThreshold ) {
+      // make sure we're not returning the top suggestion in Other Suggestions
+      const firstSuggestion = removeTopSuggestion(
+        sortedSuggestions,
+        suggestionAboveThreshold.taxon.id
+      )[0];
+      return {
+        ...newSuggestions,
+        topSuggestion: firstSuggestion,
+        topSuggestionType: "above-threshold"
+      };
+    }
+    if ( onlineSuggestions?.common_ancestor ) {
+      return {
+        ...newSuggestions,
+        topSuggestion: onlineSuggestions?.common_ancestor,
+        topSuggestionType: "common-ancestor"
+      };
+    }
+
+    return {
+      ...newSuggestions,
+      topSuggestionType: "none"
+    };
   }, [
-    offlineSuggestions.length,
-    tryOfflineSuggestions
+    humanSuggestion,
+    onlineSuggestions?.common_ancestor,
+    sortSuggestions,
+    usingOfflineSuggestions
   ] );
 
-  const filterTopSuggestions = ( ) => {
-    if ( isLoading ) { return null; }
-    if ( humanSuggestion ) {
-      return humanSuggestion;
-    }
-    if ( hasVisionSuggestion ) {
-      return currentObservation;
-    }
-    if ( onlineSuggestions?.results?.length > 0 ) {
-      return onlineSuggestions?.common_ancestor;
-    }
-    return null;
-  };
+  const allSuggestionsFetched = suggestions.isLoading
+    && (
+      ( !tryOfflineSuggestions && fetchStatus === "idle" )
+      || !loadingOfflineSuggestions
+    );
 
-  const topSuggestion = filterTopSuggestions( );
+  useEffect( ( ) => {
+    if ( allSuggestionsFetched ) {
+      setSuggestions( filterSuggestions( ) );
+    }
+  }, [allSuggestionsFetched, filterSuggestions] );
 
   const reloadSuggestions = useCallback( ( { showLocation } ) => {
-    setIsLoading( true );
-    setOtherSuggestions( [] );
+    setSuggestions( initialSuggestions );
     refetchSuggestions( );
     setShowSuggestionsWithLocation( showLocation );
-    setUsingOfflineSuggestions( false );
   }, [refetchSuggestions] );
 
   return (
     <>
       <Suggestions
         debugData={debugData}
-        loading={isLoading}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
-        otherSuggestions={otherSuggestions}
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
         // setLocationPermissionNeeded={setLocationPermissionNeeded}
         // showImproveWithLocationButton={showImproveWithLocationButton}
         showSuggestionsWithLocation={showSuggestionsWithLocation}
-        topSuggestion={topSuggestion}
-        usingOfflineSuggestions={usingOfflineSuggestions}
+        suggestions={suggestions}
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}
