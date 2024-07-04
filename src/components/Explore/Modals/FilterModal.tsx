@@ -1084,79 +1084,84 @@ const FilterModal = ( {
           </View>
 
           {/* Media section */}
-          <View className="mb-7">
+          <View className="mb-3">
             <Heading4 className="mb-5">{t( "MEDIA" )}</Heading4>
             {Object.keys( mediaValues ).map( mediaKey => (
-              <RadioButtonRow
-                key={mediaKey}
-                smallLabel
-                value={mediaValues[mediaKey]}
-                checked={mediaValues[mediaKey].value === media}
-                onPress={() => dispatch( {
-                  type: EXPLORE_ACTION.SET_MEDIA,
-                  media: mediaValues[mediaKey].value
-                } )}
-                label={mediaValues[mediaKey].label}
-              />
+              <View key={mediaKey} className="mb-4">
+                <RadioButtonRow
+                  smallLabel
+                  value={mediaValues[mediaKey]}
+                  checked={mediaValues[mediaKey].value === media}
+                  onPress={() => dispatch( {
+                    type: EXPLORE_ACTION.SET_MEDIA,
+                    media: mediaValues[mediaKey].value
+                  } )}
+                  label={mediaValues[mediaKey].label}
+                />
+              </View>
             ) )}
           </View>
 
           {/* Establishment Means section */}
-          <View className="mb-7">
+          <View className="mb-3">
             <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
             {Object.keys( establishmentValues ).map( establishmentKey => (
-              <RadioButtonRow
-                key={establishmentKey}
-                smallLabel
-                value={establishmentValues[establishmentKey]}
-                checked={
-                  establishmentValues[establishmentKey].value
-                === establishmentMean
-                }
-                onPress={() => dispatch( {
-                  type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
-                  establishmentMean:
+              <View key={establishmentKey} className="mb-4">
+                <RadioButtonRow
+                  smallLabel
+                  value={establishmentValues[establishmentKey]}
+                  checked={
                     establishmentValues[establishmentKey].value
-                } )}
-                label={establishmentValues[establishmentKey].label}
-              />
+                === establishmentMean
+                  }
+                  onPress={() => dispatch( {
+                    type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
+                    establishmentMean:
+                    establishmentValues[establishmentKey].value
+                  } )}
+                  label={establishmentValues[establishmentKey].label}
+                />
+              </View>
             ) )}
           </View>
 
           {/* Wild Status section */}
-          <View className="mb-7">
+          <View className="mb-3">
             <Heading4 className="mb-5">{t( "WILD-STATUS" )}</Heading4>
             {Object.keys( wildValues ).map( wildKey => (
-              <RadioButtonRow
-                key={wildKey}
-                smallLabel
-                value={wildValues[wildKey]}
-                checked={wildValues[wildKey].value === wildStatus}
-                onPress={() => dispatch( {
-                  type: EXPLORE_ACTION.SET_WILD_STATUS,
-                  wildStatus: wildValues[wildKey].value
-                } )}
-                label={wildValues[wildKey].label}
-              />
+              <View key={wildKey} className="mb-4">
+                <RadioButtonRow
+                  smallLabel
+                  value={wildValues[wildKey]}
+                  checked={wildValues[wildKey].value === wildStatus}
+                  onPress={() => dispatch( {
+                    type: EXPLORE_ACTION.SET_WILD_STATUS,
+                    wildStatus: wildValues[wildKey].value
+                  } )}
+                  label={wildValues[wildKey].label}
+                />
+              </View>
             ) )}
           </View>
 
           {/* Reviewed section */}
           {currentUser && (
-            <View className="mb-7">
+            <View className="mb-3">
               <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
               {Object.keys( reviewedValues ).map( reviewedKey => (
-                <RadioButtonRow
-                  key={reviewedKey}
-                  smallLabel
-                  value={reviewedValues[reviewedKey]}
-                  checked={reviewedValues[reviewedKey].value === reviewedFilter}
-                  onPress={() => dispatch( {
-                    type: EXPLORE_ACTION.SET_REVIEWED,
-                    reviewedFilter: reviewedValues[reviewedKey].value
-                  } )}
-                  label={reviewedValues[reviewedKey].label}
-                />
+                <View key={reviewedKey} className="mb-4">
+                  <RadioButtonRow
+                    key={reviewedKey}
+                    smallLabel
+                    value={reviewedValues[reviewedKey]}
+                    checked={reviewedValues[reviewedKey].value === reviewedFilter}
+                    onPress={() => dispatch( {
+                      type: EXPLORE_ACTION.SET_REVIEWED,
+                      reviewedFilter: reviewedValues[reviewedKey].value
+                    } )}
+                    label={reviewedValues[reviewedKey].label}
+                  />
+                </View>
               ) )}
             </View>
           )}
