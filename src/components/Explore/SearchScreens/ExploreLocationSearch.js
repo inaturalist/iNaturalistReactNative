@@ -9,7 +9,7 @@ import {
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
 import {

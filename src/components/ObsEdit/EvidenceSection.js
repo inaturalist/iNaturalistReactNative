@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";

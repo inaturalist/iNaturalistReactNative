@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import {
   EXPLORE_ACTION,
   ExploreProvider,

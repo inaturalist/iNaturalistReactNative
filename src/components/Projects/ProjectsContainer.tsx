@@ -1,5 +1,5 @@
 import { searchProjects } from "api/projects";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import _ from "lodash";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";

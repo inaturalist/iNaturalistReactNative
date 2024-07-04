@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import { View } from "components/styledComponents";
 import React, {
   useCallback,

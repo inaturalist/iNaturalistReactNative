@@ -13,7 +13,7 @@ jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
 } ) );
 
 // Don't need permission gates if we're just testing DetailsTab
-jest.mock( "components/SharedComponents/LocationPermissionGate", ( ) => "" );
+jest.mock( "components/SharedComponents/LocationPermissionGate.tsx", ( ) => "" );
 
 // Before migrating to Jest 27 this line was:
 // jest.useFakeTimers();

@@ -1,5 +1,5 @@
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-// import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
+// import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import _ from "lodash";
 import type { Node } from "react";
 import React, {
