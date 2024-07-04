@@ -48,22 +48,22 @@ export const LOCATION_PERMISSIONS: Array<string> = Platform.OS === "ios"
   : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
 
 type Props = {
-  blockedPrompt?: string,
-  body?: string,
-  buttonText?: string,
+  blockedPrompt?: string;
+  body?: string;
+  buttonText?: string;
   children?: React.ReactNode,
-  icon?: string,
-  image?: Object,
-  onModalHide?: Function,
-  onPermissionBlocked?: Function,
-  onPermissionDenied?: Function,
-  onPermissionGranted?: Function,
-  permissionNeeded?: boolean,
-  permissions: string[],
-  testID?: string,
-  title?: string,
-  titleDenied: string,
-  withoutNavigation?: boolean
+  icon: string;
+  image?: number;
+  onModalHide?: () => void;
+  onPermissionBlocked?: () => void;
+  onPermissionDenied?: () => void;
+  onPermissionGranted?: () => void;
+  permissionNeeded?: boolean;
+  permissions: Permission[];
+  testID?: string;
+  title?: string;
+  titleDenied?: string;
+  withoutNavigation?: boolean;
 };
 
 export function permissionResultFromMultiple( multiResults: Object ): string {
