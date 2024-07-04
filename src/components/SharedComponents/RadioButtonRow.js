@@ -56,13 +56,13 @@ const RadioButtonRow = ( {
           status={status}
           accessibilityLabel={label}
         />
-        <View className="flex-row">
+        <View className="ml-1 flex-row">
           <Label className="mr-[10px]">{label}</Label>
           {icon && <INatIcon name={icon} size={19} color={theme.colors.secondary} />}
         </View>
       </View>
       {description && (
-        <List2 className="ml-[37px] mr-[33px] py-1">{description}</List2>
+        <List2 className="ml-[41px] mr-[33px] py-1">{description}</List2>
       )}
     </Pressable>
   );
