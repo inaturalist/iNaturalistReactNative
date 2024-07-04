@@ -1,4 +1,3 @@
-// @flow
 import {
   Body1,
   Body2,
@@ -6,19 +5,19 @@ import {
   List2
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import { GestureResponderEvent } from "react-native";
 import { RadioButton, useTheme } from "react-native-paper";
 
-type Props = {
-  testID: string,
-  checked: boolean,
-  description: ?string,
-  icon: string,
-  label: string,
-  onPress: Function,
-  value: string,
-  smallLabel: ?boolean
+interface Props {
+  testID?: string;
+  icon: string;
+  label: string;
+  smallLabel?: boolean;
+  description?: string;
+  onPress: ( _e: GestureResponderEvent ) => void;
+  checked: boolean;
+  value: string;
 }
 
 const RadioButtonRow = ( {
@@ -30,7 +29,7 @@ const RadioButtonRow = ( {
   icon,
   value,
   smallLabel = false
-}: Props ): Node => {
+}: Props ) => {
   const theme = useTheme( );
 
   const status = checked
