@@ -11,7 +11,7 @@ import { RadioButton, useTheme } from "react-native-paper";
 
 interface Props {
   testID?: string;
-  icon: string;
+  icon?: string;
   label: string;
   smallLabel?: boolean;
   description?: string;
