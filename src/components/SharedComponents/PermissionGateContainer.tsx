@@ -1,9 +1,6 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import Modal from "components/SharedComponents/Modal.tsx";
 import _ from "lodash";
-import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Platform } from "react-native";
 import {
@@ -54,7 +51,7 @@ type Props = {
   blockedPrompt?: string,
   body?: string,
   buttonText?: string,
-  children?: Node,
+  children?: React.ReactNode,
   icon?: string,
   image?: Object,
   onModalHide?: Function,
@@ -62,7 +59,7 @@ type Props = {
   onPermissionDenied?: Function,
   onPermissionGranted?: Function,
   permissionNeeded?: boolean,
-  permissions: Array<string>,
+  permissions: string[],
   testID?: string,
   title?: string,
   titleDenied: string,
@@ -111,7 +108,7 @@ const PermissionGateContainer = ( {
   title,
   titleDenied,
   withoutNavigation
-}: Props ): Node => {
+}: Props ) => {
   const [result, setResult] = useState( null );
   const [modalShown, setModalShown] = useState( false );
 

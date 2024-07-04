@@ -2,7 +2,7 @@ import Geolocation, { GeolocationResponse } from "@react-native-community/geoloc
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer";
+} from "components/SharedComponents/PermissionGateContainer.tsx";
 import { Platform } from "react-native";
 import {
   checkMultiple,

@@ -2,7 +2,7 @@
 
 import PermissionGateContainer, {
   LOCATION_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer";
+} from "components/SharedComponents/PermissionGateContainer.tsx";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";

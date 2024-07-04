@@ -5,7 +5,7 @@ import PermissionGateContainer, {
   permissionResultFromMultiple,
   WRITE_MEDIA_PERMISSIONS
 }
-  from "components/SharedComponents/PermissionGateContainer";
+  from "components/SharedComponents/PermissionGateContainer.tsx";
 import { View } from "components/styledComponents";
 import React, {
   useCallback, useEffect, useRef, useState

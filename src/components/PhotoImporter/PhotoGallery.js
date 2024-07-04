@@ -5,7 +5,7 @@ import {
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
-  from "components/SharedComponents/PermissionGateContainer";
+  from "components/SharedComponents/PermissionGateContainer.tsx";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, {

@@ -4,7 +4,7 @@ import { galleryPhotosPath } from "appConstants/paths.ts";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer";
+} from "components/SharedComponents/PermissionGateContainer.tsx";
 import {
   useEffect, useRef,
   useState

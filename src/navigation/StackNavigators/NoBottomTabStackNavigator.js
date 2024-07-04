@@ -10,7 +10,7 @@ import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
   CAMERA_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer";
+} from "components/SharedComponents/PermissionGateContainer.tsx";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
