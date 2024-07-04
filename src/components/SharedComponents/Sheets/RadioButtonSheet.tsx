@@ -36,9 +36,8 @@ const RadioButtonSheet = ( {
   const [checkedValue, setCheckedValue] = useState( selectedValue );
 
   const radioButtonRow = ( radioRow: string ) => (
-    <View className="pb-4">
+    <View key={radioRow} className="pb-4">
       <RadioButtonRow
-        key={radioRow}
         value={radioValues[radioRow].value}
         icon={radioValues[radioRow].icon}
         checked={checkedValue === radioValues[radioRow].value}
