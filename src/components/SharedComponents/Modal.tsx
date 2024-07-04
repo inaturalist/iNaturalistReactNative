@@ -1,32 +1,31 @@
-// @flow
 import * as React from "react";
+import { ViewStyle } from "react-native";
 import RNModal from "react-native-modal";
 
 // repurposed from Seek: https://github.com/inaturalist/SeekReactNative/blob/main/components/UIComponents/Modals/Modal.js
 
-type Props = {
-  showModal: boolean,
-  closeModal: Function,
-  // $FlowIgnore
-  modal: unknown,
-  backdropOpacity?: number,
-  fullScreen?: boolean,
-  onModalHide?: Function,
-  style?: Object,
-  animationIn?: string,
-  animationOut?: string,
-  disableSwipeDirection?: boolean
+interface Props {
+  showModal: boolean;
+  closeModal: () => void;
+  modal: React.ReactNode,
+  backdropOpacity?: number;
+  fullScreen?: boolean;
+  onModalHide?: () => void,
+  style?: ViewStyle,
+  animationIn?: string;
+  animationOut?: string;
+  disableSwipeDirection?: boolean;
 }
 
 const modalStyle = {
   flex: 1,
   justifyContent: "flex-end"
-};
+} as const;
 
 const fullScreenModalStyle = {
   ...modalStyle,
   margin: 0
-};
+} as const;
 
 // accessibility might not work on Android because of backdrop
 // https://github.com/react-native-modal/react-native-modal/issues/525
@@ -42,9 +41,9 @@ const Modal = ( {
   onModalHide,
   showModal,
   style
-}: Props ): React.Node => {
+}: Props ) => {
   const swipeDirection = disableSwipeDirection
-    ? null
+    ? undefined
     : "down";
   return (
     <RNModal
