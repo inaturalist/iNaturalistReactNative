@@ -1,16 +1,14 @@
-// @flow
-
 import {
-  BottomSheetBackdrop
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps
 } from "@gorhom/bottom-sheet";
-import type { Node } from "react";
 import React from "react";
 
 type Props = {
-  props: Object
+  props: BottomSheetBackdropProps
 }
 
-const BottomSheetStandardBackdrop = ( { props }: Props ): Node => (
+const BottomSheetStandardBackdrop = ( { props }: Props ) => (
   <BottomSheetBackdrop
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
