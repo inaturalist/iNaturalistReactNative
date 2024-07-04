@@ -252,8 +252,15 @@ type Action = {type: EXPLORE_ACTION.RESET}
 type Dispatch = ( action: Action ) => void
 
 const ExploreContext = React.createContext<
-  {state: State; dispatch: Dispatch} | undefined
->( undefined );
+  {
+    state: State;
+    dispatch: Dispatch;
+    differsFromSnapshot: boolean;
+    isNotInitialState: boolean;
+    discardChanges(): void;
+    numberOfFilters: number;
+    defaultExploreLocation(): Promise<{place_guess: string}>;
+      } | undefined>( undefined );
 
 // Every key in this object represents a numbered filter in the UI
 const calculatedFilters = {
