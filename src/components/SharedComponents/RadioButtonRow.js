@@ -56,7 +56,7 @@ const RadioButtonRow = ( {
         </View>
       </View>
       {description && (
-        <List2 className="ml-[32px] mr-[33px]">{description}</List2>
+        <List2 className="ml-[32px] mt-[3px]">{description}</List2>
       )}
     </Pressable>
   );
