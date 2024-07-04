@@ -15,7 +15,11 @@ const DEFAULT_STATE = {
   // Track when any obs was last marked as viewed so we know when to update
   // the notifications indicator
   observationMarkedAsViewedAt: null,
-  rotatedOriginalCameraPhotos: [],
+  // Array of URIs of photos taken in the camera. These should be fully
+  // processed, including rotation or any other transformations. It might
+  // also include URIs of other photos that need to be visible as previews in
+  // the camera
+  cameraUris: [],
   savingPhoto: false,
   unsavedChanges: false
 };
@@ -90,7 +94,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     }
 
     return ( {
-      rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
+      cameraUris: [..._.pull( state.cameraUris, uri )],
       evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
       observations: newObservations,
       currentObservation: observationToJSON( newObservation )
@@ -107,7 +111,6 @@ const createObservationFlowSlice = ( set, get ) => ( {
       currentObservation: newObservation
     };
   } ),
-  resetEvidenceToAdd: ( ) => set( { evidenceToAdd: [] } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
   addCameraRollUri: uri => set( state => {
     const savedUris = state.cameraRollUris;
@@ -120,8 +123,8 @@ const createObservationFlowSlice = ( set, get ) => ( {
   setSavingPhoto: saving => set( { savingPhoto: saving } ),
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
-    rotatedOriginalCameraPhotos:
-      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos
+    cameraUris:
+      options?.cameraUris || state.cameraUris
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,
@@ -165,6 +168,13 @@ const createObservationFlowSlice = ( set, get ) => ( {
   prepareObsEdit: observation => {
     get( ).resetObservationFlowSlice( );
     get( ).updateObservations( [observation] );
+  },
+  prepareCamera: () => {
+    const existingPhotoUris = get( )
+      .currentObservation
+      ?.observationPhotos
+      ?.map( op => ( op.photo.url || op.photo.localFilePath ) ) || [];
+    return set( { evidenceToAdd: [], cameraUris: existingPhotoUris } );
   }
 } );
 

@@ -27,7 +27,7 @@ const useTakePhoto = (
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const setCameraState = useStore( state => state.setCameraState );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
-  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
+  const cameraUris = useStore( state => state.cameraUris );
 
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
@@ -51,22 +51,22 @@ const useTakePhoto = (
     if ( ( addEvidence || currentObservation?.observationPhotos?.length > 0 )
       && !replaceExisting ) {
       setCameraState( {
-        rotatedOriginalCameraPhotos: rotatedOriginalCameraPhotos.concat( [uri] ),
+        cameraUris: cameraUris.concat( [uri] ),
         evidenceToAdd: [...evidenceToAdd, uri]
       } );
     } else {
-      if ( replaceExisting && rotatedOriginalCameraPhotos?.length > 0 ) {
+      if ( replaceExisting && cameraUris?.length > 0 ) {
         // First, need to delete previously-created observation photo (happens when getting into
         // AI camera, snapping photo, then backing out from suggestions screen)
-        const uriToDelete = rotatedOriginalCameraPhotos[0];
+        const uriToDelete = cameraUris[0];
         deletePhotoFromObservation( uriToDelete );
         await ObservationPhoto.deletePhoto( realm, uriToDelete, currentObservation );
       }
 
       setCameraState( {
-        rotatedOriginalCameraPhotos: replaceExisting
+        cameraUris: replaceExisting
           ? [uri]
-          : rotatedOriginalCameraPhotos.concat( [uri] ),
+          : cameraUris.concat( [uri] ),
         evidenceToAdd: replaceExisting
           ? [uri]
           : [...evidenceToAdd, uri]
