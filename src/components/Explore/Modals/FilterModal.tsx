@@ -1089,6 +1089,7 @@ const FilterModal = ( {
             {Object.keys( mediaValues ).map( mediaKey => (
               <RadioButtonRow
                 key={mediaKey}
+                smallLabel
                 value={mediaValues[mediaKey]}
                 checked={mediaValues[mediaKey].value === media}
                 onPress={() => dispatch( {
@@ -1106,6 +1107,7 @@ const FilterModal = ( {
             {Object.keys( establishmentValues ).map( establishmentKey => (
               <RadioButtonRow
                 key={establishmentKey}
+                smallLabel
                 value={establishmentValues[establishmentKey]}
                 checked={
                   establishmentValues[establishmentKey].value
@@ -1127,6 +1129,7 @@ const FilterModal = ( {
             {Object.keys( wildValues ).map( wildKey => (
               <RadioButtonRow
                 key={wildKey}
+                smallLabel
                 value={wildValues[wildKey]}
                 checked={wildValues[wildKey].value === wildStatus}
                 onPress={() => dispatch( {
@@ -1145,6 +1148,7 @@ const FilterModal = ( {
               {Object.keys( reviewedValues ).map( reviewedKey => (
                 <RadioButtonRow
                   key={reviewedKey}
+                  smallLabel
                   value={reviewedValues[reviewedKey]}
                   checked={reviewedValues[reviewedKey].value === reviewedFilter}
                   onPress={() => dispatch( {
