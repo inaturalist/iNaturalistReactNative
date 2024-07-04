@@ -24,9 +24,23 @@ import colors from "styles/tailwindColors";
 const BACKGROUND_IMAGE_STYLE = {
   opacity: 0.33,
   backgroundColor: "black"
-};
+} as const;
 
 const isTablet = DeviceInfo.isTablet();
+
+interface Props {
+  requestPermission: () => void;
+  grantStatus: typeof RESULTS.BLOCKED | null;
+  icon: string;
+  title?: string;
+  titleDenied?: string;
+  body?: string;
+  blockedPrompt?: string;
+  buttonText?: string;
+  image?: number;
+  onClose: () => void;
+  testID?: string;
+}
 
 const PermissionGate = ( {
   requestPermission,
@@ -40,7 +54,7 @@ const PermissionGate = ( {
   image = require( "images/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
   onClose,
   testID
-} ) => (
+}: Props ) => (
   <ViewWrapper wrapperClassName="bg-black" testID={testID}>
     <StatusBar barStyle="light-content" backgroundColor="black" />
     <ImageBackground
