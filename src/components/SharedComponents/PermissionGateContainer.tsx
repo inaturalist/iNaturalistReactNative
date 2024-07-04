@@ -4,7 +4,12 @@ import _ from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
 import { Platform } from "react-native";
 import {
-  checkMultiple, PERMISSIONS, requestMultiple, RESULTS
+  AndroidPermission,
+  checkMultiple,
+  Permission,
+  PERMISSIONS,
+  requestMultiple,
+  RESULTS
 } from "react-native-permissions";
 
 import PermissionGate from "./PermissionGate";
@@ -12,7 +17,7 @@ import PermissionGate from "./PermissionGate";
 const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
 const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
 
-let androidReadPermissions = [
+let androidReadPermissions: AndroidPermission[] = [
   PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION
 ];
 if ( usesAndroid10Permissions ) {
@@ -27,23 +32,23 @@ const androidCameraPermissions = usesAndroid10Permissions
   ? [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
   : [PERMISSIONS.ANDROID.CAMERA];
 
-export const CAMERA_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const CAMERA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.CAMERA]
   : androidCameraPermissions;
 
-export const AUDIO_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const AUDIO_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.MICROPHONE]
   : [...androidReadPermissions, PERMISSIONS.ANDROID.RECORD_AUDIO];
 
-export const READ_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const READ_MEDIA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.PHOTO_LIBRARY]
   : androidReadPermissions;
 
-export const WRITE_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const WRITE_MEDIA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
   : androidReadPermissions;
 
-export const LOCATION_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const LOCATION_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]
   : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
 
@@ -109,7 +114,12 @@ const PermissionGateContainer = ( {
   titleDenied,
   withoutNavigation
 }: Props ) => {
-  const [result, setResult] = useState( null );
+  const [result, setResult] = useState<
+    typeof RESULTS.GRANTED
+    | typeof RESULTS.BLOCKED
+    | typeof RESULTS.DENIED
+    | null
+  >( null );
   const [modalShown, setModalShown] = useState( false );
 
   const navigation = useNavigation();
