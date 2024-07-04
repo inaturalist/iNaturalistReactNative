@@ -3,7 +3,7 @@
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
 import Close from "components/Camera/Buttons/Close";
 import Flash from "components/Camera/Buttons/Flash";
-import TakePhoto from "components/Camera/Buttons/TakePhoto";
+import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
@@ -60,7 +60,7 @@ type Props = {
   setNumStoredResults?: Function,
   showPrediction: boolean,
   showZoomButton: boolean,
-  takePhoto: Function,
+  takePhoto: () => Promise<void>,
   takePhotoOptions: Object,
   toggleFlash: Function,
   zoomTextValue: string

@@ -47,7 +47,7 @@ type Props = {
   rotatableAnimatedStyle: Object,
   showPrediction?: boolean,
   showZoomButton: boolean,
-  takePhoto: Function,
+  takePhoto: () => Promise<void>,
   takePhotoOptions: Object,
   toggleFlash: Function,
   zoomTextValue: string
