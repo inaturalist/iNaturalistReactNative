@@ -31,15 +31,17 @@ const RadioButtonSheet = ( {
   const [checked, setChecked] = useState( selectedValue );
 
   const radioButtonRow = radioRow => (
-    <RadioButtonRow
-      key={radioRow}
-      value={radioValues[radioRow].value}
-      icon={radioValues[radioRow].icon}
-      checked={checked === radioValues[radioRow].value}
-      onPress={() => setChecked( radioValues[radioRow].value )}
-      label={radioValues[radioRow].label}
-      description={radioValues[radioRow].text}
-    />
+    <View className="pb-4">
+      <RadioButtonRow
+        key={radioRow}
+        value={radioValues[radioRow].value}
+        icon={radioValues[radioRow].icon}
+        checked={checked === radioValues[radioRow].value}
+        onPress={() => setChecked( radioValues[radioRow].value )}
+        label={radioValues[radioRow].label}
+        description={radioValues[radioRow].text}
+      />
+    </View>
   );
 
   return (
@@ -48,13 +50,14 @@ const RadioButtonSheet = ( {
       headerText={headerText}
       insideModal={insideModal}
     >
-      <View className="pt-1 px-5 pb-3">
-        {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
+      <View className="p-4 pt-2">
+        <View className="p-3">
+          {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
+        </View>
         <Button
           level="primary"
           onPress={( ) => confirm( checked )}
           text={radioValues[checked]?.buttonText ?? t( "CONFIRM" )}
-          className="mt-7"
           accessibilityLabel={radioValues[checked]?.buttonText ?? t( "CONFIRM" )}
         />
       </View>
