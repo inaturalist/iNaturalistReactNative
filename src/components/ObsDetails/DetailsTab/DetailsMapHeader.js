@@ -20,14 +20,14 @@ const DetailsMapHeader = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   return (
-    <View className="flex-col ml-4">
+    <View className="flex-1 flex-col">
       <ObservationLocation
         observation={observation}
         obscured={obscured}
         withCoordinates
       />
       {obscured && (
-        <Body4 className="italic">
+        <Body4 className="mt-3 italic">
           {t( "Obscured-observation-location-map-description" )}
         </Body4>
       ) }
