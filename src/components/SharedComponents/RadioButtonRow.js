@@ -51,7 +51,7 @@ const RadioButtonRow = ( {
           accessibilityLabel={label}
         />
         <View className="flex-row">
-          <Label className="mr-2">{label}</Label>
+          <Label className="mr-[10px]">{label}</Label>
           {icon && <INatIcon name={icon} size={19} color={theme.colors.secondary} />}
         </View>
       </View>
