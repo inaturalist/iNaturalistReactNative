@@ -25,7 +25,11 @@ const useClearSyncedPhotosForUpload = ( ) => {
     .filter( Boolean );
 
   useEffect( ( ) => {
-    if ( !currentObservations ) {
+    // Ensure we don't clear out photos while we're creating observations.
+    // When imported/share a photo, it may exist on disk before we create an
+    // observation to with it. In that case, that photo will not appear in
+    // unsyncedPhotoFileNames
+    if ( !currentObservations || currentObservations.length === 0 ) {
       removeSyncedFilesFromDirectory( photoUploadPath, unsyncedPhotoFileNames );
     }
   }, [currentObservations, unsyncedPhotoFileNames] );
