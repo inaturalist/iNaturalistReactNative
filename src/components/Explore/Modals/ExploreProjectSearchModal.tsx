@@ -1,7 +1,7 @@
 // @flow
 
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
-import Modal from "components/SharedComponents/Modal";
+import Modal from "components/SharedComponents/Modal.tsx";
 import type { Node } from "react";
 import React from "react";
 

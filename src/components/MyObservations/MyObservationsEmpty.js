@@ -9,7 +9,7 @@ import {
   Heading2
 } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
-import Modal from "components/SharedComponents/Modal";
+import Modal from "components/SharedComponents/Modal.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";

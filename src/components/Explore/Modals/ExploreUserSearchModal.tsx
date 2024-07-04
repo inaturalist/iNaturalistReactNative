@@ -1,7 +1,7 @@
 // @flow
 
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
-import Modal from "components/SharedComponents/Modal";
+import Modal from "components/SharedComponents/Modal.tsx";
 import type { Node } from "react";
 import React from "react";
 
