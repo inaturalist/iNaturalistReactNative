@@ -1,21 +1,19 @@
-// @flow
-
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Modal from "components/SharedComponents/Modal.tsx";
-import type { Node } from "react";
 import React from "react";
 
 interface Props {
-  showModal: boolean,
-  closeModal: Function,
-  updateUser: Function
+  showModal: boolean;
+  closeModal: () => void;
+  // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
+  updateUser: ( _user: any ) => void;
 }
 
 const ExploreUserSearchModal = ( {
   showModal,
   closeModal,
   updateUser
-}: Props ): Node => (
+}: Props ) => (
   <Modal
     showModal={showModal}
     fullScreen
