@@ -57,12 +57,15 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 const { useRealm } = RealmContext;
 
 interface Props {
-  closeModal: Function,
-  filterByIconicTaxonUnknown: Function
-  updateTaxon: Function,
-  updateLocation: Function,
-  updateUser: Function,
-  updateProject: Function
+  closeModal: () => void;
+  filterByIconicTaxonUnknown: () => void;
+  updateTaxon: ( _taxon: Object | null ) => void;
+  // TODO: Param not typed yet, because ExploreLocationSearch is not typed yet
+  updateLocation: ( _location: any ) => void;
+  // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
+  updateUser: ( _user: any ) => void;
+  // TODO: Param not typed yet, because ExploreProjectSearch is not typed yet
+  updateProject: ( _project: any ) => void;
 }
 
 const FilterModal = ( {
