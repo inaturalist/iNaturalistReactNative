@@ -1,5 +1,4 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import PermissionGateContainer, {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple,
@@ -15,7 +14,6 @@ import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import {
   checkMultiple,
-  Permission,
   RESULTS
 } from "react-native-permissions";
 import { Camera, CameraDevice } from "react-native-vision-camera";
@@ -165,13 +163,13 @@ const CameraWithDevice = ( {
   useEffect( ( ) => {
     async function checkLocationPermissions() {
       const permissionsResult = permissionResultFromMultiple(
-        await checkMultiple( LOCATION_PERMISSIONS as Permission[] )
+        await checkMultiple( LOCATION_PERMISSIONS )
       );
       if ( permissionsResult === RESULTS.GRANTED ) {
         setLocationPermissionGranted( true );
       } else {
         console.warn(
-          "Location permissions have not been granted. You probably need to use a PermissionGate"
+          "Location permissions have not been granted."
         );
       }
     }
@@ -183,37 +181,19 @@ const CameraWithDevice = ( {
       className={`flex-1 bg-black ${flexDirection}`}
       testID="CameraWithDevice"
     >
-      {/* TODO why is this even here? The camera doesn't need location
-      permissions. Suggestions does. ~~~~kueda20240611 */}
-      {/* a weird quirk of react-native-modal is you can show subsequent modals
-        when a modal is nested in another modal. location permission is shown first
-        because the save photo modal pops up a second system alert on iOS asking
-        how much access to give */}
-      <LocationPermissionGate
-        permissionNeeded={checkmarkTapped}
+      <PermissionGateContainer
+        permissions={WRITE_MEDIA_PERMISSIONS}
+        titleDenied={t( "Save-photos-to-your-gallery" )}
+        body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery" )}
+        buttonText={t( "SAVE-PHOTOS" )}
+        icon="gallery"
+        image={require( "images/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
+        onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
+        onPermissionGranted={onPhotoPermissionGranted}
+        onPermissionDenied={onPhotoPermissionDenied}
         withoutNavigation
-        onPermissionGranted={( ) => {
-          // This probably doesn't do anything, but on the off chance we're
-          // able to grab coordinates immediately after the user grants
-          // permission, that will probably yield better suggestions on the
-          // next screen than nothing.
-          setLocationPermissionGranted( true );
-        }}
-      >
-        <PermissionGateContainer
-          permissions={WRITE_MEDIA_PERMISSIONS}
-          titleDenied={t( "Save-photos-to-your-gallery" )}
-          body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery" )}
-          buttonText={t( "SAVE-PHOTOS" )}
-          icon="gallery"
-          image={require( "images/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
-          onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
-          onPermissionGranted={onPhotoPermissionGranted}
-          onPermissionDenied={onPhotoPermissionDenied}
-          withoutNavigation
-          permissionNeeded={checkmarkTapped}
-        />
-      </LocationPermissionGate>
+        permissionNeeded={checkmarkTapped}
+      />
       {cameraType === "Standard"
         ? (
           <StandardCamera
