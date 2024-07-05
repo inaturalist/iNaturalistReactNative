@@ -56,7 +56,8 @@ type Props = {
   updateTaxon: Function,
   updateLocation: Function,
   updateUser: Function,
-  updateProject: Function
+  updateProject: Function,
+  hasLocationPermissions: ?boolean
 }
 
 const Explore = ( {
@@ -73,7 +74,8 @@ const Explore = ( {
   updateTaxon,
   updateLocation,
   updateUser,
-  updateProject
+  updateProject,
+  hasLocationPermissions
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );

@@ -14,6 +14,7 @@ import React, {
   useState
 } from "react";
 import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
@@ -27,6 +28,14 @@ const RootExploreContainerWithContext = ( ): Node => {
   const currentUser = useCurrentUser( );
   const rootStoredParams = useStore( state => state.rootStoredParams );
   const setRootStoredParams = useStore( state => state.setRootStoredParams );
+  const {
+    hasPermissions: hasLocationPermissions,
+    renderPermissionsGate,
+    requestPermission
+  } = useLocationPermission( );
+
+  console.log( "requestPermission", requestPermission );
+  console.log( "LocationPermissionGate", LocationPermissionGate );
 
   const worldwidePlaceText = t( "Worldwide" );
 
@@ -100,6 +109,7 @@ const RootExploreContainerWithContext = ( ): Node => {
     defaultExploreLocation,
     dispatch
   ] );
+  console.log( "onPermissionGranted", onPermissionGranted );
 
   const resetToWorldWide = useCallback( ( ) => {
     dispatch( {
@@ -107,6 +117,7 @@ const RootExploreContainerWithContext = ( ): Node => {
       placeGuess: worldwidePlaceText
     } );
   }, [dispatch, worldwidePlaceText] );
+  console.log( "resetToWorldWide", resetToWorldWide );
 
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
@@ -141,14 +152,16 @@ const RootExploreContainerWithContext = ( ): Node => {
         updateLocation={updateLocation}
         updateUser={updateUser}
         updateProject={updateProject}
+        hasLocationPermissions={hasLocationPermissions}
       />
-      <LocationPermissionGate
+      {renderPermissionsGate( )}
+      {/* <LocationPermissionGate
         permissionNeeded
         onPermissionGranted={onPermissionGranted}
         onPermissionDenied={resetToWorldWide}
         onPermissionBlocked={resetToWorldWide}
         withoutNavigation
-      />
+      /> */}
     </>
   );
 };

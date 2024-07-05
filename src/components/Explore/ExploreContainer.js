@@ -110,6 +110,7 @@ const ExploreContainerWithContext = ( ): Node => {
       updateLocation={updateLocation}
       updateUser={updateUser}
       updateProject={updateProject}
+      hasLocationPermissions={undefined}
     />
   );
 };
