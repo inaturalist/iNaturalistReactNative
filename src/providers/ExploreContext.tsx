@@ -305,7 +305,7 @@ const defaultFilters = {
 const initialState: State = {
   ...defaultFilters,
   place: undefined,
-  place_guess: "",
+  place_guess: t( "Nearby" ),
   place_id: undefined,
   return_bounds: true,
   taxon: undefined,
