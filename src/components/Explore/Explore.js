@@ -107,6 +107,52 @@ const Explore = ( {
     />
   );
 
+  const renderMainContent = ( ) => {
+    if ( !isOnline ) {
+      return (
+        <OfflineNotice
+          onPress={() => refresh()}
+        />
+      );
+    }
+    return (
+      <View className="flex-1">
+        {currentExploreView === "observations" && (
+          <ObservationsView
+            count={count}
+            layout={layout}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+        {currentExploreView === "species" && (
+          <SpeciesView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+        {currentExploreView === "observers" && (
+          <ObserversView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+        {currentExploreView === "identifiers" && (
+          <IdentifiersView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+      </View>
+    );
+  };
+
   const renderSheet = () => {
     if ( !showExploreBottomSheet ) {
       return null;
@@ -170,48 +216,7 @@ const Explore = ( {
               updateObservationsView={writeLayoutToStorage}
             />
           )}
-          { isOnline
-            ? (
-              <View className="flex-1">
-                {currentExploreView === "observations" && (
-                  <ObservationsView
-                    count={count}
-                    layout={layout}
-                    queryParams={queryParams}
-                    updateCount={updateCount}
-                  />
-                )}
-                {currentExploreView === "species" && (
-                  <SpeciesView
-                    count={count}
-                    isOnline={isOnline}
-                    queryParams={queryParams}
-                    updateCount={updateCount}
-                  />
-                )}
-                {currentExploreView === "observers" && (
-                  <ObserversView
-                    count={count}
-                    isOnline={isOnline}
-                    queryParams={queryParams}
-                    updateCount={updateCount}
-                  />
-                )}
-                {currentExploreView === "identifiers" && (
-                  <IdentifiersView
-                    count={count}
-                    isOnline={isOnline}
-                    queryParams={queryParams}
-                    updateCount={updateCount}
-                  />
-                )}
-              </View>
-            )
-            : (
-              <OfflineNotice
-                onPress={() => refresh()}
-              />
-            )}
+          {renderMainContent()}
           {isDebug && (
             <INatIconButton
               icon="triangle-exclamation"
