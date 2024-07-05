@@ -4,6 +4,8 @@ import { refresh } from "@react-native-community/netinfo";
 import classnames from "classnames";
 import ExploreFiltersModal from "components/Explore/Modals/ExploreFiltersModal";
 import {
+  Body2,
+  Button,
   INatIconButton,
   OfflineNotice,
   RadioButtonSheet,
@@ -115,6 +117,23 @@ const Explore = ( {
         <OfflineNotice
           onPress={() => refresh()}
         />
+      );
+    }
+    // Undefined means we haven't checked for location permissions yet
+    if ( hasLocationPermissions === false ) {
+      return (
+        <View className="flex-1 justify-center p-4">
+          <View className="items-center">
+            <Body2>{t( "To-view-nearby-organisms-please-enable-location" )}</Body2>
+          </View>
+          <Button
+            className="mt-5"
+            text={t( "ALLOW-LOCATION-ACCESS" )}
+            accessibilityHint={t( "Opens-location-permission-prompt" )}
+            level="focus"
+            onPress={( ) => console.log( "press" )}
+          />
+        </View>
       );
     }
     return (
