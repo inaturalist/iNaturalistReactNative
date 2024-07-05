@@ -9,7 +9,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import {
   checkMultiple,
-  Permission,
   RESULTS
 } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
@@ -64,7 +63,7 @@ function useUserLocation(
   useEffect( ( ) => {
     async function checkPermissions() {
       const permissionsResult = permissionResultFromMultiple(
-        await checkMultiple( LOCATION_PERMISSIONS as Permission[] )
+        await checkMultiple( LOCATION_PERMISSIONS )
       );
       if ( permissionsResult === RESULTS.GRANTED ) {
         setPermissionsGranted( true );
