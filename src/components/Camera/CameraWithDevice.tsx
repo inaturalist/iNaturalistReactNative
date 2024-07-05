@@ -3,8 +3,7 @@ import PermissionGateContainer, {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS
-}
-  from "components/SharedComponents/PermissionGateContainer.tsx";
+} from "components/SharedComponents/PermissionGateContainer.tsx";
 import { View } from "components/styledComponents";
 import React, {
   useCallback, useEffect, useRef, useState
