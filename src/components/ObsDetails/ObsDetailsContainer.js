@@ -392,7 +392,7 @@ const ObsDetailsContainer = ( ): Node => {
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
     if ( hasPhotos ) {
-      navigation.push( "Suggestions", { lastScreen: "ObsDetails" } );
+      navigation.push( "Suggestions", { entryScreen: "ObsDetails", lastScreen: "ObsDetails" } );
     } else {
       // Go directly to taxon search in case there are no photos
       navigation.navigate( "TaxonSearch", { lastScreen: "ObsDetails" } );

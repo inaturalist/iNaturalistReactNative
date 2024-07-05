@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Body2,
   Body3,
@@ -32,6 +32,8 @@ const SuggestionsHeader = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const { params } = useRoute( );
+  const { entryScreen } = params;
   const theme = useTheme( );
 
   const {
@@ -45,10 +47,12 @@ const SuggestionsHeader = ( {
   const headerRight = useCallback( ( ) => (
     <INatIconButton
       icon="magnifying-glass"
-      onPress={( ) => navigation.navigate( "TaxonSearch", { lastScreen: "Suggestions" } )}
+      onPress={
+        ( ) => navigation.navigate( "TaxonSearch", { entryScreen, lastScreen: "Suggestions" } )
+      }
       accessibilityLabel={t( "Search" )}
     />
-  ), [navigation, t] );
+  ), [entryScreen, navigation, t] );
 
   useEffect( ( ) => {
     navigation.setOptions( { headerRight } );

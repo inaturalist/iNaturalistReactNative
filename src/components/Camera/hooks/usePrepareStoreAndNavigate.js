@@ -163,6 +163,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
       return navigation.goBack( );
     }
     return navigation.push( "Suggestions", {
+      entryScreen: "CameraWithDevice",
       lastScreen: "CameraWithDevice"
     } );
   }, [
