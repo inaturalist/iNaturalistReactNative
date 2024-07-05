@@ -69,8 +69,7 @@ type Props = {
   showSuggestIdSheet: boolean,
   suggestIdSheetDiscardChanges: Function,
   tabs: Array<Object>,
-  taxonForAgreement: ?Object,
-  taxonForDisagreement: ?Object
+  taxonForSuggestion: ?Object
 }
 
 const ObsDetails = ( {
@@ -104,8 +103,7 @@ const ObsDetails = ( {
   showSuggestIdSheet,
   suggestIdSheetDiscardChanges,
   tabs,
-  taxonForAgreement,
-  taxonForDisagreement
+  taxonForSuggestion
 }: Props ): Node => {
   const insets = useSafeAreaInsets();
   const { params } = useRoute( );
@@ -283,7 +281,7 @@ const ObsDetails = ( {
           handleClose={closeAgreeWithIdSheet}
           onAgree={onAgree}
           openAddCommentSheet={openAddCommentSheet}
-          taxon={taxonForAgreement}
+          taxon={taxonForSuggestion}
         />
       )}
       {/* AddCommentSheet */}
@@ -306,9 +304,9 @@ const ObsDetails = ( {
       )}
       {showPotentialDisagreementSheet && (
         <PotentialDisagreementSheet
-          confirm={onPotentialDisagreePressed}
+          onPotentialDisagreePressed={onPotentialDisagreePressed}
           handleClose={potentialDisagreeSheetDiscardChanges}
-          taxon={taxonForDisagreement}
+          taxon={taxonForSuggestion}
         />
       )}
       {/*

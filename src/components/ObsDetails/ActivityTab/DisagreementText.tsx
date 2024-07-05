@@ -1,17 +1,22 @@
 import { Body4 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
+import { Trans } from "react-i18next";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
-import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-    taxon:Object,
-    username:string,
+    taxon:{
+        id: number;
+        name: string;
+        preferred_common_name?: string;
+        rank: string;
+        rank_level: number;
+      },
+    username: string,
     withdrawn?: boolean
 }
 
 const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
-  const { t } = useTranslation( );
   const taxonPojo = typeof ( taxon.toJSON ) === "function"
     ? taxon.toJSON( )
     : taxon;
@@ -20,20 +25,25 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
     scientificName
   } = generateTaxonPieces( taxonPojo );
 
-  // TODO add italics and styling to scientific name
-
   if ( withdrawn ) {
     return (
-      <Body4 className="line-through">
-        {t( "Disagreement", { username, commonName, scientificName } )}
-      </Body4>
+      <Trans
+        i18nKey="Disagreement"
+        values={{ username, commonName, scientificName }}
+        components={[
+          <Body4 className="line-through" />,
+          <Body4 className="line-through italic" />
+        ]}
+      />
     );
   }
 
   return (
-    <Body4>
-      {t( "Disagreement", { username, commonName, scientificName } )}
-    </Body4>
+    <Trans
+      i18nKey="Disagreement"
+      values={{ username, commonName, scientificName }}
+      components={[<Body4 />, <Body4 className="italic" />]}
+    />
   );
 };
 

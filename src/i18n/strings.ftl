@@ -288,7 +288,7 @@ Deleting-x-of-y-observations =
 DETAILS = DETAILS
 # Button that disables the camera's flash
 Disable-flash = Disable flash
-Disagreement = @{ $username } disagrees this is { $commonName } ({ $scientificName })
+Disagreement = <0>*@{ $username } disagrees this is { $commonName } (</0><1>{ $scientificName })</1>
 # Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
 # Button that discards all items, e.g. imported photos
@@ -693,9 +693,9 @@ Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
 POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
-Potential-disagreement-description = <0>Is the  evidence enough to confirm this is { $commonName }(</0><1>{ $scientificName }</1><0>)?</0>
-Potential-disagreement-disagree = No, but this is a member of { $commonName }({ $scientificName })
-Potential-disagreement-unsure = I don't know but I am sure this is { $commonName }({ $scientificName })
+Potential-disagreement-description = <0>Is the evidence enough to confirm this is { $commonName }(</0><1>{ $scientificName }</1><0>)?<0>
+Potential-disagreement-disagree = <0>No, but this is a member of { $commonName }(</0><1>{ $scientificName }</1><0>)</0>
+Potential-disagreement-unsure = <0>I don't know but I am sure this is { $commonName }(</0><1>{ $scientificName }</1><0>)</0>
 # Help text for beginning a sound recording
 Press-record-to-start = Press record to start
 Previous-observation = Previous observation

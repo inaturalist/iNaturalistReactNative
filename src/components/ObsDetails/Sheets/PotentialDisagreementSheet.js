@@ -1,87 +1,60 @@
 // @flow
 
 import {
-  BottomSheet,
-  Button,
-  DisplayTaxon,
-  List2,
-  RadioButtonRow
+  RadioButtonSheet
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
-import { Trans } from "react-i18next";
+import React from "react";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
   handleClose: Function,
-  confirm: Function,
+  onPotentialDisagreePressed: Function,
   taxon: Object
 }
 
 const PotentialDisagreementSheet = ( {
   handleClose,
-  confirm,
+  onPotentialDisagreePressed,
   taxon
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const [checked, setChecked] = useState( "none" );
 
   const taxonPojo = typeof ( taxon.toJSON ) === "function"
     ? taxon.toJSON( )
     : taxon;
   const {
     commonName,
+    rank,
     scientificName
   } = generateTaxonPieces( taxonPojo );
 
   const radioValues = {
     unsure: {
-      label: t( "Potential-disagreement-unsure", { commonName, scientificName } ),
+      label: t( "Potential-disagreement-unsure", { commonName, rank, scientificName } ),
       value: false
     },
     disagree: {
-      label: t( "Potential-disagreement-disagree", { commonName, scientificName } ),
+      label: t( "Potential-disagreement-disagree", { commonName, rank, scientificName } ),
       value: true
     }
   };
 
-  const radioButtonRow = radioRow => (
-    <RadioButtonRow
-      classNames="mt-4"
-      key={radioRow}
-      value={radioValues[radioRow].value}
-      checked={checked === radioValues[radioRow].value}
-      onPress={() => setChecked( radioValues[radioRow].value )}
-      label={radioValues[radioRow].label}
-    />
-  );
-
   return (
-    <BottomSheet
-      handleClose={handleClose}
+    <RadioButtonSheet
+      buttonRowClassName="mt-4"
       headerText={t( "POTENTIAL-DISAGREEMENT" )}
-    >
-      <View className="p-5 space-y-4">
-        <Trans
-          i18nKey="Potential-disagreement-description"
-          values={{ commonName, scientificName }}
-          components={[<List2 />, <List2 className="italic" />]}
-        />
-        {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
-        <View className="mx-6">
-          <DisplayTaxon taxon={taxon} />
-        </View>
-        <Button
-          level="primary"
-          onPress={( ) => confirm( checked )}
-          text={t( "SUBMIT-ID-SUGGESTION" )}
-          className="mt-[15px]"
-          accessibilityLabel={t( "SUBMIT-ID-SUGGESTION" )}
-        />
-      </View>
-    </BottomSheet>
+      confirm={checkBoxValue => {
+        onPotentialDisagreePressed( checkBoxValue );
+        handleClose( );
+      }}
+      confirmText={t( "SUBMIT-ID-SUGGESTION" )}
+      handleClose={handleClose}
+      radioValues={radioValues}
+      selectedValue={radioValues.unsure.value}
+      taxon={taxon}
+    />
   );
 };
 

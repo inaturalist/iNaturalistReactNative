@@ -20,8 +20,6 @@ const useNavigateWithTaxonSelected = (
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const vision = options?.vision;
 
-  // console.log( vision, selectedTaxon, "vision and selected taxon", currentObservation );
-
   useEffect( ( ) => {
     if ( !selectedTaxon ) { return; }
 
@@ -38,8 +36,14 @@ const useNavigateWithTaxonSelected = (
     if ( lastScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
-        suggestedTaxonId: selectedTaxon.id,
-        taxon: selectedTaxon
+        suggestedTaxon: {
+          id: selectedTaxon.id,
+          default_photo: selectedTaxon.default_photo,
+          rank: selectedTaxon.rank,
+          rank_level: selectedTaxon.rank_level,
+          preferred_common_name: selectedTaxon.preferred_common_name,
+          name: selectedTaxon.name
+        }
       } );
     } else if ( lastScreen === "ObsEdit" ) {
       navigation.goBack( );

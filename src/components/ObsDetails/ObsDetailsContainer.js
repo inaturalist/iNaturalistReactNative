@@ -55,8 +55,7 @@ const initialState = {
   showAddCommentSheet: false,
   showPotentialDisagreementSheet: false,
   showSuggestIdSheet: false,
-  taxonForAgreement: null,
-  taxonForDisagreement: null
+  taxonForSuggestion: null // taxon for agree and disagree
 };
 
 const reducer = ( state, action ) => {
@@ -89,7 +88,7 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         showAgreeWithIdSheet: action.showAgreeWithIdSheet,
-        taxonForAgreement: action.taxonForAgreement || state.taxonForAgreement,
+        taxonForSuggestion: action.taxonForSuggestion || state.taxonForSuggestion,
         comment: action.comment || state.comment
       };
     case "SHOW_ADD_COMMENT_SHEET":
@@ -112,7 +111,12 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         showPotentialDisagreementSheet: action.showPotentialDisagreementSheet,
-        taxonForDisagreement: action.taxonForDisagreement
+        taxonForSuggestion: action.taxonForSuggestion
+      };
+    case "CLEAR_TAXON":
+      return {
+        ...state,
+        taxonForSuggestion: action.taxonForSuggestion
       };
     default:
       throw new Error( );
@@ -128,8 +132,7 @@ const ObsDetailsContainer = ( ): Node => {
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
-    suggestedTaxonId,
-    taxon,
+    suggestedTaxon,
     uuid
   } = params;
   const navigation = useNavigation( );
@@ -150,8 +153,7 @@ const ObsDetailsContainer = ( ): Node => {
     showAgreeWithIdSheet,
     showAddCommentSheet,
     showSuggestIdSheet,
-    taxonForAgreement,
-    taxonForDisagreement,
+    taxonForSuggestion,
     showPotentialDisagreementSheet
   } = state;
   const queryClient = useQueryClient( );
@@ -337,6 +339,7 @@ const ObsDetailsContainer = ( ): Node => {
           if ( uuid ) {
             const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
             dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+            dispatch( { type: "CLEAR_TAXON", taxonForSuggestion: null } );
           }
         }
       },
@@ -367,24 +370,24 @@ const ObsDetailsContainer = ( ): Node => {
     }
     if (
       observationTaxon
-      && suggestedTaxonId !== observationTaxon.id
-      && observationTaxon.ancestor_ids.includes( suggestedTaxonId )
+      && suggestedTaxon.id !== observationTaxon.id
+      && observationTaxon.ancestor_ids.includes( suggestedTaxon.id )
     ) {
       dispatch( {
         type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
         showPotentialDisagreementSheet: true,
-        taxonForDisagreement: taxon
+        taxonForSuggestion: suggestedTaxon
       } );
     } else {
       openSuggestIdSheet();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [suggestedTaxonId] );
+  }, [suggestedTaxon] );
 
   useEffect( () => {
-    if ( !suggestedTaxonId ) return;
+    if ( !suggestedTaxon ) return;
     onIDAdded( );
-  }, [onIDAdded, openSuggestIdSheet, suggestedTaxonId] );
+  }, [onIDAdded, openSuggestIdSheet, suggestedTaxon] );
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
@@ -408,7 +411,6 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( {
       type: "SHOW_AGREE_SHEET",
       showAgreeWithIdSheet: false,
-      taxonForAgreement: null,
       comment: null
     } );
   };
@@ -416,7 +418,7 @@ const ObsDetailsContainer = ( ): Node => {
   const onAgree = newComment => {
     const agreeParams = {
       observation_id: observation?.uuid,
-      taxon_id: taxonForAgreement?.id,
+      taxon_id: taxonForSuggestion?.id,
       body: newComment
     };
 
@@ -429,13 +431,14 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( {
       type: "SHOW_AGREE_SHEET",
       showAgreeWithIdSheet: true,
-      taxonForAgreement: agreeTaxon
+      taxonForSuggestion: agreeTaxon
     } );
   };
   const potentialDisagreeSheetDiscardChanges = ( ) => {
     dispatch( {
       type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
-      showPotentialDisagreementSheet: false
+      showPotentialDisagreementSheet: false,
+      taxonForSuggestion: null
     } );
   };
 
@@ -444,7 +447,7 @@ const ObsDetailsContainer = ( ): Node => {
     // New taxon identification added by user
     const idParams = {
       observation_id: uuid,
-      taxon_id: suggestedTaxonId,
+      taxon_id: suggestedTaxon.id,
       vision,
       disagreement: potentialDisagree
     };
@@ -459,7 +462,8 @@ const ObsDetailsContainer = ( ): Node => {
   };
 
   const onSuggestId = useCallback( ( ) => {
-    // check for disagreement
+    // based on disagreement code in iNat web
+    // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
     let observationTaxon = observation.taxon;
     if (
       observation.prefers_community_taxon === false
@@ -470,19 +474,19 @@ const ObsDetailsContainer = ( ): Node => {
     }
     if (
       observationTaxon
-      && suggestedTaxonId !== observationTaxon.id
-      && observationTaxon.ancestor_ids.includes( suggestedTaxonId )
+      && suggestedTaxon.id !== observationTaxon.id
+      && observationTaxon.ancestor_ids.includes( suggestedTaxon.id )
     ) {
       dispatch( {
         type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
         showPotentialDisagreementSheet: true,
-        taxonForDisagreement: taxon
+        taxonForSuggestion: suggestedTaxon
       } );
     } else {
       doSuggestId();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [suggestedTaxonId] );
+  }, [suggestedTaxon] );
 
   const onPotentialDisagreePressed = potentialDisagree => {
     dispatch( {
@@ -493,20 +497,24 @@ const ObsDetailsContainer = ( ): Node => {
   };
 
   const suggestIdSheetDiscardChanges = ( ) => {
-    dispatch( { type: "SHOW_SUGGEST_ID_SHEET", showSuggestIdSheet: false } );
+    dispatch( {
+      type: "SHOW_SUGGEST_ID_SHEET",
+      showSuggestIdSheet: false,
+      taxonForSuggestion: null
+    } );
   };
 
   const confirmCommentFromCommentSheet = newComment => {
     if ( !commentIsOptional ) {
       onCommentAdded( newComment );
-    } else if ( suggestedTaxonId ) {
+    } else if ( taxonForSuggestion ) {
+      dispatch( { type: "SET_COMMENT", comment: newComment } );
+      openAgreeWithIdSheet( taxonForSuggestion );
+    } else {
       updateObservationKeys( {
         description: newComment
       } );
       openSuggestIdSheet( );
-    } else {
-      dispatch( { type: "SET_COMMENT", comment: newComment } );
-      openAgreeWithIdSheet( taxonForAgreement );
     }
   };
 
@@ -544,8 +552,7 @@ const ObsDetailsContainer = ( ): Node => {
       suggestIdSheetDiscardChanges={suggestIdSheetDiscardChanges}
       showPotentialDisagreementSheet={showPotentialDisagreementSheet}
       tabs={tabs}
-      taxonForAgreement={taxonForAgreement}
-      taxonForDisagreement={taxonForDisagreement}
+      taxonForSuggestion={taxonForSuggestion}
     />
   );
 };

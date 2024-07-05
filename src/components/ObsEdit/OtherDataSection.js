@@ -54,7 +54,6 @@ const OtherDataSection = ( {
     .find( e => e.value === currentObservation?.geoprivacy );
   const currentCaptiveStatus = captiveOptions
     .find( e => e.value === currentObservation?.captive_flag );
-
   return (
     <View className="mx-5 mt-6">
       {showGeoprivacySheet && (
