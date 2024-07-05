@@ -1,5 +1,4 @@
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-// import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import _ from "lodash";
 import React, {
   useCallback,
@@ -10,6 +9,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
   useIsConnected
 } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
@@ -48,9 +48,13 @@ const SuggestionsContainer = ( ) => {
     ...initialSuggestions,
     showSuggestionsWithLocation: evidenceHasLocation
   } );
-  // const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
+  const { hasPermissions, renderPermissionsGate, requestPermission } = useLocationPermission( );
+  const showImproveWithLocationButton = hasPermissions === false;
   // const showImproveWithLocationButton = !evidenceHasLocation
   //   && params?.lastScreen === "CameraWithDevice";
+  const improveWithLocationButtonOnPress = useCallback( ( ) => {
+    requestPermission( );
+  }, [requestPermission] );
 
   const {
     showSuggestionsWithLocation,
@@ -241,13 +245,7 @@ const SuggestionsContainer = ( ) => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
-      {/* <LocationPermissionGate
-        permissionNeeded={locationPermissionNeeded}
-        withoutNavigation
-        onPermissionGranted={( ) => console.log( "permission granted" )}
-        onPermissionDenied={( ) => console.log( "permission denied" )}
-        onPermissionBlocked={( ) => console.log( "permission blocked" )}
-      /> */}
+      {renderPermissionsGate()}
     </>
   );
 };
