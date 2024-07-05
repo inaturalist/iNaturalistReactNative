@@ -6,6 +6,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useCurrentUser } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -31,8 +32,14 @@ const ObsEdit = ( ): Node => {
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
   const isFocused = useIsFocused( );
+  const currentUser = useCurrentUser( );
 
   if ( !isFocused ) return null;
+
+  // This should never, ever happen
+  if ( currentObservation?.user && currentUser && currentUser.id !== currentObservation.user.id ) {
+    throw new Error( "User tried to edit observation they do not own" );
+  }
 
   return (
     <>

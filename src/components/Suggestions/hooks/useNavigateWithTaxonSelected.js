@@ -14,7 +14,7 @@ const useNavigateWithTaxonSelected = (
 ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { lastScreen } = params;
+  const { entryScreen } = params;
   const currentObservation = useStore( state => state.currentObservation );
   const comment = useStore( state => state.comment );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
@@ -35,22 +35,23 @@ const useNavigateWithTaxonSelected = (
     // because a user can arrive on Suggestions/TaxonSearch
     // in two different ways from ObsDetails -> they can land directly on the Suggestions
     // screen (by adding an id) or they can first land on ObsEdit (by tapping the edit button)
-    if ( lastScreen === "ObsDetails" ) {
+    if ( entryScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
         suggestedTaxonId: selectedTaxon.id
       } );
-    } else if ( lastScreen === "ObsEdit" ) {
+    } else if ( entryScreen === "ObsEdit" ) {
       navigation.goBack( );
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }
+
     // If we've navigated, there's no need to run this effect again
     unselectTaxon( );
   }, [
     comment,
     currentObservation?.uuid,
-    lastScreen,
+    entryScreen,
     navigation,
     selectedTaxon,
     unselectTaxon,

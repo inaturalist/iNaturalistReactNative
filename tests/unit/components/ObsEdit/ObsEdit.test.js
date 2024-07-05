@@ -14,6 +14,13 @@ jest.mock( "sharedHooks/useCurrentObservationLocation", () => ( {
   } )
 } ) );
 
+const mockUser = factory( "LocalUser" );
+
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockUser
+} ) );
+
 jest.mock( "components/ObsEdit/BottomButtons" );
 jest.mock( "components/SharedComponents/IconicTaxonChooser" );
 jest.mock( "components/ObsEdit/Sheets/AddEvidenceSheet" );

@@ -53,10 +53,10 @@ const IdentificationSection = ( {
 
   const navToSuggestions = useCallback( ( ) => {
     if ( hasPhotos ) {
-      navigation.push( "Suggestions", { lastScreen: "ObsEdit" } );
+      navigation.push( "Suggestions", { entryScreen: "ObsEdit", lastScreen: "ObsEdit" } );
     } else {
       // Go directly to taxon search in case there are no photos
-      navigation.navigate( "TaxonSearch", { lastScreen: "ObsEdit" } );
+      navigation.navigate( "TaxonSearch", { entryScreen: "ObsEdit", lastScreen: "ObsEdit" } );
     }
   }, [hasPhotos, navigation] );
 
