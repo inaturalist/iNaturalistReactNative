@@ -1,7 +1,6 @@
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 // import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import _ from "lodash";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -31,7 +30,7 @@ const initialSuggestions = {
   isLoading: true
 };
 
-const SuggestionsContainer = ( ): Node => {
+const SuggestionsContainer = ( ) => {
   const isOnline = useIsConnected( );
   // clearing the cache of resized images for the score_image API
   // placing this here means we can keep the app size small
@@ -232,8 +231,8 @@ const SuggestionsContainer = ( ): Node => {
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
-        // setLocationPermissionNeeded={setLocationPermissionNeeded}
-        // showImproveWithLocationButton={showImproveWithLocationButton}
+        improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
+        showImproveWithLocationButton={showImproveWithLocationButton}
         suggestions={suggestions}
       />
       <MediaViewerModal
