@@ -1,8 +1,7 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import {
   Body2,
   Body3,
-  // Button,
   INatIcon,
   INatIconButton
 } from "components/SharedComponents";
@@ -21,9 +20,7 @@ type Props = {
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  suggestions: Object,
-  // setLocationPermissionNeeded: Function,
-  // showImproveWithLocationButton: boolean
+  suggestions: Object
 };
 
 const SuggestionsHeader = ( {
@@ -32,13 +29,9 @@ const SuggestionsHeader = ( {
   reloadSuggestions,
   selectedPhotoUri,
   suggestions
-  // setLocationPermissionNeeded,
-  // showImproveWithLocationButton,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const { lastScreen } = params;
   const theme = useTheme( );
 
   const {
@@ -52,10 +45,10 @@ const SuggestionsHeader = ( {
   const headerRight = useCallback( ( ) => (
     <INatIconButton
       icon="magnifying-glass"
-      onPress={( ) => navigation.navigate( "TaxonSearch", { lastScreen } )}
+      onPress={( ) => navigation.navigate( "TaxonSearch", { lastScreen: "Suggestions" } )}
       accessibilityLabel={t( "Search" )}
     />
-  ), [navigation, lastScreen, t] );
+  ), [navigation, t] );
 
   useEffect( ( ) => {
     navigation.setOptions( { headerRight } );
