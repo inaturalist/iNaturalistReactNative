@@ -1,7 +1,5 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import PermissionGateContainer, {
-  LOCATION_PERMISSIONS,
-  permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer.tsx";
 import { View } from "components/styledComponents";
@@ -11,10 +9,6 @@ import React, {
 import { StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-import {
-  checkMultiple,
-  RESULTS
-} from "react-native-permissions";
 import { Camera, CameraDevice } from "react-native-vision-camera";
 // import { log } from "sharedHelpers/logger";
 import { useTranslation } from "sharedHooks";
@@ -22,6 +16,7 @@ import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT
 } from "sharedHooks/useDeviceOrientation.ts";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
 import AICamera from "./AICamera/AICamera";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
@@ -66,7 +61,16 @@ const CameraWithDevice = ( {
   // permission gate on ObsEdit
   const [addPhotoPermissionGateWasClosed, setAddPhotoPermissionGateWasClosed] = useState( false );
   const isFocused = useIsFocused( );
-  const [locationPermissionGranted, setLocationPermissionGranted] = useState( false );
+
+  // Check if location permission granted b/c usePrepareStoreAndNavigate and
+  // useUserLocation need to know if permission has been granted to fetch the
+  // user's location while the camera is active. We don't want to *ask* for
+  // permission here b/c we want to avoid overloading a new user with
+  // permission requests and they will just have seen the camera permission
+  // request before landing here, so it's ok if we're not fetching the
+  // location here for the user's first observation (suggestions might be a
+  // bit off and we'll fetch the obs coordinates on ObsEdit)
+  const { hasPermissions } = useLocationPermission( );
 
   // logger.debug( `isFocused: ${isFocused}` );
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( {
@@ -77,7 +81,7 @@ const CameraWithDevice = ( {
     // up and use that to pass along to Suggestions when the user navigates
     // there... but we only want to do that while the camera has focus and we
     // have permission
-    shouldFetchLocation: isFocused && locationPermissionGranted
+    shouldFetchLocation: isFocused && !!hasPermissions
   } );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
@@ -150,30 +154,6 @@ const CameraWithDevice = ( {
     } );
     return unsubscribe;
   }, [navigation] );
-
-  // Check if location permission granted b/c usePrepareStoreAndNavigate and
-  // useUserLocation need to know if permission has been granted to fetch the
-  // user's location while the camera is active. We don't want to *ask* for
-  // permission here b/c we want to avoid overloading a new user with
-  // permission requests and they will just have seen the camera permission
-  // request before landing here, so it's ok if we're not fetching the
-  // location here for the user's first observation (suggestions might be a
-  // bit off and we'll fetch the obs coordinates on ObsEdit)
-  useEffect( ( ) => {
-    async function checkLocationPermissions() {
-      const permissionsResult = permissionResultFromMultiple(
-        await checkMultiple( LOCATION_PERMISSIONS )
-      );
-      if ( permissionsResult === RESULTS.GRANTED ) {
-        setLocationPermissionGranted( true );
-      } else {
-        console.warn(
-          "Location permissions have not been granted."
-        );
-      }
-    }
-    checkLocationPermissions( );
-  }, [] );
 
   return (
     <View
