@@ -17,15 +17,24 @@ import PermissionGate from "./PermissionGate";
 const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
 const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
 
-let androidReadPermissions: AndroidPermission[] = [
+let androidReadWritePermissions: AndroidPermission[] = [
   PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION
 ];
 if ( usesAndroid10Permissions ) {
-  androidReadPermissions = [...androidReadPermissions, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE];
+  androidReadWritePermissions = [
+    ...androidReadWritePermissions,
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+  ];
 } else if ( usesAndroid13Permissions ) {
-  androidReadPermissions = [...androidReadPermissions, PERMISSIONS.ANDROID.READ_MEDIA_IMAGES];
+  androidReadWritePermissions = [
+    ...androidReadWritePermissions,
+    PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+  ];
 } else {
-  androidReadPermissions = [...androidReadPermissions, PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE];
+  androidReadWritePermissions = [
+    ...androidReadWritePermissions,
+    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+  ];
 }
 
 const androidCameraPermissions = usesAndroid10Permissions
@@ -38,15 +47,11 @@ export const CAMERA_PERMISSIONS = Platform.OS === "ios"
 
 export const AUDIO_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.MICROPHONE]
-  : [...androidReadPermissions, PERMISSIONS.ANDROID.RECORD_AUDIO];
+  : [...androidReadWritePermissions, PERMISSIONS.ANDROID.RECORD_AUDIO];
 
-export const READ_MEDIA_PERMISSIONS = Platform.OS === "ios"
+export const READ_WRITE_MEDIA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.PHOTO_LIBRARY]
-  : androidReadPermissions;
-
-export const WRITE_MEDIA_PERMISSIONS = Platform.OS === "ios"
-  ? [PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
-  : androidReadPermissions;
+  : androidReadWritePermissions;
 
 export const LOCATION_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]

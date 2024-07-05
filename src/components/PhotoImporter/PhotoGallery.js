@@ -4,7 +4,7 @@ import {
 } from "appConstants/paths.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
-import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
+import PermissionGateContainer, { READ_WRITE_MEDIA_PERMISSIONS }
   from "components/SharedComponents/PermissionGateContainer.tsx";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -226,7 +226,7 @@ const PhotoGallery = ( ): Node => {
         <ActivityAnimation />
         {!permissionGranted && (
           <PermissionGateContainer
-            permissions={READ_MEDIA_PERMISSIONS}
+            permissions={READ_WRITE_MEDIA_PERMISSIONS}
             title={t( "Observe-and-identify-organisms-from-your-gallery" )}
             titleDenied={t( "Please-Allow-Gallery-Access" )}
             body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
