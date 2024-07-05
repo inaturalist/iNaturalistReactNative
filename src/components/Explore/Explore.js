@@ -59,7 +59,8 @@ type Props = {
   updateLocation: Function,
   updateUser: Function,
   updateProject: Function,
-  hasLocationPermissions: ?boolean
+  hasLocationPermissions: ?boolean,
+  requestLocationPermissions: Function
 }
 
 const Explore = ( {
@@ -77,7 +78,8 @@ const Explore = ( {
   updateLocation,
   updateUser,
   updateProject,
-  hasLocationPermissions
+  hasLocationPermissions,
+  requestLocationPermissions
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -131,7 +133,7 @@ const Explore = ( {
             text={t( "ALLOW-LOCATION-ACCESS" )}
             accessibilityHint={t( "Opens-location-permission-prompt" )}
             level="focus"
-            onPress={( ) => console.log( "press" )}
+            onPress={( ) => requestLocationPermissions()}
           />
         </View>
       );

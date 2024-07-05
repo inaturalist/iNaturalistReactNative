@@ -31,10 +31,9 @@ const RootExploreContainerWithContext = ( ): Node => {
   const {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
-    requestPermission
+    requestPermissions: requestLocationPermissions
   } = useLocationPermission( );
 
-  console.log( "requestPermission", requestPermission );
   console.log( "LocationPermissionGate", LocationPermissionGate );
 
   const worldwidePlaceText = t( "Worldwide" );
@@ -153,6 +152,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         updateUser={updateUser}
         updateProject={updateProject}
         hasLocationPermissions={hasLocationPermissions}
+        requestLocationPermissions={requestLocationPermissions}
       />
       {renderPermissionsGate( )}
       {/* <LocationPermissionGate
