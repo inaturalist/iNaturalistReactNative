@@ -4,7 +4,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView.tsx";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import useRotation from "components/Camera/hooks/useRotation";
+import useRotation from "components/Camera/hooks/useRotation.ts";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { View } from "components/styledComponents";
@@ -20,7 +20,7 @@ import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 
@@ -83,14 +83,14 @@ const StandardCamera = ( {
 
   const { t } = useTranslation( );
 
-  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
-  const resetEvidenceToAdd = useStore( state => state.resetEvidenceToAdd );
+  const cameraUris = useStore( state => state.cameraUris );
+  const prepareCamera = useStore( state => state.prepareCamera );
   const galleryUris = useStore( state => state.galleryUris );
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
 
   const totalObsPhotoUris = useMemo(
-    ( ) => [...rotatedOriginalCameraPhotos, ...galleryUris].length,
-    [rotatedOriginalCameraPhotos, galleryUris]
+    ( ) => [...cameraUris, ...galleryUris].length,
+    [cameraUris, galleryUris]
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
@@ -101,7 +101,7 @@ const StandardCamera = ( {
   const { screenWidth } = useDeviceOrientation( );
 
   // newPhotoUris tracks photos taken in *this* instance of the camera. The
-  // camera might be instantiated with several rotatedOriginalCameraPhotos or
+  // camera might be instantiated with several cameraUris or
   // galleryUris already in state, but we only want to show the CTA button or discard modal
   // when the user has taken a photo with *this* instance of the camera
   const photosTaken = newPhotoUris.length > 0 && totalObsPhotoUris > 0;
@@ -115,7 +115,7 @@ const StandardCamera = ( {
     useCallback( ( ) => {
       // Reset camera zoom every time we get into a fresh camera view
       resetZoom( );
-      resetEvidenceToAdd( );
+      prepareCamera();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] )
   );
@@ -166,7 +166,7 @@ const StandardCamera = ( {
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
-        rotatedOriginalCameraPhotos={rotatedOriginalCameraPhotos}
+        photoUris={cameraUris}
         onDelete={deletePhotoByUri}
       />
       <View className="relative flex-1">

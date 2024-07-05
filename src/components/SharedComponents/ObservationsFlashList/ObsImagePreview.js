@@ -23,6 +23,7 @@ type Props = {
   hasSound?: boolean,
   height?: string,
   iconicTaxonName?: string,
+  isBackground?: boolean,
   isMultiplePhotosTop?: boolean,
   isSmall?: boolean,
   obsPhotosCount?: number,
@@ -41,7 +42,8 @@ const ObsImagePreview = ( {
   className,
   hasSound = false,
   height = "h-[62px]",
-  iconicTaxonName = "unknown",
+  iconicTaxonName,
+  isBackground = true,
   isMultiplePhotosTop = false,
   isSmall = false,
   obsPhotosCount = 0,
@@ -178,7 +180,7 @@ const ObsImagePreview = ( {
   let content;
 
   if ( isSmall && ( obsPhotosCount === 0 && !source?.uri ) ) {
-    imageClassNames.push( "border-2", "justify-center", "items-center" );
+    imageClassNames.push( "justify-center", "items-center" );
   }
 
   if ( isSmall && obsPhotosCount === 0 && hasSound ) {
@@ -193,7 +195,7 @@ const ObsImagePreview = ( {
           imageClassName={classNames( imageClassNames )}
           iconicTaxonName={iconicTaxonName}
           white={white}
-          isBackground
+          isBackground={isBackground}
           iconicTaxonIconSize={
             isSmall
               ? 22

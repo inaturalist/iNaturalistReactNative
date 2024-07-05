@@ -15,6 +15,7 @@ interface ButtonProps {
   disabled?: boolean;
   forceDark?: boolean;
   icon?: string;
+  iconPosition?: string,
   level?: string;
   loading?: boolean;
   onPress: ( _event?: GestureResponderEvent ) => void;
@@ -154,6 +155,7 @@ const Button = ( {
   disabled,
   forceDark,
   icon,
+  iconPosition = "left",
   level,
   loading,
   onPress,
@@ -210,7 +212,7 @@ const Button = ( {
             : undefined}
         />
       )}
-      {icon && (
+      {( icon && iconPosition === "left" ) && (
         <View className="mr-2">
           {icon}
         </View>
@@ -221,6 +223,11 @@ const Button = ( {
       >
         {text}
       </Heading4>
+      {( icon && iconPosition === "right" ) && (
+        <View className="ml-4">
+          {icon}
+        </View>
+      )}
       {dropdown && (
         <View className="ml-2 mb-1">
           <INatIcon

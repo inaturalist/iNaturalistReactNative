@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import useRotation from "components/Camera/hooks/useRotation";
+import useRotation from "components/Camera/hooks/useRotation.ts";
 import useTakePhoto from "components/Camera/hooks/useTakePhoto.ts";
 import useZoom from "components/Camera/hooks/useZoom.ts";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";

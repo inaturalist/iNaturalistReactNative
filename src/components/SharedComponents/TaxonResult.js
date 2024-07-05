@@ -3,7 +3,6 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  ActivityIndicator,
   DisplayTaxonName,
   INatIconButton
 } from "components/SharedComponents";
@@ -29,12 +28,15 @@ type Props = {
   fromLocal?: boolean,
   handleCheckmarkPress: Function,
   handlePress: Function,
-  showInfoButton?: boolean,
+  hideInfoButton?: boolean,
+  lastScreen?: ?string,
+  onPressInfo?: Function,
   showCheckmark?: boolean,
   showEditButton?: boolean,
   taxon: Object,
   testID: string,
-  white?: boolean
+  white?: boolean,
+  vision?: boolean
 };
 
 const TaxonResult = ( {
@@ -49,23 +51,27 @@ const TaxonResult = ( {
   fromLocal = true,
   handleCheckmarkPress,
   handlePress,
+  hideInfoButton = false,
   hideNavButtons = false,
+  lastScreen = null,
+  onPressInfo,
   showEditButton = false,
-  showInfoButton = true,
   showCheckmark = true,
   taxon: taxonProp,
   testID,
-  white = false
+  white = false,
+  vision = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+
   const theme = useTheme( );
   const currentUser = useCurrentUser( );
   // thinking about future performance, it might make more sense to batch
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AI camera &
   // a short list of taxa from offline Suggestions
-  const { taxon: localTaxon, isLoading } = useTaxon( taxonProp, fetchRemote );
+  const { taxon: localTaxon } = useTaxon( taxonProp, fetchRemote );
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
@@ -75,10 +81,14 @@ const TaxonResult = ( {
   const taxonImage = { uri: usableTaxon?.default_photo?.url };
   const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
 
-  const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", {
-    id: usableTaxon?.id,
-    hideNavButtons
-  } );
+  const navToTaxonDetails = ( ) => {
+    navigation.navigate( "TaxonDetails", {
+      id: usableTaxon?.id,
+      hideNavButtons,
+      lastScreen,
+      vision
+    } );
+  };
 
   return (
     <View
@@ -107,22 +117,15 @@ const TaxonResult = ( {
         accessibilityHint={t( "Navigates-to-taxon-details" )}
       >
         <View className="w-[62px] h-[62px] justify-center relative">
-          {
-            isLoading
-              ? (
-                <ActivityIndicator size={44} />
-              )
-              : (
-                <ObsImagePreview
-                  source={taxonImage}
-                  testID={`${testID}.photo`}
-                  iconicTaxonName={usableTaxon?.iconic_taxon_name}
-                  className="rounded-xl"
-                  isSmall
-                  white={white}
-                />
-              )
-          }
+          <ObsImagePreview
+            source={taxonImage}
+            testID={`${testID}.photo`}
+            iconicTaxonName={usableTaxon?.iconic_taxon_name}
+            className="rounded-xl"
+            isSmall
+            white={white}
+            isBackground={false}
+          />
           {!!( confidence && confidencePosition === "photo" ) && (
             <View className="absolute -bottom-4 w-full items-center">
               <ConfidenceInterval
@@ -149,11 +152,17 @@ const TaxonResult = ( {
         </View>
       </Pressable>
       <View className="flex-row items-center">
-        { showInfoButton && (
+        { !hideInfoButton && (
           <INatIconButton
             icon="info-circle-outline"
             size={22}
-            onPress={navToTaxonDetails}
+            onPress={( ) => {
+              if ( typeof ( onPressInfo ) === "function" ) {
+                onPressInfo( usableTaxon );
+                return;
+              }
+              navToTaxonDetails( );
+            }}
             color={clearBackground && theme.colors.onSecondary}
             accessibilityLabel={t( "More-info" )}
             accessibilityHint={t( "Navigates-to-taxon-details" )}

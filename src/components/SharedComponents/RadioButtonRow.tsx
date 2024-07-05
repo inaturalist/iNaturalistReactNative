@@ -1,4 +1,3 @@
-// @flow
 import {
   Body1,
   Body2,
@@ -6,30 +5,30 @@ import {
   List2
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
+import { GestureResponderEvent } from "react-native";
 import { RadioButton, useTheme } from "react-native-paper";
 
-type Props = {
-  testID: string,
-  checked: boolean,
-  classNames: ?string,
-  description: ?string,
-  icon: string,
-  label: string,
-  onPress: Function,
-  value: string,
-  smallLabel: ?boolean,
-  showTaxon?: boolean,
-  taxonNamePieces?: Object
+interface Props {
+  testID?: string;
+  icon?: string;
+  label: string;
+  smallLabel?: boolean;
+  description?: string;
+  onPress: ( _e: GestureResponderEvent ) => void;
+  checked: boolean;
+  classNames?: string;
+  value: string;
+  showTaxon?: boolean;
+  taxonNamePieces?: Object;
 }
 
 const RadioButtonRow = ( {
   testID,
   description,
-  classNames,
   checked,
+  classNames,
   label,
   onPress,
   icon,
@@ -37,7 +36,8 @@ const RadioButtonRow = ( {
   smallLabel = false,
   showTaxon,
   taxonNamePieces
-}: Props ): Node => {
+
+}: Props ) => {
   const theme = useTheme( );
 
   const status = checked
@@ -63,7 +63,7 @@ const RadioButtonRow = ( {
           status={status}
           accessibilityLabel={label}
         />
-        <View className="flex-row w-5/6">
+        <View className="ml-3 flex-row w-5/6">
           {( showTaxon && taxonNamePieces )
             ? (
               <Trans
@@ -77,7 +77,7 @@ const RadioButtonRow = ( {
         </View>
       </View>
       {description && (
-        <List2 className="ml-[37px] mr-[33px] py-1">{description}</List2>
+        <List2 className="ml-[32px] mt-[3px]">{description}</List2>
       )}
     </Pressable>
   );

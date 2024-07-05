@@ -39,6 +39,7 @@ const CameraNavButtons = ( {
     <View testID="CameraNavButtons">
       <MediaNavButtons
         captureButton={takePhotoButton}
+        disabled={disabled}
         mediaCaptured={photosTaken}
         onClose={handleClose}
         onConfirm={handleCheckmarkPress}

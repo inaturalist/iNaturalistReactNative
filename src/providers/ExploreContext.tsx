@@ -143,10 +143,10 @@ export enum PHOTO_LICENSE {
 }
 
 interface MapBoundaries {
-  swlat: LatLng["latitude"],
-  swlng: LatLng["longitude"],
-  nelat: LatLng["latitude"],
-  nelng: LatLng["longitude"],
+  swlat?: LatLng["latitude"],
+  swlng?: LatLng["longitude"],
+  nelat?: LatLng["latitude"],
+  nelng?: LatLng["longitude"],
   place_guess: string
 }
 
@@ -176,7 +176,6 @@ type State = {
   lat?: number,
   lng?: number,
   lrank: TAXONOMIC_RANK | undefined | null,
-  mapBoundaries: MapBoundaries | undefined,
   media: MEDIA,
   months: number[] | null | undefined,
   needsID: boolean,
@@ -253,8 +252,21 @@ type Action = {type: EXPLORE_ACTION.RESET}
 type Dispatch = ( action: Action ) => void
 
 const ExploreContext = React.createContext<
-  {state: State; dispatch: Dispatch} | undefined
->( undefined );
+  {
+    state: State;
+    dispatch: Dispatch;
+    makeSnapshot(): void;
+    differsFromSnapshot: boolean;
+    isNotInitialState: boolean;
+    discardChanges(): void;
+    numberOfFilters: number;
+    defaultExploreLocation(): Promise<{
+      place_guess: string;
+      lat?: number;
+      lng?: number;
+      radius?: number;
+    }>;
+      } | undefined>( undefined );
 
 // Every key in this object represents a numbered filter in the UI
 const calculatedFilters = {
@@ -292,7 +304,6 @@ const defaultFilters = {
 
 const initialState: State = {
   ...defaultFilters,
-  mapBoundaries: undefined,
   place: undefined,
   place_guess: "",
   place_id: undefined,

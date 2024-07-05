@@ -7,6 +7,7 @@ import {
   Map,
   Modal
 } from "components/SharedComponents";
+import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import {
   View
 } from "components/styledComponents";
@@ -19,26 +20,6 @@ import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 type Props = {
   taxon: Object
-}
-
-function getMapRegion( bounds: { nelat: number, nelng: number, swlat: number, swlng: number } ) {
-  const {
-    nelat, nelng, swlat, swlng
-  } = bounds;
-  // Deltas shouldn't be negative
-  const latDelta = Math.abs( Number( nelat ) - Number( swlat ) );
-  const lngDelta = Math.abs( Number( nelng ) - Number( swlng ) );
-  const lat = nelat - ( latDelta / 2 );
-  const lng = nelng - ( lngDelta / 2 );
-
-  return {
-    latitude: lat,
-    longitude: lng,
-    // Pad the detlas so the user sees the full range, make sure we don't
-    // specify impossible deltas like 190 degrees of latitude
-    latitudeDelta: Math.min( latDelta + 5, 175 ),
-    longitudeDelta: Math.min( lngDelta + 5, 355 )
-  };
 }
 
 const TaxonMapPreview = ( {

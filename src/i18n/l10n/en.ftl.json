@@ -1151,6 +1151,7 @@
   "Select-geoprivacy-status": "Select geoprivacy status",
   "Select-or-drag-media": "Select or drag media",
   "Select-photo": "Select photo",
+  "SELECT-THIS-TAXON": "SELECT THIS TAXON",
   "Select-user": {
     "comment": "Label for an element that let's you select a user",
     "val": "Select user"

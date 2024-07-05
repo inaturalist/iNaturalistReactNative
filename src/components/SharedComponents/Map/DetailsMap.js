@@ -27,8 +27,6 @@ type Props = {
   longitude: number,
   obscured?: boolean,
   positionalAccuracy?: number,
-  // $FlowIgnore
-  mapViewRef: unknown,
   region?: Object,
   closeModal: Function,
   tileMapParams: Object,
@@ -67,7 +65,6 @@ const DetailsMap = ( {
   closeModal,
   latitude,
   longitude,
-  mapViewRef,
   obscured,
   positionalAccuracy,
   tileMapParams,
@@ -111,7 +108,6 @@ const DetailsMap = ( {
       <View className="flex-1">
         <Map
           mapHeight="100%"
-          mapViewRef={mapViewRef}
           obsLatitude={latitude}
           obsLongitude={longitude}
           obscured={obscured}

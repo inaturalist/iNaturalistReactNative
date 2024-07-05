@@ -29,13 +29,13 @@ describe( "StandardCamera", ( ) => {
 
     useStore.setState( {
       evidenceToAdd: [mockPhotoUris[2]],
-      rotatedOriginalCameraPhotos: mockPhotoUris,
+      cameraUris: mockPhotoUris,
       deletePhotoFromObservation: uri => useStore.setState( {
-        rotatedOriginalCameraPhotos: [...removePhotoFromList( mockPhotoUris, uri )]
+        cameraUris: [...removePhotoFromList( mockPhotoUris, uri )]
       } )
     } );
 
-    const { rotatedOriginalCameraPhotos } = useStore.getState( );
+    const { cameraUris } = useStore.getState( );
 
     render(
       <StandardCamera
@@ -45,16 +45,16 @@ describe( "StandardCamera", ( ) => {
 
     );
     const photoImage = screen.getByTestId(
-      `PhotoCarousel.displayPhoto.${rotatedOriginalCameraPhotos[2]}`
+      `PhotoCarousel.displayPhoto.${cameraUris[2]}`
     );
     const predeletedPhoto = screen.queryByTestId(
-      `PhotoCarousel.displayPhoto.${rotatedOriginalCameraPhotos[2]}`
+      `PhotoCarousel.displayPhoto.${cameraUris[2]}`
     );
     expect( predeletedPhoto ).toBeVisible( );
 
     fireEvent( photoImage, "onLongPress" );
     const deleteMode = screen.getByTestId(
-      `PhotoCarousel.deletePhoto.${rotatedOriginalCameraPhotos[2]}`
+      `PhotoCarousel.deletePhoto.${cameraUris[2]}`
     );
     await waitFor( ( ) => {
       expect( deleteMode ).toBeVisible( );
@@ -69,11 +69,11 @@ describe( "StandardCamera", ( ) => {
     );
 
     const undeletedPhoto = screen.getByTestId(
-      `PhotoCarousel.displayPhoto.${rotatedOriginalCameraPhotos[1]}`
+      `PhotoCarousel.displayPhoto.${cameraUris[1]}`
     );
     expect( undeletedPhoto ).toBeVisible( );
     const deletedPhoto = screen.queryByTestId(
-      `PhotoCarousel.displayPhoto.${rotatedOriginalCameraPhotos[2]}`
+      `PhotoCarousel.displayPhoto.${cameraUris[2]}`
     );
     await waitFor( ( ) => {
       expect( deletedPhoto ).toBeFalsy( );

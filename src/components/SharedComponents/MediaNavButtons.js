@@ -41,6 +41,7 @@ type Props = {
   captureButton: Function,
   closeHidden?: boolean,
   confirmHidden?: boolean,
+  disabled?: boolean,
   mediaCaptured?: boolean,
   onClose: Function,
   onConfirm: Function,
@@ -51,6 +52,7 @@ const MediaNavButtons = ( {
   captureButton,
   closeHidden,
   confirmHidden,
+  disabled,
   mediaCaptured,
   onClose,
   onConfirm,
@@ -80,7 +82,10 @@ const MediaNavButtons = ( {
           style={!isTablet && rotatableAnimatedStyle}
           className={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )}
         >
-          <GreenCheckmark handleCheckmarkPress={onConfirm} />
+          <GreenCheckmark
+            disabled={disabled}
+            handleCheckmarkPress={onConfirm}
+          />
         </Animated.View>
       )
       : (

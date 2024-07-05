@@ -13,7 +13,7 @@ import Reanimated from "react-native-reanimated";
 import type { CameraDevice, CameraProps, CameraRuntimeError } from "react-native-vision-camera";
 import { Camera, useCameraFormat } from "react-native-vision-camera";
 import { orientationPatch } from "sharedHelpers/visionCameraPatches";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 
 import FocusSquare from "./FocusSquare";
 

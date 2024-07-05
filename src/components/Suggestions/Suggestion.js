@@ -34,8 +34,10 @@ const Suggestion = ( {
     first
     handleCheckmarkPress={onTaxonChosen}
     hideNavButtons
+    lastScreen="Suggestions"
     taxon={suggestion?.taxon}
     testID={`SuggestionsList.taxa.${suggestion?.taxon?.id}`}
+    vision
   />
 );
 

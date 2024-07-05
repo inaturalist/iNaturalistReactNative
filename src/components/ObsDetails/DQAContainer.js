@@ -18,17 +18,20 @@ import { compact, groupBy } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 import Observation from "realmModels/Observation";
+import { log } from "sharedHelpers/logger";
 import {
   useAuthenticatedMutation,
+  useAuthenticatedQuery,
   useLocalObservation
 } from "sharedHooks";
 import useRemoteObservation from "sharedHooks/useRemoteObservation";
+
+const logger = log.extend( "DQAContainer" );
 
 const DQAContainer = ( ): React.Node => {
   const { isInternetReachable: isOnline } = useNetInfo( );
   const { params } = useRoute( );
   const { observationUUID } = params;
-  const [qualityMetrics, setQualityMetrics] = useState( undefined );
   const [loadingAgree, setLoadingAgree] = useState( false );
   const [loadingDisagree, setLoadingDisagree] = useState( false );
   const [loadingMetric, setLoadingMetric] = useState( "none" );
@@ -42,8 +45,9 @@ const DQAContainer = ( ): React.Node => {
     refetchRemoteObservation,
     isRefetching
   } = useRemoteObservation( observationUUID, fetchRemoteObservationEnabled );
-  const observation
-    = localObservation || Observation.mapApiToRealm( remoteObservation );
+  const observation = remoteObservation
+    ? Observation.mapApiToRealm( remoteObservation )
+    : localObservation;
 
   const fetchMetricsParams = {
     id: observationUUID,
@@ -70,35 +74,18 @@ const DQAContainer = ( ): React.Node => {
     }
   };
 
-  // destructured mutate to pass into useEffect to prevent infinite
-  // rerender and disabling eslint useEffect dependency rule
-  const { mutate } = useAuthenticatedMutation(
-    ( p, o ) => fetchQualityMetrics( p, o ),
-    {
-      onSuccess: response => {
-        setNotLoading();
-        setQualityMetrics( response );
-      },
-      onError: () => {
-        if ( !isOnline ) {
-          setHideOfflineSheet( false );
-        }
-      }
-    }
+  const {
+    data: qualityMetrics,
+    refetch: refetchQualityMetrics
+  } = useAuthenticatedQuery(
+    ["fetchQualityMetrics", observationUUID],
+    optsWithAuth => fetchQualityMetrics( fetchMetricsParams, optsWithAuth )
   );
 
   const combinedQualityMetrics = {
     ...groupBy( qualityMetrics, "metric" ),
     ...groupBy( observation?.votes, "vote_scope" )
   };
-
-  useEffect( ( ) => {
-    mutate( {
-      id: params.observationUUID,
-      fields: "metric,agree,user_id",
-      ttl: -1
-    } );
-  }, [mutate, params] );
 
   /**
    * After a success mutation of the needs_id vote we start the refetching of the remote
@@ -139,11 +126,13 @@ const DQAContainer = ( ): React.Node => {
   const createQualityMetricMutation = useAuthenticatedMutation(
     ( qualityMetricParams, optsWithAuth ) => setQualityMetric( qualityMetricParams, optsWithAuth ),
     {
-      onSuccess: () => {
-        // fetch updated quality metrics with updated votes
-        mutate( fetchMetricsParams );
+      onSuccess: async ( ) => {
+        await refetchQualityMetrics( );
+        await refetchRemoteObservation( );
+        setNotLoading( );
       },
-      onError: () => {
+      onError: error => {
+        logger.error( "createQualityMetricMutation failure", error );
         setHideErrorSheet( false );
       }
     }
@@ -176,14 +165,16 @@ const DQAContainer = ( ): React.Node => {
     faveMutation.mutate( faveParams );
   };
 
-  const createRemoveQualityMetricMutation = useAuthenticatedMutation(
-    ( p, o ) => deleteQualityMetric( p, o ),
+  const removeQualityMetricMutation = useAuthenticatedMutation(
+    ( deleteParams, options ) => deleteQualityMetric( deleteParams, options ),
     {
-      onSuccess: () => {
-        // fetch updated quality metrics with updated votes
-        mutate( fetchMetricsParams );
+      onSuccess: async ( ) => {
+        await refetchQualityMetrics( );
+        await refetchRemoteObservation( );
+        setNotLoading( );
       },
-      onError: () => {
+      onError: error => {
+        logger.error( "removeQualityMetricMutation failed", error );
         setHideErrorSheet( false );
       }
     }
@@ -197,7 +188,7 @@ const DQAContainer = ( ): React.Node => {
       metric,
       ttyl: -1
     };
-    createRemoveQualityMetricMutation.mutate( qualityMetricParams );
+    removeQualityMetricMutation.mutate( qualityMetricParams );
   };
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"

@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import Modal from "components/SharedComponents/Modal";
+import Modal from "components/SharedComponents/Modal.tsx";
 import _ from "lodash";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";

@@ -26,7 +26,6 @@ type Props = {
   selectedPhotoUri: string,
   // setLocationPermissionNeeded: Function,
   // showImproveWithLocationButton: boolean,
-  showSuggestionsWithLocation: boolean,
   suggestions: Object
 };
 
@@ -39,16 +38,19 @@ const Suggestions = ( {
   selectedPhotoUri,
   // setLocationPermissionNeeded,
   // showImproveWithLocationButton,
-  showSuggestionsWithLocation,
   suggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const loading = suggestions?.isLoading;
-  const { usingOfflineSuggestions, topSuggestion, otherSuggestions } = suggestions;
+  const {
+    isLoading,
+    otherSuggestions,
+    topSuggestion,
+    usingOfflineSuggestions
+  } = suggestions;
 
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
-  const showLocationButton = !usingOfflineSuggestions && !loading;
+  const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
 
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
@@ -60,60 +62,54 @@ const Suggestions = ( {
   ), [onTaxonChosen, t, usingOfflineSuggestions] );
 
   const renderEmptyList = useCallback( ( ) => (
-    <SuggestionsEmpty loading={loading} hasTopSuggestion={!!topSuggestion} />
-  ), [loading, topSuggestion] );
+    <SuggestionsEmpty isLoading={isLoading} hasTopSuggestion={!!topSuggestion} />
+  ), [isLoading, topSuggestion] );
 
   const renderFooter = useCallback( ( ) => (
     <SuggestionsFooter
       debugData={debugData}
       observers={observers}
       reloadSuggestions={reloadSuggestions}
-      showLocationButton={showLocationButton}
-      showSuggestionsWithLocation={showSuggestionsWithLocation}
+      suggestions={suggestions}
     />
   ), [
     debugData,
     observers,
     reloadSuggestions,
-    showLocationButton,
-    showSuggestionsWithLocation
+    suggestions
   ] );
 
   const renderHeader = useCallback( ( ) => (
     <SuggestionsHeader
-      loading={loading}
       onPressPhoto={onPressPhoto}
       photoUris={photoUris}
       reloadSuggestions={reloadSuggestions}
       selectedPhotoUri={selectedPhotoUri}
+      suggestions={suggestions}
       // setLocationPermissionNeeded={setLocationPermissionNeeded}
       // showImproveWithLocationButton={showImproveWithLocationButton}
-      showSuggestionsWithLocation={showSuggestionsWithLocation}
-      usingOfflineSuggestions={usingOfflineSuggestions}
     />
   ), [
-    loading,
     onPressPhoto,
     photoUris,
     reloadSuggestions,
     selectedPhotoUri,
     // setLocationPermissionNeeded,
     // showImproveWithLocationButton,
-    showSuggestionsWithLocation,
-    usingOfflineSuggestions
+    suggestions
   ] );
 
   const renderSectionHeader = ( { section } ) => {
-    if ( section?.data.length === 0 || loading ) {
+    if ( section?.data.length === 0 || isLoading ) {
       return null;
     }
     return (
-      <Heading4 className="mt-6 mb-4 ml-4">{section?.title}</Heading4>
+      <Heading4 className="mt-6 mb-4 ml-4 bg-white">{section?.title}</Heading4>
     );
   };
 
   const renderTopSuggestion = ( { item } ) => {
-    if ( loading ) { return null; }
+    if ( isLoading ) { return null; }
     if ( !item && !usingOfflineSuggestions ) {
       return (
         <Body1 className="mx-2">
@@ -132,10 +128,10 @@ const Suggestions = ( {
   };
 
   const createSections = ( ) => {
-    if ( loading ) {
+    if ( isLoading ) {
       return [];
     }
-    if ( !topSuggestion && otherSuggestions?.length === 0 ) {
+    if ( isEmptyList ) {
       return [];
     }
     return [{
@@ -155,13 +151,14 @@ const Suggestions = ( {
   return (
     <ViewWrapper testID="suggestions">
       <SectionList
-        testID="Suggestions.SectionList"
-        sections={sections}
-        renderItem={renderSuggestion}
-        renderSectionHeader={renderSectionHeader}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
         ListHeaderComponent={renderHeader}
+        renderItem={renderSuggestion}
+        renderSectionHeader={renderSectionHeader}
+        sections={sections}
+        stickySectionHeadersEnabled={false}
+        testID="Suggestions.SectionList"
       />
     </ViewWrapper>
   );

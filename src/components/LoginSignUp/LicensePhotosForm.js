@@ -143,10 +143,12 @@ const LicensePhotosForm = ( ): Node => {
       return;
     }
     const success = await authenticateUser( user.login, user.password, realm );
+    setLoading( false );
     if ( !success ) {
       logger.error( "registerUser was successfull but authenticateUser failed immediately after" );
+      navigation.navigate( "Login" );
+      return;
     }
-    setLoading( false );
     navigation.navigate( "SignUpConfirmation" );
   };
 

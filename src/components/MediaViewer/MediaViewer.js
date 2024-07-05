@@ -12,7 +12,7 @@ import React, {
 } from "react";
 import { StatusBar } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation";
 
 import MainMediaDisplay from "./MainMediaDisplay";

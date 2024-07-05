@@ -6,7 +6,7 @@
 import { View } from "components/styledComponents";
 import React, { useRef, useState } from "react";
 import { iPadStylePatch } from "sharedHelpers/visionCameraPatches";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 
 const VeryBadIpadRotator = ( { children } ) => {
   const [dims, setDims] = useState( {} );
