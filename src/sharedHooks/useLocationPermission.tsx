@@ -14,7 +14,7 @@ import {
    * @returns {boolean} hasPermissions - Undefined if permissions have not been checked yet.
    * True if permissions have been granted. False if permissions have been denied.
    * @returns {Function} renderPermissionsGate - A function to render the permissions gate.
-   * @returns {Function} requestPermission - A function to request location permissions.
+   * @returns {Function} requestPermissions - A function to request location permissions.
    * Essentially just a wrapper around toggling permissionNeeded for the LocationPermissionGate.
    */
 const useLocationPermission = () => {
@@ -41,7 +41,7 @@ const useLocationPermission = () => {
     />
   );
 
-  function requestPermission() {
+  function requestPermissions() {
     setShowPermissionGate( true );
   }
 
@@ -61,7 +61,7 @@ const useLocationPermission = () => {
     checkPermissions();
   }, [] );
 
-  return { hasPermissions, renderPermissionsGate, requestPermission };
+  return { hasPermissions, renderPermissionsGate, requestPermissions };
 };
 
 export default useLocationPermission;

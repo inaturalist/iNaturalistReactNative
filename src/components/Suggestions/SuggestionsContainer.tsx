@@ -48,13 +48,13 @@ const SuggestionsContainer = ( ) => {
     ...initialSuggestions,
     showSuggestionsWithLocation: evidenceHasLocation
   } );
-  const { hasPermissions, renderPermissionsGate, requestPermission } = useLocationPermission( );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const showImproveWithLocationButton = hasPermissions === false;
   // const showImproveWithLocationButton = !evidenceHasLocation
   //   && params?.lastScreen === "CameraWithDevice";
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
-    requestPermission( );
-  }, [requestPermission] );
+    requestPermissions( );
+  }, [requestPermissions] );
 
   const {
     showSuggestionsWithLocation,
