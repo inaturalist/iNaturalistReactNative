@@ -15,7 +15,13 @@ interface Props {
   navigateToTaxonDetails: ( _taxonId: number ) => void;
   scientificNameFirst?: boolean;
   t: Function;
-  taxon: any;
+  taxon: {
+    id: number;
+    name: string;
+    preferred_common_name?: string;
+    rank: string;
+    rank_level: number;
+  };
 }
 
 const TaxonomyTaxon = ( {
