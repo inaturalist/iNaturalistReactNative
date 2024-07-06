@@ -25,7 +25,7 @@ import useStore from "stores/useStore";
 
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
 import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
-import useClearSyncedPhotosForUpload from "./hooks/useClearSyncedPhotosForUpload";
+import useClearSyncedMediaForUpload from "./hooks/useClearSyncedMediaForUpload";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
@@ -40,7 +40,7 @@ const MyObservationsContainer = ( ): Node => {
   // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
   useClearRotatedOriginalPhotos( );
   useClearGalleryPhotos( );
-  useClearSyncedPhotosForUpload( isFocused );
+  useClearSyncedMediaForUpload( isFocused );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const setUploadStatus = useStore( state => state.setUploadStatus );
