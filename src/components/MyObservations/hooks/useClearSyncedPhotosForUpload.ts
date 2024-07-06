@@ -1,38 +1,81 @@
-import { photoUploadPath } from "appConstants/paths.ts";
+import { photoUploadPath, soundUploadPath } from "appConstants/paths.ts";
 import { RealmContext } from "providers/contexts";
-import { useEffect } from "react";
-import Observation from "realmModels/Observation";
+import { useEffect, useState } from "react";
 import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory.ts";
-import useStore from "stores/useStore";
 
-const { useQuery } = RealmContext;
+const RUN_EVERY_MS = (
+  1000 // 1 second
+  * 60 // 1 minute
+);
+
+// TODO replace when Realm classes are properly typed
+interface RealmObservation {
+  observationPhotos: {
+    photo: {
+      localFilePath: string
+    }
+  }[],
+  observationSounds: {
+    sound: {
+      fileUrl: string
+    }
+  }[]
+}
+
+const { useRealm } = RealmContext;
 
 // this hook checks to see which localFilePaths are still needed in photoUploads/
 // and only keeps the references to photos which have not yet been uploaded
 // clearing this directory helps to keep the app size small
-const useClearSyncedPhotosForUpload = ( ) => {
-  const currentObservations = useStore( state => state.observations );
-  const unsyncedObservations = useQuery(
-    Observation,
-    observations => observations.filtered( "observationPhotos._synced_at == nil" )
-  );
-
-  const unsyncedPhotoFileNames = unsyncedObservations
-    .map( observation => observation.observationPhotos.map(
-      op => op.photo.localFilePath?.split( "photoUploads/" )?.at( 1 )
-    ) )
-    .flat( )
-    .filter( Boolean );
+const useClearSyncedPhotosForUpload = ( enabled: boolean ) => {
+  const [runAt, setRunAt] = useState<number>();
+  const realm = useRealm( );
 
   useEffect( ( ) => {
-    // Ensure we don't clear out photos while we're creating observations.
-    // When imported/share a photo, it may exist on disk before we create an
-    // observation to with it. In that case, that photo will not appear in
-    // unsyncedPhotoFileNames
-    if ( !currentObservations || currentObservations.length === 0 ) {
-      removeSyncedFilesFromDirectory( photoUploadPath, unsyncedPhotoFileNames );
+    function clean() {
+      // Clean out photos
+      const unsyncedObservationsWithPhotos: RealmObservation[] = realm
+        .objects( "Observation" )
+        .filtered( "observationPhotos._synced_at == nil" );
+      const unsyncedPhotoFileNames = unsyncedObservationsWithPhotos
+        .map( observation => observation.observationPhotos.map(
+          op => op.photo.localFilePath?.split( "photoUploads/" )?.at( 1 )
+        ) )
+        .flat( )
+        .filter( Boolean );
+      removeSyncedFilesFromDirectory(
+        photoUploadPath,
+        // .filter( Boolean ) ensures this array has no undefined members. IDK
+        //  why the TS compiler can't figure that out
+        //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        unsyncedPhotoFileNames
+      );
+
+      // Clean out photos
+      const unsyncedObservationsWithSounds: RealmObservation[] = realm
+        .objects( "Observation" )
+        .filtered( "observationSounds._synced_at == nil" );
+      const unsyncedSoundFileNames = unsyncedObservationsWithSounds
+        .map( observation => observation.observationSounds.map(
+          os => os.sound.fileUrl?.split( "soundUploads/" )?.at( 1 )
+        ) )
+        .flat( )
+        .filter( Boolean );
+      removeSyncedFilesFromDirectory(
+        soundUploadPath,
+        // .filter( Boolean ) ensures this array has no undefined members. IDK
+        //  why the TS compiler can't figure that out
+        //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        unsyncedSoundFileNames
+      );
     }
-  }, [currentObservations, unsyncedPhotoFileNames] );
+    if ( enabled && ( !runAt || ( Date.now( ) - runAt ) >= RUN_EVERY_MS ) ) {
+      setRunAt( Date.now( ) );
+      clean();
+    }
+  }, [enabled, realm, runAt] );
   return null;
 };
 
