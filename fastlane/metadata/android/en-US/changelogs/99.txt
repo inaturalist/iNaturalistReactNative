@@ -1,0 +1,17 @@
+NEW
+* Add remarks to new IDs for others
+* Button to select taxon on TaxonDetails
+
+UPDATED
+* Unsynced obs appear above others on MyObs
+* Suggestions can include or exclude location
+* Allow refetching suggestions when offline results shown
+
+FIXED
+* Restore cleanup of local photos (should improve disk usage)
+* Info btn. on search results from Explore navs to
+  TaxonDetails
+* Crash when viewing offline suggestions for synced obs
+* Explore shows map tiles when filtering by taxon
+
+And much more.
