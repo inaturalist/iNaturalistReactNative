@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   ActivityIndicator,
@@ -13,7 +11,6 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useEffect } from "react";
 import {
   FlatList
@@ -22,19 +19,19 @@ import {
   useTranslation
 } from "sharedHooks";
 
-type Props = {
-  searchInput: string,
+interface Props {
+  searchInput: string;
   setSearchInput: Function,
-  tabs: Array<Object>,
-  currentTabId: string,
-  projects: Array<Object>,
-  isLoading: boolean,
-  memberId: ?number
+  tabs: Object[],
+  currentTabId: string;
+  projects: Object[],
+  isLoading: boolean;
+  memberId?: number;
 }
 
 const Projects = ( {
   searchInput, setSearchInput, tabs, currentTabId, projects, isLoading, memberId
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
