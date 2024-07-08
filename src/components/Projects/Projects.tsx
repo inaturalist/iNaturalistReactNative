@@ -31,7 +31,7 @@ interface Props {
   projects: Object[],
   isLoading: boolean;
   memberId?: number;
-  hasPermissions: boolean;
+  hasPermissions: boolean | undefined;
   requestPermissions: () => void;
 }
 

@@ -110,13 +110,6 @@ const ProjectsContainer = ( ) => {
         requestPermissions={requestPermissions}
       />
       {renderPermissionsGate()}
-      {/* <LocationPermissionGate
-        permissionNeeded={currentTabId === NEARBY_TAB_ID}
-        withoutNavigation
-        onPermissionGranted={( ) => setPermissionsGranted( true )}
-        onPermissionDenied={( ) => setPermissionsGranted( false )}
-        onPermissionBlocked={( ) => setPermissionsGranted( false )}
-      /> */}
     </>
   );
 };
