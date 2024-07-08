@@ -14,9 +14,6 @@ import React, {
   useMemo,
   useRef, useState
 } from "react";
-import {
-  RESULTS as PERMISSION_RESULTS
-} from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
 import useStore from "stores/useStore";
@@ -220,16 +217,6 @@ const EvidenceSectionContainer = ( {
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       observationSounds={observationSounds}
-      onLocationPermissionGranted={( ) => {
-        setShouldRetryCurrentObservationLocation( true );
-      }}
-      onLocationPermissionDenied={( ) => {
-        setShouldRetryCurrentObservationLocation( false );
-      }}
-      onLocationPermissionBlocked={( ) => {
-        setShouldRetryCurrentObservationLocation( false );
-      }}
-      locationPermissionNeeded={locationPermissionResult === PERMISSION_RESULTS.DENIED}
     />
   );
 };

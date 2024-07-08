@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -22,11 +21,7 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 type Props = {
   currentObservation: Object,
   isFetchingLocation: boolean,
-  locationPermissionNeeded: boolean,
   locationTextClassNames: Array<string>,
-  onLocationPermissionBlocked: Function,
-  onLocationPermissionDenied: Function,
-  onLocationPermissionGranted: Function,
   passesEvidenceTest: Function,
   observationPhotos: Array<Object>,
   setShowAddEvidenceSheet: Function,
@@ -44,11 +39,7 @@ type Props = {
 const EvidenceSection = ( {
   currentObservation,
   isFetchingLocation,
-  locationPermissionNeeded,
   locationTextClassNames,
-  onLocationPermissionBlocked,
-  onLocationPermissionDenied,
-  onLocationPermissionGranted,
   passesEvidenceTest,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
@@ -172,13 +163,6 @@ const EvidenceSection = ( {
       <DatePicker
         currentObservation={currentObservation}
         updateObservationKeys={updateObservationKeys}
-      />
-      <LocationPermissionGate
-        permissionNeeded={locationPermissionNeeded}
-        onPermissionGranted={onLocationPermissionGranted}
-        onPermissionDenied={onLocationPermissionDenied}
-        onPermissionBlocked={onLocationPermissionBlocked}
-        withoutNavigation
       />
     </View>
   );
