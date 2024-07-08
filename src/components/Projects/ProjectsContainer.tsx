@@ -1,7 +1,6 @@
 import { searchProjects } from "api/projects";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import _ from "lodash";
-import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
   useAuthenticatedQuery,
@@ -16,7 +15,7 @@ const JOINED_TAB_ID = "JOINED";
 const FEATURED_TAB_ID = "FEATURED";
 const NEARBY_TAB_ID = "NEARBY";
 
-const ProjectsContainer = ( ): Node => {
+const ProjectsContainer = ( ) => {
   const [searchInput, setSearchInput] = useState( "" );
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
