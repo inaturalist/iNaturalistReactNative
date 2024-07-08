@@ -1,5 +1,4 @@
 import { useFocusEffect, useRoute } from "@react-navigation/native";
-import { RealmContext } from "providers/contexts";
 import {
   EXPLORE_ACTION,
   useExplore
@@ -9,7 +8,6 @@ import {
 } from "react";
 import { BoundingBox, Region } from "react-native-maps";
 // import { log } from "sharedHelpers/logger";
-import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useTranslation } from "sharedHooks";
 import { initialMapRegion } from "stores/createExploreSlice.ts";
 
@@ -17,12 +15,9 @@ import useCurrentMapRegion from "./useCurrentMapRegion";
 
 // const logger = log.extend( "useMapLocation" );
 
-const { useRealm } = RealmContext;
-
 const useMapLocation = ( ) => {
   const { params } = useRoute( );
   const worldwide = params?.worldwide;
-  const realm = useRealm( );
   const { dispatch, state } = useExplore( );
   const [mapBoundaries, setMapBoundaries] = useState<{
     swlat: number | undefined;
