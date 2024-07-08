@@ -1,5 +1,4 @@
 import { searchProjects } from "api/projects";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import {
@@ -8,6 +7,7 @@ import {
   useTranslation,
   useUserLocation
 } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
 import Projects from "./Projects";
 
@@ -22,10 +22,10 @@ const ProjectsContainer = ( ) => {
   const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const [permissionsGranted, setPermissionsGranted] = useState( false );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission();
   const { userLocation } = useUserLocation( {
     skipName: true,
-    permissionsGranted
+    permissionsGranted: hasPermissions
   } );
 
   const {
@@ -102,13 +102,14 @@ const ProjectsContainer = ( ) => {
         isLoading={isLoading}
         memberId={memberId}
       />
-      <LocationPermissionGate
+      {renderPermissionsGate()}
+      {/* <LocationPermissionGate
         permissionNeeded={currentTabId === NEARBY_TAB_ID}
         withoutNavigation
         onPermissionGranted={( ) => setPermissionsGranted( true )}
         onPermissionDenied={( ) => setPermissionsGranted( false )}
         onPermissionBlocked={( ) => setPermissionsGranted( false )}
-      />
+      /> */}
     </>
   );
 };
