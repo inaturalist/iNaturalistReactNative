@@ -23,33 +23,36 @@ const useLocalObservations = ( ): Object => {
 
   const realm = useRealm( );
 
-  function sortByUnsynced( array ) {
-    return array.sort( ( a, b ) => {
-      const isUnsyncedA = a.needsSync();
-      const isUnsyncedB = b.needsSync();
+  // This works but at great performance cost. I was seeing times of 1.6-1.8
+  // seconds when sorting 450+ observations. We need a faster way to do this.
+  // ~~~~kueda20240707
+  // function sortByUnsynced( array ) {
+  //   return array.sort( ( a, b ) => {
+  //     const isUnsyncedA = a.needsSync();
+  //     const isUnsyncedB = b.needsSync();
 
-      // If both are unsynced or synced, sort by _created_at
-      if ( isUnsyncedA && isUnsyncedB ) {
-        return b._created_at - a._created_at;
+  //     // If both are unsynced or synced, sort by _created_at
+  //     if ( isUnsyncedA && isUnsyncedB ) {
+  //       return b._created_at - a._created_at;
 
-      // Otherwise, show unsynced first
-      } if ( isUnsyncedA ) {
-        return -1;
-      } if ( isUnsyncedB ) {
-        return 1;
-      }
-      return b._created_at - a._created_at;
-    } );
-  }
+  //     // Otherwise, show unsynced first
+  //     } if ( isUnsyncedA ) {
+  //       return -1;
+  //     } if ( isUnsyncedB ) {
+  //       return 1;
+  //     }
+  //     return b._created_at - a._created_at;
+  //   } );
+  // }
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
       return;
     }
-    const localObservations = realm.objects( "Observation" );
+    const localObservations = realm.objects( "Observation" ).sorted( "_created_at", true );
     localObservations.addListener( ( collection, _changes ) => {
       const obsNotFlaggedForDeletion = collection.filtered( "_deleted_at == nil" );
-      stagedObservationList.current = sortByUnsynced( [...obsNotFlaggedForDeletion] );
+      stagedObservationList.current = [...obsNotFlaggedForDeletion];
 
       const unsynced = Observation.filterUnsyncedObservations( realm );
       const uploadUuids = unsynced.map( o => o.uuid );
@@ -58,12 +61,6 @@ const useLocalObservations = ( ): Object => {
       if ( isFocused ) {
         setObservationList( stagedObservationList.current );
         setUnsyncedUuids( uploadUuids );
-        // 20240530 amanda - we only need about half of the keys in an Observation object to
-        // display to the user on MyObservations, so I think passing around smaller objects
-        // will improve render time here. if it causes problems, we can remove and pass around
-        // the full realm object
-        // const mappedObservations = stagedObservationList.current
-        //   .map( o => Observation.mapObservationForFlashList( o ) );
       }
     } );
     // eslint-disable-next-line consistent-return

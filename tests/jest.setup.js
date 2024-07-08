@@ -251,13 +251,13 @@ jest.mock( "react-native-fs", ( ) => {
     moveFile: async ( ) => "testdata",
     copyFile: async ( ) => "testdata",
     stat: jest.fn( ( ) => ( {
-      mtime: 123
+      mtime: new Date()
     } ) ),
     readFile: jest.fn( ( ) => "testdata" ),
     readDir: jest.fn( async ( ) => ( [
       {
-        ctime: 123,
-        mtime: 123,
+        ctime: new Date(),
+        mtime: new Date(),
         name: "testdata"
       }
     ] ) ),

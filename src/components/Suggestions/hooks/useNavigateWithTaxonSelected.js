@@ -46,7 +46,9 @@ const useNavigateWithTaxonSelected = (
         }
       } );
     } else if ( entryScreen === "ObsEdit" ) {
-      navigation.goBack( );
+      // Cant' go back b/c we might be on Suggestions OR TaxonSearch. Don't
+      // want to set lastScreen b/c we don't want to go back to suggestions
+      navigation.navigate( "ObsEdit" );
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }
