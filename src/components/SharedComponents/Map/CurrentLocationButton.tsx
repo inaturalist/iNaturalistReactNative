@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import React from "react";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -19,17 +20,27 @@ const CurrentLocationButton = ( {
   showCurrentLocationButton
 }: Props ) => {
   const { t } = useTranslation( );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const onPress = ( ) => {
+    if ( !hasPermissions ) {
+      requestPermissions( );
+    }
+    handlePress( );
+  };
   return showCurrentLocationButton && (
-    <INatIconButton
-      icon="location-crosshairs"
-      className={classnames(
-        "absolute bottom-5 right-5 bg-white rounded-full",
-        currentLocationButtonClassName
-      )}
-      style={DROP_SHADOW}
-      accessibilityLabel={t( "Zoom-to-current-location" )}
-      onPress={handlePress}
-    />
+    <>
+      <INatIconButton
+        icon="location-crosshairs"
+        className={classnames(
+          "absolute bottom-5 right-5 bg-white rounded-full",
+          currentLocationButtonClassName
+        )}
+        style={DROP_SHADOW}
+        accessibilityLabel={t( "Zoom-to-current-location" )}
+        onPress={onPress}
+      />
+      {renderPermissionsGate( )}
+    </>
   );
 };
 
