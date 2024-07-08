@@ -25,7 +25,7 @@ import { TAB_ID } from "./ProjectsContainer";
 
 interface Props {
   searchInput: string;
-  setSearchInput: Function,
+  setSearchInput: ( _text: string ) => void;
   tabs: Tab[],
   currentTabId: TAB_ID;
   projects: Object[],
@@ -36,7 +36,9 @@ interface Props {
 }
 
 const Projects = ( {
-  searchInput, setSearchInput, tabs, currentTabId, projects, isLoading, memberId,
+  searchInput,
+  setSearchInput,
+  tabs, currentTabId, projects, isLoading, memberId,
   hasPermissions,
   requestPermissions
 }: Props ) => {
