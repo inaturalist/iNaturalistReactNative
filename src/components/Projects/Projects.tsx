@@ -104,6 +104,18 @@ const Projects = ( {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center"
+  } as const;
+
+  const renderList = ( ) => {
+    return (
+      <FlatList
+        contentContainerStyle={projects?.length === 0 && emptyListStyles}
+        data={projects}
+        renderItem={renderProject}
+        testID="Project.list"
+        ListEmptyComponent={renderEmptyList}
+      />
+    );
   };
 
   return (
@@ -123,13 +135,7 @@ const Projects = ( {
           <View className="mb-3" />
         </>
       )}
-      <FlatList
-        contentContainerStyle={projects?.length === 0 && emptyListStyles}
-        data={projects}
-        renderItem={renderProject}
-        testID="Project.list"
-        ListEmptyComponent={renderEmptyList}
-      />
+      {renderList( )}
     </ViewWrapper>
   );
 };
