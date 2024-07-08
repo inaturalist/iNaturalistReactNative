@@ -5,7 +5,7 @@ import React from "react";
 import { GestureResponderEvent, TouchableOpacity } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
-interface Tab {
+export interface Tab {
   id: string;
   text: string;
   testID?: string;

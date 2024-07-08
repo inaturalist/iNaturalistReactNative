@@ -10,6 +10,7 @@ import {
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
+import { Tab } from "components/SharedComponents/Tabs/Tabs.tsx";
 import { Pressable, View } from "components/styledComponents";
 import React, { useEffect } from "react";
 import {
@@ -24,7 +25,7 @@ import { TAB_ID } from "./ProjectsContainer";
 interface Props {
   searchInput: string;
   setSearchInput: Function,
-  tabs: Object[],
+  tabs: Tab[],
   currentTabId: TAB_ID;
   projects: Object[],
   isLoading: boolean;
