@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   ActivityIndicator,
   Body1,
+  Body2,
   Button,
   Heading1,
   INatIcon,
@@ -110,6 +111,24 @@ const Projects = ( {
   } as const;
 
   const renderList = ( ) => {
+    // hasPermission undefined means we haven't checked for location permissions yet
+    // false means the user has denied or not yet given location permissions
+    if ( currentTabId === TAB_ID.NEARBY && hasPermissions === false ) {
+      return (
+        <View className="flex-1 justify-center p-4">
+          <View className="items-center">
+            <Body2>{t( "To-view-nearby-projects-please-enable-location" )}</Body2>
+          </View>
+          <Button
+            className="mt-5"
+            text={t( "ALLOW-LOCATION-ACCESS" )}
+            accessibilityHint={t( "Opens-location-permission-prompt" )}
+            level="focus"
+            onPress={( ) => requestPermissions()}
+          />
+        </View>
+      );
+    }
     return (
       <FlatList
         contentContainerStyle={projects?.length === 0 && emptyListStyles}
