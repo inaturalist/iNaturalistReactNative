@@ -19,11 +19,13 @@ import {
   useTranslation
 } from "sharedHooks";
 
+import { TAB_ID } from "./ProjectsContainer";
+
 interface Props {
   searchInput: string;
   setSearchInput: Function,
   tabs: Object[],
-  currentTabId: string;
+  currentTabId: TAB_ID;
   projects: Object[],
   isLoading: boolean;
   memberId?: number;
@@ -87,7 +89,7 @@ const Projects = ( {
     }
 
     if ( searchInput.length === 0 ) {
-      if ( currentTabId === "JOINED" && !memberId ) {
+      if ( currentTabId === TAB_ID.JOINED && !memberId ) {
         return (
           <View className="items-center">
             <Body1>{t( "You-havent-joined-any-projects-yet" )}</Body1>

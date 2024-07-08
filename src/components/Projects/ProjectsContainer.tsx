@@ -11,9 +11,14 @@ import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
 import Projects from "./Projects";
 
-const JOINED_TAB_ID = "JOINED";
-const FEATURED_TAB_ID = "FEATURED";
-const NEARBY_TAB_ID = "NEARBY";
+export enum TAB_ID {
+  // eslint-disable-next-line no-unused-vars
+  JOINED = "JOINED",
+  // eslint-disable-next-line no-unused-vars
+  FEATURED = "FEATURED",
+  // eslint-disable-next-line no-unused-vars
+  NEARBY = "NEARBY"
+}
 
 const ProjectsContainer = ( ) => {
   const [searchInput, setSearchInput] = useState( "" );
@@ -21,7 +26,7 @@ const ProjectsContainer = ( ) => {
   const memberId = currentUser?.id;
   const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
-  const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
+  const [currentTabId, setCurrentTabId] = useState( TAB_ID.JOINED );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission();
   const { userLocation } = useUserLocation( {
     skipName: true,
@@ -40,11 +45,11 @@ const ProjectsContainer = ( ) => {
   );
 
   useEffect( ( ) => {
-    if ( currentTabId === JOINED_TAB_ID ) {
+    if ( currentTabId === TAB_ID.JOINED ) {
       setApiParams( { member_id: memberId } );
-    } else if ( currentTabId === FEATURED_TAB_ID ) {
+    } else if ( currentTabId === TAB_ID.FEATURED ) {
       setApiParams( { featured: true } );
-    } else if ( currentTabId === NEARBY_TAB_ID && userLocation ) {
+    } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
       setApiParams( {
         lat: userLocation.latitude,
         lng: userLocation.longitude
@@ -65,24 +70,24 @@ const ProjectsContainer = ( ) => {
 
   const tabs = [
     {
-      id: JOINED_TAB_ID,
+      id: TAB_ID.JOINED,
       text: t( "JOINED" ),
       onPress: () => {
-        setCurrentTabId( JOINED_TAB_ID );
+        setCurrentTabId( TAB_ID.JOINED );
       }
     },
     {
-      id: FEATURED_TAB_ID,
+      id: TAB_ID.FEATURED,
       text: t( "FEATURED" ),
       onPress: () => {
-        setCurrentTabId( FEATURED_TAB_ID );
+        setCurrentTabId( TAB_ID.FEATURED );
       }
     },
     {
-      id: NEARBY_TAB_ID,
+      id: TAB_ID.NEARBY,
       text: t( "NEARBY" ),
       onPress: () => {
-        setCurrentTabId( NEARBY_TAB_ID );
+        setCurrentTabId( TAB_ID.NEARBY );
       }
     }
   ];
