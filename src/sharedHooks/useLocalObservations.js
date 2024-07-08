@@ -49,7 +49,7 @@ const useLocalObservations = ( ): Object => {
     if ( realm === null || realm.isClosed ) {
       return;
     }
-    const localObservations = realm.objects( "Observation" );
+    const localObservations = realm.objects( "Observation" ).sorted( "_created_at", true );
     localObservations.addListener( ( collection, _changes ) => {
       const obsNotFlaggedForDeletion = collection.filtered( "_deleted_at == nil" );
       stagedObservationList.current = [...obsNotFlaggedForDeletion];
