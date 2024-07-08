@@ -5,8 +5,7 @@ class LocalPreferences extends Realm.Object {
     name: "LocalPreferences",
     properties: {
       last_deleted_sync_time: "date?",
-      last_sync_time: "date?",
-      explore_location_permission_shown: { type: "bool", default: false }
+      last_sync_time: "date?"
     }
   };
 }

@@ -27,7 +27,6 @@ const useMapLocation = ( ) => {
     place_guess: string;
   }>( );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
-  const [permissionRequested, setPermissionRequested] = useState<boolean>( );
   const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
 
   const place = state?.place;
@@ -72,22 +71,6 @@ const useMapLocation = ( ) => {
     }, [] )
   );
 
-  useEffect( ( ) => {
-    // ensure LocationPermissionGate only pops up on fresh install of the app
-    const localPrefs = realm.objects( "LocalPreferences" )[0];
-    if ( !localPrefs || localPrefs?.explore_location_permission_shown === false ) {
-      // logger.debug( "showing LocationPermissionGate in Explore, first install only" );
-      setPermissionRequested( true );
-      safeRealmWrite( realm, ( ) => {
-        if ( !localPrefs ) {
-          realm.create( "LocalPreferences", { explore_location_permission_shown: true } );
-        } else {
-          localPrefs.explore_location_permission_shown = true;
-        }
-      }, "setting explore location permission shown to true in ExploreContainer" );
-    }
-  }, [realm] );
-
   // eslint-disable-next-line max-len
   const onZoomToNearby = useCallback( async ( newRegion: Region, nearbyBoundaries: BoundingBox | undefined ) => {
     const newMapBoundaries = await updateMapBoundaries( newRegion, nearbyBoundaries );
@@ -102,23 +85,6 @@ const useMapLocation = ( ) => {
     updateMapBoundaries,
     t
   ] );
-
-  // PermissionGate callbacks need to use useCallback, otherwise they'll
-  // trigger re-renders if/when they change
-  const onPermissionGranted = useCallback( ( ) => {
-    // logger.debug( "onPermissionGranted" );
-    setPermissionRequested( false );
-  }, [setPermissionRequested] );
-
-  const onPermissionBlocked = useCallback( ( ) => {
-    // logger.debug( "onPermissionBlocked" );
-    setPermissionRequested( false );
-  }, [setPermissionRequested] );
-
-  const onPermissionDenied = useCallback( ( ) => {
-    // logger.debug( "onPermissionDenied" );
-    setPermissionRequested( false );
-  }, [setPermissionRequested] );
 
   const previousPlaceGuess = useRef( state.place_guess );
   useEffect( ( ) => {
@@ -155,11 +121,7 @@ const useMapLocation = ( ) => {
 
   return {
     onPanDrag,
-    onPermissionBlocked,
-    onPermissionDenied,
-    onPermissionGranted,
     onZoomToNearby,
-    permissionRequested,
     redoSearchInMapArea,
     region: currentMapRegion,
     showMapBoundaryButton,
