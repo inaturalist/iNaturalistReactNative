@@ -101,6 +101,8 @@ const ProjectsContainer = ( ) => {
         projects={projects}
         isLoading={isLoading}
         memberId={memberId}
+        hasPermissions={hasPermissions}
+        requestPermissions={requestPermissions}
       />
       {renderPermissionsGate()}
       {/* <LocationPermissionGate

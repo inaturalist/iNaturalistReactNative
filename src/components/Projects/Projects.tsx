@@ -27,10 +27,14 @@ interface Props {
   projects: Object[],
   isLoading: boolean;
   memberId?: number;
+  hasPermissions: boolean;
+  requestPermissions: () => void;
 }
 
 const Projects = ( {
-  searchInput, setSearchInput, tabs, currentTabId, projects, isLoading, memberId
+  searchInput, setSearchInput, tabs, currentTabId, projects, isLoading, memberId,
+  hasPermissions,
+  requestPermissions
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
