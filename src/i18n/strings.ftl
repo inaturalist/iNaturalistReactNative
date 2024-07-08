@@ -952,6 +952,7 @@ To-access-all-other-settings = To access all other account settings, click here:
 To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
+To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
 Toggle-map-type = Toggle map type
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = Traditional Project
