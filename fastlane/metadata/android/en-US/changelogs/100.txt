@@ -1,0 +1,1 @@
+Reverted showing unsynced observations first b/c of poor performance.
