@@ -46,7 +46,6 @@ const RadioButtonSheet = ( {
   radioValues,
   selectedValue = "none",
   insideModal,
-  insideModal,
   // optionalText,
   taxon,
   buttonRowClassName
