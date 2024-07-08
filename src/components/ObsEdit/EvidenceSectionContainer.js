@@ -12,10 +12,12 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef, useState
+  useRef,
+  useState
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import EvidenceSection from "./EvidenceSection";
@@ -49,6 +51,7 @@ const EvidenceSectionContainer = ( {
     shouldRetryCurrentObservationLocation,
     setShouldRetryCurrentObservationLocation
   ] = useState( false );
+  const { hasPermissions } = useLocationPermission( );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -75,7 +78,7 @@ const EvidenceSectionContainer = ( {
     currentObservation,
     updateObservationKeys,
     {
-      retry: shouldRetryCurrentObservationLocation
+      retry: hasPermissions && shouldRetryCurrentObservationLocation
     }
   );
 
@@ -84,8 +87,10 @@ const EvidenceSectionContainer = ( {
 
   useEffect( ( ) => {
     if ( latitude ) {
+      // TODO: is this handled by useLocationPermission?
       setShouldRetryCurrentObservationLocation( false );
     } else if ( locationPermissionResult === "granted" ) {
+      // TODO: is this handled by useLocationPermission?
       setShouldRetryCurrentObservationLocation( true );
     }
   }, [latitude, locationPermissionResult] );
