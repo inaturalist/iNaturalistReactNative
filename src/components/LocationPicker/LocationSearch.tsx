@@ -1,5 +1,3 @@
-// @flow
-
 import { useQueryClient } from "@tanstack/react-query";
 import fetchSearchResults from "api/search";
 import {
@@ -7,27 +5,33 @@ import {
   SearchBar
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useRef } from "react";
-import { Keyboard } from "react-native";
+import { Keyboard, TextInput } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
 const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
-type Props = {
-  locationName: string,
-  updateLocationName: Function,
-  selectPlaceResult: Function,
-  hidePlaceResults: boolean
-};
+interface Place {
+  id: string;
+  display_name: string;
+  point_geojson: {
+    coordinates: [number, number];
+  };
+}
+interface Props {
+  locationName: string;
+  updateLocationName: ( _text: string ) => void;
+  selectPlaceResult: ( _place: Place ) => void;
+  hidePlaceResults: boolean;
+}
 
 const LocationSearch = ( {
   locationName = "", updateLocationName, selectPlaceResult, hidePlaceResults
-}: Props ): Node => {
+}: Props ) => {
   const queryClient = useQueryClient( );
-  const locationInput = useRef( );
+  const locationInput = useRef<TextInput>( );
 
   // this seems necessary for clearing the cache between searches
   queryClient.invalidateQueries( { queryKey: ["fetchSearchResults"] } );
@@ -64,7 +68,7 @@ const LocationSearch = ( {
         className="absolute top-[65px] right-[26px] left-[26px] bg-white rounded-lg z-100"
         style={DROP_SHADOW}
       >
-        {!hidePlaceResults && placeResults?.map( place => (
+        {!hidePlaceResults && placeResults?.map( ( place: Place ) => (
           <Pressable
             accessibilityRole="button"
             key={place.id}
