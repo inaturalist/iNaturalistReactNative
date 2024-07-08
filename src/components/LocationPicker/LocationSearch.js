@@ -46,6 +46,7 @@ const LocationSearch = ( {
   return (
     <>
       <SearchBar
+        autoFocus={false}
         handleTextChange={locationText => {
           // only update location name when a user is typing,
           // not when a user selects a location from the dropdown
