@@ -12,13 +12,14 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef, useState
+  useState
 } from "react";
-import {
-  RESULTS as PERMISSION_RESULTS
-} from "react-native-permissions";
+// import {
+//   RESULTS as PERMISSION_RESULTS
+// } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
+// import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
+import useWatchPosition from "sharedHooks/useWatchPosition.ts";
 import useStore from "stores/useStore";
 
 import EvidenceSection from "./EvidenceSection";
@@ -43,15 +44,21 @@ const EvidenceSectionContainer = ( {
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
   const observationPhotos = currentObservation?.observationPhotos || [];
   const observationSounds = currentObservation?.observationSounds || [];
-  const mountedRef = useRef( true );
+  // const mountedRef = useRef( true );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
 
-  const [
-    shouldRetryCurrentObservationLocation,
-    setShouldRetryCurrentObservationLocation
-  ] = useState( false );
+  // const [
+  //   shouldRetryCurrentObservationLocation,
+  //   setShouldRetryCurrentObservationLocation
+  // ] = useState( false );
+
+  const {
+    hasLocation,
+    isFetchingLocation,
+    locationPermissionNeeded
+  } = useWatchPosition( );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -62,36 +69,36 @@ const EvidenceSectionContainer = ( {
   // and maybe even before other hooks execute. If we ever need to do this
   // again we could probably wrap this into its own hook, like useMounted
   // ( ).
-  useEffect( ( ) => {
-    mountedRef.current = true;
-    return function cleanup( ) {
-      mountedRef.current = false;
-    };
-  }, [mountedRef] );
+  // useEffect( ( ) => {
+  //   mountedRef.current = true;
+  //   return function cleanup( ) {
+  //     mountedRef.current = false;
+  //   };
+  // }, [mountedRef] );
 
-  const {
-    hasLocation,
-    isFetchingLocation,
-    permissionResult: locationPermissionResult
-  } = useCurrentObservationLocation(
-    mountedRef,
-    currentObservation,
-    updateObservationKeys,
-    {
-      retry: shouldRetryCurrentObservationLocation
-    }
-  );
+  // const {
+  //   hasLocation,
+  //   isFetchingLocation,
+  //   permissionResult: locationPermissionResult
+  // } = useCurrentObservationLocation(
+  //   mountedRef,
+  //   currentObservation,
+  //   updateObservationKeys,
+  //   {
+  //     retry: shouldRetryCurrentObservationLocation
+  //   }
+  // );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
 
-  useEffect( ( ) => {
-    if ( latitude ) {
-      setShouldRetryCurrentObservationLocation( false );
-    } else if ( locationPermissionResult === "granted" ) {
-      setShouldRetryCurrentObservationLocation( true );
-    }
-  }, [latitude, locationPermissionResult] );
+  // useEffect( ( ) => {
+  //   if ( latitude ) {
+  //     setShouldRetryCurrentObservationLocation( false );
+  //   } else if ( locationPermissionResult === "granted" ) {
+  //     setShouldRetryCurrentObservationLocation( true );
+  //   }
+  // }, [latitude, locationPermissionResult] );
 
   const hasPhotoOrSound = useMemo( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
@@ -221,15 +228,15 @@ const EvidenceSectionContainer = ( {
       showAddEvidenceSheet={showAddEvidenceSheet}
       observationSounds={observationSounds}
       onLocationPermissionGranted={( ) => {
-        setShouldRetryCurrentObservationLocation( true );
+        // setShouldRetryCurrentObservationLocation( true );
       }}
       onLocationPermissionDenied={( ) => {
-        setShouldRetryCurrentObservationLocation( false );
+        // setShouldRetryCurrentObservationLocation( false );
       }}
       onLocationPermissionBlocked={( ) => {
-        setShouldRetryCurrentObservationLocation( false );
+        // setShouldRetryCurrentObservationLocation( false );
       }}
-      locationPermissionNeeded={locationPermissionResult === PERMISSION_RESULTS.DENIED}
+      locationPermissionNeeded={locationPermissionNeeded}
     />
   );
 };
