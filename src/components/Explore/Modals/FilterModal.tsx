@@ -86,8 +86,7 @@ const FilterModal = ( {
     differsFromSnapshot,
     discardChanges,
     isNotInitialState,
-    numberOfFilters,
-    defaultExploreLocation
+    numberOfFilters
   } = useExplore();
   const {
     casual,
@@ -667,8 +666,7 @@ const FilterModal = ( {
             <Body3
               accessibilityRole="button"
               onPress={async ( ) => {
-                const exploreLocation = await defaultExploreLocation( );
-                dispatch( { type: EXPLORE_ACTION.RESET, exploreLocation } );
+                dispatch( { type: EXPLORE_ACTION.RESET } );
               }}
             >
               {t( "Reset-verb" )}

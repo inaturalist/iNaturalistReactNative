@@ -339,10 +339,11 @@ async function defaultExploreLocation( ) {
 // state
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
+    // Reset the state to the initial state, place is worldwide no matter if location
+    // permission is granted or not
     case EXPLORE_ACTION.RESET:
       return {
-        ...initialState,
-        ...action.exploreLocation
+        ...initialState
       };
     case EXPLORE_ACTION.DISCARD:
       return action.snapshot;
