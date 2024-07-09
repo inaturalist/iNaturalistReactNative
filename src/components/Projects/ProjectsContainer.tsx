@@ -7,7 +7,7 @@ import {
   useAuthenticatedQuery,
   useCurrentUser,
   useTranslation,
-  useUserLocation
+  useWatchPosition
 } from "sharedHooks";
 
 import Projects from "./Projects";
@@ -23,10 +23,9 @@ const ProjectsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const [permissionsGranted, setPermissionsGranted] = useState( false );
-  const { userLocation } = useUserLocation( {
-    skipName: true,
-    permissionsGranted
+  const [shouldRetryCurrentLocation, setShouldRetryCurrentLocation] = useState( false );
+  const { userLocation } = useWatchPosition( {
+    retry: shouldRetryCurrentLocation
   } );
 
   const {
@@ -48,7 +47,8 @@ const ProjectsContainer = ( ): Node => {
     } else if ( currentTabId === NEARBY_TAB_ID && userLocation ) {
       setApiParams( {
         lat: userLocation.latitude,
-        lng: userLocation.longitude
+        lng: userLocation.longitude,
+        radius: 50
       } );
     }
   }, [
@@ -106,9 +106,15 @@ const ProjectsContainer = ( ): Node => {
       <LocationPermissionGate
         permissionNeeded={currentTabId === NEARBY_TAB_ID}
         withoutNavigation
-        onPermissionGranted={( ) => setPermissionsGranted( true )}
-        onPermissionDenied={( ) => setPermissionsGranted( false )}
-        onPermissionBlocked={( ) => setPermissionsGranted( false )}
+        onPermissionGranted={( ) => {
+          setShouldRetryCurrentLocation( true );
+        }}
+        onPermissionDenied={( ) => {
+          setShouldRetryCurrentLocation( false );
+        }}
+        onPermissionBlocked={( ) => {
+          setShouldRetryCurrentLocation( false );
+        }}
       />
     </>
   );

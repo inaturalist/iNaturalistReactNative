@@ -1,7 +1,7 @@
+import Geolocation from "@react-native-community/geolocation";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import React from "react";
-import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -11,29 +11,7 @@ const initialStoreState = useStore.getState( );
 
 const mockLocationName = "San Francisco, CA";
 
-// import { checkMultiple, RESULTS } from "react-native-permissions";
-// jest.mock( "react-native-permissions", ( ) => {
-//   const actual = jest.requireActual( "react-native-permissions" );
-//   return {
-//     ...actual,
-//     checkMultiple: permissions => permissions.reduce(
-//       ( memo, permission ) => {
-//         memo[permission] = actual.RESULTS.GRANTED;
-//         return memo;
-//       },
-//       {}
-//     )
-//   };
-// } );
-// jest.mock('react-native-permissions', () => require('react-native-permissions/mock'));
-
 const mockCurrentUser = factory( "LocalUser" );
-
-const mockFetchUserLocation = jest.fn( () => ( { latitude: 37, longitude: 34 } ) );
-jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
-  __esModule: true,
-  default: () => mockFetchUserLocation()
-} ) );
 
 const renderObsEdit = ( ) => renderComponent( <ObsEdit /> );
 
@@ -93,7 +71,7 @@ describe( "location fetching", () => {
 
   beforeEach( () => {
     // resets mock back to original state
-    mockFetchUserLocation.mockReset();
+    Geolocation.watchPosition.mockReset();
   } );
 
   test( "should fetch location when new observation hasn't saved", async ( ) => {
@@ -105,13 +83,13 @@ describe( "location fetching", () => {
       currentObservation: observations[0]
     } );
     renderObsEdit( );
-    expect( mockFetchUserLocation ).not.toHaveBeenCalled();
+    expect( Geolocation.watchPosition ).not.toHaveBeenCalled();
 
     renderObsEdit( );
 
     await waitFor( () => {
-      expect( mockFetchUserLocation ).toHaveBeenCalled();
-    }, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
+      expect( Geolocation.watchPosition ).toHaveBeenCalled();
+    } );
     // Note: it would be nice to look for an update in the UI
   } );
 
@@ -137,9 +115,9 @@ describe( "location fetching", () => {
 
     // Location may not fetch immediately, so wait for twice the default fetch
     // interval before testing whether the mock was called
-    await waitFor( () => undefined, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
+    await waitFor( () => undefined );
 
-    expect( mockFetchUserLocation ).not.toHaveBeenCalled();
+    expect( Geolocation.watchPosition ).not.toHaveBeenCalled();
   } );
 
   test( "shouldn't fetch location for existing observation created elsewhere", async () => {
@@ -163,8 +141,8 @@ describe( "location fetching", () => {
       screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) )
     ).toBeTruthy();
 
-    await waitFor( () => undefined, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
+    await waitFor( () => undefined );
 
-    expect( mockFetchUserLocation ).not.toHaveBeenCalled();
+    expect( Geolocation.watchPosition ).not.toHaveBeenCalled();
   } );
 } );

@@ -8,6 +8,7 @@ import {
   checkMultiple,
   RESULTS
 } from "react-native-permissions";
+import { RealmObservation } from "realmModels/types.d.ts";
 
 export const TARGET_POSITIONAL_ACCURACY = 10;
 
@@ -18,7 +19,7 @@ export const checkLocationPermission = async ( ) => {
   return newPermissionResult;
 };
 
-export const shouldObservationFetchLocation = async observation => {
+export const shouldFetchObservationLocation = async ( observation: RealmObservation[] ) => {
   const permissionResult = await checkLocationPermission( );
   const latitude = observation?.latitude;
   const longitude = observation?.longitude;
@@ -38,8 +39,6 @@ export const shouldObservationFetchLocation = async observation => {
     observation?.positional_accuracy
     && observation.positional_accuracy <= TARGET_POSITIONAL_ACCURACY
   );
-
-  console.log( permissionResult, "new permission" );
 
   return observation
     && isNewObservation

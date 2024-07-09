@@ -8,9 +8,9 @@ import {
 } from "react-native-permissions";
 import {
   checkLocationPermission,
-  shouldObservationFetchLocation,
+  shouldFetchObservationLocation,
   TARGET_POSITIONAL_ACCURACY
-} from "sharedHelpers/shouldObservationFetchLocation";
+} from "sharedHelpers/shouldFetchObservationLocation.ts";
 import useStore from "stores/useStore";
 
 const geolocationOptions = {
@@ -30,7 +30,8 @@ const useWatchPosition = ( options: {
   const [locationPermissionResult, setLocationPermissionResult] = useState( null );
   const [errorCode, setErrorCode] = useState( null );
   const hasLocation = currentObservation?.latitude && currentObservation?.longitude;
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( null );
+  const [shouldFetchLocation, setShouldFetchLocation] = useState( true );
+  const [userLocation, setUserLocation] = useState( null );
 
   const watchPosition = ( ) => {
     const success = ( position: GeolocationResponse ) => {
@@ -60,14 +61,16 @@ const useWatchPosition = ( options: {
   };
 
   useEffect( ( ) => {
-    const positionalAccuracy = currentPosition?.coords?.accuracy;
-    if ( !currentPosition || !positionalAccuracy ) { return; }
-    if ( positionalAccuracy < TARGET_POSITIONAL_ACCURACY ) {
-      updateObservationKeys( {
-        latitude: currentPosition?.coords?.latitude,
-        longitude: currentPosition?.coords?.longitude,
-        positional_accuracy: positionalAccuracy
-      } );
+    const accuracy = currentPosition?.coords?.accuracy;
+    const newLocation = {
+      latitude: currentPosition?.coords?.latitude,
+      longitude: currentPosition?.coords?.longitude,
+      positional_accuracy: accuracy
+    };
+    if ( !currentPosition || !accuracy ) { return; }
+    updateObservationKeys( newLocation );
+    setUserLocation( newLocation );
+    if ( accuracy < TARGET_POSITIONAL_ACCURACY ) {
       Geolocation.clearWatch( subscriptionId );
       setSubscriptionId( null );
       setCurrentPosition( null );
@@ -78,23 +81,23 @@ const useWatchPosition = ( options: {
     const beginLocationFetch = async ( ) => {
       const permissionResult = await checkLocationPermission( );
       setLocationPermissionResult( permissionResult );
-      const startFetchLocation = await shouldObservationFetchLocation( currentObservation );
+      const startFetchLocation = await shouldFetchObservationLocation( currentObservation );
       if ( startFetchLocation ) {
-        setShouldFetchLocation( true );
         watchPosition( );
       } else {
         setShouldFetchLocation( false );
       }
     };
     beginLocationFetch( );
-  }, [currentObservation, options.retry] );
+  }, [currentObservation, options?.retry] );
 
   const locationDenied = locationPermissionResult === PERMISSION_RESULTS.DENIED;
 
   return {
     hasLocation,
     isFetchingLocation: ( !errorCode || !locationDenied ) && shouldFetchLocation,
-    locationPermissionNeeded: locationDenied
+    locationPermissionNeeded: locationDenied,
+    userLocation
   };
 };
 

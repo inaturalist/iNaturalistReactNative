@@ -4,7 +4,6 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
-import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -70,7 +69,7 @@ describe( "ObsEdit offline", ( ) => {
 
   describe( "creation", ( ) => {
     it( "should fetch coordinates", async ( ) => {
-      const mockGetCurrentPosition = jest.fn( ( success, _error, _options ) => success( {
+      const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
         coords: {
           latitude: 1,
           longitude: 1,
@@ -78,22 +77,23 @@ describe( "ObsEdit offline", ( ) => {
           timestamp: Date.now( )
         }
       } ) );
-      Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
+      Geolocation.watchPosition.mockImplementation( mockWatchPosition );
       const observation = factory( "LocalObservation", {
         observationPhotos: []
       } );
-      useStore.setState( { observations: [observation] } );
+      useStore.setState( {
+        observations: [observation],
+        currentObservation: observation
+      } );
       renderAppWithComponent(
         <ObsEdit />
       );
+      expect(
+        screen.getByTestId( "EvidenceSection.fetchingLocationIndicator" )
+      ).toBeTruthy( );
       await waitFor( ( ) => {
-        expect(
-          screen.getByTestId( "EvidenceSection.fetchingLocationIndicator" )
-        ).toBeTruthy( );
+        expect( mockWatchPosition ).toHaveBeenCalled( );
       } );
-      await waitFor( ( ) => {
-        expect( mockGetCurrentPosition ).toHaveBeenCalled( );
-      }, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
       const coords = await screen.findByText( /Lat:/ );
       expect( coords ).toBeTruthy( );
       expect( screen.queryByText( "Finding location..." ) ).toBeFalsy( );
