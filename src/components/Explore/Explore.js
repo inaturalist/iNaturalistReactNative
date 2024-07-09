@@ -12,6 +12,7 @@ import {
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { PLACE_MODE } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
@@ -59,6 +60,8 @@ type Props = {
   updateLocation: Function,
   updateUser: Function,
   updateProject: Function,
+  // TODO: change to PLACE_MODE in Typescript
+  placeMode: string,
   hasLocationPermissions: ?boolean,
   requestLocationPermissions: Function
 }
@@ -78,6 +81,7 @@ const Explore = ( {
   updateLocation,
   updateUser,
   updateProject,
+  placeMode,
   hasLocationPermissions,
   requestLocationPermissions
 }: Props ): Node => {
@@ -121,8 +125,8 @@ const Explore = ( {
         />
       );
     }
-    // Undefined means we haven't checked for location permissions yet
-    if ( hasLocationPermissions === false ) {
+    // hasLocationPermissions === undefined means we haven't checked for location permissions yet
+    if ( placeMode === PLACE_MODE.NEARBY && hasLocationPermissions === false ) {
       return (
         <View className="flex-1 justify-center p-4">
           <View className="items-center">
