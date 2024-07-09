@@ -739,8 +739,6 @@ const FilterModal = ( {
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
             <View className="mb-5">
-              {placeGuess
-                ? (
                   <View>
                     <View className="flex-row items-center mb-5">
                       <INatIcon name="location" size={15} />
@@ -754,16 +752,6 @@ const FilterModal = ( {
                       accessibilityLabel={t( "Edit" )}
                     />
                   </View>
-                )
-                : (
-                  <Button
-                    text={t( "SEARCH-FOR-A-LOCATION" )}
-                    onPress={() => {
-                      setShowLocationSearchModal( true );
-                    }}
-                    accessibilityLabel={t( "Search" )}
-                  />
-                )}
             </View>
           </View>
 

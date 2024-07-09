@@ -827,7 +827,6 @@ Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = SEARCH
 # Title for a search interface
 Search = Search
-SEARCH-FOR-A-LOCATION = SEARCH FOR A LOCATION
 Search-for-a-project = Search for a project
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
 Search-for-a-taxon = Search for a taxon
