@@ -75,9 +75,7 @@ const TaxonDetails = ( ): Node => {
   const lastScreen = params?.lastScreen;
 
   const realm = useRealm( );
-  console.log( "REALM TAXON DETAILS" );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
-  console.log( "REALM TAXON DETAILS results", localTaxon );
 
   const taxonFetchParams = {
     place_id: remoteUser?.place_id
@@ -304,7 +302,6 @@ const TaxonDetails = ( ): Node => {
                 navigation.navigate( "ObsDetails", {
                   uuid: obsUuid,
                   suggestedTaxon: taxon
-                  // suggestedTaxonId: id
                 } );
               } else {
                 navigation.navigate( "ObsEdit" );
