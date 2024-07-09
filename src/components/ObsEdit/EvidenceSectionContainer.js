@@ -51,7 +51,7 @@ const EvidenceSectionContainer = ( {
     shouldRetryCurrentObservationLocation,
     setShouldRetryCurrentObservationLocation
   ] = useState( false );
-  const { hasPermissions } = useLocationPermission( );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -222,6 +222,9 @@ const EvidenceSectionContainer = ( {
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       observationSounds={observationSounds}
+      hasPermissions={hasPermissions}
+      renderPermissionsGate={renderPermissionsGate}
+      requestPermissions={requestPermissions}
     />
   );
 };

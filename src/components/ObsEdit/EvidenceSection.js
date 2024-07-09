@@ -34,6 +34,9 @@ type Props = {
     uuid: string
   }>,
   updateObservationKeys: Function,
+  renderPermissionsGate: Function,
+  requestPermissions: Function,
+  hasPermissions: boolean
 }
 
 const EvidenceSection = ( {
@@ -44,7 +47,10 @@ const EvidenceSection = ( {
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
   observationSounds,
-  updateObservationKeys
+  updateObservationKeys,
+  renderPermissionsGate,
+  requestPermissions,
+  hasPermissions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -58,6 +64,16 @@ const EvidenceSection = ( {
 
   const navToLocationPicker = ( ) => {
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );
+  };
+
+  const onLocationPress = ( ) => {
+    // If we have location permissions, navigate to the location picker
+    if ( hasPermissions ) {
+      navToLocationPicker();
+    } else {
+      // If we don't have location permissions, request them
+      requestPermissions( );
+    }
   };
 
   const latitude = currentObservation?.latitude;
@@ -118,7 +134,7 @@ const EvidenceSection = ( {
       <Pressable
         accessibilityRole="link"
         className="flex-row flex-nowrap pb-3"
-        onPress={navToLocationPicker}
+        onPress={onLocationPress}
         accessibilityLabel={t( "Edit-location" )}
       >
         <View className="w-[30px] items-center mr-1">
@@ -160,6 +176,19 @@ const EvidenceSection = ( {
           }
         </View>
       </Pressable>
+      {renderPermissionsGate( {
+        // If the user does not give location permissions in any form,
+        // navigate to the location picker (if granted we just continue fetching the location)
+        onRequestDenied: ( ) => {
+          navToLocationPicker();
+        },
+        onRequestBlocked: ( ) => {
+          navToLocationPicker();
+        },
+        onModalHide: ( ) => {
+          navToLocationPicker();
+        }
+      } )}
       <DatePicker
         currentObservation={currentObservation}
         updateObservationKeys={updateObservationKeys}
