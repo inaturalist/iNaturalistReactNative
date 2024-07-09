@@ -53,8 +53,9 @@ const initialState = {
   observationShown: null,
   showAgreeWithIdSheet: false,
   showAddCommentSheet: false,
+  showPotentialDisagreementSheet: false,
   showSuggestIdSheet: false,
-  taxonForAgreement: null
+  taxonForSuggestion: null // taxon for agree and disagree
 };
 
 const reducer = ( state, action ) => {
@@ -87,7 +88,7 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         showAgreeWithIdSheet: action.showAgreeWithIdSheet,
-        taxonForAgreement: action.taxonForAgreement || state.taxonForAgreement,
+        taxonForSuggestion: action.taxonForSuggestion || state.taxonForSuggestion,
         comment: action.comment || state.comment
       };
     case "SHOW_ADD_COMMENT_SHEET":
@@ -106,6 +107,17 @@ const reducer = ( state, action ) => {
         ...state,
         comment: action.comment
       };
+    case "SHOW_POTENTIAL_DISAGREEMENT_SHEET":
+      return {
+        ...state,
+        showPotentialDisagreementSheet: action.showPotentialDisagreementSheet,
+        taxonForSuggestion: action.taxonForSuggestion
+      };
+    case "CLEAR_TAXON":
+      return {
+        ...state,
+        taxonForSuggestion: action.taxonForSuggestion
+      };
     default:
       throw new Error( );
   }
@@ -120,7 +132,7 @@ const ObsDetailsContainer = ( ): Node => {
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
   const {
-    suggestedTaxonId,
+    suggestedTaxon,
     uuid
   } = params;
   const navigation = useNavigation( );
@@ -141,9 +153,9 @@ const ObsDetailsContainer = ( ): Node => {
     showAgreeWithIdSheet,
     showAddCommentSheet,
     showSuggestIdSheet,
-    taxonForAgreement
+    taxonForSuggestion,
+    showPotentialDisagreementSheet
   } = state;
-
   const queryClient = useQueryClient( );
 
   const localObservation = useLocalObservation( uuid );
@@ -327,6 +339,7 @@ const ObsDetailsContainer = ( ): Node => {
           if ( uuid ) {
             const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
             dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+            dispatch( { type: "CLEAR_TAXON", taxonForSuggestion: null } );
           }
         }
       },
@@ -346,10 +359,35 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( { type: "SHOW_SUGGEST_ID_SHEET", showSuggestIdSheet: true } );
   }, [] );
 
+  const onIDAdded = useCallback( ( ) => {
+    let observationTaxon = observation.taxon;
+    if (
+      observation.prefers_community_taxon === false
+      || ( observation.user.prefers_community_taxa === false
+      && observation.prefers_community_taxon === null )
+    ) {
+      observationTaxon = observation.community_taxon || observation.taxon;
+    }
+    if (
+      observationTaxon
+      && suggestedTaxon.id !== observationTaxon.id
+      && observationTaxon.ancestor_ids.includes( suggestedTaxon.id )
+    ) {
+      dispatch( {
+        type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+        showPotentialDisagreementSheet: true,
+        taxonForSuggestion: suggestedTaxon
+      } );
+    } else {
+      openSuggestIdSheet();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [suggestedTaxon] );
+
   useEffect( () => {
-    if ( !suggestedTaxonId ) return;
-    openSuggestIdSheet( );
-  }, [openSuggestIdSheet, suggestedTaxonId] );
+    if ( !suggestedTaxon ) return;
+    onIDAdded( );
+  }, [onIDAdded, openSuggestIdSheet, suggestedTaxon] );
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
@@ -373,7 +411,6 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( {
       type: "SHOW_AGREE_SHEET",
       showAgreeWithIdSheet: false,
-      taxonForAgreement: null,
       comment: null
     } );
   };
@@ -381,7 +418,7 @@ const ObsDetailsContainer = ( ): Node => {
   const onAgree = newComment => {
     const agreeParams = {
       observation_id: observation?.uuid,
-      taxon_id: taxonForAgreement?.id,
+      taxon_id: taxonForSuggestion?.id,
       body: newComment
     };
 
@@ -390,21 +427,29 @@ const ObsDetailsContainer = ( ): Node => {
     closeAgreeWithIdSheet( );
   };
 
-  const openAgreeWithIdSheet = taxon => {
-    dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: true, taxonForAgreement: taxon } );
+  const openAgreeWithIdSheet = agreeTaxon => {
+    dispatch( {
+      type: "SHOW_AGREE_SHEET",
+      showAgreeWithIdSheet: true,
+      taxonForSuggestion: agreeTaxon
+    } );
+  };
+  const potentialDisagreeSheetDiscardChanges = ( ) => {
+    dispatch( {
+      type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+      showPotentialDisagreementSheet: false,
+      taxonForSuggestion: null
+    } );
   };
 
-  const suggestIdSheetDiscardChanges = ( ) => {
-    dispatch( { type: "SHOW_SUGGEST_ID_SHEET", showSuggestIdSheet: false } );
-  };
-
-  const onSuggestId = ( ) => {
+  const doSuggestId = potentialDisagree => {
     const remark = currentObservation?.description;
     // New taxon identification added by user
     const idParams = {
       observation_id: uuid,
-      taxon_id: suggestedTaxonId,
-      vision
+      taxon_id: suggestedTaxon.id,
+      vision,
+      disagreement: potentialDisagree
     };
 
     if ( remark ) {
@@ -416,17 +461,60 @@ const ObsDetailsContainer = ( ): Node => {
     createIdentificationMutation.mutate( { identification: idParams } );
   };
 
+  const onSuggestId = useCallback( ( ) => {
+    // based on disagreement code in iNat web
+    // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
+    let observationTaxon = observation.taxon;
+    if (
+      observation.prefers_community_taxon === false
+      || ( observation.user.prefers_community_taxa === false
+      && observation.prefers_community_taxon === null )
+    ) {
+      observationTaxon = observation.community_taxon || observation.taxon;
+    }
+    if (
+      observationTaxon
+      && suggestedTaxon.id !== observationTaxon.id
+      && observationTaxon.ancestor_ids.includes( suggestedTaxon.id )
+    ) {
+      dispatch( {
+        type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+        showPotentialDisagreementSheet: true,
+        taxonForSuggestion: suggestedTaxon
+      } );
+    } else {
+      doSuggestId();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [suggestedTaxon] );
+
+  const onPotentialDisagreePressed = potentialDisagree => {
+    dispatch( {
+      type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+      showPotentialDisagreementSheet: false
+    } );
+    doSuggestId( potentialDisagree );
+  };
+
+  const suggestIdSheetDiscardChanges = ( ) => {
+    dispatch( {
+      type: "SHOW_SUGGEST_ID_SHEET",
+      showSuggestIdSheet: false,
+      taxonForSuggestion: null
+    } );
+  };
+
   const confirmCommentFromCommentSheet = newComment => {
     if ( !commentIsOptional ) {
       onCommentAdded( newComment );
-    } else if ( suggestedTaxonId ) {
+    } else if ( taxonForSuggestion ) {
+      dispatch( { type: "SET_COMMENT", comment: newComment } );
+      openAgreeWithIdSheet( taxonForSuggestion );
+    } else {
       updateObservationKeys( {
         description: newComment
       } );
       openSuggestIdSheet( );
-    } else {
-      dispatch( { type: "SET_COMMENT", comment: newComment } );
-      openAgreeWithIdSheet( taxonForAgreement );
     }
   };
 
@@ -442,6 +530,7 @@ const ObsDetailsContainer = ( ): Node => {
       confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
       currentTabId={currentTabId}
       currentUser={currentUser}
+      onPotentialDisagreePressed={onPotentialDisagreePressed}
       hideAddCommentSheet={hideAddCommentSheet}
       isOnline={isOnline}
       isRefetching={isRefetching}
@@ -453,6 +542,7 @@ const ObsDetailsContainer = ( ): Node => {
       openAgreeWithIdSheet={openAgreeWithIdSheet}
       onSuggestId={onSuggestId}
       openAddCommentSheet={openAddCommentSheet}
+      potentialDisagreeSheetDiscardChanges={potentialDisagreeSheetDiscardChanges}
       refetchRemoteObservation={invalidateQueryAndRefetch}
       remoteObsWasDeleted={remoteObsWasDeleted}
       showActivityTab={showActivityTab}
@@ -460,8 +550,9 @@ const ObsDetailsContainer = ( ): Node => {
       showAddCommentSheet={showAddCommentSheet}
       showSuggestIdSheet={showSuggestIdSheet}
       suggestIdSheetDiscardChanges={suggestIdSheetDiscardChanges}
+      showPotentialDisagreementSheet={showPotentialDisagreementSheet}
       tabs={tabs}
-      taxonForAgreement={taxonForAgreement}
+      taxonForSuggestion={taxonForSuggestion}
     />
   );
 };

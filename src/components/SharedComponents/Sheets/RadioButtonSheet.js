@@ -1,3 +1,5 @@
+// @flow
+
 import {
   BottomSheet,
   Button,
@@ -6,35 +8,22 @@ import {
   RadioButtonRow
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { Node } from "react";
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
-interface Props {
+type Props = {
   handleClose: Function,
-  confirm: ( _checkedValue: string ) => void;
-  confirmText?: string;
+  confirm: Function,
+  confirmText?: string,
   headerText: string,
-  radioValues: {
-    [key: string]: {
-      value: string,
-      icon?: string,
-      label: string,
-      text?: string,
-      buttonText?: string,
-    }
-  },
+  radioValues: Object,
   selectedValue?: string,
   insideModal?: boolean,
   // optionalText?: string, when used causes error in precommit hook unused key
-  taxon?:{
-    id: number;
-    name: string;
-    preferred_common_name?: string;
-    rank: string;
-    rank_level: number;
-  },
+  taxon?: Object,
   buttonRowClassName?: boolean
 }
 
@@ -49,9 +38,9 @@ const RadioButtonSheet = ( {
   // optionalText,
   taxon,
   buttonRowClassName
-}: Props ) => {
+}: Props ): Node => {
   const { t } = useTranslation( );
-  const [checkedValue, setCheckedValue] = useState( selectedValue );
+  const [checked, setChecked] = useState( selectedValue );
 
   let commonName = "";
   let scientificName = "";
@@ -63,20 +52,19 @@ const RadioButtonSheet = ( {
     ( { commonName, scientificName } = generateTaxonPieces( taxonPojo ) );
   }
 
-  const radioButtonRow = ( radioRow: string ) => (
-    <View key={radioRow} className="pb-4">
-      <RadioButtonRow
-        classNames={buttonRowClassName}
-        value={radioValues[radioRow].value}
-        icon={radioValues[radioRow].icon}
-        checked={checkedValue === radioValues[radioRow].value}
-        onPress={() => setCheckedValue( radioValues[radioRow].value )}
-        label={radioValues[radioRow].label}
-        description={radioValues[radioRow].text}
-        showTaxon
-        taxonNamePieces={{ commonName, scientificName }}
-      />
-    </View>
+  const radioButtonRow = radioRow => (
+    <RadioButtonRow
+      classNames={buttonRowClassName}
+      key={radioRow}
+      value={radioValues[radioRow].value}
+      icon={radioValues[radioRow].icon}
+      checked={checked === radioValues[radioRow].value}
+      onPress={() => setChecked( radioValues[radioRow].value )}
+      label={radioValues[radioRow].label}
+      description={radioValues[radioRow].text}
+      showTaxon
+      taxonNamePieces={{ commonName, scientificName }}
+    />
   );
 
   const confirmLabel = confirmText || t( "CONFIRM" );
@@ -87,7 +75,7 @@ const RadioButtonSheet = ( {
       headerText={headerText}
       insideModal={insideModal}
     >
-      <View className="p-4 pt-2">
+      <View className="p-5">
         { taxon
          && (
            <Trans
@@ -96,9 +84,7 @@ const RadioButtonSheet = ( {
              components={[<List2 />, <List2 className="italic" />]}
            />
          )}
-        <View className="p-3">
-          {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
-        </View>
+        {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
         {taxon && (
           <View className="mx-6 my-4">
             <DisplayTaxon taxon={taxon} />
@@ -106,9 +92,10 @@ const RadioButtonSheet = ( {
         )}
         <Button
           level="primary"
-          onPress={( ) => confirm( checkedValue )}
-          text={radioValues[checkedValue]?.buttonText ?? confirmLabel}
-          accessibilityLabel={radioValues[checkedValue]?.buttonText ?? confirmLabel}
+          onPress={( ) => confirm( checked )}
+          text={radioValues[checked]?.buttonText ?? confirmLabel}
+          className="mt-[15px]"
+          accessibilityLabel={radioValues[checked]?.buttonText ?? confirmLabel}
         />
       </View>
     </BottomSheet>
