@@ -1073,7 +1073,6 @@
     "comment": "Quality grade option",
     "val": "Research Grade"
   },
-  "Reset": "Reset",
   "RESET-PASSWORD": {
     "comment": "Reset password button",
     "val": "RESET PASSWORD"

@@ -107,7 +107,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
         />
         <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>
         <Body3 onPress={resetPlace} className="absolute top-4 right-4">
-          {t( "Reset" )}
+          {t( "Reset-verb" )}
         </Body3>
       </View>
       <View

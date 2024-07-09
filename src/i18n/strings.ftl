@@ -789,7 +789,6 @@ Removes-your-vote-of-agreement = Removes your vote of agreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
 # Quality grade option
 Research-Grade = Research Grade
-Reset = Reset
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
