@@ -2,6 +2,7 @@ import Geolocation, {
   GeolocationError,
   GeolocationResponse
 } from "@react-native-community/geolocation";
+import _ from "lodash";
 import { useEffect, useState } from "react";
 import {
   RESULTS as PERMISSION_RESULTS
@@ -68,21 +69,28 @@ const useWatchPosition = ( options: {
       positional_accuracy: accuracy
     };
     if ( !currentPosition || !accuracy ) { return; }
-    updateObservationKeys( newLocation );
+    // right now, we're returning a userLocation for the Projects and Camera
+    // screens, and we're updating observation keys in ObsEdit so the location
+    // is added directly to the observation. once changes to permissions flow are
+    // done, we'll want to also update observation keys via Suggestions (instead of
+    // adding location in the Camera)
+    if ( !_.isEmpty( currentObservation ) ) {
+      updateObservationKeys( newLocation );
+    }
     setUserLocation( newLocation );
     if ( accuracy < TARGET_POSITIONAL_ACCURACY ) {
       Geolocation.clearWatch( subscriptionId );
       setSubscriptionId( null );
       setCurrentPosition( null );
     }
-  }, [currentPosition, subscriptionId, updateObservationKeys] );
+  }, [currentPosition, subscriptionId, updateObservationKeys, currentObservation] );
 
   useEffect( ( ) => {
     const beginLocationFetch = async ( ) => {
       const permissionResult = await checkLocationPermission( );
       setLocationPermissionResult( permissionResult );
       const startFetchLocation = await shouldFetchObservationLocation( currentObservation );
-      if ( startFetchLocation ) {
+      if ( _.isEmpty( currentObservation ) || startFetchLocation ) {
         watchPosition( );
       } else {
         setShouldFetchLocation( false );
