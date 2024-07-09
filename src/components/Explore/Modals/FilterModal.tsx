@@ -44,6 +44,7 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
@@ -107,6 +108,7 @@ const FilterModal = ( {
     observed_on: observedOn,
     photoLicense,
     place_guess: placeGuess,
+    placeMode,
     project,
     researchGrade,
     reviewedFilter,
@@ -739,19 +741,19 @@ const FilterModal = ( {
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
             <View className="mb-5">
-                  <View>
-                    <View className="flex-row items-center mb-5">
-                      <INatIcon name="location" size={15} />
-                      <Body3 className="ml-4">{placeGuess}</Body3>
-                    </View>
-                    <Button
-                      text={t( "EDIT-LOCATION" )}
-                      onPress={() => {
-                        setShowLocationSearchModal( true );
-                      }}
-                      accessibilityLabel={t( "Edit" )}
-                    />
-                  </View>
+              <View>
+                <View className="flex-row items-center mb-5">
+                  <INatIcon name="location" size={15} />
+                  <Body3 className="ml-4">{placeGuessText( placeMode, t, placeGuess )}</Body3>
+                </View>
+                <Button
+                  text={t( "EDIT-LOCATION" )}
+                  onPress={() => {
+                    setShowLocationSearchModal( true );
+                  }}
+                  accessibilityLabel={t( "Edit" )}
+                />
+              </View>
             </View>
           </View>
 
