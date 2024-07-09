@@ -10,7 +10,6 @@ import React, {
 } from "react";
 import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import LocationPicker from "./LocationPicker";
@@ -132,7 +131,6 @@ type Props = {
 };
 
 const LocationPickerContainer = ( { route }: Props ): Node => {
-  const { renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const currentObservation = useStore( state => state.currentObservation );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
@@ -158,12 +156,6 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
     positional_accuracy: accuracy,
     place_guess: locationName
   };
-
-  // Request location permission once on mount
-  useEffect( ( ) => {
-    requestPermissions( );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
 
   useEffect( ( ) => {
     if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
@@ -235,26 +227,23 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
   };
 
   return (
-    <>
-      <LocationPicker
-        accuracy={accuracy}
-        accuracyTest={accuracyTest}
-        goBackOnSave={goBackOnSave}
-        hidePlaceResults={hidePlaceResults}
-        keysToUpdate={keysToUpdate}
-        loading={loading}
-        locationName={locationName}
-        mapType={mapType}
-        region={region}
-        selectPlaceResult={selectPlaceResult}
-        setMapReady={setMapReady}
-        showCrosshairs={showCrosshairs}
-        updateLocationName={updateLocationName}
-        updateRegion={updateRegion}
-        updateObservationKeys={updateObservationKeys}
-      />
-      {renderPermissionsGate( )}
-    </>
+    <LocationPicker
+      accuracy={accuracy}
+      accuracyTest={accuracyTest}
+      goBackOnSave={goBackOnSave}
+      hidePlaceResults={hidePlaceResults}
+      keysToUpdate={keysToUpdate}
+      loading={loading}
+      locationName={locationName}
+      mapType={mapType}
+      region={region}
+      selectPlaceResult={selectPlaceResult}
+      setMapReady={setMapReady}
+      showCrosshairs={showCrosshairs}
+      updateLocationName={updateLocationName}
+      updateRegion={updateRegion}
+      updateObservationKeys={updateObservationKeys}
+    />
   );
 };
 
