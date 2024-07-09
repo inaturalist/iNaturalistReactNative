@@ -5,6 +5,7 @@ import { ActivityIndicator, OfflineNotice } from "components/SharedComponents";
 import { Image, Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
+import Photo from "realmModels/Photo";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
@@ -19,7 +20,7 @@ const PhotoContainer = ( { photo, onPress, style }: Props ): Node => {
 
   const imageSources = [];
   if ( photo.localFilePath ) {
-    imageSources.push( { uri: photo.localFilePath } );
+    imageSources.push( { uri: Photo.getLocalPhotoUri( photo.localFilePath ) } );
   }
   if ( photo.url ) {
     imageSources.push( {

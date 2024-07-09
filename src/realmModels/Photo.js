@@ -74,10 +74,10 @@ class Photo extends Realm.Object {
 
   // this is necessary because photos cannot be found reliably via the file:/// name.
   // without this, local photos will not show up when the app updates
-  static accessLocalPhotoUri( localPathOrUri ) {
-    const uuidAndJpgSuffix = localPathOrUri?.split( "photoUploads/" )[1];
-    const uri = `file://${photoUploadPath}/${uuidAndJpgSuffix}`;
-    return uri;
+  static getLocalPhotoUri( localPathOrUri ) {
+    const pieces = localPathOrUri?.split( "photoUploads/" );
+    if ( !pieces || pieces.length <= 1 ) return null;
+    return `file://${photoUploadPath}/${pieces[1]}`;
   }
 
   static displayLargePhoto( url ) {
@@ -91,23 +91,23 @@ class Photo extends Realm.Object {
   static displayLocalOrRemoteLargePhoto( photo ) {
     return (
       Photo.displayLargePhoto( photo?.url )
-      || Photo.accessLocalPhotoUri( photo?.localFilePath )
+      || Photo.getLocalPhotoUri( photo?.localFilePath )
     );
   }
 
   static displayLocalOrRemoteMediumPhoto( photo ) {
     return (
       Photo.displayMediumPhoto( photo?.url )
-      || Photo.accessLocalPhotoUri( photo?.localFilePath )
+      || Photo.getLocalPhotoUri( photo?.localFilePath )
     );
   }
 
   static displayLocalOrRemoteSquarePhoto( photo ) {
-    return photo?.url || Photo.accessLocalPhotoUri( photo?.localFilePath );
+    return photo?.url || Photo.getLocalPhotoUri( photo?.localFilePath );
   }
 
   static deletePhotoFromDeviceStorage( path ) {
-    const localPhoto = Photo.accessLocalPhotoUri( path );
+    const localPhoto = Photo.getLocalPhotoUri( path );
     unlink( localPhoto );
   }
 

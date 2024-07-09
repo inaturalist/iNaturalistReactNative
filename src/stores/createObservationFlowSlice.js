@@ -35,7 +35,7 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
     _.remove(
       obsPhotos,
       obsPhoto => (
-        Photo.accessLocalPhotoUri( obsPhoto.photo.localFilePath ) === uri
+        Photo.getLocalPhotoUri( obsPhoto.photo.localFilePath ) === uri
         || obsPhoto.originalPhotoUri === uri
       )
     );
@@ -54,7 +54,7 @@ const removeObsSoundFromObservation = ( currentObservation, uri ) => {
       obsSounds,
       obsSound => (
         obsSound.sound.file_url === uri
-        || Sound.accessLocalSoundUri( obsSound.sound.file_url ) === uri
+        || Sound.getLocalSoundUri( obsSound.sound.file_url ) === uri
       )
     );
     updatedObservation.observationSounds = obsSounds;
@@ -92,7 +92,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     const newObservation = newObservations[state.currentObservationIndex];
     if ( newObservation ) {
       const index = newObservation.observationPhotos.findIndex(
-        op => ( op.photo?.localFilePath || op.photo?.url ) === uri
+        op => ( Photo.getLocalPhotoUri( op.photo?.localFilePath ) || op.photo?.url ) === uri
       );
       if ( index > -1 ) {
         newObservation.observationPhotos.splice( index, 1 );
@@ -182,7 +182,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     const existingPhotoUris = get( )
       .currentObservation
       ?.observationPhotos
-      ?.map( op => ( op.photo.url || op.photo.localFilePath ) ) || [];
+      ?.map( op => ( op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) ) ) || [];
     return set( { evidenceToAdd: [], cameraUris: existingPhotoUris } );
   }
 } );
