@@ -151,6 +151,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         updateLocation={updateLocation}
         updateUser={updateUser}
         updateProject={updateProject}
+        placeMode={state.placeMode}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
       />

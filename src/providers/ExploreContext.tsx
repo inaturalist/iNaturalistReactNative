@@ -142,6 +142,13 @@ export enum PHOTO_LICENSE {
   CCBYNCND = "CCBYNCND",
 }
 
+export enum PLACE_MODE {
+  NEARBY = "NEARBY",
+  WORLDWIDE = "WORLDWIDE",
+  PLACE = "PLACE",
+  MAP_AREA = "MAP_AREA"
+}
+
 interface MapBoundaries {
   swlat?: LatLng["latitude"],
   swlng?: LatLng["longitude"],
@@ -185,6 +192,7 @@ type State = {
   photoLicense: PHOTO_LICENSE,
   place: PLACE | null | undefined,
   place_guess: string,
+  placeMode: PLACE_MODE,
   place_id: number | null | undefined,
   // TODO: technically this is not any Object but a "Project"
   // and should be typed as such (e.g., in realm model)
@@ -304,6 +312,7 @@ const defaultFilters = {
 
 const initialState: State = {
   ...defaultFilters,
+  placeMode: PLACE_MODE.WORLDWIDE,
   place: undefined,
   place_guess: t( "Nearby" ),
   place_id: undefined,
@@ -324,10 +333,12 @@ async function defaultExploreLocation( ) {
   if ( !location || !location.latitude ) {
     return {
       place_guess: t( "Worldwide" )
+      placeMode: PLACE_MODE.WORLDWIDE
     };
   }
   return {
     place_guess: t( "Nearby" ),
+    placeMode: PLACE_MODE.NEARBY,
     lat: location?.latitude,
     lng: location?.longitude,
     radius: 50
@@ -392,6 +403,7 @@ function exploreReducer( state: State, action: Action ) {
         nelng: undefined,
         place: action.place,
         place_guess: action.placeGuess,
+        placeMode: PLACE_MODE.PLACE,
         place_id: action.placeId,
         radius: action.radius,
         swlat: undefined,

@@ -110,6 +110,7 @@ const ExploreContainerWithContext = ( ): Node => {
       updateLocation={updateLocation}
       updateUser={updateUser}
       updateProject={updateProject}
+      placeMode={state.placeMode}
       hasLocationPermissions={undefined}
       requestLocationPermissions={() => console.log()}
     />
