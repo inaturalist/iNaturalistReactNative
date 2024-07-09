@@ -49,16 +49,18 @@ const EvidenceSectionContainer = ( {
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
 
-  // const [
-  //   shouldRetryCurrentObservationLocation,
-  //   setShouldRetryCurrentObservationLocation
-  // ] = useState( false );
+  const [
+    shouldRetryCurrentObservationLocation,
+    setShouldRetryCurrentObservationLocation
+  ] = useState( false );
 
   const {
     hasLocation,
     isFetchingLocation,
     locationPermissionNeeded
-  } = useWatchPosition( );
+  } = useWatchPosition( {
+    retry: shouldRetryCurrentObservationLocation
+  } );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -228,13 +230,13 @@ const EvidenceSectionContainer = ( {
       showAddEvidenceSheet={showAddEvidenceSheet}
       observationSounds={observationSounds}
       onLocationPermissionGranted={( ) => {
-        // setShouldRetryCurrentObservationLocation( true );
+        setShouldRetryCurrentObservationLocation( true );
       }}
       onLocationPermissionDenied={( ) => {
-        // setShouldRetryCurrentObservationLocation( false );
+        setShouldRetryCurrentObservationLocation( false );
       }}
       onLocationPermissionBlocked={( ) => {
-        // setShouldRetryCurrentObservationLocation( false );
+        setShouldRetryCurrentObservationLocation( false );
       }}
       locationPermissionNeeded={locationPermissionNeeded}
     />
