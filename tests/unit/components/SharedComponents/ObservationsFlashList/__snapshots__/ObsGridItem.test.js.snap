@@ -584,7 +584,7 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
       accessibilityIgnoresInvertColors={true}
       source={
         {
-          "uri": "document/directory/path/photoUploads/undefined",
+          "uri": "file://document/directory/path/photoUploads/undefined",
         }
       }
       style={

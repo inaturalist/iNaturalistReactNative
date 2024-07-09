@@ -53,7 +53,7 @@ const EvidenceList = ( {
 
   const observationPhotos = useMemo(
     ( ) => currentObservation?.observationPhotos || [],
-    [currentObservation]
+    [currentObservation?.observationPhotos]
   );
 
   const photoUris = observationPhotos?.map(
