@@ -580,27 +580,6 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
         </Text>
       </View>
     </View>
-    <Image
-      accessibilityIgnoresInvertColors={true}
-      source={
-        {
-          "uri": "file://document/directory/path/photoUploads/undefined",
-        }
-      }
-      style={
-        [
-          [
-            {
-              "flexGrow": 1,
-            },
-            {
-              "aspectRatio": 1,
-            },
-          ],
-        ]
-      }
-      testID="ObsList.photo"
-    />
   </View>
   <BVLinearGradient
     colors={

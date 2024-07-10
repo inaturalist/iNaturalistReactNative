@@ -28,7 +28,6 @@ const GreenCheckmark = ( {
       icon="checkmark-circle"
       color={colors.inatGreen}
       size={40}
-      testID="camera-button-label-switch-camera"
       width="100%"
       height="100%"
       backgroundColor={colors.white}

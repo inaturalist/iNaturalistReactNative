@@ -47,8 +47,9 @@ describe( "SoundRecorder navigation", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButtons = await screen.findAllByLabelText( "Add observations" );
-      await actor.press( addObsButtons[1] );
+      const tabBar = await screen.findByTestId( "CustomTabBar" );
+      const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
+      await actor.press( addObsButton );
       const recorderButton = await screen.findByLabelText( "Sound recorder" );
       await actor.press( recorderButton );
       const mediaNavButtons = await screen.findByTestId( "MediaNavButtons" );

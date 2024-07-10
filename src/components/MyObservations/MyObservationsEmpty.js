@@ -51,6 +51,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
       // https://github.com/Shopify/flash-list/discussions/517
       <View className="mx-[67px] my-[30%] items-center">
         <GradientButton
+          accessibilityLabel={t( "Add-observations" )}
           sizeClassName="w-[141px] h-[141px]"
           onPress={navToARCamera}
           iconSize={76}

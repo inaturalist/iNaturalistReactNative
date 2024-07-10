@@ -38,7 +38,7 @@ const AddEvidenceSheet = ( {
         }
       }}
     >
-      <View className="items-center p-5">
+      <View testID="AddEvidenceSheet" className="items-center p-5">
         {disableAddingMoreEvidence && (
           <List2 className="mb-5">
             {t( "You-can-add-up-to-20-media" )}

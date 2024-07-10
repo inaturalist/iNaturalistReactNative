@@ -144,6 +144,7 @@ const MediaViewer = ( {
           secondButtonText={t( "CANCEL" )}
           handleSecondButtonPress={( ) => setMediaToDelete( null )}
           insideModal
+          testID="MediaViewer.DiscardMediaWarningSheet"
         />
       )}
     </SafeAreaView>
