@@ -1,12 +1,16 @@
 import {
   act,
   screen,
-  userEvent
+  userEvent,
+  waitFor
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
+import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+
+const initialStoreState = useStore.getState( );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -42,7 +46,14 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
 } ) );
 
 const topSuggestion = {
-  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
+  taxon: factory.states( "genus" )( "RemoteTaxon", {
+    name: "Primum",
+    ancestors: [
+      factory( "RemoteTaxon", {
+        name: "Primum ancestor"
+      } )
+    ]
+  } ),
   combined_score: 90
 };
 
@@ -57,10 +68,16 @@ const makeMockObservations = ( ) => ( [
   } )
 ] );
 
+const mockTaxaList = [
+  factory( "RemoteTaxon" ),
+  factory( "RemoteTaxon" )
+];
+
 describe( "TaxonDetails", ( ) => {
   beforeAll( async () => {
     // userEvent recommends fake timers
     jest.useFakeTimers( );
+    useStore.setState( initialStoreState, true );
   } );
 
   const actor = userEvent.setup( );
@@ -68,11 +85,13 @@ describe( "TaxonDetails", ( ) => {
     const mockScoreImageResponse = makeResponse( [topSuggestion] );
     inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
     inatjs.taxa.fetch.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
+    inatjs.taxa.search.mockResolvedValue( makeResponse( mockTaxaList ) );
   } );
 
   afterEach( ( ) => {
     inatjs.computervision.score_image.mockReset( );
     inatjs.taxa.fetch.mockReset( );
+    inatjs.taxa.search.mockReset( );
   } );
 
   // navigate to ObsDetails -> Suggest ID -> Suggestions -> TaxonDetails
@@ -108,11 +127,70 @@ describe( "TaxonDetails", ( ) => {
     expect( taxonDetailsScreen ).toBeVisible( );
   }
 
+  // navigate to ObsEdit -> Suggestions -> TaxonSearch -> TaxonDetails
+  async function navigateToTaxonDetailsViaTaxonSearch( observation ) {
+    const { taxon } = topSuggestion;
+    const observationRow = await screen.findByTestId(
+      `MyObservations.obsListItem.${observation.uuid}`
+    );
+    await actor.press( observationRow );
+    const editButton = await screen.findByLabelText( /Edit/ );
+    expect( editButton ).toBeVisible( );
+    await act( async ( ) => actor.press( editButton ) );
+    const observationTaxonName = await screen.findByText( observation.taxon.name );
+    await actor.press( observationTaxonName );
+    const suggestedTaxonName = await screen.findByText( taxon.name );
+    expect( suggestedTaxonName ).toBeVisible( );
+    // navigate to search screen and search for something and tap first result
+    const searchNav = await screen.findByLabelText( "Search" );
+    await actor.press( searchNav );
+    const searchBar = await screen.findByTestId( "SearchTaxon" );
+    actor.type( searchBar, "b" );
+
+    const searchedTaxon = mockTaxaList[0];
+    const searchedTaxonName = await screen.findByText( searchedTaxon.name );
+    await waitFor( ( ) => {
+      expect( searchedTaxonName ).toBeVisible( );
+    } );
+    await actor.press( searchedTaxonName );
+
+    const taxonDetailsScreen = await screen.findByTestId( `TaxonDetails.${searchedTaxon.id}` );
+    expect( taxonDetailsScreen ).toBeVisible( );
+  }
+
+  // navigate to ObsEdit -> Suggestions -> TaxonDetails -> ancestor TaxonDetails
+  async function navigateToTaxonDetailsViaTaxonDetails( observation ) {
+    const { taxon } = topSuggestion;
+    const observationRow = await screen.findByTestId(
+      `MyObservations.obsListItem.${observation.uuid}`
+    );
+    await actor.press( observationRow );
+    const editButton = await screen.findByLabelText( /Edit/ );
+    expect( editButton ).toBeVisible( );
+    await act( async ( ) => actor.press( editButton ) );
+    const observationTaxonName = await screen.findByText( observation.taxon.name );
+    await actor.press( observationTaxonName );
+    const suggestedTaxonName = await screen.findByText( taxon.name );
+    expect( suggestedTaxonName ).toBeVisible( );
+    await actor.press( suggestedTaxonName );
+    const taxonDetailsScreen = await screen.findByTestId( `TaxonDetails.${taxon.id}` );
+    expect( taxonDetailsScreen ).toBeVisible( );
+    // navigate to an ancestor taxon details page
+    const ancestorTaxonName = await screen.findByText( taxon.ancestors[0].name );
+    expect( ancestorTaxonName ).toBeVisible( );
+    inatjs.taxa.fetch.mockResolvedValue( makeResponse( [taxon.ancestors[0]] ) );
+    await actor.press( ancestorTaxonName );
+  }
+
   it(
     "should navigate from ObsDetails -> ObsDetails when taxon is selected",
     async ( ) => {
       const { taxon } = topSuggestion;
       const observations = makeMockObservations( );
+      useStore.setState( {
+        observations,
+        currentObservation: observations[0]
+      } );
       await renderAppWithObservations( observations, __filename );
       await navigateToTaxonDetailsViaSuggestId( observations[0] );
       // make sure we're on TaxonDetails
@@ -128,6 +206,8 @@ describe( "TaxonDetails", ( ) => {
       expect( bottomSheetText ).toBeVisible( );
       const selectedTaxonName = await screen.findByText( taxon.name );
       expect( selectedTaxonName ).toBeVisible( );
+      const { currentObservation } = useStore.getState( );
+      expect( currentObservation.owners_identification_from_vision ).toBeTruthy( );
     }
   );
 
@@ -136,6 +216,10 @@ describe( "TaxonDetails", ( ) => {
     async ( ) => {
       const { taxon } = topSuggestion;
       const observations = makeMockObservations( );
+      useStore.setState( {
+        observations,
+        currentObservation: observations[0]
+      } );
       await renderAppWithObservations( observations, __filename );
       await navigateToTaxonDetailsViaObsEdit( observations[0] );
       // make sure we're on TaxonDetails
@@ -147,6 +231,61 @@ describe( "TaxonDetails", ( ) => {
       expect( obsEditBackButton ).toBeVisible( );
       const selectedTaxonName = await screen.findByText( taxon.name );
       expect( selectedTaxonName ).toBeVisible( );
+      const { currentObservation } = useStore.getState( );
+      expect( currentObservation.owners_identification_from_vision ).toBeTruthy( );
+    }
+  );
+
+  it(
+    "should create an observation with false vision attribute when reached from TaxonSearch",
+    async ( ) => {
+      const { taxon } = topSuggestion;
+      const observations = makeMockObservations( );
+      useStore.setState( {
+        observations,
+        currentObservation: observations[0]
+      } );
+      await renderAppWithObservations( observations, __filename );
+      await navigateToTaxonDetailsViaTaxonSearch( observations[0] );
+      // make sure we're on TaxonDetails
+      const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
+      expect( selectTaxonButton ).toBeVisible( );
+      await actor.press( selectTaxonButton );
+      // return to ObsEdit screen
+      const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
+      expect( obsEditBackButton ).toBeVisible( );
+      const selectedTaxonName = await screen.findByText( taxon.name );
+      expect( selectedTaxonName ).toBeVisible( );
+      const { currentObservation } = useStore.getState( );
+      expect( currentObservation.owners_identification_from_vision ).toBeFalsy( );
+    }
+  );
+
+  it(
+    "should create an observation with false vision attribute when reached from"
+    + " ancestor taxon details screen",
+    async ( ) => {
+      const { taxon } = topSuggestion;
+      const observations = makeMockObservations( );
+      useStore.setState( {
+        observations,
+        currentObservation: observations[0]
+      } );
+      await renderAppWithObservations( observations, __filename );
+      await navigateToTaxonDetailsViaTaxonDetails( observations[0] );
+      // make sure we're on TaxonDetails ancestor screen
+      const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
+      expect( selectTaxonButton ).toBeVisible( );
+      await actor.press( selectTaxonButton );
+      // return to ObsEdit screen
+      const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
+      expect( obsEditBackButton ).toBeVisible( );
+
+      // selected taxon
+      const ancestorTaxonName = await screen.findByText( taxon.ancestors[0].name );
+      expect( ancestorTaxonName ).toBeVisible( );
+      const { currentObservation } = useStore.getState( );
+      expect( currentObservation.owners_identification_from_vision ).toBeFalsy( );
     }
   );
 } );
