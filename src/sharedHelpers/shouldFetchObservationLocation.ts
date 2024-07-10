@@ -12,14 +12,16 @@ import { RealmObservation } from "realmModels/types.d.ts";
 
 export const TARGET_POSITIONAL_ACCURACY = 10;
 
-export const checkLocationPermission = async ( ) => {
+export const checkLocationPermission = async ( ): Promise<string> => {
   const newPermissionResult = permissionResultFromMultiple(
     await checkMultiple( LOCATION_PERMISSIONS )
   );
   return newPermissionResult;
 };
 
-export const shouldFetchObservationLocation = async ( observation: RealmObservation[] ) => {
+export const shouldFetchObservationLocation = async (
+  observation: RealmObservation[]
+): Promise<boolean> => {
   const permissionResult = await checkLocationPermission( );
   const latitude = observation?.latitude;
   const longitude = observation?.longitude;
