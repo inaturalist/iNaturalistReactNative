@@ -9,7 +9,6 @@ import {
   SearchBar,
   ViewWrapper
 } from "components/SharedComponents";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate.tsx";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
 import {
@@ -23,6 +22,7 @@ import React, {
 } from "react";
 import { FlatList } from "react-native";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -40,7 +40,8 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
   const { dispatch, defaultExploreLocation } = useExplore( );
 
   const [locationName, setLocationName] = useState( "" );
-  const [permissionNeeded, setPermissionNeeded] = useState( false );
+
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
 
   const resetPlace = useCallback(
     ( ) => {
@@ -94,6 +95,21 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
 
   const data = placeResults || [];
 
+  const setNearbyLocation = async ( ) => {
+    const exploreLocation = await defaultExploreLocation( );
+    dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
+    dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
+    closeModal();
+  };
+
+  const onNearbyPressed = () => {
+    if ( !hasPermissions ) {
+      requestPermissions( );
+    } else {
+      setNearbyLocation( );
+    }
+  };
+
   return (
     <ViewWrapper testID="explore-location-search">
       <View className="flex-row justify-center p-5 bg-white">
@@ -124,7 +140,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
         <View className="flex-row px-3 mt-5 justify-evenly">
           <Button
             className="w-1/2"
-            onPress={( ) => setPermissionNeeded( true )}
+            onPress={onNearbyPressed}
             text={t( "NEARBY" )}
           />
           <View className="px-2" />
@@ -141,22 +157,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
-      <LocationPermissionGate
-        permissionNeeded={permissionNeeded}
-        withoutNavigation
-        onPermissionGranted={async ( ) => {
-          setPermissionNeeded( false );
-          const exploreLocation = await defaultExploreLocation( );
-          dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
-          closeModal();
-        }}
-        onPermissionDenied={( ) => {
-          setPermissionNeeded( false );
-        }}
-        onPermissionBlocked={( ) => {
-          setPermissionNeeded( false );
-        }}
-      />
+      {renderPermissionsGate( { onPermissionGranted: setNearbyLocation } )}
     </ViewWrapper>
   );
 };
