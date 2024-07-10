@@ -8,7 +8,7 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
+import { useCurrentUser, useIsConnected } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
@@ -17,7 +17,6 @@ import useHeaderCount from "./hooks/useHeaderCount";
 import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
-  const { t } = useTranslation( );
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
   const setStoredParams = useStore( state => state.setStoredParams );
@@ -28,19 +27,18 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
-  const worldwidePlaceText = t( "Worldwide" );
-
   useParams( );
 
   const updateLocation = ( place: Object ) => {
     if ( place === "worldwide" ) {
+      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
-        placeId: null,
-        placeGuess: worldwidePlaceText
+        placeId: null
       } );
     } else {
       navigation.setParams( { place } );
+      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         place,

@@ -1,6 +1,7 @@
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
+  PLACE_MODE,
   useExplore
 } from "providers/ExploreContext.tsx";
 import {
@@ -8,7 +9,6 @@ import {
 } from "react";
 import { BoundingBox, Region } from "react-native-maps";
 // import { log } from "sharedHelpers/logger";
-import { useTranslation } from "sharedHooks";
 import { initialMapRegion } from "stores/createExploreSlice.ts";
 
 import useCurrentMapRegion from "./useCurrentMapRegion";
@@ -24,7 +24,6 @@ const useMapLocation = ( ) => {
     swlng: number | undefined;
     nelat: number | undefined;
     nelng: number | undefined;
-    place_guess: string;
   }>( );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
   const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
@@ -33,11 +32,11 @@ const useMapLocation = ( ) => {
 
   const hasPlace = state.swlat || state.place_id || state.lat;
   const [startAtNearby, setStartAtNearby] = useState( !hasPlace && !worldwide );
-  const { t } = useTranslation( );
 
   const onPanDrag = ( ) => setShowMapBoundaryButton( true );
 
-  const mapWasReset = state.place_guess === t( "Nearby" ) || state.place_guess === t( "Worldwide" );
+  const mapWasReset = state.placeMode === PLACE_MODE.NEARBY
+    || state.placeMode === PLACE_MODE.WORLDWIDE;
   const placeIdWasSet = state.place_id;
 
   // eslint-disable-next-line max-len
@@ -46,15 +45,13 @@ const useMapLocation = ( ) => {
       swlat: boundaries?.southWest?.latitude,
       swlng: boundaries?.southWest?.longitude,
       nelat: boundaries?.northEast?.latitude,
-      nelng: boundaries?.northEast?.longitude,
-      place_guess: t( "Map-Area" )
+      nelng: boundaries?.northEast?.longitude
     };
 
     setMapBoundaries( boundaryAPIParams );
     setCurrentMapRegion( newRegion );
     return boundaryAPIParams;
   }, [
-    t,
     setMapBoundaries,
     setCurrentMapRegion
   ] );
@@ -62,6 +59,7 @@ const useMapLocation = ( ) => {
   const redoSearchInMapArea = ( ) => {
     if ( !mapBoundaries ) return;
     setShowMapBoundaryButton( false );
+    dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA } );
     dispatch( { type: EXPLORE_ACTION.SET_MAP_BOUNDARIES, mapBoundaries } );
   };
 
@@ -74,7 +72,7 @@ const useMapLocation = ( ) => {
   // eslint-disable-next-line max-len
   const onZoomToNearby = useCallback( async ( newRegion: Region, nearbyBoundaries: BoundingBox | undefined ) => {
     const newMapBoundaries = await updateMapBoundaries( newRegion, nearbyBoundaries );
-    newMapBoundaries.place_guess = t( "Nearby" );
+    dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
     dispatch( {
       type: EXPLORE_ACTION.SET_MAP_BOUNDARIES,
       mapBoundaries: newMapBoundaries
@@ -82,11 +80,10 @@ const useMapLocation = ( ) => {
     setStartAtNearby( false );
   }, [
     dispatch,
-    updateMapBoundaries,
-    t
+    updateMapBoundaries
   ] );
 
-  const previousPlaceGuess = useRef( state.place_guess );
+  const previousPlaceGuess = useRef( state.placeMode );
   useEffect( ( ) => {
     // region gets set when a user is navigating from ExploreLocationSearch
     if ( placeIdWasSet ) {
@@ -98,9 +95,9 @@ const useMapLocation = ( ) => {
         longitude: coordinates[0]
       } );
     } else if ( mapWasReset ) {
-      // map gets set or reset back to nearby/worldwide, but only if the place_guess
+      // map gets set or reset back to nearby/worldwide, but only if the placeMode
       // has changed
-      if ( previousPlaceGuess.current === state.place_guess ) {
+      if ( previousPlaceGuess.current === state.placeMode ) {
         return;
       }
       // logger.debug( "setting initial nearby or worldwide map region" );
@@ -109,7 +106,7 @@ const useMapLocation = ( ) => {
         latitude: state?.lat,
         longitude: state?.lng
       } );
-      previousPlaceGuess.current = state.place_guess;
+      previousPlaceGuess.current = state.placeMode;
     }
   }, [
     mapWasReset,

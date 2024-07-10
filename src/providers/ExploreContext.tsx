@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
-import { t } from "i18next";
 import { isEqual } from "lodash";
 import * as React from "react";
 import { LatLng } from "react-native-maps";
@@ -30,6 +29,10 @@ export enum EXPLORE_ACTION {
   SET_MEDIA = "SET_MEDIA",
   SET_PHOTO_LICENSE = "SET_PHOTO_LICENSE",
   SET_PLACE = "SET_PLACE",
+  SET_PLACE_MODE_NEARBY = "SET_PLACE_MODE_NEARBY",
+  SET_PLACE_MODE_WORLDWIDE = "SET_PLACE_MODE_WORLDWIDE",
+  SET_PLACE_MODE_MAP_AREA = "SET_PLACE_MODE_MAP_AREA",
+  SET_PLACE_MODE_PLACE = "SET_PLACE_MODE_PLACE",
   SET_PROJECT = "SET_PROJECT",
   SET_REVIEWED = "SET_REVIEWED",
   SET_TAXON_NAME = "SET_TAXON_NAME",
@@ -150,11 +153,10 @@ export enum PLACE_MODE {
 }
 
 interface MapBoundaries {
-  swlat?: LatLng["latitude"],
-  swlng?: LatLng["longitude"],
-  nelat?: LatLng["latitude"],
-  nelng?: LatLng["longitude"],
-  place_guess: string
+  swlat?: LatLng["latitude"];
+  swlng?: LatLng["longitude"];
+  nelat?: LatLng["latitude"];
+  nelng?: LatLng["longitude"];
 }
 
 interface PLACE {
@@ -165,6 +167,13 @@ interface PLACE {
     coordinates: Array<number>
   },
   type: string
+}
+
+interface DefaultLocation {
+  placeMode: PLACE_MODE,
+  lat?: number,
+  lng?: number,
+  radius?: number
 }
 
 type ExploreProviderProps = {children: React.ReactNode}
@@ -225,17 +234,21 @@ type Action = {type: EXPLORE_ACTION.RESET}
     storedState: State
   }
   | { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN }
-  | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: Object}
+  | {type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation: DefaultLocation}
   | {
     type: EXPLORE_ACTION.SET_PLACE,
     place: PLACE,
     placeId: number,
-    placeGuess: string,
+    placeGuess?: string,
     lat: number,
     lng: number,
     radius: number,
     storedState: State
   }
+  | {type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY}
+  | {type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE}
+  | {type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA}
+  | {type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE}
   | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number, storedState: State}
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
@@ -268,12 +281,7 @@ const ExploreContext = React.createContext<
     isNotInitialState: boolean;
     discardChanges(): void;
     numberOfFilters: number;
-    defaultExploreLocation(): Promise<{
-      place_guess: string;
-      lat?: number;
-      lng?: number;
-      radius?: number;
-    }>;
+    defaultExploreLocation(): Promise<DefaultLocation>;
       } | undefined>( undefined );
 
 // Every key in this object represents a numbered filter in the UI
@@ -312,9 +320,13 @@ const defaultFilters = {
 
 const initialState: State = {
   ...defaultFilters,
-  placeMode: PLACE_MODE.WORLDWIDE,
+  // The very first time the user opens the explore screen, we want the place mode to be
+  // nearby (even if we don't have location permission yet and not actually making the request)
+  placeMode: PLACE_MODE.NEARBY,
   place: undefined,
-  place_guess: t( "Nearby" ),
+  // String to display as the human-readable place name, not to be used for default explore search
+  // modes, like Nearby or Worldwide
+  place_guess: "",
   place_id: undefined,
   return_bounds: true,
   taxon: undefined,
@@ -328,16 +340,14 @@ function isValidDateFormat( date: string ): boolean {
   return regex.test( date );
 }
 
-async function defaultExploreLocation( ) {
+async function defaultExploreLocation( ): Promise<DefaultLocation> {
   const location = await fetchUserLocation( );
   if ( !location || !location.latitude ) {
     return {
-      place_guess: t( "Worldwide" )
       placeMode: PLACE_MODE.WORLDWIDE
     };
   }
   return {
-    place_guess: t( "Nearby" ),
     placeMode: PLACE_MODE.NEARBY,
     lat: location?.latitude,
     lng: location?.longitude,
@@ -350,11 +360,12 @@ async function defaultExploreLocation( ) {
 // state
 function exploreReducer( state: State, action: Action ) {
   switch ( action.type ) {
-    // Reset the state to the initial state, place is worldwide no matter if location
-    // permission is granted or not
+    // Reset the state to the initial state, but place mode
+    // should be set to worldwide no matter if location and not nearby
     case EXPLORE_ACTION.RESET:
       return {
-        ...initialState
+        ...initialState,
+        placeMode: PLACE_MODE.WORLDWIDE
       };
     case EXPLORE_ACTION.DISCARD:
       return action.snapshot;
@@ -393,6 +404,27 @@ function exploreReducer( state: State, action: Action ) {
         ...state,
         ...action.exploreLocation
       };
+    case EXPLORE_ACTION.SET_PLACE_MODE_NEARBY:
+      return {
+        ...state,
+        placeMode: PLACE_MODE.NEARBY
+
+      };
+    case EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE:
+      return {
+        ...state,
+        placeMode: PLACE_MODE.WORLDWIDE
+      };
+    case EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA:
+      return {
+        ...state,
+        placeMode: PLACE_MODE.MAP_AREA
+      };
+    case EXPLORE_ACTION.SET_PLACE_MODE_PLACE:
+      return {
+        ...state,
+        placeMode: PLACE_MODE.PLACE
+      };
     case EXPLORE_ACTION.SET_PLACE:
       return {
         ...state,
@@ -403,7 +435,6 @@ function exploreReducer( state: State, action: Action ) {
         nelng: undefined,
         place: action.place,
         place_guess: action.placeGuess,
-        placeMode: PLACE_MODE.PLACE,
         place_id: action.placeId,
         radius: action.radius,
         swlat: undefined,
