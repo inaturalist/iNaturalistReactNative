@@ -8,6 +8,7 @@ import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
+import mockNodePath from "path";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 // eslint-disable-next-line import/no-unresolved
@@ -311,7 +312,8 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
 } ) );
 
 jest.mock( "react-native-exif-reader", ( ) => ( {
-  readExif: jest.fn( )
+  readExif: jest.fn( ),
+  writeLocation: jest.fn( )
 } ) );
 
 // https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
@@ -378,8 +380,11 @@ jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
       _compressFormat,
       _quality,
       _rotation,
-      _outputPath
-    ) => ( { uri: path } )
+      outputPath
+    ) => {
+      const filename = mockNodePath.basename( path );
+      return { uri: mockNodePath.join( outputPath, filename ) };
+    }
   )
 } ) );
 

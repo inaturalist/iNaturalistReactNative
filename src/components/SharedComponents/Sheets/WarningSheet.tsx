@@ -7,29 +7,31 @@ import { View } from "components/styledComponents";
 import React from "react";
 
 interface Props {
-  handleClose: () => void;
-  headerText: string;
-  text?: string;
   buttonText: string;
-  confirm: () => void;
-  secondButtonText?: string;
-  handleSecondButtonPress?: () => void;
   buttonType?: string;
+  confirm: () => void;
+  handleClose: () => void;
+  handleSecondButtonPress?: () => void;
+  headerText: string;
   hidden?: boolean;
   insideModal?: boolean;
+  secondButtonText?: string;
+  testID?: string;
+  text?: string;
 }
 
 const WarningSheet = ( {
-  handleClose,
-  headerText,
-  text,
   buttonText,
-  confirm,
-  secondButtonText,
-  handleSecondButtonPress,
   buttonType,
+  confirm,
+  handleClose,
+  handleSecondButtonPress,
+  headerText,
   hidden,
-  insideModal
+  insideModal,
+  secondButtonText,
+  testID,
+  text
 }: Props ) => (
   <BottomSheet
     handleClose={handleClose}
@@ -37,7 +39,7 @@ const WarningSheet = ( {
     hidden={hidden}
     insideModal={insideModal}
   >
-    <View className="items-center p-5">
+    <View className="items-center p-5" testID={testID}>
       {text && <List2 className="mb-6">{text}</List2>}
       <View className="flex-row">
         {secondButtonText && handleSecondButtonPress && (

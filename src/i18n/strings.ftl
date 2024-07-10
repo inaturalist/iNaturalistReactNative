@@ -41,6 +41,9 @@ Add-Date-Time = Add Date/Time
 # Label for a button that adds a vote of disagreement
 Add-disagreement = Add disagreement
 ADD-EVIDENCE = ADD EVIDENCE
+# Label for a button that shows options for adding evidence, e.g. camera,
+# gallery, sound, etc
+Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
 # Accessibility label for a button that starts the process of adding an
@@ -400,7 +403,8 @@ Go-back = Go back
 GRANT-PERMISSION = GRANT PERMISSION
 # Title of a screen asking for permission
 Grant-Permission-title = Grant Permission
-Grid-view = Grid view
+# Label for button to switch to a grid layout of observations
+Grid-layout = Grid layout
 Group-Photos = Group Photos
 # Onboarding for users learning to group photos in the camera roll
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
@@ -509,7 +513,8 @@ LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 LICENSES = LICENSES
-List-view = List view
+# Label for button to switch to a list layout of observations
+List-layout = List layout
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION
@@ -662,6 +667,8 @@ Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-AI-camera = Opens AI camera.
 Opens-location-permission-prompt = Opens location permission prompt
+# Accessibility hint for button that opens the AI camera
+Opens-the-AI-camera = Opens the AI camera
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
@@ -864,6 +871,8 @@ Show-observation-options = Show observation options.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
+# Accessibility hint for button that shows observation creation options
+Shows-observation-creation-options = Shows observation creation options
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
 Something-went-wrong = Something went wrong.

@@ -2,6 +2,7 @@
 import { Realm } from "@realm/react";
 import _ from "lodash";
 import Photo from "realmModels/Photo";
+import Sound from "realmModels/Sound";
 
 const DEFAULT_STATE = {
   cameraRollUris: [],
@@ -33,9 +34,10 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
     // removed
     _.remove(
       obsPhotos,
-      obsPhoto => Photo.accessLocalPhoto(
-        obsPhoto.photo.localFilePath
-      ) === uri || obsPhoto.originalPhotoUri === uri
+      obsPhoto => (
+        Photo.getLocalPhotoUri( obsPhoto.photo.localFilePath ) === uri
+        || obsPhoto.originalPhotoUri === uri
+      )
     );
     updatedObservation.observationPhotos = obsPhotos;
     return [updatedObservation];
@@ -50,7 +52,10 @@ const removeObsSoundFromObservation = ( currentObservation, uri ) => {
   if ( obsSounds.length > 0 ) {
     _.remove(
       obsSounds,
-      obsSound => obsSound.sound.file_url === uri
+      obsSound => (
+        obsSound.sound.file_url === uri
+        || Sound.getLocalSoundUri( obsSound.sound.file_url ) === uri
+      )
     );
     updatedObservation.observationSounds = obsSounds;
     return [updatedObservation];
@@ -85,20 +90,24 @@ const createObservationFlowSlice = ( set, get ) => ( {
       uri
     );
     const newObservation = newObservations[state.currentObservationIndex];
-    if ( !newObservation ) return {};
-    const index = newObservation.observationPhotos.findIndex(
-      op => ( op.photo?.localFilePath || op.photo?.url ) === uri
-    );
-    if ( index > -1 ) {
-      newObservation.observationPhotos.splice( index, 1 );
+    if ( newObservation ) {
+      const index = newObservation.observationPhotos.findIndex(
+        op => ( Photo.getLocalPhotoUri( op.photo?.localFilePath ) || op.photo?.url ) === uri
+      );
+      if ( index > -1 ) {
+        newObservation.observationPhotos.splice( index, 1 );
+      }
     }
 
-    return ( {
-      cameraUris: [..._.pull( state.cameraUris, uri )],
+    const newCameraUris = [..._.pull( state.cameraUris, uri )];
+    return {
+      cameraUris: newCameraUris,
       evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
       observations: newObservations,
-      currentObservation: observationToJSON( newObservation )
-    } );
+      currentObservation: newObservation
+        ? observationToJSON( newObservation )
+        : null
+    };
   } ),
   deleteSoundFromObservation: uri => set( state => {
     const newObservations = removeObsSoundFromObservation(
@@ -154,7 +163,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
   } ) ),
   updateComment: newComment => set( { comment: newComment } ),
   updateObservations: updatedObservations => set( state => ( {
-    observations: updatedObservations,
+    observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
     unsavedChanges: true
   } ) ),
@@ -173,7 +182,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     const existingPhotoUris = get( )
       .currentObservation
       ?.observationPhotos
-      ?.map( op => ( op.photo.url || op.photo.localFilePath ) ) || [];
+      ?.map( op => ( op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) ) ) || [];
     return set( { evidenceToAdd: [], cameraUris: existingPhotoUris } );
   }
 } );

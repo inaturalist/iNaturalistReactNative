@@ -239,7 +239,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
         </View>
       </View>
       <View
-        accessibilityHint="Opens add observation modal."
+        accessibilityHint="Shows observation creation options"
         accessibilityLabel="Add observations"
         accessibilityRole="button"
         accessibilityState={

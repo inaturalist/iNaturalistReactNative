@@ -1,7 +1,8 @@
 import Geolocation from "@react-native-community/geolocation";
 import {
   screen,
-  userEvent
+  userEvent,
+  within
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
@@ -64,8 +65,9 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButtons = await screen.findAllByLabelText( "Add observations" );
-      await actor.press( addObsButtons[1] );
+      const tabBar = await screen.findByTestId( "CustomTabBar" );
+      const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
+      await actor.press( addObsButton );
       const cameraButton = await screen.findByLabelText( /AI Camera/ );
       await actor.press( cameraButton );
       expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeVisible( );
@@ -98,8 +100,9 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
 
       renderApp( );
       expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const addObsButtons = await screen.findAllByLabelText( "Add observations" );
-      await actor.press( addObsButtons[1] );
+      const tabBar = await screen.findByTestId( "CustomTabBar" );
+      const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
+      await actor.press( addObsButton );
       const cameraButton = await screen.findByLabelText( /AI Camera/ );
       await actor.press( cameraButton );
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );

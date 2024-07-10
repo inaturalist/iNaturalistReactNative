@@ -72,10 +72,10 @@ class Sound extends Realm.Object {
 
   // this is necessary because sounds, like photos, cannot be found reliably
   // without this, local sounds will not be available for upload when the app updates
-  static accessLocalSound( url ) {
-    const uuidAndJpgSuffix = url?.split( "soundUploads/" )[1];
-    const localPath = `${soundUploadPath}/${uuidAndJpgSuffix}`;
-    return localPath || null;
+  static getLocalSoundUri( localPathOrUri ) {
+    const pieces = localPathOrUri?.split( "soundUploads/" );
+    if ( !pieces || pieces.length <= 1 ) return null;
+    return `file://${soundUploadPath}/${pieces[1]}`;
   }
 
   static deleteSoundFromDeviceStorage( path ) {
