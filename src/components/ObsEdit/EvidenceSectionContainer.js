@@ -22,14 +22,18 @@ import EvidenceSection from "./EvidenceSection";
 
 type Props = {
   passesEvidenceTest: boolean,
+  locationPermissionNeeded: boolean,
   setPassesEvidenceTest: Function,
+  shouldFetchLocation: boolean,
   currentObservation: Object,
   updateObservationKeys: Function
 }
 
 const EvidenceSectionContainer = ( {
   setPassesEvidenceTest,
+  locationPermissionNeeded,
   passesEvidenceTest,
+  shouldFetchLocation,
   currentObservation,
   updateObservationKeys
 }: Props ): Node => {
@@ -50,11 +54,11 @@ const EvidenceSectionContainer = ( {
   ] = useState( false );
 
   const {
-    hasLocation,
     isFetchingLocation,
-    locationPermissionNeeded
+    userLocation
   } = useWatchPosition( {
-    retry: shouldRetryCurrentObservationLocation
+    retry: shouldRetryCurrentObservationLocation,
+    shouldFetchLocation
   } );
 
   const latitude = currentObservation?.latitude;
@@ -83,9 +87,7 @@ const EvidenceSectionContainer = ( {
       validPositionalAccuracy = true;
     }
 
-    if (
-      hasLocation
-      && coordinatesExist
+    if ( coordinatesExist
       && latitudeInRange
       && longitudeInRange
       && validPositionalAccuracy
@@ -97,7 +99,6 @@ const EvidenceSectionContainer = ( {
     currentObservation,
     longitude,
     latitude,
-    hasLocation,
     isNewObs,
     hasImportedPhotos
   ] );
@@ -175,6 +176,12 @@ const EvidenceSectionContainer = ( {
     longitude,
     updateObservationKeys
   ] );
+
+  useEffect( ( ) => {
+    if ( userLocation ) {
+      updateObservationKeys( userLocation );
+    }
+  }, [userLocation, updateObservationKeys] );
 
   return (
     <EvidenceSection

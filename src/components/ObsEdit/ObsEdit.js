@@ -4,8 +4,12 @@ import { useIsFocused } from "@react-navigation/native";
 import { ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  checkLocationPermission,
+  shouldFetchObservationLocation
+} from "sharedHelpers/shouldFetchObservationLocation.ts";
 import { useCurrentUser } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadowForColor } from "styles/global";
@@ -33,6 +37,25 @@ const ObsEdit = ( ): Node => {
   const [resetScreen, setResetScreen] = useState( false );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
+  const [shouldFetchLocation, setShouldFetchLocation] = useState( false );
+  const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
+
+  useEffect( ( ) => {
+    const hasLocation = currentObservation?.latitude && currentObservation?.longitude;
+    const checkNeedsLocation = async ( ) => {
+      const permission = await checkLocationPermission( );
+      if ( permission !== "granted" ) {
+        setLocationPermissionNeeded( true );
+      }
+      const needsLocation = await shouldFetchObservationLocation( currentObservation );
+      if ( needsLocation ) {
+        setShouldFetchLocation( true );
+      }
+    };
+    if ( !hasLocation ) {
+      checkNeedsLocation( );
+    }
+  }, [currentObservation] );
 
   if ( !isFocused ) return null;
 
@@ -67,8 +90,10 @@ const ObsEdit = ( ): Node => {
                 )}
                 <EvidenceSectionContainer
                   currentObservation={currentObservation}
+                  locationPermissionNeeded={locationPermissionNeeded}
                   passesEvidenceTest={passesEvidenceTest}
                   setPassesEvidenceTest={setPassesEvidenceTest}
+                  shouldFetchLocation={shouldFetchLocation}
                   updateObservationKeys={updateObservationKeys}
                 />
                 <IdentificationSection

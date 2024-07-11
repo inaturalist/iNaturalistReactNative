@@ -75,7 +75,9 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const observations = useStore( state => state.observations );
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
   const setCameraState = useStore( state => state.setCameraState );
-  const { userLocation } = useWatchPosition( );
+  const { userLocation } = useWatchPosition( {
+    shouldFetchLocation: true
+  } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 

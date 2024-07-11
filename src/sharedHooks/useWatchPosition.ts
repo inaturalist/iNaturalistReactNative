@@ -2,50 +2,46 @@ import Geolocation, {
   GeolocationError,
   GeolocationResponse
 } from "@react-native-community/geolocation";
-import { useEffect, useState } from "react";
-import {
-  RESULTS as PERMISSION_RESULTS
-} from "react-native-permissions";
-import {
-  checkLocationPermission,
-  shouldFetchObservationLocation,
-  TARGET_POSITIONAL_ACCURACY
-} from "sharedHelpers/shouldFetchObservationLocation.ts";
-import useStore from "stores/useStore";
+import { useCallback, useEffect, useState } from "react";
+
+export const TARGET_POSITIONAL_ACCURACY = 10;
+
+export const TIMEOUT = 2000;
+
+interface UserLocation {
+  latitude: number,
+  longitude: number,
+  positional_accuracy: number
+}
 
 const geolocationOptions = {
   distanceFilter: 0,
   enableHighAccuracy: true,
   maximumAge: 0,
-  timeout: 2000
+  timeout: TIMEOUT
 };
 
 const useWatchPosition = ( options: {
-  retry: boolean
+  retry: boolean,
+  shouldFetchLocation: boolean
 } ) => {
-  const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  const currentObservation = useStore( state => state.currentObservation );
   const [currentPosition, setCurrentPosition] = useState<string | null>( null );
   const [subscriptionId, setSubscriptionId] = useState<number | null>( null );
-  const [locationPermissionResult, setLocationPermissionResult] = useState( null );
-  const [errorCode, setErrorCode] = useState( null );
-  const hasLocation = currentObservation?.latitude && currentObservation?.longitude;
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( true );
-  const [userLocation, setUserLocation] = useState( null );
+  const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
+  const { shouldFetchLocation, retry } = options;
+
+  const [isFetchingLocation, setIsFetchingLocation] = useState<boolean>(
+    shouldFetchLocation
+  );
 
   const watchPosition = ( ) => {
     const success = ( position: GeolocationResponse ) => {
-      setLocationPermissionResult( true );
       setCurrentPosition( position );
     };
 
     const failure = ( error: GeolocationError ) => {
-      console.warn( `useWatchPosition: ${error.message} (${error.code})` );
-      if ( error.code === 1 ) {
-        setLocationPermissionResult( PERMISSION_RESULTS.DENIED );
-      } else {
-        setErrorCode( error.code );
-      }
+      console.warn( error, ": useWatchPosition error" );
+      setIsFetchingLocation( false );
     };
 
     try {
@@ -60,43 +56,33 @@ const useWatchPosition = ( options: {
     }
   };
 
+  const stopWatch = useCallback( id => {
+    Geolocation.clearWatch( id );
+    setSubscriptionId( null );
+    setCurrentPosition( null );
+    setIsFetchingLocation( false );
+  }, [] );
+
   useEffect( ( ) => {
-    const accuracy = currentPosition?.coords?.accuracy;
-    const newLocation = {
+    if ( !currentPosition ) { return; }
+    setUserLocation( {
       latitude: currentPosition?.coords?.latitude,
       longitude: currentPosition?.coords?.longitude,
-      positional_accuracy: accuracy
-    };
-    if ( !currentPosition || !accuracy ) { return; }
-    updateObservationKeys( newLocation );
-    setUserLocation( newLocation );
-    if ( accuracy < TARGET_POSITIONAL_ACCURACY ) {
-      Geolocation.clearWatch( subscriptionId );
-      setSubscriptionId( null );
-      setCurrentPosition( null );
+      positional_accuracy: currentPosition?.coords?.accuracy
+    } );
+    if ( currentPosition?.coords?.accuracy < TARGET_POSITIONAL_ACCURACY ) {
+      stopWatch( subscriptionId );
     }
-  }, [currentPosition, subscriptionId, updateObservationKeys] );
+  }, [currentPosition, stopWatch, subscriptionId] );
 
   useEffect( ( ) => {
-    const beginLocationFetch = async ( ) => {
-      const permissionResult = await checkLocationPermission( );
-      setLocationPermissionResult( permissionResult );
-      const startFetchLocation = await shouldFetchObservationLocation( currentObservation );
-      if ( startFetchLocation ) {
-        watchPosition( );
-      } else {
-        setShouldFetchLocation( false );
-      }
-    };
-    beginLocationFetch( );
-  }, [currentObservation, options?.retry] );
-
-  const locationDenied = locationPermissionResult === PERMISSION_RESULTS.DENIED;
+    if ( shouldFetchLocation || retry ) {
+      watchPosition( );
+    }
+  }, [retry, shouldFetchLocation] );
 
   return {
-    hasLocation,
-    isFetchingLocation: ( !errorCode || !locationDenied ) && shouldFetchLocation,
-    locationPermissionNeeded: locationDenied,
+    isFetchingLocation,
     userLocation
   };
 };

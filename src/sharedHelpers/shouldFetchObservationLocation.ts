@@ -9,8 +9,9 @@ import {
   RESULTS
 } from "react-native-permissions";
 import { RealmObservation } from "realmModels/types.d.ts";
-
-export const TARGET_POSITIONAL_ACCURACY = 10;
+import {
+  TARGET_POSITIONAL_ACCURACY
+} from "sharedHooks/useWatchPosition.ts";
 
 export const checkLocationPermission = async ( ) => {
   const newPermissionResult = permissionResultFromMultiple(

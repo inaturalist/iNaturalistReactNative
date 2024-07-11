@@ -25,7 +25,8 @@ const ProjectsContainer = ( ): Node => {
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
   const [shouldRetryCurrentLocation, setShouldRetryCurrentLocation] = useState( false );
   const { userLocation } = useWatchPosition( {
-    retry: shouldRetryCurrentLocation
+    retry: shouldRetryCurrentLocation,
+    shouldFetchLocation: true
   } );
 
   const {
