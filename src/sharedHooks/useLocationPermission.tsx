@@ -4,6 +4,7 @@ import {
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer.tsx";
 import React, { useEffect, useState } from "react";
+import { AppState } from "react-native";
 import {
   checkMultiple,
   RESULTS
@@ -78,6 +79,21 @@ const useLocationPermission = ( ) => {
     }
   }
 
+  // Check permissions every time the app is back in the foreground. The user could
+  // have changed permissions in the settings app while the current screen was in the background.
+  useEffect( () => {
+    const subscription = AppState.addEventListener( "change", appState => {
+      if ( appState === "active" ) {
+        checkPermissions();
+      }
+    } );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [] );
+
+  // Check permissions on mount
   useEffect( () => {
     checkPermissions();
   }, [] );
