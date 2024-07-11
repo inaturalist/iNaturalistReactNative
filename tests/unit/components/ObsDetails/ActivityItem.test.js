@@ -26,7 +26,7 @@ describe( "ActivityItem", () => {
     expect( navToTaxonDetailsLabel ).toBeTruthy( );
   } );
 
-  it( "renders agree button", async ( ) => {
+  it( "renders agree button if user is logged in", async ( ) => {
     renderComponent(
       <ActivityItem
         currentUserId="000"
@@ -45,9 +45,29 @@ describe( "ActivityItem", () => {
     } );
   } );
 
+  it( "does not render agree button if user is logged out", async ( ) => {
+    renderComponent(
+      <ActivityItem
+        currentUserId={undefined}
+        isFirstDisplay
+        item={mockIdentification}
+        key={mockIdentification.uuid}
+        openAgreeWithIdSheet={jest.fn()}
+        userAgreedId=""
+      />
+    );
+    const agreeButton = screen.queryByTestId(
+      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`
+    );
+    await waitFor( ( ) => {
+      expect( agreeButton ).toBeFalsy( );
+    } );
+  } );
+
   it( "does not render agree button on second taxon display", async ( ) => {
     renderComponent(
       <ActivityItem
+        currentUserId="000"
         isFirstDisplay={false}
         item={mockIdentification}
       />
@@ -64,6 +84,7 @@ describe( "ActivityItem", () => {
     const mockopenAgreeWithIdSheet = jest.fn();
     renderComponent(
       <ActivityItem
+        currentUserId="000"
         isFirstDisplay
         item={mockIdentification}
         openAgreeWithIdSheet={mockopenAgreeWithIdSheet}
