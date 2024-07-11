@@ -22,13 +22,12 @@ const geolocationOptions = {
 };
 
 const useWatchPosition = ( options: {
-  retry: boolean,
   shouldFetchLocation: boolean
 } ) => {
   const [currentPosition, setCurrentPosition] = useState<string | null>( null );
   const [subscriptionId, setSubscriptionId] = useState<number | null>( null );
   const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
-  const { shouldFetchLocation, retry } = options;
+  const { shouldFetchLocation } = options;
 
   const [isFetchingLocation, setIsFetchingLocation] = useState<boolean>(
     shouldFetchLocation
@@ -76,10 +75,10 @@ const useWatchPosition = ( options: {
   }, [currentPosition, stopWatch, subscriptionId] );
 
   useEffect( ( ) => {
-    if ( shouldFetchLocation || retry ) {
+    if ( shouldFetchLocation && !userLocation ) {
       watchPosition( );
     }
-  }, [retry, shouldFetchLocation] );
+  }, [shouldFetchLocation, userLocation] );
 
   return {
     isFetchingLocation,

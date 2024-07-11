@@ -15,26 +15,23 @@ import React, {
   useState
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import useWatchPosition from "sharedHooks/useWatchPosition.ts";
 import useStore from "stores/useStore";
 
 import EvidenceSection from "./EvidenceSection";
 
 type Props = {
-  passesEvidenceTest: boolean,
-  locationPermissionNeeded: boolean,
-  setPassesEvidenceTest: Function,
-  shouldFetchLocation: boolean,
   currentObservation: Object,
+  isFetchingLocation: boolean,
+  passesEvidenceTest: boolean,
+  setPassesEvidenceTest: Function,
   updateObservationKeys: Function
 }
 
 const EvidenceSectionContainer = ( {
-  setPassesEvidenceTest,
-  locationPermissionNeeded,
-  passesEvidenceTest,
-  shouldFetchLocation,
   currentObservation,
+  isFetchingLocation,
+  passesEvidenceTest,
+  setPassesEvidenceTest,
   updateObservationKeys
 }: Props ): Node => {
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -47,19 +44,6 @@ const EvidenceSectionContainer = ( {
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
-
-  const [
-    shouldRetryCurrentObservationLocation,
-    setShouldRetryCurrentObservationLocation
-  ] = useState( false );
-
-  const {
-    isFetchingLocation,
-    userLocation
-  } = useWatchPosition( {
-    retry: shouldRetryCurrentObservationLocation,
-    shouldFetchLocation
-  } );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -177,12 +161,6 @@ const EvidenceSectionContainer = ( {
     updateObservationKeys
   ] );
 
-  useEffect( ( ) => {
-    if ( userLocation ) {
-      updateObservationKeys( userLocation );
-    }
-  }, [userLocation, updateObservationKeys] );
-
   return (
     <EvidenceSection
       currentObservation={currentObservation}
@@ -194,16 +172,6 @@ const EvidenceSectionContainer = ( {
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       observationSounds={observationSounds}
-      onLocationPermissionGranted={( ) => {
-        setShouldRetryCurrentObservationLocation( true );
-      }}
-      onLocationPermissionDenied={( ) => {
-        setShouldRetryCurrentObservationLocation( false );
-      }}
-      onLocationPermissionBlocked={( ) => {
-        setShouldRetryCurrentObservationLocation( false );
-      }}
-      locationPermissionNeeded={locationPermissionNeeded}
     />
   );
 };

@@ -23,10 +23,9 @@ const ProjectsContainer = ( ): Node => {
   const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const [shouldRetryCurrentLocation, setShouldRetryCurrentLocation] = useState( false );
+  const [shouldFetchLocation, setShouldFetchLocation] = useState( true );
   const { userLocation } = useWatchPosition( {
-    retry: shouldRetryCurrentLocation,
-    shouldFetchLocation: true
+    shouldFetchLocation
   } );
 
   const {
@@ -108,13 +107,13 @@ const ProjectsContainer = ( ): Node => {
         permissionNeeded={currentTabId === NEARBY_TAB_ID}
         withoutNavigation
         onPermissionGranted={( ) => {
-          setShouldRetryCurrentLocation( true );
+          setShouldFetchLocation( true );
         }}
         onPermissionDenied={( ) => {
-          setShouldRetryCurrentLocation( false );
+          setShouldFetchLocation( false );
         }}
         onPermissionBlocked={( ) => {
-          setShouldRetryCurrentLocation( false );
+          setShouldFetchLocation( false );
         }}
       />
     </>

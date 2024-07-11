@@ -2,6 +2,7 @@
 
 import { useIsFocused } from "@react-navigation/native";
 import { ViewWrapper } from "components/SharedComponents";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import {
   shouldFetchObservationLocation
 } from "sharedHelpers/shouldFetchObservationLocation.ts";
 import { useCurrentUser } from "sharedHooks";
+import useWatchPosition from "sharedHooks/useWatchPosition.ts";
 import useStore from "stores/useStore";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -40,6 +42,13 @@ const ObsEdit = ( ): Node => {
   const [shouldFetchLocation, setShouldFetchLocation] = useState( false );
   const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
 
+  const {
+    isFetchingLocation,
+    userLocation
+  } = useWatchPosition( {
+    shouldFetchLocation
+  } );
+
   useEffect( ( ) => {
     const hasLocation = currentObservation?.latitude && currentObservation?.longitude;
     const checkNeedsLocation = async ( ) => {
@@ -57,12 +66,21 @@ const ObsEdit = ( ): Node => {
     }
   }, [currentObservation] );
 
+  useEffect( ( ) => {
+    if ( userLocation ) {
+      updateObservationKeys( userLocation );
+      setShouldFetchLocation( false );
+    }
+  }, [userLocation, updateObservationKeys] );
+
   if ( !isFocused ) return null;
 
   // This should never, ever happen
   if ( currentObservation?.user && currentUser && currentUser.id !== currentObservation.user.id ) {
     throw new Error( "User tried to edit observation they do not own" );
   }
+
+  console.log( isFetchingLocation, "is fetching location" );
 
   return (
     <>
@@ -90,10 +108,9 @@ const ObsEdit = ( ): Node => {
                 )}
                 <EvidenceSectionContainer
                   currentObservation={currentObservation}
-                  locationPermissionNeeded={locationPermissionNeeded}
+                  isFetchingLocation={isFetchingLocation}
                   passesEvidenceTest={passesEvidenceTest}
                   setPassesEvidenceTest={setPassesEvidenceTest}
-                  shouldFetchLocation={shouldFetchLocation}
                   updateObservationKeys={updateObservationKeys}
                 />
                 <IdentificationSection
@@ -120,6 +137,19 @@ const ObsEdit = ( ): Node => {
         passesEvidenceTest={passesEvidenceTest}
         passesIdentificationTest={passesIdentificationTest}
         setCurrentObservationIndex={setCurrentObservationIndex}
+      />
+      <LocationPermissionGate
+        permissionNeeded={locationPermissionNeeded}
+        onPermissionGranted={( ) => {
+          setShouldFetchLocation( true );
+        }}
+        onPermissionDenied={( ) => {
+          setShouldFetchLocation( false );
+        }}
+        onPermissionBlocked={( ) => {
+          setShouldFetchLocation( false );
+        }}
+        withoutNavigation
       />
     </>
   );
