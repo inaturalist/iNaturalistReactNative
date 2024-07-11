@@ -75,7 +75,7 @@ const useLocationPermission = ( ) => {
     const permissionsResult = permissionResultFromMultiple(
       await checkMultiple( LOCATION_PERMISSIONS )
     );
-    if ( permissionsResult === RESULTS.GRANTED || permissionsResult === RESULTS.LIMITED ) {
+    if ( permissionsResult === RESULTS.GRANTED ) {
       setHasPermissions( true );
     } else {
       setHasPermissions( false );

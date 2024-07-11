@@ -97,6 +97,7 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
     return RESULTS.UNAVAILABLE;
   }
+  // Note: we're not checking for RESULTS.LIMITED here and treat it as GRANTED
   return RESULTS.GRANTED;
 }
 
