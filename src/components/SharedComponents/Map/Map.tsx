@@ -116,7 +116,6 @@ const Map = ( {
   );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
-  const [showsUserLocation, setShowsUserLocation] = useState( false );
   const [userLocation, setUserLocation] = useState<{
     accuracy: number;
     latitude: number;
@@ -209,32 +208,15 @@ const Map = ( {
     zoomToNearbyRequested
   ] );
 
-  // Kludge for the fact that the onUserLocationChange callback in MapView
-  // won't fire if showsUserLocation is true on the first render
-  useEffect( ( ) => {
-    setShowsUserLocation( true );
-  }, [] );
-
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
   const onPermissionGranted = useCallback( ( ) => {
-    setShowsUserLocation( true );
     if ( startAtNearby ) {
       setZoomToNearbyRequested( true );
     }
   }, [
     setZoomToNearbyRequested,
     startAtNearby
-  ] );
-  const onPermissionBlocked = useCallback( ( ) => {
-    setShowsUserLocation( false );
-  }, [
-    setShowsUserLocation
-  ] );
-  const onPermissionDenied = useCallback( ( ) => {
-    setShowsUserLocation( false );
-  }, [
-    setShowsUserLocation
   ] );
 
   const params = useMemo( ( ) => {
@@ -292,7 +274,7 @@ const Map = ( {
           const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
           setUserLocation( coordinate );
         }}
-        showsUserLocation={showsUserLocation}
+        showsUserLocation={hasPermissions}
         showsMyLocationButton={false}
         loadingEnabled
         onRegionChangeComplete={async newRegion => {
@@ -346,7 +328,6 @@ const Map = ( {
         handlePress={( ) => {
           if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
           setZoomToUserLocationRequested( true );
-          setShowsUserLocation( true );
         }}
       />
       <SwitchMapTypeButton
