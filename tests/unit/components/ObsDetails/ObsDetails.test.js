@@ -74,7 +74,8 @@ mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
-  iconUrl: faker.image.url( )
+  iconUrl: faker.image.url( ),
+  id: "1234"
 } );
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
@@ -84,7 +85,7 @@ jest.mock( "sharedHooks/useLocalObservation", () => ( {
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: ( ) => null
+  default: () => mockUser
 } ) );
 
 const mockNavigate = jest.fn();
@@ -334,7 +335,7 @@ describe( "ObsDetails", () => {
         data: otherUserObservation
       } );
 
-      jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => null );
+      jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
       renderObsDetails( );
       const agreeButton = screen.getByTestId(
         `ActivityItem.AgreeIdButton.${firstIdentification.taxon.id}`
