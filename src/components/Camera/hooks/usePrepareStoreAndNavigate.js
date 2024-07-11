@@ -62,7 +62,8 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const {
     addPhotoPermissionResult,
     addEvidence,
-    checkmarkTapped
+    checkmarkTapped,
+    shouldFetchLocation
   } = ( options || {} );
   const navigation = useNavigation( );
   const setObservations = useStore( state => state.setObservations );
@@ -76,7 +77,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
   const setCameraState = useStore( state => state.setCameraState );
   const { userLocation } = useWatchPosition( {
-    shouldFetchLocation: true
+    shouldFetchLocation
   } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;

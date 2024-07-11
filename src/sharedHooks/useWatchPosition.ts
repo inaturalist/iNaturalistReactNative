@@ -80,8 +80,6 @@ const useWatchPosition = ( options: {
     }
   }, [shouldFetchLocation, userLocation] );
 
-  console.log( userLocation, "user location" );
-
   return {
     isFetchingLocation,
     userLocation
