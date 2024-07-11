@@ -20,13 +20,13 @@ interface LocationPermissionCallbacks {
 }
 
 /**
-   * A hook to check and request location permissions.
-   * @returns {boolean} hasPermissions - Undefined if permissions have not been checked yet.
-   * True if permissions have been granted. False if permissions have been denied.
-   * @returns {Function} renderPermissionsGate - A function to render the permissions gate.
-   * @returns {Function} requestPermissions - A function to request location permissions.
-   * Essentially just a wrapper around toggling permissionNeeded for the LocationPermissionGate.
-   */
+ * A hook to check and request location permissions.
+ * @returns {boolean} hasPermissions - Undefined if permissions have not been checked yet.
+ * True if permissions have been granted. False if permissions have been denied.
+ * @returns {Function} renderPermissionsGate - A function to render the permissions gate.
+ * @returns {Function} requestPermissions - A function to request location permissions.
+ * Essentially just a wrapper around toggling permissionNeeded for the LocationPermissionGate.
+ */
 const useLocationPermission = ( ) => {
   const [hasPermissions, setHasPermissions] = useState<boolean>( );
   const [showPermissionGate, setShowPermissionGate] = useState( false );
