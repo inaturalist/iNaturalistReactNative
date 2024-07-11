@@ -2,15 +2,10 @@
 
 import { galleryPhotosPath } from "appConstants/paths.ts";
 import {
-  LOCATION_PERMISSIONS,
-  permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer.tsx";
-import {
   useEffect, useRef,
   useState
 } from "react";
 import RNFS from "react-native-fs";
-import { checkMultiple, RESULTS } from "react-native-permissions";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
@@ -29,6 +24,7 @@ const useCurrentObservationLocation = (
   mountedRef: unknown,
   currentObservation: Object,
   updateObservationKeys: Function,
+  hasPermissions: boolean,
   options: Object = { }
 ): Object => {
   const latitude = currentObservation?.latitude;
@@ -96,10 +92,7 @@ const useCurrentObservationLocation = (
       if ( !mountedRef.current ) return;
       if ( !shouldFetchLocation ) return;
 
-      const newPermissionResult = permissionResultFromMultiple(
-        await checkMultiple( LOCATION_PERMISSIONS )
-      );
-      if ( newPermissionResult !== RESULTS.GRANTED ) {
+      if ( !hasPermissions ) {
         setFetchingLocation( false );
         setShouldFetchLocation( false );
         return;
@@ -153,6 +146,7 @@ const useCurrentObservationLocation = (
   }, [
     currentObservation,
     fetchingLocation,
+    hasPermissions,
     lastLocationFetchTime,
     mountedRef,
     numLocationFetches,

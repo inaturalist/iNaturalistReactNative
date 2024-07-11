@@ -76,6 +76,7 @@ const EvidenceSectionContainer = ( {
     mountedRef,
     currentObservation,
     updateObservationKeys,
+    hasPermissions,
     {
       retry: hasPermissions && shouldRetryCurrentObservationLocation
     }
