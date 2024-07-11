@@ -186,7 +186,7 @@ const EvidenceSection = ( {
           navToLocationPicker();
         },
         onModalHide: ( ) => {
-          navToLocationPicker();
+          if ( !hasPermissions ) navToLocationPicker();
         }
       } )}
       <DatePicker
