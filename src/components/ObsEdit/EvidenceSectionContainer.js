@@ -50,7 +50,7 @@ const EvidenceSectionContainer = ( {
   const [
     shouldRetryCurrentObservationLocation,
     setShouldRetryCurrentObservationLocation
-  ] = useState( false );
+  ] = useState( true );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
@@ -87,13 +87,9 @@ const EvidenceSectionContainer = ( {
 
   useEffect( ( ) => {
     if ( latitude ) {
-      // TODO: is this handled by useLocationPermission?
       setShouldRetryCurrentObservationLocation( false );
-    } else if ( locationPermissionResult === "granted" ) {
-      // TODO: is this handled by useLocationPermission?
-      setShouldRetryCurrentObservationLocation( true );
     }
-  }, [latitude, locationPermissionResult] );
+  }, [latitude] );
 
   const hasPhotoOrSound = useMemo( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
