@@ -8,6 +8,7 @@ import {
   checkMultiple,
   Permission,
   PERMISSIONS,
+  PermissionStatus,
   requestMultiple,
   RESULTS
 } from "react-native-permissions";
@@ -77,7 +78,10 @@ type Props = {
   withoutNavigation?: boolean;
 };
 
-export function permissionResultFromMultiple( multiResults: Object ): string {
+interface MultiResult {
+  [permission: string]: PermissionStatus;
+}
+export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( typeof ( multiResults ) !== "object" ) {
     throw new Error(
       "permissionResultFromMultiple received something other than an object. "
@@ -121,12 +125,7 @@ const PermissionGateContainer = ( {
   titleDenied,
   withoutNavigation
 }: Props ) => {
-  const [result, setResult] = useState<
-    typeof RESULTS.GRANTED
-    | typeof RESULTS.BLOCKED
-    | typeof RESULTS.DENIED
-    | null
-  >( null );
+  const [result, setResult] = useState<PermissionStatus | null>( null );
   const [modalShown, setModalShown] = useState( false );
 
   const navigation = useNavigation();
