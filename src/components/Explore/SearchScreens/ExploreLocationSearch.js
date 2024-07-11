@@ -95,13 +95,16 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
 
   const data = placeResults || [];
 
-  const setNearbyLocation = async ( ) => {
-    const exploreLocation = await defaultExploreLocation( );
-    // exploreLocation has a placeMode already
-    // dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
-    dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
-    closeModal();
-  };
+  const setNearbyLocation = useCallback( ( ) => {
+    async function getNearbyLocation( ) {
+      const exploreLocation = await defaultExploreLocation( );
+      // exploreLocation has a placeMode already
+      // dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
+      dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
+      closeModal();
+    }
+    getNearbyLocation( );
+  }, [dispatch, defaultExploreLocation, closeModal] );
 
   const onNearbyPressed = () => {
     if ( !hasPermissions ) {

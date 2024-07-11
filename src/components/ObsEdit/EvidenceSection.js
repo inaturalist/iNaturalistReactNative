@@ -10,7 +10,7 @@ import {
 import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -62,9 +62,9 @@ const EvidenceSection = ( {
   const obsSounds = currentObservation?.observationSounds || currentObservation?.observation_sounds;
   const navigation = useNavigation( );
 
-  const navToLocationPicker = ( ) => {
+  const navToLocationPicker = useCallback( ( ) => {
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );
-  };
+  }, [navigation] );
 
   const onLocationPress = ( ) => {
     // If we have location permissions, navigate to the location picker
@@ -179,12 +179,8 @@ const EvidenceSection = ( {
       {renderPermissionsGate( {
         // If the user does not give location permissions in any form,
         // navigate to the location picker (if granted we just continue fetching the location)
-        onRequestDenied: ( ) => {
-          navToLocationPicker();
-        },
-        onRequestBlocked: ( ) => {
-          navToLocationPicker();
-        },
+        onRequestDenied: navToLocationPicker,
+        onRequestBlocked: navToLocationPicker,
         onModalHide: ( ) => {
           if ( !hasPermissions ) navToLocationPicker();
         }

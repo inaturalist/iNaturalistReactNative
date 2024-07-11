@@ -10,6 +10,8 @@ import {
   RESULTS
 } from "react-native-permissions";
 
+// PermissionGate callbacks need to use useCallback, otherwise they'll
+// trigger re-renders if/when they change
 interface LocationPermissionCallbacks {
   onPermissionGranted: ( ) => void;
   onPermissionDenied: ( ) => void;
@@ -29,6 +31,8 @@ const useLocationPermission = ( ) => {
   const [hasPermissions, setHasPermissions] = useState<boolean>( );
   const [showPermissionGate, setShowPermissionGate] = useState( false );
 
+  // PermissionGate callbacks need to use useCallback, otherwise they'll
+  // trigger re-renders if/when they change
   const renderPermissionsGate = ( callbacks?: LocationPermissionCallbacks ) => {
     const {
       onPermissionGranted,

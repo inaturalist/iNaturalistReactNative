@@ -208,8 +208,6 @@ const Map = ( {
     zoomToNearbyRequested
   ] );
 
-  // PermissionGate callbacks need to use useCallback, otherwise they'll
-  // trigger re-renders if/when they change
   const onPermissionGranted = useCallback( ( ) => {
     if ( startAtNearby ) {
       setZoomToNearbyRequested( true );
