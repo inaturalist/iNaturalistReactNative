@@ -162,6 +162,7 @@ const CameraWithDevice = ( {
     >
       <PermissionGateContainer
         permissions={READ_WRITE_MEDIA_PERMISSIONS}
+        title={t( "Save-photos-to-your-gallery" )}
         titleDenied={t( "Save-photos-to-your-gallery" )}
         body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery" )}
         buttonText={t( "SAVE-PHOTOS" )}
