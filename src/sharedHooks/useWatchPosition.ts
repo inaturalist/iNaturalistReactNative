@@ -14,19 +14,6 @@ import {
 } from "sharedHelpers/shouldFetchObservationLocation.ts";
 import useStore from "stores/useStore";
 
-interface UserLocation {
-  latitude: number,
-  longitude: number,
-  positional_accuracy: number
-}
-
-interface WatchPosition {
-  hasLocation: boolean,
-  isFetchingLocation: boolean,
-  locationPermissionNeeded: boolean,
-  userLocation: UserLocation
-}
-
 const geolocationOptions = {
   distanceFilter: 0,
   enableHighAccuracy: true,
@@ -36,20 +23,20 @@ const geolocationOptions = {
 
 const useWatchPosition = ( options: {
   retry: boolean
-} ): WatchPosition => {
+} ) => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const currentObservation = useStore( state => state.currentObservation );
-  const [currentPosition, setCurrentPosition] = useState<GeolocationResponse | null>( null );
+  const [currentPosition, setCurrentPosition] = useState<string | null>( null );
   const [subscriptionId, setSubscriptionId] = useState<number | null>( null );
-  const [locationPermissionResult, setLocationPermissionResult] = useState<string | null>( null );
-  const [errorCode, setErrorCode] = useState<number | null>( null );
+  const [locationPermissionResult, setLocationPermissionResult] = useState( null );
+  const [errorCode, setErrorCode] = useState( null );
   const hasLocation = currentObservation?.latitude && currentObservation?.longitude;
-  const [shouldFetchLocation, setShouldFetchLocation] = useState<boolean>( true );
-  const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
+  const [shouldFetchLocation, setShouldFetchLocation] = useState( true );
+  const [userLocation, setUserLocation] = useState( null );
 
   const watchPosition = ( ) => {
     const success = ( position: GeolocationResponse ) => {
-      setLocationPermissionResult( "granted" );
+      setLocationPermissionResult( true );
       setCurrentPosition( position );
     };
 
