@@ -71,8 +71,7 @@ const EvidenceSectionContainer = ( {
 
   const {
     hasLocation,
-    isFetchingLocation,
-    permissionResult: locationPermissionResult
+    isFetchingLocation
   } = useCurrentObservationLocation(
     mountedRef,
     currentObservation,

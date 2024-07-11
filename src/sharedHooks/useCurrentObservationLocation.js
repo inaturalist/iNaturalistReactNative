@@ -64,7 +64,6 @@ const useCurrentObservationLocation = (
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
   const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
-  const [permissionResult, setPermissionResult] = useState( null );
   const [currentLocation, setCurrentLocation] = useState( null );
 
   useEffect( () => {
@@ -100,7 +99,6 @@ const useCurrentObservationLocation = (
       const newPermissionResult = permissionResultFromMultiple(
         await checkMultiple( LOCATION_PERMISSIONS )
       );
-      setPermissionResult( newPermissionResult );
       if ( newPermissionResult !== RESULTS.GRANTED ) {
         setFetchingLocation( false );
         setShouldFetchLocation( false );
@@ -158,7 +156,6 @@ const useCurrentObservationLocation = (
     lastLocationFetchTime,
     mountedRef,
     numLocationFetches,
-    permissionResult,
     positionalAccuracy,
     setFetchingLocation,
     shouldFetchLocation,
@@ -186,7 +183,6 @@ const useCurrentObservationLocation = (
     // location requests is in flight, but this tells the external consumer
     // whether the overall location fetching process is happening
     isFetchingLocation: shouldFetchLocation,
-    permissionResult,
     numLocationFetches
   };
 };
