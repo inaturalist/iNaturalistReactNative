@@ -90,7 +90,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     if ( userLocation?.latitude ) {
       newObservation.latitude = userLocation?.latitude;
       newObservation.longitude = userLocation?.longitude;
-      newObservation.positional_accuracy = userLocation?.accuracy;
+      newObservation.positional_accuracy = userLocation?.positional_accuracy;
     }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( localFilePaths, {
@@ -113,9 +113,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     addPhotoPermissionResult,
     cameraUris,
     setObservations,
-    userLocation?.accuracy,
-    userLocation?.latitude,
-    userLocation?.longitude
+    userLocation
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async ( ) => {

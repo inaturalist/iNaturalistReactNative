@@ -80,8 +80,6 @@ const ObsEdit = ( ): Node => {
     throw new Error( "User tried to edit observation they do not own" );
   }
 
-  console.log( isFetchingLocation, "is fetching location" );
-
   return (
     <>
       <ViewWrapper testID="obs-edit">
@@ -140,15 +138,9 @@ const ObsEdit = ( ): Node => {
       />
       <LocationPermissionGate
         permissionNeeded={locationPermissionNeeded}
-        onPermissionGranted={( ) => {
-          setShouldFetchLocation( true );
-        }}
-        onPermissionDenied={( ) => {
-          setShouldFetchLocation( false );
-        }}
-        onPermissionBlocked={( ) => {
-          setShouldFetchLocation( false );
-        }}
+        onPermissionGranted={( ) => setShouldFetchLocation( true )}
+        onPermissionDenied={( ) => setShouldFetchLocation( false )}
+        onPermissionBlocked={( ) => setShouldFetchLocation( false )}
         withoutNavigation
       />
     </>
