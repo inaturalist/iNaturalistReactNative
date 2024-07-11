@@ -60,6 +60,7 @@ export const LOCATION_PERMISSIONS = Platform.OS === "ios"
 type Props = {
   blockedPrompt?: string;
   body?: string;
+  body2?: string;
   buttonText?: string;
   children?: React.ReactNode,
   icon: string;
@@ -103,6 +104,7 @@ export function permissionResultFromMultiple( multiResults: Object ): string {
 const PermissionGateContainer = ( {
   blockedPrompt,
   body,
+  body2,
   buttonText,
   children,
   icon,
@@ -229,6 +231,7 @@ const PermissionGateContainer = ( {
           title={title}
           titleDenied={titleDenied}
           body={body}
+          body2={body2}
           blockedPrompt={blockedPrompt}
           buttonText={buttonText}
           image={image}

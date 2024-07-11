@@ -35,6 +35,7 @@ interface Props {
   title?: string;
   titleDenied?: string;
   body?: string;
+  body2?: string;
   blockedPrompt?: string;
   buttonText?: string;
   image?: number;
@@ -49,6 +50,7 @@ const PermissionGate = ( {
   title = t( "Grant-Permission-title" ),
   titleDenied = t( "Please-Grant-Permission" ),
   body,
+  body2,
   blockedPrompt = t( "Youve-denied-permission-prompt" ),
   buttonText = t( "GRANT-PERMISSION" ),
   image = require( "images/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
@@ -102,6 +104,9 @@ const PermissionGate = ( {
         </Heading2>
         { body && (
           <Body2 className="text-center text-white">{ body }</Body2>
+        ) }
+        { body2 && (
+          <Body2 className="text-center text-white mt-5">{ body2 }</Body2>
         ) }
         { grantStatus === RESULTS.BLOCKED && (
           <Body2 className="text-center text-white mt-5">
