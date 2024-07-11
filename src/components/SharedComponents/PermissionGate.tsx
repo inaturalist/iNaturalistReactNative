@@ -18,7 +18,7 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { RESULTS } from "react-native-permissions";
+import { PermissionStatus, RESULTS } from "react-native-permissions";
 import colors from "styles/tailwindColors";
 
 const BACKGROUND_IMAGE_STYLE = {
@@ -30,7 +30,7 @@ const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   requestPermission: () => void;
-  grantStatus: typeof RESULTS.BLOCKED | null;
+  grantStatus: PermissionStatus;
   icon: string;
   title?: string;
   titleDenied?: string;
@@ -96,9 +96,9 @@ const PermissionGate = ( {
           />
         ) }
         <Heading2 className="text-center text-white mt-8 mb-5">
-          { grantStatus === null
-            ? title
-            : titleDenied}
+          { grantStatus === RESULTS.BLOCKED
+            ? titleDenied
+            : title}
         </Heading2>
         { body && (
           <Body2 className="text-center text-white">{ body }</Body2>

@@ -321,7 +321,7 @@ const defaultFilters = {
 const initialState: State = {
   ...defaultFilters,
   // The very first time the user opens the explore screen, we want the place mode to be
-  // nearby (even if we don't have location permission yet and not actually making the request)
+  // nearby (even if we don't have location permission yet and not actually make any API request)
   placeMode: PLACE_MODE.NEARBY,
   place: undefined,
   // String to display as the human-readable place name, not to be used for default explore search
