@@ -208,7 +208,9 @@ const Map = ( {
     zoomToNearbyRequested
   ] );
 
+  // TODO: Johannes: I don't know if this is necessary anymore
   const onPermissionGranted = useCallback( ( ) => {
+    console.log( "startAtNearby", startAtNearby );
     if ( startAtNearby ) {
       setZoomToNearbyRequested( true );
     }
@@ -247,6 +249,10 @@ const Map = ( {
       onZoomChange( currentZoom );
     }
   }, [currentZoom, onZoomChange] );
+
+  const renderCurrentLocationPermissionsGate = () => renderPermissionsGate( {
+    onPermissionGranted
+  } );
 
   return (
     <View
@@ -321,8 +327,9 @@ const Map = ( {
         showCurrentLocationButton={showCurrentLocationButton}
         currentLocationButtonClassName={currentLocationButtonClassName}
         hasPermissions={hasPermissions}
-        renderPermissionsGate={renderPermissionsGate}
+        renderPermissionsGate={renderCurrentLocationPermissionsGate}
         requestPermissions={requestPermissions}
+        onPermissionGranted={onPermissionGranted}
         handlePress={( ) => {
           if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
           setZoomToUserLocationRequested( true );

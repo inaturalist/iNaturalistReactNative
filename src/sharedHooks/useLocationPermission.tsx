@@ -13,10 +13,10 @@ import {
 // PermissionGate callbacks need to use useCallback, otherwise they'll
 // trigger re-renders if/when they change
 interface LocationPermissionCallbacks {
-  onPermissionGranted: ( ) => void;
-  onPermissionDenied: ( ) => void;
-  onPermissionBlocked: ( ) => void;
-  onModalHide: ( ) => void;
+  onPermissionGranted?: ( ) => void;
+  onPermissionDenied?: ( ) => void;
+  onPermissionBlocked?: ( ) => void;
+  onModalHide?: ( ) => void;
 }
 
 /**
