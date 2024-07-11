@@ -13,6 +13,7 @@ import MapView, {
   BoundingBox, LatLng, MapType, Region
 } from "react-native-maps";
 import { useDeviceOrientation } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
 import CurrentLocationButton from "./CurrentLocationButton";
 import {
@@ -114,6 +115,7 @@ const Map = ( {
       : 5
   );
   const navigation = useNavigation( );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const [showsUserLocation, setShowsUserLocation] = useState( false );
   const [userLocation, setUserLocation] = useState<{
     accuracy: number;
@@ -338,6 +340,9 @@ const Map = ( {
       <CurrentLocationButton
         showCurrentLocationButton={showCurrentLocationButton}
         currentLocationButtonClassName={currentLocationButtonClassName}
+        hasPermissions={hasPermissions}
+        renderPermissionsGate={renderPermissionsGate}
+        requestPermissions={requestPermissions}
         handlePress={( ) => {
           if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
           setZoomToUserLocationRequested( true );

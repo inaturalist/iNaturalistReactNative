@@ -1,7 +1,6 @@
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import React from "react";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -12,15 +11,20 @@ interface Props {
   currentLocationButtonClassName?: string;
   handlePress: () => void;
   showCurrentLocationButton?: boolean;
+  hasPermissions: boolean | undefined;
+  renderPermissionsGate: () => React.JSX.Element;
+  requestPermissions: () => void;
 }
 
 const CurrentLocationButton = ( {
   currentLocationButtonClassName,
   handlePress,
-  showCurrentLocationButton
+  showCurrentLocationButton,
+  hasPermissions,
+  renderPermissionsGate,
+  requestPermissions
 }: Props ) => {
   const { t } = useTranslation( );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const onPress = ( ) => {
     if ( !hasPermissions ) {
       requestPermissions( );
