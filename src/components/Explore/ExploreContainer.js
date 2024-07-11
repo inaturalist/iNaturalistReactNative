@@ -9,6 +9,7 @@ import {
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useCurrentUser, useIsConnected } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
@@ -20,6 +21,12 @@ const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
   const setStoredParams = useStore( state => state.setStoredParams );
+
+  const {
+    hasPermissions: hasLocationPermissions,
+    renderPermissionsGate,
+    requestPermissions: requestLocationPermissions
+  } = useLocationPermission( );
 
   const currentUser = useCurrentUser();
 
@@ -91,27 +98,30 @@ const ExploreContainerWithContext = ( ): Node => {
   }, [navigation, setStoredParams, state] );
 
   return (
-    <Explore
-      closeFiltersModal={closeFiltersModal}
-      count={count}
-      hideBackButton={false}
-      filterByIconicTaxonUnknown={
-        () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
-      }
-      isOnline={isOnline}
-      loadingStatus={loadingStatus}
-      openFiltersModal={openFiltersModal}
-      queryParams={queryParams}
-      showFiltersModal={showFiltersModal}
-      updateCount={updateCount}
-      updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
-      updateLocation={updateLocation}
-      updateUser={updateUser}
-      updateProject={updateProject}
-      placeMode={state.placeMode}
-      hasLocationPermissions={undefined}
-      requestLocationPermissions={() => console.log()}
-    />
+    <>
+      <Explore
+        closeFiltersModal={closeFiltersModal}
+        count={count}
+        hideBackButton={false}
+        filterByIconicTaxonUnknown={
+          () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
+        }
+        isOnline={isOnline}
+        loadingStatus={loadingStatus}
+        openFiltersModal={openFiltersModal}
+        queryParams={queryParams}
+        showFiltersModal={showFiltersModal}
+        updateCount={updateCount}
+        updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
+        placeMode={state.placeMode}
+        hasLocationPermissions={hasLocationPermissions}
+        requestLocationPermissions={requestLocationPermissions}
+      />
+      {renderPermissionsGate( )}
+    </>
   );
 };
 
