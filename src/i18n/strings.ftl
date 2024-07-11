@@ -473,7 +473,6 @@ INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
 iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
 iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location.
-Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
 iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Angie Ta, Ken-ichi Ueda, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
@@ -1159,6 +1158,7 @@ Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improve
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
 # Text prompting the user to open Settings to grant permission after
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
