@@ -324,6 +324,8 @@ During-app-start-no-model-found = During app start there was no computer vision 
 Edit = Edit
 EDIT-COMMENT = EDIT COMMENT
 Edit-comment = Edit comment
+# Label for button that edits an identification
+Edit-identification = Edit identification
 EDIT-LOCATION = EDIT LOCATION
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Edit location

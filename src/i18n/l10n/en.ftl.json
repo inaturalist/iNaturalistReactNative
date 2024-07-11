@@ -448,6 +448,10 @@
   },
   "EDIT-COMMENT": "EDIT COMMENT",
   "Edit-comment": "Edit comment",
+  "Edit-identification": {
+    "comment": "Label for button that edits an identification",
+    "val": "Edit identification"
+  },
   "EDIT-LOCATION": "EDIT LOCATION",
   "Edit-location": {
     "comment": "Label for interactive element that takes you to a location choosing screen",

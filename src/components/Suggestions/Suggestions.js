@@ -19,6 +19,7 @@ import SuggestionsHeader from "./SuggestionsHeader";
 
 type Props = {
   debugData: Object,
+  hideSkip?: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
@@ -31,6 +32,7 @@ type Props = {
 
 const Suggestions = ( {
   debugData,
+  hideSkip,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
@@ -68,12 +70,16 @@ const Suggestions = ( {
   const renderFooter = useCallback( ( ) => (
     <SuggestionsFooter
       debugData={debugData}
+      hideSkip={hideSkip}
+      isLoading={suggestions.isLoading}
       observers={observers}
       reloadSuggestions={reloadSuggestions}
-      suggestions={suggestions}
+      showSuggestionsWithLocation={suggestions.showSuggestionsWithLocation}
+      usingOfflineSuggestions={suggestions.usingOfflineSuggestions}
     />
   ), [
     debugData,
+    hideSkip,
     observers,
     reloadSuggestions,
     suggestions
