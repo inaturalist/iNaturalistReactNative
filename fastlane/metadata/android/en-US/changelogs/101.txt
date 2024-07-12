@@ -1,0 +1,8 @@
+Potential disagreement bottom sheet, and disagreeing ids
+
+Flow of how permissions are requested
+Hide skip ID button on suggestions sometimes
+
+Restore photo deletion to periodically freeing up space on the device
+Agree button does not appear while signed out
+Notifications shows sound icon
