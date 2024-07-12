@@ -190,7 +190,7 @@ const TaxonResult = ( {
                 icon="edit"
                 size={20}
                 onPress={handlePress}
-                accessibilityLabel={t( "Edit" )}
+                accessibilityLabel={t( "Edit-identification" )}
                 accessibilityHint={t( "Edits-this-observations-taxon" )}
               />
             )}

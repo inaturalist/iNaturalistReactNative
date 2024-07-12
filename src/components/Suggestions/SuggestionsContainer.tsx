@@ -1,3 +1,4 @@
+import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import _ from "lodash";
 import React, {
@@ -31,6 +32,7 @@ const initialSuggestions = {
 };
 
 const SuggestionsContainer = ( ) => {
+  const { params } = useRoute( );
   const isOnline = useIsConnected( );
   // clearing the cache of resized images for the score_image API
   // placing this here means we can keep the app size small
@@ -50,8 +52,6 @@ const SuggestionsContainer = ( ) => {
   } );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const showImproveWithLocationButton = hasPermissions === false;
-  // const showImproveWithLocationButton = !evidenceHasLocation
-  //   && params?.lastScreen === "CameraWithDevice";
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
     requestPermissions( );
   }, [requestPermissions] );
@@ -230,6 +230,7 @@ const SuggestionsContainer = ( ) => {
     <>
       <Suggestions
         debugData={debugData}
+        hideSkip={params?.hideSkip}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}

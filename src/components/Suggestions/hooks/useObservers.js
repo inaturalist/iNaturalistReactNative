@@ -25,7 +25,7 @@ const useObservers = ( taxonIds: Array<number> ): Array<string> => {
     }
   );
 
-  return data?.results?.map( observation => observation.user.login );
+  return data?.results?.map( result => result.user.login );
 };
 
 export default useObservers;

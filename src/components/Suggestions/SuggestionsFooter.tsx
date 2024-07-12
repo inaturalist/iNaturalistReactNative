@@ -18,16 +18,22 @@ import Attribution from "./Attribution";
 
 type Props = {
   debugData: Object,
+  hideSkip?: boolean,
+  isLoading?: boolean,
   observers: Array<string>,
   reloadSuggestions: Function,
-  suggestions: Object,
+  showSuggestionsWithLocation?: boolean,
+  usingOfflineSuggestions?: boolean
 };
 
 const SuggestionsFooter = ( {
   debugData,
+  hideSkip,
+  isLoading,
   observers,
   reloadSuggestions,
-  suggestions
+  showSuggestionsWithLocation,
+  usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
@@ -35,15 +41,10 @@ const SuggestionsFooter = ( {
   const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
     lastScreen: "Suggestions"
   } ), [navigation] );
-  const {
-    isLoading,
-    showSuggestionsWithLocation,
-    usingOfflineSuggestions
-  } = suggestions;
   const hideLocationButton = usingOfflineSuggestions || isLoading;
 
   return (
-    <>
+    <View className="mb-6">
       {!hideLocationButton && (
         <>
           <View className="px-4 py-6">
@@ -67,14 +68,16 @@ const SuggestionsFooter = ( {
           <Attribution observers={observers} />
         </>
       )}
-      <Body1
-        className="underline text-center py-6"
-        onPress={navToObsEdit}
-        accessibilityRole="link"
-        accessibilityHint={t( "Navigates-to-observation-edit-screen" )}
-      >
-        {t( "Add-an-ID-Later" )}
-      </Body1>
+      { !hideSkip && (
+        <Body1
+          className="underline text-center py-6"
+          onPress={navToObsEdit}
+          accessibilityRole="link"
+          accessibilityHint={t( "Navigates-to-observation-edit-screen" )}
+        >
+          {t( "Add-an-ID-Later" )}
+        </Body1>
+      ) }
       { isDebug && (
         <View className="bg-deeppink text-white p-3">
           <Heading4 className="text-white">Diagnostics</Heading4>
@@ -89,7 +92,7 @@ const SuggestionsFooter = ( {
           <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
         </View>
       )}
-    </>
+    </View>
   );
 };
 export default SuggestionsFooter;
