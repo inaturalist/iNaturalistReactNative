@@ -18,15 +18,30 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { RESULTS } from "react-native-permissions";
+import { PermissionStatus, RESULTS } from "react-native-permissions";
 import colors from "styles/tailwindColors";
 
 const BACKGROUND_IMAGE_STYLE = {
   opacity: 0.33,
   backgroundColor: "black"
-};
+} as const;
 
 const isTablet = DeviceInfo.isTablet();
+
+interface Props {
+  requestPermission: () => void;
+  grantStatus: PermissionStatus;
+  icon: string;
+  title?: string;
+  titleDenied?: string;
+  body?: string;
+  body2?: string;
+  blockedPrompt?: string;
+  buttonText?: string;
+  image?: number;
+  onClose: () => void;
+  testID?: string;
+}
 
 const PermissionGate = ( {
   requestPermission,
@@ -35,12 +50,13 @@ const PermissionGate = ( {
   title = t( "Grant-Permission-title" ),
   titleDenied = t( "Please-Grant-Permission" ),
   body,
+  body2,
   blockedPrompt = t( "Youve-denied-permission-prompt" ),
   buttonText = t( "GRANT-PERMISSION" ),
   image = require( "images/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
   onClose,
   testID
-} ) => (
+}: Props ) => (
   <ViewWrapper wrapperClassName="bg-black" testID={testID}>
     <StatusBar barStyle="light-content" backgroundColor="black" />
     <ImageBackground
@@ -82,12 +98,15 @@ const PermissionGate = ( {
           />
         ) }
         <Heading2 className="text-center text-white mt-8 mb-5">
-          { grantStatus === null
-            ? title
-            : titleDenied}
+          { grantStatus === RESULTS.BLOCKED
+            ? titleDenied
+            : title}
         </Heading2>
         { body && (
           <Body2 className="text-center text-white">{ body }</Body2>
+        ) }
+        { body2 && (
+          <Body2 className="text-center text-white mt-5">{ body2 }</Body2>
         ) }
         { grantStatus === RESULTS.BLOCKED && (
           <Body2 className="text-center text-white mt-5">

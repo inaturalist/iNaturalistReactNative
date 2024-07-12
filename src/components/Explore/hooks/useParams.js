@@ -6,25 +6,21 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import { useCallback, useEffect } from "react";
-import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const useParams = ( ): Object => {
-  const { t } = useTranslation( );
   const { params } = useRoute( );
   const { dispatch, defaultExploreLocation } = useExplore( );
   const storedParams = useStore( state => state.storedParams );
 
-  const worldwidePlaceText = t( "Worldwide" );
-
   const updateContextWithParams = useCallback( async ( storedState = { } ) => {
     const setWorldwide = ( ) => {
+      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
         place: null,
-        placeId: null,
-        placeGuess: worldwidePlaceText
+        placeId: null
       } );
     };
 
@@ -33,6 +29,8 @@ const useParams = ( ): Object => {
     }
     if ( params?.nearby ) {
       const exploreLocation = await defaultExploreLocation( );
+      // exploreLocation has a placeMode already
+      // dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
       dispatch( {
         type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
         exploreLocation
@@ -48,6 +46,7 @@ const useParams = ( ): Object => {
       } );
     }
     if ( params?.place ) {
+      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         storedState,
@@ -75,8 +74,7 @@ const useParams = ( ): Object => {
   }, [
     dispatch,
     params,
-    defaultExploreLocation,
-    worldwidePlaceText
+    defaultExploreLocation
   ] );
 
   useEffect( ( ) => {

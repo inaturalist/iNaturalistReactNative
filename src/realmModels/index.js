@@ -30,13 +30,21 @@ export default {
     User,
     Vote
   ],
-  schemaVersion: 51,
+  schemaVersion: 52,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {
     resolveEmbeddedConstraints: true
   },
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 52 ) {
+      const oldPrefs = oldRealm.objects( "LocalPreferences" );
+      const newPrefs = newRealm.objects( "LocalPreferences" );
+      oldPrefs.keys( ).forEach( objectIndex => {
+        const newObsSound = newPrefs[objectIndex];
+        delete newObsSound.explore_location_permission_shown;
+      } );
+    }
     if ( oldRealm.schemaVersion < 51 ) {
       // const oldIdentifications = oldRealm.objects( "Identification" );
       // const newIdentifications = newRealm.objects( "Identification" );

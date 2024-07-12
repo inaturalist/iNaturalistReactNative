@@ -290,12 +290,8 @@ describe( "logged in", ( ) => {
         await navigateToRootExplore( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
         expect( speciesViewIcon ).toBeVisible( );
-        const locationPermission = await screen.findByText( /Please allow Location Access/ );
-        expect( locationPermission ).toBeVisible( );
-        const closeButton = await screen.findByLabelText( /Close permission request screen/ );
-        await actor.press( closeButton );
-        const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
-        expect( defaultGlobalLocation ).toBeVisible( );
+        const defaultNearbyLocationText = await screen.findByText( /Nearby/ );
+        expect( defaultNearbyLocationText ).toBeVisible( );
         const backButton = screen.queryByTestId( "Explore.BackButton" );
         expect( backButton ).toBeFalsy( );
       } );

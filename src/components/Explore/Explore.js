@@ -4,12 +4,15 @@ import { refresh } from "@react-native-community/netinfo";
 import classnames from "classnames";
 import ExploreFiltersModal from "components/Explore/Modals/ExploreFiltersModal";
 import {
+  Body2,
+  Button,
   INatIconButton,
   OfflineNotice,
   RadioButtonSheet,
   ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { PLACE_MODE } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
@@ -56,7 +59,11 @@ type Props = {
   updateTaxon: Function,
   updateLocation: Function,
   updateUser: Function,
-  updateProject: Function
+  updateProject: Function,
+  // TODO: change to PLACE_MODE in Typescript
+  placeMode: string,
+  hasLocationPermissions: ?boolean,
+  requestLocationPermissions: Function
 }
 
 const Explore = ( {
@@ -73,7 +80,10 @@ const Explore = ( {
   updateTaxon,
   updateLocation,
   updateUser,
-  updateProject
+  updateProject,
+  placeMode,
+  hasLocationPermissions,
+  requestLocationPermissions
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -106,6 +116,69 @@ const Explore = ( {
       onPressCount={( ) => setShowExploreBottomSheet( true )}
     />
   );
+
+  const renderMainContent = ( ) => {
+    if ( !isOnline ) {
+      return (
+        <OfflineNotice
+          onPress={() => refresh()}
+        />
+      );
+    }
+    // hasLocationPermissions === undefined means we haven't checked for location permissions yet
+    if ( placeMode === PLACE_MODE.NEARBY && hasLocationPermissions === false ) {
+      return (
+        <View className="flex-1 justify-center p-4">
+          <View className="items-center">
+            <Body2>{t( "To-view-nearby-organisms-please-enable-location" )}</Body2>
+          </View>
+          <Button
+            className="mt-5"
+            text={t( "ALLOW-LOCATION-ACCESS" )}
+            accessibilityHint={t( "Opens-location-permission-prompt" )}
+            level="focus"
+            onPress={( ) => requestLocationPermissions()}
+          />
+        </View>
+      );
+    }
+    return (
+      <View className="flex-1">
+        {currentExploreView === "observations" && (
+          <ObservationsView
+            count={count}
+            layout={layout}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+        {currentExploreView === "species" && (
+          <SpeciesView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+        {currentExploreView === "observers" && (
+          <ObserversView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+        {currentExploreView === "identifiers" && (
+          <IdentifiersView
+            count={count}
+            isOnline={isOnline}
+            queryParams={queryParams}
+            updateCount={updateCount}
+          />
+        )}
+      </View>
+    );
+  };
 
   const renderSheet = () => {
     if ( !showExploreBottomSheet ) {
@@ -170,48 +243,7 @@ const Explore = ( {
               updateObservationsView={writeLayoutToStorage}
             />
           )}
-          { isOnline
-            ? (
-              <View className="flex-1">
-                {currentExploreView === "observations" && (
-                  <ObservationsView
-                    count={count}
-                    layout={layout}
-                    queryParams={queryParams}
-                    updateCount={updateCount}
-                  />
-                )}
-                {currentExploreView === "species" && (
-                  <SpeciesView
-                    count={count}
-                    isOnline={isOnline}
-                    queryParams={queryParams}
-                    updateCount={updateCount}
-                  />
-                )}
-                {currentExploreView === "observers" && (
-                  <ObserversView
-                    count={count}
-                    isOnline={isOnline}
-                    queryParams={queryParams}
-                    updateCount={updateCount}
-                  />
-                )}
-                {currentExploreView === "identifiers" && (
-                  <IdentifiersView
-                    count={count}
-                    isOnline={isOnline}
-                    queryParams={queryParams}
-                    updateCount={updateCount}
-                  />
-                )}
-              </View>
-            )
-            : (
-              <OfflineNotice
-                onPress={() => refresh()}
-              />
-            )}
+          {renderMainContent()}
           {isDebug && (
             <INatIconButton
               icon="triangle-exclamation"

@@ -11,25 +11,40 @@ interface Props {
   currentLocationButtonClassName?: string;
   handlePress: () => void;
   showCurrentLocationButton?: boolean;
+  hasPermissions: boolean | undefined;
+  renderPermissionsGate: () => React.JSX.Element;
+  requestPermissions: () => void;
 }
 
 const CurrentLocationButton = ( {
   currentLocationButtonClassName,
   handlePress,
-  showCurrentLocationButton
+  showCurrentLocationButton,
+  hasPermissions,
+  renderPermissionsGate,
+  requestPermissions
 }: Props ) => {
   const { t } = useTranslation( );
+  const onPress = ( ) => {
+    if ( !hasPermissions ) {
+      requestPermissions( );
+    }
+    handlePress( );
+  };
   return showCurrentLocationButton && (
-    <INatIconButton
-      icon="location-crosshairs"
-      className={classnames(
-        "absolute bottom-5 right-5 bg-white rounded-full",
-        currentLocationButtonClassName
-      )}
-      style={DROP_SHADOW}
-      accessibilityLabel={t( "Zoom-to-current-location" )}
-      onPress={handlePress}
-    />
+    <>
+      <INatIconButton
+        icon="location-crosshairs"
+        className={classnames(
+          "absolute bottom-5 right-5 bg-white rounded-full",
+          currentLocationButtonClassName
+        )}
+        style={DROP_SHADOW}
+        accessibilityLabel={t( "Zoom-to-current-location" )}
+        onPress={onPress}
+      />
+      {renderPermissionsGate( )}
+    </>
   );
 };
 

@@ -24,8 +24,8 @@ type Props = {
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  // setLocationPermissionNeeded: Function,
-  // showImproveWithLocationButton: boolean,
+  improveWithLocationButtonOnPress: () => void;
+  showImproveWithLocationButton: boolean;
   suggestions: Object
 };
 
@@ -36,8 +36,8 @@ const Suggestions = ( {
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
-  // setLocationPermissionNeeded,
-  // showImproveWithLocationButton,
+  improveWithLocationButtonOnPress,
+  showImproveWithLocationButton,
   suggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -86,16 +86,16 @@ const Suggestions = ( {
       reloadSuggestions={reloadSuggestions}
       selectedPhotoUri={selectedPhotoUri}
       suggestions={suggestions}
-      // setLocationPermissionNeeded={setLocationPermissionNeeded}
-      // showImproveWithLocationButton={showImproveWithLocationButton}
+      improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
+      showImproveWithLocationButton={showImproveWithLocationButton}
     />
   ), [
     onPressPhoto,
     photoUris,
     reloadSuggestions,
     selectedPhotoUri,
-    // setLocationPermissionNeeded,
-    // showImproveWithLocationButton,
+    improveWithLocationButtonOnPress,
+    showImproveWithLocationButton,
     suggestions
   ] );
 

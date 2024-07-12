@@ -1,5 +1,3 @@
-// @flow
-
 import classnames from "classnames";
 import {
   INatIcon
@@ -7,7 +5,6 @@ import {
 import {
   Pressable, View
 } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
@@ -16,17 +13,17 @@ import colors from "styles/tailwindColors";
 
 const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
-type Props = {
-  takePhoto: Function,
-  disabled: boolean,
-  showPrediction?: boolean
+interface Props {
+  takePhoto: () => Promise<void>;
+  disabled: boolean;
+  showPrediction?: boolean;
 }
 
 const TakePhoto = ( {
   takePhoto,
   disabled,
   showPrediction
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
