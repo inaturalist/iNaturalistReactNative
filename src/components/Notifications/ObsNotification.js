@@ -29,6 +29,7 @@ const ObsNotification = ( { item }: Props ): Node => {
 
   const observation = realm.objectForPrimaryKey( "Observation", item.resource_uuid );
   const photoUrl = observation?.observationPhotos[0]?.photo?.url;
+  const soundsUrl = observation?.observationSounds[0]?.sound?.file_url;
 
   const renderIcon = () => {
     switch ( type ) {
@@ -40,13 +41,12 @@ const ObsNotification = ( { item }: Props ): Node => {
         return "";
     }
   };
-
   return (
     <View
       className="shrink flex-row space-x-[10px]"
     >
-      <ObservationIcon uri={photoUrl} />
-      <View className="flex-col shrink justify-between pspace-y-[8px]">
+      <ObservationIcon photoUri={photoUrl} soundUri={soundsUrl} />
+      <View className="flex-col shrink justify-between space-y-[8px]">
         <ObsNotificationText type={type} userName={user.login} />
         <View className="flex-row space-x-[8px]">
           {
