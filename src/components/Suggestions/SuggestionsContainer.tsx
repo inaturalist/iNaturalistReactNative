@@ -52,8 +52,6 @@ const SuggestionsContainer = ( ) => {
   } );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const showImproveWithLocationButton = hasPermissions === false;
-  // const showImproveWithLocationButton = !evidenceHasLocation
-  //   && params?.lastScreen === "CameraWithDevice";
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
     requestPermissions( );
   }, [requestPermissions] );

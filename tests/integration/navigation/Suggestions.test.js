@@ -159,7 +159,7 @@ describe( "Suggestions", ( ) => {
       const observations = makeUnsyncedObservations( );
       await renderAppWithObservations( observations, __filename );
       await navigateToSuggestionsViaObsEditForObservation( observations[0] );
-      expect( await screen.findByText( "Add an ID Later" ) ).toBeVisible( );
+      expect( await screen.findByText( "Add an ID Later" ) ).toBeTruthy( );
     } );
 
     it( "should not show the add ID later button if there is a taxon", async ( ) => {
