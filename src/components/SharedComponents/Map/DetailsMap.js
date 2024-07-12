@@ -111,7 +111,6 @@ const DetailsMap = ( {
           obsLatitude={latitude}
           obsLongitude={longitude}
           obscured={obscured}
-          permissionRequested={false}
           positionalAccuracy={positionalAccuracy}
           region={region}
           showCurrentLocationButton

@@ -39,10 +39,6 @@ const MapView = ( {
 
   const {
     onPanDrag,
-    onPermissionBlocked,
-    onPermissionDenied,
-    onPermissionGranted,
-    permissionRequested,
     onZoomToNearby,
     redoSearchInMapArea,
     region,
@@ -153,10 +149,6 @@ const MapView = ( {
         switchMapTypeButtonClassName="left-20 bottom-20"
         tileMapParams={tileMapParams}
         withPressableObsTiles={tileMapParams !== null}
-        onPermissionBlocked={onPermissionBlocked}
-        onPermissionDenied={onPermissionDenied}
-        onPermissionGranted={onPermissionGranted}
-        permissionRequested={permissionRequested}
         currentLocationZoomLevel={15}
       />
     </View>

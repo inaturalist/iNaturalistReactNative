@@ -45,7 +45,10 @@ const ActivityItem = ( {
   const showAgreeButton = user?.id !== currentUserId
     && userAgreedId !== taxon?.id
     && taxon?.is_active
-    && isFirstDisplay;
+    && isFirstDisplay
+    && currentUserId;
+
+  console.log( currentUserId );
 
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 

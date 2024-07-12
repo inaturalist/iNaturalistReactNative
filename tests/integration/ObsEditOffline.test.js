@@ -87,11 +87,6 @@ describe( "ObsEdit offline", ( ) => {
         <ObsEdit />
       );
       await waitFor( ( ) => {
-        expect(
-          screen.getByTestId( "EvidenceSection.fetchingLocationIndicator" )
-        ).toBeTruthy( );
-      } );
-      await waitFor( ( ) => {
         expect( mockGetCurrentPosition ).toHaveBeenCalled( );
       }, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
       const coords = await screen.findByText( /Lat:/ );

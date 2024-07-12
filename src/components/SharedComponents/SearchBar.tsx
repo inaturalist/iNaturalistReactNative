@@ -1,8 +1,6 @@
-// @flow
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
@@ -11,17 +9,17 @@ import colors from "styles/tailwindColors";
 
 const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
-type Props = {
-  autoFocus?: boolean,
-  clearSearch?: Function,
-  containerClass?: string,
-  handleTextChange: Function,
-  hasShadow?: boolean,
-  // $FlowIgnore
-  input?: unknown,
-  placeholder?: string,
-  testID?: string,
-  value: string,
+interface Props {
+  autoFocus?: boolean;
+  clearSearch?: () => void;
+  containerClass?: string;
+  handleTextChange: ( _text: string ) => void;
+  hasShadow?: boolean;
+  // TODO: check react-native-paper docs for correct type
+  input?: any,
+  placeholder?: string;
+  testID?: string;
+  value: string;
 }
 
 // Ensure this component is placed outside of scroll views
@@ -36,7 +34,7 @@ const SearchBar = ( {
   placeholder,
   testID,
   value
-}: Props ): Node => {
+}: Props ) => {
   const theme = useTheme( );
   const { t } = useTranslation( );
 
@@ -44,7 +42,7 @@ const SearchBar = ( {
     borderColor: "lightgray",
     borderRadius: 8,
     borderWidth: 1
-  };
+  } as const;
 
   const style = {
     ...( hasShadow
@@ -53,7 +51,7 @@ const SearchBar = ( {
     fontSize: 16,
     lineHeight: 18,
     paddingRight: 28
-  };
+  } as const;
 
   // kind of tricky to change the font here:
   // https://github.com/callstack/react-native-paper/issues/3615#issuecomment-1402025033
@@ -65,7 +63,7 @@ const SearchBar = ( {
           fontFamily: fontRegular
         }
     }
-  };
+  } as const;
 
   return (
     <View className={containerClass}>

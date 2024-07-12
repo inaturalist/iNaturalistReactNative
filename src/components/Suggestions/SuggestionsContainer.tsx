@@ -1,8 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-// import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import _ from "lodash";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -12,6 +10,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
   useIsConnected
 } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
@@ -32,7 +31,7 @@ const initialSuggestions = {
   isLoading: true
 };
 
-const SuggestionsContainer = ( ): Node => {
+const SuggestionsContainer = ( ) => {
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
   // clearing the cache of resized images for the score_image API
@@ -51,6 +50,13 @@ const SuggestionsContainer = ( ): Node => {
     ...initialSuggestions,
     showSuggestionsWithLocation: evidenceHasLocation
   } );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const showImproveWithLocationButton = hasPermissions === false;
+  // const showImproveWithLocationButton = !evidenceHasLocation
+  //   && params?.lastScreen === "CameraWithDevice";
+  const improveWithLocationButtonOnPress = useCallback( ( ) => {
+    requestPermissions( );
+  }, [requestPermissions] );
 
   const {
     showSuggestionsWithLocation,
@@ -232,6 +238,8 @@ const SuggestionsContainer = ( ): Node => {
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
+        improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
+        showImproveWithLocationButton={showImproveWithLocationButton}
         suggestions={suggestions}
       />
       <MediaViewerModal
@@ -240,6 +248,7 @@ const SuggestionsContainer = ( ): Node => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
+      {renderPermissionsGate()}
     </>
   );
 };

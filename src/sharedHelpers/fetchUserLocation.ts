@@ -2,11 +2,10 @@ import Geolocation, { GeolocationResponse } from "@react-native-community/geoloc
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer";
+} from "components/SharedComponents/PermissionGateContainer.tsx";
 import { Platform } from "react-native";
 import {
   checkMultiple,
-  Permission,
   RESULTS
 } from "react-native-permissions";
 
@@ -30,9 +29,7 @@ interface UserLocation {
 
 const fetchUserLocation = async ( ): Promise<UserLocation | null> => {
   const permissionResult = permissionResultFromMultiple(
-    // TODO if/when we convert PermissionGateContainer to typescript, this
-    // case should be unnecessary
-    await checkMultiple( LOCATION_PERMISSIONS as Permission[] )
+    await checkMultiple( LOCATION_PERMISSIONS )
   );
 
   // TODO: handle case where iOS permissions are not granted

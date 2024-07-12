@@ -9,8 +9,9 @@ import { Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
-  CAMERA_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer";
+  CAMERA_PERMISSIONS,
+  READ_WRITE_MEDIA_PERMISSIONS
+} from "components/SharedComponents/PermissionGateContainer.tsx";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
@@ -69,6 +70,21 @@ const CameraContainerWithPermission = ( ) => (
   </PermissionGateContainer>
 );
 
+const GalleryContainerWithPermission = ( ) => (
+  <PermissionGateContainer
+    permissions={READ_WRITE_MEDIA_PERMISSIONS}
+    title={t( "Observe-and-identify-organisms-from-your-gallery" )}
+    titleDenied={t( "Please-Allow-Gallery-Access" )}
+    body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
+    blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
+    buttonText={t( "CHOOSE-PHOTOS" )}
+    icon="gallery"
+    image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+  >
+    <PhotoGallery />
+  </PermissionGateContainer>
+);
+
 const SoundRecorderWithPermission = ( ) => (
   <Mortal>
     <PermissionGateContainer
@@ -105,7 +121,7 @@ const NoBottomTabStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="PhotoGallery"
-        component={PhotoGallery}
+        component={GalleryContainerWithPermission}
         options={hideHeader}
       />
       <Stack.Screen

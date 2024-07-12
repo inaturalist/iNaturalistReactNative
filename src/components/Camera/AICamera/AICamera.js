@@ -42,7 +42,7 @@ type Props = {
   camera: Object,
   device: Object,
   flipCamera: Function,
-  handleCheckmarkPress: Function,
+  handleCheckmarkPress: ( _result: any | null ) => void,
   isLandscapeMode: boolean
 };
 

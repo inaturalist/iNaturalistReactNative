@@ -12,13 +12,12 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef, useState
+  useRef,
+  useState
 } from "react";
-import {
-  RESULTS as PERMISSION_RESULTS
-} from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import EvidenceSection from "./EvidenceSection";
@@ -51,7 +50,8 @@ const EvidenceSectionContainer = ( {
   const [
     shouldRetryCurrentObservationLocation,
     setShouldRetryCurrentObservationLocation
-  ] = useState( false );
+  ] = useState( true );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -71,14 +71,14 @@ const EvidenceSectionContainer = ( {
 
   const {
     hasLocation,
-    isFetchingLocation,
-    permissionResult: locationPermissionResult
+    isFetchingLocation
   } = useCurrentObservationLocation(
     mountedRef,
     currentObservation,
     updateObservationKeys,
+    hasPermissions,
     {
-      retry: shouldRetryCurrentObservationLocation
+      retry: hasPermissions && shouldRetryCurrentObservationLocation
     }
   );
 
@@ -88,10 +88,8 @@ const EvidenceSectionContainer = ( {
   useEffect( ( ) => {
     if ( latitude ) {
       setShouldRetryCurrentObservationLocation( false );
-    } else if ( locationPermissionResult === "granted" ) {
-      setShouldRetryCurrentObservationLocation( true );
     }
-  }, [latitude, locationPermissionResult] );
+  }, [latitude] );
 
   const hasPhotoOrSound = useMemo( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
@@ -220,16 +218,9 @@ const EvidenceSectionContainer = ( {
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       observationSounds={observationSounds}
-      onLocationPermissionGranted={( ) => {
-        setShouldRetryCurrentObservationLocation( true );
-      }}
-      onLocationPermissionDenied={( ) => {
-        setShouldRetryCurrentObservationLocation( false );
-      }}
-      onLocationPermissionBlocked={( ) => {
-        setShouldRetryCurrentObservationLocation( false );
-      }}
-      locationPermissionNeeded={locationPermissionResult === PERMISSION_RESULTS.DENIED}
+      hasPermissions={hasPermissions}
+      renderPermissionsGate={renderPermissionsGate}
+      requestPermissions={requestPermissions}
     />
   );
 };

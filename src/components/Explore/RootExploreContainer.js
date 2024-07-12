@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
@@ -9,11 +8,11 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, {
-  useCallback,
   useEffect,
   useState
 } from "react";
-import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
+import { useCurrentUser, useIsConnected } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
@@ -22,29 +21,32 @@ import useHeaderCount from "./hooks/useHeaderCount";
 
 const RootExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
-  const { t } = useTranslation( );
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
   const rootStoredParams = useStore( state => state.rootStoredParams );
   const setRootStoredParams = useStore( state => state.setRootStoredParams );
-
-  const worldwidePlaceText = t( "Worldwide" );
+  const {
+    hasPermissions: hasLocationPermissions,
+    renderPermissionsGate,
+    requestPermissions: requestLocationPermissions
+  } = useLocationPermission( );
 
   const {
-    state, dispatch, makeSnapshot, defaultExploreLocation
+    state, dispatch, makeSnapshot
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
   const updateLocation = ( place: Object ) => {
     if ( place === "worldwide" ) {
+      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
-        placeId: null,
-        placeGuess: worldwidePlaceText
+        placeId: null
       } );
     } else {
       navigation.setParams( { place } );
+      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         place,
@@ -90,24 +92,6 @@ const RootExploreContainerWithContext = ( ): Node => {
     makeSnapshot( );
   };
 
-  const onPermissionGranted = useCallback( async ( ) => {
-    const exploreLocation = await defaultExploreLocation( );
-    dispatch( {
-      type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
-      exploreLocation
-    } );
-  }, [
-    defaultExploreLocation,
-    dispatch
-  ] );
-
-  const resetToWorldWide = useCallback( ( ) => {
-    dispatch( {
-      type: EXPLORE_ACTION.SET_PLACE,
-      placeGuess: worldwidePlaceText
-    } );
-  }, [dispatch, worldwidePlaceText] );
-
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
       const storedState = Object.keys( rootStoredParams ).length > 0 || false;
@@ -141,14 +125,11 @@ const RootExploreContainerWithContext = ( ): Node => {
         updateLocation={updateLocation}
         updateUser={updateUser}
         updateProject={updateProject}
+        placeMode={state.placeMode}
+        hasLocationPermissions={hasLocationPermissions}
+        requestLocationPermissions={requestLocationPermissions}
       />
-      <LocationPermissionGate
-        permissionNeeded
-        onPermissionGranted={onPermissionGranted}
-        onPermissionDenied={resetToWorldWide}
-        onPermissionBlocked={resetToWorldWide}
-        withoutNavigation
-      />
+      {renderPermissionsGate( )}
     </>
   );
 };

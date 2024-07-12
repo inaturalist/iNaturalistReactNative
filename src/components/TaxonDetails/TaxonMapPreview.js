@@ -56,7 +56,6 @@ const TaxonMapPreview = ( {
           mapHeight={230}
           mapViewClassName="-mx-3"
           openMapScreen={() => setShowMapModal( true )}
-          permissionRequested={false}
           region={region}
           scrollEnabled={false}
           tileMapParams={obsParams}
