@@ -130,8 +130,8 @@ describe( "Suggestions", ( ) => {
         await navigateToSuggestionsForObservation( observations[0] );
         const searchInput = await screen.findByLabelText( "Search for a taxon" );
         const mockSearchResultTaxon = factory( "RemoteTaxon" );
-        inatjs.taxa.search.mockResolvedValue( makeResponse( [
-          mockSearchResultTaxon
+        inatjs.search.mockResolvedValue( makeResponse( [
+          { taxon: mockSearchResultTaxon }
         ] ) );
         await act(
           async ( ) => actor.type(
