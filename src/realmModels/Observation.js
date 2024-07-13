@@ -113,6 +113,7 @@ class Observation extends Realm.Object {
         ? obs?.observed_on_string
         : createObservedOnStringForUpload( ),
       quality_grade: "needs_id",
+      needs_sync: true,
       uuid: uuid.v4( )
     };
   }
@@ -257,6 +258,7 @@ class Observation extends Realm.Object {
       // ...obs.toJSON( ),
       ...obs,
       ...timestamps,
+      needs_sync: true,
       taxon,
       observationPhotos,
       observationSounds
@@ -481,7 +483,8 @@ class Observation extends Realm.Object {
       private_place_guess: { type: "string", mapTo: "privatePlaceGuess", optional: true },
       private_location: { type: "string", mapTo: "privateLocation", optional: true },
       privateLatitude: "double?",
-      privateLongitude: "double?"
+      privateLongitude: "double?",
+      needs_sync: { type: "bool", default: false, indexed: true }
     }
   };
 
@@ -494,6 +497,10 @@ class Observation extends Realm.Object {
       || this._synced_at <= this._updated_at
       || obsPhotosNeedSync
       || obsSoundsNeedSync;
+  }
+
+  updateNeedsSync() {
+    this.needsSync = this.needsSync();
   }
 
   wasSynced( ) {
