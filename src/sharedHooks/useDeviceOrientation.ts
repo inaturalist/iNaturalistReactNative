@@ -1,17 +1,16 @@
-// @flow
 import {
   useCallback, useEffect, useState
 } from "react";
 import { Dimensions } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import Orientation from "react-native-orientation-locker";
+import Orientation, { OrientationType } from "react-native-orientation-locker";
 
-export const LANDSCAPE_LEFT = "landscape-left";
-export const LANDSCAPE_RIGHT = "landscape-right";
-export const PORTRAIT = "portrait";
-export const PORTRAIT_UPSIDE_DOWN = "portrait-upside-down";
+export const LANDSCAPE_LEFT = "landscape-left" as const;
+export const LANDSCAPE_RIGHT = "landscape-right" as const;
+export const PORTRAIT = "portrait" as const;
+export const PORTRAIT_UPSIDE_DOWN = "portrait-upside-down" as const;
 
-export function orientationLockerToIosOrientation( orientation: string ): string {
+export function orientationLockerToIosOrientation( orientation: OrientationType ): string {
   // react-native-orientation-locker and react-native-vision-camera  different
   // string values for these constants, so we map everything to the
   // react-native-vision-camera versions
@@ -27,12 +26,12 @@ export function orientationLockerToIosOrientation( orientation: string ): string
   }
 }
 
-const useDeviceOrientation = ( ): Object => {
+const useDeviceOrientation = ( ) => {
   const { width, height } = Dimensions.get( "screen" );
   const [screenWidth, setScreenWidth] = useState( width );
   const [screenHeight, setScreenHeight] = useState( height );
 
-  const [deviceOrientation, setDeviceOrientation] = useState( );
+  const [deviceOrientation, setDeviceOrientation] = useState<string>( );
 
   useEffect( ( ) => {
     // Word of caution: getInitialOrientation gets the orientation when JS
@@ -49,7 +48,7 @@ const useDeviceOrientation = ( ): Object => {
   const isTablet = DeviceInfo.isTablet();
   // detect device rotation instead of using screen orientation change
   const onDeviceRotation = useCallback(
-    orientation => {
+    ( orientation: OrientationType ) => {
     // FACE-UP and FACE-DOWN could be portrait or landscape, I guess the
     // device can't tell, so I'm just not changing the layout at all for
     // those. ~~~ kueda 20230420

@@ -8,7 +8,8 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
+import { useCurrentUser, useIsConnected } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
@@ -17,10 +18,15 @@ import useHeaderCount from "./hooks/useHeaderCount";
 import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
-  const { t } = useTranslation( );
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
   const setStoredParams = useStore( state => state.setStoredParams );
+
+  const {
+    hasPermissions: hasLocationPermissions,
+    renderPermissionsGate,
+    requestPermissions: requestLocationPermissions
+  } = useLocationPermission( );
 
   const currentUser = useCurrentUser();
 
@@ -28,35 +34,18 @@ const ExploreContainerWithContext = ( ): Node => {
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
-  const worldwidePlaceText = t( "Worldwide" );
-
   useParams( );
-
-  const updateTaxon = ( taxon: Object ) => {
-    if ( !taxon ) {
-      dispatch( {
-        type: EXPLORE_ACTION.CHANGE_TAXON_NONE,
-        taxon: null
-      } );
-    } else {
-      dispatch( {
-        type: EXPLORE_ACTION.CHANGE_TAXON,
-        taxon,
-        taxonId: taxon?.id,
-        taxonName: taxon?.preferred_common_name || taxon?.name
-      } );
-    }
-  };
 
   const updateLocation = ( place: Object ) => {
     if ( place === "worldwide" ) {
+      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
-        placeId: null,
-        placeGuess: worldwidePlaceText
+        placeId: null
       } );
     } else {
       navigation.setParams( { place } );
+      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         place,
@@ -109,21 +98,30 @@ const ExploreContainerWithContext = ( ): Node => {
   }, [navigation, setStoredParams, state] );
 
   return (
-    <Explore
-      closeFiltersModal={closeFiltersModal}
-      count={count}
-      hideBackButton={false}
-      isOnline={isOnline}
-      loadingStatus={loadingStatus}
-      openFiltersModal={openFiltersModal}
-      queryParams={queryParams}
-      showFiltersModal={showFiltersModal}
-      updateCount={updateCount}
-      updateTaxon={updateTaxon}
-      updateLocation={updateLocation}
-      updateUser={updateUser}
-      updateProject={updateProject}
-    />
+    <>
+      <Explore
+        closeFiltersModal={closeFiltersModal}
+        count={count}
+        hideBackButton={false}
+        filterByIconicTaxonUnknown={
+          () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
+        }
+        isOnline={isOnline}
+        loadingStatus={loadingStatus}
+        openFiltersModal={openFiltersModal}
+        queryParams={queryParams}
+        showFiltersModal={showFiltersModal}
+        updateCount={updateCount}
+        updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
+        placeMode={state.placeMode}
+        hasLocationPermissions={hasLocationPermissions}
+        requestLocationPermissions={requestLocationPermissions}
+      />
+      {renderPermissionsGate( )}
+    </>
   );
 };
 

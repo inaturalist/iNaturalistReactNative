@@ -14,13 +14,14 @@ import type { Node } from "react";
 import React from "react";
 
 import ActivityHeaderContainer from "./ActivityHeaderContainer";
+import DisagreementText from "./DisagreementText";
 
 type Props = {
   currentUserId?: number,
   isFirstDisplay: boolean,
   isOnline: boolean,
   item: Object,
-  onIDAgreePressed: Function,
+  openAgreeWithIdSheet: Function,
   refetchRemoteObservation: Function,
   userAgreedId?: string
 }
@@ -30,28 +31,30 @@ const ActivityItem = ( {
   isFirstDisplay,
   isOnline,
   item,
-  onIDAgreePressed,
+  openAgreeWithIdSheet,
   refetchRemoteObservation,
   userAgreedId
 }: Props ): Node => {
   const navigation = useNavigation( );
-  const { taxon, user } = item;
+  const { taxon, user, disagreement } = item;
   const isCurrent = item.current !== undefined
     ? item.current
     : undefined;
 
   const idWithdrawn = isCurrent !== undefined && !isCurrent;
-
   const showAgreeButton = user?.id !== currentUserId
     && userAgreedId !== taxon?.id
     && taxon?.is_active
-    && isFirstDisplay;
+    && isFirstDisplay
+    && currentUserId;
+
+  console.log( currentUserId );
 
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   return (
     <View className="flex-column">
-      <View className="mx-[15px]">
+      <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}
           refetchRemoteObservation={refetchRemoteObservation}
@@ -69,7 +72,7 @@ const ActivityItem = ( {
             { showAgreeButton && (
               <INatIconButton
                 testID={`ActivityItem.AgreeIdButton.${item.taxon.id}`}
-                onPress={( ) => onIDAgreePressed( item.taxon )}
+                onPress={( ) => openAgreeWithIdSheet( item.taxon )}
                 icon="id-agree"
                 size={33}
                 accessibilityLabel={t( "Agree" )}
@@ -81,6 +84,13 @@ const ActivityItem = ( {
           <View className="flex-row">
             <UserText text={item.body} />
           </View>
+        )}
+        { disagreement && (
+          <DisagreementText
+            taxon={item.previous_observation_taxon}
+            username={user.login}
+            withdrawn={idWithdrawn}
+          />
         )}
       </View>
       <Divider />

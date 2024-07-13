@@ -14,7 +14,7 @@ const useNavigateWithTaxonSelected = (
 ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { lastScreen } = params;
+  const { entryScreen } = params;
   const currentObservation = useStore( state => state.currentObservation );
   const comment = useStore( state => state.comment );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
@@ -25,29 +25,40 @@ const useNavigateWithTaxonSelected = (
 
     updateObservationKeys( {
       owners_identification_from_vision: vision,
-      taxon: selectedTaxon
+      taxon: selectedTaxon,
+      description: comment
     } );
 
     // checking for previous screen here rather than a synced/unsynced observation
     // because a user can arrive on Suggestions/TaxonSearch
     // in two different ways from ObsDetails -> they can land directly on the Suggestions
     // screen (by adding an id) or they can first land on ObsEdit (by tapping the edit button)
-    if ( lastScreen === "ObsDetails" ) {
+    if ( entryScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
-        suggestedTaxonId: selectedTaxon.id,
-        comment,
-        vision
+        suggestedTaxon: {
+          id: selectedTaxon.id,
+          default_photo: selectedTaxon.default_photo,
+          rank: selectedTaxon.rank,
+          rank_level: selectedTaxon.rank_level,
+          preferred_common_name: selectedTaxon.preferred_common_name,
+          name: selectedTaxon.name
+        }
       } );
+    } else if ( entryScreen === "ObsEdit" ) {
+      // Cant' go back b/c we might be on Suggestions OR TaxonSearch. Don't
+      // want to set lastScreen b/c we don't want to go back to suggestions
+      navigation.navigate( "ObsEdit" );
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }
+
     // If we've navigated, there's no need to run this effect again
     unselectTaxon( );
   }, [
     comment,
     currentObservation?.uuid,
-    lastScreen,
+    entryScreen,
     navigation,
     selectedTaxon,
     unselectTaxon,

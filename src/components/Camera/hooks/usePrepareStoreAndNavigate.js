@@ -44,11 +44,17 @@ export async function savePhotosToCameraGallery(
         // logger.info( "saved to camera roll: ", savedPhotoUri );
         // Save these camera roll URIs, so later on observation editor can update
         // the EXIF metadata of these photos, once we retrieve a location.
-        // addCameraRollUri( savedPhotoUri );
         onEachSuccess( savedPhotoUri );
       } catch ( cameraRollSaveError ) {
-        logger.error( cameraRollSaveError );
-        console.log( "couldn't save photo to iNaturalist Next album" );
+        // This means an iOS user denied access
+        // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
+        // In theory we should not even have called this function when that
+        // happens, but we're still seeing this in the logs. They should be
+        // prompted to grant permission the next time they try so this is
+        // probably safe to ignore.
+        if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
+          logger.error( cameraRollSaveError );
+        }
       }
     },
     // We need the initial value even if we're not using it, otherwise reduce
@@ -69,12 +75,13 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
-  const rotatedOriginalCameraPhotos = useStore( state => state.rotatedOriginalCameraPhotos );
+  const cameraUris = useStore( state => state.cameraUris );
   const currentObservation = useStore( state => state.currentObservation );
   const addCameraRollUri = useStore( state => state.addCameraRollUri );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
+  const setCameraState = useStore( state => state.setCameraState );
   const { userLocation } = useUserLocation( { untilAcc: 0, enabled: !!shouldFetchLocation } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
@@ -103,11 +110,11 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     }
     setObservations( [newObservation] );
     if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
-    return savePhotosToCameraGallery( rotatedOriginalCameraPhotos, addCameraRollUri );
+    return savePhotosToCameraGallery( cameraUris, addCameraRollUri );
   }, [
     addCameraRollUri,
     addPhotoPermissionResult,
-    rotatedOriginalCameraPhotos,
+    cameraUris,
     setObservations,
     userLocation?.accuracy,
     userLocation?.latitude,
@@ -153,23 +160,27 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
       await updateObsWithCameraPhotos( );
     } else {
-      await createObsWithCameraPhotos( rotatedOriginalCameraPhotos, visionResult );
+      await createObsWithCameraPhotos( cameraUris, visionResult );
     }
+    // When we've persisted photos to the observation, we don't need them in
+    // state anymore
+    setCameraState( { evidenceToAdd: [], cameraUris: [] } );
     if ( addEvidence ) {
       return navigation.goBack( );
     }
     return navigation.push( "Suggestions", {
-      lastScreen: "CameraWithDevice",
-      hasVisionSuggestion: visionResult
+      entryScreen: "CameraWithDevice",
+      lastScreen: "CameraWithDevice"
     } );
   }, [
     addEvidence,
-    rotatedOriginalCameraPhotos,
+    cameraUris,
     checkmarkTapped,
     createObsWithCameraPhotos,
     currentObservation,
     navigation,
     updateObsWithCameraPhotos,
+    setCameraState,
     setSavingPhoto
   ] );
 

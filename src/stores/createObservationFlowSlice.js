@@ -2,6 +2,7 @@
 import { Realm } from "@realm/react";
 import _ from "lodash";
 import Photo from "realmModels/Photo";
+import Sound from "realmModels/Sound";
 
 const DEFAULT_STATE = {
   cameraRollUris: [],
@@ -15,7 +16,11 @@ const DEFAULT_STATE = {
   // Track when any obs was last marked as viewed so we know when to update
   // the notifications indicator
   observationMarkedAsViewedAt: null,
-  rotatedOriginalCameraPhotos: [],
+  // Array of URIs of photos taken in the camera. These should be fully
+  // processed, including rotation or any other transformations. It might
+  // also include URIs of other photos that need to be visible as previews in
+  // the camera
+  cameraUris: [],
   savingPhoto: false,
   unsavedChanges: false
 };
@@ -29,9 +34,10 @@ const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
     // removed
     _.remove(
       obsPhotos,
-      obsPhoto => Photo.accessLocalPhoto(
-        obsPhoto.photo.localFilePath
-      ) === uri || obsPhoto.originalPhotoUri === uri
+      obsPhoto => (
+        Photo.getLocalPhotoUri( obsPhoto.photo.localFilePath ) === uri
+        || obsPhoto.originalPhotoUri === uri
+      )
     );
     updatedObservation.observationPhotos = obsPhotos;
     return [updatedObservation];
@@ -46,7 +52,10 @@ const removeObsSoundFromObservation = ( currentObservation, uri ) => {
   if ( obsSounds.length > 0 ) {
     _.remove(
       obsSounds,
-      obsSound => obsSound.sound.file_url === uri
+      obsSound => (
+        obsSound.sound.file_url === uri
+        || Sound.getLocalSoundUri( obsSound.sound.file_url ) === uri
+      )
     );
     updatedObservation.observationSounds = obsSounds;
     return [updatedObservation];
@@ -81,20 +90,24 @@ const createObservationFlowSlice = ( set, get ) => ( {
       uri
     );
     const newObservation = newObservations[state.currentObservationIndex];
-    if ( !newObservation ) return {};
-    const index = newObservation.observationPhotos.findIndex(
-      op => ( op.photo?.localFilePath || op.photo?.url ) === uri
-    );
-    if ( index > -1 ) {
-      newObservation.observationPhotos.splice( index, 1 );
+    if ( newObservation ) {
+      const index = newObservation.observationPhotos.findIndex(
+        op => ( Photo.getLocalPhotoUri( op.photo?.localFilePath ) || op.photo?.url ) === uri
+      );
+      if ( index > -1 ) {
+        newObservation.observationPhotos.splice( index, 1 );
+      }
     }
 
-    return ( {
-      rotatedOriginalCameraPhotos: [..._.pull( state.rotatedOriginalCameraPhotos, uri )],
+    const newCameraUris = [..._.pull( state.cameraUris, uri )];
+    return {
+      cameraUris: newCameraUris,
       evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
       observations: newObservations,
-      currentObservation: observationToJSON( newObservation )
-    } );
+      currentObservation: newObservation
+        ? observationToJSON( newObservation )
+        : null
+    };
   } ),
   deleteSoundFromObservation: uri => set( state => {
     const newObservations = removeObsSoundFromObservation(
@@ -107,7 +120,6 @@ const createObservationFlowSlice = ( set, get ) => ( {
       currentObservation: newObservation
     };
   } ),
-  resetEvidenceToAdd: ( ) => set( { evidenceToAdd: [] } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
   addCameraRollUri: uri => set( state => {
     const savedUris = state.cameraRollUris;
@@ -120,8 +132,8 @@ const createObservationFlowSlice = ( set, get ) => ( {
   setSavingPhoto: saving => set( { savingPhoto: saving } ),
   setCameraState: options => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
-    rotatedOriginalCameraPhotos:
-      options?.rotatedOriginalCameraPhotos || state.rotatedOriginalCameraPhotos
+    cameraUris:
+      options?.cameraUris || state.cameraUris
   } ) ),
   setCurrentObservationIndex: index => set( state => ( {
     currentObservationIndex: index,
@@ -151,7 +163,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
   } ) ),
   updateComment: newComment => set( { comment: newComment } ),
   updateObservations: updatedObservations => set( state => ( {
-    observations: updatedObservations,
+    observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
     unsavedChanges: true
   } ) ),
@@ -165,6 +177,13 @@ const createObservationFlowSlice = ( set, get ) => ( {
   prepareObsEdit: observation => {
     get( ).resetObservationFlowSlice( );
     get( ).updateObservations( [observation] );
+  },
+  prepareCamera: () => {
+    const existingPhotoUris = get( )
+      .currentObservation
+      ?.observationPhotos
+      ?.map( op => ( op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) ) ) || [];
+    return set( { evidenceToAdd: [], cameraUris: existingPhotoUris } );
   }
 } );
 

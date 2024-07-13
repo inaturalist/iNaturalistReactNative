@@ -1,9 +1,14 @@
 // @flow
 
-import { ViewWrapper } from "components/SharedComponents";
+import {
+  Body1,
+  Heading4,
+  ViewWrapper
+} from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { FlatList } from "react-native";
+import { SectionList } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 import useObservers from "./hooks/useObservers";
@@ -14,40 +19,40 @@ import SuggestionsHeader from "./SuggestionsHeader";
 
 type Props = {
   debugData: Object,
-  loading: boolean,
+  hideSkip?: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
-  otherSuggestions: Array<Object>,
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  // setLocationPermissionNeeded: Function,
-  // showImproveWithLocationButton: boolean,
-  showSuggestionsWithLocation: boolean,
-  topSuggestion: Object,
-  usingOfflineSuggestions: boolean,
+  improveWithLocationButtonOnPress: () => void;
+  showImproveWithLocationButton: boolean;
+  suggestions: Object
 };
 
 const Suggestions = ( {
   debugData,
-  loading,
+  hideSkip,
   onPressPhoto,
   onTaxonChosen,
-  otherSuggestions,
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
-  // setLocationPermissionNeeded,
-  // showImproveWithLocationButton,
-  showSuggestionsWithLocation,
-  topSuggestion,
-  usingOfflineSuggestions
+  improveWithLocationButtonOnPress,
+  showImproveWithLocationButton,
+  suggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const {
+    isLoading,
+    otherSuggestions,
+    topSuggestion,
+    usingOfflineSuggestions
+  } = suggestions;
 
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
-  const showLocationButton = !usingOfflineSuggestions && !loading;
+  const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
 
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
@@ -59,64 +64,107 @@ const Suggestions = ( {
   ), [onTaxonChosen, t, usingOfflineSuggestions] );
 
   const renderEmptyList = useCallback( ( ) => (
-    <SuggestionsEmpty loading={loading} hasTopSuggestion={!!topSuggestion} />
-  ), [loading, topSuggestion] );
+    <SuggestionsEmpty isLoading={isLoading} hasTopSuggestion={!!topSuggestion} />
+  ), [isLoading, topSuggestion] );
 
   const renderFooter = useCallback( ( ) => (
     <SuggestionsFooter
       debugData={debugData}
+      hideSkip={hideSkip}
+      isLoading={suggestions.isLoading}
       observers={observers}
       reloadSuggestions={reloadSuggestions}
-      showLocationButton={showLocationButton}
-      showSuggestionsWithLocation={showSuggestionsWithLocation}
+      showSuggestionsWithLocation={suggestions.showSuggestionsWithLocation}
+      usingOfflineSuggestions={suggestions.usingOfflineSuggestions}
     />
   ), [
     debugData,
+    hideSkip,
     observers,
     reloadSuggestions,
-    showLocationButton,
-    showSuggestionsWithLocation
+    suggestions
   ] );
 
   const renderHeader = useCallback( ( ) => (
     <SuggestionsHeader
-      loading={loading}
       onPressPhoto={onPressPhoto}
-      otherSuggestions={otherSuggestions}
       photoUris={photoUris}
       reloadSuggestions={reloadSuggestions}
-      renderSuggestion={renderSuggestion}
       selectedPhotoUri={selectedPhotoUri}
-      // setLocationPermissionNeeded={setLocationPermissionNeeded}
-      // showImproveWithLocationButton={showImproveWithLocationButton}
-      showSuggestionsWithLocation={showSuggestionsWithLocation}
-      topSuggestion={topSuggestion}
-      usingOfflineSuggestions={usingOfflineSuggestions}
+      suggestions={suggestions}
+      improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
+      showImproveWithLocationButton={showImproveWithLocationButton}
     />
   ), [
-    loading,
     onPressPhoto,
-    otherSuggestions,
     photoUris,
     reloadSuggestions,
-    renderSuggestion,
     selectedPhotoUri,
-    // setLocationPermissionNeeded,
-    // showImproveWithLocationButton,
-    showSuggestionsWithLocation,
-    topSuggestion,
-    usingOfflineSuggestions
+    improveWithLocationButtonOnPress,
+    showImproveWithLocationButton,
+    suggestions
   ] );
+
+  const renderSectionHeader = ( { section } ) => {
+    if ( section?.data.length === 0 || isLoading ) {
+      return null;
+    }
+    return (
+      <Heading4 className="mt-6 mb-4 ml-4 bg-white">{section?.title}</Heading4>
+    );
+  };
+
+  const renderTopSuggestion = ( { item } ) => {
+    if ( isLoading ) { return null; }
+    if ( !item && !usingOfflineSuggestions ) {
+      return (
+        <Body1 className="mx-2">
+          {t( "We-are-not-confident-enough-to-make-a-top-ID-suggestion" )}
+        </Body1>
+      );
+    }
+    if ( !item ) {
+      return null;
+    }
+    return (
+      <View className="bg-inatGreen/[.13]">
+        {renderSuggestion( { item } )}
+      </View>
+    );
+  };
+
+  const createSections = ( ) => {
+    if ( isLoading ) {
+      return [];
+    }
+    if ( isEmptyList ) {
+      return [];
+    }
+    return [{
+      title: t( "TOP-ID-SUGGESTION" ),
+      data: topSuggestion
+        ? [topSuggestion]
+        : [],
+      renderItem: renderTopSuggestion
+    }, {
+      title: t( "OTHER-SUGGESTIONS" ),
+      data: otherSuggestions
+    }];
+  };
+
+  const sections = createSections( );
 
   return (
     <ViewWrapper testID="suggestions">
-      <FlatList
-        testID="Suggestions.FlatList"
-        data={otherSuggestions}
-        renderItem={renderSuggestion}
+      <SectionList
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
         ListHeaderComponent={renderHeader}
+        renderItem={renderSuggestion}
+        renderSectionHeader={renderSectionHeader}
+        sections={sections}
+        stickySectionHeadersEnabled={false}
+        testID="Suggestions.SectionList"
       />
     </ViewWrapper>
   );

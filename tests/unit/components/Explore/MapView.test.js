@@ -1,13 +1,20 @@
 import { screen, userEvent } from "@testing-library/react-native";
-import * as useMapLocation from "components/Explore/hooks/useMapLocation";
-import MapView from "components/Explore/MapView";
+import * as useMapLocation from "components/Explore/hooks/useMapLocation.ts";
+import MapView from "components/Explore/MapView.tsx";
 import { ExploreProvider } from "providers/ExploreContext.tsx";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockRedoSearch = jest.fn( );
+const mockData = { };
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: mockData
+  } )
+} ) );
 
+const mockRedoSearch = jest.fn( );
 jest.mock( "components/Explore/hooks/useMapLocation", () => ( {
   __esModule: true,
   default: ( ) => ( {

@@ -65,7 +65,6 @@ const LocationSection = ( { observation }: Props ): Node => {
         obsLongitude={longitude}
         obscured={isObscured}
         openMapScreen={openMapScreen}
-        permissionRequested={false}
         positionalAccuracy={positionalAccuracy}
         scrollEnabled={false}
         showLocationIndicator

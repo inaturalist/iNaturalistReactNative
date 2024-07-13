@@ -58,7 +58,7 @@ describe( "Taxonomy", ( ) => {
 
     const rankAndName = `${capitalizeFirstLetter( currentTaxon.rank )} ${currentTaxon.name}`;
     const commonName = currentTaxon.preferred_common_name;
-    const currentTaxonRow = screen.getByTestId( `TaxonomyRow.${currentTaxon.id}` );
+    const currentTaxonRow = screen.getByTestId( `TaxonomyTaxon.${currentTaxon.id}` );
 
     expect( currentTaxonRow ).toHaveTextContent( `${commonName} (${rankAndName})` );
   } );

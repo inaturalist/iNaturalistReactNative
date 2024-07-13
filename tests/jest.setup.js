@@ -8,6 +8,7 @@ import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
+import mockNodePath from "path";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 // eslint-disable-next-line import/no-unresolved
@@ -111,7 +112,8 @@ jest.mock( "@react-navigation/native", ( ) => {
       canGoBack: jest.fn( ( ) => true ),
       goBack: jest.fn( ),
       setOptions: jest.fn( )
-    } )
+    } ),
+    useNavigationState: jest.fn( )
   };
 } );
 
@@ -250,13 +252,13 @@ jest.mock( "react-native-fs", ( ) => {
     moveFile: async ( ) => "testdata",
     copyFile: async ( ) => "testdata",
     stat: jest.fn( ( ) => ( {
-      mtime: 123
+      mtime: new Date()
     } ) ),
     readFile: jest.fn( ( ) => "testdata" ),
     readDir: jest.fn( async ( ) => ( [
       {
-        ctime: 123,
-        mtime: 123,
+        ctime: new Date(),
+        mtime: new Date(),
         name: "testdata"
       }
     ] ) ),
@@ -310,7 +312,8 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
 } ) );
 
 jest.mock( "react-native-exif-reader", ( ) => ( {
-  readExif: jest.fn( )
+  readExif: jest.fn( ),
+  writeLocation: jest.fn( )
 } ) );
 
 // https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
@@ -377,8 +380,11 @@ jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
       _compressFormat,
       _quality,
       _rotation,
-      _outputPath
-    ) => ( { uri: path } )
+      outputPath
+    ) => {
+      const filename = mockNodePath.basename( path );
+      return { uri: mockNodePath.join( outputPath, filename ) };
+    }
   )
 } ) );
 

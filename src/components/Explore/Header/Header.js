@@ -19,6 +19,7 @@ import { Surface, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import placeGuessText from "../helpers/placeGuessText";
 import HeaderCount from "./HeaderCount";
 
 type Props = {
@@ -48,9 +49,11 @@ const Header = ( {
   const theme = useTheme( );
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
-  const placeGuess = state.place_guess;
+  const iconicTaxonNames = state.iconic_taxa || [];
   const [showTaxonSearch, setShowTaxonSearch] = useState( false );
   const [showLocationSearch, setShowLocationSearch] = useState( false );
+
+  const placeGuess = placeGuessText( state.placeMode, t, state.place_guess );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,
@@ -71,11 +74,11 @@ const Header = ( {
               />
             ) }
             <View className="flex-1">
-              {taxon
+              {( taxon || iconicTaxonNames.indexOf( "unknown" ) >= 0 )
                 ? (
                   <DisplayTaxon
                     accessibilityLabel={t( "Change-taxon-filter" )}
-                    taxon={taxon}
+                    taxon={taxon || "unknown"}
                     showInfoButton={false}
                     showCheckmark={false}
                     handlePress={() => setShowTaxonSearch( true )}

@@ -33,6 +33,13 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   } ) )
 } ) );
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+  __esModule: true,
+  default: () => ( {
+    data: []
+  } )
+} ) );
+
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
@@ -44,6 +51,15 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
   default: jest.fn( ( ) => mockObservation )
+} ) );
+
+jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
+  __esModule: true,
+  default: ( _uuid, _fetchRemoteEnabled ) => ( {
+    remoteObservation: mockObservation,
+    refetchRemoteObservation: jest.fn( ),
+    isRefetching: false
+  } )
 } ) );
 
 useRoute.mockImplementation( ( ) => ( {

@@ -25,8 +25,7 @@ import useStore from "stores/useStore";
 
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
 import useClearRotatedOriginalPhotos from "./hooks/useClearRotatedOriginalPhotos";
-import useClearSyncedPhotosForUpload from "./hooks/useClearSyncedPhotosForUpload";
-import useClearSyncedSoundsForUpload from "./hooks/useClearSyncedSoundsForUpload";
+import useClearSyncedMediaForUpload from "./hooks/useClearSyncedMediaForUpload";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
@@ -37,11 +36,11 @@ const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
   const navigation = useNavigation( );
+  const [isFocused, setIsFocused] = useState( true );
   // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
   useClearRotatedOriginalPhotos( );
   useClearGalleryPhotos( );
-  useClearSyncedPhotosForUpload( );
-  useClearSyncedSoundsForUpload( );
+  useClearSyncedMediaForUpload( isFocused );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const setUploadStatus = useStore( state => state.setUploadStatus );
@@ -153,9 +152,11 @@ const MyObservationsContainer = ( ): Node => {
     // every time a user lands on MyObservations from a different tab screen.
     // ideally, we wouldn't need both this and the useEffect hook above
     navigation.addListener( "focus", ( ) => {
+      setIsFocused( true );
       startAutomaticSync( );
     } );
     navigation.addListener( "blur", ( ) => {
+      setIsFocused( false );
       resetSyncObservationsSlice( );
     } );
   }, [

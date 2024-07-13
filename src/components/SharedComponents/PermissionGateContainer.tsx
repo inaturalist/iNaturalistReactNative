@@ -1,13 +1,16 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
-import Modal from "components/SharedComponents/Modal";
+import Modal from "components/SharedComponents/Modal.tsx";
 import _ from "lodash";
-import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Platform } from "react-native";
 import {
-  checkMultiple, PERMISSIONS, requestMultiple, RESULTS
+  AndroidPermission,
+  checkMultiple,
+  Permission,
+  PERMISSIONS,
+  PermissionStatus,
+  requestMultiple,
+  RESULTS
 } from "react-native-permissions";
 
 import PermissionGate from "./PermissionGate";
@@ -15,61 +18,70 @@ import PermissionGate from "./PermissionGate";
 const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
 const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
 
-let androidReadPermissions = [
+let androidReadWritePermissions: AndroidPermission[] = [
   PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION
 ];
 if ( usesAndroid10Permissions ) {
-  androidReadPermissions = [...androidReadPermissions, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE];
+  androidReadWritePermissions = [
+    ...androidReadWritePermissions,
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+  ];
 } else if ( usesAndroid13Permissions ) {
-  androidReadPermissions = [...androidReadPermissions, PERMISSIONS.ANDROID.READ_MEDIA_IMAGES];
+  androidReadWritePermissions = [
+    ...androidReadWritePermissions,
+    PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+  ];
 } else {
-  androidReadPermissions = [...androidReadPermissions, PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE];
+  androidReadWritePermissions = [
+    ...androidReadWritePermissions,
+    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+  ];
 }
 
 const androidCameraPermissions = usesAndroid10Permissions
   ? [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
   : [PERMISSIONS.ANDROID.CAMERA];
 
-export const CAMERA_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const CAMERA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.CAMERA]
   : androidCameraPermissions;
 
-export const AUDIO_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const AUDIO_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.MICROPHONE]
-  : [...androidReadPermissions, PERMISSIONS.ANDROID.RECORD_AUDIO];
+  : [...androidReadWritePermissions, PERMISSIONS.ANDROID.RECORD_AUDIO];
 
-export const READ_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const READ_WRITE_MEDIA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.PHOTO_LIBRARY]
-  : androidReadPermissions;
+  : androidReadWritePermissions;
 
-export const WRITE_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
-  ? [PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
-  : androidReadPermissions;
-
-export const LOCATION_PERMISSIONS: Array<string> = Platform.OS === "ios"
+export const LOCATION_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]
   : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
 
 type Props = {
-  blockedPrompt?: string,
-  body?: string,
-  buttonText?: string,
-  children?: Node,
-  icon?: string,
-  image?: Object,
-  onModalHide?: Function,
-  onPermissionBlocked?: Function,
-  onPermissionDenied?: Function,
-  onPermissionGranted?: Function,
-  permissionNeeded?: boolean,
-  permissions: Array<string>,
-  testID?: string,
-  title?: string,
-  titleDenied: string,
-  withoutNavigation?: boolean
+  blockedPrompt?: string;
+  body?: string;
+  body2?: string;
+  buttonText?: string;
+  children?: React.ReactNode,
+  icon: string;
+  image?: number;
+  onModalHide?: () => void;
+  onPermissionBlocked?: () => void;
+  onPermissionDenied?: () => void;
+  onPermissionGranted?: () => void;
+  permissionNeeded?: boolean;
+  permissions: Permission[];
+  testID?: string;
+  title?: string;
+  titleDenied?: string;
+  withoutNavigation?: boolean;
 };
 
-export function permissionResultFromMultiple( multiResults: Object ): string {
+interface MultiResult {
+  [permission: string]: PermissionStatus;
+}
+export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( typeof ( multiResults ) !== "object" ) {
     throw new Error(
       "permissionResultFromMultiple received something other than an object. "
@@ -85,6 +97,7 @@ export function permissionResultFromMultiple( multiResults: Object ): string {
   if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
     return RESULTS.UNAVAILABLE;
   }
+  // Note: we're not checking for RESULTS.LIMITED here and treat it as GRANTED
   return RESULTS.GRANTED;
 }
 
@@ -96,6 +109,7 @@ export function permissionResultFromMultiple( multiResults: Object ): string {
 const PermissionGateContainer = ( {
   blockedPrompt,
   body,
+  body2,
   buttonText,
   children,
   icon,
@@ -111,8 +125,8 @@ const PermissionGateContainer = ( {
   title,
   titleDenied,
   withoutNavigation
-}: Props ): Node => {
-  const [result, setResult] = useState( null );
+}: Props ) => {
+  const [result, setResult] = useState<PermissionStatus | null>( null );
   const [modalShown, setModalShown] = useState( false );
 
   const navigation = useNavigation();
@@ -217,6 +231,7 @@ const PermissionGateContainer = ( {
           title={title}
           titleDenied={titleDenied}
           body={body}
+          body2={body2}
           blockedPrompt={blockedPrompt}
           buttonText={buttonText}
           image={image}

@@ -1,21 +1,17 @@
-// @flow
-
 import PermissionGateContainer, {
   LOCATION_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer";
+} from "components/SharedComponents/PermissionGateContainer.tsx";
 import { t } from "i18next";
-import type { Node } from "react";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 
-type Props = {
-  children?: Node,
-  permissionNeeded?: boolean,
-  onModalHide?: Function,
-  onPermissionGranted?: Function,
-  onPermissionDenied?: Function,
-  onPermissionBlocked?: Function,
-  withoutNavigation?: boolean
-};
+interface Props extends PropsWithChildren {
+  permissionNeeded?: boolean;
+  onModalHide?: () => void;
+  onPermissionBlocked?: () => void;
+  onPermissionDenied?: () => void;
+  onPermissionGranted?: () => void;
+  withoutNavigation?: boolean;
+}
 
 const LocationPermissionGate = ( {
   children,
@@ -25,12 +21,13 @@ const LocationPermissionGate = ( {
   onPermissionDenied,
   onPermissionBlocked,
   withoutNavigation
-}: Props ): Node => (
+}: Props ) => (
   <PermissionGateContainer
     permissions={LOCATION_PERMISSIONS}
     title={t( "Get-more-accurate-suggestions-create-useful-data" )}
     titleDenied={t( "Please-allow-Location-Access" )}
     body={t( "iNaturalist-uses-your-location-to-give-you" )}
+    body2={t( "Youre-always-in-control-of-the-location-privacy" )}
     blockedPrompt={t( "Youve-previously-denied-location-permissions" )}
     buttonText={t( "USE-LOCATION" )}
     icon="map-marker-outline"

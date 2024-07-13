@@ -8,7 +8,7 @@ import Log from "components/Developer/Log";
 import NetworkLogging from "components/Developer/NetworkLogging";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
-import Donate from "components/Donate/Donate";
+import Donate from "components/Donate/Donate.tsx";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";

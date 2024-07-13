@@ -12,12 +12,12 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   hasTopSuggestion?: boolean,
-  loading: boolean
+  isLoading: boolean
 }
 
 const SuggestionsEmpty = ( {
   hasTopSuggestion = false,
-  loading
+  isLoading
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
@@ -25,7 +25,7 @@ const SuggestionsEmpty = ( {
 
   const textClass = "mt-10 px-10 text-center";
 
-  if ( loading ) {
+  if ( isLoading ) {
     return (
       <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
         <ActivityIndicator size={50} />

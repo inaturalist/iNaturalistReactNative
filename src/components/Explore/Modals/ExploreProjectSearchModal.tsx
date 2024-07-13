@@ -1,21 +1,19 @@
-// @flow
-
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
-import Modal from "components/SharedComponents/Modal";
-import type { Node } from "react";
+import Modal from "components/SharedComponents/Modal.tsx";
 import React from "react";
 
 interface Props {
-  showModal: boolean,
-  closeModal: Function,
-  updateProject: Function
+  showModal: boolean;
+  closeModal: () => void;
+  // TODO: Param not typed yet, because ExploreProjectSearch is not typed yet
+  updateProject: ( _project: any ) => void;
 }
 
 const ExploreProjectSearchModal = ( {
   showModal,
   closeModal,
   updateProject
-}: Props ): Node => (
+}: Props ) => (
   <Modal
     showModal={showModal}
     fullScreen

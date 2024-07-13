@@ -11,8 +11,9 @@ import React, {
   useState
 } from "react";
 import { StatusBar } from "react-native";
+import Photo from "realmModels/Photo";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation";
 
 import MainMediaDisplay from "./MainMediaDisplay";
@@ -52,7 +53,7 @@ const MediaViewer = ( {
   uri
 }: Props ): Node => {
   const uris = useMemo( ( ) => ( [
-    ...photos.map( photo => photo.url || photo.localFilePath ),
+    ...photos.map( photo => photo.url || Photo.getLocalPhotoUri( photo.localFilePath ) ),
     ...sounds.map( sound => sound.file_url )
   ] ), [photos, sounds] );
 
@@ -143,6 +144,7 @@ const MediaViewer = ( {
           secondButtonText={t( "CANCEL" )}
           handleSecondButtonPress={( ) => setMediaToDelete( null )}
           insideModal
+          testID="MediaViewer.DiscardMediaWarningSheet"
         />
       )}
     </SafeAreaView>

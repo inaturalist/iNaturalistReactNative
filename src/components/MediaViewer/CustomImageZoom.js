@@ -5,7 +5,7 @@ import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Image as RNImage } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 
 type Props = {
   // Height of the container

@@ -1,9 +1,8 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   ActivityIndicator,
   Body1,
+  Body2,
   Button,
   Heading1,
   INatIcon,
@@ -12,8 +11,8 @@ import {
   Tabs,
   ViewWrapper
 } from "components/SharedComponents";
+import { Tab } from "components/SharedComponents/Tabs/Tabs.tsx";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useEffect } from "react";
 import {
   FlatList
@@ -22,19 +21,27 @@ import {
   useTranslation
 } from "sharedHooks";
 
-type Props = {
-  searchInput: string,
-  setSearchInput: Function,
-  tabs: Array<Object>,
-  currentTabId: string,
-  projects: Array<Object>,
-  isLoading: boolean,
-  memberId: ?number
+import { TAB_ID } from "./ProjectsContainer";
+
+interface Props {
+  searchInput: string;
+  setSearchInput: ( _text: string ) => void;
+  tabs: Tab[],
+  currentTabId: TAB_ID;
+  projects: Object[],
+  isLoading: boolean;
+  memberId?: number;
+  hasPermissions: boolean | undefined;
+  requestPermissions: () => void;
 }
 
 const Projects = ( {
-  searchInput, setSearchInput, tabs, currentTabId, projects, isLoading, memberId
-}: Props ): Node => {
+  searchInput,
+  setSearchInput,
+  tabs, currentTabId, projects, isLoading, memberId,
+  hasPermissions,
+  requestPermissions
+}: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -86,7 +93,7 @@ const Projects = ( {
     }
 
     if ( searchInput.length === 0 ) {
-      if ( currentTabId === "JOINED" && !memberId ) {
+      if ( currentTabId === TAB_ID.JOINED && !memberId ) {
         return (
           <View className="items-center">
             <Body1>{t( "You-havent-joined-any-projects-yet" )}</Body1>
@@ -103,6 +110,36 @@ const Projects = ( {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center"
+  } as const;
+
+  const renderList = ( ) => {
+    // hasPermission undefined means we haven't checked for location permissions yet
+    // false means the user has denied or not yet given location permissions
+    if ( currentTabId === TAB_ID.NEARBY && hasPermissions === false ) {
+      return (
+        <View className="flex-1 justify-center p-4">
+          <View className="items-center">
+            <Body2>{t( "To-view-nearby-projects-please-enable-location" )}</Body2>
+          </View>
+          <Button
+            className="mt-5"
+            text={t( "ALLOW-LOCATION-ACCESS" )}
+            accessibilityHint={t( "Opens-location-permission-prompt" )}
+            level="focus"
+            onPress={( ) => requestPermissions()}
+          />
+        </View>
+      );
+    }
+    return (
+      <FlatList
+        contentContainerStyle={projects?.length === 0 && emptyListStyles}
+        data={projects}
+        renderItem={renderProject}
+        testID="Project.list"
+        ListEmptyComponent={renderEmptyList}
+      />
+    );
   };
 
   return (
@@ -122,13 +159,7 @@ const Projects = ( {
           <View className="mb-3" />
         </>
       )}
-      <FlatList
-        contentContainerStyle={projects?.length === 0 && emptyListStyles}
-        data={projects}
-        renderItem={renderProject}
-        testID="Project.list"
-        ListEmptyComponent={renderEmptyList}
-      />
+      {renderList( )}
     </ViewWrapper>
   );
 };

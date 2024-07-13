@@ -143,7 +143,7 @@ const Settings = ( ) => {
     <>
       <Heading4>{t( "OBSERVATION-BUTTON" )}</Heading4>
       <Body2 className="mt-3">{t( "When-tapping-the-green-observation-button" )}</Body2>
-      <View className="mt-5">
+      <View className="mt-[22px] pr-5">
         <RadioButtonRow
           smallLabel
           checked={!isAdvancedUser}
@@ -151,7 +151,7 @@ const Settings = ( ) => {
           label={t( "iNaturalist-AI-Camera" )}
         />
       </View>
-      <View className="mt-2 pr-5">
+      <View className="mt-4 pr-5">
         <RadioButtonRow
           testID="all-observation-option"
           smallLabel
@@ -167,7 +167,7 @@ const Settings = ( ) => {
     <>
       <Heading4 className="mt-7">{t( "TAXON-NAMES-DISPLAY" )}</Heading4>
       <Body2 className="mt-3">{t( "This-is-how-taxon-names-will-be-displayed" )}</Body2>
-      <View className="mt-5">
+      <View className="mt-[22px]">
         <RadioButtonRow
           smallLabel
           checked={settings.prefers_common_names && !settings.prefers_scientific_name_first}
@@ -175,7 +175,7 @@ const Settings = ( ) => {
           label={t( "Common-Name-Scientific-Name" )}
         />
       </View>
-      <View className="mt-2">
+      <View className="mt-4">
         <RadioButtonRow
           smallLabel
           checked={settings.prefers_common_names && settings.prefers_scientific_name_first}
@@ -183,7 +183,7 @@ const Settings = ( ) => {
           label={t( "Scientific-Name-Common-Name" )}
         />
       </View>
-      <View className="mt-2">
+      <View className="mt-4">
         <RadioButtonRow
           smallLabel
           checked={!settings.prefers_common_names && !settings.prefers_scientific_name_first}

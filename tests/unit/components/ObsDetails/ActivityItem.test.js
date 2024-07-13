@@ -26,14 +26,14 @@ describe( "ActivityItem", () => {
     expect( navToTaxonDetailsLabel ).toBeTruthy( );
   } );
 
-  it( "renders agree button", async ( ) => {
+  it( "renders agree button if user is logged in", async ( ) => {
     renderComponent(
       <ActivityItem
         currentUserId="000"
         isFirstDisplay
         item={mockIdentification}
         key={mockIdentification.uuid}
-        onIDAgreePressed={jest.fn()}
+        openAgreeWithIdSheet={jest.fn()}
         userAgreedId=""
       />
     );
@@ -45,9 +45,29 @@ describe( "ActivityItem", () => {
     } );
   } );
 
+  it( "does not render agree button if user is logged out", async ( ) => {
+    renderComponent(
+      <ActivityItem
+        currentUserId={undefined}
+        isFirstDisplay
+        item={mockIdentification}
+        key={mockIdentification.uuid}
+        openAgreeWithIdSheet={jest.fn()}
+        userAgreedId=""
+      />
+    );
+    const agreeButton = screen.queryByTestId(
+      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`
+    );
+    await waitFor( ( ) => {
+      expect( agreeButton ).toBeFalsy( );
+    } );
+  } );
+
   it( "does not render agree button on second taxon display", async ( ) => {
     renderComponent(
       <ActivityItem
+        currentUserId="000"
         isFirstDisplay={false}
         item={mockIdentification}
       />
@@ -61,19 +81,20 @@ describe( "ActivityItem", () => {
   } );
 
   it( "shows agree sheet with correct taxon", async ( ) => {
-    const mockOnIDAgreePressed = jest.fn();
+    const mockopenAgreeWithIdSheet = jest.fn();
     renderComponent(
       <ActivityItem
+        currentUserId="000"
         isFirstDisplay
         item={mockIdentification}
-        onIDAgreePressed={mockOnIDAgreePressed}
+        openAgreeWithIdSheet={mockopenAgreeWithIdSheet}
       />
     );
     const agreeButton = await screen.findByTestId(
       `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`
     );
     fireEvent.press( agreeButton );
-    expect( mockOnIDAgreePressed ).toHaveBeenCalledWith( mockIdentification.taxon );
+    expect( mockopenAgreeWithIdSheet ).toHaveBeenCalledWith( mockIdentification.taxon );
   } );
 
   it( "renders withdrawn id label", async ( ) => {

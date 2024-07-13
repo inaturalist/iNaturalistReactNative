@@ -32,8 +32,8 @@ class ObservationPhoto extends Realm.Object {
   static mapPhotoForUpload( observationID, photo ) {
     return {
       file: new FileUpload( {
-        uri: Photo.accessLocalPhoto( photo.localFilePath ),
-        name: Photo.accessLocalPhoto( photo.localFilePath ),
+        uri: Photo.getLocalPhotoUri( photo.localFilePath ),
+        name: Photo.getLocalPhotoUri( photo.localFilePath ),
         type: "image/jpeg"
       } )
     };
@@ -120,7 +120,7 @@ class ObservationPhoto extends Realm.Object {
       // Ensure that if this URI is a remote thumbnail that we are resizing
       // a reasonably-sized image for Suggestions and not delivering a handful of
       // upsampled pixels
-      obsPhoto => Photo.displayMediumPhoto( obsPhoto.photo?.url || obsPhoto.photo?.localFilePath )
+      obsPhoto => Photo.displayLocalOrRemoteMediumPhoto( obsPhoto.photo )
     );
     return obsPhotoUris;
   }

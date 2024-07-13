@@ -11,12 +11,14 @@ import colors from "styles/tailwindColors";
 const GradientButton = ( {
   sizeClassName,
   onPress,
+  accessibilityLabel,
   accessibilityHint,
   iconName,
   iconSize
 }: {
   sizeClassName: string,
   onPress: Function,
+  accessibilityLabel?: string,
   accessibilityHint?: string,
   iconName?: string,
   iconSize?: number
@@ -27,7 +29,7 @@ const GradientButton = ( {
     style={dropShadow}
     onPress={onPress}
     disabled={false}
-    accessibilityLabel={t( "Add-observations" )}
+    accessibilityLabel={accessibilityLabel}
     accessibilityHint={accessibilityHint || t( "Opens-AI-camera" )}
     accessibilityRole="button"
     accessibilityState={{

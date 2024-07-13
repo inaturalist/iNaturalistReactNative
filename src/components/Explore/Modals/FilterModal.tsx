@@ -44,6 +44,7 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
@@ -57,15 +58,20 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 const { useRealm } = RealmContext;
 
 interface Props {
-  closeModal: Function,
-  updateTaxon: Function,
-  updateLocation: Function,
-  updateUser: Function,
-  updateProject: Function
+  closeModal: () => void;
+  filterByIconicTaxonUnknown: () => void;
+  updateTaxon: ( _taxon: Object | null ) => void;
+  // TODO: Param not typed yet, because ExploreLocationSearch is not typed yet
+  updateLocation: ( _location: any ) => void;
+  // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
+  updateUser: ( _user: any ) => void;
+  // TODO: Param not typed yet, because ExploreProjectSearch is not typed yet
+  updateProject: ( _project: any ) => void;
 }
 
 const FilterModal = ( {
   closeModal,
+  filterByIconicTaxonUnknown,
   updateTaxon,
   updateLocation,
   updateUser,
@@ -81,34 +87,35 @@ const FilterModal = ( {
     differsFromSnapshot,
     discardChanges,
     isNotInitialState,
-    numberOfFilters,
-    defaultExploreLocation
+    numberOfFilters
   } = useExplore();
   const {
-    taxon,
-    place_guess: placeGuess,
-    user,
-    project,
-    sortBy,
-    researchGrade,
-    needsID,
     casual,
-    hrank,
-    lrank,
-    dateObserved,
-    observed_on: observedOn,
-    d1,
-    d2,
-    months,
-    dateUploaded,
-    created_on: createdOn,
     created_d1: createdD1,
     created_d2: createdD2,
-    media,
+    created_on: createdOn,
+    d1,
+    d2,
+    dateObserved,
+    dateUploaded,
     establishmentMean,
-    wildStatus,
+    hrank,
+    iconic_taxa: iconicTaxonNames,
+    lrank,
+    media,
+    months,
+    needsID,
+    observed_on: observedOn,
+    photoLicense,
+    place_guess: placeGuess,
+    placeMode,
+    project,
+    researchGrade,
     reviewedFilter,
-    photoLicense
+    sortBy,
+    taxon,
+    user,
+    wildStatus
   } = state;
 
   const NONE = "NONE";
@@ -661,8 +668,7 @@ const FilterModal = ( {
             <Body3
               accessibilityRole="button"
               onPress={async ( ) => {
-                const exploreLocation = await defaultExploreLocation( );
-                dispatch( { type: EXPLORE_ACTION.RESET, exploreLocation } );
+                dispatch( { type: EXPLORE_ACTION.RESET } );
               }}
             >
               {t( "Reset-verb" )}
@@ -678,7 +684,7 @@ const FilterModal = ( {
         <View className="mb-7">
           <Heading4 className="px-4 mb-5">{t( "TAXON" )}</Heading4>
           <View className="px-4 mb-5">
-            {taxon
+            {( taxon || ( iconicTaxonNames || [] ).indexOf( "unknown" ) >= 0 )
               ? (
                 <Pressable
                   className="flex-row justify-between items-center"
@@ -688,7 +694,7 @@ const FilterModal = ( {
                     setShowTaxonSearchModal( true );
                   }}
                 >
-                  <DisplayTaxon taxon={taxon} />
+                  <DisplayTaxon taxon={taxon || "unknown"} />
                   <INatIcon name="edit" size={22} />
                 </Pressable>
               )
@@ -704,16 +710,21 @@ const FilterModal = ( {
           </View>
           <IconicTaxonChooser
             before
-            taxon={taxon}
+            chosen={iconicTaxonNames || [taxon?.name?.toLowerCase()]}
             onTaxonChosen={( taxonName: string ) => {
               if ( taxonName === "unknown" ) {
-                updateTaxon( );
+                if ( ( iconicTaxonNames || [] ).indexOf( taxonName ) >= 0 ) {
+                  updateTaxon( null );
+                } else {
+                  filterByIconicTaxonUnknown();
+                }
+              } else if ( taxon?.name?.toLowerCase() === taxonName ) {
+                updateTaxon( null );
               } else {
                 const selectedTaxon = realm
                   ?.objects( "Taxon" )
                   .filtered( "name CONTAINS[c] $0", taxonName );
-                const iconicTaxon
-                = selectedTaxon.length > 0
+                const iconicTaxon = selectedTaxon.length > 0
                   ? selectedTaxon[0]
                   : null;
                 updateTaxon( iconicTaxon );
@@ -730,31 +741,19 @@ const FilterModal = ( {
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
             <View className="mb-5">
-              {placeGuess
-                ? (
-                  <View>
-                    <View className="flex-row items-center mb-5">
-                      <INatIcon name="location" size={15} />
-                      <Body3 className="ml-4">{placeGuess}</Body3>
-                    </View>
-                    <Button
-                      text={t( "EDIT-LOCATION" )}
-                      onPress={() => {
-                        setShowLocationSearchModal( true );
-                      }}
-                      accessibilityLabel={t( "Edit" )}
-                    />
-                  </View>
-                )
-                : (
-                  <Button
-                    text={t( "SEARCH-FOR-A-LOCATION" )}
-                    onPress={() => {
-                      setShowLocationSearchModal( true );
-                    }}
-                    accessibilityLabel={t( "Search" )}
-                  />
-                )}
+              <View>
+                <View className="flex-row items-center mb-5">
+                  <INatIcon name="location" size={15} />
+                  <Body3 className="ml-4">{placeGuessText( placeMode, t, placeGuess )}</Body3>
+                </View>
+                <Button
+                  text={t( "EDIT-LOCATION" )}
+                  onPress={() => {
+                    setShowLocationSearchModal( true );
+                  }}
+                  accessibilityLabel={t( "Edit" )}
+                />
+              </View>
             </View>
           </View>
 
@@ -1076,75 +1075,84 @@ const FilterModal = ( {
           </View>
 
           {/* Media section */}
-          <View className="mb-7">
+          <View className="mb-3">
             <Heading4 className="mb-5">{t( "MEDIA" )}</Heading4>
             {Object.keys( mediaValues ).map( mediaKey => (
-              <RadioButtonRow
-                key={mediaKey}
-                value={mediaValues[mediaKey]}
-                checked={mediaValues[mediaKey].value === media}
-                onPress={() => dispatch( {
-                  type: EXPLORE_ACTION.SET_MEDIA,
-                  media: mediaValues[mediaKey].value
-                } )}
-                label={mediaValues[mediaKey].label}
-              />
+              <View key={mediaKey} className="mb-4">
+                <RadioButtonRow
+                  smallLabel
+                  value={mediaValues[mediaKey]}
+                  checked={mediaValues[mediaKey].value === media}
+                  onPress={() => dispatch( {
+                    type: EXPLORE_ACTION.SET_MEDIA,
+                    media: mediaValues[mediaKey].value
+                  } )}
+                  label={mediaValues[mediaKey].label}
+                />
+              </View>
             ) )}
           </View>
 
           {/* Establishment Means section */}
-          <View className="mb-7">
+          <View className="mb-3">
             <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
             {Object.keys( establishmentValues ).map( establishmentKey => (
-              <RadioButtonRow
-                key={establishmentKey}
-                value={establishmentValues[establishmentKey]}
-                checked={
-                  establishmentValues[establishmentKey].value
-                === establishmentMean
-                }
-                onPress={() => dispatch( {
-                  type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
-                  establishmentMean:
+              <View key={establishmentKey} className="mb-4">
+                <RadioButtonRow
+                  smallLabel
+                  value={establishmentValues[establishmentKey]}
+                  checked={
                     establishmentValues[establishmentKey].value
-                } )}
-                label={establishmentValues[establishmentKey].label}
-              />
+                === establishmentMean
+                  }
+                  onPress={() => dispatch( {
+                    type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
+                    establishmentMean:
+                    establishmentValues[establishmentKey].value
+                  } )}
+                  label={establishmentValues[establishmentKey].label}
+                />
+              </View>
             ) )}
           </View>
 
           {/* Wild Status section */}
-          <View className="mb-7">
+          <View className="mb-3">
             <Heading4 className="mb-5">{t( "WILD-STATUS" )}</Heading4>
             {Object.keys( wildValues ).map( wildKey => (
-              <RadioButtonRow
-                key={wildKey}
-                value={wildValues[wildKey]}
-                checked={wildValues[wildKey].value === wildStatus}
-                onPress={() => dispatch( {
-                  type: EXPLORE_ACTION.SET_WILD_STATUS,
-                  wildStatus: wildValues[wildKey].value
-                } )}
-                label={wildValues[wildKey].label}
-              />
+              <View key={wildKey} className="mb-4">
+                <RadioButtonRow
+                  smallLabel
+                  value={wildValues[wildKey]}
+                  checked={wildValues[wildKey].value === wildStatus}
+                  onPress={() => dispatch( {
+                    type: EXPLORE_ACTION.SET_WILD_STATUS,
+                    wildStatus: wildValues[wildKey].value
+                  } )}
+                  label={wildValues[wildKey].label}
+                />
+              </View>
             ) )}
           </View>
 
           {/* Reviewed section */}
           {currentUser && (
-            <View className="mb-7">
+            <View className="mb-3">
               <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
               {Object.keys( reviewedValues ).map( reviewedKey => (
-                <RadioButtonRow
-                  key={reviewedKey}
-                  value={reviewedValues[reviewedKey]}
-                  checked={reviewedValues[reviewedKey].value === reviewedFilter}
-                  onPress={() => dispatch( {
-                    type: EXPLORE_ACTION.SET_REVIEWED,
-                    reviewedFilter: reviewedValues[reviewedKey].value
-                  } )}
-                  label={reviewedValues[reviewedKey].label}
-                />
+                <View key={reviewedKey} className="mb-4">
+                  <RadioButtonRow
+                    key={reviewedKey}
+                    smallLabel
+                    value={reviewedValues[reviewedKey]}
+                    checked={reviewedValues[reviewedKey].value === reviewedFilter}
+                    onPress={() => dispatch( {
+                      type: EXPLORE_ACTION.SET_REVIEWED,
+                      reviewedFilter: reviewedValues[reviewedKey].value
+                    } )}
+                    label={reviewedValues[reviewedKey].label}
+                  />
+                </View>
               ) )}
             </View>
           )}
@@ -1287,8 +1295,9 @@ const FilterModal = ( {
         />
       )}
       <ExploreTaxonSearchModal
-        showModal={showTaxonSearchModal}
         closeModal={() => { setShowTaxonSearchModal( false ); }}
+        hideInfoButton
+        showModal={showTaxonSearchModal}
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal

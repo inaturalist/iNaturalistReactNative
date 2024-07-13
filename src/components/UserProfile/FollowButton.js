@@ -20,11 +20,11 @@ const FollowButton = ( {
   if ( following ) {
     return (
       <Button
-        level="primary"
+        level="neutral"
         className="grow"
         text={t( "UNFOLLOW" )}
         onPress={unfollow}
-        testID="UserProfile.followButton"
+        testID="UserProfile.unfollowButton"
       />
     );
   }

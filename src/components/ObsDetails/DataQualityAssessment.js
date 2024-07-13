@@ -121,6 +121,8 @@ const DataQualityAssessment = ( {
     );
   }
 
+  // console.log( "[DEBUG DataQualityAssessment.js] qualityMetrics?.date: ", qualityMetrics?.date );
+
   return (
     <ScrollViewWrapper testID="DataQualityAssessment">
       <View className="mx-[26px] my-[19px] space-y-[9px]">

@@ -1,4 +1,3 @@
-import type { Node } from "react";
 import React from "react";
 import {
   Polygon
@@ -6,14 +5,19 @@ import {
 import colors from "styles/tailwindColors";
 
 interface Props {
-  obscurationCell: Object,
-  showLocationIndicator?: boolean
+  obscurationCell: {
+    minLat: number;
+    minLng: number;
+    maxLat: number;
+    maxLng: number;
+  };
+  showLocationIndicator?: boolean;
 }
 
 const ObscuredLocationIndicator = ( {
   obscurationCell,
   showLocationIndicator
-}: Props ): Node => showLocationIndicator && (
+}: Props ) => showLocationIndicator && (
   <Polygon
     coordinates={[
       {
@@ -37,7 +41,6 @@ const ObscuredLocationIndicator = ( {
     strokeColor={colors.inatGreen}
     fillColor="rgba( 116, 172, 0, 0.2 )"
   />
-
 );
 
 export default ObscuredLocationIndicator;

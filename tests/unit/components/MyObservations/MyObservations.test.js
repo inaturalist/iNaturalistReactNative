@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native";
 import MyObservations from "components/MyObservations/MyObservations";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -52,7 +52,7 @@ const DEVICE_ORIENTATION_TABLET_LANDSCAPE = {
   screenHeight: 820
 };
 
-jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
+jest.mock( "sharedHooks/useDeviceOrientation.ts", ( ) => ( {
   __esModule: true,
   default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) )
 } ) );

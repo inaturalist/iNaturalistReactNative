@@ -61,4 +61,7 @@ function reactQueryRetry( failureCount, error, options = {} ) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export { inspect, reactQueryRetry };
+export {
+  inspect,
+  reactQueryRetry
+};

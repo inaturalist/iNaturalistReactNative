@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
-import type { Node } from "react";
 import React, {
   useEffect
 } from "react";
@@ -12,11 +11,11 @@ import colors from "styles/tailwindColors";
 const DROP_SHADOW = getShadowForColor( colors.darkGray );
 
 interface Props {
-  currentMapType?: string,
-  mapType?: string,
-  setCurrentMapType: Function,
-  showSwitchMapTypeButton?: boolean,
-  switchMapTypeButtonClassName: string
+  currentMapType?: string;
+  mapType?: string;
+  setCurrentMapType: Function;
+  showSwitchMapTypeButton?: boolean;
+  switchMapTypeButtonClassName?: string;
 }
 
 const SwitchMapTypeButton = ( {
@@ -25,7 +24,7 @@ const SwitchMapTypeButton = ( {
   setCurrentMapType,
   showSwitchMapTypeButton,
   switchMapTypeButtonClassName
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   useEffect( () => {
     AsyncStorage.getItem( "mapType" ).then( value => {
@@ -37,7 +36,7 @@ const SwitchMapTypeButton = ( {
     } );
   }, [mapType, setCurrentMapType] );
 
-  const changeMapType = async newMapType => {
+  const changeMapType = async ( newMapType: string ) => {
     setCurrentMapType( newMapType );
     await AsyncStorage.setItem( "mapType", newMapType );
   };

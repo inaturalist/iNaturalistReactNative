@@ -1,10 +1,6 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -12,8 +8,12 @@ import React, {
   useRef,
   useState
 } from "react";
-import MapView from "react-native-maps";
+import { DimensionValue, ViewStyle } from "react-native";
+import MapView, {
+  BoundingBox, LatLng, MapType, Region
+} from "react-native-maps";
 import { useDeviceOrientation } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
 import CurrentLocationButton from "./CurrentLocationButton";
 import {
@@ -31,49 +31,42 @@ import SwitchMapTypeButton from "./SwitchMapTypeButton";
 
 const NEARBY_DIM_M = 50_000;
 
-type Props = {
-  // $FlowIgnore
-  children?: unknown,
-  className?: string,
-  currentLocationButtonClassName?: string,
-  currentLocationZoomLevel?: number,
-  mapHeight?: number|string, // allows for height to be defined as px or percentage
-  mapType?: string,
-  mapViewClassName?: string,
-  mapViewRef?: Object,
-  minZoomLevel?: number | null,
-  obscured?: boolean,
-  obsLatitude: number,
-  obsLongitude: number,
-  onCurrentLocationPress?: Function,
-  onMapReady?: Function,
-  onPanDrag?: Function,
-  onPermissionBlocked?: Function,
-  onPermissionDenied?: Function,
-  onPermissionGranted?: Function,
-  onRegionChange?: Function,
-  onRegionChangeComplete?: Function,
-  onZoomChange?: Function,
-  onZoomToNearby?: Function,
-  openMapScreen?: Function,
-  permissionRequested?: boolean,
-  positionalAccuracy?: number,
-  region?: Object,
-  scrollEnabled?: boolean,
-  showCurrentLocationButton?: boolean,
-  showLocationIndicator?: boolean,
-  showsCompass?: boolean,
-  showSwitchMapTypeButton?: boolean,
-  startAtNearby?: boolean,
-  startAtUserLocation?: boolean,
-  style?: Object,
-  switchMapTypeButtonClassName?: string,
-  testID?: string,
-  tileMapParams?: Object,
-  withObsTiles?: boolean,
-  withPressableObsTiles?: boolean,
-  zoomEnabled?: boolean,
-  zoomTapEnabled?: boolean
+interface Props {
+  children?: React.ReactNode;
+  className?: string;
+  currentLocationButtonClassName?: string;
+  currentLocationZoomLevel?: number;
+  mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
+  mapType?: MapType;
+  mapViewClassName?: string;
+  minZoomLevel?: number;
+  obscured?: boolean;
+  obsLatitude: number;
+  obsLongitude: number;
+  onCurrentLocationPress?: () => void;
+  onMapReady?: () => void;
+  onPanDrag?: () => void;
+  onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
+  onZoomChange?: ( _z: number ) => void;
+  onZoomToNearby?: Function;
+  openMapScreen?: () => void;
+  positionalAccuracy?: number;
+  region?: Region;
+  scrollEnabled?: boolean;
+  showCurrentLocationButton?: boolean;
+  showLocationIndicator?: boolean;
+  showsCompass?: boolean;
+  showSwitchMapTypeButton?: boolean;
+  startAtNearby?: boolean;
+  startAtUserLocation?: boolean;
+  style?: ViewStyle;
+  switchMapTypeButtonClassName?: string;
+  testID?: string;
+  tileMapParams?: Object | null;
+  withObsTiles?: boolean;
+  withPressableObsTiles?: boolean;
+  zoomEnabled?: boolean;
+  zoomTapEnabled?: boolean;
 }
 
 // TODO: fallback to another map library
@@ -86,7 +79,6 @@ const Map = ( {
   mapHeight,
   mapType,
   mapViewClassName,
-  mapViewRef: mapViewRefProp,
   minZoomLevel = 0, // default in react-native-maps
   obscured,
   obsLatitude,
@@ -94,15 +86,10 @@ const Map = ( {
   onCurrentLocationPress,
   onMapReady = ( ) => undefined,
   onPanDrag = ( ) => undefined,
-  onPermissionBlocked: onPermissionBlockedProp,
-  onPermissionDenied: onPermissionDeniedProp,
-  onPermissionGranted: onPermissionGrantedProp,
-  onRegionChange,
   onRegionChangeComplete,
   onZoomChange,
   onZoomToNearby,
   openMapScreen,
-  permissionRequested: permissionRequestedProp,
   positionalAccuracy,
   region,
   scrollEnabled = true,
@@ -120,7 +107,7 @@ const Map = ( {
   withPressableObsTiles,
   zoomEnabled = true,
   zoomTapEnabled = true
-}: Props ): Node => {
+}: Props ) => {
   const { screenWidth, screenHeight } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
     region
@@ -128,18 +115,21 @@ const Map = ( {
       : 5
   );
   const navigation = useNavigation( );
-  const [permissionRequested, setPermissionRequested] = useState( permissionRequestedProp );
-  const [showsUserLocation, setShowsUserLocation] = useState( false );
-  const [userLocation, setUserLocation] = useState( null );
-  const mapViewRef = useRef( mapViewRefProp );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const [userLocation, setUserLocation] = useState<{
+    accuracy: number;
+    latitude: number;
+    longitude: number;
+  } | undefined | null>( null );
+  const mapViewRef = useRef<MapView>();
   const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
 
   const initialLatitude = obsLatitude;
   const initialLongitude = obsLongitude;
 
-  let initialRegion = {
-    latitude: initialLatitude || 0,
-    longitude: initialLongitude || 0,
+  let initialRegion: Region = {
+    latitude: initialLatitude || 25, // Default to something US centric
+    longitude: initialLongitude || -85, // Default to something US centric
     latitudeDelta: initialLatitude
       ? 0.2
       : 100,
@@ -158,14 +148,6 @@ const Map = ( {
   const [zoomToNearbyRequested, setZoomToNearbyRequested] = useState(
     startAtNearby
   );
-
-  // Prop kind of functions as a signal. Would make more sense if it was
-  // declarative and not reactive, but hey, it's React
-  useEffect( ( ) => {
-    if ( permissionRequestedProp && permissionRequested === null ) {
-      setPermissionRequested( true );
-    }
-  }, [permissionRequestedProp, permissionRequested] );
 
   useEffect( ( ) => {
     if ( startAtNearby && zoomToNearbyRequested === null ) {
@@ -226,53 +208,20 @@ const Map = ( {
     zoomToNearbyRequested
   ] );
 
-  // Kludge for the fact that the onUserLocationChange callback in MapView
-  // won't fire if showsUserLocation is true on the first render
-  useEffect( ( ) => {
-    setShowsUserLocation( true );
-  }, [] );
-
-  // PermissionGate callbacks need to use useCallback, otherwise they'll
-  // trigger re-renders if/when they change
+  // TODO: Johannes: I don't know if this is necessary anymore
   const onPermissionGranted = useCallback( ( ) => {
-    if ( typeof ( onPermissionGrantedProp ) === "function" ) onPermissionGrantedProp( );
-    setPermissionRequested( false );
-    setShowsUserLocation( true );
     if ( startAtNearby ) {
       setZoomToNearbyRequested( true );
     }
   }, [
-    onPermissionGrantedProp,
-    setPermissionRequested,
     setZoomToNearbyRequested,
     startAtNearby
-  ] );
-  const onPermissionBlocked = useCallback( ( ) => {
-    if ( typeof ( onPermissionBlockedProp ) === "function" ) onPermissionBlockedProp( );
-    setPermissionRequested( false );
-    setShowsUserLocation( false );
-  }, [
-    onPermissionBlockedProp,
-    setPermissionRequested,
-    setShowsUserLocation
-  ] );
-  const onPermissionDenied = useCallback( ( ) => {
-    if ( typeof ( onPermissionDeniedProp ) === "function" ) onPermissionDeniedProp( );
-    setPermissionRequested( false );
-    setShowsUserLocation( false );
-  }, [
-    onPermissionDeniedProp,
-    setPermissionRequested,
-    setShowsUserLocation
   ] );
 
   const params = useMemo( ( ) => {
     const newTileParams = { ...tileMapParams };
-    // $FlowIgnore
     delete newTileParams.order;
-    // $FlowIgnore
     delete newTileParams.order_by;
-    // $FlowIgnore
     delete newTileParams.per_page;
     return newTileParams;
   }, [tileMapParams] );
@@ -287,7 +236,7 @@ const Map = ( {
     };
   }
 
-  const onMapPressForObsLyr = useCallback( async latLng => {
+  const onMapPressForObsLyr = useCallback( async ( latLng: LatLng ) => {
     const uuid = await fetchObservationUUID( currentZoom, latLng, params );
     if ( uuid ) {
       navigation.navigate( "ObsDetails", { uuid } );
@@ -299,6 +248,10 @@ const Map = ( {
       onZoomChange( currentZoom );
     }
   }, [currentZoom, onZoomChange] );
+
+  const renderCurrentLocationPermissionsGate = () => renderPermissionsGate( {
+    onPermissionGranted
+  } );
 
   return (
     <View
@@ -320,14 +273,11 @@ const Map = ( {
         region={( region?.latitude )
           ? region
           : initialRegion}
-        onRegionChange={async ( ) => {
-          if ( onRegionChange ) { onRegionChange( ); }
-        }}
         onUserLocationChange={async locationChangeEvent => {
           const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
           setUserLocation( coordinate );
         }}
-        showsUserLocation={showsUserLocation}
+        showsUserLocation={hasPermissions}
         showsMyLocationButton={false}
         loadingEnabled
         onRegionChangeComplete={async newRegion => {
@@ -375,11 +325,13 @@ const Map = ( {
       <CurrentLocationButton
         showCurrentLocationButton={showCurrentLocationButton}
         currentLocationButtonClassName={currentLocationButtonClassName}
+        hasPermissions={hasPermissions}
+        renderPermissionsGate={renderCurrentLocationPermissionsGate}
+        requestPermissions={requestPermissions}
+        onPermissionGranted={onPermissionGranted}
         handlePress={( ) => {
           if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
           setZoomToUserLocationRequested( true );
-          setShowsUserLocation( true );
-          setPermissionRequested( true );
         }}
       />
       <SwitchMapTypeButton
@@ -388,13 +340,6 @@ const Map = ( {
         setCurrentMapType={setCurrentMapType}
         showSwitchMapTypeButton={showSwitchMapTypeButton}
         switchMapTypeButtonClassName={switchMapTypeButtonClassName}
-      />
-      <LocationPermissionGate
-        permissionNeeded={permissionRequested}
-        onPermissionGranted={onPermissionGranted}
-        onPermissionBlocked={onPermissionBlocked}
-        onPermissionDenied={onPermissionDenied}
-        withoutNavigation
       />
       {children}
     </View>

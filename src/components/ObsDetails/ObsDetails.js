@@ -1,6 +1,7 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
-import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
+import PotentialDisagreementSheet from
+  "components/ObsDetails/Sheets/PotentialDisagreementSheet";
 import {
   ActivityIndicator,
   HideView,
@@ -23,6 +24,7 @@ import {
 import {
   useTranslation
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
@@ -31,65 +33,83 @@ import FaveButton from "./FaveButton";
 import ObsDetailsHeader from "./ObsDetailsHeader";
 import ObsDetailsOverview from "./ObsDetailsOverview";
 import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
+import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
+import SuggestIDSheet from "./Sheets/SuggestIDSheet";
 
 const isTablet = DeviceInfo.isTablet();
 
 type Props = {
   activityItems: Array<Object>,
   addingActivityItem: Function,
-  agreeIdSheetDiscardChanges: Function,
+  closeAgreeWithIdSheet: Function,
   belongsToCurrentUser: boolean,
+  comment: string,
+  commentIsOptional: ?boolean,
+  confirmCommentFromCommentSheet: Function,
   confirmRemoteObsWasDeleted?: Function,
   currentTabId: string,
   currentUser: Object,
-  hideCommentBox: Function,
+  hideAddCommentSheet: Function,
   isOnline: boolean,
   isRefetching: boolean,
   navToSuggestions: Function,
   observation: Object,
+  openAddCommentSheet: Function,
+  openAgreeWithIdSheet: Function,
   onAgree: Function,
-  onCommentAdded: Function,
-  onIDAgreePressed: Function,
-  openCommentBox: Function,
-  openCommentBox: Function,
+  onSuggestId: Function,
+  onPotentialDisagreePressed: Function,
+  potentialDisagreeSheetDiscardChanges: Function,
   refetchRemoteObservation: Function,
   remoteObsWasDeleted?: boolean,
   showActivityTab: boolean,
   showAgreeWithIdSheet: boolean,
-  showCommentBox: Function,
+  showPotentialDisagreementSheet: boolean,
+  showAddCommentSheet: Function,
+  showSuggestIdSheet: boolean,
+  suggestIdSheetDiscardChanges: Function,
   tabs: Array<Object>,
-  taxonForAgreement: ?Object
+  taxonForSuggestion: ?Object
 }
 
 const ObsDetails = ( {
   activityItems,
   addingActivityItem,
-  agreeIdSheetDiscardChanges,
+  closeAgreeWithIdSheet,
   belongsToCurrentUser,
+  comment,
+  commentIsOptional,
+  confirmCommentFromCommentSheet,
   confirmRemoteObsWasDeleted,
   currentTabId,
   currentUser,
-  hideCommentBox,
+  hideAddCommentSheet,
   isOnline,
   isRefetching,
   navToSuggestions,
   observation,
   onAgree,
-  onCommentAdded,
-  onIDAgreePressed,
-  openCommentBox,
+  openAgreeWithIdSheet,
+  onSuggestId,
+  onPotentialDisagreePressed,
+  openAddCommentSheet,
+  potentialDisagreeSheetDiscardChanges,
   refetchRemoteObservation,
   remoteObsWasDeleted,
   showActivityTab,
   showAgreeWithIdSheet,
-  showCommentBox,
+  showPotentialDisagreementSheet,
+  showAddCommentSheet,
+  showSuggestIdSheet,
+  suggestIdSheetDiscardChanges,
   tabs,
-  taxonForAgreement
+  taxonForSuggestion
 }: Props ): Node => {
   const insets = useSafeAreaInsets();
   const { params } = useRoute( );
   const { uuid } = params;
   const { t } = useTranslation( );
+  const currentObservation = useStore( state => state.currentObservation );
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -109,7 +129,7 @@ const ObsDetails = ( {
         activityItems={activityItems}
         isOnline={isOnline}
         observation={observation}
-        onIDAgreePressed={onIDAgreePressed}
+        openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
       />
     </HideView>
@@ -168,8 +188,8 @@ const ObsDetails = ( {
         {showActivityTab && (
           <FloatingButtons
             navToSuggestions={navToSuggestions}
-            openCommentBox={openCommentBox}
-            showCommentBox={showCommentBox}
+            openAddCommentSheet={openAddCommentSheet}
+            showAddCommentSheet={showAddCommentSheet}
           />
         )}
       </View>
@@ -229,12 +249,23 @@ const ObsDetails = ( {
       {showActivityTab && currentUser && (
         <FloatingButtons
           navToSuggestions={navToSuggestions}
-          openCommentBox={openCommentBox}
-          showCommentBox={showCommentBox}
+          openAddCommentSheet={openAddCommentSheet}
+          showAddCommentSheet={showAddCommentSheet}
         />
       )}
     </>
   );
+
+  const hasComment = !!( comment || currentObservation?.description );
+
+  const showAddCommentHeader = ( ) => {
+    if ( hasComment ) {
+      return t( "EDIT-COMMENT" );
+    } if ( commentIsOptional ) {
+      return t( "ADD-OPTIONAL-COMMENT" );
+    }
+    return t( "ADD-COMMENT" );
+  };
 
   return (
     <SafeAreaView
@@ -246,18 +277,36 @@ const ObsDetails = ( {
         : renderTablet()}
       {showAgreeWithIdSheet && (
         <AgreeWithIDSheet
-          taxon={taxonForAgreement}
-          handleClose={agreeIdSheetDiscardChanges}
+          comment={comment}
+          handleClose={closeAgreeWithIdSheet}
           onAgree={onAgree}
+          openAddCommentSheet={openAddCommentSheet}
+          taxon={taxonForSuggestion}
         />
       )}
       {/* AddCommentSheet */}
-      {showCommentBox && (
+      {showAddCommentSheet && (
         <TextInputSheet
-          handleClose={hideCommentBox}
-          headerText={t( "ADD-COMMENT" )}
+          buttonText={t( "CONFIRM" )}
+          handleClose={hideAddCommentSheet}
+          headerText={showAddCommentHeader( )}
           textInputStyle={textInputStyle}
-          confirm={textInput => onCommentAdded( textInput )}
+          initialInput={comment || currentObservation?.description}
+          confirm={confirmCommentFromCommentSheet}
+        />
+      )}
+      {showSuggestIdSheet && (
+        <SuggestIDSheet
+          openAddCommentSheet={openAddCommentSheet}
+          handleClose={suggestIdSheetDiscardChanges}
+          onSuggestId={onSuggestId}
+        />
+      )}
+      {showPotentialDisagreementSheet && (
+        <PotentialDisagreementSheet
+          onPotentialDisagreePressed={onPotentialDisagreePressed}
+          handleClose={potentialDisagreeSheetDiscardChanges}
+          taxon={taxonForSuggestion}
         />
       )}
       {/*

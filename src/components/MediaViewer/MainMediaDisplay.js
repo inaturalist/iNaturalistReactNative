@@ -9,7 +9,7 @@ import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { FlatList } from "react-native";
 import Photo from "realmModels/Photo";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -73,7 +73,10 @@ const MainMediaDisplay = ( {
             ? (
               <View className="absolute bottom-4 right-4">
                 <TransparentCircleButton
-                  onPress={( ) => onDeletePhoto( photo.localFilePath || photo.url )}
+                  onPress={( ) => onDeletePhoto(
+                    Photo.getLocalPhotoUri( photo.localFilePath )
+                    || photo.url
+                  )}
                   icon="trash-outline"
                   color={colors.white}
                   accessibilityLabel={t( "Delete-photo" )}

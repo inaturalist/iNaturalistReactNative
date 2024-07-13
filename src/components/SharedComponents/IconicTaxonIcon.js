@@ -16,7 +16,7 @@ type Props = {
 }
 
 const IconicTaxonIcon = ( {
-  iconicTaxonName = "unknown",
+  iconicTaxonName,
   imageClassName,
   isBackground = false,
   size = 30,
@@ -32,16 +32,17 @@ const IconicTaxonIcon = ( {
     <View
       className={classnames(
         imageClassName,
-        "shrink justify-center items-center",
+        "shrink justify-center items-center rounded-xl border-[2px] border-lightGray",
         {
-          "bg-darkGray": white,
-          "border border-lightGray": !white
+          "border-white": white && !isBackground
         }
       )}
       testID="IconicTaxonName.iconicTaxonIcon"
     >
       <INatIcon
-        name={iconicTaxonName && `iconic-${iconicTaxonName?.toLowerCase( )}`}
+        name={iconicTaxonName
+          ? `iconic-${iconicTaxonName?.toLowerCase( )}`
+          : "iconic-unknown"}
         size={size}
         color={color}
       />

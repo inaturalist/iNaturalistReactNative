@@ -2,15 +2,10 @@
 
 import { galleryPhotosPath } from "appConstants/paths.ts";
 import {
-  LOCATION_PERMISSIONS,
-  permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer";
-import {
   useEffect, useRef,
   useState
 } from "react";
 import RNFS from "react-native-fs";
-import { checkMultiple, RESULTS } from "react-native-permissions";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
@@ -29,6 +24,7 @@ const useCurrentObservationLocation = (
   mountedRef: unknown,
   currentObservation: Object,
   updateObservationKeys: Function,
+  hasPermissions: boolean,
   options: Object = { }
 ): Object => {
   const latitude = currentObservation?.latitude;
@@ -64,7 +60,6 @@ const useCurrentObservationLocation = (
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
   const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
-  const [permissionResult, setPermissionResult] = useState( null );
   const [currentLocation, setCurrentLocation] = useState( null );
 
   useEffect( () => {
@@ -97,11 +92,7 @@ const useCurrentObservationLocation = (
       if ( !mountedRef.current ) return;
       if ( !shouldFetchLocation ) return;
 
-      const newPermissionResult = permissionResultFromMultiple(
-        await checkMultiple( LOCATION_PERMISSIONS )
-      );
-      setPermissionResult( newPermissionResult );
-      if ( newPermissionResult !== RESULTS.GRANTED ) {
+      if ( !hasPermissions ) {
         setFetchingLocation( false );
         setShouldFetchLocation( false );
         return;
@@ -155,10 +146,10 @@ const useCurrentObservationLocation = (
   }, [
     currentObservation,
     fetchingLocation,
+    hasPermissions,
     lastLocationFetchTime,
     mountedRef,
     numLocationFetches,
-    permissionResult,
     positionalAccuracy,
     setFetchingLocation,
     shouldFetchLocation,
@@ -186,7 +177,6 @@ const useCurrentObservationLocation = (
     // location requests is in flight, but this tells the external consumer
     // whether the overall location fetching process is happening
     isFetchingLocation: shouldFetchLocation,
-    permissionResult,
     numLocationFetches
   };
 };
