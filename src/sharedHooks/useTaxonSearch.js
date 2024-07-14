@@ -12,7 +12,10 @@ const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
         sources: "taxa"
       },
       optsWithAuth
-    )
+    ),
+    {
+      enabled: !!( taxonQuery.length > 0 )
+    }
   );
 
   return taxonList;
