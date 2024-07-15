@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
 type Props = {
   taxon: Object
@@ -31,7 +32,8 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
   const baseStyle = {
     fontFamily: fontRegular,
     fontSize: 16,
-    lineHeight: 22
+    lineHeight: 22,
+    color: colors.darkGray
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
 
