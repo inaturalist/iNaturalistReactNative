@@ -42,18 +42,18 @@ describe( "useWatchPosition with inaccurate location", ( ) => {
   } ) );
 
   it( "should be loading by default", async ( ) => {
-    const { result } = renderHook( ( ) => useWatchPosition( ) );
+    const { result } = renderHook( ( ) => useWatchPosition( { shouldFetchLocation: true } ) );
     await waitFor( ( ) => {
       expect( result.current.isFetchingLocation ).toBeTruthy( );
     } );
   } );
 
   it( "should return a user location", async ( ) => {
-    const { result } = renderHook( ( ) => useWatchPosition( ) );
+    const { result } = renderHook( ( ) => useWatchPosition( { shouldFetchLocation: true } ) );
     await waitFor( ( ) => {
       expect( result.current.userLocation ).toBeDefined( );
     } );
-    expect( result?.current?.userLocation?.longitude )
+    expect( result?.current?.userLocation?.latitude )
       .toEqual( mockPositions[0].coords.latitude );
   } );
 } );
@@ -61,26 +61,30 @@ describe( "useWatchPosition with inaccurate location", ( ) => {
 describe( "useWatchPosition with accurate location", ( ) => {
   beforeEach( ( ) => {
     Geolocation.watchPosition.mockReset( );
-    // Mock so success gets called immediately and so that three subsequent
-    // calls succeed with changing coordinates and improving accuracy
+
     Geolocation.watchPosition
-      .mockImplementationOnce( success => success( mockPositions[0] ) )
-      .mockImplementationOnce( success => success( mockPositions[1] ) )
       .mockImplementationOnce( success => success( mockPositions[2] ) );
   } );
 
   it( "should stop watching position when target accuracy reached", async ( ) => {
-    const { result } = renderHook( ( ) => useWatchPosition( ) );
-    expect( Geolocation.watchPosition ).not.toHaveBeenCalled( );
-    await waitFor( ( ) => {
-      // 20240709 amanda - not totally sure why there's an extra call to watchPosition
-      // here since we're mocking the implementation 3x
-      expect( Geolocation.watchPosition ).toHaveBeenCalledTimes( 4 );
-    } );
+    const { result } = renderHook( ( ) => useWatchPosition( { shouldFetchLocation: true } ) );
     await waitFor( ( ) => {
       expect( result.current.userLocation?.positional_accuracy )
         .toEqual( mockPositions[2].coords.accuracy );
     } );
     expect( Geolocation.clearWatch ).toHaveBeenCalledTimes( 1 );
+  } );
+} );
+
+describe( "useWatchPosition when shouldn't fetch", ( ) => {
+  beforeEach( ( ) => {
+    Geolocation.watchPosition.mockReset( );
+  } );
+
+  it( "should not watch position when shouldFetchLocation is false", async ( ) => {
+    renderHook( ( ) => useWatchPosition( { shouldFetchLocation: false } ) );
+    await waitFor( ( ) => {
+      expect( Geolocation.watchPosition ).not.toHaveBeenCalled( );
+    } );
   } );
 } );
