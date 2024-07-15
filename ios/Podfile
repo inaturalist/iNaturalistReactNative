@@ -32,7 +32,7 @@ setup_permissions([
   # 'Motion',
   # 'Notifications',
   'PhotoLibrary',
-  'PhotoLibraryAddOnly',
+  # 'PhotoLibraryAddOnly',
   # 'Reminders',
   # 'Siri',
   # 'SpeechRecognition',

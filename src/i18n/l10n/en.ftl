@@ -41,6 +41,9 @@ Add-Date-Time = Add Date/Time
 # Label for a button that adds a vote of disagreement
 Add-disagreement = Add disagreement
 ADD-EVIDENCE = ADD EVIDENCE
+# Label for a button that shows options for adding evidence, e.g. camera,
+# gallery, sound, etc
+Add-evidence = Add evidence
 Add-favorite = Add favorite
 Add-Location = Add Location
 # Accessibility label for a button that starts the process of adding an
@@ -73,6 +76,7 @@ All-observations = All observations
 All-organisms = All organisms
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
+ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 # As in automated identification suggestions
 Almost-done = Almost done!
 Already-have-an-account = Already have an account? Log in
@@ -288,6 +292,7 @@ Deleting-x-of-y-observations =
 DETAILS = DETAILS
 # Button that disables the camera's flash
 Disable-flash = Disable flash
+Disagreement = <0>*@{ $username } disagrees this is { $commonName } (</0><1>{ $scientificName })</1>
 # Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
 # Button that discards all items, e.g. imported photos
@@ -320,6 +325,8 @@ During-app-start-no-model-found = During app start there was no computer vision 
 Edit = Edit
 EDIT-COMMENT = EDIT COMMENT
 Edit-comment = Edit comment
+# Label for button that edits an identification
+Edit-identification = Edit identification
 EDIT-LOCATION = EDIT LOCATION
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Edit location
@@ -399,7 +406,8 @@ Go-back = Go back
 GRANT-PERMISSION = GRANT PERMISSION
 # Title of a screen asking for permission
 Grant-Permission-title = Grant Permission
-Grid-view = Grid view
+# Label for button to switch to a grid layout of observations
+Grid-layout = Grid layout
 Group-Photos = Group Photos
 # Onboarding for users learning to group photos in the camera roll
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
@@ -466,7 +474,7 @@ INATURALIST-STORE = INATURALIST STORE
 INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
 iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
-iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location. You’re always in control of the location privacy of every observation you create.
+iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location.
 iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Angie Ta, Ken-ichi Ueda, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
@@ -508,7 +516,8 @@ LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 LICENSES = LICENSES
-List-view = List view
+# Label for button to switch to a list layout of observations
+List-layout = List layout
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION
@@ -661,6 +670,8 @@ Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-AI-camera = Opens AI camera.
 Opens-location-permission-prompt = Opens location permission prompt
+# Accessibility hint for button that opens the AI camera
+Opens-the-AI-camera = Opens the AI camera
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
@@ -691,6 +702,10 @@ Please-click-the-link = Please click the link in the email within 60 minutes  to
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
+POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
+Potential-disagreement-description = <0>Is the evidence enough to confirm this is { $commonName }(</0><1>{ $scientificName }</1><0>)?<0>
+Potential-disagreement-disagree = <0>No, but this is a member of { $commonName }(</0><1>{ $scientificName }</1><0>)</0>
+Potential-disagreement-unsure = <0>I don't know but I am sure this is { $commonName }(</0><1>{ $scientificName }</1><0>)</0>
 # Help text for beginning a sound recording
 Press-record-to-start = Press record to start
 Previous-observation = Previous observation
@@ -776,7 +791,6 @@ Removes-your-vote-of-agreement = Removes your vote of agreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
 # Quality grade option
 Research-Grade = Research Grade
-Reset = Reset
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -815,7 +829,6 @@ Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = SEARCH
 # Title for a search interface
 Search = Search
-SEARCH-FOR-A-LOCATION = SEARCH FOR A LOCATION
 Search-for-a-project = Search for a project
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
 Search-for-a-taxon = Search for a taxon
@@ -859,6 +872,8 @@ Show-observation-options = Show observation options.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
 Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
+# Accessibility hint for button that shows observation creation options
+Shows-observation-creation-options = Shows observation creation options
 Some-data-privacy-laws = Some data privacy laws, like the European Union's General Data Protection Regulation (GDPR), require explicit consent to transfer personal information from their jurisdictions to other jurisdictions where the legal protection of this information is not considered adequate. As of 2020, the European Union no longer considers the United States to be a jurisdiction that provides adequate legal protection of personal information, specifically because of the possibility of the US government surveilling data entering the US. It is possible other jurisdictions may have the same opinion.
 # Generic error message
 Something-went-wrong = Something went wrong.
@@ -903,6 +918,7 @@ Stop-upload = Stop upload
 Stop-verb = Stop
 # Accessibility hint for a button that stops the recording of a sound
 Stops-recording-sound = Stops recording sound
+SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 # Identification category
 supporting--identification = Supporting
@@ -935,6 +951,8 @@ This-organism-was-placed-by-humans = This organism was placed in this location b
 To-access-all-other-settings = To access all other account settings, click here:
 To-learn-more-about-what-information = To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
+To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
+To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
 Toggle-map-type = Toggle map type
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = Traditional Project
@@ -1142,6 +1160,7 @@ Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improve
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
 # Text prompting the user to open Settings to grant permission after
 # permission has been denied
 Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.

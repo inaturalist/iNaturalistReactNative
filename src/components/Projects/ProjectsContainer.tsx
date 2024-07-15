@@ -1,7 +1,5 @@
 import { searchProjects } from "api/projects";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import _ from "lodash";
-import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
   useAuthenticatedQuery,
@@ -9,23 +7,29 @@ import {
   useTranslation,
   useWatchPosition
 } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
 import Projects from "./Projects";
 
-const JOINED_TAB_ID = "JOINED";
-const FEATURED_TAB_ID = "FEATURED";
-const NEARBY_TAB_ID = "NEARBY";
+export enum TAB_ID {
+  // eslint-disable-next-line no-unused-vars
+  JOINED = "JOINED",
+  // eslint-disable-next-line no-unused-vars
+  FEATURED = "FEATURED",
+  // eslint-disable-next-line no-unused-vars
+  NEARBY = "NEARBY"
+}
 
-const ProjectsContainer = ( ): Node => {
+const ProjectsContainer = ( ) => {
   const [searchInput, setSearchInput] = useState( "" );
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
   const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
-  const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( true );
+  const [currentTabId, setCurrentTabId] = useState( TAB_ID.JOINED );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const { userLocation } = useWatchPosition( {
-    shouldFetchLocation
+    shouldFetchLocation: hasPermissions
   } );
 
   const {
@@ -40,11 +44,11 @@ const ProjectsContainer = ( ): Node => {
   );
 
   useEffect( ( ) => {
-    if ( currentTabId === JOINED_TAB_ID ) {
+    if ( currentTabId === TAB_ID.JOINED ) {
       setApiParams( { member_id: memberId } );
-    } else if ( currentTabId === FEATURED_TAB_ID ) {
+    } else if ( currentTabId === TAB_ID.FEATURED ) {
       setApiParams( { featured: true } );
-    } else if ( currentTabId === NEARBY_TAB_ID && userLocation ) {
+    } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
       setApiParams( {
         lat: userLocation.latitude,
         lng: userLocation.longitude,
@@ -66,24 +70,24 @@ const ProjectsContainer = ( ): Node => {
 
   const tabs = [
     {
-      id: JOINED_TAB_ID,
+      id: TAB_ID.JOINED,
       text: t( "JOINED" ),
       onPress: () => {
-        setCurrentTabId( JOINED_TAB_ID );
+        setCurrentTabId( TAB_ID.JOINED );
       }
     },
     {
-      id: FEATURED_TAB_ID,
+      id: TAB_ID.FEATURED,
       text: t( "FEATURED" ),
       onPress: () => {
-        setCurrentTabId( FEATURED_TAB_ID );
+        setCurrentTabId( TAB_ID.FEATURED );
       }
     },
     {
-      id: NEARBY_TAB_ID,
+      id: TAB_ID.NEARBY,
       text: t( "NEARBY" ),
       onPress: () => {
-        setCurrentTabId( NEARBY_TAB_ID );
+        setCurrentTabId( TAB_ID.NEARBY );
       }
     }
   ];
@@ -102,20 +106,10 @@ const ProjectsContainer = ( ): Node => {
         projects={projects}
         isLoading={isLoading}
         memberId={memberId}
+        hasPermissions={hasPermissions}
+        requestPermissions={requestPermissions}
       />
-      <LocationPermissionGate
-        permissionNeeded={currentTabId === NEARBY_TAB_ID}
-        withoutNavigation
-        onPermissionGranted={( ) => {
-          setShouldFetchLocation( true );
-        }}
-        onPermissionDenied={( ) => {
-          setShouldFetchLocation( false );
-        }}
-        onPermissionBlocked={( ) => {
-          setShouldFetchLocation( false );
-        }}
-      />
+      {renderPermissionsGate( )}
     </>
   );
 };

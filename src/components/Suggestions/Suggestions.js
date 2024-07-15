@@ -19,25 +19,27 @@ import SuggestionsHeader from "./SuggestionsHeader";
 
 type Props = {
   debugData: Object,
+  hideSkip?: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  // setLocationPermissionNeeded: Function,
-  // showImproveWithLocationButton: boolean,
+  improveWithLocationButtonOnPress: () => void;
+  showImproveWithLocationButton: boolean;
   suggestions: Object
 };
 
 const Suggestions = ( {
   debugData,
+  hideSkip,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
-  // setLocationPermissionNeeded,
-  // showImproveWithLocationButton,
+  improveWithLocationButtonOnPress,
+  showImproveWithLocationButton,
   suggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -68,12 +70,16 @@ const Suggestions = ( {
   const renderFooter = useCallback( ( ) => (
     <SuggestionsFooter
       debugData={debugData}
+      hideSkip={hideSkip}
+      isLoading={suggestions.isLoading}
       observers={observers}
       reloadSuggestions={reloadSuggestions}
-      suggestions={suggestions}
+      showSuggestionsWithLocation={suggestions.showSuggestionsWithLocation}
+      usingOfflineSuggestions={suggestions.usingOfflineSuggestions}
     />
   ), [
     debugData,
+    hideSkip,
     observers,
     reloadSuggestions,
     suggestions
@@ -86,16 +92,16 @@ const Suggestions = ( {
       reloadSuggestions={reloadSuggestions}
       selectedPhotoUri={selectedPhotoUri}
       suggestions={suggestions}
-      // setLocationPermissionNeeded={setLocationPermissionNeeded}
-      // showImproveWithLocationButton={showImproveWithLocationButton}
+      improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
+      showImproveWithLocationButton={showImproveWithLocationButton}
     />
   ), [
     onPressPhoto,
     photoUris,
     reloadSuggestions,
     selectedPhotoUri,
-    // setLocationPermissionNeeded,
-    // showImproveWithLocationButton,
+    improveWithLocationButtonOnPress,
+    showImproveWithLocationButton,
     suggestions
   ] );
 

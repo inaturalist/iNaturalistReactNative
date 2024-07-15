@@ -32,7 +32,9 @@ import {
 import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
-import { useAuthenticatedQuery, useTranslation, useUserMe } from "sharedHooks";
+import {
+  useAuthenticatedQuery, useCurrentUser, useTranslation, useUserMe
+} from "sharedHooks";
 import useStore from "stores/useStore";
 
 import EstablishmentMeans from "./EstablishmentMeans";
@@ -66,13 +68,19 @@ const TaxonDetails = ( ): Node => {
   const navState = useNavigationState( nav => nav );
   const history = navState?.routes.map( r => r.name );
   const fromObsDetails = _.includes( history, "ObsDetails" );
+  const fromSuggestions = _.includes( history, "Suggestions" );
+  const fromTaxonSearch = _.includes( history, "TaxonSearch" );
+  const fromPrevTaxonDetails = _.filter( history, name => name === "TaxonDetails" ).length > 1;
+  const currentUser = useCurrentUser( );
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
     ? _.find( navState?.routes, r => r.name === "ObsDetails" ).params.uuid
     : null;
 
-  const lastScreen = params?.lastScreen;
+  const showSelectButton = currentUser
+    && ( fromSuggestions || fromTaxonSearch || fromPrevTaxonDetails );
+  const usesVision = fromSuggestions && !fromTaxonSearch && !fromPrevTaxonDetails;
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
@@ -287,7 +295,7 @@ const TaxonDetails = ( ): Node => {
           header={renderHeader}
         />
       </ScrollViewWrapper>
-      {lastScreen === "Suggestions" && (
+      {showSelectButton && (
         <StickyToolbar containerClass="items-center z-50">
           <Button
             className="max-w-[500px] w-full"
@@ -296,12 +304,12 @@ const TaxonDetails = ( ): Node => {
             onPress={( ) => {
               updateObservationKeys( {
                 taxon,
-                owners_identification_from_vision: params?.vision
+                owners_identification_from_vision: usesVision
               } );
               if ( fromObsDetails ) {
                 navigation.navigate( "ObsDetails", {
                   uuid: obsUuid,
-                  suggestedTaxonId: id
+                  suggestedTaxon: taxon
                 } );
               } else {
                 navigation.navigate( "ObsEdit" );

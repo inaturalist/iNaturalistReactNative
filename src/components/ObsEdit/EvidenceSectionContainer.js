@@ -22,6 +22,7 @@ import EvidenceSection from "./EvidenceSection";
 type Props = {
   currentObservation: Object,
   isFetchingLocation: boolean,
+  onLocationPress: ( ) => void,
   passesEvidenceTest: boolean,
   setPassesEvidenceTest: Function,
   updateObservationKeys: Function
@@ -30,6 +31,7 @@ type Props = {
 const EvidenceSectionContainer = ( {
   currentObservation,
   isFetchingLocation,
+  onLocationPress,
   passesEvidenceTest,
   setPassesEvidenceTest,
   updateObservationKeys
@@ -164,14 +166,15 @@ const EvidenceSectionContainer = ( {
   return (
     <EvidenceSection
       currentObservation={currentObservation}
-      updateObservationKeys={updateObservationKeys}
-      locationTextClassNames={locationTextClassNames}
-      passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
+      locationTextClassNames={locationTextClassNames}
       observationPhotos={observationPhotos}
+      observationSounds={observationSounds}
+      onLocationPress={onLocationPress}
+      passesEvidenceTest={fullEvidenceTest}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
-      observationSounds={observationSounds}
+      updateObservationKeys={updateObservationKeys}
     />
   );
 };

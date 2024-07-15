@@ -151,8 +151,8 @@ const Toolbar = ( {
           size={30}
           disabled={false}
           accessibilityLabel={layout === "grid"
-            ? t( "List-view" )
-            : t( "Grid-view" )}
+            ? t( "List-layout" )
+            : t( "Grid-layout" )}
           testID={
             layout === "list"
               ? "MyObservationsToolbar.toggleGridView"

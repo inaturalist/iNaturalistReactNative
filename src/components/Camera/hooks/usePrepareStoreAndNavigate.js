@@ -44,11 +44,17 @@ export async function savePhotosToCameraGallery(
         // logger.info( "saved to camera roll: ", savedPhotoUri );
         // Save these camera roll URIs, so later on observation editor can update
         // the EXIF metadata of these photos, once we retrieve a location.
-        // addCameraRollUri( savedPhotoUri );
         onEachSuccess( savedPhotoUri );
       } catch ( cameraRollSaveError ) {
-        logger.error( cameraRollSaveError );
-        console.log( "couldn't save photo to iNaturalist Next album" );
+        // This means an iOS user denied access
+        // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
+        // In theory we should not even have called this function when that
+        // happens, but we're still seeing this in the logs. They should be
+        // prompted to grant permission the next time they try so this is
+        // probably safe to ignore.
+        if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
+          logger.error( cameraRollSaveError );
+        }
       }
     },
     // We need the initial value even if we're not using it, otherwise reduce

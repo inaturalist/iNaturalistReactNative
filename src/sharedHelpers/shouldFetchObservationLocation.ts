@@ -1,27 +1,11 @@
 import { galleryPhotosPath } from "appConstants/paths.ts";
-import {
-  LOCATION_PERMISSIONS,
-  permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer";
 import RNFS from "react-native-fs";
-import {
-  checkMultiple,
-  RESULTS
-} from "react-native-permissions";
 import { RealmObservation } from "realmModels/types.d.ts";
 import {
   TARGET_POSITIONAL_ACCURACY
 } from "sharedHooks/useWatchPosition.ts";
 
-export const checkLocationPermission = async ( ) => {
-  const newPermissionResult = permissionResultFromMultiple(
-    await checkMultiple( LOCATION_PERMISSIONS )
-  );
-  return newPermissionResult;
-};
-
-export const shouldFetchObservationLocation = async ( observation: RealmObservation[] ) => {
-  const permissionResult = await checkLocationPermission( );
+const shouldFetchObservationLocation = ( observation: RealmObservation ) => {
   const latitude = observation?.latitude;
   const longitude = observation?.longitude;
   const hasLocation = !!( latitude && longitude );
@@ -45,6 +29,7 @@ export const shouldFetchObservationLocation = async ( observation: RealmObservat
     && isNewObservation
     && ( !hasLocation || !accGoodEnough )
     && !isGalleryPhoto
-    && !isSharedPhoto
-    && permissionResult === RESULTS.GRANTED;
+    && !isSharedPhoto;
 };
+
+export default shouldFetchObservationLocation;

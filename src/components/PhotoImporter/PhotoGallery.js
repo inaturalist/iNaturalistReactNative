@@ -4,8 +4,6 @@ import {
 } from "appConstants/paths.ts";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
-import PermissionGateContainer, { READ_MEDIA_PERMISSIONS }
-  from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, {
@@ -29,7 +27,6 @@ const MAX_PHOTOS_ALLOWED = 20;
 const PhotoGallery = ( ): Node => {
   const navigation = useNavigation( );
   const [photoGalleryShown, setPhotoGalleryShown] = useState( false );
-  const [permissionGranted, setPermissionGranted] = useState( false );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
   const groupedPhotos = useStore( state => state.groupedPhotos );
@@ -195,10 +192,6 @@ const PhotoGallery = ( ): Node => {
     params
   ] );
 
-  const onPermissionGranted = () => {
-    setPermissionGranted( true );
-  };
-
   useFocusEffect(
     React.useCallback( () => {
       // This will run when the screen comes into focus.
@@ -206,7 +199,7 @@ const PhotoGallery = ( ): Node => {
 
       // Wait for screen to finish transition
       interactionHandle = InteractionManager.runAfterInteractions( () => {
-        if ( permissionGranted && !photoGalleryShown ) {
+        if ( !photoGalleryShown ) {
           showPhotoGallery();
         }
       } );
@@ -217,26 +210,13 @@ const PhotoGallery = ( ): Node => {
           interactionHandle.cancel();
         }
       };
-    }, [permissionGranted, photoGalleryShown, showPhotoGallery] )
+    }, [photoGalleryShown, showPhotoGallery] )
   );
 
   return (
     <ViewWrapper testID="PhotoGallery">
       <View className="flex-1 w-full h-full justify-center items-center">
         <ActivityAnimation />
-        {!permissionGranted && (
-          <PermissionGateContainer
-            permissions={READ_MEDIA_PERMISSIONS}
-            title={t( "Observe-and-identify-organisms-from-your-gallery" )}
-            titleDenied={t( "Please-Allow-Gallery-Access" )}
-            body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
-            blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
-            buttonText={t( "CHOOSE-PHOTOS" )}
-            icon="gallery"
-            image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
-            onPermissionGranted={onPermissionGranted}
-          />
-        )}
       </View>
     </ViewWrapper>
   );

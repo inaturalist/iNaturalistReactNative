@@ -8,14 +8,16 @@ import * as React from "react";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  uri: Object
+  photoUri: string,
+  soundUri: string
 }
 
 const ObservationIcon = ( {
-  uri
+  photoUri, soundUri
 }: Props ): React.Node => {
   const theme = useTheme();
-  if ( !uri ) {
+
+  if ( !photoUri && !soundUri ) {
     return (
       <View
         className={classnames(
@@ -37,11 +39,33 @@ const ObservationIcon = ( {
     );
   }
 
+  if ( !photoUri && soundUri ) {
+    return (
+      <View
+        className={classnames(
+          "w-[62px]",
+          "h-[62px]",
+          "bg-white",
+          "rounded-lg",
+          "border-[2px]",
+          "justify-center",
+          "items-center"
+        )}
+      >
+        <INatIcon
+          name="sound"
+          size={24}
+          color={theme.colors.primary}
+        />
+      </View>
+    );
+  }
+
   return (
     <Image
       testID="ObservationIcon.photo"
       className="w-[62px] h-[62px] rounded-lg"
-      source={{ uri }}
+      source={{ uri: photoUri }}
       accessibilityRole="image"
       accessibilityIgnoresInvertColors
     />

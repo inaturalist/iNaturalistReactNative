@@ -1,7 +1,6 @@
+import { useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-// import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import _ from "lodash";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -11,6 +10,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
   useIsConnected
 } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
@@ -31,7 +31,8 @@ const initialSuggestions = {
   isLoading: true
 };
 
-const SuggestionsContainer = ( ): Node => {
+const SuggestionsContainer = ( ) => {
+  const { params } = useRoute( );
   const isOnline = useIsConnected( );
   // clearing the cache of resized images for the score_image API
   // placing this here means we can keep the app size small
@@ -49,9 +50,11 @@ const SuggestionsContainer = ( ): Node => {
     ...initialSuggestions,
     showSuggestionsWithLocation: evidenceHasLocation
   } );
-  // const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
-  // const showImproveWithLocationButton = !evidenceHasLocation
-  //   && params?.lastScreen === "CameraWithDevice";
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const showImproveWithLocationButton = hasPermissions === false;
+  const improveWithLocationButtonOnPress = useCallback( ( ) => {
+    requestPermissions( );
+  }, [requestPermissions] );
 
   const {
     showSuggestionsWithLocation,
@@ -227,13 +230,14 @@ const SuggestionsContainer = ( ): Node => {
     <>
       <Suggestions
         debugData={debugData}
+        hideSkip={params?.hideSkip}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
-        // setLocationPermissionNeeded={setLocationPermissionNeeded}
-        // showImproveWithLocationButton={showImproveWithLocationButton}
+        improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
+        showImproveWithLocationButton={showImproveWithLocationButton}
         suggestions={suggestions}
       />
       <MediaViewerModal
@@ -242,13 +246,7 @@ const SuggestionsContainer = ( ): Node => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
-      {/* <LocationPermissionGate
-        permissionNeeded={locationPermissionNeeded}
-        withoutNavigation
-        onPermissionGranted={( ) => console.log( "permission granted" )}
-        onPermissionDenied={( ) => console.log( "permission denied" )}
-        onPermissionBlocked={( ) => console.log( "permission blocked" )}
-      /> */}
+      {renderPermissionsGate()}
     </>
   );
 };

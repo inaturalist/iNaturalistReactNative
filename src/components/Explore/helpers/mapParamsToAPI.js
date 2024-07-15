@@ -118,6 +118,7 @@ const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
 
   delete filteredParams.taxon;
   delete filteredParams.place_guess;
+  delete filteredParams.placeMode;
   delete filteredParams.user;
   delete filteredParams.project;
   delete filteredParams.sortBy;

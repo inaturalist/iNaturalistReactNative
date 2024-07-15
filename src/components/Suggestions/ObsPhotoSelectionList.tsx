@@ -1,23 +1,20 @@
-// @flow
-
 import classnames from "classnames";
 import {
   Image, Pressable, View
 } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  photoUris: Array<string>,
-  selectedPhotoUri: string,
-  onPressPhoto: Function
-};
+interface Props {
+  photoUris: string[];
+  selectedPhotoUri: string;
+  onPressPhoto: ( _uri: string ) => void;
+}
 
 const ObsPhotoSelectionList = ( {
   photoUris, selectedPhotoUri, onPressPhoto
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const renderPhoto = useCallback( ( { item } ) => (
@@ -36,7 +33,7 @@ const ObsPhotoSelectionList = ( {
         className={classnames(
           "rounded-lg overflow-hidden",
           {
-            "border border-inatGreen border-[3px]": selectedPhotoUri === item
+            "border-inatGreen border-[3px]": selectedPhotoUri === item
           }
         )}
         testID={`ObsPhotoSelectionList.border.${item}`}

@@ -19,6 +19,7 @@ import { Surface, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import placeGuessText from "../helpers/placeGuessText";
 import HeaderCount from "./HeaderCount";
 
 type Props = {
@@ -49,9 +50,10 @@ const Header = ( {
   const { state, numberOfFilters } = useExplore( );
   const { taxon } = state;
   const iconicTaxonNames = state.iconic_taxa || [];
-  const placeGuess = state.place_guess;
   const [showTaxonSearch, setShowTaxonSearch] = useState( false );
   const [showLocationSearch, setShowLocationSearch] = useState( false );
+
+  const placeGuess = placeGuessText( state.placeMode, t, state.place_guess );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.primary,

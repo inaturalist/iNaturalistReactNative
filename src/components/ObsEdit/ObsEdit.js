@@ -1,18 +1,15 @@
 // @flow
 
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { ViewWrapper } from "components/SharedComponents";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
-  checkLocationPermission,
   shouldFetchObservationLocation
 } from "sharedHelpers/shouldFetchObservationLocation.ts";
-import { useCurrentUser } from "sharedHooks";
-import useWatchPosition from "sharedHooks/useWatchPosition.ts";
+import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -29,6 +26,7 @@ const DROP_SHADOW = getShadowForColor( colors.black, {
 } );
 
 const ObsEdit = ( ): Node => {
+  const navigation = useNavigation( );
   const currentObservation = useStore( state => state.currentObservation );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
@@ -40,7 +38,7 @@ const ObsEdit = ( ): Node => {
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
   const [shouldFetchLocation, setShouldFetchLocation] = useState( false );
-  const [locationPermissionNeeded, setLocationPermissionNeeded] = useState( false );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
 
   const {
     isFetchingLocation,
@@ -52,19 +50,15 @@ const ObsEdit = ( ): Node => {
   useEffect( ( ) => {
     const hasLocation = currentObservation?.latitude && currentObservation?.longitude;
     const checkNeedsLocation = async ( ) => {
-      const permission = await checkLocationPermission( );
-      if ( permission !== "granted" ) {
-        setLocationPermissionNeeded( true );
-      }
       const needsLocation = await shouldFetchObservationLocation( currentObservation );
       if ( needsLocation ) {
         setShouldFetchLocation( true );
       }
     };
-    if ( !hasLocation ) {
+    if ( !hasLocation && hasPermissions ) {
       checkNeedsLocation( );
     }
-  }, [currentObservation] );
+  }, [currentObservation, hasPermissions] );
 
   useEffect( ( ) => {
     if ( userLocation ) {
@@ -72,6 +66,20 @@ const ObsEdit = ( ): Node => {
       setShouldFetchLocation( false );
     }
   }, [userLocation, updateObservationKeys] );
+
+  const navToLocationPicker = useCallback( ( ) => {
+    navigation.navigate( "LocationPicker", { goBackOnSave: true } );
+  }, [navigation] );
+
+  const onLocationPress = ( ) => {
+    // If we have location permissions, navigate to the location picker
+    if ( hasPermissions ) {
+      navToLocationPicker();
+    } else {
+      // If we don't have location permissions, request them
+      requestPermissions( );
+    }
+  };
 
   if ( !isFocused ) return null;
 
@@ -107,6 +115,7 @@ const ObsEdit = ( ): Node => {
                 <EvidenceSectionContainer
                   currentObservation={currentObservation}
                   isFetchingLocation={isFetchingLocation}
+                  onLocationPress={onLocationPress}
                   passesEvidenceTest={passesEvidenceTest}
                   setPassesEvidenceTest={setPassesEvidenceTest}
                   updateObservationKeys={updateObservationKeys}
@@ -136,13 +145,15 @@ const ObsEdit = ( ): Node => {
         passesIdentificationTest={passesIdentificationTest}
         setCurrentObservationIndex={setCurrentObservationIndex}
       />
-      <LocationPermissionGate
-        permissionNeeded={locationPermissionNeeded}
-        onPermissionGranted={( ) => setShouldFetchLocation( true )}
-        onPermissionDenied={( ) => setShouldFetchLocation( false )}
-        onPermissionBlocked={( ) => setShouldFetchLocation( false )}
-        withoutNavigation
-      />
+      {renderPermissionsGate( {
+        // If the user does not give location permissions in any form,
+        // navigate to the location picker (if granted we just continue fetching the location)
+        onRequestDenied: navToLocationPicker,
+        onRequestBlocked: navToLocationPicker,
+        onModalHide: ( ) => {
+          if ( !hasPermissions ) navToLocationPicker();
+        }
+      } )}
     </>
   );
 };

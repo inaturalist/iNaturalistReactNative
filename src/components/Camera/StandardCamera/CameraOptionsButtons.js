@@ -13,7 +13,7 @@ import Animated from "react-native-reanimated";
 const isTablet = DeviceInfo.isTablet();
 
 type Props = {
-  takePhoto: Function,
+  takePhoto: () => Promise<void>,
   handleClose: Function,
   disabled: boolean,
   photosTaken: boolean,

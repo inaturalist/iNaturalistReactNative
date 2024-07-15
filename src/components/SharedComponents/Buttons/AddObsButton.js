@@ -53,7 +53,10 @@ const AddObsButton = (): React.Node => {
         onPress={isAdvancedUser
           ? openModal
           : navToARCamera}
-        accessibilityHint={isAdvancedUser && t( "Opens-add-observation-modal" )}
+        accessibilityLabel={t( "Add-observations" )}
+        accessibilityHint={isAdvancedUser
+          ? t( "Shows-observation-creation-options" )
+          : t( "Opens-the-AI-camera" )}
         iconName={isAdvancedUser && "plus"}
         iconSize={isAdvancedUser && 31}
       />

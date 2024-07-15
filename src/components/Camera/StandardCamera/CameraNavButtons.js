@@ -1,6 +1,6 @@
 // @flow
 
-import TakePhoto from "components/Camera/Buttons/TakePhoto";
+import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import { MediaNavButtons } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -15,7 +15,7 @@ type Props = {
   handleClose: Function,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
-  takePhoto: Function
+  takePhoto: () => Promise<void>,
 }
 
 const CameraNavButtons = ( {

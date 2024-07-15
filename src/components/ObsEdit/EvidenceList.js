@@ -53,7 +53,7 @@ const EvidenceList = ( {
 
   const observationPhotos = useMemo(
     ( ) => currentObservation?.observationPhotos || [],
-    [currentObservation]
+    [currentObservation?.observationPhotos]
   );
 
   const photoUris = observationPhotos?.map(
@@ -83,21 +83,21 @@ const EvidenceList = ( {
   ] );
 
   const renderPhoto = useCallback(
-    ( { item: obsPhoto, _getIndex, drag } ) => (
+    ( { item: obsPhotoUri, _getIndex, drag } ) => (
       <ScaleDecorator>
         <Pressable
           onLongPress={drag}
           accessibilityRole="button"
           accessibilityLabel={t( "Select-or-drag-media" )}
           onPress={( ) => {
-            setSelectedMediaUri( obsPhoto );
+            setSelectedMediaUri( obsPhotoUri );
           }}
           className={classnames( imageClass )}
-          testID={`EvidenceList.${obsPhoto}`}
+          testID={`EvidenceList.${obsPhotoUri}`}
         >
           <View className="rounded-lg overflow-hidden">
             <Image
-              source={{ uri: obsPhoto }}
+              source={{ uri: obsPhotoUri }}
               testID="ObsEdit.photo"
               className="w-fit h-full flex items-center justify-center"
               accessibilityIgnoresInvertColors
@@ -144,6 +144,7 @@ const EvidenceList = ( {
 
   const renderHeader = useCallback( ( ) => (
     <Pressable
+      accessibilityLabel={t( "Add-evidence" )}
       accessibilityRole="button"
       onPress={handleAddEvidence}
       className={
@@ -153,7 +154,7 @@ const EvidenceList = ( {
     >
       <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
     </Pressable>
-  ), [handleAddEvidence] );
+  ), [handleAddEvidence, t] );
 
   const afterMediaDeleted = useCallback( ( ) => {
     // If there was was only one item and it was deleted, close the modal by

@@ -44,6 +44,7 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
@@ -86,8 +87,7 @@ const FilterModal = ( {
     differsFromSnapshot,
     discardChanges,
     isNotInitialState,
-    numberOfFilters,
-    defaultExploreLocation
+    numberOfFilters
   } = useExplore();
   const {
     casual,
@@ -108,6 +108,7 @@ const FilterModal = ( {
     observed_on: observedOn,
     photoLicense,
     place_guess: placeGuess,
+    placeMode,
     project,
     researchGrade,
     reviewedFilter,
@@ -667,8 +668,7 @@ const FilterModal = ( {
             <Body3
               accessibilityRole="button"
               onPress={async ( ) => {
-                const exploreLocation = await defaultExploreLocation( );
-                dispatch( { type: EXPLORE_ACTION.RESET, exploreLocation } );
+                dispatch( { type: EXPLORE_ACTION.RESET } );
               }}
             >
               {t( "Reset-verb" )}
@@ -741,31 +741,19 @@ const FilterModal = ( {
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
             <View className="mb-5">
-              {placeGuess
-                ? (
-                  <View>
-                    <View className="flex-row items-center mb-5">
-                      <INatIcon name="location" size={15} />
-                      <Body3 className="ml-4">{placeGuess}</Body3>
-                    </View>
-                    <Button
-                      text={t( "EDIT-LOCATION" )}
-                      onPress={() => {
-                        setShowLocationSearchModal( true );
-                      }}
-                      accessibilityLabel={t( "Edit" )}
-                    />
-                  </View>
-                )
-                : (
-                  <Button
-                    text={t( "SEARCH-FOR-A-LOCATION" )}
-                    onPress={() => {
-                      setShowLocationSearchModal( true );
-                    }}
-                    accessibilityLabel={t( "Search" )}
-                  />
-                )}
+              <View>
+                <View className="flex-row items-center mb-5">
+                  <INatIcon name="location" size={15} />
+                  <Body3 className="ml-4">{placeGuessText( placeMode, t, placeGuess )}</Body3>
+                </View>
+                <Button
+                  text={t( "EDIT-LOCATION" )}
+                  onPress={() => {
+                    setShowLocationSearchModal( true );
+                  }}
+                  accessibilityLabel={t( "Edit" )}
+                />
+              </View>
             </View>
           </View>
 

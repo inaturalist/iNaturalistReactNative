@@ -1,5 +1,7 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
+import PotentialDisagreementSheet from
+  "components/ObsDetails/Sheets/PotentialDisagreementSheet";
 import {
   ActivityIndicator,
   HideView,
@@ -52,19 +54,22 @@ type Props = {
   isRefetching: boolean,
   navToSuggestions: Function,
   observation: Object,
-  onAgree: Function,
-  openAgreeWithIdSheet: Function,
-  onSuggestId: Function,
   openAddCommentSheet: Function,
+  openAgreeWithIdSheet: Function,
+  onAgree: Function,
+  onSuggestId: Function,
+  onPotentialDisagreePressed: Function,
+  potentialDisagreeSheetDiscardChanges: Function,
   refetchRemoteObservation: Function,
   remoteObsWasDeleted?: boolean,
   showActivityTab: boolean,
   showAgreeWithIdSheet: boolean,
+  showPotentialDisagreementSheet: boolean,
   showAddCommentSheet: Function,
   showSuggestIdSheet: boolean,
   suggestIdSheetDiscardChanges: Function,
   tabs: Array<Object>,
-  taxonForAgreement: ?Object
+  taxonForSuggestion: ?Object
 }
 
 const ObsDetails = ( {
@@ -86,16 +91,19 @@ const ObsDetails = ( {
   onAgree,
   openAgreeWithIdSheet,
   onSuggestId,
+  onPotentialDisagreePressed,
   openAddCommentSheet,
+  potentialDisagreeSheetDiscardChanges,
   refetchRemoteObservation,
   remoteObsWasDeleted,
   showActivityTab,
   showAgreeWithIdSheet,
+  showPotentialDisagreementSheet,
   showAddCommentSheet,
   showSuggestIdSheet,
   suggestIdSheetDiscardChanges,
   tabs,
-  taxonForAgreement
+  taxonForSuggestion
 }: Props ): Node => {
   const insets = useSafeAreaInsets();
   const { params } = useRoute( );
@@ -273,7 +281,7 @@ const ObsDetails = ( {
           handleClose={closeAgreeWithIdSheet}
           onAgree={onAgree}
           openAddCommentSheet={openAddCommentSheet}
-          taxon={taxonForAgreement}
+          taxon={taxonForSuggestion}
         />
       )}
       {/* AddCommentSheet */}
@@ -292,6 +300,13 @@ const ObsDetails = ( {
           openAddCommentSheet={openAddCommentSheet}
           handleClose={suggestIdSheetDiscardChanges}
           onSuggestId={onSuggestId}
+        />
+      )}
+      {showPotentialDisagreementSheet && (
+        <PotentialDisagreementSheet
+          onPotentialDisagreePressed={onPotentialDisagreePressed}
+          handleClose={potentialDisagreeSheetDiscardChanges}
+          taxon={taxonForSuggestion}
         />
       )}
       {/*

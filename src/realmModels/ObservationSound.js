@@ -52,7 +52,7 @@ class ObservationSound extends Realm.Object {
       // records
       // "sound[uuid]": observationSound.sound.uuid,
       file: new FileUpload( {
-        uri: Sound.accessLocalSound( observationSound.sound.file_url ),
+        uri: Sound.getLocalSoundUri( observationSound.sound.file_url ),
         name: `${observationSound.uuid}.${fileExt}`,
         type: `audio/${fileExt}`
       } )

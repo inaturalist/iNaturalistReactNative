@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
@@ -33,7 +32,8 @@ type Props = {
     },
     uuid: string
   }>,
-  updateObservationKeys: Function,
+  onLocationPress: ( ) => void,
+  updateObservationKeys: Function
 }
 
 const EvidenceSection = ( {
@@ -44,6 +44,7 @@ const EvidenceSection = ( {
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
   observationSounds,
+  onLocationPress,
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -54,11 +55,6 @@ const EvidenceSection = ( {
   // the API
   const obsPhotos = currentObservation?.observationPhotos || currentObservation?.observation_photos;
   const obsSounds = currentObservation?.observationSounds || currentObservation?.observation_sounds;
-  const navigation = useNavigation( );
-
-  const navToLocationPicker = ( ) => {
-    navigation.navigate( "LocationPicker", { goBackOnSave: true } );
-  };
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -118,7 +114,7 @@ const EvidenceSection = ( {
       <Pressable
         accessibilityRole="link"
         className="flex-row flex-nowrap pb-3"
-        onPress={navToLocationPicker}
+        onPress={onLocationPress}
         accessibilityLabel={t( "Edit-location" )}
       >
         <View className="w-[30px] items-center mr-1">
