@@ -54,9 +54,18 @@ const ObsEdit = ( ): Node => {
   useEffect( ( ) => {
     if ( userLocation?.latitude ) {
       updateObservationKeys( userLocation );
-      setShouldFetchLocation( false );
     }
   }, [userLocation, updateObservationKeys] );
+
+  useEffect( ( ) => {
+    // this is needed to make sure watchPosition is called when a user
+    // navigates to ObsEdit a second time during an app session,
+    // otherwise, state will indicate that fetching is not needed
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      setShouldFetchLocation( false );
+    } );
+    return unsubscribe;
+  }, [navigation] );
 
   const navToLocationPicker = useCallback( ( ) => {
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );

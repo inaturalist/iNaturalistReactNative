@@ -82,8 +82,6 @@ describe( "location fetching", () => {
       observations,
       currentObservation: observations[0]
     } );
-    renderObsEdit( );
-    expect( Geolocation.watchPosition ).not.toHaveBeenCalled();
 
     renderObsEdit( );
 

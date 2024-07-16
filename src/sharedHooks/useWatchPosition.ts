@@ -2,6 +2,7 @@ import Geolocation, {
   GeolocationError,
   GeolocationResponse
 } from "@react-native-community/geolocation";
+import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 
 export const TARGET_POSITIONAL_ACCURACY = 10;
@@ -24,6 +25,7 @@ const geolocationOptions = {
 const useWatchPosition = ( options: {
   shouldFetchLocation: boolean
 } ) => {
+  const navigation = useNavigation( );
   const [currentPosition, setCurrentPosition] = useState<string | null>( null );
   const [subscriptionId, setSubscriptionId] = useState<number | null>( null );
   const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
@@ -64,21 +66,32 @@ const useWatchPosition = ( options: {
 
   useEffect( ( ) => {
     if ( !currentPosition ) { return; }
-    setUserLocation( {
+    const newLocation = {
       latitude: currentPosition?.coords?.latitude,
       longitude: currentPosition?.coords?.longitude,
       positional_accuracy: currentPosition?.coords?.accuracy
-    } );
+    };
+    setUserLocation( newLocation );
     if ( currentPosition?.coords?.accuracy < TARGET_POSITIONAL_ACCURACY ) {
       stopWatch( subscriptionId );
     }
   }, [currentPosition, stopWatch, subscriptionId] );
 
   useEffect( ( ) => {
-    if ( shouldFetchLocation && !userLocation ) {
+    if ( shouldFetchLocation ) {
       watchPosition( );
     }
-  }, [shouldFetchLocation, userLocation] );
+  }, [shouldFetchLocation] );
+
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      setSubscriptionId( null );
+      setCurrentPosition( null );
+      setIsFetchingLocation( false );
+      setUserLocation( null );
+    } );
+    return unsubscribe;
+  }, [navigation] );
 
   return {
     isFetchingLocation,
