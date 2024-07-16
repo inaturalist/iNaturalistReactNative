@@ -146,6 +146,7 @@ const Projects = ( {
     <ViewWrapper testID="Projects">
       <View className="py-5 mx-4">
         <SearchBar
+          autoFocus={false}
           handleTextChange={setSearchInput}
           value={searchInput}
           testID="ProjectSearch.input"

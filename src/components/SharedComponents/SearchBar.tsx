@@ -1,4 +1,5 @@
 import { fontRegular } from "appConstants/fontFamilies.ts";
+import classNames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -66,7 +67,7 @@ const SearchBar = ( {
   } as const;
 
   return (
-    <View className={containerClass}>
+    <View className={classNames( "flex justify-center", containerClass )}>
       <TextInput
         ref={input}
         accessibilityLabel={t( "Search-for-a-taxon" )}
@@ -86,7 +87,7 @@ const SearchBar = ( {
       />
       {value?.length > 0 && clearSearch
         ? (
-          <View className="absolute right-0 top-[10px]">
+          <View className="absolute right-0">
             <INatIconButton
               icon="close"
               accessibilityLabel={t( "Close-search" )}
