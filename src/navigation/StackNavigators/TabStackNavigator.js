@@ -44,13 +44,15 @@ const donateTitle = () => <Heading4>{t( "DONATE" )}</Heading4>;
 const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
 const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
 const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
+const dqaTitle = ( ) => <Heading4>{t( "DATA-QUALITY-ASSESSMENT" )}</Heading4>;
 const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
 const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
 const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
+const settingsTitle = () => <Heading4>{t( "SETTINGS" )}</Heading4>;
 
 const DQA_OPTIONS = {
   ...showLongHeader,
-  headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
+  headerTitle: dqaTitle,
   unmountOnBlur: true
 };
 
@@ -204,7 +206,7 @@ const TabStackNavigator = ( ): Node => (
       <Stack.Screen
         name="Settings"
         component={Settings}
-        options={{ headerTitle: t( "Settings" ) }}
+        options={{ headerTitle: settingsTitle }}
       />
       <Stack.Screen
         name="About"
