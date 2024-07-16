@@ -1,5 +1,5 @@
 // @flow
-import classNames from "classnames";
+import classnames from "classnames";
 import {
   Body1, Body3, Body4
 } from "components/SharedComponents";
@@ -110,7 +110,7 @@ const DisplayTaxonName = ( {
     return (
       <View
         testID="display-taxon-name"
-        className={classNames( "flex", {
+        className={classnames( "flex", {
           "flex-row items-end flex-wrap w-11/12": isHorizontal
         } )}
       >
@@ -143,7 +143,7 @@ const DisplayTaxonName = ( {
 
         {
           commonName && (
-            <BottomTextComponent className={textClassName}>
+            <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
               {scientificNameFirst
                 ? commonName
                 : (
