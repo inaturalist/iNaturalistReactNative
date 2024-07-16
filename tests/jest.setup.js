@@ -15,6 +15,7 @@ import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 import mockFaker from "tests/helpers/faker";
 import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
+import * as mockPhotoImporter from "tests/mocks/react-native-image-picker";
 import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
 import * as mockZustand from "tests/mocks/zustand.ts";
 
@@ -437,3 +438,5 @@ jest.mock( "zustand", ( ) => mockZustand );
 //     } );
 //   } );
 // } );
+
+jest.mock( "react-native-image-picker", ( ) => mockPhotoImporter );
