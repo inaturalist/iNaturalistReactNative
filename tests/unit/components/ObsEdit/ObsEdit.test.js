@@ -9,8 +9,7 @@ jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
   default: ( ) => ( {
     hasLocation: true,
-    isFetchingLocation: false,
-    permissionResult: "granted"
+    isFetchingLocation: false
   } )
 } ) );
 

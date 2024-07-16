@@ -79,13 +79,14 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
 
   describe( "to Suggestions", ( ) => {
     beforeEach( ( ) => {
-      const mockGetCurrentPosition = jest.fn( ( success, _error, _options ) => success( {
+      const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
         coords: {
           latitude: 56,
-          longitude: 9
+          longitude: 9,
+          accuracy: 8
         }
       } ) );
-      Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
+      Geolocation.watchPosition.mockImplementation( mockWatchPosition );
     } );
 
     it( "should advance to suggestions screen", async ( ) => {

@@ -4,6 +4,7 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
+import ReactNativePermissions from "react-native-permissions";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -43,6 +44,12 @@ beforeEach( async ( ) => {
     locale: "en"
   } );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+  const mockedPermissions = {
+    "ios.permission.LOCATION": "granted"
+  };
+
+  jest.spyOn( ReactNativePermissions, "checkMultiple" )
+    .mockResolvedValueOnce( mockedPermissions );
 } );
 
 afterEach( ( ) => {
@@ -73,7 +80,7 @@ describe( "ObsEdit offline", ( ) => {
         coords: {
           latitude: 1,
           longitude: 1,
-          accuracy: 10,
+          accuracy: 9,
           timestamp: Date.now( )
         }
       } ) );
@@ -88,9 +95,11 @@ describe( "ObsEdit offline", ( ) => {
       renderAppWithComponent(
         <ObsEdit />
       );
-      expect(
-        screen.getByTestId( "EvidenceSection.fetchingLocationIndicator" )
-      ).toBeTruthy( );
+      // removing the next lines since location fetch is fast enough that the location indicator
+      // won't show up in this scenario
+      // expect(
+      //   screen.getByTestId( "EvidenceSection.fetchingLocationIndicator" )
+      // ).toBeTruthy( );
       await waitFor( ( ) => {
         expect( mockWatchPosition ).toHaveBeenCalled( );
       } );

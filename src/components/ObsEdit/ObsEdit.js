@@ -46,20 +46,13 @@ const ObsEdit = ( ): Node => {
   } );
 
   useEffect( ( ) => {
-    const hasLocation = currentObservation?.latitude && currentObservation?.longitude;
-    const checkNeedsLocation = async ( ) => {
-      const needsLocation = await shouldFetchObservationLocation( currentObservation );
-      if ( needsLocation ) {
-        setShouldFetchLocation( true );
-      }
-    };
-    if ( !hasLocation && hasPermissions ) {
-      checkNeedsLocation( );
+    if ( shouldFetchObservationLocation( currentObservation ) ) {
+      setShouldFetchLocation( true );
     }
-  }, [currentObservation, hasPermissions] );
+  }, [currentObservation] );
 
   useEffect( ( ) => {
-    if ( userLocation ) {
+    if ( userLocation?.latitude ) {
       updateObservationKeys( userLocation );
       setShouldFetchLocation( false );
     }
