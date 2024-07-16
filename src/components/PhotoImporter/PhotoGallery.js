@@ -59,6 +59,10 @@ const PhotoGallery = ( ): Node => {
     lastScreen: "PhotoGallery"
   } ), [navigation] );
 
+  const navToSuggestions = useCallback( ( ) => navigation.navigate( "Suggestions", {
+    lastScreen: "PhotoGallery"
+  } ), [navigation] );
+
   const moveImagesToDocumentsDirectory = async selectedImages => {
     const path = galleryPhotosPath;
     await RNFS.mkdir( path );
@@ -171,7 +175,7 @@ const PhotoGallery = ( ): Node => {
       setPhotoImporterState( {
         observations: [newObservation]
       } );
-      navToObsEdit();
+      navToSuggestions();
       setPhotoGalleryShown( false );
     } else {
       // navigate to group photos
@@ -189,7 +193,7 @@ const PhotoGallery = ( ): Node => {
     navToObsEdit, navToObsList, photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
     evidenceToAdd, galleryUris, navigation, setGroupedPhotos, fromGroupPhotos, skipGroupPhotos,
     groupedPhotos, currentObservation, updateObservations, observations, currentObservationIndex,
-    params
+    params, navToSuggestions
   ] );
 
   useFocusEffect(

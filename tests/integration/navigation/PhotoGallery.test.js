@@ -80,10 +80,10 @@ describe( "PhotoGallery navigation", ( ) => {
     );
     renderApp( );
     await navigateToPhotoImporter( );
-    const obsEditText = await screen.findByLabelText( /Add evidence/ );
+    const suggestionsText = await screen.findByText( /Add an ID Later/ );
     await waitFor( ( ) => {
       // user should land on Suggestions
-      expect( obsEditText ).toBeTruthy( );
+      expect( suggestionsText ).toBeTruthy( );
     } );
   } );
 
