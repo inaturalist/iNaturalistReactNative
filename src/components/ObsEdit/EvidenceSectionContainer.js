@@ -172,8 +172,8 @@ const EvidenceSectionContainer = ( {
   ] );
 
   const locationTextClassNames = ( !latitude || !longitude )
-    ? ["color-warningRed"]
-    : [];
+    ? ["color-warningRed mr-8"]
+    : ["mr-8"];
 
   useEffect( () => {
     if ( !currentPlaceGuess ) return;
