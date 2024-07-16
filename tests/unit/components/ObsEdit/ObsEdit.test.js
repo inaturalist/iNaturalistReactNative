@@ -5,12 +5,11 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-jest.mock( "sharedHooks/useCurrentObservationLocation", () => ( {
+jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
   default: ( ) => ( {
     hasLocation: true,
-    isFetchingLocation: false,
-    permissionResult: "granted"
+    isFetchingLocation: false
   } )
 } ) );
 

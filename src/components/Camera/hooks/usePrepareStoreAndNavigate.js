@@ -8,7 +8,7 @@ import {
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { log } from "sharedHelpers/logger";
-import { useUserLocation } from "sharedHooks";
+import { useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "usePrepareStoreAndNavigate" );
@@ -82,18 +82,22 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const observations = useStore( state => state.observations );
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
   const setCameraState = useStore( state => state.setCameraState );
-  const { userLocation } = useUserLocation( { untilAcc: 0, enabled: !!shouldFetchLocation } );
+  const { userLocation } = useWatchPosition( {
+    shouldFetchLocation
+  } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
   const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
     const newObservation = await Observation.new( );
 
-    // location is needed for fetching online Suggestions on the next screen
+    // 20240709 amanda - this is temporary since we'll want to move this code to
+    // Suggestions after the changes to permissions github issue is complete, and
+    // we'll be able to updateObservationKeys on the observation there
     if ( userLocation?.latitude ) {
       newObservation.latitude = userLocation?.latitude;
       newObservation.longitude = userLocation?.longitude;
-      newObservation.positional_accuracy = userLocation?.accuracy;
+      newObservation.positional_accuracy = userLocation?.positional_accuracy;
     }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( localFilePaths, {
@@ -116,9 +120,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     addPhotoPermissionResult,
     cameraUris,
     setObservations,
-    userLocation?.accuracy,
-    userLocation?.latitude,
-    userLocation?.longitude
+    userLocation
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async ( ) => {

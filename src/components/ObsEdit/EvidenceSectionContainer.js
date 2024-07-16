@@ -12,27 +12,28 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState
 } from "react";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
 import EvidenceSection from "./EvidenceSection";
 
 type Props = {
+  currentObservation: Object,
+  isFetchingLocation: boolean,
+  onLocationPress: ( ) => void,
   passesEvidenceTest: boolean,
   setPassesEvidenceTest: Function,
-  currentObservation: Object,
   updateObservationKeys: Function
 }
 
 const EvidenceSectionContainer = ( {
-  setPassesEvidenceTest,
-  passesEvidenceTest,
   currentObservation,
+  isFetchingLocation,
+  onLocationPress,
+  passesEvidenceTest,
+  setPassesEvidenceTest,
   updateObservationKeys
 }: Props ): Node => {
   const cameraRollUris = useStore( state => state.cameraRollUris );
@@ -42,54 +43,12 @@ const EvidenceSectionContainer = ( {
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
   const observationPhotos = currentObservation?.observationPhotos || [];
   const observationSounds = currentObservation?.observationSounds || [];
-  const mountedRef = useRef( true );
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
 
-  const [
-    shouldRetryCurrentObservationLocation,
-    setShouldRetryCurrentObservationLocation
-  ] = useState( true );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
-
-  // Hook version of componentWillUnmount. We use a ref to track mounted
-  // state (not useState, which might get frozen in a closure for other
-  // useEffects), and set it to false in the cleanup cleanup function. The
-  // effect has an empty dependency array so it should only run when the
-  // component mounts and when it unmounts, unlike in the cleanup effects of
-  // other hooks, which will run when any of there dependency values change,
-  // and maybe even before other hooks execute. If we ever need to do this
-  // again we could probably wrap this into its own hook, like useMounted
-  // ( ).
-  useEffect( ( ) => {
-    mountedRef.current = true;
-    return function cleanup( ) {
-      mountedRef.current = false;
-    };
-  }, [mountedRef] );
-
-  const {
-    hasLocation,
-    isFetchingLocation
-  } = useCurrentObservationLocation(
-    mountedRef,
-    currentObservation,
-    updateObservationKeys,
-    hasPermissions,
-    {
-      retry: hasPermissions && shouldRetryCurrentObservationLocation
-    }
-  );
-
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
-
-  useEffect( ( ) => {
-    if ( latitude ) {
-      setShouldRetryCurrentObservationLocation( false );
-    }
-  }, [latitude] );
 
   const hasPhotoOrSound = useMemo( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
@@ -114,9 +73,7 @@ const EvidenceSectionContainer = ( {
       validPositionalAccuracy = true;
     }
 
-    if (
-      hasLocation
-      && coordinatesExist
+    if ( coordinatesExist
       && latitudeInRange
       && longitudeInRange
       && validPositionalAccuracy
@@ -128,7 +85,6 @@ const EvidenceSectionContainer = ( {
     currentObservation,
     longitude,
     latitude,
-    hasLocation,
     isNewObs,
     hasImportedPhotos
   ] );
@@ -210,17 +166,15 @@ const EvidenceSectionContainer = ( {
   return (
     <EvidenceSection
       currentObservation={currentObservation}
-      updateObservationKeys={updateObservationKeys}
-      locationTextClassNames={locationTextClassNames}
-      passesEvidenceTest={fullEvidenceTest}
       isFetchingLocation={isFetchingLocation}
+      locationTextClassNames={locationTextClassNames}
       observationPhotos={observationPhotos}
+      observationSounds={observationSounds}
+      onLocationPress={onLocationPress}
+      passesEvidenceTest={fullEvidenceTest}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
-      observationSounds={observationSounds}
-      hasPermissions={hasPermissions}
-      renderPermissionsGate={renderPermissionsGate}
-      requestPermissions={requestPermissions}
+      updateObservationKeys={updateObservationKeys}
     />
   );
 };

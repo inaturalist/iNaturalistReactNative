@@ -27,6 +27,7 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/@react-native/community-cli-plugin/dist/commands/ram-bundle/index.js.flow
 .*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/index.js.flow
 .*/node_modules/@react-native/community-cli-plugin/dist/commands/bundle/buildBundle.js.flow
+.*/node_modules/metro/src/lib/JsonReporter.js.flow
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*

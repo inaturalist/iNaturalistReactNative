@@ -4,7 +4,7 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
-import { LOCATION_FETCH_INTERVAL } from "sharedHooks/useCurrentObservationLocation";
+import ReactNativePermissions from "react-native-permissions";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -44,6 +44,12 @@ beforeEach( async ( ) => {
     locale: "en"
   } );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+  const mockedPermissions = {
+    "ios.permission.LOCATION": "granted"
+  };
+
+  jest.spyOn( ReactNativePermissions, "checkMultiple" )
+    .mockResolvedValueOnce( mockedPermissions );
 } );
 
 afterEach( ( ) => {
@@ -70,25 +76,33 @@ describe( "ObsEdit offline", ( ) => {
 
   describe( "creation", ( ) => {
     it( "should fetch coordinates", async ( ) => {
-      const mockGetCurrentPosition = jest.fn( ( success, _error, _options ) => success( {
+      const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
         coords: {
           latitude: 1,
           longitude: 1,
-          accuracy: 10,
+          accuracy: 9,
           timestamp: Date.now( )
         }
       } ) );
-      Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
+      Geolocation.watchPosition.mockImplementation( mockWatchPosition );
       const observation = factory( "LocalObservation", {
         observationPhotos: []
       } );
-      useStore.setState( { observations: [observation] } );
+      useStore.setState( {
+        observations: [observation],
+        currentObservation: observation
+      } );
       renderAppWithComponent(
         <ObsEdit />
       );
+      // removing the next lines since location fetch is fast enough that the location indicator
+      // won't show up in this scenario
+      // expect(
+      //   screen.getByTestId( "EvidenceSection.fetchingLocationIndicator" )
+      // ).toBeTruthy( );
       await waitFor( ( ) => {
-        expect( mockGetCurrentPosition ).toHaveBeenCalled( );
-      }, { timeout: LOCATION_FETCH_INTERVAL * 2 } );
+        expect( mockWatchPosition ).toHaveBeenCalled( );
+      } );
       const coords = await screen.findByText( /Lat:/ );
       expect( coords ).toBeTruthy( );
       expect( screen.queryByText( "Finding location..." ) ).toBeFalsy( );
