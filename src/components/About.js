@@ -154,7 +154,7 @@ const About = (): Node => {
             <Heading4 className="mb-3">{t( "INATURALIST-NETWORK" )}</Heading4>
             <Body2 className="mb-8">{t( "The-iNaturalist-Network" )}</Body2>
             <Heading4 className="mb-3">{t( "COLLABORATORS" )}</Heading4>
-            <Body2>{t( "The-iNaturalist-team-has-collaborated" )}</Body2>
+            <Body2>{t( "The-models-that-suggest-species" )}</Body2>
           </View>
         )}
       </ScrollViewWrapper>
