@@ -186,6 +186,7 @@ Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
 Community-Guidelines = Community Guidelines
+COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
@@ -316,7 +317,6 @@ DISCARD-X-OBSERVATIONS =
 DISMISS = DISMISS
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
-Donate-to-iNaturalist = Donate to iNaturalist
 # Label for a button the user taps when a task is complete
 DONE = DONE
 Dont-have-an-account = Don't have an account? Sign up
@@ -452,7 +452,7 @@ iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNatur
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
-iNaturalist-Help = iNaturalist Help
+INATURALIST-HELP = INATURALIST HELP
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
@@ -710,6 +710,7 @@ Potential-disagreement-unsure = <0>I don't know but I am sure this is { $commonN
 Press-record-to-start = Press record to start
 Previous-observation = Previous observation
 Privacy-Policy = Privacy Policy
+PRIVACY-POLICY = PRIVACY POLICY
 Private = Private
 # As in an iNat project, a collection of observations or observation search filters
 PROJECT = PROJECT
@@ -867,7 +868,6 @@ SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Share Location
 Share-map = Share map
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
-Shop-iNaturalist-Merch = Shop iNaturalist Merch
 Show-observation-options = Show observation options.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
@@ -934,9 +934,10 @@ TAXONOMIC-RANKS = TAXONOMIC RANKS
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
 TEACHERS = TEACHERS
-Teachers-Guide = Teachers' Guide
+TEACHERS-GUIDE = TEACHERS' GUIDE
 TEAM = TEAM
 Terms-of-Use = Terms of Use
+TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.

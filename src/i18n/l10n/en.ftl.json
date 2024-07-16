@@ -261,6 +261,7 @@
     "val": "Common Name (Scientific Name)"
   },
   "Community-Guidelines": "Community Guidelines",
+  "COMMUNITY-GUIDELINES": "COMMUNITY GUIDELINES",
   "CONFIRM": {
     "comment": "Button that confirms a choice the user has made",
     "val": "CONFIRM"
@@ -436,7 +437,6 @@
   "DISMISS": "DISMISS",
   "DONATE": "DONATE",
   "DONATE-TO-INATURALIST": "DONATE TO INATURALIST",
-  "Donate-to-iNaturalist": "Donate to iNaturalist",
   "DONE": {
     "comment": "Label for a button the user taps when a task is complete",
     "val": "DONE"
@@ -616,7 +616,7 @@
   "INATURALIST-COMMUNITY": "INATURALIST COMMUNITY",
   "INATURALIST-FORUM": "INATURALIST FORUM",
   "iNaturalist-has-no-ID-suggestions-for-this-photo": "iNaturalist has no ID suggestions for this photo.",
-  "iNaturalist-Help": "iNaturalist Help",
+  "INATURALIST-HELP": "INATURALIST HELP",
   "INATURALIST-HELP-PAGE": "INATURALIST HELP PAGE",
   "iNaturalist-helps-you-identify": "iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!",
   "iNaturalist-identification-suggestions-are-based-on": "iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.",
@@ -962,6 +962,7 @@
   },
   "Previous-observation": "Previous observation",
   "Privacy-Policy": "Privacy Policy",
+  "PRIVACY-POLICY": "PRIVACY POLICY",
   "Private": "Private",
   "PROJECT": {
     "comment": "As in an iNat project, a collection of observations or observation search filters",
@@ -1186,7 +1187,6 @@
   "Share-location": "Share Location",
   "Share-map": "Share map",
   "SHOP-INATURALIST-MERCH": "SHOP INATURALIST MERCH",
-  "Shop-iNaturalist-Merch": "Shop iNaturalist Merch",
   "Show-observation-options": "Show observation options.",
   "Shows-identification-suggestions": {
     "comment": "Label for button that shows identification suggestions",
@@ -1271,9 +1271,10 @@
     "val": "TAXONOMY"
   },
   "TEACHERS": "TEACHERS",
-  "Teachers-Guide": "Teachers' Guide",
+  "TEACHERS-GUIDE": "TEACHERS' GUIDE",
   "TEAM": "TEAM",
   "Terms-of-Use": "Terms of Use",
+  "TERMS-OF-USE": "TERMS OF USE",
   "Text-Box-to-Describe-Reason-for-Flag": "Text box to describe reason for flag.",
   "The-exact-location-will-be-hidden": "The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).",
   "The-iNaturalist-Network": "The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.",
