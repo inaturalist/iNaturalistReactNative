@@ -13,7 +13,7 @@ import Modal from "components/SharedComponents/Modal.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Pressable } from "react-native";
+import { Pressable, useWindowDimensions } from "react-native";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -26,6 +26,8 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const [showModal, setShowModal] = useState( false );
+
+  const { height } = useWindowDimensions( );
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navAndCloseModal = ( screen, params ) => {
@@ -47,9 +49,16 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
     return (
       // It seems to be a known issue that the EmptyListComponent of FlashList,
       // which is the parent here, is not possible to be used with a flex of 1, or flex grow.
-      // The following workaround is to use a margin of 30% to roughly center the content.
+      // The following workaround is to use a margin that roughly centers the content.
       // https://github.com/Shopify/flash-list/discussions/517
-      <View className="mx-[67px] my-[30%] items-center">
+      <View
+        className="mx-[67px] items-center"
+        style={{
+          // Height of the screen minus the height of the header, the footer,
+          // the height of the gradient button and the text. Divided by two to center the content.
+          marginTop: ( height - 180 - 80 - 190 ) * 0.5
+        }}
+      >
         <GradientButton
           accessibilityLabel={t( "Add-observations" )}
           sizeClassName="w-[141px] h-[141px]"
@@ -61,7 +70,6 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
             {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}
           </Heading2>
         </Pressable>
-
       </View>
     );
   }
