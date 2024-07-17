@@ -1,22 +1,19 @@
-// @flow
-
 import {
   INatIconButton
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  disabled?: boolean,
-  handleCheckmarkPress: Function
+interface Props {
+  disabled?: boolean;
+  handleCheckmarkPress: ( ) => void;
 }
 
 const GreenCheckmark = ( {
   disabled,
   handleCheckmarkPress
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   return (

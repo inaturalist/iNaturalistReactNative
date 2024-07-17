@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark";
+import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark.tsx";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
