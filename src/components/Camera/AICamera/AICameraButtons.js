@@ -91,7 +91,7 @@ const AICameraButtons = ( {
     return (
       <TabletButtons
         changeZoom={changeZoom}
-        disabled={modelLoaded}
+        disabled={!modelLoaded}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
