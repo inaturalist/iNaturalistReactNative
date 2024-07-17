@@ -26,7 +26,9 @@ const ProjectsContainer = ( ) => {
   const memberId = currentUser?.id;
   const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
-  const [currentTabId, setCurrentTabId] = useState( TAB_ID.JOINED );
+  const [currentTabId, setCurrentTabId] = useState( currentUser
+    ? TAB_ID.JOINED
+    : TAB_ID.FEATURED );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const { userLocation } = useWatchPosition( {
     shouldFetchLocation: hasPermissions
