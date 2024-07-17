@@ -8,7 +8,7 @@ import {
   Button,
   Heading2
 } from "components/SharedComponents";
-import GradientButton from "components/SharedComponents/Buttons/GradientButton";
+import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import Modal from "components/SharedComponents/Modal.tsx";
 import { View } from "components/styledComponents";
 import type { Node } from "react";

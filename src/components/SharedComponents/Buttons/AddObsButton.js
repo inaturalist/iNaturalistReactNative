@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal";
 import { Modal } from "components/SharedComponents";
-import GradientButton from "components/SharedComponents/Buttons/GradientButton";
+import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import * as React from "react";
