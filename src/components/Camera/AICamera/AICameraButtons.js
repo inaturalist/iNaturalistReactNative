@@ -1,10 +1,10 @@
 // @flow
 
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
-import Close from "components/Camera/Buttons/Close";
-import Flash from "components/Camera/Buttons/Flash";
+import Close from "components/Camera/Buttons/Close.tsx";
+import Flash from "components/Camera/Buttons/Flash.tsx";
 import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
-import Zoom from "components/Camera/Buttons/Zoom";
+import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
