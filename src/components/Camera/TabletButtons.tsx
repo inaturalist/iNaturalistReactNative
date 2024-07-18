@@ -39,7 +39,7 @@ interface Props {
   changeZoom: ( _event: GestureResponderEvent ) => void;
   disabled: boolean;
   flipCamera: ( _event: GestureResponderEvent ) => void;
-  handleCheckmarkPress: ( _event: GestureResponderEvent ) => void;
+  handleCheckmarkPress?: ( _event: GestureResponderEvent ) => void;
   handleClose?: ( _event: GestureResponderEvent ) => void;
   hasFlash: boolean;
   photosTaken?: boolean;
@@ -124,7 +124,7 @@ const TabletButtons = ( {
           className={classnames( checkmarkClasses, "mb-[25px]" )}
         >
           <GreenCheckmark
-            handleCheckmarkPress={handleCheckmarkPress}
+            handleCheckmarkPress={handleCheckmarkPress || ( () => null )}
           />
         </Animated.View>
       ) }
