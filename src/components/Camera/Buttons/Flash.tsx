@@ -1,24 +1,23 @@
-// @flow
-
 import classnames from "classnames";
 import TransparentCircleButton, {
   CIRCLE_SIZE
 } from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
+import { TakePhotoOptions } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 
 const isTablet = DeviceInfo.isTablet();
 
-type Props = {
-  rotatableAnimatedStyle: Object,
-  toggleFlash: Function,
-  hasFlash: boolean,
-  takePhotoOptions: Object,
-  flashClassName?: string
+interface Props {
+  rotatableAnimatedStyle: ViewStyle;
+  toggleFlash: ( _event: GestureResponderEvent ) => void;
+  hasFlash: boolean;
+  takePhotoOptions: TakePhotoOptions;
+  flashClassName?: string;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -37,7 +36,7 @@ const Flash = ( {
   hasFlash,
   takePhotoOptions,
   flashClassName
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   if ( !hasFlash ) return <CameraButtonPlaceholder />;
