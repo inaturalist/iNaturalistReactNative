@@ -64,7 +64,7 @@ const AICameraButtons = ( {
     return (
       <TabletButtons
         changeZoom={changeZoom}
-        disabled={!modelLoaded && !takingPhoto}
+        disabled={!modelLoaded || takingPhoto}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
@@ -77,7 +77,6 @@ const AICameraButtons = ( {
       />
     );
   }
-  console.log( "takingPhoto", takingPhoto );
   return (
     <View className="bottom-10 absolute right-5 left-5">
       <View className="flex-row justify-end pb-[30px]">
@@ -116,7 +115,7 @@ const AICameraButtons = ( {
       <View className="flex-row justify-between items-center">
         <Close />
         <TakePhoto
-          disabled={!modelLoaded && !takingPhoto}
+          disabled={!modelLoaded || takingPhoto}
           takePhoto={takePhoto}
           showPrediction={showPrediction}
         />
