@@ -1,5 +1,3 @@
-// @flow
-
 import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Close from "components/Camera/Buttons/Close.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
@@ -7,63 +5,36 @@ import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";
 import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons.tsx";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import { TakePhotoOptions } from "react-native-vision-camera";
 
 import AIDebugButton from "./AIDebugButton";
 
 const isTablet = DeviceInfo.isTablet();
 
-// the following code is for another version of the layout, rotated on landscape,
-// which we're not currently supporting in the StandardCamera
-
-// <>
-// <View className="h-full justify-center absolute right-6">
-//   <TakePhoto
-//     disallowAddingPhotos={false}
-//     takePhoto={takePhoto}
-//     showPrediction
-//   />
-// </View>
-// <View
-//   className="bottom-10 absolute right-5 left-5 flex-row justify-between items-center"
-// >
-//   <View className="flex-row justify-evenly w-[180px]">
-//     <Flash
-//       toggleFlash={toggleFlash}
-//       hasFlash={hasFlash}
-//       takePhotoOptions={takePhotoOptions}
-//       rotatableAnimatedStyle={rotatableAnimatedStyle}
-//     />
-//     <CameraFlip flipCamera={flipCamera} />
-//   </View>
-//   <View className="w-[74px] items-center">
-//     <Close />
-//   </View>
-// </View>
-// </>
-
-type Props = {
-  changeZoom: Function,
-  confidenceThreshold?: number,
-  cropRatio?: string,
-  flipCamera: Function,
-  fps?: number,
-  hasFlash: boolean,
-  modelLoaded: boolean,
-  numStoredResults?: number,
-  rotatableAnimatedStyle: Object,
-  setConfidenceThreshold?: Function,
+interface Props {
+  changeZoom: ( _event: GestureResponderEvent ) => void;
+  confidenceThreshold?: number;
+  cropRatio?: string;
+  flipCamera: ( _event: GestureResponderEvent ) => void;
+  fps?: number;
+  hasFlash: boolean;
+  modelLoaded: boolean;
+  numStoredResults?: number;
+  rotatableAnimatedStyle: ViewStyle;
+  setConfidenceThreshold?: Function;
   setCropRatio?: Function,
   setFPS?: Function,
   setNumStoredResults?: Function,
-  showPrediction: boolean,
-  showZoomButton: boolean,
-  takePhoto: () => Promise<void>,
-  takePhotoOptions: Object,
-  toggleFlash: Function,
-  zoomTextValue: string
+  showPrediction: boolean;
+  showZoomButton: boolean;
+  takePhoto: () => Promise<void>;
+  takePhotoOptions: TakePhotoOptions;
+  takingPhoto: boolean;
+  toggleFlash: ( _event: GestureResponderEvent ) => void;
+  zoomTextValue: string;
 }
 
 const AICameraButtons = ( {
@@ -84,14 +55,15 @@ const AICameraButtons = ( {
   showZoomButton,
   takePhoto,
   takePhotoOptions,
+  takingPhoto,
   toggleFlash,
   zoomTextValue
-}: Props ): Node => {
+}: Props ) => {
   if ( isTablet ) {
     return (
       <TabletButtons
         changeZoom={changeZoom}
-        disabled={!modelLoaded}
+        disabled={!modelLoaded && !takingPhoto}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
@@ -104,6 +76,7 @@ const AICameraButtons = ( {
       />
     );
   }
+  console.log( "takingPhoto", takingPhoto );
   return (
     <View className="bottom-10 absolute right-5 left-5">
       <View className="flex-row justify-end pb-[30px]">
@@ -142,7 +115,7 @@ const AICameraButtons = ( {
       <View className="flex-row justify-between items-center">
         <Close />
         <TakePhoto
-          disabled={!modelLoaded}
+          disabled={!modelLoaded && !takingPhoto}
           takePhoto={takePhoto}
           showPrediction={showPrediction}
         />
