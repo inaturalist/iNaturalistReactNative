@@ -254,7 +254,7 @@ const TaxonDetails = ( ): Node => {
               >
                 <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
                 {!hideNavButtons && (
-                  <View className="ml-5">
+                  <View className="ml-2">
                     <INatIconButton
                       icon="compass-rose-outline"
                       onPress={( ) => {

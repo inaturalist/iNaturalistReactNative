@@ -350,6 +350,9 @@ exports[`TaxonResult should render correctly 1`] = `
                 {
                   "color": "#454545",
                 },
+                {
+                  "marginTop": 3,
+                },
               ],
             ]
           }
