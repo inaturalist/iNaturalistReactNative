@@ -1,20 +1,18 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import { INatIconButton } from "components/SharedComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 
-type Props = {
-  handleClose?: Function,
-  black?: boolean,
-  buttonClassName?: string,
-  size?: number,
-  icon?: string,
-  width?: number,
-  height?: number
+interface Props {
+  // TODO: navigation type
+  handleClose?: ( _navigation: any ) => void;
+  black?: boolean;
+  buttonClassName?: string;
+  size?: number;
+  icon?: string;
+  width?: number;
+  height?: number;
 }
 
 const CloseButton = ( {
@@ -25,7 +23,7 @@ const CloseButton = ( {
   icon,
   size,
   width
-}: Props ): Node => {
+}: Props ) => {
   const navigation = useNavigation( );
   const theme = useTheme( );
 
