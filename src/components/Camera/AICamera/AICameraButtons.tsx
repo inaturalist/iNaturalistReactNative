@@ -24,6 +24,7 @@ interface Props {
   modelLoaded: boolean;
   numStoredResults?: number;
   rotatableAnimatedStyle: ViewStyle;
+  // Those four are debug only so I don't bother with types
   setConfidenceThreshold?: Function;
   setCropRatio?: Function,
   setFPS?: Function,
