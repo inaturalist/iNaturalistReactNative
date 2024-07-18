@@ -13,7 +13,7 @@ interface StoredResult {
   timestamp: number;
 }
 
-const usePredictions = ( ): Object => {
+const usePredictions = ( ) => {
   const [result, setResult] = useState<StoredResult | null>( null );
   const [resultTimestamp, setResultTimestamp] = useState<number | undefined>( undefined );
   const [modelLoaded, setModelLoaded] = useState( false );
