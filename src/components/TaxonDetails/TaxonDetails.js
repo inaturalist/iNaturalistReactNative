@@ -67,11 +67,30 @@ const TaxonDetails = ( ): Node => {
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
   const history = navState?.routes.map( r => r.name );
+  // remove TaxonDetails since we know we're on that screen currently
+  history?.pop( );
+  const lastScreen = _.last( history );
   const fromObsDetails = _.includes( history, "ObsDetails" );
-  const fromSuggestions = _.includes( history, "Suggestions" );
-  const fromTaxonSearch = _.includes( history, "TaxonSearch" );
-  const fromPrevTaxonDetails = _.filter( history, name => name === "TaxonDetails" ).length > 1;
+  const prevScreenSuggestions = lastScreen === "Suggestions";
+  const prevScreenTaxonSearch = lastScreen === "TaxonSearch";
+  const prevScreenTaxonDetails = lastScreen === "TaxonDetails";
   const currentUser = useCurrentUser( );
+
+  const reversedHistory = _.reverse( history );
+  let cameFromSuggestionsOrSearch = false;
+
+  reversedHistory?.forEach( ( screen, index ) => {
+    if ( screen !== "TaxonDetails" ) {
+      if ( screen === "Suggestions" || screen === "TaxonSearch" ) {
+        if ( reversedHistory[index - 1] === "TaxonDetails" ) {
+          // see if previous index was taxon details
+          cameFromSuggestionsOrSearch = true;
+        }
+      }
+    }
+  } );
+
+  const isTaxonDetailsFromSuggestions = prevScreenTaxonDetails && cameFromSuggestionsOrSearch;
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
@@ -79,8 +98,10 @@ const TaxonDetails = ( ): Node => {
     : null;
 
   const showSelectButton = currentUser
-    && ( fromSuggestions || fromTaxonSearch || fromPrevTaxonDetails );
-  const usesVision = fromSuggestions && !fromTaxonSearch && !fromPrevTaxonDetails;
+    && ( prevScreenSuggestions || prevScreenTaxonSearch || isTaxonDetailsFromSuggestions );
+  const usesVision = prevScreenSuggestions
+    && !prevScreenTaxonSearch
+    && !isTaxonDetailsFromSuggestions;
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );

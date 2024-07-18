@@ -47,6 +47,33 @@ const mockUser = factory( "LocalUser", {
   icon_url: faker.image.url( )
 } );
 
+const taxonSearchRoute = {
+  name: "TaxonSearch"
+};
+
+const suggestionsRoute = {
+  name: "Suggestions"
+};
+
+const taxonDetailsRoute = {
+  name: "TaxonDetails"
+};
+
+const obsDetailsRoute = {
+  name: "ObsDetails",
+  params: {
+    uuid: faker.string.uuid( )
+  }
+};
+
+const exploreRoute = {
+  name: "Explore"
+};
+
+const cameraRoute = {
+  name: "Camera"
+};
+
 const renderTaxonDetails = ( ) => render(
   <INatPaperProvider>
     <NavigationContainer>
@@ -128,12 +155,12 @@ describe( "Select button state when navigating from various screens", ( ) => {
     jest.useFakeTimers( );
   } );
 
-  test( "shows sticky select taxon button when navigating from suggestions", ( ) => {
+  test( "shows sticky select taxon button when previous screen was suggestions", ( ) => {
     useNavigationState.mockImplementation( ( ) => ( {
       routes: [
-        {
-          name: "Suggestions"
-        }
+        cameraRoute,
+        suggestionsRoute,
+        taxonDetailsRoute
       ]
     } ) );
     renderTaxonDetails( );
@@ -141,12 +168,12 @@ describe( "Select button state when navigating from various screens", ( ) => {
     expect( selectTaxonButton ).toBeTruthy( );
   } );
 
-  test( "shows sticky select taxon button when navigating from taxon search", ( ) => {
+  test( "shows sticky select taxon button when previous screen was taxon search", ( ) => {
     useNavigationState.mockImplementation( ( ) => ( {
       routes: [
-        {
-          name: "TaxonSearch"
-        }
+        cameraRoute,
+        taxonSearchRoute,
+        taxonDetailsRoute
       ]
     } ) );
     renderTaxonDetails( );
@@ -154,15 +181,13 @@ describe( "Select button state when navigating from various screens", ( ) => {
     expect( selectTaxonButton ).toBeTruthy( );
   } );
 
-  test( "shows sticky select taxon button when navigating from ancestor screens", ( ) => {
+  test( "shows sticky select taxon button when navigating from ancestor screens"
+    + " if previous screen is Suggestions", ( ) => {
     useNavigationState.mockImplementation( ( ) => ( {
       routes: [
-        {
-          name: "TaxonDetails"
-        },
-        {
-          name: "TaxonDetails"
-        }
+        suggestionsRoute,
+        taxonDetailsRoute,
+        taxonDetailsRoute
       ]
     } ) );
     renderTaxonDetails( );
@@ -170,18 +195,69 @@ describe( "Select button state when navigating from various screens", ( ) => {
     expect( selectTaxonButton ).toBeTruthy( );
   } );
 
-  test( "does not show sticky select taxon button when navigating from elsewhere", ( ) => {
+  test( "shows sticky select taxon button when navigating from ancestor screens"
+    + " if previous screen is TaxonSearch", ( ) => {
     useNavigationState.mockImplementation( ( ) => ( {
       routes: [
-        {
-          name: "ObsDetails",
-          params: {
-            uuid: faker.string.uuid( )
-          }
-        },
-        {
-          name: "Explore"
-        }
+        taxonSearchRoute,
+        taxonDetailsRoute,
+        taxonDetailsRoute
+      ]
+    } ) );
+    renderTaxonDetails( );
+    const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
+    expect( selectTaxonButton ).toBeTruthy( );
+  } );
+
+  test( "does not show sticky select taxon button when navigating from ancestor screens"
+    + " if previous screen is Explore", ( ) => {
+    useNavigationState.mockImplementation( ( ) => ( {
+      routes: [
+        exploreRoute,
+        taxonDetailsRoute,
+        taxonDetailsRoute
+      ]
+    } ) );
+    renderTaxonDetails( );
+    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
+    expect( selectTaxonButton ).toBeFalsy( );
+  } );
+
+  test( "does not show sticky select taxon button when navigating from ancestor screens"
+    + " if previous screen is ObsDetails", ( ) => {
+    useNavigationState.mockImplementation( ( ) => ( {
+      routes: [
+        obsDetailsRoute,
+        taxonDetailsRoute,
+        taxonDetailsRoute
+      ]
+    } ) );
+    renderTaxonDetails( );
+    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
+    expect( selectTaxonButton ).toBeFalsy( );
+  } );
+
+  test( "does not show sticky select taxon button when navigating from Explore,"
+    + "  even if Suggestions was in stack", ( ) => {
+    useNavigationState.mockImplementation( ( ) => ( {
+      routes: [
+        suggestionsRoute,
+        exploreRoute,
+        taxonDetailsRoute
+      ]
+    } ) );
+    renderTaxonDetails( );
+    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
+    expect( selectTaxonButton ).toBeFalsy( );
+  } );
+
+  test( "does not show sticky select taxon button when navigating from ObsDetails,"
+    + "  even if Suggestions was in stack", ( ) => {
+    useNavigationState.mockImplementation( ( ) => ( {
+      routes: [
+        suggestionsRoute,
+        obsDetailsRoute,
+        taxonDetailsRoute
       ]
     } ) );
     renderTaxonDetails( );
@@ -194,9 +270,8 @@ describe( "Select button state when navigating from various screens", ( ) => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => null );
     useNavigationState.mockImplementation( ( ) => ( {
       routes: [
-        {
-          name: "Suggestions"
-        }
+        suggestionsRoute,
+        taxonDetailsRoute
       ]
     } ) );
     renderTaxonDetails( );
