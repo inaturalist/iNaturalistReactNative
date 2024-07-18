@@ -1,12 +1,9 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import { TransparentCircleButton } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-const Close = ( ): Node => {
+const Close = ( ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
