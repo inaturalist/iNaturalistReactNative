@@ -1,12 +1,11 @@
-// @flow
-
 import classnames from "classnames";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
+import { TakePhotoOptions } from "react-native-vision-camera";
 
 import CameraFlip from "./Buttons/CameraFlip";
 import Flash from "./Buttons/Flash";
@@ -36,21 +35,21 @@ const cameraOptionsClasses = [
   `w-[${CAMERA_BUTTON_DIM}px]`
 ].join( " " );
 
-type Props = {
-  changeZoom: Function,
-  disabled: boolean,
-  flipCamera: Function,
-  handleCheckmarkPress?: Function,
-  handleClose?: Function,
-  hasFlash: boolean,
-  photosTaken?: boolean,
-  rotatableAnimatedStyle: Object,
-  showPrediction?: boolean,
-  showZoomButton: boolean,
-  takePhoto: () => Promise<void>,
-  takePhotoOptions: Object,
-  toggleFlash: Function,
-  zoomTextValue: string
+interface Props {
+  changeZoom: ( _event: GestureResponderEvent ) => void;
+  disabled: boolean;
+  flipCamera: ( _event: GestureResponderEvent ) => void;
+  handleCheckmarkPress: ( _event: GestureResponderEvent ) => void;
+  handleClose?: ( _event: GestureResponderEvent ) => void;
+  hasFlash: boolean;
+  photosTaken?: boolean;
+  rotatableAnimatedStyle: ViewStyle;
+  showPrediction?: boolean;
+  showZoomButton: boolean;
+  takePhoto: () => Promise<void>;
+  takePhotoOptions: TakePhotoOptions;
+  toggleFlash: ( _event: GestureResponderEvent ) => void;
+  zoomTextValue: string;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -81,7 +80,7 @@ const TabletButtons = ( {
   takePhotoOptions,
   toggleFlash,
   zoomTextValue
-}: Props ): Node => {
+}: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
     "h-[380px]",
