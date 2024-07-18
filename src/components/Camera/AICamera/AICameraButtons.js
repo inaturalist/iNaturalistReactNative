@@ -1,6 +1,6 @@
 // @flow
 
-import CameraFlip from "components/Camera/Buttons/CameraFlip";
+import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Close from "components/Camera/Buttons/Close.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
 import TakePhoto from "components/Camera/Buttons/TakePhoto.tsx";

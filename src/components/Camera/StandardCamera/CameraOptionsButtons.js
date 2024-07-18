@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import CameraFlip from "components/Camera/Buttons/CameraFlip";
+import CameraFlip from "components/Camera/Buttons/CameraFlip.tsx";
 import Flash from "components/Camera/Buttons/Flash.tsx";
 import Zoom from "components/Camera/Buttons/Zoom.tsx";
 import TabletButtons from "components/Camera/TabletButtons";
