@@ -88,7 +88,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
-  const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
+  const createObsWithCameraPhotos = useCallback( async localFilePaths => {
     const newObservation = await Observation.new( );
 
     // 20240709 amanda - this is temporary since we'll want to move this code to
@@ -104,14 +104,6 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
         position: 0,
         local: true
       } );
-
-    if ( visionResult ) {
-      // make sure taxon id is stored as a number, not a string, from AICamera
-      visionResult.taxon.id = Number( visionResult.taxon.id );
-      newObservation.taxon = visionResult.taxon;
-      newObservation.owners_identification_from_vision = true;
-      newObservation.score = visionResult.score;
-    }
     setObservations( [newObservation] );
     if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
     return savePhotosToCameraGallery( cameraUris, addCameraRollUri );
@@ -148,7 +140,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     updateObservations
   ] );
 
-  const prepareStoreAndNavigate = useCallback( async ( visionResult = null ) => {
+  const prepareStoreAndNavigate = useCallback( async ( ) => {
     if ( !checkmarkTapped ) { return null; }
 
     setSavingPhoto( true );
@@ -162,7 +154,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
       await updateObsWithCameraPhotos( );
     } else {
-      await createObsWithCameraPhotos( cameraUris, visionResult );
+      await createObsWithCameraPhotos( cameraUris );
     }
     // When we've persisted photos to the observation, we don't need them in
     // state anymore

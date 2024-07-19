@@ -230,6 +230,7 @@ const SuggestionsContainer = ( ) => {
     <>
       <Suggestions
         debugData={debugData}
+        handleSkip={( ) => setSelectedTaxon( undefined )}
         hideSkip={params?.hideSkip}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}

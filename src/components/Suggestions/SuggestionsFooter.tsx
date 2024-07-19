@@ -1,7 +1,6 @@
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable max-len */
-import { useNavigation } from "@react-navigation/native";
 import {
   Body1,
   Body3,
@@ -10,7 +9,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
 
@@ -18,6 +17,7 @@ import Attribution from "./Attribution";
 
 type Props = {
   debugData: Object,
+  handleSkip: Function,
   hideSkip?: boolean,
   isLoading?: boolean,
   observers: Array<string>,
@@ -28,6 +28,7 @@ type Props = {
 
 const SuggestionsFooter = ( {
   debugData,
+  handleSkip,
   hideSkip,
   isLoading,
   observers,
@@ -37,10 +38,7 @@ const SuggestionsFooter = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
-  const navigation = useNavigation( );
-  const navToObsEdit = useCallback( ( ) => navigation.navigate( "ObsEdit", {
-    lastScreen: "Suggestions"
-  } ), [navigation] );
+
   const hideLocationButton = usingOfflineSuggestions || isLoading;
 
   return (
@@ -71,7 +69,7 @@ const SuggestionsFooter = ( {
       { !hideSkip && (
         <Body1
           className="underline text-center py-6"
-          onPress={navToObsEdit}
+          onPress={handleSkip}
           accessibilityRole="link"
           accessibilityHint={t( "Navigates-to-observation-edit-screen" )}
         >

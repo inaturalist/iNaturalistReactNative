@@ -91,12 +91,14 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function confirmPhotosAndAddIdLater() {
+  async function confirmPhotosAndAddTopId() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
     await screen.findByText( /You are offline/ );
-    const idLaterButton = await screen.findByText( "Add an ID Later" );
-    await actor.press( idLaterButton );
+    const topTaxonResultButton = await screen.findByTestId(
+      `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+    );
+    await actor.press( topTaxonResultButton );
   }
 
   async function saveAndEditObs() {
@@ -146,7 +148,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from StandardCamera for existing photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddIdLater();
+    await confirmPhotosAndAddTopId();
     await saveAndEditObs();
     // Enter camera to add new photo
     const addEvidenceButton = await screen.findByLabelText( "Add evidence" );
@@ -164,7 +166,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddIdLater();
+    await confirmPhotosAndAddTopId();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
     await expectObsEditToHaveNoPhotos();
@@ -173,7 +175,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddIdLater();
+    await confirmPhotosAndAddTopId();
     await saveAndEditObs();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
