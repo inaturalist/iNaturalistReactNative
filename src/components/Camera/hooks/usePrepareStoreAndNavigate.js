@@ -146,14 +146,11 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     setSavingPhoto( true );
     // save all to camera roll
 
-    // handle case where user backs out from ObsEdit -> Suggestions -> Camera
-    // and already has a taxon selected
-    // TODO this isn't checking for a selected taxon, and why is it checking
-    // for existing photos? If reached from addEvidence, you are always
-    // updating an existing obs
-    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
+    if ( addEvidence ) {
       await updateObsWithCameraPhotos( );
     } else {
+      // when backing out from ObsEdit -> Suggestions -> Camera, create a
+      // new observation
       await createObsWithCameraPhotos( cameraUris );
     }
     // When we've persisted photos to the observation, we don't need them in
@@ -171,7 +168,6 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     cameraUris,
     checkmarkTapped,
     createObsWithCameraPhotos,
-    currentObservation,
     navigation,
     updateObsWithCameraPhotos,
     setCameraState,

@@ -10,6 +10,7 @@ import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
 import mockNodePath from "path";
 import React from "react";
+import mockBackHandler from "react-native/Libraries/Utilities/__mocks__/BackHandler";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
@@ -440,3 +441,8 @@ jest.mock( "zustand", ( ) => mockZustand );
 // } );
 
 jest.mock( "react-native-image-picker", ( ) => mockPhotoImporter );
+
+jest.mock(
+  "react-native/Libraries/Utilities/BackHandler",
+  () => mockBackHandler
+);

@@ -6,9 +6,13 @@ import {
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
+import inatjs from "inaturalistjs";
+import { BackHandler } from "react-native";
 import useStore from "stores/useStore";
+import factory, { makeResponse } from "tests/factory";
 import { renderApp } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -28,6 +32,17 @@ const mockLocalTaxon = {
     url: "fake_image_url"
   }
 };
+
+const mockModelResult = {
+  predictions: [factory( "ModelPrediction", {
+  // useOfflineSuggestions will filter out taxa w/ rank_level > 40
+    rank_level: 20
+  } )]
+};
+inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
+getPredictionsForImage.mockImplementation(
+  async ( ) => ( mockModelResult )
+);
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -58,18 +73,40 @@ beforeAll( async () => {
 
 beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
 
-describe( "AICamera navigation with advanced user layout", ( ) => {
-  const actor = userEvent.setup( );
+const actor = userEvent.setup( );
 
+const navToAICamera = async ( ) => {
+  expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
+  const tabBar = await screen.findByTestId( "CustomTabBar" );
+  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
+  await actor.press( addObsButton );
+  const cameraButton = await screen.findByLabelText( /AI Camera/ );
+  await actor.press( cameraButton );
+};
+
+const takePhotoAndNavToSuggestions = async ( ) => {
+  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
+  await actor.press( takePhotoButton );
+  const addIDButton = await screen.findByText( /ADD AN ID/ );
+  expect( addIDButton ).toBeVisible( );
+};
+
+const navToObsEditWithTopSuggestion = async ( ) => {
+  const topTaxonResultButton = await screen.findByTestId(
+    `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+  );
+  await actor.press( topTaxonResultButton );
+  const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
+  expect( evidenceList ).toBeVisible( );
+  // one photo from AICamera
+  expect( evidenceList.props.data.length ).toEqual( 1 );
+};
+
+describe( "AICamera navigation with advanced user layout", ( ) => {
   describe( "from MyObs", ( ) => {
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const tabBar = await screen.findByTestId( "CustomTabBar" );
-      const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
-      const cameraButton = await screen.findByLabelText( /AI Camera/ );
-      await actor.press( cameraButton );
+      await navToAICamera( );
       expect( await screen.findByText( /Loading iNaturalist's AI Camera/ ) ).toBeVisible( );
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
@@ -87,9 +124,6 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
         }
       } ) );
       Geolocation.watchPosition.mockImplementation( mockWatchPosition );
-    } );
-
-    it( "should advance to suggestions screen", async ( ) => {
       jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
         handleTaxaDetected: jest.fn( ),
         modelLoaded: true,
@@ -98,19 +132,27 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
         },
         setResult: jest.fn( )
       } ) );
+    } );
 
+    it( "should advance to suggestions screen", async ( ) => {
       renderApp( );
-      expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
-      const tabBar = await screen.findByTestId( "CustomTabBar" );
-      const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
-      const cameraButton = await screen.findByLabelText( /AI Camera/ );
-      await actor.press( cameraButton );
+      await navToAICamera( );
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
-      const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-      await actor.press( takePhotoButton );
-      const addIDButton = await screen.findByText( /ADD AN ID/ );
-      expect( addIDButton ).toBeVisible( );
+      await takePhotoAndNavToSuggestions( );
+    } );
+
+    it( "should advance from suggestions to obs edit, back out to AI camera, and"
+      + " advance to obs edit with a single observation photo", async ( ) => {
+      renderApp( );
+      await navToAICamera( );
+      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
+      await takePhotoAndNavToSuggestions( );
+      await navToObsEditWithTopSuggestion( );
+      const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
+      await actor.press( obsEditBackButton );
+      BackHandler.mockPressBack( );
+      await takePhotoAndNavToSuggestions( );
+      await navToObsEditWithTopSuggestion( );
     } );
   } );
 } );
