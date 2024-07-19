@@ -50,6 +50,7 @@ const SuggestionsContainer = ( ) => {
     ...initialSuggestions,
     showSuggestionsWithLocation: evidenceHasLocation
   } );
+  console.log( currentObservation, "current observation latitude" );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const showImproveWithLocationButton = hasPermissions === false;
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
@@ -72,7 +73,8 @@ const SuggestionsContainer = ( ) => {
     fetchStatus
   } = useOnlineSuggestions( selectedPhotoUri, {
     showSuggestionsWithLocation,
-    usingOfflineSuggestions
+    usingOfflineSuggestions,
+    hasPermissions
   } );
 
   const loadingOnlineSuggestions = fetchStatus === "fetching";
@@ -135,10 +137,7 @@ const SuggestionsContainer = ( ) => {
 
   const filterSuggestions = useCallback( ( ) => {
     const removeTopSuggestion = ( list, id ) => _.remove( list, item => item.taxon.id === id );
-    const sortedSuggestions = sortSuggestions( unfilteredSuggestions, {
-      showSuggestionsWithLocation: suggestions.showSuggestionsWithLocation,
-      hasOfflineSuggestions
-    } );
+    const sortedSuggestions = sortSuggestions( unfilteredSuggestions, { hasOfflineSuggestions } );
     const newSuggestions = {
       ...suggestions,
       otherSuggestions: sortedSuggestions,
@@ -195,11 +194,8 @@ const SuggestionsContainer = ( ) => {
     hasOfflineSuggestions
   ] );
 
-  const allSuggestionsFetched = suggestions.isLoading
-    && (
-      ( !tryOfflineSuggestions && fetchStatus === "idle" )
-      || !loadingOfflineSuggestions
-    );
+  const allSuggestionsFetched = ( !tryOfflineSuggestions && fetchStatus === "idle" )
+    || !loadingOfflineSuggestions;
 
   const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
 

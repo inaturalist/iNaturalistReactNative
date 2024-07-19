@@ -73,7 +73,8 @@ const useOnlineSuggestions = (
   const currentObservation = useStore( state => state.currentObservation );
   const {
     showSuggestionsWithLocation,
-    usingOfflineSuggestions
+    usingOfflineSuggestions,
+    hasPermissions
   } = options;
 
   const params = showSuggestionsWithLocation
@@ -106,7 +107,9 @@ const useOnlineSuggestions = (
       return scoreImage( scoreImageParams, optsWithAuth );
     },
     {
-      enabled: ( !!selectedPhotoUri && usingOfflineSuggestions === false ),
+      enabled: !!selectedPhotoUri
+        && usingOfflineSuggestions === false
+        && hasPermissions !== undefined,
       allowAnonymousJWT: true
     }
   );
