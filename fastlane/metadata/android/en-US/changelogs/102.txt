@@ -1,0 +1,15 @@
+Added:
+Collaborators text, new team members
+
+Changed:
+Refactored location fetching to watch current location
+Land user on Suggestions when one photo imported
+Only show select button when coming from Suggestions/Search
+
+Fixed:
+Multiple common names appear differently on TaxonSearch and ObsEdit
+Few UI fixes
+Projects default tab
+Tablet AI shutter enabled
+Avoid multiple navigations for taking photos
+Use location after being granted on Explore
