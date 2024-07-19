@@ -49,7 +49,10 @@ beforeAll( async ( ) => {
 describe( "Suggestions", ( ) => {
   test( "should not have accessibility errors", async ( ) => {
     const suggestions = (
-      <Suggestions suggestions={initialSuggestions} />
+      <Suggestions
+        suggestions={initialSuggestions}
+        handleSkip={jest.fn( )}
+      />
     );
     expect( suggestions ).toBeAccessible( );
   } );

@@ -19,6 +19,7 @@ import SuggestionsHeader from "./SuggestionsHeader";
 
 type Props = {
   debugData: Object,
+  handleSkip: Function,
   hideSkip?: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
@@ -32,6 +33,7 @@ type Props = {
 
 const Suggestions = ( {
   debugData,
+  handleSkip,
   hideSkip,
   onPressPhoto,
   onTaxonChosen,
@@ -70,6 +72,7 @@ const Suggestions = ( {
   const renderFooter = useCallback( ( ) => (
     <SuggestionsFooter
       debugData={debugData}
+      handleSkip={handleSkip}
       hideSkip={hideSkip}
       isLoading={suggestions.isLoading}
       observers={observers}
@@ -79,6 +82,7 @@ const Suggestions = ( {
     />
   ), [
     debugData,
+    handleSkip,
     hideSkip,
     observers,
     reloadSuggestions,

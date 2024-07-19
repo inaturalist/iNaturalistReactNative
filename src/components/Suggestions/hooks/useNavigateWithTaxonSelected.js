@@ -21,13 +21,20 @@ const useNavigateWithTaxonSelected = (
   const vision = options?.vision;
 
   useEffect( ( ) => {
-    if ( !selectedTaxon ) { return; }
+    if ( selectedTaxon === null ) { return; }
 
-    updateObservationKeys( {
-      owners_identification_from_vision: vision,
-      taxon: selectedTaxon,
-      description: comment
-    } );
+    if ( selectedTaxon === undefined ) {
+      updateObservationKeys( {
+        owners_identification_from_vision: false,
+        taxon: selectedTaxon
+      } );
+    } else {
+      updateObservationKeys( {
+        owners_identification_from_vision: vision,
+        taxon: selectedTaxon,
+        description: comment
+      } );
+    }
 
     // checking for previous screen here rather than a synced/unsynced observation
     // because a user can arrive on Suggestions/TaxonSearch
@@ -36,14 +43,16 @@ const useNavigateWithTaxonSelected = (
     if ( entryScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
-        suggestedTaxon: {
-          id: selectedTaxon.id,
-          default_photo: selectedTaxon.default_photo,
-          rank: selectedTaxon.rank,
-          rank_level: selectedTaxon.rank_level,
-          preferred_common_name: selectedTaxon.preferred_common_name,
-          name: selectedTaxon.name
-        }
+        suggestedTaxon: selectedTaxon
+          ? {
+            id: selectedTaxon.id,
+            default_photo: selectedTaxon.default_photo,
+            rank: selectedTaxon.rank,
+            rank_level: selectedTaxon.rank_level,
+            preferred_common_name: selectedTaxon.preferred_common_name,
+            name: selectedTaxon.name
+          }
+          : null
       } );
     } else if ( entryScreen === "ObsEdit" ) {
       // Cant' go back b/c we might be on Suggestions OR TaxonSearch. Don't
