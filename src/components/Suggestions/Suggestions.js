@@ -26,9 +26,11 @@ type Props = {
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  improveWithLocationButtonOnPress: () => void;
-  showImproveWithLocationButton: boolean;
-  suggestions: Object
+  improveWithLocationButtonOnPress: () => void,
+  showImproveWithLocationButton: boolean,
+  showSuggestionsWithLocation: boolean,
+  suggestions: Object,
+  toggleLocation: Function
 };
 
 const Suggestions = ( {
@@ -41,8 +43,10 @@ const Suggestions = ( {
   reloadSuggestions,
   selectedPhotoUri,
   improveWithLocationButtonOnPress,
+  showSuggestionsWithLocation,
   showImproveWithLocationButton,
-  suggestions
+  suggestions,
+  toggleLocation
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
@@ -55,6 +59,10 @@ const Suggestions = ( {
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
   const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
+
+  const hideFooterLocationButton = usingOfflineSuggestions
+    || isLoading
+    || showImproveWithLocationButton;
 
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
@@ -73,20 +81,20 @@ const Suggestions = ( {
     <SuggestionsFooter
       debugData={debugData}
       handleSkip={handleSkip}
+      hideFooterLocationButton={hideFooterLocationButton}
       hideSkip={hideSkip}
-      isLoading={suggestions.isLoading}
       observers={observers}
-      reloadSuggestions={reloadSuggestions}
-      showSuggestionsWithLocation={suggestions.showSuggestionsWithLocation}
-      usingOfflineSuggestions={suggestions.usingOfflineSuggestions}
+      showSuggestionsWithLocation={showSuggestionsWithLocation}
+      toggleLocation={toggleLocation}
     />
   ), [
     debugData,
     handleSkip,
+    hideFooterLocationButton,
     hideSkip,
     observers,
-    reloadSuggestions,
-    suggestions
+    showSuggestionsWithLocation,
+    toggleLocation
   ] );
 
   const renderHeader = useCallback( ( ) => (

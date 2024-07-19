@@ -18,46 +18,42 @@ import Attribution from "./Attribution";
 type Props = {
   debugData: Object,
   handleSkip: Function,
+  hideFooterLocationButton: Function,
   hideSkip?: boolean,
-  isLoading?: boolean,
   observers: Array<string>,
-  reloadSuggestions: Function,
   showSuggestionsWithLocation?: boolean,
-  usingOfflineSuggestions?: boolean
+  toggleLocation: Function
 };
 
 const SuggestionsFooter = ( {
   debugData,
   handleSkip,
+  hideFooterLocationButton,
   hideSkip,
-  isLoading,
   observers,
-  reloadSuggestions,
   showSuggestionsWithLocation,
-  usingOfflineSuggestions
+  toggleLocation
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
 
-  const hideLocationButton = usingOfflineSuggestions || isLoading;
-
   return (
     <View className="mb-6">
-      {!hideLocationButton && (
+      {!hideFooterLocationButton && (
         <>
           <View className="px-4 py-6">
             {showSuggestionsWithLocation
               ? (
                 <Button
                   text={t( "IGNORE-LOCATION" )}
-                  onPress={( ) => reloadSuggestions( { showLocation: false } )}
+                  onPress={( ) => toggleLocation( { showLocation: false } )}
                   accessibilityLabel={t( "Search-suggestions-without-location" )}
                 />
               )
               : (
                 <Button
                   text={t( "USE-LOCATION" )}
-                  onPress={( ) => reloadSuggestions( { showLocation: true } )}
+                  onPress={( ) => toggleLocation( { showLocation: true } )}
                   accessibilityLabel={t( "Search-suggestions-with-location" )}
                 />
 

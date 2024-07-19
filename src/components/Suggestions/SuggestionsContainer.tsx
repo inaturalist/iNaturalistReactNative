@@ -45,22 +45,19 @@ const SuggestionsContainer = ( ) => {
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const evidenceHasLocation = !!( currentObservation?.latitude ) || false;
-  const [suggestions, setSuggestions] = useState( {
-    ...initialSuggestions,
-    showSuggestionsWithLocation: evidenceHasLocation
-  } );
-  console.log( currentObservation, "current observation latitude" );
+  const evidenceHasLocation = !!currentObservation?.latitude;
+  const [suggestions, setSuggestions] = useState( initialSuggestions );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const showImproveWithLocationButton = hasPermissions === false;
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
     requestPermissions( );
   }, [requestPermissions] );
+  const [
+    showSuggestionsWithLocation,
+    setShowSuggestionsWithLocation
+  ] = useState( evidenceHasLocation );
 
   const {
-    showSuggestionsWithLocation,
-    topSuggestion,
-    otherSuggestions,
     usingOfflineSuggestions
   } = suggestions;
 
@@ -197,12 +194,12 @@ const SuggestionsContainer = ( ) => {
   const allSuggestionsFetched = ( !tryOfflineSuggestions && fetchStatus === "idle" )
     || !loadingOfflineSuggestions;
 
-  const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
-
   const updateSuggestions = useCallback( ( ) => {
-    if ( !isEmptyList ) { return; }
-    setSuggestions( filterSuggestions( ) );
-  }, [filterSuggestions, isEmptyList] );
+    const filteredSuggestions = filterSuggestions( );
+    if ( !_.isEqual( filteredSuggestions, suggestions ) ) {
+      setSuggestions( filteredSuggestions );
+    }
+  }, [filterSuggestions, suggestions] );
 
   useEffect( ( ) => {
     // update suggestions when API call and/or offline suggestions are finished loading
@@ -213,14 +210,18 @@ const SuggestionsContainer = ( ) => {
 
   const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
 
-  const reloadSuggestions = useCallback( ( { showLocation } ) => {
+  const toggleLocation = useCallback( ( { showLocation } ) => {
+    setShowSuggestionsWithLocation( showLocation );
+    setSuggestions( initialSuggestions );
+  }, [] );
+
+  const reloadSuggestions = useCallback( ( ) => {
+    // used when offline text is tapped to try to get online
+    // suggestions
     if ( skipReload ) { return; }
-    setSuggestions( {
-      ...initialSuggestions,
-      showSuggestionsWithLocation: showLocation
-    } );
+    setSuggestions( initialSuggestions );
     refetchSuggestions( );
-  }, [refetchSuggestions, skipReload] );
+  }, [skipReload, refetchSuggestions] );
 
   return (
     <>
@@ -228,14 +229,16 @@ const SuggestionsContainer = ( ) => {
         debugData={debugData}
         handleSkip={( ) => setSelectedTaxon( undefined )}
         hideSkip={params?.hideSkip}
+        improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
-        improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
         showImproveWithLocationButton={showImproveWithLocationButton}
+        showSuggestionsWithLocation={showSuggestionsWithLocation}
         suggestions={suggestions}
+        toggleLocation={toggleLocation}
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}

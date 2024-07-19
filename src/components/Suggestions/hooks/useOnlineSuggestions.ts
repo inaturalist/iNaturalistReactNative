@@ -2,7 +2,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import { computerVisionPath } from "appConstants/paths.ts";
 import { FileUpload } from "inaturalistjs";
-import { useEffect, useState } from "react";
+import {
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import RNFS from "react-native-fs";
 import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
@@ -20,15 +22,11 @@ type FlattenUploadArgs = {
     uri: string,
     name: string,
     type: string
-  },
-  lat?: number,
-  lng?: number
+  }
 }
 
 const flattenUploadParams = async (
-  uri: string,
-  latitude?: number,
-  longitude?: number
+  uri: string
 ): Promise<FlattenUploadArgs> => {
   await RNFS.mkdir( outputPath );
   const uploadUri = await resizeImage( uri, {
@@ -47,12 +45,7 @@ const flattenUploadParams = async (
       type: "image/jpeg"
     } )
   };
-  if ( latitude ) {
-    params.lat = latitude;
-  }
-  if ( longitude ) {
-    params.lng = longitude;
-  }
+
   return params;
 };
 
@@ -77,16 +70,28 @@ const useOnlineSuggestions = (
     hasPermissions
   } = options;
 
-  const params = showSuggestionsWithLocation
-    ? {
-      latitude: currentObservation?.latitude,
-      longitude: currentObservation?.longitude
-    }
-    : null;
-
   const queryClient = useQueryClient( );
+  const queryKey = useMemo( ( ) => ["scoreImage", selectedPhotoUri], [selectedPhotoUri] );
   const [timedOut, setTimedOut] = useState( false );
   const isOnline = useIsConnected( );
+  const [flattenedUploadParams, setFlattenedUploadParams] = useState( null );
+
+  async function queryFn( optsWithAuth ) {
+    const params = flattenedUploadParams;
+    const { latitude, longitude } = currentObservation;
+    if ( showSuggestionsWithLocation ) {
+      if ( latitude ) {
+        params.lat = latitude;
+      }
+      if ( longitude ) {
+        params.lng = longitude;
+      }
+    } else {
+      delete params.lat;
+      delete params.lng;
+    }
+    return scoreImage( params, optsWithAuth );
+  }
 
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
@@ -97,28 +102,30 @@ const useOnlineSuggestions = (
     fetchStatus,
     error
   } = useAuthenticatedQuery(
-    ["scoreImage", selectedPhotoUri],
-    async optsWithAuth => {
-      const scoreImageParams = await flattenUploadParams(
-        selectedPhotoUri,
-        params?.latitude,
-        params?.longitude
-      );
-      return scoreImage( scoreImageParams, optsWithAuth );
-    },
+    queryKey,
+    queryFn,
     {
       enabled: !!selectedPhotoUri
         && usingOfflineSuggestions === false
-        && hasPermissions !== undefined,
+        && hasPermissions !== undefined
+        && !!( flattenedUploadParams?.image ),
       allowAnonymousJWT: true
     }
   );
+
+  useEffect( ( ) => {
+    const resetImageParams = async ( ) => {
+      const newImageParams = await flattenUploadParams( selectedPhotoUri );
+      setFlattenedUploadParams( newImageParams );
+    };
+    resetImageParams( );
+  }, [selectedPhotoUri] );
 
   // Give up on suggestions request after a timeout
   useEffect( ( ) => {
     const timer = setTimeout( ( ) => {
       if ( onlineSuggestions === undefined ) {
-        queryClient.cancelQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
+        queryClient.cancelQueries( { queryKey } );
         setTimedOut( true );
       }
     }, SCORE_IMAGE_TIMEOUT );
@@ -126,12 +133,16 @@ const useOnlineSuggestions = (
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, selectedPhotoUri, queryClient] );
+  }, [onlineSuggestions, queryKey, queryClient] );
 
-  const refetchSuggestions = async ( ) => {
+  const refetchSuggestions = useCallback( async ( ) => {
     setTimedOut( false );
-    await queryClient.refetchQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
-  };
+    queryClient.invalidateQueries( { queryKey } );
+  }, [queryClient, queryKey] );
+
+  useEffect( ( ) => {
+    refetchSuggestions( );
+  }, [showSuggestionsWithLocation, refetchSuggestions] );
 
   useEffect( () => {
     if ( isOnline === false ) {
