@@ -14,8 +14,7 @@ const initialSuggestions = {
   topSuggestion: null,
   otherSuggestions: [],
   topSuggestionType: "none",
-  usingOfflineSuggestions: false,
-  isLoading: true
+  usingOfflineSuggestions: false
 };
 
 const mockCreateId = jest.fn( );
@@ -61,8 +60,7 @@ describe( "Suggestions", ( ) => {
     renderComponent( <Suggestions
       suggestions={{
         ...initialSuggestions,
-        otherSuggestions: mockSuggestionsList,
-        isLoading: false
+        otherSuggestions: mockSuggestionsList
       }}
     /> );
     const taxonTopResult = screen.getByTestId(
@@ -80,8 +78,7 @@ describe( "Suggestions", ( ) => {
     renderComponent( <Suggestions
       suggestions={{
         ...initialSuggestions,
-        otherSuggestions: mockSuggestionsList,
-        isLoading: false
+        otherSuggestions: mockSuggestionsList
       }}
     /> );
     const commentSection = screen.getByText(
@@ -91,11 +88,7 @@ describe( "Suggestions", ( ) => {
   } );
 
   it( "should display empty text if no suggestions are found", ( ) => {
-    renderComponent( <Suggestions suggestions={{
-      ...initialSuggestions,
-      isLoading: false
-    }}
-    /> );
+    renderComponent( <Suggestions suggestions={initialSuggestions} /> );
     const emptyText = i18next
       .t( "iNaturalist-has-no-ID-suggestions-for-this-photo" );
     expect( screen.getByText( emptyText ) ).toBeVisible( );
@@ -109,9 +102,8 @@ describe( "Suggestions", ( ) => {
 
   it( "should display loading wheel and text when suggestions are loading", ( ) => {
     renderComponent( <Suggestions
-      suggestions={{
-        ...initialSuggestions
-      }}
+      suggestions={initialSuggestions}
+      isLoading
     /> );
     const loading = screen.getByTestId( "SuggestionsList.loading" );
     expect( loading ).toBeVisible( );
@@ -123,8 +115,7 @@ describe( "Suggestions", ( ) => {
     renderComponent( <Suggestions
       suggestions={{
         ...initialSuggestions,
-        otherSuggestions: mockSuggestionsList,
-        isLoading: false
+        otherSuggestions: mockSuggestionsList
       }}
       onTaxonChosen={mockCreateId}
     /> );
