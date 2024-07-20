@@ -55,7 +55,7 @@ type OnlineSuggestionsResponse = {
   loadingOnlineSuggestions: boolean,
   timedOut: boolean,
   error: Object,
-  refetchSuggestions: Function
+  removePrevQueryAndRefetch: Function
   isRefetching: boolean
 }
 
@@ -65,7 +65,7 @@ const useOnlineSuggestions = (
 ): OnlineSuggestionsResponse => {
   const currentObservation = useStore( state => state.currentObservation );
   const {
-    showSuggestionsWithLocation,
+    isUsingLocation,
     usingOfflineSuggestions,
     hasPermissions
   } = options;
@@ -79,14 +79,14 @@ const useOnlineSuggestions = (
   async function queryFn( optsWithAuth ) {
     const params = flattenedUploadParams;
     const { latitude, longitude } = currentObservation;
-    if ( showSuggestionsWithLocation ) {
+    if ( isUsingLocation ) {
       if ( latitude ) {
         params.lat = latitude;
       }
       if ( longitude ) {
         params.lng = longitude;
       }
-    } else {
+    } else if ( params.lat ) {
       delete params.lat;
       delete params.lng;
     }
@@ -100,12 +100,14 @@ const useOnlineSuggestions = (
     data: onlineSuggestions,
     dataUpdatedAt,
     fetchStatus,
-    error
+    error,
+    refetch
   } = useAuthenticatedQuery(
     queryKey,
     queryFn,
     {
       enabled: !!selectedPhotoUri
+        && !!isOnline
         && usingOfflineSuggestions === false
         && hasPermissions !== undefined
         && !!( flattenedUploadParams?.image ),
@@ -135,14 +137,11 @@ const useOnlineSuggestions = (
     };
   }, [onlineSuggestions, queryKey, queryClient] );
 
-  const refetchSuggestions = useCallback( async ( ) => {
+  const removePrevQueryAndRefetch = useCallback( async ( ) => {
+    queryClient.removeQueries( { queryKey } );
     setTimedOut( false );
-    queryClient.invalidateQueries( { queryKey } );
-  }, [queryClient, queryKey] );
-
-  useEffect( ( ) => {
-    refetchSuggestions( );
-  }, [showSuggestionsWithLocation, refetchSuggestions] );
+    refetch( );
+  }, [queryClient, queryKey, refetch] );
 
   useEffect( () => {
     if ( isOnline === false ) {
@@ -154,7 +153,7 @@ const useOnlineSuggestions = (
     dataUpdatedAt,
     error,
     timedOut,
-    refetchSuggestions,
+    removePrevQueryAndRefetch,
     fetchStatus
   };
 

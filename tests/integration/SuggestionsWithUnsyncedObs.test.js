@@ -7,6 +7,7 @@ import {
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import inatjs from "inaturalistjs";
+import * as useIsConnected from "sharedHooks/useIsConnected.ts";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -25,15 +26,6 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   select: jest.fn( ),
   Version: 11
 } ) );
-
-const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-  coords: {
-    latitude: 56,
-    longitude: 9,
-    accuracy: 8
-  }
-} ) );
-Geolocation.watchPosition.mockImplementation( mockWatchPosition );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -104,6 +96,22 @@ const makeMockObservations = ( ) => ( [
   } )
 ] );
 
+const makeMockObservationsWithLocation = ( ) => ( [
+  factory( "RemoteObservation", {
+    _synced_at: null,
+    needsSync: jest.fn( ( ) => true ),
+    wasSynced: jest.fn( ( ) => false ),
+    // Suggestions won't load without a photo
+    observationPhotos: [
+      factory( "RemoteObservationPhoto" )
+    ],
+    user: mockUser,
+    observed_on_string: "2020-01-01",
+    latitude: 4,
+    longitude: 10
+  } )
+] );
+
 const actor = userEvent.setup( );
 
 const navigateToSuggestionsForObservationViaObsEdit = async observation => {
@@ -127,8 +135,10 @@ const navigateToSuggestionsViaAICamera = async ( ) => {
   expect( addIDButton ).toBeVisible( );
 };
 
-const setupAppWithSignedInUser = async ( ) => {
-  const observations = makeMockObservations( );
+const setupAppWithSignedInUser = async hasLocation => {
+  const observations = hasLocation
+    ? makeMockObservationsWithLocation( )
+    : makeMockObservations( );
   useStore.setState( {
     observations,
     currentObservation: observations[0],
@@ -165,7 +175,7 @@ const setupAppWithSignedInUser = async ( ) => {
 //   }
 // );
 
-describe( "Suggestions with human observation", ( ) => {
+describe( "from ObsEdit with human observation", ( ) => {
   beforeEach( ( ) => {
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [humanSuggestion, topSuggestion] ) );
@@ -190,95 +200,40 @@ describe( "Suggestions with human observation", ( ) => {
       expect( nonHumanSuggestion ).toBeFalsy( );
     }
   );
-} );
 
-describe( "from AI Camera without location", ( ) => {
-  beforeEach( async ( ) => {
-    inatjs.computervision.score_image
-      .mockResolvedValue( makeResponse( [topSuggestion] ) );
-    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
-      handleTaxaDetected: jest.fn( ),
-      modelLoaded: true,
-      result: {
-        taxon: mockLocalTaxon
-      },
-      setResult: jest.fn( )
-    } ) );
-  } );
-
-  afterEach( ( ) => {
-    inatjs.computervision.score_image.mockReset( );
-  } );
-
-  // 20240719 amanda - I keep bumping into an unmounted node error
-  // here when ignoreLocationButton is pressed and I'm not sure what the root cause is.
-  // I'm seeing the same type of error when trying to press Add an ID Later, so maybe
-  // the same root cause?
-  it.todo( "should call score_image without location parameters" );
-  // it( "should call score_image without location parameters if"
-  //   + " ignore location pressed", async ( ) => {
-  //   const { observations } = await setupAppWithSignedInUser( );
-  //   await navigateToSuggestionsViaAICamera( observations[0] );
-  //   await waitFor( ( ) => {
-  //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
-  //   } );
-  //   const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
-  //   expect( ignoreLocationButton ).toBeVisible( );
-  //   await actor.press( ignoreLocationButton );
-  //   await waitFor( ( ) => {
-  //     expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
-  //       expect.not.objectContaining( {
-  //         lat: observations[0].latitude,
-  //         lng: observations[0].longitude
-  //       } ),
-  //       expect.anything( )
-  //     );
-  //   } );
-  //   const useLocationButton = await screen.findByText( /USE LOCATION/ );
-  //   expect( useLocationButton ).toBeVisible( );
-  // } );
-} );
-
-describe( "from AI Camera with location", ( ) => {
-  beforeEach( async ( ) => {
-    inatjs.computervision.score_image
-      .mockResolvedValue( makeResponse( [topSuggestion] ) );
-    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
-      handleTaxaDetected: jest.fn( ),
-      modelLoaded: true,
-      result: {
-        taxon: mockLocalTaxon
-      },
-      setResult: jest.fn( )
-    } ) );
-  } );
-
-  afterEach( ( ) => {
-    inatjs.computervision.score_image.mockReset( );
-  } );
-
-  it( "should call score_image with location parameters on first render", async ( ) => {
+  it( "should not show location permissions button", async ( ) => {
     const { observations } = await setupAppWithSignedInUser( );
-    await navigateToSuggestionsViaAICamera( observations[0] );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const usePermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
+    expect( usePermissionsButton ).toBeFalsy( );
+  } );
+
+  it( "should show use location button if unsynced obs has no location", async ( ) => {
+    const { observations } = await setupAppWithSignedInUser( );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const useLocationButton = await screen.findByText( /USE LOCATION/ );
+    expect( useLocationButton ).toBeVisible( );
+  } );
+
+  it( "should show ignore location button if unsynced obs has location", async ( ) => {
+    const { observations } = await setupAppWithSignedInUser( true );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
     expect( ignoreLocationButton ).toBeVisible( );
-    await waitFor( ( ) => {
-      expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
-        expect.objectContaining( {
-        // Don't care about fields here
-          fields: expect.any( Object ),
-          image: expect.any( Object ),
-          lat: 56,
-          lng: 9
-        } ),
-        expect.anything( )
-      );
-    } );
   } );
 } );
 
-describe( "from AI Camera without location permissions", ( ) => {
+describe( "from AICamera", ( ) => {
   beforeEach( async ( ) => {
+    const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+      coords: {
+        latitude: 56,
+        longitude: 9,
+        accuracy: 8
+      }
+    } ) );
+    Geolocation.watchPosition.mockImplementation( mockWatchPosition );
+
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [topSuggestion] ) );
     jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
@@ -295,28 +250,96 @@ describe( "from AI Camera without location permissions", ( ) => {
     inatjs.computervision.score_image.mockReset( );
   } );
 
-  it( "should not call score_image with location parameters on first render"
-    + " if location permission not given", async ( ) => {
-    jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
-      hasPermissions: false,
-      renderPermissionsGate: jest.fn( )
-    } ) );
-    const { observations } = await setupAppWithSignedInUser( );
-    await navigateToSuggestionsViaAICamera( observations[0] );
-    const usePermissionsButton = await screen.findByText( /IMPROVE THESE SUGGESTIONS/ );
-    expect( usePermissionsButton ).toBeVisible( );
-    const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
-    expect( ignoreLocationButton ).toBeFalsy( );
-    const useLocationButton = screen.queryByText( /USE LOCATION/ );
-    expect( useLocationButton ).toBeFalsy( );
-    await waitFor( ( ) => {
-      expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
-        expect.not.objectContaining( {
-          lat: 56,
-          lng: 9
-        } ),
-        expect.anything( )
-      );
+  describe( "suggestions not using location", ( ) => {
+    // 20240719 amanda - I keep bumping into an unmounted node error
+    // here when ignoreLocationButton is pressed and I'm not sure what the root cause is.
+    // I'm seeing the same type of error when trying to press Add an ID Later, so maybe
+    // the same root cause?
+    it.todo( "should call score_image without location parameters" );
+    // it( "should call score_image without location parameters if"
+    //   + " ignore location pressed", async ( ) => {
+    //   const { observations } = await setupAppWithSignedInUser( );
+    //   await navigateToSuggestionsViaAICamera( observations[0] );
+    //   await waitFor( ( ) => {
+    //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
+    //   } );
+    //   const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
+    //   expect( ignoreLocationButton ).toBeVisible( );
+    //   await actor.press( ignoreLocationButton );
+    //   await waitFor( ( ) => {
+    //     expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+    //       expect.not.objectContaining( {
+    //         lat: observations[0].latitude,
+    //         lng: observations[0].longitude
+    //       } ),
+    //       expect.anything( )
+    //     );
+    //   } );
+    //   const useLocationButton = await screen.findByText( /USE LOCATION/ );
+    //   expect( useLocationButton ).toBeVisible( );
+    // } );
+  } );
+
+  describe( "suggestions with location", ( ) => {
+    it( "should call score_image with location parameters on first render", async ( ) => {
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+      const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
+      expect( ignoreLocationButton ).toBeVisible( );
+      await waitFor( ( ) => {
+        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+          expect.objectContaining( {
+          // Don't care about fields here
+            fields: expect.any( Object ),
+            image: expect.any( Object ),
+            lat: 56,
+            lng: 9
+          } ),
+          expect.anything( )
+        );
+      } );
+    } );
+  } );
+
+  describe( "suggestions without location permissions", ( ) => {
+    it( "should not call score_image with location parameters on first render"
+      + " if location permission not given", async ( ) => {
+      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+        hasPermissions: false,
+        renderPermissionsGate: jest.fn( )
+      } ) );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+      const usePermissionsButton = await screen.findByText( /IMPROVE THESE SUGGESTIONS/ );
+      expect( usePermissionsButton ).toBeVisible( );
+      const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
+      expect( ignoreLocationButton ).toBeFalsy( );
+      const useLocationButton = screen.queryByText( /USE LOCATION/ );
+      expect( useLocationButton ).toBeFalsy( );
+      await waitFor( ( ) => {
+        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+          expect.not.objectContaining( {
+            lat: 56,
+            lng: 9
+          } ),
+          expect.anything( )
+        );
+      } );
+    } );
+  } );
+
+  describe( "suggestions while offline", ( ) => {
+    it( "should not call score_image and should not show any location buttons", async ( ) => {
+      jest.spyOn( useIsConnected, "default" ).mockImplementation( ( ) => false );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+      expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
+      const usePermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
+      expect( usePermissionsButton ).toBeFalsy( );
+      const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
+      expect( ignoreLocationButton ).toBeFalsy( );
+      const useLocationButton = screen.queryByText( /USE LOCATION/ );
+      expect( useLocationButton ).toBeFalsy( );
     } );
   } );
 } );

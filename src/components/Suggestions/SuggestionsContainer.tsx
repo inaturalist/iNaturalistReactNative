@@ -27,8 +27,7 @@ const initialSuggestions = {
   topSuggestion: null,
   otherSuggestions: [],
   topSuggestionType: "none",
-  usingOfflineSuggestions: false,
-  isLoading: true
+  usingOfflineSuggestions: false
 };
 
 const SuggestionsContainer = ( ) => {
@@ -48,14 +47,15 @@ const SuggestionsContainer = ( ) => {
   const evidenceHasLocation = !!currentObservation?.latitude;
   const [suggestions, setSuggestions] = useState( initialSuggestions );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
-  const showImproveWithLocationButton = hasPermissions === false;
+  const showImproveWithLocationButton = hasPermissions === false && isOnline;
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
     requestPermissions( );
   }, [requestPermissions] );
   const [
-    showSuggestionsWithLocation,
-    setShowSuggestionsWithLocation
+    isUsingLocation,
+    setIsUsingLocation
   ] = useState( evidenceHasLocation );
+  const [isLoading, setIsLoading] = useState( true );
 
   const {
     usingOfflineSuggestions
@@ -66,10 +66,10 @@ const SuggestionsContainer = ( ) => {
     error: onlineSuggestionsError,
     onlineSuggestions,
     timedOut,
-    refetchSuggestions,
+    removePrevQueryAndRefetch,
     fetchStatus
   } = useOnlineSuggestions( selectedPhotoUri, {
-    showSuggestionsWithLocation,
+    isUsingLocation,
     usingOfflineSuggestions,
     hasPermissions
   } );
@@ -77,15 +77,8 @@ const SuggestionsContainer = ( ) => {
   const loadingOnlineSuggestions = fetchStatus === "fetching";
 
   // skip to offline suggestions if internet connection is spotty
-  const tryOfflineSuggestions = timedOut || (
-    // Don't try offline while online is loading
-    !loadingOnlineSuggestions
-    && (
-      // Don't bother with offline if we have some online suggestions
-      !onlineSuggestions
-      || onlineSuggestions?.results?.length === 0
-    )
-  );
+  const tryOfflineSuggestions = onlineSuggestions?.results?.length === 0
+    && ( timedOut || !loadingOnlineSuggestions );
 
   const {
     offlineSuggestions,
@@ -123,7 +116,7 @@ const SuggestionsContainer = ( ) => {
     onlineSuggestionsError,
     onlineSuggestionsUpdatedAt,
     selectedPhotoUri,
-    showSuggestionsWithLocation,
+    isUsingLocation,
     topSuggestionType: suggestions.topSuggestionType,
     usingOfflineSuggestions: suggestions.usingOfflineSuggestions
   };
@@ -138,8 +131,7 @@ const SuggestionsContainer = ( ) => {
     const newSuggestions = {
       ...suggestions,
       otherSuggestions: sortedSuggestions,
-      usingOfflineSuggestions: hasOfflineSuggestions,
-      isLoading: false
+      usingOfflineSuggestions: hasOfflineSuggestions
     };
     if ( sortedSuggestions.length === 0 ) {
       return {
@@ -191,13 +183,18 @@ const SuggestionsContainer = ( ) => {
     hasOfflineSuggestions
   ] );
 
-  const allSuggestionsFetched = ( !tryOfflineSuggestions && fetchStatus === "idle" )
-    || !loadingOfflineSuggestions;
+  const allSuggestionsFetched = onlineSuggestions?.results?.length > 0
+    || offlineSuggestions.length > 0
+    || ( !tryOfflineSuggestions
+        && fetchStatus === "idle"
+        && !loadingOfflineSuggestions
+    );
 
   const updateSuggestions = useCallback( ( ) => {
     const filteredSuggestions = filterSuggestions( );
     if ( !_.isEqual( filteredSuggestions, suggestions ) ) {
       setSuggestions( filteredSuggestions );
+      setIsLoading( false );
     }
   }, [filterSuggestions, suggestions] );
 
@@ -211,32 +208,42 @@ const SuggestionsContainer = ( ) => {
   const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
 
   const toggleLocation = useCallback( ( { showLocation } ) => {
-    setShowSuggestionsWithLocation( showLocation );
+    removePrevQueryAndRefetch( );
+    setIsLoading( true );
     setSuggestions( initialSuggestions );
-  }, [] );
+    setIsUsingLocation( showLocation );
+  }, [removePrevQueryAndRefetch] );
 
   const reloadSuggestions = useCallback( ( ) => {
     // used when offline text is tapped to try to get online
     // suggestions
     if ( skipReload ) { return; }
+    removePrevQueryAndRefetch( );
+    setIsLoading( true );
     setSuggestions( initialSuggestions );
-    refetchSuggestions( );
-  }, [skipReload, refetchSuggestions] );
+  }, [skipReload, removePrevQueryAndRefetch] );
+
+  const hideLocationToggleButton = usingOfflineSuggestions
+    || suggestions?.isLoading
+    || showImproveWithLocationButton
+    || !isOnline;
 
   return (
     <>
       <Suggestions
         debugData={debugData}
         handleSkip={( ) => setSelectedTaxon( undefined )}
+        hideLocationToggleButton={hideLocationToggleButton}
         hideSkip={params?.hideSkip}
         improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
+        isLoading={isLoading}
+        isUsingLocation={isUsingLocation}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}
         showImproveWithLocationButton={showImproveWithLocationButton}
-        showSuggestionsWithLocation={showSuggestionsWithLocation}
         suggestions={suggestions}
         toggleLocation={toggleLocation}
       />

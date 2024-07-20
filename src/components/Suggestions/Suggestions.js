@@ -20,15 +20,17 @@ import SuggestionsHeader from "./SuggestionsHeader";
 type Props = {
   debugData: Object,
   handleSkip: Function,
+  hideLocationToggleButton: boolean,
   hideSkip?: boolean,
+  improveWithLocationButtonOnPress: () => void,
+  isLoading: boolean,
+  isUsingLocation: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  improveWithLocationButtonOnPress: () => void,
   showImproveWithLocationButton: boolean,
-  showSuggestionsWithLocation: boolean,
   suggestions: Object,
   toggleLocation: Function
 };
@@ -36,21 +38,22 @@ type Props = {
 const Suggestions = ( {
   debugData,
   handleSkip,
+  hideLocationToggleButton,
   hideSkip,
+  improveWithLocationButtonOnPress,
+  isLoading,
+  isUsingLocation,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
-  improveWithLocationButtonOnPress,
-  showSuggestionsWithLocation,
   showImproveWithLocationButton,
   suggestions,
   toggleLocation
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
-    isLoading,
     otherSuggestions,
     topSuggestion,
     usingOfflineSuggestions
@@ -59,10 +62,6 @@ const Suggestions = ( {
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
   const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
-
-  const hideFooterLocationButton = usingOfflineSuggestions
-    || isLoading
-    || showImproveWithLocationButton;
 
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
@@ -81,19 +80,19 @@ const Suggestions = ( {
     <SuggestionsFooter
       debugData={debugData}
       handleSkip={handleSkip}
-      hideFooterLocationButton={hideFooterLocationButton}
+      hideLocationToggleButton={hideLocationToggleButton}
       hideSkip={hideSkip}
+      isUsingLocation={isUsingLocation}
       observers={observers}
-      showSuggestionsWithLocation={showSuggestionsWithLocation}
       toggleLocation={toggleLocation}
     />
   ), [
     debugData,
     handleSkip,
-    hideFooterLocationButton,
+    hideLocationToggleButton,
     hideSkip,
+    isUsingLocation,
     observers,
-    showSuggestionsWithLocation,
     toggleLocation
   ] );
 

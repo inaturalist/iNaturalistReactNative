@@ -18,20 +18,20 @@ import Attribution from "./Attribution";
 type Props = {
   debugData: Object,
   handleSkip: Function,
-  hideFooterLocationButton: Function,
+  hideLocationToggleButton: Function,
   hideSkip?: boolean,
   observers: Array<string>,
-  showSuggestionsWithLocation?: boolean,
+  isUsingLocation: boolean,
   toggleLocation: Function
 };
 
 const SuggestionsFooter = ( {
   debugData,
   handleSkip,
-  hideFooterLocationButton,
+  hideLocationToggleButton,
   hideSkip,
   observers,
-  showSuggestionsWithLocation,
+  isUsingLocation,
   toggleLocation
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -39,10 +39,10 @@ const SuggestionsFooter = ( {
 
   return (
     <View className="mb-6">
-      {!hideFooterLocationButton && (
+      {!hideLocationToggleButton && (
         <>
           <View className="px-4 py-6">
-            {showSuggestionsWithLocation
+            {isUsingLocation
               ? (
                 <Button
                   text={t( "IGNORE-LOCATION" )}
@@ -78,7 +78,7 @@ const SuggestionsFooter = ( {
           <Body3 className="text-white">Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
           <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
           <Body3 className="text-white">Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
-          <Body3 className="text-white">Online suggestions using location: {JSON.stringify( debugData?.showSuggestionsWithLocation )}</Body3>
+          <Body3 className="text-white">Online suggestions using location: {JSON.stringify( debugData?.isUsingLocation )}</Body3>
           <Body3 className="text-white">Top suggestion type: {JSON.stringify( debugData?.topSuggestionType )}</Body3>
           <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
           <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
