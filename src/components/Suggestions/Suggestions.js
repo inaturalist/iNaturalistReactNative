@@ -128,7 +128,13 @@ const Suggestions = ( {
     }
     return (
       <View className="bg-inatGreen/[.13]">
-        {renderSuggestion( { item } )}
+        <Suggestion
+          accessibilityLabel={t( "Choose-taxon" )}
+          fetchRemote={!usingOfflineSuggestions}
+          suggestion={item}
+          isTopSuggestion
+          onTaxonChosen={onTaxonChosen}
+        />
       </View>
     );
   };

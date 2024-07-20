@@ -14,14 +14,16 @@ type Props = {
   accessibilityLabel: string,
   fetchRemote: boolean,
   onTaxonChosen: Function,
-  suggestion: Object
+  suggestion: Object,
+  isTopSuggestion?: boolean
 };
 
 const Suggestion = ( {
   accessibilityLabel,
   fetchRemote,
   suggestion,
-  onTaxonChosen
+  onTaxonChosen,
+  isTopSuggestion = false
 }: Props ): Node => (
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
@@ -32,6 +34,7 @@ const Suggestion = ( {
     confidencePosition="text"
     fetchRemote={fetchRemote}
     first
+    isTopSuggestion={isTopSuggestion}
     handleCheckmarkPress={onTaxonChosen}
     hideNavButtons
     lastScreen="Suggestions"

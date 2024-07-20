@@ -36,7 +36,8 @@ type Props = {
   taxon: Object,
   testID: string,
   white?: boolean,
-  vision?: boolean
+  vision?: boolean,
+  isTopSuggestion?: boolean
 };
 
 const TaxonResult = ( {
@@ -60,7 +61,8 @@ const TaxonResult = ( {
   taxon: taxonProp,
   testID,
   white = false,
-  vision = false
+  vision = false,
+  isTopSuggestion = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -88,6 +90,38 @@ const TaxonResult = ( {
       lastScreen,
       vision
     } );
+  };
+  const renderCheckmark = () => {
+    if ( isTopSuggestion ) {
+      return (
+        <INatIconButton
+          className={classnames( "ml-2", {
+            "bg-inatGreen rounded-full h-[40px] w-[40px]": isTopSuggestion
+          } )}
+          icon="checkmark"
+          size={21}
+          color={theme.colors.onSecondary}
+          onPress={() => handleCheckmarkPress( usableTaxon )}
+          accessibilityLabel={accessibilityLabel}
+          testID={`${testID}.checkmark`}
+        />
+      );
+    }
+    return (
+      <INatIconButton
+        className="ml-2"
+        icon="checkmark-circle-outline"
+        size={40}
+        color={
+          clearBackground
+            ? theme.colors.onSecondary
+            : theme.colors.primary
+        }
+        onPress={() => handleCheckmarkPress( usableTaxon )}
+        accessibilityLabel={accessibilityLabel}
+        testID={`${testID}.checkmark`}
+      />
+    );
   };
 
   return (
@@ -169,21 +203,7 @@ const TaxonResult = ( {
           />
         )}
         { showCheckmark
-          && (
-            <INatIconButton
-              className="ml-2"
-              icon="checkmark-circle-outline"
-              size={40}
-              color={
-                clearBackground
-                  ? theme.colors.onSecondary
-                  : theme.colors.primary
-              }
-              onPress={() => handleCheckmarkPress( usableTaxon )}
-              accessibilityLabel={accessibilityLabel}
-              testID={`${testID}.checkmark`}
-            />
-          )}
+          && renderCheckmark()}
         { showEditButton
             && (
               <INatIconButton
