@@ -20,33 +20,40 @@ import SuggestionsHeader from "./SuggestionsHeader";
 type Props = {
   debugData: Object,
   handleSkip: Function,
+  hideLocationToggleButton: boolean,
   hideSkip?: boolean,
+  improveWithLocationButtonOnPress: () => void,
+  isLoading: boolean,
+  isUsingLocation: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  improveWithLocationButtonOnPress: () => void;
-  showImproveWithLocationButton: boolean;
-  suggestions: Object
+  showImproveWithLocationButton: boolean,
+  suggestions: Object,
+  toggleLocation: Function
 };
 
 const Suggestions = ( {
   debugData,
   handleSkip,
+  hideLocationToggleButton,
   hideSkip,
+  improveWithLocationButtonOnPress,
+  isLoading,
+  isUsingLocation,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
-  improveWithLocationButtonOnPress,
   showImproveWithLocationButton,
-  suggestions
+  suggestions,
+  toggleLocation
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
-    isLoading,
     otherSuggestions,
     topSuggestion,
     usingOfflineSuggestions
@@ -73,20 +80,20 @@ const Suggestions = ( {
     <SuggestionsFooter
       debugData={debugData}
       handleSkip={handleSkip}
+      hideLocationToggleButton={hideLocationToggleButton}
       hideSkip={hideSkip}
-      isLoading={suggestions.isLoading}
+      isUsingLocation={isUsingLocation}
       observers={observers}
-      reloadSuggestions={reloadSuggestions}
-      showSuggestionsWithLocation={suggestions.showSuggestionsWithLocation}
-      usingOfflineSuggestions={suggestions.usingOfflineSuggestions}
+      toggleLocation={toggleLocation}
     />
   ), [
     debugData,
     handleSkip,
+    hideLocationToggleButton,
     hideSkip,
+    isUsingLocation,
     observers,
-    reloadSuggestions,
-    suggestions
+    toggleLocation
   ] );
 
   const renderHeader = useCallback( ( ) => (

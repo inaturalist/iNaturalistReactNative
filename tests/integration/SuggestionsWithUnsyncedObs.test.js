@@ -1,23 +1,31 @@
+import Geolocation from "@react-native-community/geolocation";
 import {
-  // act,
   screen,
-  userEvent
-  // waitFor
+  userEvent,
+  waitFor,
+  within
 } from "@testing-library/react-native";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import inatjs from "inaturalistjs";
+import * as useIsConnected from "sharedHooks/useIsConnected.ts";
+import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
-import { signIn, signOut } from "tests/helpers/user";
-import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
-const mockModelResult = {
-  predictions: [factory( "ModelPrediction", {
-  // useOfflineSuggestions will filter out taxa w/ rank_level > 40
-    rank_level: 20
-  } )]
-};
+jest.mock( "sharedHooks/useDebugMode", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    isDebug: false
+  } )
+} ) );
+
+jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
+  OS: "ios",
+  select: jest.fn( ),
+  Version: 11
+} ) );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -63,6 +71,15 @@ const humanSuggestion = {
   combined_score: 86
 };
 
+const mockLocalTaxon = {
+  id: 144351,
+  name: "Poecile",
+  rank_level: 20,
+  default_photo: {
+    url: "fake_image_url"
+  }
+};
+
 const mockUser = factory( "LocalUser" );
 
 const makeMockObservations = ( ) => ( [
@@ -79,90 +96,250 @@ const makeMockObservations = ( ) => ( [
   } )
 ] );
 
-beforeEach( async ( ) => {
-  inatjs.computervision.score_image
-    .mockResolvedValue( makeResponse( [] ) );
-  getPredictionsForImage.mockImplementation(
-    async ( ) => ( mockModelResult )
+const makeMockObservationsWithLocation = ( ) => ( [
+  factory( "RemoteObservation", {
+    _synced_at: null,
+    needsSync: jest.fn( ( ) => true ),
+    wasSynced: jest.fn( ( ) => false ),
+    // Suggestions won't load without a photo
+    observationPhotos: [
+      factory( "RemoteObservationPhoto" )
+    ],
+    user: mockUser,
+    observed_on_string: "2020-01-01",
+    latitude: 4,
+    longitude: 10
+  } )
+] );
+
+const actor = userEvent.setup( );
+
+const navigateToSuggestionsForObservationViaObsEdit = async observation => {
+  const observationRow = await screen.findByTestId(
+    `MyObservations.obsListItem.${observation.uuid}`
   );
-  await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+  await actor.press( observationRow );
+  const addIdButton = await screen.findByText( "ADD AN ID" );
+  await actor.press( addIdButton );
+};
+
+const navigateToSuggestionsViaAICamera = async ( ) => {
+  const tabBar = await screen.findByTestId( "CustomTabBar" );
+  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
+  await actor.press( addObsButton );
+  const cameraButton = await screen.findByLabelText( /AI Camera/ );
+  await actor.press( cameraButton );
+  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
+  await actor.press( takePhotoButton );
+  const addIDButton = await screen.findByText( /ADD AN ID/ );
+  expect( addIDButton ).toBeVisible( );
+};
+
+const setupAppWithSignedInUser = async hasLocation => {
+  const observations = hasLocation
+    ? makeMockObservationsWithLocation( )
+    : makeMockObservations( );
+  useStore.setState( {
+    observations,
+    currentObservation: observations[0],
+    isAdvancedUser: true
+  } );
+  await renderAppWithObservations( observations, __filename );
+  return { observations };
+};
+
+// TODO: fix this test. As of 20240627 we're bumping into issues with the
+// 2.13 new vision camera not loading offline suggestions,
+// so we may need this issue resolved before this test can be fixed:
+// https://github.com/inaturalist/iNaturalistReactNative/issues/1715
+// it(
+//   "should try offline suggestions if no online suggestions are found",
+//   async ( ) => {
+//     const { observations } = await setupAppWithSignedInUser( );
+//     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+//     const offlineNotice = await screen.findByText( /You are offline. Tap to reload/ );
+//     await waitFor( ( ) => {
+//       expect( offlineNotice ).toBeTruthy( );
+//     }, { timeout: 10000 } );
+//     const topOfflineTaxonResultButton = await screen.findByTestId(
+//       `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+//     );
+//     expect( topOfflineTaxonResultButton ).toBeTruthy( );
+//     await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );
+//     const saveButton = await screen.findByText( /SAVE/ );
+//     expect( saveButton ).toBeTruthy( );
+//     await actor.press( saveButton );
+//     const savedObservation = global.mockRealms[__filename]
+//       .objectForPrimaryKey( "Observation", observations[0].uuid );
+//     expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
+//   }
+// );
+
+describe( "from ObsEdit with human observation", ( ) => {
+  beforeEach( ( ) => {
+    inatjs.computervision.score_image
+      .mockResolvedValue( makeResponse( [humanSuggestion, topSuggestion] ) );
+  } );
+
+  afterEach( ( ) => {
+    inatjs.computervision.score_image.mockReset( );
+  } );
+
+  it(
+    "should display only a single human observation if human is found in suggestions",
+    async ( ) => {
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+      const humanResultButton = await screen.findByTestId(
+        `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`
+      );
+      expect( humanResultButton ).toBeVisible( );
+      const human = screen.getByText( /Homo sapiens/ );
+      expect( human ).toBeVisible( );
+      const nonHumanSuggestion = screen.queryByText( /Primum/ );
+      expect( nonHumanSuggestion ).toBeFalsy( );
+    }
+  );
+
+  it( "should not show location permissions button", async ( ) => {
+    const { observations } = await setupAppWithSignedInUser( );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const usePermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
+    expect( usePermissionsButton ).toBeFalsy( );
+  } );
+
+  it( "should show use location button if unsynced obs has no location", async ( ) => {
+    const { observations } = await setupAppWithSignedInUser( );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const useLocationButton = await screen.findByText( /USE LOCATION/ );
+    expect( useLocationButton ).toBeVisible( );
+  } );
+
+  it( "should show ignore location button if unsynced obs has location", async ( ) => {
+    const { observations } = await setupAppWithSignedInUser( true );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
+    expect( ignoreLocationButton ).toBeVisible( );
+  } );
 } );
 
-afterEach( ( ) => {
-  inatjs.computervision.score_image.mockReset( );
-  signOut( { realm: global.mockRealms[__filename] } );
-} );
-
-describe( "SuggestionsWithUnsyncedObs", ( ) => {
-  const actor = userEvent.setup( );
-
-  const navigateToSuggestionsForObservationViaObsEdit = async observation => {
-    const observationRow = await screen.findByTestId(
-      `MyObservations.obsListItem.${observation.uuid}`
-    );
-    await actor.press( observationRow );
-    const addIdButton = await screen.findByText( "ADD AN ID" );
-    await actor.press( addIdButton );
-  };
-
-  const setupAppWithSignedInUser = async ( ) => {
-    const observations = makeMockObservations( );
-    useStore.setState( { observations } );
-    await renderAppWithObservations( observations, __filename );
-    return { observations };
-  };
-
-  // TODO: fix this test. As of 20240627 we're bumping into issues with the
-  // 2.13 new vision camera not loading offline suggestions,
-  // so we may need this issue resolved before this test can be fixed:
-  // https://github.com/inaturalist/iNaturalistReactNative/issues/1715
-  // it(
-  //   "should try offline suggestions if no online suggestions are found",
-  //   async ( ) => {
-  //     const { observations } = await setupAppWithSignedInUser( );
-  //     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-  //     const offlineNotice = await screen.findByText( /You are offline. Tap to reload/ );
-  //     await waitFor( ( ) => {
-  //       expect( offlineNotice ).toBeTruthy( );
-  //     }, { timeout: 10000 } );
-  //     const topOfflineTaxonResultButton = await screen.findByTestId(
-  //       `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
-  //     );
-  //     expect( topOfflineTaxonResultButton ).toBeTruthy( );
-  //     await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );
-  //     const saveButton = await screen.findByText( /SAVE/ );
-  //     expect( saveButton ).toBeTruthy( );
-  //     await actor.press( saveButton );
-  //     const savedObservation = global.mockRealms[__filename]
-  //       .objectForPrimaryKey( "Observation", observations[0].uuid );
-  //     expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
-  //   }
-  // );
-
-  describe( "human observation", ( ) => {
-    beforeEach( async ( ) => {
-      inatjs.computervision.score_image
-        .mockResolvedValue( makeResponse( [humanSuggestion, topSuggestion] ) );
-    } );
-
-    afterEach( ( ) => {
-      inatjs.computervision.score_image.mockReset( );
-    } );
-
-    it(
-      "should display only a single human observation if human is found in suggestions",
-      async ( ) => {
-        const { observations } = await setupAppWithSignedInUser( );
-        await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
-        const humanResultButton = await screen.findByTestId(
-          `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`
-        );
-        expect( humanResultButton ).toBeVisible( );
-        const human = screen.getByText( /Homo sapiens/ );
-        expect( human ).toBeVisible( );
-        const nonHumanSuggestion = screen.queryByText( /Primum/ );
-        expect( nonHumanSuggestion ).toBeFalsy( );
+describe( "from AICamera", ( ) => {
+  beforeEach( async ( ) => {
+    const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+      coords: {
+        latitude: 56,
+        longitude: 9,
+        accuracy: 8
       }
-    );
+    } ) );
+    Geolocation.watchPosition.mockImplementation( mockWatchPosition );
+
+    inatjs.computervision.score_image
+      .mockResolvedValue( makeResponse( [topSuggestion] ) );
+    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+      handleTaxaDetected: jest.fn( ),
+      modelLoaded: true,
+      result: {
+        taxon: mockLocalTaxon
+      },
+      setResult: jest.fn( )
+    } ) );
+  } );
+
+  afterEach( ( ) => {
+    inatjs.computervision.score_image.mockReset( );
+  } );
+
+  describe( "suggestions not using location", ( ) => {
+    // 20240719 amanda - I keep bumping into an unmounted node error
+    // here when ignoreLocationButton is pressed and I'm not sure what the root cause is.
+    // I'm seeing the same type of error when trying to press Add an ID Later, so maybe
+    // the same root cause?
+    it.todo( "should call score_image without location parameters" );
+    // it( "should call score_image without location parameters if"
+    //   + " ignore location pressed", async ( ) => {
+    //   const { observations } = await setupAppWithSignedInUser( );
+    //   await navigateToSuggestionsViaAICamera( observations[0] );
+    //   await waitFor( ( ) => {
+    //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
+    //   } );
+    //   const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
+    //   expect( ignoreLocationButton ).toBeVisible( );
+    //   await actor.press( ignoreLocationButton );
+    //   await waitFor( ( ) => {
+    //     expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+    //       expect.not.objectContaining( {
+    //         lat: observations[0].latitude,
+    //         lng: observations[0].longitude
+    //       } ),
+    //       expect.anything( )
+    //     );
+    //   } );
+    //   const useLocationButton = await screen.findByText( /USE LOCATION/ );
+    //   expect( useLocationButton ).toBeVisible( );
+    // } );
+  } );
+
+  describe( "suggestions with location", ( ) => {
+    it( "should call score_image with location parameters on first render", async ( ) => {
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+      const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
+      expect( ignoreLocationButton ).toBeVisible( );
+      await waitFor( ( ) => {
+        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+          expect.objectContaining( {
+          // Don't care about fields here
+            fields: expect.any( Object ),
+            image: expect.any( Object ),
+            lat: 56,
+            lng: 9
+          } ),
+          expect.anything( )
+        );
+      } );
+    } );
+  } );
+
+  describe( "suggestions without location permissions", ( ) => {
+    it( "should not call score_image with location parameters on first render"
+      + " if location permission not given", async ( ) => {
+      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+        hasPermissions: false,
+        renderPermissionsGate: jest.fn( )
+      } ) );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+      const usePermissionsButton = await screen.findByText( /IMPROVE THESE SUGGESTIONS/ );
+      expect( usePermissionsButton ).toBeVisible( );
+      const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
+      expect( ignoreLocationButton ).toBeFalsy( );
+      const useLocationButton = screen.queryByText( /USE LOCATION/ );
+      expect( useLocationButton ).toBeFalsy( );
+      await waitFor( ( ) => {
+        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+          expect.not.objectContaining( {
+            lat: 56,
+            lng: 9
+          } ),
+          expect.anything( )
+        );
+      } );
+    } );
+  } );
+
+  describe( "suggestions while offline", ( ) => {
+    it( "should not call score_image and should not show any location buttons", async ( ) => {
+      jest.spyOn( useIsConnected, "default" ).mockImplementation( ( ) => false );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+      expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
+      const usePermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
+      expect( usePermissionsButton ).toBeFalsy( );
+      const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
+      expect( ignoreLocationButton ).toBeFalsy( );
+      const useLocationButton = screen.queryByText( /USE LOCATION/ );
+      expect( useLocationButton ).toBeFalsy( );
+    } );
   } );
 } );

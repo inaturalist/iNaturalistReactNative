@@ -18,8 +18,7 @@ import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 interface Props {
   onPressPhoto: ( _uri: string ) => void;
   photoUris: string[];
-  // eslint-disable-next-line no-unused-vars
-  reloadSuggestions: ( { showLocation }: { showLocation: boolean } ) => void;
+  reloadSuggestions: ( ) => void;
   selectedPhotoUri: string;
   suggestions: Object;
   improveWithLocationButtonOnPress: () => void;
@@ -43,7 +42,6 @@ const SuggestionsHeader = ( {
 
   const {
     isLoading,
-    showSuggestionsWithLocation,
     usingOfflineSuggestions
   } = suggestions;
 
@@ -87,7 +85,7 @@ const SuggestionsHeader = ( {
         <Pressable
           accessibilityRole="button"
           className="border border-warningYellow border-[3px] m-5 rounded-2xl"
-          onPress={( ) => reloadSuggestions( { showLocation: showSuggestionsWithLocation } )}
+          onPress={( ) => reloadSuggestions( )}
         >
           <View className="p-5">
             <View className="flex-row mb-2">
