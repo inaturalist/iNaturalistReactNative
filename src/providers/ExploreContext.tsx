@@ -216,8 +216,8 @@ type State = {
   swlng?: number,
   // TODO: technically this is not any Object but a "Taxon"
   // and should be typed as such (e.g., in realm model)
-  taxon: Object | undefined,
-  taxon_id: number | undefined,
+  taxon: Object | undefined | null,
+  taxon_id: number | undefined | null,
   // TODO: technically this is not any Object but a "User"
   // and should be typed as such (e.g., in realm model)
   user: Object | undefined | null,
@@ -230,7 +230,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_USER, user: Object | null, userId: number | null, storedState: State}
   | {
     type: EXPLORE_ACTION.CHANGE_TAXON,
-    taxon: { id: number },
+    taxon: { id: number } | null,
     storedState: State
   }
   | { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN }
@@ -384,8 +384,8 @@ function exploreReducer( state: State, action: Action ) {
         newState.taxon = action.taxon;
         newState.taxon_id = action.taxon.id;
       } else {
-        newState.taxon = undefined;
-        newState.taxon_id = undefined;
+        newState.taxon = null;
+        newState.taxon_id = null;
       }
       return newState;
     }
