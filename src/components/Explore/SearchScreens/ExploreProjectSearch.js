@@ -4,6 +4,7 @@ import { FlashList } from "@shopify/flash-list";
 import { searchProjects } from "api/projects";
 import {
   ActivityIndicator,
+  Body3,
   Heading4,
   INatIconButton,
   ProjectListItem,
@@ -48,6 +49,14 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     closeModal();
   }, [updateProject, closeModal] );
 
+  const resetProject = useCallback(
+    ( ) => {
+      updateProject( null );
+      closeModal();
+    },
+    [updateProject, closeModal]
+  );
+
   const renderItem = useCallback(
     ( { item } ) => (
       <Pressable
@@ -81,6 +90,9 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
           accessibilityLabel={t( "SEARCH-PROJECTS" )}
         />
         <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>
+        <Body3 onPress={resetProject} className="absolute top-4 right-4">
+          {t( "Reset-verb" )}
+        </Body3>
       </View>
       <View
         className="bg-white px-6 pt-2 pb-8"

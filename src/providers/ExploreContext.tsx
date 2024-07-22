@@ -249,7 +249,12 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE}
-  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number, storedState: State}
+  | {
+      type: EXPLORE_ACTION.SET_PROJECT,
+      project: Object | null,
+      projectId: number | null,
+      storedState: State
+    }
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
   | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
