@@ -96,11 +96,15 @@ const Developer = (): Node => {
           text="UI LIBRARY"
           className="mb-5"
         />
-        <Button
-          onPress={() => navigation.navigate( "network" )}
-          text="NETWORK"
-          className="mb-5"
-        />
+        { // eslint-disable-next-line no-undef
+          __DEV__ && (
+            <Button
+              onPress={() => navigation.navigate( "network" )}
+              text="NETWORK"
+              className="mb-5"
+            />
+          )
+        }
         <Button
           onPress={() => navigation.navigate( "log" )}
           text="LOG"

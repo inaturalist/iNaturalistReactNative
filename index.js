@@ -85,7 +85,11 @@ setNativeExceptionHandler( exceptionString => {
   logger.error( `Native Error: ${exceptionString}` );
 }, false );
 
-startNetworkLogging();
+// Only in debug builds
+// eslint-disable-next-line no-undef
+if ( __DEV__ ) {
+  startNetworkLogging();
+}
 
 initI18next();
 
