@@ -50,6 +50,15 @@ const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
 const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
 const settingsTitle = () => <Heading4>{t( "SETTINGS" )}</Heading4>;
 
+// eslint-disable-next-line i18next/no-literal-string
+const debugTitle = () => <Heading4 className="text-white">DEBUG</Heading4>;
+// eslint-disable-next-line i18next/no-literal-string
+const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
+// eslint-disable-next-line i18next/no-literal-string
+const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
+// eslint-disable-next-line i18next/no-literal-string
+const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
+
 const DQA_OPTIONS = {
   ...showLongHeader,
   headerTitle: dqaTitle,
@@ -146,8 +155,9 @@ const TabStackNavigator = ( ): Node => (
     >
       <Stack.Screen
         name="Debug"
-        label="Debug"
         component={Developer}
+        options={{ headerTitle: debugTitle }}
+
       />
       <Stack.Screen
         name="network"
@@ -155,17 +165,18 @@ const TabStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="UILibrary"
-        label="UI Library"
         component={UiLibrary}
+        options={{ headerTitle: uiLibTitle }}
       />
       <Stack.Screen
         name="UiLibraryItem"
-        label="UI Library Item"
         component={UiLibraryItem}
+        options={{ headerTitle: uiLibItemTitle }}
       />
       <Stack.Screen
-        name="log"
         component={Log}
+        name="log"
+        options={{ headerTitle: logTitle }}
       />
     </Stack.Group>
     {/* Header with no bottom border */}
