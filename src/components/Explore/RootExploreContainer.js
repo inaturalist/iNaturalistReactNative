@@ -64,6 +64,7 @@ const RootExploreContainerWithContext = ( ): Node => {
     }
   };
 
+  // Object | null
   const updateUser = ( user: Object ) => {
     dispatch( {
       type: EXPLORE_ACTION.SET_USER,

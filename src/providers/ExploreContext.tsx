@@ -220,14 +220,14 @@ type State = {
   taxon_id: number | undefined,
   // TODO: technically this is not any Object but a "User"
   // and should be typed as such (e.g., in realm model)
-  user: Object | undefined,
-  user_id: number | undefined,
+  user: Object | undefined | null,
+  user_id: number | undefined | null,
   verifiable: boolean,
   wildStatus: WILD_STATUS
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
-  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number, storedState: State}
+  | {type: EXPLORE_ACTION.SET_USER, user: Object | null, userId: number | null, storedState: State}
   | {
     type: EXPLORE_ACTION.CHANGE_TAXON,
     taxon: { id: number },
