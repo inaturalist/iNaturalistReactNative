@@ -162,7 +162,7 @@ const UploadStatus = ( {
         showProgressValue={false}
         maxValue={1}
         inActiveStrokeOpacity={0}
-        activeStrokeWidth={2}
+        activeStrokeWidth={2.5}
       />
     </View>
   );
