@@ -1,16 +1,25 @@
 import {
   act,
   screen,
-  userEvent
+  userEvent,
+  within
 } from "@testing-library/react-native";
+import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
+import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
+
+jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
+  OS: "ios",
+  select: jest.fn( ),
+  Version: 11
+} ) );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -105,6 +114,18 @@ describe( "Suggestions", ( ) => {
   //   await actor.press( addIdButton );
   // }
 
+  async function navigateToSuggestionsViaCameraForObservation( ) {
+    const tabBar = await screen.findByTestId( "CustomTabBar" );
+    const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
+    await actor.press( addObsButton );
+    const cameraButton = await screen.findByLabelText( /AI Camera/ );
+    await actor.press( cameraButton );
+    const takePhotoButton = await screen.findByLabelText( /Take photo/ );
+    await actor.press( takePhotoButton );
+    const addIDButton = await screen.findByText( /ADD AN ID/ );
+    expect( addIDButton ).toBeVisible( );
+  }
+
   beforeAll( async () => {
     await initI18next();
     // userEvent recommends fake timers
@@ -171,6 +192,18 @@ describe( "Suggestions", ( ) => {
       await screen.findByText( "TOP ID SUGGESTION" );
       expect( screen.queryByText( "Add an ID Later" ) ).toBeFalsy( );
     } );
+
+    it( "should never show location permissions button", async ( ) => {
+      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+        hasPermissions: false,
+        renderPermissionsGate: jest.fn( )
+      } ) );
+      const observations = makeUnsyncedObservations( );
+      await renderAppWithObservations( observations, __filename );
+      await navigateToSuggestionsViaObsEditForObservation( observations[0] );
+      const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
+      expect( locationPermissionsButton ).toBeFalsy( );
+    } );
   } );
 
   describe( "when reached from ObsDetails", ( ) => {
@@ -199,6 +232,54 @@ describe( "Suggestions", ( ) => {
     //   await screen.findByText( "TOP ID SUGGESTION" );
     //   expect( screen.queryByText( "Add an ID Later" ) ).toBeFalsy( );
     // } );
+  } );
+
+  describe( "when reached from Camera", ( ) => {
+    beforeEach( async ( ) => {
+      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+      useStore.setState( {
+        isAdvancedUser: true
+      } );
+      inatjs.computervision.score_image
+        .mockResolvedValue( makeResponse( [topSuggestion] ) );
+      jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+        handleTaxaDetected: jest.fn( ),
+        modelLoaded: true,
+        result: {
+          taxon: []
+        },
+        setResult: jest.fn( )
+      } ) );
+    } );
+
+    afterEach( ( ) => {
+      signOut( { realm: global.mockRealms[__filename] } );
+      inatjs.computervision.score_image.mockClear( );
+    } );
+
+    it( "should not show location permissions button if permissions granted", async ( ) => {
+      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+        hasPermissions: true,
+        renderPermissionsGate: jest.fn( )
+      } ) );
+      const observations = makeUnsyncedObservations( );
+      await renderAppWithObservations( observations, __filename );
+      await navigateToSuggestionsViaCameraForObservation( observations[0] );
+      const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
+      expect( locationPermissionsButton ).toBeFalsy( );
+    } );
+
+    it( "should show location permissions button if permissions not granted", async ( ) => {
+      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+        hasPermissions: false,
+        renderPermissionsGate: jest.fn( )
+      } ) );
+      const observations = makeUnsyncedObservations( );
+      await renderAppWithObservations( observations, __filename );
+      await navigateToSuggestionsViaCameraForObservation( observations[0] );
+      const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
+      expect( locationPermissionsButton ).toBeVisible( );
+    } );
   } );
 
   describe( "TaxonSearch", ( ) => {

@@ -4,13 +4,15 @@ import _ from "lodash";
 import React, {
   useCallback,
   useEffect,
-  useState
+  useReducer
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
-  useIsConnected
+  useIsConnected,
+  useLastScreen,
+  useLocationPermission,
+  useWatchPosition
 } from "sharedHooks";
-import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
@@ -24,10 +26,68 @@ import Suggestions from "./Suggestions";
 // const logger = log.extend( "SuggestionsContainer" );
 
 const initialSuggestions = {
-  topSuggestion: null,
   otherSuggestions: [],
+  topSuggestion: null,
   topSuggestionType: "none",
   usingOfflineSuggestions: false
+};
+
+const initialState = {
+  isLoading: true,
+  mediaViewerVisible: false,
+  selectedPhotoUri: null,
+  selectedTaxon: null,
+  shouldFetchLocation: false,
+  shouldUseEvidenceLocation: false,
+  suggestions: initialSuggestions
+};
+
+const reducer = ( state, action ) => {
+  console.log( action.type, "action in reducer" );
+  switch ( action.type ) {
+    case "BEGIN_USER_LOCATION_FETCH":
+      return {
+        ...state,
+        shouldFetchLocation: true,
+        isLoading: true
+      };
+    case "DISPLAY_SUGGESTIONS":
+      return {
+        ...state,
+        isLoading: false,
+        suggestions: action.suggestions
+      };
+    case "FETCH_ONLINE_SUGGESTIONS":
+      return {
+        ...state,
+        isLoading: true,
+        suggestions: initialSuggestions
+      };
+    case "SELECT_PHOTO_AND_FETCH":
+      return {
+        ...state,
+        selectedPhotoUri: action.selectedPhotoUri,
+        isLoading: true,
+        suggestions: initialSuggestions
+      };
+    case "SELECT_TAXON":
+      return {
+        ...state,
+        selectedTaxon: action.selectedTaxon
+      };
+    case "TOGGLE_LOCATION":
+      return {
+        ...state,
+        shouldUseEvidenceLocation: action.shouldUseEvidenceLocation
+      };
+    case "TOGGLE_MEDIA_VIEWER":
+      return {
+        ...state,
+        mediaViewerVisible: action.mediaViewerVisible
+      };
+    default:
+      throw new Error( );
+  }
 };
 
 const SuggestionsContainer = ( ) => {
@@ -40,22 +100,41 @@ const SuggestionsContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   const photoUris = ObservationPhoto.mapObsPhotoUris( currentObservation );
+  const updateObservationKeys = useStore( state => state.updateObservationKeys );
 
-  const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoUris[0] );
-  const [selectedTaxon, setSelectedTaxon] = useState( null );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const evidenceHasLocation = !!currentObservation?.latitude;
-  const [suggestions, setSuggestions] = useState( initialSuggestions );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
-  const showImproveWithLocationButton = hasPermissions === false && isOnline;
+  const lastScreen = useLastScreen( );
+  const showImproveWithLocationButton = hasPermissions === false
+    && isOnline
+    && lastScreen === "Camera";
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
     requestPermissions( );
   }, [requestPermissions] );
-  const [
-    isUsingLocation,
-    setIsUsingLocation
-  ] = useState( evidenceHasLocation );
-  const [isLoading, setIsLoading] = useState( true );
+
+  const [state, dispatch] = useReducer( reducer, {
+    ...initialState,
+    selectedPhotoUri: photoUris[0],
+    shouldUseEvidenceLocation: evidenceHasLocation
+  } );
+
+  const {
+    isLoading,
+    mediaViewerVisible,
+    selectedPhotoUri,
+    selectedTaxon,
+    shouldFetchLocation,
+    suggestions,
+    shouldUseEvidenceLocation
+  } = state;
+
+  const shouldFetchOnlineSuggestions = !!isOnline
+    && ( hasPermissions !== undefined )
+    && isLoading;
+
+  const { userLocation } = useWatchPosition( {
+    shouldFetchLocation
+  } );
 
   const {
     usingOfflineSuggestions
@@ -66,13 +145,19 @@ const SuggestionsContainer = ( ) => {
     error: onlineSuggestionsError,
     onlineSuggestions,
     timedOut,
-    removePrevQueryAndRefetch,
+    removePrevQuery,
+    resetImageParams,
     fetchStatus
   } = useOnlineSuggestions( selectedPhotoUri, {
-    isUsingLocation,
-    usingOfflineSuggestions,
-    hasPermissions
+    shouldUseEvidenceLocation,
+    shouldFetchOnlineSuggestions
   } );
+
+  console.log(
+    onlineSuggestions?.results?.[0]?.taxon?.name,
+    "top taxon name",
+    selectedPhotoUri?.split( "photoUploads/" )[1]
+  );
 
   const loadingOnlineSuggestions = fetchStatus === "fetching";
 
@@ -89,6 +174,13 @@ const SuggestionsContainer = ( ) => {
 
   const hasOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
 
+  const setSelectedTaxon = taxon => {
+    dispatch( {
+      type: "SELECT_TAXON",
+      selectedTaxon: taxon
+    } );
+  };
+
   useNavigateWithTaxonSelected(
     selectedTaxon,
     ( ) => setSelectedTaxon( null ),
@@ -98,13 +190,20 @@ const SuggestionsContainer = ( ) => {
   const onPressPhoto = useCallback(
     uri => {
       if ( uri === selectedPhotoUri ) {
-        setMediaViewerVisible( true );
+        dispatch( {
+          type: "TOGGLE_MEDIA_VIEWER",
+          mediaViewerVisible: true
+        } );
       } else {
-        setSuggestions( initialSuggestions );
-        setSelectedPhotoUri( uri );
+        resetImageParams( );
+        dispatch( {
+          type: "SELECT_PHOTO_AND_FETCH",
+          selectedPhotoUri: uri
+        } );
       }
     },
     [
+      resetImageParams,
       selectedPhotoUri
     ]
   );
@@ -116,7 +215,7 @@ const SuggestionsContainer = ( ) => {
     onlineSuggestionsError,
     onlineSuggestionsUpdatedAt,
     selectedPhotoUri,
-    isUsingLocation,
+    shouldUseEvidenceLocation,
     topSuggestionType: suggestions.topSuggestionType,
     usingOfflineSuggestions: suggestions.usingOfflineSuggestions
   };
@@ -193,8 +292,10 @@ const SuggestionsContainer = ( ) => {
   const updateSuggestions = useCallback( ( ) => {
     const filteredSuggestions = filterSuggestions( );
     if ( !_.isEqual( filteredSuggestions, suggestions ) ) {
-      setSuggestions( filteredSuggestions );
-      setIsLoading( false );
+      dispatch( {
+        type: "DISPLAY_SUGGESTIONS",
+        suggestions: filteredSuggestions
+      } );
     }
   }, [filterSuggestions, suggestions] );
 
@@ -208,25 +309,46 @@ const SuggestionsContainer = ( ) => {
   const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
 
   const toggleLocation = useCallback( ( { showLocation } ) => {
-    removePrevQueryAndRefetch( );
-    setIsLoading( true );
-    setSuggestions( initialSuggestions );
-    setIsUsingLocation( showLocation );
-  }, [removePrevQueryAndRefetch] );
+    dispatch( {
+      type: "TOGGLE_LOCATION",
+      shouldUseEvidenceLocation: showLocation
+    } );
+    removePrevQuery( );
+    dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
+  }, [removePrevQuery] );
 
   const reloadSuggestions = useCallback( ( ) => {
     // used when offline text is tapped to try to get online
     // suggestions
     if ( skipReload ) { return; }
-    removePrevQueryAndRefetch( );
-    setIsLoading( true );
-    setSuggestions( initialSuggestions );
-  }, [skipReload, removePrevQueryAndRefetch] );
+    removePrevQuery( );
+    dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
+  }, [skipReload, removePrevQuery] );
 
   const hideLocationToggleButton = usingOfflineSuggestions
-    || suggestions?.isLoading
+    || isLoading
     || showImproveWithLocationButton
     || !isOnline;
+
+  const fetchUserLocation = hasPermissions && !evidenceHasLocation && lastScreen === "Camera";
+
+  useEffect( ( ) => {
+    // user grants permissions after Camera screen
+    if ( fetchUserLocation ) {
+      dispatch( { type: "BEGIN_USER_LOCATION_FETCH" } );
+    }
+  }, [fetchUserLocation] );
+
+  useEffect( ( ) => {
+    dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
+  }, [] );
+
+  useEffect( ( ) => {
+    if ( userLocation?.latitude ) {
+      updateObservationKeys( userLocation );
+      dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
+    }
+  }, [userLocation, updateObservationKeys, toggleLocation] );
 
   return (
     <>
@@ -237,7 +359,7 @@ const SuggestionsContainer = ( ) => {
         hideSkip={params?.hideSkip}
         improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
         isLoading={isLoading}
-        isUsingLocation={isUsingLocation}
+        shouldUseEvidenceLocation={shouldUseEvidenceLocation}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={setSelectedTaxon}
         photoUris={photoUris}
@@ -249,7 +371,10 @@ const SuggestionsContainer = ( ) => {
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}
-        onClose={() => setMediaViewerVisible( false )}
+        onClose={( ) => dispatch( {
+          type: "TOGGLE_MEDIA_VIEWER",
+          mediaViewerVisible: false
+        } )}
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />

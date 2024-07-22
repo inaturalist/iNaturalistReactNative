@@ -55,7 +55,7 @@ type OnlineSuggestionsResponse = {
   loadingOnlineSuggestions: boolean,
   timedOut: boolean,
   error: Object,
-  removePrevQueryAndRefetch: Function
+  removePrevQuery: Function
   isRefetching: boolean
 }
 
@@ -65,9 +65,8 @@ const useOnlineSuggestions = (
 ): OnlineSuggestionsResponse => {
   const currentObservation = useStore( state => state.currentObservation );
   const {
-    isUsingLocation,
-    usingOfflineSuggestions,
-    hasPermissions
+    shouldUseEvidenceLocation,
+    shouldFetchOnlineSuggestions
   } = options;
 
   const queryClient = useQueryClient( );
@@ -79,7 +78,7 @@ const useOnlineSuggestions = (
   async function queryFn( optsWithAuth ) {
     const params = flattenedUploadParams;
     const { latitude, longitude } = currentObservation;
-    if ( isUsingLocation ) {
+    if ( shouldUseEvidenceLocation ) {
       if ( latitude ) {
         params.lat = latitude;
       }
@@ -90,6 +89,7 @@ const useOnlineSuggestions = (
       delete params.lat;
       delete params.lng;
     }
+    console.log( params, "params for upload", selectedPhotoUri, shouldUseEvidenceLocation );
     return scoreImage( params, optsWithAuth );
   }
 
@@ -100,28 +100,25 @@ const useOnlineSuggestions = (
     data: onlineSuggestions,
     dataUpdatedAt,
     fetchStatus,
-    error,
-    refetch
+    error
   } = useAuthenticatedQuery(
     queryKey,
     queryFn,
     {
-      enabled: !!selectedPhotoUri
-        && !!isOnline
-        && usingOfflineSuggestions === false
-        && hasPermissions !== undefined
+      enabled: !!shouldFetchOnlineSuggestions
         && !!( flattenedUploadParams?.image ),
       allowAnonymousJWT: true
     }
   );
 
-  useEffect( ( ) => {
-    const resetImageParams = async ( ) => {
-      const newImageParams = await flattenUploadParams( selectedPhotoUri );
-      setFlattenedUploadParams( newImageParams );
-    };
-    resetImageParams( );
+  const setImageParams = useCallback( async ( ) => {
+    const newImageParams = await flattenUploadParams( selectedPhotoUri );
+    setFlattenedUploadParams( newImageParams );
   }, [selectedPhotoUri] );
+
+  useEffect( ( ) => {
+    setImageParams( );
+  }, [setImageParams] );
 
   // Give up on suggestions request after a timeout
   useEffect( ( ) => {
@@ -137,11 +134,17 @@ const useOnlineSuggestions = (
     };
   }, [onlineSuggestions, queryKey, queryClient] );
 
-  const removePrevQueryAndRefetch = useCallback( async ( ) => {
+  const resetImageParams = useCallback( async ( ) => {
     queryClient.removeQueries( { queryKey } );
     setTimedOut( false );
-    refetch( );
-  }, [queryClient, queryKey, refetch] );
+    await setImageParams( );
+  }, [setImageParams, queryClient, queryKey] );
+
+  const removePrevQuery = useCallback( async ( ) => {
+    queryClient.removeQueries( { queryKey } );
+    setTimedOut( false );
+    // refetch( );
+  }, [queryClient, queryKey] );
 
   useEffect( () => {
     if ( isOnline === false ) {
@@ -153,7 +156,8 @@ const useOnlineSuggestions = (
     dataUpdatedAt,
     error,
     timedOut,
-    removePrevQueryAndRefetch,
+    removePrevQuery,
+    resetImageParams,
     fetchStatus
   };
 

@@ -24,7 +24,7 @@ type Props = {
   hideSkip?: boolean,
   improveWithLocationButtonOnPress: () => void,
   isLoading: boolean,
-  isUsingLocation: boolean,
+  shouldUseEvidenceLocation: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
@@ -42,7 +42,7 @@ const Suggestions = ( {
   hideSkip,
   improveWithLocationButtonOnPress,
   isLoading,
-  isUsingLocation,
+  shouldUseEvidenceLocation,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
@@ -82,7 +82,7 @@ const Suggestions = ( {
       handleSkip={handleSkip}
       hideLocationToggleButton={hideLocationToggleButton}
       hideSkip={hideSkip}
-      isUsingLocation={isUsingLocation}
+      shouldUseEvidenceLocation={shouldUseEvidenceLocation}
       observers={observers}
       toggleLocation={toggleLocation}
     />
@@ -91,7 +91,7 @@ const Suggestions = ( {
     handleSkip,
     hideLocationToggleButton,
     hideSkip,
-    isUsingLocation,
+    shouldUseEvidenceLocation,
     observers,
     toggleLocation
   ] );
