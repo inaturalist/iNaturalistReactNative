@@ -63,10 +63,20 @@ const useOfflineSuggestions = (
     }
   }, [selectedPhotoUri, tryOfflineSuggestions, setError] );
 
+  console.log( tryOfflineSuggestions, "try offline suggestions" );
+
+  useEffect( ( ) => {
+    if ( tryOfflineSuggestions === false && offlineSuggestions.length > 0 ) {
+      setOfflineSuggestions( [] );
+    }
+  }, [tryOfflineSuggestions, offlineSuggestions] );
+
   if ( error ) throw error;
 
   return {
-    offlineSuggestions,
+    offlineSuggestions: loadingOfflineSuggestions
+      ? []
+      : offlineSuggestions,
     loadingOfflineSuggestions
   };
 };

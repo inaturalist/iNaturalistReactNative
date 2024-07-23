@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import _ from "lodash";
 import React, {
@@ -16,6 +16,7 @@ import {
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
+import flattenUploadParams from "./helpers/flattenUploadParams";
 import sortSuggestions from "./helpers/sortSuggestions";
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
@@ -25,6 +26,12 @@ import Suggestions from "./Suggestions";
 
 // const logger = log.extend( "SuggestionsContainer" );
 
+const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
+  "scoreImage",
+  selectedPhotoUri,
+  { shouldUseEvidenceLocation }
+];
+
 const initialSuggestions = {
   otherSuggestions: [],
   topSuggestion: null,
@@ -33,8 +40,10 @@ const initialSuggestions = {
 };
 
 const initialState = {
+  flattenedUploadParams: null,
   isLoading: true,
   mediaViewerVisible: false,
+  queryKey: [],
   selectedPhotoUri: null,
   selectedTaxon: null,
   shouldFetchLocation: false,
@@ -61,14 +70,22 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         isLoading: true,
-        suggestions: initialSuggestions
+        suggestions: initialSuggestions,
+        queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
-    case "SELECT_PHOTO_AND_FETCH":
+    case "FLATTEN_UPLOAD_PARAMS":
+      return {
+        ...state,
+        flattenedUploadParams: action.flattenedUploadParams
+      };
+    case "SELECT_PHOTO":
       return {
         ...state,
         selectedPhotoUri: action.selectedPhotoUri,
+        flattenedUploadParams: action.flattenedUploadParams,
         isLoading: true,
-        suggestions: initialSuggestions
+        suggestions: initialSuggestions,
+        queryKey: setQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_TAXON":
       return {
@@ -78,7 +95,10 @@ const reducer = ( state, action ) => {
     case "TOGGLE_LOCATION":
       return {
         ...state,
-        shouldUseEvidenceLocation: action.shouldUseEvidenceLocation
+        isLoading: true,
+        flattenedUploadParams: action.flattenedUploadParams,
+        shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
+        queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
       };
     case "TOGGLE_MEDIA_VIEWER":
       return {
@@ -91,6 +111,7 @@ const reducer = ( state, action ) => {
 };
 
 const SuggestionsContainer = ( ) => {
+  const navigation = useNavigation( );
   const { params } = useRoute( );
   const isOnline = useIsConnected( );
   // clearing the cache of resized images for the score_image API
@@ -119,8 +140,10 @@ const SuggestionsContainer = ( ) => {
   } );
 
   const {
+    flattenedUploadParams,
     isLoading,
     mediaViewerVisible,
+    queryKey,
     selectedPhotoUri,
     selectedTaxon,
     shouldFetchLocation,
@@ -145,25 +168,38 @@ const SuggestionsContainer = ( ) => {
     error: onlineSuggestionsError,
     onlineSuggestions,
     timedOut,
-    removePrevQuery,
-    resetImageParams,
+    resetTimeout,
     fetchStatus
-  } = useOnlineSuggestions( selectedPhotoUri, {
-    shouldUseEvidenceLocation,
+  } = useOnlineSuggestions( {
+    flattenedUploadParams,
+    queryKey,
     shouldFetchOnlineSuggestions
   } );
 
-  console.log(
-    onlineSuggestions?.results?.[0]?.taxon?.name,
-    "top taxon name",
-    selectedPhotoUri?.split( "photoUploads/" )[1]
-  );
+  const createUploadParams = useCallback( async ( uri, showLocation ) => {
+    const newImageParams = await flattenUploadParams( uri );
+    if ( showLocation && currentObservation?.latitude ) {
+      newImageParams.lat = currentObservation?.latitude;
+      newImageParams.lng = currentObservation?.longitude;
+    }
+    return newImageParams;
+  }, [
+    currentObservation
+  ] );
+
+  // console.log(
+  //   onlineSuggestions?.results?.[0]?.taxon?.name,
+  //   "top taxon name",
+  //   selectedPhotoUri?.split( "photoUploads/" )[1]
+  // );
 
   const loadingOnlineSuggestions = fetchStatus === "fetching";
 
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = onlineSuggestions?.results?.length === 0
-    && ( timedOut || !loadingOnlineSuggestions );
+    || ( timedOut && !onlineSuggestions );
+
+  console.log( tryOfflineSuggestions, "try offline" );
 
   const {
     offlineSuggestions,
@@ -188,23 +224,25 @@ const SuggestionsContainer = ( ) => {
   );
 
   const onPressPhoto = useCallback(
-    uri => {
+    async uri => {
       if ( uri === selectedPhotoUri ) {
         dispatch( {
           type: "TOGGLE_MEDIA_VIEWER",
           mediaViewerVisible: true
         } );
       } else {
-        resetImageParams( );
+        const newImageParams = await createUploadParams( uri, shouldUseEvidenceLocation );
         dispatch( {
-          type: "SELECT_PHOTO_AND_FETCH",
-          selectedPhotoUri: uri
+          type: "SELECT_PHOTO",
+          selectedPhotoUri: uri,
+          flattenedUploadParams: newImageParams
         } );
       }
     },
     [
-      resetImageParams,
-      selectedPhotoUri
+      createUploadParams,
+      selectedPhotoUri,
+      shouldUseEvidenceLocation
     ]
   );
 
@@ -282,12 +320,9 @@ const SuggestionsContainer = ( ) => {
     hasOfflineSuggestions
   ] );
 
-  const allSuggestionsFetched = onlineSuggestions?.results?.length > 0
-    || offlineSuggestions.length > 0
-    || ( !tryOfflineSuggestions
-        && fetchStatus === "idle"
-        && !loadingOfflineSuggestions
-    );
+  const allSuggestionsFetched = unfilteredSuggestions.length > 0
+    && !loadingOnlineSuggestions
+    && !loadingOfflineSuggestions;
 
   const updateSuggestions = useCallback( ( ) => {
     const filteredSuggestions = filterSuggestions( );
@@ -308,22 +343,28 @@ const SuggestionsContainer = ( ) => {
 
   const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
 
-  const toggleLocation = useCallback( ( { showLocation } ) => {
+  const toggleLocation = useCallback( async ( { showLocation } ) => {
+    const newImageParams = await createUploadParams( selectedPhotoUri, showLocation );
     dispatch( {
       type: "TOGGLE_LOCATION",
-      shouldUseEvidenceLocation: showLocation
+      shouldUseEvidenceLocation: showLocation,
+      flattenedUploadParams: newImageParams
     } );
-    removePrevQuery( );
+    resetTimeout( );
     dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
-  }, [removePrevQuery] );
+  }, [
+    createUploadParams,
+    resetTimeout,
+    selectedPhotoUri
+  ] );
 
   const reloadSuggestions = useCallback( ( ) => {
     // used when offline text is tapped to try to get online
     // suggestions
     if ( skipReload ) { return; }
-    removePrevQuery( );
+    resetTimeout( );
     dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
-  }, [skipReload, removePrevQuery] );
+  }, [skipReload, resetTimeout] );
 
   const hideLocationToggleButton = usingOfflineSuggestions
     || isLoading
@@ -340,15 +381,29 @@ const SuggestionsContainer = ( ) => {
   }, [fetchUserLocation] );
 
   useEffect( ( ) => {
-    dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
-  }, [] );
-
-  useEffect( ( ) => {
     if ( userLocation?.latitude ) {
       updateObservationKeys( userLocation );
       dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
     }
   }, [userLocation, updateObservationKeys, toggleLocation] );
+
+  const setImageParams = useCallback( async ( ) => {
+    const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );
+    dispatch( { type: "FLATTEN_UPLOAD_PARAMS", flattenedUploadParams: newImageParams } );
+    dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
+  }, [
+    createUploadParams,
+    selectedPhotoUri,
+    shouldUseEvidenceLocation
+  ] );
+
+  useEffect( () => {
+    const onFocus = navigation.addListener( "focus", ( ) => {
+      setImageParams( );
+    } );
+
+    return onFocus;
+  }, [setImageParams, navigation] );
 
   return (
     <>
