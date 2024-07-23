@@ -54,6 +54,7 @@ const useOfflineSuggestions = (
     };
 
     if ( selectedPhotoUri && tryOfflineSuggestions ) {
+      setLoadingOfflineSuggestions( true );
       predictOffline( ).catch( predictOfflineError => {
         // For some reason if you throw here, it doesn't actually buble up. Is
         // an effect callback run in a promise?
@@ -62,14 +63,6 @@ const useOfflineSuggestions = (
       } );
     }
   }, [selectedPhotoUri, tryOfflineSuggestions, setError] );
-
-  console.log( tryOfflineSuggestions, "try offline suggestions" );
-
-  useEffect( ( ) => {
-    if ( tryOfflineSuggestions === false && offlineSuggestions.length > 0 ) {
-      setOfflineSuggestions( [] );
-    }
-  }, [tryOfflineSuggestions, offlineSuggestions] );
 
   if ( error ) throw error;
 

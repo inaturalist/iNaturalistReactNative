@@ -52,7 +52,6 @@ const initialState = {
 };
 
 const reducer = ( state, action ) => {
-  console.log( action.type, "action in reducer" );
   switch ( action.type ) {
     case "BEGIN_USER_LOCATION_FETCH":
       return {
@@ -168,8 +167,7 @@ const SuggestionsContainer = ( ) => {
     error: onlineSuggestionsError,
     onlineSuggestions,
     timedOut,
-    resetTimeout,
-    fetchStatus
+    resetTimeout
   } = useOnlineSuggestions( {
     flattenedUploadParams,
     queryKey,
@@ -187,23 +185,12 @@ const SuggestionsContainer = ( ) => {
     currentObservation
   ] );
 
-  // console.log(
-  //   onlineSuggestions?.results?.[0]?.taxon?.name,
-  //   "top taxon name",
-  //   selectedPhotoUri?.split( "photoUploads/" )[1]
-  // );
-
-  const loadingOnlineSuggestions = fetchStatus === "fetching";
-
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = onlineSuggestions?.results?.length === 0
-    || ( timedOut && !onlineSuggestions );
-
-  console.log( tryOfflineSuggestions, "try offline" );
+    || timedOut;
 
   const {
-    offlineSuggestions,
-    loadingOfflineSuggestions
+    offlineSuggestions
   } = useOfflineSuggestions( selectedPhotoUri, {
     tryOfflineSuggestions
   } );
@@ -320,10 +307,6 @@ const SuggestionsContainer = ( ) => {
     hasOfflineSuggestions
   ] );
 
-  const allSuggestionsFetched = unfilteredSuggestions.length > 0
-    && !loadingOnlineSuggestions
-    && !loadingOfflineSuggestions;
-
   const updateSuggestions = useCallback( ( ) => {
     const filteredSuggestions = filterSuggestions( );
     if ( !_.isEqual( filteredSuggestions, suggestions ) ) {
@@ -336,10 +319,10 @@ const SuggestionsContainer = ( ) => {
 
   useEffect( ( ) => {
     // update suggestions when API call and/or offline suggestions are finished loading
-    if ( allSuggestionsFetched ) {
+    if ( unfilteredSuggestions.length > 0 ) {
       updateSuggestions( );
     }
-  }, [allSuggestionsFetched, updateSuggestions] );
+  }, [unfilteredSuggestions, updateSuggestions] );
 
   const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
 
@@ -399,11 +382,17 @@ const SuggestionsContainer = ( ) => {
 
   useEffect( () => {
     const onFocus = navigation.addListener( "focus", ( ) => {
-      setImageParams( );
+      if ( _.isEqual( initialSuggestions, suggestions ) ) {
+        setImageParams( );
+      }
     } );
 
     return onFocus;
-  }, [setImageParams, navigation] );
+  }, [
+    navigation,
+    setImageParams,
+    suggestions
+  ] );
 
   return (
     <>
