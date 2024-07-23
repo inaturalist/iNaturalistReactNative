@@ -205,8 +205,8 @@ type State = {
   place_id: number | null | undefined,
   // TODO: technically this is not any Object but a "Project"
   // and should be typed as such (e.g., in realm model)
-  project: Object | undefined,
-  project_id: number | undefined,
+  project: Object | undefined | null,
+  project_id: number | undefined | null,
   radius?: number,
   researchGrade: boolean,
   return_bounds: boolean,
