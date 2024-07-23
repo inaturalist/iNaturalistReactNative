@@ -93,32 +93,36 @@ const Developer = (): Node => {
       <View className="p-5">
         <Button
           onPress={() => navigation.navigate( "UILibrary" )}
-          text="UI Library"
+          text="UI LIBRARY"
           className="mb-5"
         />
-        <Button
-          onPress={() => navigation.navigate( "network" )}
-          text="Network"
-          className="mb-5"
-        />
+        { // eslint-disable-next-line no-undef
+          __DEV__ && (
+            <Button
+              onPress={() => navigation.navigate( "network" )}
+              text="NETWORK"
+              className="mb-5"
+            />
+          )
+        }
         <Button
           onPress={() => navigation.navigate( "log" )}
-          text="Log"
+          text="LOG"
           className="mb-5"
         />
         <Button
           onPress={() => { throw new Error( "Test error" ); }}
-          text="Test error"
+          text="TEST ERROR"
           className="mb-5"
         />
         <Button
           onPress={() => { throw new INatApiError( { error: "Test error", status: 422 } ); }}
-          text="Test INatApiError"
+          text="TEST INATAPIERROR"
           className="mb-5"
         />
         <Button
           onPress={async () => { throw new Error( "Test error in promise" ); }}
-          text="Test unhandled promise rejection"
+          text="TEST UNHANDLED PROMISE REJECTION"
           className="mb-5"
         />
         <H1>Computer Vision</H1>
