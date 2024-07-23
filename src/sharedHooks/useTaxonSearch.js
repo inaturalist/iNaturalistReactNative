@@ -3,8 +3,8 @@
 import fetchSearchResults from "api/search";
 import { useAuthenticatedQuery } from "sharedHooks";
 
-const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
-  const { data: taxonList } = useAuthenticatedQuery(
+const useTaxonSearch = ( taxonQuery: string ): Object => {
+  const { data: taxonList, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
     optsWithAuth => fetchSearchResults(
       {
@@ -18,7 +18,7 @@ const useTaxonSearch = ( taxonQuery: string ): Array<Object> => {
     }
   );
 
-  return taxonList;
+  return { taxonList, isLoading };
 };
 
 export default useTaxonSearch;
