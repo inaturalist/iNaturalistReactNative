@@ -12,7 +12,6 @@ import {
   useIsConnected,
   useLastScreen,
   useLocationPermission
-  // useWatchPosition
 } from "sharedHooks";
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
@@ -49,24 +48,21 @@ const initialState = {
   selectedPhotoUri: null,
   selectedTaxon: null,
   shouldUseEvidenceLocation: false,
-  showPermissionGate: false,
-  suggestions: initialSuggestions
+  showPermissionGate: false
 };
 
 const reducer = ( state, action ) => {
   console.log( action.type, "action type" );
   switch ( action.type ) {
-    case "DISPLAY_SUGGESTIONS":
+    case "SET_LOADING":
       return {
         ...state,
-        isLoading: false,
-        suggestions: action.suggestions
+        isLoading: action.isLoading
       };
     case "FETCH_ONLINE_SUGGESTIONS":
       return {
         ...state,
         isLoading: true,
-        suggestions: initialSuggestions,
         queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "FLATTEN_UPLOAD_PARAMS":
@@ -80,7 +76,6 @@ const reducer = ( state, action ) => {
         selectedPhotoUri: action.selectedPhotoUri,
         flattenedUploadParams: action.flattenedUploadParams,
         isLoading: true,
-        suggestions: initialSuggestions,
         queryKey: setQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_TAXON":
@@ -158,17 +153,12 @@ const SuggestionsContainer = ( ) => {
     selectedPhotoUri,
     selectedTaxon,
     shouldUseEvidenceLocation,
-    showPermissionGate,
-    suggestions
+    showPermissionGate
   } = state;
 
   const shouldFetchOnlineSuggestions = !!isOnline
     && ( hasPermissions !== undefined )
     && isLoading;
-
-  const {
-    usingOfflineSuggestions
-  } = suggestions;
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
@@ -241,18 +231,6 @@ const SuggestionsContainer = ( ) => {
     ]
   );
 
-  const debugData = {
-    timedOut,
-    onlineSuggestions,
-    offlineSuggestions,
-    onlineSuggestionsError,
-    onlineSuggestionsUpdatedAt,
-    selectedPhotoUri,
-    shouldUseEvidenceLocation,
-    topSuggestionType: suggestions.topSuggestionType,
-    usingOfflineSuggestions: suggestions.usingOfflineSuggestions
-  };
-
   const unfilteredSuggestions = onlineSuggestions?.results?.length > 0
     ? onlineSuggestions.results
     : offlineSuggestions;
@@ -261,7 +239,7 @@ const SuggestionsContainer = ( ) => {
     const removeTopSuggestion = ( list, id ) => _.remove( list, item => item.taxon.id === id );
     const sortedSuggestions = sortSuggestions( unfilteredSuggestions, { hasOfflineSuggestions } );
     const newSuggestions = {
-      ...suggestions,
+      ...initialSuggestions,
       otherSuggestions: sortedSuggestions,
       usingOfflineSuggestions: hasOfflineSuggestions
     };
@@ -310,27 +288,26 @@ const SuggestionsContainer = ( ) => {
     };
   }, [
     onlineSuggestions?.common_ancestor,
-    suggestions,
     unfilteredSuggestions,
     hasOfflineSuggestions
   ] );
 
-  const updateSuggestions = useCallback( ( ) => {
-    const filteredSuggestions = filterSuggestions( );
-    if ( !_.isEqual( filteredSuggestions, suggestions ) ) {
-      dispatch( {
-        type: "DISPLAY_SUGGESTIONS",
-        suggestions: filteredSuggestions
-      } );
+  const suggestions = useMemo( ( ) => {
+    // since we can calculate this, there's no need to store it in state
+    if ( unfilteredSuggestions?.length > 0 ) {
+      return filterSuggestions( );
     }
-  }, [filterSuggestions, suggestions] );
+    return initialSuggestions;
+  }, [unfilteredSuggestions.length, filterSuggestions] );
 
   useEffect( ( ) => {
-    // update suggestions when API call and/or offline suggestions are finished loading
-    if ( unfilteredSuggestions.length > 0 ) {
-      updateSuggestions( );
+    if ( !_.isEqual( initialSuggestions, suggestions ) ) {
+      dispatch( {
+        type: "SET_LOADING",
+        isLoading: false
+      } );
     }
-  }, [unfilteredSuggestions, updateSuggestions] );
+  }, [suggestions] );
 
   const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
 
@@ -357,7 +334,7 @@ const SuggestionsContainer = ( ) => {
     dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
   }, [skipReload, resetTimeout] );
 
-  const hideLocationToggleButton = usingOfflineSuggestions
+  const hideLocationToggleButton = suggestions.usingOfflineSuggestions
     || isLoading
     || showImproveWithLocationButton
     || !isOnline;
@@ -396,6 +373,18 @@ const SuggestionsContainer = ( ) => {
     toggleLocation( { showLocation: true } );
   }, [toggleLocation, updateObservationKeys] );
 
+  const debugData = {
+    timedOut,
+    onlineSuggestions,
+    offlineSuggestions,
+    onlineSuggestionsError,
+    onlineSuggestionsUpdatedAt,
+    selectedPhotoUri,
+    shouldUseEvidenceLocation,
+    topSuggestionType: suggestions.topSuggestionType,
+    usingOfflineSuggestions: suggestions.usingOfflineSuggestions
+  };
+
   return (
     <>
       <Suggestions
@@ -424,7 +413,7 @@ const SuggestionsContainer = ( ) => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
-      {/* 20240723 amanda - this feels kind of hacky, but without this extra
+      {/* 20240723 amanda - this feels a bit hacky, but without this extra
       showPermissionGate boolean, renderPermissionsGate creates a maximum update
       exceeded error and keeps returning onPermissionsGranted infinitely */}
       {showPermissionGate && renderPermissionsGate( { onPermissionGranted } )}
