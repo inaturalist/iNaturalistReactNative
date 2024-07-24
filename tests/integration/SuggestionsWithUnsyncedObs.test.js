@@ -27,6 +27,15 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   Version: 11
 } ) );
 
+const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+  coords: {
+    latitude: 56,
+    longitude: 9,
+    accuracy: 8
+  }
+} ) );
+Geolocation.watchPosition.mockImplementation( mockWatchPosition );
+
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
@@ -225,15 +234,6 @@ describe( "from ObsEdit with human observation", ( ) => {
 
 describe( "from AICamera", ( ) => {
   beforeEach( async ( ) => {
-    const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-      coords: {
-        latitude: 56,
-        longitude: 9,
-        accuracy: 8
-      }
-    } ) );
-    Geolocation.watchPosition.mockImplementation( mockWatchPosition );
-
     inatjs.computervision.score_image
       .mockResolvedValue( makeResponse( [topSuggestion] ) );
     jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {

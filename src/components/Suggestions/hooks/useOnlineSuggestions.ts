@@ -24,6 +24,7 @@ const useOnlineSuggestions = (
   options: Object
 ): OnlineSuggestionsResponse => {
   const {
+    dispatch,
     flattenedUploadParams,
     queryKey,
     shouldFetchOnlineSuggestions
@@ -61,6 +62,7 @@ const useOnlineSuggestions = (
     const timer = setTimeout( ( ) => {
       if ( onlineSuggestions === undefined ) {
         queryClient.cancelQueries( { queryKey } );
+        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "timed-out" } );
         setTimedOut( true );
       }
     }, SCORE_IMAGE_TIMEOUT );
@@ -68,7 +70,7 @@ const useOnlineSuggestions = (
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, queryKey, queryClient] );
+  }, [onlineSuggestions, queryKey, queryClient, dispatch] );
 
   const resetTimeout = useCallback( ( ) => {
     setTimedOut( false );
@@ -76,9 +78,16 @@ const useOnlineSuggestions = (
 
   useEffect( () => {
     if ( isOnline === false ) {
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "timed-out" } );
       setTimedOut( true );
     }
-  }, [isOnline] );
+  }, [isOnline, dispatch] );
+
+  useEffect( ( ) => {
+    if ( onlineSuggestions !== undefined ) {
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-fetched" } );
+    }
+  }, [dispatch, onlineSuggestions] );
 
   const queryObject = {
     dataUpdatedAt,

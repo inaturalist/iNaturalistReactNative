@@ -13,14 +13,12 @@ const useOfflineSuggestions = (
   selectedPhotoUri: string,
   options: Object
 ): {
-  offlineSuggestions: Array<Object>,
-  loadingOfflineSuggestions: boolean
+  offlineSuggestions: Array<Object>
 } => {
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
-  const [loadingOfflineSuggestions, setLoadingOfflineSuggestions] = useState( true );
   const [error, setError] = useState( null );
 
-  const { tryOfflineSuggestions } = options;
+  const { dispatch, tryOfflineSuggestions } = options;
 
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
@@ -31,6 +29,7 @@ const useOfflineSuggestions = (
         // currently Seek codebase as well expects different return types for each platform
         rawPredictions = result.predictions;
       } catch ( predictImageError ) {
+        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
         logger.error( "Error predicting image offline", predictImageError );
         throw predictImageError;
       }
@@ -49,28 +48,25 @@ const useOfflineSuggestions = (
           }
         } ) );
       setOfflineSuggestions( formattedPredictions );
-      setLoadingOfflineSuggestions( false );
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-fetched" } );
       return formattedPredictions;
     };
 
     if ( selectedPhotoUri && tryOfflineSuggestions ) {
-      setLoadingOfflineSuggestions( true );
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "fetching-offline" } );
       predictOffline( ).catch( predictOfflineError => {
         // For some reason if you throw here, it doesn't actually buble up. Is
         // an effect callback run in a promise?
-        setLoadingOfflineSuggestions( false );
+        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
         setError( predictOfflineError );
       } );
     }
-  }, [selectedPhotoUri, tryOfflineSuggestions, setError] );
+  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch] );
 
   if ( error ) throw error;
 
   return {
-    offlineSuggestions: loadingOfflineSuggestions
-      ? []
-      : offlineSuggestions,
-    loadingOfflineSuggestions
+    offlineSuggestions
   };
 };
 

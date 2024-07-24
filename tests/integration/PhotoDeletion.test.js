@@ -68,7 +68,6 @@ beforeEach( ( ) => {
   useStore.setState( { isAdvancedUser: true } );
   const prediction = mockModelResult.predictions[0];
   jest.spyOn( useOfflineSuggestions, "default" ).mockImplementation( ( ) => ( {
-    loadingOfflineSuggestions: false,
     offlineSuggestions: [{
       score: prediction.score,
       taxon: {

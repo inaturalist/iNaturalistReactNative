@@ -40,8 +40,8 @@ const initialSuggestions = {
 };
 
 const initialState = {
+  fetchStatus: "loading",
   flattenedUploadParams: null,
-  isLoading: true,
   mediaViewerVisible: false,
   queryKey: [],
   selectedPhotoUri: null,
@@ -52,34 +52,29 @@ const initialState = {
 
 const reducer = ( state, action ) => {
   switch ( action.type ) {
-    case "SET_LOADING":
-      return {
-        ...state,
-        isLoading: action.isLoading
-      };
-    case "FETCH_ONLINE_SUGGESTIONS":
-      return {
-        ...state,
-        isLoading: true,
-        queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
-      };
     case "FLATTEN_UPLOAD_PARAMS":
       return {
         ...state,
-        flattenedUploadParams: action.flattenedUploadParams
+        flattenedUploadParams: action.flattenedUploadParams,
+        queryKey: setQueryKey( state.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_PHOTO":
       return {
         ...state,
+        fetchStatus: "loading",
         selectedPhotoUri: action.selectedPhotoUri,
         flattenedUploadParams: action.flattenedUploadParams,
-        isLoading: true,
         queryKey: setQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation )
       };
     case "SELECT_TAXON":
       return {
         ...state,
         selectedTaxon: action.selectedTaxon
+      };
+    case "SET_FETCH_STATUS":
+      return {
+        ...state,
+        fetchStatus: action.fetchStatus
       };
     case "SHOW_PERMISSION_GATE":
       return {
@@ -89,7 +84,7 @@ const reducer = ( state, action ) => {
     case "TOGGLE_LOCATION":
       return {
         ...state,
-        isLoading: true,
+        fetchStatus: "loading",
         flattenedUploadParams: action.flattenedUploadParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
         queryKey: setQueryKey( state.selectedPhotoUri, action.shouldUseEvidenceLocation )
@@ -145,7 +140,7 @@ const SuggestionsContainer = ( ) => {
 
   const {
     flattenedUploadParams,
-    isLoading,
+    fetchStatus,
     mediaViewerVisible,
     queryKey,
     selectedPhotoUri,
@@ -154,9 +149,8 @@ const SuggestionsContainer = ( ) => {
     showPermissionGate
   } = state;
 
-  const shouldFetchOnlineSuggestions = !!isOnline
-    && ( hasPermissions !== undefined )
-    && isLoading;
+  const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
+    && fetchStatus === "loading";
 
   const {
     dataUpdatedAt: onlineSuggestionsUpdatedAt,
@@ -165,6 +159,7 @@ const SuggestionsContainer = ( ) => {
     timedOut,
     resetTimeout
   } = useOnlineSuggestions( {
+    dispatch,
     flattenedUploadParams,
     queryKey,
     shouldFetchOnlineSuggestions
@@ -182,17 +177,21 @@ const SuggestionsContainer = ( ) => {
   ] );
 
   // skip to offline suggestions if internet connection is spotty
-  const tryOfflineSuggestions = onlineSuggestions?.results?.length === 0
-    || timedOut;
+  const tryOfflineSuggestions = timedOut || (
+    onlineSuggestions?.results?.length === 0 && fetchStatus === "online-fetched"
+  );
 
   const {
-    loadingOfflineSuggestions,
     offlineSuggestions
   } = useOfflineSuggestions( selectedPhotoUri, {
+    dispatch,
     tryOfflineSuggestions
   } );
 
-  const usingOfflineSuggestions = tryOfflineSuggestions || offlineSuggestions.length > 0;
+  const usingOfflineSuggestions = tryOfflineSuggestions || (
+    offlineSuggestions.length > 0
+      && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
+  );
 
   const setSelectedTaxon = taxon => {
     dispatch( {
@@ -234,9 +233,12 @@ const SuggestionsContainer = ( ) => {
     ? onlineSuggestions.results
     : offlineSuggestions;
 
-  const filterSuggestions = useCallback( ( ) => {
+  const fetchComplete = ["online-fetched", "offline-fetched"];
+  const isLoading = !fetchComplete.includes( fetchStatus );
+
+  const filterSuggestions = useCallback( suggestionsToFilter => {
     const removeTopSuggestion = ( list, id ) => _.remove( list, item => item.taxon.id === id );
-    const sortedSuggestions = sortSuggestions( unfilteredSuggestions, { usingOfflineSuggestions } );
+    const sortedSuggestions = sortSuggestions( suggestionsToFilter, { usingOfflineSuggestions } );
     const newSuggestions = {
       ...initialSuggestions,
       otherSuggestions: sortedSuggestions
@@ -286,43 +288,23 @@ const SuggestionsContainer = ( ) => {
     };
   }, [
     onlineSuggestions?.common_ancestor,
-    unfilteredSuggestions,
     usingOfflineSuggestions
   ] );
 
-  const suggestions = useMemo( ( ) => {
-    // since we can calculate this, there's no need to store it in state
-    if ( unfilteredSuggestions?.length > 0 ) {
-      return filterSuggestions( );
-    }
-    return initialSuggestions;
-  }, [unfilteredSuggestions?.length, filterSuggestions] );
-
-  useEffect( ( ) => {
-    if ( isLoading
-      && ( !_.isEqual( initialSuggestions, suggestions )
-      || ( !loadingOfflineSuggestions && tryOfflineSuggestions ) ) ) {
-      dispatch( {
-        type: "SET_LOADING",
-        isLoading: false
-      } );
-    }
-  }, [
-    isLoading,
-    loadingOfflineSuggestions,
-    suggestions,
-    tryOfflineSuggestions
-  ] );
+  // since we can calculate this, there's no need to store it in state
+  const suggestions = useMemo(
+    ( ) => filterSuggestions( unfilteredSuggestions ),
+    [unfilteredSuggestions, filterSuggestions]
+  );
 
   const toggleLocation = useCallback( async ( { showLocation } ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, showLocation );
+    resetTimeout( );
     dispatch( {
       type: "TOGGLE_LOCATION",
       shouldUseEvidenceLocation: showLocation,
       flattenedUploadParams: newImageParams
     } );
-    resetTimeout( );
-    dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
   }, [
     createUploadParams,
     resetTimeout,
@@ -334,7 +316,7 @@ const SuggestionsContainer = ( ) => {
     // suggestions
     if ( !isOnline ) { return; }
     resetTimeout( );
-    dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
+    dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "loading" } );
   }, [isOnline, resetTimeout] );
 
   const hideLocationToggleButton = usingOfflineSuggestions
@@ -345,7 +327,6 @@ const SuggestionsContainer = ( ) => {
   const setImageParams = useCallback( async ( ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );
     dispatch( { type: "FLATTEN_UPLOAD_PARAMS", flattenedUploadParams: newImageParams } );
-    dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
   }, [
     createUploadParams,
     selectedPhotoUri,
@@ -373,8 +354,15 @@ const SuggestionsContainer = ( ) => {
     dispatch( { type: "SHOW_PERMISSION_GATE", showPermissionGate: false } );
     const userLocation = await fetchUserLocation( );
     updateObservationKeys( userLocation );
-    toggleLocation( { showLocation: true } );
-  }, [toggleLocation, updateObservationKeys] );
+    const newImageParams = await flattenUploadParams( selectedPhotoUri );
+    newImageParams.lat = userLocation?.latitude;
+    newImageParams.lng = userLocation?.longitude;
+    dispatch( {
+      type: "TOGGLE_LOCATION",
+      shouldUseEvidenceLocation: true,
+      flattenedUploadParams: newImageParams
+    } );
+  }, [selectedPhotoUri, updateObservationKeys] );
 
   const debugData = {
     timedOut,
