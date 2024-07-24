@@ -5,7 +5,6 @@ import {
   within
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
-import * as useOfflineSuggestions from "components/Suggestions/hooks/useOfflineSuggestions";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { BackHandler } from "react-native";
@@ -72,19 +71,15 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
+// Mock the response from inatjs.computervision.score_image
+const topSuggestion = {
+  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
+  combined_score: 90
+};
+
 beforeEach( ( ) => {
   useStore.setState( { isAdvancedUser: true } );
-  const prediction = mockModelResult.predictions[0];
-  jest.spyOn( useOfflineSuggestions, "default" ).mockImplementation( ( ) => ( {
-    offlineSuggestions: [{
-      score: prediction.score,
-      taxon: {
-        id: Number( prediction.taxon_id ),
-        name: prediction.name,
-        rank_level: prediction.rank_level
-      }
-    }]
-  } ) );
+  inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
 
 const actor = userEvent.setup( );
@@ -107,7 +102,7 @@ const takePhotoAndNavToSuggestions = async ( ) => {
 
 const navToObsEditWithTopSuggestion = async ( ) => {
   const topTaxonResultButton = await screen.findByTestId(
-    `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+    `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
   );
   await actor.press( topTaxonResultButton );
   const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
