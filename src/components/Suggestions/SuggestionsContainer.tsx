@@ -4,18 +4,20 @@ import _ from "lodash";
 import React, {
   useCallback,
   useEffect,
+  useMemo,
   useReducer
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
   useIsConnected,
   useLastScreen,
-  useLocationPermission,
-  useWatchPosition
+  useLocationPermission
+  // useWatchPosition
 } from "sharedHooks";
 // import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import flattenUploadParams from "./helpers/flattenUploadParams";
 import sortSuggestions from "./helpers/sortSuggestions";
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
@@ -23,7 +25,7 @@ import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import useOfflineSuggestions from "./hooks/useOfflineSuggestions";
 import useOnlineSuggestions from "./hooks/useOnlineSuggestions";
 import Suggestions from "./Suggestions";
-
+import TaxonSearchButton from "./TaxonSearchButton";
 // const logger = log.extend( "SuggestionsContainer" );
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
@@ -46,19 +48,14 @@ const initialState = {
   queryKey: [],
   selectedPhotoUri: null,
   selectedTaxon: null,
-  shouldFetchLocation: false,
   shouldUseEvidenceLocation: false,
+  showPermissionGate: false,
   suggestions: initialSuggestions
 };
 
 const reducer = ( state, action ) => {
+  console.log( action.type, "action type" );
   switch ( action.type ) {
-    case "BEGIN_USER_LOCATION_FETCH":
-      return {
-        ...state,
-        shouldFetchLocation: true,
-        isLoading: true
-      };
     case "DISPLAY_SUGGESTIONS":
       return {
         ...state,
@@ -90,6 +87,11 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         selectedTaxon: action.selectedTaxon
+      };
+    case "SHOW_PERMISSION_GATE":
+      return {
+        ...state,
+        showPermissionGate: action.showPermissionGate
       };
     case "TOGGLE_LOCATION":
       return {
@@ -123,14 +125,6 @@ const SuggestionsContainer = ( ) => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
 
   const evidenceHasLocation = !!currentObservation?.latitude;
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
-  const lastScreen = useLastScreen( );
-  const showImproveWithLocationButton = hasPermissions === false
-    && isOnline
-    && lastScreen === "Camera";
-  const improveWithLocationButtonOnPress = useCallback( ( ) => {
-    requestPermissions( );
-  }, [requestPermissions] );
 
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
@@ -139,24 +133,38 @@ const SuggestionsContainer = ( ) => {
   } );
 
   const {
+    hasPermissions,
+    renderPermissionsGate,
+    requestPermissions
+  } = useLocationPermission( );
+  const lastScreen = useLastScreen( );
+  const showImproveWithLocationButton = useMemo( ( ) => hasPermissions === false
+    && isOnline
+    && lastScreen === "Camera", [
+    hasPermissions,
+    isOnline,
+    lastScreen
+  ] );
+  const improveWithLocationButtonOnPress = useCallback( ( ) => {
+    dispatch( { type: "SHOW_PERMISSION_GATE", showPermissionGate: true } );
+    requestPermissions( );
+  }, [requestPermissions] );
+
+  const {
     flattenedUploadParams,
     isLoading,
     mediaViewerVisible,
     queryKey,
     selectedPhotoUri,
     selectedTaxon,
-    shouldFetchLocation,
-    suggestions,
-    shouldUseEvidenceLocation
+    shouldUseEvidenceLocation,
+    showPermissionGate,
+    suggestions
   } = state;
 
   const shouldFetchOnlineSuggestions = !!isOnline
     && ( hasPermissions !== undefined )
     && isLoading;
-
-  const { userLocation } = useWatchPosition( {
-    shouldFetchLocation
-  } );
 
   const {
     usingOfflineSuggestions
@@ -354,22 +362,6 @@ const SuggestionsContainer = ( ) => {
     || showImproveWithLocationButton
     || !isOnline;
 
-  const fetchUserLocation = hasPermissions && !evidenceHasLocation && lastScreen === "Camera";
-
-  useEffect( ( ) => {
-    // user grants permissions after Camera screen
-    if ( fetchUserLocation ) {
-      dispatch( { type: "BEGIN_USER_LOCATION_FETCH" } );
-    }
-  }, [fetchUserLocation] );
-
-  useEffect( ( ) => {
-    if ( userLocation?.latitude ) {
-      updateObservationKeys( userLocation );
-      dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
-    }
-  }, [userLocation, updateObservationKeys, toggleLocation] );
-
   const setImageParams = useCallback( async ( ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );
     dispatch( { type: "FLATTEN_UPLOAD_PARAMS", flattenedUploadParams: newImageParams } );
@@ -380,19 +372,29 @@ const SuggestionsContainer = ( ) => {
     shouldUseEvidenceLocation
   ] );
 
-  useEffect( () => {
+  const headerRight = useCallback( ( ) => <TaxonSearchButton />, [] );
+
+  useEffect( ( ) => {
     const onFocus = navigation.addListener( "focus", ( ) => {
       if ( _.isEqual( initialSuggestions, suggestions ) ) {
         setImageParams( );
       }
+      navigation.setOptions( { headerRight } );
     } );
-
     return onFocus;
   }, [
+    headerRight,
     navigation,
     setImageParams,
     suggestions
   ] );
+
+  const onPermissionGranted = useCallback( async ( ) => {
+    dispatch( { type: "SHOW_PERMISSION_GATE", showPermissionGate: false } );
+    const userLocation = await fetchUserLocation( );
+    updateObservationKeys( userLocation );
+    toggleLocation( { showLocation: true } );
+  }, [toggleLocation, updateObservationKeys] );
 
   return (
     <>
@@ -422,7 +424,10 @@ const SuggestionsContainer = ( ) => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
-      {renderPermissionsGate()}
+      {/* 20240723 amanda - this feels kind of hacky, but without this extra
+      showPermissionGate boolean, renderPermissionsGate creates a maximum update
+      exceeded error and keeps returning onPermissionsGranted infinitely */}
+      {showPermissionGate && renderPermissionsGate( { onPermissionGranted } )}
     </>
   );
 };

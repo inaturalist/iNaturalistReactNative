@@ -59,6 +59,8 @@ const Suggestions = ( {
     usingOfflineSuggestions
   } = suggestions;
 
+  const showOfflineText = !isLoading && usingOfflineSuggestions;
+
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
   const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
@@ -102,7 +104,7 @@ const Suggestions = ( {
       photoUris={photoUris}
       reloadSuggestions={reloadSuggestions}
       selectedPhotoUri={selectedPhotoUri}
-      suggestions={suggestions}
+      showOfflineText={showOfflineText}
       improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
       showImproveWithLocationButton={showImproveWithLocationButton}
     />
@@ -113,7 +115,7 @@ const Suggestions = ( {
     selectedPhotoUri,
     improveWithLocationButtonOnPress,
     showImproveWithLocationButton,
-    suggestions
+    showOfflineText
   ] );
 
   const renderSectionHeader = ( { section } ) => {
