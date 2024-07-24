@@ -3,6 +3,7 @@
 import { FlashList } from "@shopify/flash-list";
 import fetchSearchResults from "api/search";
 import {
+  ActivityIndicator,
   Heading4,
   INatIconButton,
   SearchBar,
@@ -33,7 +34,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const { t } = useTranslation();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
-  const { data: userList } = useAuthenticatedQuery(
+  const { data: userList, isLoading } = useAuthenticatedQuery(
     ["fetchSearchResults", userQuery],
     optsWithAuth => fetchSearchResults(
       {
@@ -96,18 +97,26 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           testID="SearchUser"
         />
       </View>
-      <FlashList
-        ItemSeparatorComponent={renderItemSeparator}
-        ListHeaderComponent={renderItemSeparator}
-        accessible
-        data={userList}
-        estimatedItemSize={100}
-        initialNumToRender={5}
-        keyExtractor={item => item.id}
-        keyboardShouldPersistTaps="handled"
-        renderItem={renderItem}
-        testID="SearchUserList"
-      />
+      {isLoading
+        ? (
+          <View className="p-4">
+            <ActivityIndicator size={40} />
+          </View>
+        )
+        : (
+          <FlashList
+            ItemSeparatorComponent={renderItemSeparator}
+            ListHeaderComponent={renderItemSeparator}
+            accessible
+            data={userList}
+            estimatedItemSize={100}
+            initialNumToRender={5}
+            keyExtractor={item => item.id}
+            keyboardShouldPersistTaps="handled"
+            renderItem={renderItem}
+            testID="SearchUserList"
+          />
+        )}
     </ViewWrapper>
   );
 };

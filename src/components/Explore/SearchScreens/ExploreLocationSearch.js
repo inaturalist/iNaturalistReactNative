@@ -2,6 +2,7 @@
 
 import fetchSearchResults from "api/search";
 import {
+  ActivityIndicator,
   Body3,
   Button,
   Heading4,
@@ -51,7 +52,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
     [updateLocation, closeModal]
   );
 
-  const { data: placeResults } = useAuthenticatedQuery(
+  const { data: placeResults, isLoading } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
     optsWithAuth => fetchSearchResults(
       {
@@ -155,12 +156,20 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
           />
         </View>
       </View>
-      <FlatList
-        keyboardShouldPersistTaps="always"
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
+      {isLoading
+        ? (
+          <View className="p-4">
+            <ActivityIndicator size={40} />
+          </View>
+        )
+        : (
+          <FlatList
+            keyboardShouldPersistTaps="always"
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+          />
+        )}
       {renderPermissionsGate( { onPermissionGranted: setNearbyLocation } )}
     </ViewWrapper>
   );
