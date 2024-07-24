@@ -32,7 +32,8 @@ type Props = {
   selectedPhotoUri: string,
   showImproveWithLocationButton: boolean,
   suggestions: Object,
-  toggleLocation: Function
+  toggleLocation: Function,
+  usingOfflineSuggestions: boolean
 };
 
 const Suggestions = ( {
@@ -50,13 +51,13 @@ const Suggestions = ( {
   selectedPhotoUri,
   showImproveWithLocationButton,
   suggestions,
-  toggleLocation
+  toggleLocation,
+  usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
     otherSuggestions,
-    topSuggestion,
-    usingOfflineSuggestions
+    topSuggestion
   } = suggestions;
 
   const showOfflineText = !isLoading && usingOfflineSuggestions;

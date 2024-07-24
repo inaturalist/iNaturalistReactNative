@@ -36,8 +36,7 @@ const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
 const initialSuggestions = {
   otherSuggestions: [],
   topSuggestion: null,
-  topSuggestionType: "none",
-  usingOfflineSuggestions: false
+  topSuggestionType: "none"
 };
 
 const initialState = {
@@ -188,12 +187,13 @@ const SuggestionsContainer = ( ) => {
     || timedOut;
 
   const {
+    loadingOfflineSuggestions,
     offlineSuggestions
   } = useOfflineSuggestions( selectedPhotoUri, {
     tryOfflineSuggestions
   } );
 
-  const hasOfflineSuggestions = tryOfflineSuggestions && offlineSuggestions?.length > 0;
+  const usingOfflineSuggestions = tryOfflineSuggestions || offlineSuggestions.length > 0;
 
   const setSelectedTaxon = taxon => {
     dispatch( {
@@ -237,11 +237,10 @@ const SuggestionsContainer = ( ) => {
 
   const filterSuggestions = useCallback( ( ) => {
     const removeTopSuggestion = ( list, id ) => _.remove( list, item => item.taxon.id === id );
-    const sortedSuggestions = sortSuggestions( unfilteredSuggestions, { hasOfflineSuggestions } );
+    const sortedSuggestions = sortSuggestions( unfilteredSuggestions, { usingOfflineSuggestions } );
     const newSuggestions = {
       ...initialSuggestions,
-      otherSuggestions: sortedSuggestions,
-      usingOfflineSuggestions: hasOfflineSuggestions
+      otherSuggestions: sortedSuggestions
     };
     if ( sortedSuggestions.length === 0 ) {
       return {
@@ -252,7 +251,7 @@ const SuggestionsContainer = ( ) => {
     }
     // return first sorted result if there's a human suggestion, if we're
     // using offline suggestions, or if there's only one suggestion
-    if ( hasOfflineSuggestions || sortedSuggestions.length === 1 ) {
+    if ( usingOfflineSuggestions || sortedSuggestions.length === 1 ) {
       const firstSuggestion = sortedSuggestions.shift( );
       return {
         ...newSuggestions,
@@ -289,7 +288,7 @@ const SuggestionsContainer = ( ) => {
   }, [
     onlineSuggestions?.common_ancestor,
     unfilteredSuggestions,
-    hasOfflineSuggestions
+    usingOfflineSuggestions
   ] );
 
   const suggestions = useMemo( ( ) => {
@@ -298,18 +297,23 @@ const SuggestionsContainer = ( ) => {
       return filterSuggestions( );
     }
     return initialSuggestions;
-  }, [unfilteredSuggestions.length, filterSuggestions] );
+  }, [unfilteredSuggestions?.length, filterSuggestions] );
 
   useEffect( ( ) => {
-    if ( !_.isEqual( initialSuggestions, suggestions ) ) {
+    if ( isLoading
+      && ( !_.isEqual( initialSuggestions, suggestions )
+      || ( !loadingOfflineSuggestions && tryOfflineSuggestions ) ) ) {
       dispatch( {
         type: "SET_LOADING",
         isLoading: false
       } );
     }
-  }, [suggestions] );
-
-  const skipReload = suggestions.usingOfflineSuggestions && !isOnline;
+  }, [
+    isLoading,
+    loadingOfflineSuggestions,
+    suggestions,
+    tryOfflineSuggestions
+  ] );
 
   const toggleLocation = useCallback( async ( { showLocation } ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, showLocation );
@@ -329,12 +333,12 @@ const SuggestionsContainer = ( ) => {
   const reloadSuggestions = useCallback( ( ) => {
     // used when offline text is tapped to try to get online
     // suggestions
-    if ( skipReload ) { return; }
+    if ( !isOnline ) { return; }
     resetTimeout( );
     dispatch( { type: "FETCH_ONLINE_SUGGESTIONS" } );
-  }, [skipReload, resetTimeout] );
+  }, [isOnline, resetTimeout] );
 
-  const hideLocationToggleButton = suggestions.usingOfflineSuggestions
+  const hideLocationToggleButton = usingOfflineSuggestions
     || isLoading
     || showImproveWithLocationButton
     || !isOnline;
@@ -381,8 +385,8 @@ const SuggestionsContainer = ( ) => {
     onlineSuggestionsUpdatedAt,
     selectedPhotoUri,
     shouldUseEvidenceLocation,
-    topSuggestionType: suggestions.topSuggestionType,
-    usingOfflineSuggestions: suggestions.usingOfflineSuggestions
+    topSuggestionType: suggestions?.topSuggestionType,
+    usingOfflineSuggestions
   };
 
   return (
@@ -403,6 +407,7 @@ const SuggestionsContainer = ( ) => {
         showImproveWithLocationButton={showImproveWithLocationButton}
         suggestions={suggestions}
         toggleLocation={toggleLocation}
+        usingOfflineSuggestions={usingOfflineSuggestions}
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}

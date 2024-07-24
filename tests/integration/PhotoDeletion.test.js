@@ -4,6 +4,7 @@ import {
   userEvent,
   within
 } from "@testing-library/react-native";
+import * as useOfflineSuggestions from "components/Suggestions/hooks/useOfflineSuggestions";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import useStore from "stores/useStore";
@@ -63,7 +64,21 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
-beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
+beforeEach( ( ) => {
+  useStore.setState( { isAdvancedUser: true } );
+  const prediction = mockModelResult.predictions[0];
+  jest.spyOn( useOfflineSuggestions, "default" ).mockImplementation( ( ) => ( {
+    loadingOfflineSuggestions: false,
+    offlineSuggestions: [{
+      score: prediction.score,
+      taxon: {
+        id: Number( prediction.taxon_id ),
+        name: prediction.name,
+        rank_level: prediction.rank_level
+      }
+    }]
+  } ) );
+} );
 
 describe( "Photo Deletion", ( ) => {
   const actor = userEvent.setup( );
