@@ -40,6 +40,7 @@ const initialSuggestions = {
 };
 
 const initialState = {
+  // loading, online-fetched, online-error, offline-fetched, offline-error
   fetchStatus: "loading",
   flattenedUploadParams: null,
   mediaViewerVisible: false,
@@ -233,8 +234,7 @@ const SuggestionsContainer = ( ) => {
     ? onlineSuggestions.results
     : offlineSuggestions;
 
-  const fetchComplete = ["online-fetched", "offline-fetched"];
-  const isLoading = !fetchComplete.includes( fetchStatus );
+  const isLoading = fetchStatus === "loading";
 
   const filterSuggestions = useCallback( suggestionsToFilter => {
     const removeTopSuggestion = ( list, id ) => _.remove( list, item => item.taxon.id === id );
