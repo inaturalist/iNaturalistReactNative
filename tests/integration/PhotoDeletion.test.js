@@ -63,25 +63,15 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
+// Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
-  taxon: factory( "RemoteTaxon", { name: "Primum suggestion" } ),
+  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
   combined_score: 90
 };
 
 beforeEach( ( ) => {
   useStore.setState( { isAdvancedUser: true } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
-  // const prediction = mockModelResult.predictions[0];
-  // jest.spyOn( useOfflineSuggestions, "default" ).mockImplementation( ( ) => ( {
-  //   offlineSuggestions: [{
-  //     score: prediction.score,
-  //     taxon: {
-  //       id: Number( prediction.taxon_id ),
-  //       name: prediction.name,
-  //       rank_level: prediction.rank_level
-  //     }
-  //   }]
-  // } ) );
 } );
 
 describe( "Photo Deletion", ( ) => {
@@ -113,9 +103,8 @@ describe( "Photo Deletion", ( ) => {
   async function confirmPhotosAndAddTopId() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
-    await screen.findByText( /You are offline/ );
     const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
     );
     await actor.press( topTaxonResultButton );
   }

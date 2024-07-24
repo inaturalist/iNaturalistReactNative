@@ -62,6 +62,7 @@ const useOnlineSuggestions = (
     const timer = setTimeout( ( ) => {
       if ( onlineSuggestions === undefined ) {
         queryClient.cancelQueries( { queryKey } );
+        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-error" } );
         setTimedOut( true );
       }
     }, SCORE_IMAGE_TIMEOUT );
@@ -69,7 +70,7 @@ const useOnlineSuggestions = (
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, queryKey, queryClient] );
+  }, [onlineSuggestions, queryKey, queryClient, dispatch] );
 
   const resetTimeout = useCallback( ( ) => {
     setTimedOut( false );
