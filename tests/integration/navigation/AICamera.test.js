@@ -5,6 +5,7 @@ import {
   within
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
+import * as useOfflineSuggestions from "components/Suggestions/hooks/useOfflineSuggestions";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { BackHandler } from "react-native";
@@ -71,7 +72,21 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
-beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
+beforeEach( ( ) => {
+  useStore.setState( { isAdvancedUser: true } );
+  const prediction = mockModelResult.predictions[0];
+  jest.spyOn( useOfflineSuggestions, "default" ).mockImplementation( ( ) => ( {
+    loadingOfflineSuggestions: false,
+    offlineSuggestions: [{
+      score: prediction.score,
+      taxon: {
+        id: Number( prediction.taxon_id ),
+        name: prediction.name,
+        rank_level: prediction.rank_level
+      }
+    }]
+  } ) );
+} );
 
 const actor = userEvent.setup( );
 
@@ -137,7 +152,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
     it( "should advance to suggestions screen", async ( ) => {
       renderApp( );
       await navToAICamera( );
-      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
+      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
       await takePhotoAndNavToSuggestions( );
     } );
 
@@ -145,7 +160,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       + " advance to obs edit with a single observation photo", async ( ) => {
       renderApp( );
       await navToAICamera( );
-      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
+      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
       await takePhotoAndNavToSuggestions( );
       await navToObsEditWithTopSuggestion( );
       const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );

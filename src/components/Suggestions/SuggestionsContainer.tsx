@@ -51,7 +51,6 @@ const initialState = {
 };
 
 const reducer = ( state, action ) => {
-  console.log( action.type, "action type" );
   switch ( action.type ) {
     case "SET_LOADING":
       return {
