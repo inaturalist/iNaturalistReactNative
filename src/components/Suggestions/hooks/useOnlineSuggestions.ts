@@ -69,7 +69,7 @@ const useOnlineSuggestions = (
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, queryKey, queryClient, dispatch] );
+  }, [onlineSuggestions, queryKey, queryClient] );
 
   const resetTimeout = useCallback( ( ) => {
     setTimedOut( false );

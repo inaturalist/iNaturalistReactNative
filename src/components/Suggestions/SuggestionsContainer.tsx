@@ -178,9 +178,8 @@ const SuggestionsContainer = ( ) => {
   ] );
 
   // skip to offline suggestions if internet connection is spotty
-  const tryOfflineSuggestions = timedOut || (
-    onlineSuggestions?.results?.length === 0 && fetchStatus === "online-fetched"
-  );
+  const tryOfflineSuggestions = timedOut
+    || ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 );
 
   const {
     offlineSuggestions

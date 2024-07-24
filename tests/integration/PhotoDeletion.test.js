@@ -4,7 +4,6 @@ import {
   userEvent,
   within
 } from "@testing-library/react-native";
-import * as useOfflineSuggestions from "components/Suggestions/hooks/useOfflineSuggestions";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import useStore from "stores/useStore";
@@ -17,25 +16,25 @@ import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 // working normally
 jest.unmock( "@react-navigation/native" );
 
+const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+  coords: {
+    latitude: 1,
+    longitude: 1,
+    accuracy: 9,
+    timestamp: Date.now( )
+  }
+} ) );
+Geolocation.watchPosition.mockImplementation( mockWatchPosition );
+
 const mockModelResult = {
   predictions: [factory( "ModelPrediction", {
   // useOfflineSuggestions will filter out taxa w/ rank_level > 40
     rank_level: 20
   } )]
 };
-inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
 getPredictionsForImage.mockImplementation(
   async ( ) => ( mockModelResult )
 );
-
-const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-  coords: {
-    latitude: 56,
-    longitude: 9,
-    accuracy: 8
-  }
-} ) );
-Geolocation.watchPosition.mockImplementation( mockWatchPosition );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -64,19 +63,25 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
+const topSuggestion = {
+  taxon: factory( "RemoteTaxon", { name: "Primum suggestion" } ),
+  combined_score: 90
+};
+
 beforeEach( ( ) => {
   useStore.setState( { isAdvancedUser: true } );
-  const prediction = mockModelResult.predictions[0];
-  jest.spyOn( useOfflineSuggestions, "default" ).mockImplementation( ( ) => ( {
-    offlineSuggestions: [{
-      score: prediction.score,
-      taxon: {
-        id: Number( prediction.taxon_id ),
-        name: prediction.name,
-        rank_level: prediction.rank_level
-      }
-    }]
-  } ) );
+  inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
+  // const prediction = mockModelResult.predictions[0];
+  // jest.spyOn( useOfflineSuggestions, "default" ).mockImplementation( ( ) => ( {
+  //   offlineSuggestions: [{
+  //     score: prediction.score,
+  //     taxon: {
+  //       id: Number( prediction.taxon_id ),
+  //       name: prediction.name,
+  //       rank_level: prediction.rank_level
+  //     }
+  //   }]
+  // } ) );
 } );
 
 describe( "Photo Deletion", ( ) => {
