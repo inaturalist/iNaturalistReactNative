@@ -1,13 +1,15 @@
-import Geolocation, {
+import {
   GeolocationError,
   GeolocationResponse
 } from "@react-native-community/geolocation";
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 
-export const TARGET_POSITIONAL_ACCURACY = 10;
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+import { clearWatch, watchPosition } from "../sharedHelpers/geolocationWrapper";
 
-export const TIMEOUT = 2000;
+export const TARGET_POSITIONAL_ACCURACY = 10;
 
 interface UserLocation {
   latitude: number,
@@ -18,15 +20,14 @@ interface UserLocation {
 const geolocationOptions = {
   distanceFilter: 0,
   enableHighAccuracy: true,
-  maximumAge: 0,
-  timeout: TIMEOUT
+  maximumAge: 0
 };
 
 const useWatchPosition = ( options: {
   shouldFetchLocation: boolean
 } ) => {
   const navigation = useNavigation( );
-  const [currentPosition, setCurrentPosition] = useState<string | null>( null );
+  const [currentPosition, setCurrentPosition] = useState<GeolocationResponse | null>( null );
   const [subscriptionId, setSubscriptionId] = useState<number | null>( null );
   const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
   const { shouldFetchLocation } = options;
@@ -35,30 +36,31 @@ const useWatchPosition = ( options: {
     shouldFetchLocation
   );
 
-  const watchPosition = ( ) => {
+  const startWatch = ( ) => {
+    setIsFetchingLocation( true );
     const success = ( position: GeolocationResponse ) => {
       setCurrentPosition( position );
     };
 
     const failure = ( error: GeolocationError ) => {
-      console.warn( error, ": useWatchPosition error" );
+      console.warn( "useWatchPosition error: ", error );
       setIsFetchingLocation( false );
     };
 
     try {
-      const watchID = Geolocation.watchPosition(
+      const watchID = watchPosition(
         success,
         failure,
         geolocationOptions
       );
       setSubscriptionId( watchID );
     } catch ( error ) {
-      failure( error );
+      failure( error as GeolocationError );
     }
   };
 
-  const stopWatch = useCallback( id => {
-    Geolocation.clearWatch( id );
+  const stopWatch = useCallback( ( id: number ) => {
+    clearWatch( id );
     setSubscriptionId( null );
     setCurrentPosition( null );
     setIsFetchingLocation( false );
@@ -72,26 +74,30 @@ const useWatchPosition = ( options: {
       positional_accuracy: currentPosition?.coords?.accuracy
     };
     setUserLocation( newLocation );
-    if ( currentPosition?.coords?.accuracy < TARGET_POSITIONAL_ACCURACY ) {
+    if (
+      subscriptionId !== null
+      && currentPosition?.coords?.accuracy < TARGET_POSITIONAL_ACCURACY
+    ) {
       stopWatch( subscriptionId );
     }
   }, [currentPosition, stopWatch, subscriptionId] );
 
   useEffect( ( ) => {
     if ( shouldFetchLocation ) {
-      watchPosition( );
+      startWatch( );
     }
   }, [shouldFetchLocation] );
 
   useEffect( ( ) => {
+    // When we leave the screen this hook was used on...
     const unsubscribe = navigation.addListener( "blur", ( ) => {
-      setSubscriptionId( null );
-      setCurrentPosition( null );
-      setIsFetchingLocation( false );
+      // ...stop watching for location updates if we were...
+      if ( subscriptionId !== null ) stopWatch( subscriptionId );
+      // ...and wipe the current location so we don't pick up a stale one later
       setUserLocation( null );
     } );
     return unsubscribe;
-  }, [navigation] );
+  }, [navigation, stopWatch, subscriptionId] );
 
   return {
     isFetchingLocation,

@@ -3,6 +3,7 @@
 import { FlashList } from "@shopify/flash-list";
 import { searchProjects } from "api/projects";
 import {
+  ActivityIndicator,
   Heading4,
   INatIconButton,
   ProjectListItem,
@@ -32,7 +33,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
 
-  const { data: projects } = useAuthenticatedQuery(
+  const { data: projects, isLoading } = useAuthenticatedQuery(
     ["searchProjects", userQuery],
     optsWithAuth => searchProjects( { q: userQuery }, optsWithAuth )
   );
@@ -91,18 +92,25 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
           testID="SearchUser"
         />
       </View>
-
-      <FlashList
-        data={projects}
-        initialNumToRender={5}
-        estimatedItemSize={100}
-        testID="SearchUserList"
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        ListHeaderComponent={renderItemSeparator}
-        ItemSeparatorComponent={renderItemSeparator}
-        accessible
-      />
+      {isLoading
+        ? (
+          <View className="p-4">
+            <ActivityIndicator size={40} />
+          </View>
+        )
+        : (
+          <FlashList
+            data={projects}
+            initialNumToRender={5}
+            estimatedItemSize={100}
+            testID="SearchUserList"
+            keyExtractor={item => item.id}
+            renderItem={renderItem}
+            ListHeaderComponent={renderItemSeparator}
+            ItemSeparatorComponent={renderItemSeparator}
+            accessible
+          />
+        )}
     </ViewWrapper>
   );
 };

@@ -27,7 +27,7 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 const TaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
-  const taxonList = useTaxonSearch( taxonQuery );
+  const { taxonList } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
   useNavigateWithTaxonSelected(

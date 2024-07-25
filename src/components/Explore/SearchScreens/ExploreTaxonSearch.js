@@ -1,6 +1,7 @@
 // @flow
 
 import {
+  ActivityIndicator,
   Heading4,
   INatIconButton,
   SearchBar,
@@ -40,7 +41,7 @@ const ExploreTaxonSearch = ( {
   const [taxonQuery, setTaxonQuery] = useState( "" );
 
   const iconicTaxa = useIconicTaxa( { reload: false } );
-  const taxonList = useTaxonSearch( taxonQuery );
+  const { taxonList, isLoading } = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
     updateTaxon( newTaxon );
@@ -91,12 +92,20 @@ const ExploreTaxonSearch = ( {
           testID="SearchTaxon"
         />
       </View>
-      <FlatList
-        keyboardShouldPersistTaps="always"
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
+      {isLoading
+        ? (
+          <View className="p-4">
+            <ActivityIndicator size={40} />
+          </View>
+        )
+        : (
+          <FlatList
+            keyboardShouldPersistTaps="always"
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+          />
+        )}
     </ViewWrapper>
   );
 };

@@ -36,20 +36,24 @@ const ObsEdit = ( ): Node => {
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
   const [shouldFetchLocation, setShouldFetchLocation] = useState( false );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const {
+    hasPermissions: hasLocationPermission,
+    renderPermissionsGate: renderLocationPermissionGate,
+    requestPermissions: requestLocationPermission
+  } = useLocationPermission( );
 
   const {
     isFetchingLocation,
     userLocation
-  } = useWatchPosition( {
-    shouldFetchLocation
-  } );
+  } = useWatchPosition( { shouldFetchLocation } );
 
+  // Note the intended functionality is *not* to request location permission
+  // until the user taps the missing location
   useEffect( ( ) => {
-    if ( shouldFetchObservationLocation( currentObservation ) ) {
+    if ( hasLocationPermission && shouldFetchObservationLocation( currentObservation ) ) {
       setShouldFetchLocation( true );
     }
-  }, [currentObservation] );
+  }, [currentObservation, hasLocationPermission] );
 
   useEffect( ( ) => {
     if ( userLocation?.latitude ) {
@@ -73,11 +77,11 @@ const ObsEdit = ( ): Node => {
 
   const onLocationPress = ( ) => {
     // If we have location permissions, navigate to the location picker
-    if ( hasPermissions ) {
+    if ( hasLocationPermission ) {
       navToLocationPicker();
     } else {
       // If we don't have location permissions, request them
-      requestPermissions( );
+      requestLocationPermission( );
     }
   };
 
@@ -145,13 +149,13 @@ const ObsEdit = ( ): Node => {
         passesIdentificationTest={passesIdentificationTest}
         setCurrentObservationIndex={setCurrentObservationIndex}
       />
-      {renderPermissionsGate( {
+      {renderLocationPermissionGate( {
         // If the user does not give location permissions in any form,
         // navigate to the location picker (if granted we just continue fetching the location)
         onRequestDenied: navToLocationPicker,
         onRequestBlocked: navToLocationPicker,
         onModalHide: ( ) => {
-          if ( !hasPermissions ) navToLocationPicker();
+          if ( !hasLocationPermission ) navToLocationPicker();
         }
       } )}
     </>
