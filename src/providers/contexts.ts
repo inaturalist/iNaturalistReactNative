@@ -13,6 +13,7 @@ import realmConfig from "realmModels/index";
 // }
 // checkOnRealmPath( "before creating realm context" );
 
+// TODO: How to use Realm with TS
 const RealmContext = createRealmContext( realmConfig );
 
 export {
