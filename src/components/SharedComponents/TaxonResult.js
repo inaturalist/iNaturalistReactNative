@@ -140,6 +140,7 @@ const TaxonResult = ( {
             taxon={usableTaxon}
             color={clearBackground && "text-white"}
             scientificNameFirst={currentUser?.prefers_scientific_name_first}
+            prefersCommonNames={currentUser?.prefers_common_names}
           />
           {!!( confidence && confidencePosition === "text" ) && (
             <View className="mt-1 w-[62px]">

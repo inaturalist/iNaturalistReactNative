@@ -86,6 +86,7 @@ const TaxonGridItem = ( {
             keyBase={taxon?.id}
             taxon={taxon}
             scientificNameFirst={currentUser?.prefers_scientific_name_first}
+            prefersCommonNames={currentUser?.prefers_common_names}
             layout="vertical"
             color="text-white"
           />
