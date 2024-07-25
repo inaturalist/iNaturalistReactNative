@@ -4,6 +4,7 @@ import { FlashList } from "@shopify/flash-list";
 import fetchSearchResults from "api/search";
 import {
   ActivityIndicator,
+  Body3,
   Heading4,
   INatIconButton,
   SearchBar,
@@ -56,6 +57,14 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     closeModal();
   }, [updateUser, closeModal] );
 
+  const resetUser = useCallback(
+    ( ) => {
+      updateUser( null );
+      closeModal();
+    },
+    [updateUser, closeModal]
+  );
+
   const renderItem = useCallback(
     ( { item } ) => (
       <UserListItem
@@ -86,6 +95,9 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           accessibilityLabel={t( "SEARCH-USERS" )}
         />
         <Heading4>{t( "SEARCH-USERS" )}</Heading4>
+        <Body3 onPress={resetUser} className="absolute top-4 right-4">
+          {t( "Reset-verb" )}
+        </Body3>
       </View>
       <View
         className="bg-white px-6 pt-2 pb-8"

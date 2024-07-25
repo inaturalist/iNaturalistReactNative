@@ -205,8 +205,8 @@ type State = {
   place_id: number | null | undefined,
   // TODO: technically this is not any Object but a "Project"
   // and should be typed as such (e.g., in realm model)
-  project: Object | undefined,
-  project_id: number | undefined,
+  project: Object | undefined | null,
+  project_id: number | undefined | null,
   radius?: number,
   researchGrade: boolean,
   return_bounds: boolean,
@@ -216,21 +216,21 @@ type State = {
   swlng?: number,
   // TODO: technically this is not any Object but a "Taxon"
   // and should be typed as such (e.g., in realm model)
-  taxon: Object | undefined,
-  taxon_id: number | undefined,
+  taxon: Object | undefined | null,
+  taxon_id: number | undefined | null,
   // TODO: technically this is not any Object but a "User"
   // and should be typed as such (e.g., in realm model)
-  user: Object | undefined,
-  user_id: number | undefined,
+  user: Object | undefined | null,
+  user_id: number | undefined | null,
   verifiable: boolean,
   wildStatus: WILD_STATUS
 }
 type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.DISCARD, snapshot: State}
-  | {type: EXPLORE_ACTION.SET_USER, user: Object, userId: number, storedState: State}
+  | {type: EXPLORE_ACTION.SET_USER, user: Object | null, userId: number | null, storedState: State}
   | {
     type: EXPLORE_ACTION.CHANGE_TAXON,
-    taxon: { id: number },
+    taxon: { id: number } | null,
     storedState: State
   }
   | { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN }
@@ -249,7 +249,12 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA}
   | {type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE}
-  | {type: EXPLORE_ACTION.SET_PROJECT, project: Object, projectId: number, storedState: State}
+  | {
+      type: EXPLORE_ACTION.SET_PROJECT,
+      project: Object | null,
+      projectId: number | null,
+      storedState: State
+    }
   | {type: EXPLORE_ACTION.CHANGE_SORT_BY, sortBy: SORT_BY}
   | {type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE}
   | {type: EXPLORE_ACTION.TOGGLE_NEEDS_ID}
@@ -379,8 +384,8 @@ function exploreReducer( state: State, action: Action ) {
         newState.taxon = action.taxon;
         newState.taxon_id = action.taxon.id;
       } else {
-        newState.taxon = undefined;
-        newState.taxon_id = undefined;
+        newState.taxon = null;
+        newState.taxon_id = null;
       }
       return newState;
     }
