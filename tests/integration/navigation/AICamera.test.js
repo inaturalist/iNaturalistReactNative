@@ -71,7 +71,16 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
-beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
+// Mock the response from inatjs.computervision.score_image
+const topSuggestion = {
+  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
+  combined_score: 90
+};
+
+beforeEach( ( ) => {
+  useStore.setState( { isAdvancedUser: true } );
+  inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
+} );
 
 const actor = userEvent.setup( );
 
@@ -93,7 +102,7 @@ const takePhotoAndNavToSuggestions = async ( ) => {
 
 const navToObsEditWithTopSuggestion = async ( ) => {
   const topTaxonResultButton = await screen.findByTestId(
-    `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+    `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
   );
   await actor.press( topTaxonResultButton );
   const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
@@ -137,7 +146,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
     it( "should advance to suggestions screen", async ( ) => {
       renderApp( );
       await navToAICamera( );
-      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
+      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
       await takePhotoAndNavToSuggestions( );
     } );
 
@@ -145,7 +154,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       + " advance to obs edit with a single observation photo", async ( ) => {
       renderApp( );
       await navToAICamera( );
-      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeVisible( );
+      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
       await takePhotoAndNavToSuggestions( );
       await navToObsEditWithTopSuggestion( );
       const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );

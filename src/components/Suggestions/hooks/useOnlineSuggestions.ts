@@ -1,53 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
-import { computerVisionPath } from "appConstants/paths.ts";
-import { FileUpload } from "inaturalistjs";
 import {
-  useCallback, useEffect, useMemo, useState
+  useCallback, useEffect, useState
 } from "react";
-import RNFS from "react-native-fs";
-import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
   useAuthenticatedQuery,
   useIsConnected
 } from "sharedHooks";
-import useStore from "stores/useStore";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
-
-const outputPath = computerVisionPath;
-
-type FlattenUploadArgs = {
-  image: {
-    uri: string,
-    name: string,
-    type: string
-  }
-}
-
-const flattenUploadParams = async (
-  uri: string
-): Promise<FlattenUploadArgs> => {
-  await RNFS.mkdir( outputPath );
-  const uploadUri = await resizeImage( uri, {
-    // this max width/height is the same as the legacy Android app
-    // we always want the width/height to be bigger than 299x299
-    // and want to preserve the aspect ratio (not crunch the image down into a square)
-    // for the best results
-    width: 640,
-    outputPath
-  } );
-
-  const params: FlattenUploadArgs = {
-    image: new FileUpload( {
-      uri: uploadUri,
-      name: "photo.jpeg",
-      type: "image/jpeg"
-    } )
-  };
-
-  return params;
-};
 
 type OnlineSuggestionsResponse = {
   dataUpdatedAt: Date,
@@ -55,41 +16,26 @@ type OnlineSuggestionsResponse = {
   loadingOnlineSuggestions: boolean,
   timedOut: boolean,
   error: Object,
-  removePrevQueryAndRefetch: Function
+  resetTimeout: Function
   isRefetching: boolean
 }
 
 const useOnlineSuggestions = (
-  selectedPhotoUri: string,
   options: Object
 ): OnlineSuggestionsResponse => {
-  const currentObservation = useStore( state => state.currentObservation );
   const {
-    isUsingLocation,
-    usingOfflineSuggestions,
-    hasPermissions
+    dispatch,
+    flattenedUploadParams,
+    queryKey,
+    shouldFetchOnlineSuggestions
   } = options;
 
   const queryClient = useQueryClient( );
-  const queryKey = useMemo( ( ) => ["scoreImage", selectedPhotoUri], [selectedPhotoUri] );
   const [timedOut, setTimedOut] = useState( false );
   const isOnline = useIsConnected( );
-  const [flattenedUploadParams, setFlattenedUploadParams] = useState( null );
 
   async function queryFn( optsWithAuth ) {
     const params = flattenedUploadParams;
-    const { latitude, longitude } = currentObservation;
-    if ( isUsingLocation ) {
-      if ( latitude ) {
-        params.lat = latitude;
-      }
-      if ( longitude ) {
-        params.lng = longitude;
-      }
-    } else if ( params.lat ) {
-      delete params.lat;
-      delete params.lng;
-    }
     return scoreImage( params, optsWithAuth );
   }
 
@@ -100,34 +46,23 @@ const useOnlineSuggestions = (
     data: onlineSuggestions,
     dataUpdatedAt,
     fetchStatus,
-    error,
-    refetch
+    error
   } = useAuthenticatedQuery(
     queryKey,
     queryFn,
     {
-      enabled: !!selectedPhotoUri
-        && !!isOnline
-        && usingOfflineSuggestions === false
-        && hasPermissions !== undefined
+      enabled: !!shouldFetchOnlineSuggestions
         && !!( flattenedUploadParams?.image ),
       allowAnonymousJWT: true
     }
   );
-
-  useEffect( ( ) => {
-    const resetImageParams = async ( ) => {
-      const newImageParams = await flattenUploadParams( selectedPhotoUri );
-      setFlattenedUploadParams( newImageParams );
-    };
-    resetImageParams( );
-  }, [selectedPhotoUri] );
 
   // Give up on suggestions request after a timeout
   useEffect( ( ) => {
     const timer = setTimeout( ( ) => {
       if ( onlineSuggestions === undefined ) {
         queryClient.cancelQueries( { queryKey } );
+        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-error" } );
         setTimedOut( true );
       }
     }, SCORE_IMAGE_TIMEOUT );
@@ -135,25 +70,31 @@ const useOnlineSuggestions = (
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, queryKey, queryClient] );
+  }, [onlineSuggestions, queryKey, queryClient, dispatch] );
 
-  const removePrevQueryAndRefetch = useCallback( async ( ) => {
-    queryClient.removeQueries( { queryKey } );
+  const resetTimeout = useCallback( ( ) => {
     setTimedOut( false );
-    refetch( );
-  }, [queryClient, queryKey, refetch] );
+  }, [] );
 
   useEffect( () => {
     if ( isOnline === false ) {
       setTimedOut( true );
     }
-  }, [isOnline] );
+  }, [isOnline, dispatch] );
+
+  useEffect( ( ) => {
+    if ( onlineSuggestions !== undefined ) {
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-fetched" } );
+    } else if ( error ) {
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-error" } );
+    }
+  }, [dispatch, onlineSuggestions, error] );
 
   const queryObject = {
     dataUpdatedAt,
     error,
     timedOut,
-    removePrevQueryAndRefetch,
+    resetTimeout,
     fetchStatus
   };
 

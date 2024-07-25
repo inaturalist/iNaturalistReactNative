@@ -24,7 +24,7 @@ type Props = {
   hideSkip?: boolean,
   improveWithLocationButtonOnPress: () => void,
   isLoading: boolean,
-  isUsingLocation: boolean,
+  shouldUseEvidenceLocation: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
@@ -32,7 +32,8 @@ type Props = {
   selectedPhotoUri: string,
   showImproveWithLocationButton: boolean,
   suggestions: Object,
-  toggleLocation: Function
+  toggleLocation: Function,
+  usingOfflineSuggestions: boolean
 };
 
 const Suggestions = ( {
@@ -42,7 +43,7 @@ const Suggestions = ( {
   hideSkip,
   improveWithLocationButtonOnPress,
   isLoading,
-  isUsingLocation,
+  shouldUseEvidenceLocation,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
@@ -50,14 +51,16 @@ const Suggestions = ( {
   selectedPhotoUri,
   showImproveWithLocationButton,
   suggestions,
-  toggleLocation
+  toggleLocation,
+  usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
     otherSuggestions,
-    topSuggestion,
-    usingOfflineSuggestions
+    topSuggestion
   } = suggestions;
+
+  const showOfflineText = !isLoading && usingOfflineSuggestions;
 
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
@@ -82,7 +85,7 @@ const Suggestions = ( {
       handleSkip={handleSkip}
       hideLocationToggleButton={hideLocationToggleButton}
       hideSkip={hideSkip}
-      isUsingLocation={isUsingLocation}
+      shouldUseEvidenceLocation={shouldUseEvidenceLocation}
       observers={observers}
       toggleLocation={toggleLocation}
     />
@@ -91,7 +94,7 @@ const Suggestions = ( {
     handleSkip,
     hideLocationToggleButton,
     hideSkip,
-    isUsingLocation,
+    shouldUseEvidenceLocation,
     observers,
     toggleLocation
   ] );
@@ -102,7 +105,7 @@ const Suggestions = ( {
       photoUris={photoUris}
       reloadSuggestions={reloadSuggestions}
       selectedPhotoUri={selectedPhotoUri}
-      suggestions={suggestions}
+      showOfflineText={showOfflineText}
       improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
       showImproveWithLocationButton={showImproveWithLocationButton}
     />
@@ -113,7 +116,7 @@ const Suggestions = ( {
     selectedPhotoUri,
     improveWithLocationButtonOnPress,
     showImproveWithLocationButton,
-    suggestions
+    showOfflineText
   ] );
 
   const renderSectionHeader = ( { section } ) => {

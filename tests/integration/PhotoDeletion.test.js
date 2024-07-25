@@ -16,25 +16,25 @@ import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 // working normally
 jest.unmock( "@react-navigation/native" );
 
+const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+  coords: {
+    latitude: 1,
+    longitude: 1,
+    accuracy: 9,
+    timestamp: Date.now( )
+  }
+} ) );
+Geolocation.watchPosition.mockImplementation( mockWatchPosition );
+
 const mockModelResult = {
   predictions: [factory( "ModelPrediction", {
   // useOfflineSuggestions will filter out taxa w/ rank_level > 40
     rank_level: 20
   } )]
 };
-inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
 getPredictionsForImage.mockImplementation(
   async ( ) => ( mockModelResult )
 );
-
-const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-  coords: {
-    latitude: 56,
-    longitude: 9,
-    accuracy: 8
-  }
-} ) );
-Geolocation.watchPosition.mockImplementation( mockWatchPosition );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -63,7 +63,16 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
-beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
+// Mock the response from inatjs.computervision.score_image
+const topSuggestion = {
+  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
+  combined_score: 90
+};
+
+beforeEach( ( ) => {
+  useStore.setState( { isAdvancedUser: true } );
+  inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
+} );
 
 describe( "Photo Deletion", ( ) => {
   const actor = userEvent.setup( );
@@ -94,9 +103,8 @@ describe( "Photo Deletion", ( ) => {
   async function confirmPhotosAndAddTopId() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
-    await screen.findByText( /You are offline/ );
     const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
     );
     await actor.press( topTaxonResultButton );
   }
