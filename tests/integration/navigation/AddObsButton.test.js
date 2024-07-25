@@ -7,15 +7,32 @@ import { renderComponent } from "tests/helpers/render";
 
 const actor = userEvent.setup();
 
-const mockNavigate = jest.fn();
+const mockDispatch = jest.fn();
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
     useNavigation: () => ( {
-      navigate: mockNavigate
+      dispatch: mockDispatch
     } )
   };
+} );
+
+const resetNavigation = ( name, params ) => ( {
+  payload: {
+    index: 0,
+    routes: [{
+      name: "NoBottomTabStackNavigator",
+      state: {
+        index: 0,
+        routes: [{
+          name,
+          params
+        }]
+      }
+    }]
+  },
+  type: "RESET"
 } );
 
 beforeAll( ( ) => {
@@ -32,10 +49,9 @@ describe( "AddObsButton", ( ) => {
     expect( addObsButton ).toBeTruthy( );
     await actor.press( addObsButton );
 
-    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
-      screen: "Camera",
-      params: { camera: "AI", previousScreen: null }
-    } );
+    expect( mockDispatch ).toHaveBeenCalledWith(
+      resetNavigation( "Camera", { camera: "AI", previousScreen: null } )
+    );
   } );
 } );
 
@@ -74,9 +90,8 @@ describe( "with advanced user layout", ( ) => {
     expect( noEvidenceButton ).toBeTruthy( );
     await actor.press( noEvidenceButton );
 
-    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
-      screen: "ObsEdit",
-      params: { previousScreen: null }
-    } );
+    expect( mockDispatch ).toHaveBeenCalledWith(
+      resetNavigation( "ObsEdit", { previousScreen: null } )
+    );
   } );
 } );
