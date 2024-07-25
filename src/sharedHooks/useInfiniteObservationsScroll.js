@@ -7,7 +7,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { flatten, last, noop } from "lodash";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";

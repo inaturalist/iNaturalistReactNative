@@ -1,4 +1,4 @@
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useMemo } from "react";
 import User from "realmModels/User.ts";
 

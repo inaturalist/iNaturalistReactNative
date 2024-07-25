@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback, useEffect
 } from "react";

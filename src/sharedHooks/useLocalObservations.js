@@ -1,7 +1,7 @@
 // @flow
 
 import { useIsFocused } from "@react-navigation/native";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import {
   useEffect, useRef,
   useState

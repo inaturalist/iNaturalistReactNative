@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   markObservationUpdatesViewed
 } from "api/observations";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import {
   useEffect,
   useState

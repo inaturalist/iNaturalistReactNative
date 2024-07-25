@@ -19,7 +19,7 @@ import {
   View
 } from "components/styledComponents";
 import _, { compact } from "lodash";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import {

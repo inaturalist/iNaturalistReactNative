@@ -11,7 +11,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { capitalize } from "lodash";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
 import { useTheme } from "react-native-paper";
