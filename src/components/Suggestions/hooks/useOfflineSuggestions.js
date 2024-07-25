@@ -1,11 +1,14 @@
 // @flow
 
+import { RealmContext } from "providers/contexts";
 import {
   useEffect,
   useState
 } from "react";
 import { predictImage } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
+
+const { useRealm } = RealmContext;
 
 const logger = log.extend( "useOfflineSuggestions" );
 
@@ -15,6 +18,7 @@ const useOfflineSuggestions = (
 ): {
   offlineSuggestions: Array<Object>
 } => {
+  const realm = useRealm( );
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
   const [error, setError] = useState( null );
 
@@ -33,6 +37,13 @@ const useOfflineSuggestions = (
         logger.error( "Error predicting image offline", predictImageError );
         throw predictImageError;
       }
+      // similar to what we're doing in the AICamera to get iconic taxon name,
+      // but we're offline so we only need the local list from realm
+      // and don't need to fetch taxon from the API
+      const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+      const branchIDs = rawPredictions.map( t => t.taxon_id );
+      const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
+
       // using the same rank level for displaying predictions in AI Camera
       // this is all temporary, since we ultimately want predictions
       // returned similarly to how we return them on web; this is returning a
@@ -44,7 +55,8 @@ const useOfflineSuggestions = (
           taxon: {
             id: Number( prediction.taxon_id ),
             name: prediction.name,
-            rank_level: prediction.rank_level
+            rank_level: prediction.rank_level,
+            iconic_taxon_name: iconicTaxonName
           }
         } ) );
       setOfflineSuggestions( formattedPredictions );
@@ -61,7 +73,7 @@ const useOfflineSuggestions = (
         setError( predictOfflineError );
       } );
     }
-  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch] );
+  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch, realm] );
 
   if ( error ) throw error;
 
