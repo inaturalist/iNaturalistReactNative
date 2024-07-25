@@ -1,9 +1,13 @@
-import Geolocation, {
+import {
   GeolocationError,
   GeolocationResponse
 } from "@react-native-community/geolocation";
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
+
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+import { clearWatch, watchPosition } from "../sharedHelpers/geolocationWrapper";
 
 export const TARGET_POSITIONAL_ACCURACY = 10;
 
@@ -32,7 +36,7 @@ const useWatchPosition = ( options: {
     shouldFetchLocation
   );
 
-  const watchPosition = ( ) => {
+  const startWatch = ( ) => {
     setIsFetchingLocation( true );
     const success = ( position: GeolocationResponse ) => {
       setCurrentPosition( position );
@@ -44,7 +48,7 @@ const useWatchPosition = ( options: {
     };
 
     try {
-      const watchID = Geolocation.watchPosition(
+      const watchID = watchPosition(
         success,
         failure,
         geolocationOptions
@@ -56,7 +60,7 @@ const useWatchPosition = ( options: {
   };
 
   const stopWatch = useCallback( ( id: number ) => {
-    Geolocation.clearWatch( id );
+    clearWatch( id );
     setSubscriptionId( null );
     setCurrentPosition( null );
     setIsFetchingLocation( false );
@@ -80,7 +84,7 @@ const useWatchPosition = ( options: {
 
   useEffect( ( ) => {
     if ( shouldFetchLocation ) {
-      watchPosition( );
+      startWatch( );
     }
   }, [shouldFetchLocation] );
 

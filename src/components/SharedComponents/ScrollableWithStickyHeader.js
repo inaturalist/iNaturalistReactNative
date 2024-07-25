@@ -55,8 +55,7 @@ const ScrollableWithStickyHeader = ( {
     screenHeight,
     screenWidth
   } = useDeviceOrientation( );
-  // eslint-disable-next-line no-unused-vars
-  const [scrollPosition, setScrollPosition] = useState( 0 );
+  const [_scrollPosition, setScrollPosition] = useState( 0 );
 
   const [stickyAt, setStickyAt] = useState( 0 );
 
