@@ -1,0 +1,12 @@
+UPDATED
+* Suggestions no longer prompts for location permission; uses a button instead
+
+FIXED
+* Backing out to AI Camera and taking a new photo does not result in two photos
+* IGNORE LOCATION button on Suggestions fixed
+* Location fetch stops when you leave cameras and ObsEdit
+* Backing out of AI Camera no longer lands on photo import screen
+* Notes editor closes when you tap DONE
+* MediaViewer plays a local sound while offline
+* Respect scientific name only pref in more places
+* and more!
