@@ -48,8 +48,6 @@ const ActivityItem = ( {
     && isFirstDisplay
     && currentUserId;
 
-  console.log( currentUserId );
-
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   return (

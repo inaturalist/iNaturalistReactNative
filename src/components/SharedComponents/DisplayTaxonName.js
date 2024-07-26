@@ -33,6 +33,7 @@ type Props = {
   ellipsizeCommonName?: boolean,
   keyBase?: string,
   layout?: "horizontal" | "vertical",
+  removeStyling?: boolean,
   scientificNameFirst?: boolean,
   small?: boolean,
   taxon: Object,
@@ -46,6 +47,7 @@ const DisplayTaxonName = ( {
   ellipsizeCommonName,
   keyBase = "",
   layout = "vertical",
+  removeStyling = false,
   scientificNameFirst = false,
   small = false,
   taxon,
@@ -107,6 +109,42 @@ const DisplayTaxonName = ( {
       return 3;
     };
 
+    const topTextComponent = (
+      <TopTextComponent
+        className={textClassName}
+        numberOfLines={setNumberOfLines( )}
+        ellipsizeMode="tail"
+      >
+        {
+          ( scientificNameFirst || !commonName )
+            ? (
+              <ScientificName
+                scientificNamePieces={scientificNamePieces}
+                rankPiece={rankPiece}
+                rankLevel={rankLevel}
+                rank={rank}
+                fontComponent={TopTextComponent}
+                isHorizontal={isHorizontal}
+                textClassName={textClassName}
+                taxonId={taxon.id}
+                keyBase={`${keyBase}-top`}
+                isTitle
+              />
+            )
+            : `${commonName}${
+              getSpaceChar( !scientificNameFirst )
+            }`
+        }
+      </TopTextComponent>
+    );
+
+    // styling using a View component results in two components being out of
+    // alignment when passing components into <Trans />, like in DisagreementText,
+    // so in these cases we want to return text only
+    if ( removeStyling ) {
+      return topTextComponent;
+    }
+
     return (
       <View
         testID="display-taxon-name"
@@ -114,33 +152,7 @@ const DisplayTaxonName = ( {
           "flex-row items-end flex-wrap w-11/12": isHorizontal
         } )}
       >
-        <TopTextComponent
-          className={textClassName}
-          numberOfLines={setNumberOfLines( )}
-          ellipsizeMode="tail"
-        >
-          {
-            ( scientificNameFirst || !commonName )
-              ? (
-                <ScientificName
-                  scientificNamePieces={scientificNamePieces}
-                  rankPiece={rankPiece}
-                  rankLevel={rankLevel}
-                  rank={rank}
-                  fontComponent={TopTextComponent}
-                  isHorizontal={isHorizontal}
-                  textClassName={textClassName}
-                  taxonId={taxon.id}
-                  keyBase={`${keyBase}-top`}
-                  isTitle
-                />
-              )
-              : `${commonName}${
-                getSpaceChar( !scientificNameFirst )
-              }`
-          }
-        </TopTextComponent>
-
+        {topTextComponent}
         {
           commonName && (
             <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
@@ -169,6 +181,7 @@ const DisplayTaxonName = ( {
     ellipsizeCommonName,
     keyBase,
     layout,
+    removeStyling,
     scientificNameFirst,
     small,
     taxon,
