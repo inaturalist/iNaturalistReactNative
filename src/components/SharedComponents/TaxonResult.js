@@ -27,12 +27,14 @@ type Props = {
   first?: boolean,
   fromLocal?: boolean,
   handleCheckmarkPress: Function,
-  handlePress: Function,
+  handleTaxonOrEditPress: Function,
+  handleRemovePress?: Function,
   hideInfoButton?: boolean,
   lastScreen?: ?string,
   onPressInfo?: Function,
   showCheckmark?: boolean,
   showEditButton?: boolean,
+  showRemoveButton?: boolean,
   taxon: Object,
   testID: string,
   white?: boolean,
@@ -50,13 +52,15 @@ const TaxonResult = ( {
   first = false,
   fromLocal = true,
   handleCheckmarkPress,
-  handlePress,
+  handleTaxonOrEditPress,
+  handleRemovePress,
   hideInfoButton = false,
   hideNavButtons = false,
   lastScreen = null,
   onPressInfo,
   showEditButton = false,
   showCheckmark = true,
+  showRemoveButton = false,
   taxon: taxonProp,
   testID,
   white = false,
@@ -110,7 +114,7 @@ const TaxonResult = ( {
             "py-3": asListItem
           } )
         }
-        onPress={handlePress || navToTaxonDetails}
+        onPress={handleTaxonOrEditPress || navToTaxonDetails}
         accessible
         accessibilityRole="link"
         accessibilityLabel={accessibleName}
@@ -190,11 +194,21 @@ const TaxonResult = ( {
               <INatIconButton
                 icon="edit"
                 size={20}
-                onPress={handlePress}
+                onPress={handleTaxonOrEditPress}
                 accessibilityLabel={t( "Edit-identification" )}
                 accessibilityHint={t( "Edits-this-observations-taxon" )}
               />
             )}
+        { showRemoveButton
+          && (
+            <INatIconButton
+              icon="close"
+              size={20}
+              onPress={handleRemovePress}
+              accessibilityLabel={t( "Remove-identification" )}
+              accessibilityHint={t( "Removes-this-observations-taxon" )}
+            />
+          )}
       </View>
     </View>
   );

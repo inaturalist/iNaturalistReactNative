@@ -1065,7 +1065,15 @@
     "val": "Remove disagreement"
   },
   "Remove-favorite": "Remove favorite",
+  "Remove-identification": {
+    "comment": "Label for button that removes an identification",
+    "val": "Remove identification"
+  },
   "Remove-Photos": "Remove Photos",
+  "Removes-this-observations-taxon": {
+    "comment": "Label for button that removes an observation's taxon",
+    "val": "Removes this observation's taxon"
+  },
   "Removes-your-vote-of-agreement": {
     "comment": "Hint for a button that removes a vote of agreement",
     "val": "Removes your vote of agreement"

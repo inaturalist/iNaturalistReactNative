@@ -785,7 +785,11 @@ Remove-agreement = Remove agreement
 # Label for a button that removes a vote of disagreement
 Remove-disagreement = Remove disagreement
 Remove-favorite = Remove favorite
+# Label for button that removes an identification
+Remove-identification = Remove identification
 Remove-Photos = Remove Photos
+# Label for button that removes an observation's taxon
+Removes-this-observations-taxon = Removes this observation's taxon
 # Hint for a button that removes a vote of agreement
 Removes-your-vote-of-agreement = Removes your vote of agreement
 # Hint for a button that removes a vote of disagreement
