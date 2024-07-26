@@ -26,23 +26,23 @@ const TaxaList = ( {
     data = taxa;
   }
 
+  if ( isLoading ) {
+    return (
+      <View className="p-4">
+        <ActivityIndicator size={40} />
+      </View>
+    );
+  }
+
   return (
     <View>
-      {isLoading
-        ? (
-          <View className="p-4">
-            <ActivityIndicator size={40} />
-          </View>
-        )
-        : (
-          <FlatList
-            keyboardShouldPersistTaps="always"
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            ListFooterComponent={renderFooter}
-          />
-        )}
+      <FlatList
+        keyboardShouldPersistTaps="always"
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        ListFooterComponent={renderFooter}
+      />
     </View>
   );
 };
