@@ -10,7 +10,6 @@ type Props = {
   fontComponent: Object,
   isHorizontal: boolean,
   isTitle?: boolean,
-  isTop?: boolean,
   keyBase: string,
   rank: string,
   rankLevel: number,
@@ -24,7 +23,6 @@ const ScientificName = ( {
   fontComponent,
   isHorizontal,
   isTitle,
-  isTop,
   keyBase,
   rank,
   rankLevel,
@@ -40,7 +38,7 @@ const ScientificName = ( {
     const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal )
       ? " "
       : "";
-    const text = ( isTop || index !== scientificNamePieces.length - 1 )
+    const text = index !== scientificNamePieces.length - 1
       ? piece + spaceChar
       : piece;
     const FontComponent = fontComponent || Body3;

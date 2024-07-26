@@ -91,6 +91,7 @@ const TaxonDetailsTitle = ( {
         topTextComponent={Heading1}
         bottomTextComponent={Subheading1}
         scientificNameFirst={currentUser?.prefers_scientific_name_first}
+        prefersCommonNames={currentUser?.prefers_common_names}
       />
     </View>
   );

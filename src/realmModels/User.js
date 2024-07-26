@@ -4,10 +4,11 @@ class User extends Realm.Object {
   static FIELDS = {
     icon_url: true,
     id: true,
+    locale: true,
     login: true,
     name: true,
-    locale: true,
     observations_count: true,
+    prefers_common_names: true,
     prefers_scientific_name_first: true
   };
 
@@ -25,13 +26,14 @@ class User extends Realm.Object {
     properties: {
       id: "int",
       icon_url: { type: "string", mapTo: "iconUrl", optional: true },
+      locale: "string?",
       login: "string?",
       name: "string?",
-      signedIn: "bool?",
-      locale: "string?",
       observations_count: "int?",
+      prefers_common_names: "bool?",
+      prefers_community_taxa: "bool?",
       prefers_scientific_name_first: "bool?",
-      prefers_community_taxa: "bool?"
+      signedIn: "bool?"
     }
   };
 }

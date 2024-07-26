@@ -34,6 +34,7 @@ type Props = {
   keyBase?: string,
   layout?: "horizontal" | "vertical",
   removeStyling?: boolean,
+  prefersCommonNames?: boolean,
   scientificNameFirst?: boolean,
   small?: boolean,
   taxon: Object,
@@ -48,6 +49,7 @@ const DisplayTaxonName = ( {
   keyBase = "",
   layout = "vertical",
   removeStyling = false,
+  prefersCommonNames = true,
   scientificNameFirst = false,
   small = false,
   taxon,
@@ -116,7 +118,7 @@ const DisplayTaxonName = ( {
         ellipsizeMode="tail"
       >
         {
-          ( scientificNameFirst || !commonName )
+          ( scientificNameFirst || !commonName || !prefersCommonNames )
             ? (
               <ScientificName
                 scientificNamePieces={scientificNamePieces}
@@ -129,17 +131,18 @@ const DisplayTaxonName = ( {
                 taxonId={taxon.id}
                 keyBase={`${keyBase}-top`}
                 isTitle
-                isTop
               />
             )
             : `${commonName}${
-              getSpaceChar( !scientificNameFirst )
+              !removeStyling
+                ? getSpaceChar( !scientificNameFirst )
+                : ""
             }`
         }
       </TopTextComponent>
     );
 
-    const bottomTextComponent = commonName && (
+    const bottomTextComponent = ( commonName && prefersCommonNames ) && (
       <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
         {scientificNameFirst
           ? commonName
@@ -166,9 +169,14 @@ const DisplayTaxonName = ( {
       return (
         <Text>
           {topTextComponent}
-          (
-          {bottomTextComponent}
-          )
+          {bottomTextComponent && (
+            <>
+              {" "}
+              (
+              {bottomTextComponent}
+              )
+            </>
+          )}
         </Text>
       );
     }
@@ -190,6 +198,7 @@ const DisplayTaxonName = ( {
     keyBase,
     layout,
     removeStyling,
+    prefersCommonNames,
     scientificNameFirst,
     small,
     taxon,
