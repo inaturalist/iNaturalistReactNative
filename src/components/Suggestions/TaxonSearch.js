@@ -27,7 +27,7 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 const TaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
-  const { taxaSearchResults, isLoading } = useTaxonSearch( taxonQuery );
+  const { taxaSearchResults, refetch, isLoading } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
   useNavigateWithTaxonSelected(
@@ -67,6 +67,8 @@ const TaxonSearch = ( ): Node => {
         taxa={taxaSearchResults}
         isLoading={isLoading}
         renderItem={renderTaxonResult}
+        taxonQuery={taxonQuery}
+        refetch={refetch}
       />
     </ViewWrapper>
   );

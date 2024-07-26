@@ -1,22 +1,28 @@
-import { ActivityIndicator } from "components/SharedComponents";
+import { refresh } from "@react-native-community/netinfo";
+import { ActivityIndicator, OfflineNotice } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import { FlatList } from "react-native";
-import { useIconicTaxa } from "sharedHooks";
+import { useIconicTaxa, useIsConnected } from "sharedHooks";
 
 interface Props {
   isLoading: boolean;
   taxa: {}[];
   renderItem: () => React.JSX.Element;
+  taxonQuery: string;
+  refetch: () => void;
 }
 
 const TaxaList = ( {
   isLoading,
   taxa,
-  renderItem
+  renderItem,
+  taxonQuery,
+  refetch
 }: Props ) => {
   // TODO: how to use Realm with TS
   const iconicTaxa = useIconicTaxa( { reload: false } );
+  const isOnline = useIsConnected( );
 
   let data = iconicTaxa;
   if ( taxa && taxa.length > 0 ) {
@@ -24,22 +30,44 @@ const TaxaList = ( {
     data = taxa;
   }
 
-  if ( isLoading ) {
-    return (
-      <View className="p-4">
-        <ActivityIndicator size={40} />
-      </View>
-    );
-  }
+  const renderMainContent = () => {
+    if ( isLoading ) {
+      return (
+        <View className="p-4">
+          <ActivityIndicator size={40} />
+        </View>
+      );
+    }
 
-  return (
-    <View className="flex-1">
+    const showIfOffline = taxonQuery.length > 0 && (
+      !taxa || ( taxa instanceof Array && taxa.length === 0 )
+    );
+    if ( showIfOffline && !isOnline ) {
+      return (
+        <View className="p-4">
+          <OfflineNotice
+            onPress={() => {
+              refresh();
+              refetch();
+            }}
+          />
+        </View>
+      );
+    }
+
+    return (
       <FlatList
         keyboardShouldPersistTaps="always"
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
+    );
+  };
+
+  return (
+    <View className="flex-1">
+      {renderMainContent()}
     </View>
   );
 };
