@@ -36,8 +36,6 @@ const TaxonSearch = ( ): Node => {
     { vision: false }
   );
 
-  const renderFooter = useCallback( ( ) => <View className="pb-20" />, [] );
-
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       accessibilityLabel={t( "Choose-taxon" )}
@@ -69,7 +67,6 @@ const TaxonSearch = ( ): Node => {
         taxa={taxaSearchResults}
         isLoading={isLoading}
         renderItem={renderTaxonResult}
-        renderFooter={renderFooter}
       />
     </ViewWrapper>
   );
