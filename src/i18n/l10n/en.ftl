@@ -704,8 +704,8 @@ PLEASE-LOG-IN = PLEASE LOG IN
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
 POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
-Potential-disagreement-disagree = <0>No, but this is a member of { $commonName }(</0><1>{ $scientificName }</1><0>)</0>
-Potential-disagreement-unsure = <0>I don't know but I am sure this is { $commonName }(</0><1>{ $scientificName }</1><0>)</0>
+Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
+Potential-disagreement-unsure = <0>I don't know but I am sure this is </0><1></1>
 # Help text for beginning a sound recording
 Press-record-to-start = Press record to start
 Previous-observation = Previous observation

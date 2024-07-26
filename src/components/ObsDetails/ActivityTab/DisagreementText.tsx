@@ -20,15 +20,15 @@ interface Props {
 const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
   const currentUser = useCurrentUser( );
 
-  const taxonName = (
+  const showTaxonName = fontComponent => (
     <DisplayTaxonName
-      taxon={taxon}
-      withdrawn={withdrawn}
-      scientificNameFirst={currentUser?.prefers_scientific_name_first}
       prefersCommonNames={currentUser?.prefers_common_names}
-      small
-      topTextComponent={Body4}
       removeStyling
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      small
+      taxon={taxon}
+      topTextComponent={fontComponent}
+      withdrawn={withdrawn}
     />
   );
 
@@ -46,7 +46,7 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
           )
         }
         />,
-        taxonName
+        showTaxonName( Body4 )
       ]}
     />
   );
