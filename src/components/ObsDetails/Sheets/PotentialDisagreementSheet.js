@@ -1,12 +1,16 @@
 // @flow
 
 import {
+  Body1,
+  DisplayTaxon,
+  DisplayTaxonName, List2,
   RadioButtonSheet
 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { generateTaxonPieces } from "sharedHelpers/taxon";
-import useTranslation from "sharedHooks/useTranslation";
+import { Trans } from "react-i18next";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
   handleClose: Function,
@@ -20,26 +24,54 @@ const PotentialDisagreementSheet = ( {
   taxon
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
 
-  const taxonPojo = typeof ( taxon.toJSON ) === "function"
-    ? taxon.toJSON( )
-    : taxon;
-  const {
-    commonName,
-    rank,
-    scientificName
-  } = generateTaxonPieces( taxonPojo );
+  const showTaxonName = fontComponent => (
+    <DisplayTaxonName
+      bottomTextComponent={fontComponent}
+      layout="horizontal"
+      prefersCommonNames={currentUser?.prefers_common_names}
+      removeStyling
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      small
+      taxon={taxon}
+      topTextComponent={fontComponent}
+    />
+  );
 
   const radioValues = {
     unsure: {
-      label: t( "Potential-disagreement-unsure", { commonName, rank, scientificName } ),
-      value: false
+      value: false,
+      labelComponent: (
+        <Trans
+          i18nKey="Potential-disagreement-unsure"
+          components={[<Body1 />, showTaxonName( Body1 )]}
+        />
+      )
     },
     disagree: {
-      label: t( "Potential-disagreement-disagree", { commonName, rank, scientificName } ),
-      value: true
+      value: true,
+      labelComponent: (
+        <Trans
+          i18nKey="Potential-disagreement-disagree"
+          components={[<Body1 />, showTaxonName( Body1 )]}
+        />
+      )
     }
   };
+
+  const topDescriptionText = (
+    <Trans
+      i18nKey="Potential-disagreement-description"
+      components={[<List2 />, showTaxonName( List2 )]}
+    />
+  );
+
+  const bottomComponent = (
+    <View className="mx-6 mb-6">
+      <DisplayTaxon taxon={taxon} />
+    </View>
+  );
 
   return (
     <RadioButtonSheet
@@ -53,7 +85,9 @@ const PotentialDisagreementSheet = ( {
       handleClose={handleClose}
       radioValues={radioValues}
       selectedValue={radioValues.unsure.value}
+      topDescriptionText={topDescriptionText}
       taxon={taxon}
+      bottomComponent={bottomComponent}
     />
   );
 };

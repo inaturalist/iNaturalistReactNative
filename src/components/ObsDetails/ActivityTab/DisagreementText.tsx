@@ -1,8 +1,9 @@
-import { Body4 } from "components/SharedComponents";
+import classnames from "classnames";
+import { Body4, DisplayTaxonName } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
-import { generateTaxonPieces } from "sharedHelpers/taxon";
+import { useCurrentUser } from "sharedHooks";
 
 interface Props {
     taxon:{
@@ -17,32 +18,35 @@ interface Props {
 }
 
 const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
-  const taxonPojo = typeof ( taxon.toJSON ) === "function"
-    ? taxon.toJSON( )
-    : taxon;
-  const {
-    commonName,
-    scientificName
-  } = generateTaxonPieces( taxonPojo );
+  const currentUser = useCurrentUser( );
 
-  if ( withdrawn ) {
-    return (
-      <Trans
-        i18nKey="Disagreement"
-        values={{ username, commonName, scientificName }}
-        components={[
-          <Body4 className="line-through" />,
-          <Body4 className="line-through italic" />
-        ]}
-      />
-    );
-  }
+  const showTaxonName = fontComponent => (
+    <DisplayTaxonName
+      prefersCommonNames={currentUser?.prefers_common_names}
+      removeStyling
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      small
+      taxon={taxon}
+      topTextComponent={fontComponent}
+      withdrawn={withdrawn}
+    />
+  );
 
   return (
     <Trans
       i18nKey="Disagreement"
-      values={{ username, commonName, scientificName }}
-      components={[<Body4 />, <Body4 className="italic" />]}
+      values={{ username }}
+      components={[
+        <Body4 className={
+          classnames(
+            {
+              "line-through": withdrawn
+            }
+          )
+        }
+        />,
+        showTaxonName( Body4 )
+      ]}
     />
   );
 };

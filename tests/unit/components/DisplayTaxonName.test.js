@@ -151,6 +151,81 @@ describe( "DisplayTaxonName", ( ) => {
     } );
   } );
 
+  describe( "when only scientific name", ( ) => {
+    test( "renders correct taxon for species", ( ) => {
+      render(
+        <DisplayTaxonName
+          taxon={speciesTaxon}
+          scientificNameFirst
+          layout="horizontal"
+          prefersCommonNames={false}
+        />
+      );
+
+      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+        speciesTaxon.name
+      );
+    } );
+
+    test( "renders correct taxon w/o common name", ( ) => {
+      render(
+        <DisplayTaxonName
+          taxon={noCommonNameTaxon}
+          scientificNameFirst
+          prefersCommonNames={false}
+        />
+      );
+
+      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+        noCommonNameTaxon.name
+      );
+    } );
+
+    test( "renders correct taxon w/o common name and no species", ( ) => {
+      render(
+        <DisplayTaxonName
+          taxon={highRankTaxon}
+          scientificNameFirst
+          prefersCommonNames={false}
+        />
+      );
+
+      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+        `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
+      );
+    } );
+
+    test( "renders correct taxon for species", ( ) => {
+      render(
+        <DisplayTaxonName
+          taxon={subspeciesTaxon}
+          scientificNameFirst
+          layout="horizontal"
+          prefersCommonNames={false}
+        />
+      );
+
+      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+        "Lupinus albifrons var. collinus"
+      );
+    } );
+
+    test( "renders correct taxon for species in grid view", ( ) => {
+      render(
+        <DisplayTaxonName
+          layout="vertical"
+          taxon={subspeciesTaxon}
+          scientificNameFirst
+          prefersCommonNames={false}
+        />
+      );
+
+      expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+        "Lupinus albifrons var. collinus"
+      );
+    } );
+  } );
+
   describe( "when taxon is a Realm object", ( ) => {
     it( "fills in a missing genus rank from the rank_level", ( ) => {
       let taxon;
@@ -167,6 +242,44 @@ describe( "DisplayTaxonName", ( ) => {
       }, "create taxon, DisplayTaxonName test" );
       render( <DisplayTaxonName taxon={taxon} /> );
       expect( screen.getByText( /Genus/ ) ).toBeTruthy( );
+    } );
+  } );
+
+  describe( "when displayed as plain text within a Trans component", ( ) => {
+    it( "it displays common name followed by scientific name", async ( ) => {
+      render( <DisplayTaxonName taxon={subspeciesTaxon} removeStyling layout="horizontal" /> );
+      expect( screen.getByTestId( "display-taxon-name-no-styling" ) ).toHaveTextContent(
+        "Silver Lupine (Lupinus albifrons var. collinus)"
+      );
+    } );
+
+    it( "it displays scientific name followed by common name", async ( ) => {
+      render(
+        <DisplayTaxonName
+          taxon={subspeciesTaxon}
+          removeStyling
+          layout="horizontal"
+          scientificNameFirst
+        />
+      );
+      expect( screen.getByTestId( "display-taxon-name-no-styling" ) ).toHaveTextContent(
+        "Lupinus albifrons var. collinus (Silver Lupine)"
+      );
+    } );
+
+    it( "it displays scientific name only", async ( ) => {
+      render(
+        <DisplayTaxonName
+          taxon={subspeciesTaxon}
+          removeStyling
+          layout="horizontal"
+          scientificNameFirst
+          prefersCommonNames={false}
+        />
+      );
+      expect( screen.getByTestId( "display-taxon-name-no-styling" ) ).toHaveTextContent(
+        "Lupinus albifrons var. collinus"
+      );
     } );
   } );
 } );
