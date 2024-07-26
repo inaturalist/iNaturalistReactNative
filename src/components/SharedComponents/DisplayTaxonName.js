@@ -4,7 +4,7 @@ import {
   Body1, Body3, Body4
 } from "components/SharedComponents";
 import ScientificName from "components/SharedComponents/ScientificName";
-import { View } from "components/styledComponents";
+import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
@@ -129,6 +129,7 @@ const DisplayTaxonName = ( {
                 taxonId={taxon.id}
                 keyBase={`${keyBase}-top`}
                 isTitle
+                isTop
               />
             )
             : `${commonName}${
@@ -138,11 +139,38 @@ const DisplayTaxonName = ( {
       </TopTextComponent>
     );
 
+    const bottomTextComponent = commonName && (
+      <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
+        {scientificNameFirst
+          ? commonName
+          : (
+            <ScientificName
+              scientificNamePieces={scientificNamePieces}
+              rankPiece={rankPiece}
+              rankLevel={rankLevel}
+              rank={rank}
+              fontComponent={BottomTextComponent}
+              isHorizontal={isHorizontal}
+              textClassName={textClassName}
+              taxonId={taxon.id}
+              keyBase={`${keyBase}-bot`}
+            />
+          )}
+      </BottomTextComponent>
+    );
+
     // styling using a View component results in two components being out of
     // alignment when passing components into <Trans />, like in DisagreementText,
     // so in these cases we want to return text only
     if ( removeStyling ) {
-      return topTextComponent;
+      return (
+        <Text>
+          {topTextComponent}
+          (
+          {bottomTextComponent}
+          )
+        </Text>
+      );
     }
 
     return (
@@ -153,27 +181,7 @@ const DisplayTaxonName = ( {
         } )}
       >
         {topTextComponent}
-        {
-          commonName && (
-            <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
-              {scientificNameFirst
-                ? commonName
-                : (
-                  <ScientificName
-                    scientificNamePieces={scientificNamePieces}
-                    rankPiece={rankPiece}
-                    rankLevel={rankLevel}
-                    rank={rank}
-                    fontComponent={BottomTextComponent}
-                    isHorizontal={isHorizontal}
-                    textClassName={textClassName}
-                    taxonId={taxon.id}
-                    keyBase={`${keyBase}-bot`}
-                  />
-                )}
-            </BottomTextComponent>
-          )
-        }
+        {bottomTextComponent}
       </View>
     );
   }, [

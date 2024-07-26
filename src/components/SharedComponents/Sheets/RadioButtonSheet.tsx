@@ -2,13 +2,14 @@ import {
   BottomSheet,
   Button,
   DisplayTaxon,
-  List2,
+  DisplayTaxonName, List2,
   RadioButtonRow
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
+import { useCurrentUser } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
@@ -53,6 +54,21 @@ const RadioButtonSheet = ( {
   const { t } = useTranslation( );
   const [checkedValue, setCheckedValue] = useState( selectedValue );
 
+  const currentUser = useCurrentUser( );
+
+  const taxonName = (
+    <DisplayTaxonName
+      taxon={taxon}
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      prefersCommonNames={currentUser?.prefers_common_names}
+      small
+      topTextComponent={List2}
+      bottomTextComponent={List2}
+      layout="horizontal"
+      removeStyling
+    />
+  );
+
   let commonName = "";
   let scientificName = "";
   if ( taxon ) {
@@ -73,7 +89,7 @@ const RadioButtonSheet = ( {
         onPress={() => setCheckedValue( radioValues[radioRow].value )}
         label={radioValues[radioRow].label}
         description={radioValues[radioRow].text}
-        showTaxon
+        showTaxon={taxon}
         taxonNamePieces={{ commonName, scientificName }}
       />
     </View>
@@ -92,15 +108,14 @@ const RadioButtonSheet = ( {
          && (
            <Trans
              i18nKey="Potential-disagreement-description"
-             values={{ commonName, scientificName }}
-             components={[<List2 />, <List2 className="italic" />]}
+             components={[<List2 />, taxonName]}
            />
          )}
         <View className="p-3">
           {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
         </View>
         {taxon && (
-          <View className="mx-6 my-4">
+          <View className="mx-6 mb-6">
             <DisplayTaxon taxon={taxon} />
           </View>
         )}
