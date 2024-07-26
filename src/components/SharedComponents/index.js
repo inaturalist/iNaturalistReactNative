@@ -54,6 +54,7 @@ export { default as TextSheet } from "./Sheets/TextSheet";
 export { default as WarningSheet } from "./Sheets/WarningSheet";
 export { default as StickyToolbar } from "./StickyToolbar";
 export { default as Tabs } from "./Tabs/Tabs";
+export { default as TaxaList } from "./TaxaList/TaxaList";
 export { default as TaxonResult } from "./TaxonResult";
 export { default as Body1 } from "./Typography/Body1";
 export { default as Body2 } from "./Typography/Body2";
