@@ -80,6 +80,7 @@ const ObsGridItem = ( {
           scientificNameFirst={
             currentUser?.prefers_scientific_name_first
           }
+          prefersCommonNames={currentUser?.prefers_common_names}
           layout="vertical"
           color="text-white"
           ellipsizeCommonName

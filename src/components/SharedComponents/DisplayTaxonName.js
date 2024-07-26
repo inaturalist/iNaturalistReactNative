@@ -33,6 +33,7 @@ type Props = {
   ellipsizeCommonName?: boolean,
   keyBase?: string,
   layout?: "horizontal" | "vertical",
+  prefersCommonNames?: boolean,
   scientificNameFirst?: boolean,
   small?: boolean,
   taxon: Object,
@@ -46,6 +47,7 @@ const DisplayTaxonName = ( {
   ellipsizeCommonName,
   keyBase = "",
   layout = "vertical",
+  prefersCommonNames = true,
   scientificNameFirst = false,
   small = false,
   taxon,
@@ -120,7 +122,7 @@ const DisplayTaxonName = ( {
           ellipsizeMode="tail"
         >
           {
-            ( scientificNameFirst || !commonName )
+            ( scientificNameFirst || !commonName || !prefersCommonNames )
               ? (
                 <ScientificName
                   scientificNamePieces={scientificNamePieces}
@@ -142,7 +144,7 @@ const DisplayTaxonName = ( {
         </TopTextComponent>
 
         {
-          commonName && (
+          ( commonName && prefersCommonNames ) && (
             <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
               {scientificNameFirst
                 ? commonName
@@ -169,6 +171,7 @@ const DisplayTaxonName = ( {
     ellipsizeCommonName,
     keyBase,
     layout,
+    prefersCommonNames,
     scientificNameFirst,
     small,
     taxon,
