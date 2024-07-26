@@ -9,6 +9,7 @@ import Taxon from "realmModels/Taxon";
 type Props = {
   fontComponent: Object,
   isHorizontal: boolean,
+  isFirst?: boolean,
   isTitle?: boolean,
   keyBase: string,
   rank: string,
@@ -23,6 +24,7 @@ const ScientificName = ( {
   fontComponent,
   isHorizontal,
   isTitle,
+  isFirst,
   keyBase,
   rank,
   rankLevel,
@@ -38,7 +40,7 @@ const ScientificName = ( {
     const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal )
       ? " "
       : "";
-    const text = index !== scientificNamePieces.length - 1
+    const text = ( isFirst || index !== scientificNamePieces.length - 1 )
       ? piece + spaceChar
       : piece;
     const FontComponent = fontComponent || Body3;

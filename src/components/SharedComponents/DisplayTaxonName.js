@@ -131,6 +131,7 @@ const DisplayTaxonName = ( {
                 taxonId={taxon.id}
                 keyBase={`${keyBase}-top`}
                 isTitle
+                isFirst={scientificNameFirst && prefersCommonNames}
               />
             )
             : `${commonName}${
@@ -167,11 +168,11 @@ const DisplayTaxonName = ( {
     // so in these cases we want to return text only
     if ( removeStyling ) {
       return (
-        <Text>
+        <Text testID="display-taxon-name-no-styling">
           {topTextComponent}
           {bottomTextComponent && (
             <>
-              {" "}
+              {getSpaceChar( !scientificNameFirst )}
               (
               {bottomTextComponent}
               )
