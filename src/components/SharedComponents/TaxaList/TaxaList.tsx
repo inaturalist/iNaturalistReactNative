@@ -8,12 +8,14 @@ interface Props {
   isLoading: boolean;
   taxa: {}[];
   renderItem: () => React.JSX.Element;
+  renderFooter?: () => React.JSX.Element;
 }
 
 const TaxaList = ( {
   isLoading,
   taxa,
-  renderItem
+  renderItem,
+  renderFooter
 }: Props ) => {
   // TODO: how to use Realm with TS
   const iconicTaxa = useIconicTaxa( { reload: false } );
@@ -38,6 +40,7 @@ const TaxaList = ( {
             data={data}
             renderItem={renderItem}
             keyExtractor={item => item.id}
+            ListFooterComponent={renderFooter}
           />
         )}
     </View>

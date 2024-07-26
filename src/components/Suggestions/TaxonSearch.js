@@ -2,6 +2,7 @@
 
 import {
   SearchBar,
+  TaxaList,
   TaxonResult,
   ViewWrapper
 } from "components/SharedComponents";
@@ -11,7 +12,6 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { FlatList } from "react-native";
 import { useTaxonSearch, useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -27,7 +27,7 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 const TaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
-  const { taxaSearchResults } = useTaxonSearch( taxonQuery );
+  const { taxaSearchResults, isLoading } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
   useNavigateWithTaxonSelected(
@@ -36,7 +36,7 @@ const TaxonSearch = ( ): Node => {
     { vision: false }
   );
 
-  const renderFooter = useCallback( ( ) => <View className="pb-10" />, [] );
+  const renderFooter = useCallback( ( ) => <View className="pb-20" />, [] );
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
@@ -65,12 +65,11 @@ const TaxonSearch = ( ): Node => {
           autoFocus={taxonQuery === ""}
         />
       </View>
-      <FlatList
-        keyboardShouldPersistTaps="always"
-        data={taxaSearchResults}
+      <TaxaList
+        taxa={taxaSearchResults}
+        isLoading={isLoading}
         renderItem={renderTaxonResult}
-        keyExtractor={item => item.id}
-        ListFooterComponent={renderFooter}
+        renderFooter={renderFooter}
       />
     </ViewWrapper>
   );
