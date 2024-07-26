@@ -39,7 +39,6 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ): Node => {
       components={[
         <Body4 className={
           classnames(
-            "italic text-justify",
             {
               "line-through": withdrawn
             }
