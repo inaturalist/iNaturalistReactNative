@@ -1,3 +1,6 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import _ from "lodash";
@@ -9,7 +12,6 @@ import React, {
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
-  useIsConnected,
   useLastScreen,
   useLocationPermission
 } from "sharedHooks";
@@ -103,7 +105,7 @@ const reducer = ( state, action ) => {
 const SuggestionsContainer = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   // clearing the cache of resized images for the score_image API
   // placing this here means we can keep the app size small
   // and only have the latest resized image stored in computerVisionSuggestions
@@ -128,10 +130,10 @@ const SuggestionsContainer = ( ) => {
   } = useLocationPermission( );
   const lastScreen = useLastScreen( );
   const showImproveWithLocationButton = useMemo( ( ) => hasPermissions === false
-    && isOnline
+    && isConnected
     && lastScreen === "Camera", [
     hasPermissions,
-    isOnline,
+    isConnected,
     lastScreen
   ] );
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
@@ -315,15 +317,15 @@ const SuggestionsContainer = ( ) => {
   const reloadSuggestions = useCallback( ( ) => {
     // used when offline text is tapped to try to get online
     // suggestions
-    if ( !isOnline ) { return; }
+    if ( !isConnected ) { return; }
     resetTimeout( );
     dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "loading" } );
-  }, [isOnline, resetTimeout] );
+  }, [isConnected, resetTimeout] );
 
   const hideLocationToggleButton = usingOfflineSuggestions
     || isLoading
     || showImproveWithLocationButton
-    || !isOnline;
+    || !isConnected;
 
   const setImageParams = useCallback( async ( ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );

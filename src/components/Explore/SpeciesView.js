@@ -16,14 +16,14 @@ const GUTTER = 15;
 
 type Props = {
   count: Object,
-  isOnline: boolean,
+  isConnected: boolean,
   queryParams: Object,
   updateCount: Function
 }
 
 const SpeciesView = ( {
   count,
-  isOnline,
+  isConnected,
   queryParams,
   updateCount
 }: Props ): Node => {
@@ -101,7 +101,7 @@ const SpeciesView = ( {
       fetchNextPage={fetchNextPage}
       hideLoadingWheel={!isFetchingNextPage}
       isFetchingNextPage={isFetchingNextPage}
-      isOnline={isOnline}
+      isConnected={isConnected}
       keyExtractor={item => item?.taxon?.id || item}
       layout="grid"
       numColumns={numColumns}

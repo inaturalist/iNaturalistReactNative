@@ -29,7 +29,7 @@ import useRemoteObservation from "sharedHooks/useRemoteObservation";
 const logger = log.extend( "DQAContainer" );
 
 const DQAContainer = ( ): React.Node => {
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const { params } = useRoute( );
   const { observationUUID } = params;
   const [loadingAgree, setLoadingAgree] = useState( false );
@@ -277,8 +277,8 @@ const DQAContainer = ( ): React.Node => {
         removeNeedsIDVote={removeNeedsIDVote}
         ifMajorityAgree={ifMajorityAgree}
         checkTest={checkTest}
-        isOnline={isOnline}
-        recheckIsOnline={refreshNetInfo}
+        isConnected={isConnected}
+        recheckisConnected={refreshNetInfo}
       />
       <BottomSheet
         headerText={t( "ERROR-VOTING-IN-DQA" )}

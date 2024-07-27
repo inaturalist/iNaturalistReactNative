@@ -1,5 +1,8 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
@@ -13,7 +16,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { writeExifToFile } from "sharedHelpers/parseExif";
-import { useCurrentUser, useIsConnected, useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import { log } from "../../../react-native-logs.config";
@@ -41,7 +44,7 @@ const BottomButtons = ( {
   observations,
   setCurrentObservationIndex
 }: Props ): Node => {
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
@@ -211,7 +214,7 @@ const BottomButtons = ( {
   ), [buttonPressed, loading, handlePress, t, passesTests] );
 
   const renderButtons = useCallback( ( ) => {
-    if ( !currentUser || !isOnline ) {
+    if ( !currentUser || !isConnected ) {
       return renderSaveButton( );
     }
     if ( currentObservation?._synced_at ) {
@@ -229,7 +232,7 @@ const BottomButtons = ( {
   }, [
     currentObservation,
     currentUser,
-    isOnline,
+    isConnected,
     passesEvidenceTest,
     renderSaveButton,
     renderSaveChangesButton,

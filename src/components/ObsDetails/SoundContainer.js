@@ -46,7 +46,7 @@ const SoundContainer = ( {
   sound
 } ) => {
   const needsInternet = sound.file_url.includes( "https://" );
-  const { isInternetReachable } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const playerRef = useRef( new AudioRecorderPlayer( ) );
   const player = playerRef.current;
   const { t } = useTranslation( );
@@ -180,7 +180,7 @@ const SoundContainer = ( {
     }
   }, [autoPlay, isVisible, playSound] );
 
-  if ( isInternetReachable === false && needsInternet ) {
+  if ( isConnected === false && needsInternet ) {
     return (
       <OfflineNotice
         onPress={( ) => refreshNetInfo( )}

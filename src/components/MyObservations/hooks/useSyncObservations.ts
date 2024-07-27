@@ -1,10 +1,13 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import Observation from "realmModels/Observation";
 import { log } from "sharedHelpers/logger";
-import { useAuthenticatedMutation, useIsConnected } from "sharedHooks";
+import { useAuthenticatedMutation } from "sharedHooks";
 import {
   AUTOMATIC_SYNC_IN_PROGRESS,
   BEGIN_AUTOMATIC_SYNC,
@@ -21,7 +24,7 @@ const logger = log.extend( "useSyncObservations" );
 const { useRealm } = RealmContext;
 
 const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   const loggedIn = !!currentUserId;
   const deleteQueue = useStore( state => state.deleteQueue );
   const deletionsCompletedAt = useStore( state => state.deletionsCompletedAt );
@@ -34,7 +37,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
 
-  const canSync = loggedIn && isOnline;
+  const canSync = loggedIn && isConnected;
 
   const realm = useRealm( );
 

@@ -1,12 +1,14 @@
 // @flow
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { fetchUserMe } from "api/users";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser,
-  useIsConnected
+  useCurrentUser
 } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -15,7 +17,7 @@ const useUserMe = ( options: ?Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const updateRealm = options?.updateRealm;
-  const isConnected = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   const enabled = !!isConnected && !!currentUser;
 
   const {

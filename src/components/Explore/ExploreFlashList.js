@@ -14,7 +14,7 @@ type Props = {
   fetchNextPage: boolean,
   hideLoadingWheel: boolean,
   isFetchingNextPage: boolean,
-  isOnline: boolean,
+  isConnected: boolean,
   keyExtractor: Function,
   layout?: string,
   numColumns?: number,
@@ -31,7 +31,7 @@ const ExploreFlashList = ( {
   fetchNextPage,
   hideLoadingWheel,
   isFetchingNextPage,
-  isOnline,
+  isConnected,
   keyExtractor,
   layout,
   numColumns,
@@ -47,9 +47,9 @@ const ExploreFlashList = ( {
       hideLoadingWheel={hideLoadingWheel}
       layout={layout}
       explore
-      isOnline={isOnline}
+      isConnected={isConnected}
     />
-  ), [hideLoadingWheel, layout, isOnline] );
+  ), [hideLoadingWheel, layout, isConnected] );
 
   const renderEmptyComponent = useCallback( ( ) => (
     <View className="flex-1 justify-center items-center">

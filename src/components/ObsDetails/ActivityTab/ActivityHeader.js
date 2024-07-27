@@ -21,7 +21,7 @@ type Props = {
   deleteComment: Function,
   flagged: boolean,
   idWithdrawn?: boolean,
-  isOnline?: boolean,
+  isConnected?: boolean,
   item: Object,
   loading: boolean,
   updateCommentBody: Function,
@@ -34,7 +34,7 @@ const ActivityHeader = ( {
   deleteComment,
   flagged,
   idWithdrawn,
-  isOnline,
+  isConnected,
   item,
   loading,
   updateCommentBody,
@@ -115,7 +115,7 @@ const ActivityHeader = ( {
 
   return (
     <View className={classnames( "flex-row justify-between h-[26px] my-[11px]", classNameMargin )}>
-      <InlineUser user={user} isOnline={isOnline} />
+      <InlineUser user={user} isConnected={isConnected} />
       <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
         {renderStatus()}

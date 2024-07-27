@@ -16,7 +16,7 @@ type Props = {
   handleIndividualUploadPress: Function,
   handleSyncButtonPress: Function,
   isFetchingNextPage: boolean,
-  isOnline: boolean,
+  isConnected: boolean,
   layout: "list" | "grid",
   observations: Array<Object>,
   onEndReached: Function,
@@ -31,7 +31,7 @@ const MyObservations = ( {
   handleIndividualUploadPress,
   handleSyncButtonPress,
   isFetchingNextPage,
-  isOnline,
+  isConnected,
   layout,
   observations,
   onEndReached,
@@ -62,14 +62,14 @@ const MyObservations = ( {
             handleScroll={onScroll}
             hideLoadingWheel={!isFetchingNextPage || !currentUser}
             isFetchingNextPage={isFetchingNextPage}
-            isOnline={isOnline}
+            isConnected={isConnected}
             layout={layout}
             onEndReached={onEndReached}
             showObservationsEmptyScreen
             status={status}
             testID="MyObservationsAnimatedList"
             renderHeader={(
-              <Announcements isOnline={isOnline} />
+              <Announcements isConnected={isConnected} />
             )}
           />
         )}
