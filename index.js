@@ -4,7 +4,6 @@
 import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { NetInfo } from "@react-native-community/netinfo";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
@@ -110,12 +109,6 @@ const queryClient = new QueryClient( {
       retry: reactQueryRetry
     }
   }
-} );
-
-// better to ping our own website to check for site uptime
-// with no rendering required, per issue #1770
-NetInfo.configure( {
-  reachabilityUrl: "https://www.inaturalist.org/ping"
 } );
 
 const AppWithProviders = ( ) => (
