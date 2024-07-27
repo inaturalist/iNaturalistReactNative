@@ -1,8 +1,10 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { screen } from "@testing-library/react-native";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
 import React from "react";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
-import * as useIsConnected from "sharedHooks/useIsConnected.ts";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -45,7 +47,7 @@ describe( "CustomTabBar", () => {
   } );
 
   it( "should display person icon while user is logged out", async () => {
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline /> );
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
     await expect( personIcon ).toBeVisible( );
@@ -53,15 +55,15 @@ describe( "CustomTabBar", () => {
 
   it( "should display avatar while user is logged in", async () => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline /> );
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
     const avatar = screen.getByTestId( "UserIcon.photo" );
     await expect( avatar ).toBeVisible( );
   } );
 
   it( "should display person icon when connectivity is low", async ( ) => {
-    jest.spyOn( useIsConnected, "default" ).mockImplementation( () => false );
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} isOnline={false} /> );
+    useNetInfo.mockImplementation( ( ) => ( { isInternetReachable: false } ) );
+    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
     await expect( personIcon ).toBeVisible( );
@@ -79,6 +81,7 @@ describe( "CustomTabBar with advanced user layout", () => {
 
   beforeEach( ( ) => {
     jest.resetAllMocks();
+    useNetInfo.mockImplementation( ( ) => ( { isInternetReachable: true } ) );
   } );
 
   it( "should render correctly", async () => {

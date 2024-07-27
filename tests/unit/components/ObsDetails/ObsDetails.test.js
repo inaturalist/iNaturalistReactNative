@@ -7,7 +7,6 @@ import { View } from "react-native";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
-import useIsConnected from "sharedHooks/useIsConnected.ts";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
@@ -146,8 +145,6 @@ jest.mock(
   }
 );
 
-jest.mock( "sharedHooks/useIsConnected" );
-
 const renderObsDetails = ( ) => renderComponent(
   <ObsDetailsContainer />
 );
@@ -178,7 +175,6 @@ describe( "ObsDetails", () => {
   // } );
 
   it( "renders obs details from remote call", async () => {
-    useIsConnected.mockImplementation( () => true );
     renderObsDetails( );
 
     const obs = await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` );
@@ -218,7 +214,6 @@ describe( "ObsDetails", () => {
     } );
 
     it( "should render fallback image icon instead of photos", async () => {
-      useIsConnected.mockImplementation( () => true );
       renderObsDetails( );
 
       const labelText = t( "Observation-has-no-photos-and-no-sounds" );
@@ -253,7 +248,6 @@ describe( "ObsDetails", () => {
     // it(
     //   "shows network error image instead of observation photos if user is offline",
     //   async () => {
-    //     useIsConnected.mockImplementation( () => false );
     //     renderObsDetails( );
     //     const labelText = t( "Observation-photos-unavailable-without-internet" );
     //     const noInternet = await screen.findByLabelText( labelText );

@@ -1,18 +1,21 @@
 // @flow
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { searchTaxa } from "api/taxa";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { useAuthenticatedQuery, useIsConnected } from "sharedHooks";
+import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
 const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ): Object => {
   const { reload } = options;
   const realm = useRealm( );
-  const isConnected = useIsConnected( );
+  const { isInternetReachable: isOnline } = useNetInfo( );
   const [isUpdatingRealm, setIsUpdatingRealm] = useState( );
-  const enabled = !!isConnected && !!reload;
+  const enabled = !!isOnline && !!reload;
 
   const queryKey = ["searchTaxa", reload];
   const { data: iconicTaxa } = useAuthenticatedQuery(

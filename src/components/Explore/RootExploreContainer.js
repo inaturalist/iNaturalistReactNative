@@ -1,5 +1,8 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
@@ -11,7 +14,7 @@ import React, {
   useEffect,
   useState
 } from "react";
-import { useCurrentUser, useIsConnected } from "sharedHooks";
+import { useCurrentUser } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
@@ -21,7 +24,7 @@ import useHeaderCount from "./hooks/useHeaderCount";
 
 const RootExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
-  const isOnline = useIsConnected( );
+  const { isInternetReachable: isOnline } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const rootStoredParams = useStore( state => state.rootStoredParams );
   const setRootStoredParams = useStore( state => state.setRootStoredParams );

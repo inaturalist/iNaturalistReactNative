@@ -1,17 +1,19 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { ActivityAnimation, ObservationsFlashList, ViewWrapper } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import {
   useCurrentUser,
-  useInfiniteObservationsScroll,
-  useIsConnected
+  useInfiniteObservationsScroll
 } from "sharedHooks";
 
 const Identify = (): Node => {
   const currentUser = useCurrentUser();
-  const isOnline = useIsConnected();
+  const { isInternetReachable: isOnline } = useNetInfo( );
 
   const params = {
     iconic_taxa: "unknown",

@@ -1,5 +1,8 @@
 import Geolocation from "@react-native-community/geolocation";
 import {
+  useNetInfo
+} from "@react-native-community/netinfo";
+import {
   screen,
   userEvent,
   waitFor,
@@ -7,7 +10,6 @@ import {
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions.ts";
 import inatjs from "inaturalistjs";
-import * as useIsConnected from "sharedHooks/useIsConnected.ts";
 import * as useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -330,7 +332,7 @@ describe( "from AICamera", ( ) => {
 
   describe( "suggestions while offline", ( ) => {
     it( "should not call score_image and should not show any location buttons", async ( ) => {
-      jest.spyOn( useIsConnected, "default" ).mockImplementation( ( ) => false );
+      useNetInfo.mockImplementation( ( ) => ( { isInternetReachable: false } ) );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( observations[0] );
       expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );

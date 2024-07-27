@@ -1,3 +1,6 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import _ from "lodash";
@@ -9,7 +12,6 @@ import React, {
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import {
-  useIsConnected,
   useLastScreen,
   useLocationPermission
 } from "sharedHooks";
@@ -103,7 +105,7 @@ const reducer = ( state, action ) => {
 const SuggestionsContainer = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const isOnline = useIsConnected( );
+  const { isInternetReachable: isOnline } = useNetInfo( );
   // clearing the cache of resized images for the score_image API
   // placing this here means we can keep the app size small
   // and only have the latest resized image stored in computerVisionSuggestions

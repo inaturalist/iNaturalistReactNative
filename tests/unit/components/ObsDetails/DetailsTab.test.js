@@ -7,11 +7,6 @@ import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
-jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
 // Before migrating to Jest 27 this line was:
 // jest.useFakeTimers();
 // TODO: replace with modern usage of jest.useFakeTimers

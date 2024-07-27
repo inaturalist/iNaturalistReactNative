@@ -1,5 +1,8 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -12,7 +15,6 @@ import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
-  useIsConnected,
   useLocalObservations,
   useObservationsUpdates,
   useStoredLayout,
@@ -56,7 +58,7 @@ const MyObservationsContainer = ( ): Node => {
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
-  const isOnline = useIsConnected( );
+  const { isInternetReachable: isOnline } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const currentUserId = currentUser?.id;
   const canUpload = currentUser && isOnline;

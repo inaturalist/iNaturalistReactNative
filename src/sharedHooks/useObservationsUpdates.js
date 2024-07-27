@@ -1,10 +1,13 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { fetchObservationUpdates } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { useAuthenticatedQuery, useIsConnected } from "sharedHooks";
+import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -12,7 +15,7 @@ export const fetchObservationUpdatesKey = "fetchObservationUpdates";
 
 const useObservationsUpdates = ( enabled: boolean ): Object => {
   const realm = useRealm();
-  const isConnected = useIsConnected( );
+  const { isInternetReachable: isOnline } = useNetInfo( );
 
   // Request params for fetching unviewed updates
   const baseParams = {
@@ -28,7 +31,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
   } = useAuthenticatedQuery(
     [fetchObservationUpdatesKey],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
-    { enabled: !!isConnected && !!enabled }
+    { enabled: !!isOnline && !!enabled }
   );
 
   /*

@@ -45,7 +45,7 @@ describe( "InlineUser", ( ) => {
     render( <InlineUser user={mockUser} isOnline /> );
     // Check for user name text
     expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
-    // This image appears after useIsConnected returns true
+    // This image appears after useNetInfo returns true
     // so we have to use await and findByTestId
     const profilePicture = await screen.findByTestId( "mockUserIcon" );
     expect( profilePicture ).toBeTruthy( );
@@ -67,7 +67,7 @@ describe( "InlineUser", ( ) => {
       render( <InlineUser user={mockUserWithoutImage} isOnline /> );
 
       expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
-      // This icon appears after useIsConnected returns true
+      // This icon appears after useNetInfo returns true
       // so we have to use await and findByTestId
       expect(
         await screen.findByTestId( "InlineUser.FallbackPicture" )
@@ -87,7 +87,7 @@ describe( "InlineUser", ( ) => {
       render( <InlineUser user={mockUser} isOnline={false} /> );
 
       expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy();
-      // This icon appears after useIsConnected returns false
+      // This icon appears after useNetInfo returns false
       // so we have to use await and findByTestId
       expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
       expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();

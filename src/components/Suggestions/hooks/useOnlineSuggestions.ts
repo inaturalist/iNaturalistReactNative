@@ -1,11 +1,13 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import {
   useCallback, useEffect, useState
 } from "react";
 import {
-  useAuthenticatedQuery,
-  useIsConnected
+  useAuthenticatedQuery
 } from "sharedHooks";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
@@ -32,7 +34,7 @@ const useOnlineSuggestions = (
 
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
-  const isOnline = useIsConnected( );
+  const { isInternetReachable: isOnline } = useNetInfo( );
 
   async function queryFn( optsWithAuth ) {
     const params = flattenedUploadParams;
