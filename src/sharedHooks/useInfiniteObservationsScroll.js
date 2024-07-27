@@ -17,7 +17,8 @@ const { useRealm } = RealmContext;
 const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const netInfo = useNetInfo( );
+  const isConnected = netInfo?.isConnected;
 
   const baseParams = {
     ...newInputParams,
@@ -62,7 +63,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     getNextPageParam: lastPage => last( lastPage )?.id,
     // allow a user to see the Explore screen Observations
     // content while logged out
-    enabled: !!isOnline && ( !!currentUser || upsert === false )
+    enabled: !!isConnected && ( !!currentUser || upsert === false )
   } );
 
   useEffect( ( ) => {

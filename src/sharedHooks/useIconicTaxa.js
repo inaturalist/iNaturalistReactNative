@@ -13,9 +13,9 @@ const { useRealm } = RealmContext;
 const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ): Object => {
   const { reload } = options;
   const realm = useRealm( );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const [isUpdatingRealm, setIsUpdatingRealm] = useState( );
-  const enabled = !!isOnline && !!reload;
+  const enabled = !!isConnected && !!reload;
 
   const queryKey = ["searchTaxa", reload];
   const { data: iconicTaxa } = useAuthenticatedQuery(

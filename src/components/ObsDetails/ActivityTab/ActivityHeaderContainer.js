@@ -12,7 +12,7 @@ import ActivityHeader from "./ActivityHeader";
 type Props = {
   classNameMargin?: string,
   idWithdrawn?: boolean,
-  isOnline?: boolean,
+  isConnected?: boolean,
   item: Object,
   refetchRemoteObservation?: Function
 }
@@ -20,7 +20,7 @@ type Props = {
 const ActivityHeaderContainer = ( {
   classNameMargin,
   idWithdrawn,
-  isOnline,
+  isConnected,
   item,
   refetchRemoteObservation
 }:Props ): Node => {
@@ -124,7 +124,7 @@ const ActivityHeaderContainer = ( {
       updateCommentBody={updateCommentBody}
       deleteComment={deleteUserComment}
       updateIdentification={updateIdentification}
-      isOnline={isOnline}
+      isConnected={isConnected}
     />
   );
 };

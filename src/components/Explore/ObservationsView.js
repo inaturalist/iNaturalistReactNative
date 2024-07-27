@@ -49,7 +49,7 @@ const ObservationsView = ( {
     }
   }, [totalResults, updateCount, count, isFetchingNextPage] );
 
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
 
   if ( !layout ) { return null; }
 
@@ -87,7 +87,7 @@ const ObservationsView = ( {
         explore
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
-        isOnline={isOnline}
+        isConnected={isConnected}
         layout={layout}
         onEndReached={fetchNextPage}
         status={status}

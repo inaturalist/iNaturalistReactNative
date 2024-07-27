@@ -17,8 +17,8 @@ const useUserMe = ( options: ?Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const updateRealm = options?.updateRealm;
-  const { isInternetReachable: isOnline } = useNetInfo( );
-  const enabled = !!isOnline && !!currentUser;
+  const { isConnected } = useNetInfo( );
+  const enabled = !!isConnected && !!currentUser;
 
   const {
     data: remoteUser,

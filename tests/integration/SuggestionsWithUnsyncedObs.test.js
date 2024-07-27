@@ -332,7 +332,7 @@ describe( "from AICamera", ( ) => {
 
   describe( "suggestions while offline", ( ) => {
     it( "should not call score_image and should not show any location buttons", async ( ) => {
-      useNetInfo.mockImplementation( ( ) => ( { isInternetReachable: false } ) );
+      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       const { observations } = await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( observations[0] );
       expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );

@@ -66,7 +66,7 @@ describe( "ObsEdit offline", ( ) => {
 
     // Mock NetInfo so it says internet is not reachable
     NetInfo.fetch.mockImplementation( async ( ) => ( {
-      isInternetReachable: false
+      isConnected: false
     } ) );
   } );
 

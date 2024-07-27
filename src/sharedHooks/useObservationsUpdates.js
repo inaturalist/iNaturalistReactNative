@@ -15,7 +15,7 @@ export const fetchObservationUpdatesKey = "fetchObservationUpdates";
 
 const useObservationsUpdates = ( enabled: boolean ): Object => {
   const realm = useRealm();
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
 
   // Request params for fetching unviewed updates
   const baseParams = {
@@ -31,7 +31,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
   } = useAuthenticatedQuery(
     [fetchObservationUpdatesKey],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
-    { enabled: !!isOnline && !!enabled }
+    { enabled: !!isConnected && !!enabled }
   );
 
   /*

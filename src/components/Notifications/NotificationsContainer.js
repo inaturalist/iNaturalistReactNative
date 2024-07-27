@@ -10,7 +10,7 @@ import useInfiniteNotificationsScroll from "sharedHooks/useInfiniteNotifications
 
 const NotificationsContainer = (): Node => {
   const navigation = useNavigation( );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
 
   const {
     notifications,
@@ -23,11 +23,11 @@ const NotificationsContainer = (): Node => {
 
   useEffect( ( ) => {
     navigation.addListener( "focus", ( ) => {
-      if ( isOnline ) {
+      if ( isConnected ) {
         refetch();
       }
     } );
-  }, [isOnline, navigation, refetch] );
+  }, [isConnected, navigation, refetch] );
 
   return (
     <NotificationsList
@@ -35,7 +35,7 @@ const NotificationsContainer = (): Node => {
       isError={isError}
       isFetching={isFetching}
       isInitialLoading={isInitialLoading}
-      isOnline={isOnline}
+      isConnected={isConnected}
       onEndReached={fetchNextPage}
       reload={refetch}
     />

@@ -41,7 +41,7 @@ const NotificationsIconContainer = ( {
   const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
   const currentUser = useCurrentUser( );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
@@ -56,7 +56,7 @@ const NotificationsIconContainer = ( {
     ],
     optsWithAuth => fetchUnviewedObservationUpdatesCount( optsWithAuth ),
     {
-      enabled: !!currentUser && !!isOnline
+      enabled: !!currentUser && !!isConnected
     }
   );
 

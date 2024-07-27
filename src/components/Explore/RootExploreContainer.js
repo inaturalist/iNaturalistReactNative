@@ -24,7 +24,7 @@ import useHeaderCount from "./hooks/useHeaderCount";
 
 const RootExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const rootStoredParams = useStore( state => state.rootStoredParams );
   const setRootStoredParams = useStore( state => state.setRootStoredParams );
@@ -127,7 +127,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
-        isOnline={isOnline}
+        isConnected={isConnected}
         loadingStatus={loadingStatus}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}

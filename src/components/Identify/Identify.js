@@ -13,7 +13,7 @@ import {
 
 const Identify = (): Node => {
   const currentUser = useCurrentUser();
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
 
   const params = {
     iconic_taxa: "unknown",
@@ -41,7 +41,7 @@ const Identify = (): Node => {
         data={observations}
         hideLoadingWheel={!isFetchingNextPage || !currentUser}
         isFetchingNextPage={isFetchingNextPage}
-        isOnline={isOnline}
+        isConnected={isConnected}
         layout="list"
         onEndReached={fetchNextPage}
         showObservationsEmptyScreen

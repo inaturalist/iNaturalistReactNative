@@ -36,13 +36,13 @@ describe( "InlineUser", ( ) => {
 
   it( "renders reliably", () => {
     // Snapshot test
-    render( <InlineUser user={snapshotUser} isOnline /> );
+    render( <InlineUser user={snapshotUser} isConnected /> );
 
     expect( screen ).toMatchSnapshot();
   } );
 
   it( "displays user handle and image correctly", async ( ) => {
-    render( <InlineUser user={mockUser} isOnline /> );
+    render( <InlineUser user={mockUser} isConnected /> );
     // Check for user name text
     expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
     // This image appears after useNetInfo returns true
@@ -53,7 +53,7 @@ describe( "InlineUser", ( ) => {
   } );
 
   it( "fires onPress handler", ( ) => {
-    render( <InlineUser user={mockUser} isOnline /> );
+    render( <InlineUser user={mockUser} isConnected /> );
 
     const inlineUserComponent = screen.getByRole( "link" );
     fireEvent.press( inlineUserComponent );
@@ -64,7 +64,7 @@ describe( "InlineUser", ( ) => {
 
   describe( "when user has no icon set", () => {
     it( "displays user handle and fallback image correctly", async () => {
-      render( <InlineUser user={mockUserWithoutImage} isOnline /> );
+      render( <InlineUser user={mockUserWithoutImage} isConnected /> );
 
       expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
       // This icon appears after useNetInfo returns true
@@ -77,14 +77,14 @@ describe( "InlineUser", ( ) => {
 
     it( "renders reliably", ( ) => {
       // Snapshot test
-      render( <InlineUser user={snapshotUserWithoutImage} isOnline /> );
+      render( <InlineUser user={snapshotUserWithoutImage} isConnected /> );
       expect( screen ).toMatchSnapshot();
     } );
   } );
 
   describe( "when offline", () => {
     it( "displays no internet fallback image correctly", async () => {
-      render( <InlineUser user={mockUser} isOnline={false} /> );
+      render( <InlineUser user={mockUser} isConnected={false} /> );
 
       expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy();
       // This icon appears after useNetInfo returns false
@@ -95,7 +95,7 @@ describe( "InlineUser", ( ) => {
 
     it( "renders reliably", ( ) => {
       // Snapshot test
-      render( <InlineUser user={snapshotUser} isOnline={false} /> );
+      render( <InlineUser user={snapshotUser} isConnected={false} /> );
       expect( screen ).toMatchSnapshot();
     } );
   } );

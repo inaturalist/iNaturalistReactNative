@@ -22,7 +22,7 @@ import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const setStoredParams = useStore( state => state.setStoredParams );
 
   const {
@@ -109,7 +109,7 @@ const ExploreContainerWithContext = ( ): Node => {
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
-        isOnline={isOnline}
+        isConnected={isConnected}
         loadingStatus={loadingStatus}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}

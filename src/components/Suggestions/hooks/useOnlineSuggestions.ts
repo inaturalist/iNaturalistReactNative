@@ -34,7 +34,7 @@ const useOnlineSuggestions = (
 
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
 
   async function queryFn( optsWithAuth ) {
     const params = flattenedUploadParams;
@@ -79,10 +79,10 @@ const useOnlineSuggestions = (
   }, [] );
 
   useEffect( () => {
-    if ( isOnline === false ) {
+    if ( isConnected === false ) {
       setTimedOut( true );
     }
-  }, [isOnline, dispatch] );
+  }, [isConnected, dispatch] );
 
   useEffect( ( ) => {
     if ( onlineSuggestions !== undefined ) {

@@ -140,7 +140,7 @@ const ObsDetailsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const vision = currentObservation?.owners_identification_from_vision;
 
   const [state, dispatch] = useReducer( reducer, initialState );
@@ -165,7 +165,7 @@ const ObsDetailsContainer = ( ): Node => {
   const fetchRemoteObservationEnabled = !!(
     !remoteObsWasDeleted
     && ( !localObservation || localObservation?.wasSynced( ) )
-    && isOnline
+    && isConnected
   );
 
   const {
@@ -538,7 +538,7 @@ const ObsDetailsContainer = ( ): Node => {
       currentUser={currentUser}
       onPotentialDisagreePressed={onPotentialDisagreePressed}
       hideAddCommentSheet={hideAddCommentSheet}
-      isOnline={isOnline}
+      isConnected={isConnected}
       isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
       // saving observation in state (i.e. using observationShown)

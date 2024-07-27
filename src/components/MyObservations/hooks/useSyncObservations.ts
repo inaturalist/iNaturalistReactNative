@@ -24,7 +24,7 @@ const logger = log.extend( "useSyncObservations" );
 const { useRealm } = RealmContext;
 
 const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const loggedIn = !!currentUserId;
   const deleteQueue = useStore( state => state.deleteQueue );
   const deletionsCompletedAt = useStore( state => state.deletionsCompletedAt );
@@ -37,7 +37,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
 
-  const canSync = loggedIn && isOnline;
+  const canSync = loggedIn && isConnected;
 
   const realm = useRealm( );
 

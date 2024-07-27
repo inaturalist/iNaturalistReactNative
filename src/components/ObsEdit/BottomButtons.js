@@ -44,7 +44,7 @@ const BottomButtons = ( {
   observations,
   setCurrentObservationIndex
 }: Props ): Node => {
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
@@ -214,7 +214,7 @@ const BottomButtons = ( {
   ), [buttonPressed, loading, handlePress, t, passesTests] );
 
   const renderButtons = useCallback( ( ) => {
-    if ( !currentUser || !isOnline ) {
+    if ( !currentUser || !isConnected ) {
       return renderSaveButton( );
     }
     if ( currentObservation?._synced_at ) {
@@ -232,7 +232,7 @@ const BottomButtons = ( {
   }, [
     currentObservation,
     currentUser,
-    isOnline,
+    isConnected,
     passesEvidenceTest,
     renderSaveButton,
     renderSaveChangesButton,

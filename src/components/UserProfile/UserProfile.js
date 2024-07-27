@@ -40,7 +40,7 @@ const UserProfile = ( ): Node => {
   const { userId } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
-  const { isInternetReachable: isOnline } = useNetInfo( );
+  const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
 
   const { data: remoteUser } = useAuthenticatedQuery(
@@ -61,7 +61,7 @@ const UserProfile = ( ): Node => {
       ttl: -1
     }, optsWithAuth ),
     {
-      enabled: !!isOnline && !!currentUser
+      enabled: !!isConnected && !!currentUser
     }
   );
   let relationshipResults = null;

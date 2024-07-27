@@ -62,7 +62,7 @@ describe( "CustomTabBar", () => {
   } );
 
   it( "should display person icon when connectivity is low", async ( ) => {
-    useNetInfo.mockImplementation( ( ) => ( { isInternetReachable: false } ) );
+    useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
 
     const personIcon = screen.getByTestId( "NavButton.personIcon" );
@@ -81,7 +81,7 @@ describe( "CustomTabBar with advanced user layout", () => {
 
   beforeEach( ( ) => {
     jest.resetAllMocks();
-    useNetInfo.mockImplementation( ( ) => ( { isInternetReachable: true } ) );
+    useNetInfo.mockImplementation( ( ) => ( { isConnected: true } ) );
   } );
 
   it( "should render correctly", async () => {

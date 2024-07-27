@@ -50,7 +50,7 @@ type Props = {
   count: Object,
   filterByIconicTaxonUnknown: Function,
   hideBackButton: boolean,
-  isOnline: boolean,
+  isConnected: boolean,
   loadingStatus: boolean,
   openFiltersModal: Function,
   queryParams: Object,
@@ -71,7 +71,7 @@ const Explore = ( {
   count,
   filterByIconicTaxonUnknown,
   hideBackButton,
-  isOnline,
+  isConnected,
   loadingStatus,
   openFiltersModal,
   queryParams,
@@ -118,7 +118,7 @@ const Explore = ( {
   );
 
   const renderMainContent = ( ) => {
-    if ( !isOnline ) {
+    if ( !isConnected ) {
       return (
         <OfflineNotice
           onPress={() => refresh()}
@@ -155,7 +155,7 @@ const Explore = ( {
         {currentExploreView === "species" && (
           <SpeciesView
             count={count}
-            isOnline={isOnline}
+            isConnected={isConnected}
             queryParams={queryParams}
             updateCount={updateCount}
           />
@@ -163,7 +163,7 @@ const Explore = ( {
         {currentExploreView === "observers" && (
           <ObserversView
             count={count}
-            isOnline={isOnline}
+            isConnected={isConnected}
             queryParams={queryParams}
             updateCount={updateCount}
           />
@@ -171,7 +171,7 @@ const Explore = ( {
         {currentExploreView === "identifiers" && (
           <IdentifiersView
             count={count}
-            isOnline={isOnline}
+            isConnected={isConnected}
             queryParams={queryParams}
             updateCount={updateCount}
           />
