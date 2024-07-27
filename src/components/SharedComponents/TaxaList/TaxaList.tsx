@@ -1,9 +1,9 @@
-import { refresh } from "@react-native-community/netinfo";
+import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { ActivityIndicator, OfflineNotice } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import { FlatList } from "react-native";
-import { useIconicTaxa, useIsConnected } from "sharedHooks";
+import { useIconicTaxa } from "sharedHooks";
 
 interface Props {
   isLoading: boolean;
@@ -22,7 +22,7 @@ const TaxaList = ( {
 }: Props ) => {
   // TODO: how to use Realm with TS
   const iconicTaxa = useIconicTaxa( { reload: false } );
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
 
   let data = iconicTaxa;
   if ( taxa && taxa.length > 0 ) {
@@ -42,7 +42,7 @@ const TaxaList = ( {
     const showIfOffline = taxonQuery.length > 0 && (
       !taxa || ( taxa instanceof Array && taxa.length === 0 )
     );
-    if ( showIfOffline && !isOnline ) {
+    if ( showIfOffline && !isConnected ) {
       return (
         <View className="p-4">
           <OfflineNotice
