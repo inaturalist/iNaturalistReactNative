@@ -7,7 +7,7 @@ import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
-} from "sharedHelpers/emitUploadProgress";
+} from "sharedHelpers/emitUploadProgress.ts";
 import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
 import {
   useLocalObservations,
