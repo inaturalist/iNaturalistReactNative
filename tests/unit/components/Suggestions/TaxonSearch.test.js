@@ -26,6 +26,11 @@ const mockTaxaList = [
   factory( "RemoteTaxon" )
 ];
 
+jest.mock( "sharedHooks/useIconicTaxa", () => ( {
+  __esModule: true,
+  default: ( ) => ( mockTaxaList )
+} ) );
+
 jest.mock( "sharedHooks/useTaxonSearch", () => ( {
   __esModule: true,
   default: ( ) => ( { taxaSearchResults: mockTaxaList, isLoading: false } )
@@ -76,7 +81,6 @@ describe( "TaxonSearch", ( ) => {
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
     fireEvent.changeText( input, "Some taxon" );
-    screen.debug();
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
   } );
 
