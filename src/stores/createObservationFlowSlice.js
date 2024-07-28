@@ -66,12 +66,16 @@ const createObservationFlowSlice = ( set, get ) => ( {
   ...DEFAULT_STATE,
   deletePhotoFromObservation: uri => set( state => {
     const newObservations = [...state.observations];
-    const newObservation = newObservations[state.currentObservationIndex];
-    const index = newObservation.observationPhotos.findIndex(
-      op => ( Photo.getLocalPhotoUri( op.photo?.localFilePath ) || op.photo?.url ) === uri
-    );
-    if ( index > -1 ) {
-      newObservation.observationPhotos.splice( index, 1 );
+    let newObservation = null;
+
+    if ( newObservations.length > 0 ) {
+      newObservation = newObservations[state.currentObservationIndex];
+      const index = newObservation.observationPhotos.findIndex(
+        op => ( Photo.getLocalPhotoUri( op.photo?.localFilePath ) || op.photo?.url ) === uri
+      );
+      if ( index > -1 ) {
+        newObservation.observationPhotos.splice( index, 1 );
+      }
     }
 
     const newCameraUris = [..._.pull( state.cameraUris, uri )];
