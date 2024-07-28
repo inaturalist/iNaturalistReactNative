@@ -265,6 +265,7 @@ const SuggestionsContainer = ( ) => {
     }
 
     const suggestionAboveThreshold = _.find( sortedSuggestions, s => s.combined_score > 0.78 );
+
     if ( suggestionAboveThreshold ) {
       // make sure we're not returning the top suggestion in Other Suggestions
       const firstSuggestion = removeTopSuggestion(
@@ -277,6 +278,7 @@ const SuggestionsContainer = ( ) => {
         topSuggestionType: "above-threshold"
       };
     }
+
     if ( onlineSuggestions?.common_ancestor ) {
       return {
         ...newSuggestions,
@@ -287,7 +289,7 @@ const SuggestionsContainer = ( ) => {
 
     return {
       ...newSuggestions,
-      topSuggestionType: "none"
+      topSuggestionType: "not-confident",
     };
   }, [
     onlineSuggestions?.common_ancestor,

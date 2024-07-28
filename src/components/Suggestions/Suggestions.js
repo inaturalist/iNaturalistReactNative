@@ -132,7 +132,7 @@ const Suggestions = ( {
     if ( isLoading ) { return null; }
     if ( !item && !usingOfflineSuggestions ) {
       return (
-        <Body1 className="mx-2">
+        <Body1 className="mx-2 p-4 text-center text-xl">
           {t( "We-are-not-confident-enough-to-make-a-top-ID-suggestion" )}
         </Body1>
       );
@@ -158,7 +158,7 @@ const Suggestions = ( {
       title: t( "TOP-ID-SUGGESTION" ),
       data: topSuggestion
         ? [topSuggestion]
-        : [],
+        : [null],
       renderItem: renderTopSuggestion
     }, {
       title: t( "OTHER-SUGGESTIONS" ),
