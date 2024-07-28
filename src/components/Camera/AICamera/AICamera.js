@@ -14,7 +14,7 @@ import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores";
+import { convertOfflineScoreToConfidence } from "sharedHelpers/convertScores.ts";
 import { useDebugMode, useTranslation } from "sharedHooks";
 
 import {
