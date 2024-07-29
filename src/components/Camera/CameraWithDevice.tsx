@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import PermissionGateContainer, {
-  READ_WRITE_MEDIA_PERMISSIONS
+  WRITE_MEDIA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer.tsx";
 import { View } from "components/styledComponents";
 import React, {
@@ -166,7 +166,7 @@ const CameraWithDevice = ( {
       testID="CameraWithDevice"
     >
       <PermissionGateContainer
-        permissions={READ_WRITE_MEDIA_PERMISSIONS}
+        permissions={WRITE_MEDIA_PERMISSIONS}
         title={t( "Save-photos-to-your-gallery" )}
         titleDenied={t( "Save-photos-to-your-gallery" )}
         body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery" )}

@@ -3,8 +3,13 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
 import {
+  permissionResultFromMultiple,
+  READ_WRITE_MEDIA_PERMISSIONS
+} from "components/SharedComponents/PermissionGateContainer.tsx";
+import {
   useCallback
 } from "react";
+import { checkMultiple, RESULTS } from "react-native-permissions";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { log } from "sharedHelpers/logger";
@@ -32,15 +37,28 @@ export async function savePhotosToCameraGallery(
   uris: [string],
   onEachSuccess: Function
 ) {
-  // $FlowIgnore
+  const readWritePermissionResult = permissionResultFromMultiple(
+    await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS )
+  );
   uris.reduce(
     async ( memo, uri ) => {
       // logger.info( "saving rotated original camera photo: ", uri );
       try {
-        const savedPhotoUri = await CameraRoll.save( uri, {
-          type: "photo",
-          album: "iNaturalist Next"
-        } );
+        let savedPhotoUri;
+        // One quirk of CameraRoll is that if you want to write ton album, you
+        // need readwrite permission, but we don't want to ask for that here
+        // b/c it might come immediately after asking for *add only*
+        // permission, so we're checking to see if we have that permission
+        // and skipping the album if we don't
+        if ( readWritePermissionResult === RESULTS.GRANTED ) {
+          savedPhotoUri = await CameraRoll.save( uri, {
+            type: "photo",
+            album: "iNaturalist Next"
+          } );
+        } else {
+          savedPhotoUri = await CameraRoll.save( uri );
+        }
+
         // logger.info( "saved to camera roll: ", savedPhotoUri );
         // Save these camera roll URIs, so later on observation editor can update
         // the EXIF metadata of these photos, once we retrieve a location.
@@ -105,7 +123,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
         local: true
       } );
     setObservations( [newObservation] );
-    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
+    if ( addPhotoPermissionResult !== RESULTS.GRANTED ) return Promise.resolve( );
     return savePhotosToCameraGallery( cameraUris, addCameraRollUri );
   }, [
     addCameraRollUri,
