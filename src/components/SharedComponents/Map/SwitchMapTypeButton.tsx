@@ -1,10 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import React, {
   useEffect
 } from "react";
 import { useTranslation } from "sharedHooks";
+import { zustandStorage } from "stores/useStore";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -27,18 +27,17 @@ const SwitchMapTypeButton = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   useEffect( () => {
-    AsyncStorage.getItem( "mapType" ).then( value => {
-      if ( value && !mapType ) {
-        // Load last saved map type (unless explicitly overridden by the parent
-        // of the Map component)
-        setCurrentMapType( value );
-      }
-    } );
+    const value = zustandStorage.getItem( "mapType" );
+    if ( value && !mapType ) {
+      // Load last saved map type (unless explicitly overridden by the parent
+      // of the Map component)
+      setCurrentMapType( value );
+    }
   }, [mapType, setCurrentMapType] );
 
-  const changeMapType = async ( newMapType: string ) => {
+  const changeMapType = ( newMapType: string ) => {
     setCurrentMapType( newMapType );
-    await AsyncStorage.setItem( "mapType", newMapType );
+    zustandStorage.setItem( "mapType", newMapType );
   };
 
   return showSwitchMapTypeButton && (

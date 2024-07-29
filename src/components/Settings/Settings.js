@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import fetchAvailableLocales from "api/translations";
@@ -25,7 +24,7 @@ import {
   useTranslation,
   useUserMe
 } from "sharedHooks";
-import useStore from "stores/useStore";
+import useStore, { zustandStorage } from "stores/useStore";
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
@@ -88,20 +87,20 @@ const Settings = ( ) => {
 
   useEffect( () => {
     async function fetchLocales() {
-      const savedLocale = await AsyncStorage.getItem( "currentLocale" );
+      const savedLocale = zustandStorage.getItem( "currentLocale" );
       if ( savedLocale ) {
         setCurrentLocale( savedLocale );
       }
 
       // Whenever possible, save latest available locales from server
-      const currentLocales = await AsyncStorage.getItem( "availableLocales" );
+      const currentLocales = zustandStorage.getItem( "availableLocales" );
 
       setAvailableLocales( currentLocales
         ? JSON.parse( currentLocales )
         : [] );
 
       const locales = await fetchAvailableLocales();
-      await AsyncStorage.setItem( "availableLocales", JSON.stringify( locales ) );
+      zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
       setAvailableLocales( locales );
     }
     fetchLocales();
@@ -211,7 +210,7 @@ const Settings = ( ) => {
             confirm={newLocale => {
               setLocaleSheetOpen( false );
               // Remember the new locale locally
-              AsyncStorage.setItem( "currentLocale", newLocale );
+              zustandStorage.setItem( "currentLocale", newLocale );
               i18n.changeLanguage( newLocale );
 
               // Also try and set the locale remotely
