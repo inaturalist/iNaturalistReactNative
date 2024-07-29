@@ -22,7 +22,8 @@ import React, { useCallback, useMemo, useState } from "react";
 import { Dimensions, ViewStyle } from "react-native";
 import User from "realmModels/User";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import { useCurrentUser, useDebugMode, useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
+import { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import { log } from "../../react-native-logs.config";
@@ -51,7 +52,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
-  const { isDebug } = useDebugMode( );
+  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
 
   const [showConfirm, setShowConfirm] = useState( false );
 
