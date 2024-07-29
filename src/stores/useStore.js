@@ -9,7 +9,7 @@ import createRootExploreSlice from "./createRootExploreSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
 import createUploadObservationsSlice from "./createUploadObservationsSlice";
 
-const storage = new MMKV();
+export const storage = new MMKV();
 
 const zustandStorage = {
   setItem: ( name, value ) => storage.set( name, value ),

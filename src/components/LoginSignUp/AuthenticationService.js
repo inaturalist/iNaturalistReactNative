@@ -2,6 +2,13 @@
 import { getUserAgent } from "api/userAgent";
 import { fetchUserMe } from "api/users";
 import { create } from "apisauce";
+import {
+  computerVisionPath,
+  galleryPhotosPath,
+  photoUploadPath,
+  rotatedOriginalPhotosPath,
+  soundUploadPath
+} from "appConstants/paths.ts";
 import axios from "axios";
 import i18next from "i18next";
 import rs from "jsrsasign";
@@ -13,9 +20,11 @@ import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
+import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { installID } from "sharedHelpers/userData.ts";
 import { sleep, unlink } from "sharedHelpers/util";
+import { storage } from "stores/useStore";
 
 import { log, logFilePath } from "../../../react-native-logs.config";
 
@@ -116,27 +125,23 @@ const signOut = async (
     queryClient: null
   }
 ) => {
-  logger.debug( "signOut" );
   if ( options.clearRealm ) {
     if ( options.realm ) {
       // Delete all the records in the realm db, including the ones accessible
       // through the copy of realm provided by RealmProvider
       options.realm.beginTransaction();
       try {
-        logger.debug( "signOut, deleting all records in realm" );
         // $FlowFixMe
         options.realm.deleteAll( );
         // $FlowFixMe
         options.realm.commitTransaction( );
       } catch ( realmError ) {
-        logger.debug( "signOut, failed to delete all records in realm" );
         // $FlowFixMe
         options.realm.cancelTransaction( );
         // If we failed to wipe all the data in realm, delete the realm file.
         // Note that deleting the realm file *all* the time seems to cause
         // problems in Android when the app is force quit, as in sometimes it
         // seems to just delete the file even if you didn't sign out
-        logger.debug( "signOut, deleting realm" );
         Realm.deleteFile( realmConfig );
       }
     }
@@ -153,6 +158,14 @@ const signOut = async (
   await deleteSensitiveItem( "username" );
   await deleteSensitiveItem( "accessToken" );
   await unlink( logFilePath );
+  // clear all directories containing user generated data within Documents Directory
+  await removeAllFilesFromDirectory( computerVisionPath );
+  await removeAllFilesFromDirectory( galleryPhotosPath );
+  await removeAllFilesFromDirectory( photoUploadPath );
+  await removeAllFilesFromDirectory( rotatedOriginalPhotosPath );
+  await removeAllFilesFromDirectory( soundUploadPath );
+  // delete all keys from mmkv
+  storage.clearAll( );
 };
 
 /**
