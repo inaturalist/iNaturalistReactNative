@@ -20,9 +20,9 @@ import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
+import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { installID } from "sharedHelpers/userData.ts";
 import { sleep, unlink } from "sharedHelpers/util";
 import { storage } from "stores/useStore";
 

@@ -6,7 +6,6 @@ import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import Observation from "realmModels/Observation";
-import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation } from "sharedHooks";
 import {
   AUTOMATIC_SYNC_IN_PROGRESS,
@@ -18,8 +17,6 @@ import useStore from "stores/useStore";
 
 import syncRemoteDeletedObservations from "../helpers/syncRemoteDeletedObservations";
 import syncRemoteObservations from "../helpers/syncRemoteObservations";
-
-const logger = log.extend( "useSyncObservations" );
 
 const { useRealm } = RealmContext;
 
@@ -48,7 +45,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   const handleRemoteDeletion = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteRemoteObservation( params, optsWithAuth ),
     {
-      onSuccess: ( ) => logger.debug( "Remote observation deleted" ),
+      onSuccess: ( ) => console.log( "Remote observation deleted" ),
       onError: deleteObservationError => {
         setDeletionError( deleteObservationError?.message );
         throw deleteObservationError;
@@ -137,13 +134,10 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
 
   const syncAutomatically = useCallback( async ( ) => {
     if ( canSync ) {
-      logger.debug( "sync #1: syncing remotely deleted observations" );
       await fetchRemoteDeletions( );
     }
-    logger.debug( "sync #2: handling locally deleted observations" );
     await deleteLocalObservations( );
     if ( canSync ) {
-      logger.debug( "sync #3: fetching remote observations" );
       await fetchRemoteObservations( );
     }
     completeSync( );
@@ -157,20 +151,16 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
 
   const syncManually = useCallback( async ( ) => {
     if ( canSync ) {
-      logger.debug( "sync #1: syncing remotely deleted observations" );
       await fetchRemoteDeletions( );
     }
-    logger.debug( "sync #2: handling locally deleted observations" );
     await deleteLocalObservations( );
     if ( canSync ) {
-      logger.debug( "sync #3: fetching remote observations" );
       await fetchRemoteObservations( );
     }
     resetSyncToolbar( );
     // we want to show user error messages if upload fails from user
     // being offline, so we're not checking internet connectivity here
     if ( loggedIn ) {
-      logger.debug( "sync #4: uploading all unsynced observations" );
       await uploadObservations( );
     }
     completeSync( );

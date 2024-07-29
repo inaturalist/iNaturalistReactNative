@@ -4,7 +4,7 @@ import { create } from "apisauce";
 import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
 import Config from "react-native-config";
 import { transportFunctionType } from "react-native-logs";
-import { installID } from "sharedHelpers/userData.ts";
+import { installID } from "sharedHelpers/persistedInstallationId.ts";
 
 const API_HOST: string
     = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
