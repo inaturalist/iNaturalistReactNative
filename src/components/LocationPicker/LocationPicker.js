@@ -20,7 +20,7 @@ import LoadingIndicator from "./LoadingIndicator";
 import LocationSearch from "./LocationSearch";
 
 export const DESIRED_LOCATION_ACCURACY = 100;
-export const REQUIRED_LOCATION_ACCURACY = 500000;
+export const REQUIRED_LOCATION_ACCURACY = 500_000;
 
 type Props = {
   accuracy: number,
@@ -61,8 +61,6 @@ const LocationPicker = ( {
 
   // prevent initial map render from resetting the coordinates and locationName
   const [initialMapRender, setInitialMapRender] = useState( true );
-
-  console.log( "[DEBUG LocationPicker.js] rendering" );
 
   return (
     <KeyboardDismissableView>
