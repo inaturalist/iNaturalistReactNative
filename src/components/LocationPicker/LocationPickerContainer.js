@@ -12,14 +12,15 @@ import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useStore from "stores/useStore";
 
-import LocationPicker from "./LocationPicker";
+import LocationPicker, {
+  DESIRED_LOCATION_ACCURACY,
+  REQUIRED_LOCATION_ACCURACY
+} from "./LocationPicker";
 
 const { width } = Dimensions.get( "screen" );
 
 const DELTA = 0.02;
 const CROSSHAIRLENGTH = 254;
-export const DESIRED_LOCATION_ACCURACY = 100;
-export const REQUIRED_LOCATION_ACCURACY = 500000;
 
 const estimatedAccuracy = longitudeDelta => longitudeDelta * 1000 * (
   ( CROSSHAIRLENGTH / width ) * 100 );
