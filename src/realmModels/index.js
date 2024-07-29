@@ -4,7 +4,6 @@ import Application from "./Application";
 import Comment from "./Comment";
 import Flag from "./Flag";
 import Identification from "./Identification";
-import LocalPreferences from "./LocalPreferences";
 import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
@@ -20,7 +19,6 @@ export default {
     Comment,
     Flag,
     Identification,
-    LocalPreferences,
     Observation,
     ObservationPhoto,
     ObservationSound,
@@ -30,21 +28,13 @@ export default {
     User,
     Vote
   ],
-  schemaVersion: 53,
+  schemaVersion: 54,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {
     resolveEmbeddedConstraints: true
   },
   migration: ( oldRealm, newRealm ) => {
-    if ( oldRealm.schemaVersion < 52 ) {
-      const oldPrefs = oldRealm.objects( "LocalPreferences" );
-      const newPrefs = newRealm.objects( "LocalPreferences" );
-      oldPrefs.keys( ).forEach( objectIndex => {
-        const newObsSound = newPrefs[objectIndex];
-        delete newObsSound.explore_location_permission_shown;
-      } );
-    }
     if ( oldRealm.schemaVersion < 51 ) {
       // const oldIdentifications = oldRealm.objects( "Identification" );
       // const newIdentifications = newRealm.objects( "Identification" );
