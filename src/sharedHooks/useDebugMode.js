@@ -1,23 +1,24 @@
 // @flow
 
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { zustandStorage } from "stores/useStore";
 
 const useDebugMode = ( ): { isDebug: boolean, toggleDebug: Function } => {
-  const {
-    getItem: fetchDebug,
-    setItem: saveDebug
-  } = useAsyncStorage( "debugMode" );
   const [isDebug, setDebug] = useState( false );
 
-  fetchDebug( ).then( result => {
-    setDebug( result === "true" );
-  } );
+  useEffect( ( ) => {
+    const readDebugModeFromStorage = ( ) => {
+      const storedDebugMode = zustandStorage.getItem( "debugMode" );
+      setDebug( storedDebugMode === "true" );
+    };
+
+    readDebugModeFromStorage( );
+  }, [] );
 
   const toggleDebug = useCallback( ( ) => {
-    saveDebug( ( !isDebug ).toString( ) );
+    zustandStorage.setItem( "debugMode", ( !isDebug ).toString( ) );
     setDebug( !isDebug );
-  }, [isDebug, saveDebug] );
+  }, [isDebug] );
 
   return {
     isDebug,

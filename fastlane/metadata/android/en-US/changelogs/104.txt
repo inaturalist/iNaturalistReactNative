@@ -1,0 +1,12 @@
+NEW
+* Button to remove ID on ObsEdit
+
+UPDATED
+* Check connectivity using an iNat domain
+* Separate permission to add photos from permission to read photos
+* Delete the documents directory on sign out to help control disk usage
+
+FIXED
+* Respect common name pref for disagreement text
+* ObsEdit should not show red triangle for accuracies under 500km
+* Don't use stale coordinates

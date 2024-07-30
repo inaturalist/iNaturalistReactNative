@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from "react";
 import { clearWatch, watchPosition } from "../sharedHelpers/geolocationWrapper";
 
 export const TARGET_POSITIONAL_ACCURACY = 10;
+const MAX_POSITION_AGE_MS = 60_000;
 
 interface UserLocation {
   latitude: number,
@@ -39,6 +40,8 @@ const useWatchPosition = ( options: {
   const startWatch = ( ) => {
     setIsFetchingLocation( true );
     const success = ( position: GeolocationResponse ) => {
+      const age = Date.now() - position.timestamp;
+      if ( age > MAX_POSITION_AGE_MS ) return;
       setCurrentPosition( position );
     };
 

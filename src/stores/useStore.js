@@ -9,9 +9,9 @@ import createRootExploreSlice from "./createRootExploreSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
 import createUploadObservationsSlice from "./createUploadObservationsSlice";
 
-const storage = new MMKV();
+export const storage = new MMKV( );
 
-const zustandStorage = {
+export const zustandStorage = {
   setItem: ( name, value ) => storage.set( name, value ),
   getItem: name => {
     const value = storage.getString( name );

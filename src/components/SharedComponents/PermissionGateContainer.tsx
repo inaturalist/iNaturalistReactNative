@@ -1,7 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import Modal from "components/SharedComponents/Modal.tsx";
 import _ from "lodash";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  JSX,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useState
+} from "react";
 import { Platform } from "react-native";
 import {
   AndroidPermission,
@@ -38,6 +44,15 @@ if ( usesAndroid10Permissions ) {
   ];
 }
 
+// TODO does this really work for Android above 10?
+let androidWritePermissions: AndroidPermission[] = [];
+if ( usesAndroid10Permissions ) {
+  androidWritePermissions = [
+    ...androidWritePermissions,
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+  ];
+}
+
 const androidCameraPermissions = usesAndroid10Permissions
   ? [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
   : [PERMISSIONS.ANDROID.CAMERA];
@@ -54,16 +69,19 @@ export const READ_WRITE_MEDIA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.PHOTO_LIBRARY]
   : androidReadWritePermissions;
 
+export const WRITE_MEDIA_PERMISSIONS = Platform.OS === "ios"
+  ? [PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
+  : androidWritePermissions;
+
 export const LOCATION_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]
   : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
 
-type Props = {
+interface Props extends PropsWithChildren {
   blockedPrompt?: string;
   body?: string;
   body2?: string;
   buttonText?: string;
-  children?: React.ReactNode,
   icon: string;
   image?: number;
   onModalHide?: () => void;
@@ -76,7 +94,7 @@ type Props = {
   title?: string;
   titleDenied?: string;
   withoutNavigation?: boolean;
-};
+}
 
 interface MultiResult {
   [permission: string]: PermissionStatus;
@@ -125,7 +143,7 @@ const PermissionGateContainer = ( {
   title,
   titleDenied,
   withoutNavigation
-}: Props ) => {
+}: Props ): JSX.Element | null => {
   const [result, setResult] = useState<PermissionStatus | null>( null );
   const [modalShown, setModalShown] = useState( false );
 
