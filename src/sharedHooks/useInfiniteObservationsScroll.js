@@ -61,9 +61,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     },
     initialPageParam: 0,
     getNextPageParam: lastPage => last( lastPage )?.id,
-    // allow a user to see the Explore screen Observations
-    // content while logged out
-    enabled: !!isConnected && ( !!currentUser || upsert === false )
+    enabled: !!( isConnected && currentUser )
   } );
 
   useEffect( ( ) => {
