@@ -9,7 +9,6 @@ const useDebugMode = ( ): { isDebug: boolean, toggleDebug: Function } => {
   useEffect( ( ) => {
     const readDebugModeFromStorage = ( ) => {
       const storedDebugMode = zustandStorage.getItem( "debugMode" );
-      console.log( storedDebugMode, "stored debug mode" );
       setDebug( storedDebugMode === "true" );
     };
 
