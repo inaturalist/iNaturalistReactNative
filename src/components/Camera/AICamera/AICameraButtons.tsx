@@ -78,48 +78,58 @@ const AICameraButtons = ( {
     );
   }
   return (
-    <View className="bottom-10 absolute right-5 left-5">
-      <View className="flex-row justify-end pb-[30px]">
-        <Zoom
-          zoomTextValue={zoomTextValue}
-          changeZoom={changeZoom}
-          showZoomButton={showZoomButton}
-          rotatableAnimatedStyle={rotatableAnimatedStyle}
-        />
+    <View className="bottom-10 absolute right-5 left-5" pointerEvents="box-none">
+      <View
+        className="absolute left-0 bottom-[17px] h-full justify-end flex gap-y-9"
+        pointerEvents="box-none"
+      >
+        <View><Close /></View>
       </View>
-      <AIDebugButton
-        confidenceThreshold={confidenceThreshold}
-        setConfidenceThreshold={setConfidenceThreshold}
-        fps={fps}
-        setFPS={setFPS}
-        numStoredResults={numStoredResults}
-        setNumStoredResults={setNumStoredResults}
-        cropRatio={cropRatio}
-        setCropRatio={setCropRatio}
-        // TODO: The following are just to get accessibility tests to pass...
-        // without making anything truly accessible. The test seems to think
-        // AIDebugButton is itself not accessible, but it's really
-        // complaining about the sliders within. If the sliders make it into
-        // production, they'll need to be made to pass that test.
-        accessibilityRole="adjustable"
-        accessibilityValue={{ min: 0, max: 100, now: 50 }}
-      />
-      <View className="flex-row justify-end pb-[20px]">
-        <Flash
-          toggleFlash={toggleFlash}
-          hasFlash={hasFlash}
-          takePhotoOptions={takePhotoOptions}
-          rotatableAnimatedStyle={rotatableAnimatedStyle}
+      <View
+        className="absolute right-0 bottom-[17px] h-full justify-end flex gap-y-9"
+        pointerEvents="box-none"
+      >
+        <AIDebugButton
+          confidenceThreshold={confidenceThreshold}
+          setConfidenceThreshold={setConfidenceThreshold}
+          fps={fps}
+          setFPS={setFPS}
+          numStoredResults={numStoredResults}
+          setNumStoredResults={setNumStoredResults}
+          cropRatio={cropRatio}
+          setCropRatio={setCropRatio}
+          // TODO: The following are just to get accessibility tests to pass...
+          // without making anything truly accessible. The test seems to think
+          // AIDebugButton is itself not accessible, but it's really
+          // complaining about the sliders within. If the sliders make it into
+          // production, they'll need to be made to pass that test.
+          accessibilityRole="adjustable"
+          accessibilityValue={{ min: 0, max: 100, now: 50 }}
         />
+        <View>
+          <Zoom
+            zoomTextValue={zoomTextValue}
+            changeZoom={changeZoom}
+            showZoomButton={showZoomButton}
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+          />
+        </View>
+        <View>
+          <Flash
+            toggleFlash={toggleFlash}
+            hasFlash={hasFlash}
+            takePhotoOptions={takePhotoOptions}
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+          />
+        </View>
+        <View><CameraFlip flipCamera={flipCamera} /></View>
       </View>
-      <View className="flex-row justify-between items-center">
-        <Close />
+      <View className="flex-row justify-center items-center w-full" pointerEvents="box-none">
         <TakePhoto
           disabled={!modelLoaded || takingPhoto}
           takePhoto={takePhoto}
           showPrediction={showPrediction}
         />
-        <CameraFlip flipCamera={flipCamera} />
       </View>
     </View>
   );
