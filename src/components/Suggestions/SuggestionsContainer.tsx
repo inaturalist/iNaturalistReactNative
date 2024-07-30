@@ -289,7 +289,7 @@ const SuggestionsContainer = ( ) => {
 
     return {
       ...newSuggestions,
-      topSuggestionType: "not-confident",
+      topSuggestionType: "not-confident"
     };
   }, [
     onlineSuggestions?.common_ancestor,
