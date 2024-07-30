@@ -11,7 +11,7 @@ import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
   count: Object,
-  isOnline: boolean,
+  isConnected: boolean,
   queryParams: Object,
   updateCount: Function
 };
@@ -20,7 +20,7 @@ const LIST_STYLE = { paddingTop: 44 };
 
 const IdentifiersView = ( {
   count,
-  isOnline,
+  isConnected,
   queryParams,
   updateCount
 }: Props ): Node => {
@@ -66,7 +66,7 @@ const IdentifiersView = ( {
       fetchNextPage={fetchNextPage}
       hideLoadingWheel={!isFetchingNextPage}
       isFetchingNextPage={isFetchingNextPage}
-      isOnline={isOnline}
+      isConnected={isConnected}
       keyExtractor={item => item.user.id}
       renderItem={renderItem}
       renderItemSeparator={renderItemSeparator}

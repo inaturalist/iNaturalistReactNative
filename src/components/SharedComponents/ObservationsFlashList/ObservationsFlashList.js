@@ -25,7 +25,7 @@ type Props = {
   handleScroll?: Function,
   hideLoadingWheel: boolean,
   isFetchingNextPage?: boolean,
-  isOnline: boolean,
+  isConnected: boolean,
   layout: "list" | "grid",
   onEndReached: Function,
   renderHeader?: Function,
@@ -45,7 +45,7 @@ const ObservationsFlashList = ( {
   handleScroll,
   hideLoadingWheel,
   isFetchingNextPage,
-  isOnline,
+  isConnected,
   layout,
   onEndReached,
   renderHeader,
@@ -105,10 +105,10 @@ const ObservationsFlashList = ( {
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={hideLoadingWheel}
       layout={layout}
-      isOnline={isOnline}
+      isConnected={isConnected}
       explore={explore}
     />
-  ), [hideLoadingWheel, layout, isOnline, explore] );
+  ), [hideLoadingWheel, layout, isConnected, explore] );
 
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return contentContainerStyleProp; }

@@ -50,7 +50,7 @@ type Props = {
   currentTabId: string,
   currentUser: Object,
   hideAddCommentSheet: Function,
-  isOnline: boolean,
+  isConnected: boolean,
   isRefetching: boolean,
   navToSuggestions: Function,
   observation: Object,
@@ -84,7 +84,7 @@ const ObsDetails = ( {
   currentTabId,
   currentUser,
   hideAddCommentSheet,
-  isOnline,
+  isConnected,
   isRefetching,
   navToSuggestions,
   observation,
@@ -127,7 +127,7 @@ const ObsDetails = ( {
     <HideView show={showActivityTab}>
       <ActivityTab
         activityItems={activityItems}
-        isOnline={isOnline}
+        isConnected={isConnected}
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}
@@ -161,7 +161,7 @@ const ObsDetails = ( {
         <View className="mr-8">
           <ObsDetailsOverview
             belongsToCurrentUser={belongsToCurrentUser}
-            isOnline={isOnline}
+            isConnected={isConnected}
             isRefetching={isRefetching}
             observation={observation}
           />
@@ -229,7 +229,7 @@ const ObsDetails = ( {
         </View>
         <ObsDetailsOverview
           belongsToCurrentUser={belongsToCurrentUser}
-          isOnline={isOnline}
+          isConnected={isConnected}
           isRefetching={isRefetching}
           observation={observation}
         />

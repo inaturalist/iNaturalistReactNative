@@ -9,7 +9,6 @@ import Observation from "realmModels/Observation";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
-import { log } from "sharedHelpers/logger";
 import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
 import {
   useLocalObservations,
@@ -22,8 +21,6 @@ import {
   UPLOAD_PENDING
 } from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
-
-const logger = log.extend( "useUploadObservations" );
 
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
 const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
@@ -206,7 +203,6 @@ export default useUploadObservations = canUpload => {
 
   const startUpload = useCallback( ( ) => {
     if ( canUpload ) {
-      logger.debug( "sync #4.2: starting upload" );
       setUploadStatus( UPLOAD_IN_PROGRESS );
     } else {
       setUploadStatus( UPLOAD_PENDING );
@@ -232,7 +228,6 @@ export default useUploadObservations = canUpload => {
   ] );
 
   const uploadObservations = useCallback( async ( ) => {
-    logger.debug( "sync #4.1: creating upload queue" );
     createUploadQueue( );
   }, [
     createUploadQueue

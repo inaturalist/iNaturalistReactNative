@@ -67,8 +67,7 @@ describe( "ExploreContext", ( ) => {
           type: EXPLORE_ACTION.CHANGE_TAXON,
           taxon: null
         } );
-        // expect( reducedState ).not.toHaveProperty( "taxon_id" );
-        expect( reducedState.taxon_id ).toBeUndefined( );
+        expect( reducedState.taxon_id ).toBeNull( );
       } );
     } );
   } );

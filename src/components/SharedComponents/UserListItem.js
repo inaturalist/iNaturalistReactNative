@@ -14,14 +14,16 @@ type Props = {
   item: Object,
   countText: string,
   onPress?: Function,
-  accessibilityLabel?: string
+  accessibilityLabel?: string,
+  pressable?: boolean
 };
 
 const UserListItem = ( {
   item,
   countText,
   onPress: onPressProp,
-  accessibilityLabel: accessibilityLabelProp
+  accessibilityLabel: accessibilityLabelProp,
+  pressable = true
 }: Props ): Node => {
   const { t } = useTranslation( );
   const user = item?.user;
@@ -36,20 +38,31 @@ const UserListItem = ( {
     user?.id
   ] );
 
-  return (
-    <Pressable
-      accessibilityRole={
-        onPressProp
-          ? "button"
-          : "link"
-      }
-      className="flex-row items-center mx-3 my-2"
-      testID={`UserProfile.${user?.id}`}
-      onPress={onPress}
-      accessibilityLabel={accessibilityLabelProp || t( "Navigates-to-user-profile" )}
-      accessibilityState={{ disabled: false }}
-    >
+  const UserListItemContainer = pressable
+    ? ( { children } ) => (
+      <Pressable
+        accessibilityRole={
+          onPressProp
+            ? "button"
+            : "link"
+        }
+        className="flex-row items-center mx-3 my-2"
+        testID={`UserProfile.${user?.id}`}
+        onPress={onPress}
+        accessibilityLabel={accessibilityLabelProp || t( "Navigates-to-user-profile" )}
+        accessibilityState={{ disabled: false }}
+      >
+        { children }
+      </Pressable>
+    )
+    : ( { children } ) => (
+      <View className="flex-row items-center mx-3 my-2" testID={`UserProfile.${user?.id}`}>
+        { children }
+      </View>
+    );
 
+  return (
+    <UserListItemContainer>
       {user?.icon_url
         ? <UserIcon uri={User.uri( user )} medium />
         : (
@@ -64,7 +77,7 @@ const UserListItem = ( {
           {countText}
         </List2>
       </View>
-    </Pressable>
+    </UserListItemContainer>
   );
 };
 

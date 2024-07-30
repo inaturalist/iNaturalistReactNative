@@ -43,13 +43,13 @@ const titleDescription = option => {
 type Props = {
   checkTest: Function,
   ifMajorityAgree: Function,
-  isOnline?: boolean,
+  isConnected?: boolean,
   loadingAgree: boolean,
   loadingDisagree: boolean,
   loadingMetric: string,
   qualityGrade: string,
   qualityMetrics: Object,
-  recheckIsOnline: Function,
+  recheckisConnected: Function,
   removeMetricVote: Function,
   removeNeedsIDVote: Function,
   setMetricVote: Function,
@@ -59,13 +59,13 @@ type Props = {
 const DataQualityAssessment = ( {
   checkTest,
   ifMajorityAgree,
-  isOnline,
+  isConnected,
   loadingAgree,
   loadingDisagree,
   loadingMetric,
   qualityGrade,
   qualityMetrics,
-  recheckIsOnline,
+  recheckisConnected,
   removeMetricVote,
   removeNeedsIDVote,
   setMetricVote,
@@ -113,10 +113,10 @@ const DataQualityAssessment = ( {
     );
   };
 
-  if ( isOnline === false ) {
+  if ( isConnected === false ) {
     return (
       <ViewWrapper>
-        <OfflineNotice onPress={( ) => recheckIsOnline( )} />
+        <OfflineNotice onPress={( ) => recheckisConnected( )} />
       </ViewWrapper>
     );
   }

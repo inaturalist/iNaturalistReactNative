@@ -16,7 +16,7 @@ type Props = {
   isError?: boolean,
   isFetching?: boolean,
   isInitialLoading?: boolean,
-  isOnline: boolean,
+  isConnected: boolean,
   onEndReached: Function,
   reload: Function
 };
@@ -26,7 +26,7 @@ const NotificationsList = ( {
   isError,
   isFetching,
   isInitialLoading,
-  isOnline,
+  isConnected,
   onEndReached,
   reload
 }: Props ): Node => {
@@ -43,9 +43,9 @@ const NotificationsList = ( {
     <InfiniteScrollLoadingWheel
       explore={false}
       hideLoadingWheel={!isFetching || data?.length === 0}
-      isOnline={isOnline}
+      isConnected={isConnected}
     />
-  ), [isFetching, isOnline, data.length] );
+  ), [isFetching, isConnected, data.length] );
 
   const renderEmptyComponent = useCallback( ( ) => {
     if ( isInitialLoading ) {
@@ -56,7 +56,7 @@ const NotificationsList = ( {
       );
     }
 
-    if ( !isOnline ) {
+    if ( !isConnected ) {
       return <OfflineNotice onPress={reload} />;
     }
 
@@ -80,7 +80,7 @@ const NotificationsList = ( {
     user,
     isError,
     isInitialLoading,
-    isOnline,
+    isConnected,
     reload,
     t
   ] );

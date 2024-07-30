@@ -51,6 +51,10 @@ const IdentificationSection = ( {
     || identTaxon.isIconic
     || identTaxon.name === "Life";
 
+  const removeTaxon = useCallback( ( ) => {
+    updateObservationKeys( { taxon: undefined } );
+  }, [updateObservationKeys] );
+
   const navToSuggestions = useCallback( ( ) => {
     if ( hasPhotos ) {
       navigation.push( "Suggestions", {
@@ -148,12 +152,14 @@ const IdentificationSection = ( {
           <TaxonResult
             accessibilityLabel={t( "Edits-this-observations-taxon" )}
             asListItem={false}
-            handlePress={navToSuggestions}
-            hideNavButtons
-            taxon={identTaxon}
+            handleTaxonOrEditPress={navToSuggestions}
+            handleRemovePress={removeTaxon}
             hideInfoButton
+            hideNavButtons
             showCheckmark={false}
             showEditButton
+            showRemoveButton
+            taxon={identTaxon}
           />
         </View>
       )}

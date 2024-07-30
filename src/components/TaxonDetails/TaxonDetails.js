@@ -33,7 +33,8 @@ import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import {
-  useAuthenticatedQuery, useCurrentUser, useTranslation, useUserMe
+  useAuthenticatedQuery, useCurrentUser, useLastScreen,
+  useTranslation, useUserMe
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -67,9 +68,7 @@ const TaxonDetails = ( ): Node => {
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
   const history = navState?.routes.map( r => r.name );
-  // remove TaxonDetails since we know we're on that screen currently
-  history?.pop( );
-  const lastScreen = _.last( history );
+  const lastScreen = useLastScreen( );
   const fromObsDetails = _.includes( history, "ObsDetails" );
   const prevScreenSuggestions = lastScreen === "Suggestions";
   const prevScreenTaxonSearch = lastScreen === "TaxonSearch";

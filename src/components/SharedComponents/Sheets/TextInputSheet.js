@@ -8,6 +8,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
+import { Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -48,10 +49,16 @@ const TextInputSheet = ( {
     textAlignVertical: "top"
   } ), [theme] );
 
+  const dismissKeyboardAndClose = ( ) => {
+    Keyboard.dismiss( );
+    handleClose( );
+  };
+
   return (
     <BottomSheet
-      handleClose={handleClose}
+      handleClose={dismissKeyboardAndClose}
       headerText={headerText}
+      keyboardShouldPersistTaps="always"
     >
       <View className="p-5">
         <View className="border rounded-lg border-lightGray p-3 pt-1">
@@ -89,7 +96,7 @@ const TextInputSheet = ( {
           text={buttonText || t( "DONE" )}
           onPress={() => {
             confirm( input );
-            handleClose();
+            dismissKeyboardAndClose( );
           }}
         />
       </View>

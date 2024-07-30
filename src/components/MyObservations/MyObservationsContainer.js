@@ -1,5 +1,8 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -12,7 +15,6 @@ import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
-  useIsConnected,
   useLocalObservations,
   useObservationsUpdates,
   useStoredLayout,
@@ -56,10 +58,10 @@ const MyObservationsContainer = ( ): Node => {
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const currentUserId = currentUser?.id;
-  const canUpload = currentUser && isOnline;
+  const canUpload = currentUser && isConnected;
 
   const { uploadObservations } = useUploadObservations( canUpload );
   useSyncObservations(
@@ -90,14 +92,14 @@ const MyObservationsContainer = ( ): Node => {
   };
 
   const confirmInternetConnection = useCallback( ( ) => {
-    if ( !isOnline ) {
+    if ( !isConnected ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
         t( "Please-try-again-when-you-are-connected-to-the-internet" )
       );
     }
-    return isOnline;
-  }, [t, isOnline] );
+    return isConnected;
+  }, [t, isConnected] );
 
   const confirmLoggedIn = useCallback( ( ) => {
     if ( !currentUser ) {
@@ -178,7 +180,7 @@ const MyObservationsContainer = ( ): Node => {
     <MyObservations
       currentUser={currentUser}
       isFetchingNextPage={isFetchingNextPage}
-      isOnline={isOnline}
+      isConnected={isConnected}
       handleIndividualUploadPress={handleIndividualUploadPress}
       handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}

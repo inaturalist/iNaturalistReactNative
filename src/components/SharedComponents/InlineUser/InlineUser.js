@@ -20,10 +20,10 @@ type Props = {
     id: number,
     icon_url?: string
   },
-  isOnline: boolean
+  isConnected: boolean
 };
 
-const InlineUser = ( { user, isOnline }: Props ): Node => {
+const InlineUser = ( { user, isConnected }: Props ): Node => {
   const navigation = useNavigation();
   const userImgUri = User.uri( user );
   const userHandle = User.userHandle( user );
@@ -31,7 +31,7 @@ const InlineUser = ( { user, isOnline }: Props ): Node => {
   const { t } = useTranslation( );
 
   const renderUserIcon = () => {
-    if ( !userImgUri || !isOnline ) {
+    if ( !userImgUri || !isConnected ) {
       return (
         <INatIcon
           testID="InlineUser.FallbackPicture"

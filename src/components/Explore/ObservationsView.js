@@ -1,5 +1,8 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
 import { ObservationsFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -7,8 +10,7 @@ import type { Node } from "react";
 import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
 import {
-  useDeviceOrientation,
-  useIsConnected
+  useDeviceOrientation
 } from "sharedHooks";
 
 import MapView from "./MapView";
@@ -47,7 +49,7 @@ const ObservationsView = ( {
     }
   }, [totalResults, updateCount, count, isFetchingNextPage] );
 
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
 
   if ( !layout ) { return null; }
 
@@ -85,7 +87,7 @@ const ObservationsView = ( {
         explore
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
-        isOnline={isOnline}
+        isConnected={isConnected}
         layout={layout}
         onEndReached={fetchNextPage}
         status={status}

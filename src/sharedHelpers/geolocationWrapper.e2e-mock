@@ -1,0 +1,40 @@
+import Geolocation, {
+  GeolocationError,
+  GeolocationResponse
+} from "@react-native-community/geolocation";
+import { CHUCKS_PAD } from "appConstants/e2e.ts";
+
+function watchPosition(
+  success: ( position: GeolocationResponse ) => void,
+  error?: ( error: GeolocationError ) => void,
+  options?: {
+    interval?: number;
+    fastestInterval?: number;
+    timeout?: number;
+    maximumAge?: number;
+    enableHighAccuracy?: boolean;
+    distanceFilter?: number;
+    useSignificantChanges?: boolean;
+  }
+) {
+  console.log( "[DEBUG geolocationWrapper.e2e-mock] watchPosition" );
+  const watchID = Date.now();
+  setTimeout( ( ) => {
+    console.log( "[DEBUG geolocationWrapper.e2e-mock] watchPosition success" );
+    success( {
+      coords: CHUCKS_PAD,
+      timestamp: Date.now()
+    } );
+  }, 1000 );
+  return watchID;
+}
+
+function clearWatch( watchID: number ) {
+  console.log( "[DEBUG geolocationWrapper.e2e-mock] clearWatch, watchID: ", watchID );
+}
+
+export {
+  CHUCKS_PAD,
+  clearWatch,
+  watchPosition
+};

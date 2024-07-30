@@ -19,6 +19,18 @@ class Taxon extends Realm.Object {
     rank_level: true
   };
 
+  static SCORE_IMAGE_FIELDS = {
+    ancestor_ids: true,
+    default_photo: {
+      id: true,
+      url: true
+    },
+    name: true,
+    preferred_common_name: true,
+    rank: true,
+    rank_level: true
+  };
+
   static STATEOFMATTER_LEVEL = 100;
 
   static KINGDOM_LEVEL = 70;

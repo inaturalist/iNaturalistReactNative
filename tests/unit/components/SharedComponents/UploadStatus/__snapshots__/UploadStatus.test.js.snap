@@ -72,7 +72,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
       </View>
       <CircularProgress
         activeStrokeColor="#454545"
-        activeStrokeWidth={2}
+        activeStrokeWidth={2.5}
         inActiveStrokeOpacity={0}
         maxValue={1}
         radius={18}

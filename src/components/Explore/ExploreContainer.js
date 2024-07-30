@@ -1,5 +1,8 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
@@ -8,7 +11,7 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useCurrentUser, useIsConnected } from "sharedHooks";
+import { useCurrentUser } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
@@ -19,7 +22,7 @@ import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   const setStoredParams = useStore( state => state.setStoredParams );
 
   const {
@@ -106,7 +109,7 @@ const ExploreContainerWithContext = ( ): Node => {
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
-        isOnline={isOnline}
+        isConnected={isConnected}
         loadingStatus={loadingStatus}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}

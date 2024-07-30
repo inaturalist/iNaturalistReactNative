@@ -1,4 +1,7 @@
 // @flow
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
 import type { Node } from "react";
@@ -6,8 +9,7 @@ import React, { useEffect, useState } from "react";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useInterval,
-  useIsConnected
+  useInterval
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -39,7 +41,7 @@ const NotificationsIconContainer = ( {
   const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
   const currentUser = useCurrentUser( );
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
@@ -54,7 +56,7 @@ const NotificationsIconContainer = ( {
     ],
     optsWithAuth => fetchUnviewedObservationUpdatesCount( optsWithAuth ),
     {
-      enabled: !!currentUser && !!isOnline
+      enabled: !!currentUser && !!isConnected
     }
   );
 

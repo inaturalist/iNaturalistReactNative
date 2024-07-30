@@ -1,6 +1,6 @@
 // @flow
 
-import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   differenceInCalendarYears,
   isFuture,
@@ -65,7 +65,7 @@ const EvidenceSectionContainer = ( {
     const positionalAccuracyBlank = isNil( currentObservation?.positional_accuracy );
     const positionalAccuracyDesireable = (
       currentObservation?.positional_accuracy || 0
-    ) <= DESIRED_LOCATION_ACCURACY;
+    ) <= REQUIRED_LOCATION_ACCURACY;
     let validPositionalAccuracy = ( positionalAccuracyBlank || positionalAccuracyDesireable );
 
     if ( isNewObs && hasImportedPhotos ) {

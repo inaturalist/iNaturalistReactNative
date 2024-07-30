@@ -19,7 +19,7 @@ describe( "IdentifiersView", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel={false}
-        isOnline
+        isConnected
       />
     );
 
@@ -31,7 +31,7 @@ describe( "IdentifiersView", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel={false}
-        isOnline={false}
+        isConnected={false}
       />
     );
 
@@ -43,7 +43,7 @@ describe( "IdentifiersView", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel
-        isOnline
+        isConnected
       />
     );
 
@@ -55,7 +55,7 @@ describe( "IdentifiersView", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel
-        isOnline
+        isConnected
         data={[]}
         status="loading"
       />
@@ -69,7 +69,7 @@ describe( "IdentifiersView", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel
-        isOnline
+        isConnected
         data={[]}
       />
     );

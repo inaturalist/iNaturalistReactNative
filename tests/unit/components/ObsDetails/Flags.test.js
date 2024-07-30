@@ -10,8 +10,6 @@ const mockObservation = factory( "LocalObservation", {
   time_observed_at: "2023-12-14T21:07:41-09:30"
 } );
 
-jest.mock( "sharedHooks/useIsConnected" );
-
 jest.mock( "sharedHelpers/dateAndTime", ( ) => ( {
   __esModule: true,
   formatIdDate: jest.fn()

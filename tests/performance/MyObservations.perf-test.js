@@ -82,7 +82,7 @@
 //       isFetchingNextPage={false}
 //       onEndReached={mockOnEndReached}
 //       currentUser={mockUser}
-//       isOnline
+//       isConnected
 //       uploadState={mockState}
 //     /> );
 //   } );

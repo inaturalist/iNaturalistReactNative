@@ -20,14 +20,14 @@ import {
 
 type Props = {
   belongsToCurrentUser?: boolean,
-  isOnline: boolean,
+  isConnected: boolean,
   isRefetching: boolean,
   observation: Object,
 }
 
 const ObsDetailsOverview = ( {
   belongsToCurrentUser,
-  isOnline,
+  isConnected,
   isRefetching,
   observation
 }: Props ): Node => {
@@ -67,7 +67,7 @@ const ObsDetailsOverview = ( {
     <View className="bg-white">
       <View className="flex-row justify-between mx-[15px] mt-[13px]">
         {( !observation || isRefetching ) && loadingIndicator}
-        <InlineUser user={observation?.user} isOnline={isOnline} />
+        <InlineUser user={observation?.user} isConnected={isConnected} />
         {observation && (
           <DateDisplay
             dateString={

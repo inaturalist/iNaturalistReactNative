@@ -28,8 +28,14 @@ const useLinking = ( currentUser: ?Object ) => {
     const uuid = results?.[0]?.uuid;
 
     if ( uuid ) {
-      navigation.navigate( "ObsDetails", {
-        uuid
+      navigation.navigate( "TabNavigator", {
+        screen: "TabStackNavigator",
+        params: {
+          screen: "ObsDetails",
+          params: {
+            uuid
+          }
+        }
       } );
     }
   }, [navigation, observationId] );
@@ -48,31 +54,30 @@ const useLinking = ( currentUser: ?Object ) => {
     }
   }, [] );
 
+  const handleUrl = useCallback( url => {
+    if ( url === newAccountConfirmedUrl
+      || url === existingAccountConfirmedUrl
+    ) {
+      navigateConfirmedUser( );
+    } else {
+      checkAllowedHosts( url );
+    }
+  }, [navigateConfirmedUser, checkAllowedHosts] );
+
   useEffect( ( ) => {
     Linking.addEventListener( "url", async ( { url } ) => {
       if ( !url ) { return; }
-      if ( url === newAccountConfirmedUrl
-        || url === existingAccountConfirmedUrl
-      ) {
-        navigateConfirmedUser( );
-      }
-      checkAllowedHosts( url );
+      handleUrl( url );
     } );
-  }, [navigateConfirmedUser, navigateToObservations, checkAllowedHosts] );
+  }, [handleUrl] );
 
   useEffect( ( ) => {
     const fetchInitialUrl = async ( ) => {
       const url = await Linking.getInitialURL( );
-
-      if ( url === newAccountConfirmedUrl
-        || url === existingAccountConfirmedUrl
-      ) {
-        navigateConfirmedUser( );
-      }
-      checkAllowedHosts( url );
+      handleUrl( url );
     };
     fetchInitialUrl( );
-  }, [navigateConfirmedUser, navigateToObservations, checkAllowedHosts] );
+  }, [handleUrl] );
 
   useEffect( ( ) => {
     if ( observationId ) {

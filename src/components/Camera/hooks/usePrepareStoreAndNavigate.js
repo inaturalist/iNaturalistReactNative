@@ -3,8 +3,13 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
 import {
+  permissionResultFromMultiple,
+  READ_WRITE_MEDIA_PERMISSIONS
+} from "components/SharedComponents/PermissionGateContainer.tsx";
+import {
   useCallback
 } from "react";
+import { checkMultiple, RESULTS } from "react-native-permissions";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { log } from "sharedHelpers/logger";
@@ -32,15 +37,28 @@ export async function savePhotosToCameraGallery(
   uris: [string],
   onEachSuccess: Function
 ) {
-  // $FlowIgnore
+  const readWritePermissionResult = permissionResultFromMultiple(
+    await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS )
+  );
   uris.reduce(
     async ( memo, uri ) => {
       // logger.info( "saving rotated original camera photo: ", uri );
       try {
-        const savedPhotoUri = await CameraRoll.save( uri, {
-          type: "photo",
-          album: "iNaturalist Next"
-        } );
+        let savedPhotoUri;
+        // One quirk of CameraRoll is that if you want to write ton album, you
+        // need readwrite permission, but we don't want to ask for that here
+        // b/c it might come immediately after asking for *add only*
+        // permission, so we're checking to see if we have that permission
+        // and skipping the album if we don't
+        if ( readWritePermissionResult === RESULTS.GRANTED ) {
+          savedPhotoUri = await CameraRoll.save( uri, {
+            type: "photo",
+            album: "iNaturalist Next"
+          } );
+        } else {
+          savedPhotoUri = await CameraRoll.save( uri );
+        }
+
         // logger.info( "saved to camera roll: ", savedPhotoUri );
         // Save these camera roll URIs, so later on observation editor can update
         // the EXIF metadata of these photos, once we retrieve a location.
@@ -88,7 +106,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
-  const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
+  const createObsWithCameraPhotos = useCallback( async localFilePaths => {
     const newObservation = await Observation.new( );
 
     // 20240709 amanda - this is temporary since we'll want to move this code to
@@ -104,16 +122,8 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
         position: 0,
         local: true
       } );
-
-    if ( visionResult ) {
-      // make sure taxon id is stored as a number, not a string, from AICamera
-      visionResult.taxon.id = Number( visionResult.taxon.id );
-      newObservation.taxon = visionResult.taxon;
-      newObservation.owners_identification_from_vision = true;
-      newObservation.score = visionResult.score;
-    }
     setObservations( [newObservation] );
-    if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
+    if ( addPhotoPermissionResult !== RESULTS.GRANTED ) return Promise.resolve( );
     return savePhotosToCameraGallery( cameraUris, addCameraRollUri );
   }, [
     addCameraRollUri,
@@ -148,21 +158,18 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     updateObservations
   ] );
 
-  const prepareStoreAndNavigate = useCallback( async ( visionResult = null ) => {
+  const prepareStoreAndNavigate = useCallback( async ( ) => {
     if ( !checkmarkTapped ) { return null; }
 
     setSavingPhoto( true );
     // save all to camera roll
 
-    // handle case where user backs out from ObsEdit -> Suggestions -> Camera
-    // and already has a taxon selected
-    // TODO this isn't checking for a selected taxon, and why is it checking
-    // for existing photos? If reached from addEvidence, you are always
-    // updating an existing obs
-    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
+    if ( addEvidence ) {
       await updateObsWithCameraPhotos( );
     } else {
-      await createObsWithCameraPhotos( cameraUris, visionResult );
+      // when backing out from ObsEdit -> Suggestions -> Camera, create a
+      // new observation
+      await createObsWithCameraPhotos( cameraUris );
     }
     // When we've persisted photos to the observation, we don't need them in
     // state anymore
@@ -179,7 +186,6 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     cameraUris,
     checkmarkTapped,
     createObsWithCameraPhotos,
-    currentObservation,
     navigation,
     updateObsWithCameraPhotos,
     setCameraState,

@@ -57,17 +57,19 @@ const SOUND_RECORDER_OPTIONS = {
 };
 
 const CameraContainerWithPermission = ( ) => (
-  <PermissionGateContainer
-    permissions={CAMERA_PERMISSIONS}
-    title={t( "Observe-and-identify-organisms-in-real-time-with-your-camera" )}
-    titleDenied={t( "Please-allow-Camera-Access" )}
-    body={t( "Use-the-iNaturalist-camera-to-observe" )}
-    blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
-    buttonText={t( "OBSERVE-ORGANISMS" )}
-    icon="camera"
-  >
-    <CameraContainer />
-  </PermissionGateContainer>
+  <Mortal>
+    <PermissionGateContainer
+      permissions={CAMERA_PERMISSIONS}
+      title={t( "Observe-and-identify-organisms-in-real-time-with-your-camera" )}
+      titleDenied={t( "Please-allow-Camera-Access" )}
+      body={t( "Use-the-iNaturalist-camera-to-observe" )}
+      blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
+      buttonText={t( "OBSERVE-ORGANISMS" )}
+      icon="camera"
+    >
+      <CameraContainer />
+    </PermissionGateContainer>
+  </Mortal>
 );
 
 const GalleryContainerWithPermission = ( ) => (

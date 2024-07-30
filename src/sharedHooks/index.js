@@ -8,7 +8,7 @@ export { default as useInfiniteNotificationsScroll } from "./useInfiniteNotifica
 export { default as useInfiniteObservationsScroll } from "./useInfiniteObservationsScroll";
 export { default as useInfiniteScroll } from "./useInfiniteScroll";
 export { default as useInterval } from "./useInterval";
-export { default as useIsConnected } from "./useIsConnected";
+export { default as useLastScreen } from "./useLastScreen";
 export { default as useLocalObservation } from "./useLocalObservation";
 export { default as useLocalObservations } from "./useLocalObservations";
 export { default as useLocationPermission } from "./useLocationPermission";

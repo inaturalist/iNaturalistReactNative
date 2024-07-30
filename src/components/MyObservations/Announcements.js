@@ -43,11 +43,11 @@ const AutoheightWebView = ( webshellProps ): Node => {
 };
 
 type Props = {
-  isOnline: boolean
+  isConnected: boolean
 }
 
 const Announcements = ( {
-  isOnline
+  isConnected
 }: Props ): Node => {
   const { t } = useTranslation( );
   const queryClient = useQueryClient( );
@@ -78,7 +78,7 @@ const Announcements = ( {
     ["searchAnnouncements", apiParams],
     optsWithAuth => searchAnnouncements( apiParams, optsWithAuth ),
     {
-      enabled: !!isOnline && !!currentUser
+      enabled: !!isConnected && !!currentUser
     }
   );
 
@@ -97,7 +97,7 @@ const Announcements = ( {
     }
   );
 
-  if ( !isOnline ) {
+  if ( !isConnected ) {
     return null;
   }
   if ( !currentUser ) {

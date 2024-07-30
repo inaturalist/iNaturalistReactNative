@@ -1,5 +1,6 @@
 // @flow
 
+import { RealmContext } from "providers/contexts";
 import {
   useEffect,
   useState
@@ -7,20 +8,21 @@ import {
 import { predictImage } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
 
+const { useRealm } = RealmContext;
+
 const logger = log.extend( "useOfflineSuggestions" );
 
 const useOfflineSuggestions = (
   selectedPhotoUri: string,
   options: Object
 ): {
-  offlineSuggestions: Array<Object>,
-  loadingOfflineSuggestions: boolean
+  offlineSuggestions: Array<Object>
 } => {
+  const realm = useRealm( );
   const [offlineSuggestions, setOfflineSuggestions] = useState( [] );
-  const [loadingOfflineSuggestions, setLoadingOfflineSuggestions] = useState( true );
   const [error, setError] = useState( null );
 
-  const { tryOfflineSuggestions } = options;
+  const { dispatch, tryOfflineSuggestions } = options;
 
   useEffect( ( ) => {
     const predictOffline = async ( ) => {
@@ -31,9 +33,17 @@ const useOfflineSuggestions = (
         // currently Seek codebase as well expects different return types for each platform
         rawPredictions = result.predictions;
       } catch ( predictImageError ) {
+        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
         logger.error( "Error predicting image offline", predictImageError );
         throw predictImageError;
       }
+      // similar to what we're doing in the AICamera to get iconic taxon name,
+      // but we're offline so we only need the local list from realm
+      // and don't need to fetch taxon from the API
+      const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+      const branchIDs = rawPredictions.map( t => t.taxon_id );
+      const iconicTaxonName = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 )?.name;
+
       // using the same rank level for displaying predictions in AI Camera
       // this is all temporary, since we ultimately want predictions
       // returned similarly to how we return them on web; this is returning a
@@ -45,29 +55,30 @@ const useOfflineSuggestions = (
           taxon: {
             id: Number( prediction.taxon_id ),
             name: prediction.name,
-            rank_level: prediction.rank_level
+            rank_level: prediction.rank_level,
+            iconic_taxon_name: iconicTaxonName
           }
         } ) );
       setOfflineSuggestions( formattedPredictions );
-      setLoadingOfflineSuggestions( false );
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-fetched" } );
       return formattedPredictions;
     };
 
     if ( selectedPhotoUri && tryOfflineSuggestions ) {
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "fetching-offline" } );
       predictOffline( ).catch( predictOfflineError => {
         // For some reason if you throw here, it doesn't actually buble up. Is
         // an effect callback run in a promise?
-        setLoadingOfflineSuggestions( false );
+        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
         setError( predictOfflineError );
       } );
     }
-  }, [selectedPhotoUri, tryOfflineSuggestions, setError] );
+  }, [selectedPhotoUri, tryOfflineSuggestions, setError, dispatch, realm] );
 
   if ( error ) throw error;
 
   return {
-    offlineSuggestions,
-    loadingOfflineSuggestions
+    offlineSuggestions
   };
 };
 

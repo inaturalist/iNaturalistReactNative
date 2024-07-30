@@ -27,7 +27,8 @@ type Props = {
   hideCloseButton?: boolean,
   headerText?: string,
   snapPoints?: Array<string>,
-  insideModal?: boolean
+  insideModal?: boolean,
+  keyboardShouldPersistTaps: string
 }
 
 const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
@@ -40,7 +41,8 @@ const StandardBottomSheet = ( {
   hideCloseButton = false,
   headerText,
   snapPoints,
-  insideModal
+  insideModal,
+  keyboardShouldPersistTaps = "never"
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -120,7 +122,9 @@ const StandardBottomSheet = ( {
       ref={sheetRef}
       style={[shadow, marginOnWide]}
     >
-      <BottomSheetScrollView>
+      <BottomSheetScrollView
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+      >
         <View
           className={classnames(
             "pt-7",
