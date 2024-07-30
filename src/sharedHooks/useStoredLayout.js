@@ -1,22 +1,18 @@
 // @flow
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useState } from "react";
+import { zustandStorage } from "stores/useStore";
 
 const useStoredLayout = ( storageKey: string ): Object => {
-  const {
-    getItem: getStoredLayout,
-    setItem: setStoredLayout
-  } = useAsyncStorage( storageKey );
   const [layout, setLayout] = useState( null );
 
-  const writeLayoutToStorage = useCallback( async newValue => {
-    await setStoredLayout( newValue );
+  const writeLayoutToStorage = useCallback( newValue => {
+    zustandStorage.setItem( storageKey, newValue );
     setLayout( newValue );
-  }, [setStoredLayout] );
+  }, [storageKey] );
 
   useEffect( ( ) => {
     const readLayoutFromStorage = async ( ) => {
-      const storedLayout = await getStoredLayout( );
+      const storedLayout = zustandStorage.getItem( storageKey );
       const defaultLayout = storageKey === "exploreObservationsLayout"
         ? "map"
         : "list";
@@ -24,7 +20,7 @@ const useStoredLayout = ( storageKey: string ): Object => {
     };
 
     readLayoutFromStorage( );
-  }, [getStoredLayout, writeLayoutToStorage, storageKey] );
+  }, [writeLayoutToStorage, storageKey] );
 
   return {
     layout,

@@ -11,7 +11,6 @@ import React, {
   useState
 } from "react";
 import { Alert } from "react-native";
-import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -31,8 +30,6 @@ import useClearSyncedMediaForUpload from "./hooks/useClearSyncedMediaForUpload";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservations from "./MyObservations";
-
-const logger = log.extend( "MyObservationsContainer" );
 
 const { useRealm } = RealmContext;
 
@@ -77,7 +74,7 @@ const MyObservationsContainer = ( ): Node => {
     observations: data,
     status
   } = useInfiniteObservationsScroll( {
-    upsert: true,
+    upsert: syncingStatus === "sync-pending",
     params: {
       user_id: currentUserId
     }
@@ -109,7 +106,6 @@ const MyObservationsContainer = ( ): Node => {
   }, [currentUser] );
 
   const handleSyncButtonPress = useCallback( ( ) => {
-    logger.debug( "Manual sync starting: user tapped sync button" );
     if ( !confirmLoggedIn( ) ) { return; }
     if ( !confirmInternetConnection( ) ) { return; }
 
@@ -125,7 +121,6 @@ const MyObservationsContainer = ( ): Node => {
     if ( uploadExists ) {
       return;
     }
-    logger.debug( "Starting individual upload:", uuid );
     if ( !confirmLoggedIn( ) ) { return; }
     if ( !confirmInternetConnection( ) ) { return; }
     const observation = realm.objectForPrimaryKey( "Observation", uuid );

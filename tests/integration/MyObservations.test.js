@@ -4,13 +4,13 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations.ts";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import { format } from "date-fns";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util";
+import { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
@@ -328,7 +328,6 @@ describe( "MyObservations", ( ) => {
       it( "doesn't throw an error when sync button tapped", async ( ) => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
-        expect( realm.objects( "LocalPreferences" )[0] ).toBeFalsy( );
         renderAppWithComponent( <MyObservationsContainer /> );
         const syncIcon = await screen.findByTestId( "SyncButton" );
         await waitFor( ( ) => {
@@ -341,24 +340,17 @@ describe( "MyObservations", ( ) => {
 
       describe( "on screen focus", ( ) => {
         beforeEach( ( ) => {
-          const realm = global.mockRealms[__filename];
-          safeRealmWrite( realm, ( ) => {
-            realm.create( "LocalPreferences", {
-              last_sync_time: new Date( "2023-11-01" ),
-              last_deleted_sync_time: new Date( "2024-05-01" )
-            } );
-          }, "add last_sync_time to LocalPreferences, MyObservations integration test" );
+          zustandStorage.setItem( "lastDeletedSyncTime", "2024-05-01" );
         } );
 
         it( "downloads deleted observations from server when screen focused", async ( ) => {
           const realm = global.mockRealms[__filename];
           expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
           renderAppWithComponent( <MyObservationsContainer /> );
-          const lastSyncTime = realm.objects( "LocalPreferences" )[0].last_deleted_sync_time;
           await waitFor( ( ) => {
             expect( inatjs.observations.deleted ).toHaveBeenCalledWith(
               {
-                since: format( lastSyncTime, "yyyy-MM-dd" )
+                since: "2024-05-01"
               },
               expect.anything( )
             );

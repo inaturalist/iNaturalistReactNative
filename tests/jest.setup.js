@@ -64,11 +64,6 @@ jest.mock( "react-native-worklets-core", () => ( {
 jest.mock( "@sayem314/react-native-keep-awake" );
 jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
 
-jest.mock(
-  "@react-native-async-storage/async-storage",
-  () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
-);
-
 require( "react-native-reanimated" ).setUpTests();
 
 jest.mock( "react-native-vision-camera", ( ) => ( {
