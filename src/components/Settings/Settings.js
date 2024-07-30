@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import fetchAvailableLocales from "api/translations";
+// import fetchAvailableLocales from "api/translations";
 import { updateUsers } from "api/users";
 import {
   ActivityIndicator,
   Body2,
   Button,
   Heading4,
-  PickerSheet,
+  // PickerSheet,
   RadioButtonRow,
   ScrollViewWrapper
 } from "components/SharedComponents";
@@ -24,30 +24,32 @@ import {
   useTranslation,
   useUserMe
 } from "sharedHooks";
-import useStore, { zustandStorage } from "stores/useStore";
+import useStore from "stores/useStore";
+// import useStore, { zustandStorage } from "stores/useStore";
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
 const Settings = ( ) => {
   const navigation = useNavigation( );
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation( );
+  // const { t, i18n } = useTranslation();
   const currentUser = useCurrentUser( );
   const { remoteUser, isLoading, refetchUserMe } = useUserMe();
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
 
   const [settings, setSettings] = useState( {} );
-  const [currentLocale, setCurrentLocale] = useState( i18n.language );
+  // const [currentLocale, setCurrentLocale] = useState( i18n.language );
   const [isSaving, setIsSaving] = useState( false );
-  const [availableLocales, setAvailableLocales] = useState( [] );
-  const availableLocalesOptions = Object.fromEntries(
-    availableLocales.map( locale => [locale.locale, {
-      label: locale.language_in_locale,
-      value: locale.locale
-    }] )
-  );
-  const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
+  // const [availableLocales, setAvailableLocales] = useState( [] );
+  // const availableLocalesOptions = Object.fromEntries(
+  //   availableLocales.map( locale => [locale.locale, {
+  //     label: locale.language_in_locale,
+  //     value: locale.locale
+  //   }] )
+  // );
+  // const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
 
   const queryClient = useQueryClient();
 
@@ -68,7 +70,7 @@ const Settings = ( ) => {
   useEffect( () => {
     if ( remoteUser ) {
       setSettings( remoteUser );
-      setCurrentLocale( remoteUser.locale );
+      // setCurrentLocale( remoteUser.locale );
       setIsSaving( false );
     }
   }, [remoteUser] );
@@ -85,26 +87,26 @@ const Settings = ( ) => {
     };
   }, [refetchUserMe] );
 
-  useEffect( () => {
-    async function fetchLocales() {
-      const savedLocale = zustandStorage.getItem( "currentLocale" );
-      if ( savedLocale ) {
-        setCurrentLocale( savedLocale );
-      }
+  // useEffect( () => {
+  //   async function fetchLocales() {
+  //     const savedLocale = zustandStorage.getItem( "currentLocale" );
+  //     if ( savedLocale ) {
+  //       setCurrentLocale( savedLocale );
+  //     }
 
-      // Whenever possible, save latest available locales from server
-      const currentLocales = zustandStorage.getItem( "availableLocales" );
+  //     // Whenever possible, save latest available locales from server
+  //     const currentLocales = zustandStorage.getItem( "availableLocales" );
 
-      setAvailableLocales( currentLocales
-        ? JSON.parse( currentLocales )
-        : [] );
+  //     setAvailableLocales( currentLocales
+  //       ? JSON.parse( currentLocales )
+  //       : [] );
 
-      const locales = await fetchAvailableLocales();
-      zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
-      setAvailableLocales( locales );
-    }
-    fetchLocales();
-  }, [] );
+  //     const locales = await fetchAvailableLocales();
+  //     zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
+  //     setAvailableLocales( locales );
+  //   }
+  //   fetchLocales();
+  // }, [] );
 
   const changeTaxonNameDisplay = v => {
     setIsSaving( true );
@@ -127,16 +129,16 @@ const Settings = ( ) => {
     updateUserMutation.mutate( payload );
   };
 
-  const changeUserLocale = locale => {
-    setIsSaving( true );
+  // const changeUserLocale = locale => {
+  //   setIsSaving( true );
 
-    const payload = {
-      id: settings?.id
-    };
+  //   const payload = {
+  //     id: settings?.id
+  //   };
 
-    payload["user[locale]"] = locale;
-    updateUserMutation.mutate( payload );
-  };
+  //   payload["user[locale]"] = locale;
+  //   updateUserMutation.mutate( payload );
+  // };
 
   const renderLoggedOut = ( ) => (
     <>
@@ -190,7 +192,8 @@ const Settings = ( ) => {
           label={t( "Scientific-Name" )}
         />
       </View>
-      {availableLocales.length > 0 && (
+      {/* 20240730 amanda - hiding this since we're not including in soft launch */}
+      {/* {availableLocales.length > 0 && (
         <>
           <Heading4 className="mt-7">{t( "APP-LANGUAGE" )}</Heading4>
           <Button
@@ -220,7 +223,7 @@ const Settings = ( ) => {
             selectedValue={currentLocale || i18n.language}
             pickerValues={availableLocalesOptions}
           />
-        )}
+        )} */}
       <Heading4 className="mt-7">{t( "INATURALIST-ACCOUNT-SETTINGS" )}</Heading4>
       <Body2 className="mt-2">{t( "To-access-all-other-settings" )}</Body2>
       <Button
