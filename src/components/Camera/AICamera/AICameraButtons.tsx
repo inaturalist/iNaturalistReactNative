@@ -87,7 +87,7 @@ const AICameraButtons = ( {
         <View><Close /></View>
       </View>
       <View
-        className="absolute right-0 bottom-[17px] h-full justify-end flex gap-y-9"
+        className="absolute right-0 bottom-[6px] h-full justify-end items-end flex gap-y-9"
         pointerEvents="box-none"
       >
         <AIDebugButton
