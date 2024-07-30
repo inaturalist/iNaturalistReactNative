@@ -45,6 +45,10 @@ const SharedStackScreens = ( ): Node => (
       <Stack.Screen
         name="ObsEdit"
         component={ObsEdit}
+        // 20240730 - amanda: we need to disable swiping on ObsEdit
+        // options={{
+        //   gestureEnabled: false
+        // }}
       />
       <Stack.Screen
         name="LocationPicker"
