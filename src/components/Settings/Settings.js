@@ -1,3 +1,6 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 // import fetchAvailableLocales from "api/translations";
@@ -11,9 +14,9 @@ import {
   RadioButtonRow,
   ScrollViewWrapper
 } from "components/SharedComponents";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  StatusBar,
+  Alert, StatusBar,
   View
 } from "react-native";
 import Config from "react-native-config";
@@ -31,6 +34,7 @@ const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
 const Settings = ( ) => {
+  const { isConnected } = useNetInfo( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // const { t, i18n } = useTranslation();
@@ -51,6 +55,16 @@ const Settings = ( ) => {
   // );
   // const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
 
+  const confirmInternetConnection = useCallback( ( ) => {
+    if ( !isConnected ) {
+      Alert.alert(
+        t( "Internet-Connection-Required" ),
+        t( "Please-try-again-when-you-are-connected-to-the-internet" )
+      );
+    }
+    return isConnected;
+  }, [t, isConnected] );
+
   const queryClient = useQueryClient();
 
   const updateUserMutation = useAuthenticatedMutation(
@@ -62,6 +76,7 @@ const Settings = ( ) => {
         refetchUserMe();
       },
       onError: () => {
+        confirmInternetConnection( );
         setIsSaving( false );
       }
     }
@@ -230,6 +245,8 @@ const Settings = ( ) => {
         className="mt-4"
         text={t( "INATURALIST-SETTINGS" )}
         onPress={() => {
+          confirmInternetConnection( );
+          if ( !isConnected ) { return; }
           navigation.navigate( "FullPageWebView", {
             title: t( "Settings" ),
             loggedIn: true,
