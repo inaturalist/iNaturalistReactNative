@@ -1,5 +1,7 @@
 // @flow
 
+import Geolocation from "@react-native-community/geolocation";
+import NetInfo from "@react-native-community/netinfo";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -32,6 +34,16 @@ Realm.setLogLevel( "warn" );
 // from react-native-share-menu.
 // https://stackoverflow.com/questions/69538962
 LogBox.ignoreLogs( ["new NativeEventEmitter"] );
+
+// better to ping our own website to check for site uptime
+// with no rendering required, per issue #1770
+NetInfo.configure( {
+  reachabilityUrl: "https://www.inaturalist.org/ping"
+} );
+
+const geolocationConfig = {
+  skipPermissionRequests: true
+};
 
 type Props = {
   // $FlowIgnore
@@ -68,6 +80,10 @@ const App = ( { children }: Props ): Node => {
   useEffect( ( ) => {
     logger.info( "pickup" );
   }, [] );
+
+  // skipping location permissions here since we're manually showing
+  // permission gates and don't want to pop up the native notification
+  Geolocation.setRNConfiguration( geolocationConfig );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

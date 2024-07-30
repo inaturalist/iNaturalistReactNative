@@ -1,13 +1,11 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Body2,
   Body3,
   Button,
-  INatIcon,
-  INatIconButton
+  INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
@@ -18,10 +16,9 @@ import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 interface Props {
   onPressPhoto: ( _uri: string ) => void;
   photoUris: string[];
-  // eslint-disable-next-line no-unused-vars
-  reloadSuggestions: ( { showLocation }: { showLocation: boolean } ) => void;
+  reloadSuggestions: ( ) => void;
   selectedPhotoUri: string;
-  suggestions: Object;
+  showOfflineText: boolean;
   improveWithLocationButtonOnPress: () => void;
   showImproveWithLocationButton: boolean;
 }
@@ -31,37 +28,12 @@ const SuggestionsHeader = ( {
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
-  suggestions,
+  showOfflineText,
   improveWithLocationButtonOnPress,
   showImproveWithLocationButton
 }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const { entryScreen } = params;
   const theme = useTheme( );
-
-  const {
-    isLoading,
-    showSuggestionsWithLocation,
-    usingOfflineSuggestions
-  } = suggestions;
-
-  const showOfflineText = !isLoading && usingOfflineSuggestions;
-
-  const headerRight = useCallback( ( ) => (
-    <INatIconButton
-      icon="magnifying-glass"
-      onPress={
-        ( ) => navigation.navigate( "TaxonSearch", { entryScreen, lastScreen: "Suggestions" } )
-      }
-      accessibilityLabel={t( "Search" )}
-    />
-  ), [entryScreen, navigation, t] );
-
-  useEffect( ( ) => {
-    navigation.setOptions( { headerRight } );
-  }, [headerRight, navigation] );
 
   return (
     <>
@@ -79,7 +51,7 @@ const SuggestionsHeader = ( {
             text={t( "IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION" )}
             accessibilityHint={t( "Opens-location-permission-prompt" )}
             level="focus"
-            onPress={( ) => improveWithLocationButtonOnPress()}
+            onPress={improveWithLocationButtonOnPress}
           />
         </View>
       )}
@@ -87,7 +59,7 @@ const SuggestionsHeader = ( {
         <Pressable
           accessibilityRole="button"
           className="border border-warningYellow border-[3px] m-5 rounded-2xl"
-          onPress={( ) => reloadSuggestions( { showLocation: showSuggestionsWithLocation } )}
+          onPress={reloadSuggestions}
         >
           <View className="p-5">
             <View className="flex-row mb-2">

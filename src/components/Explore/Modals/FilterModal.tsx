@@ -814,6 +814,7 @@ const FilterModal = ( {
                     <UserListItem
                       item={{ user }}
                       countText={t( "X-Observations", { count: user.observations_count } )}
+                      pressable={false}
                     />
                     <INatIcon name="edit" size={22} />
                   </Pressable>

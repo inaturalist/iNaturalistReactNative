@@ -3,6 +3,8 @@ import {
 } from "detox";
 import Config from "react-native-config-node";
 
+// This needs to be a relative path for the e2e-mock version to be used
+import { CHUCKS_PAD } from "../src/appConstants/e2e";
 import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 
 describe( "Signed in user", () => {
@@ -22,6 +24,12 @@ describe( "Signed in user", () => {
     await obsWithoutEvidenceButton.tap();
     // Check that the new observation screen is visible
     await waitFor( element( by.id( "new-observation-text" ) ) )
+      .toBeVisible()
+      .withTimeout( 10000 );
+    // Ensure the location from the e2e-mock is being used so we don't end up
+    // with tests flaking out due to time zone issues
+    const pattern = new RegExp( `.*${CHUCKS_PAD.latitude.toFixed( 4 )}.*` );
+    await waitFor( element( by.text( pattern ) ) )
       .toBeVisible()
       .withTimeout( 10000 );
     if ( options.upload ) {

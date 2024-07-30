@@ -16,24 +16,25 @@ import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 // working normally
 jest.unmock( "@react-navigation/native" );
 
+const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+  coords: {
+    latitude: 1,
+    longitude: 1,
+    accuracy: 9,
+    timestamp: Date.now( )
+  }
+} ) );
+Geolocation.watchPosition.mockImplementation( mockWatchPosition );
+
 const mockModelResult = {
   predictions: [factory( "ModelPrediction", {
   // useOfflineSuggestions will filter out taxa w/ rank_level > 40
     rank_level: 20
   } )]
 };
-inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
 getPredictionsForImage.mockImplementation(
   async ( ) => ( mockModelResult )
 );
-
-const mockGetCurrentPosition = jest.fn( ( success, _error, _options ) => success( {
-  coords: {
-    latitude: 56,
-    longitude: 9
-  }
-} ) );
-Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
@@ -62,7 +63,16 @@ beforeAll( async () => {
   jest.useFakeTimers( );
 } );
 
-beforeEach( ( ) => useStore.setState( { isAdvancedUser: true } ) );
+// Mock the response from inatjs.computervision.score_image
+const topSuggestion = {
+  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
+  combined_score: 90
+};
+
+beforeEach( ( ) => {
+  useStore.setState( { isAdvancedUser: true } );
+  inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
+} );
 
 describe( "Photo Deletion", ( ) => {
   const actor = userEvent.setup( );
@@ -90,12 +100,13 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function confirmPhotosAndAddIdLater() {
+  async function confirmPhotosAndAddTopId() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
-    await screen.findByText( /You are offline/ );
-    const idLaterButton = await screen.findByText( "Add an ID Later" );
-    await actor.press( idLaterButton );
+    const topTaxonResultButton = await screen.findByTestId(
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+    );
+    await actor.press( topTaxonResultButton );
   }
 
   async function saveAndEditObs() {
@@ -145,7 +156,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from StandardCamera for existing photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddIdLater();
+    await confirmPhotosAndAddTopId();
     await saveAndEditObs();
     // Enter camera to add new photo
     const addEvidenceButton = await screen.findByLabelText( "Add evidence" );
@@ -163,7 +174,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddIdLater();
+    await confirmPhotosAndAddTopId();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
     await expectObsEditToHaveNoPhotos();
@@ -172,7 +183,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddIdLater();
+    await confirmPhotosAndAddTopId();
     await saveAndEditObs();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );

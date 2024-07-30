@@ -86,6 +86,7 @@ describe( "TaxonDetails", ( ) => {
     inatjs.computervision.score_image.mockResolvedValue( mockScoreImageResponse );
     inatjs.taxa.fetch.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
     inatjs.taxa.search.mockResolvedValue( makeResponse( mockTaxaList ) );
+    inatjs.search.mockResolvedValue( makeResponse( mockTaxaList.map( x => ( { taxon: x } ) ) ) );
   } );
 
   afterEach( ( ) => {

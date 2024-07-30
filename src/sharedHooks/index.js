@@ -1,6 +1,5 @@
 export { default as useAuthenticatedMutation } from "./useAuthenticatedMutation";
 export { default as useAuthenticatedQuery } from "./useAuthenticatedQuery";
-export { default as useCurrentObservationLocation } from "./useCurrentObservationLocation";
 export { default as useCurrentUser } from "./useCurrentUser";
 export { default as useDebugMode } from "./useDebugMode";
 export { default as useDeviceOrientation } from "./useDeviceOrientation";
@@ -9,9 +8,10 @@ export { default as useInfiniteNotificationsScroll } from "./useInfiniteNotifica
 export { default as useInfiniteObservationsScroll } from "./useInfiniteObservationsScroll";
 export { default as useInfiniteScroll } from "./useInfiniteScroll";
 export { default as useInterval } from "./useInterval";
-export { default as useIsConnected } from "./useIsConnected";
+export { default as useLastScreen } from "./useLastScreen";
 export { default as useLocalObservation } from "./useLocalObservation";
 export { default as useLocalObservations } from "./useLocalObservations";
+export { default as useLocationPermission } from "./useLocationPermission";
 export { default as useObservationsUpdates } from "./useObservationsUpdates";
 export { default as useObservationUpdatesWhenFocused } from "./useObservationUpdatesWhenFocused";
 export { default as useRemoteObservation } from "./useRemoteObservation";
@@ -20,5 +20,5 @@ export { default as useStoredLayout } from "./useStoredLayout";
 export { default as useTaxon } from "./useTaxon";
 export { default as useTaxonSearch } from "./useTaxonSearch";
 export { default as useTranslation } from "./useTranslation";
-export { default as useUserLocation } from "./useUserLocation";
 export { default as useUserMe } from "./useUserMe";
+export { default as useWatchPosition } from "./useWatchPosition";

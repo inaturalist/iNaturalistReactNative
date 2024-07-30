@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
@@ -10,7 +9,7 @@ import {
 import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React from "react";
 import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -33,10 +32,8 @@ type Props = {
     },
     uuid: string
   }>,
-  updateObservationKeys: Function,
-  renderPermissionsGate: Function,
-  requestPermissions: Function,
-  hasPermissions: boolean
+  onLocationPress: ( ) => void,
+  updateObservationKeys: Function
 }
 
 const EvidenceSection = ( {
@@ -47,10 +44,8 @@ const EvidenceSection = ( {
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
   observationSounds,
-  updateObservationKeys,
-  renderPermissionsGate,
-  requestPermissions,
-  hasPermissions
+  onLocationPress,
+  updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -60,21 +55,6 @@ const EvidenceSection = ( {
   // the API
   const obsPhotos = currentObservation?.observationPhotos || currentObservation?.observation_photos;
   const obsSounds = currentObservation?.observationSounds || currentObservation?.observation_sounds;
-  const navigation = useNavigation( );
-
-  const navToLocationPicker = useCallback( ( ) => {
-    navigation.navigate( "LocationPicker", { goBackOnSave: true } );
-  }, [navigation] );
-
-  const onLocationPress = ( ) => {
-    // If we have location permissions, navigate to the location picker
-    if ( hasPermissions ) {
-      navToLocationPicker();
-    } else {
-      // If we don't have location permissions, request them
-      requestPermissions( );
-    }
-  };
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -176,15 +156,6 @@ const EvidenceSection = ( {
           }
         </View>
       </Pressable>
-      {renderPermissionsGate( {
-        // If the user does not give location permissions in any form,
-        // navigate to the location picker (if granted we just continue fetching the location)
-        onRequestDenied: navToLocationPicker,
-        onRequestBlocked: navToLocationPicker,
-        onModalHide: ( ) => {
-          if ( !hasPermissions ) navToLocationPicker();
-        }
-      } )}
       <DatePicker
         currentObservation={currentObservation}
         updateObservationKeys={updateObservationKeys}

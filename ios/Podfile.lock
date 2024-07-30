@@ -1137,7 +1137,9 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.13.1):
     - React-Core
-  - RNFlashList (1.6.4):
+  - RNFlashList (1.7.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - RNFS (2.20.0):
     - React-Core
@@ -1556,7 +1558,7 @@ SPEC CHECKSUMS:
   RNCPicker: 82ccad5b08259dc09310082118cbb6c136d7da67
   RNDateTimePicker: 7b38b71bcd7c4cfa1cb95f2dff9a4f1faed2dced
   RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
-  RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
+  RNFlashList: 68224225541895f0fb0de98b4d8be0cbe1c577df
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: bc2cdb2dc42facdf34992ae364b8a728e19a3686
   RNLocalize: e8694475db034bf601e17bd3dfa8986565e769eb

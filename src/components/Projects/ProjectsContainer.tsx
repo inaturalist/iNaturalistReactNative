@@ -5,7 +5,7 @@ import {
   useAuthenticatedQuery,
   useCurrentUser,
   useTranslation,
-  useUserLocation
+  useWatchPosition
 } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 
@@ -26,11 +26,12 @@ const ProjectsContainer = ( ) => {
   const memberId = currentUser?.id;
   const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
-  const [currentTabId, setCurrentTabId] = useState( TAB_ID.JOINED );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission();
-  const { userLocation } = useUserLocation( {
-    skipName: true,
-    permissionsGranted: hasPermissions
+  const [currentTabId, setCurrentTabId] = useState( currentUser
+    ? TAB_ID.JOINED
+    : TAB_ID.FEATURED );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const { userLocation } = useWatchPosition( {
+    shouldFetchLocation: hasPermissions
   } );
 
   const {
@@ -52,7 +53,8 @@ const ProjectsContainer = ( ) => {
     } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
       setApiParams( {
         lat: userLocation.latitude,
-        lng: userLocation.longitude
+        lng: userLocation.longitude,
+        radius: 50
       } );
     }
   }, [
@@ -109,7 +111,7 @@ const ProjectsContainer = ( ) => {
         hasPermissions={hasPermissions}
         requestPermissions={requestPermissions}
       />
-      {renderPermissionsGate()}
+      {renderPermissionsGate( )}
     </>
   );
 };

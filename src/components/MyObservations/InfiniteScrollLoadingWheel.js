@@ -9,13 +9,13 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   layout?: string,
-  isOnline?: boolean,
+  isConnected?: boolean,
   hideLoadingWheel: boolean,
   explore: boolean
 }
 
 const InfiniteScrollLoadingWheel = ( {
-  hideLoadingWheel, layout, isOnline, explore
+  hideLoadingWheel, layout, isConnected, explore
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -30,7 +30,7 @@ const InfiniteScrollLoadingWheel = ( {
       "border-t border-lightGray": layout === "list"
     } )}
     >
-      {!isOnline
+      {!isConnected
         ? (
           <Body3 className="text-center">
             {t( "An-Internet-connection-is-required" )}

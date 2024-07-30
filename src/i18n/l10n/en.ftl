@@ -186,6 +186,7 @@ Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
 Community-Guidelines = Community Guidelines
+COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
@@ -292,7 +293,7 @@ Deleting-x-of-y-observations =
 DETAILS = DETAILS
 # Button that disables the camera's flash
 Disable-flash = Disable flash
-Disagreement = <0>*@{ $username } disagrees this is { $commonName } (</0><1>{ $scientificName })</1>
+Disagreement = <0>*@{ $username } disagrees this is </0><1></1>
 # Button that discards changes or an item, e.g. a photo
 DISCARD = DISCARD
 # Button that discards all items, e.g. imported photos
@@ -316,7 +317,6 @@ DISCARD-X-OBSERVATIONS =
 DISMISS = DISMISS
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
-Donate-to-iNaturalist = Donate to iNaturalist
 # Label for a button the user taps when a task is complete
 DONE = DONE
 Dont-have-an-account = Don't have an account? Sign up
@@ -452,7 +452,7 @@ iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNatur
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
-iNaturalist-Help = iNaturalist Help
+INATURALIST-HELP = INATURALIST HELP
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
@@ -475,7 +475,7 @@ INATURALIST-TEAM = INATURALIST TEAM
 iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
 iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
 iNaturalist-uses-your-location-to-give-you = iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location.
-iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Angie Ta, Ken-ichi Ueda, Jason Walthall, & Jane Weeden.
+iNaturalists-apps-are-designed-and-developed = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Michelle Vryn, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
 INFO-TRANSFER = INFO TRANSFER
@@ -703,13 +703,14 @@ Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
 POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
-Potential-disagreement-description = <0>Is the evidence enough to confirm this is { $commonName }(</0><1>{ $scientificName }</1><0>)?<0>
-Potential-disagreement-disagree = <0>No, but this is a member of { $commonName }(</0><1>{ $scientificName }</1><0>)</0>
-Potential-disagreement-unsure = <0>I don't know but I am sure this is { $commonName }(</0><1>{ $scientificName }</1><0>)</0>
+Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
+Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
+Potential-disagreement-unsure = <0>I don't know but I am sure this is </0><1></1>
 # Help text for beginning a sound recording
 Press-record-to-start = Press record to start
 Previous-observation = Previous observation
 Privacy-Policy = Privacy Policy
+PRIVACY-POLICY = PRIVACY POLICY
 Private = Private
 # As in an iNat project, a collection of observations or observation search filters
 PROJECT = PROJECT
@@ -784,7 +785,11 @@ Remove-agreement = Remove agreement
 # Label for a button that removes a vote of disagreement
 Remove-disagreement = Remove disagreement
 Remove-favorite = Remove favorite
+# Label for button that removes an identification
+Remove-identification = Remove identification
 Remove-Photos = Remove Photos
+# Label for button that removes an observation's taxon
+Removes-this-observations-taxon = Removes this observation's taxon
 # Hint for a button that removes a vote of agreement
 Removes-your-vote-of-agreement = Removes your vote of agreement
 # Hint for a button that removes a vote of disagreement
@@ -867,7 +872,6 @@ SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Share Location
 Share-map = Share map
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
-Shop-iNaturalist-Merch = Shop iNaturalist Merch
 Show-observation-options = Show observation options.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
@@ -934,14 +938,15 @@ TAXONOMIC-RANKS = TAXONOMIC RANKS
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
 TEACHERS = TEACHERS
-Teachers-Guide = Teachers' Guide
+TEACHERS-GUIDE = TEACHERS' GUIDE
 TEAM = TEAM
 Terms-of-Use = Terms of Use
+TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
-The-iNaturalist-team-has-collaborated = The iNaturalist team has collaborated with...
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
+The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sarah Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
 There-is-no-way = There is no way to have an iNaturalist account without storing personal information, so the only way to revoke this consent is to delete your account.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.

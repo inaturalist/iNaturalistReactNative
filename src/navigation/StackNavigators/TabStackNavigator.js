@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import About from "components/About";
 import Developer from "components/Developer/Developer";
 import Log from "components/Developer/Log";
-import NetworkLogging from "components/Developer/NetworkLogging";
+import NetworkLogging from "components/Developer/NetworkLogging.tsx";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate.tsx";
@@ -44,13 +44,24 @@ const donateTitle = () => <Heading4>{t( "DONATE" )}</Heading4>;
 const helpTitle = () => <Heading4>{t( "HELP" )}</Heading4>;
 const locationSearchTitle = () => <Heading4>{t( "SEARCH-LOCATION" )}</Heading4>;
 const notificationsTitle = ( ) => <Heading4>{t( "NOTIFICATIONS" )}</Heading4>;
+const dqaTitle = ( ) => <Heading4>{t( "DATA-QUALITY-ASSESSMENT" )}</Heading4>;
 const projectSearchTitle = () => <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>;
 const taxonSearchTitle = () => <Heading4>{t( "SEARCH-TAXA" )}</Heading4>;
 const userSearchTitle = () => <Heading4>{t( "SEARCH-USERS" )}</Heading4>;
+const settingsTitle = () => <Heading4>{t( "SETTINGS" )}</Heading4>;
+
+// eslint-disable-next-line i18next/no-literal-string
+const debugTitle = () => <Heading4 className="text-white">DEBUG</Heading4>;
+// eslint-disable-next-line i18next/no-literal-string
+const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
+// eslint-disable-next-line i18next/no-literal-string
+const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
+// eslint-disable-next-line i18next/no-literal-string
+const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 
 const DQA_OPTIONS = {
   ...showLongHeader,
-  headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
+  headerTitle: dqaTitle,
   unmountOnBlur: true
 };
 
@@ -144,26 +155,32 @@ const TabStackNavigator = ( ): Node => (
     >
       <Stack.Screen
         name="Debug"
-        label="Debug"
         component={Developer}
+        options={{ headerTitle: debugTitle }}
+
       />
-      <Stack.Screen
-        name="network"
-        component={NetworkLogging}
-      />
+      { // eslint-disable-next-line no-undef
+        __DEV__ && (
+          <Stack.Screen
+            name="network"
+            component={NetworkLogging}
+          />
+        )
+      }
       <Stack.Screen
         name="UILibrary"
-        label="UI Library"
         component={UiLibrary}
+        options={{ headerTitle: uiLibTitle }}
       />
       <Stack.Screen
         name="UiLibraryItem"
-        label="UI Library Item"
         component={UiLibraryItem}
+        options={{ headerTitle: uiLibItemTitle }}
       />
       <Stack.Screen
-        name="log"
         component={Log}
+        name="log"
+        options={{ headerTitle: logTitle }}
       />
     </Stack.Group>
     {/* Header with no bottom border */}
@@ -204,7 +221,7 @@ const TabStackNavigator = ( ): Node => (
       <Stack.Screen
         name="Settings"
         component={Settings}
-        options={{ headerTitle: t( "Settings" ) }}
+        options={{ headerTitle: settingsTitle }}
       />
       <Stack.Screen
         name="About"

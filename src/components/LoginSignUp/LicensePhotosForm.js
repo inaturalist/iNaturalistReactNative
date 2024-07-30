@@ -42,7 +42,7 @@ const LicensePhotosForm = ( ): Node => {
   const onTermsPressed = async () => {
     const url = "https://www.inaturalist.org/pages/terms";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Terms-of-Use" ),
+      title: t( "TERMS-OF-USE" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: true
@@ -52,7 +52,7 @@ const LicensePhotosForm = ( ): Node => {
   const onPrivacyPressed = async () => {
     const url = "https://www.inaturalist.org/pages/privacy";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Privacy-Policy" ),
+      title: t( "PRIVACY-POLICY" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: true
@@ -62,7 +62,7 @@ const LicensePhotosForm = ( ): Node => {
   const onCommunityPressed = async () => {
     const url = "https://www.inaturalist.org/pages/community+guidelines";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Community-Guidelines" ),
+      title: t( "COMMUNITY-GUIDELINES" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: true

@@ -3,6 +3,8 @@
 import { FlashList } from "@shopify/flash-list";
 import { searchProjects } from "api/projects";
 import {
+  ActivityIndicator,
+  Body3,
   Heading4,
   INatIconButton,
   ProjectListItem,
@@ -32,7 +34,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
 
-  const { data: projects } = useAuthenticatedQuery(
+  const { data: projects, isLoading } = useAuthenticatedQuery(
     ["searchProjects", userQuery],
     optsWithAuth => searchProjects( { q: userQuery }, optsWithAuth )
   );
@@ -46,6 +48,14 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
     updateProject( project );
     closeModal();
   }, [updateProject, closeModal] );
+
+  const resetProject = useCallback(
+    ( ) => {
+      updateProject( null );
+      closeModal();
+    },
+    [updateProject, closeModal]
+  );
 
   const renderItem = useCallback(
     ( { item } ) => (
@@ -80,6 +90,9 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
           accessibilityLabel={t( "SEARCH-PROJECTS" )}
         />
         <Heading4>{t( "SEARCH-PROJECTS" )}</Heading4>
+        <Body3 onPress={resetProject} className="absolute top-4 right-4">
+          {t( "Reset-verb" )}
+        </Body3>
       </View>
       <View
         className="bg-white px-6 pt-2 pb-8"
@@ -91,18 +104,25 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ): Node => {
           testID="SearchUser"
         />
       </View>
-
-      <FlashList
-        data={projects}
-        initialNumToRender={5}
-        estimatedItemSize={100}
-        testID="SearchUserList"
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        ListHeaderComponent={renderItemSeparator}
-        ItemSeparatorComponent={renderItemSeparator}
-        accessible
-      />
+      {isLoading
+        ? (
+          <View className="p-4">
+            <ActivityIndicator size={40} />
+          </View>
+        )
+        : (
+          <FlashList
+            data={projects}
+            initialNumToRender={5}
+            estimatedItemSize={100}
+            testID="SearchUserList"
+            keyExtractor={item => item.id}
+            renderItem={renderItem}
+            ListHeaderComponent={renderItemSeparator}
+            ItemSeparatorComponent={renderItemSeparator}
+            accessible
+          />
+        )}
     </ViewWrapper>
   );
 };

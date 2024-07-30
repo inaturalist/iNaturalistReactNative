@@ -1,4 +1,7 @@
 // @flow
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
@@ -17,7 +20,6 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
-  useIsConnected,
   useLocalObservation,
   useObservationsUpdates,
   useTranslation
@@ -138,7 +140,7 @@ const ObsDetailsContainer = ( ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const { t } = useTranslation( );
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   const vision = currentObservation?.owners_identification_from_vision;
 
   const [state, dispatch] = useReducer( reducer, initialState );
@@ -163,7 +165,7 @@ const ObsDetailsContainer = ( ): Node => {
   const fetchRemoteObservationEnabled = !!(
     !remoteObsWasDeleted
     && ( !localObservation || localObservation?.wasSynced( ) )
-    && isOnline
+    && isConnected
   );
 
   const {
@@ -536,7 +538,7 @@ const ObsDetailsContainer = ( ): Node => {
       currentUser={currentUser}
       onPotentialDisagreePressed={onPotentialDisagreePressed}
       hideAddCommentSheet={hideAddCommentSheet}
-      isOnline={isOnline}
+      isConnected={isConnected}
       isRefetching={isRefetching}
       navToSuggestions={navToSuggestions}
       // saving observation in state (i.e. using observationShown)

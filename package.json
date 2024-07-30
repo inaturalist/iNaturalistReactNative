@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.35.2",
+  "version": "0.37.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -58,7 +58,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@realm/react": "^0.6.2",
     "@sayem314/react-native-keep-awake": "^1.2.3",
-    "@shopify/flash-list": "^1.6.4",
+    "@shopify/flash-list": "^1.7.0",
     "@tanstack/react-query": "^5.29.0",
     "apisauce": "^3.0.1",
     "axios": "^1.6.8",

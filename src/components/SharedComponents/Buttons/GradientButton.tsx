@@ -1,13 +1,20 @@
-// @flow
-
 import { INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
+import { GestureResponderEvent } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
+interface Props {
+  sizeClassName: string;
+  onPress: ( _event: GestureResponderEvent ) => void;
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
+  iconName?: string;
+  iconSize?: number;
+}
 const GradientButton = ( {
   sizeClassName,
   onPress,
@@ -15,14 +22,7 @@ const GradientButton = ( {
   accessibilityHint,
   iconName,
   iconSize
-}: {
-  sizeClassName: string,
-  onPress: Function,
-  accessibilityLabel?: string,
-  accessibilityHint?: string,
-  iconName?: string,
-  iconSize?: number
-} ): React.Node => (
+}: Props ) => (
   <Pressable
     className={`${sizeClassName} rounded-full overflow-hidden`}
     testID="add-obs-button"

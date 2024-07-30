@@ -19,36 +19,48 @@ import SuggestionsHeader from "./SuggestionsHeader";
 
 type Props = {
   debugData: Object,
+  handleSkip: Function,
+  hideLocationToggleButton: boolean,
   hideSkip?: boolean,
+  improveWithLocationButtonOnPress: () => void,
+  isLoading: boolean,
+  shouldUseEvidenceLocation: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: Array<string>,
   reloadSuggestions: Function,
   selectedPhotoUri: string,
-  improveWithLocationButtonOnPress: () => void;
-  showImproveWithLocationButton: boolean;
-  suggestions: Object
+  showImproveWithLocationButton: boolean,
+  suggestions: Object,
+  toggleLocation: Function,
+  usingOfflineSuggestions: boolean
 };
 
 const Suggestions = ( {
   debugData,
+  handleSkip,
+  hideLocationToggleButton,
   hideSkip,
+  improveWithLocationButtonOnPress,
+  isLoading,
+  shouldUseEvidenceLocation,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
   reloadSuggestions,
   selectedPhotoUri,
-  improveWithLocationButtonOnPress,
   showImproveWithLocationButton,
-  suggestions
+  suggestions,
+  toggleLocation,
+  usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
-    isLoading,
     otherSuggestions,
-    topSuggestion,
-    usingOfflineSuggestions
+    topSuggestion
   } = suggestions;
+
+  const showOfflineText = !isLoading && usingOfflineSuggestions;
 
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
   const observers = useObservers( taxonIds );
@@ -70,19 +82,21 @@ const Suggestions = ( {
   const renderFooter = useCallback( ( ) => (
     <SuggestionsFooter
       debugData={debugData}
+      handleSkip={handleSkip}
+      hideLocationToggleButton={hideLocationToggleButton}
       hideSkip={hideSkip}
-      isLoading={suggestions.isLoading}
+      shouldUseEvidenceLocation={shouldUseEvidenceLocation}
       observers={observers}
-      reloadSuggestions={reloadSuggestions}
-      showSuggestionsWithLocation={suggestions.showSuggestionsWithLocation}
-      usingOfflineSuggestions={suggestions.usingOfflineSuggestions}
+      toggleLocation={toggleLocation}
     />
   ), [
     debugData,
+    handleSkip,
+    hideLocationToggleButton,
     hideSkip,
+    shouldUseEvidenceLocation,
     observers,
-    reloadSuggestions,
-    suggestions
+    toggleLocation
   ] );
 
   const renderHeader = useCallback( ( ) => (
@@ -91,7 +105,7 @@ const Suggestions = ( {
       photoUris={photoUris}
       reloadSuggestions={reloadSuggestions}
       selectedPhotoUri={selectedPhotoUri}
-      suggestions={suggestions}
+      showOfflineText={showOfflineText}
       improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
       showImproveWithLocationButton={showImproveWithLocationButton}
     />
@@ -102,7 +116,7 @@ const Suggestions = ( {
     selectedPhotoUri,
     improveWithLocationButtonOnPress,
     showImproveWithLocationButton,
-    suggestions
+    showOfflineText
   ] );
 
   const renderSectionHeader = ( { section } ) => {

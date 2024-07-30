@@ -80,6 +80,7 @@ const DisplayTaxon = ( {
               taxon={taxon}
               withdrawn={withdrawn}
               scientificNameFirst={currentUser?.prefers_scientific_name_first}
+              prefersCommonNames={currentUser?.prefers_common_names}
             />
           </View>
         </View>

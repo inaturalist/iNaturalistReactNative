@@ -83,7 +83,7 @@ const MyObservationsHeader = ( {
           )
           : (
             <Subheading1
-              className="my-5 shrink m-0"
+              className="shrink m-0"
               testID="log-in-to-iNaturalist-text-no-observations"
             >
               {t( "Log-in-to-contribute-your-observations" )}

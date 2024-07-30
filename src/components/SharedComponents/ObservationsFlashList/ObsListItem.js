@@ -60,6 +60,7 @@ const ObsListItem = ( {
           taxon={observation?.taxon}
           keyBase={observation?.uuid}
           scientificNameFirst={currentUser?.prefers_scientific_name_first}
+          prefersCommonNames={currentUser?.prefers_common_names}
         />
         <ObservationLocation observation={observation} classNameMargin="mt-1" />
         <DateDisplay

@@ -70,13 +70,16 @@ module.exports = {
     ],
     "no-alert": 0,
     "no-underscore-dangle": 0,
-    "no-unused-vars": [
+    // This gets around eslint problems when typing functions in TS
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-unused-vars": [
       "error",
       {
         vars: "all",
         args: "after-used",
         // Overriding airbnb to allow leading underscore to indicate unused var
         argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
         ignoreRestSiblings: true
       }
     ],
@@ -136,7 +139,6 @@ module.exports = {
 
     // TODO: we should actually type these at some point ~amanda 041824
     "@typescript-eslint/ban-types": 0,
-    "@typescript-eslint/no-unused-vars": 0,
     "@typescript-eslint/no-var-requires": 0
   },
   // need this so jest doesn't show as undefined in jest.setup.js

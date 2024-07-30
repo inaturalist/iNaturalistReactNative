@@ -54,6 +54,7 @@ const CameraWithDevice = ( {
     setAddPhotoPermissionResult
   ] = useState<"granted" | "denied" | null>( null );
   const [checkmarkTapped, setCheckmarkTapped] = useState( false );
+  const [isNavigating, setIsNavigating] = useState( false );
   const [visionCameraResult, setVisionCameraResult] = useState( null );
   // We track this because we only want to navigate away when the permission
   // gate is completely closed, because there's a good chance another will
@@ -119,20 +120,24 @@ const CameraWithDevice = ( {
   useEffect( ( ) => {
     if (
       checkmarkTapped
+      && !isNavigating
       && (
         addPhotoPermissionGateWasClosed
         || addPhotoPermissionResult === "granted"
       )
     ) {
+      setIsNavigating( true );
       setCheckmarkTapped( false );
       setAddPhotoPermissionGateWasClosed( false );
       storeCurrentObservationAndNavigate( );
+      setIsNavigating( false );
     }
   }, [
     storeCurrentObservationAndNavigate,
     checkmarkTapped,
     addPhotoPermissionGateWasClosed,
-    addPhotoPermissionResult
+    addPhotoPermissionResult,
+    isNavigating
   ] );
 
   // Hide the StatusBar. Using a component doesn't guarantee that it will get

@@ -12,7 +12,7 @@ const Donate = () => {
   const onDonatePress = async ( ) => {
     const url = "https://donorbox.org/support-inaturalist?utm_campaign=default&utm_medium=mobile&utm_source=iNatRN";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Donate-to-iNaturalist" ),
+      title: t( "DONATE-TO-INATURALIST" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: false,
@@ -23,7 +23,7 @@ const Donate = () => {
   const onShopPress = async ( ) => {
     const url = "https://inaturalist.threadless.com";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Shop-iNaturalist-Merch" ),
+      title: t( "SHOP-INATURALIST-MERCH" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: true

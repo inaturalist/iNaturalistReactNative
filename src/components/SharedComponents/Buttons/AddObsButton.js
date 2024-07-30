@@ -1,9 +1,9 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import AddObsModal from "components/AddObsModal";
 import { Modal } from "components/SharedComponents";
-import GradientButton from "components/SharedComponents/Buttons/GradientButton";
+import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import { t } from "i18next";
 import { getCurrentRoute } from "navigation/navigationUtils.ts";
 import * as React from "react";
@@ -30,11 +30,29 @@ const AddObsButton = (): React.Node => {
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
     }
-    // access nested screen
-    navigation.navigate( "NoBottomTabStackNavigator", {
-      screen,
-      params: { ...params, previousScreen: currentRoute }
-    } );
+
+    // we need to reset the navigation stack whenever a user navigates from the AddObs wheel,
+    // otherwise the user can end up closing out to a previous place in the stack, #1857
+    navigation.dispatch(
+      CommonActions.reset( {
+        index: 0,
+        routes: [
+          {
+            name: "NoBottomTabStackNavigator",
+            state: {
+              index: 0,
+              routes: [
+                {
+                  name: screen,
+                  params: { ...params, previousScreen: currentRoute }
+                }
+              ]
+            }
+          }
+        ]
+      } )
+    );
+
     closeModal( );
   };
   const navToARCamera = ( ) => { navAndCloseModal( "Camera", { camera: "AI" } ); };

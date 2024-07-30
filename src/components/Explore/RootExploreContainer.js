@@ -1,5 +1,8 @@
 // @flow
 
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
@@ -11,7 +14,7 @@ import React, {
   useEffect,
   useState
 } from "react";
-import { useCurrentUser, useIsConnected } from "sharedHooks";
+import { useCurrentUser } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
 
@@ -21,7 +24,7 @@ import useHeaderCount from "./hooks/useHeaderCount";
 
 const RootExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const rootStoredParams = useStore( state => state.rootStoredParams );
   const setRootStoredParams = useStore( state => state.setRootStoredParams );
@@ -32,17 +35,25 @@ const RootExploreContainerWithContext = ( ): Node => {
   } = useLocationPermission( );
 
   const {
-    state, dispatch, makeSnapshot
+    state, dispatch, makeSnapshot, defaultExploreLocation
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
-  const updateLocation = ( place: Object ) => {
+  const updateLocation = async ( place: Object ) => {
     if ( place === "worldwide" ) {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
         placeId: null
+      } );
+    } else if ( place === "nearby" ) {
+      const exploreLocation = await defaultExploreLocation( );
+      // exploreLocation has a placeMode already
+      // dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
+      dispatch( {
+        type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+        exploreLocation
       } );
     } else {
       navigation.setParams( { place } );
@@ -56,6 +67,7 @@ const RootExploreContainerWithContext = ( ): Node => {
     }
   };
 
+  // Object | null
   const updateUser = ( user: Object ) => {
     dispatch( {
       type: EXPLORE_ACTION.SET_USER,
@@ -115,7 +127,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
-        isOnline={isOnline}
+        isConnected={isConnected}
         loadingStatus={loadingStatus}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}
@@ -129,7 +141,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
       />
-      {renderPermissionsGate( )}
+      {renderPermissionsGate( { onPermissionGranted: () => updateLocation( "nearby" ) } )}
     </>
   );
 };

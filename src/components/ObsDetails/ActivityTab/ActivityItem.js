@@ -19,7 +19,7 @@ import DisagreementText from "./DisagreementText";
 type Props = {
   currentUserId?: number,
   isFirstDisplay: boolean,
-  isOnline: boolean,
+  isConnected: boolean,
   item: Object,
   openAgreeWithIdSheet: Function,
   refetchRemoteObservation: Function,
@@ -29,7 +29,7 @@ type Props = {
 const ActivityItem = ( {
   currentUserId,
   isFirstDisplay,
-  isOnline,
+  isConnected,
   item,
   openAgreeWithIdSheet,
   refetchRemoteObservation,
@@ -48,8 +48,6 @@ const ActivityItem = ( {
     && isFirstDisplay
     && currentUserId;
 
-  console.log( currentUserId );
-
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   return (
@@ -59,7 +57,7 @@ const ActivityItem = ( {
           item={item}
           refetchRemoteObservation={refetchRemoteObservation}
           idWithdrawn={idWithdrawn}
-          isOnline={isOnline}
+          isConnected={isConnected}
         />
         {taxon && (
           <View className="flex-row items-center justify-between mr-[23px] mb-4">

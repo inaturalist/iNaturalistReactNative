@@ -1,26 +1,24 @@
-// @flow
-
 import classnames from "classnames";
 import { Body3 } from "components/SharedComponents";
 import {
   CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE
 } from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
 import { Pressable } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 
 const isTablet = DeviceInfo.isTablet();
 
-type Props = {
-  rotatableAnimatedStyle: Object,
-  changeZoom: Function,
-  zoomClassName?: string,
-  zoomTextValue: string,
-  showZoomButton: boolean,
-};
+interface Props {
+  rotatableAnimatedStyle: ViewStyle;
+  changeZoom: ( _event: GestureResponderEvent ) => void;
+  zoomClassName?: string;
+  zoomTextValue: string;
+  showZoomButton: boolean;
+}
 
 const CameraZoom = ( {
   rotatableAnimatedStyle,
@@ -28,7 +26,7 @@ const CameraZoom = ( {
   zoomClassName,
   zoomTextValue,
   showZoomButton
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation();
 
   if ( !showZoomButton ) {

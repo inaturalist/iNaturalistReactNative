@@ -102,7 +102,11 @@ const useLocationPermission = ( ) => {
     checkPermissions();
   }, [] );
 
-  return { hasPermissions, renderPermissionsGate, requestPermissions };
+  return {
+    hasPermissions,
+    renderPermissionsGate,
+    requestPermissions
+  };
 };
 
 export default useLocationPermission;

@@ -1,60 +1,16 @@
+import {
+  useNetInfo
+} from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
-import { computerVisionPath } from "appConstants/paths.ts";
-import { FileUpload } from "inaturalistjs";
-import { useEffect, useState } from "react";
-import RNFS from "react-native-fs";
-import resizeImage from "sharedHelpers/resizeImage.ts";
 import {
-  useAuthenticatedQuery,
-  useIsConnected
+  useCallback, useEffect, useState
+} from "react";
+import {
+  useAuthenticatedQuery
 } from "sharedHooks";
-import useStore from "stores/useStore";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
-
-const outputPath = computerVisionPath;
-
-type FlattenUploadArgs = {
-  image: {
-    uri: string,
-    name: string,
-    type: string
-  },
-  lat?: number,
-  lng?: number
-}
-
-const flattenUploadParams = async (
-  uri: string,
-  latitude?: number,
-  longitude?: number
-): Promise<FlattenUploadArgs> => {
-  await RNFS.mkdir( outputPath );
-  const uploadUri = await resizeImage( uri, {
-    // this max width/height is the same as the legacy Android app
-    // we always want the width/height to be bigger than 299x299
-    // and want to preserve the aspect ratio (not crunch the image down into a square)
-    // for the best results
-    width: 640,
-    outputPath
-  } );
-
-  const params: FlattenUploadArgs = {
-    image: new FileUpload( {
-      uri: uploadUri,
-      name: "photo.jpeg",
-      type: "image/jpeg"
-    } )
-  };
-  if ( latitude ) {
-    params.lat = latitude;
-  }
-  if ( longitude ) {
-    params.lng = longitude;
-  }
-  return params;
-};
 
 type OnlineSuggestionsResponse = {
   dataUpdatedAt: Date,
@@ -62,30 +18,28 @@ type OnlineSuggestionsResponse = {
   loadingOnlineSuggestions: boolean,
   timedOut: boolean,
   error: Object,
-  refetchSuggestions: Function
+  resetTimeout: Function
   isRefetching: boolean
 }
 
 const useOnlineSuggestions = (
-  selectedPhotoUri: string,
   options: Object
 ): OnlineSuggestionsResponse => {
-  const currentObservation = useStore( state => state.currentObservation );
   const {
-    showSuggestionsWithLocation,
-    usingOfflineSuggestions
+    dispatch,
+    flattenedUploadParams,
+    queryKey,
+    shouldFetchOnlineSuggestions
   } = options;
-
-  const params = showSuggestionsWithLocation
-    ? {
-      latitude: currentObservation?.latitude,
-      longitude: currentObservation?.longitude
-    }
-    : null;
 
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
-  const isOnline = useIsConnected( );
+  const { isConnected } = useNetInfo( );
+
+  async function queryFn( optsWithAuth ) {
+    const params = flattenedUploadParams;
+    return scoreImage( params, optsWithAuth );
+  }
 
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
@@ -96,17 +50,11 @@ const useOnlineSuggestions = (
     fetchStatus,
     error
   } = useAuthenticatedQuery(
-    ["scoreImage", selectedPhotoUri],
-    async optsWithAuth => {
-      const scoreImageParams = await flattenUploadParams(
-        selectedPhotoUri,
-        params?.latitude,
-        params?.longitude
-      );
-      return scoreImage( scoreImageParams, optsWithAuth );
-    },
+    queryKey,
+    queryFn,
     {
-      enabled: ( !!selectedPhotoUri && usingOfflineSuggestions === false ),
+      enabled: !!shouldFetchOnlineSuggestions
+        && !!( flattenedUploadParams?.image ),
       allowAnonymousJWT: true
     }
   );
@@ -115,7 +63,8 @@ const useOnlineSuggestions = (
   useEffect( ( ) => {
     const timer = setTimeout( ( ) => {
       if ( onlineSuggestions === undefined ) {
-        queryClient.cancelQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
+        queryClient.cancelQueries( { queryKey } );
+        dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-error" } );
         setTimedOut( true );
       }
     }, SCORE_IMAGE_TIMEOUT );
@@ -123,24 +72,31 @@ const useOnlineSuggestions = (
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, selectedPhotoUri, queryClient] );
+  }, [onlineSuggestions, queryKey, queryClient, dispatch] );
 
-  const refetchSuggestions = async ( ) => {
+  const resetTimeout = useCallback( ( ) => {
     setTimedOut( false );
-    await queryClient.refetchQueries( { queryKey: ["scoreImage", selectedPhotoUri] } );
-  };
+  }, [] );
 
   useEffect( () => {
-    if ( isOnline === false ) {
+    if ( isConnected === false ) {
       setTimedOut( true );
     }
-  }, [isOnline] );
+  }, [isConnected, dispatch] );
+
+  useEffect( ( ) => {
+    if ( onlineSuggestions !== undefined ) {
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-fetched" } );
+    } else if ( error ) {
+      dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-error" } );
+    }
+  }, [dispatch, onlineSuggestions, error] );
 
   const queryObject = {
     dataUpdatedAt,
     error,
     timedOut,
-    refetchSuggestions,
+    resetTimeout,
     fetchStatus
   };
 

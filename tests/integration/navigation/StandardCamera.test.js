@@ -62,13 +62,14 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
   } );
 
   it( "should advance to Suggestions when photo taken and checkmark tapped", async ( ) => {
-    const mockGetCurrentPosition = jest.fn( ( success, _error, _options ) => success( {
+    const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
       coords: {
         latitude: 56,
-        longitude: 9
+        longitude: 9,
+        accuracy: 8
       }
     } ) );
-    Geolocation.getCurrentPosition.mockImplementation( mockGetCurrentPosition );
+    Geolocation.watchPosition.mockImplementation( mockWatchPosition );
     renderApp( );
     expect( await screen.findByText( /Log in to contribute/ ) ).toBeVisible( );
     const tabBar = await screen.findByTestId( "CustomTabBar" );

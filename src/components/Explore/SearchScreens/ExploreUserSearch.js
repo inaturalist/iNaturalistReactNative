@@ -3,6 +3,8 @@
 import { FlashList } from "@shopify/flash-list";
 import fetchSearchResults from "api/search";
 import {
+  ActivityIndicator,
+  Body3,
   Heading4,
   INatIconButton,
   SearchBar,
@@ -33,7 +35,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const { t } = useTranslation();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
-  const { data: userList } = useAuthenticatedQuery(
+  const { data: userList, isLoading } = useAuthenticatedQuery(
     ["fetchSearchResults", userQuery],
     optsWithAuth => fetchSearchResults(
       {
@@ -54,6 +56,14 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     updateUser( user );
     closeModal();
   }, [updateUser, closeModal] );
+
+  const resetUser = useCallback(
+    ( ) => {
+      updateUser( null );
+      closeModal();
+    },
+    [updateUser, closeModal]
+  );
 
   const renderItem = useCallback(
     ( { item } ) => (
@@ -85,6 +95,9 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           accessibilityLabel={t( "SEARCH-USERS" )}
         />
         <Heading4>{t( "SEARCH-USERS" )}</Heading4>
+        <Body3 onPress={resetUser} className="absolute top-4 right-4">
+          {t( "Reset-verb" )}
+        </Body3>
       </View>
       <View
         className="bg-white px-6 pt-2 pb-8"
@@ -96,18 +109,26 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           testID="SearchUser"
         />
       </View>
-      <FlashList
-        ItemSeparatorComponent={renderItemSeparator}
-        ListHeaderComponent={renderItemSeparator}
-        accessible
-        data={userList}
-        estimatedItemSize={100}
-        initialNumToRender={5}
-        keyExtractor={item => item.id}
-        keyboardShouldPersistTaps="handled"
-        renderItem={renderItem}
-        testID="SearchUserList"
-      />
+      {isLoading
+        ? (
+          <View className="p-4">
+            <ActivityIndicator size={40} />
+          </View>
+        )
+        : (
+          <FlashList
+            ItemSeparatorComponent={renderItemSeparator}
+            ListHeaderComponent={renderItemSeparator}
+            accessible
+            data={userList}
+            estimatedItemSize={100}
+            initialNumToRender={5}
+            keyExtractor={item => item.id}
+            keyboardShouldPersistTaps="handled"
+            renderItem={renderItem}
+            testID="SearchUserList"
+          />
+        )}
     </ViewWrapper>
   );
 };

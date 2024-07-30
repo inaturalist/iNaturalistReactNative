@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import classnames from "classnames";
 import {
   Body1,
   Body2,
@@ -12,7 +11,7 @@ import {
   UnderlinedLink,
   ViewWrapper
 } from "components/SharedComponents";
-import { Image, View } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -25,6 +24,7 @@ const teamID = "team";
 const About = (): Node => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState( aboutID );
+  const [count, setCount] = useState( 0 );
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
   const { isDebug, toggleDebug } = useDebugMode( );
@@ -32,7 +32,7 @@ const About = (): Node => {
   const onTermsPressed = async () => {
     const url = "https://www.inaturalist.org/pages/terms";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Terms-of-Use" ),
+      title: t( "TERMS-OF-USE" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: true
@@ -42,7 +42,7 @@ const About = (): Node => {
   const onPrivacyPressed = async () => {
     const url = "https://www.inaturalist.org/pages/privacy";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Privacy-Policy" ),
+      title: t( "PRIVACY-POLICY" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: true
@@ -52,11 +52,18 @@ const About = (): Node => {
   const onCommunityPressed = async () => {
     const url = "https://www.inaturalist.org/pages/community+guidelines";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Community-Guidelines" ),
+      title: t( "COMMUNITY-GUIDELINES" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: true
     } );
+  };
+
+  const onVersionPressed = () => {
+    if ( ( count + 1 ) % 3 === 0 ) {
+      toggleDebug();
+    }
+    setCount( count + 1 );
   };
 
   return (
@@ -120,25 +127,24 @@ const About = (): Node => {
             >
               {t( "Community-Guidelines" )}
             </UnderlinedLink>
-            <View className="items-center justify-center">
+            <Pressable
+              accessibilityRole="button"
+              className="items-center justify-center"
+              onPress={() => onVersionPressed()}
+            >
               <Body1>{`Version ${appVersion} (${buildVersion})`}</Body1>
-            </View>
-            <Button
-              // eslint-disable-next-line multiline-ternary
-              text={`Debug Mode: ${isDebug ? "on" : "off"}`}
-              className={classnames(
-                "mt-5",
-                isDebug
-                  ? "bg-deeppink"
-                  : "border-deeppink"
-              )}
-              level={
-                isDebug
-                  ? "primary"
-                  : null
-              }
-              onPress={toggleDebug}
-            />
+            </Pressable>
+            {isDebug && (
+              <Button
+                text="TURN OFF DEBUG MODE"
+                className="mt-5 bg-deeppink"
+                level="primary"
+                onPress={() => {
+                  setCount( 0 );
+                  toggleDebug();
+                }}
+              />
+            )}
           </View>
         )}
         {activeTab === teamID && (
@@ -154,7 +160,7 @@ const About = (): Node => {
             <Heading4 className="mb-3">{t( "INATURALIST-NETWORK" )}</Heading4>
             <Body2 className="mb-8">{t( "The-iNaturalist-Network" )}</Body2>
             <Heading4 className="mb-3">{t( "COLLABORATORS" )}</Heading4>
-            <Body2>{t( "The-iNaturalist-team-has-collaborated" )}</Body2>
+            <Body2>{t( "The-models-that-suggest-species" )}</Body2>
           </View>
         )}
       </ScrollViewWrapper>

@@ -1,21 +1,20 @@
 import {
   BottomSheet,
   Button,
-  DisplayTaxon,
-  List2,
   RadioButtonRow
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
-import { Trans } from "react-i18next";
-import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-  handleClose: Function,
+  bottomComponent?: React.JSX.Element
+  buttonRowClassName?: boolean
   confirm: ( _checkedValue: string ) => void;
   confirmText?: string;
+  handleClose: Function,
   headerText: string,
+  insideModal?: boolean,
   radioValues: {
     [key: string]: {
       value: string,
@@ -26,42 +25,23 @@ interface Props {
     }
   },
   selectedValue?: string,
-  insideModal?: boolean,
-  // optionalText?: string, when used causes error in precommit hook unused key
-  taxon?:{
-    id: number;
-    name: string;
-    preferred_common_name?: string;
-    rank: string;
-    rank_level: number;
-  },
-  buttonRowClassName?: boolean
+  topDescriptionText?: React.JSX.Element,
 }
 
 const RadioButtonSheet = ( {
-  handleClose,
+  bottomComponent,
+  buttonRowClassName,
   confirm,
   confirmText,
+  handleClose,
   headerText,
+  insideModal,
   radioValues,
   selectedValue = "none",
-  insideModal,
-  // optionalText,
-  taxon,
-  buttonRowClassName
+  topDescriptionText
 }: Props ) => {
   const { t } = useTranslation( );
   const [checkedValue, setCheckedValue] = useState( selectedValue );
-
-  let commonName = "";
-  let scientificName = "";
-  if ( taxon ) {
-    const taxonPojo = ( typeof ( taxon.toJSON ) === "function" )
-      ? taxon.toJSON( )
-      : taxon;
-
-    ( { commonName, scientificName } = generateTaxonPieces( taxonPojo ) );
-  }
 
   const radioButtonRow = ( radioRow: string ) => (
     <View key={radioRow} className="pb-4">
@@ -73,8 +53,7 @@ const RadioButtonSheet = ( {
         onPress={() => setCheckedValue( radioValues[radioRow].value )}
         label={radioValues[radioRow].label}
         description={radioValues[radioRow].text}
-        showTaxon
-        taxonNamePieces={{ commonName, scientificName }}
+        labelComponent={radioValues[radioRow].labelComponent}
       />
     </View>
   );
@@ -88,22 +67,11 @@ const RadioButtonSheet = ( {
       insideModal={insideModal}
     >
       <View className="p-4 pt-2">
-        { taxon
-         && (
-           <Trans
-             i18nKey="Potential-disagreement-description"
-             values={{ commonName, scientificName }}
-             components={[<List2 />, <List2 className="italic" />]}
-           />
-         )}
+        {topDescriptionText}
         <View className="p-3">
           {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
         </View>
-        {taxon && (
-          <View className="mx-6 my-4">
-            <DisplayTaxon taxon={taxon} />
-          </View>
-        )}
+        {bottomComponent}
         <Button
           level="primary"
           onPress={( ) => confirm( checkedValue )}

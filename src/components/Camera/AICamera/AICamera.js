@@ -218,6 +218,7 @@ const AICamera = ( {
         showZoomButton={showZoomButton}
         takePhoto={handlePress}
         takePhotoOptions={takePhotoOptions}
+        takingPhoto={takingPhoto}
         toggleFlash={toggleFlash}
         zoomTextValue={zoomTextValue}
       />

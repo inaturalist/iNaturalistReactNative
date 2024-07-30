@@ -20,7 +20,7 @@ describe( "ObservationsView", () => {
     renderComponent(
       <ObservationsFlashList
         hideLoadingWheel={false}
-        isOnline
+        isConnected
       />
     );
 
@@ -32,7 +32,7 @@ describe( "ObservationsView", () => {
     renderComponent(
       <ObservationsFlashList
         hideLoadingWheel={false}
-        isOnline={false}
+        isConnected={false}
       />
     );
 
@@ -44,7 +44,7 @@ describe( "ObservationsView", () => {
     renderComponent(
       <ObservationsFlashList
         hideLoadingWheel
-        isOnline
+        isConnected
       />
     );
 
@@ -57,7 +57,7 @@ describe( "ObservationsView", () => {
       <ObservationsFlashList
         dataCanBeFetched
         hideLoadingWheel
-        isOnline
+        isConnected
         data={[]}
         status="loading"
       />
@@ -71,7 +71,7 @@ describe( "ObservationsView", () => {
     renderComponent(
       <ObservationsFlashList
         hideLoadingWheel
-        isOnline
+        isConnected
         data={[]}
       />
     );

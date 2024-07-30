@@ -74,12 +74,12 @@ const TaxonDetailsTitle = ( {
   return (
     <View className="flex-1 flex-col" pointerEvents="none">
       { taxon?.rank && (
-        <View className="flex-row items-center">
+        <View className="flex-row items-center mb-[8px]">
           <Heading4 className={optionalClasses}>
             {translatedRank( taxon.rank, t )}
           </Heading4>
           {taxon.rank_level <= 10 && (
-            <View className="ml-3">
+            <View className="ml-2.5">
               <SpeciesSeenCheckmark taxonId={taxon.id} />
             </View>
           )}
@@ -91,6 +91,7 @@ const TaxonDetailsTitle = ( {
         topTextComponent={Heading1}
         bottomTextComponent={Subheading1}
         scientificNameFirst={currentUser?.prefers_scientific_name_first}
+        prefersCommonNames={currentUser?.prefers_common_names}
       />
     </View>
   );

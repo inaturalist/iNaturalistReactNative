@@ -1,19 +1,17 @@
-// @flow
-
 import { TransparentCircleButton } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
+import { GestureResponderEvent } from "react-native";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  flipCamera: Function,
-  cameraFlipClasses?: string
+interface Props {
+  flipCamera: ( _event: GestureResponderEvent ) => void;
+  cameraFlipClasses?: string;
 }
 
 const CameraFlip = ( {
   flipCamera,
   cameraFlipClasses
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   return (

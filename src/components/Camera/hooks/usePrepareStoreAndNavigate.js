@@ -8,7 +8,7 @@ import {
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { log } from "sharedHelpers/logger";
-import { useUserLocation } from "sharedHooks";
+import { useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "usePrepareStoreAndNavigate" );
@@ -82,32 +82,28 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const observations = useStore( state => state.observations );
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
   const setCameraState = useStore( state => state.setCameraState );
-  const { userLocation } = useUserLocation( { untilAcc: 0, enabled: !!shouldFetchLocation } );
+  const { userLocation } = useWatchPosition( {
+    shouldFetchLocation
+  } );
 
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
-  const createObsWithCameraPhotos = useCallback( async ( localFilePaths, visionResult ) => {
+  const createObsWithCameraPhotos = useCallback( async localFilePaths => {
     const newObservation = await Observation.new( );
 
-    // location is needed for fetching online Suggestions on the next screen
+    // 20240709 amanda - this is temporary since we'll want to move this code to
+    // Suggestions after the changes to permissions github issue is complete, and
+    // we'll be able to updateObservationKeys on the observation there
     if ( userLocation?.latitude ) {
       newObservation.latitude = userLocation?.latitude;
       newObservation.longitude = userLocation?.longitude;
-      newObservation.positional_accuracy = userLocation?.accuracy;
+      newObservation.positional_accuracy = userLocation?.positional_accuracy;
     }
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( localFilePaths, {
         position: 0,
         local: true
       } );
-
-    if ( visionResult ) {
-      // make sure taxon id is stored as a number, not a string, from AICamera
-      visionResult.taxon.id = Number( visionResult.taxon.id );
-      newObservation.taxon = visionResult.taxon;
-      newObservation.owners_identification_from_vision = true;
-      newObservation.score = visionResult.score;
-    }
     setObservations( [newObservation] );
     if ( addPhotoPermissionResult !== "granted" ) return Promise.resolve( );
     return savePhotosToCameraGallery( cameraUris, addCameraRollUri );
@@ -116,9 +112,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     addPhotoPermissionResult,
     cameraUris,
     setObservations,
-    userLocation?.accuracy,
-    userLocation?.latitude,
-    userLocation?.longitude
+    userLocation
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async ( ) => {
@@ -146,21 +140,18 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     updateObservations
   ] );
 
-  const prepareStoreAndNavigate = useCallback( async ( visionResult = null ) => {
+  const prepareStoreAndNavigate = useCallback( async ( ) => {
     if ( !checkmarkTapped ) { return null; }
 
     setSavingPhoto( true );
     // save all to camera roll
 
-    // handle case where user backs out from ObsEdit -> Suggestions -> Camera
-    // and already has a taxon selected
-    // TODO this isn't checking for a selected taxon, and why is it checking
-    // for existing photos? If reached from addEvidence, you are always
-    // updating an existing obs
-    if ( addEvidence || currentObservation?.observationPhotos?.length > 0 ) {
+    if ( addEvidence ) {
       await updateObsWithCameraPhotos( );
     } else {
-      await createObsWithCameraPhotos( cameraUris, visionResult );
+      // when backing out from ObsEdit -> Suggestions -> Camera, create a
+      // new observation
+      await createObsWithCameraPhotos( cameraUris );
     }
     // When we've persisted photos to the observation, we don't need them in
     // state anymore
@@ -177,7 +168,6 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     cameraUris,
     checkmarkTapped,
     createObsWithCameraPhotos,
-    currentObservation,
     navigation,
     updateObsWithCameraPhotos,
     setCameraState,

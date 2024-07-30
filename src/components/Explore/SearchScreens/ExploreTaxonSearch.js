@@ -1,6 +1,8 @@
 // @flow
 
 import {
+  ActivityIndicator,
+  Body3,
   Heading4,
   INatIconButton,
   SearchBar,
@@ -40,17 +42,25 @@ const ExploreTaxonSearch = ( {
   const [taxonQuery, setTaxonQuery] = useState( "" );
 
   const iconicTaxa = useIconicTaxa( { reload: false } );
-  const taxonList = useTaxonSearch( taxonQuery );
+  const { taxonList, isLoading } = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
     updateTaxon( newTaxon );
     closeModal();
   }, [closeModal, updateTaxon] );
 
+  const resetTaxon = useCallback(
+    ( ) => {
+      updateTaxon( null );
+      closeModal();
+    },
+    [updateTaxon, closeModal]
+  );
+
   const renderItem = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
       first={index === 0}
-      handlePress={() => onTaxonSelected( taxon )}
+      handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
       hideInfoButton={hideInfoButton}
       onPressInfo={onPressInfo}
       showCheckmark={false}
@@ -80,6 +90,9 @@ const ExploreTaxonSearch = ( {
           accessibilityLabel={t( "SEARCH-TAXA" )}
         />
         <Heading4>{t( "SEARCH-TAXA" )}</Heading4>
+        <Body3 onPress={resetTaxon} className="absolute top-4 right-4">
+          {t( "Reset-verb" )}
+        </Body3>
       </View>
       <View
         className="bg-white px-6 pt-2 pb-8"
@@ -91,12 +104,20 @@ const ExploreTaxonSearch = ( {
           testID="SearchTaxon"
         />
       </View>
-      <FlatList
-        keyboardShouldPersistTaps="always"
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
+      {isLoading
+        ? (
+          <View className="p-4">
+            <ActivityIndicator size={40} />
+          </View>
+        )
+        : (
+          <FlatList
+            keyboardShouldPersistTaps="always"
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+          />
+        )}
     </ViewWrapper>
   );
 };

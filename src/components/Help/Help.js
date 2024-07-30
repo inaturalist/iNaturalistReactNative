@@ -19,7 +19,7 @@ const Help = ( ): Node => {
   const onHelpPressed = async ( ) => {
     const url = "https://help.inaturalist.org/";
     navigation.navigate( "FullPageWebView", {
-      title: t( "iNaturalist-Help" ),
+      title: t( "INATURALIST-HELP" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: false,
@@ -37,7 +37,7 @@ const Help = ( ): Node => {
   const onTeacherPressed = async ( ) => {
     const url = "https://www.inaturalist.org/pages/teacher's+guide";
     navigation.navigate( "FullPageWebView", {
-      title: t( "Teachers-Guide" ),
+      title: t( "TEACHERS-GUIDE" ),
       initialUrl: url,
       loggedIn: false,
       openLinksInBrowser: true
