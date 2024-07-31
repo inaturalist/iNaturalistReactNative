@@ -158,7 +158,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     updateObservations
   ] );
 
-  const prepareStoreAndNavigate = useCallback( async ( ) => {
+  const prepareStoreAndNavigate = useCallback( async visionResult => {
     if ( !checkmarkTapped ) { return null; }
 
     setSavingPhoto( true );
@@ -179,7 +179,8 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     }
     return navigation.push( "Suggestions", {
       entryScreen: "CameraWithDevice",
-      lastScreen: "CameraWithDevice"
+      lastScreen: "CameraWithDevice",
+      aiCameraSuggestion: visionResult
     } );
   }, [
     addEvidence,
