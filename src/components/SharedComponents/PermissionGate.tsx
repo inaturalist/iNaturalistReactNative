@@ -53,7 +53,7 @@ const PermissionGate = ( {
   body2,
   blockedPrompt = t( "Youve-denied-permission-prompt" ),
   buttonText = t( "GRANT-PERMISSION" ),
-  image = require( "images/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
+  image = require( "images/background/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
   onClose,
   testID
 }: Props ) => (

@@ -81,7 +81,7 @@ const GalleryContainerWithPermission = ( ) => (
     blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
     buttonText={t( "CHOOSE-PHOTOS" )}
     icon="gallery"
-    image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+    image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
   >
     <PhotoGallery />
   </PermissionGateContainer>
@@ -97,7 +97,7 @@ const SoundRecorderWithPermission = ( ) => (
       blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
       buttonText={t( "RECORD-SOUND" )}
       icon="microphone"
-      image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
+      image={require( "images/background/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
     >
       <SoundRecorder />
     </PermissionGateContainer>
