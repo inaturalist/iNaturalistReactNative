@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect
@@ -197,7 +196,6 @@ export default useUploadObservations = canUpload => {
     // fully stop uploads when cancel upload button is tapped
     if ( uploadStatus === UPLOAD_CANCELLED ) {
       abortController.abort( );
-      deactivateKeepAwake( );
     }
   }, [abortController, uploadStatus] );
 
