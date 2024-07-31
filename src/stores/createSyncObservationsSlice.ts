@@ -76,12 +76,9 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = set => 
       syncingStatus: BEGIN_MANUAL_SYNC
     } );
   } ),
-  startAutomaticSync: ( ) => set( ( ) => {
-    activateKeepAwake( );
-    return ( {
-      syncingStatus: BEGIN_AUTOMATIC_SYNC
-    } );
-  } ),
+  startAutomaticSync: ( ) => set( ( ) => ( {
+    syncingStatus: BEGIN_AUTOMATIC_SYNC
+  } ) ),
   completeSync: ( ) => set( ( ) => ( {
     currentDeleteCount: 1,
     deleteError: null,

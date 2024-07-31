@@ -141,7 +141,6 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
     if ( canSync ) {
       await fetchRemoteObservations( );
     }
-    deactivateKeepAwake( );
     completeSync( );
   }, [
     canSync,
