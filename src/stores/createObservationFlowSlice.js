@@ -25,26 +25,6 @@ const DEFAULT_STATE = {
   unsavedChanges: false
 };
 
-const removeObsPhotoFromObservation = ( currentObservation, uri ) => {
-  if ( _.isEmpty( currentObservation ) ) { return []; }
-  const updatedObservation = currentObservation;
-  const obsPhotos = Array.from( currentObservation?.observationPhotos || [] );
-  if ( obsPhotos.length > 0 ) {
-    // FYI, _.remove edits the array in place and returns the items you
-    // removed
-    _.remove(
-      obsPhotos,
-      obsPhoto => (
-        Photo.getLocalPhotoUri( obsPhoto.photo.localFilePath ) === uri
-        || obsPhoto.originalPhotoUri === uri
-      )
-    );
-    updatedObservation.observationPhotos = obsPhotos;
-    return [updatedObservation];
-  }
-  return [];
-};
-
 const removeObsSoundFromObservation = ( currentObservation, uri ) => {
   if ( _.isEmpty( currentObservation ) ) { return []; }
   const updatedObservation = currentObservation;
@@ -85,12 +65,11 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
 const createObservationFlowSlice = ( set, get ) => ( {
   ...DEFAULT_STATE,
   deletePhotoFromObservation: uri => set( state => {
-    const newObservations = removeObsPhotoFromObservation(
-      state.observations[state.currentObservationIndex],
-      uri
-    );
-    const newObservation = newObservations[state.currentObservationIndex];
-    if ( newObservation ) {
+    const newObservations = [...state.observations];
+    let newObservation = null;
+
+    if ( newObservations.length > 0 ) {
+      newObservation = newObservations[state.currentObservationIndex];
       const index = newObservation.observationPhotos.findIndex(
         op => ( Photo.getLocalPhotoUri( op.photo?.localFilePath ) || op.photo?.url ) === uri
       );

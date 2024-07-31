@@ -132,7 +132,7 @@ const Suggestions = ( {
     if ( isLoading ) { return null; }
     if ( !item && !usingOfflineSuggestions ) {
       return (
-        <Body1 className="mx-2">
+        <Body1 className="mx-2 p-4 text-center text-xl">
           {t( "We-are-not-confident-enough-to-make-a-top-ID-suggestion" )}
         </Body1>
       );
@@ -162,9 +162,10 @@ const Suggestions = ( {
     }
     return [{
       title: t( "TOP-ID-SUGGESTION" ),
-      data: topSuggestion
-        ? [topSuggestion]
-        : [],
+      // If there is a top suggestion we want to show it, but if there isn't
+      // we will still show the section with a notice saying there's nothing
+      // to show, so data can't be empty
+      data: [topSuggestion || null],
       renderItem: renderTopSuggestion
     }, {
       title: t( "OTHER-SUGGESTIONS" ),
