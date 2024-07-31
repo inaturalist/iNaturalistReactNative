@@ -1,4 +1,4 @@
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import { activateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { StateCreator } from "zustand";
 
 export const SYNC_PENDING = "sync-pending";
@@ -76,21 +76,15 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = set => 
       syncingStatus: BEGIN_MANUAL_SYNC
     } );
   } ),
-  startAutomaticSync: ( ) => set( ( ) => {
-    activateKeepAwake( );
-    return ( {
-      syncingStatus: BEGIN_AUTOMATIC_SYNC
-    } );
-  } ),
-  completeSync: ( ) => set( ( ) => {
-    deactivateKeepAwake( );
-    return ( {
-      currentDeleteCount: 1,
-      deleteError: null,
-      deleteQueue: [],
-      syncingStatus: SYNC_PENDING
-    } );
-  } )
+  startAutomaticSync: ( ) => set( ( ) => ( {
+    syncingStatus: BEGIN_AUTOMATIC_SYNC
+  } ) ),
+  completeSync: ( ) => set( ( ) => ( {
+    currentDeleteCount: 1,
+    deleteError: null,
+    deleteQueue: [],
+    syncingStatus: SYNC_PENDING
+  } ) )
 } );
 
 export default createSyncObservationsSlice;

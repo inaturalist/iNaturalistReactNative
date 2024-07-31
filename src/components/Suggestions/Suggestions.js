@@ -76,8 +76,12 @@ const Suggestions = ( {
   ), [onTaxonChosen, t, usingOfflineSuggestions] );
 
   const renderEmptyList = useCallback( ( ) => (
-    <SuggestionsEmpty isLoading={isLoading} hasTopSuggestion={!!topSuggestion} />
-  ), [isLoading, topSuggestion] );
+    <SuggestionsEmpty
+      hasTopSuggestion={!!topSuggestion}
+      isLoading={isLoading}
+      onTaxonChosen={onTaxonChosen}
+    />
+  ), [isLoading, topSuggestion, onTaxonChosen] );
 
   const renderFooter = useCallback( ( ) => (
     <SuggestionsFooter
