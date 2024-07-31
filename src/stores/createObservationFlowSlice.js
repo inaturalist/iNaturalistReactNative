@@ -148,8 +148,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
   updateComment: newComment => set( { comment: newComment } ),
   updateObservations: updatedObservations => set( state => ( {
     observations: updatedObservations.map( observationToJSON ),
-    currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
-    unsavedChanges: true
+    currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )
   } ) ),
   updateObservationKeys: keysAndValues => set( state => ( {
     observations: updateObservationKeysWithState( keysAndValues, state ),

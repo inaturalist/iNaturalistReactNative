@@ -82,9 +82,7 @@ const Header = ( {
     || ( unsynced && !unsavedChanges );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( params?.lastScreen === "ObsList" ) {
-      navToObsList( );
-    } else if ( params?.lastScreen === "Suggestions" ) {
+    if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
     } else if ( shouldNavigateBack ) {
       navigation.goBack( );
@@ -97,7 +95,6 @@ const Header = ( {
     }
   }, [
     currentObservation?.uuid,
-    navToObsList,
     shouldNavigateBack,
     navigation,
     params?.lastScreen,

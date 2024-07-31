@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
   BackButton,
   INatIconButton
@@ -63,9 +64,7 @@ const ObsDetailsHeader = ( {
               testID="ObsDetail.editButton"
               onPress={() => {
                 prepareObsEdit( localObservation );
-                navigation.navigate( "NoBottomTabStackNavigator", {
-                  screen: "ObsEdit"
-                } );
+                navigateToObsEdit( navigation );
               }}
               icon="pencil"
               color={!rightIconBlack
