@@ -41,6 +41,9 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
       } else {
         // $FlowIgnore
         params.page = 1;
+        // For the first page and only for the first page, get the bounds as
+        // well
+        params.return_bounds = true;
       }
       const response = await searchObservations( params, options );
       return response;
@@ -60,6 +63,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
     fetchNextPage,
     observations: flatten( observations ),
     status,
+    totalBounds: data?.pages?.[0].total_bounds,
     totalResults
   };
 };

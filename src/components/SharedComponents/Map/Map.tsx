@@ -41,8 +41,8 @@ interface Props {
   mapViewClassName?: string;
   minZoomLevel?: number;
   obscured?: boolean;
-  obsLatitude: number;
-  obsLongitude: number;
+  obsLatitude?: number;
+  obsLongitude?: number;
   onCurrentLocationPress?: () => void;
   onMapReady?: () => void;
   onPanDrag?: () => void;

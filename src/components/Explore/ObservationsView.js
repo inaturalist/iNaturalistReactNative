@@ -33,7 +33,11 @@ const ObservationsView = ( {
   updateCount
 }: Props ): Node => {
   const {
-    observations, isFetchingNextPage, fetchNextPage, status,
+    observations,
+    isFetchingNextPage,
+    fetchNextPage,
+    status,
+    totalBounds,
     totalResults
   } = useInfiniteExploreScroll( { params: queryParams } );
   const {
@@ -93,7 +97,7 @@ const ObservationsView = ( {
         status={status}
         testID="ExploreObservationsAnimatedList"
       />
-      <MapView observations={observations} queryParams={queryParams} />
+      <MapView observationBounds={totalBounds} queryParams={queryParams} />
     </View>
   );
 };
