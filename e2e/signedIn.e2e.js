@@ -179,10 +179,13 @@ describe( "Signed in user", () => {
     / 5. Delete the observations
     */
     await deleteObservationByUUID( uuid, username, { uploaded: true } );
-    // TODO test to make sure the exact observation we created was deleted.
-    // Testing for the empty list UI isn't adequate because other test runs
-    // happening in parallel might cause other observations to be there
-    const deletedObservationText = element( by.text( /1 observation deleted/ ) );
-    await waitFor( deletedObservationText ).toBeVisible().withTimeout( 10000 );
+    // It would be nice to test for the "1 observation deleted" status text in
+    // the toolbar, but that message appears ephemerally and sometimes this
+    // test doesn't pick it up on the Github runner. Since we created two
+    // observations, the upload prompt will be the stable status text at this
+    // point, and we can confirm deletion by testing for the absence of the
+    // list item for the observation we deleted.
+    await waitFor( element( by.text( /Upload 1 observation/ ) ) ).toBeVisible( ).withTimeout( 10000 );
+    await expect( obsListItem ).toBeNotVisible( );
   } );
 } );

@@ -123,6 +123,8 @@ const PhotoGallery = ( ): Node => {
         // Determine if we need to go back to ObsList or ObsDetails screen
       } else if ( params && params.previousScreen && params.previousScreen.name === "ObsDetails" ) {
         navigateToObsDetails( navigation, params.previousScreen.params.uuid );
+      } else if ( params?.cmonBack && navigation.canGoBack() ) {
+        navigation.goBack();
       } else {
         navToObsList();
       }
