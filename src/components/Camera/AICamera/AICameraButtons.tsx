@@ -68,6 +68,7 @@ const AICameraButtons = ( {
         disabled={!modelLoaded || takingPhoto}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
+        hasGalleryButton
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         showPrediction={showPrediction}
         showZoomButton={showZoomButton}
