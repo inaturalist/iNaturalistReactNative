@@ -1,5 +1,3 @@
-// @flow
-
 import inatjs from "inaturalistjs";
 import User from "realmModels/User.ts";
 
@@ -16,12 +14,12 @@ const PARAMS = {
   fields: MESSAGE_FIELDS
 };
 
-const searchMessages = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const searchMessages = async ( params: Object = {}, opts: Object = {} ): Promise<Object> => {
   try {
     const { results } = await inatjs.messages.search( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e as Error );
   }
 };
 
