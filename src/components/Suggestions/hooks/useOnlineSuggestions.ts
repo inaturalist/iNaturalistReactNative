@@ -2,7 +2,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
-import scoreImage from "api/computerVision";
+import scoreImage from "api/computerVision.ts";
 import {
   useCallback, useEffect, useState
 } from "react";

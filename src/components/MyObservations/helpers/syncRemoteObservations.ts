@@ -1,5 +1,5 @@
 import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import Observation from "realmModels/Observation";
 import { sleep } from "sharedHelpers/util";
 

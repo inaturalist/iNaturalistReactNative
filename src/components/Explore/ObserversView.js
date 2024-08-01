@@ -4,7 +4,7 @@ import { UserListItem } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
-import User from "realmModels/User";
+import User from "realmModels/User.ts";
 import { useInfiniteScroll, useTranslation } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";

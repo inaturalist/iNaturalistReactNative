@@ -6,7 +6,7 @@ import {
   isLoggedIn,
   registerUser,
   signOut
-} from "components/LoginSignUp/AuthenticationService";
+} from "components/LoginSignUp/AuthenticationService.ts";
 import nock from "nock";
 import faker from "tests/helpers/faker";
 

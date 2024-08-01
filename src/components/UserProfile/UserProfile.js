@@ -20,7 +20,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import User from "realmModels/User";
+import User from "realmModels/User.ts";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import {
   useAuthenticatedQuery,

@@ -1,5 +1,3 @@
-// @flow
-
 import inatjs from "inaturalistjs";
 import Taxon from "realmModels/Taxon";
 
@@ -13,13 +11,13 @@ const PARAMS = {
 };
 
 const scoreImage = async (
-  params: Object = {},
-  opts: Object = {}
-): Promise<?Object> => {
+  params = {},
+  opts = {}
+): Promise<Object> => {
   try {
     return inatjs.computervision.score_image( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e as Error );
   }
 };
 

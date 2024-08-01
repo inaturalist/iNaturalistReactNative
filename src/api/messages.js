@@ -1,7 +1,7 @@
 // @flow
 
 import inatjs from "inaturalistjs";
-import User from "realmModels/User";
+import User from "realmModels/User.ts";
 
 import handleError from "./error";
 
