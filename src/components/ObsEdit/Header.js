@@ -103,15 +103,13 @@ const Header = ( {
   ] );
 
   const renderBackButton = useCallback( ( ) => {
-    const extraPadding = {
-      marginStart: 15,
-      paddingVertical: 18,
-      paddingEnd: 24
+    const extraStart = {
+      marginStart: 30
     };
     return (
       <BackButton
         onPress={handleBackButtonPress}
-        customStyles={extraPadding}
+        customStyles={extraStart}
         testID="ObsEdit.BackButton"
       />
     );
