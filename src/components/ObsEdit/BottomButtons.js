@@ -27,7 +27,6 @@ const { useRealm } = RealmContext;
 
 type Props = {
   passesEvidenceTest: boolean,
-  passesIdentificationTest: boolean,
   observations: Array<Object>,
   currentObservation: Object,
   currentObservationIndex: number,
@@ -38,7 +37,6 @@ const logger = log.extend( "ObsEditBottomButtons" );
 
 const BottomButtons = ( {
   passesEvidenceTest,
-  passesIdentificationTest,
   currentObservation,
   currentObservationIndex,
   observations,
@@ -62,7 +60,10 @@ const BottomButtons = ( {
   const [buttonPressed, setButtonPressed] = useState( null );
   const [loading, setLoading] = useState( false );
 
-  const passesTests = passesEvidenceTest && passesIdentificationTest;
+  const hasIdentification = currentObservation?.taxon
+    && currentObservation?.taxon.rank_level !== 100;
+
+  const passesTests = passesEvidenceTest && hasIdentification;
 
   const writeExifToCameraRollPhotos = useCallback( async exif => {
     if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {

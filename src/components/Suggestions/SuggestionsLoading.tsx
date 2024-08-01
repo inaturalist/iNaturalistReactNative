@@ -28,7 +28,6 @@ const SuggestionsLoading = ( {
       <View className="pt-6" />
       <Suggestion
         accessibilityLabel={t( "Choose-taxon" )}
-        fetchRemote={false}
         suggestion={aiCameraSuggestion}
         onTaxonChosen={onTaxonChosen}
       />
