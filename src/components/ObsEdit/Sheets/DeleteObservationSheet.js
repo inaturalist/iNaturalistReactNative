@@ -44,9 +44,9 @@ const DeleteObservationSheet = ( {
     }
     if ( multipleObservations ) {
       updateObservations( observations.filter( o => o.uuid !== uuid ) );
+      handleClose( );
       return;
     }
-    handleClose( );
     navToObsList( );
   }, [
     handleClose,
