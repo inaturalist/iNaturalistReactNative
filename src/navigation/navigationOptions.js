@@ -8,8 +8,6 @@ import React from "react";
 import { View } from "react-native";
 import colors from "styles/tailwindColors";
 
-import ContextHeader from "./ContextHeader";
-
 const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
@@ -52,14 +50,6 @@ const showSimpleCustomHeader: Object = {
   headerShadowVisible: true
 };
 
-const showCustomHeader: Object = {
-  ...baseHeaderOptions,
-  header: ContextHeader,
-  headerShadowVisible: true,
-  alignStart: true,
-  headerLeft: () => <BackButton inCustomHeader />
-};
-
 const hideHeader = {
   headerShown: false
 };
@@ -87,7 +77,6 @@ export {
   hideDrawerHeaderLeft,
   hideHeader,
   removeBottomBorder,
-  showCustomHeader,
   showHeader,
   showLongHeader,
   showSimpleCustomHeader

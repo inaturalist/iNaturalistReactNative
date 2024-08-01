@@ -17,15 +17,7 @@ type Props = {
   testID?: string
 }
 
-// const REACT_NAVIGATION_BACK_BUTTON_STYLE = {
-// start: Platform.OS === "ios"
-//   ? -15
-//   : 0,
-// minWidth: 44,
-// minHeight: 44
-// };
-
-// lifted from
+// styling lifted from
 // https://github.com/react-navigation/react-navigation/blob/395410a7a751492ad846c7723dd33b55891173e1/packages/elements/src/Header/HeaderBackButton.tsx
 const REACT_NAVIGATION_BACK_BUTTON_STYLES = {
   container: {
@@ -92,13 +84,7 @@ const BackButton = ( {
         style={[
           REACT_NAVIGATION_BACK_BUTTON_STYLES.container
         ]}
-        // move backbutton to same start as in react-navigation
-        // style={[
-        //   !inCustomHeader && REACT_NAVIGATION_BACK_BUTTON_STYLE,
-        //   customStyles
-        // ]}
         testID={testID}
-        // tintColor={tintColor}
       />
     );
   }

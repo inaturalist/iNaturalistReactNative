@@ -40,12 +40,17 @@ const ContextHeader = ( {
       return options.headerLeft();
     }
 
+    const extraPadding = {
+      marginStart: 30
+    };
+
     return (
       back && (
         <BackButton
           color={colors.black}
           onPress={navigation.goBack}
           inCustomHeader
+          customStyles={extraPadding}
         />
       )
     );
@@ -83,7 +88,9 @@ const ContextHeader = ( {
             }
           )}
         >
-          {backButton}
+          <View className="pr-5 pt-1.5">
+            {backButton}
+          </View>
           {customTitleComponent
             ? (
               options.headerTitle()
