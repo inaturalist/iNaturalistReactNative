@@ -35,25 +35,21 @@ const ObsEdit = ( ): Node => {
   const [resetScreen, setResetScreen] = useState( false );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( false );
   const {
     hasPermissions: hasLocationPermission,
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission
   } = useLocationPermission( );
 
+  const shouldFetchLocation = hasLocationPermission
+    && shouldFetchObservationLocation( currentObservation );
+
   const {
     isFetchingLocation,
+    stopWatch,
+    subscriptionId,
     userLocation
   } = useWatchPosition( { shouldFetchLocation } );
-
-  // Note the intended functionality is *not* to request location permission
-  // until the user taps the missing location
-  useEffect( ( ) => {
-    if ( hasLocationPermission && shouldFetchObservationLocation( currentObservation ) ) {
-      setShouldFetchLocation( true );
-    }
-  }, [currentObservation, hasLocationPermission] );
 
   useEffect( ( ) => {
     if ( userLocation?.latitude ) {
@@ -61,24 +57,15 @@ const ObsEdit = ( ): Node => {
     }
   }, [userLocation, updateObservationKeys] );
 
-  useEffect( ( ) => {
-    // this is needed to make sure watchPosition is called when a user
-    // navigates to ObsEdit a second time during an app session,
-    // otherwise, state will indicate that fetching is not needed
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
-      setShouldFetchLocation( false );
-    } );
-    return unsubscribe;
-  }, [navigation] );
-
   const navToLocationPicker = useCallback( ( ) => {
+    stopWatch( subscriptionId );
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );
-  }, [navigation] );
+  }, [stopWatch, subscriptionId, navigation] );
 
   const onLocationPress = ( ) => {
     // If we have location permissions, navigate to the location picker
     if ( hasLocationPermission ) {
-      navToLocationPicker();
+      navToLocationPicker( );
     } else {
       // If we don't have location permissions, request them
       requestLocationPermission( );
