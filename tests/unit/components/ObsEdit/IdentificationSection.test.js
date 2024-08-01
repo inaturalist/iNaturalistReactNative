@@ -35,7 +35,6 @@ const renderIdentificationSection = ( obs, index = 0, resetState = false ) => re
   <IdentificationSection
     currentObservation={obs[index]}
     observations={obs}
-    passesIdentificationTest
     resetState={resetState}
   />
 );

@@ -28,7 +28,7 @@ const mockTaxaList = [
 
 jest.mock( "sharedHooks/useTaxonSearch", () => ( {
   __esModule: true,
-  default: ( ) => ( { taxonList: mockTaxaList, isLoading: false } )
+  default: ( ) => ( { taxaSearchResults: mockTaxaList, isLoading: false } )
 } ) );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
@@ -70,7 +70,7 @@ describe( "TaxonSearch", ( ) => {
 
   it( "show taxon search results", async ( ) => {
     inatjs.taxa.search.mockResolvedValue(
-      makeResponse( { taxonList: mockTaxaList, isLoading: false } )
+      makeResponse( { taxaSearchResults: mockTaxaList, isLoading: false } )
     );
     renderComponent( <TaxonSearch /> );
     const input = screen.getByTestId( "SearchTaxon" );

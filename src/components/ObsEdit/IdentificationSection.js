@@ -23,8 +23,6 @@ type Props = {
   currentObservation: Object,
   resetScreen: boolean,
   setResetScreen: Function,
-  passesIdentificationTest: boolean,
-  setPassesIdentificationTest: Function,
   updateObservationKeys: Function
 }
 
@@ -32,8 +30,6 @@ const IdentificationSection = ( {
   currentObservation,
   resetScreen,
   setResetScreen,
-  passesIdentificationTest,
-  setPassesIdentificationTest,
   updateObservationKeys
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -71,12 +67,6 @@ const IdentificationSection = ( {
     hasPhotos,
     navigation
   ] );
-
-  useEffect( ( ) => {
-    if ( hasIdentification && !passesIdentificationTest ) {
-      setPassesIdentificationTest( true );
-    }
-  }, [hasIdentification, setPassesIdentificationTest, passesIdentificationTest] );
 
   useEffect( ( ) => {
     // by adding resetScreen as a key in renderIconicTaxonChooser,
@@ -152,6 +142,7 @@ const IdentificationSection = ( {
           <TaxonResult
             accessibilityLabel={t( "Edits-this-observations-taxon" )}
             asListItem={false}
+            fetchRemote={false}
             handleTaxonOrEditPress={navToSuggestions}
             handleRemovePress={removeTaxon}
             hideInfoButton

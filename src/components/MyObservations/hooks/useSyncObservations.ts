@@ -46,7 +46,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   const handleRemoteDeletion = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteRemoteObservation( params, optsWithAuth ),
     {
-      onSuccess: ( ) => console.log( "Remote observation deleted" ),
+      onSuccess: ( ) => undefined,
       onError: deleteObservationError => {
         setDeletionError( deleteObservationError?.message );
         throw deleteObservationError;

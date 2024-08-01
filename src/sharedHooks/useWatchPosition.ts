@@ -104,6 +104,8 @@ const useWatchPosition = ( options: {
 
   return {
     isFetchingLocation,
+    stopWatch,
+    subscriptionId,
     userLocation
   };
 };

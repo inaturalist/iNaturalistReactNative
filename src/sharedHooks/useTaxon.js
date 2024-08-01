@@ -32,6 +32,8 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
       // Sync if the local copy hasn't been synced in a week
       localTaxon._synced_at && ( Date.now( ) - localTaxon._synced_at > ONE_WEEK_MS )
     )
+    // Sync if missing a common name or default photo from being saved in Realm while offline
+    || ( !localTaxon.preferred_common_name || !localTaxon.default_photo?.url )
   );
   const enabled = !!( canFetchTaxon && fetchRemote && localTaxonNeedsSync );
 
@@ -40,7 +42,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
     isLoading
   } = useAuthenticatedQuery(
     ["fetchTaxon", taxonId],
-    optsWithAuth => fetchTaxon( taxonId, { fields: Taxon.TAXON_FIELDS }, optsWithAuth ),
+    optsWithAuth => fetchTaxon( taxonId, { fields: Taxon.SCORE_IMAGE_FIELDS }, optsWithAuth ),
     {
       enabled
     }
