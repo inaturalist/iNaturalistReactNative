@@ -99,7 +99,6 @@ const BottomButtons = ( {
     }
 
     if ( observations.length === 1 ) {
-      logger.info( "navigating back to MyObs" );
       // navigate to ObsList and start upload with uuid
       navigation.navigate( "TabNavigator", {
         screen: "TabStackNavigator",
@@ -167,7 +166,6 @@ const BottomButtons = ( {
   ] );
 
   const handlePress = useCallback( type => {
-    logger.info( `tapped ${type}` );
     if ( showMissingEvidence( ) ) { return; }
     setLoading( true );
     setButtonPressed( type );
