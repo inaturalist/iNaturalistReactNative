@@ -3,14 +3,19 @@ import {
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
+import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useState
 } from "react";
+import Taxon from "realmModels/Taxon";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery
 } from "sharedHooks";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
+
+const { useRealm } = RealmContext;
 
 type OnlineSuggestionsResponse = {
   dataUpdatedAt: Date,
@@ -25,6 +30,7 @@ type OnlineSuggestionsResponse = {
 const useOnlineSuggestions = (
   options: Object
 ): OnlineSuggestionsResponse => {
+  const realm = useRealm( );
   const {
     dispatch,
     flattenedUploadParams,
@@ -84,13 +90,37 @@ const useOnlineSuggestions = (
     }
   }, [isConnected, dispatch] );
 
+  const saveTaxaToRealm = useCallback( ( ) => {
+    // we're already getting all this taxon information anytime we make this API
+    // call, so we might as well store it in realm immediately instead of waiting
+    // for useTaxon to fetch individual taxon results
+    const mappedTaxa = onlineSuggestions?.results?.map(
+      suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm )
+    );
+    if ( onlineSuggestions?.common_ancestor ) {
+      const mappedCommonAncestor = Taxon
+        .mapApiToRealm( onlineSuggestions?.common_ancestor.taxon, realm );
+      mappedTaxa.push( mappedCommonAncestor );
+    }
+    safeRealmWrite( realm, ( ) => {
+      mappedTaxa.forEach( remoteTaxon => {
+        realm.create(
+          "Taxon",
+          { ...remoteTaxon, _synced_at: new Date( ) },
+          "modified"
+        );
+      } );
+    }, "saving remote taxon from onlineSuggestions" );
+  }, [realm, onlineSuggestions] );
+
   useEffect( ( ) => {
     if ( onlineSuggestions !== undefined ) {
+      saveTaxaToRealm( );
       dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-fetched" } );
     } else if ( error ) {
       dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "online-error" } );
     }
-  }, [dispatch, onlineSuggestions, error] );
+  }, [dispatch, onlineSuggestions, error, saveTaxaToRealm] );
 
   const queryObject = {
     dataUpdatedAt,

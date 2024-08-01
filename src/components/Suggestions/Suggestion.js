@@ -12,7 +12,6 @@ import {
 
 type Props = {
   accessibilityLabel: string,
-  fetchRemote: boolean,
   onTaxonChosen: Function,
   suggestion: Object,
   isTopSuggestion?: boolean
@@ -20,7 +19,6 @@ type Props = {
 
 const Suggestion = ( {
   accessibilityLabel,
-  fetchRemote,
   suggestion,
   onTaxonChosen,
   isTopSuggestion = false
@@ -32,7 +30,7 @@ const Suggestion = ( {
       ? convertOfflineScoreToConfidence( suggestion?.score )
       : convertOnlineScoreToConfidence( suggestion?.combined_score )}
     confidencePosition="text"
-    fetchRemote={fetchRemote}
+    fetchRemote={false}
     first
     isTopSuggestion={isTopSuggestion}
     handleCheckmarkPress={onTaxonChosen}

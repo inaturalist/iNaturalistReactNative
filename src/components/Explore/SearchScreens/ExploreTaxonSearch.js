@@ -42,7 +42,7 @@ const ExploreTaxonSearch = ( {
   const [taxonQuery, setTaxonQuery] = useState( "" );
 
   const iconicTaxa = useIconicTaxa( { reload: false } );
-  const { taxonList, isLoading } = useTaxonSearch( taxonQuery );
+  const { taxaSearchResults, isLoading } = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
     updateTaxon( newTaxon );
@@ -75,7 +75,7 @@ const ExploreTaxonSearch = ( {
 
   let data = iconicTaxa;
   if ( taxonQuery.length > 0 ) {
-    data = taxonList;
+    data = taxaSearchResults;
   }
 
   return (

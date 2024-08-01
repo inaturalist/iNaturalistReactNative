@@ -31,7 +31,6 @@ const ObsEdit = ( ): Node => {
   const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
-  const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
@@ -113,9 +112,7 @@ const ObsEdit = ( ): Node => {
                 />
                 <IdentificationSection
                   currentObservation={currentObservation}
-                  passesIdentificationTest={passesIdentificationTest}
                   resetScreen={resetScreen}
-                  setPassesIdentificationTest={setPassesIdentificationTest}
                   setResetScreen={setResetScreen}
                   updateObservationKeys={updateObservationKeys}
                 />
@@ -133,7 +130,6 @@ const ObsEdit = ( ): Node => {
         currentObservationIndex={currentObservationIndex}
         observations={observations}
         passesEvidenceTest={passesEvidenceTest}
-        passesIdentificationTest={passesIdentificationTest}
         setCurrentObservationIndex={setCurrentObservationIndex}
       />
       {renderLocationPermissionGate( {
