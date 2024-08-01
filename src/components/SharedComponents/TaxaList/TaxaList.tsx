@@ -7,7 +7,9 @@ import { useIconicTaxa } from "sharedHooks";
 
 interface Props {
   isLoading: boolean;
-  taxa: {}[];
+  taxa: {
+    id: string;
+  }[];
   renderItem: () => React.JSX.Element;
   taxonQuery: string;
   refetch: () => void;
