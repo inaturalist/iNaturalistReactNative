@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -33,6 +33,7 @@ const ObsEdit = ( ): Node => {
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
+  const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
   const {
     hasPermissions: hasLocationPermission,
@@ -70,6 +71,8 @@ const ObsEdit = ( ): Node => {
       requestLocationPermission( );
     }
   };
+
+  if ( !isFocused ) return null;
 
   // This should never, ever happen
   if ( currentObservation?.user && currentUser && currentUser.id !== currentObservation.user.id ) {
