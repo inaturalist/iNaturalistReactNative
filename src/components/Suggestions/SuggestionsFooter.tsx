@@ -4,10 +4,12 @@
 import {
   Body1,
   Body3,
+  Body4,
   Button,
   Heading4
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { Suggestions } from "components/Suggestions/SuggestionsContainer";
 import type { Node } from "react";
 import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
@@ -16,12 +18,23 @@ import { useDebugMode, useTranslation } from "sharedHooks";
 import Attribution from "./Attribution";
 
 type Props = {
-  debugData: Object,
+  debugData: {
+    selectedPhotoUri: string,
+    onlineSuggestionsUpdatedAt: Date,
+    timedOut: boolean,
+    shouldUseEvidenceLocation: boolean,
+    topSuggestionType: string,
+    onlineSuggestions: [],
+    offlineSuggestions: [],
+    usingOfflineSuggestions: boolean,
+    onlineSuggestionsError: Error
+  },
   handleSkip: Function,
   hideLocationToggleButton: Function,
   hideSkip?: boolean,
   observers: Array<string>,
   shouldUseEvidenceLocation: boolean,
+  suggestions: Suggestions,
   toggleLocation: Function
 };
 
@@ -32,6 +45,7 @@ const SuggestionsFooter = ( {
   hideSkip,
   observers,
   shouldUseEvidenceLocation,
+  suggestions,
   toggleLocation
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -84,6 +98,24 @@ const SuggestionsFooter = ( {
           <Body3 className="text-white">Num offline suggestions: {JSON.stringify( debugData?.offlineSuggestions?.length )}</Body3>
           <Body3 className="text-white">Using offline suggestions: {JSON.stringify( debugData?.usingOfflineSuggestions )}</Body3>
           <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
+          <Body3 className="text-white">Scores:</Body3>
+          <Body4>
+            {suggestions?.topSuggestion?.taxon.name}: {suggestions?.topSuggestion?.score}
+          </Body4>
+          { suggestions?.otherSuggestions?.map( suggestion => (
+            <Body4 key={`sugg-debug-${suggestion.taxon.id}`}>
+              {suggestion.taxon.name}: {suggestion.score}
+            </Body4>
+          ) ) }
+          <Body3 className="text-white">Combined Scores:</Body3>
+          <Body4>
+            {suggestions?.topSuggestion?.taxon.name}: {suggestions?.topSuggestion?.combined_score}
+          </Body4>
+          { suggestions?.otherSuggestions?.map( suggestion => (
+            <Body4 key={`sugg-debug-${suggestion.taxon.id}`}>
+              {suggestion.taxon.name}: {suggestion.combined_score}
+            </Body4>
+          ) ) }
         </View>
       )}
     </View>
