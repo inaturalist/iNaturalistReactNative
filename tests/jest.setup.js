@@ -14,6 +14,7 @@ import mockBackHandler from "react-native/Libraries/Utilities/__mocks__/BackHand
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
+import { configure } from "reassure";
 import mockFaker from "tests/helpers/faker";
 import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
 import * as mockPhotoImporter from "tests/mocks/react-native-image-picker";
@@ -27,6 +28,8 @@ import {
   mockUseCameraDevice,
   mockUseCameraFormat
 } from "./vision-camera/vision-camera";
+
+configure( { testingLibrary: "react-native" } );
 
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
 // instead use console.logs for tests
