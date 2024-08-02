@@ -57,7 +57,7 @@ const ObsDetailsHeader = ( {
       ]}
     >
       <View className="left-4 top-4">
-        <BackButton color="white" inCustomHeader />
+        <BackButton color="white" inCustomHeader testID="ObsDetails.BackButton" />
       </View>
       <View className="right-4">
         {

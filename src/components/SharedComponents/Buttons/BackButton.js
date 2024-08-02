@@ -51,31 +51,33 @@ const BackButton = ( {
   const tintColor = color || colors.black;
   const { t } = useTranslation( );
 
+  const imageStyles = [
+    !inCustomHeader && REACT_NAVIGATION_BACK_BUTTON_STYLES.icon,
+    Boolean( tintColor ) && { tintColor },
+    customStyles
+  ];
+
   const backImage = ( ) => (
     <Image
-      testID="Image.BackButton"
-      source={require( "images/backIcons/back-icon.png" )}
-      tintColor={tintColor}
+      accessibilityLabel={t( "Go-back" )}
       accessibilityIgnoresInvertColors
-      style={[
-        !inCustomHeader && REACT_NAVIGATION_BACK_BUTTON_STYLES.icon,
-        Boolean( tintColor ) && { tintColor },
-        customStyles
-      ]}
-      resizeMode="contain"
       fadeDuration={0}
+      resizeMode="contain"
+      source={require( "images/backIcons/back-icon.png" )}
+      style={imageStyles}
+      testID="Image.BackButton"
     />
   );
 
   if ( navigation?.canGoBack( ) ) {
     return (
       <HeaderBackButton
-        accessibilityLabel={t( "Go-back" )}
         backImage={backImage}
         labelVisible={false}
         onPress={onPress || navigation.goBack}
         style={REACT_NAVIGATION_BACK_BUTTON_STYLES.container}
         testID={testID}
+        tintColor={tintColor}
       />
     );
   }

@@ -172,7 +172,7 @@ describe( "Signed in user", () => {
     await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "bottom" );
     const comment = element( by.text( "This is a comment" ) );
     await waitFor( comment ).toBeVisible().withTimeout( 10000 );
-    await element( by.label( "Go back" ) ).tap( );
+    await element( by.id( "ObsDetails.BackButton" ) ).tap( );
     await waitFor( username ).toBeVisible( ).withTimeout( 10000 );
 
     /*
