@@ -80,7 +80,6 @@ const PhotoSharing = ( ): Node => {
         } ) ),
         firstObservationDefaults
       } );
-      console.log( "photo sharing and landing group" );
       navigation.navigate( "NoBottomTabStackNavigator", { screen: "GroupPhotos" } );
     }
   }, [
