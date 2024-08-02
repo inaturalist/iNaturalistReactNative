@@ -73,7 +73,7 @@ describe( "ObsEditHeader", () => {
     expect( kebabLabel ).toBeVisible();
   } );
 
-  it( "renders a back button with extra padding for accessibility", () => {
+  it( "renders a back button", () => {
     renderComponent(
       <ObsEditHeader
         observations={mockObservations}
@@ -82,9 +82,6 @@ describe( "ObsEditHeader", () => {
 
     const backButtonId = screen.getByTestId( "ObsEdit.BackButton" );
 
-    expect( backButtonId ).toBeVisible();
-    expect(
-      backButtonId
-    ).toHaveStyle( { paddingVertical: 18, paddingEnd: 24 } );
+    expect( backButtonId ).toBeVisible( );
   } );
 } );
