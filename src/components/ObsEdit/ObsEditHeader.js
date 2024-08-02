@@ -22,7 +22,7 @@ type Props = {
   currentObservation: Object
 }
 
-const Header = ( {
+const ObsEditHeader = ( {
   observations,
   currentObservation
 }: Props ): Node => {
@@ -103,15 +103,13 @@ const Header = ( {
   ] );
 
   const renderBackButton = useCallback( ( ) => {
-    const extraPadding = {
-      marginStart: 15,
-      paddingVertical: 18,
-      paddingEnd: 24
+    const extraStart = {
+      marginStart: 15
     };
     return (
       <BackButton
         onPress={handleBackButtonPress}
-        customStyles={extraPadding}
+        customStyles={extraStart}
         testID="ObsEdit.BackButton"
       />
     );
@@ -198,4 +196,4 @@ const Header = ( {
   );
 };
 
-export default Header;
+export default ObsEditHeader;

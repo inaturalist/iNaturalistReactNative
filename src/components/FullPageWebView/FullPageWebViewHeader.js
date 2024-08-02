@@ -8,10 +8,8 @@ import type { Node } from "react";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { dropShadow } from "styles/global";
-import colors from "styles/tailwindColors";
 
 type Props = {
-  navigation: Object,
   route: Object,
   options: Object
 };
@@ -26,7 +24,6 @@ const BACK_BUTTON_STYLE = {
 };
 
 const FullPageWebViewHeader = ( {
-  navigation,
   route,
   options
 }: Props ): Node => {
@@ -67,8 +64,6 @@ const FullPageWebViewHeader = ( {
         )}
       >
         <BackButton
-          color={colors.black}
-          onPress={navigation.goBack}
           inCustomHeader
           customStyles={BACK_BUTTON_STYLE}
         />

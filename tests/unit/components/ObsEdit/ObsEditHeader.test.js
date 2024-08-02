@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import Header from "components/ObsEdit/Header";
+import ObsEditHeader from "components/ObsEdit/ObsEditHeader";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -10,10 +10,10 @@ const mockObservations = [
   factory( "LocalObservation" )
 ];
 
-describe( "Header", () => {
+describe( "ObsEditHeader", () => {
   it( "has no accessibility errors", () => {
     const button = (
-      <Header
+      <ObsEditHeader
         observations={mockObservations}
       />
     );
@@ -23,7 +23,7 @@ describe( "Header", () => {
 
   it( "renders a header title with 1 observation", async () => {
     renderComponent(
-      <Header
+      <ObsEditHeader
         observations={[mockObservations[1]]}
       />
     );
@@ -35,7 +35,7 @@ describe( "Header", () => {
 
   it( "renders a header title with multiple observations", async () => {
     renderComponent(
-      <Header
+      <ObsEditHeader
         observations={mockObservations}
       />
     );
@@ -50,7 +50,7 @@ describe( "Header", () => {
       _created_at: faker.date.past( )
     } );
     renderComponent(
-      <Header
+      <ObsEditHeader
         currentObservation={observation}
         observations={[observation]}
       />
@@ -63,7 +63,7 @@ describe( "Header", () => {
 
   it( "renders a kebab menu", async () => {
     renderComponent(
-      <Header
+      <ObsEditHeader
         observations={mockObservations}
       />
     );
@@ -73,18 +73,15 @@ describe( "Header", () => {
     expect( kebabLabel ).toBeVisible();
   } );
 
-  it( "renders a back button with extra padding for accessibility", () => {
+  it( "renders a back button", () => {
     renderComponent(
-      <Header
+      <ObsEditHeader
         observations={mockObservations}
       />
     );
 
     const backButtonId = screen.getByTestId( "ObsEdit.BackButton" );
 
-    expect( backButtonId ).toBeVisible();
-    expect(
-      backButtonId
-    ).toHaveStyle( { paddingVertical: 18, paddingEnd: 24 } );
+    expect( backButtonId ).toBeVisible( );
   } );
 } );

@@ -14,9 +14,9 @@ import colors from "styles/tailwindColors";
 
 import BottomButtons from "./BottomButtons";
 import EvidenceSectionContainer from "./EvidenceSectionContainer";
-import Header from "./Header";
 import IdentificationSection from "./IdentificationSection";
 import MultipleObservationsArrows from "./MultipleObservationsArrows";
+import ObsEditHeader from "./ObsEditHeader";
 import OtherDataSection from "./OtherDataSection";
 
 const DROP_SHADOW = getShadowForColor( colors.black, {
@@ -81,7 +81,7 @@ const ObsEdit = ( ): Node => {
   return (
     <>
       <ViewWrapper testID="obs-edit">
-        <Header
+        <ObsEditHeader
           currentObservation={currentObservation}
           observations={observations}
         />
