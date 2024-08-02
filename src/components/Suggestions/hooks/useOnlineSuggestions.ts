@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision.ts";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback, useEffect, useState
 } from "react";
