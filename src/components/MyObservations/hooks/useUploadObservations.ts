@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect
+  useCallback, useEffect, useMemo
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
@@ -10,7 +10,6 @@ import {
 } from "sharedHelpers/emitUploadProgress";
 import uploadObservation, { handleUploadError } from "sharedHelpers/uploadObservation";
 import {
-  useLocalObservations,
   useTranslation
 } from "sharedHooks";
 import {
@@ -49,7 +48,8 @@ export default useUploadObservations = canUpload => {
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
 
-  const { unsyncedUuids } = useLocalObservations( );
+  const unsyncedList = Observation.filterUnsyncedObservations( realm );
+  const unsyncedUuids = useMemo( ( ) => unsyncedList.map( o => o.uuid ), [unsyncedList] );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );

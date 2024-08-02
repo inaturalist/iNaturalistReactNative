@@ -19,7 +19,6 @@ const useLocalObservations = ( ): Object => {
   // views from rendering when they have focus.
   const stagedObservationList = useRef( [] );
   const [observationList, setObservationList] = useState( [] );
-  const [unsyncedUuids, setUnsyncedUuids] = useState( [] );
 
   const realm = useRealm( );
 
@@ -55,12 +54,10 @@ const useLocalObservations = ( ): Object => {
       stagedObservationList.current = [...obsNotFlaggedForDeletion];
 
       const unsynced = Observation.filterUnsyncedObservations( realm );
-      const uploadUuids = unsynced.map( o => o.uuid );
       setNumUnuploadedObservations( unsynced.length );
 
       if ( isFocused ) {
         setObservationList( stagedObservationList.current );
-        setUnsyncedUuids( uploadUuids );
       }
     } );
     // eslint-disable-next-line consistent-return
@@ -71,8 +68,7 @@ const useLocalObservations = ( ): Object => {
   }, [isFocused, realm, setNumUnuploadedObservations] );
 
   return {
-    observationList,
-    unsyncedUuids
+    observationList
   };
 };
 
