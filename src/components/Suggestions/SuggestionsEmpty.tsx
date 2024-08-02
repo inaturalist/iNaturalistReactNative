@@ -1,23 +1,23 @@
 import { useRoute } from "@react-navigation/native";
 import {
-  ActivityIndicator,
   Body1
 } from "components/SharedComponents";
-import {
-  View
-} from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
+import SuggestionsLoading from "./SuggestionsLoading";
+
 interface Props {
   hasTopSuggestion?: boolean,
-  isLoading: boolean
+  isLoading: boolean,
+  onTaxonChosen: Function
 }
 
 const SuggestionsEmpty = ( {
   hasTopSuggestion = false,
-  isLoading
+  isLoading,
+  onTaxonChosen
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
@@ -27,10 +27,9 @@ const SuggestionsEmpty = ( {
 
   if ( isLoading ) {
     return (
-      <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
-        <ActivityIndicator size={50} />
-        <Body1 className="pt-6">{t( "iNaturalist-is-loading-ID-suggestions" )}</Body1>
-      </View>
+      <SuggestionsLoading
+        onTaxonChosen={onTaxonChosen}
+      />
     );
   }
   if ( !hasTopSuggestion ) {

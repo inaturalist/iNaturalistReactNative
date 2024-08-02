@@ -1,3 +1,4 @@
+import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import _ from "lodash";
 import { RealmObservation } from "realmModels/types.d.ts";
 import { StateCreator } from "zustand";
@@ -106,10 +107,19 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     },
     multiError: error
   } ) ),
-  stopAllUploads: ( ) => set( { ...DEFAULT_STATE, uploadStatus: UPLOAD_CANCELLED } ),
-  completeUploads: ( ) => set( ( ) => ( {
-    uploadStatus: UPLOAD_COMPLETE
-  } ) ),
+  stopAllUploads: ( ) => set( ( ) => {
+    deactivateKeepAwake( );
+    return ( {
+      ...DEFAULT_STATE,
+      uploadStatus: UPLOAD_CANCELLED
+    } );
+  } ),
+  completeUploads: ( ) => set( ( ) => {
+    deactivateKeepAwake( );
+    return ( {
+      uploadStatus: UPLOAD_COMPLETE
+    } );
+  } ),
   updateTotalUploadProgress: ( uuid, increment ) => set( state => {
     const {
       currentUpload,

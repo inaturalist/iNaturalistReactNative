@@ -27,7 +27,7 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 const TaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
-  const { taxonList } = useTaxonSearch( taxonQuery );
+  const { taxaSearchResults } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
   useNavigateWithTaxonSelected(
@@ -65,10 +65,9 @@ const TaxonSearch = ( ): Node => {
           autoFocus={taxonQuery === ""}
         />
       </View>
-
       <FlatList
         keyboardShouldPersistTaps="always"
-        data={taxonList}
+        data={taxaSearchResults}
         renderItem={renderTaxonResult}
         keyExtractor={item => item.id}
         ListFooterComponent={renderFooter}

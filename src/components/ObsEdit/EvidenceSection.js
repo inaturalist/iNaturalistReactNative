@@ -86,7 +86,7 @@ const EvidenceSection = ( {
   };
 
   return (
-    <View className="mx-6">
+    <View className="mx-6 mt-4">
       {showAddEvidenceSheet && (
         <AddEvidenceSheet
           disableAddingMoreEvidence={

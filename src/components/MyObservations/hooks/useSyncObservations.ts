@@ -1,6 +1,7 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
+import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
@@ -45,7 +46,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   const handleRemoteDeletion = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteRemoteObservation( params, optsWithAuth ),
     {
-      onSuccess: ( ) => console.log( "Remote observation deleted" ),
+      onSuccess: ( ) => undefined,
       onError: deleteObservationError => {
         setDeletionError( deleteObservationError?.message );
         throw deleteObservationError;
@@ -162,6 +163,8 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
     // being offline, so we're not checking internet connectivity here
     if ( loggedIn ) {
       await uploadObservations( );
+    } else {
+      deactivateKeepAwake( );
     }
     completeSync( );
   }, [

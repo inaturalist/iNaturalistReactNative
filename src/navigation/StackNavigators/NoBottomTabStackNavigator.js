@@ -14,11 +14,10 @@ import PermissionGateContainer, {
 } from "components/SharedComponents/PermissionGateContainer.tsx";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
+import ContextHeader from "navigation/ContextHeader";
 import {
   hideHeader,
-  hideHeaderLeft,
-  showCustomHeader,
-  showHeader
+  hideHeaderLeft
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -40,10 +39,9 @@ const CAMERA_SCREEN_OPTIONS = {
 };
 
 const GROUP_PHOTOS_OPTIONS = {
-  ...showHeader,
-  ...showCustomHeader,
-  lazy: true,
-  headerShadowVisible: false
+  header: ContextHeader,
+  alignStart: true,
+  lazy: true
 };
 
 const SOUND_RECORDER_OPTIONS = {

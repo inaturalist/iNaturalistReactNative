@@ -152,11 +152,11 @@ export enum PLACE_MODE {
   MAP_AREA = "MAP_AREA"
 }
 
-interface MapBoundaries {
-  swlat?: LatLng["latitude"];
-  swlng?: LatLng["longitude"];
-  nelat?: LatLng["latitude"];
-  nelng?: LatLng["longitude"];
+export interface MapBoundaries {
+  swlat: LatLng["latitude"];
+  swlng: LatLng["longitude"];
+  nelat: LatLng["latitude"];
+  nelng: LatLng["longitude"];
 }
 
 interface PLACE {

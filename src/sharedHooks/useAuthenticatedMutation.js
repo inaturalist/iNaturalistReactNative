@@ -2,7 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import handleError from "api/error";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 
 // Should work like React Query's useMutation except it calls the queryFunction
 // with an object that includes the JWT

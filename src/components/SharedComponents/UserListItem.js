@@ -7,7 +7,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import User from "realmModels/User";
+import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
 
 type Props = {

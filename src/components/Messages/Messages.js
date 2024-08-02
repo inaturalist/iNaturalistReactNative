@@ -1,6 +1,6 @@
 // @flow
 
-import searchMessages from "api/messages";
+import searchMessages from "api/messages.ts";
 import { Body3, Tabs, ViewWrapper } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";

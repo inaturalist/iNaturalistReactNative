@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
@@ -25,12 +26,7 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
     const { uuid } = observation;
     if ( unsynced ) {
       prepareObsEdit( observation );
-      navigation.navigate( "NoBottomTabStackNavigator", {
-        screen: "ObsEdit",
-        params: {
-          lastScreen: "ObsList"
-        }
-      } );
+      navigateToObsEdit( navigation );
     } else {
       navigation.push( "ObsDetails", { uuid } );
     }

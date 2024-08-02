@@ -12,7 +12,7 @@ import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useTheme } from "react-native-paper";
-import User from "realmModels/User";
+import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 

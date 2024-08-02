@@ -6,7 +6,7 @@ import {
   fetchRemoteObservation,
   updateObservation
 } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";

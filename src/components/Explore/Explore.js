@@ -25,7 +25,7 @@ import {
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
-import Header from "./Header/Header";
+import ExploreHeader from "./Header/ExploreHeader";
 import useCurrentExploreView from "./hooks/useCurrentExploreView";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
@@ -104,7 +104,7 @@ const Explore = ( {
   const headerCount = count[currentExploreView];
 
   const renderHeader = ( ) => (
-    <Header
+    <ExploreHeader
       count={headerCount}
       exploreView={currentExploreView}
       exploreViewIcon={icon}

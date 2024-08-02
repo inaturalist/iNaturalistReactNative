@@ -22,7 +22,7 @@ type Props = {
   currentObservation: Object
 }
 
-const Header = ( {
+const ObsEditHeader = ( {
   observations,
   currentObservation
 }: Props ): Node => {
@@ -82,9 +82,7 @@ const Header = ( {
     || ( unsynced && !unsavedChanges );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( params?.lastScreen === "ObsList" ) {
-      navToObsList( );
-    } else if ( params?.lastScreen === "Suggestions" ) {
+    if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
     } else if ( shouldNavigateBack ) {
       navigation.goBack( );
@@ -97,7 +95,6 @@ const Header = ( {
     }
   }, [
     currentObservation?.uuid,
-    navToObsList,
     shouldNavigateBack,
     navigation,
     params?.lastScreen,
@@ -106,15 +103,13 @@ const Header = ( {
   ] );
 
   const renderBackButton = useCallback( ( ) => {
-    const extraPadding = {
-      marginStart: 15,
-      paddingVertical: 18,
-      paddingEnd: 24
+    const extraStart = {
+      marginStart: 15
     };
     return (
       <BackButton
         onPress={handleBackButtonPress}
-        customStyles={extraPadding}
+        customStyles={extraStart}
         testID="ObsEdit.BackButton"
       />
     );
@@ -201,4 +196,4 @@ const Header = ( {
   );
 };
 
-export default Header;
+export default ObsEditHeader;

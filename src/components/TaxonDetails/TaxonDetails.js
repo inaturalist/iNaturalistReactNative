@@ -190,20 +190,17 @@ const TaxonDetails = ( ): Node => {
         <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <View className="flex-1 h-full bg-black">
           <View className="w-full h-[420px] shrink-1">
+            <View className="absolute left-4 top-4 z-10">
+              <BackButton color="white" />
+            </View>
             <TaxonMedia
               loading={isLoading}
               photos={photos}
               tablet={isTablet}
               onChangeIndex={setMediaIndex}
             />
-            <View className="absolute left-5 top-5">
-              <BackButton
-                color={theme.colors.onPrimary}
-                onPress={( ) => navigation.goBack( )}
-              />
-            </View>
             {!hideNavButtons && (
-              <View className="absolute right-5 top-5">
+              <View className="absolute right-4 top-1">
                 <KebabMenu
                   visible={kebabMenuVisible}
                   setVisible={setKebabMenuVisible}

@@ -2,7 +2,7 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { flatten, last } from "lodash";
 import Observation from "realmModels/Observation";
 
@@ -41,6 +41,9 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
       } else {
         // $FlowIgnore
         params.page = 1;
+        // For the first page and only for the first page, get the bounds as
+        // well
+        params.return_bounds = true;
       }
       const response = await searchObservations( params, options );
       return response;
@@ -60,6 +63,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
     fetchNextPage,
     observations: flatten( observations ),
     status,
+    totalBounds: data?.pages?.[0].total_bounds,
     totalResults
   };
 };

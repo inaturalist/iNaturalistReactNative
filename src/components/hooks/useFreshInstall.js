@@ -1,6 +1,6 @@
 // @flow
 
-import { signOut } from "components/LoginSignUp/AuthenticationService";
+import { signOut } from "components/LoginSignUp/AuthenticationService.ts";
 import { useEffect } from "react";
 import { zustandStorage } from "stores/useStore";
 

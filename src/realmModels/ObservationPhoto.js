@@ -94,7 +94,7 @@ class ObservationPhoto extends Realm.Object {
     );
 
     if ( obsPhotoToDelete ) {
-      const { getJWT } = require( "components/LoginSignUp/AuthenticationService" );
+      const { getJWT } = require( "components/LoginSignUp/AuthenticationService.ts" );
       const apiToken = await getJWT( );
       const options = { api_token: apiToken };
       await inatjs.observation_photos.delete( { id: obsPhotoToDelete.uuid }, options );
