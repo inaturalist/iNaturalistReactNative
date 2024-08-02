@@ -196,14 +196,11 @@ const TaxonDetails = ( ): Node => {
               tablet={isTablet}
               onChangeIndex={setMediaIndex}
             />
-            <View className="absolute left-5 top-5">
-              <BackButton
-                color={theme.colors.onPrimary}
-                onPress={( ) => navigation.goBack( )}
-              />
+            <View className="left-4 top-4">
+              <BackButton color="white" />
             </View>
             {!hideNavButtons && (
-              <View className="absolute right-5 top-5">
+              <View className="absolute right-4 top-1">
                 <KebabMenu
                   visible={kebabMenuVisible}
                   setVisible={setKebabMenuVisible}

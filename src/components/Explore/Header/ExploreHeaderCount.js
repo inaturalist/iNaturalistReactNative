@@ -19,7 +19,7 @@ type Props = {
   onPress: Function,
 }
 
-const HeaderCount = ( {
+const ExploreHeaderCount = ( {
   count,
   exploreView,
   exploreViewIcon,
@@ -63,4 +63,4 @@ const HeaderCount = ( {
   );
 };
 
-export default HeaderCount;
+export default ExploreHeaderCount;

@@ -6,7 +6,7 @@ import {
   INatIconButton
 } from "components/SharedComponents";
 import {
-  LinearGradient
+  LinearGradient, View
 } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
@@ -56,25 +56,29 @@ const ObsDetailsHeader = ( {
         "transparent"
       ]}
     >
-      <BackButton color="white" inCustomHeader />
-      {
-        belongsToCurrentUser
-          ? (
-            <INatIconButton
-              testID="ObsDetail.editButton"
-              onPress={() => {
-                prepareObsEdit( localObservation );
-                navigateToObsEdit( navigation );
-              }}
-              icon="pencil"
-              color={!rightIconBlack
-                ? colors.white
-                : colors.black}
-              accessibilityLabel={t( "Edit" )}
-            />
-          )
-          : <HeaderKebabMenu observationId={observationId} white={!rightIconBlack} />
-      }
+      <View className="left-4 top-4">
+        <BackButton color="white" inCustomHeader />
+      </View>
+      <View className="right-4">
+        {
+          belongsToCurrentUser
+            ? (
+              <INatIconButton
+                testID="ObsDetail.editButton"
+                onPress={() => {
+                  prepareObsEdit( localObservation );
+                  navigateToObsEdit( navigation );
+                }}
+                icon="pencil"
+                color={!rightIconBlack
+                  ? colors.white
+                  : colors.black}
+                accessibilityLabel={t( "Edit" )}
+              />
+            )
+            : <HeaderKebabMenu observationId={observationId} white={!rightIconBlack} />
+        }
+      </View>
     </LinearGradient>
   );
 };

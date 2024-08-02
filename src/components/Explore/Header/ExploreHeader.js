@@ -20,7 +20,7 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
-import HeaderCount from "./HeaderCount";
+import ExploreHeaderCount from "./ExploreHeaderCount";
 
 type Props = {
   count: ?number,
@@ -125,7 +125,7 @@ const Header = ( {
             )}
           </View>
         </View>
-        <HeaderCount
+        <ExploreHeaderCount
           count={count}
           exploreView={exploreView}
           exploreViewIcon={exploreViewIcon}

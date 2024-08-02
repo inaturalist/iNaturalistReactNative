@@ -41,7 +41,7 @@ const ContextHeader = ( {
     }
 
     const extraPadding = {
-      marginStart: 30
+      marginStart: 15
     };
 
     return (
@@ -88,7 +88,7 @@ const ContextHeader = ( {
             }
           )}
         >
-          <View className="pr-5 pt-1.5">
+          <View className="pr-1 pt-1.5">
             {backButton}
           </View>
           {customTitleComponent
