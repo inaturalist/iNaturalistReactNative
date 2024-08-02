@@ -1,0 +1,15 @@
+NEW
+* Gallery button on AI Camera
+
+UPDATED
+* Top ID suggestion is green
+* Suggestions shows message when there is no Top ID
+* Removed language settings
+* Show AI Camera suggestion on Suggestions loading screen
+
+FIXED
+* Deleting 1 photo from import batch does not remove other photos
+* Warning when trying to change settings that require internet
+* App stays awake during upload
+* Location fetches stop after going to Location Picker
+* New users get the basic AI Camera button in the bottom tabs

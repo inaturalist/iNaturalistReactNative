@@ -13,12 +13,10 @@ type Props = {
   navigation: Object,
   route: Object,
   options: Object,
-  back: boolean,
-  alignStart?: boolean,
 };
 
 const ContextHeader = ( {
-  navigation, route, options, back
+  navigation, route, options
 }: Props ): Node => {
   const customTitleComponent = typeof options.headerTitle === "function";
   const subtitle = options.headerSubtitle;
@@ -35,24 +33,31 @@ const ContextHeader = ( {
     return getHeaderTitle( options, route.name );
   };
 
-  const renderBackButton = () => {
-    if ( options.headerLeft ) {
-      return options.headerLeft();
+  const handleBackNavigation = ( ) => {
+    if ( navigation.canGoBack( ) ) {
+      navigation.goBack( );
+    } else {
+      navigation.navigate( "TabNavigator", {
+        screen: "TabStackNavigator",
+        params: {
+          screen: "ObsList"
+        }
+      } );
     }
+  };
 
+  const renderBackButton = () => {
     const extraPadding = {
       marginStart: 15
     };
 
     return (
-      back && (
-        <BackButton
-          color={colors.black}
-          onPress={navigation.goBack}
-          inCustomHeader
-          customStyles={extraPadding}
-        />
-      )
+      <BackButton
+        color={colors.black}
+        onPress={handleBackNavigation}
+        inCustomHeader
+        customStyles={extraPadding}
+      />
     );
   };
 
@@ -101,10 +106,6 @@ const ContextHeader = ( {
                 {subtitle && <Heading4>{subtitle}</Heading4>}
               </View>
             )}
-
-          <View className="absolute right-0 top-0">
-            {options?.headerRight?.()}
-          </View>
         </View>
       </View>
     </SafeAreaView>

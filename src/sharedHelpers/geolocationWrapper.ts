@@ -20,7 +20,6 @@ export function watchPosition(
   }
 ) {
   const watchID = Geolocation.watchPosition( success, error, options );
-  console.log( "[DEBUG geolocationWrapper.ts] watchPosition, watchID: ", watchID );
   return watchID;
 }
 
