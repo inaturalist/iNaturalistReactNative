@@ -1,4 +1,4 @@
-import { Realm } from "@realm/react";
+import Realm, { ObjectSchema } from "realm";
 
 class User extends Realm.Object {
   static FIELDS = {
@@ -13,19 +13,29 @@ class User extends Realm.Object {
   };
 
   // getting user icon data from production instead of staging
-  static uri = user => user?.icon_url
-               && { uri: user?.icon_url.replace( "staticdev", "static" ) };
+  static uri( user: { icon_url?: string } ) {
+    return user?.icon_url
+      && { uri: user?.icon_url.replace( "staticdev", "static" ) };
+  }
 
-  static userHandle = user => ( user && user.login ) && `@${user.login}`;
+  static userHandle( user: { login: string } ) {
+    return user && `@${user.login}`;
+  }
 
-  static currentUser = realm => realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  static currentUser( realm: Realm ) {
+    return realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  }
 
-  static schema = {
+  static schema: ObjectSchema = {
     name: "User",
     primaryKey: "id",
     properties: {
       id: "int",
-      icon_url: { type: "string", mapTo: "iconUrl", optional: true },
+      icon_url: {
+        type: "string",
+        mapTo: "iconUrl",
+        optional: true
+      },
       locale: "string?",
       login: "string?",
       name: "string?",

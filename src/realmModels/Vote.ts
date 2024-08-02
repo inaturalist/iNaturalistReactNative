@@ -1,4 +1,4 @@
-import { Realm } from "@realm/react";
+import Realm, { ObjectSchema } from "realm";
 
 class Vote extends Realm.Object {
   static VOTE_FIELDS = {
@@ -9,7 +9,7 @@ class Vote extends Realm.Object {
     vote_scope: true
   };
 
-  static schema = {
+  static schema: ObjectSchema = {
     name: "Vote",
     embedded: true,
     properties: {

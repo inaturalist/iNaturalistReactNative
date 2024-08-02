@@ -1,7 +1,7 @@
-// @flow
+import type { QueryClient } from "@tanstack/query-core";
 import { getUserAgent } from "api/userAgent";
 import { fetchUserMe } from "api/users";
-import { create } from "apisauce";
+import { ApiResponse, create } from "apisauce";
 import {
   computerVisionPath,
   galleryPhotosPath,
@@ -9,7 +9,6 @@ import {
   rotatedOriginalPhotosPath,
   soundUploadPath
 } from "appConstants/paths.ts";
-import axios from "axios";
 import i18next from "i18next";
 import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
@@ -17,9 +16,9 @@ import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
-import Realm from "realm";
+import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
-import User from "realmModels/User";
+import User from "realmModels/User.ts";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
@@ -39,14 +38,11 @@ const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "h
 // expire every 30 mins, so might as well be futureproof.
 const JWT_EXPIRATION_MINS = 25;
 
-const axiosInstance = axios.create( {
-  baseURL: API_HOST
-} );
-
-async function getSensitiveItem( key, options = {} ) {
+async function getSensitiveItem( key: string, options = {} ) {
   try {
     return await RNSInfo.getItem( key, options );
-  } catch ( getItemError ) {
+  } catch ( e ) {
+    const getItemError = e as Error;
     if ( getItemError.message.match( /Protected data not available yet/ ) ) {
       await sleep( 1_000 );
       return RNSInfo.getItem( key, options );
@@ -55,10 +51,11 @@ async function getSensitiveItem( key, options = {} ) {
   }
 }
 
-async function setSensitiveItem( key, value, options = {} ) {
+async function setSensitiveItem( key: string, value: string, options = {} ) {
   try {
     return await RNSInfo.setItem( key, value, options );
-  } catch ( setItemError ) {
+  } catch ( e ) {
+    const setItemError = e as Error;
     if ( setItemError.message.match( /Protected data not available yet/ ) ) {
       await sleep( 1_000 );
       return RNSInfo.setItem( key, value, options );
@@ -67,10 +64,11 @@ async function setSensitiveItem( key, value, options = {} ) {
   }
 }
 
-async function deleteSensitiveItem( key, options = {} ) {
+async function deleteSensitiveItem( key: string, options = {} ) {
   try {
     return await RNSInfo.deleteItem( key, options );
-  } catch ( deleteItemError ) {
+  } catch ( e ) {
+    const deleteItemError = e as Error;
     console.log( "[DEBUG AuthenticationService.js] deleteItemError: ", deleteItemError );
     if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
       await sleep( 500 );
@@ -84,8 +82,8 @@ async function deleteSensitiveItem( key, options = {} ) {
  * Creates base API client for all requests
  * @param additionalHeaders any additional headers that will be passed to the API
  */
-const createAPI = additionalHeaders => create( {
-  axiosInstance,
+const createAPI = ( additionalHeaders?: { [header: string]: string } ) => create( {
+  baseURL: API_HOST,
   headers: {
     "User-Agent": getUserAgent(),
     "X-Installation-ID": installID( ),
@@ -117,12 +115,12 @@ const getUsername = async (): Promise<string> => getSensitiveItem( "username" );
  */
 const signOut = async (
   options: {
-    realm?: Object,
+    realm?: Realm,
     clearRealm?: boolean,
-    queryClient?: Object
+    queryClient?: QueryClient
   } = {
     clearRealm: false,
-    queryClient: null
+    queryClient: undefined
   }
 ) => {
   if ( options.clearRealm ) {
@@ -172,7 +170,7 @@ const signOut = async (
  * Encodes a JWT. Lifted from react-native-jwt-io
  * https://github.com/maxweb4u/react-native-jwt-io/blob/7f926da46ff536dbb531dd8ae7177ab4ff28c43f/src/jwt.js#L21
  */
-const encodeJWT = ( payload, key, algorithm ) => {
+const encodeJWT = ( payload: Object, key: string, algorithm?: string ) => {
   algorithm = typeof algorithm !== "undefined"
     ? algorithm
     : "HS256";
@@ -195,7 +193,7 @@ const getAnonymousJWT = (): string => {
     exp: Date.now() / 1000 + 300
   };
 
-  return encodeJWT( claims, Config.JWT_ANONYMOUS_API_SECRET, "HS512" );
+  return encodeJWT( claims, Config.JWT_ANONYMOUS_API_SECRET || "not-a-real-secret", "HS512" );
 };
 
 /**
@@ -206,11 +204,12 @@ const getAnonymousJWT = (): string => {
  * @returns {Promise<string|*>}
  */
 // $FlowIgnore
-const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
-  let jwtToken = await getSensitiveItem( "jwtToken" );
-  let jwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
-  if ( jwtGeneratedAt ) {
-    jwtGeneratedAt = parseInt( jwtGeneratedAt, 10 );
+const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
+  let jwtToken: string | undefined = await getSensitiveItem( "jwtToken" );
+  const storedJwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
+  let jwtGeneratedAt: number | null = null;
+  if ( storedJwtGeneratedAt ) {
+    jwtGeneratedAt = parseInt( storedJwtGeneratedAt, 10 );
   }
 
   const loggedIn = await isLoggedIn();
@@ -226,7 +225,7 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
 
   if (
     !jwtToken
-    || ( Date.now() - jwtGeneratedAt ) / 1000 > JWT_EXPIRATION_MINS * 60
+    || ( jwtGeneratedAt && ( Date.now() - jwtGeneratedAt ) / 1000 > JWT_EXPIRATION_MINS * 60 )
   ) {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older
     // than 25 mins (safe margin) - ask for a new one
@@ -235,7 +234,7 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     let response;
     try {
-      response = await api.get( "/users/api_token.json" );
+      response = await api.get<{api_token: string}>( "/users/api_token.json" );
     } catch ( getUsersApiTokenError ) {
       logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
       throw getUsersApiTokenError;
@@ -261,7 +260,10 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<?string> => {
     }
 
     // Get newest JWT Token
-    jwtToken = response.data.api_token;
+    jwtToken = response.data?.api_token;
+    if ( !jwtToken ) {
+      throw new Error( "Fetched empty JWT" );
+    }
     jwtGeneratedAt = Date.now();
 
     await setSensitiveItem( "jwtToken", jwtToken );
@@ -286,7 +288,7 @@ const getAPIToken = async (
   useJWT = false,
   // $FlowIgnore
   allowAnonymousJWT = false
-): Promise<?string> => {
+): Promise<string | null> => {
   const loggedIn = await isLoggedIn();
   if ( !loggedIn ) {
     return null;
@@ -306,12 +308,26 @@ const showErrorAlert = ( errorText: string ) => {
   );
 };
 
-function errorDescriptionFromResponse( response: Object ): string {
+interface RailsApiResponse {
+  error_description?: string;
+}
+
+interface OauthTokenResponse extends RailsApiResponse {
+  access_token?: string;
+}
+
+function errorDescriptionFromResponse( response: ApiResponse<OauthTokenResponse> ): string {
   let errorDescription = response?.data?.error_description;
   if ( !errorDescription && response.problem === "NETWORK_ERROR" ) {
     errorDescription = i18next.t( "You-need-an-Internet-connection-to-do-that" );
   }
   return errorDescription || i18next.t( "Something-went-wrong" );
+}
+
+interface UsersEditResponse extends RailsApiResponse {
+  id: number;
+  login: string;
+  name?: string;
 }
 
 /**
@@ -338,26 +354,27 @@ const verifyCredentials = async (
 
   const api = createAPI();
 
-  let response = await api.post( "/oauth/token", formData );
+  const tokenResponse = await api.post<OauthTokenResponse>( "/oauth/token", formData );
 
-  if ( !response.ok ) {
-    showErrorAlert( errorDescriptionFromResponse( response ) );
+  if ( !tokenResponse.ok ) {
+    showErrorAlert( errorDescriptionFromResponse( tokenResponse ) );
 
-    if ( response.problem !== "CLIENT_ERROR" ) {
+    if ( tokenResponse.problem !== "CLIENT_ERROR" ) {
       console.error(
         "verifyCredentials failed when calling /oauth/token - ",
-        response.problem,
-        response.status
+        tokenResponse.problem,
+        tokenResponse.status
       );
     }
     return null;
   }
 
   // Upgrade to the access token
-  const accessToken = response.data.access_token;
+  const accessToken = tokenResponse.data?.access_token;
+  if ( !accessToken ) throw new Error( "Fetched empty OAuth access token" );
 
   // Next, find the iNat username (since we currently only have the FB/Google email)
-  response = await api.get(
+  const usersEditResponse = await api.get<UsersEditResponse>(
     "/users/edit.json",
     {},
     {
@@ -368,21 +385,24 @@ const verifyCredentials = async (
     }
   );
 
-  if ( !response.ok ) {
-    showErrorAlert( errorDescriptionFromResponse( response ) );
-    if ( response.problem !== "CLIENT_ERROR" ) {
+  if ( !usersEditResponse.ok ) {
+    showErrorAlert( errorDescriptionFromResponse( usersEditResponse ) );
+    if ( usersEditResponse.problem !== "CLIENT_ERROR" ) {
       console.error(
         "verifyCredentials failed when calling /users/edit.json - ",
-        response.problem,
-        response.status
+        usersEditResponse.problem,
+        usersEditResponse.status
       );
     }
 
     return null;
   }
 
-  const iNatUsername = response.data.login;
-  const iNatID = response.data.id;
+  const iNatUsername = usersEditResponse.data?.login;
+  const iNatID = usersEditResponse.data?.id;
+
+  if ( !iNatUsername ) throw new Error( "Fetch user without a login" );
+  if ( !iNatID ) throw new Error( "Fetch user without an id" );
 
   return {
     accessToken,
@@ -402,7 +422,7 @@ const verifyCredentials = async (
 const authenticateUser = async (
   username: string,
   password: string,
-  realm: Object
+  realm: Realm
 ): Promise<boolean> => {
   const userDetails = await verifyCredentials( username, password );
 
@@ -437,7 +457,7 @@ const authenticateUser = async (
 
   logger.debug( "writing current user to realm: ", localUser );
   safeRealmWrite( realm, ( ) => {
-    realm.create( "User", localUser, "modified" );
+    realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
   const currentRealmUser = User.currentUser( realm );
   logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
@@ -446,6 +466,10 @@ const authenticateUser = async (
 
   return true;
 };
+
+interface CreateUserResponse {
+  errors?: string[]
+}
 
 /**
  * Registers a new user
@@ -458,7 +482,7 @@ const authenticateUser = async (
  *
  * @returns null if successful, otherwise an error string
  */
-const registerUser = async ( user: Object ): ?Object => {
+const registerUser = async ( user: { password: string } ) => {
   const locales = RNLocalize.getLocales();
   const formData = {
     user: {
@@ -469,7 +493,7 @@ const registerUser = async ( user: Object ): ?Object => {
   };
 
   const api = createAPI();
-  const response = await api.post( "/users.json", formData );
+  const response = await api.post<CreateUserResponse>( "/users.json", formData );
 
   if ( !response.ok ) {
     console.error(
@@ -477,7 +501,7 @@ const registerUser = async ( user: Object ): ?Object => {
       response.problem,
       response.status
     );
-    return response.data.errors[0];
+    return response.data?.errors?.[0];
   }
 
   return null;
@@ -488,6 +512,10 @@ const isCurrentUser = async ( username: string ): Promise<boolean> => {
   return username === currentUsername;
 };
 
+interface ChangePasswordResponse {
+  error?: string;
+}
+
 /**
  * Resets user password
  *
@@ -495,9 +523,7 @@ const isCurrentUser = async ( username: string ): Promise<boolean> => {
  *
  * @returns null if successful, otherwise an error string
  */
-const resetPassword = async (
-  email: string
-): ?Object => {
+const resetPassword = async ( email: string ) => {
   const formData = {
     user: {
       email
@@ -505,12 +531,12 @@ const resetPassword = async (
   };
 
   const api = createAPI( );
-  const response = await api.post( "/users/password", formData );
+  const response = await api.post<ChangePasswordResponse>( "/users/password", formData );
 
   // this endpoint doesn't exactly exist,
   // so it's expected to get a 404 Not found error back here
   if ( !response.ok ) {
-    return response.data.error;
+    return response.data?.error;
   }
 
   return null;

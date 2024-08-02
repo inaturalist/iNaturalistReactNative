@@ -1,7 +1,7 @@
 import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
 // eslint-disable-next-line import/no-cycle
-import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import Config from "react-native-config";
 import { transportFunctionType } from "react-native-logs";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";

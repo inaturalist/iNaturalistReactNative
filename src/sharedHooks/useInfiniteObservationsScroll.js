@@ -5,7 +5,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { flatten, last, noop } from "lodash";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
