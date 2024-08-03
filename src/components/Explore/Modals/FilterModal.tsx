@@ -24,7 +24,7 @@ import {
 } from "components/SharedComponents";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,

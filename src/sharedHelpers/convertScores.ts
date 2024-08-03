@@ -1,5 +1,3 @@
-// @flow
-
 const convertOfflineScoreToConfidence = ( score: number ): number => {
   if ( !score ) {
     return 0;

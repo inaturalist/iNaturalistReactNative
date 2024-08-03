@@ -1,5 +1,3 @@
-// @flow
-// $FlowIgnore[cannot-resolve-module]
 import { createRealmContext } from "@realm/react";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
@@ -15,9 +13,10 @@ import realmConfig from "realmModels/index";
 // }
 // checkOnRealmPath( "before creating realm context" );
 
-const RealmContext: Object = createRealmContext( realmConfig );
+// TODO: How to use Realm with TS
+const RealmContext = createRealmContext( realmConfig );
 
 export {
-  // eslint-disable-next-line
+  // eslint-disable-next-line import/prefer-default-export
   RealmContext
 };

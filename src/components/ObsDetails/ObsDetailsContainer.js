@@ -6,7 +6,7 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
   useCallback,

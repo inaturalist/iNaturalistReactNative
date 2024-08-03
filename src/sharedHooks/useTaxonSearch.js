@@ -1,7 +1,7 @@
 // @flow
 
 import fetchSearchResults from "api/search";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback, useEffect
 } from "react";
@@ -13,7 +13,7 @@ const { useRealm } = RealmContext;
 
 const useTaxonSearch = ( taxonQuery: string ): Object => {
   const realm = useRealm( );
-  const { data: taxaSearchResults, isLoading } = useAuthenticatedQuery(
+  const { data: taxaSearchResults, refetch, isLoading } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
     optsWithAuth => fetchSearchResults(
       {
@@ -54,7 +54,7 @@ const useTaxonSearch = ( taxonQuery: string ): Object => {
     }
   }, [saveTaxaToRealm, taxaSearchResults] );
 
-  return { taxaSearchResults, isLoading };
+  return { taxaSearchResults, refetch, isLoading };
 };
 
 export default useTaxonSearch;

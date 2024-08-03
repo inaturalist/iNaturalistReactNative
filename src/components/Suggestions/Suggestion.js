@@ -8,7 +8,7 @@ import React from "react";
 import {
   convertOfflineScoreToConfidence,
   convertOnlineScoreToConfidence
-} from "sharedHelpers/convertScores";
+} from "sharedHelpers/convertScores.ts";
 
 type Props = {
   accessibilityLabel: string,

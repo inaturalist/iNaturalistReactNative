@@ -1,6 +1,6 @@
 // @flow
 
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 
 const { useRealm } = RealmContext;
 

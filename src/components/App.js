@@ -3,7 +3,7 @@
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import { LogBox } from "react-native";

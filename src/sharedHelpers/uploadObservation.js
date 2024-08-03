@@ -11,7 +11,7 @@ import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
-import emitUploadProgress from "sharedHelpers/emitUploadProgress";
+import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 

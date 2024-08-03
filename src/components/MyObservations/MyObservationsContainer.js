@@ -4,7 +4,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect,
