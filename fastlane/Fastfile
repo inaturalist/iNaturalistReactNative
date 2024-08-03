@@ -77,6 +77,23 @@ def get_changelog_path( build_number = nil )
   File.join( changelog_dir_path, "#{build_number}.txt" )
 end
 
+def app_store_release_notes
+  build_number ||= get_build_number( xcodeproj: XCODEPROJ )
+  data = {}
+  Dir.glob( File.join( "metadata", "android", "*" ) ) do | locale_dir |
+    changelog_path = File.join( locale_dir, "changelogs", "#{build_number}.txt" )
+    locale = File.basename( locale_dir )
+    unless File.exist?( changelog_path )
+      UI.abort_with_message! <<~MSG
+        No change log file exists at #{changelog_path}. That should have been
+        created when you ran `fastlane tag`.
+      MSG
+    end
+    data[locale] = File.read( changelog_path )
+  end
+  data
+end
+
 def get_aab_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
   File.expand_path( File.join(
@@ -440,15 +457,17 @@ lane :beta do
 end
 
 lane :prod do
-  desc "Push builds for the latest tag to production"
-  # build_number = get_build_number( xcodeproj: XCODEPROJ )
-  # # In theory this will move the release associated with the build_number in
-  # # the beta track to the production track and 100% rollout... but I haven't
-  # # been able to test that yet
-  # upload_to_play_store(
-  #   version_code: build_number,
-  #   track: "beta",
-  #   track_promote_to: "production"
-  # )
-  UI.abort_with_message! "This doesn't upload iOS builds yet"
+  desc "Set up App Store version and upload new metadata"
+  upload_to_app_store(
+    automatic_release: false,
+    force: true,
+    submit_for_review: false,
+    metadata_path: "./metadata/ios",
+    copyright: "#{Date.today.year} iNaturalist",
+    release_notes: app_store_release_notes,
+    precheck_include_in_app_purchases: false
+  )
+
+  UI.important "This just sets up the version in the App Store. You need to go there " \
+    "to attach a build and submit for review."
 end
