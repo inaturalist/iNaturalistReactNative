@@ -148,6 +148,7 @@ describe( "MyObservations", ( ) => {
   describe( "when signed in", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+      jest.useFakeTimers( );
     } );
 
     afterEach( async ( ) => {
