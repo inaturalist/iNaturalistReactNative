@@ -16,7 +16,6 @@ const useNavigateWithTaxonSelected = (
   const { params } = useRoute( );
   const { entryScreen } = params;
   const currentObservation = useStore( state => state.currentObservation );
-  const comment = useStore( state => state.comment );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const vision = options?.vision;
 
@@ -29,14 +28,10 @@ const useNavigateWithTaxonSelected = (
         taxon: selectedTaxon
       } );
     } else {
-      const newTaxon = {
+      updateObservationKeys( {
         owners_identification_from_vision: vision,
         taxon: selectedTaxon
-      };
-      if ( comment ) {
-        newTaxon.description = comment;
-      }
-      updateObservationKeys( newTaxon );
+      } );
     }
 
     // checking for previous screen here rather than a synced/unsynced observation
@@ -68,7 +63,6 @@ const useNavigateWithTaxonSelected = (
     // If we've navigated, there's no need to run this effect again
     unselectTaxon( );
   }, [
-    comment,
     currentObservation?.uuid,
     entryScreen,
     navigation,

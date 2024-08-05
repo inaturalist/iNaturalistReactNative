@@ -6,7 +6,6 @@ import Sound from "realmModels/Sound";
 
 const DEFAULT_STATE = {
   cameraRollUris: [],
-  comment: "",
   currentObservation: {},
   currentObservationIndex: 0,
   evidenceToAdd: [],
@@ -145,7 +144,6 @@ const createObservationFlowSlice = ( set, get ) => ( {
     ),
     firstObservationDefaults: options?.firstObservationDefaults
   } ) ),
-  updateComment: newComment => set( { comment: newComment } ),
   updateObservations: updatedObservations => set( state => ( {
     observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] )
