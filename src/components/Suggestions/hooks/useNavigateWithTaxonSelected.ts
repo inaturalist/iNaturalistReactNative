@@ -1,16 +1,16 @@
-// @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect } from "react";
 import useStore from "stores/useStore";
 
 const useNavigateWithTaxonSelected = (
-  // Navgiation happens when a taxon was selected
+  // Navigation happens when a taxon was selected
   selectedTaxon: ?Object,
   // After navigation we need to unselect the taxon so we don't have
   // mysterious background nonsense happening after this screen loses focus
   unselectTaxon: Function,
-  options: Object
+  options: {
+    vision: boolean
+  }
 ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -29,11 +29,14 @@ const useNavigateWithTaxonSelected = (
         taxon: selectedTaxon
       } );
     } else {
-      updateObservationKeys( {
+      const newTaxon = {
         owners_identification_from_vision: vision,
-        taxon: selectedTaxon,
-        description: comment
-      } );
+        taxon: selectedTaxon
+      };
+      if ( comment ) {
+        newTaxon.description = comment;
+      }
+      updateObservationKeys( newTaxon );
     }
 
     // checking for previous screen here rather than a synced/unsynced observation
