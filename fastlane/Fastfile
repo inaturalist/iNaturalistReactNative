@@ -462,6 +462,12 @@ lane :prod do
     automatic_release: false,
     force: true,
     submit_for_review: false,
+    # As of 20240805, this does not actually upload the values from these
+    # files. I'm leaving them there in the hopes that it will work for some
+    # reason after we have our first release up. If that doesn't work we
+    # should probably just remove them, though we could also manually load
+    # there values and submit them with args here like we're doing for the
+    # release notes. ~~~kueda
     metadata_path: "./metadata/ios",
     copyright: "#{Date.today.year} iNaturalist",
     release_notes: app_store_release_notes,
