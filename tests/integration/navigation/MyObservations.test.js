@@ -174,4 +174,13 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     await deleteObservationByTaxonName( mockUnsyncedObservations[0].taxon.name );
     await deleteObservationByTaxonName( mockUnsyncedObservations[1].taxon.name );
   } );
+
+  it( "should display empty MyObs screen after all three observations are deleted", async ( ) => {
+    renderApp( );
+    await checkToolbarResetWithUnsyncedObs( );
+    await deleteObservationByTaxonName( mockUnsyncedObservations[0].taxon.name );
+    await deleteObservationByTaxonName( mockUnsyncedObservations[1].taxon.name );
+    await deleteObservationByTaxonName( mockUnsyncedObservations[2].taxon.name );
+    await waitForDisplayedText( /CREATE YOUR FIRST OBSERVATION/ );
+  } );
 } );
