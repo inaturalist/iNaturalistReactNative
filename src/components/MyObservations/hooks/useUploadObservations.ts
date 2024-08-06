@@ -1,7 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import {
-  useCallback, useEffect, useMemo
+  useCallback, useEffect
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
@@ -48,16 +47,12 @@ export default useUploadObservations = canUpload => {
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
 
-  const unsyncedList = Observation.filterUnsyncedObservations( realm );
-  const unsyncedUuids = useMemo( ( ) => unsyncedList.map( o => o.uuid ), [unsyncedList] );
-
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
   // ...but whenever you start a new abortable upload process, you need to
   //    mint a new abort controller
   const newAbortController = useStore( storeState => storeState.newAbortController );
 
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
 
   useEffect( () => {
@@ -180,18 +175,6 @@ export default useUploadObservations = canUpload => {
     uploadStatus
   ] );
 
-  useEffect(
-    ( ) => {
-      navigation.addListener( "blur", ( ) => {
-        resetUploadObservationsSlice( );
-      } );
-    },
-    [
-      navigation,
-      resetUploadObservationsSlice
-    ]
-  );
-
   useEffect( ( ) => {
     // fully stop uploads when cancel upload button is tapped
     if ( uploadStatus === UPLOAD_CANCELLED ) {
@@ -211,6 +194,8 @@ export default useUploadObservations = canUpload => {
   ] );
 
   const createUploadQueue = useCallback( ( ) => {
+    const unsyncedList = Observation.filterUnsyncedObservations( realm );
+    const unsyncedUuids = unsyncedList.map( o => o.uuid );
     const uuidsQuery = unsyncedUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
     const uploads = realm.objects( "Observation" )
       .filtered( `uuid IN { ${uuidsQuery} }` );
@@ -220,7 +205,6 @@ export default useUploadObservations = canUpload => {
   }, [
     realm,
     setTotalToolbarIncrements,
-    unsyncedUuids,
     addToUploadQueue,
     startUpload
   ] );

@@ -11,6 +11,7 @@ import React, {
   useState
 } from "react";
 import { Alert } from "react-native";
+import Observation from "realmModels/Observation";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -51,6 +52,8 @@ const MyObservationsContainer = ( ): Node => {
     = useStore( state => state.resetSyncObservationsSlice );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
+  const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
+  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -153,14 +156,21 @@ const MyObservationsContainer = ( ): Node => {
       startAutomaticSync( );
     } );
     navigation.addListener( "blur", ( ) => {
+      console.log( "screen is blurring. resetting focus and sync slice and upload slice" );
       setIsFocused( false );
       resetSyncObservationsSlice( );
+      resetUploadObservationsSlice( );
+      const unsynced = Observation.filterUnsyncedObservations( realm );
+      setNumUnuploadedObservations( unsynced.length );
     } );
   }, [
     navigation,
     startAutomaticSync,
     syncingStatus,
-    resetSyncObservationsSlice
+    resetSyncObservationsSlice,
+    resetUploadObservationsSlice,
+    realm,
+    setNumUnuploadedObservations
   ] );
 
   if ( !layout ) { return null; }
