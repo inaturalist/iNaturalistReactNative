@@ -18,6 +18,15 @@ type Props = {
   taxon: Object
 }
 
+const BASE_STYLE = {
+  fontFamily: fontRegular,
+  fontSize: 16,
+  lineHeight: 22,
+  color: colors.darkGray
+};
+
+const FONTS = [fontRegular, ...defaultSystemFonts];
+
 const Wikipedia = ( { taxon }: Props ): React.Node => {
   const { width } = useWindowDimensions();
   const { t, i18n } = useTranslation();
@@ -28,14 +37,6 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
       Linking.openURL( taxon.wikipedia_url );
     }
   };
-
-  const baseStyle = {
-    fontFamily: fontRegular,
-    fontSize: 16,
-    lineHeight: 22,
-    color: colors.darkGray
-  };
-  const fonts = [fontRegular, ...defaultSystemFonts];
 
   let wikipediaUrl = taxon.wikipedia_url;
 
@@ -55,14 +56,12 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
   return (
     <>
       <Heading4 className="mb-3">{t( "WIKIPEDIA" )}</Heading4>
-      {taxon.wikipedia_summary && (
-        <HTML
-          contentWidth={width}
-          source={{ html: taxon.wikipedia_summary }}
-          systemFonts={fonts}
-          baseStyle={baseStyle}
-        />
-      )}
+      <HTML
+        contentWidth={width}
+        source={{ html: taxon.wikipedia_summary }}
+        systemFonts={FONTS}
+        baseStyle={BASE_STYLE}
+      />
       { wikipediaUrl && (
         <Body2
           onPress={openWikipedia}

@@ -33,8 +33,9 @@ import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
 import {
-  useAuthenticatedQuery, useCurrentUser, useLastScreen,
-  useTranslation, useUserMe
+  useAuthenticatedQuery,
+  useTranslation,
+  useUserMe
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -67,40 +68,18 @@ const TaxonDetails = ( ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
-  const history = navState?.routes.map( r => r.name );
-  const lastScreen = useLastScreen( );
-  const fromObsDetails = _.includes( history, "ObsDetails" );
-  const prevScreenSuggestions = lastScreen === "Suggestions";
-  const prevScreenTaxonSearch = lastScreen === "TaxonSearch";
-  const prevScreenTaxonDetails = lastScreen === "TaxonDetails";
-  const currentUser = useCurrentUser( );
-
-  const reversedHistory = _.reverse( history );
-  let cameFromSuggestionsOrSearch = false;
-
-  reversedHistory?.forEach( ( screen, index ) => {
-    if ( screen !== "TaxonDetails" ) {
-      if ( screen === "Suggestions" || screen === "TaxonSearch" ) {
-        if ( reversedHistory[index - 1] === "TaxonDetails" ) {
-          // see if previous index was taxon details
-          cameFromSuggestionsOrSearch = true;
-        }
-      }
-    }
-  } );
-
-  const isTaxonDetailsFromSuggestions = prevScreenTaxonDetails && cameFromSuggestionsOrSearch;
+  const history = navState?.routes.map( r => r.name ) || [];
+  const fromObsDetails = history.includes( "ObsDetails" );
+  const fromSuggestions = history.includes( "Suggestions" );
+  const fromObsEdit = history.includes( "ObsEdit" );
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
     ? _.find( navState?.routes, r => r.name === "ObsDetails" ).params.uuid
     : null;
 
-  const showSelectButton = currentUser
-    && ( prevScreenSuggestions || prevScreenTaxonSearch || isTaxonDetailsFromSuggestions );
-  const usesVision = prevScreenSuggestions
-    && !prevScreenTaxonSearch
-    && !isTaxonDetailsFromSuggestions;
+  const showSelectButton = fromSuggestions || fromObsEdit;
+  const usesVision = history[history.length - 2] === "Suggestions";
 
   const realm = useRealm( );
   const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
