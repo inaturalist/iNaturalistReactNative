@@ -206,8 +206,10 @@ fastlane internal
 # internal build to open testing)
 fastlane beta
 
-# Upload the build for the latest tag to production release. In Android, this
-# should just promote the last beta to prod.
+# Set up in a production release in app stores, so in the App Store, it
+# creates a distribution version based on the latest tag. At present the only
+# attributes it updates are the version and copyright. To choose a build and
+# submit for review you'll need to use the App Store
 fastlane prod
 ```
 
