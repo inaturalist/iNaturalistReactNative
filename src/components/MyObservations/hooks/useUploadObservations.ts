@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import {
-  useCallback, useEffect, useMemo
+  useCallback, useEffect
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
@@ -47,9 +47,6 @@ export default useUploadObservations = canUpload => {
   const setUploadStatus = useStore( state => state.setUploadStatus );
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
   const initialNumObservationsInQueue = useStore( state => state.initialNumObservationsInQueue );
-
-  const unsyncedList = Observation.filterUnsyncedObservations( realm );
-  const unsyncedUuids = useMemo( ( ) => unsyncedList.map( o => o.uuid ), [unsyncedList] );
 
   // The existing abortController lets you abort...
   const abortController = useStore( storeState => storeState.abortController );
@@ -211,6 +208,8 @@ export default useUploadObservations = canUpload => {
   ] );
 
   const createUploadQueue = useCallback( ( ) => {
+    const unsyncedList = Observation.filterUnsyncedObservations( realm );
+    const unsyncedUuids = unsyncedList.map( o => o.uuid );
     const uuidsQuery = unsyncedUuids.map( uploadUuid => `'${uploadUuid}'` ).join( ", " );
     const uploads = realm.objects( "Observation" )
       .filtered( `uuid IN { ${uuidsQuery} }` );
@@ -220,7 +219,6 @@ export default useUploadObservations = canUpload => {
   }, [
     realm,
     setTotalToolbarIncrements,
-    unsyncedUuids,
     addToUploadQueue,
     startUpload
   ] );
