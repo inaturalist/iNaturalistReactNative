@@ -36,7 +36,6 @@ Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID
 Add-an-ID-Later = Add an ID Later
 ADD-COMMENT = ADD COMMENT
-Add-comment = Add comment
 Add-Date-Time = Add Date/Time
 # Label for a button that adds a vote of disagreement
 Add-disagreement = Add disagreement
@@ -1163,7 +1162,6 @@ You-need-log-in-to-do-that = You need to log in to do that.
 You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
-Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
 # Text prompting the user to open Settings to grant permission after

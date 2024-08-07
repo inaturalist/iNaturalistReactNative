@@ -16,8 +16,6 @@ import { useTaxonSearch, useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
-import AddCommentPrompt from "./AddCommentPrompt";
-import CommentBox from "./CommentBox";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 
 const DROP_SHADOW = getShadowForColor( colors.darkGray, {
@@ -50,8 +48,6 @@ const TaxonSearch = ( ): Node => {
 
   return (
     <ViewWrapper>
-      <AddCommentPrompt />
-      <CommentBox />
       <View
         className="bg-white px-6 pt-2 pb-8"
         style={DROP_SHADOW}
