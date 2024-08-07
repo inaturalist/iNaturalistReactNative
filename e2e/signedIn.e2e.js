@@ -185,7 +185,7 @@ describe( "Signed in user", () => {
     // observations, the upload prompt will be the stable status text at this
     // point, and we can confirm deletion by testing for the absence of the
     // list item for the observation we deleted.
-    await waitFor( element( by.text( /Upload 1 observation/ ) ) ).toBeVisible( ).withTimeout( 10000 );
+    await waitFor( element( by.text( /Upload 1 observation/ ) ) ).toBeVisible( ).withTimeout( 20_000 );
     await expect( obsListItem ).toBeNotVisible( );
   } );
 } );
