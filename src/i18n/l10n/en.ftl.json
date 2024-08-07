@@ -281,6 +281,10 @@
     "comment": "Right to control copies of a creative work; this string may be used as a\nheading to describe general information about rights, attribution, and\nlicensing",
     "val": "Copyright"
   },
+  "Could-not-find-a-camera-on-this-device": {
+    "comment": "Error message when no camera can be found",
+    "val": "Could not find a camera on this device"
+  },
   "Couldnt-create-comment": "Couldn't create comment",
   "Couldnt-create-identification-error": "Couldn't create identification { $error }",
   "Couldnt-create-identification-unknown-error": "Couldn't create identification, unknown error.",
@@ -788,6 +792,10 @@
     "val": "Newest to oldest"
   },
   "Next-observation": "Next observation",
+  "No-Camera-Available": {
+    "comment": "Error message when no camera can be found",
+    "val": "No Camera Available"
+  },
   "No-Location": "No Location",
   "No-Media": "No Media",
   "No-model-found": {

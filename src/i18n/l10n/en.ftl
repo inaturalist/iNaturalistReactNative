@@ -200,6 +200,8 @@ Copy-coordinates = Copy Coordinates
 # heading to describe general information about rights, attribution, and
 # licensing
 Copyright = Copyright
+# Error message when no camera can be found
+Could-not-find-a-camera-on-this-device = Could not find a camera on this device
 Couldnt-create-comment = Couldn't create comment
 Couldnt-create-identification-error = Couldn't create identification { $error }
 Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
@@ -589,6 +591,8 @@ New-Observation = New Observation
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
+# Error message when no camera can be found
+No-Camera-Available = No Camera Available
 No-Location = No Location
 No-Media = No Media
 # As in a machine learning model that powers automated suggestions
