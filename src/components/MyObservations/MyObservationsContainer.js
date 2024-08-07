@@ -3,15 +3,11 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
-import React, {
-  useCallback, useEffect,
-  useState
-} from "react";
+import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
-import Observation from "realmModels/Observation";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -35,8 +31,7 @@ import MyObservations from "./MyObservations";
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
-  const navigation = useNavigation( );
-  const [isFocused, setIsFocused] = useState( true );
+  const isFocused = useIsFocused( );
   // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
   useClearRotatedOriginalPhotos( );
   useClearGalleryPhotos( );
@@ -48,14 +43,13 @@ const MyObservationsContainer = ( ): Node => {
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const syncingStatus = useStore( state => state.syncingStatus );
-  const resetSyncObservationsSlice
-    = useStore( state => state.resetSyncObservationsSlice );
+  // const resetSyncObservationsSlice
+  //  = useStore( state => state.resetSyncObservationsSlice );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
-  const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
-  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+  // const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
 
-  const { observationList: observations } = useLocalObservations( );
+  const { observationList: observations, isInitialRender } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const { isConnected } = useNetInfo( );
@@ -73,9 +67,7 @@ const MyObservationsContainer = ( ): Node => {
 
   const {
     fetchNextPage,
-    isFetchingNextPage,
-    observations: data,
-    status
+    isFetchingNextPage
   } = useInfiniteObservationsScroll( {
     upsert: syncingStatus === "sync-pending",
     params: {
@@ -140,46 +132,47 @@ const MyObservationsContainer = ( ): Node => {
     setUploadStatus
   ] );
 
-  useEffect( ( ) => {
-    // this is intended to have the automatic sync run once
-    // the very first time a user lands on MyObservations
-    startAutomaticSync( );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
+  // useEffect( ( ) => {
+  //   // this is intended to have the automatic sync run once
+  //   // the very first time a user lands on MyObservations
+  //   startAutomaticSync( );
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [] );
 
-  useEffect( ( ) => {
-    // this is intended to have the automatic sync run once
-    // every time a user lands on MyObservations from a different tab screen.
-    // ideally, we wouldn't need both this and the useEffect hook above
-    navigation.addListener( "focus", ( ) => {
-      setIsFocused( true );
-      startAutomaticSync( );
-    } );
-    navigation.addListener( "blur", ( ) => {
-      console.log( "screen is blurring. resetting focus and sync slice and upload slice" );
-      setIsFocused( false );
-      resetSyncObservationsSlice( );
-      resetUploadObservationsSlice( );
-      const unsynced = Observation.filterUnsyncedObservations( realm );
-      setNumUnuploadedObservations( unsynced.length );
-    } );
-  }, [
-    navigation,
-    startAutomaticSync,
-    syncingStatus,
-    resetSyncObservationsSlice,
-    resetUploadObservationsSlice,
-    realm,
-    setNumUnuploadedObservations
-  ] );
+  useFocusEffect(
+    // it's tempting to use a "blur" effect instead, but blur doesn't work
+    // since this is a Tab screen, so better to clear state when a user
+    // returns to MyObs
+    useCallback( ( ) => {
+      let isActive = true;
+
+      if ( isActive ) {
+        startAutomaticSync( );
+        // resetSyncObservationsSlice( );
+        // resetUploadObservationsSlice( );
+      }
+
+      return ( ) => {
+        isActive = false;
+      };
+    }, [
+      // resetSyncObservationsSlice,
+      // resetUploadObservationsSlice,
+      startAutomaticSync
+    ] )
+  );
 
   if ( !layout ) { return null; }
 
   // remote data is available before data is synced locally; this check
   // prevents the empty list from rendering briefly when a user first logs in
-  const observationListStatus = data?.length > observations?.length
-    ? "loading"
-    : status;
+  // const observationListStatus = data?.length > observations?.length
+  //   ? "loading"
+  //   : status;
+
+  const showInitialLoadingWheel = !!( currentUser ) && isInitialRender;
+
+  console.log( currentUser, "currentuser" );
 
   return (
     <MyObservations
@@ -192,8 +185,8 @@ const MyObservationsContainer = ( ): Node => {
       observations={observations}
       onEndReached={fetchNextPage}
       setShowLoginSheet={setShowLoginSheet}
+      showInitialLoadingWheel={showInitialLoadingWheel}
       showLoginSheet={showLoginSheet}
-      status={observationListStatus}
       toggleLayout={toggleLayout}
     />
   );
