@@ -96,12 +96,17 @@ jest.mock( "react-native-paper", () => {
   return MockedModule;
 } );
 
+// 20240806 amanda - best practice for react navigation
+// is actually not to mock navigation at all. I removed
+// useFocusEffect so we can test how that actually works in
+// components; it requires using the wrapInNavigationContainer
+// helper around components with useFocusEffect
+// https://reactnavigation.org/docs/testing/#best-practices
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
     useIsFocused: jest.fn( ( ) => true ),
-    useFocusEffect: ( ) => jest.fn( ),
     useRoute: jest.fn( ( ) => ( { params: {} } ) ),
     useNavigation: ( ) => ( {
       addListener: jest.fn(),

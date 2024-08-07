@@ -3,7 +3,7 @@ import ObsEditHeader from "components/ObsEdit/ObsEditHeader";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-import { renderComponent } from "tests/helpers/render";
+import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
 
 const mockObservations = [
   factory( "LocalObservation" ),
@@ -12,7 +12,7 @@ const mockObservations = [
 
 describe( "ObsEditHeader", () => {
   it( "has no accessibility errors", () => {
-    const button = (
+    const button = wrapInNavigationContainer(
       <ObsEditHeader
         observations={mockObservations}
       />

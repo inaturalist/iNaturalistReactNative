@@ -3,7 +3,7 @@ import ObsEdit from "components/ObsEdit/ObsEdit";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
-import { renderComponent } from "tests/helpers/render";
+import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
@@ -52,8 +52,10 @@ describe( "ObsEdit", () => {
   } );
 
   it( "should not have accessibility errors", async ( ) => {
-    const obsEdit = <ObsEdit />;
-    expect( obsEdit ).toBeAccessible();
+    const view = wrapInNavigationContainer(
+      <ObsEdit />
+    );
+    expect( view ).toBeAccessible();
   } );
 
   it( "displays the number of photos in global state obsPhotos", async ( ) => {
