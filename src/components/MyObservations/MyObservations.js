@@ -21,8 +21,8 @@ type Props = {
   observations: Array<Object>,
   onEndReached: Function,
   setShowLoginSheet: Function,
-  showInitialLoadingWheel: boolean,
   showLoginSheet: boolean,
+  status: string,
   toggleLayout: Function
 };
 
@@ -36,8 +36,8 @@ const MyObservations = ( {
   observations,
   onEndReached,
   setShowLoginSheet,
-  showInitialLoadingWheel,
   showLoginSheet,
+  status,
   toggleLayout
 }: Props ): Node => (
   <>
@@ -65,8 +65,8 @@ const MyObservations = ( {
             isConnected={isConnected}
             layout={layout}
             onEndReached={onEndReached}
-            showInitialLoadingWheel={showInitialLoadingWheel}
             showObservationsEmptyScreen
+            status={status}
             testID="MyObservationsAnimatedList"
             renderHeader={(
               <Announcements isConnected={isConnected} />
