@@ -106,23 +106,13 @@ jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
-    useIsFocused: jest.fn( ( ) => true ),
     useRoute: jest.fn( ( ) => ( { params: {} } ) ),
     useNavigation: ( ) => ( {
       addListener: jest.fn(),
       canGoBack: jest.fn( ( ) => true ),
       goBack: jest.fn( ),
       setOptions: jest.fn( )
-    } ),
-    useNavigationState: jest.fn( )
-  };
-} );
-
-jest.mock( "@react-navigation/drawer", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/drawer" );
-  return {
-    ...actualNav,
-    useDrawerStatus: jest.fn( ( ) => false )
+    } )
   };
 } );
 
