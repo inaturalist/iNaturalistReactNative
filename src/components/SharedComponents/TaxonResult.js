@@ -73,6 +73,7 @@ const TaxonResult = ( {
 
   const theme = useTheme( );
   const currentUser = useCurrentUser( );
+
   // thinking about future performance, it might make more sense to batch
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AI camera &
