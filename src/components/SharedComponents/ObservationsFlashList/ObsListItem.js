@@ -28,12 +28,14 @@ const ObsListItem = ( {
   observation
 }: Props ): Node => {
   const uploadStatus = useStore( state => state.uploadStatus );
+  const currentUser = useCurrentUser( );
 
   const photo = observation?.observationPhotos?.[0]?.photo
     || observation?.observation_photos?.[0]?.photo
     || null;
   const needsSync = typeof observation.needsSync !== "undefined" && observation.needsSync( );
-  const currentUser = useCurrentUser( );
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
+
   const obsPhotosCount = observation?.observationPhotos?.length
     || observation?.observation_photos?.length
     || 0;
@@ -41,6 +43,7 @@ const ObsListItem = ( {
     observation?.observationSounds?.length
     || observation?.observation_sounds?.length
   );
+  const isObscured = observation?.obscured && !belongsToCurrentUser;
 
   return (
     <View
@@ -62,7 +65,11 @@ const ObsListItem = ( {
           scientificNameFirst={currentUser?.prefers_scientific_name_first}
           prefersCommonNames={currentUser?.prefers_common_names}
         />
-        <ObservationLocation observation={observation} classNameMargin="mt-1" />
+        <ObservationLocation
+          observation={observation}
+          obscured={isObscured}
+          classNameMargin="mt-1"
+        />
         <DateDisplay
           dateString={
             observation.time_observed_at
