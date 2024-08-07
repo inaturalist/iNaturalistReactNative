@@ -6,7 +6,7 @@ import {
 import ScientificName from "components/SharedComponents/ScientificName";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -66,147 +66,6 @@ const DisplayTaxonName = ( {
     return textColorClass;
   }, [color, withdrawn] );
 
-  const renderTaxonName = useCallback( ( ) => {
-    const taxonPojo = typeof ( taxon.toJSON ) === "function"
-      ? taxon.toJSON( )
-      : taxon;
-
-    // this is mostly for the AICamera, but might be helpful to display elsewhere
-    if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
-      taxonPojo.rank = rankNames[taxonPojo?.rank_level];
-    }
-
-    const {
-      commonName,
-      scientificNamePieces,
-      rankPiece,
-      rankLevel,
-      rank
-    } = generateTaxonPieces( taxonPojo );
-    const isHorizontal = layout === "horizontal";
-    const getSpaceChar = showSpace => ( showSpace && isHorizontal
-      ? " "
-      : "" );
-
-    let TopTextComponent = TopTextComponentProp;
-    if ( !TopTextComponent ) {
-      TopTextComponent = small
-        ? Body3
-        : Body1;
-    }
-    let BottomTextComponent = BottomTextComponentProp;
-    if ( !BottomTextComponent ) {
-      BottomTextComponent = small
-        ? Body4
-        : Body3;
-    }
-
-    const setNumberOfLines = ( ) => {
-      if ( scientificNameFirst ) {
-        return 1;
-      }
-      if ( ellipsizeCommonName ) {
-        return 2;
-      }
-      return 3;
-    };
-
-    const topTextComponent = (
-      <TopTextComponent
-        className={textClassName}
-        numberOfLines={setNumberOfLines( )}
-        ellipsizeMode="tail"
-      >
-        {
-          ( scientificNameFirst || !commonName || !prefersCommonNames )
-            ? (
-              <ScientificName
-                scientificNamePieces={scientificNamePieces}
-                rankPiece={rankPiece}
-                rankLevel={rankLevel}
-                rank={rank}
-                fontComponent={TopTextComponent}
-                isHorizontal={isHorizontal}
-                textClassName={textClassName}
-                taxonId={taxon.id}
-                keyBase={`${keyBase}-top`}
-                isTitle
-                isFirst={scientificNameFirst && prefersCommonNames}
-              />
-            )
-            : `${commonName}${
-              !removeStyling
-                ? getSpaceChar( !scientificNameFirst )
-                : ""
-            }`
-        }
-      </TopTextComponent>
-    );
-
-    const bottomTextComponent = ( commonName && prefersCommonNames ) && (
-      <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
-        {scientificNameFirst
-          ? commonName
-          : (
-            <ScientificName
-              scientificNamePieces={scientificNamePieces}
-              rankPiece={rankPiece}
-              rankLevel={rankLevel}
-              rank={rank}
-              fontComponent={BottomTextComponent}
-              isHorizontal={isHorizontal}
-              textClassName={textClassName}
-              taxonId={taxon.id}
-              keyBase={`${keyBase}-bot`}
-            />
-          )}
-      </BottomTextComponent>
-    );
-
-    // styling using a View component results in two components being out of
-    // alignment when passing components into <Trans />, like in DisagreementText,
-    // so in these cases we want to return text only
-    if ( removeStyling ) {
-      return (
-        <Text testID="display-taxon-name-no-styling">
-          {topTextComponent}
-          {bottomTextComponent && (
-            <>
-              {getSpaceChar( !scientificNameFirst )}
-              (
-              {bottomTextComponent}
-              )
-            </>
-          )}
-        </Text>
-      );
-    }
-
-    return (
-      <View
-        testID="display-taxon-name"
-        className={classnames( "flex", {
-          "flex-row items-end flex-wrap w-11/12": isHorizontal
-        } )}
-      >
-        {topTextComponent}
-        {bottomTextComponent}
-      </View>
-    );
-  }, [
-    BottomTextComponentProp,
-    ellipsizeCommonName,
-    keyBase,
-    layout,
-    removeStyling,
-    prefersCommonNames,
-    scientificNameFirst,
-    small,
-    taxon,
-    textClassName,
-    TopTextComponentProp
-  ] );
-
   if ( !taxon || !taxon.id ) {
     return (
       <Body1 className={textClassName} numberOfLines={1}>
@@ -215,7 +74,132 @@ const DisplayTaxonName = ( {
     );
   }
 
-  return renderTaxonName( );
+  const taxonPojo = typeof ( taxon.toJSON ) === "function"
+    ? taxon.toJSON( )
+    : taxon;
+
+  // this is mostly for the AICamera, but might be helpful to display elsewhere
+  if ( taxonPojo?.rank_level && !taxonPojo?.rank ) {
+    taxonPojo.rank = rankNames[taxonPojo?.rank_level];
+  }
+
+  const {
+    commonName,
+    scientificNamePieces,
+    rankPiece,
+    rankLevel,
+    rank
+  } = generateTaxonPieces( taxonPojo );
+  const isHorizontal = layout === "horizontal";
+  const getSpaceChar = showSpace => ( showSpace && isHorizontal
+    ? " "
+    : "" );
+
+  let TopTextComponent = TopTextComponentProp;
+  if ( !TopTextComponent ) {
+    TopTextComponent = small
+      ? Body3
+      : Body1;
+  }
+  let BottomTextComponent = BottomTextComponentProp;
+  if ( !BottomTextComponent ) {
+    BottomTextComponent = small
+      ? Body4
+      : Body3;
+  }
+
+  const setNumberOfLines = ( ) => {
+    if ( scientificNameFirst ) {
+      return 1;
+    }
+    if ( ellipsizeCommonName ) {
+      return 2;
+    }
+    return 3;
+  };
+
+  const topTextComponent = (
+    <TopTextComponent
+      className={textClassName}
+      numberOfLines={setNumberOfLines( )}
+      ellipsizeMode="tail"
+    >
+      {
+        ( scientificNameFirst || !commonName || !prefersCommonNames )
+          ? (
+            <ScientificName
+              scientificNamePieces={scientificNamePieces}
+              rankPiece={rankPiece}
+              rankLevel={rankLevel}
+              rank={rank}
+              fontComponent={TopTextComponent}
+              isHorizontal={isHorizontal}
+              textClassName={textClassName}
+              taxonId={taxon.id}
+              keyBase={`${keyBase}-top`}
+              isTitle
+              isFirst={scientificNameFirst && prefersCommonNames}
+            />
+          )
+          : `${commonName}${
+            !removeStyling
+              ? getSpaceChar( !scientificNameFirst )
+              : ""
+          }`
+      }
+    </TopTextComponent>
+  );
+
+  const bottomTextComponent = ( commonName && prefersCommonNames ) && (
+    <BottomTextComponent className={classnames( textClassName, "mt-[3px]" )}>
+      {scientificNameFirst
+        ? commonName
+        : (
+          <ScientificName
+            scientificNamePieces={scientificNamePieces}
+            rankPiece={rankPiece}
+            rankLevel={rankLevel}
+            rank={rank}
+            fontComponent={BottomTextComponent}
+            isHorizontal={isHorizontal}
+            textClassName={textClassName}
+            taxonId={taxon.id}
+            keyBase={`${keyBase}-bot`}
+          />
+        )}
+    </BottomTextComponent>
+  );
+
+  // styling using a View component results in two components being out of
+  // alignment when passing components into <Trans />, like in DisagreementText,
+  // so in these cases we want to return text only
+  if ( removeStyling ) {
+    return (
+      <Text testID="display-taxon-name-no-styling">
+        {topTextComponent}
+        {bottomTextComponent && (
+          <>
+            {getSpaceChar( !scientificNameFirst )}
+            (
+            {bottomTextComponent}
+            )
+          </>
+        )}
+      </Text>
+    );
+  }
+
+  return (
+    <View
+      testID="display-taxon-name"
+      className={classnames( "flex", {
+        "flex-row items-end flex-wrap w-11/12": isHorizontal
+      } )}
+    >
+      {topTextComponent}
+      {bottomTextComponent}
+    </View>
+  );
 };
 
 export default DisplayTaxonName;

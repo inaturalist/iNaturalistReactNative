@@ -14,7 +14,8 @@ const shouldFetchObservationLocation = ( observation: RealmObservation ) => {
     originalPhotoUri && !originalPhotoUri.includes( RNFS.DocumentDirectoryPath )
   );
   const isNewObservation = (
-    !observation?._created_at
+    observation
+    && !observation?._created_at
     && !observation?._synced_at
   );
 

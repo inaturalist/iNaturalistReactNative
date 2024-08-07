@@ -96,6 +96,7 @@ const TaxonResult = ( {
       vision
     } );
   };
+
   const renderCheckmark = () => {
     if ( isTopSuggestion ) {
       return (
