@@ -5,8 +5,7 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 
 interface Props {
-  // TODO: navigation type
-  handleClose?: ( _navigation: any ) => void;
+  handleClose?: ( ) => void;
   black?: boolean;
   buttonClassName?: string;
   size?: number;
