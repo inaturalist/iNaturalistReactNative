@@ -4,7 +4,7 @@ import {
 import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedMutation } from "sharedHooks";

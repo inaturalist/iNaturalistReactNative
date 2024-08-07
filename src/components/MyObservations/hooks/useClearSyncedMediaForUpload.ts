@@ -1,5 +1,5 @@
 import { photoUploadPath, soundUploadPath } from "appConstants/paths.ts";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
 import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory.ts";
 

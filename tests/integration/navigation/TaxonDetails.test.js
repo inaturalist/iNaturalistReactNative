@@ -146,7 +146,7 @@ describe( "TaxonDetails", ( ) => {
     const searchNav = await screen.findByLabelText( "Search" );
     await actor.press( searchNav );
     const searchBar = await screen.findByTestId( "SearchTaxon" );
-    actor.type( searchBar, "b" );
+    await actor.type( searchBar, "b" );
 
     const searchedTaxon = mockTaxaList[0];
     const searchedTaxonName = await screen.findByText( searchedTaxon.name );

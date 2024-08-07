@@ -34,7 +34,17 @@ export default {
   migrationOptions: {
     resolveEmbeddedConstraints: true
   },
+  // TODO: type?
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 52 ) {
+      const oldPrefs = oldRealm.objects( "LocalPreferences" );
+      const newPrefs = newRealm.objects( "LocalPreferences" );
+      //  TODO: type? here and below
+      oldPrefs.keys( ).forEach( objectIndex => {
+        const newObsSound = newPrefs[objectIndex];
+        delete newObsSound.explore_location_permission_shown;
+      } );
+    }
     if ( oldRealm.schemaVersion < 51 ) {
       // const oldIdentifications = oldRealm.objects( "Identification" );
       // const newIdentifications = newRealm.objects( "Identification" );

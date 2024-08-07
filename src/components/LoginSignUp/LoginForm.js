@@ -7,7 +7,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { TouchableWithoutFeedback } from "react-native";

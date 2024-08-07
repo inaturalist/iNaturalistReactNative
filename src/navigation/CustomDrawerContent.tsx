@@ -17,7 +17,7 @@ import {
   WarningSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useMemo, useState } from "react";
 import { Dimensions, ViewStyle } from "react-native";
 import User from "realmModels/User.ts";

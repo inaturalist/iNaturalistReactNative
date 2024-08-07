@@ -1,20 +1,20 @@
-// @flow
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { searchTaxa } from "api/taxa";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useEffect, useState } from "react";
+import { UpdateMode } from "realm";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ): Object => {
+const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
   const { reload } = options;
   const realm = useRealm( );
   const { isConnected } = useNetInfo( );
-  const [isUpdatingRealm, setIsUpdatingRealm] = useState( );
+  const [isUpdatingRealm, setIsUpdatingRealm] = useState<boolean>( );
   const enabled = !!isConnected && !!reload;
 
   const queryKey = ["searchTaxa", reload];
@@ -33,7 +33,7 @@ const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ): Obje
             ...taxon,
             isIconic: true,
             _synced_at: new Date( )
-          }, "modified" );
+          }, UpdateMode.Modified );
         } );
       }, "modifying iconic taxa in useIconicTaxa" );
     }

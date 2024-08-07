@@ -6,7 +6,7 @@ let mTilePositionX;
 let mTilePositionY;
 
 /* Based on: https://developers.google.com/maps/documentation/javascript/examples/map-coordinates */
-const project = ( latitude, longitude ) => {
+const project = ( latitude: number, longitude: number ) => {
   let siny = Math.sin( ( latitude * Math.PI ) / 180 );
 
   // Truncating to 0.9999 effectively limits latitude to 89.189. This is
@@ -20,7 +20,7 @@ const project = ( latitude, longitude ) => {
 };
 
 /* Based on: https://developers.google.com/maps/documentation/javascript/examples/map-coordinates */
-const createUTFPosition = ( zoomLevel, latitude, longitude ) => {
+const createUTFPosition = ( zoomLevel: number, latitude: number, longitude: number ) => {
   const scale = 2 ** Math.floor( zoomLevel );
 
   const worldCoordinate = project( latitude, longitude );
