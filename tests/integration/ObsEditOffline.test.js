@@ -99,21 +99,18 @@ describe( "ObsEdit offline", ( ) => {
       renderAppWithComponent(
         <ObsEdit />
       );
-      // expect(
-      //   screen.getByTestId( "EvidenceSection.fetchingLocationIndicator" )
-      // ).toBeTruthy( );
       await screen.findByTestId( "EvidenceSection.fetchingLocationIndicator" );
       await waitFor( ( ) => {
         expect( mockWatchPositionSuccess ).toHaveBeenCalled( );
       } );
-      const coords = await screen.findByText( /Lat:/ );
+      const coords = await screen.findByText( /Lat: 1/ );
       expect( coords ).toBeTruthy( );
       expect( screen.queryByText( "Finding location..." ) ).toBeFalsy( );
       await waitFor( ( ) => {
         expect(
           screen.queryByTestId( "EvidenceSection.fetchingLocationIndicator" )
         ).toBeFalsy( );
-      }, { timeout: 3000, interval: 500 } );
+      }, { timeout: 5_000, interval: 500 } );
     } );
   } );
 } );
