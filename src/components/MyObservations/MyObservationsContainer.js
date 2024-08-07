@@ -3,12 +3,11 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect,
-  useState
+  useCallback, useState
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
@@ -35,8 +34,7 @@ import MyObservations from "./MyObservations";
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
-  const navigation = useNavigation( );
-  const [isFocused, setIsFocused] = useState( true );
+  const isFocused = useIsFocused( );
   // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
   useClearRotatedOriginalPhotos( );
   useClearGalleryPhotos( );
@@ -48,12 +46,11 @@ const MyObservationsContainer = ( ): Node => {
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const syncingStatus = useStore( state => state.syncingStatus );
-  const resetSyncObservationsSlice
-    = useStore( state => state.resetSyncObservationsSlice );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -140,38 +137,21 @@ const MyObservationsContainer = ( ): Node => {
     setUploadStatus
   ] );
 
-  useEffect( ( ) => {
-    // this is intended to have the automatic sync run once
-    // the very first time a user lands on MyObservations
-    startAutomaticSync( );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
-
-  useEffect( ( ) => {
-    // this is intended to have the automatic sync run once
-    // every time a user lands on MyObservations from a different tab screen.
-    // ideally, we wouldn't need both this and the useEffect hook above
-    navigation.addListener( "focus", ( ) => {
-      setIsFocused( true );
-      startAutomaticSync( );
-    } );
-    navigation.addListener( "blur", ( ) => {
-      console.log( "screen is blurring. resetting focus and sync slice and upload slice" );
-      setIsFocused( false );
-      resetSyncObservationsSlice( );
+  useFocusEffect(
+    // need to reset the state on a FocusEffect, not a blur listener, because
+    // tab bar screens don't seem to blur
+    useCallback( ( ) => {
       resetUploadObservationsSlice( );
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
-    } );
-  }, [
-    navigation,
-    startAutomaticSync,
-    syncingStatus,
-    resetSyncObservationsSlice,
-    resetUploadObservationsSlice,
-    realm,
-    setNumUnuploadedObservations
-  ] );
+      startAutomaticSync( );
+    }, [
+      startAutomaticSync,
+      setNumUnuploadedObservations,
+      realm,
+      resetUploadObservationsSlice
+    ] )
+  );
 
   if ( !layout ) { return null; }
 
@@ -189,6 +169,7 @@ const MyObservationsContainer = ( ): Node => {
       handleIndividualUploadPress={handleIndividualUploadPress}
       handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}
+      numUnuploadedObservations={numUnuploadedObservations}
       observations={observations}
       onEndReached={fetchNextPage}
       setShowLoginSheet={setShowLoginSheet}
