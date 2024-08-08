@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
+import { TextInput as RNTextInput } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
@@ -16,8 +17,7 @@ interface Props {
   containerClass?: string;
   handleTextChange: ( _text: string ) => void;
   hasShadow?: boolean;
-  // TODO: check react-native-paper docs for correct type
-  input?: any,
+  input?: React.RefObject<RNTextInput>,
   placeholder?: string;
   testID?: string;
   value: string;
