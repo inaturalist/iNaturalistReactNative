@@ -85,7 +85,6 @@ beforeEach( async ( ) => {
       user: mockUser
     } )]
   } );
-  inatjs.taxa.search.mockResolvedValue( makeResponse( [topSuggestion.taxon] ) );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 } );
 

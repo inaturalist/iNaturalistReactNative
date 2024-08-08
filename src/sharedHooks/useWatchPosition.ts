@@ -32,13 +32,15 @@ const useWatchPosition = ( options: {
   const [subscriptionId, setSubscriptionId] = useState<number | null>( null );
   const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
   const { shouldFetchLocation } = options;
+  const [hasFocus, setHasFocus] = useState( true );
 
-  const [isFetchingLocation, setIsFetchingLocation] = useState<boolean>(
-    shouldFetchLocation
-  );
+  const stopWatch = useCallback( ( id: number ) => {
+    clearWatch( id );
+    setSubscriptionId( null );
+    setCurrentPosition( null );
+  }, [] );
 
-  const startWatch = ( ) => {
-    setIsFetchingLocation( true );
+  const startWatch = useCallback( ( ) => {
     const success = ( position: GeolocationResponse ) => {
       const age = Date.now() - position.timestamp;
       if ( age > MAX_POSITION_AGE_MS ) return;
@@ -47,7 +49,9 @@ const useWatchPosition = ( options: {
 
     const failure = ( error: GeolocationError ) => {
       console.warn( "useWatchPosition error: ", error );
-      setIsFetchingLocation( false );
+      if ( subscriptionId ) {
+        stopWatch( subscriptionId );
+      }
     };
 
     try {
@@ -56,18 +60,14 @@ const useWatchPosition = ( options: {
         failure,
         geolocationOptions
       );
+      if ( typeof ( watchID ) !== "number" ) {
+        throw new Error( "watchPosition failed to return a watchID" );
+      }
       setSubscriptionId( watchID );
     } catch ( error ) {
       failure( error as GeolocationError );
     }
-  };
-
-  const stopWatch = useCallback( ( id: number ) => {
-    clearWatch( id );
-    setSubscriptionId( null );
-    setCurrentPosition( null );
-    setIsFetchingLocation( false );
-  }, [] );
+  }, [stopWatch, subscriptionId] );
 
   useEffect( ( ) => {
     if ( !currentPosition ) { return; }
@@ -86,24 +86,39 @@ const useWatchPosition = ( options: {
   }, [currentPosition, stopWatch, subscriptionId] );
 
   useEffect( ( ) => {
-    if ( shouldFetchLocation ) {
+    if (
+      shouldFetchLocation
+      && subscriptionId === null
+      && hasFocus
+    ) {
       startWatch( );
     }
-  }, [shouldFetchLocation] );
+  }, [shouldFetchLocation, startWatch, subscriptionId, hasFocus] );
 
   useEffect( ( ) => {
     // When we leave the screen this hook was used on...
     const unsubscribe = navigation.addListener( "blur", ( ) => {
       // ...stop watching for location updates if we were...
-      if ( subscriptionId !== null ) stopWatch( subscriptionId );
+      if ( subscriptionId !== null ) {
+        stopWatch( subscriptionId );
+      }
       // ...and wipe the current location so we don't pick up a stale one later
       setUserLocation( null );
+      setHasFocus( false );
     } );
     return unsubscribe;
   }, [navigation, stopWatch, subscriptionId] );
 
+  // Listen for focus. We only want to fetch location when this screen has focus.
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "focus", ( ) => {
+      setHasFocus( true );
+    } );
+    return unsubscribe;
+  }, [navigation] );
+
   return {
-    isFetchingLocation,
+    isFetchingLocation: subscriptionId !== null,
     stopWatch,
     subscriptionId,
     userLocation

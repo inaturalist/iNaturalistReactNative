@@ -6,7 +6,7 @@ import Sound from "realmModels/Sound";
 
 const DEFAULT_STATE = {
   cameraRollUris: [],
-  currentObservation: {},
+  currentObservation: null,
   currentObservationIndex: 0,
   evidenceToAdd: [],
   galleryUris: [],
