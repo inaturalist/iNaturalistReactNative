@@ -60,10 +60,10 @@ const MyObservationsContainer = ( ): Node => {
   const currentUserId = currentUser?.id;
   const canUpload = currentUser && isConnected;
 
-  const { uploadObservations } = useUploadObservations( canUpload );
+  const { startUploadObservations } = useUploadObservations( canUpload );
   useSyncObservations(
     currentUserId,
-    uploadObservations
+    startUploadObservations
   );
 
   useObservationsUpdates( !!currentUser );
