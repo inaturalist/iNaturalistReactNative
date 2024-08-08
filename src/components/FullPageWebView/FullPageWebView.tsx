@@ -23,15 +23,17 @@ const LoadingView = ( ) => (
   </View>
 );
 
+type FullPageWebViewParams = {
+  initialUrl: string,
+  blurEvent?: string,
+  title?: string,
+  loggedIn?: boolean,
+  openLinksInBrowser?: boolean,
+  skipSetSourceInShouldStartLoadWithRequest?: boolean
+}
+
 type ParamList = {
-  FullPageWebView: {
-    initialUrl: string,
-    blurEvent?: string,
-    title?: string,
-    loggedIn?: boolean,
-    openLinksInBrowser?: boolean,
-    skipSetSourceInShouldStartLoadWithRequest?: boolean
-  }
+  FullPageWebView: FullPageWebViewParams
 }
 
 type WebViewSource = {
@@ -43,6 +45,40 @@ type WebViewSource = {
 
 type WebViewRequest = {
   url: string;
+}
+
+export function onShouldStartLoadWithRequest(
+  request: WebViewRequest,
+  source: WebViewSource,
+  params: FullPageWebViewParams,
+  setSource?: ( source: WebViewSource ) => void
+) {
+  // If we're just loading the same page, that's fine
+  if ( request.url === source.uri ) return true;
+
+  // If we're going to a different anchor on the same page, also fine
+  const requestUrl = new URL( request.url );
+  const sourceUrl = new URL( source.uri );
+  if (
+    requestUrl.host === sourceUrl.host
+    && requestUrl.search === sourceUrl.search
+  ) {
+    return true;
+  }
+
+  // Otherwise we might want to open a browser
+  if ( params.openLinksInBrowser ) {
+    Linking.openURL( request.url ).catch( linkingError => {
+      logger.info( "User refused to open ", request.url, ", error: ", linkingError );
+    } );
+    return false;
+  }
+
+  if ( params.skipSetSourceInShouldStartLoadWithRequest || !setSource ) return true;
+
+  // Note: this will cause infinite re-renders if the page has iframes
+  setSource( { ...source, uri: request.url } );
+  return true;
 }
 
 const FullPageWebView = ( ) => {
@@ -75,6 +111,7 @@ const FullPageWebView = ( ) => {
       } );
 
       // Make the WebView logged in for the current user
+      // TODO: make sure this isn't spewing JWTs to any old site
       if ( params.loggedIn ) {
         getAPIToken().then( token => {
           setSource( {
@@ -96,33 +133,14 @@ const FullPageWebView = ( ) => {
           <WebView
             className="h-full w-full flex-1"
             source={source}
-            onShouldStartLoadWithRequest={( request: WebViewRequest ) => {
-            // If we're just loading the same page, that's fine
-              if ( request.url === source.uri ) return true;
-
-              // If we're going to a different anchor on the same page, also fine
-              const requestUrl = new URL( request.url );
-              const sourceUrl = new URL( source.uri );
-              if (
-                requestUrl.host === sourceUrl.host
-              && requestUrl.search === sourceUrl.search
-              ) {
-                return true;
-              }
-
-              // Otherwise we might want to open a browser
-              if ( params.openLinksInBrowser ) {
-                Linking.openURL( request.url ).catch( linkingError => {
-                  logger.info( "User refused to open ", request.url, ", error: ", linkingError );
-                } );
-                return false;
-              }
-
-              if ( params.skipSetSourceInShouldStartLoadWithRequest ) return true;
-              // Note: this will cause infinite re-renders if the page has iframes
-              setSource( { ...source, uri: request.url } );
-              return true;
-            }}
+            onShouldStartLoadWithRequest={
+              ( request: WebViewRequest ) => onShouldStartLoadWithRequest(
+                request,
+                source,
+                params,
+                setSource
+              )
+            }
             renderLoading={LoadingView}
             startInLoadingState
             userAgent={getUserAgent()}
