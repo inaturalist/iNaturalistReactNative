@@ -1,4 +1,9 @@
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute
+} from "@react-navigation/native";
 import { getUserAgent } from "api/userAgent";
 import { getAPIToken } from "components/LoginSignUp/AuthenticationService.ts";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
@@ -18,21 +23,42 @@ const LoadingView = ( ) => (
   </View>
 );
 
+type ParamList = {
+  FullPageWebView: {
+    initialUrl: string,
+    blurEvent?: string,
+    title?: string,
+    loggedIn?: boolean,
+    openLinksInBrowser?: boolean,
+    skipSetSourceInShouldStartLoadWithRequest?: boolean
+  }
+}
+
+type WebViewSource = {
+  uri: string;
+  headers?: {
+    Authorization?: string | null
+  }
+}
+
+type WebViewRequest = {
+  url: string;
+}
+
 const FullPageWebView = ( ) => {
   const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const [source, setSource] = useState( { uri: params.initialUrl } );
+  const { params } = useRoute<RouteProp<ParamList, "FullPageWebView">>( );
+  const [source, setSource] = useState<WebViewSource>( { uri: params.initialUrl } );
 
   // If the previous screen wanted to know when this one blurs, fire off an
   // event when that happens
   useEffect( ( ) => {
-    if ( params.blurEvent ) {
-      const unsubscribe = navigation.addListener( "blur", ( ) => {
+    const unsubscribe = navigation.addListener( "blur", ( ) => {
+      if ( params.blurEvent ) {
         EventRegister.emit( params.blurEvent );
-      } );
-      return unsubscribe;
-    }
-    return ( ) => undefined;
+      }
+    } );
+    return unsubscribe;
   }, [navigation, params.blurEvent] );
 
   useFocusEffect(
@@ -70,7 +96,7 @@ const FullPageWebView = ( ) => {
           <WebView
             className="h-full w-full flex-1"
             source={source}
-            onShouldStartLoadWithRequest={request => {
+            onShouldStartLoadWithRequest={( request: WebViewRequest ) => {
             // If we're just loading the same page, that's fine
               if ( request.url === source.uri ) return true;
 
