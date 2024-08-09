@@ -346,7 +346,6 @@ Endemic = Endemic
 Endemic-to-place = Endemic to { $place }
 # Title for a section describing an error
 Error = Error
-Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 ERROR-LOADING-DQA = ERROR LOADING IN DQA
 # Title of dialog or section describing an error
 Error-title = Error

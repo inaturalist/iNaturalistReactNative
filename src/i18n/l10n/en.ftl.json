@@ -484,7 +484,6 @@
     "comment": "Title for a section describing an error",
     "val": "Error"
   },
-  "Error-Could-Not-Fetch-Taxon": "Error: Could Not Fetch Taxon",
   "ERROR-LOADING-DQA": "ERROR LOADING IN DQA",
   "Error-title": {
     "comment": "Title of dialog or section describing an error",
