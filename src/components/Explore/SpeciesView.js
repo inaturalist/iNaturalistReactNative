@@ -18,14 +18,16 @@ type Props = {
   count: Object,
   isConnected: boolean,
   queryParams: Object,
-  updateCount: Function
+  updateCount: Function,
+  setCurrentExploreView: Function
 }
 
 const SpeciesView = ( {
   count,
   isConnected,
   queryParams,
-  updateCount
+  updateCount,
+  setCurrentExploreView
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -72,6 +74,7 @@ const SpeciesView = ( {
 
   const renderItem = ( { item } ) => (
     <TaxonGridItem
+      setCurrentExploreView={setCurrentExploreView}
       count={item?.count}
       style={{
         height: gridItemWidth,

@@ -13,23 +13,22 @@ import Photo from "realmModels/Photo";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
-import useCurrentExploreView from "./hooks/useCurrentExploreView";
-
 interface Props {
   count: number,
   style?: Object,
   taxon: Object,
+  setCurrentExploreView: Function
 }
 
 const TaxonGridItem = ( {
   count,
   style,
-  taxon
+  taxon,
+  setCurrentExploreView
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const { setCurrentExploreView } = useCurrentExploreView( );
   const {
     dispatch
   } = useExplore( );
