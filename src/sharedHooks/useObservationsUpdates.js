@@ -4,7 +4,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { fetchObservationUpdates } from "api/observations";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery } from "sharedHooks";

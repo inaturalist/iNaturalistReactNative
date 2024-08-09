@@ -9,8 +9,6 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
-import AddCommentPrompt from "./AddCommentPrompt";
-import CommentBox from "./CommentBox";
 import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 
 interface Props {
@@ -37,7 +35,6 @@ const SuggestionsHeader = ( {
 
   return (
     <>
-      <AddCommentPrompt />
       <View className="mx-5">
         <ObsPhotoSelectionList
           photoUris={photoUris}
@@ -74,7 +71,6 @@ const SuggestionsHeader = ( {
           </View>
         </Pressable>
       )}
-      <CommentBox />
     </>
   );
 };

@@ -26,19 +26,23 @@ const mockPositions = [
   }
 ];
 
+const mockWatchPositionSuccess = jest.fn( onSuccess => onSuccess( ) );
+
 describe( "useWatchPosition with inaccurate location", ( ) => {
   beforeEach( ( ) => {
     Geolocation.watchPosition.mockReset( );
-    // Mock so success gets called immediately and so that three subsequent
-    // calls succeed with changing coordinates and improving accuracy
-    Geolocation.watchPosition.mockImplementationOnce( success => success( mockPositions[0] ) );
+    Geolocation.watchPosition.mockImplementation( success => {
+      setTimeout( ( ) => mockWatchPositionSuccess( ( ) => success( mockPositions[0] ) ), 100 );
+      return 0;
+    } );
   } );
 
-  // Geolocation.watchPosition should have been called and that roughly
+  // The success callback should have been called and that roughly
   // marks the end of async effects, so hopefull this prevents "outside of
   // act" warnings
   afterEach( ( ) => waitFor( ( ) => {
-    expect( Geolocation.watchPosition ).toHaveBeenCalled( );
+    expect( mockWatchPositionSuccess ).toHaveBeenCalled( );
+    mockWatchPositionSuccess.mockClear( );
   } ) );
 
   it( "should be loading by default", async ( ) => {
@@ -51,19 +55,26 @@ describe( "useWatchPosition with inaccurate location", ( ) => {
   it( "should return a user location", async ( ) => {
     const { result } = renderHook( ( ) => useWatchPosition( { shouldFetchLocation: true } ) );
     await waitFor( ( ) => {
-      expect( result.current.userLocation ).toBeDefined( );
+      expect( result.current.userLocation.latitude ).toBeDefined( );
     } );
-    expect( result?.current?.userLocation?.latitude )
-      .toEqual( mockPositions[0].coords.latitude );
+    expect( result.current.userLocation.latitude ).toEqual( mockPositions[0].coords.latitude );
   } );
 } );
 
 describe( "useWatchPosition with accurate location", ( ) => {
   beforeEach( ( ) => {
-    Geolocation.watchPosition.mockReset( );
-
-    Geolocation.watchPosition
-      .mockImplementationOnce( success => success( mockPositions[2] ) );
+    Geolocation.watchPosition.mockImplementation( success => {
+      setTimeout( ( ) => {
+        mockWatchPositionSuccess( ( ) => success( mockPositions[0] ) );
+        setTimeout( ( ) => {
+          mockWatchPositionSuccess( ( ) => success( mockPositions[1] ) );
+          setTimeout( ( ) => {
+            mockWatchPositionSuccess( ( ) => success( mockPositions[2] ) );
+          }, 100 );
+        }, 100 );
+      }, 100 );
+      return 0;
+    } );
   } );
 
   it( "should stop watching position when target accuracy reached", async ( ) => {

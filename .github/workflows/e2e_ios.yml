@@ -86,7 +86,14 @@ jobs:
         E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
         E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
         JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=small_inception_tf1.tflite\nANDROID_TAXONOMY_FILE_NAME=small_export_tax.csv\nIOS_MODEL_FILE_NAME=small_inception_tf1.mlmodel\nIOS_TAXONOMY_FILE_NAME=small_export_tax.json\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+      run: |
+        printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=small_inception_tf1.tflite\nANDROID_TAXONOMY_FILE_NAME=small_export_tax.csv\nIOS_MODEL_FILE_NAME=small_inception_tf1.mlmodel\nIOS_TAXONOMY_FILE_NAME=small_export_tax.json\n' \
+        "$JWT_ANONYMOUS_API_SECRET" \
+        "$OAUTH_CLIENT_ID" \
+        "$OAUTH_CLIENT_SECRET" \
+        "$E2E_TEST_USERNAME" \
+        "$E2E_TEST_PASSWORD" \
+        "$GMAPS_API_KEY" > .env
 
     # Download all linked model files not included in the repository (otherwise build will error out), requires .env file
     - name: Download the example cv model and taxonomy file into the ios folder

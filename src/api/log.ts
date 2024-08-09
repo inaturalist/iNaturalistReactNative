@@ -25,8 +25,12 @@ function isError( error: { message?: string, stack?: string } ) {
 
 // Custom transport for posting to iNat API logging
 const iNatLogstashTransport: transportFunctionType = async props => {
+  // Don't bother to log from dev builds
+  // eslint-disable-next-line no-undef
+  if ( __DEV__ ) return;
   const userToken = await getJWT();
   const anonymousToken = getAnonymousJWT();
+  // Can't log w/o auth token
   if ( !userToken && !anonymousToken ) {
     return;
   }

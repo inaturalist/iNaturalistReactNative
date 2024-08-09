@@ -1,11 +1,11 @@
 // @flow
 
 import {
-  ActivityIndicator,
   Body3,
   Heading4,
   INatIconButton,
   SearchBar,
+  TaxaList,
   TaxonResult,
   ViewWrapper
 } from "components/SharedComponents";
@@ -15,8 +15,7 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { FlatList } from "react-native";
-import { useIconicTaxa, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -41,8 +40,7 @@ const ExploreTaxonSearch = ( {
   const { t } = useTranslation( );
   const [taxonQuery, setTaxonQuery] = useState( "" );
 
-  const iconicTaxa = useIconicTaxa( { reload: false } );
-  const { taxaSearchResults, isLoading } = useTaxonSearch( taxonQuery );
+  const { taxaSearchResults, refetch, isLoading } = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
     updateTaxon( newTaxon );
@@ -73,11 +71,6 @@ const ExploreTaxonSearch = ( {
     onTaxonSelected
   ] );
 
-  let data = iconicTaxa;
-  if ( taxonQuery.length > 0 ) {
-    data = taxaSearchResults;
-  }
-
   return (
     <ViewWrapper>
       <View className="flex-row justify-center p-5 bg-white">
@@ -104,20 +97,13 @@ const ExploreTaxonSearch = ( {
           testID="SearchTaxon"
         />
       </View>
-      {isLoading
-        ? (
-          <View className="p-4">
-            <ActivityIndicator size={40} />
-          </View>
-        )
-        : (
-          <FlatList
-            keyboardShouldPersistTaps="always"
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-          />
-        )}
+      <TaxaList
+        taxa={taxaSearchResults}
+        isLoading={isLoading}
+        renderItem={renderItem}
+        taxonQuery={taxonQuery}
+        refetch={refetch}
+      />
     </ViewWrapper>
   );
 };

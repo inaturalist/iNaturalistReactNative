@@ -72,22 +72,6 @@ describe( "Suggestions", ( ) => {
     } );
   } );
 
-  it( "shows comment section if observation has comment", ( ) => {
-    useStore.setState( {
-      comment: "This is a test comment"
-    } );
-    renderComponent( <Suggestions
-      suggestions={{
-        ...initialSuggestions,
-        otherSuggestions: mockSuggestionsList
-      }}
-    /> );
-    const commentSection = screen.getByText(
-      i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
-    );
-    expect( commentSection ).toBeVisible( );
-  } );
-
   it( "should display empty text if no suggestions are found", ( ) => {
     renderComponent( <Suggestions suggestions={initialSuggestions} /> );
     const emptyText = i18next

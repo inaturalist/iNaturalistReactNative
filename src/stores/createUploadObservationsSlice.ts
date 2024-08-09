@@ -1,6 +1,6 @@
-import { deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import _ from "lodash";
-import { RealmObservation } from "realmModels/types.d.ts";
+import type { RealmObservation } from "realmModels/types.d.ts";
 import { StateCreator } from "zustand";
 
 export const UPLOAD_CANCELLED = "cancelled";
@@ -8,7 +8,34 @@ export const UPLOAD_PENDING = "pending";
 export const UPLOAD_COMPLETE = "complete";
 export const UPLOAD_IN_PROGRESS = "in-progress";
 
-const DEFAULT_STATE = {
+type UploadStatus = typeof UPLOAD_PENDING
+  | typeof UPLOAD_IN_PROGRESS
+  | typeof UPLOAD_COMPLETE
+  | typeof UPLOAD_CANCELLED;
+
+interface TotalUploadProgress {
+  uuid: string,
+  currentIncrements: number,
+  totalIncrements: number,
+  totalProgress: number
+}
+
+interface UploadObservationsSlice {
+  abortController: AbortController,
+  currentUpload: RealmObservation | null,
+  errorsByUuid: Object,
+  multiError: string | null,
+  initialNumObservationsInQueue: number,
+  numUnuploadedObservations: number,
+  numUploadsAttempted: number,
+  totalToolbarIncrements: number,
+  totalToolbarProgress: number,
+  totalUploadProgress: Array<TotalUploadProgress>,
+  uploadQueue: Array<string>,
+  uploadStatus: UploadStatus
+}
+
+const DEFAULT_STATE: UploadObservationsSlice = {
   abortController: new AbortController( ),
   currentUpload: null,
   errorsByUuid: {},
@@ -25,30 +52,6 @@ const DEFAULT_STATE = {
   uploadQueue: [],
   uploadStatus: UPLOAD_PENDING
 };
-
-interface TotalUploadProgress {
-  uuid: string,
-  currentIncrements: number,
-  totalIncrements: number,
-  totalProgress: number
-}
-
-interface UploadObservationsSlice {
-  currentUpload: RealmObservation,
-  errorsByUuid: Object,
-  multiError: string | null,
-  initialNumObservationsInQueue: number,
-  numUnuploadedObservations: number,
-  numUploadsAttempted: number,
-  totalToolbarIncrements: number,
-  totalToolbarProgress: number,
-  totalUploadProgress: Array<TotalUploadProgress>,
-  uploadQueue: Array<string>,
-  uploadStatus: typeof UPLOAD_PENDING
-    | typeof UPLOAD_IN_PROGRESS
-    | typeof UPLOAD_COMPLETE
-    | typeof UPLOAD_CANCELLED
-}
 
 const countEvidenceIncrements = ( upload, evidence ) => {
   const evidenceToUpload = upload?.[evidence];
@@ -114,13 +117,19 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       uploadStatus: UPLOAD_CANCELLED
     } );
   } ),
-  completeUploads: ( ) => set( ( ) => {
+  // Sets state to indicate that upload is needed without necessarily
+  // resetting the state, as there might still be observations to upload
+  setCannotUploadObservations: ( ) => set( { uploadStatus: UPLOAD_PENDING } ),
+  // Sets the state to start uploading observations
+  setStartUploadObservations: ( ) => {
+    activateKeepAwake( );
+    return set( { uploadStatus: UPLOAD_IN_PROGRESS } );
+  },
+  completeUploads: ( ) => {
     deactivateKeepAwake( );
-    return ( {
-      uploadStatus: UPLOAD_COMPLETE
-    } );
-  } ),
-  updateTotalUploadProgress: ( uuid, increment ) => set( state => {
+    set( { uploadStatus: UPLOAD_COMPLETE } );
+  },
+  updateTotalUploadProgress: ( uuid: string, increment: number ) => set( state => {
     const {
       currentUpload,
       totalToolbarIncrements,
@@ -154,7 +163,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress )
     };
   } ),
-  setUploadStatus: uploadStatus => set( ( ) => ( {
+  setUploadStatus: ( uploadStatus: UploadStatus ) => set( ( ) => ( {
     uploadStatus
   } ) ),
   addToUploadQueue: uuids => set( state => {
@@ -233,8 +242,8 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
       totalUploadProgress,
       totalToolbarProgress: setTotalToolbarProgress( totalToolbarIncrements, totalUploadProgress ),
       uploadStatus: numUploadsAttempted === initialNumObservationsInQueue
-        ? "complete"
-        : "uploadInProgress"
+        ? UPLOAD_COMPLETE
+        : UPLOAD_IN_PROGRESS
     } );
   } )
 } );

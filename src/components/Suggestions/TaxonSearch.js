@@ -2,6 +2,7 @@
 
 import {
   SearchBar,
+  TaxaList,
   TaxonResult,
   ViewWrapper
 } from "components/SharedComponents";
@@ -11,13 +12,10 @@ import React, {
   useCallback,
   useState
 } from "react";
-import { FlatList } from "react-native";
 import { useTaxonSearch, useTranslation } from "sharedHooks";
 import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
-import AddCommentPrompt from "./AddCommentPrompt";
-import CommentBox from "./CommentBox";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 
 const DROP_SHADOW = getShadowForColor( colors.darkGray, {
@@ -27,7 +25,7 @@ const DROP_SHADOW = getShadowForColor( colors.darkGray, {
 const TaxonSearch = ( ): Node => {
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const [selectedTaxon, setSelectedTaxon] = useState( null );
-  const { taxaSearchResults } = useTaxonSearch( taxonQuery );
+  const { taxaSearchResults, refetch, isLoading } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
   useNavigateWithTaxonSelected(
@@ -35,8 +33,6 @@ const TaxonSearch = ( ): Node => {
     ( ) => setSelectedTaxon( null ),
     { vision: false }
   );
-
-  const renderFooter = useCallback( ( ) => <View className="pb-10" />, [] );
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
@@ -52,8 +48,6 @@ const TaxonSearch = ( ): Node => {
 
   return (
     <ViewWrapper>
-      <AddCommentPrompt />
-      <CommentBox />
       <View
         className="bg-white px-6 pt-2 pb-8"
         style={DROP_SHADOW}
@@ -65,12 +59,12 @@ const TaxonSearch = ( ): Node => {
           autoFocus={taxonQuery === ""}
         />
       </View>
-      <FlatList
-        keyboardShouldPersistTaps="always"
-        data={taxaSearchResults}
+      <TaxaList
+        taxa={taxaSearchResults}
+        isLoading={isLoading}
         renderItem={renderTaxonResult}
-        keyExtractor={item => item.id}
-        ListFooterComponent={renderFooter}
+        taxonQuery={taxonQuery}
+        refetch={refetch}
       />
     </ViewWrapper>
   );
