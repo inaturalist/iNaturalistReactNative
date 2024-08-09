@@ -79,8 +79,7 @@ describe( "Settings", ( ) => {
       expect( mockNavigate ).toHaveBeenCalledWith(
         "FullPageWebView",
         expect.objectContaining( {
-          loggedIn: true,
-          openLinksInBrowser: true
+          loggedIn: true
         } )
       );
     } );

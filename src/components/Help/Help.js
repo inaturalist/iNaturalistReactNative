@@ -22,7 +22,7 @@ const Help = ( ): Node => {
       title: t( "INATURALIST-HELP" ),
       initialUrl: url,
       loggedIn: false,
-      openLinksInBrowser: false,
+      handleLinksForAllowedDomains: true,
       skipSetSourceInShouldStartLoadWithRequest: true
     } );
   };
@@ -39,8 +39,7 @@ const Help = ( ): Node => {
     navigation.navigate( "FullPageWebView", {
       title: t( "TEACHERS-GUIDE" ),
       initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
+      loggedIn: false
     } );
   };
 

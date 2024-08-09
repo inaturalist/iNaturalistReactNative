@@ -16,6 +16,17 @@ import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "FullPageWebView" );
 
+export const ALLOWED_DOMAINS = [
+  "inaturalist.org",
+  "donorbox.org",
+  "stripe.com",
+  "recaptcha.net",
+  "paypalobjects.com",
+  "stripecdn.com",
+  "stripe.network",
+  "hcaptcha.com"
+];
+
 // Note that you want flex-2 so it grows into the entire webview container
 const LoadingView = ( ) => (
   <View className="flex-2 justify-center items-center w-full h-full">
@@ -28,7 +39,7 @@ type FullPageWebViewParams = {
   blurEvent?: string,
   title?: string,
   loggedIn?: boolean,
-  openLinksInBrowser?: boolean,
+  handleLinksForAllowedDomains?: boolean,
   skipSetSourceInShouldStartLoadWithRequest?: boolean
 }
 
@@ -45,6 +56,7 @@ type WebViewSource = {
 
 type WebViewRequest = {
   url: string;
+  navigationType: "click" | "other"
 }
 
 export function onShouldStartLoadWithRequest(
@@ -54,27 +66,42 @@ export function onShouldStartLoadWithRequest(
   setSource?: ( source: WebViewSource ) => void
 ) {
   // If we're just loading the same page, that's fine
-  if ( request.url === source.uri ) return true;
+  if ( request.url === source.uri ) {
+    return true;
+  }
 
   // If we're going to a different anchor on the same page, also fine
   const requestUrl = new URL( request.url );
+  const requestDomain = requestUrl.host.split( "." ).slice( -2 ).join( "." );
   const sourceUrl = new URL( source.uri );
   if (
     requestUrl.host === sourceUrl.host
+    && requestUrl.pathname === sourceUrl.pathname
     && requestUrl.search === sourceUrl.search
   ) {
     return true;
   }
 
   // Otherwise we might want to open a browser
-  if ( params.openLinksInBrowser ) {
+  if (
+    // If we're not explicitly trying to keep the user inside the app
+    !params.handleLinksForAllowedDomains
+    // or if the user is about to visit a domain we don't want to handle
+    || !ALLOWED_DOMAINS.includes( requestDomain )
+    // or if this is a click, i.e. even if this is an allowed domain, we want
+    // to open a browser unless we were explicitly asked not to. This only
+    // works in iOS.
+    || ( !params.handleLinksForAllowedDomains && request.navigationType === "click" )
+  ) {
     Linking.openURL( request.url ).catch( linkingError => {
       logger.info( "User refused to open ", request.url, ", error: ", linkingError );
     } );
     return false;
   }
 
-  if ( params.skipSetSourceInShouldStartLoadWithRequest || !setSource ) return true;
+  if ( params.skipSetSourceInShouldStartLoadWithRequest || !setSource ) {
+    return true;
+  }
 
   // Note: this will cause infinite re-renders if the page has iframes
   setSource( { ...source, uri: request.url } );

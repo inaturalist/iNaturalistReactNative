@@ -15,7 +15,7 @@ const Donate = () => {
       title: t( "DONATE-TO-INATURALIST" ),
       initialUrl: url,
       loggedIn: false,
-      openLinksInBrowser: false,
+      handleLinksForAllowedDomains: true,
       skipSetSourceInShouldStartLoadWithRequest: true
     } );
   };
@@ -25,8 +25,7 @@ const Donate = () => {
     navigation.navigate( "FullPageWebView", {
       title: t( "SHOP-INATURALIST-MERCH" ),
       initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
+      loggedIn: false
     } );
   };
 
