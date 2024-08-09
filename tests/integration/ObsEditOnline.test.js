@@ -41,7 +41,7 @@ describe( "basic rendering", ( ) => {
     useStore.setState( initialStoreState, true );
   } );
 
-  it( "should render place_guess and latitude", ( ) => {
+  it( "should render place_guess and latitude", async ( ) => {
     const observations = [factory( "RemoteObservation", {
       latitude: 37.99,
       longitude: -142.88,
@@ -56,10 +56,9 @@ describe( "basic rendering", ( ) => {
       currentObservation: observations[0]
     } );
     renderObsEdit( );
-
     const obs = observations[0];
 
-    expect( screen.getByText( obs.place_guess ) ).toBeTruthy( );
+    expect( await screen.findByText( obs.place_guess ) ).toBeTruthy( );
     expect( screen.getByText( new RegExp( `${obs.latitude}` ) ) ).toBeTruthy( );
   } );
 } );
@@ -71,7 +70,7 @@ describe( "location fetching", () => {
 
   beforeEach( () => {
     // resets mock back to original state
-    Geolocation.watchPosition.mockReset();
+    Geolocation.watchPosition.mockClear();
   } );
 
   test( "should fetch location when new observation hasn't saved", async ( ) => {

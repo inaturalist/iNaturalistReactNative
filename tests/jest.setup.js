@@ -225,7 +225,7 @@ jest.mock( "react-native-permissions", () => require( "react-native-permissions/
 // mocking globally since this currently affects a handful of unit and integration tests
 jest.mock( "@react-native-community/geolocation", ( ) => ( {
   getCurrentPosition: jest.fn( ),
-  watchPosition: jest.fn( ),
+  watchPosition: jest.fn( ( ) => 0 ),
   clearWatch: jest.fn( ),
   setRNConfiguration: jest.fn( ( ) => ( {
     skipPermissionRequests: true

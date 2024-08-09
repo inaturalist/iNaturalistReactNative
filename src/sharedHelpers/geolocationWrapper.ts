@@ -19,8 +19,7 @@ export function watchPosition(
     useSignificantChanges?: boolean;
   }
 ) {
-  const watchID = Geolocation.watchPosition( success, error, options );
-  return watchID;
+  return Geolocation.watchPosition( success, error, options );
 }
 
 export function clearWatch( watchID: number ) {

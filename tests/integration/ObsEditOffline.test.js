@@ -76,14 +76,18 @@ describe( "ObsEdit offline", ( ) => {
 
   describe( "creation", ( ) => {
     it( "should fetch coordinates", async ( ) => {
-      const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+      const mockWatchPositionSuccess = jest.fn( success => success( {
         coords: {
           latitude: 1,
           longitude: 1,
-          accuracy: 9,
-          timestamp: Date.now( )
-        }
+          accuracy: 9
+        },
+        timestamp: Date.now( )
       } ) );
+      const mockWatchPosition = jest.fn( ( success, _error, _options ) => {
+        setTimeout( ( ) => mockWatchPositionSuccess( success ), 100 );
+        return 0;
+      } );
       Geolocation.watchPosition.mockImplementation( mockWatchPosition );
       const observation = factory( "LocalObservation", {
         observationPhotos: []
@@ -95,22 +99,18 @@ describe( "ObsEdit offline", ( ) => {
       renderAppWithComponent(
         <ObsEdit />
       );
-      // removing the next lines since location fetch is fast enough that the location indicator
-      // won't show up in this scenario
-      // expect(
-      //   screen.getByTestId( "EvidenceSection.fetchingLocationIndicator" )
-      // ).toBeTruthy( );
+      await screen.findByTestId( "EvidenceSection.fetchingLocationIndicator" );
       await waitFor( ( ) => {
-        expect( mockWatchPosition ).toHaveBeenCalled( );
+        expect( mockWatchPositionSuccess ).toHaveBeenCalled( );
       } );
-      const coords = await screen.findByText( /Lat:/ );
+      const coords = await screen.findByText( /Lat: 1/ );
       expect( coords ).toBeTruthy( );
       expect( screen.queryByText( "Finding location..." ) ).toBeFalsy( );
       await waitFor( ( ) => {
         expect(
           screen.queryByTestId( "EvidenceSection.fetchingLocationIndicator" )
         ).toBeFalsy( );
-      } );
+      }, { timeout: 5_000, interval: 500 } );
     } );
   } );
 } );

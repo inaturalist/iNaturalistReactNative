@@ -1,3 +1,5 @@
+import mockOs from "os";
+import mockPath from "path";
 import Realm from "realm";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
@@ -18,7 +20,7 @@ jest.mock( "realmModels/index", ( ) => {
       schema: originalModule.default.schema,
       schemaVersion: originalModule.default.schemaVersion,
       inMemory: true,
-      path: "testArtifacts.realm"
+      path: mockPath.join( mockOs.tmpdir( ), "testArtifacts.realm" )
     }
   };
 } );

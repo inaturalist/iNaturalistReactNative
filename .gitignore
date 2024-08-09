@@ -68,6 +68,7 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/Appfile
+fastlane/metadata/ios/review_information
 
 # Apple signing and auth files that fastlane might download
 *.cer

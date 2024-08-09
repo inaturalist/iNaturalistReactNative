@@ -210,7 +210,7 @@ const EvidenceList = ( {
     }
   }, [
     afterMediaDeleted,
-    currentObservation.uuid,
+    currentObservation?.uuid,
     deleteObservationSoundMutation,
     deleteSoundFromObservation,
     realm,

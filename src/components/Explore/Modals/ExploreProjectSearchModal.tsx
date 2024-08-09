@@ -6,7 +6,7 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   // TODO: Param not typed yet, because ExploreProjectSearch is not typed yet
-  updateProject: ( _project: any ) => void;
+  updateProject: ( project: null | { title: string } ) => void;
 }
 
 const ExploreProjectSearchModal = ( {
