@@ -20,6 +20,7 @@ import useStore from "stores/useStore";
 
 import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import flattenUploadParams from "./helpers/flattenUploadParams";
+import isolateHumans from "./helpers/isolateHumans";
 import sortSuggestions from "./helpers/sortSuggestions";
 import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirectory";
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
@@ -35,7 +36,26 @@ const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
   { shouldUseEvidenceLocation }
 ];
 
-const initialSuggestions = {
+export type Suggestion = {
+  score: number;
+  combined_score: number;
+  taxon: {
+    id: number;
+    name: string;
+  }
+};
+
+export type Suggestions = {
+  otherSuggestions: Suggestion[];
+  topSuggestion: Suggestion | null;
+  topSuggestionType: "none"
+    | "first-sorted"
+    | "above-threshold"
+    | "common-ancestor"
+    | "not-confident";
+};
+
+const initialSuggestions: Suggestions = {
   otherSuggestions: [],
   topSuggestion: null,
   topSuggestionType: "none"
@@ -239,9 +259,11 @@ const SuggestionsContainer = ( ) => {
 
   const isLoading = fetchStatus === "loading";
 
-  const filterSuggestions = useCallback( suggestionsToFilter => {
-    const removeTopSuggestion = ( list, id ) => _.remove( list, item => item.taxon.id === id );
-    const sortedSuggestions = sortSuggestions( suggestionsToFilter, { usingOfflineSuggestions } );
+  const filterSuggestions = useCallback( ( suggestionsToFilter: Suggestion[] ) => {
+    const sortedSuggestions = sortSuggestions(
+      isolateHumans( suggestionsToFilter ),
+      { usingOfflineSuggestions }
+    );
     const newSuggestions = {
       ...initialSuggestions,
       otherSuggestions: sortedSuggestions
@@ -264,14 +286,17 @@ const SuggestionsContainer = ( ) => {
       };
     }
 
-    const suggestionAboveThreshold = _.find( sortedSuggestions, s => s.combined_score > 0.78 );
+    // Note: score_vision responses have combined_score values between 0 and
+    // 100, compared with offline model results that have scores between 0
+    // and 1
+    const suggestionAboveThreshold = _.find( sortedSuggestions, s => s.combined_score > 78 );
 
     if ( suggestionAboveThreshold ) {
       // make sure we're not returning the top suggestion in Other Suggestions
-      const firstSuggestion = removeTopSuggestion(
+      const firstSuggestion = _.remove(
         sortedSuggestions,
-        suggestionAboveThreshold.taxon.id
-      )[0];
+        ( s: Suggestion ) => s.taxon.id === suggestionAboveThreshold.taxon.id
+      ).at( 0 );
       return {
         ...newSuggestions,
         topSuggestion: firstSuggestion,

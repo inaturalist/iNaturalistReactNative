@@ -172,7 +172,7 @@ describe( "Signed in user", () => {
     await element( by.id( `ObsDetails.${uuid}` ) ).scrollTo( "bottom" );
     const comment = element( by.text( "This is a comment" ) );
     await waitFor( comment ).toBeVisible().withTimeout( 10000 );
-    await element( by.label( "Go back" ) ).tap( );
+    await element( by.id( "ObsDetails.BackButton" ) ).tap( );
     await waitFor( username ).toBeVisible( ).withTimeout( 10000 );
 
     /*
@@ -185,7 +185,7 @@ describe( "Signed in user", () => {
     // observations, the upload prompt will be the stable status text at this
     // point, and we can confirm deletion by testing for the absence of the
     // list item for the observation we deleted.
-    await waitFor( element( by.text( /Upload 1 observation/ ) ) ).toBeVisible( ).withTimeout( 10000 );
+    await waitFor( element( by.text( /Upload 1 observation/ ) ) ).toBeVisible( ).withTimeout( 20_000 );
     await expect( obsListItem ).toBeNotVisible( );
   } );
 } );

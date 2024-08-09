@@ -13,7 +13,7 @@ import {
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import User from "realmModels/User";
+import User from "realmModels/User.ts";
 
 type Props = {
   user: {

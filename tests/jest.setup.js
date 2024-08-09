@@ -4,7 +4,6 @@ import "@shopify/flash-list/jestSetup";
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
-// import { act } from "@testing-library/react";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
@@ -231,7 +230,7 @@ jest.mock( "react-native-permissions", () => require( "react-native-permissions/
 // mocking globally since this currently affects a handful of unit and integration tests
 jest.mock( "@react-native-community/geolocation", ( ) => ( {
   getCurrentPosition: jest.fn( ),
-  watchPosition: jest.fn( ),
+  watchPosition: jest.fn( ( ) => 0 ),
   clearWatch: jest.fn( ),
   setRNConfiguration: jest.fn( ( ) => ( {
     skipPermissionRequests: true

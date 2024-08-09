@@ -1,9 +1,6 @@
 import { galleryPhotosPath } from "appConstants/paths.ts";
 import RNFS from "react-native-fs";
 import { RealmObservation } from "realmModels/types.d.ts";
-import {
-  TARGET_POSITIONAL_ACCURACY
-} from "sharedHooks/useWatchPosition.ts";
 
 const shouldFetchObservationLocation = ( observation: RealmObservation ) => {
   const latitude = observation?.latitude;
@@ -17,17 +14,14 @@ const shouldFetchObservationLocation = ( observation: RealmObservation ) => {
     originalPhotoUri && !originalPhotoUri.includes( RNFS.DocumentDirectoryPath )
   );
   const isNewObservation = (
-    !observation?._created_at
+    observation
+    && !observation?._created_at
     && !observation?._synced_at
-  );
-  const accGoodEnough = (
-    observation?.positional_accuracy
-    && observation.positional_accuracy <= TARGET_POSITIONAL_ACCURACY
   );
 
   return observation
     && isNewObservation
-    && ( !hasLocation || !accGoodEnough )
+    && !hasLocation
     && !isGalleryPhoto
     && !isSharedPhoto;
 };

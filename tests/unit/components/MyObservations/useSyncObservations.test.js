@@ -63,7 +63,7 @@ const mockUpload = jest.fn( );
 jest.mock( "components/MyObservations/hooks/useUploadObservations", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    uploadObservations: mockUpload
+    startUploadObservations: mockUpload
   } )
 } ) );
 

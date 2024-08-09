@@ -2,7 +2,7 @@
 import { useDrawerStatus } from "@react-navigation/drawer";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
-import User from "realmModels/User";
+import User from "realmModels/User.ts";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import CustomTabBar from "./CustomTabBar";

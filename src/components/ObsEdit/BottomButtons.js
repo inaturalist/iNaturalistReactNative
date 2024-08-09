@@ -11,7 +11,7 @@ import {
   StickyToolbar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -27,7 +27,6 @@ const { useRealm } = RealmContext;
 
 type Props = {
   passesEvidenceTest: boolean,
-  passesIdentificationTest: boolean,
   observations: Array<Object>,
   currentObservation: Object,
   currentObservationIndex: number,
@@ -38,7 +37,6 @@ const logger = log.extend( "ObsEditBottomButtons" );
 
 const BottomButtons = ( {
   passesEvidenceTest,
-  passesIdentificationTest,
   currentObservation,
   currentObservationIndex,
   observations,
@@ -62,7 +60,10 @@ const BottomButtons = ( {
   const [buttonPressed, setButtonPressed] = useState( null );
   const [loading, setLoading] = useState( false );
 
-  const passesTests = passesEvidenceTest && passesIdentificationTest;
+  const hasIdentification = currentObservation?.taxon
+    && currentObservation?.taxon.rank_level !== 100;
+
+  const passesTests = passesEvidenceTest && hasIdentification;
 
   const writeExifToCameraRollPhotos = useCallback( async exif => {
     if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {
@@ -99,7 +100,6 @@ const BottomButtons = ( {
     }
 
     if ( observations.length === 1 ) {
-      logger.info( "navigating back to MyObs" );
       // navigate to ObsList and start upload with uuid
       navigation.navigate( "TabNavigator", {
         screen: "TabStackNavigator",
@@ -167,7 +167,6 @@ const BottomButtons = ( {
   ] );
 
   const handlePress = useCallback( type => {
-    logger.info( `tapped ${type}` );
     if ( showMissingEvidence( ) ) { return; }
     setLoading( true );
     setButtonPressed( type );

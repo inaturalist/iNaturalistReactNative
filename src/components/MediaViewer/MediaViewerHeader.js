@@ -7,10 +7,7 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
-
-const BACK_BUTTON_STYLE = { position: "absolute", start: 0 };
 
 type Props = {
   onClose: Function,
@@ -23,7 +20,6 @@ const MediaViewerHeader = ( {
   onClose,
   soundCount = 0
 }: Props ): Node => {
-  const theme = useTheme( );
   const { t } = useTranslation( );
 
   let headerText = t( "X-PHOTOS", { photoCount } );
@@ -36,16 +32,19 @@ const MediaViewerHeader = ( {
   }
 
   return (
-    <View className="flex-row items-center justify-center min-h-[44]">
+    <View className="flex-row min-h-[44] justify-between">
       <BackButton
         inCustomHeader
-        color={theme.colors.onPrimary}
-        customStyles={BACK_BUTTON_STYLE}
+        color="white"
         onPress={onClose}
+        className="w-[44px]"
       />
-      <Heading4 className="color-white">
-        {headerText}
-      </Heading4>
+      <View className="justify-center min-h-[44]">
+        <Heading4 className="color-white">
+          {headerText}
+        </Heading4>
+      </View>
+      <View className="w-[44px]" />
     </View>
   );
 };

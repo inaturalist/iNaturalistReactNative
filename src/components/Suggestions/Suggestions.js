@@ -69,11 +69,10 @@ const Suggestions = ( {
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
       accessibilityLabel={t( "Choose-taxon" )}
-      fetchRemote={!usingOfflineSuggestions}
       suggestion={suggestion}
       onTaxonChosen={onTaxonChosen}
     />
-  ), [onTaxonChosen, t, usingOfflineSuggestions] );
+  ), [onTaxonChosen, t] );
 
   const renderEmptyList = useCallback( ( ) => (
     <SuggestionsEmpty
@@ -90,6 +89,7 @@ const Suggestions = ( {
       hideLocationToggleButton={hideLocationToggleButton}
       hideSkip={hideSkip}
       shouldUseEvidenceLocation={shouldUseEvidenceLocation}
+      suggestions={suggestions}
       observers={observers}
       toggleLocation={toggleLocation}
     />
@@ -99,6 +99,7 @@ const Suggestions = ( {
     hideLocationToggleButton,
     hideSkip,
     shouldUseEvidenceLocation,
+    suggestions,
     observers,
     toggleLocation
   ] );
@@ -148,7 +149,6 @@ const Suggestions = ( {
       <View className="bg-inatGreen/[.13]">
         <Suggestion
           accessibilityLabel={t( "Choose-taxon" )}
-          fetchRemote={!usingOfflineSuggestions}
           suggestion={item}
           isTopSuggestion
           onTaxonChosen={onTaxonChosen}
