@@ -76,6 +76,14 @@ export function onShouldStartLoadWithRequest(
   const requestUrl = new URL( request.url );
   const requestDomain = requestUrl.host.split( "." ).slice( -2 ).join( "." );
   const sourceUrl = new URL( source.uri );
+  const sourceDomain = sourceUrl.host.split( "." ).slice( -2 ).join( "." );
+
+  // This should prevent accidentally making a webview with auth for a
+  // non-iNat domain
+  if ( source.headers?.Authorization && sourceDomain !== "inaturalist.org" ) {
+    throw new Error( "Cannot send Authorization to non-iNat domain" );
+  }
+
   if (
     requestUrl.host === sourceUrl.host
     && requestUrl.pathname === sourceUrl.pathname
@@ -118,6 +126,12 @@ export function onShouldStartLoadWithRequest(
       logger.info( "User refused to open ", request.url, ", error: ", linkingError );
     } );
     return false;
+  }
+
+  // This should prevent making any request w/ auth to a non-iNat domain from
+  // a web page on an iNat domain
+  if ( source.headers?.Authorization && requestDomain !== "inaturalist.org" ) {
+    throw new Error( "Cannot send Authorization to non-iNat domain" );
   }
 
   if ( params.skipSetSourceInShouldStartLoadWithRequest || !setSource ) {
