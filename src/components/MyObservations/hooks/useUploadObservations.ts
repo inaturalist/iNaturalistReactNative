@@ -1,5 +1,5 @@
 import { RealmContext } from "providers/contexts.ts";
-import useMemo, {
+import {
   useCallback, useEffect, useMemo
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
