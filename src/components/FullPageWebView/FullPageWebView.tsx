@@ -20,6 +20,8 @@ const logger = log.extend( "FullPageWebView" );
 
 export const ALLOWED_DOMAINS = [
   "inaturalist.org",
+
+  // The following are all required for the donorbox form to work
   "donorbox.org",
   "stripe.com",
   "recaptcha.net",
@@ -99,8 +101,8 @@ export function onShouldStartLoadWithRequest(
     }, ( error: string ) => {
       if ( Platform.OS === "ios" && error === "not_available" ) {
         Alert.alert(
-          t( "Looks-like-youre-not-using-Apple-Mail" ),
-          emailAddress
+          t( "No-email-app-installed" ),
+          t( "No-email-app-installed-body", { address: emailAddress } )
         );
         return;
       }
@@ -122,8 +124,11 @@ export function onShouldStartLoadWithRequest(
     // works in iOS.
     || ( !params.handleLinksForAllowedDomains && request.navigationType === "click" )
   ) {
-    Linking.openURL( request.url ).catch( linkingError => {
-      logger.info( "User refused to open ", request.url, ", error: ", linkingError );
+    // Note we can't use openExternalWebBrowser here b/c this function needs
+    // to be synchronous
+    Linking.openURL( request.url ).catch( e => {
+      const linkingError = e as Error;
+      logger.info( "Failed to open ", request.url, ", error: ", linkingError );
     } );
     return false;
   }

@@ -13,8 +13,8 @@ import { ActivityIndicator, Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Alert, Linking } from "react-native";
 import { WebView } from "react-native-webview";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -53,17 +53,7 @@ const Announcements = ( {
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
 
-  const onLinkPress = async target => {
-    // Checking if the link is supported for links with custom URL scheme.
-    const url = target.uri;
-    const supported = await Linking.canOpenURL( url );
-
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
-  };
+  const onLinkPress = async target => openExternalWebBrowser( target.uri );
 
   const apiParams = {
     locale: currentUser?.locale || "en",

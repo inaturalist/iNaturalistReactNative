@@ -9,7 +9,7 @@ import inatjs from "inaturalistjs";
 import { flatten } from "lodash";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { sleep } from "sharedHelpers/util";
+import { sleep } from "sharedHelpers/util.ts";
 import { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";

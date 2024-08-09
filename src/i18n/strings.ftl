@@ -90,7 +90,7 @@ APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
 April = April
-Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
+Are-you-an-educator = Are you an educator wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
@@ -334,6 +334,7 @@ Edit-location = Edit location
 Edit-Observation = Edit Observation
 # Label for button that edits an observation's taxon
 Edits-this-observations-taxon = Edits this observation's taxon
+EDUCATORS = EDUCATORS
 EMAIL = EMAIL
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
 # Button that enables the camera's flash
@@ -453,7 +454,6 @@ iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNatur
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
-INATURALIST-HELP = INATURALIST HELP
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
@@ -536,8 +536,6 @@ LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
-# Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
-Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
 Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 MAP = MAP
@@ -593,6 +591,9 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
+# Alert dialog title when attempting to send email but no email is installed
+No-email-app-installed = No email app installed
+No-email-app-installed-body = If you have another way of sending email, the address is { $address }
 No-Location = No Location
 No-Media = No Media
 # As in a machine learning model that powers automated suggestions
@@ -885,6 +886,9 @@ Some-data-privacy-laws = Some data privacy laws, like the European Union's Gener
 # Generic error message
 Something-went-wrong = Something went wrong.
 Sorry-this-observation-was-deleted = Sorry, this observation was deleted
+# Error message if the app tries to open a URL the operating system can't
+# handle
+Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
 SORT-BY = SORT BY
 Sort-by = Sort by
 # Character separating current position and total duration when playing a
@@ -940,8 +944,6 @@ TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
 TAXONOMIC-RANKS = TAXONOMIC RANKS
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
-TEACHERS = TEACHERS
-TEACHERS-GUIDE = TEACHERS' GUIDE
 TEAM = TEAM
 Terms-of-Use = Terms of Use
 TERMS-OF-USE = TERMS OF USE
@@ -1011,6 +1013,7 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
+VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
 View-in-browser = View in browser
 VIEW-IN-EXPLORE = VIEW IN EXPLORE
 VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
@@ -1023,7 +1026,6 @@ VIEW-PROJECTS = VIEW PROJECTS
 # Label for a button that shows identification suggestions for an observation
 # or photo
 View-suggestions = View suggestions
-VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
