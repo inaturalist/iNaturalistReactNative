@@ -1,5 +1,6 @@
 // @flow
 
+import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { fetchTaxon } from "api/taxa";
 import classnames from "classnames";
@@ -7,11 +8,11 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
   BackButton,
-  Body2,
   Button,
   INatIcon,
   INatIconButton,
   KebabMenu,
+  OfflineNotice,
   ScrollViewWrapper,
   StickyToolbar
 } from "components/SharedComponents";
@@ -63,6 +64,7 @@ const TaxonDetails = ( ): Node => {
   const { params } = useRoute( );
   const { id, hideNavButtons } = params;
   const { t } = useTranslation( );
+  const { isConnected } = useNetInfo( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const { remoteUser } = useUserMe( );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
@@ -92,6 +94,7 @@ const TaxonDetails = ( ): Node => {
   const {
     data: remoteTaxon,
     isLoading,
+    refetch,
     isError,
     error
   } = useAuthenticatedQuery(
@@ -136,10 +139,16 @@ const TaxonDetails = ( ): Node => {
       return <View className="m-3 flex-1 h-full"><ActivityIndicator /></View>;
     }
 
-    if ( isError || !taxon ) {
+    if ( isError ) {
       return (
-        <View className="m-3">
-          <Body2>{t( "Error-Could-Not-Fetch-Taxon" )}</Body2>
+        <View className="pb-2">
+          <OfflineNotice
+            onPress={( ) => {
+              refresh();
+              refetch();
+            }}
+            color="black"
+          />
         </View>
       );
     }
@@ -151,6 +160,84 @@ const TaxonDetails = ( ): Node => {
         <Taxonomy taxon={taxon} hideNavButtons={hideNavButtons} />
         <TaxonMapPreview taxon={taxon} />
       </View>
+    );
+  };
+
+  const displayScrollDots = () => (
+    <View
+      className="flex flex-row w-full justify-center items-center mb-3"
+      pointerEvents="none"
+    >
+      { photos.map( ( item, idx ) => (
+        <View
+          key={`dot-${item.id}`}
+          className={classnames(
+            "rounded-full bg-white m-[2.5]",
+            idx === mediaIndex
+              ? "w-[4px] h-[4px]"
+              : "w-[2px] h-[2px]"
+          )}
+        />
+      ) )}
+    </View>
+  );
+
+  const displayTaxonTitle = useCallback( ( ) => (
+    <View
+      className="w-full flex-row items-center pl-5 pr-5 pb-5"
+      pointerEvents="box-none"
+    >
+      <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
+      {!hideNavButtons && isConnected && (
+        <View className="ml-2">
+          <INatIconButton
+            icon="compass-rose-outline"
+            onPress={( ) => {
+              setExploreView( "observations" );
+              navigation.navigate( "TabNavigator", {
+                screen: "TabStackNavigator",
+                params: {
+                  screen: "Explore",
+                  params: {
+                    taxon,
+                    worldwide: true,
+                    resetStoredParams: true
+                  }
+                }
+              } );
+            }}
+            accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
+            accessibilityHint={t( "Navigates-to-explore" )}
+            size={30}
+            color={theme.colors.onPrimary}
+            className="bg-inatGreen rounded-full"
+            mode="contained"
+            preventTransparency
+          />
+        </View>
+      )}
+    </View>
+  ), [hideNavButtons, isConnected, navigation, setExploreView, t, taxon, theme.colors.onPrimary] );
+
+  const displayTaxonMedia = () => {
+    if ( !isConnected ) {
+      return (
+        <OfflineNotice
+          onPress={( ) => {
+            refresh();
+            refetch();
+          }}
+          color="white"
+        />
+      );
+    }
+    return (
+      <TaxonMedia
+        loading={isLoading}
+        photos={photos}
+        tablet={isTablet}
+        onChangeIndex={setMediaIndex}
+      />
     );
   };
 
@@ -172,12 +259,7 @@ const TaxonDetails = ( ): Node => {
             <View className="absolute left-4 top-4 z-10">
               <BackButton color="white" />
             </View>
-            <TaxonMedia
-              loading={isLoading}
-              photos={photos}
-              tablet={isTablet}
-              onChangeIndex={setMediaIndex}
-            />
+            {displayTaxonMedia()}
             {!hideNavButtons && (
               <View className="absolute right-4 top-1">
                 <KebabMenu
@@ -226,58 +308,8 @@ const TaxonDetails = ( ): Node => {
               className="absolute bottom-0 p-0 w-full"
               pointerEvents="box-none"
             >
-              {!isTablet && photos.length > 1 && (
-                <View
-                  className="flex flex-row w-full justify-center items-center mb-3"
-                  pointerEvents="none"
-                >
-                  { photos.map( ( item, idx ) => (
-                    <View
-                      key={`dot-${item.id}`}
-                      className={classnames(
-                        "rounded-full bg-white m-[2.5]",
-                        idx === mediaIndex
-                          ? "w-[4px] h-[4px]"
-                          : "w-[2px] h-[2px]"
-                      )}
-                    />
-                  ) )}
-                </View>
-              )}
-              <View
-                className="w-full flex-row items-center pl-5 pr-5 pb-5"
-                pointerEvents="box-none"
-              >
-                <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
-                {!hideNavButtons && (
-                  <View className="ml-2">
-                    <INatIconButton
-                      icon="compass-rose-outline"
-                      onPress={( ) => {
-                        setExploreView( "observations" );
-                        navigation.navigate( "TabNavigator", {
-                          screen: "TabStackNavigator",
-                          params: {
-                            screen: "Explore",
-                            params: {
-                              taxon,
-                              worldwide: true,
-                              resetStoredParams: true
-                            }
-                          }
-                        } );
-                      }}
-                      accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
-                      accessibilityHint={t( "Navigates-to-explore" )}
-                      size={30}
-                      color={theme.colors.onPrimary}
-                      className="bg-inatGreen rounded-full"
-                      mode="contained"
-                      preventTransparency
-                    />
-                  </View>
-                )}
-              </View>
+              {isConnected && !isTablet && photos.length > 1 && displayScrollDots()}
+              {taxon && displayTaxonTitle()}
             </View>
           </View>
           <View className="bg-white pt-5 h-full flex-1">
