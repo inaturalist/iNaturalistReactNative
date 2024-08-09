@@ -8,6 +8,7 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
   BackButton,
+  Body1,
   Button,
   INatIcon,
   INatIconButton,
@@ -95,7 +96,6 @@ const TaxonDetails = ( ): Node => {
     data: remoteTaxon,
     isLoading,
     refetch,
-    isError,
     error
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
@@ -139,9 +139,9 @@ const TaxonDetails = ( ): Node => {
       return <View className="m-3 flex-1 h-full"><ActivityIndicator /></View>;
     }
 
-    if ( isError ) {
+    if ( error?.message?.match( /Network request failed/ ) ) {
       return (
-        <View className="pb-2">
+        <View className="py-[93px]">
           <OfflineNotice
             onPress={( ) => {
               refresh();
@@ -153,8 +153,12 @@ const TaxonDetails = ( ): Node => {
       );
     }
 
+    if ( error ) {
+      return <Body1 className="mx-3">{ t( "Something-went-wrong" ) }</Body1>;
+    }
+
     return (
-      <View className="mx-3 mb-3">
+      <View className="mx-3">
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} hideNavButtons={hideNavButtons} />
@@ -312,7 +316,7 @@ const TaxonDetails = ( ): Node => {
               {taxon && displayTaxonTitle()}
             </View>
           </View>
-          <View className="bg-white pt-5 h-full flex-1">
+          <View className="bg-white py-5 h-full flex-1">
             {displayTaxonDetails( )}
           </View>
         </View>
