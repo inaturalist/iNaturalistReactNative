@@ -8,9 +8,11 @@ import { getUserAgent } from "api/userAgent";
 import { getAPIToken } from "components/LoginSignUp/AuthenticationService.ts";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { t } from "i18next";
 import React, { useEffect, useState } from "react";
-import { Linking } from "react-native";
+import { Alert, Linking, Platform } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
+import Mailer from "react-native-mail";
 import WebView from "react-native-webview";
 import { log } from "sharedHelpers/logger";
 
@@ -80,6 +82,25 @@ export function onShouldStartLoadWithRequest(
     && requestUrl.search === sourceUrl.search
   ) {
     return true;
+  }
+
+  const emailAddress = request.url.match( /^mailto:(.+)/ )?.[1];
+  if ( emailAddress ) {
+    Mailer.mail( {
+      recipients: [emailAddress]
+    }, ( error: string ) => {
+      if ( Platform.OS === "ios" && error === "not_available" ) {
+        Alert.alert(
+          t( "Looks-like-youre-not-using-Apple-Mail" ),
+          emailAddress
+        );
+        return;
+      }
+      if ( error ) {
+        Alert.alert( t( "Something-went-wrong" ), error );
+      }
+    } );
+    return false;
   }
 
   // Otherwise we might want to open a browser
@@ -168,6 +189,7 @@ const FullPageWebView = ( ) => {
                 setSource
               )
             }
+            originWhitelist={["https://*", "mailto:*"]}
             renderLoading={LoadingView}
             startInLoadingState
             userAgent={getUserAgent()}
