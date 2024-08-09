@@ -1,5 +1,5 @@
 import handleError from "api/error";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 
 import { log } from "../../react-native-logs.config";
 

@@ -17,7 +17,7 @@ import useStore from "stores/useStore";
 
 import Explore from "./Explore";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
-import useHeaderCount from "./hooks/useHeaderCount";
+import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
@@ -86,8 +86,8 @@ const ExploreContainerWithContext = ( ): Node => {
     per_page: 20
   };
 
-  // need this hook to be top-level enough that HeaderCount rerenders
-  const { count, loadingStatus, updateCount } = useHeaderCount( );
+  // need this hook to be top-level enough that ExploreHeaderCount rerenders
+  const { count, loadingStatus, updateCount } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 

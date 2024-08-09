@@ -20,7 +20,7 @@ const SignUpConfirmation = ( ): Node => {
   const navigation = useNavigation( );
 
   return (
-    <LoginSignUpWrapper backgroundSource={require( "images/pink_flower.png" )}>
+    <LoginSignUpWrapper backgroundSource={require( "images/background/pink_flower.jpg" )}>
       <View className="flex-1 justify-between">
         <Header />
         <View className="px-4">

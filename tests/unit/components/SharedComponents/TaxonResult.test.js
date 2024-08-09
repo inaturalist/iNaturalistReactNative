@@ -10,6 +10,11 @@ const mockTaxon = {
   rank_level: 60
 };
 
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: () => undefined
+} ) );
+
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
   default: () => ( { taxon: mockTaxon } )

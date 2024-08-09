@@ -2,9 +2,9 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchObservationUpdates, fetchRemoteObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { flatten } from "lodash";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useCallback } from "react";
 import Observation from "realmModels/Observation";
 import { reactQueryRetry } from "sharedHelpers/logging";

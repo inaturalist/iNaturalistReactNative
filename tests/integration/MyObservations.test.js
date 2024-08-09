@@ -148,6 +148,7 @@ describe( "MyObservations", ( ) => {
   describe( "when signed in", ( ) => {
     beforeEach( async ( ) => {
       await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+      jest.useFakeTimers( );
     } );
 
     afterEach( async ( ) => {
@@ -156,9 +157,9 @@ describe( "MyObservations", ( ) => {
 
     describe( "with unsynced observations", ( ) => {
       // Mock inatjs endpoints so they return the right responses for the right test data
-      inatjs.observations.create.mockImplementation( ( params, _opts ) => {
+      inatjs.observations.create.mockImplementation( async ( params, _opts ) => {
         const mockObs = mockUnsyncedObservations.find( o => o.uuid === params.observation.uuid );
-        return Promise.resolve( makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] ) );
+        return makeResponse( [{ id: faker.number.int( ), uuid: mockObs.uuid }] );
       } );
       inatjs.observations.fetch.mockImplementation( ( uuid, _params, _opts ) => {
         const mockObs = mockUnsyncedObservations.find( o => o.uuid === uuid );

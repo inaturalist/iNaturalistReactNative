@@ -1,16 +1,19 @@
-set -e
+#!/usr/bin/env bash
+set -e 
 
-BASELINE_BRANCH=main
+BASELINE_BRANCH=${GITHUB_BASE_REF:="main"}
 
 # Required for `git switch` on CI
 git fetch origin
 
 # Gather baseline perf measurements
 git switch "$BASELINE_BRANCH"
-npm install --force
-npx reassure --baseline
+
+npm install
+npm run reassure -- --baseline
 
 # Gather current perf measurements & compare results
 git switch --detach -
-npm install --force
-npm run reassure
+
+npm install
+npm run reassure -- --branch

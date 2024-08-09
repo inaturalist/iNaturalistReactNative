@@ -1,8 +1,9 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import inatjs from "inaturalistjs";
+// import inatjs from "inaturalistjs";
 import React from "react";
-import factory, { makeResponse } from "tests/factory";
+import factory from "tests/factory";
+// import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -36,11 +37,11 @@ const mockUser = factory( "LocalUser", {
   locale: "en"
 } );
 
-const mockSpanishUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
-  iconUrl: faker.image.url( ),
-  locale: "es"
-} );
+// const mockSpanishUser = factory( "LocalUser", {
+//   login: faker.internet.userName( ),
+//   iconUrl: faker.image.url( ),
+//   locale: "es"
+// } );
 
 describe( "MyObservations", ( ) => {
   describe( "localization for current user", ( ) => {
@@ -57,37 +58,39 @@ describe( "MyObservations", ( ) => {
       expect( screen.queryByText( /Welcome-user/ ) ).toBeFalsy( );
     } );
 
-    it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
-      expect( mockSpanishUser.locale ).toEqual( "es" );
-      await signIn( mockSpanishUser, { realm: global.mockRealms[__filename] } );
-      renderAppWithComponent( <MyObservationsContainer /> );
-      await waitFor( ( ) => {
-        expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy();
-      } );
-      expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
-    } );
+    // 20240730 - amanda - hiding these since we're not soft launching with internationalization
 
-    it(
-      "should change to es when local user locale is en but remote user locale is es",
-      async ( ) => {
-        expect( mockUser.locale ).toEqual( "en" );
-        await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+    // it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
+    //   expect( mockSpanishUser.locale ).toEqual( "es" );
+    //   await signIn( mockSpanishUser, { realm: global.mockRealms[__filename] } );
+    //   renderAppWithComponent( <MyObservationsContainer /> );
+    //   await waitFor( ( ) => {
+    //     expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy();
+    //   } );
+    //   expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
+    // } );
 
-        const mockSpanishUser2 = factory( "LocalUser", {
-          locale: "es"
-        } );
-        inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser2] ) );
+    // it(
+    //   "should change to es when local user locale is en but remote user locale is es",
+    //   async ( ) => {
+    //     expect( mockUser.locale ).toEqual( "en" );
+    //     await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 
-        renderAppWithComponent( <MyObservationsContainer /> );
-        // I'd prefer to wait for the Spanish text to appear, but that never
-        // seems to wait long enough. This waits for the relevant API call to
-        // have been made
-        await waitFor( ( ) => {
-          expect( inatjs.users.me ).toHaveBeenCalled( );
-        } );
-        expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy( );
-        expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
-      }
-    );
+    //     const mockSpanishUser2 = factory( "LocalUser", {
+    //       locale: "es"
+    //     } );
+    //     inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser2] ) );
+
+    //     renderAppWithComponent( <MyObservationsContainer /> );
+    //     // I'd prefer to wait for the Spanish text to appear, but that never
+    //     // seems to wait long enough. This waits for the relevant API call to
+    //     // have been made
+    //     await waitFor( ( ) => {
+    //       expect( inatjs.users.me ).toHaveBeenCalled( );
+    //     } );
+    //     expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy( );
+    //     expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
+    //   }
+    // );
   } );
 } );

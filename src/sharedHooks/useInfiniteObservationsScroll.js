@@ -5,9 +5,9 @@ import {
 } from "@react-native-community/netinfo";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { flatten, last, noop } from "lodash";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";
@@ -61,9 +61,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     },
     initialPageParam: 0,
     getNextPageParam: lastPage => last( lastPage )?.id,
-    // allow a user to see the Explore screen Observations
-    // content while logged out
-    enabled: !!isConnected && ( !!currentUser || upsert === false )
+    enabled: !!( isConnected && currentUser )
   } );
 
   useEffect( ( ) => {

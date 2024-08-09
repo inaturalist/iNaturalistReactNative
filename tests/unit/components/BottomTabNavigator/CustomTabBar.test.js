@@ -10,6 +10,14 @@ import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
+jest.mock( "@react-navigation/drawer", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/drawer" );
+  return {
+    ...actualNav,
+    useDrawerStatus: jest.fn( ( ) => false )
+  };
+} );
+
 const initialPersistedStoreState = useStore.getState( );
 
 const mockUser = factory( "LocalUser", {

@@ -3,7 +3,7 @@ import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { fetchUserMe } from "api/users";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect } from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {

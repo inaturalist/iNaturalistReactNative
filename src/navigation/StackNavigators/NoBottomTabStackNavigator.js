@@ -14,11 +14,10 @@ import PermissionGateContainer, {
 } from "components/SharedComponents/PermissionGateContainer.tsx";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
+import ContextHeader from "navigation/ContextHeader";
 import {
   hideHeader,
-  hideHeaderLeft,
-  showCustomHeader,
-  showHeader
+  hideHeaderLeft
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
@@ -40,10 +39,9 @@ const CAMERA_SCREEN_OPTIONS = {
 };
 
 const GROUP_PHOTOS_OPTIONS = {
-  ...showHeader,
-  ...showCustomHeader,
-  lazy: true,
-  headerShadowVisible: false
+  header: ContextHeader,
+  alignStart: true,
+  lazy: true
 };
 
 const SOUND_RECORDER_OPTIONS = {
@@ -81,7 +79,7 @@ const GalleryContainerWithPermission = ( ) => (
     blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
     buttonText={t( "CHOOSE-PHOTOS" )}
     icon="gallery"
-    image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+    image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
   >
     <PhotoGallery />
   </PermissionGateContainer>
@@ -97,7 +95,7 @@ const SoundRecorderWithPermission = ( ) => (
       blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
       buttonText={t( "RECORD-SOUND" )}
       icon="microphone"
-      image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
+      image={require( "images/background/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
     >
       <SoundRecorder />
     </PermissionGateContainer>

@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedMutation } from "sharedHooks";
@@ -20,7 +20,10 @@ import syncRemoteObservations from "../helpers/syncRemoteObservations";
 
 const { useRealm } = RealmContext;
 
-const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
+const useSyncObservations = (
+  currentUserId: number,
+  startUploadObservations: ( ) => void
+): void => {
   const { isConnected } = useNetInfo( );
   const loggedIn = !!currentUserId;
   const deleteQueue = useStore( state => state.deleteQueue );
@@ -38,15 +41,15 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
 
   const realm = useRealm( );
 
-  const deleteRealmObservation = useCallback( async uuid => {
+  const deleteRealmObservation = useCallback( async ( uuid: string ) => {
     await Observation.deleteLocalObservation( realm, uuid );
   }, [realm] );
 
   const handleRemoteDeletion = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => deleteRemoteObservation( params, optsWithAuth ),
+    ( params: Object, optsWithAuth: Object ) => deleteRemoteObservation( params, optsWithAuth ),
     {
-      onSuccess: ( ) => console.log( "Remote observation deleted" ),
-      onError: deleteObservationError => {
+      onSuccess: ( ) => undefined,
+      onError: ( deleteObservationError: Error ) => {
         setDeletionError( deleteObservationError?.message );
         throw deleteObservationError;
       }
@@ -56,7 +59,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
   const deleteLocalObservations = useCallback( async ( ) => {
     if ( deleteQueue.length === 0 ) { return; }
 
-    deleteQueue.forEach( async ( uuid, i ) => {
+    deleteQueue.forEach( async ( uuid: string, i: number ) => {
       const observation = realm.objectForPrimaryKey( "Observation", uuid );
       const hasBeenSyncedRemotely = observation?._synced_at;
 
@@ -158,12 +161,19 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
       await fetchRemoteObservations( );
     }
     resetSyncToolbar( );
+    // FYI this updates the state in the sync slice to state that "syncing" is
+    // complete, i.e. all the stuff except for uploading observations, even
+    // though this method is called "syncManually". We could use some better
+    // terminology and naming if we really want to consider those two
+    // processes as separate
+    completeSync( );
     // we want to show user error messages if upload fails from user
     // being offline, so we're not checking internet connectivity here
     if ( loggedIn ) {
-      await uploadObservations( );
+      // In theory completeSync will get called when the upload process finishes
+      return startUploadObservations( );
     }
-    completeSync( );
+    return Promise.resolve();
   }, [
     canSync,
     completeSync,
@@ -172,7 +182,7 @@ const useSyncObservations = ( currentUserId, uploadObservations ): Object => {
     fetchRemoteObservations,
     loggedIn,
     resetSyncToolbar,
-    uploadObservations
+    startUploadObservations
   ] );
 
   useEffect( ( ) => {

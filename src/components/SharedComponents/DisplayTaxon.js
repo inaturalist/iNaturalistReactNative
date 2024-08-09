@@ -3,7 +3,7 @@
 import classnames from "classnames";
 import { DisplayTaxonName, IconicTaxonIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React from "react";
 import { accessibleTaxonName } from "sharedHelpers/taxon";

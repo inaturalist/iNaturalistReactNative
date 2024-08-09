@@ -1,6 +1,7 @@
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
+  MapBoundaries,
   PLACE_MODE,
   useExplore
 } from "providers/ExploreContext.tsx";
@@ -19,12 +20,7 @@ const useMapLocation = ( ) => {
   const { params } = useRoute( );
   const worldwide = params?.worldwide;
   const { dispatch, state } = useExplore( );
-  const [mapBoundaries, setMapBoundaries] = useState<{
-    swlat: number | undefined;
-    swlng: number | undefined;
-    nelat: number | undefined;
-    nelng: number | undefined;
-  }>( );
+  const [mapBoundaries, setMapBoundaries] = useState<MapBoundaries>( );
   const [showMapBoundaryButton, setShowMapBoundaryButton] = useState( false );
   const { currentMapRegion, setCurrentMapRegion } = useCurrentMapRegion( );
 
@@ -41,16 +37,18 @@ const useMapLocation = ( ) => {
 
   // eslint-disable-next-line max-len
   const updateMapBoundaries = useCallback( async ( newRegion: Region, boundaries?: BoundingBox ) => {
-    const boundaryAPIParams = {
-      swlat: boundaries?.southWest?.latitude,
-      swlng: boundaries?.southWest?.longitude,
-      nelat: boundaries?.northEast?.latitude,
-      nelng: boundaries?.northEast?.longitude
-    };
-
-    setMapBoundaries( boundaryAPIParams );
     setCurrentMapRegion( newRegion );
-    return boundaryAPIParams;
+    if ( boundaries ) {
+      const newMapBoundaries = {
+        swlat: boundaries.southWest.latitude,
+        swlng: boundaries.southWest.longitude,
+        nelat: boundaries.northEast.latitude,
+        nelng: boundaries.northEast.longitude
+      };
+      setMapBoundaries( newMapBoundaries );
+      return newMapBoundaries;
+    }
+    return {};
   }, [
     setMapBoundaries,
     setCurrentMapRegion

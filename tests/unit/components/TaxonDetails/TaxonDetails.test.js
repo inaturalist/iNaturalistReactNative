@@ -5,6 +5,7 @@ import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
 import Photo from "realmModels/Photo";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -25,11 +26,9 @@ const mockTaxon = factory( "RemoteTaxon", {
     name: faker.person.fullName( ),
     rank: "class"
   }],
-  wikipedia_summary: faker.lorem.paragraph( ),
   taxonPhotos: [{
     photo: factory( "RemotePhoto" )
-  }],
-  wikipedia_url: faker.internet.url( )
+  }]
 } );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -47,31 +46,21 @@ const mockUser = factory( "LocalUser", {
   icon_url: faker.image.url( )
 } );
 
-const taxonSearchRoute = {
-  name: "TaxonSearch"
-};
-
-const suggestionsRoute = {
-  name: "Suggestions"
-};
-
-const taxonDetailsRoute = {
-  name: "TaxonDetails"
-};
-
+const exploreRoute = { name: "Explore" };
+const myObsRoute = { name: "ObsList" };
+const obsEditRoute = { name: "ObsEdit" };
+const suggestionsRoute = { name: "Suggestions" };
+const taxonDetailsRoute = { name: "TaxonDetails" };
+const taxonSearchRoute = { name: "TaxonSearch" };
 const obsDetailsRoute = {
   name: "ObsDetails",
   params: {
     uuid: faker.string.uuid( )
   }
 };
-
-const exploreRoute = {
-  name: "Explore"
-};
-
-const cameraRoute = {
-  name: "Camera"
+const aiCameraRoute = {
+  name: "Camera",
+  params: { camera: "AI" }
 };
 
 const renderTaxonDetails = ( ) => render(
@@ -83,23 +72,14 @@ const renderTaxonDetails = ( ) => render(
 );
 
 jest.mock(
-  "../../../../src/sharedHooks/useAuthenticatedQuery",
+  "sharedHooks/useAuthenticatedQuery",
   ( ) => ( {
     __esModule: true,
-    default: ( queryKey, _queryFunction ) => {
-      if ( queryKey[0] === "fetchTaxon" ) {
-        return {
-          data: mockTaxon,
-          isLoading: false,
-          isError: false
-        };
-      }
-      return {
-        data: null,
-        isLoading: false,
-        isError: false
-      };
-    }
+    default: jest.fn( ( ) => ( {
+      data: null,
+      isLoading: false,
+      isError: false
+    } ) )
   } )
 );
 
@@ -111,20 +91,27 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
 describe( "TaxonDetails", ( ) => {
   beforeAll( ( ) => {
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
-    useRoute.mockImplementation( ( ) => ( {
-      params: { id: mockTaxon.id }
-    } ) );
     jest.useFakeTimers( );
   } );
 
-  test( "renders taxon details from API call", async ( ) => {
+  beforeEach( ( ) => {
+    useAuthenticatedQuery.mockImplementation( ( ) => ( {
+      data: mockTaxon,
+      isLoading: false,
+      isError: false
+    } ) );
+    useRoute.mockImplementation( ( ) => ( {
+      params: { id: mockTaxon.id }
+    } ) );
+  } );
+
+  it( "renders taxon photos from API response", async ( ) => {
     renderTaxonDetails( );
     expect( screen.getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );
     const photo
       = await screen.findByTestId( `TaxonDetails.photo.${mockTaxon.taxonPhotos[0].photo.id}` );
     expect( photo.props.source )
       .toStrictEqual( { uri: Photo.displayMediumPhoto( mockTaxon.taxonPhotos[0].photo.url ) } );
-    expect( screen.getByText( mockTaxon.wikipedia_summary ) ).toBeTruthy( );
   } );
 
   // fails because of image carousel
@@ -133,149 +120,134 @@ describe( "TaxonDetails", ( ) => {
   //   expect( taxonDetails ).toBeAccessible( );
   // } );
 
-  test( "navigates to Wikipedia on button press", async ( ) => {
-    renderTaxonDetails( );
-    fireEvent.press( screen.getByTestId( "TaxonDetails.wikipedia" ) );
-    expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
-    expect( Linking.openURL ).toHaveBeenCalledWith( mockTaxon.wikipedia_url );
-  } );
-
-  test( "does not show sticky select taxon button on default screen", ( ) => {
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeFalsy( );
-  } );
-} );
-
-describe( "Select button state when navigating from various screens", ( ) => {
-  beforeAll( ( ) => {
-    useRoute.mockImplementation( ( ) => ( {
-      params: { id: mockTaxon.id }
-    } ) );
-    jest.useFakeTimers( );
-  } );
-
-  test( "shows sticky select taxon button when previous screen was suggestions", ( ) => {
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        cameraRoute,
-        suggestionsRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeTruthy( );
-  } );
-
-  test( "shows sticky select taxon button when previous screen was taxon search", ( ) => {
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        cameraRoute,
-        taxonSearchRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeTruthy( );
-  } );
-
-  test( "shows sticky select taxon button when navigating from ancestor screens"
-    + " if previous screen is Suggestions", ( ) => {
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        suggestionsRoute,
-        taxonDetailsRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeTruthy( );
-  } );
-
-  test( "shows sticky select taxon button when navigating from ancestor screens"
-    + " if previous screen is TaxonSearch", ( ) => {
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        taxonSearchRoute,
-        taxonDetailsRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeTruthy( );
-  } );
-
-  test( "does not show sticky select taxon button when navigating from ancestor screens"
-    + " if previous screen is Explore", ( ) => {
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        exploreRoute,
-        taxonDetailsRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
+  it( "does not show sticky select taxon button on default screen", ( ) => {
     renderTaxonDetails( );
     const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
     expect( selectTaxonButton ).toBeFalsy( );
   } );
 
-  test( "does not show sticky select taxon button when navigating from ancestor screens"
-    + " if previous screen is ObsDetails", ( ) => {
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        obsDetailsRoute,
-        taxonDetailsRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeFalsy( );
+  describe( "select button", ( ) => {
+    beforeAll( ( ) => {
+      useRoute.mockImplementation( ( ) => ( {
+        params: { id: mockTaxon.id }
+      } ) );
+      jest.useFakeTimers( );
+    } );
+
+    function expectSelectButtonForPath( path ) {
+      useNavigationState.mockImplementation( ( ) => ( { routes: path } ) );
+      renderTaxonDetails( );
+      expect( screen.getByText( /SELECT THIS TAXON/ ) ).toBeTruthy( );
+    }
+
+    function expectNoSelectButtonForPath( path ) {
+      useNavigationState.mockImplementation( ( ) => ( { routes: path } ) );
+      renderTaxonDetails( );
+      expect( screen.queryByText( /SELECT THIS TAXON/ ) ).toBeFalsy( );
+    }
+
+    describe( "should appear", ( ) => {
+      test( "from Explore via ObsDetails via Suggestions", ( ) => {
+        expectSelectButtonForPath( [exploreRoute, obsDetailsRoute, suggestionsRoute] );
+      } );
+
+      test( "from Explore via ObsDetails via Suggestions via taxonomy", ( ) => {
+        expectSelectButtonForPath( [
+          exploreRoute,
+          obsDetailsRoute,
+          suggestionsRoute,
+          taxonDetailsRoute
+        ] );
+      } );
+
+      test( "from MyObs via ObsDetails via Suggestions", ( ) => {
+        expectSelectButtonForPath( [myObsRoute, obsDetailsRoute, suggestionsRoute] );
+      } );
+
+      test( "from ObsEdit via Suggestions", ( ) => {
+        expectSelectButtonForPath( [obsEditRoute, suggestionsRoute] );
+      } );
+
+      test( "from ObsEdit via Suggestions via taxonomy", ( ) => {
+        expectSelectButtonForPath( [obsEditRoute, suggestionsRoute, taxonDetailsRoute] );
+      } );
+
+      test( "from ObsEdit via TaxonSearch", ( ) => {
+        expectSelectButtonForPath( [obsEditRoute, taxonSearchRoute] );
+      } );
+
+      test( "from ObsEdit via TaxonSearch via taxonomy", ( ) => {
+        expectSelectButtonForPath( [obsEditRoute, taxonSearchRoute, taxonDetailsRoute] );
+      } );
+
+      describe( "when logged out", ( ) => {
+        test( "from Explore via ObsDetails via Suggestions", ( ) => {
+          expectSelectButtonForPath( [exploreRoute, obsDetailsRoute, suggestionsRoute] );
+        } );
+
+        test( "from ObsEdit via Suggestions", ( ) => {
+          expectSelectButtonForPath( [obsEditRoute, suggestionsRoute] );
+        } );
+
+        test( "from ObsEdit via Suggestions via taxonomy", ( ) => {
+          expectSelectButtonForPath( [obsEditRoute, suggestionsRoute, taxonDetailsRoute] );
+        } );
+      } );
+    } );
+
+    describe( "should not appear", ( ) => {
+      test( "from Explore", ( ) => {
+        expectNoSelectButtonForPath( [exploreRoute] );
+      } );
+
+      test( "from Explore via taxonomy", ( ) => {
+        expectNoSelectButtonForPath( [exploreRoute, taxonDetailsRoute] );
+      } );
+
+      test( "from Explore via ObsDetails", ( ) => {
+        expectNoSelectButtonForPath( [exploreRoute, obsDetailsRoute] );
+      } );
+
+      test( "from MyObs via ObsDetails", ( ) => {
+        expectNoSelectButtonForPath( [myObsRoute, obsDetailsRoute] );
+      } );
+
+      // I.e. when the user taps the info button next to the TaxonResult at
+      // the top of the AICamera. We don't want them to land on ObsEdit from
+      // AI Camera with no photo
+      test( "from AICamera", ( ) => {
+        expectNoSelectButtonForPath( [aiCameraRoute] );
+      } );
+    } );
   } );
 
-  test( "does not show sticky select taxon button when navigating from Explore,"
-    + "  even if Suggestions was in stack", ( ) => {
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        suggestionsRoute,
-        exploreRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeFalsy( );
-  } );
+  describe( "for taxon with Wikipedia content", ( ) => {
+    const mockTaxonWithWikipedia = factory( "RemoteTaxon", {
+      wikipedia_summary: faker.lorem.paragraph( ),
+      wikipedia_url: faker.internet.url( )
+    } );
 
-  test( "does not show sticky select taxon button when navigating from ObsDetails,"
-    + "  even if Suggestions was in stack", ( ) => {
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        suggestionsRoute,
-        obsDetailsRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeFalsy( );
-  } );
+    beforeEach( ( ) => {
+      useAuthenticatedQuery.mockImplementation( ( ) => ( {
+        data: mockTaxonWithWikipedia,
+        isLoading: false,
+        isError: false
+      } ) );
+      useRoute.mockImplementation( ( ) => ( {
+        params: { id: mockTaxonWithWikipedia.id }
+      } ) );
+    } );
 
-  test( "does not show sticky select taxon button when navigating"
-    + "from suggestions for logged out user", ( ) => {
-    jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => null );
-    useNavigationState.mockImplementation( ( ) => ( {
-      routes: [
-        suggestionsRoute,
-        taxonDetailsRoute
-      ]
-    } ) );
-    renderTaxonDetails( );
-    const selectTaxonButton = screen.queryByText( /SELECT THIS TAXON/ );
-    expect( selectTaxonButton ).toBeFalsy( );
+    it( "renders Wikipedia content form API response", async ( ) => {
+      renderTaxonDetails( );
+      expect( await screen.findByText( mockTaxonWithWikipedia.wikipedia_summary ) ).toBeTruthy( );
+    } );
+
+    it( "navigates to Wikipedia on button press", async ( ) => {
+      renderTaxonDetails( );
+      fireEvent.press( screen.getByTestId( "TaxonDetails.wikipedia" ) );
+      expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
+      expect( Linking.openURL ).toHaveBeenCalledWith( mockTaxonWithWikipedia.wikipedia_url );
+    } );
   } );
 } );

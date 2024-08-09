@@ -23,16 +23,23 @@ jest.mock( "components/Explore/hooks/useMapLocation", () => ( {
   } )
 } ) );
 
+jest.mock( "sharedHooks/useLocationPermission.tsx", () => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    hasPermissions: true,
+    renderPermissionsGate: jest.fn(),
+    requestPermissions: jest.fn()
+  } )
+} ) );
+
 const mockObservations = [
   factory( "RemoteObservation" ),
   factory( "RemoteObservation" )
 ];
 
-const exploreMap = (
-  <ExploreProvider>
-    <MapView observations={mockObservations} />
-  </ExploreProvider>
-);
+function renderMapView() {
+  renderComponent( <ExploreProvider><MapView /></ExploreProvider> );
+}
 
 describe( "MapView", () => {
   beforeAll( async ( ) => {
@@ -41,12 +48,16 @@ describe( "MapView", () => {
   } );
 
   it( "should be accessible", ( ) => {
+    const exploreMap = (
+      <ExploreProvider>
+        <MapView observations={mockObservations} />
+      </ExploreProvider>
+    );
     expect( exploreMap ).toBeAccessible( );
   } );
 
   it( "should hide redo search button by default", async ( ) => {
-    renderComponent( <MapView /> );
-
+    renderMapView();
     const redoSearchButton = screen.queryByText( /REDO SEARCH IN MAP AREA/ );
     expect( redoSearchButton ).toBeFalsy( );
   } );
@@ -54,8 +65,7 @@ describe( "MapView", () => {
   it( "should render redo search button", async ( ) => {
     jest.spyOn( useMapLocation, "default" )
       .mockImplementation( ( ) => ( { showMapBoundaryButton: true } ) );
-    renderComponent( <MapView /> );
-
+    renderMapView();
     const redoSearchButton = screen.queryByText( /REDO SEARCH IN MAP AREA/ );
     expect( redoSearchButton ).toBeVisible( );
   } );
@@ -66,7 +76,7 @@ describe( "MapView", () => {
         showMapBoundaryButton: true,
         redoSearchInMapArea: mockRedoSearch
       } ) );
-    renderComponent( <MapView /> );
+    renderMapView();
 
     const actor = await userEvent.setup( );
     const redoSearchButton = screen.queryByText( /REDO SEARCH IN MAP AREA/ );

@@ -1,8 +1,6 @@
 import classnames from "classnames";
-import TransparentCircleButton, {
-  CIRCLE_SIZE
-} from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
-import { View } from "components/styledComponents";
+// eslint-disable-next-line max-len
+import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton.tsx";
 import React from "react";
 import { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -15,20 +13,10 @@ const isTablet = DeviceInfo.isTablet();
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
   toggleFlash: ( _event: GestureResponderEvent ) => void;
-  hasFlash: boolean;
+  hasFlash?: boolean;
   takePhotoOptions: TakePhotoOptions;
   flashClassName?: string;
 }
-
-// Empty space where a camera button should be so buttons don't jump around
-// when they appear or disappear
-const CameraButtonPlaceholder = ( ) => (
-  <View
-    accessibilityElementsHidden
-    aria-hidden
-    className={CIRCLE_SIZE}
-  />
-);
 
 const Flash = ( {
   rotatableAnimatedStyle,
@@ -39,7 +27,7 @@ const Flash = ( {
 }: Props ) => {
   const { t } = useTranslation( );
 
-  if ( !hasFlash ) return <CameraButtonPlaceholder />;
+  if ( !hasFlash ) return null;
   let testID = "";
   let accessibilityHint = "";
   let name = "";
@@ -59,9 +47,9 @@ const Flash = ( {
     <Animated.View
       style={!isTablet && rotatableAnimatedStyle}
       className={classnames(
-        flashClassName,
         "m-0",
-        "border-0"
+        "border-0",
+        flashClassName
       )}
     >
       <TransparentCircleButton
