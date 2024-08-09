@@ -61,4 +61,38 @@ describe( "ObservationLocation", () => {
     );
     expect( await screen.findByText( new RegExp( expectedResult ) ) ).toBeTruthy();
   } );
+
+  it( "renders obscured icon if obscured", async () => {
+    const mockObservation = {
+      taxon_geoprivacy: "obscured"
+    };
+    render(
+      <ObservationLocation observation={mockObservation} />
+    );
+    expect( await screen.findByTestId(
+      `ContentWithIcon.${mockObservation.taxon_geoprivacy}`
+    ) ).toBeTruthy( );
+  } );
+
+  it( "renders private icon if private", async () => {
+    const mockObservation = {
+      taxon_geoprivacy: "private"
+    };
+    render(
+      <ObservationLocation observation={mockObservation} />
+    );
+    expect( await screen.findByTestId(
+      `ContentWithIcon.${mockObservation.taxon_geoprivacy}`
+    ) ).toBeTruthy( );
+  } );
+
+  it( "renders loaction icon if not obscured", async () => {
+    const mockObservation = factory( "RemoteObservation" );
+    render(
+      <ObservationLocation observation={mockObservation} />
+    );
+    expect( await screen.findByTestId(
+      "ContentWithIcon.location"
+    ) ).toBeTruthy( );
+  } );
 } );

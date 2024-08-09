@@ -100,7 +100,11 @@ const ObsDetailsOverview = ( {
           </Body4>
         )
       }
-      <ObservationLocation observation={observation} classNameMargin="mx-3 mb-2" />
+      <ObservationLocation
+        observation={observation}
+        obscured={observation?.obscured}
+        classNameMargin="mx-3 mb-2"
+      />
     </View>
   );
 };
