@@ -34,8 +34,6 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
     currentObservation?.observed_on_string || currentObservation?.time_observed_at
   );
 
-  console.log( currentObservation, "current obs" );
-
   return (
     <>
       <DateTimePicker
