@@ -15,9 +15,6 @@ import React, {
 import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
-import colors from "styles/tailwindColors";
-
-const borderRadius = 24;
 
 type Props = {
   children: Node,
@@ -47,19 +44,6 @@ const StandardBottomSheet = ( {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
   }
-
-  const shadow = {
-    shadowColor: colors.black,
-    borderTopStartRadius: borderRadius,
-    borderTopEndRadius: borderRadius,
-    shadowOffset: {
-      width: 0,
-      height: 12
-    },
-    shadowOpacity: 0.75,
-    shadowRadius: 16.0,
-    elevation: 24
-  };
 
   const { t } = useTranslation( );
   const sheetRef = useRef( null );
@@ -120,7 +104,7 @@ const StandardBottomSheet = ( {
       index={0}
       onChange={onChange || handleBackdropPress}
       ref={sheetRef}
-      style={[shadow, marginOnWide]}
+      style={marginOnWide}
     >
       <BottomSheetScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
