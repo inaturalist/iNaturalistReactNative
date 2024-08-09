@@ -26,7 +26,6 @@ import { getShadowForColor } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import ExploreHeader from "./Header/ExploreHeader";
-import useCurrentExploreView from "./hooks/useCurrentExploreView";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
@@ -48,6 +47,8 @@ const exploreViewIcon = {
 type Props = {
   closeFiltersModal: Function,
   count: Object,
+  currentExploreView: string,
+  setCurrentExploreView: Function,
   filterByIconicTaxonUnknown: Function,
   hideBackButton: boolean,
   isConnected: boolean,
@@ -69,6 +70,8 @@ type Props = {
 const Explore = ( {
   closeFiltersModal,
   count,
+  currentExploreView,
+  setCurrentExploreView,
   filterByIconicTaxonUnknown,
   hideBackButton,
   isConnected,
@@ -90,7 +93,6 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
-  const { currentExploreView, setCurrentExploreView } = useCurrentExploreView( );
 
   const exploreViewA11yLabel = {
     observations: t( "Observations-View" ),
@@ -155,6 +157,7 @@ const Explore = ( {
         {currentExploreView === "species" && (
           <SpeciesView
             count={count}
+            setCurrentExploreView={setCurrentExploreView}
             isConnected={isConnected}
             queryParams={queryParams}
             updateCount={updateCount}

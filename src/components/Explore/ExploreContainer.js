@@ -24,6 +24,8 @@ const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
   const setStoredParams = useStore( state => state.setStoredParams );
+  const exploreView = useStore( state => state.exploreView );
+  const setExploreView = useStore( state => state.setExploreView );
 
   const {
     hasPermissions: hasLocationPermissions,
@@ -105,6 +107,8 @@ const ExploreContainerWithContext = ( ): Node => {
       <Explore
         closeFiltersModal={closeFiltersModal}
         count={count}
+        currentExploreView={exploreView}
+        setCurrentExploreView={setExploreView}
         hideBackButton={false}
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
