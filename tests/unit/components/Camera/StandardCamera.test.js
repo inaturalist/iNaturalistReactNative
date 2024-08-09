@@ -4,6 +4,8 @@ import {
 import StandardCamera from "components/Camera/StandardCamera/StandardCamera";
 import React from "react";
 import useStore from "stores/useStore";
+import factory from "tests/factory";
+import { wrapInNavigationContainer } from "tests/helpers/render";
 
 jest.mock( "components/MediaViewer/MediaViewerModal", ( ) => jest.fn( ( ) => null ) );
 
@@ -15,35 +17,49 @@ const mockPhotoUris = [
   "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
 ];
 
-describe( "StandardCamera", ( ) => {
-  beforeAll( async () => {
-    useStore.setState( initialStoreState, true );
-  } );
-
-  it( "deletes a photo on long press", async ( ) => {
-    const removePhotoFromList = ( list, photo ) => {
-      const i = list.findIndex( p => p === photo );
-      list.splice( i, 1 );
-      return list || [];
-    };
-
-    useStore.setState( {
-      evidenceToAdd: [mockPhotoUris[2]],
-      cameraUris: mockPhotoUris,
-      deletePhotoFromObservation: uri => useStore.setState( {
-        cameraUris: [...removePhotoFromList( mockPhotoUris, uri )]
+const mockObservation = factory( "RemoteObservation", {
+  observationPhotos: [
+    factory( "RemoteObservationPhoto", {
+      photo: factory( "RemotePhoto", {
+        url: mockPhotoUris[0]
       } )
+    } ),
+    factory( "RemoteObservationPhoto", {
+      photo: factory( "RemotePhoto", {
+        url: mockPhotoUris[1]
+      } )
+    } ),
+    factory( "RemoteObservationPhoto", {
+      photo: factory( "RemotePhoto", {
+        url: mockPhotoUris[2]
+      } )
+    } )
+  ]
+} );
+
+const renderCamera = ( ) => render(
+  wrapInNavigationContainer(
+    <StandardCamera
+      camera={{}}
+      device={{}}
+    />
+  )
+);
+
+beforeAll( async () => {
+  useStore.setState( initialStoreState, true );
+} );
+
+describe( "StandardCamera", ( ) => {
+  beforeEach( ( ) => {
+    useStore.setState( {
+      currentObservation: mockObservation,
+      observations: [mockObservation]
     } );
-
+  } );
+  it( "deletes a photo on long press", async ( ) => {
+    renderCamera( );
     const { cameraUris } = useStore.getState( );
-
-    render(
-      <StandardCamera
-        camera={{}}
-        device={{}}
-      />
-
-    );
     const photoImage = screen.getByTestId(
       `PhotoCarousel.displayPhoto.${cameraUris[2]}`
     );
@@ -61,12 +77,7 @@ describe( "StandardCamera", ( ) => {
     } );
     fireEvent.press( deleteMode );
 
-    render(
-      <StandardCamera
-        camera={{}}
-        device={{}}
-      />
-    );
+    renderCamera( );
 
     const undeletedPhoto = screen.getByTestId(
       `PhotoCarousel.displayPhoto.${cameraUris[1]}`

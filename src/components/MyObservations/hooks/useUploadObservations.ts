@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import {
   useCallback, useEffect, useMemo
@@ -58,7 +57,6 @@ export default ( canUpload: boolean ) => {
   //    mint a new abort controller
   const newAbortController = useStore( storeState => storeState.newAbortController );
 
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
 
   useEffect( () => {
@@ -183,18 +181,6 @@ export default ( canUpload: boolean ) => {
     uploadQueue,
     uploadStatus
   ] );
-
-  useEffect(
-    ( ) => {
-      navigation.addListener( "blur", ( ) => {
-        resetUploadObservationsSlice( );
-      } );
-    },
-    [
-      navigation,
-      resetUploadObservationsSlice
-    ]
-  );
 
   useEffect( ( ) => {
     // fully stop uploads when cancel upload button is tapped
