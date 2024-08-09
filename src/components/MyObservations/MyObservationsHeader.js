@@ -14,7 +14,6 @@ import { Trans } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User.ts";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import Onboarding from "./Onboarding";
 
@@ -24,6 +23,7 @@ type Props = {
   hideToolbar: boolean,
   layout: string,
   logInButtonNeutral: boolean,
+  numUnuploadedObservations: number,
   setHeightAboveToolbar: Function,
   toggleLayout: Function
 }
@@ -34,10 +34,10 @@ const MyObservationsHeader = ( {
   hideToolbar,
   layout,
   logInButtonNeutral,
+  numUnuploadedObservations,
   setHeightAboveToolbar,
   toggleLayout
 }: Props ): Node => {
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const theme = useTheme( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );

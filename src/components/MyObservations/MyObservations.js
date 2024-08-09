@@ -18,6 +18,7 @@ type Props = {
   isFetchingNextPage: boolean,
   isConnected: boolean,
   layout: "list" | "grid",
+  numUnuploadedObservations: number,
   observations: Array<Object>,
   onEndReached: Function,
   setShowLoginSheet: Function,
@@ -33,6 +34,7 @@ const MyObservations = ( {
   isFetchingNextPage,
   isConnected,
   layout,
+  numUnuploadedObservations,
   observations,
   onEndReached,
   setShowLoginSheet,
@@ -45,11 +47,12 @@ const MyObservations = ( {
       <ScrollableWithStickyHeader
         renderHeader={setStickyAt => (
           <MyObservationsHeader
-            handleSyncButtonPress={handleSyncButtonPress}
             currentUser={currentUser}
+            handleSyncButtonPress={handleSyncButtonPress}
             hideToolbar={observations.length === 0}
             layout={layout}
             logInButtonNeutral={observations.length === 0}
+            numUnuploadedObservations={numUnuploadedObservations}
             setHeightAboveToolbar={setStickyAt}
             toggleLayout={toggleLayout}
           />

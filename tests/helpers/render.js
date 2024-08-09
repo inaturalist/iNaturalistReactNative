@@ -120,11 +120,20 @@ function renderHook( renderCallback, options = {} ) {
   return { result, rerender, unmount };
 }
 
+function wrapInNavigationContainer( component ) {
+  return (
+    <NavigationContainer>
+      {component}
+    </NavigationContainer>
+  );
+}
+
 export {
   queryClient,
   renderApp,
   renderAppWithComponent,
   renderAppWithObservations,
   renderComponent,
-  renderHook
+  renderHook,
+  wrapInNavigationContainer
 };
