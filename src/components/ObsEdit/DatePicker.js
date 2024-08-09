@@ -4,7 +4,10 @@ import { Body3, DateTimePicker, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { createObservedOnStringForUpload, displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
+import {
+  createObservedOnStringFromDatePicker,
+  displayDateTimeObsEdit
+} from "sharedHelpers/dateAndTime";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -20,7 +23,7 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
   const closeModal = () => setShowModal( false );
 
   const handlePicked = value => {
-    const dateString = createObservedOnStringForUpload( value );
+    const dateString = createObservedOnStringFromDatePicker( value );
     updateObservationKeys( {
       observed_on_string: dateString
     } );
@@ -30,6 +33,8 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ): Nod
   const displayDate = ( ) => displayDateTimeObsEdit(
     currentObservation?.observed_on_string || currentObservation?.time_observed_at
   );
+
+  console.log( currentObservation, "current obs" );
 
   return (
     <>
