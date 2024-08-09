@@ -14,6 +14,10 @@ const mockRemoteObservation = factory( "RemoteObservation", {
   observed_on_string: null
 } );
 
+const mockLocalObservationNoDate = factory( "LocalObservation", {
+  observed_on_string: null
+} );
+
 describe( "DatePicker", ( ) => {
   it( "has no accessibility errors", ( ) => {
     const datePicker = <DatePicker />;
@@ -32,5 +36,12 @@ describe( "DatePicker", ( ) => {
 
     const date = screen.getByText( "06/15/2024, 5:26 PM" );
     expect( date ).toBeVisible( );
+  } );
+
+  it( "displays Add Date text when observation has no date", ( ) => {
+    renderComponent( <DatePicker currentObservation={mockLocalObservationNoDate} /> );
+
+    const addDateText = screen.getByText( "Add Date/Time" );
+    expect( addDateText ).toBeVisible( );
   } );
 } );
