@@ -2,7 +2,6 @@ import "react-native-gesture-handler/jestSetup";
 import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
-import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
@@ -10,11 +9,7 @@ import fetchMock from "jest-fetch-mock";
 import React from "react";
 import mockBackHandler from "react-native/Libraries/Utilities/__mocks__/BackHandler";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
-// eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
-import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
-import * as mockPhotoImporter from "tests/mocks/react-native-image-picker";
-import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
 import * as mockZustand from "tests/mocks/zustand.ts";
 
 import factory, { makeResponse } from "./factory";
@@ -47,7 +42,6 @@ jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
 
 require( "react-native-reanimated" ).setUpTests();
 
-jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
 // mock Portal with a Modal component inside of it (MediaViewer)
@@ -274,10 +268,6 @@ jest.mock( "jsrsasign" );
 inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
-jest.mock( "react-native-audio-recorder-player", ( ) => MockAudioRecorderPlayer );
-
-jest.mock( "@react-native-clipboard/clipboard", () => mockClipboard );
-
 jest.mock( "react-native-webview", () => {
   const MockWebView = jest.requireActual( "react-native" ).View;
 
@@ -313,8 +303,6 @@ jest.mock( "zustand", ( ) => mockZustand );
 //     } );
 //   } );
 // } );
-
-jest.mock( "react-native-image-picker", ( ) => mockPhotoImporter );
 
 jest.mock(
   "react-native/Libraries/Utilities/BackHandler",
