@@ -27,6 +27,7 @@ beforeAll( ( ) => {
     taxon: mockTaxon
   }] ) );
   inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
+  jest.useFakeTimers( );
 } );
 
 const switchToObservationsView = async ( ) => {
