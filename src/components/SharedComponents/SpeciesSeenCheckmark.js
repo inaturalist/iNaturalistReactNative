@@ -9,10 +9,9 @@ import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray );
+const DROP_SHADOW = getShadow( );
 
 type Props = {
   taxonId: number

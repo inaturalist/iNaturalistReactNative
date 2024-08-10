@@ -5,11 +5,11 @@ import { LinearGradient, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import { useTheme } from "react-native-paper";
-import { getShadowForColor } from "styles/global";
+import { getShadow } from "styles/global";
 
 import ObsImage from "./ObsImage";
 
-const ICON_DROP_SHADOW = getShadowForColor( "#000000", {
+const ICON_DROP_SHADOW = getShadow( {
   offsetHeight: 1
 } );
 

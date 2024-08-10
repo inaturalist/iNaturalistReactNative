@@ -22,8 +22,7 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import ExploreHeader from "./Header/ExploreHeader";
 import IdentifiersView from "./IdentifiersView";
@@ -32,7 +31,7 @@ import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );

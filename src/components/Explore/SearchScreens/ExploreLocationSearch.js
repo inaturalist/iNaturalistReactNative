@@ -24,10 +24,9 @@ import React, {
 import { FlatList } from "react-native";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4
 } );
 

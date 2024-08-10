@@ -9,8 +9,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
 import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import BottomButtons from "./BottomButtons";
 import EvidenceSectionContainer from "./EvidenceSectionContainer";
@@ -19,7 +18,7 @@ import MultipleObservationsArrows from "./MultipleObservationsArrows";
 import ObsEditHeader from "./ObsEditHeader";
 import OtherDataSection from "./OtherDataSection";
 
-const DROP_SHADOW = getShadowForColor( colors.black, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: -2
 } );
 

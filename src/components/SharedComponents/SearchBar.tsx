@@ -6,10 +6,9 @@ import React from "react";
 import { TextInput as RNTextInput } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray );
+const DROP_SHADOW = getShadow( );
 
 interface Props {
   autoFocus?: boolean;

@@ -8,10 +8,9 @@ import {
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.black, { offsetHeight: 4 } );
+const DROP_SHADOW = getShadow( { offsetHeight: 4 } );
 
 interface Props {
   takePhoto: () => Promise<void>;

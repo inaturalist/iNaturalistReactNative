@@ -4,7 +4,7 @@ import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { getShadowForColor } from "styles/global";
+import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
   updateObservationsView: Function
 };
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );

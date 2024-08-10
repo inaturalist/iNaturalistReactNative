@@ -20,7 +20,7 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import openMap from "react-native-open-maps";
 import { useTheme } from "react-native-paper";
-import { getShadowForColor } from "styles/global";
+import { getShadow } from "styles/global";
 
 type Props = {
   latitude: number,
@@ -39,8 +39,7 @@ const FloatingActionButton = ( {
   buttonClassName,
   onPress,
   accessibilityLabel,
-  icon,
-  theme
+  icon
 } ) => {
   const fabClassNames = classnames(
     "absolute",
@@ -52,7 +51,7 @@ const FloatingActionButton = ( {
 
   return (
     <INatIconButton
-      style={getShadowForColor( theme.colors.primary )}
+      style={getShadow( )}
       className={fabClassNames}
       icon={icon}
       onPress={onPress}
@@ -126,14 +125,12 @@ const DetailsMap = ( {
                 onPress={( ) => copyCoordinates( )}
                 accessibilityLabel={t( "Copy-coordinates" )}
                 buttonClassName="top-0 left-0"
-                theme={theme}
               />
               <FloatingActionButton
                 icon="share"
                 onPress={( ) => shareMap( )}
                 accessibilityLabel={t( "Share-map" )}
                 buttonClassName="top-0 right-0"
-                theme={theme}
               />
             </>
           )}
