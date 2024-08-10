@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import AddObsModal from "components/AddObsModal";
 import {
   Body1,
@@ -14,20 +15,30 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Pressable, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
+
+const HEADER_HEIGHT = 177;
+const FOOTER_HEIGHT = 77;
+const HALF_GRADIENT_AND_TEXT_HEIGHT = 216 / 2;
 
 type Props = {
   isFetchingNextPage: ?boolean
 }
 
 const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
+  const insets = useSafeAreaInsets( );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const [showModal, setShowModal] = useState( false );
 
   const { height } = useWindowDimensions( );
+
+  const outerViewHeight = (
+    height + insets.top - HEADER_HEIGHT - FOOTER_HEIGHT - HALF_GRADIENT_AND_TEXT_HEIGHT
+  ) * 0.5;
 
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const navAndCloseModal = ( screen, params ) => {
@@ -49,27 +60,28 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
     return (
       // It seems to be a known issue that the EmptyListComponent of FlashList,
       // which is the parent here, is not possible to be used with a flex of 1, or flex grow.
-      // The following workaround is to use a margin that roughly centers the content.
+      // The following workaround is to roughly center the content.
       // https://github.com/Shopify/flash-list/discussions/517
       <View
-        className="mx-[67px] items-center"
-        style={{
-          // Height of the screen minus the height of the header, the footer,
-          // the height of the gradient button and the text. Divided by two to center the content.
-          marginTop: ( height - 180 - 80 - 190 ) * 0.5
-        }}
+        className="px-[67px] items-center"
+        style={{ height: outerViewHeight }}
       >
-        <GradientButton
-          accessibilityLabel={t( "Add-observations" )}
-          sizeClassName="w-[141px] h-[141px]"
-          onPress={navToARCamera}
-          iconSize={76}
-        />
-        <Pressable accessibilityRole="button" onPress={navToARCamera}>
-          <Heading2 className="mt-6 text-center">
-            {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}
-          </Heading2>
-        </Pressable>
+        <View className={classnames(
+          "items-center absolute top-[50%]"
+        )}
+        >
+          <GradientButton
+            accessibilityLabel={t( "Add-observations" )}
+            sizeClassName="w-[141px] h-[141px]"
+            onPress={navToARCamera}
+            iconSize={76}
+          />
+          <Pressable accessibilityRole="button" onPress={navToARCamera}>
+            <Heading2 className="mt-6 text-center">
+              {t( "Identify-an-organism-with-the-iNaturalist-AI-Camera" )}
+            </Heading2>
+          </Pressable>
+        </View>
       </View>
     );
   }
