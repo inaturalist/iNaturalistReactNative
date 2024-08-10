@@ -7,25 +7,17 @@ import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
-import mockNodePath from "path";
 import React from "react";
 import mockBackHandler from "react-native/Libraries/Utilities/__mocks__/BackHandler";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 // eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
-import mockFaker from "tests/helpers/faker";
 import MockAudioRecorderPlayer from "tests/mocks/react-native-audio-recorder-player";
 import * as mockPhotoImporter from "tests/mocks/react-native-image-picker";
 import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
 import * as mockZustand from "tests/mocks/zustand.ts";
 
 import factory, { makeResponse } from "./factory";
-// import {
-//   mockCamera,
-//   mockSortDevices,
-//   mockUseCameraDevice,
-//   mockUseCameraFormat
-// } from "./vision-camera/vision-camera";
 
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
 // instead use console.logs for tests
@@ -98,13 +90,6 @@ jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
 
 // https://github.com/callstack/react-native-testing-library/issues/658#issuecomment-766886514
 jest.mock( "react-native/Libraries/LogBox/LogBox" );
-
-jest.mock( "react-native-config", () => ( {
-  OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID,
-  OAUTH_CLIENT_SECRET: process.env.OAUTH_CLIENT_SECRET,
-  JWT_ANONYMOUS_API_SECRET: process.env.JWT_ANONYMOUS_API_SECRET,
-  API_URL: process.env.API_URL
-} ) );
 
 jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 
@@ -195,15 +180,6 @@ jest.setTimeout( 50000 );
 // eslint-disable-next-line global-require
 jest.mock( "react-native-permissions", () => require( "react-native-permissions/mock" ) );
 
-// mocking globally since this currently affects a handful of unit and integration tests
-jest.mock( "@react-native-community/geolocation", ( ) => ( {
-  getCurrentPosition: jest.fn( ),
-  watchPosition: jest.fn( ( ) => 0 ),
-  clearWatch: jest.fn( ),
-  setRNConfiguration: jest.fn( ( ) => ( {
-    skipPermissionRequests: true
-  } ) )
-} ) );
 require( "react-native" ).NativeModules.RNCGeolocation = { };
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
@@ -259,32 +235,6 @@ jest.mock( "@gorhom/bottom-sheet", ( ) => ( {
   BottomSheetTextInput: ( ) => <></>
 } ) );
 
-jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
-  nativeInterface: jest.fn( ),
-  CameraRoll: {
-    getPhotos: jest.fn( ( ) => ( {
-      page_info: {
-        end_cursor: jest.fn( ),
-        has_next_page: false
-      },
-      edges: [
-        // This expexcts something like
-        // { node: photo }
-      ]
-    } ) ),
-    getAlbums: jest.fn( ( ) => ( {
-      // Expecting album titles as keys and photo counts as values
-      // "My Amazing album": 12
-    } ) ),
-    save: jest.fn( ( _uri, _options = {} ) => mockFaker.system.filePath( ) )
-  }
-} ) );
-
-jest.mock( "react-native-exif-reader", ( ) => ( {
-  readExif: jest.fn( ),
-  writeLocation: jest.fn( )
-} ) );
-
 // https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
 jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
   KeyboardAwareScrollView: jest
@@ -296,18 +246,6 @@ jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
 jest.mock( "inaturalistjs" );
 inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
-
-jest.mock( "react-native-orientation-locker", () => ( {
-  addDeviceOrientationListener: jest.fn( ),
-  addEventListener: jest.fn( ),
-  getDeviceOrientation: jest.fn( ),
-  getInitialOrientation: jest.fn( ),
-  getOrientation: jest.fn( ),
-  lockToPortrait: jest.fn( ),
-  removeEventListener: jest.fn( ),
-  removeOrientationListener: jest.fn( ),
-  unlockAllOrientations: jest.fn( )
-} ) );
 
 const mockErrorHandler = error => {
   console.log( error );
@@ -321,15 +259,6 @@ jest.mock( "react-native-exception-handler", () => ( {
     .mockImplementation( () => mockErrorHandler() )
 } ) );
 
-jest.mock( "react-native-geocoder-reborn", ( ) => ( {
-  geocodePosition: jest.fn( coord => [
-    `Somewhere near ${coord.lat}, ${coord.lng}`,
-    "Somewhere",
-    "Somewheria",
-    "SW"
-  ] )
-} ) );
-
 // Set up mocked fetch for testing (or disabling) fetch requests
 fetchMock.enableMocks( );
 fetchMock.dontMock( );
@@ -339,23 +268,6 @@ const mockIconicTaxon = factory( "RemoteTaxon", {
   name: "Mock iconic taxon"
 } );
 inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
-
-jest.mock( "@bam.tech/react-native-image-resizer", ( ) => ( {
-  createResizedImage: jest.fn(
-    async (
-      path,
-      _maxWidth,
-      _maxHeight,
-      _compressFormat,
-      _quality,
-      _rotation,
-      outputPath
-    ) => {
-      const filename = mockNodePath.basename( path );
-      return { uri: mockNodePath.join( outputPath, filename ) };
-    }
-  )
-} ) );
 
 jest.mock( "jsrsasign" );
 
