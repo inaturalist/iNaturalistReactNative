@@ -30,12 +30,6 @@ jest.mock( "../react-native-logs.config", () => {
   };
 } );
 
-jest.mock( "vision-camera-plugin-inatvision", () => ( {
-  getPredictionsForImage: jest.fn( () => Promise.resolve( { predictions: [] } ) ),
-  removeLogListener: jest.fn( ),
-  resetStoredResults: jest.fn( )
-} ) );
-
 jest.mock( "@sayem314/react-native-keep-awake" );
 jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
 
@@ -240,17 +234,17 @@ jest.mock( "inaturalistjs" );
 inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
-const mockErrorHandler = error => {
-  console.log( error );
-};
-jest.mock( "react-native-exception-handler", () => ( {
-  setJSExceptionHandler: jest
-    .fn()
-    .mockImplementation( () => mockErrorHandler() ),
-  setNativeExceptionHandler: jest
-    .fn()
-    .mockImplementation( () => mockErrorHandler() )
-} ) );
+// const mockErrorHandler = error => {
+//   console.log( error );
+// };
+// jest.mock( "react-native-exception-handler", () => ( {
+//   setJSExceptionHandler: jest
+//     .fn()
+//     .mockImplementation( () => mockErrorHandler() ),
+//   setNativeExceptionHandler: jest
+//     .fn()
+//     .mockImplementation( () => mockErrorHandler() )
+// } ) );
 
 // Set up mocked fetch for testing (or disabling) fetch requests
 fetchMock.enableMocks( );
