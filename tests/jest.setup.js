@@ -42,35 +42,10 @@ jest.mock(
 
 require( "react-native-reanimated" ).setUpTests();
 
-// 20240806 amanda - best practice for react navigation
-// is actually not to mock navigation at all. I removed
-// useFocusEffect so we can test how that actually works in
-// components; it requires using the wrapInNavigationContainer
-// helper around components with useFocusEffect
-// https://reactnavigation.org/docs/testing/#best-practices
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: jest.fn( ( ) => ( { params: {} } ) ),
-    useNavigation: ( ) => ( {
-      addListener: jest.fn(),
-      canGoBack: jest.fn( ( ) => true ),
-      goBack: jest.fn( ),
-      setOptions: jest.fn( )
-    } )
-  };
-} );
-
-// https://github.com/callstack/react-native-testing-library/issues/658#issuecomment-766886514
-jest.mock( "react-native/Libraries/LogBox/LogBox" );
-
 // Some test environments may need a little more time
 jest.setTimeout( 50000 );
 
-require( "react-native" ).NativeModules.RNCGeolocation = { };
-require( "react-native" ).NativeModules.FileReaderModule = { };
-
+// tests seem to be slower without this global reanimated mock
 global.ReanimatedDataMock = {
   now: () => 0
 };
@@ -102,7 +77,7 @@ jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
     ...turboModuleRegistry,
     getEnforcing: name => {
       // List of TurboModules libraries to mock.
-      const modulesToMock = ["ReactNativeKCKeepAwake"];
+      const modulesToMock = ["ReactNativeKCKeepAwake", "FileReaderModule"];
       if ( modulesToMock.includes( name ) ) {
         return null;
       }
