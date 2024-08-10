@@ -3,10 +3,8 @@ import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
-import mockFs from "fs";
 import inatjs from "inaturalistjs";
 import fetchMock from "jest-fetch-mock";
-import React from "react";
 import mockBackHandler from "react-native/Libraries/Utilities/__mocks__/BackHandler";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
@@ -30,23 +28,19 @@ jest.mock( "../react-native-logs.config", () => {
   };
 } );
 
-jest.mock( "@sayem314/react-native-keep-awake" );
-jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
+jest.mock( "@gorhom/bottom-sheet", () => ( {
+  ...mockBottomSheet,
+  __esModule: true
+} ) );
+jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
+jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
+jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
+jest.mock(
+  "react-native/Libraries/Utilities/BackHandler",
+  () => mockBackHandler
+);
 
 require( "react-native-reanimated" ).setUpTests();
-
-jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
-
-// mock Portal with a Modal component inside of it (MediaViewer)
-jest.mock( "react-native-paper", () => {
-  const actual = jest.requireActual( "react-native-paper" );
-  const MockedModule = {
-    ...actual,
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    Portal: ( { children } ) => <>{children}</>
-  };
-  return MockedModule;
-} );
 
 // 20240806 amanda - best practice for react navigation
 // is actually not to mock navigation at all. I removed
@@ -68,86 +62,18 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-// this resolves error with importing file after Jest environment is torn down
-// https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
-jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
-  default: ( ) => ( { getInitialState: { then: jest.fn( ) } } ),
-  __esModule: true
-} ) );
-
 // https://github.com/callstack/react-native-testing-library/issues/658#issuecomment-766886514
 jest.mock( "react-native/Libraries/LogBox/LogBox" );
-
-jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 
 // Some test environments may need a little more time
 jest.setTimeout( 50000 );
 
-// https://github.com/zoontek/react-native-permissions
-// eslint-disable-next-line global-require
-jest.mock( "react-native-permissions", () => require( "react-native-permissions/mock" ) );
-
 require( "react-native" ).NativeModules.RNCGeolocation = { };
-
-jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
+require( "react-native" ).NativeModules.FileReaderModule = { };
 
 global.ReanimatedDataMock = {
   now: () => 0
 };
-
-jest.mock( "react-native-fs", ( ) => {
-  const RNFS = {
-    appendFile: jest.fn( ),
-    CachesDirectoryPath: "caches/directory/path",
-    DocumentDirectoryPath: "document/directory/path",
-    exists: jest.fn( async ( ) => true ),
-    moveFile: async ( ) => "testdata",
-    copyFile: async ( ) => "testdata",
-    stat: jest.fn( ( ) => ( {
-      mtime: new Date()
-    } ) ),
-    readFile: jest.fn( ( ) => "testdata" ),
-    readDir: jest.fn( async ( ) => ( [
-      {
-        ctime: new Date(),
-        mtime: new Date(),
-        name: "testdata"
-      }
-    ] ) ),
-    writeFile: jest.fn( async ( filePath, contents, _encoding ) => {
-      mockFs.writeFile( filePath, contents, jest.fn( ) );
-    } ),
-    mkdir: jest.fn( async ( filepath, _options ) => {
-      mockFs.mkdir( filepath, jest.fn( ) );
-    } ),
-    unlink: jest.fn( async ( path = "" ) => {
-      if ( !path ) return;
-      if ( typeof ( path ) !== "string" ) return;
-      mockFs.unlink( path, jest.fn( ) );
-    } )
-  };
-
-  return RNFS;
-} );
-
-require( "react-native" ).NativeModules.FileReaderModule = { };
-
-// Mock native animation for all tests
-jest.mock( "react-native/Libraries/Animated/NativeAnimatedHelper" );
-
-jest.mock( "@gorhom/bottom-sheet", ( ) => ( {
-  ...mockBottomSheet,
-  __esModule: true,
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  BottomSheetTextInput: ( ) => <></>
-} ) );
-
-// https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
-jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
-  KeyboardAwareScrollView: jest
-    .fn( )
-    .mockImplementation( ( { children } ) => children )
-} ) );
 
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
@@ -164,11 +90,11 @@ const mockIconicTaxon = factory( "RemoteTaxon", {
 } );
 inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
 
-jest.mock( "jsrsasign" );
-
 inatjs.announcements.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
+// the following two mocks are both needed for react-native-keep-awake
+jest.mock( "@sayem314/react-native-keep-awake" );
 jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
   const turboModuleRegistry = jest
     .requireActual( "react-native/Libraries/TurboModule/TurboModuleRegistry" );
@@ -184,8 +110,3 @@ jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
     }
   };
 } );
-
-jest.mock(
-  "react-native/Libraries/Utilities/BackHandler",
-  () => mockBackHandler
-);
