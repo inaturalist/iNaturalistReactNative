@@ -20,12 +20,12 @@ import * as mockRNLocalize from "tests/mocks/react-native-localize.ts";
 import * as mockZustand from "tests/mocks/zustand.ts";
 
 import factory, { makeResponse } from "./factory";
-import {
-  mockCamera,
-  mockSortDevices,
-  mockUseCameraDevice,
-  mockUseCameraFormat
-} from "./vision-camera/vision-camera";
+// import {
+//   mockCamera,
+//   mockSortDevices,
+//   mockUseCameraDevice,
+//   mockUseCameraFormat
+// } from "./vision-camera/vision-camera";
 
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
 // instead use console.logs for tests
@@ -50,40 +50,13 @@ jest.mock( "vision-camera-plugin-inatvision", () => ( {
   resetStoredResults: jest.fn( )
 } ) );
 
-jest.mock( "react-native-worklets-core", () => ( {
-  useSharedValue: jest.fn(),
-  Worklets: {
-    createRunOnJS: jest.fn(),
-    defaultContext: {
-      createRunAsync: jest.fn()
-    }
-  }
-} ) );
-
 jest.mock( "@sayem314/react-native-keep-awake" );
 jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
 
 require( "react-native-reanimated" ).setUpTests();
 
-jest.mock( "react-native-vision-camera", ( ) => ( {
-  Camera: mockCamera,
-  sortDevices: mockSortDevices,
-  useCameraDevice: mockUseCameraDevice,
-  useCameraFormat: mockUseCameraFormat,
-  VisionCameraProxy: {
-    initFrameProcessorPlugin: jest.fn( )
-  },
-  useFrameProcessor: jest.fn( )
-} ) );
-
 jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
-// Trivial mock b/c I assume we can't really test the native parts of this
-// library ~~~kueda 20230516
-jest.mock( "react-native-share-menu", ( ) => ( {
-  addNewShareListener: jest.fn( ),
-  getInitialShare: jest.fn( )
-} ) );
 
 // mock Portal with a Modal component inside of it (MediaViewer)
 jest.mock( "react-native-paper", () => {
