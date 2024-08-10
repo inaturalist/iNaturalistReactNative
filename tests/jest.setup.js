@@ -10,7 +10,6 @@ import React from "react";
 import mockBackHandler from "react-native/Libraries/Utilities/__mocks__/BackHandler";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
-import * as mockZustand from "tests/mocks/zustand.ts";
 
 import factory, { makeResponse } from "./factory";
 
@@ -293,16 +292,6 @@ jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
     }
   };
 } );
-
-// Mock zustand in a way that will allow us to reset its state between tests
-jest.mock( "zustand", ( ) => mockZustand );
-// afterEach( () => {
-//   act( () => {
-//     mockZustand.storeResetFns.forEach( resetFn => {
-//       resetFn();
-//     } );
-//   } );
-// } );
 
 jest.mock(
   "react-native/Libraries/Utilities/BackHandler",
