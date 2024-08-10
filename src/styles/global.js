@@ -1,12 +1,10 @@
 import { StyleSheet } from "react-native";
 
-import colors from "./tailwindColors";
-
 const DEFAULT_SHADOW = {
   elevation: 5,
   offsetHeight: 2,
   offsetWidth: 0,
-  shadowColor: colors.black,
+  shadowColor: "rgba( 0, 0, 0, 0.25 )",
   shadowOpacity: 0.25,
   shadowRadius: 2
 };
@@ -40,10 +38,9 @@ export const getShadowStyle = ( {
 
 export const dropShadow = getShadowStyle( DEFAULT_SHADOW );
 
-export function getShadowForColor( shadowColor, options = {} ) {
+export function getShadow( options = {} ) {
   return getShadowStyle( {
     ...DEFAULT_SHADOW,
-    shadowColor,
     ...options
   } );
 }

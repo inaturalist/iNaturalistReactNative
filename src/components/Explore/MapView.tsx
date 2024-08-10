@@ -10,12 +10,11 @@ import { MapBoundaries, PLACE_MODE, useExplore } from "providers/ExploreContext.
 import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { useDebugMode, useTranslation } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import useMapLocation from "./hooks/useMapLocation";
 
-const DROP_SHADOW = getShadowForColor( colors?.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );

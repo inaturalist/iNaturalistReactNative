@@ -5,10 +5,9 @@ import React, {
 } from "react";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray );
+const DROP_SHADOW = getShadow( );
 
 interface Props {
   currentMapType?: string;

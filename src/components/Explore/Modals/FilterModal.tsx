@@ -41,8 +41,7 @@ import {
 import React, { useState } from "react";
 import { useTheme } from "react-native-paper";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
@@ -50,7 +49,7 @@ import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
 import ExploreUserSearchModal from "./ExploreUserSearchModal";
 
-const DROP_SHADOW = getShadowForColor( colors?.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );
