@@ -11,6 +11,17 @@ import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
 import factory, { makeResponse } from "./factory";
 
+// this resolves error with importing file after Jest environment is torn down
+// https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
+jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
+  default: ( ) => ( { getInitialState: { then: jest.fn( ) } } ),
+  __esModule: true
+} ) );
+// tests seem to be slower without this global reanimated mock
+global.ReanimatedDataMock = {
+  now: () => 0
+};
+
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
 // instead use console.logs for tests
 jest.mock( "../react-native-logs.config", () => {
@@ -44,11 +55,6 @@ require( "react-native-reanimated" ).setUpTests();
 
 // Some test environments may need a little more time
 jest.setTimeout( 50000 );
-
-// tests seem to be slower without this global reanimated mock
-global.ReanimatedDataMock = {
-  now: () => 0
-};
 
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
