@@ -4,8 +4,8 @@ import { INatIconButton } from "components/SharedComponents";
 import { FasterImageView } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import colors from "styles/tailwindColors";
 import { View } from "react-native";
+import colors from "styles/tailwindColors";
 
 type Props = {
   uri: Object,
