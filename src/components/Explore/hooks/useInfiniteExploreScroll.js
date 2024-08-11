@@ -26,10 +26,16 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
     if ( !lastObs ) return null;
 
     if ( ["observed_on", "created_at"].includes( orderBy ) ) {
-      const lastObsDate = parseISO( orderBy === "observed_on"
+      const lastObsDate = orderBy === "observed_on"
         ? lastObs?.time_observed_at
-        : lastObs?.created_at );
-      const newObsDate = addSeconds( lastObsDate, baseParams.order === "asc"
+        : lastObs?.created_at;
+
+      if ( !lastObsDate ) {
+        return null;
+      }
+
+      const lastObsDateParsed = parseISO( lastObsDate );
+      const newObsDate = addSeconds( lastObsDateParsed, baseParams.order === "asc"
         ? 1
         : -1 );
       return formatISO( newObsDate );
