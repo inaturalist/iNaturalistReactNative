@@ -1,9 +1,11 @@
 // @flow
 
+import { INatIconButton } from "components/SharedComponents";
 import { FasterImageView } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import colors from "styles/tailwindColors";
+import { View } from "react-native";
 
 type Props = {
   uri: Object,
@@ -44,17 +46,32 @@ const UserIcon = ( {
     borderRadius: size / 2
   };
   return (
-    <FasterImageView
-      testID="UserIcon.photo"
-      style={[active && activeStyle, style]}
-      source={{
-        url: uri?.uri,
-        borderRadius: size / 2,
-        resizeMode: "cover"
-      }}
-      accessibilityRole="image"
-      accessibilityIgnoresInvertColors
-    />
+    uri?.uri
+      ? (
+        <FasterImageView
+          testID="UserIcon.photo"
+          style={[active && activeStyle, style]}
+          source={{
+            url: uri?.uri,
+            borderRadius: size / 2,
+            resizeMode: "cover"
+          }}
+          accessibilityRole="image"
+          accessibilityIgnoresInvertColors
+        />
+      )
+      : (
+        <View
+          style={[active && activeStyle, style]}
+        >
+          <INatIconButton
+            icon="person"
+            size={size}
+            accessibilityRole="image"
+            accessibilityLabel="iNaturalist"
+          />
+        </View>
+      )
 
   );
 };
