@@ -134,11 +134,11 @@ const ObservationLocation = ( {
   ] );
 
   const locationIcon = () => {
-    if ( geoprivacy === "obscured" || taxonGeoprivacy === "obscured" ) {
-      return "obscured";
-    }
     if ( geoprivacy === "private" || taxonGeoprivacy === "private" ) {
       return "private";
+    }
+    if ( geoprivacy === "obscured" || taxonGeoprivacy === "obscured" ) {
+      return "obscured";
     }
     return "location";
   };
