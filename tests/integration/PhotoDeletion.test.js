@@ -103,13 +103,12 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function confirmPhotosAndAddTopId() {
+  async function confirmPhotosAndSkipId() {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
-    const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
-    );
-    await actor.press( topTaxonResultButton );
+    const skipIdButton = screen.queryByText( /Add an ID Later/ );
+    expect( skipIdButton ).toBeVisible( );
+    await actor.press( skipIdButton );
   }
 
   async function saveAndEditObs() {
@@ -159,7 +158,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from StandardCamera for existing photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await saveAndEditObs();
     // Enter camera to add new photo
     const addEvidenceButton = await screen.findByLabelText( "Add evidence" );
@@ -177,7 +176,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
     await expectObsEditToHaveNoPhotos();
@@ -186,7 +185,7 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
     await startApp();
     await takePhotoForNewObs();
-    await confirmPhotosAndAddTopId();
+    await confirmPhotosAndSkipId();
     await saveAndEditObs();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
