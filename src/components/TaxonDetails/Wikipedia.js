@@ -6,11 +6,9 @@ import {
   Heading4
 } from "components/SharedComponents";
 import * as React from "react";
-import {
-  Linking,
-  useWindowDimensions
-} from "react-native";
+import { useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -34,7 +32,7 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
 
   const openWikipedia = ( ) => {
     if ( taxon?.wikipedia_url ) {
-      Linking.openURL( taxon.wikipedia_url );
+      openExternalWebBrowser( taxon.wikipedia_url );
     }
   };
 

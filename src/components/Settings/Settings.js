@@ -261,7 +261,6 @@ const Settings = ( ) => {
             title: t( "Settings" ),
             loggedIn: true,
             initialUrl: SETTINGS_URL,
-            openLinksInBrowser: true,
             blurEvent: FINISHED_WEB_SETTINGS
           } );
         }}

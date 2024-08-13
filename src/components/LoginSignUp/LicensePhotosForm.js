@@ -44,8 +44,7 @@ const LicensePhotosForm = ( ): Node => {
     navigation.navigate( "FullPageWebView", {
       title: t( "TERMS-OF-USE" ),
       initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
+      loggedIn: false
     } );
   };
 
@@ -54,8 +53,7 @@ const LicensePhotosForm = ( ): Node => {
     navigation.navigate( "FullPageWebView", {
       title: t( "PRIVACY-POLICY" ),
       initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
+      loggedIn: false
     } );
   };
 
@@ -64,8 +62,7 @@ const LicensePhotosForm = ( ): Node => {
     navigation.navigate( "FullPageWebView", {
       title: t( "COMMUNITY-GUIDELINES" ),
       initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
+      loggedIn: false
     } );
   };
 

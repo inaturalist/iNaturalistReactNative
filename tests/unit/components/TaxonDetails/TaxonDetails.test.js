@@ -1,5 +1,7 @@
 import { NavigationContainer, useNavigationState, useRoute } from "@react-navigation/native";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import {
+  fireEvent, render, screen, waitFor
+} from "@testing-library/react-native";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
@@ -246,7 +248,9 @@ describe( "TaxonDetails", ( ) => {
     it( "navigates to Wikipedia on button press", async ( ) => {
       renderTaxonDetails( );
       fireEvent.press( screen.getByTestId( "TaxonDetails.wikipedia" ) );
-      expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
+      await waitFor( ( ) => {
+        expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
+      } );
       expect( Linking.openURL ).toHaveBeenCalledWith( mockTaxonWithWikipedia.wikipedia_url );
     } );
   } );

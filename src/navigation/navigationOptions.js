@@ -1,7 +1,7 @@
 // @flow
 import { HeaderBackground } from "@react-navigation/elements";
 import { fontMedium } from "appConstants/fontFamilies.ts";
-import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader";
+import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader.tsx";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import type { Node } from "react";
 import React from "react";
