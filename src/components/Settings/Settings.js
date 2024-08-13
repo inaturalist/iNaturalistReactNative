@@ -45,7 +45,7 @@ const Settings = ( ) => {
   // const { t, i18n } = useTranslation();
   const currentUser = useCurrentUser( );
   const {
-    remoteUser, isLoading, refetchUserMe, updateUser
+    remoteUser, isLoading, refetchUserMe
   } = useUserMe();
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
@@ -98,7 +98,7 @@ const Settings = ( ) => {
       // setCurrentLocale( remoteUser.locale );
       setIsSaving( false );
     }
-  }, [remoteUser, updateUser, realm] );
+  }, [remoteUser, realm] );
 
   // Listen for the webview to finish so we can fetch the updates users/me
   // response
