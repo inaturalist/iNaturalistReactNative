@@ -16,7 +16,6 @@ const Donate = () => {
       title: t( "DONATE-TO-INATURALIST" ),
       initialUrl: url,
       loggedIn: false,
-      handleLinksForAllowedDomains: true,
       skipSetSourceInShouldStartLoadWithRequest: true
     } );
   };

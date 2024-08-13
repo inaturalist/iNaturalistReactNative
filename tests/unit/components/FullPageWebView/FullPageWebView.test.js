@@ -46,9 +46,9 @@ describe( "FullPageWebView", ( ) => {
         expect( onShouldStartLoadWithRequest( request, source, routeParams ) ).toBeTruthy();
         expect( Linking.openURL ).not.toHaveBeenCalled( );
       } );
-      it( "should try to open for any domain on the allowlist if not requested", ( ) => {
+      it( "should try to open for any domain on the allowlist for clicks", ( ) => {
         const url = "https://www.inaturalist.org";
-        const request = { url: "https://www.inaturalist.org/users/edit" };
+        const request = { url: "https://www.inaturalist.org/users/edit", navigationType: "click" };
         const source = { uri: url };
         const routeParams = { initialUrl: url };
         expect( onShouldStartLoadWithRequest( request, source, routeParams ) ).toBeFalsy();

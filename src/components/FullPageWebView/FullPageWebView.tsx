@@ -25,7 +25,9 @@ export const ALLOWED_DOMAINS = [
   "donorbox.org",
   "stripe.com",
   "recaptcha.net",
+  "paypal.com",
   "paypalobjects.com",
+  "plaid.com",
   "stripecdn.com",
   "stripe.network",
   "hcaptcha.com"
@@ -43,7 +45,6 @@ type FullPageWebViewParams = {
   blurEvent?: string,
   title?: string,
   loggedIn?: boolean,
-  handleLinksForAllowedDomains?: boolean,
   skipSetSourceInShouldStartLoadWithRequest?: boolean
 }
 
@@ -115,14 +116,13 @@ export function onShouldStartLoadWithRequest(
 
   // Otherwise we might want to open a browser
   if (
-    // If we're not explicitly trying to keep the user inside the app
-    !params.handleLinksForAllowedDomains
-    // or if the user is about to visit a domain we don't want to handle
-    || !ALLOWED_DOMAINS.includes( requestDomain )
+    // If the user is about to visit a domain we don't want to handle
+    !ALLOWED_DOMAINS.includes( requestDomain )
     // or if this is a click, i.e. even if this is an allowed domain, we want
     // to open a browser unless we were explicitly asked not to. This only
     // works in iOS.
-    || ( !params.handleLinksForAllowedDomains && request.navigationType === "click" )
+    // TODO come up with an Android solution
+    || request.navigationType === "click"
   ) {
     // Note we can't use openExternalWebBrowser here b/c this function needs
     // to be synchronous
@@ -178,7 +178,6 @@ const FullPageWebView = ( ) => {
       } );
 
       // Make the WebView logged in for the current user
-      // TODO: make sure this isn't spewing JWTs to any old site
       if ( params.loggedIn ) {
         getAPIToken().then( token => {
           setSource( {
