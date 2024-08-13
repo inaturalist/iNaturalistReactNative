@@ -1,4 +1,3 @@
-import { searchObservations } from "api/observations";
 import classnames from "classnames";
 import {
   Body1,
@@ -7,35 +6,38 @@ import {
 } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers.ts";
 import { View } from "components/styledComponents";
-import React, { useState } from "react";
+import { MapBoundaries, PLACE_MODE, useExplore } from "providers/ExploreContext.tsx";
+import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
-import { Region } from "react-native-maps";
 import { useDebugMode, useTranslation } from "sharedHooks";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import useMapLocation from "./hooks/useMapLocation";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );
 
 interface Props {
-  observations: Object[];
+  // Bounding box of the observations retrieved for the query params
+  observationBounds?: MapBoundaries,
   queryParams: {
     taxon_id?: number;
+    return_bounds?: boolean;
+    order?: string;
+    orderBy?: string;
   };
 }
 
 const MapView = ( {
-  observations,
+  observationBounds,
   queryParams
 }: Props ) => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );
   const [zoom, setZoom] = useState( -1 );
+  const { state: exploreState } = useExplore( );
 
   const {
     onPanDrag,
@@ -47,38 +49,15 @@ const MapView = ( {
     updateMapBoundaries
   } = useMapLocation( );
 
-  /*
-  * Query for the bounding box of the taxon_id, if it hasn't been fetched yet, and
-  * zoom to that bounding box on the map
-  */
-  interface StoredBoundingBoxes {
-    [taxonId: number]: Region;
-  }
-  const [storedBoundingBoxes, setStoredBoundingBoxes] = useState<StoredBoundingBoxes>( {} );
-  const obsParams = {
-    ...queryParams, return_bounds: true, per_page: 0
-  };
-  const {
-    data
-  } = useAuthenticatedQuery(
-    ["fetchTaxonBoundingBox"],
-    ( optsWithAuth: Object ) => searchObservations( obsParams, optsWithAuth ),
-    {
-      enabled: obsParams.taxon_id && !storedBoundingBoxes[obsParams.taxon_id]
+  // TODO this should really be a part of the explore reducer
+  useEffect( ( ) => {
+    if (
+      observationBounds
+      && [PLACE_MODE.WORLDWIDE, PLACE_MODE.PLACE].indexOf( exploreState.placeMode ) >= 0
+    ) {
+      updateMapBoundaries( getMapRegion( observationBounds ) );
     }
-  );
-  // Only update the map once per taxon_id, so that it only zooms to the
-  // bounding box on initial load
-  if ( obsParams.taxon_id && !storedBoundingBoxes[obsParams.taxon_id] ) {
-    if ( data && data.total_bounds && data.total_bounds.nelat !== undefined ) {
-      const boundsRegion = getMapRegion( data.total_bounds );
-      updateMapBoundaries( boundsRegion );
-      setStoredBoundingBoxes( {
-        ...storedBoundingBoxes,
-        [obsParams.taxon_id]: boundsRegion
-      } );
-    }
-  }
+  }, [observationBounds, updateMapBoundaries, exploreState.placeMode] );
 
   const tileMapParams = {
     ...queryParams
@@ -123,7 +102,6 @@ const MapView = ( {
       ) }
       <Map
         currentLocationButtonClassName="left-5 bottom-20"
-        observations={observations}
         onPanDrag={onPanDrag}
         onRegionChangeComplete={async ( newRegion, boundaries ) => {
           // Seems to be a bug in react-native-maps where
@@ -142,7 +120,6 @@ const MapView = ( {
         onZoomChange={newZoom => setZoom( newZoom )}
         region={region}
         showCurrentLocationButton
-        showExplore
         showSwitchMapTypeButton
         showsCompass={false}
         startAtNearby={startAtNearby}

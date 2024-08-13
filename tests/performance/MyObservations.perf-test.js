@@ -1,89 +1,79 @@
-// // ComponentUnderTest.perf-test.tsx
-// import MyObservations from "components/MyObservations/MyObservations";
-// import React from "react";
-// // eslint-disable-next-line import/no-extraneous-dependencies
-// import { measurePerformance } from "reassure";
-// import factory from "tests/factory";
-// import faker from "tests/helpers/faker";
+import {
+  QueryClientProvider
+} from "@tanstack/react-query";
+import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import React from "react";
+import { measureRenders } from "reassure";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import factory from "tests/factory";
+import { queryClient } from "tests/helpers/render";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn, signOut } from "tests/helpers/user";
 
-// jest.setTimeout( 60_000 );
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => []
+    }
+  };
+} );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
-// const mockUser = factory( "LocalUser" );
+const mockUser = factory( "LocalUser" );
 
-// const mockObservations = [
-//   factory( "LocalObservation", {
-//     _synced_at: null,
-//     observationPhotos: [
-//       factory( "LocalObservationPhoto", {
-//         photo: {
-//           id: faker.number.int( ),
-//           url: faker.image.url( ),
-//           position: 0
-//         }
-//       } )
-//     ]
-//   } ),
-//   factory( "LocalObservation", {
-//     _synced_at: null,
-//     observationPhotos: [
-//       factory( "LocalObservationPhoto", {
-//         photo: {
-//           id: faker.number.int( ),
-//           url: `${faker.image.url( )}/100`,
-//           position: 0
-//         }
-//       } ),
-//       factory( "LocalObservationPhoto", {
-//         photo: {
-//           id: faker.number.int( ),
-//           url: `${faker.image.url( )}/200`,
-//           position: 1
-//         }
-//       } )
-//     ]
-//   } )
-// ];
+// Mock inaturalistjs so test suite can run
+jest.mock( "inaturalistjs" );
 
-// const mockState = {
-//   uploads: mockObservations,
-//   error: null,
-//   numToUpload: 3,
-//   totalProgressIncrements: 4,
-//   uploadProgress: 1
-// };
+const mockObservation = factory( "LocalObservation" );
 
-// const mockOnEndReached = jest.fn( );
+const renderMyObs = ( ) => (
+  <QueryClientProvider client={queryClient}>
+    <MyObservationsContainer />
+  </QueryClientProvider>
+);
 
-// jest.mock( "sharedHooks/useInfiniteObservationsScroll", () => ( {
-//   __esModule: true,
-//   default: () => ( {
-//     data: mockObservations,
-//     isFetchingNextPage: false,
-//     fetchNextPage: mockOnEndReached
-//   } )
-// } ) );
+test( "Measure MyObservations renders", async () => {
+  await measureRenders(
+    renderMyObs( )
+  );
+} );
 
-// jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
-//   __esModule: true,
-//   default: jest.fn( () => ( {
-//     refetch: jest.fn()
-//   } ) )
-// } ) );
+describe( "scenario", ( ) => {
+  beforeEach( async ( ) => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+    safeRealmWrite( global.mockRealms[__filename], ( ) => {
+      global.mockRealms[__filename].create( "Observation", mockObservation );
+    }, "write Observation, MyObs.perf-test" );
+  } );
 
-// describe( "MyObservations Performance", ( ) => {
-//   test( "Test list loading time in MyObservations", async () => {
-//     await measurePerformance( <MyObservations
-//       observations={mockObservations}
-//       layout="list"
-//       toggleLayout={jest.fn( )}
-//       allObsToUpload={[]}
-//       showLoginSheet={false}
-//       setShowLoginSheet={jest.fn( )}
-//       isFetchingNextPage={false}
-//       onEndReached={mockOnEndReached}
-//       currentUser={mockUser}
-//       isConnected
-//       uploadState={mockState}
-//     /> );
-//   } );
-// } );
+  afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
+  } );
+
+  test( "Test tapping sync button", async () => {
+    const scenario = async () => {
+      const syncIcon = screen.getByTestId( "SyncButton" );
+      expect( syncIcon ).toBeVisible( );
+      fireEvent.press( syncIcon );
+      const syncingText = screen.queryByText( /Syncing.../ );
+      expect( syncingText ).toBeVisible( );
+      await waitForElementToBeRemoved( ( ) => screen.queryByText( /Syncing.../ ) );
+    };
+
+    await measureRenders( renderMyObs( ), { scenario } );
+  } );
+} );

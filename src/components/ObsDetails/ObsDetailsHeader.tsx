@@ -1,11 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
   BackButton,
   INatIconButton
 } from "components/SharedComponents";
 import {
-  LinearGradient
+  LinearGradient, View
 } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
@@ -55,27 +56,29 @@ const ObsDetailsHeader = ( {
         "transparent"
       ]}
     >
-      <BackButton color="white" inCustomHeader />
-      {
-        belongsToCurrentUser
-          ? (
-            <INatIconButton
-              testID="ObsDetail.editButton"
-              onPress={() => {
-                prepareObsEdit( localObservation );
-                navigation.navigate( "NoBottomTabStackNavigator", {
-                  screen: "ObsEdit"
-                } );
-              }}
-              icon="pencil"
-              color={!rightIconBlack
-                ? colors.white
-                : colors.black}
-              accessibilityLabel={t( "Edit" )}
-            />
-          )
-          : <HeaderKebabMenu observationId={observationId} white={!rightIconBlack} />
-      }
+      <View className="left-4 top-4">
+        <BackButton color="white" inCustomHeader testID="ObsDetails.BackButton" />
+      </View>
+      <View className="right-4">
+        {
+          belongsToCurrentUser
+            ? (
+              <INatIconButton
+                testID="ObsDetail.editButton"
+                onPress={() => {
+                  prepareObsEdit( localObservation );
+                  navigateToObsEdit( navigation );
+                }}
+                icon="pencil"
+                color={!rightIconBlack
+                  ? colors.white
+                  : colors.black}
+                accessibilityLabel={t( "Edit" )}
+              />
+            )
+            : <HeaderKebabMenu observationId={observationId} white={!rightIconBlack} />
+        }
+      </View>
     </LinearGradient>
   );
 };

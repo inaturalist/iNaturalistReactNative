@@ -20,12 +20,14 @@ import useStore from "stores/useStore";
 
 import Explore from "./Explore";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
-import useHeaderCount from "./hooks/useHeaderCount";
+import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 
 const RootExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
+  const rootExploreView = useStore( state => state.rootExploreView );
+  const setRootExploreView = useStore( state => state.setRootExploreView );
   const rootStoredParams = useStore( state => state.rootStoredParams );
   const setRootStoredParams = useStore( state => state.setRootStoredParams );
   const {
@@ -94,8 +96,8 @@ const RootExploreContainerWithContext = ( ): Node => {
     per_page: 20
   };
 
-  // need this hook to be top-level enough that HeaderCount rerenders
-  const { count, loadingStatus, updateCount } = useHeaderCount( );
+  // need this hook to be top-level enough that ExploreHeaderCount rerenders
+  const { count, loadingStatus, updateCount } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -127,6 +129,8 @@ const RootExploreContainerWithContext = ( ): Node => {
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
+        currentExploreView={rootExploreView}
+        setCurrentExploreView={setRootExploreView}
         isConnected={isConnected}
         loadingStatus={loadingStatus}
         openFiltersModal={openFiltersModal}

@@ -22,18 +22,16 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-import Header from "./Header/Header";
-import useCurrentExploreView from "./hooks/useCurrentExploreView";
+import ExploreHeader from "./Header/ExploreHeader";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );
@@ -48,6 +46,8 @@ const exploreViewIcon = {
 type Props = {
   closeFiltersModal: Function,
   count: Object,
+  currentExploreView: string,
+  setCurrentExploreView: Function,
   filterByIconicTaxonUnknown: Function,
   hideBackButton: boolean,
   isConnected: boolean,
@@ -69,6 +69,8 @@ type Props = {
 const Explore = ( {
   closeFiltersModal,
   count,
+  currentExploreView,
+  setCurrentExploreView,
   filterByIconicTaxonUnknown,
   hideBackButton,
   isConnected,
@@ -90,7 +92,6 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
-  const { currentExploreView, setCurrentExploreView } = useCurrentExploreView( );
 
   const exploreViewA11yLabel = {
     observations: t( "Observations-View" ),
@@ -104,7 +105,7 @@ const Explore = ( {
   const headerCount = count[currentExploreView];
 
   const renderHeader = ( ) => (
-    <Header
+    <ExploreHeader
       count={headerCount}
       exploreView={currentExploreView}
       exploreViewIcon={icon}
@@ -155,6 +156,7 @@ const Explore = ( {
         {currentExploreView === "species" && (
           <SpeciesView
             count={count}
+            setCurrentExploreView={setCurrentExploreView}
             isConnected={isConnected}
             queryParams={queryParams}
             updateCount={updateCount}

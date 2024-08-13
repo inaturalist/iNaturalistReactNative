@@ -10,7 +10,7 @@ import LicensePhotosForm from "./LicensePhotosForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
 const LicensePhotos = ( ): Node => (
-  <LoginSignUpWrapper backgroundSource={require( "images/plants.png" )}>
+  <LoginSignUpWrapper backgroundSource={require( "images/background/plants.jpg" )}>
     <ScrollView
       keyboardShouldPersistTaps="always"
     >

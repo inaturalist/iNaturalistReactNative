@@ -6,7 +6,7 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   // TODO: Param not typed yet, because ExploreLocationSearch is not typed yet
-  updateLocation: ( _location: any ) => void;
+  updateLocation: ( location: "worldwide" | { name: string } ) => void;
 }
 
 const ExploreLocationSearchModal = ( {

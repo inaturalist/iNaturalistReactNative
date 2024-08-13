@@ -172,7 +172,7 @@ const CameraWithDevice = ( {
         body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery" )}
         buttonText={t( "SAVE-PHOTOS" )}
         icon="gallery"
-        image={require( "images/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
+        image={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
         onModalHide={( ) => setAddPhotoPermissionGateWasClosed( true )}
         onPermissionGranted={onPhotoPermissionGranted}
         onPermissionDenied={onPhotoPermissionDenied}

@@ -9,17 +9,16 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation.ts";
 import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
 import useStore from "stores/useStore";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import BottomButtons from "./BottomButtons";
 import EvidenceSectionContainer from "./EvidenceSectionContainer";
-import Header from "./Header";
 import IdentificationSection from "./IdentificationSection";
 import MultipleObservationsArrows from "./MultipleObservationsArrows";
+import ObsEditHeader from "./ObsEditHeader";
 import OtherDataSection from "./OtherDataSection";
 
-const DROP_SHADOW = getShadowForColor( colors.black, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: -2
 } );
 
@@ -31,29 +30,24 @@ const ObsEdit = ( ): Node => {
   const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
-  const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( false );
   const {
     hasPermissions: hasLocationPermission,
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission
   } = useLocationPermission( );
 
+  const shouldFetchLocation = hasLocationPermission
+    && shouldFetchObservationLocation( currentObservation );
+
   const {
     isFetchingLocation,
+    stopWatch,
+    subscriptionId,
     userLocation
   } = useWatchPosition( { shouldFetchLocation } );
-
-  // Note the intended functionality is *not* to request location permission
-  // until the user taps the missing location
-  useEffect( ( ) => {
-    if ( hasLocationPermission && shouldFetchObservationLocation( currentObservation ) ) {
-      setShouldFetchLocation( true );
-    }
-  }, [currentObservation, hasLocationPermission] );
 
   useEffect( ( ) => {
     if ( userLocation?.latitude ) {
@@ -61,24 +55,15 @@ const ObsEdit = ( ): Node => {
     }
   }, [userLocation, updateObservationKeys] );
 
-  useEffect( ( ) => {
-    // this is needed to make sure watchPosition is called when a user
-    // navigates to ObsEdit a second time during an app session,
-    // otherwise, state will indicate that fetching is not needed
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
-      setShouldFetchLocation( false );
-    } );
-    return unsubscribe;
-  }, [navigation] );
-
   const navToLocationPicker = useCallback( ( ) => {
+    stopWatch( subscriptionId );
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );
-  }, [navigation] );
+  }, [stopWatch, subscriptionId, navigation] );
 
   const onLocationPress = ( ) => {
     // If we have location permissions, navigate to the location picker
     if ( hasLocationPermission ) {
-      navToLocationPicker();
+      navToLocationPicker( );
     } else {
       // If we don't have location permissions, request them
       requestLocationPermission( );
@@ -95,7 +80,7 @@ const ObsEdit = ( ): Node => {
   return (
     <>
       <ViewWrapper testID="obs-edit">
-        <Header
+        <ObsEditHeader
           currentObservation={currentObservation}
           observations={observations}
         />
@@ -126,9 +111,7 @@ const ObsEdit = ( ): Node => {
                 />
                 <IdentificationSection
                   currentObservation={currentObservation}
-                  passesIdentificationTest={passesIdentificationTest}
                   resetScreen={resetScreen}
-                  setPassesIdentificationTest={setPassesIdentificationTest}
                   setResetScreen={setResetScreen}
                   updateObservationKeys={updateObservationKeys}
                 />
@@ -146,7 +129,6 @@ const ObsEdit = ( ): Node => {
         currentObservationIndex={currentObservationIndex}
         observations={observations}
         passesEvidenceTest={passesEvidenceTest}
-        passesIdentificationTest={passesIdentificationTest}
         setCurrentObservationIndex={setCurrentObservationIndex}
       />
       {renderLocationPermissionGate( {

@@ -1,3 +1,4 @@
+import { useRoute } from "@react-navigation/native";
 import {
   fireEvent,
   screen,
@@ -71,22 +72,6 @@ describe( "Suggestions", ( ) => {
     } );
   } );
 
-  it( "shows comment section if observation has comment", ( ) => {
-    useStore.setState( {
-      comment: "This is a test comment"
-    } );
-    renderComponent( <Suggestions
-      suggestions={{
-        ...initialSuggestions,
-        otherSuggestions: mockSuggestionsList
-      }}
-    /> );
-    const commentSection = screen.getByText(
-      i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
-    );
-    expect( commentSection ).toBeVisible( );
-  } );
-
   it( "should display empty text if no suggestions are found", ( ) => {
     renderComponent( <Suggestions suggestions={initialSuggestions} /> );
     const emptyText = i18next
@@ -109,6 +94,50 @@ describe( "Suggestions", ( ) => {
     expect( loading ).toBeVisible( );
     const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
     expect( loadingText ).toBeVisible( );
+  } );
+
+  it( "should display loading wheel and vision result when coming from AICamera", async ( ) => {
+    const mockVisionResult = {
+      score: 0.9,
+      taxon: mockTaxon
+    };
+    useRoute.mockImplementation( ( ) => ( {
+      params: {
+        aiCameraSuggestion: mockVisionResult
+      }
+    } ) );
+    renderComponent(
+      <Suggestions
+        suggestions={initialSuggestions}
+        isLoading
+      />
+    );
+    const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
+    expect( loadingText ).toBeVisible( );
+    const taxonName = await screen.findByText( mockVisionResult.taxon.name );
+    expect( taxonName ).toBeVisible( );
+  } );
+
+  it( "should display no vision result if not coming from AICamera", async ( ) => {
+    const mockVisionResult = {
+      score: 0.9,
+      taxon: mockTaxon
+    };
+    useRoute.mockImplementation( ( ) => ( {
+      params: {
+        aiCameraSuggestion: undefined
+      }
+    } ) );
+    renderComponent(
+      <Suggestions
+        suggestions={initialSuggestions}
+        isLoading
+      />
+    );
+    const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
+    expect( loadingText ).toBeVisible( );
+    const taxonName = screen.queryByText( mockVisionResult.taxon.name );
+    expect( taxonName ).toBeFalsy( );
   } );
 
   it( "should create an id when checkmark is pressed", async ( ) => {

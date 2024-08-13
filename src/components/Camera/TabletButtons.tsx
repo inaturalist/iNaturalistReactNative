@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import Gallery from "components/Camera/Buttons/Gallery.tsx";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -41,7 +42,8 @@ interface Props {
   flipCamera: ( _event: GestureResponderEvent ) => void;
   handleCheckmarkPress?: ( _event: GestureResponderEvent ) => void;
   handleClose?: ( _event: GestureResponderEvent ) => void;
-  hasFlash: boolean;
+  hasFlash?: boolean;
+  hasGalleryButton?: boolean;
   photosTaken?: boolean;
   rotatableAnimatedStyle: ViewStyle;
   showPrediction?: boolean;
@@ -54,13 +56,15 @@ interface Props {
 
 // Empty space where a camera button should be so buttons don't jump around
 // when they appear or disappear
-const CameraButtonPlaceholder = ( ) => (
+const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string } ) => (
   <View
     accessibilityElementsHidden
     aria-hidden
     className={classnames(
+      // "bg-deeppink",
       `w-[${CAMERA_BUTTON_DIM}px]`,
-      `h-[${CAMERA_BUTTON_DIM}px]`
+      `h-[${CAMERA_BUTTON_DIM}px]`,
+      extraClassName
     )}
   />
 );
@@ -72,6 +76,7 @@ const TabletButtons = ( {
   handleCheckmarkPress,
   handleClose,
   hasFlash,
+  hasGalleryButton,
   photosTaken,
   rotatableAnimatedStyle,
   showPrediction,
@@ -83,33 +88,34 @@ const TabletButtons = ( {
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
-    "h-[380px]",
     "items-center",
     "justify-center",
     "mr-5",
-    "mt-[-190px]",
-    "pb-0",
+    "p-0",
     "right-0",
-    "top-[50%]"
+    "h-full"
   ];
 
   return (
-    <View className={classnames( tabletCameraOptionsClasses )}>
+    <View className={classnames( tabletCameraOptionsClasses )} pointerEvents="box-none">
+      { photosTaken && <CameraButtonPlaceholder extraClassName="mb-[25px]" /> }
       <Zoom
         changeZoom={changeZoom}
         zoomTextValue={zoomTextValue}
         showZoomButton={showZoomButton}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
+        zoomClassName="mb-[25px]"
       />
       <Flash
         toggleFlash={toggleFlash}
         hasFlash={hasFlash}
         takePhotoOptions={takePhotoOptions}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
+        flashClassName="m-0 mb-[25px]"
       />
       <CameraFlip
         flipCamera={flipCamera}
-        cameraFlipClasses="m-0 mt-[25px]"
+        cameraFlipClasses="m-0"
       />
       <View className="mt-[40px] mb-[40px]">
         <TakePhoto
@@ -121,7 +127,7 @@ const TabletButtons = ( {
       { photosTaken && (
         <Animated.View
           style={!isTablet && rotatableAnimatedStyle}
-          className={classnames( checkmarkClasses, "mb-[25px]" )}
+          className={classnames( checkmarkClasses )}
         >
           <GreenCheckmark
             handleCheckmarkPress={handleCheckmarkPress || ( () => null )}
@@ -131,7 +137,7 @@ const TabletButtons = ( {
       <View
         className={classnames(
           cameraOptionsClasses,
-          { "mb-[25px]": !photosTaken }
+          { "mt-[25px]": photosTaken }
         )}
       >
         <CloseButton
@@ -139,7 +145,13 @@ const TabletButtons = ( {
           size={18}
         />
       </View>
-      { !photosTaken && <CameraButtonPlaceholder /> }
+      { hasFlash && <CameraButtonPlaceholder extraClassName="mt-[25px]" /> }
+      { showZoomButton && <CameraButtonPlaceholder extraClassName="mt-[25px]" /> }
+      { hasGalleryButton && (
+        <View className="absolute bottom-6">
+          <Gallery rotatableAnimatedStyle={rotatableAnimatedStyle} />
+        </View>
+      ) }
     </View>
   );
 };

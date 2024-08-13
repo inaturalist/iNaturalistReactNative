@@ -1,7 +1,7 @@
 // @flow
 
 import { useQuery } from "@tanstack/react-query";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { reactQueryRetry } from "sharedHelpers/logging";
 
 // Should work like React Query's useQuery except it calls the queryFunction

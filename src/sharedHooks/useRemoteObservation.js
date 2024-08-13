@@ -1,6 +1,6 @@
 // @flow
 import { fetchRemoteObservation } from "api/observations";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import { useCallback, useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";

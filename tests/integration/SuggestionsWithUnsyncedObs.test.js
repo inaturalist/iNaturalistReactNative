@@ -29,13 +29,18 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   Version: 11
 } ) );
 
-const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+const watchPositionSuccess = jest.fn( success => success( {
   coords: {
     latitude: 56,
     longitude: 9,
     accuracy: 8
   }
 } ) );
+
+const mockWatchPosition = jest.fn( ( success, _error, _options ) => {
+  setTimeout( () => watchPositionSuccess( success ), 100 );
+  return 0;
+} );
 Geolocation.watchPosition.mockImplementation( mockWatchPosition );
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -134,11 +139,16 @@ const navigateToSuggestionsForObservationViaObsEdit = async observation => {
   await actor.press( addIdButton );
 };
 
-const navigateToSuggestionsViaAICamera = async ( ) => {
+const navigateToSuggestionsViaAICamera = async ( options = {} ) => {
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
   await actor.press( addObsButton );
   const cameraButton = await screen.findByLabelText( /AI Camera/ );
+  if ( options.waitForLocation ) {
+    await waitFor( ( ) => {
+      expect( watchPositionSuccess ).toHaveBeenCalled( );
+    } );
+  }
   await actor.press( cameraButton );
   const takePhotoButton = await screen.findByLabelText( /Take photo/ );
   await actor.press( takePhotoButton );
@@ -285,7 +295,7 @@ describe( "from AICamera", ( ) => {
   describe( "suggestions with location", ( ) => {
     it( "should call score_image with location parameters on first render", async ( ) => {
       const { observations } = await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( observations[0] );
+      await navigateToSuggestionsViaAICamera( observations[0], { waitForLocation: true } );
       const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
       expect( ignoreLocationButton ).toBeVisible( );
       await waitFor( ( ) => {

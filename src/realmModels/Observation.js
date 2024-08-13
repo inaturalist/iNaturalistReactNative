@@ -62,6 +62,7 @@ class Observation extends Realm.Object {
   };
 
   static EXPLORE_LIST_FIELDS = {
+    created_at: true,
     comments: {
       current: true
     },

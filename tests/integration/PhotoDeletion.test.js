@@ -16,14 +16,17 @@ import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 // working normally
 jest.unmock( "@react-navigation/native" );
 
-const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
-  coords: {
-    latitude: 1,
-    longitude: 1,
-    accuracy: 9,
+const mockWatchPosition = jest.fn( ( success, _error, _options ) => {
+  setTimeout( ( ) => success( {
+    coords: {
+      latitude: 1,
+      longitude: 1,
+      accuracy: 9
+    },
     timestamp: Date.now( )
-  }
-} ) );
+  } ), 100 );
+  return 0;
+} );
 Geolocation.watchPosition.mockImplementation( mockWatchPosition );
 
 const mockModelResult = {

@@ -24,7 +24,7 @@ import {
 } from "components/SharedComponents";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { Pressable, ScrollView, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
@@ -41,8 +41,7 @@ import {
 import React, { useState } from "react";
 import { useTheme } from "react-native-paper";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
@@ -50,7 +49,7 @@ import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
 import ExploreUserSearchModal from "./ExploreUserSearchModal";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );
@@ -60,13 +59,14 @@ const { useRealm } = RealmContext;
 interface Props {
   closeModal: () => void;
   filterByIconicTaxonUnknown: () => void;
-  updateTaxon: ( _taxon: Object | null ) => void;
+  // TODO: type this properly when taxon has a type
+  updateTaxon: ( taxon: null | { name: string } ) => void;
   // TODO: Param not typed yet, because ExploreLocationSearch is not typed yet
-  updateLocation: ( _location: any ) => void;
+  updateLocation: ( location: "worldwide" | { name: string } ) => void;
   // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
-  updateUser: ( _user: any ) => void;
+  updateUser: ( user: null | { login: string } ) => void;
   // TODO: Param not typed yet, because ExploreProjectSearch is not typed yet
-  updateProject: ( _project: any ) => void;
+  updateProject: ( project: null | { title: string } ) => void;
 }
 
 const FilterModal = ( {

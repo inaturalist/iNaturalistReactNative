@@ -66,7 +66,7 @@ const AIDebugButton = ( {
   if ( !isDebug ) return null;
 
   return (
-    <View className="flex-row justify-end pb-[20px]">
+    <View className="flex-row justify-end">
       <INatIconButton
         className={classnames(
           "bg-deeppink",

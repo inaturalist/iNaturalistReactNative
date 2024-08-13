@@ -36,7 +36,6 @@ Add-agreement = Add agreement
 ADD-AN-ID = ADD AN ID
 Add-an-ID-Later = Add an ID Later
 ADD-COMMENT = ADD COMMENT
-Add-comment = Add comment
 Add-Date-Time = Add Date/Time
 # Label for a button that adds a vote of disagreement
 Add-disagreement = Add disagreement
@@ -201,6 +200,8 @@ Copy-coordinates = Copy Coordinates
 # heading to describe general information about rights, attribution, and
 # licensing
 Copyright = Copyright
+# Error message when no camera can be found
+Could-not-find-a-camera-on-this-device = Could not find a camera on this device
 Couldnt-create-comment = Couldn't create comment
 Couldnt-create-identification-error = Couldn't create identification { $error }
 Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
@@ -345,7 +346,6 @@ Endemic = Endemic
 Endemic-to-place = Endemic to { $place }
 # Title for a section describing an error
 Error = Error
-Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 ERROR-LOADING-DQA = ERROR LOADING IN DQA
 # Title of dialog or section describing an error
 Error-title = Error
@@ -590,6 +590,8 @@ New-Observation = New Observation
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
+# Error message when no camera can be found
+No-Camera-Available = No Camera Available
 No-Location = No Location
 No-Media = No Media
 # As in a machine learning model that powers automated suggestions
@@ -1163,7 +1165,6 @@ You-need-log-in-to-do-that = You need to log in to do that.
 You-will-see-notifications = You’ll see notifications here once you log in & upload observations.
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
-Your-identification-will-be-posted-with-the-following-comment = Your identification will be posted with the following comment:
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 Youre-always-in-control-of-the-location-privacy = You’re always in control of the location privacy of every observation you create.
 # Text prompting the user to open Settings to grant permission after

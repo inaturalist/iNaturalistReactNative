@@ -1,4 +1,4 @@
-import { API_HOST } from "components/LoginSignUp/AuthenticationService";
+import { API_HOST } from "components/LoginSignUp/AuthenticationService.ts";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import nock from "nock";

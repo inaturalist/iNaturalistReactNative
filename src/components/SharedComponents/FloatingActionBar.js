@@ -4,13 +4,12 @@ import { View } from "components/styledComponents";
 import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Animated, Keyboard } from "react-native";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   shadowOpacity: 0.4,
-  shadowRadius: 4
+  shadowRadius: 8
 } );
 
 type Props = {

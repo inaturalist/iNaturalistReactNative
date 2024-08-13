@@ -5,14 +5,12 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import NavButton from "./NavButton";
 
-const DROP_SHADOW = getShadowForColor( colors.black, {
-  offsetHeight: -3,
-  shadowOpacity: 0.2,
+const DROP_SHADOW = getShadow( {
+  offsetHeight: -2,
   elevation: 20
 } );
 

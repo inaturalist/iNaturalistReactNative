@@ -1,9 +1,10 @@
 import "@testing-library/jest-native/extend-expect";
 
-import { act } from "@testing-library/react";
-import * as mockZustand from "tests/mocks/zustand.ts";
+import { act } from "@testing-library/react-native";
 
-// Reset the Zustand state after every test. See also tests/mocks/zustand.ts
+import * as mockZustand from "../__mocks__/zustand";
+
+// Reset the Zustand state after every test. See also ../__mocks__/zustand.ts
 afterEach( () => {
   act( () => {
     mockZustand.storeResetFns.forEach( resetFn => {

@@ -40,7 +40,19 @@ const createObservedOnStringForUpload = date => formatDateStringFromTimestamp(
   getUnixTime( date || new Date( ) )
 );
 
-const displayDateTimeObsEdit = date => date && format( new Date( date ), "PPpp" );
+const createObservedOnStringFromDatePicker = date => {
+  // DatePicker does not support seconds, so we're returning a date,
+  // without timezone and without seconds (just "2022-12-31T23:59")
+  const isoDate = formatISO( date );
+  const isoDateNoSeconds = isoDate.substring( 0, 16 );
+  return isoDateNoSeconds;
+};
+
+const displayDateTimeObsEdit = date => {
+  if ( !date ) { return ""; }
+  // this displays date times formatted like 08/09/2024, 12:14 PM
+  return format( new Date( date ), "Pp" );
+};
 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
@@ -99,6 +111,7 @@ const formatUserProfileDate = ( date, t ) => format( parseISO( date ), t( "date-
 
 export {
   createObservedOnStringForUpload,
+  createObservedOnStringFromDatePicker,
   displayDateTimeObsEdit,
   formatApiDatetime,
   formatDateStringFromTimestamp,

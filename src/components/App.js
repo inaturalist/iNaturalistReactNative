@@ -3,7 +3,7 @@
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
-import { RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import { LogBox } from "react-native";
@@ -17,7 +17,7 @@ import {
   useShare
 } from "sharedHooks";
 
-import useChangeLocale from "./hooks/useChangeLocale";
+// import useChangeLocale from "./hooks/useChangeLocale";
 import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
@@ -60,7 +60,7 @@ const App = ( { children }: Props ): Node => {
   useReactQueryRefetch( );
   useFreshInstall( currentUser );
   useLinking( currentUser );
-  useChangeLocale( currentUser );
+  // useChangeLocale( currentUser );
 
   useLockOrientation( );
   useShare( );

@@ -1,4 +1,3 @@
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { StateCreator } from "zustand";
 
 export const SYNC_PENDING = "sync-pending";
@@ -7,7 +6,22 @@ export const BEGIN_AUTOMATIC_SYNC = "begin-automatic-sync";
 export const MANUAL_SYNC_IN_PROGRESS = "manual-sync-progress";
 export const AUTOMATIC_SYNC_IN_PROGRESS = "automatic-sync-progress";
 
-const DEFAULT_STATE = {
+type SyncingStatus = typeof SYNC_PENDING
+  | typeof BEGIN_MANUAL_SYNC
+  | typeof BEGIN_AUTOMATIC_SYNC
+  | typeof MANUAL_SYNC_IN_PROGRESS
+  | typeof AUTOMATIC_SYNC_IN_PROGRESS;
+
+interface SyncObservationsSlice {
+  currentDeleteCount: number,
+  deleteError: string | null,
+  deleteQueue: Array<string>,
+  deletionsCompletedAt: Date | null,
+  initialNumDeletionsInQueue: number,
+  syncingStatus: SyncingStatus
+}
+
+const DEFAULT_STATE: SyncObservationsSlice = {
   currentDeleteCount: 1,
   deleteError: null,
   deleteQueue: [],
@@ -16,20 +30,9 @@ const DEFAULT_STATE = {
   syncingStatus: SYNC_PENDING
 };
 
-interface SyncObservationsSlice {
-  currentDeleteCount: number,
-  deleteError: string | null,
-  deleteQueue: Array<string>,
-  deletionsCompletedAt: Date,
-  initialNumDeletionsInQueue: number,
-  syncingStatus: typeof SYNC_PENDING
-  | typeof AUTOMATIC_SYNC_IN_PROGRESS
-  | typeof MANUAL_SYNC_IN_PROGRESS
-}
-
 const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = set => ( {
   ...DEFAULT_STATE,
-  addToDeleteQueue: uuids => set( state => {
+  addToDeleteQueue: ( uuids: string[] ) => set( state => {
     let copyOfDeleteQueue = state.deleteQueue;
     if ( typeof uuids === "string" ) {
       copyOfDeleteQueue.push( uuids );
@@ -58,10 +61,10 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = set => 
     deletionsCompletedAt: new Date( )
   } ) ),
   resetSyncObservationsSlice: ( ) => set( DEFAULT_STATE ),
-  setDeletionError: message => set( ( ) => ( {
+  setDeletionError: ( message: string ) => set( ( ) => ( {
     deleteError: message
   } ) ),
-  setSyncingStatus: syncingStatus => set( ( ) => ( {
+  setSyncingStatus: ( syncingStatus: SyncingStatus ) => set( ( ) => ( {
     syncingStatus
   } ) ),
   resetSyncToolbar: ( ) => set( ( ) => ( {
@@ -70,26 +73,13 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = set => 
     deleteQueue: [],
     initialNumDeletionsInQueue: 0
   } ) ),
-  startManualSync: ( ) => set( ( ) => {
-    activateKeepAwake( );
-    return ( {
-      syncingStatus: BEGIN_MANUAL_SYNC
-    } );
-  } ),
-  startAutomaticSync: ( ) => set( ( ) => {
-    activateKeepAwake( );
-    return ( {
-      syncingStatus: BEGIN_AUTOMATIC_SYNC
-    } );
-  } ),
-  completeSync: ( ) => set( ( ) => {
-    deactivateKeepAwake( );
-    return ( {
-      currentDeleteCount: 1,
-      deleteError: null,
-      deleteQueue: [],
-      syncingStatus: SYNC_PENDING
-    } );
+  startManualSync: ( ) => set( { syncingStatus: BEGIN_MANUAL_SYNC } ),
+  startAutomaticSync: ( ) => set( { syncingStatus: BEGIN_AUTOMATIC_SYNC } ),
+  completeSync: ( ) => set( {
+    currentDeleteCount: 1,
+    deleteError: null,
+    deleteQueue: [],
+    syncingStatus: SYNC_PENDING
   } )
 } );
 

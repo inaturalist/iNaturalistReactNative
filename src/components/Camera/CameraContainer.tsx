@@ -1,14 +1,18 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, {
   useState
 } from "react";
+import { Alert } from "react-native";
 import {
   useCameraDevice
 } from "react-native-vision-camera";
+import { useTranslation } from "sharedHooks";
 
 import CameraWithDevice from "./CameraWithDevice";
 
 const CameraContainer = ( ) => {
+  const navigation = useNavigation( );
+  const { t } = useTranslation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
@@ -23,6 +27,11 @@ const CameraContainer = ( ) => {
   } );
 
   if ( !device ) {
+    Alert.alert(
+      t( "No-Camera-Available" ),
+      t( "Could-not-find-a-camera-on-this-device" )
+    );
+    navigation.goBack();
     return null;
   }
 

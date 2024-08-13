@@ -17,13 +17,15 @@ import useStore from "stores/useStore";
 
 import Explore from "./Explore";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
-import useHeaderCount from "./hooks/useHeaderCount";
+import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 import useParams from "./hooks/useParams";
 
 const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
   const setStoredParams = useStore( state => state.setStoredParams );
+  const exploreView = useStore( state => state.exploreView );
+  const setExploreView = useStore( state => state.setExploreView );
 
   const {
     hasPermissions: hasLocationPermissions,
@@ -84,8 +86,8 @@ const ExploreContainerWithContext = ( ): Node => {
     per_page: 20
   };
 
-  // need this hook to be top-level enough that HeaderCount rerenders
-  const { count, loadingStatus, updateCount } = useHeaderCount( );
+  // need this hook to be top-level enough that ExploreHeaderCount rerenders
+  const { count, loadingStatus, updateCount } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -105,6 +107,8 @@ const ExploreContainerWithContext = ( ): Node => {
       <Explore
         closeFiltersModal={closeFiltersModal}
         count={count}
+        currentExploreView={exploreView}
+        setCurrentExploreView={setExploreView}
         hideBackButton={false}
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )

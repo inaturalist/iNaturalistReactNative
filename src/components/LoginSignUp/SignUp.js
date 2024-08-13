@@ -24,7 +24,7 @@ const SignUp = ( ): Node => {
 
   return (
     <LoginSignUpWrapper
-      backgroundSource={require( "images/frog.png" )}
+      backgroundSource={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
       <Header
