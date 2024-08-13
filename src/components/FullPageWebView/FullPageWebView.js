@@ -4,12 +4,9 @@ import { getAPIToken } from "components/LoginSignUp/AuthenticationService.ts";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
-import { Linking } from "react-native";
+import { Alert, Linking } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import WebView from "react-native-webview";
-import { log } from "sharedHelpers/logger";
-
-const logger = log.extend( "FullPageWebView" );
 
 // Note that you want flex-2 so it grows into the entire webview container
 const LoadingView = ( ) => (
@@ -87,7 +84,7 @@ const FullPageWebView = ( ) => {
               // Otherwise we might want to open a browser
               if ( params.openLinksInBrowser ) {
                 Linking.openURL( request.url ).catch( linkingError => {
-                  logger.info( "User refused to open ", request.url, ", error: ", linkingError );
+                  Alert.alert( "User refused to open \", request.url, ", linkingError );
                 } );
                 return false;
               }

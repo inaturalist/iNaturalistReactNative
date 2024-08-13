@@ -3,9 +3,6 @@
 import { signOut } from "components/LoginSignUp/AuthenticationService.ts";
 import { useEffect } from "react";
 import { MMKV } from "react-native-mmkv";
-import { log } from "sharedHelpers/logger";
-
-const logger = log.extend( "useFreshInstall" );
 
 // it's not recommended to have multiple instances of MMKV in an app, but
 // we can't use the zustand one here since it hasn't been initialized yet,
@@ -28,9 +25,6 @@ const useFreshInstall = ( currentUser: ?Object ) => {
       if ( !alreadyLaunched ) {
         installStatus.set( INSTALL_STATUS, true );
         if ( !currentUser ) {
-          logger.debug(
-            "Signing out and deleting Realm because no signed in user found in the database"
-          );
           await signOut( { clearRealm: true } );
         }
       }

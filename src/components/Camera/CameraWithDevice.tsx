@@ -73,7 +73,6 @@ const CameraWithDevice = ( {
   // bit off and we'll fetch the obs coordinates on ObsEdit)
   const { hasPermissions } = useLocationPermission( );
 
-  // logger.debug( `isFocused: ${isFocused}` );
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( {
     addPhotoPermissionResult,
     addEvidence,

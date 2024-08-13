@@ -18,15 +18,12 @@ import { compact, groupBy } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 import Observation from "realmModels/Observation";
-import { log } from "sharedHelpers/logger";
 import {
   useAuthenticatedMutation,
   useAuthenticatedQuery,
   useLocalObservation
 } from "sharedHooks";
 import useRemoteObservation from "sharedHooks/useRemoteObservation";
-
-const logger = log.extend( "DQAContainer" );
 
 const DQAContainer = ( ): React.Node => {
   const { isConnected } = useNetInfo( );
@@ -131,8 +128,7 @@ const DQAContainer = ( ): React.Node => {
         await refetchRemoteObservation( );
         setNotLoading( );
       },
-      onError: error => {
-        logger.error( "createQualityMetricMutation failure", error );
+      onError: ( ) => {
         setHideErrorSheet( false );
       }
     }
@@ -173,8 +169,7 @@ const DQAContainer = ( ): React.Node => {
         await refetchRemoteObservation( );
         setNotLoading( );
       },
-      onError: error => {
-        logger.error( "removeQualityMetricMutation failed", error );
+      onError: ( ) => {
         setHideErrorSheet( false );
       }
     }

@@ -42,7 +42,6 @@ export async function savePhotosToCameraGallery(
   );
   uris.reduce(
     async ( memo, uri ) => {
-      // logger.info( "saving rotated original camera photo: ", uri );
       try {
         let savedPhotoUri;
         // One quirk of CameraRoll is that if you want to write ton album, you
@@ -59,7 +58,6 @@ export async function savePhotosToCameraGallery(
           savedPhotoUri = await CameraRoll.save( uri );
         }
 
-        // logger.info( "saved to camera roll: ", savedPhotoUri );
         // Save these camera roll URIs, so later on observation editor can update
         // the EXIF metadata of these photos, once we retrieve a location.
         onEachSuccess( savedPhotoUri );

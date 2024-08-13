@@ -12,10 +12,7 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress.ts";
-import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-
-const logger = log.extend( "uploadObservation.js" );
 
 const UPLOAD_PROGRESS_INCREMENT = 1;
 
@@ -187,7 +184,6 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       if ( !accessError.message.match( /No object with key/ ) ) {
         throw accessError;
       }
-      logger.error( "Failed to access photo to obsPhoto", accessError );
       return null;
     }
   } ).flat( );

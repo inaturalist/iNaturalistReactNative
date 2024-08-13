@@ -18,16 +18,13 @@ import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
-import User from "realmModels/User.ts";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep, unlink } from "sharedHelpers/util";
 import { storage } from "stores/useStore";
 
-import { log, logFilePath } from "../../../react-native-logs.config";
-
-const logger = log.extend( "AuthenticationService" );
+import { logFilePath } from "../../../react-native-logs.config";
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
@@ -149,8 +146,6 @@ const signOut = async (
   // to the React Query context (maybe it could...)
   options.queryClient?.getQueryCache( ).clear( );
 
-  const username = await getUsername( );
-  logger.debug( "signed out user with username:", username );
   await deleteSensitiveItem( "jwtToken" );
   await deleteSensitiveItem( "jwtGeneratedAt" );
   await deleteSensitiveItem( "username" );
@@ -236,7 +231,7 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
     try {
       response = await api.get<{api_token: string}>( "/users/api_token.json" );
     } catch ( getUsersApiTokenError ) {
-      logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
+      if ( !getUsersApiTokenError ) { return null; }
       throw getUsersApiTokenError;
     }
 
@@ -455,14 +450,10 @@ const authenticateUser = async (
     }
     : currentUser;
 
-  logger.debug( "writing current user to realm: ", localUser );
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
-  const currentRealmUser = User.currentUser( realm );
-  logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
-  const realmPathExists = await RNFS.exists( realm.path );
-  logger.debug( `realm.path exists after sign in: ${realmPathExists}` );
+  await RNFS.exists( realm.path );
 
   return true;
 };

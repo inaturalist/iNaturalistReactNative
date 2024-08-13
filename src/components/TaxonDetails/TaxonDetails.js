@@ -33,7 +33,6 @@ import {
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
-import { log } from "sharedHelpers/logger";
 import {
   useAuthenticatedQuery,
   useTranslation,
@@ -48,8 +47,6 @@ import TaxonMapPreview from "./TaxonMapPreview";
 import TaxonMedia from "./TaxonMedia";
 import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
-
-const logger = log.extend( "TaxonDetails" );
 
 const { useRealm } = RealmContext;
 
@@ -101,9 +98,7 @@ const TaxonDetails = ( ): Node => {
     ["fetchTaxon", id],
     optsWithAuth => fetchTaxon( id, taxonFetchParams, optsWithAuth )
   );
-  if ( error ) {
-    logger.error( `Failed to retrieve taxon ${id}: ${error}` );
-  }
+
   const taxon = remoteTaxon || localTaxon;
   const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
 

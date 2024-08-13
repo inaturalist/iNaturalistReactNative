@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { INatApiError } from "api/error";
+import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
 import {
@@ -118,6 +118,15 @@ const Developer = (): Node => {
         <Button
           onPress={() => { throw new INatApiError( { error: "Test error", status: 422 } ); }}
           text="TEST INATAPIERROR"
+          className="mb-5"
+        />
+        <Button
+          onPress={() => {
+            throw new INatApiTooManyRequestsError( {
+              error: "Test 429 error", status: 429
+            } );
+          }}
+          text="TEST API TOO MANY REQUESTS ERROR"
           className="mb-5"
         />
         <Button

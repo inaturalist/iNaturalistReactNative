@@ -4,12 +4,9 @@ import { createRelationships, updateRelationships } from "api/relationships";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 import FollowButton from "./FollowButton";
-
-const logger = log.extend( "FollowButtonContainer" );
 
 type Props = {
   currentUser: Object,
@@ -58,9 +55,8 @@ const FollowButtonContainer = ( {
       refetchRelationship();
       setLoading( false );
     },
-    onError: error => {
+    onError: ( ) => {
       setLoading( false );
-      logger.error( error );
       Alert.alert( t( "Something-went-wrong" ) );
     }
   } );
@@ -75,9 +71,8 @@ const FollowButtonContainer = ( {
       refetchRelationship();
       setLoading( false );
     },
-    onError: error => {
+    onError: ( ) => {
       setLoading( false );
-      logger.error( error );
       Alert.alert( t( "Something-went-wrong" ) );
     }
   } );
