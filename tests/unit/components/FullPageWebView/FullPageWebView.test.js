@@ -1,10 +1,7 @@
-// import { useRoute } from "@react-navigation/native";
-// import { render } from "@testing-library/react-native";
 import {
   ALLOWED_DOMAINS,
   onShouldStartLoadWithRequest
 } from "components/FullPageWebView/FullPageWebView.tsx";
-// import React from "react";
 import { Linking } from "react-native";
 
 describe( "FullPageWebView", ( ) => {
@@ -16,6 +13,7 @@ describe( "FullPageWebView", ( ) => {
       const routeParams = { initialUrl: url };
       expect( onShouldStartLoadWithRequest( request, source, routeParams ) ).toBeTruthy();
     } );
+
     it( "should approve a request for an anchor on the source url", ( ) => {
       const url = "https://www.inaturalist.org";
       const request = { url: `${url}#something` };
@@ -23,11 +21,14 @@ describe( "FullPageWebView", ( ) => {
       const routeParams = { initialUrl: url };
       expect( onShouldStartLoadWithRequest( request, source, routeParams ) ).toBeTruthy();
     } );
+
     describe( "external browser", ( ) => {
       beforeEach( ( ) => {
         Linking.openURL.mockImplementation( jest.fn( _url => Promise.resolve() ) );
       } );
+
       afterEach( ( ) => Linking.openURL.mockReset( ) );
+
       it( "should try to open for any domain not on the allowlist", ( ) => {
         const url = "https://www.inaturalist.org";
         const request = { url: "https://www.ebird.org" };
@@ -37,6 +38,7 @@ describe( "FullPageWebView", ( ) => {
         expect( onShouldStartLoadWithRequest( request, source, routeParams ) ).toBeFalsy();
         expect( Linking.openURL ).toHaveBeenCalledWith( request.url );
       } );
+
       it( "should not try to open for any domain on the allowlist if requested", ( ) => {
         const url = "https://www.inaturalist.org";
         const request = { url: "https://www.inaturalist.org/users/edit" };
@@ -46,6 +48,7 @@ describe( "FullPageWebView", ( ) => {
         expect( onShouldStartLoadWithRequest( request, source, routeParams ) ).toBeTruthy();
         expect( Linking.openURL ).not.toHaveBeenCalled( );
       } );
+
       it( "should try to open for any domain on the allowlist for clicks", ( ) => {
         const url = "https://www.inaturalist.org";
         const request = { url: "https://www.inaturalist.org/users/edit", navigationType: "click" };

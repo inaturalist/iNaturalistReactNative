@@ -87,6 +87,7 @@ export function onShouldStartLoadWithRequest(
     throw new Error( "Cannot send Authorization to non-iNat domain" );
   }
 
+  // We do want to handle requests for the same page
   if (
     requestUrl.host === sourceUrl.host
     && requestUrl.pathname === sourceUrl.pathname
