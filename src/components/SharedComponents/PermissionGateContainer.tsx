@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import Modal from "components/SharedComponents/Modal.tsx";
 import _ from "lodash";
 import React, {
-  JSX,
   PropsWithChildren,
   useCallback,
   useEffect,
@@ -88,6 +87,7 @@ interface Props extends PropsWithChildren {
   onPermissionBlocked?: () => void;
   onPermissionDenied?: () => void;
   onPermissionGranted?: () => void;
+  onPermissionLimited?: () => void;
   permissionNeeded?: boolean;
   permissions: Permission[];
   testID?: string;
@@ -115,7 +115,9 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
     return RESULTS.UNAVAILABLE;
   }
-  // Note: we're not checking for RESULTS.LIMITED here and treat it as GRANTED
+  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.LIMITED ) ) {
+    return RESULTS.LIMITED;
+  }
   return RESULTS.GRANTED;
 }
 
@@ -137,13 +139,14 @@ const PermissionGateContainer = ( {
   onPermissionBlocked,
   onPermissionDenied,
   onPermissionGranted,
+  onPermissionLimited,
   permissionNeeded = true,
   permissions,
   testID,
   title,
   titleDenied,
   withoutNavigation
-}: Props ): JSX.Element | null => {
+}: Props ) => {
   const [result, setResult] = useState<PermissionStatus | null>( null );
   const [modalShown, setModalShown] = useState( false );
 
@@ -169,6 +172,7 @@ const PermissionGateContainer = ( {
     if (
       permissionNeeded
       && result !== RESULTS.GRANTED
+      && result !== RESULTS.LIMITED
       && result !== null
     ) {
       setModalShown( true );
@@ -192,7 +196,10 @@ const PermissionGateContainer = ( {
   ] );
 
   useEffect( ( ) => {
-    if ( result === RESULTS.GRANTED && !children ) {
+    if (
+      ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+      && !children
+    ) {
       setModalShown( false );
     }
   }, [result, children, setModalShown] );
@@ -220,6 +227,8 @@ const PermissionGateContainer = ( {
       onPermissionDenied( );
     } else if ( onPermissionGranted && result === RESULTS.GRANTED ) {
       onPermissionGranted( );
+    } else if ( onPermissionLimited && result === RESULTS.LIMITED ) {
+      onPermissionLimited( );
     } else if ( onPermissionBlocked && result === RESULTS.BLOCKED ) {
       onPermissionBlocked( );
     }
@@ -227,11 +236,15 @@ const PermissionGateContainer = ( {
     onPermissionBlocked,
     onPermissionDenied,
     onPermissionGranted,
+    onPermissionLimited,
     result
   ] );
 
   // If permission was granted, just render the children
-  if ( result === RESULTS.GRANTED && children ) return children;
+  if (
+    ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+    && children
+  ) return children;
 
   if ( !result ) return null;
 
