@@ -38,6 +38,7 @@ import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
+  useQuery,
   useTranslation,
   useUserMe
 } from "sharedHooks";
@@ -109,7 +110,7 @@ const TaxonDetails = ( ): Node => {
 
   const currentUser = useCurrentUser( );
 
-  const { data: seenByCurrentUser } = useAuthenticatedQuery(
+  const { data: seenByCurrentUser } = useQuery(
     ["fetchSpeciesCounts", taxon?.id],
     ( ) => fetchSpeciesCounts( {
       user_id: currentUser?.id,

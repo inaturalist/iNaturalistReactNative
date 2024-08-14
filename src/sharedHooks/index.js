@@ -14,6 +14,7 @@ export { default as useLocalObservations } from "./useLocalObservations";
 export { default as useLocationPermission } from "./useLocationPermission";
 export { default as useObservationsUpdates } from "./useObservationsUpdates";
 export { default as useObservationUpdatesWhenFocused } from "./useObservationUpdatesWhenFocused";
+export { default as useQuery } from "./useQuery";
 export { default as useRemoteObservation } from "./useRemoteObservation";
 export { default as useShare } from "./useShare";
 export { default as useStoredLayout } from "./useStoredLayout";

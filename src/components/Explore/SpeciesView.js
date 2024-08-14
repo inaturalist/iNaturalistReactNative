@@ -8,10 +8,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import Taxon from "realmModels/Taxon";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import {
-  useAuthenticatedQuery,
   useCurrentUser,
   useDeviceOrientation,
-  useInfiniteScroll
+  useInfiniteScroll,
+  useQuery
 } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
@@ -83,7 +83,7 @@ const SpeciesView = ( {
 
   const taxonIds = data.map( r => r.taxon.id );
 
-  const { data: seenByCurrentUser } = useAuthenticatedQuery(
+  const { data: seenByCurrentUser } = useQuery(
     ["fetchSpeciesCounts", taxonIds],
     ( ) => fetchSpeciesCounts( {
       user_id: currentUser?.id,
