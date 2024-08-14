@@ -46,6 +46,20 @@ const mockModelResultNoConfidence = {
   ]
 };
 
+const mockModelResultWithHuman = {
+  predictions: [
+    factory( "ModelPrediction", {
+      rank_level: 20,
+      score: 0.86
+    } ),
+    factory( "ModelPrediction", {
+      rank_level: 30,
+      score: 0.96,
+      name: "Homo"
+    } )
+  ]
+};
+
 jest.mock( "sharedHooks/useDebugMode", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
@@ -414,6 +428,27 @@ describe( "from AICamera", ( ) => {
         `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`
       );
       expect( otherSuggestion ).toBeVisible( );
+    } );
+
+    it( "should only show top human suggestion if human predicted offline", async ( ) => {
+      getPredictionsForImage.mockImplementation(
+        async ( ) => ( mockModelResultWithHuman )
+      );
+      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+
+      const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
+      const humanPrediction = mockModelResultWithHuman.predictions
+        .find( p => p.name === "Homo" );
+
+      expect( topTaxonSuggestion ).toHaveProp(
+        "testID",
+        `SuggestionsList.taxa.${humanPrediction.taxon_id}.checkmark`
+      );
+
+      const otherSuggestionsText = screen.queryByText( /OTHER SUGGESTIONS/ );
+      expect( otherSuggestionsText ).toBeFalsy( );
     } );
   } );
 } );
