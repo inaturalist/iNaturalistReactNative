@@ -33,6 +33,9 @@ const SpeciesView = ( {
   updateCount,
   setCurrentExploreView
 }: Props ): Node => {
+  // 20240814 - amanda: not sure if we actually need observedTaxonIds in state in the long
+  // run, but for now, it prevents flickering when a user scrolls and new species are loaded
+  // on screen
   const [observedTaxonIds, setObservedTaxonIds] = useState( new Set( ) );
   const currentUser = useCurrentUser( );
   const {
