@@ -14,6 +14,7 @@ type Event = {
 
 const handleClassifierError = ( error: Error ) => {
   // When we hit this error, there is an error with the classifier.
+  logger.error( "handleClassifierError: ", error );
   Alert.alert( "error", error.message );
 };
 
@@ -24,11 +25,13 @@ const handleDeviceNotSupported = ( error: Error ) => {
 
 const handleCaptureError = ( error: Error ) => {
   // When we hit this error, taking a photo did not work correctly
+  logger.error( "handleCaptureError: ", error );
   Alert.alert( "error", error.message );
 };
 
 const handleCameraError = ( error: Error ) => {
   // This error is thrown when it does not fit in any of the above categories.
+  logger.error( "handleCameraError ", error );
   Alert.alert( "error", error.message );
 };
 

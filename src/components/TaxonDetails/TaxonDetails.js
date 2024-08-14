@@ -24,7 +24,7 @@ import {
 import _, { compact } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
   Platform,
@@ -33,6 +33,7 @@ import {
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
+import { log } from "sharedHelpers/logger";
 import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import {
   useAuthenticatedQuery,
@@ -49,6 +50,8 @@ import TaxonMapPreview from "./TaxonMapPreview";
 import TaxonMedia from "./TaxonMedia";
 import Taxonomy from "./Taxonomy";
 import Wikipedia from "./Wikipedia";
+
+const logger = log.extend( "TaxonDetails" );
 
 const { useRealm } = RealmContext;
 
@@ -121,6 +124,12 @@ const TaxonDetails = ( ): Node => {
       enabled: !!( taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser )
     }
   );
+
+  useEffect( ( ) => {
+    if ( error ) {
+      logger.error( "Failed to retrieve taxon", error );
+    }
+  }, [error] );
 
   const currentUserHasSeenTaxon = seenByCurrentUser?.total_results === 1;
 

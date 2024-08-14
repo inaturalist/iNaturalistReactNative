@@ -6,6 +6,9 @@ import {
   useState
 } from "react";
 import { predictImage } from "sharedHelpers/cvModel.ts";
+import { log } from "sharedHelpers/logger";
+
+const logger = log.extend( "useOfflineSuggestions" );
 
 const { useRealm } = RealmContext;
 
@@ -31,6 +34,7 @@ const useOfflineSuggestions = (
         rawPredictions = result.predictions;
       } catch ( predictImageError ) {
         dispatch( { type: "SET_FETCH_STATUS", fetchStatus: "offline-error" } );
+        logger.error( "Error predicting image offline", predictImageError );
         throw predictImageError;
       }
       // similar to what we're doing in the AICamera to get iconic taxon name,

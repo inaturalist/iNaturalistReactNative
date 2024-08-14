@@ -33,7 +33,7 @@ const SpeciesView = ( {
   updateCount,
   setCurrentExploreView
 }: Props ): Node => {
-  const [taxonSeen, setTaxonSeen] = useState( [] );
+  const [observedTaxonIds, setObservedTaxonIds] = useState( new Set( ) );
   const currentUser = useCurrentUser( );
   const {
     isLandscapeMode,
@@ -96,18 +96,18 @@ const SpeciesView = ( {
     }
   );
 
-  const taxonIdsSeenByCurrentUser = useMemo( ( ) => seenByCurrentUser?.results?.map(
+  const pageObservedTaxonIds = useMemo( ( ) => seenByCurrentUser?.results?.map(
     r => r.taxon.id
   ) || [], [seenByCurrentUser?.results] );
 
   useEffect( ( ) => {
-    if ( taxonIdsSeenByCurrentUser.length > 0 ) {
-      const uniqueSeenList = _.uniq( taxonSeen.concat( taxonIdsSeenByCurrentUser ) );
-      if ( uniqueSeenList.length > taxonSeen.length ) {
-        setTaxonSeen( uniqueSeenList );
-      }
+    if ( pageObservedTaxonIds.length > 0 ) {
+      pageObservedTaxonIds.forEach( id => {
+        observedTaxonIds.add( id );
+      } );
+      setObservedTaxonIds( observedTaxonIds );
     }
-  }, [taxonIdsSeenByCurrentUser, taxonSeen] );
+  }, [pageObservedTaxonIds, observedTaxonIds] );
 
   const renderItem = ( { item } ) => (
     <TaxonGridItem
@@ -119,7 +119,7 @@ const SpeciesView = ( {
         margin: GUTTER / 2
       }}
       taxon={item?.taxon}
-      showSpeciesSeenCheckmark={taxonSeen.includes( item?.taxon.id )}
+      showSpeciesSeenCheckmark={observedTaxonIds.has( item?.taxon.id )}
     />
   );
   useEffect( ( ) => {
