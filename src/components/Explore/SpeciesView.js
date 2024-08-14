@@ -76,7 +76,7 @@ const SpeciesView = ( {
     {
       ...queryParams,
       fields: {
-        taxon: Taxon.SCORE_IMAGE_FIELDS
+        taxon: Taxon.LIMITED_TAXON_FIELDS
       }
     }
   );

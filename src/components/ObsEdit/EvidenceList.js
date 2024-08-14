@@ -16,12 +16,14 @@ import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatli
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import Photo from "realmModels/Photo";
+import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation } from "sharedHooks";
 import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
+const logger = log.extend( "EvidenceList" );
 
 type Props = {
   handleAddEvidence?: Function,
@@ -191,7 +193,11 @@ const EvidenceList = ( {
     if ( obsSound?.id ) {
       deleteObservationSoundMutation.mutate( { uuid: obsSound.uuid }, {
         onSuccess: removeLocalSound,
-        onError: ( ) => {
+        onError: deleteRemoteObservationSoundError => {
+          logger.error(
+            "[EvidenceList.js] failed to delete remote observation sound: ",
+            deleteRemoteObservationSoundError
+          );
           Alert.alert(
             t( "Failed-to-delete-sound" ),
             t( "Please-try-again-when-you-are-connected-to-the-internet" )

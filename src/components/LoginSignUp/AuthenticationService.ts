@@ -13,18 +13,18 @@ import i18next from "i18next";
 import rs from "jsrsasign";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
-import RNFS from "react-native-fs";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
+import { log, logFilePath } from "sharedHelpers/logger";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep, unlink } from "sharedHelpers/util.ts";
 import { storage } from "stores/useStore";
 
-import { logFilePath } from "../../../react-native-logs.config";
+const logger = log.extend( "AuthenticationService" );
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
@@ -231,6 +231,7 @@ const getJWT = async ( allowAnonymousJWT = false ): Promise<string | null> => {
     try {
       response = await api.get<{api_token: string}>( "/users/api_token.json" );
     } catch ( getUsersApiTokenError ) {
+      logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
       if ( !getUsersApiTokenError ) { return null; }
       throw getUsersApiTokenError;
     }
@@ -453,8 +454,6 @@ const authenticateUser = async (
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
-  await RNFS.exists( realm.path );
-
   return true;
 };
 

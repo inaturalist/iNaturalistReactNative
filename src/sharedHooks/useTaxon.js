@@ -42,7 +42,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true ): Object => {
     isLoading
   } = useAuthenticatedQuery(
     ["fetchTaxon", taxonId],
-    optsWithAuth => fetchTaxon( taxonId, { fields: Taxon.SCORE_IMAGE_FIELDS }, optsWithAuth ),
+    optsWithAuth => fetchTaxon( taxonId, { fields: Taxon.LIMITED_TAXON_FIELDS }, optsWithAuth ),
     {
       enabled
     }
