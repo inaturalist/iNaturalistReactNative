@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FullPageWebView from "components/FullPageWebView/FullPageWebView";
+import FullPageWebView from "components/FullPageWebView/FullPageWebView.tsx";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import PhotoSharing from "components/PhotoSharing";

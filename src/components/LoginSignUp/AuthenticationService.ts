@@ -21,7 +21,7 @@ import realmConfig from "realmModels/index";
 import { installID } from "sharedHelpers/persistedInstallationId.ts";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory.ts";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { sleep, unlink } from "sharedHelpers/util";
+import { sleep, unlink } from "sharedHelpers/util.ts";
 import { storage } from "stores/useStore";
 
 import { logFilePath } from "../../../react-native-logs.config";

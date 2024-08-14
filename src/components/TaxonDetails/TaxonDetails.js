@@ -27,13 +27,13 @@ import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import {
   Alert,
-  Linking,
   Platform,
   Share,
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -137,20 +137,6 @@ const TaxonDetails = ( ): Node => {
       onClose={onClose}
     />
   ), [taxon, currentUserHasSeenTaxon] );
-
-  const openURLInBrowser = async url => {
-    try {
-      const canOpen = await Linking.canOpenURL( url );
-
-      if ( canOpen ) {
-        await Linking.openURL( url );
-      } else {
-        console.error( "Cannot open URL" );
-      }
-    } catch ( exc ) {
-      console.error( "An error occurred", exc );
-    }
-  };
 
   const displayTaxonDetails = ( ) => {
     if ( isLoading ) {
@@ -306,7 +292,7 @@ const TaxonDetails = ( ): Node => {
                   <KebabMenu.Item
                     testID="MenuItem.OpenInBrowser"
                     onPress={( ) => {
-                      openURLInBrowser( taxonUrl );
+                      openExternalWebBrowser( taxonUrl );
                       setKebabMenuVisible( false );
                     }}
                     title={t( "View-in-browser" )}

@@ -1,17 +1,23 @@
-// @flow
-import { getHeaderTitle } from "@react-navigation/elements";
+import { getHeaderTitle, HeaderTitleProps } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { dropShadow } from "styles/global";
 
+type HeaderTitle = string | ( ( props: HeaderTitleProps ) => React.ReactNode ) | undefined;
 type Props = {
-  route: Object,
-  options: Object
+  route: {
+    name: string
+  };
+  options: {
+    title?: string | undefined;
+    headerTitle?: HeaderTitle;
+    headerStyle?: Object;
+    headerShadowVisible?: boolean;
+  };
 };
 
 const HEADER_STYLE = {
@@ -26,12 +32,11 @@ const BACK_BUTTON_STYLE = {
 const FullPageWebViewHeader = ( {
   route,
   options
-}: Props ): Node => {
+}: Props ) => {
   const insets = useSafeAreaInsets();
-  const customTitleComponent = typeof options.headerTitle === "function";
 
-  const getTitle = () => {
-    if ( options.headerTitle && !customTitleComponent ) {
+  const getTitle = (): string | React.ReactNode => {
+    if ( options.headerTitle && typeof options.headerTitle !== "function" ) {
       return options.headerTitle;
     }
 

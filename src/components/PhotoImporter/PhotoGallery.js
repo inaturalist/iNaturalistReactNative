@@ -19,7 +19,7 @@ import RNFS from "react-native-fs";
 import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import { sleep } from "sharedHelpers/util";
+import { sleep } from "sharedHelpers/util.ts";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;

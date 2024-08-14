@@ -6,6 +6,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React from "react";
 import * as StoreReview from "react-native-store-review";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 
 const Donate = () => {
   const navigation = useNavigation( );
@@ -15,18 +16,7 @@ const Donate = () => {
       title: t( "DONATE-TO-INATURALIST" ),
       initialUrl: url,
       loggedIn: false,
-      openLinksInBrowser: false,
       skipSetSourceInShouldStartLoadWithRequest: true
-    } );
-  };
-
-  const onShopPress = async ( ) => {
-    const url = "https://inaturalist.threadless.com";
-    navigation.navigate( "FullPageWebView", {
-      title: t( "SHOP-INATURALIST-MERCH" ),
-      initialUrl: url,
-      loggedIn: false,
-      openLinksInBrowser: true
     } );
   };
 
@@ -54,7 +44,7 @@ const Donate = () => {
           className="mb-8"
           level="neutral"
           text={t( "SHOP-INATURALIST-MERCH" )}
-          onPress={() => onShopPress( )}
+          onPress={() => openExternalWebBrowser( "https://inaturalist.threadless.com" )}
         />
         <Heading4 className="mb-3">{t( "LEAVE-US-A-REVIEW" )}</Heading4>
         <Button
