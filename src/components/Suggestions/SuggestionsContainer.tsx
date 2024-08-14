@@ -29,6 +29,7 @@ import Suggestions from "./Suggestions";
 import TaxonSearchButton from "./TaxonSearchButton";
 
 const ONLINE_THRESHOLD = 78;
+// note: offline threshold may need to change based on input from the CV team
 const OFFLINE_THRESHOLD = 0.78;
 
 const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
