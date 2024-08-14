@@ -2,6 +2,7 @@
 
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
+import { fetchSpeciesCounts } from "api/observations";
 import { fetchTaxon } from "api/taxa";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
@@ -35,6 +36,7 @@ import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import {
   useAuthenticatedQuery,
+  useCurrentUser,
   useTranslation,
   useUserMe
 } from "sharedHooks";
@@ -102,6 +104,26 @@ const TaxonDetails = ( ): Node => {
   const taxon = remoteTaxon || localTaxon;
   const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
 
+  const currentUser = useCurrentUser( );
+
+  const { data: seenByCurrentUser } = useAuthenticatedQuery(
+    ["fetchSpeciesCounts", taxon?.id],
+    ( ) => fetchSpeciesCounts( {
+      user_id: currentUser?.id,
+      taxon_id: taxon?.id,
+      fields: {
+        taxon: {
+          id: true
+        }
+      }
+    } ),
+    {
+      enabled: !!( taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser )
+    }
+  );
+
+  const currentUserHasSeenTaxon = seenByCurrentUser?.total_results === 1;
+
   const photos = compact(
     taxon?.taxonPhotos
       ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
@@ -110,10 +132,11 @@ const TaxonDetails = ( ): Node => {
 
   const renderHeader = useCallback( ( { onClose } ) => (
     <TaxonDetailsMediaViewerHeader
+      showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
       taxon={taxon}
       onClose={onClose}
     />
-  ), [taxon] );
+  ), [taxon, currentUserHasSeenTaxon] );
 
   const openURLInBrowser = async url => {
     try {
@@ -157,7 +180,7 @@ const TaxonDetails = ( ): Node => {
         <EstablishmentMeans taxon={taxon} />
         <Wikipedia taxon={taxon} />
         <Taxonomy taxon={taxon} hideNavButtons={hideNavButtons} />
-        <TaxonMapPreview taxon={taxon} />
+        <TaxonMapPreview taxon={taxon} showSpeciesSeenCheckmark={currentUserHasSeenTaxon} />
       </View>
     );
   };
@@ -186,7 +209,11 @@ const TaxonDetails = ( ): Node => {
       className="w-full flex-row items-center pl-5 pr-5 pb-5"
       pointerEvents="box-none"
     >
-      <TaxonDetailsTitle taxon={taxon} optionalClasses="text-white" />
+      <TaxonDetailsTitle
+        optionalClasses="text-white"
+        showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
+        taxon={taxon}
+      />
       {!hideNavButtons && isConnected && (
         <View className="ml-2">
           <INatIconButton
@@ -216,7 +243,16 @@ const TaxonDetails = ( ): Node => {
         </View>
       )}
     </View>
-  ), [hideNavButtons, isConnected, navigation, setExploreView, t, taxon, theme.colors.onPrimary] );
+  ), [
+    currentUserHasSeenTaxon,
+    hideNavButtons,
+    isConnected,
+    navigation,
+    setExploreView,
+    t,
+    taxon,
+    theme.colors.onPrimary
+  ] );
 
   const displayTaxonMedia = () => {
     if ( !isConnected ) {

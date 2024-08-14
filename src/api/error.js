@@ -24,11 +24,6 @@ Object.defineProperty( INatApiError.prototype, "name", {
 
 export class INatApiTooManyRequestsError extends INatApiError { }
 
-// https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
-Object.defineProperty( INatApiTooManyRequestsError.prototype, "name", {
-  value: "INatApiTooManyRequestsError"
-} );
-
 async function handleError( e: Object, options: Object = {} ): Object {
   if ( !e.response ) { throw e; }
 

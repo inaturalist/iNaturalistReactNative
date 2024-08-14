@@ -2,12 +2,16 @@
 
 import { fetchSpeciesCounts } from "api/observations";
 import TaxonGridItem from "components/Explore/TaxonGridItem.tsx";
+import _ from "lodash";
 import type { Node } from "react";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Taxon from "realmModels/Taxon";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import {
-  useDeviceOrientation, useInfiniteScroll
+  useAuthenticatedQuery,
+  useCurrentUser,
+  useDeviceOrientation,
+  useInfiniteScroll
 } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
@@ -29,6 +33,8 @@ const SpeciesView = ( {
   updateCount,
   setCurrentExploreView
 }: Props ): Node => {
+  const [taxonSeen, setTaxonSeen] = useState( [] );
+  const currentUser = useCurrentUser( );
   const {
     isLandscapeMode,
     isTablet,
@@ -67,10 +73,41 @@ const SpeciesView = ( {
     {
       ...queryParams,
       fields: {
-        taxon: Taxon.TAXON_FIELDS
+        taxon: Taxon.SCORE_IMAGE_FIELDS
       }
     }
   );
+
+  const taxonIds = data.map( r => r.taxon.id );
+
+  const { data: seenByCurrentUser } = useAuthenticatedQuery(
+    ["fetchSpeciesCounts", taxonIds],
+    ( ) => fetchSpeciesCounts( {
+      user_id: currentUser?.id,
+      taxon_id: taxonIds,
+      fields: {
+        taxon: {
+          id: true
+        }
+      }
+    } ),
+    {
+      enabled: !!( taxonIds.length > 0 && currentUser )
+    }
+  );
+
+  const taxonIdsSeenByCurrentUser = useMemo( ( ) => seenByCurrentUser?.results?.map(
+    r => r.taxon.id
+  ) || [], [seenByCurrentUser?.results] );
+
+  useEffect( ( ) => {
+    if ( taxonIdsSeenByCurrentUser.length > 0 ) {
+      const uniqueSeenList = _.uniq( taxonSeen.concat( taxonIdsSeenByCurrentUser ) );
+      if ( uniqueSeenList.length > taxonSeen.length ) {
+        setTaxonSeen( uniqueSeenList );
+      }
+    }
+  }, [taxonIdsSeenByCurrentUser, taxonSeen] );
 
   const renderItem = ( { item } ) => (
     <TaxonGridItem
@@ -82,6 +119,7 @@ const SpeciesView = ( {
         margin: GUTTER / 2
       }}
       taxon={item?.taxon}
+      showSpeciesSeenCheckmark={taxonSeen.includes( item?.taxon.id )}
     />
   );
   useEffect( ( ) => {
