@@ -15,6 +15,36 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
+
+const mockModelResult = {
+  predictions: [
+    factory( "ModelPrediction", {
+      rank_level: 30,
+      score: 0.86
+    } ),
+    factory( "ModelPrediction", {
+      rank_level: 20,
+      score: 0.96
+    } ),
+    factory( "ModelPrediction", {
+      rank_level: 10,
+      score: 0.40
+    } )]
+};
+
+const mockModelResultNoConfidence = {
+  predictions: [
+    factory( "ModelPrediction", {
+      rank_level: 30,
+      score: 0.7
+    } ),
+    factory( "ModelPrediction", {
+      rank_level: 20,
+      score: 0.65
+    } )
+  ]
+};
 
 jest.mock( "sharedHooks/useDebugMode", ( ) => ( {
   __esModule: true,
@@ -352,6 +382,38 @@ describe( "from AICamera", ( ) => {
       expect( ignoreLocationButton ).toBeFalsy( );
       const useLocationButton = screen.queryByText( /USE LOCATION/ );
       expect( useLocationButton ).toBeFalsy( );
+    } );
+
+    it( "should show top suggestion with finest rank if a prediction"
+      + " is above offline threshold", async ( ) => {
+      getPredictionsForImage.mockImplementation(
+        async ( ) => ( mockModelResult )
+      );
+      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+      const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
+      expect( topTaxonSuggestion ).toHaveProp(
+        "testID",
+        `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}.checkmark`
+      );
+    } );
+
+    it( "should show not confident message if no predictions"
+      + " meet the offline threshold", async ( ) => {
+      getPredictionsForImage.mockImplementation(
+        async ( ) => ( mockModelResultNoConfidence )
+      );
+      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      const { observations } = await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICamera( observations[0] );
+
+      const notConfidentText = await screen.findByText( /not confident enough to make a top ID suggestion/ );
+      expect( notConfidentText ).toBeVisible( );
+      const otherSuggestion = await screen.findByTestId(
+        `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`
+      );
+      expect( otherSuggestion ).toBeVisible( );
     } );
   } );
 } );
