@@ -161,6 +161,8 @@ CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
 Choose-taxon = Choose taxon
+# Label for button that chooses top taxon
+Choose-top-taxon = Choose top taxon
 # Label for a button that clears content, like the text entered in a text
 # field
 Clear = Clear

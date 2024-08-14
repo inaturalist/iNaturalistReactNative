@@ -220,6 +220,10 @@
     "comment": "Label for button that chooses a taxon",
     "val": "Choose taxon"
   },
+  "Choose-top-taxon": {
+    "comment": "Label for button that chooses top taxon",
+    "val": "Choose top taxon"
+  },
   "Clear": {
     "comment": "Label for a button that clears content, like the text entered in a text\nfield",
     "val": "Clear"
