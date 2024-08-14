@@ -68,6 +68,10 @@ const markRecordUploaded = (
       record.id = id;
       // $FlowIgnore
       record._synced_at = new Date( );
+      if ( type === "Observation" ) {
+        // $FlowIgnore
+        record.needs_sync = false;
+      }
     }, `marking record uploaded in uploadObservation.js, type: ${type}` );
   } catch ( realmWriteError ) {
     // Try it one more time in case it was invalidated but it's still in the
@@ -81,6 +85,10 @@ const markRecordUploaded = (
         record.id = id;
         // $FlowIgnore
         record._synced_at = new Date( );
+        if ( type === "Observation" ) {
+          // $FlowIgnore
+          record.needs_sync = false;
+        }
       }, `marking record uploaded in uploadObservation.js, type: ${type}` );
     }
   }
