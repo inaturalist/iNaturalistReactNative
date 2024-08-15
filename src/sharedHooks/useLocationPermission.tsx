@@ -3,8 +3,7 @@ import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer.tsx";
-import React, { useEffect, useState } from "react";
-import { AppState } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   checkMultiple,
   RESULTS
@@ -33,13 +32,19 @@ const useLocationPermission = ( ) => {
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
-  const renderPermissionsGate = ( callbacks?: LocationPermissionCallbacks ) => {
+  const renderPermissionsGate = useCallback( ( callbacks?: LocationPermissionCallbacks ) => {
     const {
       onPermissionGranted,
       onPermissionDenied,
       onPermissionBlocked,
       onModalHide
     } = callbacks || { };
+
+    // this prevents infinite rerenders of the LocationPermissionGate component
+    if ( !showPermissionGate ) {
+      return null;
+    }
+
     return (
       <LocationPermissionGate
         permissionNeeded={showPermissionGate}
@@ -54,18 +59,16 @@ const useLocationPermission = ( ) => {
           if ( onPermissionGranted ) onPermissionGranted( );
         }}
         onPermissionDenied={( ) => {
-          setShowPermissionGate( false );
-          setHasPermissions( false );
           if ( onPermissionDenied ) onPermissionDenied( );
         }}
         onPermissionBlocked={( ) => {
-          setShowPermissionGate( false );
-          setHasPermissions( false );
           if ( onPermissionBlocked ) onPermissionBlocked( );
         }}
       />
     );
-  };
+  }, [
+    showPermissionGate
+  ] );
 
   function requestPermissions() {
     setShowPermissionGate( true );
@@ -82,20 +85,6 @@ const useLocationPermission = ( ) => {
       console.log( "Location permissions have not been granted." );
     }
   }
-
-  // Check permissions every time the app is back in the foreground. The user could
-  // have changed permissions in the settings app while the current screen was in the background.
-  useEffect( () => {
-    const subscription = AppState.addEventListener( "change", appState => {
-      if ( appState === "active" ) {
-        checkPermissions();
-      }
-    } );
-
-    return () => {
-      subscription.remove();
-    };
-  }, [] );
 
   // Check permissions on mount
   useEffect( () => {
