@@ -22,20 +22,17 @@ class ObservationSound extends Realm.Object {
   }
 
   static async new( observationSound ) {
-    const soundUUID = uuid.v4( );
-
     return {
       ...observationSound,
-      uuid: soundUUID
+      uuid: uuid.v4( )
     };
-    /* eslint-enable camelcase */
   }
 
   static mapApiToRealm( observationSound, realm = null ) {
     const localObsSound = {
       ...observationSound,
       _synced_at: new Date( ),
-      photo: Sound.mapApiToRealm( observationSound.sound, realm )
+      sound: Sound.mapApiToRealm( observationSound.sound, realm )
     };
     return localObsSound;
   }
@@ -46,11 +43,7 @@ class ObservationSound extends Realm.Object {
       : "m4a";
 
     return {
-      // Sound UUIDs don't really do anything at present. When
-      // https://github.com/inaturalist/iNaturalistReactNative/issues/1068 is
-      // completed we can use them to prevent the creation of duplicate sound
-      // records
-      // "sound[uuid]": observationSound.sound.uuid,
+      uuid: observationSound.uuid,
       file: new FileUpload( {
         uri: Sound.getLocalSoundUri( observationSound.sound.file_url ),
         name: `${observationSound.uuid}.${fileExt}`,
@@ -62,7 +55,8 @@ class ObservationSound extends Realm.Object {
   static mapSoundForAttachingToObs( id, observationSound ) {
     return {
       "observation_sound[observation_id]": id,
-      "observation_sound[sound_id]": observationSound.id
+      "observation_sound[sound_id]": observationSound.id,
+      "observation_sound[uuid]": observationSound.uuid
     };
   }
 
