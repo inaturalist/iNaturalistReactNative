@@ -53,21 +53,20 @@ class Sound extends Realm.Object {
   }
 
   static async new( sound ) {
-    const soundUUID = uuid.v4( );
     /* eslint-disable camelcase */
     let { file_url } = sound;
     if ( sound?.file_url.match( /file:\/\// ) ) {
       file_url = await Sound.moveFromCacheToDocumentDirectory( sound.file_url, {
-        basename: soundUUID
+        basename: uuid.v4()
       } );
       // this needs a protocol for the sound player to play it when it's local
       file_url = `file://${file_url}`;
     }
     return {
       ...sound,
-      // uuid: soundUUID,
       file_url
     };
+    /* eslint-enable camelcase */
   }
 
   // this is necessary because sounds, like photos, cannot be found reliably
