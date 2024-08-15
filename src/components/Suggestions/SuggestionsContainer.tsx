@@ -194,10 +194,17 @@ const SuggestionsContainer = ( ) => {
     currentObservation
   ] );
 
+  // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
+  // since the user can see the small square version of this image in MyObs/ObsDetails already
+  // but for now, passing in an https photo to predictImage while offline crashes the app
+  const urlWillCrashOffline = selectedPhotoUri.includes( "https://" ) && !isConnected;
+
   // skip to offline suggestions if internet connection is spotty
-  const tryOfflineSuggestions = timedOut || (
-    ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
-      && ( fetchStatus === "online-fetched" || fetchStatus === "online-error" )
+  const tryOfflineSuggestions = !urlWillCrashOffline && (
+    timedOut
+    || (
+      ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
+      && ( fetchStatus === "online-fetched" || fetchStatus === "online-error" ) )
   );
 
   const {
@@ -381,7 +388,10 @@ const SuggestionsContainer = ( ) => {
 
   useEffect( ( ) => {
     const onFocus = navigation.addListener( "focus", ( ) => {
-      if ( _.isEqual( initialSuggestions, suggestions ) ) {
+      // resizeImage crashes if trying to resize an https:// photo while there is no internet
+      // in this situation, we can skip creating upload parameters since we're loading
+      // offline suggestions anyway
+      if ( _.isEqual( initialSuggestions, suggestions ) && isConnected ) {
         setImageParams( );
       }
       navigation.setOptions( { headerRight } );
@@ -389,6 +399,7 @@ const SuggestionsContainer = ( ) => {
     return onFocus;
   }, [
     headerRight,
+    isConnected,
     navigation,
     setImageParams,
     suggestions
@@ -437,6 +448,7 @@ const SuggestionsContainer = ( ) => {
         showImproveWithLocationButton={showImproveWithLocationButton}
         suggestions={suggestions}
         toggleLocation={toggleLocation}
+        urlWillCrashOffline={urlWillCrashOffline}
         usingOfflineSuggestions={usingOfflineSuggestions}
       />
       <MediaViewerModal

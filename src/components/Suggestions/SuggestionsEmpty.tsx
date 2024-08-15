@@ -1,29 +1,38 @@
 import { useRoute } from "@react-navigation/native";
-import {
-  Body1
-} from "components/SharedComponents";
+import { Body1 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
 import SuggestionsLoading from "./SuggestionsLoading";
+import SuggestionsOffline from "./SuggestionsOffline";
 
 interface Props {
   hasTopSuggestion?: boolean,
   isLoading: boolean,
-  onTaxonChosen: Function
+  onTaxonChosen: Function,
+  reloadSuggestions: Function,
+  urlWillCrashOffline: boolean
 }
 
 const SuggestionsEmpty = ( {
   hasTopSuggestion = false,
   isLoading,
-  onTaxonChosen
+  onTaxonChosen,
+  reloadSuggestions,
+  urlWillCrashOffline
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { params } = useRoute( );
   const { lastScreen } = params;
 
   const textClass = "mt-10 px-10 text-center";
+
+  if ( urlWillCrashOffline ) {
+    return (
+      <SuggestionsOffline reloadSuggestions={reloadSuggestions} />
+    );
+  }
 
   if ( isLoading ) {
     return (
