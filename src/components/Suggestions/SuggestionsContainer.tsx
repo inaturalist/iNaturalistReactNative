@@ -72,8 +72,7 @@ const initialState = {
   queryKey: [],
   selectedPhotoUri: null,
   selectedTaxon: null,
-  shouldUseEvidenceLocation: false,
-  showPermissionGate: false
+  shouldUseEvidenceLocation: false
 };
 
 const reducer = ( state, action ) => {
@@ -101,11 +100,6 @@ const reducer = ( state, action ) => {
       return {
         ...state,
         fetchStatus: action.fetchStatus
-      };
-    case "SHOW_PERMISSION_GATE":
-      return {
-        ...state,
-        showPermissionGate: action.showPermissionGate
       };
     case "TOGGLE_LOCATION":
       return {
@@ -160,7 +154,6 @@ const SuggestionsContainer = ( ) => {
     lastScreen
   ] );
   const improveWithLocationButtonOnPress = useCallback( ( ) => {
-    dispatch( { type: "SHOW_PERMISSION_GATE", showPermissionGate: true } );
     requestPermissions( );
   }, [requestPermissions] );
 
@@ -171,8 +164,7 @@ const SuggestionsContainer = ( ) => {
     queryKey,
     selectedPhotoUri,
     selectedTaxon,
-    shouldUseEvidenceLocation,
-    showPermissionGate
+    shouldUseEvidenceLocation
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
@@ -403,7 +395,6 @@ const SuggestionsContainer = ( ) => {
   ] );
 
   const onPermissionGranted = useCallback( async ( ) => {
-    dispatch( { type: "SHOW_PERMISSION_GATE", showPermissionGate: false } );
     const userLocation = await fetchUserLocation( );
     updateObservationKeys( userLocation );
     const newImageParams = await flattenUploadParams( selectedPhotoUri );
@@ -457,10 +448,7 @@ const SuggestionsContainer = ( ) => {
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
-      {/* 20240723 amanda - this feels a bit hacky, but without this extra
-      showPermissionGate boolean, renderPermissionsGate creates a maximum update
-      exceeded error and keeps returning onPermissionsGranted infinitely */}
-      {showPermissionGate && renderPermissionsGate( { onPermissionGranted } )}
+      {renderPermissionsGate( { onPermissionGranted } )}
     </>
   );
 };
