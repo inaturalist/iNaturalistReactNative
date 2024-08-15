@@ -17,14 +17,16 @@ interface Props {
   count: number,
   style?: Object,
   taxon: Object,
-  setCurrentExploreView: Function
+  setCurrentExploreView: Function,
+  showSpeciesSeenCheckmark: boolean
 }
 
 const TaxonGridItem = ( {
   count,
   style,
   taxon,
-  setCurrentExploreView
+  setCurrentExploreView,
+  showSpeciesSeenCheckmark = false
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -57,9 +59,9 @@ const TaxonGridItem = ( {
         testID={`TaxonGridItem.${taxon.id}`}
         iconicTaxonName={taxon.iconic_taxon_name}
       >
-        {taxon.rank_level <= 10 && (
+        {showSpeciesSeenCheckmark && (
           <View className="absolute top-3 left-3">
-            <SpeciesSeenCheckmark taxonId={taxon.id} />
+            <SpeciesSeenCheckmark />
           </View>
         )}
 

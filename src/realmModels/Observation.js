@@ -1,7 +1,6 @@
 import { Realm } from "@realm/react";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
-// import { log } from "sharedHelpers/logger";
 import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -14,8 +13,6 @@ import Sound from "./Sound";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
-
-// const logger = log.extend( "Observation" );
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
@@ -139,11 +136,9 @@ class Observation extends Realm.Object {
     //   return `obs ${remoteObservation.uuid}, ops: ${obsPhotoUUIDs}`;
     // } );
     // Trying to debug disappearing photos
-    // logger.info( "upsertRemoteObservations, upserting: ", msg );
     safeRealmWrite( realm, ( ) => {
       obsToUpsert.forEach( remoteObservation => {
         const obsMappedForRealm = Observation.mapApiToRealm( remoteObservation, realm );
-        // logger.info( "upsertRemoteObservations, obsMappedForRealm: ", obsMappedForRealm );
         realm.create(
           "Observation",
           obsMappedForRealm,

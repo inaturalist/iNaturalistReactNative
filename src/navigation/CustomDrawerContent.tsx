@@ -26,10 +26,6 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
 
-import { log } from "../../react-native-logs.config";
-
-const logger = log.extend( "CustomDrawerContent" );
-
 const { useRealm } = RealmContext;
 
 const { width } = Dimensions.get( "screen" );
@@ -139,7 +135,6 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   ] );
 
   const onSignOut = async ( ) => {
-    logger.info( `Signing out ${User.userHandle( currentUser ) || ""} at the request of the user` );
     await signOut( { realm, clearRealm: true, queryClient } );
     setShowConfirm( false );
 

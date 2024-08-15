@@ -19,7 +19,6 @@ import { writeExifToFile } from "sharedHelpers/parseExif";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import { log } from "../../../react-native-logs.config";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
@@ -32,8 +31,6 @@ type Props = {
   currentObservationIndex: number,
   setCurrentObservationIndex: Function
 }
-
-const logger = log.extend( "ObsEditBottomButtons" );
 
 const BottomButtons = ( {
   passesEvidenceTest,
@@ -71,7 +68,6 @@ const BottomButtons = ( {
     }
     // Update all photos taken via the app with the new fetched location.
     cameraRollUris.forEach( uri => {
-      logger.info( "writeExifToCameraRollPhotos, writing exif for uri: ", uri );
       writeExifToFile( uri, exif );
     } );
   }, [

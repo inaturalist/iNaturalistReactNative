@@ -16,6 +16,7 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
   optionalClasses?: string,
+  showSpeciesSeenCheckmark: boolean,
   taxon?: {
     rank: string,
     rank_level: number,
@@ -66,6 +67,7 @@ function translatedRank( rank, t ) {
 
 const TaxonDetailsTitle = ( {
   optionalClasses,
+  showSpeciesSeenCheckmark,
   taxon
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -78,9 +80,9 @@ const TaxonDetailsTitle = ( {
           <Heading4 className={optionalClasses}>
             {translatedRank( taxon.rank, t )}
           </Heading4>
-          {taxon.rank_level <= 10 && (
+          {showSpeciesSeenCheckmark && (
             <View className="ml-2.5">
-              <SpeciesSeenCheckmark taxonId={taxon.id} />
+              <SpeciesSeenCheckmark />
             </View>
           )}
         </View>

@@ -7,7 +7,7 @@ import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
 import Photo from "realmModels/Photo";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { useAuthenticatedQuery } from "sharedHooks";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -81,6 +81,16 @@ jest.mock(
       data: null,
       isLoading: false,
       isError: false
+    } ) )
+  } )
+);
+
+jest.mock(
+  "sharedHooks/useQuery",
+  ( ) => ( {
+    __esModule: true,
+    default: jest.fn( ( ) => ( {
+      data: null
     } ) )
   } )
 );
