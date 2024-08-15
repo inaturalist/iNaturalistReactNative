@@ -362,9 +362,8 @@ class Observation extends Realm.Object {
   };
 
   static createObservationFromGalleryPhotos = async photos => {
-    const newObservation = await readExifFromMultiplePhotos(
-      photos.map( photo => photo?.image?.uri )
-    );
+    const photoUris = photos.map( photo => photo?.image?.uri );
+    const newObservation = await readExifFromMultiplePhotos( photoUris );
 
     return Observation.new( newObservation );
   };

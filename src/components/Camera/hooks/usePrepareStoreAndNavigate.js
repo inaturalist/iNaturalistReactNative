@@ -45,7 +45,7 @@ export async function savePhotosToCameraGallery(
       // logger.info( "saving rotated original camera photo: ", uri );
       try {
         let savedPhotoUri;
-        // One quirk of CameraRoll is that if you want to write ton album, you
+        // One quirk of CameraRoll is that if you want to write to an album, you
         // need readwrite permission, but we don't want to ask for that here
         // b/c it might come immediately after asking for *add only*
         // permission, so we're checking to see if we have that permission
