@@ -812,6 +812,7 @@
     "comment": "Used for explore screen when search params lead to a search with no data",
     "val": "No results found"
   },
+  "No-results-found-for-that-search": "No results found for that search.",
   "no-rights-reserved-cc0": {
     "comment": "license code",
     "val": "no rights reserved (CC0)"
