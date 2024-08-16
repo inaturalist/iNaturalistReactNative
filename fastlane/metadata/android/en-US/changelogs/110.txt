@@ -1,0 +1,14 @@
+KNOWN BUG: online suggestions never load
+
+UPDATED
+* Replaced most in-app web browsers w/ external
+* In-app browser only loads certain domains, almost all links open external
+* Show unsynced obs before others on My Obs
+* Offline suggestions only show Top ID if above score cutoff
+
+FIXED
+* Fetch coords for new obs w/ acc above cutoff
+* Sort by date observed
+* Respect sci name-only pref in more places
+* Permission requests after limited photo access granted
+* Explore species flashing
