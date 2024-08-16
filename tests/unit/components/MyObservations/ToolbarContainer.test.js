@@ -2,7 +2,6 @@ import { screen } from "@testing-library/react-native";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import React from "react";
 import {
-  AUTOMATIC_SYNC_IN_PROGRESS,
   MANUAL_SYNC_IN_PROGRESS,
   SYNC_PENDING
 } from "stores/createSyncObservationsSlice.ts";
@@ -161,14 +160,17 @@ describe( "Toolbar Container", () => {
     expect( statusText ).toBeVisible( );
   } );
 
-  it( "displays deletion error", () => {
+  it( "displays deletion error", ( ) => {
     const deleteError = "Unknown problem deleting observations";
     useStore.setState( {
       ...deletionStore,
       deleteError,
-      syncingStatus: AUTOMATIC_SYNC_IN_PROGRESS
+      initialNumDeletionsInQueue: 2
     } );
     renderComponent( <ToolbarContainer /> );
+
+    const deletingText = screen.getByText( /Deleting/ );
+    expect( deletingText ).toBeVisible( );
 
     const statusText = screen.getByText( deleteError );
     expect( statusText ).toBeVisible( );
