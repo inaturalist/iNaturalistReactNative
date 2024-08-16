@@ -48,7 +48,6 @@ const MyObservationsContainer = ( ): Node => {
   const syncingStatus = useStore( state => state.syncingStatus );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
-  const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
 
@@ -141,15 +140,13 @@ const MyObservationsContainer = ( ): Node => {
     // need to reset the state on a FocusEffect, not a blur listener, because
     // tab bar screens don't seem to blur
     useCallback( ( ) => {
-      resetUploadObservationsSlice( );
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
       startAutomaticSync( );
     }, [
       startAutomaticSync,
       setNumUnuploadedObservations,
-      realm,
-      resetUploadObservationsSlice
+      realm
     ] )
   );
 
