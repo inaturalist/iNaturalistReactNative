@@ -603,6 +603,7 @@ No-Notifications-Found = You have no notifications! Get started by creating your
 No-projects-match-that-search = No projects match that search
 # Used for explore screen when search params lead to a search with no data
 No-results-found = No results found
+No-results-found-for-that-search = No results found for that search.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
 NONE = NONE
