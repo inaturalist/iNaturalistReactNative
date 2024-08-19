@@ -48,6 +48,7 @@ type Props = {
   count: Object,
   currentExploreView: string,
   setCurrentExploreView: Function,
+  startFetching: Function,
   filterByIconicTaxonUnknown: Function,
   handleUpdateCount: Function,
   hideBackButton: boolean,
@@ -71,6 +72,7 @@ const Explore = ( {
   count,
   currentExploreView,
   setCurrentExploreView,
+  startFetching,
   filterByIconicTaxonUnknown,
   handleUpdateCount,
   hideBackButton,
@@ -226,6 +228,7 @@ const Explore = ( {
         headerText={t( "EXPLORE" )}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
+          startFetching( );
           setCurrentExploreView( newView );
           setShowExploreBottomSheet( false );
         }}

@@ -36,7 +36,6 @@ const ObservationsView = ( {
     observations,
     isFetchingNextPage,
     fetchNextPage,
-    status,
     totalBounds,
     totalResults
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
@@ -85,14 +84,14 @@ const ObservationsView = ( {
       <ObservationsFlashList
         contentContainerStyle={OBS_LIST_CONTAINER_STYLE}
         data={observations}
-        dataCanBeFetched
+        dataCanBeFetched={canFetch}
         explore
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
         layout={layout}
         onEndReached={fetchNextPage}
-        status={status}
+        showNoResults={!canFetch}
         testID="ExploreObservationsAnimatedList"
       />
       <MapView observationBounds={totalBounds} queryParams={queryParams} />

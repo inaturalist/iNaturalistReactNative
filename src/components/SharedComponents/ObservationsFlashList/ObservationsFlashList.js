@@ -30,7 +30,7 @@ type Props = {
   onEndReached: Function,
   renderHeader?: Function,
   showObservationsEmptyScreen?: boolean,
-  status?: string,
+  showNoResults?: boolean,
   testID: string
 };
 
@@ -49,8 +49,8 @@ const ObservationsFlashList = ( {
   layout,
   onEndReached,
   renderHeader,
+  showNoResults,
   showObservationsEmptyScreen,
-  status,
   testID
 }: Props ): Node => {
   const {
@@ -127,7 +127,7 @@ const ObservationsFlashList = ( {
       ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
       : <Body3 className="self-center mt-[150px]">{t( "No-results-found" )}</Body3>;
 
-    return ( ( status === "success" && dataCanBeFetched ) || !dataCanBeFetched )
+    return showNoResults
       ? showEmptyScreen
       : (
         <View className="self-center mt-[150px]">
@@ -135,10 +135,9 @@ const ObservationsFlashList = ( {
         </View>
       );
   }, [
-    dataCanBeFetched,
     isFetchingNextPage,
     showObservationsEmptyScreen,
-    status,
+    showNoResults,
     t
   ] );
 

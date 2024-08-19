@@ -11,6 +11,7 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useEffect,
   useState
 } from "react";
@@ -125,14 +126,18 @@ const RootExploreContainerWithContext = ( ): Node => {
     } );
   }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
 
-  useEffect( ( ) => {
+  const startFetching = useCallback( ( ) => {
     const nearby = state?.placeMode === "NEARBY";
     if ( hasLocationPermissions && nearby ) {
       setFetchingStatus( true );
     } else if ( !nearby ) {
       setFetchingStatus( true );
     }
-  }, [state, setFetchingStatus, hasLocationPermissions] );
+  }, [hasLocationPermissions, setFetchingStatus, state?.placeMode] );
+
+  useEffect( ( ) => {
+    startFetching( );
+  }, [startFetching] );
 
   return (
     <>
@@ -158,6 +163,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         placeMode={state.placeMode}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
+        startFetching={startFetching}
       />
       {renderPermissionsGate( {
         onPermissionGranted: async ( ) => {
