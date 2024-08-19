@@ -8,6 +8,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
+  canFetch: boolean,
   contentContainerStyle?: Object,
   data: Array<Object>,
   estimatedItemSize: number,
@@ -20,11 +21,11 @@ type Props = {
   numColumns?: number,
   renderItem: Function,
   renderItemSeparator?: Function,
-  status: string,
   testID: string
 };
 
 const ExploreFlashList = ( {
+  canFetch,
   contentContainerStyle,
   data,
   estimatedItemSize,
@@ -37,7 +38,6 @@ const ExploreFlashList = ( {
   numColumns,
   renderItem,
   renderItemSeparator,
-  status,
   testID
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -53,13 +53,13 @@ const ExploreFlashList = ( {
 
   const renderEmptyComponent = useCallback( ( ) => (
     <View className="flex-1 justify-center items-center">
-      {status === "loading"
+      {canFetch
         ? (
           <ActivityIndicator size={50} testID="ExploreFlashList.loading" />
         )
         : <Body3>{t( "No-results-found" )}</Body3>}
     </View>
-  ), [status, t] );
+  ), [canFetch, t] );
 
   const headerComponentStyle = layout === "grid" && {
     marginLeft: -7,

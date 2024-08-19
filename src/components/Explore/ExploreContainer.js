@@ -87,7 +87,9 @@ const ExploreContainerWithContext = ( ): Node => {
   };
 
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
-  const { count, loadingStatus, updateCount } = useExploreHeaderCount( );
+  const {
+    count, fetchingStatus, handleUpdateCount, setFetchingStatus
+  } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -102,6 +104,15 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   }, [navigation, setStoredParams, state] );
 
+  useEffect( ( ) => {
+    const nearby = state?.placeMode === "NEARBY";
+    if ( hasLocationPermissions && nearby ) {
+      setFetchingStatus( true );
+    } else if ( !nearby ) {
+      setFetchingStatus( true );
+    }
+  }, [state, setFetchingStatus, hasLocationPermissions] );
+
   return (
     <>
       <Explore
@@ -109,16 +120,16 @@ const ExploreContainerWithContext = ( ): Node => {
         count={count}
         currentExploreView={exploreView}
         setCurrentExploreView={setExploreView}
+        handleUpdateCount={handleUpdateCount}
         hideBackButton={false}
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
         isConnected={isConnected}
-        loadingStatus={loadingStatus}
+        fetchingStatus={fetchingStatus}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}
         showFiltersModal={showFiltersModal}
-        updateCount={updateCount}
         updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
         updateLocation={updateLocation}
         updateUser={updateUser}
@@ -127,7 +138,11 @@ const ExploreContainerWithContext = ( ): Node => {
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
       />
-      {renderPermissionsGate( )}
+      {renderPermissionsGate( {
+        onPermissionGranted: () => {
+          setFetchingStatus( true );
+        }
+      } ) }
     </>
   );
 };

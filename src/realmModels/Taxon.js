@@ -20,7 +20,6 @@ class Taxon extends Realm.Object {
   };
 
   static LIMITED_TAXON_FIELDS = {
-    ancestor_ids: true,
     default_photo: {
       id: true,
       url: true

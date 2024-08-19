@@ -6,7 +6,10 @@ import { flatten } from "lodash";
 const useInfiniteScroll = (
   queryKey: string,
   apiCall: Function,
-  newInputParams: Object
+  newInputParams: Object,
+  options: {
+    enabled: boolean
+  }
 ): Object => {
   const baseParams = {
     ...newInputParams,
@@ -34,7 +37,8 @@ const useInfiniteScroll = (
     initialPageParam: 0,
     getNextPageParam: lastPage => ( lastPage
       ? lastPage.page + 1
-      : 1 )
+      : 1 ),
+    enabled: options.enabled
   } );
 
   const pages = data?.pages;
