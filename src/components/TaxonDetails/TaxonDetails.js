@@ -8,12 +8,10 @@ import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   ActivityIndicator,
-  BackButton,
   Body1,
   Button,
   INatIcon,
   INatIconButton,
-  KebabMenu,
   OfflineNotice,
   ScrollViewWrapper,
   StickyToolbar
@@ -26,15 +24,11 @@ import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  Alert,
-  Platform,
-  Share,
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
-import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -45,6 +39,7 @@ import {
 import useStore from "stores/useStore";
 
 import EstablishmentMeans from "./EstablishmentMeans";
+import TaxonDetailsHeader from "./TaxonDetailsHeader";
 import TaxonDetailsMediaViewerHeader from "./TaxonDetailsMediaViewerHeader";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 import TaxonMapPreview from "./TaxonMapPreview";
@@ -55,8 +50,6 @@ import Wikipedia from "./Wikipedia";
 const logger = log.extend( "TaxonDetails" );
 
 const { useRealm } = RealmContext;
-
-const TAXON_URL = "https://www.inaturalist.org/taxa";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -71,7 +64,6 @@ const TaxonDetails = ( ): Node => {
   const { isConnected } = useNetInfo( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const { remoteUser } = useUserMe( );
-  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [mediaIndex, setMediaIndex] = useState( 0 );
   const navState = useNavigationState( nav => nav );
   const history = navState?.routes.map( r => r.name ) || [];
@@ -106,7 +98,6 @@ const TaxonDetails = ( ): Node => {
   );
 
   const taxon = remoteTaxon || localTaxon;
-  const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
 
   const currentUser = useCurrentUser( );
 
@@ -284,57 +275,14 @@ const TaxonDetails = ( ): Node => {
         black, which reveals a dark area at the bottom of the screen on
         overscroll in iOS ~~~kueda20240228
       */}
+        <TaxonDetailsHeader
+          hideNavButtons={hideNavButtons}
+          taxonId={taxon?.id}
+        />
         <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <View className="flex-1 h-full bg-black">
           <View className="w-full h-[420px] shrink-1">
-            <View className="absolute left-4 top-4 z-10">
-              <BackButton color="white" />
-            </View>
             {displayTaxonMedia()}
-            {!hideNavButtons && (
-              <View className="absolute right-4 top-1">
-                <KebabMenu
-                  visible={kebabMenuVisible}
-                  setVisible={setKebabMenuVisible}
-                  large
-                  white
-                >
-                  <KebabMenu.Item
-                    testID="MenuItem.OpenInBrowser"
-                    onPress={( ) => {
-                      openExternalWebBrowser( taxonUrl );
-                      setKebabMenuVisible( false );
-                    }}
-                    title={t( "View-in-browser" )}
-                  />
-                  <KebabMenu.Item
-                    testID="MenuItem.Share"
-                    onPress={async ( ) => {
-                      const sharingOptions = {
-                        url: "",
-                        message: ""
-                      };
-
-                      if ( Platform.OS === "ios" ) {
-                        sharingOptions.url = taxonUrl;
-                      } else {
-                        sharingOptions.message = taxonUrl;
-                      }
-
-                      setKebabMenuVisible( false );
-
-                      try {
-                        return await Share.share( sharingOptions );
-                      } catch ( err ) {
-                        Alert.alert( err.message );
-                        return null;
-                      }
-                    }}
-                    title={t( "Share" )}
-                  />
-                </KebabMenu>
-              </View>
-            )}
             <View
               className="absolute bottom-0 p-0 w-full"
               pointerEvents="box-none"

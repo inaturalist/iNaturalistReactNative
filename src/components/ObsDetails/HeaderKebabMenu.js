@@ -48,6 +48,7 @@ const HeaderKebabMenu = ( {
       white={white}
       accessibilityLabel={t( "Observation-options" )}
       accessibilityHint={t( "Show-observation-options" )}
+      large
     >
       <Menu.Item
         onPress={handleShare}
