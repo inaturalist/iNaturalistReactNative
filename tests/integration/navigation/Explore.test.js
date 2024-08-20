@@ -1,6 +1,7 @@
 import {
   screen,
   userEvent,
+  waitFor,
   within
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -245,19 +246,22 @@ describe( "logged in", ( ) => {
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
           results: []
         } ) );
-        inatjs.observations.fetch.mockResolvedValue( makeResponse( mockObservations[0] ) );
         renderApp( );
         await navigateToRootExplore( );
         const speciesViewIcon = await screen.findByLabelText( /Species View/ );
-        expect( speciesViewIcon ).toBeVisible( );
         await actor.press( speciesViewIcon );
         const observationsRadioButton = await screen.findByText( "Observations" );
         await actor.press( observationsRadioButton );
         const confirmButton = await screen.findByText( /EXPLORE OBSERVATIONS/ );
         await actor.press( confirmButton );
+        const headerCount = await screen.findByText( /1 Observation/ );
+        expect( headerCount ).toBeVisible( );
         const gridView = await screen.findByTestId( "SegmentedButton.grid" );
         await actor.press( gridView );
-        const firstObservation = await screen.findByTestId( `MyObservationsPressable.${obs.uuid}` );
+        const firstObservation = screen.queryByTestId( `MyObservationsPressable.${obs.uuid}` );
+        await waitFor( ( ) => {
+          expect( firstObservation ).toBeVisible( );
+        }, { timeout: 10000 } );
         await actor.press( firstObservation );
         const userProfileButton = await screen.findByLabelText( `User @${mockUser.login}` );
         await actor.press( userProfileButton );

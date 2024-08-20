@@ -73,6 +73,7 @@ describe( "ObservationsView", () => {
         hideLoadingWheel
         isConnected
         data={[]}
+        showNoResults
       />
     );
 

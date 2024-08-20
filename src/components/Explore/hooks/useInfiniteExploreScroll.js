@@ -8,7 +8,7 @@ import { flatten, last } from "lodash";
 import { useCallback } from "react";
 import Observation from "realmModels/Observation";
 
-const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object => {
+const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object ): Object => {
   const baseParams = {
     ...newInputParams,
     fields: Observation.EXPLORE_LIST_FIELDS,
@@ -90,7 +90,8 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
       return response;
     },
     initialPageParam: 0,
-    getNextPageParam
+    getNextPageParam,
+    enabled
   } );
 
   const observations = flatten( data?.pages?.map( r => r.results ) ) || [];
