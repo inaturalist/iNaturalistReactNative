@@ -2,11 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import navigateToObsEdit from "components/ObsEdit/helpers/navigateToObsEdit.ts";
 import {
-  BackButton,
-  INatIconButton
+  INatIconButton,
+  OverlayHeader
 } from "components/SharedComponents";
 import {
-  LinearGradient, View
+  LinearGradient
 } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
@@ -47,7 +47,7 @@ const ObsDetailsHeader = ( {
         "w-full",
         "flex-row",
         "justify-between",
-        "h-10"
+        "h-12"
       )}
       colors={[
         isTablet
@@ -56,11 +56,9 @@ const ObsDetailsHeader = ( {
         "transparent"
       ]}
     >
-      <View className="left-4 top-4">
-        <BackButton color="white" inCustomHeader testID="ObsDetails.BackButton" />
-      </View>
-      <View className="right-4">
-        {
+      <OverlayHeader
+        testID="ObsDetails.BackButton"
+        rightHeaderButton={
           belongsToCurrentUser
             ? (
               <INatIconButton
@@ -78,7 +76,7 @@ const ObsDetailsHeader = ( {
             )
             : <HeaderKebabMenu observationId={observationId} white={!rightIconBlack} />
         }
-      </View>
+      />
     </LinearGradient>
   );
 };
