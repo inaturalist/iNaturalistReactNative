@@ -29,6 +29,7 @@ interface LocationPermissionCallbacks {
 const useLocationPermission = ( ) => {
   const [hasPermissions, setHasPermissions] = useState<boolean>( );
   const [showPermissionGate, setShowPermissionGate] = useState( false );
+  const [hasBlockedPermissions, setHasBlockedPermissions] = useState( false );
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
@@ -62,13 +63,14 @@ const useLocationPermission = ( ) => {
           if ( onPermissionDenied ) onPermissionDenied( );
         }}
         onPermissionBlocked={( ) => {
+          setHasPermissions( false );
+          setHasBlockedPermissions( true );
+          setShowPermissionGate( true );
           if ( onPermissionBlocked ) onPermissionBlocked( );
         }}
       />
     );
-  }, [
-    showPermissionGate
-  ] );
+  }, [showPermissionGate] );
 
   function requestPermissions() {
     setShowPermissionGate( true );
@@ -80,6 +82,9 @@ const useLocationPermission = ( ) => {
     );
     if ( permissionsResult === RESULTS.GRANTED ) {
       setHasPermissions( true );
+    } else if ( permissionsResult === RESULTS.BLOCKED ) {
+      setHasPermissions( false );
+      setHasBlockedPermissions( true );
     } else {
       setHasPermissions( false );
       console.log( "Location permissions have not been granted." );
@@ -94,7 +99,8 @@ const useLocationPermission = ( ) => {
   return {
     hasPermissions,
     renderPermissionsGate,
-    requestPermissions
+    requestPermissions,
+    hasBlockedPermissions
   };
 };
 
