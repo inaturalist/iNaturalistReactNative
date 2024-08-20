@@ -19,9 +19,6 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import {
-  UPLOAD_IN_PROGRESS
-} from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
@@ -41,7 +38,7 @@ const MyObservationsContainer = ( ): Node => {
   useClearSyncedMediaForUpload( isFocused );
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const setUploadStatus = useStore( state => state.setUploadStatus );
+  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
@@ -117,15 +114,13 @@ const MyObservationsContainer = ( ): Node => {
 
   const handleIndividualUploadPress = useCallback( uuid => {
     const uploadExists = uploadQueue.includes( uuid );
-    if ( uploadExists ) {
-      return;
-    }
-    if ( !confirmLoggedIn( ) ) { return; }
-    if ( !confirmInternetConnection( ) ) { return; }
+    if ( uploadExists ) return;
+    if ( !confirmLoggedIn( ) ) return;
+    if ( !confirmInternetConnection( ) ) return;
     const observation = realm.objectForPrimaryKey( "Observation", uuid );
     addTotalToolbarIncrements( observation );
     addToUploadQueue( uuid );
-    setUploadStatus( UPLOAD_IN_PROGRESS );
+    setStartUploadObservations( );
   }, [
     confirmLoggedIn,
     uploadQueue,
@@ -133,7 +128,7 @@ const MyObservationsContainer = ( ): Node => {
     realm,
     addTotalToolbarIncrements,
     addToUploadQueue,
-    setUploadStatus
+    setStartUploadObservations
   ] );
 
   useFocusEffect(
