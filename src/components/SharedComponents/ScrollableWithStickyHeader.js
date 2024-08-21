@@ -12,7 +12,7 @@
 // the setStickyAt function, that sets the scroll offset at which the header
 // sticks (this is probably dependent on the height of the rendered layout).
 //
-// renderScrollable takes a single argument, the onScroll callback, which
+// renderScrollable takes a single argument, the animatedScrollEvent, which
 // should be passed to the scrollable's onScroll prop, and/or get called with
 // the same event
 //
@@ -42,11 +42,13 @@ import { Animated } from "react-native";
 import { useDeviceOrientation } from "sharedHooks";
 
 type Props = {
+  onScroll?: Function,
   renderHeader: Function,
   renderScrollable: Function
 };
 
 const ScrollableWithStickyHeader = ( {
+  onScroll,
   renderHeader,
   renderScrollable
 }: Props ): Node => {
@@ -63,7 +65,7 @@ const ScrollableWithStickyHeader = ( {
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
 
-  const onScroll = Animated.event(
+  const animatedScrollEvent = Animated.event(
     [
       {
         nativeEvent: {
@@ -72,7 +74,8 @@ const ScrollableWithStickyHeader = ( {
       }
     ],
     {
-      useNativeDriver: true
+      useNativeDriver: true,
+      listener: onScroll
     }
   );
 
@@ -148,7 +151,7 @@ const ScrollableWithStickyHeader = ( {
         }}
       >
         {renderHeader( setStickyAt )}
-        {renderScrollable( onScroll )}
+        {renderScrollable( animatedScrollEvent )}
       </Animated.View>
     </View>
   );

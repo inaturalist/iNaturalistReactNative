@@ -38,6 +38,7 @@ const ObsDetailsHeader = ( {
   const localObservation = useLocalObservation( uuid );
   const { t } = useTranslation( );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
+  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
 
   return (
     <LinearGradient
@@ -65,7 +66,7 @@ const ObsDetailsHeader = ( {
                 testID="ObsDetail.editButton"
                 onPress={() => {
                   prepareObsEdit( localObservation );
-                  navigateToObsEdit( navigation );
+                  navigateToObsEdit( navigation, setMyObsOffsetToRestore );
                 }}
                 icon="pencil"
                 color={!rightIconBlack
