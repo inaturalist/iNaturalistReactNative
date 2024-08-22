@@ -83,7 +83,7 @@ exports[`INatIconButton renders correctly 1`] = `
         ]
       }
     >
-      
+      
     </Text>
   </View>
 </View>
