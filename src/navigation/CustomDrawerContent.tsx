@@ -55,7 +55,6 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
   const { isConnected } = useNetInfo( );
 
-
   const [showConfirm, setShowConfirm] = useState( false );
   const [showFeedback, setShowFeedback] = useState( false );
 
