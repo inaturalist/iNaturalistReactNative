@@ -11,7 +11,14 @@ import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import { Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useTranslation from "sharedHooks/useTranslation";
+
+// Optimized to maximize input size while minimizing post-render height
+// adjustments for for iPhone 13 and taller screens. Shorter screens
+// (e.g. iPhone SE) will jerk around a bit to avoid the top inset
+const TARGET_INPUT_HEIGHT = 220;
 
 type Props = {
   buttonText: string,
@@ -61,18 +68,29 @@ const TextInputSheet = ( {
   const [input, setInput] = useState( initialInput );
   const [hasChanged, setHasChanged] = useState( false );
   const { t } = useTranslation( );
+  const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
+  const { top: topInset } = useSafeAreaInsets( );
+  const [sheetHeight, setSheetHeight] = useState( 0 );
 
   // disable if user hasn't changed existing text
   const confirmButtonDisabled = initialInput === input && !hasChanged;
 
   const inputStyle = useMemo( ( ) => ( {
-    height: 223,
+    height: Math.min(
+      TARGET_INPUT_HEIGHT - ( sheetHeight - nonKeyboardHeight ) - topInset,
+      TARGET_INPUT_HEIGHT
+    ),
     fontFamily: fontRegular,
     fontSize: 14,
     lineHeight: 17,
     color: theme.colors.primary,
     textAlignVertical: "top"
-  } ), [theme] );
+  } ), [
+    nonKeyboardHeight,
+    sheetHeight,
+    theme,
+    topInset
+  ] );
 
   const dismissKeyboardAndClose = ( ) => {
     Keyboard.dismiss( );
@@ -84,10 +102,17 @@ const TextInputSheet = ( {
       handleClose={dismissKeyboardAndClose}
       headerText={headerText}
       keyboardShouldPersistTaps="always"
+      onLayout={event => {
+        const { height } = event.nativeEvent.layout;
+        // Only do this once. Device height isn't going to change
+        if ( sheetHeight === 0 ) {
+          setSheetHeight( height );
+        }
+      }}
     >
-      <View className="p-5">
+      <View className="p-5 pb-0">
         { description && description.length > 0 && (
-          <View className="p-3 pt-1">
+          <View className="p-3 pt-0">
             <Body3 className="text-center">{ description }</Body3>
           </View>
         ) }
