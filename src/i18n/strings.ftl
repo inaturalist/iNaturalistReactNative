@@ -283,6 +283,8 @@ DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Delete photo
 Delete-sound = Delete sound
+# Hint for a button that clears text you entered
+Deletes-entered-text = Deletes entered text
 # Shows the progress of deletions for X of Y
 Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
 # Shows the number of observations a user is currently deleting out of total on my observations page
@@ -955,6 +957,7 @@ Terms-of-Use = Terms of Use
 TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
+Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.

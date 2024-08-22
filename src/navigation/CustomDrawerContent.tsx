@@ -289,6 +289,8 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           handleClose={() => setShowFeedback( false )}
           headerText={t( "FEEDBACK" )}
           confirm={submitFeedback}
+          description={t( "Thanks-for-using-any-suggestions" )}
+          maxLength={1000}
         />
       )}
     </DrawerContentScrollView>
