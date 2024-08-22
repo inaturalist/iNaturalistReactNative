@@ -27,7 +27,7 @@ type Props = {
   exploreView: string,
   exploreViewIcon: string,
   hideBackButton: boolean,
-  loadingStatus: boolean,
+  fetchingStatus: boolean,
   onPressCount?: Function,
   openFiltersModal: Function,
   updateTaxon: Function,
@@ -39,7 +39,7 @@ const Header = ( {
   exploreView,
   exploreViewIcon,
   hideBackButton,
-  loadingStatus,
+  fetchingStatus,
   onPressCount,
   openFiltersModal,
   updateTaxon,
@@ -129,7 +129,7 @@ const Header = ( {
           count={count}
           exploreView={exploreView}
           exploreViewIcon={exploreViewIcon}
-          loadingStatus={loadingStatus}
+          fetchingStatus={fetchingStatus}
           onPress={onPressCount}
         />
       </Surface>

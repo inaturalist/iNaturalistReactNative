@@ -69,7 +69,7 @@ const MyObservations = ( {
             layout={layout}
             onEndReached={onEndReached}
             showObservationsEmptyScreen
-            status={status}
+            showNoResults={( status === "success" && !!( currentUser ) ) || !currentUser}
             testID="MyObservationsAnimatedList"
             renderHeader={(
               <Announcements isConnected={isConnected} />

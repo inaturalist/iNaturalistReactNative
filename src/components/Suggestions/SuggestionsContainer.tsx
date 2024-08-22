@@ -376,10 +376,14 @@ const SuggestionsContainer = ( ) => {
     || !isConnected;
 
   const setImageParams = useCallback( async ( ) => {
+    if ( isConnected === false ) {
+      return;
+    }
     const newImageParams = await createUploadParams( selectedPhotoUri, shouldUseEvidenceLocation );
     dispatch( { type: "FLATTEN_UPLOAD_PARAMS", flattenedUploadParams: newImageParams } );
   }, [
     createUploadParams,
+    isConnected,
     selectedPhotoUri,
     shouldUseEvidenceLocation
   ] );
@@ -391,7 +395,7 @@ const SuggestionsContainer = ( ) => {
       // resizeImage crashes if trying to resize an https:// photo while there is no internet
       // in this situation, we can skip creating upload parameters since we're loading
       // offline suggestions anyway
-      if ( _.isEqual( initialSuggestions, suggestions ) && isConnected ) {
+      if ( _.isEqual( initialSuggestions, suggestions ) ) {
         setImageParams( );
       }
       navigation.setOptions( { headerRight } );
@@ -399,7 +403,6 @@ const SuggestionsContainer = ( ) => {
     return onFocus;
   }, [
     headerRight,
-    isConnected,
     navigation,
     setImageParams,
     suggestions

@@ -19,19 +19,19 @@ import ExploreFlashList from "./ExploreFlashList";
 const GUTTER = 15;
 
 type Props = {
-  count: Object,
+  canFetch: boolean,
   isConnected: boolean,
   queryParams: Object,
-  updateCount: Function,
-  setCurrentExploreView: Function
+  setCurrentExploreView: Function,
+  handleUpdateCount: Function
 }
 
 const SpeciesView = ( {
-  count,
+  canFetch,
   isConnected,
   queryParams,
-  updateCount,
-  setCurrentExploreView
+  setCurrentExploreView,
+  handleUpdateCount
 }: Props ): Node => {
   // 20240814 - amanda: not sure if we actually need observedTaxonIds in state in the long
   // run, but for now, it prevents flickering when a user scrolls and new species are loaded
@@ -64,12 +64,12 @@ const SpeciesView = ( {
 
   const numColumns = calculateNumColumns( );
   const gridItemWidth = calculateGridItemWidth( numColumns );
+
   const {
     data,
     isFetchingNextPage,
     fetchNextPage,
-    totalResults,
-    status
+    totalResults
   } = useInfiniteScroll(
     "fetchSpeciesCounts",
     fetchSpeciesCounts,
@@ -78,6 +78,9 @@ const SpeciesView = ( {
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS
       }
+    },
+    {
+      enabled: canFetch
     }
   );
 
@@ -126,10 +129,8 @@ const SpeciesView = ( {
     />
   );
   useEffect( ( ) => {
-    if ( totalResults && count.species !== totalResults ) {
-      updateCount( { species: totalResults } );
-    }
-  }, [totalResults, updateCount, count] );
+    handleUpdateCount( "species", totalResults );
+  }, [totalResults, handleUpdateCount] );
 
   const contentContainerStyle = useMemo( ( ) => ( {
     paddingLeft: GUTTER / 2,
@@ -139,6 +140,7 @@ const SpeciesView = ( {
 
   return (
     <ExploreFlashList
+      canFetch={canFetch}
       contentContainerStyle={contentContainerStyle}
       data={data}
       estimatedItemSize={gridItemWidth}
@@ -150,7 +152,6 @@ const SpeciesView = ( {
       layout="grid"
       numColumns={numColumns}
       renderItem={renderItem}
-      status={status}
       testID="ExploreSpeciesAnimatedList"
     />
   );

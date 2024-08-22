@@ -1,0 +1,7 @@
+UPDATED
+* Empty and offline states for search results
+
+FIXED
+* Online suggestions should load
+* Higher res photos on Taxon Details
+* Upload status should work after tapping UPLOAD NOW on Obs Edit

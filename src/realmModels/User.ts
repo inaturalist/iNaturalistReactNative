@@ -12,6 +12,13 @@ class User extends Realm.Object {
     prefers_scientific_name_first: true
   };
 
+  static LIMITED_FIELDS = {
+    icon_url: true,
+    id: true,
+    login: true,
+    observations_count: true
+  };
+
   // getting user icon data from production instead of staging
   static uri( user: { icon_url?: string } ) {
     return user?.icon_url

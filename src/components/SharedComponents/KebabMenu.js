@@ -44,7 +44,7 @@ const KebabMenu = ( {
       icon="kebab-menu"
       testID="KebabMenu.Button"
       size={large
-        ? 26
+        ? 28
         : 15}
       accessibilityLabel={accessibilityLabel || t( "Menu" )}
       accessibilityHint={accessibilityHint || t( "Open-menu" )}

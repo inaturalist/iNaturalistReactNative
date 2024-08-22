@@ -245,11 +245,10 @@ async function uploadObservation( obs: Object, realm: Object, opts: Object = {} 
       id: newObs.uuid,
       ignore_photos: true
     }, options );
-    emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   } else {
     response = await createObservation( uploadParams, options );
-    emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
   }
+  emitUploadProgress( obs.uuid, ( UPLOAD_PROGRESS_INCREMENT / 2 ) );
 
   if ( !response ) {
     return response;

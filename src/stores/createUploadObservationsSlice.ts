@@ -21,7 +21,7 @@ interface TotalUploadProgress {
 }
 
 interface UploadObservationsSlice {
-  abortController: AbortController,
+  abortController: AbortController | null,
   currentUpload: RealmObservation | null,
   errorsByUuid: Object,
   multiError: string | null,
@@ -36,7 +36,7 @@ interface UploadObservationsSlice {
 }
 
 const DEFAULT_STATE: UploadObservationsSlice = {
-  abortController: new AbortController( ),
+  abortController: null,
   currentUpload: null,
   errorsByUuid: {},
   // Single error caught during multiple obs upload
@@ -97,9 +97,13 @@ const setTotalToolbarProgress = ( totalToolbarIncrements, totalUploadProgress ) 
     : 0
 );
 
-const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set => ( {
+const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( set, get ) => ( {
   ...DEFAULT_STATE,
-  resetUploadObservationsSlice: ( ) => set( DEFAULT_STATE ),
+  resetUploadObservationsSlice: ( ) => {
+    // Preserve the abortController just in case something might try and use it
+    const { abortController } = get( );
+    return set( { ...DEFAULT_STATE, abortController } );
+  },
   addUploadError: ( error, obsUUID ) => set( state => ( {
     errorsByUuid: {
       ...state.errorsByUuid,
@@ -110,20 +114,29 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     },
     multiError: error
   } ) ),
-  stopAllUploads: ( ) => set( ( ) => {
+  stopAllUploads: ( ) => {
     deactivateKeepAwake( );
-    return ( {
+    const { abortController } = get( );
+    abortController?.abort();
+    return set( {
       ...DEFAULT_STATE,
+      // Preserve the abort controller in case in might still get used. It
+      // should only get regenerated when the uploads start
+      abortController,
       uploadStatus: UPLOAD_CANCELLED
     } );
-  } ),
+  },
   // Sets state to indicate that upload is needed without necessarily
   // resetting the state, as there might still be observations to upload
   setCannotUploadObservations: ( ) => set( { uploadStatus: UPLOAD_PENDING } ),
   // Sets the state to start uploading observations
   setStartUploadObservations: ( ) => {
     activateKeepAwake( );
-    return set( { uploadStatus: UPLOAD_IN_PROGRESS } );
+    return set( {
+      // Make a new abort controller for this upload session
+      abortController: new AbortController( ),
+      uploadStatus: UPLOAD_IN_PROGRESS
+    } );
   },
   completeUploads: ( ) => {
     deactivateKeepAwake( );
@@ -166,7 +179,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   setUploadStatus: ( uploadStatus: UploadStatus ) => set( ( ) => ( {
     uploadStatus
   } ) ),
-  addToUploadQueue: uuids => set( state => {
+  addToUploadQueue: ( uuids: string | string[] ) => set( state => {
     let copyOfUploadQueue = state.uploadQueue;
     if ( typeof uuids === "string" ) {
       copyOfUploadQueue.unshift( uuids );
@@ -175,7 +188,6 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
     }
     return ( {
       uploadQueue: copyOfUploadQueue,
-      uploadStatus: UPLOAD_IN_PROGRESS,
       initialNumObservationsInQueue: state.initialNumObservationsInQueue
         + ( typeof uuids === "string"
           ? 1
@@ -209,11 +221,6 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = set
   setNumUnuploadedObservations: numUnuploadedObservations => set( ( ) => ( {
     numUnuploadedObservations
   } ) ),
-  newAbortController: ( ) => {
-    const abc = new AbortController( );
-    set( ( ) => ( { abortController: abc } ) );
-    return abc;
-  },
   removeDeletedObsFromUploadQueue: uuid => set( state => {
     const {
       initialNumObservationsInQueue,

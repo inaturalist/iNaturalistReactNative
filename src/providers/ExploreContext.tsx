@@ -209,7 +209,7 @@ type State = {
   project_id: number | undefined | null,
   radius?: number,
   researchGrade: boolean,
-  return_bounds: boolean,
+  return_bounds: boolean | undefined,
   reviewedFilter: REVIEWED,
   sortBy: SORT_BY,
   swlat?: number,
@@ -333,7 +333,7 @@ const initialState: State = {
   // modes, like Nearby or Worldwide
   place_guess: "",
   place_id: undefined,
-  return_bounds: true,
+  return_bounds: undefined,
   taxon: undefined,
   taxon_id: undefined,
   verifiable: true
