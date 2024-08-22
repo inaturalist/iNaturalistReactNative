@@ -45,7 +45,11 @@ interface Props {
   descriptors: Object;
 }
 
-const logger = log.extend( "feedback" );
+const feedbackLogger = log.extend( "feedback" );
+
+function showOfflineAlert( t ) {
+  Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
+}
 
 const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const realm = useRealm( );
@@ -117,7 +121,13 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     items.feedback = {
       label: t( "FEEDBACK" ),
       icon: "feedback",
-      onPress: ( ) => setShowFeedback( true )
+      onPress: ( ) => {
+        if ( isConnected ) {
+          setShowFeedback( true );
+        } else {
+          showOfflineAlert( t );
+        }
+      }
     };
 
     if ( currentUser ) {
@@ -142,6 +152,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     return items;
   }, [
     currentUser,
+    isConnected,
     isDebug,
     t
   ] );
@@ -249,14 +260,14 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   ] );
 
   const submitFeedback = useCallback( ( text: string ) => {
-    setShowFeedback( false );
-
     if ( !isConnected ) {
-      Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
-    } else {
-      logger.info( text );
-      Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
+      showOfflineAlert( t );
+      return false;
     }
+    feedbackLogger.info( text );
+    Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
+    setShowFeedback( false );
+    return true;
   }, [isConnected, t] );
 
   return (

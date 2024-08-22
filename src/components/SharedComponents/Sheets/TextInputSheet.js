@@ -139,8 +139,12 @@ const TextInputSheet = ( {
           level="primary"
           text={buttonText || t( "DONE" )}
           onPress={() => {
-            confirm( input );
-            dismissKeyboardAndClose( );
+            // If the confirm() callback returns false, something went wrong
+            // and the user may need to edit the text or do something else
+            // before we close the sheet
+            if ( confirm( input ) !== false ) {
+              dismissKeyboardAndClose( );
+            }
           }}
         />
       </View>
