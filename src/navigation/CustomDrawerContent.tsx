@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import {
   DrawerContentScrollView,
   DrawerItem
@@ -12,16 +13,17 @@ import {
   Heading4,
   INatIcon,
   INatIconButton,
-  List2,
+  List2, TextInputSheet,
   UserIcon,
   WarningSheet
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useMemo, useState } from "react";
-import { Dimensions, ViewStyle } from "react-native";
+import { Alert, Dimensions, ViewStyle } from "react-native";
 import User from "realmModels/User.ts";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -43,14 +45,19 @@ interface Props {
   descriptors: Object;
 }
 
+const logger = log.extend( "feedback" );
+
 const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
   const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+  const { isConnected } = useNetInfo( );
+
 
   const [showConfirm, setShowConfirm] = useState( false );
+  const [showFeedback, setShowFeedback] = useState( false );
 
   const drawerItemStyle = useMemo( ( ) => ( {
     marginBottom: width <= BREAKPOINTS.lg
@@ -108,6 +115,12 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         icon: "gear"
       }
     };
+    items.feedback = {
+      label: t( "FEEDBACK" ),
+      icon: "feedback",
+      onPress: ( ) => setShowFeedback( true )
+    };
+
     if ( currentUser ) {
       items.logout = {
         label: t( "LOG-OUT" ),
@@ -236,6 +249,17 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
     navigation
   ] );
 
+  const submitFeedback = useCallback( ( text: string ) => {
+    setShowFeedback( false );
+
+    if ( !isConnected ) {
+      Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
+    } else {
+      logger.info( text );
+      Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
+    }
+  }, [isConnected, t] );
+
   return (
     <DrawerContentScrollView
       state={state}
@@ -258,6 +282,14 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
           secondButtonText={t( "CANCEL" )}
           confirm={onSignOut}
           buttonText={t( "LOG-OUT" )}
+        />
+      )}
+      {showFeedback && (
+        <TextInputSheet
+          buttonText={t( "SUBMIT" )}
+          handleClose={() => setShowFeedback( false )}
+          headerText={t( "FEEDBACK" )}
+          confirm={submitFeedback}
         />
       )}
     </DrawerContentScrollView>

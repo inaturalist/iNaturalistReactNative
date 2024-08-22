@@ -376,6 +376,8 @@ Failed-to-log-in = Failed to log in
 FEATURED = FEATURED
 # Month of February
 February = February
+FEEDBACK = FEEDBACK
+Feedback-Submitted = Feedback Submitted
 Fetching-location = Fetching location...
 Filter = Filter
 FILTER-BY-A-PROJECT = FILTER BY A PROJECT
@@ -708,6 +710,7 @@ Please-click-the-link = Please click the link in the email within 60 minutes  to
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
+Please-try-again-when-you-are-online = Please try again when you are online!
 POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
@@ -931,6 +934,7 @@ Stop-upload = Stop upload
 Stop-verb = Stop
 # Accessibility hint for a button that stops the recording of a sound
 Stops-recording-sound = Stops recording sound
+SUBMIT = SUBMIT
 SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 # Identification category
@@ -950,6 +954,7 @@ TEAM = TEAM
 Terms-of-Use = Terms of Use
 TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
+Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
@@ -1146,6 +1151,7 @@ x-uploads-failed =
        *[other] { $count } uploads failed
     }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
