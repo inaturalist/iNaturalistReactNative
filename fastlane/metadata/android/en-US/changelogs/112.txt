@@ -1,0 +1,13 @@
+NEW
+* Feedback form
+
+UPDATED
+* Explore shows worldwide results after denying location
+* Show generic user icon in drawer and profile when user has no photo
+
+FIXED
+* Explore shows nearby species after location permission granted
+* Stopping upload no longer prevents future uploads
+* My Obs should not lose scroll position when returning from editing
+* Allow popups in web view, which may enable PayPal on the Donate screen
+* Crash on ObsEdit when saving an obs w/ photo but w/o location permission
