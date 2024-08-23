@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
+  PLACE_MODE,
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
@@ -43,6 +44,8 @@ const RootExploreContainerWithContext = ( ): Node => {
   } = useExplore( );
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
+
+  const [canFetch, setCanFetch] = useState( false );
 
   const updateLocation = useCallback( async ( place: Object ) => {
     if ( place === "worldwide" ) {
@@ -101,9 +104,9 @@ const RootExploreContainerWithContext = ( ): Node => {
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
   const {
     count,
-    fetchingStatus,
-    setFetchingStatus,
-    handleUpdateCount
+    isFetching: isFetchingHeaderCount,
+    handleUpdateCount,
+    setIsFetching: setIsFetchingHeaderCount
   } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
@@ -133,14 +136,18 @@ const RootExploreContainerWithContext = ( ): Node => {
     }
   }, [hasBlockedLocationPermissions, updateLocation] );
 
+  // Subviews need the ability to imperatively start fetching, e.g. when the
+  // user switches from species to obs view
   const startFetching = useCallback( ( ) => {
-    const nearby = state?.placeMode === "NEARBY";
-    if ( hasLocationPermissions && nearby ) {
-      setFetchingStatus( true );
-    } else if ( !nearby ) {
-      setFetchingStatus( true );
+    if ( hasLocationPermissions || state?.placeMode !== PLACE_MODE.NEARBY ) {
+      setIsFetchingHeaderCount( true );
+      setCanFetch( true );
     }
-  }, [hasLocationPermissions, setFetchingStatus, state?.placeMode] );
+  }, [
+    hasLocationPermissions,
+    setIsFetchingHeaderCount,
+    state?.placeMode
+  ] );
 
   useEffect( ( ) => {
     startFetching( );
@@ -149,6 +156,7 @@ const RootExploreContainerWithContext = ( ): Node => {
   return (
     <>
       <Explore
+        canFetch={canFetch}
         closeFiltersModal={closeFiltersModal}
         count={count}
         hideBackButton
@@ -158,7 +166,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         currentExploreView={rootExploreView}
         setCurrentExploreView={setRootExploreView}
         isConnected={isConnected}
-        fetchingStatus={fetchingStatus}
+        isFetchingHeaderCount={isFetchingHeaderCount}
         handleUpdateCount={handleUpdateCount}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}
@@ -175,7 +183,7 @@ const RootExploreContainerWithContext = ( ): Node => {
       {renderPermissionsGate( {
         onPermissionGranted: async ( ) => {
           await updateLocation( "nearby" );
-          setFetchingStatus( true );
+          startFetching( );
         }
       } )}
     </>

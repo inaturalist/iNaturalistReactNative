@@ -10,7 +10,7 @@ import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
-  canFetch: boolean,
+  canFetch?: boolean,
   isConnected: boolean,
   queryParams: Object,
   handleUpdateCount: Function

@@ -8,7 +8,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
-  canFetch: boolean,
+  canFetch?: boolean,
   contentContainerStyle?: Object,
   data: Array<Object>,
   estimatedItemSize: number,

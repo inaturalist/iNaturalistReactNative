@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
   ExploreProvider,
+  PLACE_MODE,
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
@@ -38,6 +39,12 @@ const ExploreContainerWithContext = ( ): Node => {
   const { state, dispatch, makeSnapshot } = useExplore();
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
+
+  // Whether or not we can fetch results, *not* whether or not we *are*
+  // fetching results. This will be set when we know what data the user wants
+  // to view and whether we have the permissions we need to show it, e.g.
+  // location permissions to show nearby obs
+  const [canFetch, setCanFetch] = useState( false );
 
   useParams( );
 
@@ -88,7 +95,10 @@ const ExploreContainerWithContext = ( ): Node => {
 
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
   const {
-    count, fetchingStatus, handleUpdateCount, setFetchingStatus
+    count,
+    isFetching: isFetchingHeaderCount,
+    handleUpdateCount,
+    setIsFetching: setIsFetchingHeaderCount
   } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
@@ -104,14 +114,18 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   }, [navigation, setStoredParams, state] );
 
+  // Subviews need the ability to imperatively start fetching, e.g. when the
+  // user switches from species to obs view
   const startFetching = useCallback( ( ) => {
-    const nearby = state?.placeMode === "NEARBY";
-    if ( hasLocationPermissions && nearby ) {
-      setFetchingStatus( true );
-    } else if ( !nearby ) {
-      setFetchingStatus( true );
+    if ( hasLocationPermissions || state?.placeMode !== PLACE_MODE.NEARBY ) {
+      setIsFetchingHeaderCount( true );
+      setCanFetch( true );
     }
-  }, [hasLocationPermissions, setFetchingStatus, state?.placeMode] );
+  }, [
+    hasLocationPermissions,
+    setIsFetchingHeaderCount,
+    state?.placeMode
+  ] );
 
   useEffect( ( ) => {
     startFetching( );
@@ -120,6 +134,7 @@ const ExploreContainerWithContext = ( ): Node => {
   return (
     <>
       <Explore
+        canFetch={canFetch}
         closeFiltersModal={closeFiltersModal}
         count={count}
         currentExploreView={exploreView}
@@ -130,7 +145,7 @@ const ExploreContainerWithContext = ( ): Node => {
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
         isConnected={isConnected}
-        fetchingStatus={fetchingStatus}
+        isFetchingHeaderCount={isFetchingHeaderCount}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}
         showFiltersModal={showFiltersModal}
@@ -144,9 +159,7 @@ const ExploreContainerWithContext = ( ): Node => {
         startFetching={startFetching}
       />
       {renderPermissionsGate( {
-        onPermissionGranted: () => {
-          setFetchingStatus( true );
-        }
+        onPermissionGranted: startFetching
       } ) }
     </>
   );
