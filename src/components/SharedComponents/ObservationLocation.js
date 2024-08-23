@@ -11,8 +11,8 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   classNameMargin?: string,
   details?: boolean, // Same as withCoordinates && withGeoprivacy
-  obscured?: boolean,
   observation: Object,
+  obscured?: boolean,
   withCoordinates?: boolean,
   withGeoprivacy?: boolean,
 };
@@ -20,13 +20,15 @@ type Props = {
 const ObservationLocation = ( {
   classNameMargin,
   details,
-  obscured,
   observation,
   withCoordinates,
-  withGeoprivacy
+  withGeoprivacy,
+  obscured
 }: Props ): Node => {
   const { t } = useTranslation( );
   const geoprivacy = observation?.geoprivacy;
+  const taxonGeoprivacy = observation?.taxon_geoprivacy;
+
   let displayLocation = useMemo(
     ( ) => checkCamelAndSnakeCase( observation, "placeGuess" ),
     [observation]
@@ -131,10 +133,11 @@ const ObservationLocation = ( {
   ] );
 
   const locationIcon = () => {
-    if ( geoprivacy === "obscured" ) {
-      return "obscured";
-    } if ( geoprivacy === "private" ) {
+    if ( geoprivacy === "private" || taxonGeoprivacy === "private" ) {
       return "private";
+    }
+    if ( geoprivacy === "obscured" || taxonGeoprivacy === "obscured" ) {
+      return "obscured";
     }
     return "location";
   };

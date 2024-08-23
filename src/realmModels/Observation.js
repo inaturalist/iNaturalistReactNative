@@ -39,6 +39,7 @@ class Observation extends Realm.Object {
     quality_grade: true,
     observation_sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     taxon: Taxon.TAXON_FIELDS,
+    taxon_geoprivacy: true,
     time_observed_at: true,
     user: User && {
       ...User.FIELDS,
@@ -74,6 +75,7 @@ class Observation extends Realm.Object {
     observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
     place_guess: true,
     quality_grade: true,
+    obscured: true,
     observation_sounds: {
       id: true
     },
@@ -85,6 +87,7 @@ class Observation extends Realm.Object {
       rank: true,
       rank_level: true
     },
+    taxon_geoprivacy: true,
     time_observed_at: true
   };
 
@@ -462,6 +465,7 @@ class Observation extends Realm.Object {
       prefers_community_taxon: "bool?",
       quality_grade: { type: "string", mapTo: "qualityGrade", optional: true },
       taxon: "Taxon?",
+      taxon_geoprivacy: "string?",
       // datetime when the observer observed the organism; user-editable, but
       // only by changing observed_on_string
       time_observed_at: { type: "string", mapTo: "timeObservedAt", optional: true },
