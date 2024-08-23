@@ -78,6 +78,7 @@ const App = ( { children }: Props ): Node => {
   }, [realm?.path] );
 
   useEffect( ( ) => {
+    // don't remove this logger.info statement: it's used for internal metrics
     logger.info( "pickup" );
   }, [] );
 

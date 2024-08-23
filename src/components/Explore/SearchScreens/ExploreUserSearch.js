@@ -3,7 +3,6 @@
 import { FlashList } from "@shopify/flash-list";
 import fetchSearchResults from "api/search";
 import {
-  ActivityIndicator,
   Body3,
   Heading4,
   INatIconButton,
@@ -18,10 +17,11 @@ import React, {
   useState
 } from "react";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+import EmptySearchResults from "./EmptySearchResults";
+
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4
 } );
 
@@ -35,7 +35,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const { t } = useTranslation();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
-  const { data: userList, isLoading } = useAuthenticatedQuery(
+  const { data: userList, isLoading, refetch } = useAuthenticatedQuery(
     ["fetchSearchResults", userQuery],
     optsWithAuth => fetchSearchResults(
       {
@@ -83,11 +83,19 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     <View className="border-b border-lightGray" />
   );
 
+  const renderEmptyList = ( ) => (
+    <EmptySearchResults
+      isLoading={isLoading}
+      searchQuery={userQuery}
+      refetch={refetch}
+    />
+  );
+
   return (
     <ViewWrapper>
       <View className="flex-row justify-center p-5 bg-white">
         <INatIconButton
-          testID="ExploreTaxonSearch.close"
+          testID="ExploreUserSearch.close"
           size={18}
           icon="back"
           className="absolute top-2 left-3 z-10"
@@ -109,26 +117,19 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
           testID="SearchUser"
         />
       </View>
-      {isLoading
-        ? (
-          <View className="p-4">
-            <ActivityIndicator size={40} />
-          </View>
-        )
-        : (
-          <FlashList
-            ItemSeparatorComponent={renderItemSeparator}
-            ListHeaderComponent={renderItemSeparator}
-            accessible
-            data={userList}
-            estimatedItemSize={100}
-            initialNumToRender={5}
-            keyExtractor={item => item.id}
-            keyboardShouldPersistTaps="handled"
-            renderItem={renderItem}
-            testID="SearchUserList"
-          />
-        )}
+      <FlashList
+        ItemSeparatorComponent={renderItemSeparator}
+        ListEmptyComponent={renderEmptyList}
+        ListHeaderComponent={renderItemSeparator}
+        accessible
+        data={userList}
+        estimatedItemSize={100}
+        initialNumToRender={5}
+        keyExtractor={item => item.id}
+        keyboardShouldPersistTaps="handled"
+        renderItem={renderItem}
+        testID="SearchUserList"
+      />
     </ViewWrapper>
   );
 };

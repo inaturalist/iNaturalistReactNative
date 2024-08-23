@@ -3,10 +3,12 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
+import { addSeconds, formatISO, parseISO } from "date-fns";
 import { flatten, last } from "lodash";
+import { useCallback } from "react";
 import Observation from "realmModels/Observation";
 
-const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object => {
+const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object ): Object => {
   const baseParams = {
     ...newInputParams,
     fields: Observation.EXPLORE_LIST_FIELDS,
@@ -16,6 +18,31 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
   const { fields, ...queryKeyParams } = baseParams;
 
   const queryKey = ["useInfiniteExploreScroll", "searchObservations", queryKeyParams];
+
+  const getNextPageParam = useCallback( lastPage => {
+    const lastObs = last( lastPage.results );
+    const orderBy = baseParams.order_by;
+
+    if ( !lastObs ) return null;
+
+    if ( ["observed_on", "created_at"].includes( orderBy ) ) {
+      const lastObsDate = orderBy === "observed_on"
+        ? lastObs?.time_observed_at
+        : lastObs?.created_at;
+
+      if ( !lastObsDate ) {
+        return null;
+      }
+
+      const lastObsDateParsed = parseISO( lastObsDate );
+      const newObsDate = addSeconds( lastObsDateParsed, baseParams.order === "asc"
+        ? 1
+        : -1 );
+      return formatISO( newObsDate );
+    }
+
+    return lastObs?.id;
+  }, [baseParams.order_by, baseParams.order] );
 
   const {
     data,
@@ -36,8 +63,22 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
       };
 
       if ( pageParam ) {
-        // $FlowIgnore
-        params.id_below = pageParam;
+        if ( params.order_by === "observed_on" ) {
+          if ( baseParams.order === "asc" ) {
+            params.d1 = pageParam;
+          } else {
+            params.d2 = pageParam;
+          }
+        } else if ( params.order_by === "created_at" ) {
+          if ( baseParams.order === "asc" ) {
+            params.created_d1 = pageParam;
+          } else {
+            params.created_d2 = pageParam;
+          }
+        } else {
+          // $FlowIgnore
+          params.id_below = pageParam;
+        }
       } else {
         // $FlowIgnore
         params.page = 1;
@@ -49,7 +90,8 @@ const useInfiniteExploreScroll = ( { params: newInputParams }: Object ): Object 
       return response;
     },
     initialPageParam: 0,
-    getNextPageParam: lastPage => last( lastPage.results )?.id
+    getNextPageParam,
+    enabled
   } );
 
   const observations = flatten( data?.pages?.map( r => r.results ) ) || [];

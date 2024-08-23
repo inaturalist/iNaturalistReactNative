@@ -9,12 +9,9 @@ import {
   useCallback, useEffect, useRef, useState
 } from "react";
 import { BoundingBox, Region } from "react-native-maps";
-// import { log } from "sharedHelpers/logger";
 import { initialMapRegion } from "stores/createExploreSlice.ts";
 
 import useCurrentMapRegion from "./useCurrentMapRegion";
-
-// const logger = log.extend( "useMapLocation" );
 
 const useMapLocation = ( ) => {
   const { params } = useRoute( );
@@ -85,7 +82,6 @@ const useMapLocation = ( ) => {
   useEffect( ( ) => {
     // region gets set when a user is navigating from ExploreLocationSearch
     if ( placeIdWasSet ) {
-      // logger.debug( "setting map region based on location search" );
       const { coordinates } = place.point_geojson;
       setCurrentMapRegion( {
         ...initialMapRegion,
@@ -98,7 +94,6 @@ const useMapLocation = ( ) => {
       if ( previousPlaceGuess.current === state.placeMode ) {
         return;
       }
-      // logger.debug( "setting initial nearby or worldwide map region" );
       setCurrentMapRegion( {
         ...initialMapRegion,
         latitude: state?.lat,

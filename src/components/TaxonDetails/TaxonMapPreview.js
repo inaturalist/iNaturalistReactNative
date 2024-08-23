@@ -19,10 +19,12 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 type Props = {
-  taxon: Object
+  showSpeciesSeenCheckmark: boolean,
+  taxon: Object,
 }
 
 const TaxonMapPreview = ( {
+  showSpeciesSeenCheckmark,
   taxon
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -79,7 +81,12 @@ const TaxonMapPreview = ( {
               closeModal={( ) => setShowMapModal( false )}
               tileMapParams={obsParams}
               showLocationIndicator={false}
-              headerTitle={<TaxonDetailsTitle taxon={taxon} />}
+              headerTitle={(
+                <TaxonDetailsTitle
+                  taxon={taxon}
+                  showSpeciesSeenCheckmark={showSpeciesSeenCheckmark}
+                />
+              )}
             />
           )}
         />

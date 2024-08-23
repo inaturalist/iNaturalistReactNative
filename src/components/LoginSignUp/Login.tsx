@@ -34,7 +34,7 @@ const Login = ( ) => {
 
   return (
     <LoginSignUpWrapper
-      backgroundSource={require( "images/toucan.png" )}
+      backgroundSource={require( "images/background/toucan.jpg" )}
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
       {renderLoginForm( )}

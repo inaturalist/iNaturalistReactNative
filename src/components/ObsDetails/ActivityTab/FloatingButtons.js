@@ -8,10 +8,9 @@ import React from "react";
 import {
   useTranslation
 } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.black, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: -3,
   shadowOpacity: 0.2
 } );

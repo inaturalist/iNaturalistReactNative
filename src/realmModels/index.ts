@@ -36,6 +36,13 @@ export default {
   },
   // TODO: type?
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 55 ) {
+      const newObservations = newRealm.objects( "Observation" );
+      newObservations.keys( ).forEach( objectIndex => {
+        const newObservation = newObservations[objectIndex];
+        newObservation.updateNeedsSync();
+      } );
+    }
     if ( oldRealm.schemaVersion < 52 ) {
       const oldPrefs = oldRealm.objects( "LocalPreferences" );
       const newPrefs = newRealm.objects( "LocalPreferences" );

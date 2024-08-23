@@ -8,10 +8,9 @@ import { Pressable, View } from "components/styledComponents";
 import React, { useRef } from "react";
 import { Keyboard, TextInput } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray );
+const DROP_SHADOW = getShadow( );
 
 interface Place {
   id: string;

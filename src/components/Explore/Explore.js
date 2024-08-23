@@ -22,18 +22,16 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import ExploreHeader from "./Header/ExploreHeader";
-import useCurrentExploreView from "./hooks/useCurrentExploreView";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
 import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6
 } );
@@ -48,14 +46,17 @@ const exploreViewIcon = {
 type Props = {
   closeFiltersModal: Function,
   count: Object,
+  currentExploreView: string,
+  setCurrentExploreView: Function,
+  startFetching: Function,
   filterByIconicTaxonUnknown: Function,
+  handleUpdateCount: Function,
   hideBackButton: boolean,
   isConnected: boolean,
-  loadingStatus: boolean,
+  fetchingStatus: boolean,
   openFiltersModal: Function,
   queryParams: Object,
   showFiltersModal: boolean,
-  updateCount: Function,
   updateTaxon: Function,
   updateLocation: Function,
   updateUser: Function,
@@ -69,14 +70,17 @@ type Props = {
 const Explore = ( {
   closeFiltersModal,
   count,
+  currentExploreView,
+  setCurrentExploreView,
+  startFetching,
   filterByIconicTaxonUnknown,
+  handleUpdateCount,
   hideBackButton,
   isConnected,
-  loadingStatus,
+  fetchingStatus,
   openFiltersModal,
   queryParams,
   showFiltersModal,
-  updateCount,
   updateTaxon,
   updateLocation,
   updateUser,
@@ -90,7 +94,6 @@ const Explore = ( {
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
-  const { currentExploreView, setCurrentExploreView } = useCurrentExploreView( );
 
   const exploreViewA11yLabel = {
     observations: t( "Observations-View" ),
@@ -103,13 +106,16 @@ const Explore = ( {
   const a11yLabel = exploreViewA11yLabel[currentExploreView];
   const headerCount = count[currentExploreView];
 
+  // only start fetching infinite lists if permissions are given
+  const canFetch = fetchingStatus === true;
+
   const renderHeader = ( ) => (
     <ExploreHeader
       count={headerCount}
       exploreView={currentExploreView}
       exploreViewIcon={icon}
       hideBackButton={hideBackButton}
-      loadingStatus={loadingStatus}
+      fetchingStatus={fetchingStatus}
       openFiltersModal={openFiltersModal}
       updateTaxon={updateTaxon}
       updateLocation={updateLocation}
@@ -146,34 +152,35 @@ const Explore = ( {
       <View className="flex-1">
         {currentExploreView === "observations" && (
           <ObservationsView
-            count={count}
+            canFetch={canFetch}
             layout={layout}
             queryParams={queryParams}
-            updateCount={updateCount}
+            handleUpdateCount={handleUpdateCount}
           />
         )}
         {currentExploreView === "species" && (
           <SpeciesView
-            count={count}
+            canFetch={canFetch}
+            setCurrentExploreView={setCurrentExploreView}
             isConnected={isConnected}
             queryParams={queryParams}
-            updateCount={updateCount}
+            handleUpdateCount={handleUpdateCount}
           />
         )}
         {currentExploreView === "observers" && (
           <ObserversView
-            count={count}
+            canFetch={canFetch}
             isConnected={isConnected}
             queryParams={queryParams}
-            updateCount={updateCount}
+            handleUpdateCount={handleUpdateCount}
           />
         )}
         {currentExploreView === "identifiers" && (
           <IdentifiersView
-            count={count}
+            canFetch={canFetch}
             isConnected={isConnected}
             queryParams={queryParams}
-            updateCount={updateCount}
+            handleUpdateCount={handleUpdateCount}
           />
         )}
       </View>
@@ -221,6 +228,7 @@ const Explore = ( {
         headerText={t( "EXPLORE" )}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
+          startFetching( );
           setCurrentExploreView( newView );
           setShowExploreBottomSheet( false );
         }}

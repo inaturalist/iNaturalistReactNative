@@ -15,7 +15,7 @@ import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocat
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
-import Help from "components/Help/Help";
+import Help from "components/Help/Help.tsx";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import DQAContainer from "components/ObsDetails/DQAContainer";

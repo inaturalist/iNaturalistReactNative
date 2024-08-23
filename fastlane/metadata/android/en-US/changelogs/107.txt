@@ -1,0 +1,12 @@
+UPDATED
+* Offline notice for taxon search
+
+FIXED
+* Notes don't disappear after editing taxon
+* SELECT THIS TAXON button visible on Taxon Details while signed out
+* Location fetch should stop after saving obs w/ edited notes
+* Device should stay awake while uploading and be able to sleep afterwards
+* Higher res photos for signup / login screens
+* Obs locality notes wrap on My Obs
+* Upload success status should not get stuck
+* Explore no longer reloads every time you return

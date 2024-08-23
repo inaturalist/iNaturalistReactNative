@@ -60,7 +60,7 @@ const useLogs = ( ) => {
     ( error, event ) => {
       if ( Platform.OS === "ios" && error === "not_available" ) {
         Alert.alert(
-          t( "Looks-like-youre-not-using-Apple-Mail" ),
+          t( "No-email-app-installed" ),
           t( "You-can-still-share-the-file", {
             email: emailParams.recipients[0]
           } ),

@@ -10,7 +10,7 @@ import {
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useCurrentUser } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import useStore from "stores/useStore";
@@ -24,6 +24,8 @@ const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
   const setStoredParams = useStore( state => state.setStoredParams );
+  const exploreView = useStore( state => state.exploreView );
+  const setExploreView = useStore( state => state.setExploreView );
 
   const {
     hasPermissions: hasLocationPermissions,
@@ -85,7 +87,9 @@ const ExploreContainerWithContext = ( ): Node => {
   };
 
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
-  const { count, loadingStatus, updateCount } = useExploreHeaderCount( );
+  const {
+    count, fetchingStatus, handleUpdateCount, setFetchingStatus
+  } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -100,21 +104,36 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   }, [navigation, setStoredParams, state] );
 
+  const startFetching = useCallback( ( ) => {
+    const nearby = state?.placeMode === "NEARBY";
+    if ( hasLocationPermissions && nearby ) {
+      setFetchingStatus( true );
+    } else if ( !nearby ) {
+      setFetchingStatus( true );
+    }
+  }, [hasLocationPermissions, setFetchingStatus, state?.placeMode] );
+
+  useEffect( ( ) => {
+    startFetching( );
+  }, [startFetching] );
+
   return (
     <>
       <Explore
         closeFiltersModal={closeFiltersModal}
         count={count}
+        currentExploreView={exploreView}
+        setCurrentExploreView={setExploreView}
+        handleUpdateCount={handleUpdateCount}
         hideBackButton={false}
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
         isConnected={isConnected}
-        loadingStatus={loadingStatus}
+        fetchingStatus={fetchingStatus}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}
         showFiltersModal={showFiltersModal}
-        updateCount={updateCount}
         updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
         updateLocation={updateLocation}
         updateUser={updateUser}
@@ -122,8 +141,13 @@ const ExploreContainerWithContext = ( ): Node => {
         placeMode={state.placeMode}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
+        startFetching={startFetching}
       />
-      {renderPermissionsGate( )}
+      {renderPermissionsGate( {
+        onPermissionGranted: () => {
+          setFetchingStatus( true );
+        }
+      } ) }
     </>
   );
 };

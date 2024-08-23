@@ -13,12 +13,11 @@ import React, {
   useState
 } from "react";
 import { useTaxonSearch, useTranslation } from "sharedHooks";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: 4
 } );
 

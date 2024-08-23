@@ -31,7 +31,7 @@ const ForgotPassword = ( ): Node => {
 
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={blurFields}>
-      <LoginSignUpWrapper backgroundSource={require( "images/butterfly.png" )}>
+      <LoginSignUpWrapper backgroundSource={require( "images/background/butterfly.jpg" )}>
         {showSheet && (
           <WarningSheet
             handleClose={( ) => setShowSheet( false )}

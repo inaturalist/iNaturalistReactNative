@@ -8,9 +8,9 @@ import {
 import { predictImage } from "sharedHelpers/cvModel.ts";
 import { log } from "sharedHelpers/logger";
 
-const { useRealm } = RealmContext;
-
 const logger = log.extend( "useOfflineSuggestions" );
+
+const { useRealm } = RealmContext;
 
 const useOfflineSuggestions = (
   selectedPhotoUri: string,

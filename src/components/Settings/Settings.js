@@ -14,6 +14,7 @@ import {
   RadioButtonRow,
   ScrollViewWrapper
 } from "components/SharedComponents";
+import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert, StatusBar,
@@ -21,6 +22,7 @@ import {
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
@@ -30,16 +32,21 @@ import {
 import useStore from "stores/useStore";
 // import useStore, { zustandStorage } from "stores/useStore";
 
+const { useRealm } = RealmContext;
+
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
 const Settings = ( ) => {
+  const realm = useRealm( );
   const { isConnected } = useNetInfo( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // const { t, i18n } = useTranslation();
   const currentUser = useCurrentUser( );
-  const { remoteUser, isLoading, refetchUserMe } = useUserMe();
+  const {
+    remoteUser, isLoading, refetchUserMe
+  } = useUserMe();
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const setIsAdvancedUser = useStore( state => state.setIsAdvancedUser );
 
@@ -84,11 +91,14 @@ const Settings = ( ) => {
 
   useEffect( () => {
     if ( remoteUser ) {
+      safeRealmWrite( realm, ( ) => {
+        realm.create( "User", remoteUser, "modified" );
+      }, "modifying current user via remote fetch in Settings" );
       setSettings( remoteUser );
       // setCurrentLocale( remoteUser.locale );
       setIsSaving( false );
     }
-  }, [remoteUser] );
+  }, [remoteUser, realm] );
 
   // Listen for the webview to finish so we can fetch the updates users/me
   // response
@@ -251,7 +261,6 @@ const Settings = ( ) => {
             title: t( "Settings" ),
             loggedIn: true,
             initialUrl: SETTINGS_URL,
-            openLinksInBrowser: true,
             blurEvent: FINISHED_WEB_SETTINGS
           } );
         }}

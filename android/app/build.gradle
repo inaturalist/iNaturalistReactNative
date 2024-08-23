@@ -111,8 +111,8 @@ android {
         applicationId "org.inaturalist.iNaturalistMobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 105
-        versionName "0.39.0"
+        versionCode 111
+        versionName "0.42.0"
         setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
         manifestPlaceholders = [ GMAPS_API_KEY:project.env.get("GMAPS_API_KEY") ]
         // Detox Android setup

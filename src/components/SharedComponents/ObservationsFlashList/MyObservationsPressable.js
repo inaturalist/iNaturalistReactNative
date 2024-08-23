@@ -19,6 +19,7 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
+  const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
 
   const unsynced = typeof observation.wasSynced !== "undefined" && !observation.wasSynced( );
 
@@ -26,7 +27,7 @@ const MyObservationsPressable = ( { observation, testID, children }: Props ): No
     const { uuid } = observation;
     if ( unsynced ) {
       prepareObsEdit( observation );
-      navigateToObsEdit( navigation );
+      navigateToObsEdit( navigation, setMyObsOffsetToRestore );
     } else {
       navigation.push( "ObsDetails", { uuid } );
     }

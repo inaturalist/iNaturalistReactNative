@@ -160,6 +160,9 @@ const ToolbarContainer = ( {
   ] );
 
   const errorText = useMemo( ( ) => {
+    if ( syncInProgress ) {
+      return null;
+    }
     let error;
     if ( deleteError ) {
       error = deleteError;
@@ -171,6 +174,7 @@ const ToolbarContainer = ( {
     return error;
   }, [
     deleteError,
+    syncInProgress,
     t,
     totalUploadErrors,
     uploadMultiError

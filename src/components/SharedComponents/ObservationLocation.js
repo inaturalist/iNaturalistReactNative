@@ -110,7 +110,6 @@ const ObservationLocation = ( {
     <View className="flex-col space-y-[11px]">
       <Body4
         className="text-darkGray"
-        numberOfLines={1}
         ellipsizeMode="tail"
       >
         {displayLocation}

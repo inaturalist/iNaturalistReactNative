@@ -13,23 +13,24 @@ import Photo from "realmModels/Photo";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
-import useCurrentExploreView from "./hooks/useCurrentExploreView";
-
 interface Props {
   count: number,
   style?: Object,
   taxon: Object,
+  setCurrentExploreView: Function,
+  showSpeciesSeenCheckmark: boolean
 }
 
 const TaxonGridItem = ( {
   count,
   style,
-  taxon
+  taxon,
+  setCurrentExploreView,
+  showSpeciesSeenCheckmark = false
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const { setCurrentExploreView } = useCurrentExploreView( );
   const {
     dispatch
   } = useExplore( );
@@ -58,9 +59,9 @@ const TaxonGridItem = ( {
         testID={`TaxonGridItem.${taxon.id}`}
         iconicTaxonName={taxon.iconic_taxon_name}
       >
-        {taxon.rank_level <= 10 && (
+        {showSpeciesSeenCheckmark && (
           <View className="absolute top-3 left-3">
-            <SpeciesSeenCheckmark taxonId={taxon.id} />
+            <SpeciesSeenCheckmark />
           </View>
         )}
 

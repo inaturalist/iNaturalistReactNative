@@ -3,14 +3,16 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect,
+  useCallback,
+  useRef,
   useState
 } from "react";
 import { Alert } from "react-native";
+import Observation from "realmModels/Observation";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -19,9 +21,6 @@ import {
   useStoredLayout,
   useTranslation
 } from "sharedHooks";
-import {
-  UPLOAD_IN_PROGRESS
-} from "stores/createUploadObservationsSlice.ts";
 import useStore from "stores/useStore";
 
 import useClearGalleryPhotos from "./hooks/useClearGalleryPhotos";
@@ -34,23 +33,25 @@ import MyObservations from "./MyObservations";
 const { useRealm } = RealmContext;
 
 const MyObservationsContainer = ( ): Node => {
-  const navigation = useNavigation( );
-  const [isFocused, setIsFocused] = useState( true );
+  const isFocused = useIsFocused( );
   // clear original, large-sized photos before a user returns to any of the Camera or AICamera flows
   useClearRotatedOriginalPhotos( );
   useClearGalleryPhotos( );
   useClearSyncedMediaForUpload( isFocused );
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const setUploadStatus = useStore( state => state.setUploadStatus );
+  const listRef = useRef( );
+  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const syncingStatus = useStore( state => state.syncingStatus );
-  const resetSyncObservationsSlice
-    = useStore( state => state.resetSyncObservationsSlice );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
+  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
+  const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
+  const setMyObsOffset = useStore( state => state.setMyObsOffset );
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -118,15 +119,13 @@ const MyObservationsContainer = ( ): Node => {
 
   const handleIndividualUploadPress = useCallback( uuid => {
     const uploadExists = uploadQueue.includes( uuid );
-    if ( uploadExists ) {
-      return;
-    }
-    if ( !confirmLoggedIn( ) ) { return; }
-    if ( !confirmInternetConnection( ) ) { return; }
+    if ( uploadExists ) return;
+    if ( !confirmLoggedIn( ) ) return;
+    if ( !confirmInternetConnection( ) ) return;
     const observation = realm.objectForPrimaryKey( "Observation", uuid );
     addTotalToolbarIncrements( observation );
     addToUploadQueue( uuid );
-    setUploadStatus( UPLOAD_IN_PROGRESS );
+    setStartUploadObservations( );
   }, [
     confirmLoggedIn,
     uploadQueue,
@@ -134,33 +133,33 @@ const MyObservationsContainer = ( ): Node => {
     realm,
     addTotalToolbarIncrements,
     addToUploadQueue,
-    setUploadStatus
+    setStartUploadObservations
   ] );
 
-  useEffect( ( ) => {
-    // this is intended to have the automatic sync run once
-    // the very first time a user lands on MyObservations
-    startAutomaticSync( );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
-
-  useEffect( ( ) => {
-    // this is intended to have the automatic sync run once
-    // every time a user lands on MyObservations from a different tab screen.
-    // ideally, we wouldn't need both this and the useEffect hook above
-    navigation.addListener( "focus", ( ) => {
-      setIsFocused( true );
+  useFocusEffect(
+    // need to reset the state on a FocusEffect, not a blur listener, because
+    // tab bar screens don't seem to blur
+    useCallback( ( ) => {
+      const unsynced = Observation.filterUnsyncedObservations( realm );
+      setNumUnuploadedObservations( unsynced.length );
       startAutomaticSync( );
-    } );
-    navigation.addListener( "blur", ( ) => {
-      setIsFocused( false );
-      resetSyncObservationsSlice( );
-    } );
+    }, [
+      startAutomaticSync,
+      setNumUnuploadedObservations,
+      realm
+    ] )
+  );
+
+  // Scroll the list to the offset we need to restore, e.g. when you are
+  // scrolled way down, edit an observation, and return. Entering ObsEdit
+  // takes you into a parallel stack navigator, which will destroy MyObs, so
+  // we need to keep track of the scroll offset manually
+  const restoreScrollOffset = useCallback( ( ) => {
+    if ( listRef.current && myObsOffsetToRestore ) {
+      listRef.current.scrollToOffset( { offset: myObsOffsetToRestore } );
+    }
   }, [
-    navigation,
-    startAutomaticSync,
-    syncingStatus,
-    resetSyncObservationsSlice
+    myObsOffsetToRestore
   ] );
 
   if ( !layout ) { return null; }
@@ -179,8 +178,14 @@ const MyObservationsContainer = ( ): Node => {
       handleIndividualUploadPress={handleIndividualUploadPress}
       handleSyncButtonPress={handleSyncButtonPress}
       layout={layout}
+      listRef={listRef}
+      numUnuploadedObservations={numUnuploadedObservations}
       observations={observations}
       onEndReached={fetchNextPage}
+      onListLayout={() => restoreScrollOffset()}
+      // Keep track of the scroll offset so we can restore it when we mount
+      // this component again after returning from ObsEdit
+      onScroll={scrollEvent => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y )}
       setShowLoginSheet={setShowLoginSheet}
       showLoginSheet={showLoginSheet}
       status={observationListStatus}

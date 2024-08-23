@@ -19,7 +19,7 @@ import RNFS from "react-native-fs";
 import * as ImagePicker from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import { sleep } from "sharedHelpers/util";
+import { sleep } from "sharedHelpers/util.ts";
 import useStore from "stores/useStore";
 
 const MAX_PHOTOS_ALLOWED = 20;
@@ -103,7 +103,6 @@ const PhotoGallery = ( ): Node => {
       selectionLimit: MAX_PHOTOS_ALLOWED,
       mediaType: "photo",
       includeBase64: false,
-      includeExtra: true,
       forceOldAndroidPhotoPicker: true,
       chooserTitle: t( "Import-Photos-From" ),
       presentationStyle: "fullScreen"
@@ -192,10 +191,24 @@ const PhotoGallery = ( ): Node => {
       setPhotoGalleryShown( false );
     }
   }, [
-    navToObsEdit, navToObsList, photoGalleryShown, numOfObsPhotos, setPhotoImporterState,
-    evidenceToAdd, galleryUris, navigation, setGroupedPhotos, fromGroupPhotos, skipGroupPhotos,
-    groupedPhotos, currentObservation, updateObservations, observations, currentObservationIndex,
-    params, navToSuggestions
+    currentObservation,
+    currentObservationIndex,
+    evidenceToAdd,
+    fromGroupPhotos,
+    galleryUris,
+    groupedPhotos,
+    navigation,
+    navToObsEdit,
+    navToObsList,
+    navToSuggestions,
+    numOfObsPhotos,
+    observations,
+    params,
+    photoGalleryShown,
+    setGroupedPhotos,
+    setPhotoImporterState,
+    skipGroupPhotos,
+    updateObservations
   ] );
 
   useFocusEffect(

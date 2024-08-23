@@ -90,7 +90,7 @@ APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
 April = April
-Are-you-a-teacher = Are you a teacher wanting to use iNaturalist with your students?
+Are-you-an-educator = Are you an educator wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
@@ -154,13 +154,15 @@ Change-taxon-filter = Change taxon filter
 Change-user = Change user
 # Label for a button that cycles through zoom levels for the camera
 Change-zoom = Change zoom
-Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons
+Check-this-box-if-you-want-to-apply-a-Creative-Commons = Check this box if you want to apply a Creative Commons Attribution-NonCommercial license to uploaded content. This means anyone can copy and reuse your photos and/or observations without asking for permission as long as they give you credit and don't use the works commercially. You can choose a different license or remove the license later, but this is the best license for sharing with researchers.
 # Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 # Text for a button prompting the user to grant access to the gallery
 CHOOSE-PHOTOS = CHOOSE PHOTOS
 # Label for button that chooses a taxon
 Choose-taxon = Choose taxon
+# Label for button that chooses top taxon
+Choose-top-taxon = Choose top taxon
 # Label for a button that clears content, like the text entered in a text
 # field
 Clear = Clear
@@ -281,6 +283,8 @@ DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Delete photo
 Delete-sound = Delete sound
+# Hint for a button that clears text you entered
+Deletes-entered-text = Deletes entered text
 # Shows the progress of deletions for X of Y
 Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
 # Shows the number of observations a user is currently deleting out of total on my observations page
@@ -334,6 +338,7 @@ Edit-location = Edit location
 Edit-Observation = Edit Observation
 # Label for button that edits an observation's taxon
 Edits-this-observations-taxon = Edits this observation's taxon
+EDUCATORS = EDUCATORS
 EMAIL = EMAIL
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
 # Button that enables the camera's flash
@@ -346,7 +351,6 @@ Endemic = Endemic
 Endemic-to-place = Endemic to { $place }
 # Title for a section describing an error
 Error = Error
-Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 ERROR-LOADING-DQA = ERROR LOADING IN DQA
 # Title of dialog or section describing an error
 Error-title = Error
@@ -374,6 +378,8 @@ Failed-to-log-in = Failed to log in
 FEATURED = FEATURED
 # Month of February
 February = February
+FEEDBACK = FEEDBACK
+Feedback-Submitted = Feedback Submitted
 Fetching-location = Fetching location...
 Filter = Filter
 FILTER-BY-A-PROJECT = FILTER BY A PROJECT
@@ -453,7 +459,6 @@ iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-gallery = iNatur
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
-INATURALIST-HELP = INATURALIST HELP
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
@@ -536,8 +541,6 @@ LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
-# Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
-Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
 Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 MAP = MAP
@@ -593,6 +596,9 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
+# Alert dialog title when attempting to send email but no email is installed
+No-email-app-installed = No email app installed
+No-email-app-installed-body = If you have another way of sending email, the address is { $address }
 No-Location = No Location
 No-Media = No Media
 # As in a machine learning model that powers automated suggestions
@@ -601,6 +607,7 @@ No-Notifications-Found = You have no notifications! Get started by creating your
 No-projects-match-that-search = No projects match that search
 # Used for explore screen when search params lead to a search with no data
 No-results-found = No results found
+No-results-found-for-that-search = No results found for that search.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
 NONE = NONE
@@ -705,6 +712,7 @@ Please-click-the-link = Please click the link in the email within 60 minutes  to
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
+Please-try-again-when-you-are-online = Please try again when you are online!
 POTENTIAL-DISAGREEMENT = POTENTIAL DISAGREEMENT
 Potential-disagreement-description = <0>Is the evidence enough to confirm this is </0><1></1><0>?<0>
 Potential-disagreement-disagree = <0>No, but this is a member of </0><1></1>
@@ -885,6 +893,9 @@ Some-data-privacy-laws = Some data privacy laws, like the European Union's Gener
 # Generic error message
 Something-went-wrong = Something went wrong.
 Sorry-this-observation-was-deleted = Sorry, this observation was deleted
+# Error message if the app tries to open a URL the operating system can't
+# handle
+Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
 SORT-BY = SORT BY
 Sort-by = Sort by
 # Character separating current position and total duration when playing a
@@ -925,6 +936,7 @@ Stop-upload = Stop upload
 Stop-verb = Stop
 # Accessibility hint for a button that stops the recording of a sound
 Stops-recording-sound = Stops recording sound
+SUBMIT = SUBMIT
 SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 # Identification category
@@ -940,12 +952,12 @@ TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
 TAXONOMIC-RANKS = TAXONOMIC RANKS
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
-TEACHERS = TEACHERS
-TEACHERS-GUIDE = TEACHERS' GUIDE
 TEAM = TEAM
 Terms-of-Use = Terms of Use
 TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
+Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
+Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
@@ -1011,6 +1023,7 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 Using-iNaturalist-requires-the-storage = Using iNaturalist requires the storage of personal information like your email address, all iNaturalist data is stored in the United States, and we cannot be sure what legal jurisdiction you are in when you are using iNaturalist, so in order to comply with privacy laws like the GDPR, you must acknowledge that you understand and accept this risk and consent to transferring your personal information to iNaturalist's servers in the US.
 VIEW-CHILDREN-TAXA = VIEW CHILDREN TAXA
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
+VIEW-EDUCATORS-GUIDE = VIEW EDUCATOR'S GUIDE
 View-in-browser = View in browser
 VIEW-IN-EXPLORE = VIEW IN EXPLORE
 VIEW-INATURALIST-HELP = VIEW INATURALIST HELP
@@ -1023,7 +1036,6 @@ VIEW-PROJECTS = VIEW PROJECTS
 # Label for a button that shows identification suggestions for an observation
 # or photo
 View-suggestions = View suggestions
-VIEW-TEACHERS-GUIDE = VIEW TEACHERS' GUIDE
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 We-store-personal-information = We store personal information like usernames and email addresses in order to manage accounts on this site, and to comply with privacy laws, we need you to check this box to indicate that you consent to this use of personal information. To learn more about what information we collect and how we use it, please see our Privacy Policy and our Terms of Use.
@@ -1142,6 +1154,7 @@ x-uploads-failed =
        *[other] { $count } uploads failed
     }
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.

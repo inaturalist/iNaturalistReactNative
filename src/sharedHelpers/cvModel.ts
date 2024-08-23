@@ -2,10 +2,7 @@ import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
-import { log } from "sharedHelpers/logger";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
-
-const logger = log.extend( "cvModel" );
 
 const modelFiles = {
   // The iOS model and taxonomy files always have to be referenced in the
@@ -78,11 +75,9 @@ const addCameraFilesAndroid = () => {
 
     // Android writes over existing files
     if ( hasModel !== undefined ) {
-      logger.debug( "Found model asset found with filename", model );
       copyFilesAndroid( `camera/${model}`, modelPath );
       copyFilesAndroid( `camera/${taxonomy}`, taxonomyPath );
     } else {
-      logger.debug( "No model asset found to copy into document directory." );
       Alert.alert(
         i18next.t( "No-model-found" ),
         i18next.t( "During-app-start-no-model-found" )

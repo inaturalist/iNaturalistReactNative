@@ -2,10 +2,9 @@
 import classNames from "classnames";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { getShadowForColor } from "styles/global";
-import colors from "styles/tailwindColors";
+import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadowForColor( colors.darkGray, {
+const DROP_SHADOW = getShadow( {
   offsetHeight: -2
 } );
 

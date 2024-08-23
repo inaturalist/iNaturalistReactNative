@@ -9,7 +9,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
-import { getShadowForColor } from "styles/global";
+import { getShadow } from "styles/global";
 
 const CoordinatesCopiedNotification = ( ): React.Node => {
   const theme = useTheme( );
@@ -25,7 +25,7 @@ const CoordinatesCopiedNotification = ( ): React.Node => {
         "p-3",
         "rounded-xl"
       )}
-      style={getShadowForColor( theme.colors.primary )}
+      style={getShadow( )}
     >
       <Body2 className="mr-3">
         {t( "Coordinates-copied-to-clipboard" )}

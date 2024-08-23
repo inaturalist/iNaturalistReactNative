@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.39.0",
+  "version": "0.42.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -60,7 +60,7 @@
     "@shopify/flash-list": "^1.7.0",
     "@tanstack/react-query": "^5.29.0",
     "apisauce": "^3.0.1",
-    "axios": "^1.6.8",
+    "axios": "^1.7.4",
     "classnames": "^2.5.1",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.1",
@@ -89,7 +89,7 @@
     "react-native-email-link": "^1.16.0",
     "react-native-event-listeners": "^1.0.7",
     "react-native-exception-handler": "^2.10.10",
-    "react-native-exif-reader": "github:inaturalist/react-native-exif-reader#v0.4.0",
+    "react-native-exif-reader": "github:inaturalist/react-native-exif-reader#v0.4.1",
     "react-native-fs": "^2.20.0",
     "react-native-geocoder-reborn": "^0.9.0",
     "react-native-gesture-handler": "^2.16.0",

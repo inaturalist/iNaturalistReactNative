@@ -8,9 +8,7 @@ import { View } from "components/styledComponents";
 import _ from "lodash";
 import * as React from "react";
 import { Trans } from "react-i18next";
-import {
-  Linking
-} from "react-native";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 import { useTranslation } from "sharedHooks";
 
 const baseUrl = "https://www.inaturalist.org";
@@ -64,7 +62,7 @@ const EstablishmentMeans = ( { taxon }: Props ): React.Node => {
           <Body2 />,
           <Body2
             className="text-inatGreen underline"
-            onPress={( ) => Linking.openURL( url )}
+            onPress={( ) => openExternalWebBrowser( url )}
           />
         ]}
       />

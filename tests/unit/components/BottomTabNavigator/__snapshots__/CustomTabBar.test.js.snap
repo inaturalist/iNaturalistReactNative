@@ -49,12 +49,12 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             },
             {
               "elevation": 20,
-              "shadowColor": "#000000",
+              "shadowColor": "rgba( 0, 0, 0, 0.25 )",
               "shadowOffset": {
-                "height": -3,
+                "height": -2,
                 "width": 0,
               },
-              "shadowOpacity": 0.2,
+              "shadowOpacity": 0.25,
               "shadowRadius": 2,
             },
           ],
@@ -234,7 +234,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </View>
@@ -291,7 +291,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
               },
               {
                 "elevation": 5,
-                "shadowColor": "#000000",
+                "shadowColor": "rgba( 0, 0, 0, 0.25 )",
                 "shadowOffset": {
                   "height": 2,
                   "width": 0,

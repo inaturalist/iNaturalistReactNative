@@ -22,6 +22,7 @@ const AddObsButton = (): React.Node => {
   const isAdvancedUser = useStore( state => state.isAdvancedUser );
   const navigation = useNavigation( );
   React.useEffect( ( ) => {
+    // don't remove this logger.info statement: it's used for internal metrics
     logger.info( `isAdvancedUser: ${isAdvancedUser}` );
   }, [isAdvancedUser] );
 
