@@ -44,6 +44,7 @@ const exploreViewIcon = {
 };
 
 type Props = {
+  canFetch?: boolean,
   closeFiltersModal: Function,
   count: Object,
   currentExploreView: string,
@@ -53,7 +54,7 @@ type Props = {
   handleUpdateCount: Function,
   hideBackButton: boolean,
   isConnected: boolean,
-  fetchingStatus: boolean,
+  isFetchingHeaderCount: boolean,
   openFiltersModal: Function,
   queryParams: Object,
   showFiltersModal: boolean,
@@ -68,6 +69,7 @@ type Props = {
 }
 
 const Explore = ( {
+  canFetch,
   closeFiltersModal,
   count,
   currentExploreView,
@@ -77,7 +79,7 @@ const Explore = ( {
   handleUpdateCount,
   hideBackButton,
   isConnected,
-  fetchingStatus,
+  isFetchingHeaderCount,
   openFiltersModal,
   queryParams,
   showFiltersModal,
@@ -106,16 +108,13 @@ const Explore = ( {
   const a11yLabel = exploreViewA11yLabel[currentExploreView];
   const headerCount = count[currentExploreView];
 
-  // only start fetching infinite lists if permissions are given
-  const canFetch = fetchingStatus === true;
-
   const renderHeader = ( ) => (
     <ExploreHeader
       count={headerCount}
       exploreView={currentExploreView}
       exploreViewIcon={icon}
       hideBackButton={hideBackButton}
-      fetchingStatus={fetchingStatus}
+      isFetchingHeaderCount={isFetchingHeaderCount}
       openFiltersModal={openFiltersModal}
       updateTaxon={updateTaxon}
       updateLocation={updateLocation}

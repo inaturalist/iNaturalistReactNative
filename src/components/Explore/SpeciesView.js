@@ -19,7 +19,7 @@ import ExploreFlashList from "./ExploreFlashList";
 const GUTTER = 15;
 
 type Props = {
-  canFetch: boolean,
+  canFetch?: boolean,
   isConnected: boolean,
   queryParams: Object,
   setCurrentExploreView: Function,

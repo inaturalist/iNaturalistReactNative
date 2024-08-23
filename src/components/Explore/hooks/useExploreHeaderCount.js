@@ -11,14 +11,14 @@ const useExploreHeaderCount = ( ): Object => {
     observers: null,
     identifiers: null
   } );
-  const [fetchingStatus, setFetchingStatus] = useState( null );
+  const [isFetching, setIsFetching] = useState( false );
 
   const updateCount = useCallback( newCount => {
     setCount( {
       ...count,
       ...newCount
     } );
-    setFetchingStatus( false );
+    setIsFetching( false );
   }, [count] );
 
   const memoizedCount = useMemo( ( ) => count, [count] );
@@ -29,16 +29,16 @@ const useExploreHeaderCount = ( ): Object => {
     }
     if ( count[exploreView] !== totalResults ) {
       updateCount( { [exploreView]: totalResults } );
-    } else if ( count[exploreView] === totalResults && fetchingStatus === true ) {
-      setFetchingStatus( false );
+    } else if ( count[exploreView] === totalResults && isFetching ) {
+      setIsFetching( false );
     }
   };
 
   return {
     count: memoizedCount,
-    fetchingStatus,
+    isFetching,
     handleUpdateCount,
-    setFetchingStatus
+    setIsFetching
   };
 };
 

@@ -15,7 +15,7 @@ type Props = {
   count: ?number,
   exploreView: string,
   exploreViewIcon: string,
-  fetchingStatus: boolean,
+  isFetching: boolean,
   onPress: Function,
 }
 
@@ -23,7 +23,7 @@ const ExploreHeaderCount = ( {
   count,
   exploreView,
   exploreViewIcon,
-  fetchingStatus,
+  isFetching,
   onPress
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -43,7 +43,7 @@ const ExploreHeaderCount = ( {
   };
 
   const renderHeader = ( ) => {
-    if ( fetchingStatus ) {
+    if ( isFetching ) {
       return <ActivityIndicator size={25} />;
     } if ( count ) {
       return (
