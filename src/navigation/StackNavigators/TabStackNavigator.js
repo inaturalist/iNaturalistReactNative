@@ -9,12 +9,12 @@ import NetworkLogging from "components/Developer/NetworkLogging.tsx";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate.tsx";
-import ExploreContainer from "components/Explore/ExploreContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
+import StackedExploreContainer from "components/Explore/StackedExploreContainer";
 import Help from "components/Help/Help.tsx";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
@@ -107,7 +107,7 @@ const TabStackNavigator = ( ): Node => (
       />
       <Stack.Screen
         name="Explore"
-        component={ExploreContainer}
+        component={StackedExploreContainer}
       />
     </Stack.Group>
     <Stack.Screen

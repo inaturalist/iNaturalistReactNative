@@ -1,55 +1,73 @@
 // @flow
 
+// Generic Explore container. Should not be used alone, needs to be wrapped in
+// another container that uses ExploreProvider
+
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,
-  ExploreProvider,
   PLACE_MODE,
   useExplore
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState
+} from "react";
 import { useCurrentUser } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
-import useStore from "stores/useStore";
 
 import Explore from "./Explore";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 import useParams from "./hooks/useParams";
 
-const ExploreContainerWithContext = ( ): Node => {
+type Props = {
+  exploreView: string,
+  hideBackButton?: boolean,
+  setExploreView: Function,
+  setStoredParams: Function
+}
+
+const ExploreContainer = ( {
+  exploreView,
+  hideBackButton,
+  setExploreView,
+  setStoredParams
+}: Props ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
-  const setStoredParams = useStore( state => state.setStoredParams );
-  const exploreView = useStore( state => state.exploreView );
-  const setExploreView = useStore( state => state.setExploreView );
+  const currentUser = useCurrentUser( );
 
   const {
+    hasBlockedPermissions: hasBlockedLocationPermissions,
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
     requestPermissions: requestLocationPermissions
   } = useLocationPermission( );
 
-  const currentUser = useCurrentUser();
-
-  const { state, dispatch, makeSnapshot } = useExplore();
+  const {
+    dispatch,
+    makeSnapshot,
+    state
+  } = useExplore();
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
   // Whether or not we can fetch results, *not* whether or not we *are*
   // fetching results. This will be set when we know what data the user wants
   // to view and whether we have the permissions we need to show it, e.g.
-  // location permissions to show nearby obs
+  // location permissions to show "nearby" obs
   const [canFetch, setCanFetch] = useState( false );
 
   useParams( );
 
-  const updateLocation = ( place: Object ) => {
-    if ( place === "worldwide" ) {
+  const updateLocation = useCallback( async ( place: Object ) => {
+    if ( place === PLACE_MODE.WORLDWIDE ) {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
         type: EXPLORE_ACTION.SET_PLACE,
@@ -65,7 +83,7 @@ const ExploreContainerWithContext = ( ): Node => {
         placeGuess: place?.display_name
       } );
     }
-  };
+  }, [dispatch, navigation] );
 
   const updateUser = ( user: Object ) => {
     dispatch( {
@@ -114,6 +132,16 @@ const ExploreContainerWithContext = ( ): Node => {
     } );
   }, [navigation, setStoredParams, state] );
 
+  useEffect( () => {
+    if ( hasBlockedLocationPermissions && state?.placeMode !== PLACE_MODE.NEARBY ) {
+      updateLocation( PLACE_MODE.WORLDWIDE );
+    }
+  }, [
+    hasBlockedLocationPermissions,
+    state?.placeMode,
+    updateLocation
+  ] );
+
   // Subviews need the ability to imperatively start fetching, e.g. when the
   // user switches from species to obs view
   const startFetching = useCallback( ( ) => {
@@ -138,25 +166,25 @@ const ExploreContainerWithContext = ( ): Node => {
         closeFiltersModal={closeFiltersModal}
         count={count}
         currentExploreView={exploreView}
-        setCurrentExploreView={setExploreView}
-        handleUpdateCount={handleUpdateCount}
-        hideBackButton={false}
         filterByIconicTaxonUnknown={
           () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
         }
+        handleUpdateCount={handleUpdateCount}
+        hasLocationPermissions={hasLocationPermissions}
+        hideBackButton={hideBackButton}
         isConnected={isConnected}
         isFetchingHeaderCount={isFetchingHeaderCount}
         openFiltersModal={openFiltersModal}
-        queryParams={queryParams}
-        showFiltersModal={showFiltersModal}
-        updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
-        updateLocation={updateLocation}
-        updateUser={updateUser}
-        updateProject={updateProject}
         placeMode={state.placeMode}
-        hasLocationPermissions={hasLocationPermissions}
+        queryParams={queryParams}
         requestLocationPermissions={requestLocationPermissions}
+        setCurrentExploreView={setExploreView}
+        showFiltersModal={showFiltersModal}
         startFetching={startFetching}
+        updateLocation={updateLocation}
+        updateProject={updateProject}
+        updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
+        updateUser={updateUser}
       />
       {renderPermissionsGate( {
         onPermissionGranted: startFetching
@@ -164,11 +192,5 @@ const ExploreContainerWithContext = ( ): Node => {
     </>
   );
 };
-
-const ExploreContainer = (): Node => (
-  <ExploreProvider>
-    <ExploreContainerWithContext />
-  </ExploreProvider>
-);
 
 export default ExploreContainer;
