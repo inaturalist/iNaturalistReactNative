@@ -4,6 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import createExploreSlice from "./createExploreSlice";
 import createLayoutSlice from "./createLayoutSlice";
+import createMyObsSlice from "./createMyObsSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
 import createRootExploreSlice from "./createRootExploreSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
@@ -26,11 +27,12 @@ const useStore = create( persist(
   ( ...args ) => {
     // Let's make our slices
     const slices = [
-      createSyncObservationsSlice( ...args ),
       createExploreSlice( ...args ),
-      createRootExploreSlice( ...args ),
-      createObservationFlowSlice( ...args ),
       createLayoutSlice( ...args ),
+      createMyObsSlice( ...args ),
+      createObservationFlowSlice( ...args ),
+      createRootExploreSlice( ...args ),
+      createSyncObservationsSlice( ...args ),
       createUploadObservationsSlice( ...args )
     ];
 

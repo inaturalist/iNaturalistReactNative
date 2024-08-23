@@ -101,10 +101,10 @@ const pressIndividualUpload = observation => {
   actor.press( uploadIcon );
 };
 
-const waitForDisplayedText = async text => {
+const waitForDisplayedText = async ( text, timeout = 1000 ) => {
   await waitFor( ( ) => {
     expect( screen.getByText( text ) ).toBeVisible( );
-  } );
+  }, { timeout } );
 };
 
 const pressButtonByLabel = async labelText => {
@@ -163,7 +163,8 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     // missing evidence sheet pops up here, so need to press SAVE twice
     await pressButtonByText( "OK" );
     await pressButtonByText( /SAVE/ );
-    await waitForDisplayedText( /Upload 3 observations/ );
+    await waitForDisplayedText( /1 observation uploaded/ );
+    await waitForDisplayedText( /Upload 3 observations/, 5000 );
   } );
 
   // it( "should display fresh toolbar status after deleting an observation, then"

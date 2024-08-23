@@ -14,9 +14,9 @@ import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback } from "react";
-import { Alert, Linking } from "react-native";
+import React from "react";
 import { useTheme } from "react-native-paper";
+import { openExternalWebBrowser } from "sharedHelpers/util.ts";
 
 import Attribution from "./Attribution";
 import LocationSection from "./LocationSection";
@@ -26,28 +26,14 @@ type Props = {
   observation: Object
 }
 
-const ViewInBrowserButton = ( { id } ) => {
-  const url = `https://inaturalist.org/observations/${id}`;
-  const handlePress = useCallback( async () => {
-    // Checking if the link is supported for links with custom URL scheme.
-    const supported = await Linking.canOpenURL( url );
-
-    if ( supported ) {
-      await Linking.openURL( url );
-    } else {
-      Alert.alert( `Don't know how to open this URL: ${url}` );
-    }
-  }, [url] );
-
-  return (
-    <Body4
-      className="underline mt-[11px]"
-      onPress={handlePress}
-    >
-      {t( "View-in-browser" )}
-    </Body4>
-  );
-};
+const ViewInBrowserButton = ( { id } ) => (
+  <Body4
+    className="underline mt-[11px]"
+    onPress={async () => openExternalWebBrowser( `https://www.inaturalist.org/observations/${id}` )}
+  >
+    {t( "View-in-browser" )}
+  </Body4>
+);
 
 const qualityGradeOption = option => {
   switch ( option ) {

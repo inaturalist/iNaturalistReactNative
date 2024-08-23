@@ -18,7 +18,10 @@ const ContentWithIcon = ( {
   classNameMargin,
   children
 }: Props ): React.Node => (
-  <View className={classNames( "flex-row space-x-[5px]", classNameMargin )}>
+  <View
+    className={classNames( "flex-row space-x-[5px]", classNameMargin )}
+    testID={`ContentWithIcon.${icon}`}
+  >
     <INatIcon name={icon} size={size} />
     {children}
   </View>

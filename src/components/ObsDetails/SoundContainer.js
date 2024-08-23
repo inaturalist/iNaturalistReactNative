@@ -14,10 +14,7 @@ import React, {
 } from "react";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import { useTheme } from "react-native-paper";
-import { log } from "sharedHelpers/logger";
 import { useTranslation } from "sharedHooks";
-
-const logger = log.extend( "SoundContainer" );
 
 const SoundSlider = ( { playBackState, onSlidingComplete } ) => {
   const theme = useTheme( );
@@ -110,7 +107,6 @@ const SoundContainer = ( {
       if ( pausePlayerError.message.match( /Player has already stopped/ ) ) {
         // Something else might be wrong, but it's not really something to
         // bother the user with
-        logger.error( "[SoundContainer.js] Error pausing player: ", pausePlayerError );
         return;
       }
       throw pausePlayerError;

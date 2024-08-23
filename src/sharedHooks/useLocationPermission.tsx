@@ -3,8 +3,7 @@ import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer.tsx";
-import React, { useEffect, useState } from "react";
-import { AppState } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   checkMultiple,
   RESULTS
@@ -30,16 +29,23 @@ interface LocationPermissionCallbacks {
 const useLocationPermission = ( ) => {
   const [hasPermissions, setHasPermissions] = useState<boolean>( );
   const [showPermissionGate, setShowPermissionGate] = useState( false );
+  const [hasBlockedPermissions, setHasBlockedPermissions] = useState( false );
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
-  const renderPermissionsGate = ( callbacks?: LocationPermissionCallbacks ) => {
+  const renderPermissionsGate = useCallback( ( callbacks?: LocationPermissionCallbacks ) => {
     const {
       onPermissionGranted,
       onPermissionDenied,
       onPermissionBlocked,
       onModalHide
     } = callbacks || { };
+
+    // this prevents infinite rerenders of the LocationPermissionGate component
+    if ( !showPermissionGate ) {
+      return null;
+    }
+
     return (
       <LocationPermissionGate
         permissionNeeded={showPermissionGate}
@@ -54,18 +60,17 @@ const useLocationPermission = ( ) => {
           if ( onPermissionGranted ) onPermissionGranted( );
         }}
         onPermissionDenied={( ) => {
-          setShowPermissionGate( false );
-          setHasPermissions( false );
           if ( onPermissionDenied ) onPermissionDenied( );
         }}
         onPermissionBlocked={( ) => {
-          setShowPermissionGate( false );
           setHasPermissions( false );
+          setHasBlockedPermissions( true );
+          setShowPermissionGate( true );
           if ( onPermissionBlocked ) onPermissionBlocked( );
         }}
       />
     );
-  };
+  }, [showPermissionGate] );
 
   function requestPermissions() {
     setShowPermissionGate( true );
@@ -77,25 +82,14 @@ const useLocationPermission = ( ) => {
     );
     if ( permissionsResult === RESULTS.GRANTED ) {
       setHasPermissions( true );
+    } else if ( permissionsResult === RESULTS.BLOCKED ) {
+      setHasPermissions( false );
+      setHasBlockedPermissions( true );
     } else {
       setHasPermissions( false );
       console.log( "Location permissions have not been granted." );
     }
   }
-
-  // Check permissions every time the app is back in the foreground. The user could
-  // have changed permissions in the settings app while the current screen was in the background.
-  useEffect( () => {
-    const subscription = AppState.addEventListener( "change", appState => {
-      if ( appState === "active" ) {
-        checkPermissions();
-      }
-    } );
-
-    return () => {
-      subscription.remove();
-    };
-  }, [] );
 
   // Check permissions on mount
   useEffect( () => {
@@ -105,7 +99,8 @@ const useLocationPermission = ( ) => {
   return {
     hasPermissions,
     renderPermissionsGate,
-    requestPermissions
+    requestPermissions,
+    hasBlockedPermissions
   };
 };
 

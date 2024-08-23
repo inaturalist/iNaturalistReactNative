@@ -33,6 +33,7 @@ type Props = {
   showImproveWithLocationButton: boolean,
   suggestions: Object,
   toggleLocation: Function,
+  urlWillCrashOffline: boolean,
   usingOfflineSuggestions: boolean
 };
 
@@ -52,6 +53,7 @@ const Suggestions = ( {
   showImproveWithLocationButton,
   suggestions,
   toggleLocation,
+  urlWillCrashOffline,
   usingOfflineSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -79,8 +81,10 @@ const Suggestions = ( {
       hasTopSuggestion={!!topSuggestion}
       isLoading={isLoading}
       onTaxonChosen={onTaxonChosen}
+      reloadSuggestions={reloadSuggestions}
+      urlWillCrashOffline={urlWillCrashOffline}
     />
-  ), [isLoading, topSuggestion, onTaxonChosen] );
+  ), [isLoading, topSuggestion, onTaxonChosen, urlWillCrashOffline, reloadSuggestions] );
 
   const renderFooter = useCallback( ( ) => (
     <SuggestionsFooter
@@ -135,20 +139,17 @@ const Suggestions = ( {
 
   const renderTopSuggestion = ( { item } ) => {
     if ( isLoading ) { return null; }
-    if ( !item && !usingOfflineSuggestions ) {
+    if ( !item ) {
       return (
         <Body1 className="mx-2 p-4 text-center text-xl">
           {t( "We-are-not-confident-enough-to-make-a-top-ID-suggestion" )}
         </Body1>
       );
     }
-    if ( !item ) {
-      return null;
-    }
     return (
       <View className="bg-inatGreen/[.13]">
         <Suggestion
-          accessibilityLabel={t( "Choose-taxon" )}
+          accessibilityLabel={t( "Choose-top-taxon" )}
           suggestion={item}
           isTopSuggestion
           onTaxonChosen={onTaxonChosen}

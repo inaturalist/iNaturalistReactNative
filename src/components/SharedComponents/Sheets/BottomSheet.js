@@ -23,6 +23,7 @@ type Props = {
   handleClose?: Function,
   hideCloseButton?: boolean,
   headerText?: string,
+  onLayout?: Function,
   snapPoints?: Array<string>,
   insideModal?: boolean,
   keyboardShouldPersistTaps: string
@@ -37,6 +38,7 @@ const StandardBottomSheet = ( {
   handleClose,
   hideCloseButton = false,
   headerText,
+  onLayout,
   snapPoints,
   insideModal,
   keyboardShouldPersistTaps = "never"
@@ -116,6 +118,7 @@ const StandardBottomSheet = ( {
               ? "pb-7"
               : null
           )}
+          onLayout={onLayout}
         >
           <View className="items-center">
             <Heading4 testID="bottom-sheet-header">{headerText}</Heading4>

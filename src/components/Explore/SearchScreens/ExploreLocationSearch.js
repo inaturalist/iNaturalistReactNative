@@ -2,7 +2,6 @@
 
 import fetchSearchResults from "api/search";
 import {
-  ActivityIndicator,
   Body3,
   Button,
   Heading4,
@@ -25,6 +24,8 @@ import { FlatList } from "react-native";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission.tsx";
 import { getShadow } from "styles/global";
+
+import EmptySearchResults from "./EmptySearchResults";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4
@@ -51,7 +52,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
     [updateLocation, closeModal]
   );
 
-  const { data: placeResults, isLoading } = useAuthenticatedQuery(
+  const { data: placeResults, isLoading, refetch } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
     optsWithAuth => fetchSearchResults(
       {
@@ -114,11 +115,19 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
     }
   };
 
+  const renderEmptyList = ( ) => (
+    <EmptySearchResults
+      isLoading={isLoading}
+      searchQuery={locationName}
+      refetch={refetch}
+    />
+  );
+
   return (
     <ViewWrapper testID="explore-location-search">
       <View className="flex-row justify-center p-5 bg-white">
         <INatIconButton
-          testID="ExploreTaxonSearch.close"
+          testID="ExploreLocationSearch.close"
           size={18}
           icon="back"
           className="absolute top-2 left-3 z-10"
@@ -138,7 +147,7 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
           <SearchBar
             handleTextChange={locationText => setLocationName( locationText )}
             value={locationName}
-            testID="LocationPicker.locationSearch"
+            testID="ExploreLocationSearch.locationSearch"
           />
         </View>
         <View className="flex-row px-3 mt-5 justify-evenly">
@@ -155,20 +164,13 @@ const ExploreLocationSearch = ( { closeModal, updateLocation }: Props ): Node =>
           />
         </View>
       </View>
-      {isLoading
-        ? (
-          <View className="p-4">
-            <ActivityIndicator size={40} />
-          </View>
-        )
-        : (
-          <FlatList
-            keyboardShouldPersistTaps="always"
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-          />
-        )}
+      <FlatList
+        keyboardShouldPersistTaps="always"
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        ListEmptyComponent={renderEmptyList}
+      />
       {renderPermissionsGate( { onPermissionGranted: setNearbyLocation } )}
     </ViewWrapper>
   );

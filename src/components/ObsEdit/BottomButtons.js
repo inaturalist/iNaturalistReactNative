@@ -19,7 +19,6 @@ import { writeExifToFile } from "sharedHelpers/parseExif";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import { log } from "../../../react-native-logs.config";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
@@ -33,8 +32,6 @@ type Props = {
   setCurrentObservationIndex: Function
 }
 
-const logger = log.extend( "ObsEditBottomButtons" );
-
 const BottomButtons = ( {
   passesEvidenceTest,
   currentObservation,
@@ -47,7 +44,9 @@ const BottomButtons = ( {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
+  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
+  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const navigation = useNavigation( );
   const isNewObs = !currentObservation?._created_at;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
@@ -71,7 +70,6 @@ const BottomButtons = ( {
     }
     // Update all photos taken via the app with the new fetched location.
     cameraRollUris.forEach( uri => {
-      logger.info( "writeExifToCameraRollPhotos, writing exif for uri: ", uri );
       writeExifToFile( uri, exif );
     } );
   }, [
@@ -93,10 +91,17 @@ const BottomButtons = ( {
 
   const setNextScreen = useCallback( async ( { type }: Object ) => {
     const savedObservation = await saveObservation( currentObservation );
+    // If we are saving a new observations, reset the stored my obs offset to
+    // restore b/c we want MyObs rendered in its default state with this new
+    // observation visible at the top
+    if ( isNewObs ) {
+      resetMyObsOffsetToRestore( );
+    }
     if ( type === "upload" ) {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
+      setStartUploadObservations( );
     }
 
     if ( observations.length === 1 ) {
@@ -122,10 +127,13 @@ const BottomButtons = ( {
     addToUploadQueue,
     currentObservation,
     currentObservationIndex,
+    isNewObs,
     navigation,
+    resetMyObsOffsetToRestore,
     saveObservation,
     observations,
-    setCurrentObservationIndex
+    setCurrentObservationIndex,
+    setStartUploadObservations
   ] );
 
   useEffect(

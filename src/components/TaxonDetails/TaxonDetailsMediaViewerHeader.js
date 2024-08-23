@@ -11,6 +11,7 @@ import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
 type Props = {
   onClose: Function,
+  showSpeciesSeenCheckmark: boolean,
   taxon: Object
 }
 
@@ -20,7 +21,7 @@ const BACK_BUTTON_STYLE = {
 
 const TaxonDetailsMediaViewerHeader = ( {
   onClose,
-  // photoCount,
+  showSpeciesSeenCheckmark,
   taxon
 }: Props ): Node => (
   <View className="bg-white w-full flex-row pt-4 pb-4 pr-4 items-start">
@@ -29,7 +30,7 @@ const TaxonDetailsMediaViewerHeader = ( {
       customStyles={BACK_BUTTON_STYLE}
       onPress={onClose}
     />
-    <TaxonDetailsTitle taxon={taxon} />
+    <TaxonDetailsTitle taxon={taxon} showSpeciesSeenCheckmark={showSpeciesSeenCheckmark} />
   </View>
 );
 

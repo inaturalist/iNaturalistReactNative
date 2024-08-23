@@ -11,6 +11,7 @@ import {
 } from "providers/ExploreContext.tsx";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useEffect,
   useState
 } from "react";
@@ -33,7 +34,8 @@ const RootExploreContainerWithContext = ( ): Node => {
   const {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
-    requestPermissions: requestLocationPermissions
+    requestPermissions: requestLocationPermissions,
+    hasBlockedPermissions: hasBlockedLocationPermissions
   } = useLocationPermission( );
 
   const {
@@ -42,7 +44,7 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
-  const updateLocation = async ( place: Object ) => {
+  const updateLocation = useCallback( async ( place: Object ) => {
     if ( place === "worldwide" ) {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
@@ -67,7 +69,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         placeGuess: place?.display_name
       } );
     }
-  };
+  }, [defaultExploreLocation, dispatch, navigation] );
 
   // Object | null
   const updateUser = ( user: Object ) => {
@@ -97,7 +99,12 @@ const RootExploreContainerWithContext = ( ): Node => {
   };
 
   // need this hook to be top-level enough that ExploreHeaderCount rerenders
-  const { count, loadingStatus, updateCount } = useExploreHeaderCount( );
+  const {
+    count,
+    fetchingStatus,
+    setFetchingStatus,
+    handleUpdateCount
+  } = useExploreHeaderCount( );
 
   const closeFiltersModal = ( ) => setShowFiltersModal( false );
 
@@ -120,6 +127,25 @@ const RootExploreContainerWithContext = ( ): Node => {
     } );
   }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
 
+  useEffect( () => {
+    if ( hasBlockedLocationPermissions ) {
+      updateLocation( "worldwide" );
+    }
+  }, [hasBlockedLocationPermissions, updateLocation] );
+
+  const startFetching = useCallback( ( ) => {
+    const nearby = state?.placeMode === "NEARBY";
+    if ( hasLocationPermissions && nearby ) {
+      setFetchingStatus( true );
+    } else if ( !nearby ) {
+      setFetchingStatus( true );
+    }
+  }, [hasLocationPermissions, setFetchingStatus, state?.placeMode] );
+
+  useEffect( ( ) => {
+    startFetching( );
+  }, [startFetching] );
+
   return (
     <>
       <Explore
@@ -132,11 +158,11 @@ const RootExploreContainerWithContext = ( ): Node => {
         currentExploreView={rootExploreView}
         setCurrentExploreView={setRootExploreView}
         isConnected={isConnected}
-        loadingStatus={loadingStatus}
+        fetchingStatus={fetchingStatus}
+        handleUpdateCount={handleUpdateCount}
         openFiltersModal={openFiltersModal}
         queryParams={queryParams}
         showFiltersModal={showFiltersModal}
-        updateCount={updateCount}
         updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
         updateLocation={updateLocation}
         updateUser={updateUser}
@@ -144,8 +170,14 @@ const RootExploreContainerWithContext = ( ): Node => {
         placeMode={state.placeMode}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
+        startFetching={startFetching}
       />
-      {renderPermissionsGate( { onPermissionGranted: () => updateLocation( "nearby" ) } )}
+      {renderPermissionsGate( {
+        onPermissionGranted: async ( ) => {
+          await updateLocation( "nearby" );
+          setFetchingStatus( true );
+        }
+      } )}
     </>
   );
 };

@@ -6,7 +6,9 @@ import { ActivityIndicator, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo
+  forwardRef,
+  useCallback,
+  useMemo
 } from "react";
 import { Animated } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -22,37 +24,39 @@ type Props = {
   dataCanBeFetched?: boolean,
   explore: boolean,
   handleIndividualUploadPress: Function,
-  handleScroll?: Function,
+  onScroll?: Function,
   hideLoadingWheel: boolean,
-  isFetchingNextPage?: boolean,
   isConnected: boolean,
+  isFetchingNextPage?: boolean,
   layout: "list" | "grid",
   onEndReached: Function,
+  onLayout?: Function,
   renderHeader?: Function,
+  showNoResults?: boolean,
   showObservationsEmptyScreen?: boolean,
-  status?: string,
   testID: string
 };
 
 const GUTTER = 15;
 
-const ObservationsFlashList = ( {
+const ObservationsFlashList: Function = forwardRef( ( {
   contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
   explore,
   handleIndividualUploadPress,
-  handleScroll,
+  onScroll,
   hideLoadingWheel,
-  isFetchingNextPage,
   isConnected,
+  isFetchingNextPage,
   layout,
   onEndReached,
+  onLayout,
   renderHeader,
+  showNoResults,
   showObservationsEmptyScreen,
-  status,
   testID
-}: Props ): Node => {
+}: Props, ref ): Node => {
   const {
     isLandscapeMode,
     isTablet,
@@ -127,7 +131,7 @@ const ObservationsFlashList = ( {
       ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
       : <Body3 className="self-center mt-[150px]">{t( "No-results-found" )}</Body3>;
 
-    return ( ( status === "success" && dataCanBeFetched ) || !dataCanBeFetched )
+    return showNoResults
       ? showEmptyScreen
       : (
         <View className="self-center mt-[150px]">
@@ -135,10 +139,9 @@ const ObservationsFlashList = ( {
         </View>
       );
   }, [
-    dataCanBeFetched,
     isFetchingNextPage,
     showObservationsEmptyScreen,
-    status,
+    showNoResults,
     t
   ] );
 
@@ -171,18 +174,20 @@ const ObservationsFlashList = ( {
       // react thinks we've rendered a second item w/ a duplicate key
       keyExtractor={item => item.uuid || item.id}
       numColumns={numColumns}
+      ref={ref}
       onEndReachedThreshold={0.2}
+      onLayout={onLayout}
       onMomentumScrollEnd={( ) => {
         if ( dataCanBeFetched ) {
           onEndReached( );
         }
       }}
-      onScroll={handleScroll}
+      onScroll={onScroll}
       refreshing={isFetchingNextPage}
       renderItem={renderItem}
       testID={testID}
     />
   );
-};
+} );
 
 export default ObservationsFlashList;

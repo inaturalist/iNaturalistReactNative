@@ -15,7 +15,7 @@ type Props = {
   count: ?number,
   exploreView: string,
   exploreViewIcon: string,
-  loadingStatus: boolean,
+  fetchingStatus: boolean,
   onPress: Function,
 }
 
@@ -23,7 +23,7 @@ const ExploreHeaderCount = ( {
   count,
   exploreView,
   exploreViewIcon,
-  loadingStatus,
+  fetchingStatus,
   onPress
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -42,14 +42,11 @@ const ExploreHeaderCount = ( {
     return t( "X-Observers", { count } );
   };
 
-  return (
-    <Pressable
-      className="h-[40px] flex-row items-center justify-center"
-      onPress={onPress}
-      accessibilityRole="summary"
-    >
-      {( loadingStatus && count === null ) && <ActivityIndicator size={25} />}
-      {count !== null && (
+  const renderHeader = ( ) => {
+    if ( fetchingStatus ) {
+      return <ActivityIndicator size={25} />;
+    } if ( count ) {
+      return (
         <>
           <INatIcon
             name={exploreViewIcon}
@@ -58,7 +55,18 @@ const ExploreHeaderCount = ( {
           />
           <Body2 className="text-white ml-3">{renderText( )}</Body2>
         </>
-      )}
+      );
+    }
+    return null;
+  };
+
+  return (
+    <Pressable
+      className="h-[40px] flex-row items-center justify-center"
+      onPress={onPress}
+      accessibilityRole="summary"
+    >
+      {renderHeader( )}
     </Pressable>
   );
 };

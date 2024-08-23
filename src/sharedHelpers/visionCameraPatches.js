@@ -13,7 +13,7 @@ import {
   Worklets
 } from "react-native-worklets-core";
 import resizeImage from "sharedHelpers/resizeImage.ts";
-import { unlink } from "sharedHelpers/util";
+import { unlink } from "sharedHelpers/util.ts";
 import {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,

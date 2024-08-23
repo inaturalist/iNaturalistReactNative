@@ -16,10 +16,10 @@ import {
 import MapView from "./MapView";
 
 type Props = {
-  count: Object,
+  canFetch: boolean,
   layout: string,
   queryParams: Object,
-  updateCount: Function
+  handleUpdateCount: Function
 }
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
@@ -27,19 +27,18 @@ const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
 const { width: defaultScreenWidth } = Dimensions.get( "screen" );
 
 const ObservationsView = ( {
-  count,
+  canFetch,
   layout,
   queryParams,
-  updateCount
+  handleUpdateCount
 }: Props ): Node => {
   const {
     observations,
     isFetchingNextPage,
     fetchNextPage,
-    status,
     totalBounds,
     totalResults
-  } = useInfiniteExploreScroll( { params: queryParams } );
+  } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
   const {
     isLandscapeMode,
     isTablet,
@@ -48,10 +47,8 @@ const ObservationsView = ( {
   } = useDeviceOrientation( );
 
   useEffect( ( ) => {
-    if ( count.observations !== totalResults ) {
-      updateCount( { observations: totalResults }, isFetchingNextPage );
-    }
-  }, [totalResults, updateCount, count, isFetchingNextPage] );
+    handleUpdateCount( "observations", totalResults );
+  }, [totalResults, handleUpdateCount] );
 
   const { isConnected } = useNetInfo( );
 
@@ -87,14 +84,14 @@ const ObservationsView = ( {
       <ObservationsFlashList
         contentContainerStyle={OBS_LIST_CONTAINER_STYLE}
         data={observations}
-        dataCanBeFetched
+        dataCanBeFetched={canFetch}
         explore
         hideLoadingWheel={!isFetchingNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isConnected={isConnected}
         layout={layout}
         onEndReached={fetchNextPage}
-        status={status}
+        showNoResults={!canFetch}
         testID="ExploreObservationsAnimatedList"
       />
       <MapView observationBounds={totalBounds} queryParams={queryParams} />

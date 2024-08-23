@@ -1,4 +1,5 @@
 // @flow
+
 import { log } from "../../react-native-logs.config";
 
 const logger = log.extend( "INatApiError" );
@@ -20,6 +21,8 @@ export class INatApiError extends Error {
 Object.defineProperty( INatApiError.prototype, "name", {
   value: "INatApiError"
 } );
+
+export class INatApiTooManyRequestsError extends INatApiError { }
 
 async function handleError( e: Object, options: Object = {} ): Object {
   if ( !e.response ) { throw e; }
@@ -51,7 +54,12 @@ async function handleError( e: Object, options: Object = {} ): Object {
       return error;
     } );
   }
+
+  if ( e.response.status === 429 ) {
+    throw new INatApiTooManyRequestsError( errorJson, e.response.status );
+  }
   const error = new INatApiError( errorJson, e.response.status );
+
   // In theory code higher up in the stack will handle this error when thrown,
   // so it's probably not worth reporting at this stage. If it doesn't get
   // handled, it will get logged when it gets caught by the app-wide error

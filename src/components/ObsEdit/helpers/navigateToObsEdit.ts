@@ -1,6 +1,6 @@
 import { CommonActions } from "@react-navigation/native";
 
-const navigateToObsEdit = navigation => {
+const navigateToObsEdit = ( navigation, setMyObsOffsetToRestore ) => {
   // since we can access ObsEdit from two separate stacks, the TabStackNavigator
   // and the NoBottomTabStackNavigator, we don't want ObsEdit to land on the previous
   // history of the NoBottomTabStackNavigator (i.e. anything from the ObsCreate flow)
@@ -23,6 +23,7 @@ const navigateToObsEdit = navigation => {
       ]
     } )
   );
+  setMyObsOffsetToRestore();
 };
 
 export default navigateToObsEdit;

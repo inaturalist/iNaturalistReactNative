@@ -59,7 +59,10 @@ const TaxonMedia = ( {
           testID={`TaxonDetails.photo.${item.id}`}
           className="w-full h-full"
           source={{
-            uri: Photo.displayMediumPhoto( item.url )
+            // TODO replace this entire image component to one that supports
+            // progressive sizes and fallbacks if the large photo isn't
+            // available
+            uri: Photo.displayLargePhoto( item.url )
           }}
           accessibilityIgnoresInvertColors
         />

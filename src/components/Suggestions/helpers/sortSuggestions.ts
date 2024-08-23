@@ -9,8 +9,9 @@ export default function sortSuggestions(
   }
 ) {
   const { usingOfflineSuggestions } = options;
-  if ( !usingOfflineSuggestions ) {
-    return _.orderBy( suggestions, "combined_score", "desc" );
+  if ( usingOfflineSuggestions ) {
+    // sort finest to coarsest rank
+    return _.orderBy( suggestions, "taxon.rank_level", "asc" );
   }
-  return suggestions;
+  return _.orderBy( suggestions, "combined_score", "desc" );
 }

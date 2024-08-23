@@ -3,7 +3,7 @@ import { photoUploadPath } from "appConstants/paths.ts";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import resizeImage from "sharedHelpers/resizeImage.ts";
-import { unlink } from "sharedHelpers/util";
+import { unlink } from "sharedHelpers/util.ts";
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {

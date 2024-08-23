@@ -20,7 +20,7 @@ const useTaxonSearch = ( taxonQuery: string ): Object => {
         q: taxonQuery,
         sources: "taxa",
         fields: {
-          taxon: Taxon.SCORE_IMAGE_FIELDS
+          taxon: Taxon.LIMITED_TAXON_FIELDS
         }
       },
       optsWithAuth

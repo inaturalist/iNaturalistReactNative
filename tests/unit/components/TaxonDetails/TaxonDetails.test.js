@@ -1,11 +1,13 @@
 import { NavigationContainer, useNavigationState, useRoute } from "@react-navigation/native";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import {
+  fireEvent, render, screen, waitFor
+} from "@testing-library/react-native";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
 import Photo from "realmModels/Photo";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { useAuthenticatedQuery } from "sharedHooks";
 import * as useCurrentUser from "sharedHooks/useCurrentUser.ts";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -79,6 +81,16 @@ jest.mock(
       data: null,
       isLoading: false,
       isError: false
+    } ) )
+  } )
+);
+
+jest.mock(
+  "sharedHooks/useQuery",
+  ( ) => ( {
+    __esModule: true,
+    default: jest.fn( ( ) => ( {
+      data: null
     } ) )
   } )
 );
@@ -246,7 +258,9 @@ describe( "TaxonDetails", ( ) => {
     it( "navigates to Wikipedia on button press", async ( ) => {
       renderTaxonDetails( );
       fireEvent.press( screen.getByTestId( "TaxonDetails.wikipedia" ) );
-      expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
+      await waitFor( ( ) => {
+        expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
+      } );
       expect( Linking.openURL ).toHaveBeenCalledWith( mockTaxonWithWikipedia.wikipedia_url );
     } );
   } );
