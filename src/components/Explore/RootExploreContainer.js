@@ -34,7 +34,8 @@ const RootExploreContainerWithContext = ( ): Node => {
   const {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
-    requestPermissions: requestLocationPermissions
+    requestPermissions: requestLocationPermissions,
+    hasBlockedPermissions: hasBlockedLocationPermissions
   } = useLocationPermission( );
 
   const {
@@ -43,7 +44,7 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
-  const updateLocation = async ( place: Object ) => {
+  const updateLocation = useCallback( async ( place: Object ) => {
     if ( place === "worldwide" ) {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
@@ -68,7 +69,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         placeGuess: place?.display_name
       } );
     }
-  };
+  }, [defaultExploreLocation, dispatch, navigation] );
 
   // Object | null
   const updateUser = ( user: Object ) => {
@@ -125,6 +126,12 @@ const RootExploreContainerWithContext = ( ): Node => {
       setRootStoredParams( state );
     } );
   }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
+
+  useEffect( () => {
+    if ( hasBlockedLocationPermissions ) {
+      updateLocation( "worldwide" );
+    }
+  }, [hasBlockedLocationPermissions, updateLocation] );
 
   const startFetching = useCallback( ( ) => {
     const nearby = state?.placeMode === "NEARBY";
