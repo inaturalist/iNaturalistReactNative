@@ -1,10 +1,9 @@
 // @flow
 
-import { INatIconButton } from "components/SharedComponents";
+import { INatIcon } from "components/SharedComponents";
 import { FasterImageView } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { View } from "react-native";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -61,16 +60,10 @@ const UserIcon = ( {
         />
       )
       : (
-        <View
-          style={[active && activeStyle, style]}
-        >
-          <INatIconButton
-            icon="person"
-            size={size}
-            accessibilityRole="image"
-            accessibilityLabel="iNaturalist"
-          />
-        </View>
+        <INatIcon
+          name="person"
+          size={size}
+        />
       )
 
   );
