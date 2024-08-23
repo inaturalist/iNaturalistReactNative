@@ -30,7 +30,12 @@ const ObservationLocation = ( {
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
   let displayLocation = useMemo(
-    ( ) => checkCamelAndSnakeCase( observation, "placeGuess" ),
+    ( ) => checkCamelAndSnakeCase(
+      observation,
+      observation.private_place_guess
+        ? "privatePlaceGuess"
+        : "placeGuess"
+    ),
     [observation]
   );
 
