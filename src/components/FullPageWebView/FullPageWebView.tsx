@@ -212,6 +212,7 @@ const FullPageWebView = ( ) => {
             renderLoading={LoadingView}
             startInLoadingState
             userAgent={getUserAgent()}
+            onOpenWindow={() => true}
           />
         )}
       </ViewWrapper>
