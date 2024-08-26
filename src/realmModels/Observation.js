@@ -14,6 +14,10 @@ import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
 
+export const GEOPRIVACY_OPEN = "open";
+export const GEOPRIVACY_OBSCURED = "obscured";
+export const GEOPRIVACY_PRIVATE = "private";
+
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
 // https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
@@ -107,7 +111,7 @@ class Observation extends Realm.Object {
     return {
       ...obs,
       captive_flag: false,
-      geoprivacy: "open",
+      geoprivacy: GEOPRIVACY_OPEN,
       owners_identification_from_vision: false,
       observed_on: obs?.observed_on,
       observed_on_string: obs
