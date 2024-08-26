@@ -9,7 +9,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { openInbox } from "react-native-email-link";
+import { openInbox } from "sharedHelpers/mail.ts";
 
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";

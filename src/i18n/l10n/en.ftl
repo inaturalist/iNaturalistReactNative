@@ -599,6 +599,7 @@ No-Camera-Available = No Camera Available
 # Alert dialog title when attempting to send email but no email is installed
 No-email-app-installed = No email app installed
 No-email-app-installed-body = If you have another way of sending email, the address is { $address }
+No-email-app-installed-body-check-other = Try checking your email in a web browser or on another device.
 No-Location = No Location
 No-Media = No Media
 # As in a machine learning model that powers automated suggestions

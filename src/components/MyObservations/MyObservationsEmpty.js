@@ -112,7 +112,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
           className="mb-2"
           text={t( "CREATE-YOUR-FIRST-OBSERVATION" )}
           level="focus"
-          onPress={( ) => setShowModal( true )}
+          onPress={navToARCamera}
           accessibilityLabel={t( "Observe" )}
           accessibilityHint={t( "Opens-add-observation-modal" )}
         />

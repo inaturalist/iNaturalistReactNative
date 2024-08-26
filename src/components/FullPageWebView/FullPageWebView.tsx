@@ -8,13 +8,12 @@ import { getUserAgent } from "api/userAgent";
 import { getAPIToken } from "components/LoginSignUp/AuthenticationService.ts";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import React, { useEffect, useState } from "react";
-import { Alert, Linking, Platform } from "react-native";
+import { Linking } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
-import Mailer from "react-native-mail";
 import WebView from "react-native-webview";
 import { log } from "sharedHelpers/logger";
+import { composeEmail } from "sharedHelpers/mail.ts";
 
 const logger = log.extend( "FullPageWebView" );
 
@@ -98,20 +97,7 @@ export function onShouldStartLoadWithRequest(
 
   const emailAddress = request.url.match( /^mailto:(.+)/ )?.[1];
   if ( emailAddress ) {
-    Mailer.mail( {
-      recipients: [emailAddress]
-    }, ( error: string ) => {
-      if ( Platform.OS === "ios" && error === "not_available" ) {
-        Alert.alert(
-          t( "No-email-app-installed" ),
-          t( "No-email-app-installed-body", { address: emailAddress } )
-        );
-        return;
-      }
-      if ( error ) {
-        Alert.alert( t( "Something-went-wrong" ), error );
-      }
-    } );
+    composeEmail( emailAddress );
     return false;
   }
 
