@@ -1,5 +1,6 @@
 // @flow
 
+import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -16,11 +17,21 @@ const SpeciesSeenCheckmark = ( ): Node => {
   // in android, so instead we insert smaller white circle behind the icon
   return (
     <View
-      className="rounded-full"
+      className="rounded-full items-center"
       style={DROP_SHADOW}
       testID="SpeciesSeenCheckmark"
     >
-      <View className="w-[18px] h-[18px] top-[1px] bg-white absolute rounded-full" />
+      <View
+        className={classnames(
+          "w-[16px]",
+          "h-[16px]",
+          "bg-white",
+          "absolute",
+          "rounded-full",
+          "top-1/2",
+          "mt-[-8px]"
+        )}
+      />
       <View className="-mt-[0.5px]">
         <INatIcon
           name="checkmark-circle"

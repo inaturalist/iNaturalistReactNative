@@ -34,7 +34,6 @@ const TaxonGridItem = ( {
   const {
     dispatch
   } = useExplore( );
-
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
   return (

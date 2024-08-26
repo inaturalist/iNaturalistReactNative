@@ -9,6 +9,7 @@ import Icons from "./UiLibrary/Icons";
 import Misc from "./UiLibrary/Misc";
 import ObsGridItemDemo from "./UiLibrary/ObsGridItemDemo";
 import ObsListItemDemo from "./UiLibrary/ObsListItemDemo";
+import TaxonGridItemDemo from "./UiLibrary/TaxonGridItemDemo";
 import TaxonResultDemo from "./UiLibrary/TaxonResultDemo";
 import ToolbarDemo from "./UiLibrary/ToolbarDemo";
 import Typography from "./UiLibrary/Typography";
@@ -21,6 +22,7 @@ const LIBRARY = {
   Misc,
   ObsGridItemDemo,
   ObsListItemDemo,
+  TaxonGridItemDemo,
   TaxonResultDemo,
   ToolbarDemo,
   Typography
@@ -37,7 +39,7 @@ const UiLibraryItem = ( ) => {
   // For reasons I don't understand hot reload doesn't work with this LIBRARY
   // approach, so if you want that you might just need to render the
   // component explicitly here. ~~~~kueda20240613
-  // return <ToolbarDemo />;
+  // return <TaxonGridItemDemo />;
   return typeof ( LIBRARY[params.component] ) === "function"
     ? LIBRARY[params.component]()
     : <ActivityIndicator />;
