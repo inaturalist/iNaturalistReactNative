@@ -56,6 +56,7 @@ interface Props {
   showCurrentLocationButton?: boolean;
   showLocationIndicator?: boolean;
   showsCompass?: boolean;
+  showsUserLocation?: boolean;
   showSwitchMapTypeButton?: boolean;
   startAtNearby?: boolean;
   startAtUserLocation?: boolean;
@@ -96,6 +97,7 @@ const Map = ( {
   showCurrentLocationButton,
   showLocationIndicator,
   showsCompass,
+  showsUserLocation: showsUserLocationProp,
   showSwitchMapTypeButton,
   startAtNearby = false,
   startAtUserLocation = false,
@@ -108,6 +110,7 @@ const Map = ( {
   zoomEnabled = true,
   zoomTapEnabled = true
 }: Props ) => {
+  const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
     region
@@ -277,7 +280,7 @@ const Map = ( {
           const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
           setUserLocation( coordinate );
         }}
-        showsUserLocation={hasPermissions}
+        showsUserLocation={hasPermissions && showsUserLocation}
         showsMyLocationButton={false}
         loadingEnabled
         onRegionChangeComplete={async newRegion => {
@@ -331,6 +334,7 @@ const Map = ( {
         onPermissionGranted={onPermissionGranted}
         handlePress={( ) => {
           if ( onCurrentLocationPress ) { onCurrentLocationPress( ); }
+          setShowsUserLocation( true );
           setZoomToUserLocationRequested( true );
         }}
       />
