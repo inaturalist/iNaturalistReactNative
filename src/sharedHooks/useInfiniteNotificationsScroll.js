@@ -50,12 +50,16 @@ const useInfiniteNotificationsScroll = ( ): Object => {
       }
 
       const response = await fetchObservationUpdates( params, options );
-      const obsUUIDs = response?.map( obsUpdate => obsUpdate.resource_uuid ) || [];
+      // Sometimes updates linger after notifiers that generated them have been deleted
+      const updatesWithContent = response?.filter(
+        update => update.comment || update.identification
+      ) || [];
+      const obsUUIDs = updatesWithContent.map( obsUpdate => obsUpdate.resource_uuid );
       if ( obsUUIDs.length > 0 ) {
         await fetchObsByUUIDs( obsUUIDs, options );
       }
 
-      return response;
+      return updatesWithContent;
     },
     initialPageParam: 0,
     getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
