@@ -86,11 +86,11 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
       //   navigation: "search",
       //   icon: "magnifying-glass"
       // },
-      projects: {
-        label: t( "PROJECTS" ),
-        navigation: "Projects",
-        icon: "briefcase"
-      },
+      // projects: {
+      //   label: t( "PROJECTS" ),
+      //   navigation: "Projects",
+      //   icon: "briefcase"
+      // },
       // blog: {
       //   label: t( "BLOG" ),
       //   navigation: "Blog",
