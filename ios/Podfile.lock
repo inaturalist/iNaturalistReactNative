@@ -907,7 +907,7 @@ PODS:
     - react-native-config/App (= 1.5.1)
   - react-native-config/App (1.5.1):
     - React-Core
-  - react-native-exif-reader (0.4.2):
+  - react-native-exif-reader (0.4.1):
     - React-Core
   - react-native-geocoder-reborn (0.9.0):
     - React
@@ -1507,7 +1507,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 6f392912435adb8fbf4c3eee0e79a0a0b4e4b717
   react-native-cameraroll: af8eec1e585d053ff485d98ec837f9a8a11b5745
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
-  react-native-exif-reader: fe4678df00e36e1aba6ade9013fd1d35c78c8381
+  react-native-exif-reader: 5ec4683035bb1b3f1c343257699ffab44dac7c1e
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation: ed9e1d132f576b9a4a503af46f9704413ea0dec1
   react-native-image-picker: ddbbe4d226d9c82a82360f5de66bf71a657a42e6
