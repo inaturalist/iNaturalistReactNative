@@ -5,7 +5,7 @@ import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
-import { Dimensions, StatusBar } from "react-native";
+import { Dimensions } from "react-native";
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Carousel from "react-native-reanimated-carousel";
 import colors from "styles/tailwindColors";
@@ -146,7 +146,6 @@ const ObsMedia = ( {
 
   return (
     <View className="relative">
-      <StatusBar hidden={mediaViewerVisible} />
       {!tablet
         ? renderPhone( )
         : renderTablet( )}
