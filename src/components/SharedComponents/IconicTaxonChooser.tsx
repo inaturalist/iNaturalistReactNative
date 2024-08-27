@@ -1,4 +1,3 @@
-// @flow
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -9,17 +8,18 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  before?: Node,
-  chosen: string[],
-  onTaxonChosen: Function,
-  testID?: string
+  before?: Node;
+  chosen: string[];
+  onTaxonChosen: Function;
+  testID?: string;
+  withoutUnknown?: boolean;
 };
 
 const STYLESHEET = {
   alignItems: "center"
 };
 
-const iconicTaxonIcons = [
+const ICONIC_TAXA = [
   "plantae",
   "insecta",
   "aves",
@@ -40,9 +40,13 @@ const IconicTaxonChooser = ( {
   before,
   chosen = [],
   onTaxonChosen,
-  testID
+  testID,
+  withoutUnknown
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const iconicTaxonIcons = withoutUnknown
+    ? ICONIC_TAXA.filter( taxon => taxon !== "unknown" )
+    : ICONIC_TAXA;
   const renderIcon = useCallback( ( { item: iconicTaxonName } ) => {
     const isSelected = chosen.indexOf( iconicTaxonName ) >= 0;
     return (
@@ -81,7 +85,6 @@ const IconicTaxonChooser = ( {
     chosen,
     onTaxonChosen,
     t
-    // selectedIcon
   ] );
 
   const renderHeader = useCallback( ( ) => {

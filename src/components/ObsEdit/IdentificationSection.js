@@ -123,6 +123,7 @@ const IdentificationSection = ( {
             updateObservationKeys( { taxon: newTaxon } );
           }
         }}
+        withoutUnknown
       />
     </View>
   );
