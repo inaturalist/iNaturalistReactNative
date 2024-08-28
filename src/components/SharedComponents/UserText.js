@@ -7,6 +7,7 @@ import { useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
 import WebView from "react-native-webview";
 import sanitizeHtml from "sanitize-html";
+import colors from "styles/tailwindColors";
 
 const ALLOWED_TAGS = ( `
   a
@@ -116,6 +117,7 @@ const UserText = ( {
     fontFamily: fontRegular,
     fontSize: 16,
     lineHeight: 22,
+    color: colors.darkGray,
     ...htmlStyle
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
