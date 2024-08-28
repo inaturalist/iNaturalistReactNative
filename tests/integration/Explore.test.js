@@ -1,5 +1,5 @@
 import { fireEvent, screen, userEvent } from "@testing-library/react-native";
-import ExploreContainer from "components/Explore/ExploreContainer";
+import RootExploreContainer from "components/Explore/RootExploreContainer";
 import inatjs from "inaturalistjs";
 import React from "react";
 import factory, { makeResponse } from "tests/factory";
@@ -44,7 +44,7 @@ const switchToObservationsView = async ( ) => {
 
 describe( "Explore", ( ) => {
   it( "should render species view and switch to observations view list correctly", async ( ) => {
-    renderAppWithComponent( <ExploreContainer /> );
+    renderAppWithComponent( <RootExploreContainer /> );
     await switchToObservationsView( );
     expect(
       await screen.findByTestId( `ObsStatus.${mockRemoteObservation.uuid}` )
@@ -55,7 +55,7 @@ describe( "Explore", ( ) => {
   } );
 
   it( "should display observations view grid correctly", async ( ) => {
-    renderAppWithComponent( <ExploreContainer /> );
+    renderAppWithComponent( <RootExploreContainer /> );
     await switchToObservationsView( );
     expect(
       await screen.findByTestId( "SegmentedButton.grid" )

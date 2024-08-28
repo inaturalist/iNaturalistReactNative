@@ -52,7 +52,7 @@ type Props = {
   startFetching: Function,
   filterByIconicTaxonUnknown: Function,
   handleUpdateCount: Function,
-  hideBackButton: boolean,
+  hideBackButton?: boolean,
   isConnected: boolean,
   isFetchingHeaderCount: boolean,
   openFiltersModal: Function,

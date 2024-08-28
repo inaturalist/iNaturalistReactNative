@@ -26,7 +26,7 @@ type Props = {
   count: ?number,
   exploreView: string,
   exploreViewIcon: string,
-  hideBackButton: boolean,
+  hideBackButton?: boolean,
   isFetchingHeaderCount: boolean,
   onPressCount?: Function,
   openFiltersModal: Function,
