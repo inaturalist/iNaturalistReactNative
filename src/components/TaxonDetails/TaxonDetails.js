@@ -213,8 +213,7 @@ const TaxonDetails = ( ): Node => {
                   screen: "Explore",
                   params: {
                     taxon,
-                    worldwide: true,
-                    resetStoredParams: true
+                    worldwide: true
                   }
                 }
               } );
