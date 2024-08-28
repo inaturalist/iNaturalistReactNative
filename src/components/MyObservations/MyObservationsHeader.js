@@ -44,11 +44,12 @@ const MyObservationsHeader = ( {
 
   const signedInContent = ( ) => (
     <Trans
+      className="my-5"
       i18nKey="Welcome-user"
       parent={View}
       values={{ userHandle: User.userHandle( currentUser ) }}
       components={[
-        <Subheading1 className="mt-5" />,
+        <Subheading1 />,
         <Heading1 />
       ]}
     />
