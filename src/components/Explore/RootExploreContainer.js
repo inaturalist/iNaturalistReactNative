@@ -36,7 +36,8 @@ const RootExploreContainerWithContext = ( ): Node => {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
     requestPermissions: requestLocationPermissions,
-    hasBlockedPermissions: hasBlockedLocationPermissions
+    hasBlockedPermissions: hasBlockedLocationPermissions,
+    checkPermissions
   } = useLocationPermission( );
 
   const {
@@ -109,7 +110,10 @@ const RootExploreContainerWithContext = ( ): Node => {
     setIsFetching: setIsFetchingHeaderCount
   } = useExploreHeaderCount( );
 
-  const closeFiltersModal = ( ) => setShowFiltersModal( false );
+  const closeFiltersModal = ( ) => {
+    checkPermissions();
+    setShowFiltersModal( false );
+  };
 
   const openFiltersModal = ( ) => {
     setShowFiltersModal( true );
