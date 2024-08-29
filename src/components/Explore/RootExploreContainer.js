@@ -129,12 +129,12 @@ const RootExploreContainerWithContext = ( ): Node => {
       setRootStoredParams( state );
     } );
   }, [navigation, setRootStoredParams, state, dispatch, rootStoredParams] );
-  
+
   useEffect( () => {
-    if ( state.placeMode === PLACE_MODE.NEARBY &&
-        hasLocationPermissions &&
-        state.lat === undefined ) {
-      updateLocation("nearby");
+    if ( state.placeMode === PLACE_MODE.NEARBY
+        && hasLocationPermissions
+        && state.lat === undefined ) {
+      updateLocation( "nearby" );
     }
     if ( hasBlockedLocationPermissions ) {
       updateLocation( "worldwide" );
