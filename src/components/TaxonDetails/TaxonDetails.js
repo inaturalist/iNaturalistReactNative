@@ -314,10 +314,16 @@ const TaxonDetails = ( ): Node => {
                 owners_identification_from_vision: usesVision
               } );
               if ( fromObsDetails ) {
-                navigation.navigate( "ObsDetails", {
+                const obsDetailsParam = {
                   uuid: obsUuid,
-                  suggestedTaxon: taxon
-                } );
+                  identTaxonId: taxon?.id,
+                  identAt: Date.now()
+                };
+                console.log(
+                  "[DEBUG TaxonDetails.js] nav'ing to ObsDetails, param: ",
+                  obsDetailsParam
+                );
+                navigation.navigate( "ObsDetails", obsDetailsParam );
               } else {
                 navigation.navigate( "ObsEdit" );
               }
