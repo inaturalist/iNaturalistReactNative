@@ -39,9 +39,9 @@ const DisplayTaxon = ( {
     : taxon?.iconic_taxon_name;
 
   const iconicTaxon = iconicTaxonName && realm?.objects( "Taxon" )
-    .filtered( "name CONTAINS[c] $0", iconicTaxonName );
+    .filtered( "name CONTAINS[c] $0", iconicTaxonName )?.[0];
 
-  const taxonPhoto = taxon?.default_photo?.url || iconicTaxon?.[0]?.default_photo?.url;
+  const taxonPhoto = taxon?.default_photo?.url || iconicTaxon?.default_photo?.url;
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
 
   return (

@@ -46,7 +46,6 @@
   },
   "ADD-OPTIONAL-COMMENT": "ADD OPTIONAL COMMENT",
   "Add-optional-notes": "Add optional notes",
-  "Add-suggestion-and-remarks-to-observation": "Add suggestion and remarks to observation",
   "Adds-your-vote-of-agreement": {
     "comment": "Hint for a button that adds a vote of agreement",
     "val": "Adds your vote of agreement"
@@ -1284,6 +1283,10 @@
   "SUBMIT": "SUBMIT",
   "SUBMIT-ID-SUGGESTION": "SUBMIT ID SUGGESTION",
   "SUGGEST-ID": "SUGGEST ID",
+  "Suggest-ID": {
+    "comment": "Label for element that suggest an identification",
+    "val": "SUGGEST ID"
+  },
   "supporting--identification": {
     "comment": "Identification category",
     "val": "Supporting"
