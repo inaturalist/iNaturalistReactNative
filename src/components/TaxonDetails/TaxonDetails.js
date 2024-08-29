@@ -3,7 +3,6 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
-import { fetchTaxon } from "api/taxa";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
@@ -29,6 +28,7 @@ import {
 import DeviceInfo from "react-native-device-info";
 import { useTheme } from "react-native-paper";
 import { log } from "sharedHelpers/logger";
+import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -73,7 +73,7 @@ const TaxonDetails = ( ): Node => {
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
-    ? _.find( navState?.routes, r => r.name === "ObsDetails" ).params.uuid
+    ? _.find( navState?.routes?.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
 
   const showSelectButton = fromSuggestions || fromObsEdit;
@@ -94,7 +94,7 @@ const TaxonDetails = ( ): Node => {
     error
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
-    optsWithAuth => fetchTaxon( id, taxonFetchParams, optsWithAuth )
+    optsWithAuth => fetchTaxonAndSave( id, realm, taxonFetchParams, optsWithAuth )
   );
 
   const taxon = remoteTaxon || localTaxon;
@@ -319,10 +319,6 @@ const TaxonDetails = ( ): Node => {
                   identTaxonId: taxon?.id,
                   identAt: Date.now()
                 };
-                console.log(
-                  "[DEBUG TaxonDetails.js] nav'ing to ObsDetails, param: ",
-                  obsDetailsParam
-                );
                 navigation.navigate( "ObsDetails", obsDetailsParam );
               } else {
                 navigation.navigate( "ObsEdit" );

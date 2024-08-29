@@ -17,6 +17,7 @@ import React, {
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { fetchTaxonAndSave } from "sharedHelpers/taxon";
 import {
   useAuthenticatedMutation,
   useCurrentUser,
@@ -226,13 +227,18 @@ const ObsDetailsContainer = ( ): Node => {
 
   // Translates identification-related params to local state
   useEffect( ( ) => {
-    if ( identTaxonId ) {
-      // TODO sometimes this will be remote, so we need to fetch
-      const taxon = realm.objectForPrimaryKey( "Taxon", identTaxonId );
+    async function fetchAndSet() {
+      let taxon = realm.objectForPrimaryKey( "Taxon", identTaxonId );
+      if ( !taxon ) {
+        taxon = await fetchTaxonAndSave( identTaxonId, realm );
+      }
       dispatch( {
         type: SET_IDENT_TAXON,
         taxon
       } );
+    }
+    if ( identTaxonId ) {
+      fetchAndSet();
     } else {
       dispatch( { type: CLEAR_SUGGESTED_TAXON } );
     }
@@ -427,24 +433,9 @@ const ObsDetailsContainer = ( ): Node => {
   );
 
   useEffect( () => {
-    console.log( "[DEBUG ObsDetailsContainer.js]" );
-    console.log( "[DEBUG ObsDetailsContainer.js]" );
-    console.log( "[DEBUG ObsDetailsContainer.js] effect, identTaxon: ", identTaxon );
     if ( !identTaxon ) return;
-    console.log(
-      "[DEBUG ObsDetailsContainer.js] effect, showPotentialDisagreementSheet: ",
-      showPotentialDisagreementSheet
-    );
     if ( showPotentialDisagreementSheet ) return;
-    console.log(
-      "[DEBUG ObsDetailsContainer.js] effect, showSuggestIdSheet: ",
-      showSuggestIdSheet
-    );
     if ( showSuggestIdSheet ) return;
-    console.log(
-      "[DEBUG ObsDetailsContainer.js] effect, identBodySheetShown: ",
-      identBodySheetShown
-    );
     if ( identBodySheetShown ) return;
     let observationTaxon = observation.taxon;
     if (
