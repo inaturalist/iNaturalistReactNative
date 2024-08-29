@@ -36,7 +36,8 @@ const RootExploreContainerWithContext = ( ): Node => {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
     requestPermissions: requestLocationPermissions,
-    hasBlockedPermissions: hasBlockedLocationPermissions
+    hasBlockedPermissions: hasBlockedLocationPermissions,
+    checkPermissions
   } = useLocationPermission( );
 
   const {
@@ -47,7 +48,14 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   const [canFetch, setCanFetch] = useState( false );
 
+  useEffect( () => {
+    if ( state.placeMode === PLACE_MODE.NEARBY ) {
+      checkPermissions();
+    }
+  }, [checkPermissions, state] );
+
   const updateLocation = useCallback( async ( place: Object ) => {
+    checkPermissions();
     if ( place === "worldwide" ) {
       dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
       dispatch( {
@@ -72,7 +80,7 @@ const RootExploreContainerWithContext = ( ): Node => {
         placeGuess: place?.display_name
       } );
     }
-  }, [defaultExploreLocation, dispatch, navigation] );
+  }, [checkPermissions, defaultExploreLocation, dispatch, navigation] );
 
   // Object | null
   const updateUser = ( user: Object ) => {
@@ -109,7 +117,10 @@ const RootExploreContainerWithContext = ( ): Node => {
     setIsFetching: setIsFetchingHeaderCount
   } = useExploreHeaderCount( );
 
-  const closeFiltersModal = ( ) => setShowFiltersModal( false );
+  const closeFiltersModal = ( ) => {
+    checkPermissions();
+    setShowFiltersModal( false );
+  };
 
   const openFiltersModal = ( ) => {
     setShowFiltersModal( true );
