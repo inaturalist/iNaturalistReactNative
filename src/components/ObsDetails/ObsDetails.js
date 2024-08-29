@@ -24,7 +24,6 @@ import {
 import {
   useTranslation
 } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import ActivityTab from "./ActivityTab/ActivityTab";
 import FloatingButtons from "./ActivityTab/FloatingButtons";
@@ -43,12 +42,13 @@ type Props = {
   addingActivityItem: Function,
   closeAgreeWithIdSheet: Function,
   belongsToCurrentUser: boolean,
-  comment: string,
+  comment?: string | null,
   commentIsOptional: ?boolean,
   confirmCommentFromCommentSheet: Function,
   confirmRemoteObsWasDeleted?: Function,
   currentTabId: string,
   currentUser: Object,
+  editIdentBody: Function,
   hideAddCommentSheet: Function,
   isConnected: boolean,
   isRefetching: boolean,
@@ -69,7 +69,14 @@ type Props = {
   showSuggestIdSheet: boolean,
   suggestIdSheetDiscardChanges: Function,
   tabs: Array<Object>,
-  taxonForSuggestion: ?Object
+  identBodySheetShown?: boolean,
+  onCloseIdentBodySheet?: Function,
+  newIdentification?: null | {
+    body?: string,
+    taxon: Object,
+    vision?: boolean
+  },
+  onChangeIdentBody?: Function
 }
 
 const ObsDetails = ( {
@@ -83,6 +90,7 @@ const ObsDetails = ( {
   confirmRemoteObsWasDeleted,
   currentTabId,
   currentUser,
+  editIdentBody,
   hideAddCommentSheet,
   isConnected,
   isRefetching,
@@ -103,13 +111,16 @@ const ObsDetails = ( {
   showSuggestIdSheet,
   suggestIdSheetDiscardChanges,
   tabs,
-  taxonForSuggestion
+  identBodySheetShown,
+  onCloseIdentBodySheet,
+  newIdentification,
+  onChangeIdentBody
+
 }: Props ): Node => {
   const insets = useSafeAreaInsets();
   const { params } = useRoute( );
   const { uuid } = params;
   const { t } = useTranslation( );
-  const currentObservation = useStore( state => state.currentObservation );
 
   const dynamicInsets = useMemo( () => ( {
     backgroundColor: "#ffffff",
@@ -256,7 +267,7 @@ const ObsDetails = ( {
     </>
   );
 
-  const hasComment = !!( comment || currentObservation?.description );
+  const hasComment = ( comment || newIdentification?.body || "" ).length > 0;
 
   const showAddCommentHeader = ( ) => {
     if ( hasComment ) {
@@ -275,13 +286,13 @@ const ObsDetails = ( {
       {!isTablet
         ? renderPhone()
         : renderTablet()}
-      {showAgreeWithIdSheet && (
+      {showAgreeWithIdSheet && newIdentification && (
         <AgreeWithIDSheet
-          comment={comment}
-          handleClose={closeAgreeWithIdSheet}
           onAgree={onAgree}
-          openAddCommentSheet={openAddCommentSheet}
-          taxon={taxonForSuggestion}
+          editIdentBody={editIdentBody}
+          hidden={identBodySheetShown}
+          onPressClose={closeAgreeWithIdSheet}
+          identification={newIdentification}
         />
       )}
       {/* AddCommentSheet */}
@@ -291,22 +302,35 @@ const ObsDetails = ( {
           handleClose={hideAddCommentSheet}
           headerText={showAddCommentHeader( )}
           textInputStyle={textInputStyle}
-          initialInput={comment || currentObservation?.description}
+          initialInput={comment}
           confirm={confirmCommentFromCommentSheet}
+        />
+      )}
+      {identBodySheetShown && (
+        <TextInputSheet
+          buttonText={t( "CONFIRM" )}
+          handleClose={onCloseIdentBodySheet}
+          headerText={showAddCommentHeader( )}
+          textInputStyle={textInputStyle}
+          initialInput={newIdentification?.body}
+          confirm={onChangeIdentBody}
         />
       )}
       {showSuggestIdSheet && (
         <SuggestIDSheet
-          openAddCommentSheet={openAddCommentSheet}
-          handleClose={suggestIdSheetDiscardChanges}
+          editIdentBody={editIdentBody}
+          hidden={identBodySheetShown}
+          onPressClose={suggestIdSheetDiscardChanges}
           onSuggestId={onSuggestId}
+          identification={newIdentification}
         />
       )}
-      {showPotentialDisagreementSheet && (
+      {showPotentialDisagreementSheet && newIdentification && (
         <PotentialDisagreementSheet
           onPotentialDisagreePressed={onPotentialDisagreePressed}
           handleClose={potentialDisagreeSheetDiscardChanges}
-          taxon={taxonForSuggestion}
+          newTaxon={newIdentification.taxon}
+          oldTaxon={observation.taxon}
         />
       )}
       {/*

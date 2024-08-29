@@ -50,7 +50,6 @@ Add-Location = Add Location
 Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
-Add-suggestion-and-remarks-to-observation = Add suggestion and remarks to observation
 # Hint for a button that adds a vote of agreement
 Adds-your-vote-of-agreement = Adds your vote of agreement
 # Hint for a button that adds a vote of disagreement
@@ -940,6 +939,8 @@ Stops-recording-sound = Stops recording sound
 SUBMIT = SUBMIT
 SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
+# Label for element that suggest an identification
+Suggest-ID = SUGGEST ID
 # Identification category
 supporting--identification = Supporting
 Switches-to-tab = Switches to { $tab } tab.

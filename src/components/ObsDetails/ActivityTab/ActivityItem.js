@@ -48,7 +48,7 @@ const ActivityItem = ( {
     && isFirstDisplay
     && currentUserId;
 
-  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
+  const navToTaxonDetails = ( ) => navigation.push( "TaxonDetails", { id: taxon.id } );
 
   return (
     <View className="flex-column">

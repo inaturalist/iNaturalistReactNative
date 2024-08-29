@@ -100,7 +100,8 @@ const useLocationPermission = ( ) => {
     hasPermissions,
     renderPermissionsGate,
     requestPermissions,
-    hasBlockedPermissions
+    hasBlockedPermissions,
+    checkPermissions
   };
 };
 
