@@ -88,8 +88,7 @@ const UserProfile = ( ): Node => {
       setExploreView( "observations" );
       navigation.navigate( "Explore", {
         user,
-        worldwide: true,
-        resetStoredParams: true
+        worldwide: true
       } );
     },
     [navigation, user, setExploreView]
@@ -100,8 +99,7 @@ const UserProfile = ( ): Node => {
       setExploreView( "species" );
       navigation.navigate( "Explore", {
         user,
-        worldwide: true,
-        resetStoredParams: true
+        worldwide: true
       } );
     },
     [navigation, user, setExploreView]
