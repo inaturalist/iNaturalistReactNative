@@ -13,11 +13,16 @@ import React from "react";
 import { Text } from "react-native";
 
 type Props = {
-  comment: string,
+  editIdentBody: Function,
+  handleClose?: Function,
+  hidden?: boolean,
+  identification: {
+    body?: string,
+    taxon: { id: number },
+    vision?: boolean
+  },
   onAgree:Function,
-  openAddCommentSheet: Function,
-  handleClose: Function,
-  taxon: Object
+  onPressClose: Function,
 }
 
 const showTaxon = taxon => {
@@ -32,15 +37,18 @@ const showTaxon = taxon => {
 };
 
 const AgreeWithIDSheet = ( {
-  comment,
-  onAgree,
-  openAddCommentSheet,
+  editIdentBody,
   handleClose,
-  taxon
+  hidden,
+  identification,
+  onAgree,
+  onPressClose
 }: Props ): Node => (
   <BottomSheet
     handleClose={handleClose}
     headerText={t( "AGREE-WITH-ID" )}
+    hidden={hidden}
+    onPressClose={onPressClose}
   >
     <View
       className="mx-[26px] space-y-[11px] my-[15px]"
@@ -48,28 +56,27 @@ const AgreeWithIDSheet = ( {
       <List2 className="text-black">
         {t( "Agree-with-ID-description" )}
       </List2>
-      { comment && (
+      { identification.body && (
         <View
           className=" flex-row items-center bg-lightGray p-[15px] rounded"
         >
           <INatIcon name="add-comment-outline" size={22} />
           <List2 className="ml-[7px] text-black">
-            {comment}
+            {identification.body}
           </List2>
         </View>
       )}
-      {showTaxon( taxon )}
+      {showTaxon( identification.taxon )}
     </View>
-    <View className="flex-row justify-evenly mx-3 mb-3">
-      {comment
+    <View className="flex-row mx-3 mb-3">
+      {identification.body
         ? (
           <Button
             text={t( "EDIT-COMMENT" )}
             onPress={( ) => {
-              openAddCommentSheet( { isOptional: true } );
-              handleClose( );
+              editIdentBody( );
             }}
-            className="mx-2 grow"
+            className="mx-2 flex-1"
             testID="ObsDetail.AgreeId.EditCommentButton"
             accessibilityHint={t( "Opens-add-comment-modal" )}
           />
@@ -78,10 +85,9 @@ const AgreeWithIDSheet = ( {
           <Button
             text={t( "ADD-COMMENT" )}
             onPress={( ) => {
-              openAddCommentSheet( { isOptional: true } );
-              handleClose( );
+              editIdentBody( );
             }}
-            className="mx-2 grow"
+            className="mx-2 flex-1"
             testID="ObsDetail.AgreeId.commentButton"
             accessibilityHint={t( "Opens-add-comment-modal" )}
           />
@@ -89,12 +95,12 @@ const AgreeWithIDSheet = ( {
 
       <Button
         text={t( "AGREE" )}
-        onPress={( ) => onAgree( comment )}
-        className="mx-2 grow"
+        onPress={( ) => onAgree( identification )}
+        className="mx-2 flex-1"
         testID="ObsDetail.AgreeId.cvSuggestionsButton"
         accessibilityRole="link"
         accessibilityHint={t( "Navigates-to-suggest-identification" )}
-        level={comment && "primary"}
+        level="primary"
       />
     </View>
   </BottomSheet>

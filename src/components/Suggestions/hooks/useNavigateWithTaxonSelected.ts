@@ -41,16 +41,9 @@ const useNavigateWithTaxonSelected = (
     if ( entryScreen === "ObsDetails" ) {
       navigation.navigate( "ObsDetails", {
         uuid: currentObservation?.uuid,
-        suggestedTaxon: selectedTaxon
-          ? {
-            id: selectedTaxon.id,
-            default_photo: selectedTaxon.default_photo,
-            rank: selectedTaxon.rank,
-            rank_level: selectedTaxon.rank_level,
-            preferred_common_name: selectedTaxon.preferred_common_name,
-            name: selectedTaxon.name
-          }
-          : null
+        identTaxonId: selectedTaxon?.id,
+        identTaxonFromVision: options?.vision,
+        identAt: Date.now()
       } );
     } else if ( entryScreen === "ObsEdit" ) {
       // Cant' go back b/c we might be on Suggestions OR TaxonSearch. Don't
@@ -66,6 +59,7 @@ const useNavigateWithTaxonSelected = (
     currentObservation?.uuid,
     entryScreen,
     navigation,
+    options?.vision,
     selectedTaxon,
     unselectTaxon,
     updateObservationKeys,
