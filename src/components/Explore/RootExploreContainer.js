@@ -13,7 +13,7 @@ import {
 import type { Node } from "react";
 import React, {
   useCallback,
-  useEffect,
+  useEffect, useRef,
   useState
 } from "react";
 import { useCurrentUser } from "sharedHooks";
@@ -39,6 +39,7 @@ const RootExploreContainerWithContext = ( ): Node => {
     hasBlockedPermissions: hasBlockedLocationPermissions,
     checkPermissions
   } = useLocationPermission( );
+  const previousHasLocationPermissions = useRef();
 
   const {
     state, dispatch, makeSnapshot, defaultExploreLocation
@@ -47,6 +48,23 @@ const RootExploreContainerWithContext = ( ): Node => {
   const [showFiltersModal, setShowFiltersModal] = useState( false );
 
   const [canFetch, setCanFetch] = useState( false );
+
+  useEffect( () => {
+    async function locationPermissionsChanged() {
+      if ( hasLocationPermissions && !previousHasLocationPermissions.current
+        && state.placeMode === PLACE_MODE.NEARBY && !state.lat ) {
+        const exploreLocation = await defaultExploreLocation();
+        dispatch( {
+          type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
+          exploreLocation
+        } );
+      }
+
+      previousHasLocationPermissions.current = hasLocationPermissions;
+    }
+
+    locationPermissionsChanged();
+  }, [defaultExploreLocation, dispatch, hasLocationPermissions, state] );
 
   const updateLocation = useCallback( async ( place: Object ) => {
     if ( place === "worldwide" ) {
