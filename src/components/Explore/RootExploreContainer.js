@@ -147,14 +147,17 @@ const RootExploreContainerWithContext = ( ): Node => {
         && state.lat === undefined ) {
       updateLocation( "nearby" );
     }
-    if ( hasBlockedLocationPermissions ) {
-      updateLocation( "worldwide" );
-    }
-  }, [hasBlockedLocationPermissions,
+  }, [
     updateLocation,
     hasLocationPermissions,
     state.placeMode,
     state.lat] );
+
+  useEffect( () => {
+    if ( hasBlockedLocationPermissions && state.placeMode === PLACE_MODE.NEARBY ) {
+      updateLocation( "worldwide" );
+    }
+  }, [hasBlockedLocationPermissions, state.placeMode, updateLocation] );
 
   // Subviews need the ability to imperatively start fetching, e.g. when the
   // user switches from species to obs view
