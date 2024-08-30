@@ -12,6 +12,7 @@ import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { useTheme } from "react-native-paper";
+import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
 import {
   authenticateUser
@@ -39,6 +40,7 @@ const LoginForm = ( {
   const [error, setError] = useState( null );
   const [loading, setLoading] = useState( false );
   const theme = useTheme();
+  const { keyboardShown } = useKeyboardInfo( );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -147,7 +149,12 @@ const LoginForm = ( {
         />
         {!hideFooter && (
           <Body1
-            className="color-white self-center mt-[31px] mb-[35px] underline"
+            className={classnames(
+              "color-white self-center mt-[31px] underline",
+              // When the keyboard is up this pushes the form up enough to cut
+              // off the username label on some devices
+              !keyboardShown && "mb-[35px]"
+            )}
             onPress={( ) => navigation.navigate( "SignUp" )}
           >
             {t( "Dont-have-an-account" )}

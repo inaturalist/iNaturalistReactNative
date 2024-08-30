@@ -7,7 +7,7 @@ import LoginForm from "./LoginForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
 const TARGET_NON_KEYBOARD_HEIGHT = 420 as const;
-const HIDE_HEADER_HEIGHT = 560 as const;
+const HIDE_HEADER_HEIGHT = 570 as const;
 const HIDE_FOOTER_HEIGHT = 500 as const;
 
 const Login = ( ) => {
