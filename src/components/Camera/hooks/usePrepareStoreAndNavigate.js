@@ -35,7 +35,8 @@ type Options = {
 // $FlowIgnore
 export async function savePhotosToCameraGallery(
   uris: [string],
-  onEachSuccess: Function
+  onEachSuccess: Function,
+  location: Object
 ) {
   const readWritePermissionResult = permissionResultFromMultiple(
     await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS )
@@ -43,20 +44,22 @@ export async function savePhotosToCameraGallery(
   uris.reduce(
     async ( memo, uri ) => {
       try {
-        let savedPhotoUri;
+        const saveOptions = {};
         // One quirk of CameraRoll is that if you want to write to an album, you
         // need readwrite permission, but we don't want to ask for that here
         // b/c it might come immediately after asking for *add only*
         // permission, so we're checking to see if we have that permission
         // and skipping the album if we don't
         if ( readWritePermissionResult === RESULTS.GRANTED ) {
-          savedPhotoUri = await CameraRoll.save( uri, {
-            type: "photo",
-            album: "iNaturalist Next"
-          } );
-        } else {
-          savedPhotoUri = await CameraRoll.save( uri );
+          saveOptions.type = "photo";
+          saveOptions.album = "iNaturalist Next";
         }
+        if ( location ) {
+          saveOptions.latitude = location.latitude;
+          saveOptions.longitude = location.longitude;
+          saveOptions.horizontalAccuracy = location.positional_accuracy;
+        }
+        const savedPhotoUri = await CameraRoll.save( uri, saveOptions );
 
         // Save these camera roll URIs, so later on observation editor can update
         // the EXIF metadata of these photos, once we retrieve a location.
@@ -122,7 +125,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
       } );
     setObservations( [newObservation] );
     if ( addPhotoPermissionResult !== RESULTS.GRANTED ) return Promise.resolve( );
-    return savePhotosToCameraGallery( cameraUris, addCameraRollUri );
+    return savePhotosToCameraGallery( cameraUris, addCameraRollUri, userLocation );
   }, [
     addCameraRollUri,
     addPhotoPermissionResult,

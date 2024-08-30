@@ -69,8 +69,7 @@ const ToolbarContainer = ( {
       setExploreView( "observations" );
       navigation.navigate( "Explore", {
         user: currentUser,
-        worldwide: true,
-        resetStoredParams: true
+        worldwide: true
       } );
     },
     [navigation, currentUser, setExploreView]

@@ -15,6 +15,7 @@ interface Props {
   handleClose: Function,
   headerText: string,
   insideModal?: boolean,
+  onPressClose?: ( ) => void;
   radioValues: {
     [key: string]: {
       value: string,
@@ -36,6 +37,7 @@ const RadioButtonSheet = ( {
   handleClose,
   headerText,
   insideModal,
+  onPressClose,
   radioValues,
   selectedValue = "none",
   topDescriptionText
@@ -65,6 +67,7 @@ const RadioButtonSheet = ( {
       handleClose={handleClose}
       headerText={headerText}
       insideModal={insideModal}
+      onPressClose={onPressClose}
     >
       <View className="p-4 pt-2">
         {topDescriptionText}

@@ -35,8 +35,7 @@ const ProjectDetails = ( {
   const onObservationPressed = useCallback(
     ( ) => navigation.navigate( "Explore", {
       project,
-      worldwide: true,
-      resetStoredParams: true
+      worldwide: true
     } ),
     [navigation, project]
   );
@@ -46,8 +45,7 @@ const ProjectDetails = ( {
       setExploreView( "species" );
       navigation.navigate( "Explore", {
         project,
-        worldwide: true,
-        resetStoredParams: true
+        worldwide: true
       } );
     },
     [navigation, project, setExploreView]

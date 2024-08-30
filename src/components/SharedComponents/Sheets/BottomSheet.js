@@ -20,10 +20,14 @@ type Props = {
   children: Node,
   hidden?: boolean,
   onChange?: Function,
+  // Callback when the sheet closes
   handleClose?: Function,
   hideCloseButton?: boolean,
   headerText?: string,
   onLayout?: Function,
+  // Callback when the user presses the close button, not whenever the sheet
+  // closes
+  onPressClose?: Function,
   snapPoints?: Array<string>,
   insideModal?: boolean,
   keyboardShouldPersistTaps: string
@@ -39,6 +43,7 @@ const StandardBottomSheet = ( {
   hideCloseButton = false,
   headerText,
   onLayout,
+  onPressClose,
   snapPoints,
   insideModal,
   keyboardShouldPersistTaps = "never"
@@ -60,7 +65,7 @@ const StandardBottomSheet = ( {
     }
   }, [handleClose] );
 
-  const handleClosePress = useCallback( ( ) => {
+  const hide = useCallback( ( ) => {
     if ( handleClose ) {
       handleClose( );
     }
@@ -81,11 +86,11 @@ const StandardBottomSheet = ( {
 
   useEffect( ( ) => {
     if ( hidden ) {
-      handleClosePress( );
+      hide( );
     } else {
       handleSnapPress( );
     }
-  }, [hidden, handleClosePress, handleSnapPress] );
+  }, [hidden, hide, handleSnapPress] );
 
   const BottomSheetComponent = insideModal
     ? BottomSheet
@@ -127,7 +132,7 @@ const StandardBottomSheet = ( {
           {!hideCloseButton && (
             <INatIconButton
               icon="close"
-              onPress={handleClose}
+              onPress={onPressClose || handleClose}
               size={19}
               className="absolute top-3.5 right-3"
               accessibilityState={{ disabled: hidden }}

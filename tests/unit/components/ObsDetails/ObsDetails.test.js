@@ -342,8 +342,7 @@ describe( "ObsDetails", () => {
       expect( mockMutate ).toHaveBeenCalledWith( {
         identification: {
           observation_id: otherUserObservation.uuid,
-          taxon_id: firstIdentification.taxon.id,
-          body: ""
+          taxon_id: firstIdentification.taxon.id
         }
       } );
     } );

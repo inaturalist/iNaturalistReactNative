@@ -105,7 +105,7 @@ const PhotoGallery = ( ): Node => {
       includeBase64: false,
       forceOldAndroidPhotoPicker: true,
       chooserTitle: t( "Import-Photos-From" ),
-      presentationStyle: "fullScreen"
+      presentationStyle: "overFullScreen"
     } );
 
     if ( !response || response.didCancel || !response.assets || response.errorCode ) {
