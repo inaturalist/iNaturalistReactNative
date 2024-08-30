@@ -349,14 +349,27 @@ async function defaultExploreLocation( ): Promise<DefaultLocation> {
   const location = await fetchUserLocation( );
   if ( !location || !location.latitude ) {
     return {
-      placeMode: PLACE_MODE.WORLDWIDE
+      placeMode: PLACE_MODE.WORLDWIDE,
+      lat: undefined,
+      lng: undefined,
+      radius: undefined,
+      place_id: undefined,
+      swlat: undefined,
+      swlng: undefined,
+      nelat: undefined,
+      nelng: undefined
     };
   }
   return {
     placeMode: PLACE_MODE.NEARBY,
     lat: location?.latitude,
     lng: location?.longitude,
-    radius: 50
+    radius: 50,
+    place_id: undefined,
+    swlat: undefined,
+    swlng: undefined,
+    nelat: undefined,
+    nelng: undefined
   };
 }
 
