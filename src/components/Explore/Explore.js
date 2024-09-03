@@ -123,7 +123,7 @@ const Explore = ( {
   );
 
   const renderMainContent = ( ) => {
-    if ( !isConnected ) {
+    if ( isConnected === false ) {
       return (
         <OfflineNotice
           onPress={() => refresh()}

@@ -241,7 +241,7 @@ const TaxonDetails = ( ): Node => {
   ] );
 
   const displayTaxonMedia = () => {
-    if ( !isConnected ) {
+    if ( isConnected === false ) {
       return (
         <OfflineNotice
           onPress={( ) => {

@@ -56,7 +56,7 @@ const NotificationsList = ( {
       );
     }
 
-    if ( !isConnected ) {
+    if ( isConnected === false ) {
       return <OfflineNotice onPress={reload} />;
     }
 

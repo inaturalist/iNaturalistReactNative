@@ -258,7 +258,7 @@ const Settings = ( ) => {
           confirmInternetConnection( );
           if ( !isConnected ) { return; }
           navigation.navigate( "FullPageWebView", {
-            title: t( "Settings" ),
+            title: t( "SETTINGS" ),
             loggedIn: true,
             initialUrl: SETTINGS_URL,
             blurEvent: FINISHED_WEB_SETTINGS

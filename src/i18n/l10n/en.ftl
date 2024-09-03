@@ -877,7 +877,6 @@ Separate-Photos = Separate Photos
 # Month of September
 September = September
 SETTINGS = SETTINGS
-Settings = Settings
 Share = Share
 SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 Share-location = Share Location
