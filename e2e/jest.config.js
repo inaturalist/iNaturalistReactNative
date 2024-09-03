@@ -1,5 +1,5 @@
 module.exports = {
-  maxWorkers: 1,
+  maxWorkers: 4,
   testTimeout: 900000,
   rootDir: "..",
   testMatch: ["<rootDir>/e2e/**/*.e2e.js"],
