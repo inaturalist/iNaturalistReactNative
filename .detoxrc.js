@@ -24,14 +24,14 @@ module.exports = {
       binaryPath:
         "ios/build/Build/Products/Debug-iphonesimulator/iNaturalistReactNative.app",
       build:
-        "xcodebuild -showBuildTimingSummary -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
     },
     "ios.release": {
       type: "ios.app",
       binaryPath:
         "ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app",
       build:
-        "xcodebuild -showBuildTimingSummary -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "xcodebuild -j 4 -showBuildTimingSummary -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
     },
     "android.debug": {
       type: "android.apk",
