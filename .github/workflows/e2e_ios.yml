@@ -5,9 +5,6 @@ name: e2e-iOS
 on:
   workflow_dispatch:
   pull_request:
-  push:
-    branches:
-      - 'main'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -31,7 +28,7 @@ jobs:
   test:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-13
+    runs-on: macos-13-xl
     # Kill the task if not finished after 120 minutes
     timeout-minutes: 120
 
@@ -133,15 +130,3 @@ jobs:
       with:
         name: detox-artifacts
         path: artifacts
-
-  notify:
-    name: Notify Slack
-    needs: test
-    if: ${{ success() || failure() }}
-    runs-on: macos-13
-    steps:
-      - uses: iRoachie/slack-github-actions@v2.3.0
-        if: env.SLACK_WEBHOOK_URL != null
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
