@@ -57,7 +57,7 @@ const ObsEdit = ( ): Node => {
 
   const navToLocationPicker = useCallback( ( ) => {
     stopWatch( subscriptionId );
-    navigation.navigate( "LocationPicker", { goBackOnSave: true } );
+    navigation.navigate( "LocationPicker" );
   }, [stopWatch, subscriptionId, navigation] );
 
   const onLocationPress = ( ) => {

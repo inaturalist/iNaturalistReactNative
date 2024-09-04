@@ -36,6 +36,7 @@ interface Props {
   className?: string;
   currentLocationButtonClassName?: string;
   currentLocationZoomLevel?: number;
+  initialRegion?: boolean;
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
   mapType?: MapType;
   mapViewClassName?: string;
@@ -52,6 +53,7 @@ interface Props {
   openMapScreen?: () => void;
   positionalAccuracy?: number;
   region?: Region;
+  regionToAnimate?: Object;
   scrollEnabled?: boolean;
   showCurrentLocationButton?: boolean;
   showLocationIndicator?: boolean;
@@ -77,6 +79,7 @@ const Map = ( {
   className = "flex-1",
   currentLocationButtonClassName,
   currentLocationZoomLevel, // target zoom level when user hits current location btn
+  initialRegion,
   mapHeight,
   mapType,
   mapViewClassName,
@@ -93,6 +96,7 @@ const Map = ( {
   openMapScreen,
   positionalAccuracy,
   region,
+  regionToAnimate,
   scrollEnabled = true,
   showCurrentLocationButton,
   showLocationIndicator,
@@ -130,7 +134,7 @@ const Map = ( {
   const initialLatitude = obsLatitude;
   const initialLongitude = obsLongitude;
 
-  let initialRegion: Region = {
+  let defaultInitialRegion: Region = {
     latitude: initialLatitude || 25, // Default to something US centric
     longitude: initialLongitude || -85, // Default to something US centric
     latitudeDelta: initialLatitude
@@ -193,6 +197,19 @@ const Map = ( {
     zoomToUserLocationRequested
   ] );
 
+  useEffect( ( ) => {
+    // in LocationPicker we're setting initialRegion to eliminate jitteriness
+    // when scrolling, which means we also must use this method to reset the map
+    // when searching for a location by typing a place name and selecting place coordinates
+    if ( !regionToAnimate ) { return; }
+    mapViewRef.current?.animateToRegion( {
+      latitude: regionToAnimate.latitude,
+      longitude: regionToAnimate.longitude
+    } );
+  }, [
+    regionToAnimate
+  ] );
+
   // Zoom to nearby region if requested. Note that if you want to do something
   // after the map zooms, you need to use onRegionChangeComplete
   useEffect( ( ) => {
@@ -231,7 +248,7 @@ const Map = ( {
 
   const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
   if ( obscured ) {
-    initialRegion = {
+    defaultInitialRegion = {
       latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
       longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
       latitudeDelta: 0.3,
@@ -256,6 +273,16 @@ const Map = ( {
     onPermissionGranted
   } );
 
+  const setRegion = ( ) => {
+    if ( initialRegion ) {
+      return null;
+    }
+    if ( region?.latitude ) {
+      return region;
+    }
+    return defaultInitialRegion;
+  };
+
   return (
     <View
       style={[
@@ -273,9 +300,8 @@ const Map = ( {
         ref={mapViewRef}
         testID={testID || "Map.MapView"}
         className={className}
-        region={( region?.latitude )
-          ? region
-          : initialRegion}
+        initialRegion={initialRegion}
+        region={setRegion( )}
         onUserLocationChange={async locationChangeEvent => {
           const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
           setUserLocation( coordinate );
