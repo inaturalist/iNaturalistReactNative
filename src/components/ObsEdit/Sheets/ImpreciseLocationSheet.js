@@ -1,6 +1,6 @@
 // @flow
 
-import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import { TextSheet } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";

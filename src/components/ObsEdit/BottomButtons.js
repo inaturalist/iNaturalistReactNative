@@ -5,7 +5,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
+import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import {
   Button,
   StickyToolbar
