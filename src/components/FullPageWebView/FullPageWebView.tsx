@@ -5,7 +5,7 @@ import {
   useRoute
 } from "@react-navigation/native";
 import { getUserAgent } from "api/userAgent";
-import { getAPIToken } from "components/LoginSignUp/AuthenticationService.ts";
+import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
@@ -32,6 +32,16 @@ export const ALLOWED_DOMAINS = [
   "hcaptcha.com"
 ];
 
+const ALLOWED_ORIGINS = ["https://*", "mailto:*"];
+const ALLOWED_AUTH_DOMAINS = ["inaturalist.org"];
+
+// eslint-disable-next-line no-undef
+if ( __DEV__ ) {
+  ALLOWED_DOMAINS.push( "localhost:3000" );
+  ALLOWED_ORIGINS.push( "http://localhost:3000*" );
+  ALLOWED_AUTH_DOMAINS.push( "localhost:3000" );
+}
+
 // Note that you want flex-2 so it grows into the entire webview container
 const LoadingView = ( ) => (
   <View className="flex-2 justify-center items-center w-full h-full">
@@ -40,11 +50,13 @@ const LoadingView = ( ) => (
 );
 
 type FullPageWebViewParams = {
-  initialUrl: string,
-  blurEvent?: string,
-  title?: string,
-  loggedIn?: boolean,
-  skipSetSourceInShouldStartLoadWithRequest?: boolean
+  initialUrl: string;
+  blurEvent?: string;
+  title?: string;
+  loggedIn?: boolean;
+  skipSetSourceInShouldStartLoadWithRequest?: boolean;
+  clickablePathnames?: Array<string>;
+  shouldLoadUrl?: ( url: string ) => boolean;
 }
 
 type ParamList = {
@@ -69,6 +81,10 @@ export function onShouldStartLoadWithRequest(
   params: FullPageWebViewParams,
   setSource?: ( source: WebViewSource ) => void
 ) {
+  if ( typeof ( params.shouldLoadUrl ) === "function" ) {
+    if ( !params.shouldLoadUrl( request.url ) ) return false;
+  }
+
   // If we're just loading the same page, that's fine
   if ( request.url === source.uri ) {
     return true;
@@ -82,7 +98,7 @@ export function onShouldStartLoadWithRequest(
 
   // This should prevent accidentally making a webview with auth for a
   // non-iNat domain
-  if ( source.headers?.Authorization && sourceDomain !== "inaturalist.org" ) {
+  if ( source.headers?.Authorization && ALLOWED_AUTH_DOMAINS.indexOf( sourceDomain ) < 0 ) {
     throw new Error( "Cannot send Authorization to non-iNat domain" );
   }
 
@@ -108,8 +124,11 @@ export function onShouldStartLoadWithRequest(
     // or if this is a click, i.e. even if this is an allowed domain, we want
     // to open a browser unless we were explicitly asked not to. This only
     // works in iOS.
-    // TODO come up with an Android solution
-    || request.navigationType === "click"
+    || (
+      // TODO come up with an Android solution
+      request.navigationType === "click"
+      && ( params.clickablePathnames || [] ).indexOf( requestUrl.pathname ) < 0
+    )
   ) {
     // Note we can't use openExternalWebBrowser here b/c this function needs
     // to be synchronous
@@ -118,12 +137,6 @@ export function onShouldStartLoadWithRequest(
       logger.info( "Failed to open ", request.url, ", error: ", linkingError );
     } );
     return false;
-  }
-
-  // This should prevent making any request w/ auth to a non-iNat domain from
-  // a web page on an iNat domain
-  if ( source.headers?.Authorization && requestDomain !== "inaturalist.org" ) {
-    throw new Error( "Cannot send Authorization to non-iNat domain" );
   }
 
   if ( params.skipSetSourceInShouldStartLoadWithRequest || !setSource ) {
@@ -166,11 +179,11 @@ const FullPageWebView = ( ) => {
 
       // Make the WebView logged in for the current user
       if ( params.loggedIn ) {
-        getAPIToken().then( token => {
+        getJWT().then( jwt => {
           setSource( {
             ...source,
             headers: {
-              Authorization: token
+              Authorization: jwt
             }
           } );
         } );
@@ -194,7 +207,7 @@ const FullPageWebView = ( ) => {
                 setSource
               )
             }
-            originWhitelist={["https://*", "mailto:*"]}
+            originWhitelist={ALLOWED_ORIGINS}
             renderLoading={LoadingView}
             startInLoadingState
             userAgent={getUserAgent()}

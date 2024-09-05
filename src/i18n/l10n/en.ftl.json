@@ -20,6 +20,10 @@
     "comment": "Label for a taxon when a user prefers to see or hear the scientific name first",
     "val": "{ $scientificName } ({ $commonName })"
   },
+  "Account-Deleted": {
+    "comment": "Alert message shown after account deletion",
+    "val": "Account Deleted"
+  },
   "ACTIVITY": "ACTIVITY",
   "Add-agreement": {
     "comment": "Label for a button that adds a vote of agreement",
@@ -660,6 +664,7 @@
   "Intl-number": "{ $val }",
   "Introduced": "Introduced",
   "Introduced-to-place": "Introduced to { $place }",
+  "It-may-take-up-to-an-hour-to-remove-content": "It may take up to an hour to completely delete all associated content",
   "January": {
     "comment": "Month of January",
     "val": "January"
