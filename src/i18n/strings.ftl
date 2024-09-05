@@ -30,6 +30,8 @@ ABOUT-UMBRELLA-PROJECTS = ABOUT UMBRELLA PROJECTS
 accessible-comname-sciname = { $commonName } ({ $scientificName })
 # Label for a taxon when a user prefers to see or hear the scientific name first
 accessible-sciname-comname = { $scientificName } ({ $commonName })
+# Alert message shown after account deletion
+Account-Deleted = Account Deleted
 ACTIVITY = ACTIVITY
 # Label for a button that adds a vote of agreement
 Add-agreement = Add agreement
@@ -489,6 +491,7 @@ Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
+It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
 # Month of January
 January = January
 JOIN = JOIN

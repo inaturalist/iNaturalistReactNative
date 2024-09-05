@@ -3,21 +3,23 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-// import fetchAvailableLocales from "api/translations";
 import { updateUsers } from "api/users";
+import {
+  signOut
+} from "components/LoginSignUp/AuthenticationService.ts";
 import {
   ActivityIndicator,
   Body2,
   Button,
   Heading4,
-  // PickerSheet,
   RadioButtonRow,
   ScrollViewWrapper
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts.ts";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  Alert, StatusBar,
+  Alert,
+  StatusBar,
   View
 } from "react-native";
 import Config from "react-native-config";
@@ -30,7 +32,6 @@ import {
   useUserMe
 } from "sharedHooks";
 import useStore from "stores/useStore";
-// import useStore, { zustandStorage } from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
@@ -261,7 +262,26 @@ const Settings = ( ) => {
             title: t( "SETTINGS" ),
             loggedIn: true,
             initialUrl: SETTINGS_URL,
-            blurEvent: FINISHED_WEB_SETTINGS
+            blurEvent: FINISHED_WEB_SETTINGS,
+            clickablePathnames: ["/users/delete"],
+            skipSetSourceInShouldStartLoadWithRequest: true,
+            shouldLoadUrl: url => {
+              async function signOutGoHome() {
+                // sign out
+                await signOut( { realm, clearRealm: true, queryClient } );
+                // navigate to My Obs
+                navigation.navigate( "ObsList" );
+                Alert.alert(
+                  t( "Account-Deleted" ),
+                  t( "It-may-take-up-to-an-hour-to-remove-content" )
+                );
+              }
+              if ( url === `${Config.OAUTH_API_URL}/?account_deleted=true` ) {
+                signOutGoHome( );
+                return false;
+              }
+              return true;
+            }
           } );
         }}
         accessibilityLabel={t( "INATURALIST-SETTINGS" )}
