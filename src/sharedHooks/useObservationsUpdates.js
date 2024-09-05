@@ -1,8 +1,5 @@
 // @flow
 
-import {
-  useNetInfo
-} from "@react-native-community/netinfo";
 import { fetchObservationUpdates } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
 import { useEffect } from "react";
@@ -15,7 +12,6 @@ export const fetchObservationUpdatesKey = "fetchObservationUpdates";
 
 const useObservationsUpdates = ( enabled: boolean ): Object => {
   const realm = useRealm();
-  const { isConnected } = useNetInfo( );
 
   // Request params for fetching unviewed updates
   const baseParams = {
@@ -31,7 +27,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
   } = useAuthenticatedQuery(
     [fetchObservationUpdatesKey],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
-    { enabled: !!isConnected && !!enabled }
+    { enabled: !!( enabled ) }
   );
 
   /*

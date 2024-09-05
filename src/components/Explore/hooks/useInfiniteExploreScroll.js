@@ -1,12 +1,11 @@
 // @flow
 
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { addSeconds, formatISO, parseISO } from "date-fns";
 import { flatten, last } from "lodash";
 import { useCallback } from "react";
 import Observation from "realmModels/Observation";
+import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object ): Object => {
   const baseParams = {
@@ -49,15 +48,9 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     isFetchingNextPage,
     fetchNextPage,
     status
-  } = useInfiniteQuery( {
-    // eslint-disable-next-line
+  } = useAuthenticatedInfiniteQuery(
     queryKey,
-    queryFn: async ( { pageParam } ) => {
-      const apiToken = await getJWT( );
-      const options = {
-        api_token: apiToken
-      };
-
+    async ( { pageParam }, optsWithAuth ) => {
       const params = {
         ...baseParams
       };
@@ -86,13 +79,14 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
         // well
         params.return_bounds = true;
       }
-      const response = await searchObservations( params, options );
+      const response = await searchObservations( params, optsWithAuth );
       return response;
     },
-    initialPageParam: 0,
-    getNextPageParam,
-    enabled
-  } );
+    {
+      getNextPageParam,
+      enabled
+    }
+  );
 
   const observations = flatten( data?.pages?.map( r => r.results ) ) || [];
   let totalResults = data?.pages?.[0].total_results;

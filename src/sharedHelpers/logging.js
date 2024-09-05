@@ -14,23 +14,21 @@ function inspect( target ) {
 // returning a promise is like returning true, which means it retries
 // forever
 function reactQueryRetry( failureCount, error, options = {} ) {
+  const isOffline = error instanceof TypeError && error.message.match( "Network request failed" );
   const logger = options.logger || defaultLogger;
   if ( typeof ( options.beforeRetry ) === "function" ) {
     options.beforeRetry( failureCount, error );
   }
   logger.warn(
     `reactQueryRetry, error: ${error.message}, failureCount: ${failureCount}, options:`,
-    options,
-    error
+    inspect( options?.queryKey )
   );
   let shouldRetry = failureCount < 2;
   if (
     // If this is an actual 408 Request Timeout error, we probably want to
     // retry... but this will probably never happen because at this point the
     // error hasn't been converted to an INatApiError
-    error.status === 408
-    // If there's just no network at the moment, definitely retry
-    || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
+    error.status === 408 || isOffline
   ) {
     shouldRetry = failureCount < 3;
     console.log(
@@ -38,6 +36,11 @@ function reactQueryRetry( failureCount, error, options = {} ) {
       + `failureCount: ${failureCount}, shouldRetry: ${shouldRetry}, options: `,
       options
     );
+    // 20240905 amanda - not handling error here since we want these queries to retry
+    // immediately if there is an internet connection
+    // though i'm also not sure if we need to log these network request failed errors somewhere
+    // or if it's ok to suppress them
+    return shouldRetry;
   }
   // 404 means the record does not exist, so no need to retry
   if ( error.status === 404 ) {
