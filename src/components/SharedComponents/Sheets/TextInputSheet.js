@@ -66,14 +66,13 @@ const TextInputSheet = ( {
   const textInputRef = useRef( );
   const theme = useTheme( );
   const [input, setInput] = useState( initialInput );
-  const [hasChanged, setHasChanged] = useState( false );
   const { t } = useTranslation( );
   const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
   const { top: topInset } = useSafeAreaInsets( );
   const [sheetHeight, setSheetHeight] = useState( 0 );
 
   // disable if user hasn't changed existing text
-  const confirmButtonDisabled = initialInput === input && !hasChanged;
+  const confirmButtonDisabled = initialInput === input || !input;
 
   const inputStyle = useMemo( ( ) => ( {
     height: Math.min(
@@ -124,9 +123,6 @@ const TextInputSheet = ( {
             maxLength={maxLength}
             multiline
             onChangeText={text => {
-              if ( !hasChanged ) {
-                setHasChanged( true );
-              }
               setInput( text );
             }}
             placeholder={placeholder}
