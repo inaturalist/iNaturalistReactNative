@@ -57,7 +57,10 @@ const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
-  // need to add this for auto refetch in React Native
+  // this ensures that React Query has the most accurate depiction of whether the
+  // app is online or offline. since queries only run when the app is online, this
+  // eventListener prevents both queries and retries (via reactQueryRetry)
+  // from running unnecessarily when the app is offline
   // https://tanstack.com/query/latest/docs/framework/react/react-native#online-status-management
   onlineManager.setEventListener( setOnline => NetInfo.addEventListener( state => {
     setOnline( !!state.isConnected );

@@ -1,4 +1,3 @@
-import { onlineManager } from "@tanstack/react-query";
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 
@@ -15,9 +14,7 @@ function inspect( target ) {
 // returning a promise is like returning true, which means it retries
 // forever
 function reactQueryRetry( failureCount, error, options = {} ) {
-  const isOnline = onlineManager.isOnline( );
-  const isOffline = !isOnline
-    && ( error instanceof TypeError && error.message.match( "Network request failed" ) );
+  const isOffline = error instanceof TypeError && error.message.match( "Network request failed" );
   const logger = options.logger || defaultLogger;
   if ( typeof ( options.beforeRetry ) === "function" ) {
     options.beforeRetry( failureCount, error );
