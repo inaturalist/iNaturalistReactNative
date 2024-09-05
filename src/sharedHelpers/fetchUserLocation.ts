@@ -10,8 +10,7 @@ import {
 } from "react-native-permissions";
 
 const options = {
-  enableHighAccuracy: true,
-  maximumAge: 0,
+  enableHighAccuracy: false,
   timeout: 2000
 } as const;
 
