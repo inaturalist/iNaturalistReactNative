@@ -1,8 +1,5 @@
 // @flow
 
-import {
-  useNetInfo
-} from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
@@ -40,7 +37,6 @@ const UserProfile = ( ): Node => {
   const { userId } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
-  const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
 
   const { data: remoteUser } = useAuthenticatedQuery(
@@ -61,7 +57,7 @@ const UserProfile = ( ): Node => {
       ttl: -1
     }, optsWithAuth ),
     {
-      enabled: !!isConnected && !!currentUser
+      enabled: !!currentUser
     }
   );
   let relationshipResults = null;

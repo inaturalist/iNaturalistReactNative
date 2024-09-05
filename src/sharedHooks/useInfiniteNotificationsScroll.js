@@ -1,14 +1,11 @@
 // @flow
 
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchObservationUpdates, fetchRemoteObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService.ts";
 import { flatten } from "lodash";
 import { RealmContext } from "providers/contexts.ts";
 import { useCallback } from "react";
 import Observation from "realmModels/Observation";
-import { reactQueryRetry } from "sharedHelpers/logging";
-import { useCurrentUser } from "sharedHooks";
+import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -24,6 +21,8 @@ const useInfiniteNotificationsScroll = ( ): Object => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
 
+  const queryKey = ["useInfiniteNotificationsScroll"];
+
   const fetchObsByUUIDs = useCallback( async ( uuids, authOptions ) => {
     const observations = await fetchRemoteObservations(
       uuids,
@@ -33,14 +32,9 @@ const useInfiniteNotificationsScroll = ( ): Object => {
     Observation.upsertRemoteObservations( observations, realm );
   }, [realm] );
 
-  const infQueryResult = useInfiniteQuery( {
-    queryKey: ["useInfiniteNotificationsScroll"],
-    queryFn: async ( { pageParam } ) => {
-      const apiToken = await getJWT( );
-      const options = {
-        api_token: apiToken
-      };
-
+  const infQueryResult = useAuthenticatedInfiniteQuery(
+    queryKey,
+    async ( { pageParam }, optsWithAuth ) => {
       const params = { ...BASE_PARAMS };
 
       if ( pageParam ) {
@@ -49,25 +43,25 @@ const useInfiniteNotificationsScroll = ( ): Object => {
         params.page = 1;
       }
 
-      const response = await fetchObservationUpdates( params, options );
+      const response = await fetchObservationUpdates( params, optsWithAuth );
       // Sometimes updates linger after notifiers that generated them have been deleted
       const updatesWithContent = response?.filter(
         update => update.comment || update.identification
       ) || [];
       const obsUUIDs = updatesWithContent.map( obsUpdate => obsUpdate.resource_uuid );
       if ( obsUUIDs.length > 0 ) {
-        await fetchObsByUUIDs( obsUUIDs, options );
+        await fetchObsByUUIDs( obsUUIDs, optsWithAuth );
       }
 
       return updatesWithContent;
     },
-    initialPageParam: 0,
-    getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
-      ? allPages.length + 1
-      : undefined ),
-    enabled: !!currentUser,
-    retry: reactQueryRetry
-  } );
+    {
+      getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
+        ? allPages.length + 1
+        : undefined ),
+      enabled: !!( currentUser )
+    }
+  );
 
   return {
     ...infQueryResult,

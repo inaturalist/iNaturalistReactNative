@@ -1,3 +1,4 @@
+export { default as useAuthenticatedInfiniteQuery } from "./useAuthenticatedInfiniteQuery";
 export { default as useAuthenticatedMutation } from "./useAuthenticatedMutation";
 export { default as useAuthenticatedQuery } from "./useAuthenticatedQuery";
 export { default as useCurrentUser } from "./useCurrentUser";
