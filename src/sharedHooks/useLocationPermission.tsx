@@ -72,11 +72,12 @@ const useLocationPermission = ( ) => {
     );
   }, [showPermissionGate] );
 
-  function requestPermissions() {
-    setShowPermissionGate( true );
-  }
+  const requestPermissions = useCallback(
+    ( ) => setShowPermissionGate( true ),
+    []
+  );
 
-  async function checkPermissions() {
+  const checkPermissions = useCallback( async () => {
     const permissionsResult = permissionResultFromMultiple(
       await checkMultiple( LOCATION_PERMISSIONS )
     );
@@ -87,14 +88,13 @@ const useLocationPermission = ( ) => {
       setHasBlockedPermissions( true );
     } else {
       setHasPermissions( false );
-      console.log( "Location permissions have not been granted." );
     }
-  }
+  }, [] );
 
   // Check permissions on mount
   useEffect( () => {
     checkPermissions();
-  }, [] );
+  }, [checkPermissions] );
 
   return {
     hasPermissions,
