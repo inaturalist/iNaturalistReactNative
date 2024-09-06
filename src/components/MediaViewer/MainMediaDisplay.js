@@ -52,6 +52,7 @@ const MainMediaDisplay = ( {
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
+  const [scrolling, setScrolling] = useState( false );
   const atFirstItem = selectedMediaIndex === 0;
   const items = useMemo( ( ) => ( [
     ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
@@ -67,6 +68,7 @@ const MainMediaDisplay = ( {
           source={{ uri }}
           height={displayHeight}
           setZooming={setZooming}
+          zoomDisabled={scrolling}
         />
         {
           editable
@@ -97,6 +99,7 @@ const MainMediaDisplay = ( {
     displayHeight,
     editable,
     onDeletePhoto,
+    scrolling,
     t
   ] );
 
@@ -180,6 +183,7 @@ const MainMediaDisplay = ( {
     } else if ( x < currentOffset ) {
       handleScrollLeft( index );
     }
+    setScrolling( false );
   }, [
     handleScrollLeft,
     handleScrollRight,
@@ -207,6 +211,7 @@ const MainMediaDisplay = ( {
         showsHorizontalScrollIndicator={false}
         ref={horizontalScroll}
         onMomentumScrollEnd={handleScrollEndDrag}
+        onScrollBeginDrag={() => setScrolling( true )}
       />
     </View>
   );
