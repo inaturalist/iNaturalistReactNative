@@ -92,7 +92,6 @@ describe( "MediaViewer", ( ) => {
       it(
         "should not render the AttributionButton if attribution is not present",
         async () => {
-          console.log( "Photos", photos );
           const photosWithoutAttribution = [
             factory( "LocalPhoto", { attribution: undefined } )
           ];
