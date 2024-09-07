@@ -62,6 +62,7 @@ const MainMediaDisplay = ( {
 
   const renderPhoto = useCallback( photo => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
+    const hasAttribution = photo?.attribution;
     return (
       <View>
         <CustomImageZoom
@@ -86,11 +87,14 @@ const MainMediaDisplay = ( {
               </View>
             )
             : (
-              <AttributionButton
-                licenseCode={photo.licenseCode}
-                attribution={photo.attribution}
-                optionalClasses="absolute top-4 right-4"
-              />
+              hasAttribution
+              && (
+                <AttributionButton
+                  licenseCode={photo.licenseCode}
+                  attribution={photo.attribution}
+                  optionalClasses="absolute top-4 right-4"
+                />
+              )
             )
         }
       </View>
