@@ -96,13 +96,13 @@ describe( "MediaViewer", ( ) => {
             factory( "LocalPhoto", { attribution: undefined } )
           ];
           renderComponent( <MediaViewer photos={photosWithoutAttribution} /> );
-          expect( screen.queryByTestId( "AttributionButton" ) ).not.toBeTruthy();
+          expect( screen.queryByLabelText( photos[0].attribution ) ).not.toBeTruthy();
         }
       );
 
       it( "should render the AttributionButton if attribution is present", async () => {
         renderComponent( <MediaViewer photos={photos} /> );
-        expect( await screen.findByTestId( "AttributionButton" ) ).toBeTruthy();
+        expect( await screen.findByLabelText( photos[0].attribution ) ).toBeTruthy();
       } );
     } );
   } );
