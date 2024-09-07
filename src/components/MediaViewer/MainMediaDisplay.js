@@ -62,7 +62,7 @@ const MainMediaDisplay = ( {
 
   const renderPhoto = useCallback( photo => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
-    const hasAttribution = photo.attribution;
+    const hasAttribution = photo?.attribution;
     return (
       <View>
         <CustomImageZoom
