@@ -1,25 +1,22 @@
-// @flow
-
 import {
   TransparentCircleButton
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import { Alert } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  attribution?: string,
-  licenseCode?: string,
-  optionalClasses?: string
-};
+interface Props {
+  attribution?: string;
+  licenseCode?: string;
+  optionalClasses?: string;
+}
 
 const AttributionButton = ( {
   attribution,
   licenseCode,
   optionalClasses
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const usableAttribution = attribution || t( "all-rights-reserved" );
   return (
