@@ -13,13 +13,15 @@ type Props = {
   source: Object,
   // Function to tell the parent whether zooming is enabled, useful to disable
   // scrolling
-  setZooming?: Function
+  setZooming?: Function,
+  zoomDisabled?: boolean
 }
 
 const CustomImageZoom = ( {
   height,
   source,
-  setZooming
+  setZooming,
+  zoomDisabled = false
 }: Props ): Node => {
   const [photoDimensions, setPhotoDimensions] = useState( {
     width: 0,
@@ -71,6 +73,7 @@ const CustomImageZoom = ( {
       }
       minScale={1}
       onMove={handleMove}
+      pinchToZoom={!zoomDisabled}
     >
       <View
         testID="CustomImageZoom"
