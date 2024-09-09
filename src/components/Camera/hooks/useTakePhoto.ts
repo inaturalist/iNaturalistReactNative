@@ -79,7 +79,7 @@ const useTakePhoto = (
     inactivateCallback?: () => void,
     replaceExisting?: boolean
   }
-  const takePhoto = async ( options: Options ) => {
+  const takePhoto = async ( options: Options = {} ) => {
     setTakingPhoto( true );
     // On Android, setting the camera to inactive before taking a photo
     // crashes the app. So we only set it to inactive on iOS here.
