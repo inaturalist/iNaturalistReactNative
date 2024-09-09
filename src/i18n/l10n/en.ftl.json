@@ -814,11 +814,11 @@
   },
   "No-Notifications-Found": "You have no notifications! Get started by creating your own observations.",
   "No-projects-match-that-search": "No projects match that search",
-  "No-results-found": {
+  "No-results-found-for-that-search": {
     "comment": "Used for explore screen when search params lead to a search with no data",
-    "val": "No results found"
+    "val": "No results found for that search."
   },
-  "No-results-found-for-that-search": "No results found for that search.",
+  "No-results-found-try-different-search": "No results found. Try a different search or adjust your filters.",
   "no-rights-reserved-cc0": {
     "comment": "license code",
     "val": "no rights reserved (CC0)"

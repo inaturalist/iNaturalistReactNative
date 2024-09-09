@@ -72,6 +72,7 @@ const ObserversView = ( {
       renderItem={renderItem}
       renderItemSeparator={renderItemSeparator}
       testID="ExploreObserversAnimatedList"
+      totalResults={totalResults}
     />
   );
 };

@@ -606,8 +606,8 @@ No-model-found = No model found
 No-Notifications-Found = You have no notifications! Get started by creating your own observations.
 No-projects-match-that-search = No projects match that search
 # Used for explore screen when search params lead to a search with no data
-No-results-found = No results found
 No-results-found-for-that-search = No results found for that search.
+No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
 NONE = NONE

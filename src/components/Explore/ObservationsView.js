@@ -91,7 +91,7 @@ const ObservationsView = ( {
         isConnected={isConnected}
         layout={layout}
         onEndReached={fetchNextPage}
-        showNoResults={!canFetch}
+        showNoResults={!canFetch || totalResults === 0}
         testID="ExploreObservationsAnimatedList"
       />
       <MapView observationBounds={totalBounds} queryParams={queryParams} />
