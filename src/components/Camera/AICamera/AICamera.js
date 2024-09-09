@@ -113,7 +113,7 @@ const AICamera = ( {
   }, [navigation, setResult, resetZoom] );
 
   const handlePress = async ( ) => {
-    await takePhoto( { replaceExisting: true, photoTakenCallback: () => setActive( false ) } );
+    await takePhoto( { replaceExisting: true, inactivateCallback: () => setActive( false ) } );
     handleCheckmarkPress( showPrediction
       ? result
       : null );
