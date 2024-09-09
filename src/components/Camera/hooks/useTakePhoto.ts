@@ -74,9 +74,14 @@ const useTakePhoto = (
     }
   };
 
-  const takePhoto = async ( options = { } ) => {
+  interface Options {
+    photoTakenCallback?: () => void,
+    replaceExisting?: boolean
+  }
+  const takePhoto = async ( options: Options ) => {
     setTakingPhoto( true );
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
+    if ( options.photoTakenCallback ) options.photoTakenCallback();
     const uri = await saveRotatedPhotoToDocumentsDirectory( cameraPhoto );
     await updateStore( uri, options );
     setTakingPhoto( false );
