@@ -1,3 +1,4 @@
+import "linkify-plugin-mention";
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import linkifyHtml from "linkify-html";
 import { isEqual, trim } from "lodash";
@@ -71,12 +72,11 @@ const SANITIZE_HTML_CONFIG = {
 const LINKIFY_OPTIONS = {
   className: null,
   attributes: { rel: "nofollow noopener" },
-  ignoreTags: ["a", "code", "pre"]
+  ignoreTags: ["a", "code", "pre"],
+  formatHref: {
+    mention: href => `https://www.inaturalist.org/people${href}`
+  }
 };
-
-function hyperlinkMentions( text ) {
-  return text.replace( /(\B)@([a-z][\\\w\\\-_]*)/g, "$1<a href='https://www.inaturalist.org/people/$2'>@$2</a>" );
-}
 
 type Props = {
   text:string,
@@ -106,7 +106,7 @@ const UserText = ( {
 
   html = md.render( html );
 
-  html = sanitizeHtml( hyperlinkMentions( html ), SANITIZE_HTML_CONFIG );
+  html = sanitizeHtml( html, SANITIZE_HTML_CONFIG );
   // Note: markdown-it has a linkifier option too, but it does not allow you
   // to specify attributes like nofollow, so we're using linkifyjs, but we
   // are ignoring URLs in the existing tags that might have them like <a> and
