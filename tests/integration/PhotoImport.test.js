@@ -5,6 +5,7 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
+import * as ImagePicker from "react-native-image-picker";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -21,6 +22,19 @@ const mockUri = `file:///var/mobile/Containers/Data/Application/${directory}/tmp
 
 const mockImageLibraryResponse = {
   assets: [
+    {
+      uri: mockUri,
+      fileName: mockFileName
+    }
+  ]
+};
+
+const mockImageLibraryResponseMultiplePhotos = {
+  assets: [
+    {
+      uri: "some_uri",
+      fileName: "some_file_name"
+    },
     {
       uri: mockUri,
       fileName: mockFileName
@@ -63,6 +77,9 @@ const topSuggestion = {
 beforeAll( async () => {
   await initI18next();
   jest.useFakeTimers( );
+} );
+
+beforeEach( ( ) => {
   useStore.setState( { isAdvancedUser: true } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
@@ -81,6 +98,22 @@ describe( "Photo Import", ( ) => {
     await actor.press( addObsButton );
     const photoImportButton = await within( tabBar ).findByLabelText( "Photo importer" );
     await actor.press( photoImportButton );
+  }
+
+  async function groupPhotosIntoObservation() {
+    const groupPhotosText = await screen.findByText( /Group Photos/ );
+    expect( groupPhotosText ).toBeVisible( );
+    const path = "file://document/directory/path/galleryPhotos/";
+    const firstUri = `${path}${mockImageLibraryResponseMultiplePhotos.assets[0].fileName}`;
+    const secondUri = `${path}${mockImageLibraryResponseMultiplePhotos.assets[1].fileName}`;
+    const firstPhoto = await screen.findByTestId( `GroupPhotos.${firstUri}` );
+    await actor.press( firstPhoto );
+    const secondPhoto = await screen.findByTestId( `GroupPhotos.${secondUri}` );
+    await actor.press( secondPhoto );
+    const combineButton = await screen.findByLabelText( /Combine Photos/ );
+    await actor.press( combineButton );
+    const importButton = await screen.findByText( /IMPORT 1 OBSERVATION/ );
+    await actor.press( importButton );
   }
 
   async function viewSuggestionsAndAddId() {
@@ -112,6 +145,17 @@ describe( "Photo Import", ( ) => {
   it( "should create and save an observation with an imported photo", async ( ) => {
     await startApp( );
     await importPhotoForNewObs( );
+    await viewSuggestionsAndAddId( );
+    await saveObservationWithPhoto( );
+  } );
+
+  it( "should create and save an observation with multiple imported photos", async ( ) => {
+    jest.spyOn( ImagePicker, "launchImageLibrary" ).mockImplementation(
+      ( ) => mockImageLibraryResponseMultiplePhotos
+    );
+    await startApp( );
+    await importPhotoForNewObs( );
+    await groupPhotosIntoObservation( );
     await viewSuggestionsAndAddId( );
     await saveObservationWithPhoto( );
   } );
