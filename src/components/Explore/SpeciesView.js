@@ -152,6 +152,7 @@ const SpeciesView = ( {
       layout="grid"
       numColumns={numColumns}
       renderItem={renderItem}
+      totalResults={totalResults}
       testID="ExploreSpeciesAnimatedList"
     />
   );

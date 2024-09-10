@@ -129,7 +129,11 @@ const ObservationsFlashList: Function = forwardRef( ( {
   const renderEmptyComponent = useCallback( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
       ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
-      : <Body3 className="self-center mt-[150px]">{t( "No-results-found" )}</Body3>;
+      : (
+        <Body3 className="self-center mt-[150px]">
+          {t( "No-results-found-try-different-search" )}
+        </Body3>
+      );
 
     return showNoResults
       ? showEmptyScreen

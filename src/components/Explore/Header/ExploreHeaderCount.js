@@ -45,7 +45,7 @@ const ExploreHeaderCount = ( {
   const renderHeader = ( ) => {
     if ( isFetching ) {
       return <ActivityIndicator size={25} />;
-    } if ( count ) {
+    } if ( count !== null ) {
       return (
         <>
           <INatIcon
