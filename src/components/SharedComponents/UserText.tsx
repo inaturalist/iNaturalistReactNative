@@ -3,13 +3,14 @@ import "linkify-plugin-mention";
 import { useNavigation } from "@react-navigation/native";
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import linkifyHtml from "linkify-html";
+import { Opts } from "linkifyjs";
 import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { Linking, useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
 import WebView from "react-native-webview";
-import sanitizeHtml from "sanitize-html";
+import sanitizeHtml, { IOptions } from "sanitize-html";
 import colors from "styles/tailwindColors";
 
 const ALLOWED_TAGS = ( `
@@ -65,15 +66,14 @@ const ALLOWED_ATTRIBUTES = { a: ["href"] };
 ALLOWED_TAGS.filter( tag => tag !== "a" )
   .forEach( tag => { ALLOWED_ATTRIBUTES[tag] = ALLOWED_ATTRIBUTES_NAMES; } );
 
-const SANITIZE_HTML_CONFIG = {
+const SANITIZE_HTML_CONFIG: IOptions = {
   allowedTags: ALLOWED_TAGS,
   allowedAttributes: ALLOWED_ATTRIBUTES,
   allowedSchemes: ["http", "https"]
 };
 
-const LINKIFY_OPTIONS = {
-  className: null,
-  attributes: ( href, type, token ) => {
+const LINKIFY_OPTIONS: Opts = {
+  attributes: ( _href: string, type, token ) => {
     // Only for mentions we add a title attribute
     if ( type === "mention" ) {
       return {
@@ -85,20 +85,20 @@ const LINKIFY_OPTIONS = {
   rel: "nofollow noopener",
   ignoreTags: ["a", "code", "pre"],
   formatHref: {
-    mention: href => `https://www.inaturalist.org/people${href}`
+    mention: ( href: string ) => `https://www.inaturalist.org/people${href}`
   }
 };
 
-type Props = {
-  text:string,
-  htmlStyle?:Object,
+interface Props extends React.PropsWithChildren {
+  text: string,
+  htmlStyle?: Object,
 }
 
 const UserText = ( {
   children,
   htmlStyle,
   text: textProp
-} : Props ): React.Node => {
+} : Props ) => {
   const navigation = useNavigation( );
 
   // Allow stringified children to serve as text if no prop provided
