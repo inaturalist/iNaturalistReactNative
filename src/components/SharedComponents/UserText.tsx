@@ -1,10 +1,12 @@
 import "linkify-plugin-mention";
+
+import { useNavigation } from "@react-navigation/native";
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import linkifyHtml from "linkify-html";
 import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
-import { useWindowDimensions } from "react-native";
+import { Linking, useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
 import WebView from "react-native-webview";
 import sanitizeHtml from "sanitize-html";
@@ -97,6 +99,8 @@ const UserText = ( {
   htmlStyle,
   text: textProp
 } : Props ): React.Node => {
+  const navigation = useNavigation( );
+
   // Allow stringified children to serve as text if no prop provided
   const text = textProp || children.toString( );
   const { width } = useWindowDimensions( );
@@ -130,6 +134,23 @@ const UserText = ( {
     ...htmlStyle
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
+
+  const renderersProps = {
+    a: {
+      onPress: ( event, href, htmlAttribs ) => {
+        if ( htmlAttribs.title ) {
+          event.preventDefault( );
+          // This is a mention, so we want to navigate to user profile screen
+          // Strip the preceding @
+          const login = htmlAttribs.title.replace( /^@/, "" );
+          navigation.navigate( "UserProfile", { login } );
+          return;
+        }
+        // This is any other regular link
+        Linking.openURL( href );
+      }
+    }
+  };
 
   return (
     <HTML
