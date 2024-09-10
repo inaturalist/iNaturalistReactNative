@@ -159,6 +159,7 @@ const UserText = ( {
       source={{ html }}
       WebView={WebView}
       systemFonts={fonts}
+      renderersProps={renderersProps}
     />
   );
 };
