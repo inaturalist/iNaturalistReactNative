@@ -10,8 +10,11 @@ import {
 } from "react-native-permissions";
 
 const options = {
-  enableHighAccuracy: false,
-  timeout: 2000
+  enableHighAccuracy: Platform.OS === "ios",
+  timeout: 2000,
+  // Setting maximumAge to 0 always causes errors on Android.
+  // Therefore, we conditionally apply it only if the platform is iOS.
+  ...( Platform.OS === "ios" && { maximumAge: 0 } )
 } as const;
 
 const getCurrentPosition = ( ): Promise<GeolocationResponse> => new Promise(
