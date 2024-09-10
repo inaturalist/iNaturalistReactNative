@@ -71,6 +71,15 @@ const SANITIZE_HTML_CONFIG = {
 
 const LINKIFY_OPTIONS = {
   className: null,
+  attributes: ( href, type, token ) => {
+    // Only for mentions we add a title attribute
+    if ( type === "mention" ) {
+      return {
+        title: token
+      };
+    }
+    return { };
+  },
   rel: "nofollow noopener",
   ignoreTags: ["a", "code", "pre"],
   formatHref: {
