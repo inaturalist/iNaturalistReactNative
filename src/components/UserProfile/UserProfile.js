@@ -2,7 +2,6 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchRelationships } from "api/relationships";
-import fetchSearchResults from "api/search";
 import { fetchRemoteUser } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
@@ -40,22 +39,7 @@ const UserProfile = ( ): Node => {
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
   const { t } = useTranslation( );
 
-  const { data: remoteUsers } = useAuthenticatedQuery(
-    ["fetchSearchResults", login],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: login,
-        sources: "users",
-        fields: "user.id"
-      },
-      optsWithAuth
-    ),
-    {
-      enabled: !!login
-    }
-  );
-
-  const fetchId = userId || remoteUsers?.[0].id;
+  const fetchId = userId || login;
   const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", fetchId],
     optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
