@@ -71,7 +71,7 @@ const SANITIZE_HTML_CONFIG = {
 
 const LINKIFY_OPTIONS = {
   className: null,
-  attributes: { rel: "nofollow noopener" },
+  rel: "nofollow noopener",
   ignoreTags: ["a", "code", "pre"],
   formatHref: {
     mention: href => `https://www.inaturalist.org/people${href}`
