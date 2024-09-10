@@ -10,7 +10,7 @@ import {
   Heading4,
   QualityGradeStatus
 } from "components/SharedComponents";
-import UserText from "components/SharedComponents/UserText";
+import UserText from "components/SharedComponents/UserText.tsx";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
