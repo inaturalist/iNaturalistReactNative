@@ -162,8 +162,10 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
   const prepareStoreAndNavigate = useCallback( async visionResult => {
     if ( !checkmarkTapped ) { return null; }
 
-    setSavingPhoto( true );
-    // save all to camera roll
+    // save all to camera roll if save photo permission is given
+    if ( addPhotoPermissionResult === "granted" ) {
+      setSavingPhoto( true );
+    }
 
     if ( addEvidence ) {
       await updateObsWithCameraPhotos( );
@@ -185,6 +187,7 @@ const usePrepareStoreAndNavigate = ( options: Options ): Function => {
     } );
   }, [
     addEvidence,
+    addPhotoPermissionResult,
     cameraUris,
     checkmarkTapped,
     createObsWithCameraPhotos,
