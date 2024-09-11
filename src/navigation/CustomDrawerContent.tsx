@@ -196,7 +196,7 @@ const CustomDrawerContent = ( { state, navigation, descriptors }: Props ) => {
         if ( !currentUser ) {
           navigation.navigate( "LoginStackNavigator" );
         } else {
-          navigation.navigate( "ObsList" );
+          navigation.navigate( "UserProfile", { userId: currentUser.id } );
         }
       }}
     >
