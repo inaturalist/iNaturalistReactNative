@@ -8,7 +8,7 @@ import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { Linking, useWindowDimensions } from "react-native";
-import HTML, { defaultSystemFonts } from "react-native-render-html";
+import HTML, { defaultSystemFonts, RenderersProps } from "react-native-render-html";
 import WebView from "react-native-webview";
 import sanitizeHtml, { IOptions } from "sanitize-html";
 import colors from "styles/tailwindColors";
@@ -62,7 +62,7 @@ const ALLOWED_ATTRIBUTES_NAMES = (
   "href src width height alt cite title class name abbr value align target rel"
 ).split( " " );
 
-const ALLOWED_ATTRIBUTES = { a: ["href"] };
+const ALLOWED_ATTRIBUTES: { [key: string]: string[] } = { a: ["href"] };
 ALLOWED_TAGS.filter( tag => tag !== "a" )
   .forEach( tag => { ALLOWED_ATTRIBUTES[tag] = ALLOWED_ATTRIBUTES_NAMES; } );
 
@@ -75,7 +75,7 @@ const SANITIZE_HTML_CONFIG: IOptions = {
 const MENTION_TITLE = "mention_";
 
 const LINKIFY_OPTIONS: Opts = {
-  attributes: ( _href: string, type, token ) => {
+  attributes: ( _href, type, token ) => {
     // Only for mentions we add a title attribute
     if ( type === "mention" ) {
       return {
@@ -137,7 +137,7 @@ const UserText = ( {
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
 
-  const renderersProps = {
+  const renderersProps: Partial<RenderersProps> = {
     a: {
       onPress: ( event, href, htmlAttribs ) => {
         if ( htmlAttribs.title && htmlAttribs.title.includes( MENTION_TITLE ) ) {
