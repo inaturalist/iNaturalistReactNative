@@ -47,7 +47,10 @@ const TaxonMapPreview = ( {
     }, optsWithAuth )
   );
 
-  if ( obsSearchResponse?.total_bounds ) {
+  const hasObservationResults = obsSearchResponse?.total_results > 0;
+  const hasBounds = obsSearchResponse?.total_bounds;
+
+  if ( hasBounds && hasObservationResults ) {
     const region = getMapRegion( obsSearchResponse?.total_bounds );
 
     return (
@@ -95,10 +98,7 @@ const TaxonMapPreview = ( {
     );
   }
 
-  return (
-    <View className="relative h-[390px]" />
-
-  );
+  return null;
 };
 
 export default TaxonMapPreview;
