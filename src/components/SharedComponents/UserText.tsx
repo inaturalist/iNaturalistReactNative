@@ -87,7 +87,7 @@ const LINKIFY_OPTIONS: Opts = {
   rel: "nofollow noopener",
   ignoreTags: ["a", "code", "pre"],
   formatHref: {
-    mention: ( href: string ) => `https://www.inaturalist.org/people${href}`
+    mention: href => `https://www.inaturalist.org/people${href}`
   }
 };
 
