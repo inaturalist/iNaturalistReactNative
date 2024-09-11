@@ -57,7 +57,7 @@ const AICamera = ( {
   const { isDebug } = useDebugMode( );
   const {
     animatedProps,
-    changeZoom,
+    handleZoomButtonPress,
     pinchToZoom,
     showZoomButton,
     zoomTextValue,
@@ -201,7 +201,7 @@ const AICamera = ( {
       )}
       <FadeInOutView takingPhoto={takingPhoto} />
       <AICameraButtons
-        changeZoom={changeZoom}
+        handleZoomButtonPress={handleZoomButtonPress}
         confidenceThreshold={confidenceThreshold}
         cropRatio={cropRatio}
         flipCamera={flipCamera}

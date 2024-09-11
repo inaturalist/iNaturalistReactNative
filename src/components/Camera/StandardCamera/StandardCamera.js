@@ -63,7 +63,7 @@ const StandardCamera = ( {
   const hasFlash = device?.hasFlash;
   const {
     animatedProps,
-    changeZoom,
+    handleZoomButtonPress,
     pinchToZoom,
     resetZoom,
     showZoomButton,
@@ -184,7 +184,7 @@ const StandardCamera = ( {
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
         <CameraOptionsButtons
-          changeZoom={changeZoom}
+          handleZoomButtonPress={handleZoomButtonPress}
           disabled={disallowAddingPhotos}
           flipCamera={flipCamera}
           handleCheckmarkPress={handleCheckmarkPress}
