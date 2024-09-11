@@ -142,6 +142,7 @@ const CameraView = ( {
           ref={cameraRef}
           animatedProps={animatedProps}
           device={device}
+          // we can't use the native zoom since it doesn't expose a zoom value to JS
           enableZoomGesture={false}
           exposure={exposure}
           format={format}

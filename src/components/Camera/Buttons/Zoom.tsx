@@ -14,7 +14,7 @@ const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  changeZoom: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
   zoomClassName?: string;
   zoomTextValue: string;
   showZoomButton: boolean;
@@ -22,7 +22,7 @@ interface Props {
 
 const CameraZoom = ( {
   rotatableAnimatedStyle,
-  changeZoom,
+  handleZoomButtonPress,
   zoomClassName,
   zoomTextValue,
   showZoomButton
@@ -42,7 +42,7 @@ const CameraZoom = ( {
     >
       <Pressable
         className={classnames( CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE )}
-        onPress={changeZoom}
+        onPress={handleZoomButtonPress}
         accessibilityRole="button"
         accessibilityLabel={t( "Change-zoom" )}
         accessibilityState={{ disabled: false }}
