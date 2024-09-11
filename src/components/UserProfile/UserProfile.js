@@ -8,6 +8,7 @@ import {
   Body2,
   Heading1,
   Heading4,
+  List2,
   OverviewCounts,
   ScrollViewWrapper,
   Subheading1,
@@ -40,7 +41,7 @@ const UserProfile = ( ): Node => {
   const { t } = useTranslation( );
 
   const fetchId = userId || login;
-  const { data: remoteUser } = useAuthenticatedQuery(
+  const { data: remoteUser, isError, error } = useAuthenticatedQuery(
     ["fetchRemoteUser", fetchId],
     optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
     {
@@ -104,6 +105,15 @@ const UserProfile = ( ): Node => {
     },
     [navigation, user, setExploreView]
   );
+
+  if ( isError && error?.status === 404 ) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Heading4>{t( "ERROR" )}</Heading4>
+        <List2>{t( "That-user-profile-doesnt-exist" )}</List2>
+      </View>
+    );
+  }
 
   if ( !user ) {
     return null;
