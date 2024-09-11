@@ -142,7 +142,6 @@ const UserText = ( {
       onPress: ( event, href, htmlAttribs ) => {
         if ( htmlAttribs.title ) {
           event.preventDefault( );
-          console.log( "htmlAttribs.title", htmlAttribs.title );
           // This is a mention, so we want to navigate to user profile screen
           // Mentions anchors have a custom title from linkify, we strip it and the preceding @
           const login = htmlAttribs.title
