@@ -133,7 +133,7 @@ const UserText = ( {
           // This is a mention, so we want to navigate to user profile screen
           event.preventDefault( );
           const login = href.replace( peopleURL, "" );
-          navigation.navigate( "UserProfile", { login } );
+          navigation.push( "UserProfile", { login } );
           return;
         }
         // This is any other regular link
