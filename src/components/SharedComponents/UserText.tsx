@@ -1,3 +1,5 @@
+import "linkify-plugin-mention";
+
 import { useNavigation } from "@react-navigation/native";
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import linkifyHtml from "linkify-html";
@@ -70,14 +72,24 @@ const SANITIZE_HTML_CONFIG: IOptions = {
   allowedSchemes: ["http", "https"]
 };
 
-const LINKIFY_OPTIONS: Opts = {
-  rel: "nofollow noopener",
-  ignoreTags: ["a", "code", "pre"]
-};
+const MENTION_TITLE = "mention_";
 
-function hyperlinkMentions( text: string ) {
-  return text.replace( /(\B)@([a-z][\\\w\\\-_]*)/g, "$1<a href='https://www.inaturalist.org/people/$2'>@$2</a>" );
-}
+const LINKIFY_OPTIONS: Opts = {
+  attributes: ( _href: string, type, token ) => {
+    // Only for mentions we add a title attribute
+    if ( type === "mention" ) {
+      return {
+        title: `${MENTION_TITLE}${token}`
+      };
+    }
+    return { };
+  },
+  rel: "nofollow noopener",
+  ignoreTags: ["a", "code", "pre"],
+  formatHref: {
+    mention: ( href: string ) => `https://www.inaturalist.org/people${href}`
+  }
+};
 
 interface Props extends React.PropsWithChildren {
   text: string,
@@ -109,7 +121,7 @@ const UserText = ( {
 
   html = md.render( html );
 
-  html = sanitizeHtml( hyperlinkMentions( html ), SANITIZE_HTML_CONFIG );
+  html = sanitizeHtml( html, SANITIZE_HTML_CONFIG );
   // Note: markdown-it has a linkifier option too, but it does not allow you
   // to specify attributes like nofollow, so we're using linkifyjs, but we
   // are ignoring URLs in the existing tags that might have them like <a> and
@@ -127,12 +139,15 @@ const UserText = ( {
 
   const renderersProps = {
     a: {
-      onPress: ( event, href ) => {
-        const peopleURL = "https://www.inaturalist.org/people/";
-        if ( href.includes( peopleURL ) ) {
-          // This is a mention, so we want to navigate to user profile screen
+      onPress: ( event, href, htmlAttribs ) => {
+        if ( htmlAttribs.title ) {
           event.preventDefault( );
-          const login = href.replace( peopleURL, "" );
+          console.log( "htmlAttribs.title", htmlAttribs.title );
+          // This is a mention, so we want to navigate to user profile screen
+          // Mentions anchors have a custom title from linkify, we strip it and the preceding @
+          const login = htmlAttribs.title
+            .replace( MENTION_TITLE, "" )
+            .replace( /^@/, "" );
           navigation.push( "UserProfile", { login } );
           return;
         }
