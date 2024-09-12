@@ -511,7 +511,6 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
 July = July
 # Month of June
 June = June
-Label-colon-value = { $label }: { $value }
 # Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: { $date }
 # Latitude, longitude on a single line on a single line

@@ -8,6 +8,7 @@ import {
   DateDisplay,
   Divider,
   Heading4,
+  LabelColonValue,
   QualityGradeStatus
 } from "components/SharedComponents";
 import UserText from "components/SharedComponents/UserText.tsx";
@@ -148,8 +149,8 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
         {application && (
           <Body4>{t( "Uploaded-via-application", { application } )}</Body4>
         )}
-        <Body4>{t( "Label-colon-value", { label: "ID", value: observation.id } )}</Body4>
-        <Body4>{t( "Label-colon-value", { label: "UUID", value: observation.uuid } )}</Body4>
+        <View><LabelColonValue label="ID" value={String( observation.id )} valueSelectable /></View>
+        <View><LabelColonValue label="UUID" value={observation.uuid} valueSelectable /></View>
         <ViewInBrowserButton id={observation.id} />
       </View>
     </>
