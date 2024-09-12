@@ -352,6 +352,7 @@ Endemic = Endemic
 Endemic-to-place = Endemic to { $place }
 # Title for a section describing an error
 Error = Error
+ERROR = ERROR
 ERROR-LOADING-DQA = ERROR LOADING IN DQA
 # Title of dialog or section describing an error
 Error-title = Error
@@ -962,6 +963,7 @@ TERMS-OF-USE = TERMS OF USE
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 Thank-you-for-sharing-your-feedback = Thank you for sharing your feedback to help us improve!
 Thanks-for-using-any-suggestions = Thanks for using this app! Do you have any suggestions for the people who make it?
+That-user-profile-doesnt-exist = That user profile doesn't exist
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.

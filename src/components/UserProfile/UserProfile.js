@@ -8,6 +8,7 @@ import {
   Body2,
   Heading1,
   Heading4,
+  List2,
   OverviewCounts,
   ScrollViewWrapper,
   Subheading1,
@@ -34,14 +35,18 @@ const UserProfile = ( ): Node => {
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
-  const { userId } = params;
+  const { userId, login } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
   const { t } = useTranslation( );
 
-  const { data: remoteUser } = useAuthenticatedQuery(
-    ["fetchRemoteUser", userId],
-    optsWithAuth => fetchRemoteUser( userId, {}, optsWithAuth )
+  const fetchId = userId || login;
+  const { data: remoteUser, isError, error } = useAuthenticatedQuery(
+    ["fetchRemoteUser", fetchId],
+    optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
+    {
+      enabled: !!fetchId
+    }
   );
 
   const user = remoteUser || null;
@@ -100,6 +105,15 @@ const UserProfile = ( ): Node => {
     },
     [navigation, user, setExploreView]
   );
+
+  if ( isError && error?.status === 404 ) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Heading4>{t( "ERROR" )}</Heading4>
+        <List2>{t( "That-user-profile-doesnt-exist" )}</List2>
+      </View>
+    );
+  }
 
   if ( !user ) {
     return null;

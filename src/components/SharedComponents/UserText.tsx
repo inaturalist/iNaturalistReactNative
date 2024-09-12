@@ -1,12 +1,16 @@
+import "linkify-plugin-mention";
+
+import { useNavigation } from "@react-navigation/native";
 import { fontRegular } from "appConstants/fontFamilies.ts";
 import linkifyHtml from "linkify-html";
+import { Opts } from "linkifyjs";
 import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
-import { useWindowDimensions } from "react-native";
-import HTML, { defaultSystemFonts } from "react-native-render-html";
+import { Linking, useWindowDimensions } from "react-native";
+import HTML, { defaultSystemFonts, RenderersProps } from "react-native-render-html";
 import WebView from "react-native-webview";
-import sanitizeHtml from "sanitize-html";
+import sanitizeHtml, { IOptions } from "sanitize-html";
 import colors from "styles/tailwindColors";
 
 const ALLOWED_TAGS = ( `
@@ -58,36 +62,47 @@ const ALLOWED_ATTRIBUTES_NAMES = (
   "href src width height alt cite title class name abbr value align target rel"
 ).split( " " );
 
-const ALLOWED_ATTRIBUTES = { a: ["href"] };
+const ALLOWED_ATTRIBUTES: { [key: string]: string[] } = { a: ["href"] };
 ALLOWED_TAGS.filter( tag => tag !== "a" )
   .forEach( tag => { ALLOWED_ATTRIBUTES[tag] = ALLOWED_ATTRIBUTES_NAMES; } );
 
-const SANITIZE_HTML_CONFIG = {
+const SANITIZE_HTML_CONFIG: IOptions = {
   allowedTags: ALLOWED_TAGS,
   allowedAttributes: ALLOWED_ATTRIBUTES,
   allowedSchemes: ["http", "https"]
 };
 
-const LINKIFY_OPTIONS = {
-  className: null,
-  attributes: { rel: "nofollow noopener" },
-  ignoreTags: ["a", "code", "pre"]
+const MENTION_TITLE = "mention_";
+
+const LINKIFY_OPTIONS: Opts = {
+  attributes: ( _href, type, token ) => {
+    // Only for mentions we add a title attribute
+    if ( type === "mention" ) {
+      return {
+        title: `${MENTION_TITLE}${token}`
+      };
+    }
+    return { };
+  },
+  rel: "nofollow noopener",
+  ignoreTags: ["a", "code", "pre"],
+  formatHref: {
+    mention: href => `https://www.inaturalist.org/people${href}`
+  }
 };
 
-function hyperlinkMentions( text ) {
-  return text.replace( /(\B)@([a-z][\\\w\\\-_]*)/g, "$1<a href='https://www.inaturalist.org/people/$2'>@$2</a>" );
-}
-
-type Props = {
-  text:string,
-  htmlStyle?:Object,
+interface Props extends React.PropsWithChildren {
+  text: string,
+  htmlStyle?: Object,
 }
 
 const UserText = ( {
   children,
   htmlStyle,
   text: textProp
-} : Props ): React.Node => {
+} : Props ) => {
+  const navigation = useNavigation( );
+
   // Allow stringified children to serve as text if no prop provided
   const text = textProp || children.toString( );
   const { width } = useWindowDimensions( );
@@ -106,7 +121,7 @@ const UserText = ( {
 
   html = md.render( html );
 
-  html = sanitizeHtml( hyperlinkMentions( html ), SANITIZE_HTML_CONFIG );
+  html = sanitizeHtml( html, SANITIZE_HTML_CONFIG );
   // Note: markdown-it has a linkifier option too, but it does not allow you
   // to specify attributes like nofollow, so we're using linkifyjs, but we
   // are ignoring URLs in the existing tags that might have them like <a> and
@@ -122,6 +137,25 @@ const UserText = ( {
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
 
+  const renderersProps: Partial<RenderersProps> = {
+    a: {
+      onPress: ( event, href, htmlAttribs ) => {
+        if ( htmlAttribs.title && htmlAttribs.title.includes( MENTION_TITLE ) ) {
+          event.preventDefault( );
+          // This is a mention, so we want to navigate to user profile screen
+          // Mentions anchors have a custom title from linkify, we strip it and the preceding @
+          const login = htmlAttribs.title
+            .replace( MENTION_TITLE, "" )
+            .replace( /^@/, "" );
+          navigation.push( "UserProfile", { login } );
+          return;
+        }
+        // This is any other regular link
+        Linking.openURL( href );
+      }
+    }
+  };
+
   return (
     <HTML
       baseStyle={baseStyle}
@@ -129,6 +163,7 @@ const UserText = ( {
       source={{ html }}
       WebView={WebView}
       systemFonts={fonts}
+      renderersProps={renderersProps}
     />
   );
 };
