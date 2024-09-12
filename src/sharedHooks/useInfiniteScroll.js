@@ -19,6 +19,7 @@ const useInfiniteScroll = (
 
   const {
     data,
+    isFetching,
     isFetchingNextPage,
     fetchNextPage,
     status
@@ -45,13 +46,14 @@ const useInfiniteScroll = (
   const allResults = pages?.map( page => page?.results );
 
   return {
+    data: flatten( allResults ),
+    isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    data: flatten( allResults ),
+    status,
     totalResults: pages?.[0]
       ? pages?.[0].total_results
-      : null,
-    status
+      : null
   };
 };
 
