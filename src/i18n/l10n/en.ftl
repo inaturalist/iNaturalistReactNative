@@ -421,6 +421,7 @@ Group-Photos = Group Photos
 # Onboarding for users learning to group photos in the camera roll
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
 HELP = HELP
+Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
 I-agree-to-the-Terms-of-Use = I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).
@@ -825,6 +826,7 @@ Reset-verb = Reset
 RESTART-APP = RESTART APP
 # Label for button that restores a withdrawn identification
 Restore = Restore
+Reveal = Reveal
 REVIEW-INATURALIST = REVIEW INATURALIST
 # Title for section of observation filters for controls over whether you have
 # reviewed the observations or not
