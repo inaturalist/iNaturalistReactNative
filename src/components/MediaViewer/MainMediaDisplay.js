@@ -60,13 +60,16 @@ const MainMediaDisplay = ( {
   ] ), [photos, sounds] );
   const atLastItem = selectedMediaIndex === items.length - 1;
 
+  const deletePhotoLabel = t( "Delete-photo" );
+  const deleteSoundLabel = t( "Delete-sound" );
+
   const renderPhoto = useCallback( photo => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     const hasAttribution = photo?.attribution;
     return (
       <View>
         <CustomImageZoom
-          source={{ uri }}
+          imageUri={uri}
           height={displayHeight}
           setZooming={setZooming}
           zoomDisabled={scrolling}
@@ -82,7 +85,7 @@ const MainMediaDisplay = ( {
                   )}
                   icon="trash-outline"
                   color={colors.white}
-                  accessibilityLabel={t( "Delete-photo" )}
+                  accessibilityLabel={deletePhotoLabel}
                 />
               </View>
             )
@@ -100,11 +103,11 @@ const MainMediaDisplay = ( {
       </View>
     );
   }, [
+    deletePhotoLabel,
     displayHeight,
     editable,
     onDeletePhoto,
-    scrolling,
-    t
+    scrolling
   ] );
 
   const renderSound = useCallback( sound => (
@@ -128,7 +131,7 @@ const MainMediaDisplay = ( {
               onPress={( ) => onDeleteSound( sound.file_url )}
               icon="trash-outline"
               color={colors.white}
-              accessibilityLabel={t( "Delete-sound" )}
+              accessibilityLabel={deleteSoundLabel}
             />
           </View>
         )
@@ -136,13 +139,13 @@ const MainMediaDisplay = ( {
     </View>
   ), [
     autoPlaySound,
+    deleteSoundLabel,
     displayHeight,
     editable,
     items,
     onDeleteSound,
     screenWidth,
-    selectedMediaIndex,
-    t
+    selectedMediaIndex
   ] );
 
   const renderItem = useCallback( ( { item } ) => (

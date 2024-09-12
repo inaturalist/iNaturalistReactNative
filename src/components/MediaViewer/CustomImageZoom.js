@@ -2,7 +2,12 @@
 
 import { Image, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import { Image as RNImage } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
@@ -10,7 +15,7 @@ import useDeviceOrientation from "sharedHooks/useDeviceOrientation.ts";
 type Props = {
   // Height of the container
   height: number,
-  source: Object,
+  imageUri: string,
   // Function to tell the parent whether zooming is enabled, useful to disable
   // scrolling
   setZooming?: Function,
@@ -19,7 +24,7 @@ type Props = {
 
 const CustomImageZoom = ( {
   height,
-  source,
+  imageUri,
   setZooming,
   zoomDisabled = false
 }: Props ): Node => {
@@ -43,23 +48,25 @@ const CustomImageZoom = ( {
     ( imageHeight / photoDimensions.height ) * photoDimensions.width
   );
 
-  const handleMove = ( { scale } ) => {
+  const handleMove = useCallback( ( { scale } ) => {
     if ( !setZooming ) return;
     if ( scale > 1 ) {
       setZooming( true );
     } else {
       setZooming( false );
     }
-  };
+  }, [setZooming] );
 
   useEffect( ( ) => {
-    RNImage.getSize( source.uri, ( w, h ) => {
+    RNImage.getSize( imageUri, ( w, h ) => {
       setPhotoDimensions( {
         height: h,
         width: w
       } );
     } );
-  }, [source] );
+  }, [imageUri] );
+
+  const source = useMemo( ( ) => ( { uri: imageUri } ), [imageUri] );
 
   return (
     <ImageZoom
@@ -79,7 +86,7 @@ const CustomImageZoom = ( {
         testID="CustomImageZoom"
       >
         <Image
-          testID={`CustomImageZoom.${source.uri}`}
+          testID={`CustomImageZoom.${imageUri}`}
           source={source}
           resizeMode="contain"
           className="w-full h-full"
