@@ -4,20 +4,37 @@ import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
-import { formatApiDatetime } from "sharedHelpers/dateAndTime";
+import { formatApiDatetime, formatMonthYearDate } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
   label?: string,
   dateString: string,
-  classNameMargin?: string
+  classNameMargin?: string,
+  geoprivacy?: string,
+  taxonGeoprivacy?: string,
+  belongsToCurrentUser?: boolean
 };
 
-const DateDisplay = ( { dateString, label, classNameMargin }: Props ): Node => {
+const DateDisplay = ( {
+  geoprivacy, taxonGeoprivacy, belongsToCurrentUser, dateString, label, classNameMargin
+}: Props ): Node => {
   const { t } = useTranslation( );
+  const obscuredDate = geoprivacy === "obscured"
+  || taxonGeoprivacy === "obscured"
+  || geoprivacy === "private"
+  || taxonGeoprivacy === "private";
+
+  const formatDate = useMemo( () => {
+    if ( !belongsToCurrentUser && obscuredDate ) {
+      return formatMonthYearDate( dateString, t );
+    }
+    return formatApiDatetime( dateString, t );
+  }, [belongsToCurrentUser, obscuredDate, dateString, t] );
+
   const date = useMemo( ( ) => ( label
     ? `${label} `
-    : "" ) + formatApiDatetime( dateString, t ), [dateString, label, t] );
+    : "" ) + formatDate, [formatDate, label] );
 
   return (
     <View className={classNames( "flex flex-row items-center", classNameMargin )}>

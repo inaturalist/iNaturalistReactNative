@@ -107,6 +107,15 @@ const formatIdDate = ( date, t ) => {
   return format( d, t( "Date-this-year" ) );
 };
 
+const formatMonthYearDate = ( dateString, t ) => {
+  if ( !dateString || dateString === "" ) {
+    return t( "Missing-Date" );
+  }
+
+  const date = parseISO( dateString );
+  return format( date, t( "date-month-year" ) );
+};
+
 const formatUserProfileDate = ( date, t ) => format( parseISO( date ), t( "date-format-long" ) );
 
 export {
@@ -117,6 +126,7 @@ export {
   formatDateStringFromTimestamp,
   formatIdDate,
   formatISONoTimezone,
+  formatMonthYearDate,
   formatObsListTime,
   formatUserProfileDate,
   timeAgo
