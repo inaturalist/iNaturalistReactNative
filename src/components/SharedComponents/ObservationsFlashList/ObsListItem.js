@@ -44,6 +44,8 @@ const ObsListItem = ( {
     || observation?.observation_sounds?.length
   );
   const isObscured = observation?.obscured && !belongsToCurrentUser;
+  const geoprivacy = observation?.geoprivacy;
+  const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
   return (
     <View
@@ -77,6 +79,9 @@ const ObsListItem = ( {
             || observation.observed_on
           }
           classNameMargin="mt-1"
+          geoprivacy={geoprivacy}
+          taxonGeoprivacy={taxonGeoprivacy}
+          belongsToCurrentUser={belongsToCurrentUser}
         />
       </View>
       <View

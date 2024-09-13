@@ -353,6 +353,7 @@
     "comment": "Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)",
     "val": "{ $count }m"
   },
+  "date-month-year": "MMM yyyy",
   "DATE-OBSERVED": "DATE OBSERVED",
   "Date-observed": "Date observed",
   "Date-observed-header-short": "Observed",

@@ -4,7 +4,8 @@ import ActivityHeaderKebabMenu from "components/ObsDetails/ActivityTab/ActivityH
 import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
 import {
   ActivityIndicator,
-  Body4, INatIcon, InlineUser, TextInputSheet, WarningSheet
+  Body4, DateDisplay,
+  INatIcon, InlineUser, TextInputSheet, WarningSheet
 } from "components/SharedComponents";
 import {
   View
@@ -12,7 +13,6 @@ import {
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
-import { formatIdDate } from "sharedHelpers/dateAndTime";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -25,7 +25,10 @@ type Props = {
   item: Object,
   loading: boolean,
   updateCommentBody: Function,
-  updateIdentification: Function
+  updateIdentification: Function,
+  geoprivacy: string,
+  taxonGeoprivacy: string,
+  belongsToCurrentUser: boolean
 }
 
 const ActivityHeader = ( {
@@ -38,7 +41,10 @@ const ActivityHeader = ( {
   item,
   loading,
   updateCommentBody,
-  updateIdentification
+  updateIdentification,
+  geoprivacy,
+  taxonGeoprivacy,
+  belongsToCurrentUser
 }:Props ): Node => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
@@ -121,9 +127,15 @@ const ActivityHeader = ( {
         {renderStatus()}
         {item.created_at
             && (
-              <Body4>
-                {formatIdDate( item.updated_at || item.created_at, t )}
-              </Body4>
+              <DateDisplay
+                dateString={
+                  item.updated_at || item.created_at
+                }
+                classNameMargin="mt-1"
+                geoprivacy={geoprivacy}
+                taxonGeoprivacy={taxonGeoprivacy}
+                belongsToCurrentUser={belongsToCurrentUser}
+              />
             )}
         {
           loading

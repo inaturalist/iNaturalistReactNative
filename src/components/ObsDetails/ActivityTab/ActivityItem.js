@@ -23,7 +23,10 @@ type Props = {
   item: Object,
   openAgreeWithIdSheet: Function,
   refetchRemoteObservation: Function,
-  userAgreedId?: string
+  userAgreedId?: string,
+  geoprivacy: string,
+  taxonGeoprivacy: string,
+  belongsToCurrentUser: boolean
 }
 
 const ActivityItem = ( {
@@ -33,7 +36,10 @@ const ActivityItem = ( {
   item,
   openAgreeWithIdSheet,
   refetchRemoteObservation,
-  userAgreedId
+  userAgreedId,
+  geoprivacy,
+  taxonGeoprivacy,
+  belongsToCurrentUser
 }: Props ): Node => {
   const navigation = useNavigation( );
   const { taxon, user, disagreement } = item;
@@ -58,6 +64,9 @@ const ActivityItem = ( {
           refetchRemoteObservation={refetchRemoteObservation}
           idWithdrawn={idWithdrawn}
           isConnected={isConnected}
+          geoprivacy={geoprivacy}
+          taxonGeoprivacy={taxonGeoprivacy}
+          belongsToCurrentUser={belongsToCurrentUser}
         />
         {taxon && (
           <View className="flex-row items-center justify-between mr-[23px] mb-4">

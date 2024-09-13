@@ -14,7 +14,7 @@ type Props = {
   observation: Object,
   obscured?: boolean,
   withCoordinates?: boolean,
-  withGeoprivacy?: boolean,
+  withGeoprivacy?: boolean
 };
 
 const ObservationLocation = ( {

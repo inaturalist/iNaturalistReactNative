@@ -250,6 +250,7 @@ date-format-short = M/d/yy
 Date-hours = { $count }h
 # Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
 Date-minutes = { $count }m
+date-month-year = MMM yyyy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed

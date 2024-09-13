@@ -24,6 +24,9 @@ const ActivityTab = ( {
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
+  const geoprivacy = observation?.geoprivacy;
+  const taxonGeoprivacy = observation?.taxon_geoprivacy;
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
 
   // finds the user's most recent id
   const findRecentUserAgreedToID = ( ) => {
@@ -63,6 +66,9 @@ const ActivityTab = ( {
             openAgreeWithIdSheet={openAgreeWithIdSheet}
             refetchRemoteObservation={refetchRemoteObservation}
             userAgreedId={userAgreedToId}
+            geoprivacy={geoprivacy}
+            taxonGeoprivacy={taxonGeoprivacy}
+            belongsToCurrentUser={belongsToCurrentUser}
           />
         ) )}
     </View>
