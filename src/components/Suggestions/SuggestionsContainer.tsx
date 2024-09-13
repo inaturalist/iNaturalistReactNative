@@ -17,7 +17,7 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
+import fetchCoarseUserLocation from "../../sharedHelpers/fetchUserLocation";
 import flattenUploadParams from "./helpers/flattenUploadParams";
 import isolateHumans, { humanFilter } from "./helpers/isolateHumans";
 import sortSuggestions from "./helpers/sortSuggestions";
@@ -409,7 +409,7 @@ const SuggestionsContainer = ( ) => {
   ] );
 
   const onPermissionGranted = useCallback( async ( ) => {
-    const userLocation = await fetchUserLocation( );
+    const userLocation = await fetchCoarseUserLocation( );
     updateObservationKeys( userLocation );
     const newImageParams = await flattenUploadParams( selectedPhotoUri );
     newImageParams.lat = userLocation?.latitude;

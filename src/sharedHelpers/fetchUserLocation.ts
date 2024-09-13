@@ -10,7 +10,7 @@ import {
 } from "react-native-permissions";
 
 const options = {
-  enableHighAccuracy: Platform.OS === "ios",
+  enableHighAccuracy: false,
   timeout: 2000,
   // Setting maximumAge to 0 always causes errors on Android.
   // Therefore, we conditionally apply it only if the platform is iOS.
@@ -29,7 +29,7 @@ interface UserLocation {
   positional_accuracy: number;
 }
 
-const fetchUserLocation = async ( ): Promise<UserLocation | null> => {
+const fetchCoarseUserLocation = async ( ): Promise<UserLocation | null> => {
   const permissionResult = permissionResultFromMultiple(
     await checkMultiple( LOCATION_PERMISSIONS )
   );
@@ -53,4 +53,4 @@ const fetchUserLocation = async ( ): Promise<UserLocation | null> => {
   return null;
 };
 
-export default fetchUserLocation;
+export default fetchCoarseUserLocation;
