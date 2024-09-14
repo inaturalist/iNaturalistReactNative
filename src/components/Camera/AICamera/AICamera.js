@@ -86,7 +86,7 @@ const AICamera = ( {
     takingPhoto,
     toggleFlash
   } = useTakePhoto( camera, false, device );
-  const [active, setActive] = React.useState( true );
+  const [inactive, setInactive] = React.useState( true );
   const { t } = useTranslation();
   const theme = useTheme();
   const navigation = useNavigation();
@@ -113,7 +113,7 @@ const AICamera = ( {
   }, [navigation, setResult, resetZoom] );
 
   const handlePress = async ( ) => {
-    await takePhoto( { replaceExisting: true, inactivateCallback: () => setActive( false ) } );
+    await takePhoto( { replaceExisting: true, inactivateCallback: () => setInactive( true ) } );
     handleCheckmarkPress( showPrediction
       ? result
       : null );
@@ -141,7 +141,7 @@ const AICamera = ( {
             animatedProps={animatedProps}
             pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
-            active={active}
+            inactive={inactive}
           />
         </View>
       )}

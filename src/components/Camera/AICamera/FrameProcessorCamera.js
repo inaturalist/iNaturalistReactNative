@@ -36,7 +36,7 @@ type Props = {
   onTaxaDetected: Function,
   pinchToZoom?: Function,
   takingPhoto: boolean,
-  active?: boolean
+  inactive?: boolean
 };
 
 const DEFAULT_FPS = 1;
@@ -62,7 +62,7 @@ const FrameProcessorCamera = ( {
   onTaxaDetected,
   pinchToZoom,
   takingPhoto,
-  active
+  inactive
 }: Props ): Node => {
   const { deviceOrientation } = useDeviceOrientation();
   const [lastTimestamp, setLastTimestamp] = useState( Date.now() );
@@ -179,7 +179,7 @@ const FrameProcessorCamera = ( {
       onClassifierError={onClassifierError}
       onDeviceNotSupported={onDeviceNotSupported}
       pinchToZoom={pinchToZoom}
-      active={active}
+      active={!inactive}
     />
   );
 };

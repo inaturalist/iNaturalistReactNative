@@ -33,7 +33,7 @@ interface Props {
   onDeviceNotSupported?: Function,
   pinchToZoom?: Function,
   resizeMode?: "cover" | "contain",
-  active?: boolean
+  inactive?: boolean
 }
 
 // A container for the Camera component
@@ -49,7 +49,7 @@ const CameraView = ( {
   onDeviceNotSupported,
   pinchToZoom,
   resizeMode,
-  active
+  inactive
 }: Props ) => {
   const {
     animatedStyle,
@@ -59,7 +59,7 @@ const CameraView = ( {
   // check if camera page is active
   const isFocused = useIsFocused( );
   const appState = useAppState( );
-  const isActive = !!active && isFocused && appState === "active";
+  const isActive = !inactive && isFocused && appState === "active";
 
   // Select a format that provides the highest resolution for photos and videos
   const iosFormat = useCameraFormat( device, [
