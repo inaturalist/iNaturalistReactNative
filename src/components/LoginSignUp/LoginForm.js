@@ -39,6 +39,7 @@ const LoginForm = ( {
   const [password, setPassword] = useState( "" );
   const [error, setError] = useState( null );
   const [loading, setLoading] = useState( false );
+  const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const theme = useTheme();
   const { keyboardShown } = useKeyboardInfo( );
 
@@ -81,6 +82,10 @@ const LoginForm = ( {
     navigation.getParent( )?.goBack( );
   };
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible( prevState => !prevState );
+  };
+
   const showEmailConfirmed = ( ) => (
     <View className="flex-row mb-5 items-center justify-center mx-2">
       <View className="bg-white rounded-full">
@@ -121,20 +126,29 @@ const LoginForm = ( {
           headerText={t( "PASSWORD" )}
           inputMode="text"
           onChangeText={text => setPassword( text )}
-          secureTextEntry
+          secureTextEntry={!isPasswordVisible}
           testID="Login.password"
           textContentType="password"
         />
-        <View className="mx-4">
+        <View className="flex-row justify-between">
           <Body2
             accessibilityRole="button"
-            className="underline mt-[15px] self-end color-white"
+            className="underline p-4 color-white"
+            onPress={() => togglePasswordVisibility()}
+          >
+            {isPasswordVisible
+              ? t( "Hide" )
+              : t( "Reveal" )}
+          </Body2>
+          <Body2
+            accessibilityRole="button"
+            className="underline p-4 color-white"
             onPress={( ) => navigation.navigate( "ForgotPassword" )}
           >
             {t( "Forgot-Password" )}
           </Body2>
-          {error && <Error error={error} />}
         </View>
+        {error && <Error error={error} />}
         <Button
           className={classnames( "mt-[30px]", {
             "mt-5": error
