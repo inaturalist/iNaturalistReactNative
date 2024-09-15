@@ -133,8 +133,8 @@ const LoginForm = ( {
         <View className="flex-row justify-between">
           <Body2
             accessibilityRole="button"
-            onPress={togglePasswordVisibility}
             className="underline p-4 color-white"
+            onPress={() => togglePasswordVisibility()}
           >
             {isPasswordVisible
               ? t( "Hide" )
