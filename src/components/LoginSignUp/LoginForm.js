@@ -130,11 +130,11 @@ const LoginForm = ( {
           testID="Login.password"
           textContentType="password"
         />
-        <View className="mx-4 flex-row justify-between ">
+        <View className="flex-row justify-between">
           <Body2
             accessibilityRole="button"
-            className="underline mt-[15px] color-white"
             onPress={togglePasswordVisibility}
+            className="underline p-4 color-white"
           >
             {isPasswordVisible
               ? t( "Hide" )
@@ -142,7 +142,7 @@ const LoginForm = ( {
           </Body2>
           <Body2
             accessibilityRole="button"
-            className="underline mt-[15px] color-white"
+            className="underline p-4 color-white"
             onPress={( ) => navigation.navigate( "ForgotPassword" )}
           >
             {t( "Forgot-Password" )}
