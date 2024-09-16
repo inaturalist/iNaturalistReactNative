@@ -3,11 +3,12 @@
 import {
   useNetInfo
 } from "@react-native-community/netinfo";
+import { useDrawerStatus } from "@react-navigation/drawer";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts.ts";
 import type { Node } from "react";
 import React, {
-  useCallback,
+  useCallback, useEffect,
   useRef,
   useState
 } from "react";
@@ -52,6 +53,7 @@ const MyObservationsContainer = ( ): Node => {
   const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
+  const isDrawerOpen = useDrawerStatus() === "open";
 
   const { observationList: observations } = useLocalObservations( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -161,6 +163,12 @@ const MyObservationsContainer = ( ): Node => {
   }, [
     myObsOffsetToRestore
   ] );
+
+  useEffect( () => {
+    // We just have this since we want rendering to occur when the drawer is opened/closed -
+    // Since this forces a refresh of the home screen on this page (in case a user logs in/out)
+    console.log( "isDrawerOpen", isDrawerOpen );
+  }, [isDrawerOpen] );
 
   if ( !layout ) { return null; }
 
