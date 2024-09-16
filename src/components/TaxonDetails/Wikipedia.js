@@ -30,11 +30,6 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
   const { t, i18n } = useTranslation();
   const { language } = i18n;
 
-  const openWikipedia = ( ) => {
-    if ( taxon?.wikipedia_url ) {
-      openExternalWebBrowser( taxon.wikipedia_url );
-    }
-  };
 
   let wikipediaUrl = taxon.wikipedia_url;
 
@@ -46,6 +41,13 @@ const Wikipedia = ( { taxon }: Props ): React.Node => {
     const lang = language?.split( "-" )?.[0] || "en";
     wikipediaUrl = `https://${lang}.wikipedia.org/wiki/${taxon.name}`;
   }
+
+  const openWikipedia = ( ) => {
+    if ( wikipediaUrl ) {
+      openExternalWebBrowser( wikipediaUrl );
+    }
+  };
+
 
   if ( !taxon.wikipedia_summary || taxon.wikipedia_summary.length === 0 ) {
     return null;
