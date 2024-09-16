@@ -52,10 +52,6 @@ export enum SORT_BY {
   MOST_FAVED = "MOST_FAVED",
 }
 
-// TODO: this should be imported from a central point, e.g. Taxon realm model
-// TODO: this is probably against conventioins to
-// make it in lower case but I (Johannes) don't want
-// to have to add another object somewhere else to map them to the values the API accepts
 export enum TAXONOMIC_RANK {
   none = null,
   kingdom = "kingdom",
