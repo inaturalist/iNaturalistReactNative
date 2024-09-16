@@ -179,7 +179,7 @@ const FrameProcessorCamera = ( {
       onClassifierError={onClassifierError}
       onDeviceNotSupported={onDeviceNotSupported}
       pinchToZoom={pinchToZoom}
-      active={!inactive}
+      inactive={inactive}
     />
   );
 };

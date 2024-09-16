@@ -86,7 +86,7 @@ const AICamera = ( {
     takingPhoto,
     toggleFlash
   } = useTakePhoto( camera, false, device );
-  const [inactive, setInactive] = React.useState( true );
+  const [inactive, setInactive] = React.useState( false );
   const { t } = useTranslation();
   const theme = useTheme();
   const navigation = useNavigation();
