@@ -40,7 +40,8 @@ const useZoom = ( device: Object ): Object => {
     : neutralZoom;
   const zoom = useSharedValue( initialZoom );
   const startZoom = useSharedValue( initialZoom );
-  const [zoomTextValue, setZoomTextValue] = useState( zoomButtonOptions[1] );
+  const initialZoomTextValue = zoomButtonOptions[1];
+  const [zoomTextValue, setZoomTextValue] = useState( initialZoomTextValue );
 
   const zoomButtonValues = [minZoom, neutralZoom, maxZoomWithButton];
 
@@ -65,6 +66,7 @@ const useZoom = ( device: Object ): Object => {
 
   const resetZoom = () => {
     zoom.value = initialZoom;
+    setZoomTextValue( initialZoomTextValue );
   };
 
   const onZoomChange = useCallback( scale => {
