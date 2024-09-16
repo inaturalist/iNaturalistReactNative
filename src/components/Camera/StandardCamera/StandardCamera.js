@@ -153,6 +153,11 @@ const StandardCamera = ( {
     setNewPhotoUris( [...newPhotoUris, uri] );
   };
 
+  const onFlipCamera = () => {
+    resetZoom( );
+    flipCamera( );
+  };
+
   const containerClasses = ["flex-1"];
   if ( isTablet && isLandscapeMode ) {
     containerClasses.push( "flex-row" );
@@ -186,7 +191,7 @@ const StandardCamera = ( {
         <CameraOptionsButtons
           handleZoomButtonPress={handleZoomButtonPress}
           disabled={disallowAddingPhotos}
-          flipCamera={flipCamera}
+          flipCamera={onFlipCamera}
           handleCheckmarkPress={handleCheckmarkPress}
           handleClose={handleBackButtonPress}
           hasFlash={hasFlash}
