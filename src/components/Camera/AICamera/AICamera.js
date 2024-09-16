@@ -121,6 +121,11 @@ const AICamera = ( {
 
   const insets = useSafeAreaInsets( );
 
+  const onFlipCamera = () => {
+    resetZoom( );
+    flipCamera( );
+  };
+
   return (
     <>
       {device && (
@@ -206,7 +211,7 @@ const AICamera = ( {
         handleZoomButtonPress={handleZoomButtonPress}
         confidenceThreshold={confidenceThreshold}
         cropRatio={cropRatio}
-        flipCamera={flipCamera}
+        flipCamera={onFlipCamera}
         fps={fps}
         hasFlash={hasFlash}
         modelLoaded={modelLoaded}
