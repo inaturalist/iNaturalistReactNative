@@ -23,8 +23,6 @@ const useTaxonCommonNames = ( ) => {
   const { hasPermissions } = useLocationPermission( );
   const [userLocation, setUserLocation] = useState( null );
 
-  console.log( hasPermissions, "has permissions" );
-
   const params = {
     per_page: 500,
     fields: {
