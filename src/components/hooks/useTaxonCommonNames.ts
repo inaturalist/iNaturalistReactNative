@@ -1,9 +1,11 @@
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts.ts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { useAuthenticatedQuery } from "sharedHooks";
+import { useAuthenticatedQuery, useLocationPermission } from "sharedHooks";
+
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 
 const { useRealm } = RealmContext;
 
@@ -18,20 +20,48 @@ const ONE_WEEK_MS = (
 );
 
 const useTaxonCommonNames = ( ) => {
+  const { hasPermissions } = useLocationPermission( );
+  const [userLocation, setUserLocation] = useState( null );
+
+  console.log( hasPermissions, "has permissions" );
+
+  const params = {
+    per_page: 500,
+    fields: {
+      taxon: {
+        id: true,
+        preferred_common_name: true,
+        name: true
+      }
+    }
+  };
+
+  if ( userLocation?.latitude ) {
+    params.lat = userLocation.latitude;
+    params.lng = userLocation.longitude;
+  }
+
   const realm = useRealm( );
   const { data } = useAuthenticatedQuery(
-    ["fetchSpeciesCounts"],
-    ( ) => fetchSpeciesCounts( {
-      fields: {
-        taxon: {
-          id: true,
-          preferred_common_name: true,
-          name: true
-        }
-      },
-      per_page: 500
-    } )
+    ["fetchSpeciesCounts", userLocation],
+    optsWithAuth => fetchSpeciesCounts(
+      params,
+      optsWithAuth,
+      {
+        enabled: hasPermissions !== null
+      }
+    )
   );
+
+  useEffect( ( ) => {
+    const fetchLocation = async ( ) => {
+      const location = await fetchUserLocation( );
+      setUserLocation( location );
+    };
+    if ( hasPermissions ) {
+      fetchLocation( );
+    }
+  }, [hasPermissions] );
 
   useEffect( ( ) => {
     if ( data?.results ) {
