@@ -26,6 +26,8 @@ const SoundSlider = ( { playBackState, onSlidingComplete } ) => {
       style={sliderStyle}
       minimumValue={0}
       maximumValue={playBackState.duration}
+      lowerLimit={0}
+      upperLimit={playBackState.duration}
       minimumTrackTintColor="#FFFFFF"
       maximumTrackTintColor="#FFFFFF"
       thumbTintColor={theme.colors.inatGreen}
@@ -71,7 +73,16 @@ const SoundContainer = ( {
     async function playSoundAsync( ) {
       await player.startPlayer( sound.file_url );
       if ( position ) {
-        await player.seekToPlayer( position );
+        try {
+          await player.seekToPlayer( position );
+        } catch ( pausePlayerError ) {
+          if ( pausePlayerError.message.match( /Player has already stopped/ ) ) {
+            // Something else might be wrong, but it's not really something to
+            // bother the user with
+            return;
+          }
+          throw pausePlayerError;
+        }
       }
       player.addPlayBackListener( playBackEvent => {
         setPlayBackState( {
@@ -92,11 +103,7 @@ const SoundContainer = ( {
     return ( ) => {
       player.removePlayBackListener( );
     };
-  }, [
-    player,
-    sound.file_url,
-    mmss
-  ] );
+  }, [player, sound.file_url, mmss] );
 
   const stopSound = useCallback( async ( ) => {
     setPlaying( false );
@@ -135,7 +142,10 @@ const SoundContainer = ( {
         // seems to not cause the progress to jump back to 0 and then to the
         // current position
         setPlaying( true );
-        player.resumePlayer( );
+        // resumePlayer seemed to make slider stop when audio kept playing
+        // when toggle was pressed repeatedly
+        // occasionally jumps back to 0, havent been able to repicate consistently.
+        playSound( playBackState.currentPosition );
       }
     } else {
       playSound( );
@@ -143,12 +153,10 @@ const SoundContainer = ( {
   }, [
     playBackState.currentPosition,
     playBackState.duration,
-    player,
     playing,
     playSound,
     swipedAway,
-    stopSound
-  ] );
+    stopSound] );
 
   // If the sound is no longer visible in the carousel (i.e. user swiped to a
   // different media item), stop playback
@@ -175,6 +183,14 @@ const SoundContainer = ( {
       playSound( );
     }
   }, [autoPlay, isVisible, playSound] );
+
+  useEffect( ( ) => {
+    // when user seeks when audio reaches the end.
+    if ( !playing && playBackState.currentPosition < playBackState.duration ) {
+      setPlaying( true );
+      togglePlay();
+    }
+  }, [playBackState.currentPosition, playBackState.duration, playSound, playing, togglePlay] );
 
   if ( isConnected === false && needsInternet ) {
     return (
@@ -221,7 +237,14 @@ const SoundContainer = ( {
               currentPosition: value,
               formattedCurrentPosition: mmss( value )
             } );
-            player.seekToPlayer( value );
+            player.seekToPlayer( value )
+              .catch( seekToPlayerError => {
+                if ( seekToPlayerError.message.match( /Player is null/ ) ) {
+                  // Occurs when player reaches end of audio and tries to seek.
+                  return;
+                }
+                throw seekToPlayerError;
+              } );
           }}
         />
       </View>
