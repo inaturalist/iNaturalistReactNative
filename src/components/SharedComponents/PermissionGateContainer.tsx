@@ -8,6 +8,8 @@ import React, {
   useState
 } from "react";
 import { Platform } from "react-native";
+import DeviceInfo from "react-native-device-info";
+import Orientation from "react-native-orientation-locker";
 import {
   AndroidPermission,
   checkMultiple,
@@ -19,6 +21,8 @@ import {
 } from "react-native-permissions";
 
 import PermissionGate from "./PermissionGate";
+
+const isTablet = DeviceInfo.isTablet( );
 
 const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
 const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
@@ -100,6 +104,9 @@ interface MultiResult {
   [permission: string]: PermissionStatus;
 }
 export function permissionResultFromMultiple( multiResults: MultiResult ) {
+  if ( !isTablet ) {
+    Orientation.lockToPortrait( );
+  }
   if ( typeof ( multiResults ) !== "object" ) {
     throw new Error(
       "permissionResultFromMultiple received something other than an object. "
