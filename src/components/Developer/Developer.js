@@ -121,9 +121,7 @@ const Developer = (): Node => {
               />
               <Button
                 onPress={() => {
-                  throw new INatApiTooManyRequestsError( {
-                    error: "Test 429 error", status: 429
-                  } );
+                  throw new INatApiTooManyRequestsError( );
                 }}
                 text="TEST API TOO MANY REQUESTS ERROR"
                 className="mb-5"
