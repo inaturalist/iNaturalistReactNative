@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import AddObsModal from "components/AddObsModal";
+import AddObsModal from "components/AddObsModal.tsx";
 import {
   Body1,
   Body2,

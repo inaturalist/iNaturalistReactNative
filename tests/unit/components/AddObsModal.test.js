@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import AddObsModal from "components/AddObsModal";
+import AddObsModal from "components/AddObsModal.tsx";
 import i18next from "i18next";
 import React from "react";
 // eslint-disable-next-line import/no-unresolved
