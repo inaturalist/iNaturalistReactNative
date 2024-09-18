@@ -146,7 +146,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ): React.Node => {
       } )}
       >
         {renderAddObsIcon( "standardCamera" )}
-        {renderAddObsIcon( "arCamera" )}
+        {showAICamera && renderAddObsIcon( "arCamera" )}
         {renderAddObsIcon( "photoLibrary" )}
       </View>
       <View className="flex-row justify-center items-center">
