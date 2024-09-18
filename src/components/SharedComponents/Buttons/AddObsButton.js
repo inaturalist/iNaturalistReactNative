@@ -1,7 +1,7 @@
 // @flow
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import AddObsModal from "components/AddObsModal";
+import AddObsModal from "components/AddObsModal.tsx";
 import { Modal } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton.tsx";
 import { t } from "i18next";
