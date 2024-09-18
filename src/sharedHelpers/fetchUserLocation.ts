@@ -17,6 +17,11 @@ const options = {
   ...( Platform.OS === "ios" && { maximumAge: 0 } )
 } as const;
 
+// Issue reference for getCurrentPosition bug on Android:
+// Known bug in react-native-geolocation: getCurrentPosition does not work on
+// Android when enableHighAccuracy: true and maximumAge: 0.
+// See: https://github.com/michalchudziak/react-native-geolocation/issues/272
+// Added OS-specific conditions to handle this issue and make it work properly on Android.
 const getCurrentPosition = ( ): Promise<GeolocationResponse> => new Promise(
   ( resolve, error ) => {
     Geolocation.getCurrentPosition( resolve, error, options );
