@@ -23,6 +23,7 @@ import useFreshInstall from "./hooks/useFreshInstall";
 import useLinking from "./hooks/useLinking";
 import useLockOrientation from "./hooks/useLockOrientation";
 import useReactQueryRefetch from "./hooks/useReactQueryRefetch";
+import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 
 const { useRealm } = RealmContext;
 
@@ -75,6 +76,7 @@ const App = ( { children }: Props ): Node => {
   useLockOrientation( );
   useShare( );
   useObservationUpdatesWhenFocused( );
+  useTaxonCommonNames( );
 
   useEffect( ( ) => {
     addARCameraFiles( );
