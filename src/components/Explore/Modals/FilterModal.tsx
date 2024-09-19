@@ -696,6 +696,14 @@ const FilterModal = ( {
                 >
                   <DisplayTaxon taxon={taxon || "unknown"} />
                   <INatIcon name="edit" size={22} />
+                  <INatIconButton
+                    className="ml-3"
+                    icon="close"
+                    size={20}
+                    onPress={() => updateTaxon( null )}
+                    accessibilityLabel={t( "Remove-identification" )}
+                    accessibilityHint={t( "Removes-this-observations-taxon" )}
+                  />
                 </Pressable>
               )
               : (
