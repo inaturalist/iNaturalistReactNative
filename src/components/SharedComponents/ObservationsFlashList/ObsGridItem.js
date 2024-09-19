@@ -1,6 +1,6 @@
 // @flow
 
-import { Body2, DisplayTaxonName, ObsStatus } from "components/SharedComponents";
+import { Body2, DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -55,36 +55,25 @@ const ObsGridItem = ( {
       white
     >
       <View className="absolute bottom-0 flex p-2 w-full">
-        {explore
-          ? (
-            <ObsStatus
-              observation={observation}
-              layout="horizontal"
-              testID={`ObsStatus.${observation.uuid}`}
-              white
-            />
-          )
-          : (
-            <ObsUploadStatus
-              classNameMargin="mb-1"
-              handleIndividualUploadPress={handleIndividualUploadPress}
-              layout="horizontal"
-              observation={observation}
-              showUploadStatus={showUploadStatus}
-              white
-            />
-          )}
+        <ObsUploadStatus
+          classNameMargin="mb-1"
+          explore={explore}
+          handleIndividualUploadPress={handleIndividualUploadPress}
+          layout="horizontal"
+          observation={observation}
+          showUploadStatus={showUploadStatus}
+          white
+        />
         <DisplayTaxonName
-          keyBase={observation?.uuid}
-          taxon={observation?.taxon}
-          scientificNameFirst={
-            currentUser?.prefers_scientific_name_first
-          }
-          prefersCommonNames={currentUser?.prefers_common_names}
-          layout="vertical"
+          bottomTextComponent={Body2}
           color="text-white"
           ellipsizeCommonName
-          bottomTextComponent={Body2}
+          keyBase={observation?.uuid}
+          layout="vertical"
+          prefersCommonNames={currentUser?.prefers_common_names}
+          scientificNameFirst={currentUser?.prefers_scientific_name_first}
+          showOneNameOnly={!explore}
+          taxon={observation?.taxon}
         />
       </View>
     </ObsImagePreview>

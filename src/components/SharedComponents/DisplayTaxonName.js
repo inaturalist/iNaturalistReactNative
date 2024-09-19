@@ -36,6 +36,7 @@ type Props = {
   removeStyling?: boolean,
   prefersCommonNames?: boolean,
   scientificNameFirst?: boolean,
+  showOneNameOnly: boolean,
   selectable?: boolean,
   small?: boolean,
   taxon: Object,
@@ -52,6 +53,7 @@ const DisplayTaxonName = ( {
   removeStyling = false,
   prefersCommonNames = true,
   scientificNameFirst = false,
+  showOneNameOnly = false,
   selectable,
   small = false,
   taxon,
@@ -114,7 +116,7 @@ const DisplayTaxonName = ( {
     if ( scientificNameFirst ) {
       return 1;
     }
-    if ( ellipsizeCommonName ) {
+    if ( ellipsizeCommonName || showOneNameOnly ) {
       return 2;
     }
     return 3;
@@ -203,7 +205,7 @@ const DisplayTaxonName = ( {
       } )}
     >
       {topTextComponent}
-      {bottomTextComponent}
+      {!showOneNameOnly && bottomTextComponent}
     </View>
   );
 };

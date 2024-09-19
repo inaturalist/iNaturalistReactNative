@@ -1,7 +1,7 @@
 // @flow
 import classnames from "classnames";
 import {
-  DateDisplay, DisplayTaxonName, ObservationLocation, ObsStatus
+  DateDisplay, DisplayTaxonName, ObservationLocation
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -90,22 +90,14 @@ const ObsListItem = ( {
           { "justify-center": uploadStatus === UPLOAD_IN_PROGRESS }
         )}
       >
-        {explore
-          ? (
-            <ObsStatus
-              observation={observation}
-              layout="vertical"
-              testID={`ObsStatus.${observation.uuid}`}
-            />
-          )
-          : (
-            <ObsUploadStatus
-              handleIndividualUploadPress={handleIndividualUploadPress}
-              layout="vertical"
-              showUploadStatus={showUploadStatus}
-              observation={observation}
-            />
-          )}
+        <ObsUploadStatus
+          explore={explore}
+          handleIndividualUploadPress={handleIndividualUploadPress}
+          layout="vertical"
+          observation={observation}
+          showObsStatus
+          showUploadStatus={showUploadStatus}
+        />
       </View>
     </View>
   );
