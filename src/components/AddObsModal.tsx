@@ -132,7 +132,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
     <>
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View className="bg-white rounded-3xl p-[23px] mb-20">
-        <Heading2 testID="identify-text" className="mb-4 ml-1">
+        <Heading2 maxFontSizeMultiplier={1.5} testID="identify-text" className="mb-4 ml-1">
           {t( "Identify-an-organism" )}
         </Heading2>
         {Object.keys( obsCreateItems )
@@ -155,7 +155,7 @@ const AddObsModal = ( { closeModal, navAndCloseModal }: Props ) => {
                       : theme.colors.primary
                   }
                 />
-                <Body3 className="ml-[20px] shrink">{item.text}</Body3>
+                <Body3 maxFontSizeMultiplier={1.5} className="ml-[20px] shrink">{item.text}</Body3>
               </Pressable>
             );
           } )}

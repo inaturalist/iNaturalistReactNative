@@ -102,7 +102,7 @@ const ContextHeader = ( {
             )
             : (
               <View>
-                <Heading1>{getTitle()}</Heading1>
+                <Heading1 maxFontSizeMultiplier={1.5}>{getTitle()}</Heading1>
                 {subtitle && <Heading4>{subtitle}</Heading4>}
               </View>
             )}
