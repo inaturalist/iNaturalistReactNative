@@ -869,7 +869,16 @@ const FilterModal = ( {
                     }}
                   >
                     <ProjectListItem item={project} />
-                    <INatIcon name="edit" size={22} />
+                    <View className="flex-row items-center">
+                      <INatIcon name="edit" size={22} />
+                      <INatIconButton
+                        className="ml-3"
+                        icon="close"
+                        size={20}
+                        onPress={() => updateProject( null )}
+                        accessibilityLabel={t( "Remove-project-filter" )}
+                      />
+                    </View>
                   </Pressable>
                 )
                 : (

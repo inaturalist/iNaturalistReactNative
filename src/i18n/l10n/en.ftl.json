@@ -1096,6 +1096,7 @@
     "val": "Remove identification"
   },
   "Remove-Photos": "Remove Photos",
+  "Remove-project-filter": "Remove project filter",
   "Remove-taxon-filter": "Remove taxon filter",
   "Remove-user-filter": "Remove user filter",
   "Removes-this-observations-taxon": {
