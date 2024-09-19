@@ -824,7 +824,17 @@ const FilterModal = ( {
                       countText={t( "X-Observations", { count: user.observations_count } )}
                       pressable={false}
                     />
-                    <INatIcon name="edit" size={22} />
+                    <View className="flex-row items-center">
+                      <INatIcon name="edit" size={22} />
+                      <INatIconButton
+                        className="ml-3"
+                        icon="close"
+                        size={20}
+                        onPress={() => updateUser( null )}
+                        accessibilityLabel={t( "Remove-identification" )}
+                        accessibilityHint={t( "Removes-this-observations-taxon" )}
+                      />
+                    </View>
                   </Pressable>
                 )
                 : (
