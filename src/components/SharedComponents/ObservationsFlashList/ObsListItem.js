@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
 import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice.ts";
@@ -47,6 +47,20 @@ const ObsListItem = ( {
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
+  const displayTaxonName = useMemo( ( ) => (
+    <DisplayTaxonName
+      taxon={observation?.taxon}
+      keyBase={observation?.uuid}
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      prefersCommonNames={currentUser?.prefers_common_names}
+    />
+  ), [
+    currentUser?.prefers_common_names,
+    currentUser?.prefers_scientific_name_first,
+    observation?.taxon,
+    observation?.uuid
+  ] );
+
   return (
     <View
       testID={`MyObservations.obsListItem.${observation.uuid}`}
@@ -61,12 +75,7 @@ const ObsListItem = ( {
         iconicTaxonName={observation.taxon?.iconic_taxon_name}
       />
       <View className="pr-[25px] flex-1 ml-[10px]">
-        <DisplayTaxonName
-          taxon={observation?.taxon}
-          keyBase={observation?.uuid}
-          scientificNameFirst={currentUser?.prefers_scientific_name_first}
-          prefersCommonNames={currentUser?.prefers_common_names}
-        />
+        {displayTaxonName}
         <ObservationLocation
           observation={observation}
           obscured={isObscured}

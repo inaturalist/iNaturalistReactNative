@@ -3,7 +3,7 @@
 import { Body2, DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
 import { useCurrentUser } from "sharedHooks";
 
@@ -39,6 +39,27 @@ const ObsGridItem = ( {
     || observation?.observation_sounds?.length
   );
   const currentUser = useCurrentUser( );
+
+  const displayTaxonName = useMemo( ( ) => (
+    <DisplayTaxonName
+      bottomTextComponent={Body2}
+      color="text-white"
+      ellipsizeCommonName
+      keyBase={observation?.uuid}
+      layout="vertical"
+      prefersCommonNames={currentUser?.prefers_common_names}
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      showOneNameOnly={!explore}
+      taxon={observation?.taxon}
+    />
+  ), [
+    currentUser?.prefers_common_names,
+    currentUser?.prefers_scientific_name_first,
+    explore,
+    observation?.taxon,
+    observation?.uuid
+  ] );
+
   return (
     <ObsImagePreview
       source={{
@@ -64,17 +85,7 @@ const ObsGridItem = ( {
           showUploadStatus={showUploadStatus}
           white
         />
-        <DisplayTaxonName
-          bottomTextComponent={Body2}
-          color="text-white"
-          ellipsizeCommonName
-          keyBase={observation?.uuid}
-          layout="vertical"
-          prefersCommonNames={currentUser?.prefers_common_names}
-          scientificNameFirst={currentUser?.prefers_scientific_name_first}
-          showOneNameOnly={!explore}
-          taxon={observation?.taxon}
-        />
+        {displayTaxonName}
       </View>
     </ObsImagePreview>
   );

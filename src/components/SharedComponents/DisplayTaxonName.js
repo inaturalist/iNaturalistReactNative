@@ -94,6 +94,7 @@ const DisplayTaxonName = ( {
     rankLevel,
     rank
   } = generateTaxonPieces( taxonPojo );
+  console.log( commonName, "common name" );
   const isHorizontal = layout === "horizontal";
   const getSpaceChar = showSpace => ( showSpace && isHorizontal
     ? " "
@@ -155,7 +156,9 @@ const DisplayTaxonName = ( {
     </TopTextComponent>
   );
 
-  const bottomTextComponent = ( commonName && prefersCommonNames ) && (
+  const showBottomTextComponent = commonName && prefersCommonNames && !showOneNameOnly;
+
+  const bottomTextComponent = showBottomTextComponent && (
     <BottomTextComponent
       className={classnames( textClassName, "mt-[3px]" )}
       selectable={selectable}
@@ -205,7 +208,7 @@ const DisplayTaxonName = ( {
       } )}
     >
       {topTextComponent}
-      {!showOneNameOnly && bottomTextComponent}
+      {bottomTextComponent}
     </View>
   );
 };
