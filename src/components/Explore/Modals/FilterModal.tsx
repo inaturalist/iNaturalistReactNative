@@ -707,6 +707,8 @@ const FilterModal = ( {
                       icon="close"
                       size={20}
                       onPress={() => updateTaxon( null )}
+                      accessibilityLabel={t( "Remove-identification" )}
+                      accessibilityHint={t( "Removes-this-observations-taxon" )}
                     />
                   </View>
                 </Pressable>
@@ -836,6 +838,8 @@ const FilterModal = ( {
                         icon="close"
                         size={20}
                         onPress={() => updateUser( null )}
+                        accessibilityLabel={t( "Remove-identification" )}
+                        accessibilityHint={t( "Removes-this-observations-taxon" )}
                       />
                     </View>
                   </Pressable>
